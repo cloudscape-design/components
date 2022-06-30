@@ -1,0 +1,31 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/index' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.root {
+  /* used in test-utils and in the use-selection hook */
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  padding-right: awsui.$space-xs;
+  padding-left: awsui.$space-xs;
+  padding-bottom: awsui.$space-xxs;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  left: 0;
+  box-sizing: border-box;
+  border-right: 0.1 * styles.$base-size solid transparent;
+}
+
+.stud {
+  visibility: hidden;
+}

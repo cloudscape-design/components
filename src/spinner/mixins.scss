@@ -1,0 +1,63 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$_spinner-sizes: (
+  (
+    name: 'normal',
+    size: 1.2 * styles.$base-size,
+    iconSizeMap: awsui.$size-icon-normal,
+    supportedLineHeight: awsui.$font-body-m-line-height,
+  ),
+  (
+    name: 'big',
+    size: 2.4 * styles.$base-size,
+    iconSizeMap: awsui.$size-icon-big,
+    supportedLineHeight: awsui.$font-heading-xl-line-height,
+  ),
+  (
+    name: 'large',
+    size: 3.6 * styles.$base-size,
+    iconSizeMap: awsui.$size-icon-large,
+    supportedLineHeight: awsui.$font-display-l-line-height,
+  )
+);
+
+$_spinner-variants: (
+  'normal': currentColor,
+  'disabled': awsui.$color-text-interactive-disabled,
+  'inverted': awsui.$color-text-inverted,
+);
+
+@mixin make-spinner-sizes {
+  @each $type in $_spinner-sizes {
+    $name: map.get($type, 'name');
+    $size: map.get($type, 'size');
+    $supportedLineHeight: map.get($type, 'supportedLineHeight');
+    $iconSizeMap: map.get($type, 'iconSizeMap');
+    $padding: calc((#{$iconSizeMap} - #{$size}) / 2);
+    $margin: calc((#{$supportedLineHeight} - #{$iconSizeMap}) / 2);
+
+    &.size-#{$name} {
+      width: $iconSizeMap;
+      height: $iconSizeMap;
+      padding: $padding;
+      margin-top: $margin;
+      margin-bottom: $margin;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@mixin make-spinner-variants {
+  @each $variant in map.keys($_spinner-variants) {
+    &.variant-#{$variant} {
+      color: #{map.get($_spinner-variants, $variant)};
+    }
+  }
+}

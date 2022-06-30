@@ -1,0 +1,32 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use './spacing.scss' as spacing;
+
+@include spacing.create-spacing(p-, padding, '.box');
+@include spacing.create-spacing(m-, margin, '.box');
+
+.box {
+  &.d-block {
+    display: block;
+  }
+  &.d-inline {
+    display: inline;
+  }
+  &.d-inline-block {
+    display: inline-block;
+  }
+  &.d-none {
+    display: none;
+  }
+}
+
+.f-left {
+  float: left;
+}
+.f-right {
+  float: right;
+}

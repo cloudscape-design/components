@@ -1,0 +1,72 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - gh-readonly-queue/main/**
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  buildReference:
+    name: Generate reference images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.base_ref }}
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - run: npm install
+      - name: Install BackstopJS
+        run: npm --prefix backstop install ./backstop
+      - name: Build components
+        run: npx gulp quick-build
+      - name: Start dev server
+        run: npm run start:integ &
+      - name: Generate reference images
+        run: npm run test:visual reference
+      - name: Upload reference artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: visual-regression-results
+          path: |
+            backstop
+            !backstop/node_modules
+
+  test:
+    name: Test for regressions
+    runs-on: ubuntu-latest
+    needs:
+      - buildReference
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download reference artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: visual-regression-results
+          path: backstop
+      - run: npm install
+      - name: Install BackstopJS
+        run: npm --prefix backstop install ./backstop
+      - name: Build components
+        run: npx gulp quick-build
+      - name: Start dev server
+        run: npm run start:integ &
+      - name: Run visual regression tests
+        run: npm run test:visual test
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: visual-regression-results
+          path: |
+            backstop
+            !backstop/node_modules

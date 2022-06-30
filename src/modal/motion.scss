@@ -1,0 +1,57 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+@keyframes modal-slide-up {
+  0% {
+    transform: translate(0, 10px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+// Exception: The modal animations do not follow the motion guidelines
+// for the "Show/hide (paced)" group and are therefore not using
+// standard variables from that group.
+.dialog {
+  @include styles.with-motion {
+    @include styles.animation-fade-in-0;
+    animation: modal-slide-up awsui.$motion-duration-slow ease-out,
+      awsui-motion-fade-in-0 awsui.$motion-duration-slow ease-out;
+    animation-delay: awsui.$motion-duration-fast;
+    animation-fill-mode: both;
+  }
+
+  &.refresh {
+    @include styles.with-motion {
+      @include styles.animation-fade-in-0;
+      @include styles.animation-scale-popup;
+
+      animation: awsui-motion-scale-popup, awsui-motion-fade-in-0;
+      animation-duration: awsui.$motion-duration-refresh-only-fast;
+      animation-timing-function: awsui.$motion-easing-refresh-only-a;
+
+      animation-fill-mode: both;
+    }
+  }
+}
+
+.root {
+  @include styles.with-motion {
+    @include styles.animation-fade-in;
+    animation: awsui-motion-fade-in awsui.$motion-duration-extra-slow ease-out;
+    animation-fill-mode: both;
+  }
+
+  &.refresh {
+    @include styles.with-motion {
+      animation-duration: awsui.$motion-duration-refresh-only-fast;
+    }
+  }
+}

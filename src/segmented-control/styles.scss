@@ -1,0 +1,44 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/' as styles;
+@use 'segment';
+@use 'sass:list' as list;
+
+@function repeatValue($value, $times) {
+  $result: ();
+  @for $i from 1 through $times {
+    $result: list.append($result, $value);
+  }
+  @return $result;
+}
+
+.root {
+  @include styles.styles-reset;
+}
+
+.segment-part {
+  display: -ms-inline-grid;
+  display: inline-grid;
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    display: none;
+  }
+}
+
+.select {
+  display: none;
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    display: block;
+  }
+}
+
+//Since IE does not support grid-auto-columns, grid will work for maximum of 6 segments
+@for $i from 2 through 6 {
+  .segment-count-#{$i} {
+    -ms-grid-columns: repeatValue(1fr, $i);
+    // The repeat syntax is not used since it is broken when using with SASS together
+    grid-template-columns: repeatValue(1fr, $i);
+  }
+}

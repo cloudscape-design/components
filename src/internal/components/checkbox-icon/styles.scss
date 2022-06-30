@@ -1,0 +1,43 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.root {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  > .styled-box {
+    fill: awsui.$color-background-control-default;
+    stroke: awsui.$color-border-control-default;
+    stroke-width: styles.$control-border-width;
+    &-checked,
+    &-indeterminate {
+      fill: awsui.$color-background-control-checked;
+      stroke: awsui.$color-border-control-checked;
+    }
+    &-disabled {
+      fill: awsui.$color-background-control-disabled;
+      stroke: awsui.$color-border-control-disabled;
+    }
+    @include styles.with-motion {
+      transition: fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+    }
+  }
+
+  > .styled-line {
+    stroke: awsui.$color-foreground-control-default;
+    stroke-width: 2;
+    fill: none;
+    &-disabled {
+      stroke: awsui.$color-foreground-control-disabled;
+    }
+  }
+}

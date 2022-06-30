@@ -1,0 +1,381 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`balanceLabelNodes empty 1`] = `NodeList []`;
+
+exports[`balanceLabelNodes heavy overlap on both sides 1`] = `
+NodeList [
+  <g
+    data-x="125"
+    data-y="-120"
+    transform=""
+  >
+    <text
+      x="125"
+      y="-120"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-116"
+    transform="translate(0 22)"
+  >
+    <text
+      x="125"
+      y="-116"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-109"
+    transform="translate(0 41)"
+  >
+    <text
+      x="125"
+      y="-109"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="120"
+    transform=""
+  >
+    <text
+      x="125"
+      y="120"
+    >
+      Segment 4
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-109"
+    transform="translate(0 41)"
+  >
+    <rect
+      x="-125"
+      y="-109"
+    >
+      Segment 5
+    </rect>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-118"
+    transform="translate(0 24)"
+  >
+    <text
+      x="-125"
+      y="-118"
+    >
+      Segment 6
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-120"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="-120"
+    >
+      Segment 7
+    </text>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes heavy overlap on the left side 1`] = `
+NodeList [
+  <g
+    data-x="125"
+    data-y="111"
+    transform=""
+  >
+    <text
+      x="125"
+      y="111"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-92"
+    transform="translate(0 102)"
+  >
+    <text
+      x="-125"
+      y="-92"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-100"
+    transform="translate(0 84)"
+  >
+    <text
+      x="-125"
+      y="-100"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-108"
+    transform="translate(0 66)"
+  >
+    <text
+      x="-125"
+      y="-108"
+    >
+      Segment 4
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-114"
+    transform="translate(0 46)"
+  >
+    <rect
+      x="-125"
+      y="-114"
+    >
+      Segment 5
+    </rect>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-118"
+    transform="translate(0 24)"
+  >
+    <text
+      x="-125"
+      y="-118"
+    >
+      Segment 6
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-120"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="-120"
+    >
+      Segment 7
+    </text>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes heavy overlap on the right side 1`] = `
+NodeList [
+  <g
+    data-x="125"
+    data-y="-119"
+    transform=""
+  >
+    <text
+      x="125"
+      y="-119"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-117"
+    transform="translate(0 24)"
+  >
+    <text
+      x="125"
+      y="-117"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-113"
+    transform="translate(0 46)"
+  >
+    <text
+      x="125"
+      y="-113"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-108"
+    transform="translate(0 67)"
+  >
+    <text
+      x="125"
+      y="-108"
+    >
+      Segment 4
+    </text>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-100"
+    transform="translate(0 85)"
+  >
+    <rect
+      x="125"
+      y="-100"
+    >
+      Segment 5
+    </rect>
+  </g>,
+  <g
+    data-x="125"
+    data-y="-92"
+    transform="translate(0 103)"
+  >
+    <text
+      x="125"
+      y="-92"
+    >
+      Segment 6
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="111"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="111"
+    >
+      Segment 7
+    </text>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes one segment 1`] = `
+NodeList [
+  <g
+    data-x="-125"
+    data-y="120"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="120"
+    >
+      Test
+    </text>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes overlap on the left, but not all labels need to be moved 1`] = `
+NodeList [
+  <g
+    data-x="125"
+    data-y="45"
+    transform=""
+  >
+    <text
+      x="125"
+      y="45"
+    >
+      Segment 1
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="45"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="45"
+    >
+      Segment 2
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-45"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="-45"
+    >
+      Segment 3
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-113"
+    transform="translate(0 20)"
+  >
+    <text
+      x="-125"
+      y="-113"
+    >
+      Segment 4
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="-119"
+    transform=""
+  >
+    <rect
+      x="-125"
+      y="-119"
+    >
+      Segment 5
+    </rect>
+  </g>,
+]
+`;
+
+exports[`balanceLabelNodes two equal segments 1`] = `
+NodeList [
+  <g
+    data-x="125"
+    data-y="0"
+    transform=""
+  >
+    <text
+      x="125"
+      y="0"
+    >
+      Test
+    </text>
+  </g>,
+  <g
+    data-x="-125"
+    data-y="0"
+    transform=""
+  >
+    <text
+      x="-125"
+      y="0"
+    >
+      Test
+    </text>
+  </g>,
+]
+`;

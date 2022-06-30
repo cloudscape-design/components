@@ -1,0 +1,146 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+}
+
+.header {
+  padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
+  // Additional xl space to prevent text from overlapping the close button.
+  padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+}
+
+.header-link {
+  @include styles.font-panel-header;
+  color: awsui.$color-text-heading-default;
+  min-height: awsui.$font-panel-header-line-height;
+
+  display: flex;
+
+  &--has-logo {
+    > .header-link-text {
+      font-weight: styles.$font-weight-normal;
+    }
+  }
+}
+
+.header-logo {
+  margin-right: awsui.$space-s;
+  margin-top: awsui.$space-xxxs;
+  max-width: calc(1.25 * #{awsui.$size-icon-big});
+  align-self: flex-start;
+
+  &--stretched {
+    max-width: 100%;
+    margin-right: 0;
+  }
+}
+
+.list-container {
+  margin-top: awsui.$space-scaled-l;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  padding-left: awsui.$space-l;
+}
+
+.list-variant-root {
+  margin: 0;
+  margin-bottom: awsui.$space-scaled-xxxl;
+  padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
+}
+
+.list-variant-expandable-link-group {
+  padding-left: awsui.$space-xxxl;
+}
+
+.list-item {
+  margin: awsui.$space-scaled-xs 0;
+  padding: 0;
+  list-style: none;
+}
+
+.section,
+.expandable-link-group {
+  margin-left: calc(-1 * #{awsui.$space-l});
+}
+
+.section {
+  margin-top: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  margin-bottom: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+
+  // HACK: Remove padding from section header and content to rely on margin collapsing rules.
+  /* stylelint-disable-next-line selector-max-type */
+  > div {
+    padding: 0;
+  }
+}
+
+.section-header {
+  color: awsui.$color-text-body-secondary;
+  font-weight: styles.$font-weight-bold;
+}
+
+.link {
+  @include styles.font-body-m;
+  color: awsui.$color-text-body-secondary;
+  font-weight: styles.$font-weight-normal;
+}
+
+.link-active {
+  font-weight: awsui.$font-wayfinding-link-active-weight;
+  color: awsui.$color-text-accent;
+}
+
+.header-link,
+.link {
+  text-decoration: none;
+
+  &:hover {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+}
+
+.info {
+  margin-left: awsui.$space-xs;
+}
+
+.external-icon {
+  margin-left: awsui.$space-xxs;
+}
+
+.divider {
+  border: none;
+  border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.divider-default {
+  margin: awsui.$space-scaled-2x-xl calc(-1 * #{awsui.$space-s});
+}
+
+.divider-header {
+  margin-top: 0;
+}

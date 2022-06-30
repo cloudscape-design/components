@@ -1,0 +1,204 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../container/shared' as container;
+
+.root {
+  @include styles.default-text-style;
+  width: 100%;
+}
+
+.tools {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
+
+  &-filtering {
+    flex: 1 1 0%;
+    margin-right: awsui.$space-l;
+  }
+
+  &-align-right {
+    display: flex;
+    margin-left: auto;
+  }
+
+  &-pagination + &-preferences {
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+    margin-left: awsui.$space-xs;
+    padding-left: awsui.$space-xs;
+  }
+
+  &-small > &-filtering {
+    margin-right: 0;
+    margin-bottom: awsui.$space-scaled-xs;
+    flex-basis: 100%;
+  }
+}
+
+.table {
+  width: 100%;
+  border-spacing: 0;
+  position: relative;
+  box-sizing: border-box;
+  &-layout-fixed {
+    table-layout: fixed;
+  }
+}
+
+.wrapper {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: awsui.$space-table-content-top;
+  padding-bottom: awsui.$space-table-content-bottom;
+  overflow-x: auto;
+  border-top-right-radius: awsui.$border-container-radius;
+  border-top-left-radius: awsui.$border-container-radius;
+  &.variant-stacked,
+  &.variant-container {
+    & > .table {
+      padding-left: awsui.$space-table-horizontal;
+      padding-right: awsui.$space-table-horizontal;
+    }
+  }
+  &.variant-embedded {
+    padding-bottom: awsui.$space-table-embedded-content-bottom;
+  }
+  &.has-header {
+    padding-top: 0px;
+  }
+  &.has-footer {
+    padding-bottom: 0px;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.cell-merged {
+  text-align: center;
+  padding: 0;
+  &-content {
+    box-sizing: border-box;
+    width: 100%;
+    padding: awsui.$space-scaled-m awsui.$space-l awsui.$space-scaled-l;
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    @supports (position: sticky) {
+      position: sticky;
+      left: 0;
+      // Offset table paddings to position centered when sticky
+      margin: 0 calc(-2 * #{awsui.$space-table-horizontal});
+    }
+    /* stylelint-enable plugin/no-unsupported-browser-features */
+  }
+}
+
+.empty {
+  color: awsui.$color-text-empty;
+}
+
+.loading {
+  /* used in test-utils */
+}
+
+.selection-control {
+  position: relative;
+  box-sizing: border-box;
+  width: 5.4 * styles.$base-size;
+  max-width: 5.4 * styles.$base-size;
+  min-width: 5.4 * styles.$base-size;
+  &.selection-control-header {
+    padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
+    border-left: awsui.$border-item-width solid transparent;
+  }
+}
+
+.sticky-scrollbar {
+  height: 15px;
+  position: fixed;
+  display: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: -15px;
+  bottom: 0;
+  width: 100%;
+
+  &-content {
+    height: 15px;
+  }
+  &-visible {
+    display: block;
+  }
+}
+
+.header-secondary {
+  overflow: auto;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 0;
+  background: awsui.$color-background-table-header;
+  &.variant-stacked,
+  &.variant-container {
+    & > .table {
+      padding-left: awsui.$space-table-horizontal;
+      padding-right: awsui.$space-table-horizontal;
+    }
+  }
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
+
+.header-controls {
+  padding-top: awsui.$space-container-header-vertical;
+  padding-bottom: awsui.$space-container-header-vertical;
+  &.variant-stacked,
+  &.variant-container {
+    padding-left: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+    padding-right: calc(awsui.$space-table-horizontal + awsui.$space-table-header-horizontal);
+  }
+  &.variant-embedded {
+    padding-left: awsui.$space-table-header-horizontal;
+    padding-right: awsui.$space-table-header-horizontal;
+    padding-top: awsui.$space-table-embedded-header-top;
+  }
+  & + .header-secondary {
+    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
+  }
+}
+
+.divider {
+  border: none;
+  margin: 0;
+  height: 0;
+  @include container.divider;
+}
+
+.footer-wrapper {
+  &.variant-stacked,
+  &.variant-container {
+    padding-left: awsui.$space-table-horizontal;
+    padding-right: awsui.$space-table-horizontal;
+  }
+}
+
+.footer {
+  padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
+}
+
+.thead-active,
+.row,
+.row-selected {
+  /* used in test-utils */
+}

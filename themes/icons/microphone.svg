@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+    <g id="icon">
+        <rect class="stroke-linejoin-round" x="6" y="1" width="4" height="8" rx="2"/>
+        <path class="stroke-linejoin-round" d="M3,6V7A5,5,0,0,0,13,7V6"/>
+        <line class="stroke-linejoin-round" x1="8" y1="12" x2="8" y2="15"/>
+        <line class="stroke-linejoin-round" x1="3" y1="15" x2="13" y2="15"/>
+    </g>
+</svg>

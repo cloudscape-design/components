@@ -1,0 +1,93 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.container {
+  display: inline-block;
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  z-index: 2000;
+}
+
+.container-arrow {
+  $arrow-offset: 12px;
+  $arrow-width: 20px;
+  $arrow-height: $arrow-width * 0.5;
+
+  position: absolute;
+  display: inline-block;
+
+  &-position-right-top,
+  &-position-right-bottom {
+    transform: rotate(-90deg);
+    transform-origin: 0 100%;
+  }
+
+  &-position-right-top {
+    top: calc(#{$arrow-offset} + #{$arrow-height});
+    left: 0;
+  }
+
+  &-position-right-bottom {
+    bottom: $arrow-offset;
+    left: 0;
+  }
+
+  &-position-left-top,
+  &-position-left-bottom {
+    transform: rotate(90deg);
+    transform-origin: 100% 100%;
+  }
+
+  &-position-left-top {
+    top: calc(#{$arrow-offset} + #{$arrow-height});
+    right: 0;
+  }
+
+  &-position-left-bottom {
+    bottom: $arrow-offset;
+    right: 0;
+  }
+
+  &-position-top-center,
+  &-position-top-right,
+  &-position-top-left,
+  &-position-top-responsive {
+    transform: rotate(180deg);
+    transform-origin: 50% 50%;
+  }
+
+  &-position-top-center {
+    bottom: -$arrow-width * 0.5;
+    left: calc(50% - #{$arrow-height});
+  }
+
+  &-position-top-right {
+    bottom: -$arrow-width * 0.5;
+    left: $arrow-offset;
+  }
+
+  &-position-top-left {
+    bottom: -$arrow-width * 0.5;
+    left: calc(100% - #{$arrow-width} - #{$arrow-offset});
+  }
+
+  &-position-bottom-center {
+    top: -$arrow-width * 0.5;
+    left: calc(50% - #{$arrow-height});
+  }
+
+  &-position-bottom-right {
+    top: -$arrow-width * 0.5;
+    left: $arrow-offset;
+  }
+
+  &-position-bottom-left {
+    top: -$arrow-width * 0.5;
+    left: calc(100% - #{$arrow-width} - #{$arrow-offset});
+  }
+}

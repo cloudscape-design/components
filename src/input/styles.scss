@@ -1,0 +1,145 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+    // Chrome allows to select the placeholder on drag, if drag starts and
+    // ends in surrounding flex container
+    user-select: none;
+  }
+
+  &::-ms-input-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+    opacity: 1;
+  }
+}
+
+.root {
+  /* used in test-utils for component to distinguish input from other input-like components, for example autosuggest */
+}
+
+.input {
+  @include styles.styles-reset;
+  padding: styles.$control-padding;
+  color: awsui.$color-text-body-default;
+  width: 100%;
+  cursor: text;
+  box-sizing: border-box;
+  background-color: awsui.$color-background-input-default;
+  border-radius: styles.$control-border-radius;
+  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  @include styles.font-body-m;
+  // IE requires input height to be explicitly set
+  height: awsui.$size-vertical-input;
+
+  &.input-readonly {
+    @include styles.form-readonly-element;
+  }
+
+  @include placeholder {
+    @include styles.form-placeholder;
+  }
+
+  &:focus {
+    @include styles.form-focus-element;
+  }
+
+  &:disabled {
+    @include styles.form-disabled-element;
+    cursor: default;
+    @include placeholder {
+      @include styles.form-placeholder-disabled;
+    }
+  }
+
+  &:invalid {
+    // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+    box-shadow: none;
+  }
+
+  &.input-invalid {
+    @include styles.form-invalid-control();
+    &.input-has-icon-left {
+      padding-left: calc(
+        #{styles.$control-icon-horizontal-padding} - (#{styles.$invalid-control-left-border} - #{styles.$control-border-width})
+      );
+    }
+  }
+
+  &.input-type-search {
+    box-sizing: border-box; // Overrides the [type='search'] CSS from normalize
+    -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+
+    &::-ms-clear {
+      // Override IE clear field display
+      display: none;
+    }
+
+    &::-webkit-search-decoration {
+      // Remove extra space for default Safari browser search icon
+      -webkit-appearance: none; /* stylelint-disable-line plugin/no-unsupported-browser-features */
+    }
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+  &.input-has-icon-left {
+    padding-left: styles.$control-icon-horizontal-padding;
+  }
+  &.input-has-icon-right {
+    padding-right: styles.$control-icon-horizontal-padding;
+  }
+  &.input-has-no-border-radius {
+    border-radius: awsui.$border-dropdown-radius;
+  }
+}
+
+.input-container {
+  display: flex;
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  &:not(.input-icon-hoverable) {
+    pointer-events: none;
+  }
+}
+
+.input-icon-left {
+  left: styles.$control-icon-horizontal-offset;
+  top: styles.$control-icon-vertical-offset;
+}
+
+.input-icon-right {
+  right: styles.$control-icon-horizontal-offset;
+  top: styles.$control-icon-vertical-offset;
+  color: awsui.$color-text-button-inline-icon-default;
+}
+
+.input-icon-hoverable {
+  cursor: pointer;
+  &:hover {
+    color: awsui.$color-text-button-inline-icon-hover;
+  }
+}

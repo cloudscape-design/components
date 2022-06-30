@@ -1,0 +1,55 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/index' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/typography/index' as typographyConstants;
+
+.custom-range {
+  // This padding aligns the custom range selection with the radio labels
+  padding-left: calc(#{1.4 * styles.$base-size} + #{awsui.$space-xs});
+
+  display: flex;
+  width: 80%;
+}
+.custom-range--no-padding {
+  padding-left: 0;
+}
+
+.custom-range-form-controls {
+  display: flex;
+  width: 100%;
+
+  > .custom-range-duration,
+  > .custom-range-unit {
+    width: 50%;
+  }
+
+  > .custom-range-duration {
+    margin-right: awsui.$space-xs;
+  }
+
+  &.vertical {
+    flex-direction: column;
+
+    > .custom-range-duration,
+    > .custom-range-unit {
+      width: 100%;
+    }
+
+    > .custom-range-unit {
+      margin-top: awsui.$space-s;
+    }
+  }
+}
+
+.custom-range-duration-input,
+.custom-range-unit-select {
+  /* used in test-utils */
+}
+
+.relative-range-radio-group {
+  /* used in test-utils */
+}

@@ -1,0 +1,106 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '../column-layout/styles.scss' as mixins;
+
+$gutter: awsui.$space-grid-gutter;
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  display: block;
+}
+
+@mixin make-column($nColumns) {
+  $nColumns: math.div(12, $nColumns);
+  $p: math.percentage(math.div(1, $nColumns));
+  flex: 0 0;
+  // IE11 ignores calc functions in flex shorthand declarations
+  // https://github.com/philipwalton/flexbugs#flexbug-8
+  flex-basis: calc(#{$p} - #{$gutter});
+  max-width: calc(#{$p} - #{$gutter});
+}
+
+.tile-container {
+  box-sizing: border-box;
+  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-radius: styles.$control-border-radius;
+  padding: awsui.$space-xs awsui.$space-scaled-m;
+  display: flex;
+  flex-direction: column;
+
+  &.has-metadata {
+    padding-bottom: awsui.$space-s;
+  }
+
+  &.selected {
+    border: styles.$control-border-width solid awsui.$color-border-item-selected;
+    background: awsui.$color-background-item-selected;
+  }
+
+  &.disabled {
+    border: styles.$control-border-width solid awsui.$color-border-tiles-disabled;
+    background: awsui.$color-background-tiles-disabled;
+  }
+
+  @include styles.with-motion {
+    transition: border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+      background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}
+
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  margin: calc(#{$gutter} / -2);
+  @each $i, $columns-setting in mixins.$column-breakpoint-spans {
+    &.column-#{$i} {
+      & > .tile-container {
+        margin: calc(#{$gutter} / 2);
+        box-sizing: border-box;
+        @include make-column(12);
+        &.breakpoint-xs {
+          @include make-column(map.get($columns-setting, 'xs'));
+        }
+        &.breakpoint-xxs {
+          @include make-column(map.get($columns-setting, 'xxs'));
+        }
+      }
+    }
+  }
+}
+
+.control {
+  flex-grow: 1;
+  margin-bottom: awsui.$space-s;
+
+  &.no-image {
+    margin-bottom: 0;
+  }
+}
+
+.image {
+  text-align: center;
+  flex: none; // needed to have IE11 calculate the height of this region correctly
+
+  // This manipulates a (optionally) passed img element for the image attribute of
+  // an item. We do not have control over the img element.
+  // stylelint-disable-next-line selector-max-type
+  & > img {
+    max-width: 100%;
+  }
+
+  &.disabled {
+    // stylelint-disable-next-line selector-max-type
+    & > img {
+      opacity: 0.3;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.breadcrumb-group {
+  @include styles.styles-reset;
+  margin: 0;
+  padding: awsui.$space-xxs 0;
+
+  > .item {
+    @include styles.styles-reset;
+    display: inline;
+  }
+
+  > .breadcrumb-group-list {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+    flex-wrap: wrap;
+
+    > .item,
+    > .ellipsis {
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+    }
+
+    > .ellipsis {
+      display: none;
+
+      > .icon {
+        margin: 0 styles.$base-size;
+        color: awsui.$color-text-breadcrumb-icon;
+      }
+    }
+  }
+
+  // In the smallest screen, breadcrumbs truncate into
+  // BC1 > ... > BCL
+  // and we apply ellipsis if the breadcrumb items are too long
+  &.mobile {
+    > .breadcrumb-group-list {
+      flex-wrap: nowrap;
+
+      > .ellipsis {
+        display: flex;
+        flex-shrink: 0;
+      }
+      > .item {
+        min-width: 0;
+        &:not(:first-child):not(:last-child) {
+          display: none;
+        }
+      }
+    }
+  }
+}

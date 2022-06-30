@@ -1,0 +1,25 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+.permutations {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+.default {
+  max-width: 290px;
+  border: 1px solid;
+  flex-grow: 1;
+  margin: 20px;
+}
+.medium {
+  max-width: 350px;
+  border: 1px solid;
+  margin: 20px;
+}
+.large {
+  max-width: 550px;
+  border: 1px solid;
+  margin: 20px;
+}

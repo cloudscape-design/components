@@ -1,0 +1,68 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant */
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$size-prefixes-horizontal: (
+  'n': awsui.$space-none,
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-s,
+  'm': awsui.$space-m,
+  'l': awsui.$space-l,
+  'xl': awsui.$space-xl,
+  'xxl': awsui.$space-xxl,
+  'xxxl': awsui.$space-xxxl,
+);
+
+$size-prefixes-vertical: (
+  'n': awsui.$space-scaled-none,
+  'xxxs': awsui.$space-scaled-xxxs,
+  'xxs': awsui.$space-scaled-xxs,
+  'xs': awsui.$space-scaled-xs,
+  's': awsui.$space-scaled-s,
+  'm': awsui.$space-scaled-m,
+  'l': awsui.$space-scaled-l,
+  'xl': awsui.$space-scaled-xl,
+  'xxl': awsui.$space-scaled-xxl,
+  'xxxl': awsui.$space-scaled-xxxl,
+);
+
+$side-suffixes: (
+  'top': '-top',
+  'right': '-right',
+  'bottom': '-bottom',
+  'left': '-left',
+);
+
+$sides: (('top', 'vertical'), ('right', 'horizontal'), ('bottom', 'vertical'), ('left', 'horizontal'));
+
+$prefixes: 'n', 'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl';
+
+@mixin create-spacing($name, $css_property, $parent-selector) {
+  @each $p in $prefixes {
+    #{$parent-selector}.#{$name}#{$p} {
+      #{$css_property}: #{map.get($size-prefixes-vertical, $p)} #{map.get($size-prefixes-horizontal, $p)};
+    }
+    // creates sides and horizontal(h)/vertical(v) padding classes
+    @each $side_a, $side_b in $sides {
+      $side_a_suffix: map.get($side-suffixes, $side_a);
+      #{$parent-selector}.#{$name}#{$side_a}-#{$p},
+      #{$parent-selector}.#{$name}#{$side_b}-#{$p} {
+        @if $side_a == 'top' {
+          #{$css_property}#{$side_a_suffix}: #{map.get($size-prefixes-vertical, $p)};
+        } @else if $side_a == 'bottom' {
+          #{$css_property}#{$side_a_suffix}: #{map.get($size-prefixes-vertical, $p)};
+        } @else {
+          #{$css_property}#{$side_a_suffix}: #{map.get($size-prefixes-horizontal, $p)};
+        }
+      }
+    }
+  }
+}

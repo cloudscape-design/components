@@ -1,0 +1,115 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  // The xs breakpoint, minus the table tools container padding
+  max-width: calc(#{styles.$breakpoint-x-small} - 2 * #{awsui.$space-l});
+}
+
+.input-wrapper {
+  flex-grow: 1;
+}
+
+.add-token {
+  border-left: 1px solid awsui.$color-border-divider-default;
+  box-sizing: border-box;
+  margin-left: awsui.$space-m;
+  padding-left: awsui.$space-m;
+}
+
+.tokens {
+  margin-top: awsui.$space-xs;
+}
+
+.token-operator {
+  font-weight: bold;
+}
+
+.token-editor {
+  margin: awsui.$space-xxs;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-label {
+    @include styles.text-flex-wrapping;
+  }
+  &-field {
+    width: 200px;
+    flex-shrink: 0;
+    margin-left: awsui.$space-xl;
+  }
+  &-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: awsui.$space-scaled-xl;
+  }
+  &-commit {
+    margin-left: awsui.$space-xs;
+  }
+}
+
+.custom-control {
+  margin-right: awsui.$space-s;
+}
+
+.input {
+  flex: 1;
+}
+
+.results {
+  color: awsui.$color-text-form-label;
+  display: inline-block;
+  box-sizing: border-box;
+  white-space: nowrap;
+  &-visible {
+    padding-left: awsui.$space-s;
+  }
+}
+
+.separator {
+  margin: 0px awsui.$space-scaled-m;
+  height: 100%;
+  width: awsui.$border-divider-section-width;
+  background-color: awsui.$color-border-divider-default;
+}
+
+.toggle-collapsed {
+  margin-top: calc(-1 * #{awsui.$space-scaled-xxs});
+  margin-left: awsui.$space-xs;
+}
+
+.token-trigger {
+  @include styles.text-wrapping;
+}
+
+.token-editor-cancel {
+  margin-right: awsui.$space-xs;
+}
+
+.remove-all,
+.token-label,
+.join-operation,
+.property-selector,
+.operator-selector,
+.value-selector,
+.token-editor-submit {
+  /* used in test-utils */
+}

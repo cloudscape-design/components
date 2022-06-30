@@ -1,0 +1,7 @@
+name: Figma - Feture request
+about: Request a feature for our Figma library
+labels: enhancement,design,figma
+body:
+  - type: markdown
+    attributes:
+      value: TBD

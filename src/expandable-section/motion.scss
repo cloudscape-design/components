@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as tokens;
+
+.content {
+  &-enter {
+    @include styles.with-motion {
+      @include styles.animation-fade-in;
+      animation: awsui-motion-fade-in tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
+    }
+  }
+}
+
+.trigger {
+  &-expanded {
+    @include styles.with-motion {
+      transition: border-bottom-color tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
+    }
+  }
+}
+
+.icon {
+  @include styles.with-motion {
+    transition: transform tokens.$motion-duration-rotate-90 tokens.$motion-easing-rotate-90;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node12/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "style-dictionary",
+    "declaration": true,
+    "incremental": true
+  },
+  "include": ["style-dictionary"]
+}

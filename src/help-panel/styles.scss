@@ -1,0 +1,161 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.help-panel {
+  @include styles.styles-reset;
+  word-wrap: break-word;
+  padding: awsui.$space-scaled-l awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
+
+  hr {
+    border: none;
+    border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
+  }
+
+  ol,
+  ul {
+    padding-left: awsui.$space-l;
+    list-style-position: outside;
+  }
+
+  a,
+  p,
+  ul,
+  ol,
+  li,
+  h2,
+  h3,
+  h4,
+  h5,
+  pre,
+  code {
+    margin: awsui.$space-xs 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  code {
+    @include styles.code-highlight;
+  }
+
+  pre {
+    @include styles.code-highlight;
+    padding: awsui.$space-xxs;
+  }
+
+  dl {
+    margin: awsui.$space-xs 0;
+    /* stylelint-disable-next-line selector-max-universal */
+    * {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  dt {
+    margin-top: awsui.$space-xs;
+    font-weight: styles.$font-weight-bold;
+  }
+  dd {
+    margin: 0 0 awsui.$space-xs;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: awsui.$space-xl;
+    color: awsui.$color-text-heading-default;
+  }
+  // sets padding at the bottom of the panel
+  & > :last-child {
+    margin-bottom: awsui.$space-scaled-xxxl;
+  }
+
+  // add basic font-sizes
+  p {
+    color: inherit;
+    text-decoration: none;
+  }
+  h1 {
+    @include styles.font-heading-xl;
+  }
+  h2 {
+    @include styles.font-heading-l;
+  }
+  h3 {
+    @include styles.font-heading-m;
+  }
+  h4 {
+    @include styles.font-heading-s;
+  }
+  h5 {
+    @include styles.font-heading-xs;
+  }
+  b,
+  strong {
+    font-weight: styles.$font-weight-bold;
+  }
+  a {
+    @include styles.link-default;
+    &:focus {
+      @include styles.link-focus;
+    }
+  }
+
+  .header {
+    @include styles.font-panel-header;
+    color: awsui.$color-text-heading-default;
+    padding-bottom: awsui.$space-scaled-l;
+    padding-left: awsui.$space-panel-side-left;
+    // padding to make sure the header doesn't overlap with the close icon
+    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-scaled-xxl});
+    border: none;
+    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    margin: 0 calc(-1 * #{awsui.$space-panel-side-right}) awsui.$space-scaled-l
+      calc(-1 * #{awsui.$space-panel-side-left});
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @include styles.font-panel-header;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.content {
+  color: awsui.$color-text-body-secondary;
+
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 0;
+  }
+}
+
+.footer {
+  color: awsui.$color-text-body-secondary;
+  border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  margin: awsui.$space-scaled-xl calc(-1 * #{awsui.$space-xs});
+  padding: 0 awsui.$space-s;
+  > :first-child {
+    margin-top: awsui.$space-scaled-xl;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+}

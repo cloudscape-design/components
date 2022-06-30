@@ -1,0 +1,36 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+}
+
+.list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-direction: column;
+
+  > .list-item {
+    display: inline-flex;
+    justify-content: space-between;
+  }
+}
+
+.key {
+  display: inline-flex;
+  align-items: flex-start;
+  color: awsui.$color-text-group-label;
+  margin-right: awsui.$space-xxl;
+}
+
+.dimmed {
+  opacity: 0.35;
+}

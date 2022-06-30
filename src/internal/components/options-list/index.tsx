@@ -1,0 +1,119 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import clsx from 'clsx';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
+import React, { useEffect, useRef } from 'react';
+import { BaseComponentProps, getBaseProps } from '../../base-component';
+import {
+  fireNonCancelableEvent,
+  NonCancelableEventHandler,
+  CancelableEventHandler,
+  BaseKeyDetail,
+  fireKeyboardEvent,
+  getBlurEventRelatedTarget,
+} from '../../events';
+import { findUpUntil } from '../../utils/dom';
+import styles from './styles.css.js';
+
+export interface OptionsListProps extends BaseComponentProps {
+  open?: boolean;
+  /**
+   * Options list
+   */
+  children: React.ReactNode;
+  nativeAttributes?: Record<string, any>;
+  /**
+   * Called when more items need to be loaded.
+   */
+  onLoadMore?: NonCancelableEventHandler;
+  onKeyDown?: CancelableEventHandler<BaseKeyDetail>;
+  onBlur?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
+  onFocus?: NonCancelableEventHandler;
+  onMouseUp?: (itemIndex: number) => void;
+  onMouseMove?: (itemIndex: number) => void;
+  position?: React.CSSProperties['position'];
+  role?: 'listbox' | 'list' | 'menu';
+  ariaLabelledby?: string;
+  decreaseTopMargin?: boolean;
+}
+
+const BOTTOM_TRIGGER_OFFSET = 80;
+
+const getItemIndex = (containerRef: React.RefObject<HTMLElement>, event: React.MouseEvent) => {
+  const target = findUpUntil(
+    event.target as HTMLElement,
+    element => element === containerRef.current || !!element.dataset.mouseTarget
+  );
+  const mouseTarget = target?.dataset.mouseTarget;
+  return mouseTarget ? parseInt(mouseTarget) : -1;
+};
+
+const OptionsList = (
+  {
+    open,
+    children,
+    nativeAttributes = {},
+    onKeyDown,
+    onBlur,
+    onFocus,
+    onLoadMore,
+    onMouseUp,
+    onMouseMove,
+    position = 'relative',
+    role = 'listbox',
+    decreaseTopMargin = false,
+    ariaLabelledby,
+    ...restProps
+  }: OptionsListProps,
+  ref: React.Ref<HTMLUListElement>
+) => {
+  const baseProps = getBaseProps(restProps);
+  const menuRef = useRef<HTMLUListElement>(null);
+
+  const handleScroll = () => {
+    const scrollContainer = menuRef?.current;
+    if (scrollContainer) {
+      const bottomEdgePosition = scrollContainer.scrollTop + scrollContainer.clientHeight;
+      const remainingScrollHeight = scrollContainer.scrollHeight - bottomEdgePosition;
+      if (remainingScrollHeight < BOTTOM_TRIGGER_OFFSET) {
+        fireNonCancelableEvent(onLoadMore);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    handleScroll();
+  });
+
+  const className = clsx(styles['options-list'], {
+    [styles['decrease-top-margin']]: decreaseTopMargin,
+  });
+
+  const mergedRef = useMergeRefs(ref, menuRef);
+
+  return (
+    <ul
+      {...baseProps}
+      {...nativeAttributes}
+      className={className}
+      ref={mergedRef}
+      style={{ position }}
+      role={role}
+      onScroll={handleScroll}
+      onKeyDown={event => onKeyDown && fireKeyboardEvent(onKeyDown, event)}
+      onMouseMove={event => onMouseMove?.(getItemIndex(menuRef, event))}
+      onMouseUp={event => onMouseUp?.(getItemIndex(menuRef, event))}
+      onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) })}
+      onFocus={() => fireNonCancelableEvent(onFocus)}
+      tabIndex={-1}
+      aria-labelledby={ariaLabelledby}
+    >
+      {open && children}
+    </ul>
+  );
+};
+
+export default React.forwardRef(OptionsList);

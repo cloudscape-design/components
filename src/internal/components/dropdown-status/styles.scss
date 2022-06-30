@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  padding: styles.$option-padding-vertical styles.$control-padding-horizontal
+    calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+  color: awsui.$color-text-dropdown-footer;
+
+  > .recovery {
+    /* used in test-utils */
+  }
+}

@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.marker {
+  @include styles.with-motion {
+    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}

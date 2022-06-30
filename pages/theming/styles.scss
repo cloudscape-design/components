@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.mosaik {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tile {
+  color: white;
+  height: 4em;
+  line-height: 4em;
+  margin: 5px;
+  flex: 1;
+  padding: 4px;
+  text-align: center;
+}
+
+.title {
+  color: black;
+}

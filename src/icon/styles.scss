@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use './mixins' as mixins;
+
+.icon {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  &-flex-height {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  > svg {
+    // SVG is focusable by default
+    // https://stackoverflow.com/questions/18646111/disable-onfocus-event-for-svg-element
+    pointer-events: none;
+  }
+
+  @include mixins.style-svg();
+
+  @include mixins.make-icon-sizes;
+  @include mixins.make-icon-variants;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: awsui.$color-text-status-info;
+  top: 2px;
+  right: -2px;
+}

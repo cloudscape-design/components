@@ -1,0 +1,56 @@
+{
+  "extends": [
+    "stylelint-config-recommended-scss",
+    "stylelint-prettier/recommended"
+  ],
+  "rules": {
+    "custom-property-pattern": "^(?!.+)",
+    "scss/comment-no-empty": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global"
+        ]
+      }
+    ],
+    "selector-combinator-disallowed-list": [
+      " "
+    ],
+    "selector-class-pattern": "^(?!awsui).*?",
+    "selector-max-type": [0, { "ignore": ["compounded"] }],
+    "selector-max-universal": [0],
+    "order/order": [
+      "declarations",
+      "rules"
+    ],
+    "@cloudscape-design/license-headers": [
+      true,
+      {
+        "header": "\n Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n SPDX-License-Identifier: Apache-2.0\n"
+      }
+    ],
+    "@cloudscape-design/no-implicit-descendant": [
+      true,
+      {
+        "ignoreParents": [
+          ":global",
+          "svg",
+          "@keyframes"
+        ]
+      }
+    ],
+    "@cloudscape-design/no-motion-outside-of-mixin": [true],
+    "plugin/no-unsupported-browser-features": [
+      true,
+      {
+        "ignorePartialSupport": true
+      }
+    ]
+  },
+  "plugins": [
+    "stylelint-order",
+    "stylelint-no-unsupported-browser-features",
+    "./build-tools/stylelint"
+  ]
+}

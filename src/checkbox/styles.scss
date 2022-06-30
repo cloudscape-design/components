@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+$checkbox-size: awsui.$size-control;
+
+// tag selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
+div.root {
+  @include styles.styles-reset;
+  display: flex;
+}
+
+.checkbox-control {
+  @include styles.make-control-size($checkbox-size);
+}
+
+.input {
+  @include focus-visible.when-visible {
+    /* stylelint-disable-next-line selector-max-type -- Can't access the outline class from focus-visible */
+    & + div {
+      @include styles.focus-highlight(2px);
+    }
+  }
+}

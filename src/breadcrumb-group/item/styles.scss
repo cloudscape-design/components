@@ -1,0 +1,51 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
+
+.link:after {
+  display: none;
+}
+
+.breadcrumb {
+  display: flex;
+
+  > .icon {
+    margin: 0 awsui.$space-xs;
+    color: awsui.$color-text-breadcrumb-icon;
+  }
+
+  > .anchor {
+    @include styles.link-default;
+
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+
+  &.last {
+    > .icon {
+      display: none;
+    }
+    > .anchor {
+      color: awsui.$color-text-breadcrumb-current;
+      text-decoration: none;
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+}
+.compressed {
+  min-width: 0;
+  overflow: hidden;
+  > .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+}

@@ -1,0 +1,285 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable selector-max-universal, selector-max-type */
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.wizard.refresh {
+  column-gap: awsui.$space-xl;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  row-gap: awsui.$space-scaled-xl;
+
+  &.small-container {
+    row-gap: awsui.$space-scaled-l;
+  }
+}
+
+.wizard:not(.refresh) {
+  display: flex;
+}
+
+.navigation.refresh {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding-top: awsui.$space-scaled-xxs;
+  z-index: 1;
+
+  > ul {
+    background: awsui.$color-background-container-content;
+    border-radius: awsui.$border-container-radius;
+    box-shadow: awsui.$shadow-container;
+    margin: 0;
+    padding: awsui.$space-scaled-l awsui.$space-l;
+    width: 280px;
+    box-sizing: border-box;
+
+    > li {
+      display: grid;
+      column-gap: awsui.$space-s;
+      grid-template-columns: awsui.$space-l 1fr;
+      grid-template-rows: repeat(2, auto);
+
+      > hr {
+        background-color: awsui.$color-border-divider-default;
+        border: 0;
+        grid-column: 1;
+        height: 100%;
+        width: awsui.$space-xxxs;
+      }
+
+      > .number {
+        color: awsui.$color-text-small;
+        font-size: awsui.$font-body-s-size;
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      > a {
+        align-items: start;
+        column-gap: awsui.$space-s;
+        cursor: pointer;
+        display: grid;
+        font-size: awsui.$font-body-m-size;
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        grid-template-columns: awsui.$space-l 1fr;
+
+        > .circle {
+          border-radius: 100%;
+          grid-column: 1;
+          height: 10px;
+          justify-self: center;
+          margin-top: 6px;
+          width: 10px;
+        }
+
+        > .title {
+          @include styles.text-wrapping;
+          grid-column: 2;
+        }
+
+        @include focus-visible.when-visible {
+          @include styles.link-focus;
+        }
+      }
+    }
+
+    > li:first-child > hr {
+      grid-row: 2 / span 2;
+    }
+
+    > li:not(:first-child) > .number {
+      margin-top: awsui.$space-scaled-xl;
+    }
+
+    > li:last-child > hr {
+      grid-row: 1;
+    }
+
+    > li:only-of-type > hr {
+      display: none;
+    }
+
+    > li:not(:first-child):not(:last-child) > hr {
+      grid-row: 1 / span 3;
+    }
+
+    > li.active > a {
+      cursor: text;
+    }
+
+    > li.active > a > .circle {
+      background-color: awsui.$color-background-control-checked;
+      box-shadow: 0 0 0 3px awsui.$color-background-container-content, 0 0 0 5px awsui.$color-background-control-checked,
+        0 0 0 7px awsui.$color-background-container-content;
+    }
+
+    > li.active > a > .title {
+      color: awsui.$color-background-control-checked;
+      font-weight: styles.$font-weight-bold;
+    }
+
+    > li.disabled > a {
+      cursor: text;
+    }
+
+    > li.disabled > a > .circle {
+      background-color: awsui.$color-background-container-content;
+      box-shadow: 0 0 0 2px awsui.$color-text-interactive-disabled, 0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.disabled > a > .title {
+      color: awsui.$color-text-interactive-disabled;
+    }
+
+    > li.enabled > a > .circle {
+      background-color: awsui.$color-text-interactive-default;
+      box-shadow: 0 0 0 2px awsui.$color-text-interactive-default, 0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.enabled > a > .title {
+      color: awsui.$color-text-interactive-default;
+    }
+
+    > li.enabled > a:hover > .circle {
+      background-color: awsui.$color-background-control-checked;
+      box-shadow: 0 0 0 2px awsui.$color-background-control-checked, 0 0 0 4px awsui.$color-background-container-content;
+    }
+
+    > li.enabled > a:hover > .title {
+      color: awsui.$color-background-control-checked;
+    }
+  }
+}
+
+.navigation:not(.refresh) {
+  color: awsui.$color-text-disabled;
+  display: inline-block;
+  margin-right: calc(2 * #{awsui.$space-xxxl});
+  min-width: 20 * styles.$base-size;
+  padding-top: awsui.$space-xxs;
+  width: 20 * styles.$base-size;
+
+  > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > li {
+      padding-bottom: awsui.$space-scaled-m;
+      padding-top: 0;
+    }
+
+    > li:not(:first-child) {
+      margin-top: awsui.$space-scaled-m;
+    }
+
+    > li:not(:last-child) {
+      border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-layout;
+    }
+  }
+}
+
+.form:not(.refresh) {
+  @include styles.text-wrapping;
+  width: 100%;
+
+  > .form-header {
+    position: relative;
+    margin-bottom: awsui.$space-scaled-m;
+  }
+}
+
+.form.refresh {
+  @include styles.text-wrapping;
+  display: contents;
+
+  > .background {
+    background-color: awsui.$color-background-layout-main;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+
+  > .form-header {
+    background-color: awsui.$color-background-layout-main;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  > .form-header > .form-header-content {
+    padding-top: awsui.$space-scaled-xl;
+    padding-bottom: awsui.$space-scaled-xl;
+  }
+
+  > .form-component {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  &.small-container {
+    > .form-header {
+      grid-column: 1 / span 2;
+    }
+
+    > .form-header > .form-header-content {
+      padding-top: 0;
+    }
+
+    > .form-component {
+      grid-column: 1 / span 2;
+    }
+  }
+}
+
+.navigation.hidden {
+  display: none;
+}
+
+.collapsed-steps {
+  color: awsui.$color-text-heading-secondary;
+  font-weight: styles.$font-weight-bold;
+  padding-top: awsui.$space-scaled-xxs;
+  &-extra-padding {
+    padding-top: awsui.$space-scaled-l;
+  }
+  &-hidden {
+    display: none;
+  }
+}
+
+.form-header-component,
+.navigation-link,
+.navigation-link-item,
+.navigation-link-label {
+  /* used in test-utils */
+}
+
+.navigation-link-active {
+  font-weight: styles.$font-weight-bold;
+  color: awsui.$color-text-body-default;
+}
+.navigation-link-disabled {
+  color: awsui.$color-text-control-disabled;
+}
+
+.cancel-button,
+.previous-button,
+.primary-button,
+.skip-to-button {
+  /* used in test-utils */
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}

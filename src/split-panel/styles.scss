@@ -1,0 +1,298 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../app-layout/constants' as constants;
+
+@import './motion';
+@import './icons/icons-styles';
+
+$slider-width: 16px;
+
+// Values taken from app layout
+$app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
+
+/* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+.resize {
+  &-active * {
+    user-select: none;
+  }
+  &-active iframe {
+    // Prevents iframes from eating the mouseup event if the cursor is on top of it.
+    pointer-events: none;
+  }
+  &-side * {
+    cursor: ew-resize;
+  }
+  &-bottom * {
+    cursor: ns-resize;
+  }
+}
+/* stylelint-enable */
+
+.root {
+  @include styles.styles-reset;
+}
+
+.preferences-button {
+  /* used in test-utils */
+}
+
+.close-button {
+  /* used in test-utils */
+}
+
+.drawer {
+  flex-shrink: 0;
+  position: relative;
+  word-wrap: break-word;
+  background-color: awsui.$color-background-layout-panel-content;
+  // should be above tools and navigation panels to avoid their shadows
+  z-index: 851;
+  &-closed {
+    cursor: pointer;
+    min-width: constants.$sidebar-size-closed;
+  }
+}
+
+.drawer-content-side {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow: auto;
+  .drawer-closed > & {
+    width: constants.$sidebar-size-closed;
+    &:hover {
+      background: awsui.$color-background-layout-panel-hover;
+    }
+  }
+
+  &.refresh {
+    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
+    box-sizing: border-box;
+  }
+
+  & > [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.drawer-content-bottom {
+  :not(.drawer-closed) > & {
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.position-bottom {
+  position: fixed;
+  overflow-y: auto;
+  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
+  border-top: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
+
+  &:not(.refresh) {
+    // custom shadow because the existing one does not have shadow on top
+    box-shadow: awsui.$shadow-split-bottom;
+  }
+  &.drawer-closed {
+    overflow: hidden;
+  }
+  &.drawer-closed:hover {
+    background: awsui.$color-background-layout-panel-hover;
+  }
+  & > .drawer-content-bottom > [aria-hidden='true'] {
+    display: none;
+  }
+
+  /*
+  Removed the position fixed with the AppLayout refactor because the 
+  SplitPanel is no longer in fixed position in the DOM.
+  */
+  &.refresh {
+    position: relative;
+  }
+}
+
+.position-side {
+  border-top: none;
+  box-shadow: awsui.$shadow-split-side;
+  height: 100%;
+}
+
+.slider {
+  padding: 0;
+  cursor: ns-resize;
+  margin: 2px 0 0 0;
+  height: $slider-width;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(0px);
+  }
+}
+
+.slider-side {
+  cursor: ew-resize;
+  margin: 0 0 0 2px;
+}
+
+.slider-wrapper-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $slider-width + 2px;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.slider-wrapper-side {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: $slider-width + 2px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.open-button {
+  /* used in test-utils */
+}
+
+.open-button-side {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  box-sizing: border-box;
+  margin: awsui.$space-xxs auto 0;
+}
+
+.slider-icon {
+  stroke: awsui.$color-text-interactive-default;
+  &:hover {
+    stroke: awsui.$color-text-interactive-hover;
+  }
+  &-bottom {
+    margin: auto;
+  }
+  &-side {
+    transform: rotate(90deg);
+  }
+}
+
+.pane-header-wrapper-bottom {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1; // should be above .content-bottom
+  padding: 0 awsui.$space-scaled-2x-xxxl;
+  .drawer-mobile > .drawer-content-bottom > & {
+    padding: 0 awsui.$space-l;
+  }
+  .drawer-disable-content-paddings > .drawer-content-bottom > & {
+    padding: 0 awsui.$space-l;
+  }
+  :not(.drawer-closed) > .drawer-content-bottom > & {
+    background-color: awsui.$color-background-layout-panel-content;
+    border-bottom: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+  }
+}
+
+.content-bottom {
+  padding: 0 awsui.$space-scaled-2x-xxxl;
+  margin-top: awsui.$space-panel-split-top;
+  .drawer-mobile > .drawer-content-bottom > & {
+    padding: 0 awsui.$space-l;
+  }
+  .drawer-disable-content-paddings > .drawer-content-bottom > & {
+    padding: 0;
+  }
+}
+
+.pane-bottom-center-align {
+  display: flex;
+  justify-content: center;
+}
+
+.pane-bottom-content-nav-padding {
+  padding-left: $app-layout-drawer-width;
+}
+
+.pane-bottom-content-tools-padding {
+  padding-right: $app-layout-drawer-width;
+}
+
+.content-bottom-max-width {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.content-side {
+  flex: auto;
+  align-self: flex-start;
+  box-sizing: border-box;
+  overflow-y: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  > .pane-header-wrapper-side {
+    padding: 0 awsui.$space-m 0 awsui.$space-panel-side-left;
+  }
+  > .pane-content-wrapper-side {
+    padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-side-left;
+    margin-top: awsui.$space-panel-split-top;
+  }
+}
+
+.header {
+  display: flex;
+  flex: auto;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  margin: awsui.$space-scaled-m 0 awsui.$space-m 0;
+  &-text {
+    @include styles.font-panel-header;
+    padding: awsui.$space-xxs 0 awsui.$space-scaled-xxs 0;
+    margin: 0;
+  }
+}
+
+.header-divider {
+  border: none;
+  border-top: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+  margin-top: calc(-1 * #{awsui.$border-panel-header-width});
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  margin-left: awsui.$space-xs;
+}
+
+.divider {
+  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  margin: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+}

@@ -1,0 +1,4 @@
+// all code-editor samples should be ignored
+{
+  "ignorePatterns": ["*"]
+}

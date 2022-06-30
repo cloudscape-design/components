@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../utils/theming' as theming;
+
+// the motion mixin definition is an exception from these scoping rules
+/* stylelint-disable @cloudscape-design/no-motion-outside-of-mixin, selector-combinator-disallowed-list, selector-pseudo-class-no-unknown, selector-class-pattern */
+@mixin with-motion {
+  @content;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    transition: none;
+  }
+  :global(.awsui-motion-disabled) &,
+  :global(.awsui-mode-entering) & {
+    animation: none;
+    transition: none;
+  }
+}
+/* stylelint-enable @cloudscape-design/no-motion-outside-of-mixin, selector-combinator-disallowed-list, selector-pseudo-class-no-unknown, selector-class-pattern */

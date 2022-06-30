@@ -1,0 +1,49 @@
+# This workflow releases the current package to a dedicated private CodeArtifact repository.
+# One repository may publish more than one package. For more details refer to the release-package Action.
+name: release
+
+on:
+  push:
+    branches:
+      - main
+      - 'dev-v3-*'
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  release:
+    concurrency: release-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_CODEARTIFACT_ROLE }}
+          aws-region: us-west-2
+      - name: Login and configure codeartifact
+        env:
+          CODE_ARTIFACT_REPO: ${{ startsWith(github.ref_name, 'dev-v3-') && format('AwsUI-Artifacts-{0}', github.ref_name) || 'github-artifacts' }}
+        run: |
+          echo Logging into repository $CODE_ARTIFACT_REPO
+          aws codeartifact login --tool npm --repository $CODE_ARTIFACT_REPO --domain awsui --domain-owner ${{ secrets.AWS_ACCOUNT_ID }} --region us-west-2 --namespace @cloudscape-design
+
+      - name: Make sure to use pre-release versions of our dependencies
+        uses: ./.github/actions/patch-local-dependencies
+        with:
+          path: ${{ github.workspace }}
+          type: next
+
+      - run: npm install
+
+      - name: Restore locally modified files
+        run: git restore .
+
+      - run: npm run test
+
+      - name: Release package to private CodeArtifact
+        uses: ./.github/actions/release-package

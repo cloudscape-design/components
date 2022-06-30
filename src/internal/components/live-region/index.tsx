@@ -1,0 +1,106 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { memo, useEffect, useRef } from 'react';
+import styles from './styles.css.js';
+
+export interface LiveRegionProps {
+  assertive?: boolean;
+  delay?: number;
+  children: React.ReactNode;
+}
+
+/**
+  The live region is hidden in the layout, but visible for screen readers.
+  It's purpose it to announce changes e.g. when custom navigation logic is used.
+
+  The way live region works differently in different browsers and screen readers and
+  it is recommended to manually test every new implementation.
+
+  If you notice there are different words being merged together,
+  check if there are text nodes not being wrapped in elements, like:
+  <LiveRegion>
+    {title}
+    <span><Details /></span>
+  </LiveRegion>
+
+  To fix, wrap "title" in an element:
+  <LiveRegion>
+    <span>{title}</span>
+    <span><Details /></span>
+  </LiveRegion>
+
+  Or create a single text node if possible:
+  <LiveRegion>
+    {`${title} ${details}`}
+  </LiveRegion>
+
+  The live region is always atomic, because non-atomic regions can be treated by screen readers
+  differently and produce unexpected results. To imitate non-atomic announcements simply use
+  multiple live regions:
+  <>
+    <LiveRegion>{title}</LiveRegion>
+    <LiveRegion><Details /></LiveRegion>
+  </>
+*/
+export default memo(LiveRegion);
+
+function LiveRegion({ assertive = false, delay = 10, children }: LiveRegionProps) {
+  const sourceRef = useRef<HTMLSpanElement>(null);
+  const targetRef = useRef<HTMLSpanElement>(null);
+
+  /*
+    When React state changes, React often produces too many DOM updates, causing NVDA to
+    issue many announcements for the same logical event (See https://github.com/nvaccess/nvda/issues/7996).
+
+    The code below imitates a debouncing, scheduling a callback every time new React state
+    update is detected. When a callback resolves, it copies content from a muted element
+    to the live region, which is recognized by screen readers as an update.
+
+    If the use case requires no announcement to be ignored, use delay = 0, but ensure it
+    does not impact the performance. If it does, prefer using a string as children prop.
+  */
+  useEffect(() => {
+    function updateLiveRegion() {
+      if (targetRef.current && sourceRef.current) {
+        const sourceContent = extractInnerText(sourceRef.current);
+        const targetContent = extractInnerText(targetRef.current);
+        if (targetContent !== sourceContent) {
+          // The aria-atomic does not work properly in Voice Over, causing
+          // certain parts of the content to be ignored. To fix that,
+          // we assign the source text content as a single node.
+          targetRef.current.innerText = sourceContent;
+        }
+      }
+    }
+
+    let timeoutId: null | number;
+    if (delay) {
+      timeoutId = setTimeout(updateLiveRegion, delay);
+    } else {
+      updateLiveRegion();
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  });
+
+  return (
+    <div className={styles.root}>
+      <span aria-hidden="true">
+        <span ref={sourceRef}>{children}</span>
+      </span>
+
+      <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
+    </div>
+  );
+}
+
+// This only extracts text content from the node including all its children which is enough for now.
+// To make it more powerful, it is possible to create a more sophisticated extractor with respect to
+// ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
+function extractInnerText(node: HTMLElement) {
+  return (node.innerText || '').replace(/\s+/g, ' ').trim();
+}

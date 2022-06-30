@@ -1,0 +1,132 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../container/shared' as container;
+@use './motion';
+
+$modal-z-index: 5000;
+
+.root {
+  @include styles.styles-reset;
+  background-color: awsui.$color-background-modal-overlay;
+
+  display: flex;
+  align-items: center;
+  justify-items: center;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+  z-index: $modal-z-index;
+
+  outline: 0;
+  overflow: auto;
+
+  cursor: pointer;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.focus-lock {
+  align-self: flex-start;
+  margin: auto;
+  padding: awsui.$space-s 0;
+  z-index: $modal-z-index;
+  pointer-events: none;
+}
+
+.dialog {
+  position: static;
+  top: 0;
+  transform: translate(0, 0);
+
+  width: calc(100vw - #{awsui.$space-s} * 2);
+
+  box-sizing: border-box;
+  outline: none; // prevent highlight when focus set for ESC support
+
+  z-index: $modal-z-index;
+  pointer-events: all;
+
+  &.small {
+    max-width: 320px;
+  }
+
+  &.medium {
+    max-width: 600px;
+  }
+
+  &.large {
+    max-width: 820px;
+  }
+
+  &.max.breakpoint-xs {
+    // viewport - (closed app layout panel widths + 20px on each side)
+    max-width: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
+    margin: auto;
+  }
+}
+
+.container {
+  @include styles.styles-reset;
+  display: block;
+  background-color: awsui.$color-background-container-content;
+  @include styles.container-shadow;
+  box-shadow: awsui.$shadow-modal;
+  word-wrap: break-word;
+}
+
+.content {
+  padding: awsui.$space-container-content-top awsui.$space-modal-horizontal awsui.$space-modal-content-bottom;
+  &.no-paddings {
+    padding: 0;
+  }
+}
+
+.header {
+  padding: awsui.$space-s awsui.$space-modal-horizontal;
+  background-color: awsui.$color-background-container-header;
+  border-bottom: 1px solid awsui.$color-border-container-divider;
+  border-radius: awsui.$border-container-radius awsui.$border-container-radius 0 0;
+}
+
+.header--text {
+  /* used in test-utils */
+}
+
+.footer {
+  @include container.divider;
+  padding: container.$footer-padding;
+
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+.dismiss-control {
+  /* used in test-utils */
+}
+
+// Added to `document.body` to disable body scroll
+.modal-open {
+  overflow: hidden;
+
+  /*
+   * When padding-right is added to account for scrollbar being turned
+   * off by overflow:hidden, that padding will go offscreen and have no
+   * effect if box-sizing is content-box and body width is 100%.  Set
+   * border-box to avoid this; this should be safe as box-sizing isn't
+   * inherited by child elements normally.
+   */
+  box-sizing: border-box;
+}

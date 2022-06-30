@@ -1,0 +1,91 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/styles' as styles;
+
+.tutorial-list {
+  @include styles.styles-reset;
+  padding: 0;
+  margin: 0;
+}
+
+.tutorial-title {
+  display: flex;
+  align-items: flex-start;
+  margin-left: calc(-1 * #{awsui.$space-xxs});
+  padding-bottom: awsui.$space-xxxs;
+}
+
+.task {
+  list-style: none;
+  padding-top: 0;
+  &:not(:first-child) {
+    margin-top: awsui.$space-xl;
+  }
+}
+
+.task-title {
+  display: flex;
+  align-items: flex-start;
+  padding-left: awsui.$border-divider-section-width;
+  @include styles.font(heading-s);
+
+  &--status {
+    line-height: inherit;
+  }
+}
+
+.current-task {
+  font-weight: styles.$font-weight-bold;
+}
+
+.successful-task {
+  color: awsui.$color-text-status-success;
+}
+
+.congratulation-message {
+  display: flex;
+  @include styles.font(heading-s);
+  font-weight: awsui.$font-heading-xs-weight;
+  color: awsui.$color-text-status-success;
+
+  &--status {
+    line-height: inherit;
+  }
+}
+
+.plaintext-congratulation-description {
+  white-space: pre-line;
+}
+
+.divider {
+  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.step-list {
+  list-style: none;
+  padding: 0 0 0 awsui.$space-xxxs;
+}
+
+.step:not(:first-child) {
+  padding-top: awsui.$space-xxs;
+}
+
+.expandable-section-wrapper {
+  width: 100%;
+}
+
+.expandable-section-header {
+  @include styles.font(body-m);
+}
+
+.step-title,
+.feedback-link,
+.dismiss-button,
+.completion-screen-title,
+.completion-screen-description {
+  /* used in test-utils */
+}

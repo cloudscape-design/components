@@ -1,0 +1,90 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use './mixins' as mixins;
+@use '../internal/styles/tokens' as awsui;
+
+@keyframes spinner-rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin swing-animation($name, $from, $to) {
+  @keyframes #{$name} {
+    0% {
+      transform: rotate($from);
+    }
+
+    50% {
+      transform: rotate($to);
+    }
+
+    100% {
+      transform: rotate($from);
+    }
+  }
+}
+
+@include swing-animation(spinner-line-left, 0deg, 120deg);
+
+// right part of animation requires offset, so it starts from different angle
+@include swing-animation(spinner-line-right, 90deg, -30deg);
+
+@mixin awsui-spinner-circle {
+  position: relative;
+  &:after {
+    position: absolute;
+    box-sizing: border-box;
+    content: '';
+    border-radius: 50%;
+    border: 0.2 * styles.$base-size solid;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+}
+
+.root {
+  display: inline-block;
+  vertical-align: top;
+  // Spinner is an exception from our motion rules, it always has motion
+  /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+  animation: spinner-rotator 0.7s linear infinite;
+  box-sizing: border-box;
+  line-height: 0;
+
+  @include mixins.make-spinner-sizes;
+  @include mixins.make-spinner-variants;
+}
+
+.circle {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  @include awsui-spinner-circle;
+  &:after {
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation: 1.5s ease-in-out infinite;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200%;
+  }
+  &.circle-left:after {
+    left: 0;
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-line-left;
+  }
+  &.circle-right:after {
+    left: -100%;
+    /*stylelint-disable-next-line @cloudscape-design/no-motion-outside-of-mixin */
+    animation-name: spinner-line-right;
+  }
+}

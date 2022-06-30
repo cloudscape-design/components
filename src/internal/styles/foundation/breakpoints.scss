@@ -1,0 +1,41 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// Breakpoints
+$breakpoint-xxx-small: 0;
+$breakpoint-xx-small: 576px;
+$breakpoint-x-small: 688px;
+$breakpoint-small: 992px;
+$breakpoint-medium: 1200px;
+$breakpoint-large: 1400px;
+$breakpoint-x-large: 1920px;
+$breakpoint-xx-large: 2540px;
+
+$_smallest_breakpoint: $breakpoint-xxx-small;
+$_largest_breakpoint: $breakpoint-x-large;
+
+// Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
+// Makes the @content apply to the wider than given breakpoint.
+@mixin media-breakpoint-up($breakpoint) {
+  @if $breakpoint != $_smallest_breakpoint {
+    @media (min-width: $breakpoint + 1px) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
+// Makes the @content apply to the given breakpoint and narrower.
+@mixin media-breakpoint-down($breakpoint) {
+  @if $breakpoint != $_largest_breakpoint {
+    @media (max-width: $breakpoint) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

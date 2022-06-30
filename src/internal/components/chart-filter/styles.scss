@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.chart-filter {
+  /* used in test-utils */
+}
+
+.custom-icon-wrapper {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+}

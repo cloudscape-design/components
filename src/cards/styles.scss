@@ -1,0 +1,137 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../container/shared' as container;
+@use './motion';
+
+.root {
+  @include styles.styles-reset();
+  @include styles.default-text-style;
+}
+
+.header {
+  &-variant-full-page.header-refresh {
+    @include container.borders-and-shadows;
+    padding-top: awsui.$space-container-header-vertical;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: calc(#{awsui.$space-container-header-vertical} + #{awsui.$space-scaled-xxs});
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  // reset styles from OL
+  padding: 0;
+  list-style: none;
+  margin: 0 0 0 calc(#{awsui.$space-grid-gutter} * -1);
+
+  @for $i from 1 through 20 {
+    &.list-grid-#{$i} {
+      > .card {
+        width: math.div(100%, $i);
+      }
+    }
+  }
+}
+
+.selection-control {
+  position: absolute;
+  box-sizing: border-box;
+  width: calc(#{awsui.$size-control} + (2 * #{awsui.$space-card-horizontal}));
+  top: 0;
+  right: 0;
+  padding: awsui.$space-scaled-l awsui.$space-card-horizontal;
+}
+
+.loading,
+.empty {
+  overflow: hidden;
+  text-align: center;
+  color: awsui.$color-text-empty;
+  margin-bottom: awsui.$space-scaled-l;
+}
+
+.has-header {
+  // Unfortunately, we don't have access to the header of InternalContainer
+  // in order to use margin-bottom instead.
+  margin-top: awsui.$space-grid-gutter;
+}
+
+.card {
+  display: flex;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  &-inner {
+    position: relative;
+    background-color: awsui.$color-background-container-content;
+    margin: 0 0 awsui.$space-grid-gutter awsui.$space-grid-gutter;
+    padding: awsui.$space-scaled-l awsui.$space-card-horizontal awsui.$space-scaled-l;
+    // HACK: IE shadow comes with full border that we need to take into account
+    @media screen and (-ms-high-contrast: active) {
+      padding: calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width})
+        calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width})
+        calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
+    }
+    // reset border color to prevent it from flashing black during selection animation
+    border-color: transparent;
+    @include styles.container-shadow;
+    // container shadow comes with a top border, need to make it the same as the selection width
+    border-width: awsui.$border-item-width;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  &-header {
+    @include styles.font-heading-m;
+    &-inner {
+      width: 100%;
+      display: inline-block;
+    }
+  }
+  &-selectable {
+    > .card-inner > .card-header {
+      width: 90%;
+    }
+  }
+  &-selected {
+    > .card-inner {
+      border: awsui.$border-item-width solid awsui.$color-border-item-selected;
+      background-color: awsui.$color-background-item-selected;
+      padding: awsui.$space-scaled-l calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width})
+        calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
+      > .card-header > .selection-control {
+        margin-right: calc(-1 * #{awsui.$border-item-width});
+      }
+    }
+  }
+}
+
+.section {
+  display: inline-block;
+  box-sizing: border-box;
+  // only scale bottom padding to reduce padding between sections and after the last section.
+  padding: awsui.$space-xs 0 awsui.$space-scaled-xs 0;
+  vertical-align: top;
+  &-header {
+    @include styles.font-label;
+    color: awsui.$color-text-label;
+  }
+  &-content {
+    /* used in test-utils */
+  }
+}
+.section:last-child {
+  padding: awsui.$space-xs 0 0 0;
+}

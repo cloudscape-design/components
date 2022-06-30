@@ -1,0 +1,97 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { useCallback, MutableRefObject } from 'react';
+import { KeyCode } from '../../../keycode';
+import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
+
+const HOME = 36;
+const END = 35;
+
+interface UseMenuKeyboard {
+  (inputProps: {
+    moveHighlight: (direction: -1 | 1, startIndex?: number) => void;
+    selectOption: () => void;
+    goHome: () => void;
+    goEnd: () => void;
+    closeDropdown: () => void;
+    isKeyboard: MutableRefObject<boolean>;
+    isSelectingUsingSpace: MutableRefObject<boolean>;
+    preventNativeSpace?: boolean;
+  }): CancelableEventHandler<BaseKeyDetail>;
+}
+
+export const useMenuKeyboard: UseMenuKeyboard = ({
+  moveHighlight,
+  selectOption,
+  goHome,
+  goEnd,
+  closeDropdown,
+  isKeyboard,
+  isSelectingUsingSpace,
+  preventNativeSpace = false,
+}) => {
+  return useCallback(
+    (e: CustomEvent<BaseKeyDetail>) => {
+      isKeyboard.current = true;
+      switch (e.detail.keyCode) {
+        case KeyCode.up:
+          e.preventDefault();
+          moveHighlight(-1);
+          break;
+        case KeyCode.down:
+          e.preventDefault();
+          moveHighlight(1);
+          break;
+        case HOME:
+          goHome();
+          break;
+        case END:
+          goEnd();
+          break;
+        case KeyCode.escape:
+          closeDropdown();
+          break;
+        case KeyCode.enter:
+          e.preventDefault();
+          selectOption();
+          break;
+        case KeyCode.space:
+          if (preventNativeSpace) {
+            e.preventDefault();
+            selectOption();
+            isSelectingUsingSpace.current = true;
+          }
+      }
+    },
+    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, isKeyboard, isSelectingUsingSpace, preventNativeSpace]
+  );
+};
+
+interface UseTriggerKeyboard {
+  (inputProps: {
+    openDropdown: () => void;
+    goHome: () => void;
+    isKeyboard: MutableRefObject<boolean>;
+  }): CancelableEventHandler<BaseKeyDetail>;
+}
+
+export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome, isKeyboard }) => {
+  return useCallback(
+    (e: CustomEvent<BaseKeyDetail>) => {
+      isKeyboard.current = true;
+      switch (e.detail.keyCode) {
+        case KeyCode.up:
+        case KeyCode.down:
+          e.preventDefault();
+          goHome();
+          openDropdown();
+          break;
+        case KeyCode.space:
+          e.preventDefault();
+          openDropdown();
+          break;
+      }
+    },
+    [openDropdown, goHome, isKeyboard]
+  );
+};

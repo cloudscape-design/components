@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../utils/theming' as theming;
+@use '../tokens' as awsui;
+
+$base-size: 10px;
+
+// Font families
+$font-family-base: awsui.$font-family-base;
+$font-family-monospace: awsui.$font-family-monospace;
+
+// Font weights
+$font-weight-heavy: awsui.$font-weight-heavy;
+$font-weight-bold: 700;
+$font-weight-normal: 400;
+$font-weight-lighter: 300;
+
+$letter-spacing-bold-link: 0.005em;

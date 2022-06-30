@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "lib": [
+      // Config for IE11
+      "es5",
+      "es2015.collection",
+      "dom",
+      // we load promise polyfill
+      "es2015.promise"
+    ],
+    "declaration": false,
+    "declarationMap": false,
+    "rootDir": ".",
+    "incremental": true,
+    "jsx": "react",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "paths": {
+      "~components": ["../lib/components"],
+      "~components/*": ["../lib/components/*"],
+      "~design-tokens": ["../lib/design-tokens"]
+    },
+    "types": ["node", "webpack-env"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

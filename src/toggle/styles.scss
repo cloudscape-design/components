@@ -1,0 +1,72 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+$toggle-width: 2.4 * styles.$base-size;
+$toggle-height: 1.6 * styles.$base-size;
+$handle-size: 1.2 * styles.$base-size;
+$handle-offset: 0.2 * styles.$base-size;
+$shadow-color: rgba(0, 0, 0, 0.25);
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+}
+
+.input {
+  @include focus-visible.when-visible {
+    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+    & + div {
+      @include styles.focus-highlight(2px);
+    }
+  }
+}
+
+.toggle-control {
+  @include styles.make-control-size($toggle-height, $toggle-width);
+  background: awsui.$color-background-toggle-default;
+  border-radius: 0.8 * styles.$base-size;
+  &-checked {
+    background: awsui.$color-background-control-checked;
+  }
+  &-disabled {
+    background: awsui.$color-background-control-disabled;
+    &.toggle-control-checked {
+      background: awsui.$color-background-toggle-checked-disabled;
+    }
+  }
+}
+
+.toggle-handle {
+  position: absolute;
+
+  border-radius: 0.6 * styles.$base-size;
+  background: awsui.$color-foreground-control-default;
+  box-shadow: 1px 1px $shadow-color;
+  width: $handle-size;
+  height: $handle-size;
+  top: $handle-offset;
+  left: $handle-offset;
+
+  &-checked {
+    transform: translateX(0.8 * styles.$base-size);
+  }
+
+  &-disabled {
+    background: awsui.$color-foreground-control-disabled;
+    box-shadow: none;
+  }
+
+  @include styles.with-motion {
+    // Exception: The toggle state transition does not follow the motion guidelines
+    // for the "State transition (quick)" group and is therefore not using
+    // standard variables from that group.
+    transition: transform awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart,
+      background-color awsui.$motion-duration-fast awsui.$motion-easing-ease-out-quart;
+  }
+}

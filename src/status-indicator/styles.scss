@@ -1,0 +1,60 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+@import './motion';
+
+$_status-colors: (
+  'error': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-error,
+  'success': awsui.$color-text-status-success,
+  'info': awsui.$color-text-status-info,
+  'stopped': awsui.$color-text-status-inactive,
+  'pending': awsui.$color-text-status-inactive,
+  'in-progress': awsui.$color-text-status-inactive,
+  'loading': awsui.$color-text-status-inactive,
+);
+
+$_color-overrides: (
+  'red': awsui.$color-text-status-error,
+  'grey': awsui.$color-text-status-inactive,
+  'blue': awsui.$color-text-status-info,
+  'green': awsui.$color-text-status-success,
+);
+
+.root {
+  @include styles.default-text-style;
+  @each $status in map.keys($_status-colors) {
+    &.status-#{$status} {
+      color: #{map.get($_status-colors, $status)};
+    }
+  }
+  @each $color in map.keys($_color-overrides) {
+    &.color-override-#{$color} {
+      color: #{map.get($_color-overrides, $color)};
+    }
+  }
+}
+
+.icon {
+  padding-right: awsui.$space-xxs;
+}
+
+.container {
+  display: inline-block;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+.overflow-ellipsis {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: text-bottom;
+}

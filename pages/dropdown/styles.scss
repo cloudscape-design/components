@@ -1,0 +1,57 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.list-container {
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 200px;
+  height: 200px;
+  border: 1px solid cornflowerblue;
+  overflow: hidden;
+  display: inline-block;
+
+  &-wide {
+    width: 400px;
+  }
+
+  &-overflow-visible {
+    overflow: auto;
+  }
+
+  &-overflow-y-visible {
+    overflow-y: auto;
+  }
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.wide-container {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: calc(75vh);
+  box-sizing: border-box;
+  > .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}

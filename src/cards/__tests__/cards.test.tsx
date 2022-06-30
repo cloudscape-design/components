@@ -1,0 +1,196 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import * as React from 'react';
+import { render } from '@testing-library/react';
+import Cards, { CardsProps } from '../../../lib/components/cards';
+import { CardsWrapper } from '../../../lib/components/test-utils/dom';
+
+interface Item {
+  id: number;
+  name: string;
+}
+
+const cardDefinition: CardsProps.CardDefinition<Item> = {
+  header: item => `Header ${item.name}`,
+  sections: [
+    {
+      id: 'description',
+      header: 'Number',
+      content: item => item.id,
+    },
+    {
+      id: 'type',
+      header: 'Text',
+      content: item => item.name,
+    },
+  ],
+};
+
+const defaultItems: Item[] = [
+  { id: 1, name: 'Apples' },
+  { id: 2, name: 'Oranges' },
+  { id: 3, name: 'Bananas' },
+];
+
+function renderCards(jsx: React.ReactElement) {
+  const { container, rerender, getByTestId, queryByTestId } = render(jsx);
+  const wrapper = new CardsWrapper(container.querySelector<HTMLElement>(`.${CardsWrapper.rootSelector}`)!);
+  return { wrapper, rerender, getByTestId, queryByTestId };
+}
+
+describe('Cards', () => {
+  let wrapper: CardsWrapper;
+
+  // index is 0-based
+  const getCard = (index: number) => wrapper.findItems()[index];
+
+  const getCardHeader = (index: number) => getCard(index)?.findCardHeader()?.getElement();
+
+  // index is 0-based
+  const getCardsSections = (index: number) => getCard(index).findSections();
+
+  // cardIndex and sectionIndex are 0-based
+  const getCardSection = (cardIndex: number, sectionIndex: number) => getCardsSections(cardIndex)[sectionIndex];
+
+  const getCardSectionHeader = (cardIndex: number, sectionIndex: number) =>
+    getCardSection(cardIndex, sectionIndex)?.findSectionHeader()?.getElement();
+
+  const getCardSectionContent = (cardIndex: number, sectionIndex: number) =>
+    getCardSection(cardIndex, sectionIndex)?.findContent()?.getElement();
+
+  const getEmptyRegion = () => wrapper?.findEmptySlot();
+
+  describe('items property', () => {
+    it('renders as many cards as many defined', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={cardDefinition} items={defaultItems} />).wrapper;
+      expect(wrapper.findItems()).toHaveLength(defaultItems.length);
+    });
+
+    it('correctly renders card header', () => {
+      defaultItems.forEach((item, idx) => {
+        wrapper = renderCards(<Cards<Item> cardDefinition={cardDefinition} items={defaultItems} />).wrapper;
+        expect(getCardHeader(idx)).toHaveTextContent(`Header ${item.name}`);
+      });
+    });
+
+    it('correctly renders card sections', () => {
+      defaultItems.forEach((item, idx) => {
+        wrapper = renderCards(<Cards<Item> cardDefinition={cardDefinition} items={defaultItems} />).wrapper;
+        expect(getCardsSections(idx)).toHaveLength(2);
+
+        expect(getCardSectionHeader(idx, 0)).toHaveTextContent('Number');
+        expect(getCardSectionContent(idx, 0)).toHaveTextContent('' + item.id);
+
+        expect(getCardSectionHeader(idx, 1)).toHaveTextContent('Text');
+        expect(getCardSectionContent(idx, 1)).toHaveTextContent(item.name);
+      });
+    });
+
+    it('correctly renders card header when header is not provided', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} />).wrapper;
+      defaultItems.forEach((_, idx) => {
+        expect(getCardHeader(idx)).toBeEmptyDOMElement();
+      });
+    });
+
+    it('does not render cards sections when not defined', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} />).wrapper;
+      defaultItems.forEach((_, idx) => {
+        expect(getCardsSections(idx)).toHaveLength(0);
+      });
+    });
+
+    test('only renders sections with id in visibleSections', () => {
+      wrapper = renderCards(
+        <Cards<Item> cardDefinition={cardDefinition} items={defaultItems} visibleSections={['type']} />
+      ).wrapper;
+      defaultItems.forEach((item, idx) => {
+        expect(getCardsSections(idx)).toHaveLength(1);
+        expect(getCardSectionHeader(idx, 0)).toHaveTextContent('Text');
+        expect(getCardSectionContent(idx, 0)).toHaveTextContent(item.name);
+      });
+    });
+
+    it('does not render section header when not defined', () => {
+      wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            sections: [
+              {
+                content: item => item.name,
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      ).wrapper;
+      defaultItems.forEach((item, idx) => {
+        expect(getCardsSections(idx)).toHaveLength(1);
+
+        expect(getCardSection(idx, 0).findSectionHeader()).toBe(null);
+        expect(getCardSectionContent(idx, 0)).toHaveTextContent(item.name);
+      });
+    });
+
+    it('does not render section content when not defined', () => {
+      wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            sections: [
+              {
+                header: 'id',
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      ).wrapper;
+      defaultItems.forEach((item, idx) => {
+        expect(getCardsSections(idx)).toHaveLength(1);
+
+        expect(getCardSectionHeader(idx, 0)).toHaveTextContent('id');
+        expect(getCardSection(idx, 0)?.findContent()).toBe(null);
+      });
+    });
+  });
+
+  describe('header region', () => {
+    it('is displayed', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
+      expect(wrapper.findHeader()?.getElement()).toHaveTextContent('abcedefg');
+    });
+  });
+
+  describe('empty region', () => {
+    it('is displayed when no items', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={[]} empty="whatever" />).wrapper;
+      expect(getEmptyRegion()?.getElement()).toHaveTextContent('whatever');
+    });
+    it('not displayed if there are items', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} empty="whatever" />).wrapper;
+      expect(getEmptyRegion()).toBeNull();
+    });
+  });
+
+  describe('loading property enabled', () => {
+    it('renders a spinner with loadingText', () => {
+      wrapper = renderCards(
+        <Cards<Item> cardDefinition={{}} items={[]} loading={true} loadingText="Resources loading" />
+      ).wrapper;
+      expect(wrapper?.findLoadingText()?.getElement()).toHaveTextContent('Resources loading');
+    });
+
+    it('does not render cards', () => {
+      wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={cardDefinition}
+          items={defaultItems}
+          loading={true}
+          loadingText="Resources loading"
+        />
+      ).wrapper;
+      expect(wrapper.findItems()).toHaveLength(0);
+      expect(wrapper?.findLoadingText()?.getElement()).toHaveTextContent('Resources loading');
+    });
+  });
+});

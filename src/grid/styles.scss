@@ -1,0 +1,77 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:math';
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$grid-columns: 12;
+$grid-gutter-width: awsui.$space-grid-gutter;
+
+.grid {
+  @include styles.styles-reset;
+  display: flex;
+  flex-wrap: wrap;
+  margin: calc(#{$grid-gutter-width} / -2);
+  pointer-events: none;
+
+  &.no-gutters {
+    margin: 0;
+  }
+}
+
+.grid-column {
+  box-sizing: border-box;
+  position: relative;
+  padding: calc(#{$grid-gutter-width} / 2);
+
+  display: flex;
+
+  .grid.no-gutters > & {
+    padding: 0;
+  }
+
+  @for $i from 1 through $grid-columns {
+    &.colspan-#{$i} {
+      flex: 0 0 math.percentage(math.div($i, $grid-columns));
+      // Add a `max-width` to ensure content within each column does not blow out
+      // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
+      // do not appear to require this.
+      max-width: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.push-#{$i} {
+      left: math.percentage(math.div($i, $grid-columns));
+    }
+
+    &.pull-#{$i} {
+      right: math.percentage(math.div($i, $grid-columns));
+    }
+  }
+
+  &.push-0 {
+    left: auto;
+  }
+
+  &.pull-0 {
+    right: auto;
+  }
+
+  // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
+  @for $i from 0 through ($grid-columns - 1) {
+    // Avoid emitting useless .offset-0
+    @if $i != 0 {
+      &.offset-#{$i} {
+        margin-left: math.percentage(math.div($i, $grid-columns));
+      }
+    }
+  }
+}
+
+.restore-pointer-events {
+  pointer-events: auto;
+  width: 100%;
+}

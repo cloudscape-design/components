@@ -1,0 +1,26 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.root {
+  width: 100%;
+}
+
+.layout-strut {
+  width: 100%;
+  position: relative;
+  // Prevent incorrect layer ordering in Safari by making sure
+  // this element is also offloaded to the GPU along with the virtual items
+  transform: translate3d(0, 0, 0);
+}
+
+.dropdown-footer {
+  // Fixes incorrect flex height calculation in IE11.
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.list-bottom {
+  /* used in unit-tests */
+}

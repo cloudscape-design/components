@@ -1,0 +1,34 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.badge {
+  @include styles.styles-reset;
+
+  @include styles.font-body-s;
+  line-height: awsui.$font-body-m-line-height;
+  display: inline-block;
+  border-radius: awsui.$border-badge-radius;
+  padding: 0 awsui.$space-xs;
+  color: awsui.$color-text-notification-default;
+
+  &.badge-color-grey {
+    background-color: awsui.$color-background-notification-grey;
+  }
+
+  &.badge-color-green {
+    background-color: awsui.$color-background-notification-green;
+  }
+
+  &.badge-color-blue {
+    background-color: awsui.$color-background-notification-blue;
+  }
+
+  &.badge-color-red {
+    background-color: awsui.$color-background-notification-red;
+  }
+}

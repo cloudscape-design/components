@@ -1,0 +1,94 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+
+$cell-vertical-padding: awsui.$space-scaled-xs;
+// Calculate padding to prevent a shift in content after selection due to the difference
+// between selected border widths and normal row divider widths (visual refresh).
+$cell-vertical-padding-w-border: calc(
+  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+$cell-horizontal-padding: awsui.$space-scaled-l;
+$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
+$cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
+$selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
+$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
+$border-placeholder: awsui.$border-item-width solid transparent;
+
+.body-cell {
+  box-sizing: border-box;
+  padding: $cell-vertical-padding $cell-horizontal-padding $cell-vertical-padding-w-border;
+  border-top: awsui.$border-divider-list-width solid transparent;
+  word-wrap: break-word;
+  border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  &:not(.body-cell-wrap) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &:first-child {
+    border-left: $border-placeholder;
+    padding-left: $cell-edge-horizontal-padding;
+  }
+  &:last-child {
+    border-right: $border-placeholder;
+    padding-right: $cell-edge-horizontal-padding;
+  }
+  &-first-row {
+    border-top: $border-placeholder;
+  }
+  &-last-row {
+    // skip border for the last row, because container already has a border
+    border-bottom: $border-placeholder;
+  }
+  &-selected {
+    background-color: awsui.$color-background-item-selected;
+    border-top: $selected-border;
+    border-bottom: $selected-border;
+    padding-bottom: $cell-vertical-padding;
+    &:first-child {
+      border-left: $selected-border;
+      border-radius: awsui.$border-item-radius 0 0 awsui.$border-item-radius;
+    }
+    &:last-child {
+      border-right: $selected-border;
+      border-radius: 0 awsui.$border-item-radius awsui.$border-item-radius 0;
+    }
+  }
+  // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
+  &-selected:not(:first-child) {
+    padding-top: $cell-vertical-padding-w-border;
+  }
+  &:not(.body-cell-selected).body-cell-next-selected {
+    border-bottom: 0;
+    padding-bottom: calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width});
+  }
+  &-selected.body-cell-prev-selected {
+    padding-top: $cell-vertical-padding-w-border;
+    border-top: $selected-border-placeholder;
+  }
+  &-selected.body-cell-next-selected {
+    border-bottom-width: awsui.$border-divider-list-width;
+  }
+  // Remove border radii for consecutive selected rows (visual refresh)
+  &-selected.body-cell-next-selected:first-child {
+    border-bottom-left-radius: 0;
+  }
+  &-selected.body-cell-next-selected:last-child {
+    border-bottom-right-radius: 0;
+  }
+  &-selected.body-cell-prev-selected:first-child {
+    border-top-left-radius: 0;
+  }
+  &-selected.body-cell-prev-selected:last-child {
+    border-top-right-radius: 0;
+  }
+  // Reset padding for selected rows with no adjacent selected row above it,
+  // because rows reuse adjacent selected borders (visual refresh)
+  &-selected:not(.body-cell-prev-selected) {
+    padding-top: $cell-vertical-padding;
+  }
+}

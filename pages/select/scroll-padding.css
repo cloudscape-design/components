@@ -1,0 +1,8 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+/* stylelint-disable-next-line selector-max-type */
+html {
+  scroll-padding-top: 50px;
+}

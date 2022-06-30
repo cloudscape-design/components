@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es2015.collection", "dom"],
+    "types": [],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "declaration": true,
+    "jsx": "react",
+    "rootDir": "src",
+    "outDir": "lib/components",
+    "incremental": true
+  },
+  "include": ["src", "types"],
+  "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**"]
+}

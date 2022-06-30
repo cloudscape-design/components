@@ -1,0 +1,115 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/tokens' as awsui;
+
+.axis,
+%axis {
+  stroke: awsui.$color-charts-line-axis;
+  stroke-width: 1px;
+}
+
+.axis--emphasized {
+  stroke-width: 2px;
+}
+
+.axis-label {
+  font-weight: bold;
+  fill: awsui.$color-text-body-default;
+}
+
+.axis-label--x,
+.axis-label--y {
+  /* used in test-utils */
+}
+
+.grid {
+  stroke: awsui.$color-charts-line-grid;
+  stroke-width: 1px;
+}
+
+.ticks__line {
+  stroke: awsui.$color-charts-line-tick;
+  stroke-width: 1px;
+}
+
+.ticks__text {
+  font-size: awsui.$font-chart-detail-size;
+  fill: awsui.$color-text-body-secondary;
+}
+
+.ticks--y,
+.ticks--x {
+  /* used in test-utils */
+}
+
+.ticks--bottom > .ticks__text {
+  text-anchor: middle;
+  dominant-baseline: hanging;
+}
+
+.labels-left > .ticks > .ticks__text {
+  text-anchor: end;
+  dominant-baseline: central;
+}
+
+.labels-left {
+  position: relative;
+  margin-right: 12px;
+
+  > .axis-label {
+    position: absolute;
+    visibility: visible;
+    white-space: nowrap;
+  }
+}
+
+.labels-left__label {
+  position: absolute;
+}
+
+.labels-left--hidden {
+  visibility: hidden;
+
+  > .labels-left__label {
+    position: relative;
+    white-space: nowrap;
+  }
+}
+
+.labels-bottom {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.vertical-marker {
+  @extend %axis;
+  pointer-events: none;
+}
+
+.vertical-marker-circle {
+  fill: awsui.$color-background-container-content;
+  pointer-events: none;
+  stroke-width: awsui.$border-line-chart-width;
+}
+
+.vertical-marker-circle-active {
+  cursor: pointer;
+  stroke-width: awsui.$border-line-chart-width;
+}
+
+.focus-outline {
+  outline: none;
+  pointer-events: none;
+  fill: none;
+  stroke: awsui.$color-border-item-focused;
+  stroke-width: 2px;
+}
+
+.filter-container {
+  /* used in test-utils */
+}

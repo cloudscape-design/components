@@ -1,0 +1,168 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+/*
+The Tools component container has a max width calculation that depends on the 
+state of the other siblings within the Layout grid definition. The layout width
+is set in the resize observer in the Layout component. The main offset left 
+will calculate the distance from the start of the Layout component. The minimum 
+content width has a default value that can be set directly with the minContentWidth
+property. The content gap right is computed in the Layout styles based on the 
+viewport size and state of the Tools drawer.
+*/
+.tools-container {
+  /* stylelint-disable scss/operator-no-newline-after */
+  #{custom-props.$toolsMaxWidth}: calc(
+    var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
+      var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
+  );
+  /* stylelint-enable scss/operator-no-newline-after */
+  #{custom-props.$toolsWidth}: 290px;
+  display: flex;
+  grid-column: 5;
+  grid-row: 1 / span 5;
+  height: var(#{custom-props.$contentHeight});
+  max-width: var(#{custom-props.$toolsMaxWidth});
+  position: sticky;
+  top: var(#{custom-props.$offsetTop});
+  z-index: 850;
+
+  @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
+    #{custom-props.$toolsWidth}: 360px;
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$toolsMaxWidth}: none;
+    #{custom-props.$toolsWidth}: auto;
+    position: fixed;
+    right: 0;
+    top: var(#{custom-props.$offsetTop});
+    z-index: 1001;
+  }
+}
+
+.tools {
+  background-color: awsui.$color-background-container-content;
+  box-shadow: awsui.$shadow-panel;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  position: relative;
+  word-wrap: break-word;
+
+  // Animation for the Tools opacity and width when it is added to the DOM
+  @keyframes openTools {
+    from {
+      opacity: var(#{custom-props.$toolsAnimationStartingOpacity}, 0);
+      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+    }
+
+    to {
+      opacity: 1;
+      width: var(#{custom-props.$toolsWidth});
+    }
+  }
+
+  &:not(.is-tools-open) {
+    width: 0;
+    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
+    display: none;
+  }
+
+  // Apply the animation when the Tools is opened
+  &.is-tools-open {
+    &.animating {
+      @include styles.with-motion {
+        animation: openTools awsui.$motion-duration-refresh-only-fast;
+      }
+    }
+  }
+
+  /*
+  A non-semantic node is added with a fixed width equal to the final Tools 
+  width. This will create the visual appearance of horizontal movement and 
+  prevent unwanted text wrapping.
+  */
+  > .animated-content {
+    width: var(#{custom-props.$toolsWidth});
+  }
+
+  /*
+  A right border is needed if the Tools is open and the buttons are persistent in
+  the DOM. This creates a visual vertical boundary between the Tools and the Buttons 
+  only when they are both present. This is the circumstance when there is a Split Panel
+  in the side position.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &.is-tools-open.has-tools-form-persistence {
+      border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    }
+  }
+
+  // The Tools drawer will take up the entire viewport on mobile
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$toolsWidth}: 100vw;
+  }
+}
+
+.hide-tools {
+  position: absolute;
+  right: awsui.$space-m;
+  top: awsui.$size-vertical-panel-icon-offset;
+}
+
+/*
+Warning! If these design tokens for padding change it will adversely impact 
+the calculation used to determine the Split Panel maximum width in the 
+handleSplitPanelMaxWidth function in the context.
+*/
+.show-tools {
+  box-sizing: border-box;
+  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+
+  // Animation for the buttons when they are added to the DOM
+  @keyframes showButtons {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  &:not(.has-tools-form) {
+    display: none;
+  }
+
+  /*
+  Apply the animation only in desktop viewports because the AppBar will 
+  take control in responsive viewports.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &.has-tools-form {
+      display: flex;
+      flex-direction: column;
+      gap: awsui.$space-xs;
+      &.animating {
+        @include styles.with-motion {
+          animation: showButtons awsui.$motion-duration-refresh-only-fast;
+        }
+      }
+    }
+
+    &.has-tools-form-persistence {
+      background-color: awsui.$color-background-container-content;
+      // We ned an incremented z-index so the shadow of the tools or split panel does not overlap the white background.
+      z-index: 1;
+    }
+  }
+}

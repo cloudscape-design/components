@@ -1,0 +1,159 @@
+# This workflow executes a full dry-run test, which means that all we build and test all @cloudscape-design packages in GitHub.
+# This ensures that the changes in the current package do not cause any regressions for its consumers.
+name: dry-run
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+defaults:
+  run:
+    shell: bash
+jobs:
+  buildJestPreset:
+    name: Build jest-preset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: jest-preset
+          skip_build: 'true'
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildGlobalStyles:
+    name: Build global-styles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: global-styles
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildCollectionHooks:
+    name: Build collection-hooks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: collection-hooks
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildBrowserTestTools:
+    name: Build browser-test-tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: browser-test-tools
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildDocumenter:
+    name: Build documenter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: documenter
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildTestUtils:
+    name: Build test-utils
+    runs-on: ubuntu-latest
+    needs: buildDocumenter
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: test-utils
+          download_dependencies: 'true'
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildThemingCore:
+    name: Build theming-core
+    runs-on: ubuntu-latest
+    needs:
+      - buildBrowserTestTools
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: theming-core
+          artifact_path: theming-*.tgz
+          download_dependencies: true
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+  buildComponents:
+    name: Build components
+    runs-on: ubuntu-latest
+    needs:
+      - buildJestPreset
+      - buildGlobalStyles
+      - buildCollectionHooks
+      - buildBrowserTestTools
+      - buildDocumenter
+      - buildTestUtils
+      - buildThemingCore
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/build-package
+        with:
+          package: components
+          token: ${{ secrets.DRYRUN_GITHUB_TOKEN }}
+          target_artifact: components-package
+          skip_tests: true
+          download_dependencies: true
+
+  unitTest:
+    name: Components unit tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Download component artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components.tgz
+      - name: Unit tests
+        run: npm run test:unit
+
+  integTest:
+    name: Components integration tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Download component artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components.tgz
+      - name: Integration tests
+        run: npm run test:integ
+
+  a11yTest:
+    name: Components accessibility tests
+    runs-on: ubuntu-latest
+    needs:
+      - buildComponents
+    steps:
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Download component artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: components-package
+      - name: Unpack components artifacts
+        run: tar -xzf components.tgz
+      - name: Accessibility tests
+        run: npm run test:a11y

@@ -1,0 +1,34 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../utils/theming' as theming;
+@use '../tokens' as awsui;
+
+$control-border-width: awsui.$border-field-width;
+$control-border-radius: awsui.$border-field-radius;
+
+// Use for options in dropdowns
+$option-padding-vertical: awsui.$space-xxs;
+$option-padding-with-border-placeholder-vertical: calc(
+  #{$option-padding-vertical} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+
+$group-option-padding-vertical: awsui.$space-xs;
+$group-option-padding-with-border-placeholder-vertical: calc(
+  #{$group-option-padding-vertical} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+);
+
+$control-padding-vertical: awsui.$space-scaled-xxs;
+$control-padding-horizontal: awsui.$space-field-horizontal;
+$control-padding: $control-padding-vertical $control-padding-horizontal;
+
+$invalid-control-left-border: awsui.$border-invalid-width;
+$invalid-control-left-padding: calc(
+  #{$control-padding-horizontal} - (#{$invalid-control-left-border} - #{$control-border-width})
+);
+
+$control-icon-vertical-offset: calc(50% - #{awsui.$font-body-m-line-height} / 2);
+$control-icon-horizontal-offset: $control-padding-horizontal;
+$control-icon-horizontal-padding: awsui.$space-field-icon-offset;

@@ -1,0 +1,51 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import clsx from 'clsx';
+
+import { BarChartProps } from './interfaces';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { getBaseProps } from '../internal/base-component';
+import styles from './styles.css.js';
+import InternalMixedLineBarChart from '../mixed-line-bar-chart/internal';
+import useBaseComponent from '../internal/hooks/use-base-component';
+
+export { BarChartProps };
+
+function BarChart<T extends number | string | Date>({
+  series = [],
+  height = 500,
+  xScaleType = 'linear',
+  yScaleType = 'linear',
+  stackedBars = false,
+  horizontalBars = false,
+  detailPopoverSize = 'medium',
+  statusType = 'finished',
+  emphasizeBaselineAxis = true,
+  ...props
+}: BarChartProps<T>) {
+  const baseComponentProps = useBaseComponent('BarChart');
+  const baseProps = getBaseProps(props);
+  const className = clsx(baseProps.className, styles.root);
+
+  return (
+    <InternalMixedLineBarChart
+      {...props}
+      {...baseComponentProps}
+      className={className}
+      height={height}
+      xScaleType={xScaleType}
+      yScaleType={yScaleType}
+      stackedBars={stackedBars}
+      horizontalBars={horizontalBars}
+      series={series}
+      detailPopoverSize={detailPopoverSize}
+      statusType={statusType}
+      emphasizeBaselineAxis={emphasizeBaselineAxis}
+    />
+  );
+}
+
+applyDisplayName(BarChart, 'BarChart');
+
+export default BarChart;

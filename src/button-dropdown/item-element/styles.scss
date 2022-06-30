@@ -1,0 +1,97 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.item-element {
+  position: relative;
+  z-index: 1;
+  border: awsui.$border-item-width solid transparent;
+  list-style: none;
+  padding: 0;
+  color: awsui.$color-text-dropdown-item-default;
+  margin-top: calc(-1 * #{styles.$control-border-width});
+  cursor: pointer;
+
+  &.disabled {
+    cursor: default;
+    color: awsui.$color-text-dropdown-item-disabled;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+  &.last {
+    border-bottom: awsui.$border-item-width solid awsui.$color-border-dropdown-group;
+  }
+  &.highlighted {
+    color: awsui.$color-text-dropdown-item-highlighted;
+    z-index: 2;
+
+    &.variant-icon,
+    &.variant-normal,
+    &.variant-primary {
+      background-color: awsui.$color-background-dropdown-item-hover;
+      border-color: awsui.$color-border-dropdown-item-hover;
+      border-radius: awsui.$border-item-radius;
+
+      &.disabled {
+        color: awsui.$color-text-dropdown-item-dimmed;
+        border-color: awsui.$color-border-dropdown-item-dimmed-hover;
+        background-color: awsui.$color-background-dropdown-item-dimmed;
+      }
+    }
+  }
+
+  &.variant-navigation {
+    &.highlighted {
+      color: awsui.$color-text-accent;
+    }
+
+    // Additional spacing for groups of items
+    &.first:not(.has-category-header) {
+      padding-top: styles.$option-padding-vertical;
+    }
+    &.last {
+      padding-bottom: styles.$option-padding-vertical;
+    }
+    &.first.last {
+      padding-bottom: styles.$option-padding-vertical;
+      padding-top: styles.$option-padding-vertical;
+    }
+    // Additional spacing for the very last item in the list
+    &.last:last-child {
+      padding-bottom: styles.$option-padding-vertical;
+    }
+  }
+}
+
+.menu-item {
+  @include styles.text-wrapping;
+  display: flex;
+  align-items: flex-start;
+  padding: styles.$option-padding-vertical awsui.$space-l;
+  color: inherit;
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  /* stylelint-disable-next-line selector-max-type */
+  .has-category-header > &,
+  .has-category-header > span > & {
+    padding-left: awsui.$space-xxl;
+  }
+}
+
+.icon {
+  padding-right: awsui.$space-xs;
+  flex-shrink: 0;
+}
+
+.external-icon {
+  margin-left: awsui.$space-xxs;
+}

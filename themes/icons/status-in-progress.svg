@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <circle class="stroke-linejoin-round" cx="8" cy="8" r="7"/>
+  <rect class="stroke-linecap-round" x="4.99" y="7.995" width="0.01" height="0.01"/>
+  <rect class="stroke-linecap-round" x="7.99" y="7.995" width="0.01" height="0.01"/>
+  <rect class="stroke-linecap-round" x="10.99" y="7.995" width="0.01" height="0.01"/>
+</svg>

@@ -1,0 +1,95 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as tokens;
+.flash-refresh {
+  $flashbar-translate-y-content: -8px;
+  $flashbar-translate-y: -20px;
+
+  $flash-icon-transition-delay: calc(tokens.$motion-duration-refresh-only-slow - 50ms);
+  $flash-header-transition-delay: calc(tokens.$motion-duration-refresh-only-slow + 10ms);
+  $flash-content-transition-delay: calc(tokens.$motion-duration-refresh-only-slow + 10ms);
+  $flash-button-wrapper-transition-delay: calc(tokens.$motion-duration-refresh-only-slow * 2 - 100ms);
+
+  &.enter {
+    position: absolute;
+    @include styles.with-motion {
+      opacity: 0;
+      transform: translateY($flashbar-translate-y);
+    }
+    > .flash-body > .flash-message > .flash-header,
+    > .flash-body > .flash-message > .flash-content,
+    > .flash-body > .action-button-wrapper,
+    > .dismiss-button-wrapper {
+      @include styles.with-motion {
+        opacity: 0;
+        transform: translateY($flashbar-translate-y-content);
+      }
+    }
+    > .flash-icon {
+      @include styles.with-motion {
+        opacity: 0;
+      }
+    }
+  }
+  &.entering {
+    @include styles.with-motion {
+      transition-property: transform, opacity;
+      transition-duration: tokens.$motion-duration-refresh-only-slow;
+      transition-timing-function: tokens.$motion-easing-refresh-only-c;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &.entering,
+  &.entered {
+    > .flash-icon,
+    > .flash-body > .flash-message > .flash-header,
+    > .flash-body > .flash-message > .flash-content,
+    > .flash-body > .action-button-wrapper,
+    > .dismiss-button-wrapper {
+      @include styles.with-motion {
+        opacity: 1;
+        transform: translateY(0);
+        transition-property: transform, opacity;
+        transition-duration: tokens.$motion-duration-refresh-only-slow;
+        transition-timing-function: tokens.$motion-easing-refresh-only-c;
+      }
+    }
+    > .flash-icon {
+      @include styles.with-motion {
+        transition-delay: $flash-icon-transition-delay;
+      }
+    }
+    > .flash-body > .flash-message > .flash-header {
+      @include styles.with-motion {
+        transition-delay: $flash-header-transition-delay;
+      }
+    }
+    > .flash-body > .flash-message > .flash-content {
+      @include styles.with-motion {
+        transition-delay: $flash-content-transition-delay;
+      }
+    }
+    > .dismiss-button-wrapper,
+    > .flash-body > .action-button-wrapper {
+      @include styles.with-motion {
+        transition-delay: $flash-button-wrapper-transition-delay;
+      }
+    }
+  }
+
+  &.exiting {
+    @include styles.with-motion {
+      opacity: 0;
+      transform: translateY($flashbar-translate-y);
+      transition-property: transform, opacity;
+      transition-duration: tokens.$motion-duration-refresh-only-fast;
+      transition-timing-function: tokens.$motion-easing-refresh-only-c;
+    }
+  }
+}

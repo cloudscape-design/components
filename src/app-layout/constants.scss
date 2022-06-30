@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+// Toggle should have 40px width, whereas button is 26px wide.
+// 40 - 26 = 14px in total or 7px on each side
+$toggle-padding-horizontal: 0.7 * styles.$base-size;
+$toggle-padding-vertical: awsui.$space-xxs;
+$toggle-padding: $toggle-padding-vertical $toggle-padding-horizontal;
+
+$sidebar-size-closed: 4 * styles.$base-size;

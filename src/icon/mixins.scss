@@ -1,0 +1,120 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable selector-max-universal, selector-max-type */
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$_variant-colors: (
+  'normal': currentColor,
+  'disabled': awsui.$color-text-interactive-disabled,
+  'inverted': awsui.$color-text-inverted,
+  'subtle': awsui.$color-text-icon-subtle,
+  'warning': awsui.$color-text-status-warning,
+  'error': awsui.$color-text-status-error,
+  'success': awsui.$color-text-status-success,
+  'link': awsui.$color-text-link-default,
+);
+
+$_icon-sizes: (
+  (
+    name: 'small',
+    size: awsui.$size-icon-normal,
+    supportedLineHeight: awsui.$font-body-s-line-height,
+    stroke: 2px,
+  ),
+  (
+    name: 'normal',
+    size: awsui.$size-icon-normal,
+    supportedLineHeight: awsui.$font-body-m-line-height,
+    stroke: 2px,
+  ),
+  (
+    name: 'medium',
+    size: awsui.$size-icon-medium,
+    supportedLineHeight: awsui.$font-heading-l-line-height,
+    stroke: 2px,
+  ),
+  (
+    name: 'big',
+    size: awsui.$size-icon-big,
+    supportedLineHeight: awsui.$font-heading-xl-line-height,
+    stroke: 2px,
+  ),
+  (
+    name: 'large',
+    size: awsui.$size-icon-large,
+    supportedLineHeight: awsui.$font-display-l-line-height,
+    stroke: 1.2px,
+  )
+);
+
+@mixin make-icon-sizes {
+  @each $type in $_icon-sizes {
+    $name: map.get($type, 'name');
+    $size: map.get($type, 'size');
+    $supportedLineHeight: map.get($type, 'supportedLineHeight');
+    $stroke: map.get($type, 'stroke');
+    $padding: calc((#{$supportedLineHeight} - #{$size}) / 2);
+
+    &.size-#{$name} {
+      width: $size;
+      box-sizing: border-box;
+      &-mapped-height {
+        height: $supportedLineHeight;
+        padding: $padding 0;
+      }
+
+      > svg,
+      > img {
+        width: $size;
+        height: $size;
+        vertical-align: top;
+      }
+
+      > svg {
+        &,
+        * {
+          stroke-width: $stroke;
+        }
+      }
+    }
+  }
+}
+
+@mixin make-icon-variants {
+  @each $variant in map.keys($_variant-colors) {
+    &.variant-#{$variant} {
+      color: #{map.get($_variant-colors, $variant)};
+    }
+  }
+}
+
+@mixin style-svg {
+  > svg {
+    fill: none;
+
+    * {
+      stroke: currentColor;
+    }
+
+    // Designers count on these class names when exporting the new svgs
+    :global {
+      .stroke-linejoin-round {
+        stroke-linejoin: round;
+      }
+      .stroke-linecap-square {
+        stroke-linecap: square;
+      }
+      .stroke-linecap-round {
+        stroke-linecap: round;
+      }
+      .filled {
+        fill: currentColor;
+      }
+    }
+  }
+}

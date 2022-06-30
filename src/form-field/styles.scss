@@ -1,0 +1,69 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+@import './motion';
+
+.root {
+  @include styles.styles-reset;
+  box-sizing: border-box;
+}
+
+.label {
+  box-sizing: border-box;
+  color: awsui.$color-text-form-label;
+  // We display label inline to achieve the proper line-wrapping with info links
+  display: inline;
+  @include styles.font-label;
+  @include styles.info-link-spacing;
+}
+
+.info {
+  padding-left: awsui.$space-xs;
+  border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+}
+
+.description,
+.constraint {
+  @include styles.form-control-description;
+}
+
+.hints,
+.constraint-has-error {
+  padding-top: awsui.$space-xxs;
+}
+
+.secondary-control {
+  /* used in test-utils */
+}
+
+.controls {
+  &:not(.label-hidden) {
+    padding-top: awsui.$space-xxs;
+  }
+}
+
+.control {
+  @include styles.text-wrapping;
+}
+
+.error {
+  color: awsui.$color-text-status-error;
+  @include styles.font-body-s;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.error__message {
+  margin-left: awsui.$space-xxs;
+}
+
+.visually-hidden {
+  @include styles.awsui-util-hide;
+}

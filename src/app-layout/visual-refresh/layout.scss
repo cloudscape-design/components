@@ -1,0 +1,198 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+/*
+  The first and last column definitions have two responsibilities.
+  If Navigation and/or Tools exist then that will determine the width of
+  the first and last columns, respectively, and the content in these drawers
+  will create horizontal space from the center column content. However, if the
+  navigationHide and/or toolsHide properties have been set then the first
+  and last column width will default to the minimum content gap properties to
+  create the necessary visual space around the main content.
+  
+  The minimum content width property is set to zero and applied under all
+  circumstances regardless of whether the minContentWidth property is
+  explicitly set in script.
+  */
+.layout {
+  #{custom-props.$contentGapLeft}: 0px;
+  #{custom-props.$contentGapRight}: 0px;
+  #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
+  #{custom-props.$defaultMaxContentWidth}: 1280px;
+  #{custom-props.$defaultMinContentWidth}: 0px;
+  #{custom-props.$footerHeight}: 0px;
+  #{custom-props.$headerHeight}: 0px;
+  #{custom-props.$layoutWidth}: 0px;
+  #{custom-props.$mainOffsetLeft}: 0px;
+  #{custom-props.$maxContentWidth}: 0px;
+  #{custom-props.$minContentWidth}: 280px;
+  #{custom-props.$notificationsHeight}: 0px;
+  #{custom-props.$offsetTop}: 0px;
+  #{custom-props.$offsetTopWithNotifications}: 0px;
+  #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+  background-color: awsui.$color-background-layout-main;
+  display: grid;
+  grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr;
+  grid-template-columns:
+    min-content
+    minmax(var(#{custom-props.$contentGapLeft}), 1fr)
+    minmax(var(#{custom-props.$defaultMinContentWidth}), var(#{custom-props.$defaultMaxContentWidth}))
+    minmax(var(#{custom-props.$contentGapRight}), 1fr)
+    min-content;
+  position: relative;
+
+  // Add unified max-width for AppLayout content based on breakpoints.
+  &:not(.has-max-content-width) {
+    @include styles.media-breakpoint-up(styles.$breakpoint-large) {
+      #{custom-props.$defaultMaxContentWidth}: 1280px;
+    }
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-large) {
+      #{custom-props.$defaultMaxContentWidth}: 1440px;
+    }
+    @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
+      #{custom-props.$defaultMaxContentWidth}: 1620px;
+    }
+  }
+
+  /*
+  Only use the max content width custom property for the middle column definition
+  if the maxContentWidth property has been explicitly set to a non-zero value and
+  subsequently set the has-max-content-width data attribute to true.
+  */
+  &.has-max-content-width {
+    #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
+  }
+
+  /*
+  Warning! This is a hack! We are implementing a short term fix to prevent the 
+  tools drawer from potentially getting pushed off screen. Currently there is no 
+  protection against a navigationWidth, minContentWidth, and toolsWidth that are 
+  in excess ove the available space in the viewport. To accomodate this we remove 
+  the minContentWidth and set it to zero in small viewports and below until the 
+  isMobile breakpoint sets the drawers to overlay at 100vw.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-small) {
+    #{custom-props.$defaultMinContentWidth}: var(#{custom-props.$minContentWidth}, 280px);
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-small) {
+    #{custom-props.$defaultMinContentWidth}: 0px;
+  }
+
+  /*
+  Override the dark header overlap height property if isOverlapDisabled is true.
+  The is computed state from props that can be found in the AppLayout context.
+  */
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
+
+  /*
+  If disableBodyScroll is false (this is the overwhelming majority
+  of use cases and the default scenario) then the scrollable element
+  will be the document body which is a parent of the AppLayout component.
+  The Layout should have a minimum but not fixed content height set to the
+  viewport height less the header and footer height set by the resize
+  observers in the component. The offset top value for components
+  with position: sticky (AppBar, Navigation, Notifications, Tools) will
+  be set to the header height value. The offset top value for AppLayout
+  contentMain children with position: sticky will be the combined value of the
+  header and notifications height in addition to the notifications top margin
+  and some additional vertical space for aesthetics.
+  */
+  &:not(.disable-body-scroll) {
+    #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
+    min-height: var(#{custom-props.$contentHeight});
+  }
+
+  &:not(.disable-body-scroll):not(.has-sticky-notifications) {
+    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
+  }
+
+  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+  &:not(.disable-body-scroll).has-sticky-notifications {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+    );
+  }
+
+  /*
+  If disableBodyScroll is true (very uncommon use case) then the
+  AppLayout component and not the document body will be the scrollable
+  element. This requires a fixed height instead of a minimum height
+  with a vertical scroll policy. The offset top value for components
+  with position: sticky (AppBar, Navigation, Notifications, Tools) will
+  be set zero since the AppLayout is nearest scrollable parent and any
+  existing header does not matter. The offset top value for AppLayout
+  contentMain children with position: sticky will be the value of the
+  notifications height in addition to the notifications top margin
+  and some additional vertical space for aesthetics.
+  */
+  &.disable-body-scroll {
+    #{custom-props.$offsetTop}: 0px;
+    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr auto;
+    height: var(#{custom-props.$contentHeight});
+    overflow-y: scroll;
+  }
+
+  &.disable-body-scroll.has-split-panel.split-panel-position-bottom {
+    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) repeat(2, auto);
+  }
+
+  &.disable-body-scroll:not(.has-sticky-notifications) {
+    #{custom-props.$offsetTopWithNotifications}: 0px;
+  }
+
+  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+  &.disable-body-scroll.has-sticky-notifications {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
+    );
+  }
+
+  /*
+  In desktop viewports the content gap property for the left and right 
+  columns should override the default of zero if the navigationHide 
+  or toolsHide property is set. This ensures adequate horizontal space
+  for the center column from the edges of the viewport when there is 
+  not left or right content.
+
+  Warning! If these design tokens change it will adversely impact the 
+  calculation used to determine the Split Panel maximum width in the 
+  handleSplitPanelMaxWidth function in the context.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &.has-content-gap-left {
+      #{custom-props.$contentGapLeft}: #{awsui.$space-scaled-2x-xxxl};
+    }
+
+    &.has-content-gap-right {
+      #{custom-props.$contentGapRight}: #{awsui.$space-scaled-2x-xxxl};
+    }
+  }
+
+  /*
+  In mobile viewports the Navigation and Tools drawers are hidden
+  and triggered by the AppBar which then take up the entire viewport.
+  The center column needs permanent space from the horizontal viewport 
+  edges regardless of whether or not there is a Navigation or Tools. 
+  */
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$contentGapLeft}: #{awsui.$space-l};
+    #{custom-props.$contentGapRight}: #{awsui.$space-l};
+  }
+}
+
+/*
+This CSS class is applied to the document body to prevent overflow scrolling
+when the navigation or tools drawers are open in responsive viewports. 
+*/
+.block-body-scroll {
+  overflow: hidden;
+}

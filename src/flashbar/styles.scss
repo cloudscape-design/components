@@ -1,0 +1,124 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use './motion';
+.flashbar {
+  position: relative;
+}
+.flashbar,
+.flash {
+  @include styles.styles-reset;
+}
+
+.flash {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: awsui.$space-scaled-xs awsui.$space-flashbar-horizontal;
+  @include styles.container-shadow;
+  border-top: none;
+  border-radius: awsui.$border-flashbar-radius;
+  color: awsui.$color-text-notification-default;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  &:not(:last-child) {
+    margin-bottom: awsui.$space-xxxs;
+  }
+}
+
+.flash-refresh {
+  box-shadow: none;
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: transparent;
+    border-radius: awsui.$border-flashbar-radius;
+    pointer-events: none;
+    box-shadow: awsui.$shadow-flash-sticky;
+  }
+}
+
+.flash-body {
+  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.flash-text {
+  margin: awsui.$border-field-width 0;
+  padding: awsui.$space-scaled-xxs awsui.$space-xxs;
+}
+
+.flash-icon {
+  flex: 0 0 auto;
+  padding-left: 0;
+}
+
+.flash-message {
+  flex: 1 1 0%;
+  @include styles.text-flex-wrapping;
+}
+
+.flash-header {
+  font-weight: styles.$font-weight-bold;
+}
+
+.flash-content {
+  /* Only used as a selector for test-utils */
+}
+
+.dismiss-button-wrapper {
+  flex: 0 0 auto;
+  margin-left: awsui.$space-s;
+  margin-right: calc(-1 * #{awsui.$space-xxs});
+  padding-right: awsui.$space-flashbar-dismiss-right;
+}
+
+.dismiss-button {
+  /* Only used as a selector for test-utils */
+}
+
+.action-button-wrapper {
+  white-space: nowrap;
+  margin-left: awsui.$space-flashbar-action-left;
+}
+/* stylelint-disable selector-max-type */
+.flashbar.breakpoint-default > div > .flash > .flash-body {
+  display: block;
+  & > .action-button-wrapper {
+    margin-left: awsui.$space-xxs;
+    margin-bottom: awsui.$space-xxs;
+  }
+}
+/* stylelint-enable selector-max-type */
+
+.action-button {
+  /* Only used as a selector for test-utils */
+}
+
+.flash-type-success {
+  background-color: awsui.$color-background-notification-green;
+}
+
+.flash-type-error {
+  background-color: awsui.$color-background-notification-red;
+}
+
+.flash-type-warning {
+  background-color: awsui.$color-background-notification-blue;
+}
+
+.flash-type-info {
+  background-color: awsui.$color-background-notification-blue;
+}

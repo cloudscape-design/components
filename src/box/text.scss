@@ -1,0 +1,91 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant */
+@use './base-styles.scss' as base-styles;
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:selector';
+
+// Transforms a list of tags into the corresponding list of variants class declarations
+@function classify($tags) {
+  $classified-tags: ();
+  @each $tag in $tags {
+    $classified-tags: list.append($classified-tags, '.box.#{$tag}-variant', $separator: comma);
+  }
+  @return $classified-tags;
+}
+
+@mixin extra-default-styles {
+  .box {
+    &.h1-variant,
+    &.h2-variant,
+    &.h3-variant,
+    &.h4-variant,
+    &.h5-variant,
+    &.p-variant {
+      @include base-styles.headings-paragraphs-extra-defaults;
+    }
+    &.small-variant {
+      display: inline-block;
+    }
+    &.code-variant,
+    &.pre-variant,
+    &.samp-variant {
+      @include base-styles.code-extra-defaults;
+    }
+    &.key-label-variant {
+      font-weight: awsui.$font-display-label-weight;
+      color: awsui.$color-text-label;
+      margin-bottom: awsui.$space-scaled-xxxs;
+    }
+    &.value-large-variant {
+      @include styles.font-display-l;
+      font-weight: awsui.$font-box-value-large-weight;
+      color: inherit;
+    }
+  }
+}
+
+@mixin default-styles {
+  @each $property, $variants-map in base-styles.$font-styles {
+    $variant-value: map.get($variants-map, default);
+    @each $value, $tags in $variant-value {
+      #{selector.append(classify($tags), '.#{$property}-default')} {
+        @include base-styles.style-declaration($property, $value);
+      }
+    }
+  }
+  @include extra-default-styles;
+}
+
+@mixin text-styles-variants {
+  @each $property, $variants-map in base-styles.$font-styles {
+    @each $variant-name, $variant-value in $variants-map {
+      @if $variant-name != default {
+        &.#{$property}-#{$variant-name} {
+          @include base-styles.style-declaration($property, $variant-value);
+        }
+      }
+    }
+  }
+}
+
+@include default-styles;
+.box {
+  @include text-styles-variants;
+}
+
+.t-left {
+  text-align: left;
+}
+.t-right {
+  text-align: right;
+}
+.t-center {
+  text-align: center;
+}

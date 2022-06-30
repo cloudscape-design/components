@@ -1,0 +1,123 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../tokens' as awsui;
+@use './constants' as constants;
+
+@mixin default-text-style {
+  @include font-body-m;
+  color: awsui.$color-text-body-default;
+  font-weight: constants.$font-weight-normal;
+  font-family: constants.$font-family-base;
+}
+
+@mixin font-body-s {
+  font-size: awsui.$font-body-s-size;
+  line-height: awsui.$font-body-s-line-height;
+  letter-spacing: awsui.$font-body-s-letter-spacing;
+}
+
+@mixin font-body-m {
+  font-size: awsui.$font-body-m-size;
+  line-height: awsui.$font-body-m-line-height;
+}
+
+@mixin font-heading-xs($weight: true) {
+  font-size: awsui.$font-heading-xs-size;
+  line-height: awsui.$font-heading-xs-line-height;
+  @if $weight {
+    font-weight: awsui.$font-heading-xs-weight;
+  }
+}
+
+@mixin font-heading-s($weight: true) {
+  font-size: awsui.$font-heading-s-size;
+  line-height: awsui.$font-heading-s-line-height;
+  letter-spacing: awsui.$font-heading-s-letter-spacing;
+  @if $weight {
+    font-weight: awsui.$font-heading-s-weight;
+  }
+}
+
+@mixin font-heading-m($weight: true) {
+  font-size: awsui.$font-heading-m-size;
+  line-height: awsui.$font-heading-m-line-height;
+  letter-spacing: awsui.$font-heading-m-letter-spacing;
+  @if $weight {
+    font-weight: awsui.$font-heading-m-weight;
+  }
+}
+
+@mixin font-heading-l($weight: true) {
+  font-size: awsui.$font-heading-l-size;
+  line-height: awsui.$font-heading-l-line-height;
+  letter-spacing: awsui.$font-heading-l-letter-spacing;
+  @if $weight {
+    font-weight: awsui.$font-heading-l-weight;
+  }
+}
+
+@mixin font-heading-xl($weight: true) {
+  font-size: awsui.$font-heading-xl-size;
+  line-height: awsui.$font-heading-xl-line-height;
+  letter-spacing: awsui.$font-heading-xl-letter-spacing;
+  @if $weight {
+    font-weight: awsui.$font-heading-xl-weight;
+  }
+}
+
+@mixin font-display-l {
+  font-size: awsui.$font-display-l-size;
+  line-height: awsui.$font-display-l-line-height;
+  letter-spacing: awsui.$font-display-l-letter-spacing;
+}
+
+@mixin font-label {
+  @include font-body-m();
+  font-weight: awsui.$font-display-label-weight;
+}
+
+@mixin font-panel-header {
+  font-size: awsui.$font-panel-header-size;
+  line-height: awsui.$font-panel-header-line-height;
+  font-weight: awsui.$font-heading-l-weight;
+}
+
+@mixin font-code-inline {
+  font-size: awsui.$font-body-s-size;
+  line-height: awsui.$font-body-m-line-height;
+}
+
+@mixin font-code-block {
+  font-size: awsui.$font-body-m-size;
+  line-height: awsui.$font-body-m-line-height;
+}
+
+@mixin font($font-size) {
+  @if $font-size == body-s {
+    @include font-body-s;
+  }
+  @if $font-size == body-m {
+    @include font-body-m;
+  }
+  @if $font-size == heading-xs {
+    @include font-heading-xs($weight: false);
+  }
+  @if $font-size == heading-s {
+    @include font-heading-s($weight: false);
+  }
+  @if $font-size == heading-m {
+    @include font-heading-m($weight: false);
+  }
+  @if $font-size == heading-l {
+    @include font-heading-l($weight: false);
+  }
+  @if $font-size == heading-xl {
+    @include font-heading-xl($weight: false);
+  }
+  @if $font-size == display-l {
+    @include font-display-l;
+  }
+}

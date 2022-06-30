@@ -1,0 +1,39 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+@import './tab-header-bar';
+
+.root {
+  /* used in test-utils or tests */
+}
+
+.tabs {
+  @include styles.styles-reset;
+  display: block;
+  width: 100%;
+}
+
+.tabs-content-wrapper {
+  &.with-paddings {
+    padding: awsui.$space-scaled-m 0;
+  }
+}
+
+.tabs-container-content-wrapper {
+  &.with-paddings {
+    padding-top: awsui.$space-tabs-content-top;
+  }
+}
+
+.tabs-content {
+  display: none;
+}
+
+.tabs-content-active {
+  display: block;
+}

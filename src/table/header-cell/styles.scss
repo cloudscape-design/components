@@ -1,0 +1,103 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/hooks/focus-visible' as focus-visible;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+
+.header-cell {
+  position: relative;
+  text-align: left;
+  box-sizing: border-box;
+  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-heading-s-weight;
+  padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+  &-sticky {
+    border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+  }
+  &-stuck {
+    border-bottom-color: transparent;
+  }
+  &-variant-full-page {
+    border-bottom: awsui.$space-scaled-xxs solid transparent;
+  }
+  &:first-child {
+    padding-left: awsui.$space-xs;
+  }
+  &:last-child,
+  &.header-cell-sortable {
+    padding-right: awsui.$space-xs;
+  }
+
+  &:not(:last-child):before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 25%;
+    height: 50%;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+  }
+}
+
+.sorting-icon {
+  position: absolute;
+  top: awsui.$space-scaled-xxs;
+  right: awsui.$space-xxs;
+  color: awsui.$color-text-column-sorting-icon;
+}
+
+.header-cell-disabled.header-cell-sorted > .header-cell-content > .sorting-icon {
+  color: awsui.$color-text-interactive-disabled;
+}
+
+.header-cell-content {
+  position: relative;
+
+  padding: awsui.$space-scaled-xxs awsui.$space-s;
+  .header-cell-sortable > & {
+    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  &.header-cell-fake-focus {
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+  }
+}
+
+.header-cell-sortable:not(.header-cell-disabled) {
+  & > .header-cell-content {
+    cursor: pointer;
+  }
+  & > .header-cell-content:hover,
+  &.header-cell-sorted > .header-cell-content {
+    color: awsui.$color-text-interactive-active;
+    > .sorting-icon {
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+}
+
+.header-cell-text {
+  &:not(.header-cell-text-wrap) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.header-cell-ascending,
+.header-cell-descending {
+  /* used in test-utils */
+}

@@ -1,0 +1,12 @@
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /backstop/
+    schedule:
+      interval: daily
+    # For visual tests we only care about updates to backstopjs and puppeteer, so that we get the latest browser environment.
+    # This allowlist applies to both version and security updates.
+    allow:
+      - dependency-name: puppeteer
+      - dependency-name: backstopjs

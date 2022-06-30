@@ -1,0 +1,65 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+$radio-size: awsui.$size-control;
+
+.root {
+  @include styles.styles-reset;
+  display: block;
+}
+
+.radio {
+  /*used in test-utils*/
+}
+
+.radio + .radio {
+  margin-top: awsui.$space-scaled-xxs;
+}
+
+.radio--has-description + .radio {
+  margin-top: awsui.$space-scaled-xs;
+}
+
+.radio-control {
+  @include styles.make-control-size($radio-size);
+}
+
+.input {
+  @include focus-visible.when-visible {
+    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+    & + div {
+      @include styles.focus-highlight(2px, awsui.$border-control-focus-ring-radius-circle);
+    }
+  }
+}
+
+.styled-circle-border {
+  stroke: awsui.$color-border-control-default;
+  fill: awsui.$color-background-control-default;
+  &.styled-circle-disabled {
+    fill: awsui.$color-background-control-disabled;
+    stroke: awsui.$color-background-control-disabled;
+  }
+}
+
+.styled-circle-fill {
+  stroke: awsui.$color-background-control-checked;
+  fill: awsui.$color-foreground-control-default;
+  opacity: 0;
+  &.styled-circle-checked {
+    opacity: 1;
+  }
+  &.styled-circle-disabled {
+    fill: awsui.$color-foreground-control-disabled;
+    stroke: awsui.$color-background-control-disabled;
+  }
+  @include styles.with-motion {
+    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}

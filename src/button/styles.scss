@@ -1,0 +1,144 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use './constants' as constants;
+
+@mixin adjust-for-variant($variant) {
+  background: map.get($variant, 'default-background');
+  color: map.get($variant, 'default-color');
+  border-color: map.get($variant, 'default-border-color');
+  border-width: map.get($variant, 'border-width');
+  position: relative;
+  text-decoration: none;
+  padding: map.get($variant, 'padding');
+  font-weight: map.get($variant, 'font-weight');
+
+  &:hover {
+    background: map.get($variant, 'hover-background');
+    color: map.get($variant, 'hover-color');
+    border-color: map.get($variant, 'hover-border-color');
+    text-decoration: none;
+  }
+
+  &:active,
+  &.is-activated {
+    background: map.get($variant, 'active-background');
+    color: map.get($variant, 'active-color');
+    border-color: map.get($variant, 'active-border-color');
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+  &.variant-icon,
+  &.variant-modal-dismiss,
+  &.variant-flashbar-icon {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(
+        (
+          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
+          'horizontal': awsui.$space-button-focus-outline-gutter,
+        )
+      );
+    }
+  }
+  &.variant-inline-icon {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+    }
+  }
+
+  &.disabled {
+    background: map.get($variant, 'disabled-background');
+    border-color: map.get($variant, 'disabled-border-color');
+    color: map.get($variant, 'disabled-color');
+    text-decoration: none;
+    pointer-events: none;
+    cursor: auto;
+  }
+}
+
+.content {
+  /* used in test-utils */
+}
+
+.button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  border-radius: awsui.$border-button-radius;
+  border: styles.$control-border-width solid;
+  padding: styles.$control-padding-vertical awsui.$space-l;
+  font-weight: awsui.$font-button-weight;
+  letter-spacing: awsui.$font-button-letter-spacing;
+  display: inline-block; // for <a> as a button
+  text-decoration: none;
+  cursor: pointer;
+
+  @each $variant in map.keys(constants.$variants) {
+    &.variant-#{$variant} {
+      @include adjust-for-variant(map.get(constants.$variants, $variant));
+    }
+  }
+
+  &.button-no-text {
+    padding-left: awsui.$space-button-icon-only-horizontal;
+    padding-right: awsui.$space-button-icon-only-horizontal;
+  }
+
+  &.button-no-wrap {
+    white-space: nowrap;
+  }
+
+  &.variant-icon,
+  &.variant-inline-icon,
+  &.variant-flashbar-icon {
+    // Icon has vertical padding, but no horizontal, we need to conpensate this
+    // in order to have equal height and width
+    padding-left: awsui.$space-xxs;
+    padding-right: awsui.$space-xxs;
+  }
+
+  &.variant-modal-dismiss {
+    padding: awsui.$space-button-modal-dismiss-vertical awsui.$space-xxs;
+    margin-right: calc(-1 * #{awsui.$space-xxs});
+  }
+
+  &.variant-inline-icon {
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+  }
+
+  > .icon-left {
+    position: relative;
+    // margin-left was breaking layout on firefox
+    left: calc(-1 * #{awsui.$space-xxs});
+    margin-right: awsui.$space-xxs;
+  }
+
+  > .icon-right {
+    position: relative;
+    // margin-right was breaking layout on firefox
+    right: calc(-1 * #{awsui.$space-xxs});
+    margin-left: awsui.$space-xxs;
+  }
+
+  &.button-no-text > .icon {
+    margin-right: auto;
+    margin-left: auto;
+    // IE does not understand `initial`
+    right: 0;
+    left: 0;
+  }
+}

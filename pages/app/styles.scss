@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as tokens;
+/* stylelint-disable-next-line selector-max-type */
+body {
+  margin: 0;
+  color: tokens.$color-text-body-default;
+  background: tokens.$color-background-container-content;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+:global(.awsui-motion-disabled) {
+  // disable blinking caret for stable screenshot tests
+  // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, selector-max-type
+  input,
+  textarea {
+    caret-color: transparent !important;
+  }
+
+  &.macos {
+    // override scrollbars in macos for stable screenshot tests
+    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+    ::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+}

@@ -1,0 +1,152 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+// Outer borders of adjacent cells overlap and we want selected option border
+// to take precedence over the other ones, hence negative margins and z-indices
+.selectable-item {
+  @include styles.default-text-style;
+  position: relative;
+  list-style: none;
+  z-index: 1;
+
+  border: awsui.$border-divider-list-width solid transparent;
+  border-top-color: awsui.$color-border-dropdown-item-default;
+  border-bottom-color: awsui.$color-border-dropdown-item-default;
+  background-color: awsui.$color-background-dropdown-item-default;
+  color: awsui.$color-text-dropdown-item-default;
+
+  // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
+  border-left-width: 0;
+  border-right-width: 0;
+  // to compensate for the loss of padding due to the removal of the left and right borders
+  // and differences in default divider + selected border widths (visual refresh)
+  padding: styles.$option-padding-with-border-placeholder-vertical
+    calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+
+  &.pad-bottom {
+    padding-bottom: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+    border-bottom-color: transparent;
+  }
+
+  &:not(:first-child) {
+    margin-top: calc(-1 * #{awsui.$border-item-width});
+  }
+
+  &.has-background {
+    background-color: awsui.$color-background-dropdown-item-hover;
+  }
+
+  &.highlighted,
+  &.selected {
+    color: awsui.$color-text-dropdown-item-highlighted;
+    border-width: awsui.$border-item-width;
+    border-radius: awsui.$border-item-radius;
+    padding: styles.$option-padding-vertical styles.$control-padding-horizontal;
+    &.pad-bottom {
+      padding-bottom: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+    }
+  }
+
+  &.highlighted {
+    z-index: 2;
+    background-color: awsui.$color-background-dropdown-item-hover;
+    border-color: awsui.$color-border-dropdown-item-hover;
+    &.disabled {
+      color: awsui.$color-text-dropdown-item-dimmed;
+      border-color: awsui.$color-border-dropdown-item-dimmed-hover;
+      background-color: awsui.$color-background-dropdown-item-dimmed;
+    }
+  }
+
+  &.selected {
+    z-index: 3;
+    background-color: awsui.$color-background-dropdown-item-selected;
+    border-color: awsui.$color-border-dropdown-item-selected;
+    // smooth adjacent selected borders to avoid bubble effect (visual refresh)
+    &.next-item-selected {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &.selected + &.selected {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.highlighted.selected.is-keyboard {
+    box-shadow: inset 0 0 0 1px awsui.$color-border-item-focused;
+  }
+
+  &.parent {
+    font-weight: bold;
+    color: awsui.$color-text-dropdown-group-label;
+    &:not(.interactiveGroups) {
+      border-top-color: awsui.$color-border-dropdown-group;
+      padding: awsui.$space-xs;
+    }
+    &.interactiveGroups {
+      padding: styles.$group-option-padding-with-border-placeholder-vertical
+        calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+      &.highlighted,
+      &.selected {
+        padding: styles.$group-option-padding-vertical styles.$control-padding-horizontal;
+      }
+    }
+  }
+
+  &.child {
+    padding-left: calc(#{awsui.$space-xxl} + #{awsui.$border-item-width});
+    &.highlighted,
+    &.selected {
+      padding-left: awsui.$space-xxl;
+    }
+  }
+
+  &.disabled {
+    color: awsui.$color-text-dropdown-item-disabled;
+  }
+
+  &:not(.disabled):not(.parent) {
+    cursor: pointer;
+  }
+  &.interactiveGroups:not(.disabled) {
+    cursor: pointer;
+  }
+  &.virtual {
+    position: absolute;
+    top: awsui.$border-dropdown-virtual-offset-width;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    &:first-of-type:not(.selected, .highlighted) {
+      border-top-color: awsui.$color-border-dropdown-item-top;
+    }
+  }
+}
+
+.measure-strut {
+  position: absolute;
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding-top: awsui.$border-divider-list-width;
+  &-first {
+    padding-bottom: awsui.$border-divider-list-width;
+  }
+}
+
+.screenreader-content {
+  @include styles.awsui-util-hide;
+}
+
+.option-content {
+  /* used in test-utils */
+}

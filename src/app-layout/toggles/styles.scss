@@ -1,0 +1,50 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '../../internal/hooks/focus-visible' as focus-visible;
+
+.close-button {
+  position: absolute;
+  outline: none;
+  right: awsui.$space-m;
+  top: awsui.$size-vertical-panel-icon-offset;
+  z-index: 1;
+}
+
+.circular-toggle {
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  width: awsui.$space-layout-toggle-diameter;
+  height: awsui.$space-layout-toggle-diameter;
+  padding: 0 awsui.$space-s;
+  background: awsui.$color-background-layout-toggle-default;
+  color: awsui.$color-text-layout-toggle;
+  box-shadow: awsui.$shadow-panel-toggle;
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(3px);
+  }
+  &:hover {
+    background: awsui.$color-background-layout-toggle-hover;
+  }
+  &:active {
+    background: awsui.$color-background-layout-toggle-active;
+  }
+  &-selected {
+    background: awsui.$color-background-layout-toggle-selected-default;
+    color: awsui.$color-text-layout-toggle-selected;
+    &:hover {
+      background: awsui.$color-background-layout-toggle-selected-hover;
+    }
+    &:active {
+      background: awsui.$color-background-layout-toggle-selected-active;
+    }
+  }
+}

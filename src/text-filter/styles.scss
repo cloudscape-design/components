@@ -1,0 +1,29 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.root {
+  @include styles.styles-reset;
+  display: flex;
+  align-items: center;
+  // The xs breakpoint, minus the table tools container padding
+  max-width: calc(688px - 2 * #{awsui.$space-l});
+}
+
+.input {
+  flex: 1;
+}
+
+.results {
+  color: awsui.$color-text-form-label;
+  display: inline-block;
+  box-sizing: border-box;
+  white-space: nowrap;
+  &-visible {
+    padding-left: awsui.$space-s;
+  }
+}

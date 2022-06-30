@@ -1,0 +1,82 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$sizes-horizontal: (
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-s,
+  'm': awsui.$space-m,
+  'l': awsui.$space-l,
+  'xl': awsui.$space-xl,
+  'xxl': awsui.$space-xxl,
+);
+
+$sizes-vertical: (
+  'xxxs': awsui.$space-xxxs,
+  'xxs': awsui.$space-xxs,
+  'xs': awsui.$space-xs,
+  's': awsui.$space-scaled-s,
+  'm': awsui.$space-scaled-m,
+  'l': awsui.$space-scaled-l,
+  'xl': awsui.$space-scaled-xl,
+  'xxl': awsui.$space-scaled-xxl,
+);
+
+.root {
+  display: flex;
+}
+
+.child {
+  /* used in test-utils */
+}
+
+.child:empty {
+  display: none;
+}
+
+/*
+ * Horizontal variant
+ */
+
+.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @each $name, $size in $sizes-horizontal {
+    &-#{$name} {
+      // This cancels out the margins of the children in the first row / in the first column.
+      margin-left: calc(-1 * #{$size});
+      margin-bottom: calc(-1 * #{$size});
+    }
+  }
+}
+
+@each $name, $size in $sizes-horizontal {
+  .child-horizontal-#{$name} {
+    margin-left: $size;
+    margin-bottom: $size;
+
+    // This is a fix for IE11. It prevents the content from overflowing.
+    min-width: 1px;
+  }
+}
+
+/*
+ * Vertical variant
+ */
+
+.vertical {
+  flex-direction: column;
+}
+
+@each $name, $size in $sizes-vertical {
+  .child-vertical-#{$name}:not(:last-child) {
+    margin-bottom: $size;
+  }
+}

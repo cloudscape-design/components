@@ -1,0 +1,89 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles/typography/constants.scss' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$link-variants: (
+  'secondary': (
+    'text-color-default': awsui.$color-text-link-default,
+    'text-color-hover': awsui.$color-text-link-hover,
+    'text-color-active': awsui.$color-text-link-hover,
+    'font-weight': inherit,
+    'decoration': none,
+    'decoration-color': transparent,
+    'decoration-color-hover': currentColor,
+    'letter-spacing': normal,
+  ),
+  'primary': (
+    'text-color-default': awsui.$color-text-link-default,
+    'text-color-hover': awsui.$color-text-link-hover,
+    'text-color-active': awsui.$color-text-link-hover,
+    'font-weight': awsui.$font-link-primary-weight,
+    'decoration': awsui.$font-link-primary-decoration,
+    'decoration-color': awsui.$color-text-link-primary-underline,
+    'decoration-color-hover': currentColor,
+    'letter-spacing': awsui.$font-link-primary-letter-spacing,
+  ),
+  'info': (
+    'text-color-default': awsui.$color-text-link-default,
+    'text-color-hover': awsui.$color-text-link-hover,
+    'text-color-active': awsui.$color-text-link-hover,
+    'font-weight': awsui.$font-button-weight,
+    'decoration': none,
+    'decoration-color': transparent,
+    'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
+    'letter-spacing': styles.$letter-spacing-bold-link,
+  ),
+  'value-large': (
+    'text-color-default': awsui.$color-text-link-default,
+    'text-color-hover': awsui.$color-text-link-hover,
+    'text-color-active': awsui.$color-text-link-hover,
+    'font-weight': awsui.$font-box-value-large-weight,
+    'decoration': none,
+    'decoration-color': transparent,
+    'decoration-color-hover': currentColor,
+  ),
+  'top-navigation': (
+    'text-color-default': awsui.$color-text-interactive-default,
+    'text-color-hover': awsui.$color-text-interactive-hover,
+    'text-color-active': awsui.$color-text-interactive-active,
+    'font-weight': styles.$font-weight-bold,
+    'decoration': none,
+    'decoration-color': transparent,
+    'decoration-color-hover': transparent,
+    'letter-spacing': styles.$letter-spacing-bold-link,
+  ),
+  // Need separate variant used for backwards compatible styles in classic
+  // (vr - button style, classic - underlined link style),
+  'recovery':
+    (
+      'text-color-default': awsui.$color-text-link-default,
+      'text-color-hover': awsui.$color-text-link-hover,
+      'text-color-active': awsui.$color-text-link-hover,
+      'font-weight': awsui.$font-link-button-weight,
+      // Decoration fallback is for IE11, and IE11 does not support VR, so no variable needed
+      'decoration': underline,
+      'decoration-color': awsui.$color-text-link-button-underline,
+      'decoration-color-hover': awsui.$color-text-link-button-underline-hover,
+      'letter-spacing': awsui.$font-link-button-letter-spacing,
+    ),
+);
+
+$link-styles: (
+  // A link without an href to be styled like a button
+  'button':
+    (
+      'text-color-default': awsui.$color-text-button-normal-default,
+      'text-color-hover': awsui.$color-text-button-normal-hover,
+      'text-color-active': awsui.$color-text-button-normal-active,
+      'font-weight': awsui.$font-button-weight,
+      'decoration': none,
+      'decoration-color': transparent,
+      'decoration-color-hover': transparent,
+      'letter-spacing': awsui.$font-button-letter-spacing,
+    )
+);

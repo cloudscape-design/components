@@ -1,0 +1,26 @@
+name: Documentation
+about: Report an issue or suggest an improvement in our [documentation website](TBD).
+title: '[Documentation]: '
+labels: documentation
+body:
+  - type: markdown
+    attributes:
+      value: Use this template to report an issue or suggest an improvement in our [documentation website](TBD).
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue or the suggested improvement
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: Please confirm the following
+      options:
+        - label:
+            I agree to follow this project's [Code of
+            Conduct](../../CODE_OF_CONDUCT.md)
+          required: true

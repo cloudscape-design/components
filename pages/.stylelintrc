@@ -1,0 +1,6 @@
+{
+  "extends": "../.stylelintrc",
+  "rules": {
+    "custom-property-pattern": null
+  }
+}

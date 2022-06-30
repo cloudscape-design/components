@@ -1,0 +1,117 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+  position: relative;
+  white-space: inherit;
+
+  &.interior {
+    position: static;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  display: none;
+  // Needs to be higher than a global navigation element
+  z-index: 2000;
+  user-select: none;
+  transform-origin: top;
+
+  // When used in portal we need z-index to be higher than modal's
+  &.use-portal {
+    z-index: 7000;
+  }
+
+  &:not(.interior) {
+    transform: translateY(0px);
+    @include styles.with-motion {
+      transition: transform awsui.$motion-duration-show-quick;
+    }
+  }
+
+  &-content-wrapper {
+    position: relative;
+    background-color: awsui.$color-background-dropdown-item-default;
+    outline: none;
+    @include styles.dropdown-shadow;
+    // HACK: because of the issues with IE's box shadow rendering we draw
+    // a border and don't mind the pixel fitting
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      border: styles.$control-border-width solid awsui.$color-border-container-top;
+    }
+
+    border-bottom: none;
+  }
+
+  &-drop-up {
+    > .dropdown-content-wrapper {
+      transform-origin: bottom;
+      box-shadow: awsui.$shadow-dropup;
+    }
+
+    &.with-limited-width > .dropdown-content-wrapper {
+      border-top: none;
+    }
+  }
+  &-drop-left {
+    right: 0;
+  }
+  &-drop-right {
+    left: 0;
+  }
+  &.occupy-entire-width {
+    min-width: 100%;
+  }
+  &.hide-upper-border > .dropdown-content-wrapper {
+    border-top: none;
+  }
+  &.interior > .dropdown-content-wrapper {
+    margin-top: -1px;
+    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
+  }
+  &.open {
+    display: block;
+
+    &:not(.interior).refresh[data-animating='true'] {
+      transform: translateY(4px);
+
+      &.dropdown-drop-up {
+        transform: translateY(-4px);
+      }
+    }
+    &.nowrap {
+      white-space: nowrap;
+      // Taking into account width of scroll element
+      overflow: scroll;
+    }
+  }
+  // Don't show dropdown border when there's no dropdown content
+  &.is-empty::after {
+    display: none;
+  }
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+// Child flex wrapper used because when combining an absolute position
+// and flexbox, IE11 will incorrectly size the container according to its parent
+// and not its content.
+.ie11-wrapper {
+  display: flex;
+}
+
+.stretch-trigger-height {
+  height: 100%;
+}

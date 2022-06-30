@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path class="stroke-linejoin-round" d="M8,2.16667c-3.5,0-3.5,4.66666-3.5,4.66666L1,11.5H15L11.5,6.83333S11.5,2.16667,8,2.16667Z"/>
+  <path class="stroke-linejoin-round" d="M5.66667,11.5v1.16667a2.33333,2.33333,0,0,0,4.66666,0V11.5"/>
+  <line class="stroke-linecap-round" x1="8" y1="1" x2="8" y2="2.16667"/>
+</svg>

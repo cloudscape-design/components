@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+// Spinner animations do not follow our general motion configuration, we need to disable them explicitly to get stable
+// screenshot testing results
+/* stylelint-disable selector-combinator-disallowed-list, selector-max-universal, @cloudscape-design/no-motion-outside-of-mixin, @cloudscape-design/no-implicit-descendant */
+.noAnimation {
+  *,
+  *:before,
+  *:after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* stylelint-enable */
+
+.gutters {
+  padding: 1rem;
+}

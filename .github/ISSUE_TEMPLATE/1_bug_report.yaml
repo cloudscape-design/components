@@ -1,0 +1,64 @@
+name: Bug Report
+about: Report a bug
+title: '[Bug]: '
+labels: bug
+body:
+  - type: markdown
+    attributes:
+      value: Provide as much information as possible to help us investigate the bug.
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: In which browser(s) are you experiencing the issue?
+      multiple: true
+      options:
+        - Chrome
+        - Safari
+        - Firefox
+        - Edge
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: Which version(s) are you using?
+      placeholder: e.g. v3.0.122
+    validations:
+      required: true
+  - type: input
+    id: react-version
+    attributes:
+      label: React version
+      description: Which version of React are you using?
+      placeholder: e.g. v18.0.1
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Tell us more about the issue you are experiencing
+      placeholder: What is the actual and expected behavior?
+    validations:
+      required: true
+  - type: textarea
+    id: source-code
+    attributes:
+      label: Source code
+      description: Share links to your source code
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Recreate the issue using [CodeSandbox](https://codesandbox.io/). Use this [template](TBD) as a starting point
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: Please confirm the following
+      options:
+        - label:
+            I agree to follow this project's [Code of
+            Conduct](../../CODE_OF_CONDUCT.md)
+          required: true
+        - label:
+            I checked the [current
+            issues](https://github.com/cloudscape-design/components/issues) for duplicate problems

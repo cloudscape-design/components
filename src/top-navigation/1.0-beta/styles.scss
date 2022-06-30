@@ -1,0 +1,229 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
+
+.top-navigation {
+  @include styles.styles-reset;
+  background: awsui.$color-background-container-content;
+
+  > .padding-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-m});
+    padding: 0 0 0 awsui.$space-l;
+  }
+
+  &.medium > .padding-box,
+  &.narrow > .padding-box {
+    height: calc(#{awsui.$space-xxxl} + #{awsui.$space-scaled-xs});
+  }
+
+  &.narrow > .padding-box {
+    height: awsui.$space-xxxl;
+    padding: 0 0 0 awsui.$space-xs;
+  }
+}
+
+.hidden {
+  @include styles.awsui-util-hide;
+  visibility: hidden;
+  width: 9000px;
+}
+
+// Ensures that tabbable child elements are hidden to a11y software.
+// ":not(#\9)" manually added because we want to override the default
+// visibility set by styles-reset, and "*" has a specificity of 0.
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.hidden *:not(#\9) {
+  visibility: hidden;
+}
+
+.identity {
+  > .identity-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: awsui.$color-text-top-navigation-title;
+
+    &:hover {
+      color: awsui.$color-text-accent;
+    }
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+
+  &.no-logo {
+    // Prevent responsiveness from completely hiding the title.
+    min-width: 100px;
+  }
+}
+
+.logo {
+  display: block;
+  max-height: awsui.$space-xxl;
+  margin-left: awsui.$space-s;
+  width: auto;
+
+  // Setting an arbitrary min-width here discourages browser from lazy rendering
+  min-width: 10px;
+
+  &.narrow {
+    max-height: awsui.$space-xl;
+  }
+}
+
+.title {
+  @include styles.font-heading-m;
+  margin-left: awsui.$space-s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .no-logo > .identity-link > & {
+    font-weight: styles.$font-weight-bold;
+  }
+}
+
+.inputs {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search {
+  width: 100%;
+  max-width: 340px;
+  padding-left: awsui.$space-xxxl;
+
+  &-expanded {
+    max-width: none;
+    padding-left: awsui.$space-s;
+  }
+}
+
+.utilities {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: stretch;
+  padding-left: awsui.$space-m;
+
+  // Expand height of utilies fully so that the dropdown is anchored directly underneath it.
+  height: 100%;
+
+  .medium > .padding-box > &,
+  .narrow > .padding-box > & {
+    padding-left: 0;
+  }
+}
+
+.utility-wrapper {
+  display: flex;
+  position: relative;
+  flex-shrink: 0;
+  align-items: center;
+
+  &::after {
+    display: block;
+    position: absolute;
+    content: '';
+
+    width: 1px;
+    right: 0;
+    top: awsui.$space-s;
+    bottom: awsui.$space-s;
+
+    background: awsui.$color-border-divider-default;
+  }
+
+  &.utility-wrapper-last:not(.utility-type-button-primary-button) {
+    padding-right: 0;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .medium > .padding-box > .utilities > &::after,
+  .narrow > .padding-box > .utilities > &::after {
+    top: awsui.$space-xs;
+    bottom: awsui.$space-xs;
+  }
+}
+
+.utility-wrapper-last {
+  // Add appropriate space to the right for the last utility
+  margin-right: awsui.$space-s;
+
+  &.utility-type-menu-dropdown {
+    // Remove the margin in case of a dropdown, because it's added as padding to the trigger.
+    // This makes sure that the dropdown trigger (and therefore the dropdown itself)
+    // will expand completely to the right edge of the top nav.
+    margin-right: 0;
+  }
+
+  // Adjust spacing in the smaller variant
+  .narrow > .padding-box > .utilities > & {
+    margin-right: 0;
+
+    &.utility-type-button-primary-button {
+      padding-right: awsui.$space-l;
+    }
+  }
+}
+
+.utility-type-menu-dropdown {
+  padding: 0 awsui.$space-s;
+  align-items: stretch;
+}
+
+.utility-type-button-link,
+.utility-type-button-primary-button {
+  padding: 0 awsui.$space-m;
+}
+
+.utility-type-button-primary-button {
+  // Hide dividers around primary buttons.
+  left: -1px;
+  border-left: 1px solid awsui.$color-background-container-content;
+  &::after {
+    display: none;
+  }
+}
+
+.utility-link-icon {
+  margin-right: awsui.$space-xxs;
+}
+
+.utility-button-external-icon {
+  display: inline-block;
+}
+
+.trigger {
+  /*used in test-utils*/
+}
+
+.rotate-up {
+  transform: rotate(-180deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}
+
+.rotate-down {
+  transform: rotate(0deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}

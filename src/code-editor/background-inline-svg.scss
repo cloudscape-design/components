@@ -1,0 +1,52 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:string';
+@use 'awsui:resolved-tokens' as resolved-tokens;
+@use '../internal/styles/utils/theming' as theming;
+
+@mixin background-inline-svg($path, $stroke, $fill: null) {
+  @each $theme in resolved-tokens.$resolved-tokens {
+    $selector: string.unquote(map.get($theme, 'selector'));
+    $tokens: map.get($theme, 'tokens');
+    @if ($selector == ':root') {
+      @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'light');
+      // dark mode is not supported in browsers that do not support css variables
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      @supports (--css-variable-support-check: #000) {
+        @include theming.dark-mode-only {
+          @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'dark');
+        }
+      }
+    } @else {
+      // secondary themes (e.g. visual refresh) are not supported in browsers that do not support css variables
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+      @supports (--css-variable-support-check: #000) {
+        :global(#{$selector}) & {
+          @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'light');
+        }
+        @include theming.dark-mode-only($selector) {
+          @include _themed-background-inline-svg($path, $tokens, $stroke, $fill, 'dark');
+        }
+      }
+    }
+  }
+}
+
+@mixin _themed-background-inline-svg($path, $tokens, $stroke, $fill, $mode) {
+  $stroke-map: map.get($tokens, $stroke);
+  @if ($fill) {
+    $fill-map: map.get($tokens, $fill);
+    background-image: svg-load(
+      $path,
+      fill=#{string.unquote(map.get($fill-map, $mode))},
+      stroke=#{string.unquote(map.get($stroke-map, $mode))}
+    );
+  } @else {
+    background-image: svg-load($path, stroke=#{string.unquote(map.get($stroke-map, $mode))});
+  }
+}

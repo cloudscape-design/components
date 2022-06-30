@@ -1,0 +1,181 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset();
+  cursor: inherit;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  &-no-actions {
+    &.root-variant-h1 {
+      padding-bottom: 0;
+      &-refresh {
+        padding-bottom: awsui.$space-xxxs;
+      }
+    }
+  }
+
+  &-no-actions,
+  &-has-description {
+    &.root-variant-h2 {
+      padding-bottom: awsui.$space-scaled-xxs;
+      &-refresh {
+        padding-bottom: awsui.$space-xxxs;
+      }
+    }
+    &.root-variant-h3 {
+      padding-bottom: awsui.$space-scaled-xxs;
+      &-refresh {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &-no-wrap {
+    flex-wrap: nowrap;
+  }
+}
+
+.main {
+  @include styles.text-flex-wrapping;
+  :not(.root-no-actions) > & {
+    margin-right: awsui.$space-xs;
+  }
+
+  &-variant-h1 {
+    padding: awsui.$space-scaled-2x-xxs 0;
+    &-refresh {
+      padding: awsui.$space-xxs 0;
+    }
+  }
+  :not(.root-no-actions) > &-variant-h1-refresh {
+    padding-top: awsui.$space-scaled-xxxs;
+  }
+
+  // So that headers with only a title have the same height as headers with actions and descriptions
+  &-variant-h2,
+  &-variant-h3 {
+    padding-top: awsui.$space-scaled-xxs;
+    :not(.root-has-description) > & {
+      padding-bottom: awsui.$space-xxxs;
+    }
+  }
+  &-variant-h2-refresh {
+    padding-top: 0;
+    :not(.root-has-description) > & {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.actions {
+  // extra flex container to avoid overflow issues in IE11
+  // https://github.com/philipwalton/flexbugs/issues/170
+  display: flex;
+  align-items: flex-start;
+  &-variant-h1 {
+    padding: awsui.$space-scaled-xs 0;
+    &-refresh {
+      padding: awsui.$space-xs 0;
+    }
+  }
+  &-variant-h2,
+  &-variant-h3 {
+    padding: awsui.$space-scaled-xxs 0;
+    .root-has-description > & {
+      padding-bottom: 0;
+    }
+  }
+  &-variant-h2-refresh {
+    padding-bottom: awsui.$space-xxxs;
+  }
+  &-variant-h3-refresh {
+    padding-bottom: 0;
+  }
+}
+
+.title {
+  @include styles.text-wrapping;
+  color: awsui.$color-text-heading-default;
+
+  &-variant-h2,
+  &-variant-h3 {
+    padding: awsui.$space-scaled-xxs 0;
+  }
+  &-variant-h2 {
+    @include styles.font-heading-l;
+    &-refresh {
+      padding-top: awsui.$space-scaled-2x-xxs;
+    }
+  }
+  &-variant-h3 {
+    @include styles.font-heading-m;
+  }
+}
+
+.info {
+  // Space 's' used as it's the smallest value that works in all browsers
+  padding-right: awsui.$space-s;
+}
+
+.description {
+  // Override built-in styles and global typography from 2.1 for <p> tag
+  margin: 0;
+  padding: 0;
+  color: awsui.$color-text-heading-secondary;
+
+  &-variant-h1 {
+    @include styles.font-body-m;
+    padding-top: awsui.$space-scaled-xxs;
+    &-refresh {
+      padding-top: awsui.$space-scaled-xs;
+    }
+  }
+  &-variant-h2 {
+    font-size: awsui.$font-header-h2-description-size;
+    line-height: awsui.$font-header-h2-description-line-height;
+    padding-bottom: awsui.$space-scaled-xxs;
+  }
+  &-variant-h3 {
+    @include styles.font-body-s;
+    padding-bottom: awsui.$space-scaled-xxs;
+    &-refresh {
+      padding-top: awsui.$space-xxxs;
+    }
+  }
+}
+
+.heading {
+  margin: 0;
+  // We display heading element inline to achieve the proper line-wrapping with info links
+  display: inline;
+  font-size: inherit;
+  @include styles.info-link-spacing();
+
+  &-variant-h1 {
+    @include styles.font-heading-xl;
+  }
+  &-variant-h2 {
+    font-weight: awsui.$font-heading-l-weight;
+  }
+  &-variant-h3 {
+    font-weight: awsui.$font-heading-m-weight;
+  }
+}
+
+.heading-text {
+  /* used in test-utils */
+}
+
+.counter {
+  color: awsui.$color-text-counter;
+  font-weight: styles.$font-weight-normal;
+}

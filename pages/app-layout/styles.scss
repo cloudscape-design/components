@@ -1,0 +1,81 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.contentPlaceholder::before {
+  content: 'X';
+  display: block;
+  background-color: awsui.$color-background-input-disabled;
+  color: awsui.$color-background-container-content;
+  text-align: center;
+  font-size: 400px;
+  line-height: 400px;
+}
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  color: #eee;
+  background: #232f3e;
+  box-sizing: border-box;
+  padding: 0 1rem;
+  line-height: 30px;
+  z-index: 1000;
+  &:not(.legacyNav) {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    position: sticky;
+  }
+}
+
+.highlightBorder {
+  border: 1px solid red;
+}
+
+.textContent {
+  color: awsui.$color-text-body-default;
+}
+
+.longContent {
+  height: 200vh;
+}
+
+.floatingBlock {
+  position: relative;
+  z-index: 1;
+  background: awsui.$color-background-container-content;
+}
+
+.wizard {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.wizard-steps {
+  width: 16rem;
+  height: 40rem;
+  margin-right: 4rem;
+}
+
+.wizard-form {
+  min-width: 30rem;
+  max-width: 80rem;
+  height: 150rem;
+}
+
+@media (max-width: 703px) {
+  .wizard {
+    display: block;
+  }
+
+  .wizard-steps {
+    margin-right: 0;
+  }
+
+  .wizard-form {
+    margin-top: 4rem;
+  }
+}

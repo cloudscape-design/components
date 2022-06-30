@@ -1,0 +1,35 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React, { useState } from 'react';
+import Tabs from '~components/tabs';
+import AppLayout from '~components/app-layout';
+
+export default function TabsInHelpPanelDemoPage() {
+  const [toolsOpen, setToolsOpen] = useState(true);
+  return (
+    <AppLayout
+      content={<h1>Tabs in help panel</h1>}
+      navigationHide={true}
+      ariaLabels={{
+        tools: 'Tools',
+        toolsToggle: 'Open tools',
+        toolsClose: 'Close tools',
+      }}
+      toolsWidth={330}
+      toolsOpen={toolsOpen}
+      onToolsChange={({ detail }) => setToolsOpen(detail.open)}
+      tools={
+        <Tabs
+          tabs={[
+            { id: 'help-panel', label: 'Info', content: 'Info' },
+            {
+              id: 'tutorials-panel',
+              label: 'Tutorials',
+              content: 'Tutorials',
+            },
+          ]}
+        />
+      }
+    />
+  );
+}

@@ -1,0 +1,226 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/styles/typography/index' as typographyConstants;
+@use './motion';
+
+$calendar-header-color: awsui.$color-text-body-default;
+$calendar-grid-day-name-color: awsui.$color-text-calendar-month;
+
+$calendar-grid-width: awsui.$size-calendar-grid-width;
+
+.root {
+  @include styles.styles-reset;
+  max-width: 32em;
+}
+
+.trigger-wrapper {
+  min-width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
+}
+
+.trigger-flexbox {
+  display: flex;
+}
+
+.preferred-wordbreak {
+  display: inline-block;
+}
+
+.calendar {
+  display: block;
+  width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
+
+  &.one-grid {
+    width: $calendar-grid-width;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  &-header-months-wrapper {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+
+    pointer-events: none;
+  }
+
+  &-header-month {
+    @include styles.font-body-m;
+    font-weight: typographyConstants.$font-weight-bold;
+    color: $calendar-header-color;
+
+    display: flex;
+
+    pointer-events: auto;
+  }
+
+  &-next-month-btn {
+    /* used for identifying element */
+  }
+
+  &-prev-month-btn {
+    /* used for identifying element */
+  }
+
+  &-day-names {
+    display: flex;
+    justify-content: stretch;
+  }
+
+  &-day-name {
+    flex: 1 1 0%;
+    width: 0;
+    word-break: break-word;
+    text-align: center;
+    padding: awsui.$space-s 0 awsui.$space-xxs;
+    color: $calendar-grid-day-name-color;
+    @include styles.font-body-s;
+  }
+
+  &-week {
+    display: flex;
+    justify-content: stretch;
+  }
+}
+
+.first-grid,
+.second-grid {
+  /* used in test-utils */
+}
+
+.grid {
+  width: $calendar-grid-width;
+}
+
+.date-and-time-wrapper {
+  display: flex;
+  width: $calendar-grid-width;
+
+  &__date {
+    margin-right: awsui.$space-xs;
+  }
+
+  & > .date-and-time-wrapper__time,
+  & > .date-and-time-wrapper__date {
+    flex-grow: 1;
+  }
+}
+
+.date-and-time-constrainttext {
+  @include styles.form-control-description;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  border-top: 1px solid #{awsui.$color-border-dropdown-item-default};
+  padding: 0 awsui.$space-l awsui.$space-s;
+
+  &.has-clear-button {
+    justify-content: space-between;
+  }
+
+  &.one-grid {
+    padding: 0 awsui.$space-xs awsui.$space-s;
+  }
+}
+
+.footer-button-wrapper {
+  padding-top: awsui.$space-s;
+}
+
+.icon-wrapper {
+  color: awsui.$color-text-interactive-default;
+  margin-right: awsui.$space-xs;
+}
+
+.label {
+  user-select: text;
+  cursor: default;
+}
+
+.label.label-enabled:hover > .trigger-flexbox > .icon-wrapper {
+  color: awsui.$color-text-interactive-hover;
+}
+
+.label-text {
+  @include styles.form-placeholder;
+}
+
+.mode-switch {
+  /* used in test-utils */
+}
+
+.dropdown {
+  // There needs to be an outer container because we set a fixed width on the
+  // actual dropdown and calendar grid, so the scrollbar would mess up the
+  // widths.
+  overflow: auto;
+
+  border-top: 1px solid #{awsui.$color-border-container-top};
+  border-bottom: 1px solid #{awsui.$color-border-container-top};
+  border-radius: awsui.$border-dropdown-radius;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.dropdown-content {
+  user-select: text;
+  background-color: awsui.$color-background-container-content;
+  width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs} + 2 * #{awsui.$space-l});
+
+  &.one-grid {
+    width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
+  }
+}
+
+.start-date-input,
+.start-time-input,
+.end-date-input,
+.end-time-input {
+  /* used in test-utils */
+}
+
+.validation-section {
+  /* used in test-utils */
+}
+
+.validation-error {
+  /* used in test-utils */
+}
+
+.clear-button {
+  /* used in test-utils */
+}
+.apply-button {
+  /* used in test-utils */
+}
+.cancel-button {
+  /* used in test-utils */
+}
+.calendar-aria-live {
+  /* used in test-utils */
+}

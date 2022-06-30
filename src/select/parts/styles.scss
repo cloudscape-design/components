@@ -1,0 +1,51 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.placeholder {
+  @include styles.form-placeholder;
+}
+
+$checkbox-size: awsui.$size-control;
+
+.item {
+  display: flex;
+  align-items: center;
+
+  > .checkbox {
+    position: relative;
+    min-height: $checkbox-size;
+    min-width: $checkbox-size;
+    height: $checkbox-size;
+    width: $checkbox-size;
+    margin-right: styles.$control-padding-horizontal;
+  }
+}
+
+.filter {
+  z-index: 4;
+
+  // Prevents the input container from shrinking below its minimum size
+  // See AWSUI-12019
+  flex-shrink: 0;
+}
+
+.trigger {
+  @include styles.text-overflow-ellipsis;
+}
+
+.layout-strut {
+  width: 100%;
+  position: relative;
+  // Prevent incorrect layer ordering in Safari by making sure
+  // this element is also offloaded to the GPU along with the virtual items
+  transform: translate3d(0, 0, 0);
+}
+
+.list-bottom {
+  /* used in unit-tests */
+}

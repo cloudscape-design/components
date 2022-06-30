@@ -1,0 +1,58 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../hooks/focus-visible' as focus-visible;
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.title {
+  /* used in test utils */
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.marker {
+  display: inline-flex;
+  align-items: flex-start;
+  margin-right: awsui.$space-m;
+  padding: 0;
+  cursor: pointer;
+  opacity: 1;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &.marker--dimmed {
+    opacity: 0.35;
+  }
+
+  &.marker--highlighted {
+    /* used in test utils */
+  }
+
+  &.marker--focused {
+    @include styles.focus-highlight(2px);
+  }
+}

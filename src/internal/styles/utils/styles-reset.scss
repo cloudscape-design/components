@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../typography' as typography;
+
+@mixin styles-reset {
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  all: initial;
+  box-sizing: border-box;
+  @include typography.default-text-style;
+}

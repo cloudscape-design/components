@@ -1,0 +1,14 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.alert {
+  @include styles.with-motion {
+    @include styles.animation-fade-in;
+    animation: awsui-motion-fade-in awsui.$motion-duration-show-paced awsui.$motion-easing-show-paced;
+  }
+}

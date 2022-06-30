@@ -1,0 +1,104 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.text-content {
+  @include styles.styles-reset;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    font-family: inherit;
+    font-weight: normal;
+    text-decoration: none;
+    margin: 0;
+    padding: awsui.$space-xxs 0;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: awsui.$color-text-heading-default;
+  }
+
+  h1 {
+    @include styles.font-heading-xl;
+  }
+  h2 {
+    @include styles.font-heading-l;
+  }
+  h3 {
+    @include styles.font-heading-m;
+  }
+  h4 {
+    @include styles.font-heading-s;
+  }
+  h5 {
+    @include styles.font-heading-xs;
+  }
+  b,
+  strong {
+    font-weight: styles.$font-weight-bold;
+  }
+  p {
+    @include styles.font(body-m);
+    color: inherit;
+  }
+  small {
+    display: inline-block;
+    @include styles.font(body-s);
+    color: awsui.$color-text-small;
+    a {
+      font-size: inherit;
+      @include styles.link-inline;
+    }
+  }
+  code,
+  pre,
+  samp {
+    font-family: styles.$font-family-monospace;
+    background: transparent;
+  }
+  code {
+    @include styles.font(body-s);
+  }
+  /* stylelint-disable no-descending-specificity */
+  a {
+    @include styles.link-default;
+
+    &:focus {
+      @include styles.link-focus;
+    }
+  }
+  /* stylelint-enable no-descending-specificity */
+
+  ul,
+  ol {
+    padding-left: awsui.$space-l;
+    margin: awsui.$space-xxs 0;
+    list-style-position: outside;
+
+    + ul,
+    + ol,
+    > li + ul,
+    > li + li,
+    > li + ol,
+    > li > ul,
+    > li > ol {
+      padding-top: awsui.$space-xxs;
+    }
+
+    > li > ul,
+    > li > ol {
+      margin: 0;
+    }
+  }
+}

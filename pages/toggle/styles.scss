@@ -1,0 +1,10 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+.highlightLabels {
+  /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+  label {
+    box-shadow: 0 0 0 1px green;
+  }
+}

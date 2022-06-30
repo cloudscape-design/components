@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+.root {
+  /* used in test utils */
+}
+
+.loading {
+  /* used in test utils */
+}
+
+.undo-button {
+  @include styles.link-recovery;
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
+}

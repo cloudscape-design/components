@@ -1,0 +1,134 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use 'sass:math';
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+$grid-columns: 12;
+$grid-gutter-width: awsui.$space-grid-gutter;
+$column-layout-border: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+$column-breakpoint-spans: (
+  '1': (
+    'xxs': 12,
+    'xs': 12,
+  ),
+  '2': (
+    'xxs': 6,
+    'xs': 6,
+  ),
+  '3': (
+    'xxs': 6,
+    'xs': 4,
+  ),
+  '4': (
+    'xxs': 6,
+    'xs': 3,
+  ),
+);
+
+@mixin make-vertical-borders($direction) {
+  /* stylelint-disable-next-line selector-max-universal */
+  > * {
+    border-#{$direction}: $column-layout-border;
+  }
+
+  &.grid-breakpoint-default {
+    @include remove-useless-vertical-borders(12, $direction);
+  }
+
+  @each $i, $columns-setting in $column-breakpoint-spans {
+    &.grid-columns-#{$i}.grid-breakpoint-xxs {
+      @include remove-useless-vertical-borders(map.get($columns-setting, 'xxs'), $direction);
+    }
+
+    &.grid-columns-#{$i}.grid-breakpoint-xs {
+      @include remove-useless-vertical-borders(map.get($columns-setting, 'xs'), $direction);
+    }
+  }
+}
+
+@mixin remove-useless-vertical-borders($col-size, $direction) {
+  $items-per-row: math.div($grid-columns, $col-size);
+  $items-modifier: if($direction == 'left', '+1', '');
+  > *:nth-child(#{$items-per-row}n#{$items-modifier}) {
+    border-#{$direction}-width: 0;
+  }
+}
+
+@mixin make-horizontal-borders() {
+  /* stylelint-disable selector-max-universal */
+  > * {
+    border-bottom: $column-layout-border;
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+  /* stylelint-enable selector-max-universal */
+
+  @each $i, $columns-setting in $column-breakpoint-spans {
+    &.grid-columns-#{$i}.grid-breakpoint-xxs {
+      @include remove-useless-horizontal-borders(map.get($columns-setting, 'xxs'));
+    }
+
+    &.grid-columns-#{$i}.grid-breakpoint-xs {
+      @include remove-useless-horizontal-borders(map.get($columns-setting, 'xs'));
+    }
+  }
+}
+
+@mixin remove-useless-horizontal-borders($col-size) {
+  $items-per-row: math.div($grid-columns, $col-size);
+  @if $items-per-row > 1 {
+    @for $m from 2 through $items-per-row {
+      @for $h from 1 through $items-per-row - $m + 1 {
+        @if $h > 0 {
+          > *:nth-last-child(#{$m}):nth-child(#{$items-per-row}n + #{$h}) {
+            border-bottom-width: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// tag selector to bump specificity above the grid styles overriden here
+div.column-layout {
+  @include styles.styles-reset;
+  word-wrap: break-word;
+
+  > .grid {
+    margin: calc(#{$grid-gutter-width} / -2);
+
+    &.grid-no-gutters {
+      margin: 0;
+    }
+
+    &.grid-variant-text-grid {
+      @include make-vertical-borders('left');
+      margin: calc(-1 * (#{awsui.$space-text-grid-vertical})) calc(-1 * #{$grid-gutter-width});
+    }
+    /* stylelint-disable-next-line selector-max-universal */
+    &:not(.grid-no-gutters) > * {
+      padding: calc(#{$grid-gutter-width} / 2);
+    }
+
+    /* stylelint-disable-next-line selector-max-universal */
+    &:not(.grid-no-gutters).grid-variant-text-grid > * {
+      padding: 0 $grid-gutter-width;
+      margin: awsui.$space-text-grid-vertical 0;
+    }
+
+    &.grid-vertical-borders {
+      @include make-vertical-borders('right');
+    }
+    &.grid-horizontal-borders {
+      @include make-horizontal-borders;
+    }
+  }
+}

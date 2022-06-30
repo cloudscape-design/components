@@ -1,0 +1,139 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable @cloudscape-design/no-implicit-descendant */
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './spacing.scss' as spacing;
+
+$font-styles: (
+  color: (
+    default: (
+      awsui.$color-text-body-default: (
+        p,
+        b,
+        strong,
+        code,
+        pre,
+        samp,
+      ),
+      awsui.$color-text-heading-default: (
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+      ),
+      awsui.$color-text-small: (
+        small,
+      ),
+      awsui.$color-text-link-default: (
+        a,
+      ),
+    ),
+    inverted: awsui.$color-text-notification-default,
+    text-label: awsui.$color-text-label,
+    text-body-secondary: awsui.$color-text-body-secondary,
+    text-status-error: awsui.$color-text-status-error,
+    text-status-success: awsui.$color-text-status-success,
+    text-status-info: awsui.$color-text-status-info,
+    text-status-inactive: awsui.$color-text-status-inactive,
+    inherit: inherit,
+  ),
+  font-size: (
+    default: (
+      body-s: (
+        small,
+        code,
+      ),
+      body-m: (
+        p,
+        b,
+        strong,
+        pre,
+        samp,
+        a,
+      ),
+      heading-xs: (
+        h5,
+      ),
+      heading-s: (
+        h4,
+      ),
+      heading-m: (
+        h3,
+      ),
+      heading-l: (
+        h2,
+      ),
+      heading-xl: (
+        h1,
+      ),
+    ),
+    body-s: body-s,
+    body-m: body-m,
+    heading-xs: heading-xs,
+    heading-s: heading-s,
+    heading-m: heading-m,
+    heading-l: heading-l,
+    heading-xl: heading-xl,
+    display-l: display-l,
+  ),
+  font-weight: (
+    default: (
+      styles.$font-weight-normal: (
+        p,
+        code,
+        pre,
+        samp,
+        small,
+        a,
+      ),
+      styles.$font-weight-bold: (
+        strong,
+        b,
+      ),
+      awsui.$font-heading-xs-weight: (
+        h5,
+      ),
+      awsui.$font-heading-s-weight: (
+        h4,
+      ),
+      awsui.$font-heading-m-weight: (
+        h3,
+      ),
+      awsui.$font-heading-l-weight: (
+        h2,
+      ),
+      awsui.$font-heading-xl-weight: (
+        h1,
+      ),
+    ),
+    light: styles.$font-weight-lighter,
+    normal: styles.$font-weight-normal,
+    bold: styles.$font-weight-bold,
+    heavy: styles.$font-weight-heavy,
+  ),
+);
+
+// Allows to have aliases for font-size values
+@mixin style-declaration($property, $value) {
+  @if $property == font-size {
+    @include styles.font($value);
+  } @else {
+    #{$property}: #{$value};
+  }
+}
+
+@mixin headings-paragraphs-extra-defaults {
+  margin: 0;
+  text-decoration: none;
+  padding: awsui.$space-xxs 0;
+}
+
+@mixin code-extra-defaults {
+  font-family: styles.$font-family-monospace;
+  background: transparent;
+}

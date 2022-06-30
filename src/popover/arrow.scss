@@ -1,0 +1,105 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.arrow {
+  // Arrow design:
+  // - A wrapper component for positioning.
+  //   - A background triangle with border color and box-shadow
+  //   - A foreground triangle with popover background color overlapping
+  //     the outer triangle 1 pixel in
+  //
+  // For the sake of accurate positioning, the arrow box has to be an even integer in px
+  // The box-shadow rotates with the arrow, so we need different shadows for each direction
+
+  // Based on $awsui-box-shadow-inner shadow, but rotated based on x and y multipliers.
+  @mixin awsui-box-shadow-inner-rotated($x, $y) {
+    $box-shadow-size: 0.71px; // Box shadow is actually 1px, but rotating the arrow changes this to sqrt(1/2)
+    box-shadow: ($box-shadow-size * $x) ($box-shadow-size * $y) 4px -2px awsui.$color-shadow-default;
+  }
+
+  $arrow-edge-length: 14px;
+  $arrow-width: 20px;
+  $arrow-height: $arrow-width * 0.5;
+
+  width: $arrow-width;
+  height: $arrow-height;
+
+  &-outer,
+  &-inner {
+    position: absolute;
+    overflow: hidden;
+    width: $arrow-width;
+    height: $arrow-height;
+
+    top: 0;
+    left: 0;
+
+    &::after {
+      content: '';
+      box-sizing: border-box;
+      display: inline-block;
+      position: absolute;
+      border-radius: 2px 0 0 0;
+
+      bottom: 0;
+      left: 0;
+
+      width: $arrow-edge-length;
+      height: $arrow-edge-length;
+      transform: rotate(45deg);
+      transform-origin: 0 100%;
+    }
+  }
+
+  &-outer {
+    &::after {
+      background-color: awsui.$color-border-popover;
+    }
+  }
+
+  &-inner {
+    top: 2px;
+
+    &::after {
+      border-radius: 1px 0 0 0;
+      background-color: awsui.$color-background-popover;
+    }
+  }
+
+  &-position-right-top,
+  &-position-right-bottom {
+    > .arrow-outer::after {
+      @include awsui-box-shadow-inner-rotated(-1, 1);
+    }
+  }
+
+  &-position-left-top,
+  &-position-left-bottom {
+    > .arrow-outer::after {
+      @include awsui-box-shadow-inner-rotated(1, -1);
+    }
+  }
+
+  &-position-top-center,
+  &-position-top-right,
+  &-position-top-left,
+  &-position-top-responsive {
+    > .arrow-outer::after {
+      @include awsui-box-shadow-inner-rotated(-1, -1);
+    }
+  }
+
+  &-position-bottom-center,
+  &-position-bottom-right,
+  &-position-bottom-left,
+  &-position-bottom-responsive {
+    > .arrow-outer::after {
+      @include awsui-box-shadow-inner-rotated(1, 1);
+    }
+  }
+}

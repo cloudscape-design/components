@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "incremental": true,
+    "module": "CommonJS",
+    "target": "ES5",
+    "lib": ["es5", "es6", "dom"],
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "../../lib/components/test-utils",
+    "experimentalDecorators": true
+  },
+  "include": ["./", "../../types"]
+}

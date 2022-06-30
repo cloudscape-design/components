@@ -1,0 +1,53 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
+
+/*
+Warning! If these design tokens for width change it will adversely impact 
+the calculation used to determine the Split Panel maximum width in the 
+handleSplitPanelMaxWidth function in the context.
+*/
+.trigger {
+  background: awsui.$color-background-layout-toggle-default;
+  border: none;
+  border-radius: 50%;
+  box-shadow: awsui.$shadow-panel-toggle;
+  color: awsui.$color-text-layout-toggle;
+  cursor: pointer;
+  height: awsui.$space-layout-toggle-diameter;
+  padding: 0 awsui.$space-s;
+  width: awsui.$space-layout-toggle-diameter;
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(3px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-hover;
+  }
+
+  &:active {
+    background: awsui.$color-background-layout-toggle-active;
+  }
+
+  &.selected {
+    background: awsui.$color-background-layout-toggle-selected-default;
+    color: awsui.$color-text-layout-toggle-selected;
+
+    &:hover {
+      background: awsui.$color-background-layout-toggle-selected-hover;
+    }
+    &:active {
+      background: awsui.$color-background-layout-toggle-selected-active;
+    }
+  }
+}

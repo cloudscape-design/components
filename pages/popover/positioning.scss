@@ -1,0 +1,59 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.grid {
+  box-sizing: border-box;
+  height: 100vh;
+  flex: 1 1 auto;
+  padding: 1.2rem;
+
+  display: grid;
+  display: -ms-grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  -ms-grid-columns: 1fr 1fr 1fr;
+  -ms-grid-rows: 1fr 1fr 1fr;
+}
+
+.square {
+  display: flex;
+  flex-direction: column;
+}
+
+.square-row-1 {
+  justify-content: flex-start;
+  grid-row: 1;
+  -ms-grid-row: 1;
+}
+
+.square-row-2 {
+  justify-content: center;
+  grid-row: 2;
+  -ms-grid-row: 2;
+}
+
+.square-row-3 {
+  justify-content: flex-end;
+  grid-row: 3;
+  -ms-grid-row: 3;
+}
+
+.square-col-1 {
+  align-items: flex-start;
+  grid-column: 1;
+  -ms-grid-column: 1;
+}
+
+.square-col-2 {
+  align-items: center;
+  grid-column: 2;
+  -ms-grid-column: 2;
+}
+
+.square-col-3 {
+  align-items: flex-end;
+  grid-column: 3;
+  -ms-grid-column: 3;
+}

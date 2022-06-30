@@ -1,0 +1,40 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.root {
+  outline: none;
+  shape-rendering: auto;
+  overflow: visible;
+
+  // These attributes are needed to ensure that the chart does not grow indefinitely
+  // when placed in a parent container without a width constraint.
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.precise {
+  shape-rendering: geometricPrecision;
+}
+
+.focus-outline {
+  outline: none;
+  pointer-events: none;
+  fill: none;
+  stroke: awsui.$color-border-item-focused;
+  stroke-width: 2px;
+  visibility: hidden;
+}
+
+.application {
+  /* Used in test-utils */
+}

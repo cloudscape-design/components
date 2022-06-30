@@ -1,0 +1,114 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.container {
+  grid-column: 3;
+  grid-row: 4 / span 2;
+  padding-bottom: awsui.$space-layout-content-bottom;
+
+  /*
+  If disableContentPaddings is enabled then the Main content has a different 
+  behavior inside the Layout grid. By default it will render across the entire 
+  grid column span. If the Navigation is open on the left, we increment the 
+  start column by one. If the Tools or Split Panel (in side position) is open 
+  on the right, we decrement the column end by one.
+  */
+  &.disable-content-paddings {
+    grid-column: 1 / 6;
+    padding: 0;
+
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+      &.is-navigation-open {
+        grid-column-start: 2;
+      }
+
+      &.is-tools-open,
+      &.is-split-panel-open.split-panel-position-side {
+        grid-column-end: 5;
+      }
+    }
+  }
+
+  /*
+  If disableContentPaddings is not enabled (the majority of use cases) then 
+  the following code block will compute the padding behavior for the Main 
+  under various circumstances.
+  */
+  &:not(.disable-content-paddings) {
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+      /*
+      Notifications is the previous adjacent sibling to the Main in 
+      desktop viewports if there are no Breadcrumbs or Header. Use additional
+      to padding on the Main.
+      */
+      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
+      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header) {
+        padding-top: awsui.$space-scaled-m;
+      }
+
+      /*
+      Main is the only rendered center content if there are no Notifications, 
+      Breadcrumbs, or Header. Use minimal top padding.
+      */
+      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header),
+      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
+        padding-top: awsui.$space-scaled-xs;
+      }
+
+      /*
+      If the Header exists then it is necessarily the previous adjacent 
+      sibling to the Main which requires no top padding.
+      */
+      &.has-header {
+        padding-top: 0;
+      }
+    }
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      /*
+      If the Notifications exist but the Header does not then the 
+      Notifications is the previous adjacent sibling to the Main 
+      requiring additional top padding. This is because the Breadcrumbs
+      are now rendered first and positioned sticky.
+      */
+      &.content-type-default.has-notifications-content:not(.has-header),
+      &.content-type-form.has-notifications-content:not(.has-header) {
+        padding-top: awsui.$space-scaled-m;
+      }
+
+      /*
+      Main is the only rendered center content if there are no Notifications or Header.
+      */
+      &.content-type-default:not(.has-notifications-content):not(.has-header),
+      &.content-type-form:not(.has-notifications-content):not(.has-header) {
+        padding-top: awsui.$space-scaled-m;
+      }
+
+      /*
+      If the Header exists then it is necessarily the previous adjacent 
+      sibling to the Main which requires no top padding.
+      */
+      &.has-header {
+        padding-top: 0;
+      }
+    }
+  }
+
+  // Main should never have top padding for dark header content types
+  &.content-type-cards,
+  &.content-type-table,
+  &.content-type-wizard {
+    padding-top: 0;
+  }
+}
+
+// Prevent content that is visually hidden behind drawers and content area in mobile view from receiving focus
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.unfocusable * {
+  visibility: hidden !important;
+}

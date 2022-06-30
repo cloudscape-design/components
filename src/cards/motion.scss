@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+.card-inner {
+  @include styles.with-motion {
+    transition-property: background-color, border-top-color, border-bottom-color, border-left-color, border-right-color;
+    transition-duration: awsui.$motion-duration-transition-show-paced;
+    transition-timing-function: awsui.$motion-easing-transition-show-paced;
+  }
+}

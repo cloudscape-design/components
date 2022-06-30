@@ -1,0 +1,123 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+$option-padding-horizontal: awsui.$space-l;
+.header {
+  position: relative;
+  margin: 0;
+  color: awsui.$color-text-dropdown-group-label;
+  border: awsui.$border-divider-list-width solid transparent;
+  // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
+  border-left: 0;
+  border-right: 0;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  // to compensate for the loss of padding due to the removal of the left and right borders
+  // and differences in default divider + selected border widths (visual refresh)
+  padding: styles.$option-padding-with-border-placeholder-vertical
+    calc(#{$option-padding-horizontal} + #{awsui.$border-item-width});
+  z-index: 1;
+
+  &.disabled {
+    color: awsui.$color-text-dropdown-item-disabled;
+    cursor: default;
+  }
+
+  &.expandable-header {
+    border-top-color: awsui.$color-border-dropdown-group;
+    border-bottom-color: awsui.$color-border-dropdown-group;
+    cursor: pointer;
+    &.disabled {
+      cursor: default;
+    }
+    &:focus {
+      outline: none;
+    }
+    &.rolled-down {
+      border-bottom-color: transparent;
+    }
+    &.highlighted {
+      background-color: awsui.$color-background-dropdown-item-hover;
+      color: awsui.$color-text-dropdown-item-highlighted;
+      // reset padding when adding border back in
+      padding: styles.$option-padding-vertical $option-padding-horizontal;
+      border: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
+      border-radius: awsui.$border-item-radius;
+      z-index: 2;
+      &.disabled {
+        background-color: awsui.$color-background-dropdown-item-dimmed;
+        border-color: awsui.$color-border-dropdown-item-dimmed-hover;
+        color: awsui.$color-text-dropdown-item-dimmed;
+      }
+    }
+
+    &.variant-navigation {
+      padding-top: awsui.$space-xs;
+      padding-bottom: awsui.$space-xs;
+
+      &.highlighted {
+        border-color: transparent;
+        border-top-color: awsui.$color-border-dropdown-group;
+        border-bottom-color: awsui.$color-border-dropdown-group;
+
+        background-color: transparent;
+        color: awsui.$color-text-accent;
+      }
+    }
+  }
+}
+
+.category {
+  list-style: none;
+  margin-top: calc(-1 * #{awsui.$border-divider-list-width});
+  padding: 0;
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &.expandable {
+    border-top: 0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.variant-navigation {
+    padding-top: awsui.$space-xxs;
+
+    &.expandable {
+      padding-top: 0;
+    }
+  }
+}
+
+.expand-icon {
+  position: relative;
+  left: awsui.$space-s;
+  width: awsui.$space-m;
+  display: inline-block;
+
+  &-up {
+    transform: rotate(-180deg);
+  }
+
+  &-right {
+    transform: rotate(-90deg);
+  }
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}
+
+.items-list-container {
+  padding: 0;
+  margin: -1px 0 0 0;
+  overflow-y: auto;
+}

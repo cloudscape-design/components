@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.default-text-style;
+}
+
+/* stylelint-disable no-invalid-position-at-import-rule */
+@import './text';
+@import './layout';
+/* stylelint-enable no-invalid-position-at-import-rule */

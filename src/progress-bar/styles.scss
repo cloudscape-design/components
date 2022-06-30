@@ -1,0 +1,148 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@import './motion';
+
+.root {
+  @include styles.styles-reset;
+}
+
+.with-result-button {
+  padding-right: awsui.$space-m;
+}
+
+.result-text {
+  /* used in test-utils */
+}
+
+.result-container {
+  &-error,
+  &-success {
+    /* used in test-utils */
+  }
+}
+.result-button {
+  display: inline-block;
+  margin: awsui.$space-scaled-xxs 0;
+}
+
+.word-wrap {
+  @include styles.text-wrapping;
+}
+
+.label {
+  &-flash {
+    color: 'inherit';
+    font-weight: styles.$font-weight-bold;
+  }
+  &-key-value {
+    font-weight: awsui.$font-display-label-weight;
+    color: awsui.$color-text-label;
+    margin-bottom: awsui.$space-scaled-xxxs;
+  }
+}
+
+.flash {
+  color: inherit;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  max-width: 800px;
+  height: awsui.$font-body-m-line-height;
+}
+
+.percentage-container {
+  width: 3.3 * styles.$base-size;
+  flex-shrink: 0;
+  white-space: nowrap;
+  text-align: right;
+  @include styles.font(body-s);
+}
+
+.percentage {
+  /* used in test-utils */
+}
+
+@mixin general-progress-background-style {
+  height: 0.4 * styles.$base-size;
+  border: 0 none;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+@mixin general-progress-bar-style {
+  border-radius: 10px 0px 0px 10px;
+}
+
+$background-color: awsui.$color-background-progress-bar-layout-default;
+$background-color-in-flash: awsui.$color-background-progress-bar-layout-in-flash;
+
+$bar-color: awsui.$color-background-progress-bar-content-default;
+$bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
+
+// Current version of Edge has a known bug with CSS variables used in pseudo elements.
+$bar-color-edge: #0073bb;
+$bar-color-edge-in-flash: rgba(255, 255, 255, 0.7);
+
+.progress {
+  width: 100%;
+  margin-right: awsui.$space-s;
+  min-width: 0;
+  @include general-progress-background-style;
+  background-color: $background-color;
+
+  &::-webkit-progress-bar {
+    @include general-progress-background-style;
+    background-color: $background-color;
+  }
+
+  &::-webkit-progress-value {
+    @include general-progress-bar-style;
+    background-color: $bar-color;
+  }
+
+  &.complete::-webkit-progress-value {
+    border-radius: 10px;
+  }
+
+  &::-moz-progress-bar {
+    @include general-progress-bar-style;
+    background-color: $bar-color;
+  }
+
+  &::-ms-fill {
+    @include general-progress-bar-style;
+    background-color: $bar-color-edge;
+    border: none;
+  }
+
+  &.complete::-ms-fill {
+    border-radius: 10px;
+  }
+
+  &.progress-in-flash {
+    background-color: $background-color-in-flash;
+
+    &::-webkit-progress-bar {
+      background-color: $background-color-in-flash;
+    }
+
+    &::-webkit-progress-value {
+      background-color: $bar-color-in-flash;
+    }
+
+    &::-moz-progress-bar {
+      background-color: $bar-color-in-flash;
+    }
+
+    &::-ms-fill {
+      background-color: $bar-color-edge-in-flash;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <rect class="stroke-linejoin-round" x="2" y="2" width="12" height="12"/>
+  <rect x="4.99" y="8" width="0.01" height="0.01"/>
+  <rect x="7.99" y="8" width="0.01" height="0.01"/>
+  <rect x="10.99" y="8" width="0.01" height="0.01"/>
+  <rect x="4.99" y="5" width="0.01" height="0.01"/>
+  <rect x="7.99" y="5" width="0.01" height="0.01"/>
+  <rect x="10.99" y="5" width="0.01" height="0.01"/>
+  <rect x="4.99" y="11" width="0.01" height="0.01"/>
+  <rect x="7.99" y="11" width="0.01" height="0.01"/>
+</svg>

@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+
+@import './arrow';
+@import './body';
+@import './container';
+@import './motion';
+
+.root {
+  @include styles.styles-reset;
+  color: inherit;
+}
+
+.trigger {
+  display: inline-block;
+  max-width: 100%;
+  color: inherit;
+  text-align: inherit;
+}
+
+.trigger-type-text {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+
+  cursor: pointer;
+  border-bottom: awsui.$border-divider-list-width dashed currentColor;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(1px);
+  }
+
+  // Prevents trigger from shifting on click in IE11.
+  // https://stackoverflow.com/a/32655269
+  > .trigger-inner-text {
+    position: relative;
+  }
+}

@@ -1,0 +1,251 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './constants' as constants;
+
+// should be above sticky notifications
+$drawer-z-index: 850;
+// should be above mobile toolbar
+$drawer-z-index-mobile: 1001;
+
+$drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-layout-toggle-padding});
+
+// double flex container to work around flexbox issue in IE
+// https://github.com/philipwalton/flexbugs#flexbug-3
+.root,
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.root-no-scroll {
+  position: relative;
+  z-index: 1;
+}
+
+.layout {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  background-color: awsui.$color-background-layout-main;
+
+  &-no-scroll {
+    overflow: hidden;
+  }
+}
+
+.layout-main {
+  flex: 1;
+  min-width: 0;
+  background-color: awsui.$color-background-layout-main;
+  position: relative;
+  &-scrollable {
+    overflow: auto;
+  }
+}
+
+/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+.unfocusable * {
+  // Prevent content that is visually hidden behind drawers in mobile view from receiving focus
+  visibility: hidden;
+}
+
+.drawer {
+  flex-shrink: 0;
+  position: relative;
+  word-wrap: break-word;
+  box-shadow: awsui.$shadow-panel;
+
+  &:not(.drawer-mobile) {
+    z-index: $drawer-z-index;
+  }
+  &-closed {
+    min-width: constants.$sidebar-size-closed;
+    cursor: pointer;
+    &.drawer-mobile {
+      display: none;
+    }
+  }
+
+  &.opaque-background {
+    background: awsui.$color-background-layout-panel-content;
+  }
+}
+
+.drawer-content {
+  position: fixed;
+  overflow: auto;
+  background-color: awsui.$color-background-layout-panel-content;
+
+  .opaque-background > & {
+    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
+  }
+
+  .drawer-mobile > & {
+    z-index: $drawer-z-index-mobile;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .drawer-closed > & {
+    width: constants.$sidebar-size-closed;
+    &:hover {
+      background: awsui.$color-background-layout-panel-hover;
+    }
+  }
+
+  & > [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.toggle {
+  box-sizing: border-box;
+  padding: constants.$toggle-padding;
+}
+
+.visual-refresh-toggle {
+  position: fixed;
+  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  &-type-tools {
+    right: 0;
+  }
+  &-type-navigation {
+    left: 0;
+  }
+  &[aria-hidden='true'] {
+    visibility: hidden;
+  }
+  &[aria-hidden='false'] {
+    visibility: visible;
+  }
+}
+
+.button-toggles-container {
+  min-width: $drawer-width;
+  position: relative;
+  // to allow help panel slide under the container
+  z-index: $drawer-z-index + 1;
+  &-is-hidden {
+    min-width: 0;
+  }
+  &.opaque-background {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: $drawer-width;
+
+      background: awsui.$color-background-layout-panel-content;
+      border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
+    }
+  }
+}
+
+.breadcrumbs-desktop {
+  padding-top: awsui.$space-scaled-m;
+  padding-bottom: awsui.$space-scaled-s;
+}
+
+.content-header-wrapper {
+  padding-bottom: awsui.$space-scaled-m;
+}
+
+.content-wrapper {
+  padding-bottom: awsui.$space-layout-content-bottom;
+}
+
+.content-overlapped {
+  margin-top: calc(-1 * #{awsui.$space-dark-header-overlap-distance});
+}
+
+.content-extra-top-padding {
+  // extra top padding when there are no breadcrumbs above,
+  // applied to content or content header, whatever comes first
+  padding-top: awsui.$space-scaled-m;
+}
+
+/* stylelint-disable-next-line selector-max-universal */
+.navigation-toggle > * {
+  pointer-events: none;
+}
+
+/* stylelint-disable-next-line selector-max-universal */
+.tools-toggle > * {
+  pointer-events: none;
+}
+
+// This series of selectors is applied to both mobile and desktop version of the component.
+// Customers can use these selectors via test-utils to interact with app layout universally on any breakpoint.
+
+.navigation {
+  /* used in test-utils */
+}
+
+.navigation-toggle {
+  /* used in test-utils */
+}
+
+.navigation-close {
+  /* used in test-utils */
+}
+
+.tools {
+  /* used in test-utils */
+}
+
+.tools-toggle {
+  /* used in test-utils */
+}
+
+.tools-close {
+  /* used in test-utils */
+}
+
+.notifications {
+  /* used in test-utils */
+}
+
+.breadcrumbs {
+  /* used in test-utils */
+}
+
+.content {
+  /* used in test-utils */
+}
+
+.panel-wrapper-outer,
+.panel-wrapper-inner {
+  z-index: $drawer-z-index;
+}
+
+.panel-wrapper-outer {
+  position: fixed;
+  height: 100%;
+  display: flex;
+
+  &.mobile {
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
+    &.open {
+      z-index: $drawer-z-index-mobile;
+      width: 100vw;
+      pointer-events: auto;
+    }
+  }
+}
+
+.panel-wrapper-inner {
+  background: awsui.$color-background-layout-panel-content;
+}

@@ -1,0 +1,129 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use 'sass:map';
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+@use './motion';
+
+.root {
+  @include styles.styles-reset;
+  @include styles.text-flex-wrapping;
+  display: block;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.alert {
+  @include styles.styles-reset;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: awsui.$border-alert-radius;
+  border: awsui.$border-field-width solid;
+  padding: awsui.$space-alert-vertical awsui.$space-alert-horizontal;
+  background-color: awsui.$color-background-container-content;
+}
+
+.body {
+  display: flex;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.header {
+  font-weight: styles.$font-weight-bold;
+}
+
+.action {
+  white-space: nowrap;
+  margin-left: awsui.$space-s;
+}
+
+.action-button {
+  /* used in test-utils */
+}
+
+.text {
+  padding: awsui.$border-field-width 0; // To account for vertical misalignment due to button borders
+  margin: awsui.$space-scaled-xxs awsui.$space-xxs;
+  &.icon {
+    margin-left: 0;
+  }
+  &.message {
+    margin-right: awsui.$space-alert-message-right;
+    & + .action {
+      margin-left: awsui.$space-alert-action-left;
+    }
+  }
+}
+
+/* stylelint-disable selector-max-type */
+.root.breakpoint-default > div > .alert > .body {
+  display: block;
+  & > .action {
+    margin-left: awsui.$space-xxs;
+    margin-bottom: awsui.$space-xxs;
+  }
+}
+/* stylelint-enable selector-max-type */
+
+.message {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.content {
+  /* used in test-utils */
+}
+
+.dismiss {
+  flex: 0 0 auto;
+  margin-right: calc(-1 * #{awsui.$space-xxs});
+  margin-left: awsui.$space-s;
+}
+
+.dismiss-button {
+  /* used in test-utils */
+}
+
+.icon {
+  flex: 0 0 auto;
+}
+
+$_border-colors: (
+  'error': awsui.$color-border-status-error,
+  'warning': awsui.$color-border-status-warning,
+  'success': awsui.$color-border-status-success,
+  'info': awsui.$color-border-status-info,
+);
+
+$_background-colors: (
+  'error': awsui.$color-background-status-error,
+  'warning': awsui.$color-background-status-warning,
+  'success': awsui.$color-background-status-success,
+  'info': awsui.$color-background-status-info,
+);
+
+$_text-colors: (
+  'error': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
+  'success': awsui.$color-text-status-success,
+  'info': awsui.$color-text-status-info,
+);
+
+@each $type in map.keys($_text-colors) {
+  .type-#{$type} {
+    border-color: #{map.get($_border-colors, $type)};
+    background-color: #{map.get($_background-colors, $type)};
+    > .icon {
+      color: #{map.get($_text-colors, $type)};
+    }
+  }
+}

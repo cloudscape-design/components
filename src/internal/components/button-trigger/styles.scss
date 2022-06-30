@@ -1,0 +1,101 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../hooks/focus-visible' as focus-visible;
+@use '../../../token-group/constants' as tokenGroup;
+
+@use './motion';
+
+.button-trigger {
+  @include styles.styles-reset;
+
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+
+  background-color: awsui.$color-background-input-default;
+  border-radius: styles.$control-border-radius;
+  border: styles.$control-border-width solid awsui.$color-border-input-default;
+  min-height: awsui.$size-vertical-input;
+
+  &.has-caret {
+    padding-right: styles.$control-icon-horizontal-padding;
+  }
+
+  > .placeholder {
+    @include styles.form-placeholder;
+  }
+
+  > .arrow {
+    position: absolute;
+    right: styles.$control-icon-horizontal-offset;
+    top: styles.$control-icon-vertical-offset;
+    color: awsui.$color-text-button-inline-icon-default;
+  }
+
+  &:hover {
+    > .arrow {
+      color: awsui.$color-text-button-inline-icon-hover;
+    }
+  }
+
+  &.pressed {
+    > .arrow {
+      transform: rotate(-180deg);
+    }
+  }
+
+  &.disabled {
+    @include styles.form-disabled-element;
+    > .arrow {
+      color: awsui.$color-text-button-inline-icon-disabled;
+    }
+    &.in-filtering-token {
+      border-color: awsui.$color-border-control-disabled;
+    }
+    > .placeholder {
+      @include styles.form-placeholder-disabled;
+    }
+  }
+
+  &.read-only {
+    @include styles.form-readonly-element;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  &:not(.in-filtering-token) {
+    @include focus-visible.when-visible {
+      @include styles.form-focus-element();
+    }
+    &:invalid {
+      // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
+      box-shadow: none;
+    }
+
+    &.invalid,
+    &.invalid:focus {
+      @include styles.form-invalid-control();
+    }
+  }
+
+  &.in-filtering-token {
+    border-color: tokenGroup.$token-border-color;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 100%;
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
+    }
+  }
+}

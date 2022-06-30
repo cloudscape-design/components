@@ -1,0 +1,74 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '../../hooks/focus-visible' as focus-visible;
+
+.button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  white-space: nowrap;
+
+  height: 100%;
+  padding-left: awsui.$space-xs;
+  padding-right: awsui.$space-xs;
+  text-decoration: none;
+  cursor: pointer;
+
+  border: transparent;
+  background: transparent;
+  font-weight: awsui.$font-button-weight;
+  color: awsui.$color-text-interactive-default;
+
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.expanded {
+    background: transparent;
+    color: awsui.$color-text-interactive-active;
+  }
+
+  &.expanded {
+    color: awsui.$color-text-accent;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  &.offset-right-none {
+    margin-right: 0;
+  }
+
+  &.offset-right-l {
+    margin-right: awsui.$space-s;
+  }
+
+  &.offset-right-xxl {
+    margin-right: awsui.$space-xl;
+  }
+
+  @include focus-visible.when-visible {
+    // -1px because the button touches the edges of the top navigation.
+    @include styles.focus-highlight(-1px);
+  }
+}
+
+.text {
+  margin-right: awsui.$space-xs;
+}
+
+.icon + .text {
+  margin-left: awsui.$space-xs;
+}

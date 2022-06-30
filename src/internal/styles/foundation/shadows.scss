@@ -1,0 +1,15 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../utils/theming' as theming;
+@use '../tokens' as awsui;
+
+// focus for clickable elements, like buttons
+$box-shadow-focused: 0 0 0 2px awsui.$color-border-item-focused;
+// focus for form input elements, excluding buttons
+$box-shadow-focused-light: 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
+// focus for form input elements, excluding buttons
+$box-shadow-focused-light-invalid: 0 0 0 awsui.$border-control-invalid-focus-ring-shadow-spread
+  awsui.$color-border-item-focused;
