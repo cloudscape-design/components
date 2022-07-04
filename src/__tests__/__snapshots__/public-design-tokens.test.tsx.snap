@@ -1157,6 +1157,156 @@ Array [
     "name": "font-family-monospace",
     "themeable": true,
   },
+  Object {
+    "description": "The easing curve for providing responsive yet smooth visual feedback.",
+    "name": "motion-easing-responsive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The easing curve for making an element sticky to a certain state.",
+    "name": "motion-easing-sticky",
+    "themeable": false,
+  },
+  Object {
+    "description": "The easing curve for drawing a user's attention in an expressive way.",
+    "name": "motion-easing-expressive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for making the motion feel quick and responsive.",
+    "name": "motion-duration-responsive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for accommodating the motion with more expressiveness.",
+    "name": "motion-duration-expressive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for drawing more attention or accommodating for more complexity.",
+    "name": "motion-duration-complex",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for showing an element.",
+    "name": "motion-keyframes-fade-in",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for hiding an element.",
+    "name": "motion-keyframes-fade-out",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
+    "name": "motion-keyframes-status-icon-error",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for scaling up an element to draw the user's attention.",
+    "name": "motion-keyframes-scale-popup",
+    "themeable": false,
+  },
+  Object {
+    "description": "The horizontal padding inside a container.",
+    "name": "space-container-horizontal",
+    "themeable": false,
+  },
+  Object {
+    "description": "The horizontal padding inside field components.",
+    "name": "space-field-horizontal",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+    "name": "space-scaled-xxxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXS spacing unit which scales between modes. For example: vertical space between form field label and control.",
+    "name": "space-scaled-xxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XS spacing unit which scales between modes. For example: horizontal space between buttons in an action stripe.",
+    "name": "space-scaled-xs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The S spacing unit which scales between modes. For example: vertical padding inside a popover.",
+    "name": "space-scaled-s",
+    "themeable": false,
+  },
+  Object {
+    "description": "The M spacing unit which scales between modes. For example: top padding of content inside a container",
+    "name": "space-scaled-m",
+    "themeable": false,
+  },
+  Object {
+    "description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
+    "name": "space-scaled-l",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+    "name": "space-scaled-xl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXL spacing unit which scales between modes. For example: horizontal padding for side navigation and help panel content.",
+    "name": "space-scaled-xxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXXL spacing unit which scales between modes. For example: horizontal padding for app layout and split panel content on large screens.",
+    "name": "space-scaled-xxxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXXS spacing unit.",
+    "name": "space-static-xxxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXS spacing unit.",
+    "name": "space-static-xxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XS spacing unit.",
+    "name": "space-static-xs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static S spacing unit.",
+    "name": "space-static-s",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static M spacing unit.",
+    "name": "space-static-m",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static L spacing unit.",
+    "name": "space-static-l",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XL spacing unit.",
+    "name": "space-static-xl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXL spacing unit.",
+    "name": "space-static-xxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXXL spacing unit.",
+    "name": "space-static-xxxl",
+    "themeable": false,
+  },
 ]
 `;
 
@@ -2316,6 +2466,156 @@ Array [
     "description": "The monospace font family that will be applied globally to the product interface.",
     "name": "font-family-monospace",
     "themeable": true,
+  },
+  Object {
+    "description": "The easing curve for providing responsive yet smooth visual feedback.",
+    "name": "motion-easing-responsive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The easing curve for making an element sticky to a certain state.",
+    "name": "motion-easing-sticky",
+    "themeable": false,
+  },
+  Object {
+    "description": "The easing curve for drawing a user's attention in an expressive way.",
+    "name": "motion-easing-expressive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for making the motion feel quick and responsive.",
+    "name": "motion-duration-responsive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for accommodating the motion with more expressiveness.",
+    "name": "motion-duration-expressive",
+    "themeable": false,
+  },
+  Object {
+    "description": "The duration for drawing more attention or accommodating for more complexity.",
+    "name": "motion-duration-complex",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for showing an element.",
+    "name": "motion-keyframes-fade-in",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for hiding an element.",
+    "name": "motion-keyframes-fade-out",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes applied to an error status icon to draw the user's attention.",
+    "name": "motion-keyframes-status-icon-error",
+    "themeable": false,
+  },
+  Object {
+    "description": "The CSS keyframes for scaling up an element to draw the user's attention.",
+    "name": "motion-keyframes-scale-popup",
+    "themeable": false,
+  },
+  Object {
+    "description": "The horizontal padding inside a container.",
+    "name": "space-container-horizontal",
+    "themeable": false,
+  },
+  Object {
+    "description": "The horizontal padding inside field components.",
+    "name": "space-field-horizontal",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXXS spacing unit which scales between modes. For example: vertical space between key label and value in key/value pairs.",
+    "name": "space-scaled-xxxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXS spacing unit which scales between modes. For example: vertical space between form field label and control.",
+    "name": "space-scaled-xxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XS spacing unit which scales between modes. For example: horizontal space between buttons in an action stripe.",
+    "name": "space-scaled-xs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The S spacing unit which scales between modes. For example: vertical padding inside a popover.",
+    "name": "space-scaled-s",
+    "themeable": false,
+  },
+  Object {
+    "description": "The M spacing unit which scales between modes. For example: horizontal padding inside a popover.",
+    "name": "space-scaled-m",
+    "themeable": false,
+  },
+  Object {
+    "description": "The L spacing unit which scales between modes. For example: vertical space between form fields.",
+    "name": "space-scaled-l",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XL spacing unit which scales between modes. For example: vertical space between tasks in a tutorial panel.",
+    "name": "space-scaled-xl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXL spacing unit which scales between modes. For example: left indentation of grouped options in a select.",
+    "name": "space-scaled-xxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The XXXL spacing unit which scales between modes. For example: horizontal padding for app layout and split panel content on large screens.",
+    "name": "space-scaled-xxxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXXS spacing unit.",
+    "name": "space-static-xxxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXS spacing unit.",
+    "name": "space-static-xxs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XS spacing unit.",
+    "name": "space-static-xs",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static S spacing unit.",
+    "name": "space-static-s",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static M spacing unit.",
+    "name": "space-static-m",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static L spacing unit.",
+    "name": "space-static-l",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XL spacing unit.",
+    "name": "space-static-xl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXL spacing unit.",
+    "name": "space-static-xxl",
+    "themeable": false,
+  },
+  Object {
+    "description": "The static XXXL spacing unit.",
+    "name": "space-static-xxxl",
+    "themeable": false,
   },
 ]
 `;

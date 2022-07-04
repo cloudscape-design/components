@@ -1,0 +1,68 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// stylelint-disable @awsui/no-implicit-descendant, @awsui/no-motion-outside-of-mixin
+
+@use './tokens' as awsui;
+@use 'awsui:resolved-tokens' as resolved-tokens;
+@use 'sass:list';
+@use 'sass:map';
+
+@mixin keyframes($name) {
+  @each $theme in resolved-tokens.$resolved-tokens {
+    $token: map.get($theme, 'tokens', $name);
+    @if $token {
+      // We are interpolating $token, but the rule seems to be missing this.
+      // stylelint-disable-next-line scss/dollar-variable-no-missing-interpolation
+      @keyframes #{':global(' + map.get($token, 'default') + ')'} {
+        @content;
+      }
+    }
+  }
+}
+
+@include keyframes('motionKeyframesFadeIn') {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@include keyframes('motionKeyframesFadeOut') {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@include keyframes('motionKeyframesStatusIconError') {
+  0% {
+    transform: translateX(-5px);
+    animation-timing-function: linear;
+  }
+
+  50% {
+    transform: translateX(5px);
+    animation-timing-function: awsui.$motion-easing-refresh-only-a;
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@include keyframes('motionKeyframesScalePopup') {
+  0% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
