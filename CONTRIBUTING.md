@@ -2,7 +2,7 @@
 
 ## Support
 
-Use this repository to [create bug reports or feature requests](https://github.com/cloudscape-design/components/issues/new/choose). You can also [start a discussion](https://github.com/cloudscape-design/components/discussions) to ask a question. We will do our best to reply. Search for existing bug reports, feature requests, or discussions before initiating a new thread.
+Use this repository to [create bug reports or feature requests](https://github.com/cloudscape-design/components/issues/new/choose). You can also [start a discussion](https://github.com/cloudscape-design/components/discussions) to ask a question. We will do our best to reply. To minimize duplicates, we recommend that you search for existing bug reports, feature requests, or discussions before initiating a new thread.
 
 ## Versioning
 
