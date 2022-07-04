@@ -130,11 +130,11 @@ export default function Layout({ children }: LayoutProps) {
         [customCssProps.footerHeight]: `${footerHeight}px`,
         [customCssProps.layoutWidth]: `${layoutWidth}px`,
         [customCssProps.mainOffsetLeft]: `${mainOffsetLeft}px`,
-        [customCssProps.maxContentWidth]: maxContentWidth ? `${maxContentWidth}px` : '',
-        [customCssProps.minContentWidth]: minContentWidth ? `${minContentWidth}px` : '',
+        ...(maxContentWidth && { [customCssProps.maxContentWidth]: `${maxContentWidth}px` }),
+        ...(minContentWidth && { [customCssProps.minContentWidth]: `${minContentWidth}px` }),
         [customCssProps.notificationsHeight]: `${notificationsHeight}px`,
-        [customCssProps.overlapHeight]:
-          !isOverlapDisabled && dynamicOverlapHeight > 0 ? `${dynamicOverlapHeight}px` : '',
+        ...(!isOverlapDisabled &&
+          dynamicOverlapHeight > 0 && { [customCssProps.overlapHeight]: `${dynamicOverlapHeight}px` }),
       }}
     >
       {children}
