@@ -13,6 +13,7 @@ import InternalSpaceBetween from '../../space-between/internal';
 import styles from './styles.css.js';
 
 export interface RelativeRangePickerProps {
+  dateOnly: boolean;
   options: ReadonlyArray<DateRangePickerProps.RelativeOption>;
   initialSelection: DateRangePickerProps.RelativeValue | null;
   onChange: (range: DateRangePickerProps.RelativeValue) => void;
@@ -25,23 +26,16 @@ interface UnitSelectOption {
   label: string;
 }
 
-const units: ReadonlyArray<DateRangePickerProps.TimeUnit> = [
-  'second',
-  'minute',
-  'hour',
-  'day',
-  'week',
-  'month',
-  'year',
-];
+const dayUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['day', 'week', 'month', 'year'];
+const units: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['second', 'minute', 'hour', ...dayUnits];
 
 const CUSTOM_OPTION_SELECT_KEY = 'awsui-internal-custom-duration-key';
-const DEFAULT_CUSTOM_UNIT_OF_TIME = 'minute';
 
 export default forwardRef(RelativeRangePicker);
 
 function RelativeRangePicker(
   {
+    dateOnly,
     options: clientOptions = [],
     initialSelection: initialRange,
     onChange: onChangeRangeSize,
@@ -75,8 +69,9 @@ function RelativeRangePicker(
     return NaN;
   });
 
+  const initialCustomTimeUnit = dateOnly ? 'day' : 'minute';
   const [customUnitOfTime, setCustomUnitOfTime] = useState<DateRangePickerProps.TimeUnit>(
-    initialRange?.unit ?? DEFAULT_CUSTOM_UNIT_OF_TIME
+    initialRange?.unit ?? initialCustomTimeUnit
   );
 
   const showRadioControl = clientOptions.length > 0;
@@ -104,10 +99,10 @@ function RelativeRangePicker(
 
                 if (detail.value === CUSTOM_OPTION_SELECT_KEY) {
                   setCustomDuration(NaN);
-                  setCustomUnitOfTime(DEFAULT_CUSTOM_UNIT_OF_TIME);
+                  setCustomUnitOfTime(initialCustomTimeUnit);
                   onChangeRangeSize({
                     amount: NaN,
-                    unit: DEFAULT_CUSTOM_UNIT_OF_TIME,
+                    unit: initialCustomTimeUnit,
                     type: 'relative',
                   });
                 } else {
@@ -172,7 +167,7 @@ function RelativeRangePicker(
                         setCustomUnitOfTime(unit);
                         onChangeRangeSize({ amount: customDuration, unit, type: 'relative' });
                       }}
-                      options={units.map(unit => ({
+                      options={(dateOnly ? dayUnits : units).map(unit => ({
                         value: unit,
                         label: i18nStrings.formatUnit(unit, customDuration),
                       }))}
