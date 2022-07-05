@@ -83,7 +83,7 @@ section.appbar {
     Breadcrumbs and Main components that expands the height 
     of the dark header.
     */
-    > .breadcrumbs:not(.has-header) {
+    > .breadcrumbs:not(.has-header):not(.has-dynamic-overlap-height) {
       padding-bottom: awsui.$space-m;
     }
 

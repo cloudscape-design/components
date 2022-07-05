@@ -46,8 +46,8 @@
       desktop viewports if there are no Breadcrumbs or Header. Use additional
       to padding on the Main.
       */
-      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
-      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header) {
+      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height),
+      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height) {
         padding-top: awsui.$space-scaled-m;
       }
 
@@ -55,8 +55,8 @@
       Main is the only rendered center content if there are no Notifications, 
       Breadcrumbs, or Header. Use minimal top padding.
       */
-      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header),
-      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
+      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height),
+      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height) {
         padding-top: awsui.$space-scaled-xs;
       }
 
@@ -64,7 +64,8 @@
       If the Header exists then it is necessarily the previous adjacent 
       sibling to the Main which requires no top padding.
       */
-      &.has-header {
+      &.has-header,
+      &.has-dynamic-overlap-height {
         padding-top: 0;
       }
     }
@@ -76,16 +77,16 @@
       requiring additional top padding. This is because the Breadcrumbs
       are now rendered first and positioned sticky.
       */
-      &.content-type-default.has-notifications-content:not(.has-header),
-      &.content-type-form.has-notifications-content:not(.has-header) {
+      &.content-type-default.has-notifications-content:not(.has-header):not(.has-dynamic-overlap-height),
+      &.content-type-form.has-notifications-content:not(.has-header):not(.has-dynamic-overlap-height) {
         padding-top: awsui.$space-scaled-m;
       }
 
       /*
       Main is the only rendered center content if there are no Notifications or Header.
       */
-      &.content-type-default:not(.has-notifications-content):not(.has-header),
-      &.content-type-form:not(.has-notifications-content):not(.has-header) {
+      &.content-type-default:not(.has-notifications-content):not(.has-header):not(.has-dynamic-overlap-height),
+      &.content-type-form:not(.has-notifications-content):not(.has-header):not(.has-dynamic-overlap-height) {
         padding-top: awsui.$space-scaled-m;
       }
 
@@ -93,7 +94,8 @@
       If the Header exists then it is necessarily the previous adjacent 
       sibling to the Main which requires no top padding.
       */
-      &.has-header {
+      &.has-header,
+      &.has-dynamic-overlap-height {
         padding-top: 0;
       }
     }
