@@ -30,6 +30,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderItemFocused: {
     dark: '{colorGrey100}',
   },
+  colorTextLinkButtonNormalDefault: '{colorTextLinkDefault}',
+  colorTextLinkButtonNormalHover: '{colorTextLinkHover}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(

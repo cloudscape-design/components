@@ -267,13 +267,12 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
   },
   colorTextButtonNormalDefault: {
-    description:
-      'The default text color of normal buttons. For example: Default text color in normal and link buttons.',
+    description: 'The default text color of normal buttons.',
     themeable: true,
     public: true,
   },
   colorTextButtonNormalHover: {
-    description: 'The hover text color of normal buttons. For example: Hover text color in normal and link buttons.',
+    description: 'The hover text color of normal buttons.',
     themeable: true,
     public: true,
   },
@@ -281,6 +280,21 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'The active text color of primary buttons.',
     themeable: true,
     public: true,
+  },
+  colorTextLinkButtonNormalDefault: {
+    description: 'The default text color of link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextLinkButtonNormalHover: {
+    description: 'The hover text color of link buttons.',
+    themeable: true,
+    public: false,
+  },
+  colorTextLinkButtonNormalActive: {
+    description: 'The active text color of link buttons.',
+    themeable: true,
+    public: false,
   },
   colorTextButtonPrimaryDefault: {
     description: 'The default text color of primary buttons.',
