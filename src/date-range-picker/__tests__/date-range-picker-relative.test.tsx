@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 import Mockdate from 'mockdate';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { i18nStrings } from './i18n-strings';
@@ -37,6 +37,15 @@ function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {
   const wrapper = createWrapper(container).findDateRangePicker()!;
 
   return { container, wrapper, ref, getByTestId };
+}
+
+function getCustomRelativeRangeUnits(wrapper: DateRangePickerWrapper) {
+  return wrapper
+    .findDropdown()!
+    .findCustomRelativeRangeUnit()!
+    .findDropdown()
+    .findOptions()
+    .map(option => option.getElement().textContent!.trim());
 }
 
 describe('Date range picker', () => {
@@ -159,6 +168,39 @@ describe('Date range picker', () => {
       changeMode(wrapper, 'relative');
 
       expect(wrapper.findDropdown()!.getElement().textContent).toContain('Set a custom range in the past');
+    });
+
+    test('shows all custom units by default', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        rangeSelectorMode: 'relative-only',
+        relativeOptions: [],
+      });
+      act(() => wrapper.findLabel().click());
+
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
+      expect(getCustomRelativeRangeUnits(wrapper)).toEqual([
+        'seconds',
+        'minutes',
+        'hours',
+        'days',
+        'weeks',
+        'months',
+        'years',
+      ]);
+    });
+
+    test('shows only days and above units in dateOnly mode', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        rangeSelectorMode: 'relative-only',
+        relativeOptions: [],
+        dateOnly: true,
+      });
+      act(() => wrapper.findLabel().click());
+
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
+      expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
     });
   });
 });
