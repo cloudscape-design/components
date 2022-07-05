@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import Alert from '~components/alert';
+import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
 import styles from './styles.scss';
@@ -24,6 +25,10 @@ export default function AlertScenario() {
               onDismiss={() => setVisible(false)}
             >
               Content
+              <br />
+              <Link>This is a button link</Link>
+              <br />
+              <Link href="#">This is a secondary link</Link>
             </Alert>
           </div>
           <Alert header="Info">

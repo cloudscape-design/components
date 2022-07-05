@@ -77,9 +77,9 @@ $link-styles: (
   // A link without an href to be styled like a button
   'button':
     (
-      'text-color-default': awsui.$color-text-button-normal-default,
-      'text-color-hover': awsui.$color-text-button-normal-hover,
-      'text-color-active': awsui.$color-text-button-normal-active,
+      'text-color-default': awsui.$color-text-link-button-normal-default,
+      'text-color-hover': awsui.$color-text-link-button-normal-hover,
+      'text-color-active': awsui.$color-text-link-button-normal-active,
       'font-weight': awsui.$font-button-weight,
       'decoration': none,
       'decoration-color': transparent,
