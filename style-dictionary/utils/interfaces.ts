@@ -59,6 +59,7 @@ export namespace StyleDictionary {
     public?: boolean;
     themeable?: boolean;
     sassName?: string;
+    visualRefreshOnly?: boolean;
   }
   export type TokenIndex<T> = {
     [key in TokenName]?: T;

@@ -1,8 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { StyleDictionary } from '../utils/interfaces';
-
 import { expandMotionDictionary } from '../utils';
+
+import path from 'path';
+import { fileHashSync } from '../utils/hash';
+
+const keyframeHash = fileHashSync(path.join(__dirname, '../../../src'), [
+  path.join(__dirname, '../../../src/internal/styles/keyframes.scss'),
+]);
 
 const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExtraFast: { default: '45ms', disabled: '0ms' },
@@ -21,6 +27,7 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationTransitionQuick: '{motionDurationFast}',
   motionDurationTransitionShowPaced: '{motionDurationSlow}',
   motionDurationTransitionShowQuick: '{motionDurationFast}',
+
   motionEasingEaseOutQuart: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
   motionEasingRefreshOnlyA: 'cubic-bezier(0, 0, 0, 1)',
   motionEasingRefreshOnlyB: 'cubic-bezier(1, 0, 0.83, 1)',
@@ -33,6 +40,19 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionEasingTransitionQuick: 'linear',
   motionEasingTransitionShowPaced: 'ease-out',
   motionEasingTransitionShowQuick: 'linear',
+
+  motionEasingResponsive: '{motionEasingRefreshOnlyA}',
+  motionEasingSticky: '{motionEasingRefreshOnlyB}',
+  motionEasingExpressive: '{motionEasingRefreshOnlyC}',
+
+  motionDurationResponsive: '{motionDurationRefreshOnlyFast}',
+  motionDurationExpressive: '{motionDurationRefreshOnlyMedium}',
+  motionDurationComplex: '{motionDurationRefreshOnlySlow}',
+
+  motionKeyframesFadeIn: 'awsui_fade-in_' + keyframeHash,
+  motionKeyframesFadeOut: 'awsui_fade-out_' + keyframeHash,
+  motionKeyframesStatusIconError: 'awsui_status-icon-error_' + keyframeHash,
+  motionKeyframesScalePopup: 'awsui_scale-popup_' + keyframeHash,
 };
 
 const expandedTokens: StyleDictionary.ExpandedMotionScopeDictionary = expandMotionDictionary(tokens);
