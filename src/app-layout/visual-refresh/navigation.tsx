@@ -61,7 +61,7 @@ export default function Navigation() {
             [styles.unfocusable]: isUnfocusable,
           })}
           // Overwrite the default nav width (depends on breakpoints) only when the `navigationWidth` property is set.
-          style={{ [customCssProps.navigationWidth]: navigationWidth ? `${navigationWidth}px` : '' }}
+          style={{ ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }) }}
         >
           {!isMobile && (
             <nav
