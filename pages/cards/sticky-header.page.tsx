@@ -52,7 +52,7 @@ export default () => {
     cardDefinition,
     trackBy: item => item.name,
     stickyHeader: sticky,
-    stickyHeaderVerticalOffset: verticalOffset ? 44 : 0,
+    stickyHeaderVerticalOffset: verticalOffset ? 50 : 0,
     header: <Header variant="h2">Cards header</Header>,
     filter: <TextFilter {...filterProps} filteringPlaceholder={'Find by Text'} filteringAriaLabel={'Find instances'} />,
     ...collectionProps,

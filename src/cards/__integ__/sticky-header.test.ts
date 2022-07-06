@@ -46,7 +46,7 @@ describe('Cards Sticky Header', () => {
   const toggleStickinessBtn = '#toggle-stickiness-btn';
   const toggleVerticalOffsetBtn = '#toggle-vertical-offset-btn';
   const overflowParentPageHeight = 300;
-  const verticalOffset = 44;
+  const verticalOffset = 50;
   const containerBorder = 1;
 
   test(
