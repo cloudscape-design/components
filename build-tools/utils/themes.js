@@ -25,7 +25,6 @@ const themes = [
     designTokensOutput: 'index',
     designTokensDir: 'design-tokens',
     designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
-    globalStylesPath: path.dirname(require.resolve('@awsui/global-styles/index.css')),
     outputPath: path.join(workspace.targetPath, 'components'),
     primaryThemePath: './classic',
     secondaryThemePaths: ['./visual-refresh-secondary'],
