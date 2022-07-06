@@ -24,7 +24,7 @@ export interface PopoverProps extends BaseComponentProps {
   /**
    * Specifies the type of content inside the trigger region. The following types are available:
    * - `text` - Use for inline text triggers.
-   * - `custom` - Use for the [button](/components/awsui-button/) component.
+   * - `custom` - Use for the [button](/components/button/) component.
    */
   triggerType?: PopoverProps.TriggerType;
 

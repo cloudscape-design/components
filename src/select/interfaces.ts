@@ -29,10 +29,10 @@ export interface BaseSelectProps
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the option.
    * - `filteringTags` [string[]] - (Optional) A list of additional tags used for automatic filtering.
-   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the option.
+   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
    * - `iconAlt` (string) - (Optional) Specifies alternate text for a custom icon, for use with `iconUrl`.
    * - `iconUrl` (string) - (Optional) URL of a custom icon.
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/awsui-icon/).
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    *
    * #### OptionGroup
    * - `label` (string) - Option group text displayed to the user.
@@ -102,7 +102,7 @@ export interface BaseSelectProps
   /**
    * Specifies the localized string that describes an option as being selected.
    * This is required to provide a good screen reader experience. For more information, see the
-   * [accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).
+   * [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
    */
   selectedAriaLabel?: string;
   /**
@@ -114,7 +114,7 @@ export interface BaseSelectProps
    * are used and it differs from the group of the previously highlighted option).
    *
    * For more information, see the
-   * [accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).
+   * [accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
    */
   renderHighlightedAriaLive?: SelectProps.ContainingOptionAndGroupString;
   /**

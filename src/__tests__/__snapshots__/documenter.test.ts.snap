@@ -576,7 +576,7 @@ Note that sticky notifications are not supported in Internet Explorer.
   ],
   "regions": Array [
     Object {
-      "description": "Use this slot to add the [breadcrumb group component](/components/awsui-breadcrumb-group/) to the app layout.",
+      "description": "Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the app layout.",
       "isDefault": false,
       "name": "breadcrumbs",
     },
@@ -604,7 +604,7 @@ Conceived to contain notifications (flash messages).
       "name": "notifications",
     },
     Object {
-      "description": "Use this slot to add the [split panel component](/components/awsui-split-panel/) to the app layout.",
+      "description": "Use this slot to add the [split panel component](/components/split-panel/) to the app layout.",
       "isDefault": false,
       "name": "splitPanel",
     },
@@ -1477,10 +1477,10 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
-- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the option.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
 #### OptionGroup
 - \`label\` (string) - Option group text displayed to the user.
@@ -1535,7 +1535,7 @@ the \`selectedLabel\` property is defined.
 The highlighted option is provided, and its group (if groups
 are used and it differs from the group of the previously highlighted option).
 For more information, see the
-[accessibility guidelines](/components/awsui-autosuggest/?tabId=usage#accessibility-guidelines).
+[accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).
 ",
       "inlineType": Object {
         "name": "AutosuggestProps.ContainingOptionAndGroupString",
@@ -1559,7 +1559,7 @@ For more information, see the
     Object {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
-[accessibility guidelines](/components/awsui-autosuggest/?tabId=usage#accessibility-guidelines).",
+[accessibility guidelines](/components/autosuggest/?tabId=usage#accessibility-guidelines).",
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -2852,13 +2852,13 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
 
 - \`externalIconAriaLabel\` (string) - Adds an \`aria-label\` to the external icon.
 
-- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/awsui-icon/).
+- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`.
 
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
 
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
 ",
       "name": "items",
@@ -2970,7 +2970,7 @@ add a meaningful description to the whole selection.
     Object {
       "description": " Defines what to display in each card. It has the following properties:
  * \`header\` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-     Use \`fontSize=\\"heading-m\\"\` on [link](/components/awsui-link/) components inside card header.
+     Use \`fontSize=\\"heading-m\\"\` on [link](/components/link/) components inside card header.
  * \`sections\` (array) - Responsible for displaying the card content. Cards can have many sections in their
    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    * \`id\`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -3174,7 +3174,7 @@ It's also used for connecting \`items\` and \`selectedItems\` values when they d
     },
     Object {
       "description": "Specifies an array containing the \`id\` of each visible section. If not set, all sections are displayed.
-Use it in conjunction with the visible content preference of the [collection preferences](/components/awsui-collection-preferences/) component.
+Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 
 The order of \`id\`s doesn't influence the order of display of sections, which is controlled by the \`cardDefinition\` property.
 ",
@@ -3195,17 +3195,17 @@ The order of \`id\`s doesn't influence the order of display of sections, which i
       "name": "filter",
     },
     Object {
-      "description": "Heading element of the table container. Use the [header component](/components/awsui-header/).",
+      "description": "Heading element of the table container. Use the [header component](/components/header/).",
       "isDefault": false,
       "name": "header",
     },
     Object {
-      "description": "Use this slot to add the [pagination component](/components/awsui-pagination/) to the component.",
+      "description": "Use this slot to add the [pagination component](/components/pagination/) to the component.",
       "isDefault": false,
       "name": "pagination",
     },
     Object {
-      "description": "Use this slot to add [collection preferences](/components/awsui-collection-preferences/) to the component.",
+      "description": "Use this slot to add [collection preferences](/components/collection-preferences/) to the component.",
       "isDefault": false,
       "name": "preferences",
     },
@@ -4077,7 +4077,7 @@ Object {
       "name": "footer",
     },
     Object {
-      "description": "Heading element of the container. Use the [header component](/components/awsui-header/).",
+      "description": "Heading element of the container. Use the [header component](/components/header/).",
       "isDefault": false,
       "name": "header",
     },
@@ -4938,7 +4938,7 @@ Object {
   ],
   "regions": Array [
     Object {
-      "description": "Specifies actions for the form. You should wrap action buttons in a [space between component](/components/awsui-space-between) with \`direction=\\"horizontal\\"\` and \`size=\\"xs\\"\`.",
+      "description": "Specifies actions for the form. You should wrap action buttons in a [space between component](/components/space-between) with \`direction=\\"horizontal\\"\` and \`size=\\"xs\\"\`.",
       "isDefault": false,
       "name": "actions",
     },
@@ -4953,7 +4953,7 @@ Object {
       "name": "errorText",
     },
     Object {
-      "description": "Specifies the form title and optional description. Use the [header component](/components/awsui-header/).",
+      "description": "Specifies the form title and optional description. Use the [header component](/components/header/).",
       "isDefault": false,
       "name": "header",
     },
@@ -4983,7 +4983,7 @@ Object {
       "description": "The ID of the primary form control. You can use this to set the
 \`for\` attribute of a label for accessibility.
 If you don't set this property, the control group automatically sets
-the label to the ID of an inner form control (for example, an [input](/components/awsui-input) component).
+the label to the ID of an inner form control (for example, an [input](/components/input) component).
 This only works well if you're using a single control in the form field.
 ",
       "name": "controlId",
@@ -7178,10 +7178,10 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
-- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the option.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
 #### OptionGroup
 - \`label\` (string) - Option group text displayed to the user.
@@ -7226,7 +7226,7 @@ the \`selectedLabel\` property is defined.
 The highlighted option is provided, and its group (if groups
 are used and it differs from the group of the previously highlighted option).
 For more information, see the
-[accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
 ",
       "inlineType": Object {
         "name": "SelectProps.ContainingOptionAndGroupString",
@@ -7250,7 +7250,7 @@ For more information, see the
     Object {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
-[accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).",
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -7952,7 +7952,7 @@ Note: Using popover rendered with portal within a Modal is not supported.
       "defaultValue": "\\"text\\"",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
 - \`text\` - Use for inline text triggers.
-- \`custom\` - Use for the [button](/components/awsui-button/) component.",
+- \`custom\` - Use for the [button](/components/button/) component.",
       "inlineType": Object {
         "name": "PopoverProps.TriggerType",
         "type": "union",
@@ -9176,11 +9176,11 @@ the label is visible and attached to the select component, unless \`ariaLabelled
       "description": "An array of objects representing options. Each segment has the following properties:
 - \`id\` (string) - The ID of the segment.
 - \`disabled\` [boolean] - (Optional) Determines whether the segment is disabled, which prevents the user from selecting it.
-- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/awsui-icon/).
+- \`iconName\` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for the icon when using \`iconUrl\`, or \`iconName\` without \`text\`.
            This is required when you use an icon without \`text\`.
 - \`iconUrl\` (string) - (Optional) Specifies the URL of a custom icon.
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 - \`text\` (string) - (Optional) Specifies the text of the segment.
 ",
       "name": "options",
@@ -9438,10 +9438,10 @@ The options can be grouped using \`OptionGroup\` objects.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the option.
 - \`filteringTags\` [string[]] - (Optional) A list of additional tags used for automatic filtering.
-- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the option.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the option.
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 
 #### OptionGroup
 - \`label\` (string) - Option group text displayed to the user.
@@ -9486,7 +9486,7 @@ the \`selectedLabel\` property is defined.
 The highlighted option is provided, and its group (if groups
 are used and it differs from the group of the previously highlighted option).
 For more information, see the
-[accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).
 ",
       "inlineType": Object {
         "name": "SelectProps.ContainingOptionAndGroupString",
@@ -9510,7 +9510,7 @@ For more information, see the
     Object {
       "description": "Specifies the localized string that describes an option as being selected.
 This is required to provide a good screen reader experience. For more information, see the
-[accessibility guidelines](/components/awsui-select/?tabId=usage#accessibility-guidelines).",
+[accessibility guidelines](/components/select/?tabId=usage#accessibility-guidelines).",
       "name": "selectedAriaLabel",
       "optional": true,
       "type": "string",
@@ -10517,7 +10517,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
     },
     Object {
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
-Use it in conjunction with the visible content preference of the [collection preferences](/components/awsui-collection-preferences/) component.
+Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 
 The order of ids doesn't influence the order in which columns are displayed - this is dictated by the \`columnDefinitions\` property
 ",
@@ -10550,17 +10550,17 @@ multiple lines instead of being truncated with an ellipsis.",
       "name": "footer",
     },
     Object {
-      "description": "Heading element of the table container. Use the [header component](/components/awsui-header/).",
+      "description": "Heading element of the table container. Use the [header component](/components/header/).",
       "isDefault": false,
       "name": "header",
     },
     Object {
-      "description": "Use this slot to add the [pagination component](/components/awsui-pagination/) to the table.",
+      "description": "Use this slot to add the [pagination component](/components/pagination/) to the table.",
       "isDefault": false,
       "name": "pagination",
     },
     Object {
-      "description": "Use this slot to add [collection preferences](/components/awsui-collection-preferences/) to the table.",
+      "description": "Use this slot to add [collection preferences](/components/collection-preferences/) to the table.",
       "isDefault": false,
       "name": "preferences",
     },
@@ -11933,10 +11933,10 @@ Object {
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
 - \`tags\` [string[]] - (Optional) A list of tags giving further guidance about the token.
 - \`dismissLabel\` (string) - (Optional) Adds an \`aria-label\` to the dismiss button.
-- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the token.
+- \`iconName\` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the token.
 - \`iconAlt\` (string) - (Optional) Specifies alternate text for a custom icon, for use with \`iconUrl\`.
 - \`iconUrl\` (string) - (Optional) URL of a custom icon.
-- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/awsui-icon/).
+- \`iconSvg\` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 ",
       "name": "items",
       "optional": true,
@@ -12080,7 +12080,7 @@ The following properties are supported across all utility types:
 ### menu-dropdown
 
 * \`description\` (string) - The description displayed inside the dropdown.
-* \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/awsui-button-dropdown).
+* \`items\` (ButtonDropdownProps.Items) - An array of dropdown items. This follows the same structure as the \`items\` property of the [button dropdown component](/components/button-dropdown).
 * \`onItemClick\` (NonCancelableEventHandler<ButtonDropdownProps.ItemClickDetails>) - Specifies the event handler called when a dropdown item is selected.
 ",
       "name": "utilities",
@@ -12463,7 +12463,7 @@ Use this if you need to wait for a response from the server before the user can 
       "description": "Array of step objects. Each object represents a step in the wizard with the following properties:
 - \`title\` (string) - Text that's displayed as the title in the navigation pane and form header.
 - \`info\` (ReactNode) - (Optional) Area for a page level info link that's displayed in the form header.
-   The page level info link should trigger the default help panel content for the step. Use the [link component](/components/awsui-link/) to display the link.
+   The page level info link should trigger the default help panel content for the step. Use the [link component](/components/link/) to display the link.
 - \`description\` (ReactNode) - (Optional) Area below the form header for a page level description text to further explain the purpose, goal, or main actions of the step.
 - \`content\` (ReactNode) - Main content area to display form sections, form fields, and controls.
 - \`errorText\` (ReactNode) - (Optional) Error text that's displayed in a page level error alert.

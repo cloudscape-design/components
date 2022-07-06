@@ -10,7 +10,7 @@ export interface WizardProps extends BaseComponentProps {
    *
    * - `title` (string) - Text that's displayed as the title in the navigation pane and form header.
    * - `info` (ReactNode) - (Optional) Area for a page level info link that's displayed in the form header.
-   *    The page level info link should trigger the default help panel content for the step. Use the [link component](/components/awsui-link/) to display the link.
+   *    The page level info link should trigger the default help panel content for the step. Use the [link component](/components/link/) to display the link.
    * - `description` (ReactNode) - (Optional) Area below the form header for a page level description text to further explain the purpose, goal, or main actions of the step.
    * - `content` (ReactNode) - Main content area to display form sections, form fields, and controls.
    * - `errorText` (ReactNode) - (Optional) Error text that's displayed in a page level error alert.

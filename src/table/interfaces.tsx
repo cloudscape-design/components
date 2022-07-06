@@ -19,7 +19,7 @@ export interface TableForwardRefType {
 }
 export interface TableProps<T = any> extends BaseComponentProps {
   /**
-   * Heading element of the table container. Use the [header component](/components/awsui-header/).
+   * Heading element of the table container. Use the [header component](/components/header/).
    */
   header?: React.ReactNode;
 
@@ -104,12 +104,12 @@ export interface TableProps<T = any> extends BaseComponentProps {
   filter?: React.ReactNode;
 
   /**
-   * Use this slot to add the [pagination component](/components/awsui-pagination/) to the table.
+   * Use this slot to add the [pagination component](/components/pagination/) to the table.
    */
   pagination?: React.ReactNode;
 
   /**
-   * Use this slot to add [collection preferences](/components/awsui-collection-preferences/) to the table.
+   * Use this slot to add [collection preferences](/components/collection-preferences/) to the table.
    */
   preferences?: React.ReactNode;
 
@@ -178,7 +178,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
    *
-   * Use it in conjunction with the visible content preference of the [collection preferences](/components/awsui-collection-preferences/) component.
+   * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
    *
    * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property
    */

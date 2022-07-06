@@ -25,7 +25,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   empty?: React.ReactNode;
 
   /**
-   * Heading element of the table container. Use the [header component](/components/awsui-header/).
+   * Heading element of the table container. Use the [header component](/components/header/).
    */
   header?: React.ReactNode;
 
@@ -35,12 +35,12 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   filter?: React.ReactNode;
 
   /**
-   * Use this slot to add the [pagination component](/components/awsui-pagination/) to the component.
+   * Use this slot to add the [pagination component](/components/pagination/) to the component.
    */
   pagination?: React.ReactNode;
 
   /**
-   * Use this slot to add [collection preferences](/components/awsui-collection-preferences/) to the component.
+   * Use this slot to add [collection preferences](/components/collection-preferences/) to the component.
    */
   preferences?: React.ReactNode;
 
@@ -64,7 +64,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    *  Defines what to display in each card. It has the following properties:
    *  * `header` ((item) => ReactNode) - Responsible for displaying the card header. You receive the current item as an argument.
-   *      Use `fontSize="heading-m"` on [link](/components/awsui-link/) components inside card header.
+   *      Use `fontSize="heading-m"` on [link](/components/link/) components inside card header.
    *  * `sections` (array) - Responsible for displaying the card content. Cards can have many sections in their
    *    body. Each entry in the array is responsible for displaying a section. An entry has the following properties:
    *    * `id`: (string) - A unique identifier for the section. The property is used as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys)
@@ -160,7 +160,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
   /**
    * Specifies an array containing the `id` of each visible section. If not set, all sections are displayed.
    *
-   * Use it in conjunction with the visible content preference of the [collection preferences](/components/awsui-collection-preferences/) component.
+   * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
    *
    * The order of `id`s doesn't influence the order of display of sections, which is controlled by the `cardDefinition` property.
    */

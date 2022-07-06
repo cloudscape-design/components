@@ -10,7 +10,7 @@ export interface FormFieldProps extends BaseComponentProps {
    * `for` attribute of a label for accessibility.
    *
    * If you don't set this property, the control group automatically sets
-   * the label to the ID of an inner form control (for example, an [input](/components/awsui-input) component).
+   * the label to the ID of an inner form control (for example, an [input](/components/input) component).
    * This only works well if you're using a single control in the form field.
    */
   controlId?: string;
