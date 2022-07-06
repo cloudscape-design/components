@@ -213,6 +213,7 @@ export function DateRangePickerDropdown({
                     ref={focusRefs['relative-only']}
                     isSingleGrid={isSingleGrid}
                     options={relativeOptions}
+                    dateOnly={dateOnly}
                     initialSelection={selectedRelativeRange}
                     onChange={range => setSelectedRelativeRange(range)}
                     i18nStrings={i18nStrings}

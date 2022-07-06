@@ -988,12 +988,12 @@ Array [
     "themeable": true,
   },
   Object {
-    "description": "The default text color of normal buttons. For example: Default text color in normal and link buttons.",
+    "description": "The default text color of normal buttons.",
     "name": "color-text-button-normal-default",
     "themeable": true,
   },
   Object {
-    "description": "The hover text color of normal buttons. For example: Hover text color in normal and link buttons.",
+    "description": "The hover text color of normal buttons.",
     "name": "color-text-button-normal-hover",
     "themeable": true,
   },
@@ -2148,12 +2148,12 @@ Array [
     "themeable": true,
   },
   Object {
-    "description": "The default text color of normal buttons. For example: Default text color in normal and link buttons.",
+    "description": "The default text color of normal buttons.",
     "name": "color-text-button-normal-default",
     "themeable": true,
   },
   Object {
-    "description": "The hover text color of normal buttons. For example: Hover text color in normal and link buttons.",
+    "description": "The hover text color of normal buttons.",
     "name": "color-text-button-normal-hover",
     "themeable": true,
   },
