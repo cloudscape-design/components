@@ -366,6 +366,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
     public: true,
+    themeable: true,
   },
   colorTextHeadingDefault: {
     description:
@@ -445,6 +446,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.',
     public: true,
+    themeable: true,
   },
   colorTextNotificationDefault: {
     description: 'Default text color for notifications. For example: the text on badges and flashes.',

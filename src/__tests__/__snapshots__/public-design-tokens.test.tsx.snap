@@ -1045,7 +1045,7 @@ Array [
   Object {
     "description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
     "name": "color-text-group-label",
-    "themeable": false,
+    "themeable": true,
   },
   Object {
     "description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
@@ -1115,7 +1115,7 @@ Array [
   Object {
     "description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
     "name": "color-text-link-hover",
-    "themeable": false,
+    "themeable": true,
   },
   Object {
     "description": "Default text color for notifications. For example: the text on badges and flashes.",
@@ -2205,7 +2205,7 @@ Array [
   Object {
     "description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector.",
     "name": "color-text-group-label",
-    "themeable": false,
+    "themeable": true,
   },
   Object {
     "description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels.",
@@ -2275,7 +2275,7 @@ Array [
   Object {
     "description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links.",
     "name": "color-text-link-hover",
-    "themeable": false,
+    "themeable": true,
   },
   Object {
     "description": "Default text color for notifications. For example: the text on badges and flashes.",
