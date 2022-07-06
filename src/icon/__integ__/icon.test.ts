@@ -75,7 +75,7 @@ describe('Icon', () => {
       await expect(page.getHeight(removedIconSelector)).resolves.toEqual(36);
       await expect(page.hasSize('size-big', removedIconSelector)).resolves.toBe(true);
 
-      await expect(page.getHeight(hiddenIconSelector)).resolves.toEqual(24);
+      await expect(page.getHeight(hiddenIconSelector)).resolves.toEqual(27);
       await expect(page.hasSize('size-medium', hiddenIconSelector)).resolves.toBe(true);
     })
   );
