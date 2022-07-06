@@ -17,8 +17,8 @@ export function expandMetadata(dictionary: StyleDictionary.MetadataIndex): Style
   return Object.fromEntries(entries);
 }
 
-export function updateMetadata(
-  descriptions: StyleDictionary.TokenIndex<StyleDictionary.Metadata>,
+export function updateDescriptions(
+  descriptions: StyleDictionary.TokenIndex<string>,
   baseDictionary: StyleDictionary.MetadataIndex
 ): StyleDictionary.MetadataIndex {
   const entries = Object.entries(baseDictionary).map(([token, metadata]) => {
@@ -26,7 +26,7 @@ export function updateMetadata(
       token,
       {
         ...metadata,
-        ...(descriptions[token as TokenName] ?? {}),
+        description: descriptions[token as TokenName] || metadata.description,
       },
     ];
   });
