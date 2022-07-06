@@ -31,13 +31,12 @@ function buildThemeDocumentation(themeName) {
   writeFile(join(workspace.apiDocsPath, `styles/tokens-${themeName}.json`), JSON.stringify(documentation, null, 2));
 }
 
-function transformToken(jsName, { sassName, description, themeable, visualRefreshOnly }, value, variable) {
+function transformToken(jsName, { sassName, description, themeable }, value, variable) {
   return {
     name: sassName.replace(/^\$/, ''),
     description,
     themeable,
     value,
-    visualRefreshOnly: visualRefreshOnly || false,
     variable,
   };
 }
