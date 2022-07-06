@@ -5,7 +5,7 @@ import React from 'react';
 
 export interface ContainerProps extends BaseComponentProps {
   /**
-   * Heading element of the container. Use the [header component](/components/awsui-header/).
+   * Heading element of the container. Use the [header component](/components/header/).
    */
   header?: React.ReactNode;
 

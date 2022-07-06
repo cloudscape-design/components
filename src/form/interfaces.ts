@@ -9,7 +9,7 @@ export interface FormProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Specifies the form title and optional description. Use the [header component](/components/awsui-header/).
+   * Specifies the form title and optional description. Use the [header component](/components/header/).
    */
   header?: React.ReactNode;
 
@@ -19,7 +19,7 @@ export interface FormProps extends BaseComponentProps {
   errorText?: React.ReactNode;
 
   /**
-   * Specifies actions for the form. You should wrap action buttons in a [space between component](/components/awsui-space-between) with `direction="horizontal"` and `size="xs"`.
+   * Specifies actions for the form. You should wrap action buttons in a [space between component](/components/space-between) with `direction="horizontal"` and `size="xs"`.
    */
   actions?: React.ReactNode;
 

@@ -142,7 +142,7 @@ export interface AppLayoutProps extends BaseComponentProps {
   notifications?: React.ReactNode;
 
   /**
-   * Use this slot to add the [breadcrumb group component](/components/awsui-breadcrumb-group/) to the app layout.
+   * Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the app layout.
    */
   breadcrumbs?: React.ReactNode;
 
@@ -156,7 +156,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    */
   onToolsChange?: NonCancelableEventHandler<AppLayoutProps.ChangeDetail>;
   /**
-   * Use this slot to add the [split panel component](/components/awsui-split-panel/) to the app layout.
+   * Use this slot to add the [split panel component](/components/split-panel/) to the app layout.
    */
   splitPanel?: React.ReactNode;
 

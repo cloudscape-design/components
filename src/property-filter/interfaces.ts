@@ -161,7 +161,7 @@ export namespace PropertyFilterProps {
   export interface I18nStrings {
     /**
      * Label that will be passed down to the Autosuggest `ariaLabel` property.
-     * See the [Autosuggest API](/system/components/awsui-autosuggest/?tabId=api) page for more details.
+     * See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.
      */
     filteringAriaLabel: string;
     dismissAriaLabel: string;

@@ -31,10 +31,10 @@ export interface TokenGroupProps extends BaseComponentProps {
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
    * - `tags` [string[]] - (Optional) A list of tags giving further guidance about the token.
    * - `dismissLabel` (string) - (Optional) Adds an `aria-label` to the dismiss button.
-   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/awsui-icon/) to display in the token.
+   * - `iconName` (string) - (Optional) Specifies the name of an [icon](/components/icon/) to display in the token.
    * - `iconAlt` (string) - (Optional) Specifies alternate text for a custom icon, for use with `iconUrl`.
    * - `iconUrl` (string) - (Optional) URL of a custom icon.
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/awsui-icon/).
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    */
   items?: ReadonlyArray<TokenGroupProps.Item>;
   /**

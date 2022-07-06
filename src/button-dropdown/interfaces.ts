@@ -29,13 +29,13 @@ export interface ButtonDropdownProps extends BaseComponentProps {
 
    * - `externalIconAriaLabel` (string) - Adds an `aria-label` to the external icon.
 
-   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/awsui-icon/).
+   * - `iconName` (string) - (Optional) Specifies the name of the icon, used with the [icon component](/components/icon/).
 
    * - `iconAlt` (string) - (Optional) Specifies alternate text for the icon when using `iconUrl`.
 
    * - `iconUrl` (string) - (Optional) Specifies the URL of a custom icon.
 
-   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/awsui-icon/).
+   * - `iconSvg` (ReactNode) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
 
    */
   items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
