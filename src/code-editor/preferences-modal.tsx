@@ -11,6 +11,7 @@ import InternalModal from '../modal/internal';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalSpaceBetween from '../space-between/internal';
+import { FormFieldDomContext } from '../internal/context/form-field-context';
 import { NonCancelableCustomEvent } from '../internal/events';
 import { LightThemes, DarkThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
@@ -49,43 +50,45 @@ export default (props: PreferencesModalProps) => {
   };
 
   return (
-    <InternalModal
-      size="medium"
-      visible={true}
-      onDismiss={props.onDismiss}
-      header={props.i18nStrings.header}
-      closeAriaLabel={props.i18nStrings.cancel}
-      footer={
-        <InternalBox float="right">
-          <InternalSpaceBetween direction="horizontal" size="xs">
-            <InternalButton onClick={props.onDismiss}>{props.i18nStrings.cancel}</InternalButton>
-            <InternalButton onClick={() => props.onConfirm({ wrapLines, theme })} variant="primary">
-              {props.i18nStrings.confirm}
-            </InternalButton>
-          </InternalSpaceBetween>
-        </InternalBox>
-      }
-    >
-      <InternalColumnLayout columns={2} variant="text-grid">
-        <div>
-          <InternalCheckbox checked={wrapLines} onChange={e => setWrapLines(e.detail.checked)}>
-            {props.i18nStrings.wrapLines}
-          </InternalCheckbox>
-        </div>
-        <div>
-          <InternalFormField label={props.i18nStrings.theme}>
-            <InternalSelect
-              selectedOption={selectedThemeOption}
-              onChange={onThemeSelected}
-              options={[
-                { label: props.i18nStrings.lightThemes, options: LightThemes },
-                { label: props.i18nStrings.darkThemes, options: DarkThemes },
-              ]}
-              filteringType="auto"
-            />
-          </InternalFormField>
-        </div>
-      </InternalColumnLayout>
-    </InternalModal>
+    <FormFieldDomContext.RootProvider value={{}}>
+      <InternalModal
+        size="medium"
+        visible={true}
+        onDismiss={props.onDismiss}
+        header={props.i18nStrings.header}
+        closeAriaLabel={props.i18nStrings.cancel}
+        footer={
+          <InternalBox float="right">
+            <InternalSpaceBetween direction="horizontal" size="xs">
+              <InternalButton onClick={props.onDismiss}>{props.i18nStrings.cancel}</InternalButton>
+              <InternalButton onClick={() => props.onConfirm({ wrapLines, theme })} variant="primary">
+                {props.i18nStrings.confirm}
+              </InternalButton>
+            </InternalSpaceBetween>
+          </InternalBox>
+        }
+      >
+        <InternalColumnLayout columns={2} variant="text-grid">
+          <div>
+            <InternalCheckbox checked={wrapLines} onChange={e => setWrapLines(e.detail.checked)}>
+              {props.i18nStrings.wrapLines}
+            </InternalCheckbox>
+          </div>
+          <div>
+            <InternalFormField label={props.i18nStrings.theme}>
+              <InternalSelect
+                selectedOption={selectedThemeOption}
+                onChange={onThemeSelected}
+                options={[
+                  { label: props.i18nStrings.lightThemes, options: LightThemes },
+                  { label: props.i18nStrings.darkThemes, options: DarkThemes },
+                ]}
+                filteringType="auto"
+              />
+            </InternalFormField>
+          </div>
+        </InternalColumnLayout>
+      </InternalModal>
+    </FormFieldDomContext.RootProvider>
   );
 };
