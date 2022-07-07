@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { addDays, addMonths, isSameMonth, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
-import TabTrap, { FocusNextElement } from '../../internal/components/tab-trap';
+import { FocusNextElement } from '../../internal/components/tab-trap';
 import { BaseComponentProps } from '../../internal/base-component';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { DatePickerProps } from '../interfaces';
@@ -131,45 +131,41 @@ const Calendar = ({
   };
 
   return (
-    <>
-      {calendarHasFocus && <TabTrap focusNextCallback={focusCurrentDate} />}
-      <div
-        {...focusVisible}
-        className={styles.calendar}
-        tabIndex={0}
-        role="application"
-        aria-describedby={headerId}
-        ref={elementRef}
-      >
-        <div className={styles['calendar-inner']}>
-          <CalendarHeader
-            headerId={headerId}
-            baseDate={baseDate}
+    <div
+      {...focusVisible}
+      className={styles.calendar}
+      tabIndex={0}
+      role="application"
+      aria-describedby={headerId}
+      ref={elementRef}
+    >
+      <div className={styles['calendar-inner']}>
+        <CalendarHeader
+          headerId={headerId}
+          baseDate={baseDate}
+          locale={locale}
+          onChangeMonth={onHeaderChangeMonthHandler}
+          previousMonthLabel={previousMonthLabel}
+          nextMonthLabel={nextMonthLabel}
+          calendarHasFocus={calendarHasFocus}
+        />
+        <div onBlur={onGridBlur} onFocus={onGridFocus} ref={gridWrapperRef}>
+          <Grid
             locale={locale}
-            onChangeMonth={onHeaderChangeMonthHandler}
-            previousMonthLabel={previousMonthLabel}
-            nextMonthLabel={nextMonthLabel}
-            calendarHasFocus={calendarHasFocus}
+            baseDate={baseDate}
+            isDateEnabled={isDateEnabled}
+            focusedDate={focusedDate}
+            onSelectDate={onSelectDate}
+            onFocusDate={onFocusDate}
+            onChangeMonth={onChangeMonth}
+            startOfWeek={startOfWeek}
+            todayAriaLabel={todayAriaLabel}
+            selectedDate={selectedDate}
+            handleFocusMove={moveFocusHandler}
           />
-          <div onBlur={onGridBlur} onFocus={onGridFocus} ref={gridWrapperRef}>
-            <Grid
-              locale={locale}
-              baseDate={baseDate}
-              isDateEnabled={isDateEnabled}
-              focusedDate={focusedDate}
-              onSelectDate={onSelectDate}
-              onFocusDate={onFocusDate}
-              onChangeMonth={onChangeMonth}
-              startOfWeek={startOfWeek}
-              todayAriaLabel={todayAriaLabel}
-              selectedDate={selectedDate}
-              handleFocusMove={moveFocusHandler}
-            />
-          </div>
         </div>
-        {calendarHasFocus && <TabTrap focusNextCallback={() => elementRef.current?.focus()} />}
       </div>
-    </>
+    </div>
   );
 };
 
