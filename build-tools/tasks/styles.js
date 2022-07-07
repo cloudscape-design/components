@@ -1,13 +1,30 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const { parallel, series } = require('gulp');
+const { readFileSync } = require('fs');
+const { createHash } = require('crypto');
 const { join, basename } = require('path');
 const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build');
 
 const themes = require('../utils/themes');
 const workspace = require('../utils/workspace');
 const { task } = require('../utils/gulp-utils');
+const { writeFile } = require('../utils/files');
 const { compileTypescript } = require('./typescript');
+
+function generateEnvironment() {
+  return task(`style-dictionary:environment`, () => {
+    const tokenStylesPath = join(workspace.sourcePath, './internal/styles/global.scss');
+    const hash = createHash('sha256');
+    hash.update(readFileSync(tokenStylesPath, 'utf-8'));
+    const tokenStylesHash = hash.digest('hex').slice(0, 6);
+    writeFile(
+      join(rootDir, workspace.compiledStyleDictionary, 'utils/environment.js'),
+      `exports.tokenStylesSuffix = "${tokenStylesHash}";`
+    );
+    return Promise.resolve();
+  });
+}
 
 function compileStyleDictionary() {
   return compileTypescript({
@@ -65,4 +82,8 @@ function getTheme(themePath) {
   return require(join(rootDir, workspace.compiledStyleDictionary, themePath)).default;
 }
 
-module.exports = series(compileStyleDictionary(), parallel(themes.map(theme => stylesTask(theme))));
+module.exports = series(
+  generateEnvironment(),
+  compileStyleDictionary(),
+  parallel(themes.map(theme => stylesTask(theme)))
+);

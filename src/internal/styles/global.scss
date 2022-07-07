@@ -1,0 +1,78 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use './tokens' as awsui;
+@use 'awsui:resolved-tokens' as resolved-tokens;
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:string';
+
+@mixin keyframes($name) {
+  @each $theme in resolved-tokens.$resolved-tokens {
+    @each $token-name, $token-value in map.get($theme, 'tokens') {
+      @if string.index($token-name, 'motionKeyframes') == 1 {
+        $keyframe-name: map.get($token-value, 'default');
+        @if string.index($keyframe-name, $name) == 1 {
+          // We are interpolating, but the rule seems to be missing this.
+          // stylelint-disable-next-line scss/dollar-variable-no-missing-interpolation
+          @keyframes #{':global(' + $keyframe-name + ')'} {
+            @content;
+          }
+        }
+      }
+    }
+  }
+}
+
+// These are globally defined animations. The lint rule can't detect the local mixin.
+// stylelint-disable @cloudscape-design/no-implicit-descendant, @cloudscape-design/no-motion-outside-of-mixin
+
+@include keyframes('awsui-fade-in') {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@include keyframes('awsui-fade-out') {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@include keyframes('awsui-status-icon-error') {
+  0% {
+    transform: translateX(-5px);
+    animation-timing-function: linear;
+  }
+
+  50% {
+    transform: translateX(5px);
+    animation-timing-function: awsui.$motion-easing-refresh-only-a;
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@include keyframes('awsui-scale-popup') {
+  0% {
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@include keyframes('awsui-none') {
+  // This exists as a placeholder to switch to when no animation should be applied.
+}

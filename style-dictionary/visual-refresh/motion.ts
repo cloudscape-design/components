@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { StyleDictionary } from '../utils/interfaces';
-
 import { expandMotionDictionary } from '../utils';
+import { tokenStylesSuffix } from '../utils/environment';
 
 const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExtraFast: { default: '45ms', disabled: '0ms' },
@@ -21,6 +21,7 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationTransitionQuick: '{motionDurationFast}',
   motionDurationTransitionShowPaced: '{motionDurationSlow}',
   motionDurationTransitionShowQuick: '{motionDurationFast}',
+
   motionEasingEaseOutQuart: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
   motionEasingRefreshOnlyA: 'cubic-bezier(0, 0, 0, 1)',
   motionEasingRefreshOnlyB: 'cubic-bezier(1, 0, 0.83, 1)',
@@ -33,6 +34,19 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionEasingTransitionQuick: 'linear',
   motionEasingTransitionShowPaced: 'ease-out',
   motionEasingTransitionShowQuick: 'linear',
+
+  motionEasingResponsive: '{motionEasingRefreshOnlyA}',
+  motionEasingSticky: '{motionEasingRefreshOnlyB}',
+  motionEasingExpressive: '{motionEasingRefreshOnlyC}',
+
+  motionDurationResponsive: '{motionDurationRefreshOnlyFast}',
+  motionDurationExpressive: '{motionDurationRefreshOnlyMedium}',
+  motionDurationComplex: '{motionDurationRefreshOnlySlow}',
+
+  motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
+  motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
+  motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
+  motionKeyframesScalePopup: 'awsui-scale-popup-' + tokenStylesSuffix,
 };
 
 const expandedTokens: StyleDictionary.ExpandedMotionScopeDictionary = expandMotionDictionary(tokens);
