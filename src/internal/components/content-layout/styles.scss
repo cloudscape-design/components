@@ -5,7 +5,20 @@
 @use '../../styles/' as styles;
 @use '../../styles/tokens' as awsui;
 
-.layout {
+.layout:not(.is-visual-refresh) {
+  display: contents;
+
+  > .background {
+    display: none;
+  }
+
+  > .header,
+  > .content {
+    display: contents;
+  }
+}
+
+.layout.is-visual-refresh {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto #{awsui.$space-dark-header-overlap-distance} 1fr;
@@ -14,35 +27,35 @@
   &.is-overlap-disabled {
     grid-template-rows: auto 0 1fr;
   }
-}
 
-.background {
-  background-color: awsui.$color-background-layout-main;
-  grid-column: 1;
-  grid-row: 1 / 3;
+  > .background {
+    background-color: awsui.$color-background-layout-main;
+    grid-column: 1;
+    grid-row: 1 / 3;
 
-  &.is-overlap-disabled {
-    grid-row: 1 / 2;
-  }
-}
-
-.header {
-  grid-column: 1;
-  grid-row: 1;
-  padding-bottom: awsui.$space-dark-header-padding-bottom;
-
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    &.has-breadcrumbs {
-      padding-top: awsui.$space-xxs;
+    &.is-overlap-disabled {
+      grid-row: 1 / 2;
     }
   }
 
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    padding: awsui.$space-m 0 awsui.$space-dark-header-padding-bottom;
-  }
-}
+  > .header {
+    grid-column: 1;
+    grid-row: 1;
+    padding-bottom: awsui.$space-dark-header-padding-bottom;
 
-.content {
-  grid-column: 1;
-  grid-row: 2 / 4;
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+      &.has-breadcrumbs {
+        padding-top: awsui.$space-xxs;
+      }
+    }
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      padding: awsui.$space-m 0 awsui.$space-dark-header-padding-bottom;
+    }
+  }
+
+  > .content {
+    grid-column: 1;
+    grid-row: 2 / 4;
+  }
 }

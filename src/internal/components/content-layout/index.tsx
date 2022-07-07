@@ -27,17 +27,14 @@ export default function ContentLayout({ children, disableOverlap, header }: Cont
     [isVisualRefresh, overlapContainerQuery, setDynamicOverlapHeight]
   );
 
-  if (!isVisualRefresh || !header) {
-    return (
-      <>
-        {header}
-        {children}
-      </>
-    );
-  }
-
   return (
-    <div className={clsx(styles.layout, { [styles['is-overlap-disabled']]: isOverlapDisabled })} ref={rootElement}>
+    <div
+      className={clsx(styles.layout, {
+        [styles['is-overlap-disabled']]: isOverlapDisabled,
+        [styles['is-visual-refresh']]: isVisualRefresh,
+      })}
+      ref={rootElement}
+    >
       <div
         className={clsx(
           styles.background,
@@ -47,13 +44,15 @@ export default function ContentLayout({ children, disableOverlap, header }: Cont
         ref={overlapElement}
       />
 
-      <div
-        className={clsx(styles.header, { [styles['has-breadcrumbs']]: breadcrumbs }, 'awsui-context-content-header')}
-      >
-        {header}
-      </div>
+      {header && (
+        <div
+          className={clsx(styles.header, { [styles['has-breadcrumbs']]: breadcrumbs }, 'awsui-context-content-header')}
+        >
+          {header}
+        </div>
+      )}
 
-      <div className={styles.content}>{children}</div>
+      {children && <div className={styles.content}>{children}</div>}
     </div>
   );
 }
