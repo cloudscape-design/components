@@ -2465,6 +2465,12 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   "name": "Button",
   "properties": Array [
     Object {
+      "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
+      "name": "ariaExpanded",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Adds \`aria-label\` to the button element. It should be used in buttons that don't have text in order to make
 them accessible.",
       "name": "ariaLabel",

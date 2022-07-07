@@ -114,6 +114,12 @@ export interface ButtonProps extends BaseComponentProps {
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
    */
   onFollow?: CancelableEventHandler<null>;
+
+  /**
+   *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
+   */
+
+  ariaExpanded?: boolean;
 }
 
 export namespace ButtonProps {

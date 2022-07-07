@@ -124,7 +124,7 @@ const InternalButtonDropdown = React.forwardRef(
         }}
         ariaLabel={ariaLabel}
         aria-haspopup={true}
-        aria-expanded={canBeOpened && isOpen}
+        ariaExpanded={canBeOpened && isOpen}
         formAction="none"
       >
         {children}

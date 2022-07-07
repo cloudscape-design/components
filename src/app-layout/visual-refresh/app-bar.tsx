@@ -55,7 +55,7 @@ export default function AppBar() {
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-            aria-expanded={isNavigationOpen}
+            ariaExpanded={isNavigationOpen}
             iconName="menu"
             formAction="none"
             onClick={() => handleNavigationClick(true)}
@@ -86,7 +86,7 @@ export default function AppBar() {
         >
           <InternalButton
             className={testutilStyles['tools-toggle']}
-            aria-expanded={isToolsOpen}
+            ariaExpanded={isToolsOpen}
             disabled={isAnyPanelOpen}
             ariaLabel={ariaLabels?.toolsToggle ?? undefined}
             iconName="status-info"

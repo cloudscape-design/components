@@ -151,9 +151,9 @@ function Tutorial({
             <InternalButton
               id={triggerControldId}
               variant="icon"
+              ariaExpanded={expanded}
               __nativeAttributes={{
                 'aria-controls': controlId,
-                'aria-expanded': expanded,
                 'aria-labelledby': headerId,
               }}
               formAction="none"
