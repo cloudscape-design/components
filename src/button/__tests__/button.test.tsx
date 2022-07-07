@@ -97,6 +97,14 @@ describe('Button Component', () => {
     });
   });
 
+  describe('ariaExpanded property', () => {
+    test('adds aria-expanded property to button', () => {
+      const wrapper = renderButton({ ariaExpanded: true });
+      console.log(wrapper.getElement());
+      expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
   describe('iconUrl property', () => {
     const iconUrl = 'data:image/png;base64,aaaa';
     const iconAlt = 'Custom icon';

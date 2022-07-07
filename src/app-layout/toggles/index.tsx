@@ -44,9 +44,7 @@ export const AppLayoutButton = React.forwardRef(
         onClick={onClick}
         iconName={iconName}
         disabled={disabled}
-        __nativeAttributes={{
-          'aria-expanded': ariaExpanded,
-        }}
+        ariaExpanded={ariaExpanded}
       />
     );
   }

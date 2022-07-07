@@ -13,8 +13,8 @@ test('specific properties take precedence over nativeAttributes', () => {
 });
 
 test('supports providing custom attributes', () => {
-  const { container } = render(<InternalButton __nativeAttributes={{ 'aria-expanded': 'true' }} />);
-  expect(container.querySelector('button')).toHaveAttribute('aria-expanded', 'true');
+  const { container } = render(<InternalButton __nativeAttributes={{ 'aria-hidden': 'true' }} />);
+  expect(container.querySelector('button')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('supports __iconClass property', () => {
