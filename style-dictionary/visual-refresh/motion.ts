@@ -2,13 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { StyleDictionary } from '../utils/interfaces';
 import { expandMotionDictionary } from '../utils';
-
-import path from 'path';
-import { fileHashSync } from '../utils/hash';
-
-const keyframeHash = fileHashSync(path.join(__dirname, '../../../src'), [
-  path.join(__dirname, '../../../src/internal/styles/keyframes.scss'),
-]);
+import { tokenStylesSuffix } from '../utils/environment';
 
 const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExtraFast: { default: '45ms', disabled: '0ms' },
@@ -49,10 +43,10 @@ const tokens: StyleDictionary.MotionDictionary = {
   motionDurationExpressive: '{motionDurationRefreshOnlyMedium}',
   motionDurationComplex: '{motionDurationRefreshOnlySlow}',
 
-  motionKeyframesFadeIn: 'awsui_fade-in_' + keyframeHash,
-  motionKeyframesFadeOut: 'awsui_fade-out_' + keyframeHash,
-  motionKeyframesStatusIconError: 'awsui_status-icon-error_' + keyframeHash,
-  motionKeyframesScalePopup: 'awsui_scale-popup_' + keyframeHash,
+  motionKeyframesFadeIn: 'awsui-fade-in-' + tokenStylesSuffix,
+  motionKeyframesFadeOut: 'awsui-fade-out-' + tokenStylesSuffix,
+  motionKeyframesStatusIconError: 'awsui-status-icon-error-' + tokenStylesSuffix,
+  motionKeyframesScalePopup: 'awsui-scale-popup-' + tokenStylesSuffix,
 };
 
 const expandedTokens: StyleDictionary.ExpandedMotionScopeDictionary = expandMotionDictionary(tokens);
