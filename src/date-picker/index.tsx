@@ -26,7 +26,7 @@ import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import TabTrap, { FocusNextElement } from '../internal/components/tab-trap';
+import TabTrap from '../internal/components/tab-trap';
 
 export { DatePickerProps };
 
@@ -159,7 +159,7 @@ const DatePicker = React.forwardRef(
     }
 
     const elementRef = useRef<HTMLDivElement>(null);
-    const focusCurrentDate: FocusNextElement = () =>
+    const focusCurrentDate = () =>
       (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
 
     const DateInputElement = (
