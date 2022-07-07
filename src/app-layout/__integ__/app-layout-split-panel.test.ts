@@ -66,7 +66,7 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new AppLayoutSplitViewPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(url);
+    await browser.url(`${url}?visualRefresh=false`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
@@ -77,7 +77,7 @@ test(
   useBrowser(async browser => {
     const page = new AppLayoutSplitViewPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(`#/light/app-layout/with-split-panel?splitPanelPosition=side`);
+    await browser.url(`#/light/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await page.openPanel();
     await expect(page.getPanelPosition()).resolves.toEqual('side');

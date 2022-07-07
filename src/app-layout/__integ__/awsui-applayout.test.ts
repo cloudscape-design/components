@@ -32,13 +32,13 @@ class AppLayoutPage extends BasePageObject {
 }
 
 function setupTest(
-  { viewport = viewports.desktop, pageName = 'default', trackResizeObserverErrors = true },
+  { viewport = viewports.desktop, pageName = 'default', trackResizeObserverErrors = true, visualRefresh = false },
   testFn: (page: AppLayoutPage) => Promise<void>
 ) {
   return useBrowser(async browser => {
     const page = new AppLayoutPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url(`#/light/app-layout/${pageName}`);
+    await browser.url(`#/light/app-layout/${pageName}?visualRefresh=${visualRefresh}`);
     if (trackResizeObserverErrors) {
       await page.trackResizeObserverErrors();
     }
@@ -173,7 +173,7 @@ test(
 
 test(
   'does not render notifications slot when it is empty',
-  setupTest({ pageName: 'with-notifications?visualRefresh=true', trackResizeObserverErrors: false }, async page => {
+  setupTest({ pageName: 'with-notifications', visualRefresh: true, trackResizeObserverErrors: false }, async page => {
     const { height: originalHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
     expect(originalHeight).toBeGreaterThan(0);
     await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());

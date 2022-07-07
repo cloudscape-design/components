@@ -3,6 +3,7 @@
 import qs from 'qs';
 import React, { createContext } from 'react';
 import mapValues from 'lodash/mapValues';
+import { THEME } from '~components/internal/environment';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ const appContextDefaults: AppContextType = {
   pageId: undefined,
   urlParams: {
     density: Density.Comfortable,
-    visualRefresh: false,
+    visualRefresh: THEME === 'default',
     motionDisabled: false,
   },
   setMode: () => {},
