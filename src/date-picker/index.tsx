@@ -79,6 +79,7 @@ const DatePicker = React.forwardRef(
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
+    const calendarRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -158,9 +159,8 @@ const DatePicker = React.forwardRef(
       }
     }
 
-    const elementRef = useRef<HTMLDivElement>(null);
     const focusCurrentDate = () =>
-      (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
+      (calendarRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
 
     const DateInputElement = (
       <div className={styles['date-picker-trigger']}>
@@ -235,6 +235,7 @@ const DatePicker = React.forwardRef(
             <>
               {calendarHasFocus && <TabTrap focusNextCallback={focusCurrentDate} />}
               <Calendar
+                ref={calendarRef}
                 selectedDate={memoizedDate('value', selectedDate)}
                 focusedDate={memoizedDate('focused', focusedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
@@ -249,7 +250,7 @@ const DatePicker = React.forwardRef(
                 onSelectDate={onSelectDateHandler}
                 onFocusDate={onDateFocusHandler}
               />
-              {calendarHasFocus && <TabTrap focusNextCallback={() => __internalRootRef.current?.focus()} />}
+              {calendarHasFocus && <TabTrap focusNextCallback={() => calendarRef.current?.focus()} />}
             </>
           )}
         </Dropdown>
