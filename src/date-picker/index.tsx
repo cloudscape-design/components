@@ -249,7 +249,7 @@ const DatePicker = React.forwardRef(
                 onSelectDate={onSelectDateHandler}
                 onFocusDate={onDateFocusHandler}
               />
-              {calendarHasFocus && <TabTrap focusNextCallback={() => elementRef.current?.focus()} />}
+              {calendarHasFocus && <TabTrap focusNextCallback={() => __internalRootRef.current?.focus()} />}
             </>
           )}
         </Dropdown>
