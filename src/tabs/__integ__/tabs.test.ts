@@ -54,7 +54,8 @@ class TabsPage extends BasePageObject {
 const setupTest = (testFn: (page: TabsPage) => Promise<void>, smallViewport = false) => {
   return useBrowser(async browser => {
     const page = new TabsPage(browser);
-    await browser.url('#/light/tabs/responsive-integ/?motionDisabled=true');
+    // TODO: Remove VR flag once AWSUI-18703 is fixed
+    await browser.url('#/light/tabs/responsive-integ/?motionDisabled=true&visualRefresh=false');
     await page.waitForVisible(wrapper.findTabContent().toSelector());
     if (smallViewport) {
       await page.setWindowSize({ width: 400, height: 1000 });

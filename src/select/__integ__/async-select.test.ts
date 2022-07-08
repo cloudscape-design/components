@@ -15,7 +15,8 @@ function setup(virtualScrolling: boolean, testFn: (page: AsyncDropdownComponentP
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, select);
     await page.setWindowSize({ width: 950, height: 300 });
-    await browser.url('/#/light/select/select.test.async');
+    // TODO: Remove VR flag once AWSUI-18701 is fixed
+    await browser.url('/#/light/select/select.test.async?visualRefresh=false');
     await page.waitForVisible(select.findTrigger().toSelector());
     if (virtualScrolling) {
       await page.enableVirtualScrolling();

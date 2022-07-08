@@ -9,6 +9,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const autosuggest = createWrapper().findAutosuggest();
 
+// Necessary scrolling to reach the bottom. For Visual Refresh, use 500.
 const SCROLL_PAGE_HEIGHT = 480;
 
 function setup(
@@ -18,7 +19,8 @@ function setup(
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, autosuggest, opts.expandToViewport);
     await page.setWindowSize({ width: 800, height: 300 });
-    await browser.url('/#/light/autosuggest/async');
+    // TODO: Remove VR flag once AWSUI-18701 is fixed
+    await browser.url('/#/light/autosuggest/async?visualRefresh=false');
     await page.waitForVisible(autosuggest.findNativeInput().toSelector());
     if (opts.virtualScrolling) {
       await page.enableVirtualScrolling();

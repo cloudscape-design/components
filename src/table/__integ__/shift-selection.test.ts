@@ -99,8 +99,8 @@ describe('Shift selection', () => {
       'selects a batch of items with a mouse click',
       setupTest(async page => {
         await page.toggleRow(1);
-        await page.selectWithShiftClick(10);
-        await expect(page.countSelected()).resolves.toBe(10);
+        await page.selectWithShiftClick(8);
+        await expect(page.countSelected()).resolves.toBe(8);
       })
     );
     test(
@@ -119,7 +119,7 @@ describe('Shift selection', () => {
         await expect(page.countSelected()).resolves.toBe(1);
         await page.click(tableWrapper.findPagination().findNextPageButton().toSelector());
         await expect(page.countSelected()).resolves.toBe(0);
-        await page.selectWithShiftClick(10);
+        await page.selectWithShiftClick(8);
         await expect(page.countSelected()).resolves.toBe(1);
       })
     );
@@ -142,7 +142,7 @@ describe('Shift selection', () => {
         await expect(page.countSelected()).resolves.toBe(1);
         await page.click(tableWrapper.findColumnHeaders().get(2).toSelector());
         await expect(page.countSelected()).resolves.toBe(0);
-        await page.selectWithShiftClick(10);
+        await page.selectWithShiftClick(8);
         await expect(page.countSelected()).resolves.toBe(1);
       })
     );
