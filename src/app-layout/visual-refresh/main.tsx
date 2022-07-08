@@ -14,6 +14,7 @@ export default function Main() {
     contentHeader,
     contentType,
     disableContentPaddings,
+    dynamicOverlapHeight,
     hasNotificationsContent,
     isNavigationOpen,
     isSplitPanelOpen,
@@ -35,6 +36,7 @@ export default function Main() {
         {
           [styles['disable-content-paddings']]: disableContentPaddings,
           [styles['has-breadcrumbs']]: breadcrumbs,
+          [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
           [styles['has-header']]: contentHeader,
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['is-navigation-open']]: isNavigationOpen,

@@ -18,6 +18,7 @@ export default function AppBar() {
     breadcrumbs,
     contentHeader,
     contentType,
+    dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
     hasNotificationsContent,
@@ -70,6 +71,7 @@ export default function AppBar() {
       {breadcrumbs && (
         <div
           className={clsx(styles.breadcrumbs, styles[`content-type-${contentType}`], testutilStyles.breadcrumbs, {
+            [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
             [styles['has-header']]: contentHeader,
             [styles['has-notifications-content']]: hasNotificationsContent,
           })}

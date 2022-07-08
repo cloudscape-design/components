@@ -24,7 +24,8 @@ function App() {
     urlParams: { density, motionDisabled, visualRefresh },
   } = useContext(AppContext);
 
-  const isAppLayout = pageId !== undefined && pageId.indexOf('app-layout') > -1;
+  const isAppLayout =
+    pageId !== undefined && (pageId.indexOf('app-layout') > -1 || pageId.indexOf('content-layout') > -1);
   // AppLayout already contains <main>
   // Also, AppLayout pages should resemble the ConsoleNav 2.0 styles
   const ContentTag = isAppLayout ? 'div' : 'main';
