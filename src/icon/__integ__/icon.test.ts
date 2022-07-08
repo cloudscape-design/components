@@ -37,6 +37,8 @@ describe('Icon', () => {
       const page = new IconSizeInherit(browser);
       await browser.url('#/light/icon/size-inherit');
       await page.waitForVisible(dynamicIconSelector);
+      // The default theme is VR by default, so we toggle once to go to classic mode
+      await page.toggleMode();
       await testFn(page);
     });
   };

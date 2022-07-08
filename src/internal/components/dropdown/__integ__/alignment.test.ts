@@ -25,7 +25,9 @@ describe('Dropdown and trigger element alignment', () => {
         const dropdownBox = await page.getBoundingBox(wrapper.findDropdown({ expandToViewport }).toSelector());
         const triggerBox = await page.getBoundingBox(wrapper.findNativeInput().toSelector());
         expect(dropdownBox.left).toEqual(triggerBox.left);
-        expect(dropdownBox.width).toEqual(triggerBox.width);
+        if (!expandToViewport) {
+          expect(dropdownBox.width).toEqual(triggerBox.width);
+        }
       })();
     });
   });

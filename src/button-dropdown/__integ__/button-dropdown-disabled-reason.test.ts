@@ -35,7 +35,7 @@ class ButtonDropdownDisabledReasonPage extends BasePageObject {
 const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownDisabledReasonPage(browser);
-    await browser.url('#/light/button-dropdown/disabled-reason');
+    await browser.url('#/light/button-dropdown/disabled-reason?visualRefresh=false');
     await page.waitForVisible(page.findButtonDropdown().toSelector());
     await page.openDropdown();
     await testFn(page);

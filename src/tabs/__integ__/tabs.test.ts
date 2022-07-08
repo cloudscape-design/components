@@ -93,7 +93,9 @@ test(
   setupTest(async page => {
     await page.click(wrapper.findTabLinkByIndex(6).toSelector());
     await page.toggleSmallSize();
-    await page.waitForAssertion(async () => expect(page.getScrollLeft()).resolves.toEqual(await page.getMaxScroll()));
+    await page.waitForAssertion(async () =>
+      expect(Math.round(await page.getScrollLeft())).toEqual(await page.getMaxScroll())
+    );
   })
 );
 
