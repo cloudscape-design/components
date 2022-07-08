@@ -16,6 +16,7 @@ export default function ContentLayout({ children, disableOverlap, header }: Cont
   const isVisualRefresh = useVisualRefresh(rootElement);
   const isOverlapDisabled = !children || !header || disableOverlap;
 
+  // Documentation to be added.
   const [overlapContainerQuery, overlapElement] = useContainerQuery(rect => rect.height);
 
   useLayoutEffect(
