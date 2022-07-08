@@ -70,7 +70,7 @@ export interface AutosuggestProps
   filteringType?: OptionsFilteringType;
 
   /**
-   * Specifies a function that generates the custom value indicator (for example, `\`Use "${value}"\``).
+   * Specifies a function that generates the custom value indicator (for example, `Use "${value}"`).
    */
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
 
