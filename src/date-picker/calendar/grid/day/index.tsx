@@ -4,7 +4,7 @@ import React from 'react';
 import styles from '../../../styles.css.js';
 import { DatePickerProps } from '../../../interfaces';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { renderDayLabel } from '../../utils/intl';
+import { getDateLabel } from '../../utils/intl';
 import clsx from 'clsx';
 
 interface GridDayProps {
@@ -30,7 +30,7 @@ const GridDay = ({
   onSelectDate,
   isDateInLastWeek,
 }: GridDayProps) => {
-  const labels = [renderDayLabel(locale, date)];
+  const labels = [getDateLabel(locale, date)];
   const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
   const isSelected = !!selectedDate && isSameDay(date, selectedDate);
   const isEnabled = !isDateEnabled || isDateEnabled(date);

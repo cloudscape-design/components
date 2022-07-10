@@ -27,31 +27,26 @@ export function renderMonthAndYear(locale: string, baseDate: Date): string {
  `toLocaleDateString` is expensive (10+ ms) to calculate in IE11.
 */
 const dayLabelCache = new Map<string, string>();
-export function renderDayLabel(locale: string, date: Date): string {
+export function getDateLabel(locale: string, date: Date): string;
+export function getDateLabel(locale: string, date: Date | null): string | null;
+export function getDateLabel(locale: string, date: Date | null): string | null {
+  if (!date) {
+    return null;
+  }
+
   const cacheKey = locale + date.getTime();
   const cachedValue = dayLabelCache.get(cacheKey);
   if (cachedValue) {
     return cachedValue;
   }
-
   const value = date.toLocaleDateString(locale, {
     weekday: 'long',
-    month: 'short',
+    month: 'long',
     day: 'numeric',
+    year: 'numeric',
   });
   dayLabelCache.set(cacheKey, value);
   return value;
-}
-
-export function getDateLabel(locale: string, date: Date | null): string | null {
-  return date
-    ? date.toLocaleDateString(locale, {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
-    : null;
 }
 
 export function renderTimeLabel(locale: string, date: Date, format?: TimeInputProps.Format): string {

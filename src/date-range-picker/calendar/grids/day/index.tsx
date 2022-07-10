@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from '../../../interfaces';
 import { getDaysInMonth, isAfter, isBefore, isLastDayOfMonth, isSameMonth, isToday as isTodayFn } from 'date-fns';
-import { renderDayLabel } from '../../../../date-picker/calendar/utils/intl';
+import { getDateLabel } from '../../../../date-picker/calendar/utils/intl';
 import clsx from 'clsx';
 import { KeyCode } from '../../../../internal/keycode.js';
 import { formatDate } from '../../../../date-picker/calendar/utils/date.js';
@@ -90,7 +90,7 @@ const GridDay = React.memo(
       }: GridDayProps,
       ref
     ) => {
-      const dayLabel = renderDayLabel(locale, date);
+      const dayLabel = getDateLabel(locale, date);
 
       const labels = [dayLabel];
 

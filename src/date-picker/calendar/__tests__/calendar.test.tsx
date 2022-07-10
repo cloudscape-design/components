@@ -475,6 +475,14 @@ describe('Date picker calendar', () => {
         'TEST PREV MONTH'
       );
     });
+
+    test('should add date label to date button in the calendar', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, value: '2022-02-10' });
+      act(() => wrapper.findOpenCalendarButton().click());
+      expect(wrapper.findCalendar()!.findSelectedDate().getElement().getAttribute('aria-label')).toBe(
+        'Thursday, February 10, 2022'
+      );
+    });
   });
 
   describe('keyboard navigation with no entered value', () => {
