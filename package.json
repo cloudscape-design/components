@@ -1,6 +1,11 @@
 {
   "name": "@cloudscape-design/components-monorepo",
   "version": "3.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudscape-design/components.git"
+  },
+  "homepage": "https://cloudscape.design",
   "files": [],
   "scripts": {
     "quick-build": "gulp quick-build",
