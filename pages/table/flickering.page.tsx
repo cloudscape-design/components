@@ -40,7 +40,7 @@ export default function App() {
         display: 'flex',
         alignItems: 'stretch',
         flexWrap: 'nowrap',
-        width: '100%',
+        width: 'calc(100% - 32px)',
         margin: '16px',
       }}
     >
@@ -48,7 +48,6 @@ export default function App() {
       <div style={{ display: 'flex', flexGrow: 1 }}>
         <Table<Instance>
           {...collectionProps}
-          stickyHeader={true}
           resizableColumns={true}
           header={
             <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
