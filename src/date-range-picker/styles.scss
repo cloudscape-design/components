@@ -16,7 +16,6 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
 
 .root {
   @include styles.styles-reset;
-  max-width: 32em;
 }
 
 .trigger-wrapper {

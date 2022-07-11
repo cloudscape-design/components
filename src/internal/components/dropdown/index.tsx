@@ -112,9 +112,11 @@ const Dropdown = ({
   footer,
   dropdownId,
   stretchTriggerHeight = false,
+  // TODO: What?
   stretchWidth = true,
-  stretchHeight = false,
   stretchToTriggerWidth = true,
+  // TODO
+  stretchHeight = false,
   expandToViewport = false,
   preferCenter = false,
   interior = false,

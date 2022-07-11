@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   DateRangePicker,
@@ -11,9 +11,13 @@ import {
   SegmentedControl,
   FormField,
 } from '~components';
+import AppContext, { AppContextType } from '../app/app-context';
 import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
+type DateRangePickerDemoContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;
+
 export default function DatePickerScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [showRelativeOptions, setShowRelativeOptions] = useState(true);
   const [dateOnly, setDateOnly] = useState(false);
   const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
@@ -39,6 +43,12 @@ export default function DatePickerScenario() {
           <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
             Date-only
           </Checkbox>
+          <Checkbox
+            checked={urlParams.expandToViewport}
+            onChange={event => setUrlParams({ expandToViewport: event.detail.checked })}
+          >
+            Expand to viewport
+          </Checkbox>
         </SpaceBetween>
         <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
         <FormField label="Date Range Picker field">
@@ -53,6 +63,7 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
+            expandToViewport={urlParams.expandToViewport}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>
