@@ -27,13 +27,7 @@ export function renderMonthAndYear(locale: string, baseDate: Date): string {
  `toLocaleDateString` is expensive (10+ ms) to calculate in IE11.
 */
 const dayLabelCache = new Map<string, string>();
-export function getDateLabel(locale: string, date: Date): string;
-export function getDateLabel(locale: string, date: Date | null): string | null;
-export function getDateLabel(locale: string, date: Date | null): string | null {
-  if (!date) {
-    return null;
-  }
-
+export function getDateLabel(locale: string, date: Date): string {
   const cacheKey = locale + date.getTime();
   const cachedValue = dayLabelCache.get(cacheKey);
   if (cachedValue) {

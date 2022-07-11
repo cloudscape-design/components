@@ -195,7 +195,7 @@ const DatePicker = React.forwardRef(
             ariaLabel={
               openCalendarAriaLabel &&
               openCalendarAriaLabel(
-                getDateLabel(normalizedLocale, value.length === 10 ? memoizedDate('value', value) : null)
+                value.length === 10 ? getDateLabel(normalizedLocale, memoizedDate('value', value)) : null
               )
             }
             disabled={disabled || readOnly}
