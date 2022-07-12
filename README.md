@@ -15,7 +15,7 @@ You can [create bug reports or feature requests](https://github.com/cloudscape-d
 
 ## Contributing
 
-The [contribution guidelines]([/CONTRIBUTING.md](https://github.com/cloudscape-design/components/blob/main/CONTRIBUTING.md) contains information on how to contribute, as well as our support model and versioning strategy.
+The [contribution guidelines](https://github.com/cloudscape-design/components/blob/main/CONTRIBUTING.md) contains information on how to contribute, as well as our support model and versioning strategy.
 
 ## License
 
