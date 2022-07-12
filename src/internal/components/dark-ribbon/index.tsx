@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import { useMutationObserver } from '../../hooks/use-mutation-observer';
+import { useAttributesMutationObserver } from '../../hooks/use-mutation-observer';
 import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
 import styles from './styles.css.js';
 
@@ -34,7 +34,7 @@ export default function DarkRibbon({ children, isRefresh, hasPlainStyling }: Dar
       newRight => (to.style.right = newRight)
     );
   });
-  useMutationObserver(containerRef, node => {
+  useAttributesMutationObserver(containerRef, node => {
     if (fillRef.current) {
       syncSizes(node, fillRef.current);
     }

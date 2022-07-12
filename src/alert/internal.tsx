@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { IconProps } from '../icon/interfaces';
@@ -42,10 +42,9 @@ export default function InternalAlert({
   const baseProps = getBaseProps(rest);
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const refObject = useRef(null);
-  const mergedRef = useMergeRefs(breakpointRef, refObject, __internalRootRef);
+  const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
-  const isRefresh = useVisualRefresh(refObject);
+  const isRefresh = useVisualRefresh();
   const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
 
   const actionButton = action || (

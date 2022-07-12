@@ -47,7 +47,7 @@ const AppLayout = React.forwardRef(
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
-    const isRefresh = useVisualRefresh(__internalRootRef);
+    const isRefresh = useVisualRefresh();
 
     // This re-builds the props including the default values
     const props = { contentType, headerSelector, footerSelector, ...rest };

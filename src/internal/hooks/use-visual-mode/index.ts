@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { isMotionDisabled } from '../../motion';
 import { findUpUntil } from '../../utils/dom';
-import { useMutationObserver } from '../use-mutation-observer';
+import { useAttributesMutationObserver, useMutationObserver } from '../use-mutation-observer';
 
 export function useCurrentMode(elementRef: React.RefObject<HTMLElement>) {
   const [value, setValue] = useState<'light' | 'dark'>('light');
-  useMutationObserver(elementRef, node => {
+  useAttributesMutationObserver(elementRef, node => {
     const darkModeParent = findUpUntil(
       node,
       node => node.classList.contains('awsui-polaris-dark-mode') || node.classList.contains('awsui-dark-mode')
@@ -20,7 +20,7 @@ export function useCurrentMode(elementRef: React.RefObject<HTMLElement>) {
 
 export function useDensityMode(elementRef: React.RefObject<HTMLElement>) {
   const [value, setValue] = useState<'comfortable' | 'compact'>('comfortable');
-  useMutationObserver(elementRef, node => {
+  useAttributesMutationObserver(elementRef, node => {
     const compactModeParent = findUpUntil(
       node,
       node => node.classList.contains('awsui-polaris-compact-mode') || node.classList.contains('awsui-compact-mode')
@@ -30,22 +30,21 @@ export function useDensityMode(elementRef: React.RefObject<HTMLElement>) {
   return value;
 }
 
-export function useVisualRefresh(elementRef: React.RefObject<HTMLElement>) {
+export function useVisualRefresh() {
   const [value, setValue] = useState(Boolean(ALWAYS_VISUAL_REFRESH));
-  useMutationObserver(elementRef, node => {
+  useMutationObserver('body', body => {
     const supportsCSSVariables = window.CSS?.supports?.('color', 'var(--test-var)');
     if (!supportsCSSVariables || ALWAYS_VISUAL_REFRESH) {
       return;
     }
-    const visualRefreshParent = findUpUntil(node, node => node.classList.contains('awsui-visual-refresh'));
-    setValue(!!visualRefreshParent);
+    setValue(body.classList.contains('awsui-visual-refresh'));
   });
   return value;
 }
 
 export function useReducedMotion(elementRef: React.RefObject<HTMLElement>) {
   const [value, setValue] = useState(false);
-  useMutationObserver(elementRef, node => {
+  useAttributesMutationObserver(elementRef, node => {
     setValue(isMotionDisabled(node));
   });
   return value;

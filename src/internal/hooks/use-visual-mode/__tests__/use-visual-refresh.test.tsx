@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import { useVisualRefresh } from '../index';
 import { render, screen } from '@testing-library/react';
 import { mutate } from './utils';
@@ -17,28 +17,25 @@ afterEach(() => {
 });
 
 describe('useVisualRefresh with locked visual refresh mode', () => {
-  function RefreshRender() {
-    const ref = useRef(null);
-    const isRefresh = useVisualRefresh(ref);
+  function App() {
+    const isRefresh = useVisualRefresh();
     return (
-      <div ref={ref} data-testid="current-mode">
-        {isRefresh.toString()}
-      </div>
+      <body>
+        <div data-testid="current-mode">{isRefresh.toString()}</div>
+      </body>
     );
   }
 
   test('should return true when the environment is locked in visual refresh mode', () => {
-    render(<RefreshRender />);
-
+    render(<App />);
     expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
   });
 
   test('cannot not change visual refresh state', async () => {
-    const { container } = render(<RefreshRender />);
-
-    await mutate(() => container.classList.add('awsui-visual-refresh'));
+    render(<App />);
+    await mutate(() => document.body.classList.add('awsui-visual-refresh'));
     expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
-    await mutate(() => container.classList.remove('awsui-visual-refresh'));
+    await mutate(() => document.body.classList.remove('awsui-visual-refresh'));
     expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
   });
 });

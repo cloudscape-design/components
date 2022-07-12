@@ -44,7 +44,7 @@ export const useStickyHeader = (
   const { stickyOffsetTop } = useAppLayoutContext();
   const effectiveStickyOffset = __stickyOffset ?? (usesBodyScroll ? stickyOffsetTop : 0);
   const isSticky = useSupportsStickyHeader() && !!__stickyHeader;
-  const isRefresh = useVisualRefresh(rootRef);
+  const isRefresh = useVisualRefresh();
 
   /**
    * The AppLayout refactor removed the need for passing the sticky offset in px all the time through the
