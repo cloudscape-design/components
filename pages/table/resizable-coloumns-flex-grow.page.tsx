@@ -6,6 +6,7 @@ import Box from '~components/box';
 import Button from '~components/button';
 import Table from '~components/table';
 import { columnsConfig, EmptyState } from './shared-configs';
+import Header from '~components/header';
 
 export default function () {
   const { collectionProps } = useCollection([], {
@@ -22,6 +23,8 @@ export default function () {
 
   return (
     <>
+      <Header variant="h1">Resizable Columns Flex-Grow</Header>
+      <Box>Resize any column and reduce screen width to trigger table flickering.</Box>
       <div
         style={{
           display: 'flex',
