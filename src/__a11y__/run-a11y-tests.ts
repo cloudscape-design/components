@@ -19,11 +19,7 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
 }
 
 function urlFormatter(inputUrl: string, theme: Theme, mode: Mode) {
-  const baseUrl = `#/${mode}/${inputUrl}`;
-  if (theme.indexOf('visual-refresh') !== -1) {
-    return `${baseUrl}?visualRefresh=true`;
-  }
-  return baseUrl;
+  return `#/${mode}/${inputUrl}?visualRefresh=${theme.indexOf('visual-refresh') !== -1 ? 'true' : 'false'}`;
 }
 
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {

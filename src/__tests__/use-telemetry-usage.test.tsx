@@ -80,7 +80,7 @@ describe('useTelemetry hook is used in all public components', () => {
           JSON.stringify({
             o: 'main',
             s: lowerCaseComponentName,
-            t: 'dev',
+            t: 'default',
             a: 'used',
             f: 'react',
             v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),
@@ -106,7 +106,7 @@ describe('useTelemetry hook is used in all public components', () => {
         JSON.stringify({
           o: 'main',
           s: 'button',
-          t: 'dev',
+          t: 'default',
           a: 'used',
           f: 'react',
           v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),
@@ -123,7 +123,7 @@ describe('useTelemetry hook is used in all public components', () => {
         JSON.stringify({
           o: 'custom',
           s: 'button',
-          t: 'dev',
+          t: 'default',
           a: 'used',
           f: 'react',
           v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),

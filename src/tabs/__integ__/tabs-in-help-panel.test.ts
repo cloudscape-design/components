@@ -10,7 +10,8 @@ const tabsWrapper = createWrapper().findTabs();
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await browser.url('#/light/tabs/in-app-layout-help-panel/?motionDisabled=true');
+    // TODO: Remove VR flag once AWSUI-18705 is fixed
+    await browser.url('#/light/tabs/in-app-layout-help-panel/?motionDisabled=true&visualRefresh=false');
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
   });

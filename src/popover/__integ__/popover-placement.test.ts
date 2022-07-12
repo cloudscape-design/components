@@ -36,7 +36,7 @@ type Scenario = [props: SetupProps, expectation: Expectation];
 const centerBottom: Expectation = (trigger, container, arrow) => {
   const arrowCenter = arrow.left + arrow.width / 2;
   expect(trigger.bottom).toBeLessThan(container.top);
-  expect((arrowCenter - trigger.left) / 10).toBeCloseTo((trigger.right - arrowCenter) / 10, 1);
+  expect(Math.round(arrowCenter - trigger.left)).toEqual(Math.round(trigger.right - arrowCenter));
 };
 
 const rightBottom: Expectation = (trigger, container, arrow) => {
@@ -58,7 +58,7 @@ const leftBottom: Expectation = (trigger, container, arrow) => {
 const centerTop: Expectation = (trigger, container, arrow) => {
   const arrowCenter = arrow.left + arrow.width / 2;
   expect(trigger.top).toBeGreaterThan(container.bottom);
-  expect((arrowCenter - trigger.left) / 10).toBeCloseTo((trigger.right - arrowCenter) / 10, 1);
+  expect(Math.round(arrowCenter - trigger.left)).toEqual(Math.round(trigger.right - arrowCenter));
 };
 
 const rightTop: Expectation = (trigger, container, arrow) => {
@@ -79,7 +79,7 @@ const leftTop: Expectation = (trigger, container, arrow) => {
 
 const bottomRight: Expectation = (trigger, container) => {
   expect(trigger.bottom).toBeLessThan(container.top);
-  expect(trigger.left).toEqual(container.left);
+  expect(Math.round(trigger.left)).toEqual(Math.round(container.left));
 };
 
 const bottomLeft: Expectation = (trigger, container) => {
@@ -89,7 +89,7 @@ const bottomLeft: Expectation = (trigger, container) => {
 
 const topRight: Expectation = (trigger, container) => {
   expect(trigger.top).toBeGreaterThan(container.bottom);
-  expect(trigger.left).toEqual(container.left);
+  expect(Math.round(trigger.left)).toEqual(Math.round(container.left));
 };
 
 const topLeft: Expectation = (trigger, container) => {

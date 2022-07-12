@@ -37,10 +37,10 @@ class CustomPropertyPageObject extends BasePageObject {
 
 describe('CSS Custom Properties', () => {
   test.each<[string, string, string?]>([
-    ['light', `#light`],
-    ['dark', '#dark'],
-    ['compact', '#light/?density=compact'],
-    ['reduced-motion', '#light/?motionDisabled=true'],
+    ['light', `#light/?visualRefresh=false`],
+    ['dark', '#dark/?visualRefresh=false'],
+    ['compact', '#light/?visualRefresh=false&density=compact'],
+    ['reduced-motion', '#light/?visualRefresh=false&motionDisabled=true'],
     ['visual-refresh', '#light/?visualRefresh=true'],
     ['visual-refresh-dark', '#dark/?visualRefresh=true'],
     [

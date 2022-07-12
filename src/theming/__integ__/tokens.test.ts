@@ -39,6 +39,8 @@ const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ColorTokensMosaikPage(browser);
     await browser.url('#/light/theming/tokens');
+    // The default theme is VR by default, so we toggle once to go to classic mode
+    await page.toggleVisualRefresh();
     await testFn(page);
   });
 };

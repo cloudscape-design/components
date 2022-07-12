@@ -25,7 +25,11 @@ describe('Dropdown and trigger element alignment', () => {
         const dropdownBox = await page.getBoundingBox(wrapper.findDropdown({ expandToViewport }).toSelector());
         const triggerBox = await page.getBoundingBox(wrapper.findNativeInput().toSelector());
         expect(dropdownBox.left).toEqual(triggerBox.left);
-        expect(dropdownBox.width).toEqual(triggerBox.width);
+
+        // TODO: Remove the condition once AWSUI-16369 is resolved
+        if (!expandToViewport) {
+          expect(dropdownBox.width).toEqual(triggerBox.width);
+        }
       })();
     });
   });

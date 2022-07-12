@@ -93,7 +93,7 @@ class TablePage extends BasePageObject {
 const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
   return useBrowser({ ...defaultScreen }, async browser => {
     const page = new TablePage(browser);
-    await browser.url('#/light/table/resizable-columns');
+    await browser.url('#/light/table/resizable-columns?visualRefresh=false');
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
     await testFn(page);
   });

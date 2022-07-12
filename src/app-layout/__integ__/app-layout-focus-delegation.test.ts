@@ -7,8 +7,14 @@ import { viewports } from './constants';
 
 const wrapper = createWrapper().findAppLayout();
 
-function setupTest(testFn: (page: BasePageObject) => Promise<void>, url = '#/light/app-layout/with-split-panel') {
+function setupTest(
+  testFn: (page: BasePageObject) => Promise<void>,
+  { pageName = 'with-split-panel', visualRefresh = false, splitPanelPosition = '' }
+) {
   return useBrowser(async browser => {
+    const url = `#/light/app-layout/${pageName}?visualRefresh=${visualRefresh}${
+      splitPanelPosition ? `&splitPanelPosition=${splitPanelPosition}` : ''
+    }`;
     const page = new BasePageObject(browser);
     await page.setWindowSize(viewports.desktop);
     await browser.url(url);
@@ -21,72 +27,94 @@ function setupTest(testFn: (page: BasePageObject) => Promise<void>, url = '#/lig
   describe(`visualRefresh=${visualRefresh}`, () => {
     test(
       'split panel focus toggles between open and close buttons',
-      setupTest(async page => {
-        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}`)
+      setupTest(
+        async page => {
+          await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
+        },
+        { pageName: 'with-split-panel', visualRefresh }
+      )
     );
 
     test(
       'tools panel focus toggles between open and close buttons',
-      setupTest(async page => {
-        await page.click(wrapper.findToolsToggle().toSelector());
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}`)
+      setupTest(
+        async page => {
+          await page.click(wrapper.findToolsToggle().toSelector());
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
+        },
+        { pageName: 'with-split-panel', visualRefresh }
+      )
     );
 
     test(
       'navigation panel focus toggles between open and close buttons',
-      setupTest(async page => {
-        await page.click(wrapper.findNavigationClose().toSelector());
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findNavigationClose().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findNavigationToggle().toSelector())).resolves.toBe(true);
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findNavigationClose().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}`)
+      setupTest(
+        async page => {
+          await page.click(wrapper.findNavigationClose().toSelector());
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findNavigationClose().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findNavigationToggle().toSelector())).resolves.toBe(true);
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findNavigationClose().toSelector())).resolves.toBe(true);
+        },
+        { pageName: 'with-split-panel', visualRefresh }
+      )
     );
 
     test(
       'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position',
-      setupTest(async page => {
-        await page.setWindowSize({ width: 1000, height: 800 });
-        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.keys('Tab');
-        await page.keys('Enter');
-        await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}&splitPanelPosition=side`)
+      setupTest(
+        async page => {
+          await page.setWindowSize({ width: 1000, height: 800 });
+          await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+          await page.keys('Tab');
+          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
+        },
+        { pageName: 'with-split-panel', visualRefresh, splitPanelPosition: 'side' }
+      )
     );
 
     test(
       'focuses split panel preferences button when its position changes from bottom to side',
-      setupTest(async page => {
-        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-        await page.keys(['Tab', 'Right', 'Tab', 'Tab', 'Enter']);
-        await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}&splitPanelPosition=bottom`)
+      setupTest(
+        async page => {
+          await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+          await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
+          await page.keys(['Tab', 'Right', 'Tab', 'Tab', 'Enter']);
+          await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(
+            true
+          );
+        },
+        { pageName: 'with-split-panel', visualRefresh, splitPanelPosition: 'bottom' }
+      )
     );
 
     test(
       'focuses split panel preferences button when its position changes from side to bottom',
-      setupTest(async page => {
-        await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-        await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-        await page.keys(['Tab', 'Left', 'Tab', 'Tab', 'Enter']);
-        await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(true);
-      }, `#/light/app-layout/with-split-panel/?visualRefresh=${visualRefresh}&splitPanelPosition=side`)
+      setupTest(
+        async page => {
+          await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+          await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
+          await page.keys(['Tab', 'Left', 'Tab', 'Tab', 'Enter']);
+          await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(
+            true
+          );
+        },
+        { pageName: 'with-split-panel', visualRefresh, splitPanelPosition: 'side' }
+      )
     );
   })
 );

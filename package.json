@@ -12,9 +12,8 @@
     "test:integ": "gulp test:integ",
     "test:visual": "./backstop/node_modules/.bin/backstop --config backstop.config.js",
     "lint": "eslint --ignore-path .gitignore --ext ts,tsx,js . && stylelint --ignore-path .gitignore '{src,pages}/**/*.{css,scss}'",
-    "start": "THEME=default gulp watch & THEME=default NODE_ENV=development webpack serve --config pages/webpack.config.js",
-    "start:dev": "THEME=dev gulp watch & THEME=dev NODE_ENV=development webpack serve --config pages/webpack.config.js",
-    "start:integ": "THEME=dev NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
+    "start": "gulp watch & NODE_ENV=development webpack serve --config pages/webpack.config.js",
+    "start:integ": "NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
     "preinstall": "./scripts/prepare-package-lock.js",
     "prepare": "husky install"
   },

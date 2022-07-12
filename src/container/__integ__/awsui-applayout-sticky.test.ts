@@ -36,7 +36,7 @@ function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutSti
   return useBrowser(async browser => {
     const page = new AppLayoutStickyPage(browser);
     await page.setWindowSize(viewport);
-    await browser.url('#/light/container/sticky-with-app-layout');
+    await browser.url('#/light/container/sticky-with-app-layout?visualRefresh=false');
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
   });
