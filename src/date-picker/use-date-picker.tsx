@@ -7,8 +7,10 @@ import { normalizeLocale } from './calendar/utils/locales';
 import { CalendarTypes } from './calendar/definitions';
 import { formatDate } from './calendar/utils/date';
 import { usePrevious } from '../internal/hooks/use-previous';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { DatePickerProps } from './interfaces';
 
-export function UseDatePicker({ locale, startOfWeek, value }: UseDatePickerProps) {
+export function useDatePicker({ locale, startOfWeek, value, onChange }: UseDatePickerProps) {
   const [calendarHasFocus, setCalendarHasFocus] = useState<boolean>(false);
   const normalizedLocale = normalizeLocale('DatePicker', locale ?? '');
   const normalizedStartOfWeek = (
@@ -33,6 +35,7 @@ export function UseDatePicker({ locale, startOfWeek, value }: UseDatePickerProps
     setDisplayedDate(formattedDate);
     setCalendarHasFocus(false);
     setFocusedDate(null);
+    fireNonCancelableEvent(onChange, { value: formattedDate });
   };
 
   const onDateFocusHandler = ({ date }: CalendarTypes.DateDetailNullable) => {
@@ -61,10 +64,14 @@ export function UseDatePicker({ locale, startOfWeek, value }: UseDatePickerProps
   return {
     normalizedLocale,
     normalizedStartOfWeek,
+    defaultDisplayedDate,
     displayedDate,
+    setDisplayedDate,
     selectedDate,
+    setSelectedDate,
     focusedDate,
     calendarHasFocus,
+    setCalendarHasFocus,
     onChangeMonthHandler,
     onSelectDateHandler,
     onDateFocusHandler,
@@ -75,4 +82,5 @@ export interface UseDatePickerProps {
   locale: string;
   startOfWeek: number | undefined;
   value: string;
+  onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail> | undefined;
 }
