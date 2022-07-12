@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import { DatePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { memoizedDate } from './calendar/utils/date';
@@ -32,12 +32,9 @@ const DatePickerEmbedded = ({
     value,
   });
 
-  const calendarRef = useRef<HTMLDivElement>(null);
-
   return (
     <div>
       <Calendar
-        ref={calendarRef}
         selectedDate={memoizedDate('value', selectedDate)}
         focusedDate={memoizedDate('focused', focusedDate)}
         displayedDate={memoizedDate('displayed', displayedDate)}
