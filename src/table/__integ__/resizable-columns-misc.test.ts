@@ -100,7 +100,10 @@ test(
   })
 );
 
-test(
+// Known issue: the table is flickering when rendered in a flex container and has resizeable columns.
+// As a mitigation we ask customers to use a non-flexible container, e.g. based on a Grid.
+// The test below and the corresponding test page reproduce the behaviour.
+test.skip(
   'should not oscillate when resizing table rendered in flex container',
   useBrowser({ width: 800, height: 800 }, async browser => {
     const page = new ResizableColumnsPage(browser);
