@@ -9,13 +9,16 @@ import { formatDate } from './calendar/utils/date';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { DatePickerProps } from './interfaces';
+import { ButtonProps } from '../button/interfaces';
 
-export function useDatePicker({ locale, startOfWeek, value, onChange }: UseDatePickerProps) {
+export function useDatePicker({ locale, startOfWeek, value, onChange, buttonRef }: UseDatePickerProps) {
   const [calendarHasFocus, setCalendarHasFocus] = useState<boolean>(false);
   const normalizedLocale = normalizeLocale('DatePicker', locale ?? '');
   const normalizedStartOfWeek = (
     typeof startOfWeek === 'number' ? startOfWeek : getWeekStartByLocale(normalizedLocale)
   ) as DayIndex;
+
+  const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
   const defaultSelectedDate = value.length >= 10 ? value : null;
   const [selectedDate, setSelectedDate] = useState<string | null>(defaultSelectedDate);
@@ -31,6 +34,8 @@ export function useDatePicker({ locale, startOfWeek, value, onChange }: UseDateP
 
   const onSelectDateHandler = ({ date }: CalendarTypes.DateDetail) => {
     const formattedDate = formatDate(date);
+    buttonRef?.current?.focus();
+    setIsDropDownOpen(false);
     setSelectedDate(formattedDate);
     setDisplayedDate(formattedDate);
     setCalendarHasFocus(false);
@@ -65,6 +70,8 @@ export function useDatePicker({ locale, startOfWeek, value, onChange }: UseDateP
     normalizedLocale,
     normalizedStartOfWeek,
     defaultDisplayedDate,
+    isDropDownOpen,
+    setIsDropDownOpen,
     displayedDate,
     setDisplayedDate,
     selectedDate,
@@ -82,5 +89,6 @@ export interface UseDatePickerProps {
   locale: string;
   startOfWeek: number | undefined;
   value: string;
+  buttonRef?: React.RefObject<ButtonProps.Ref>;
   onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail> | undefined;
 }

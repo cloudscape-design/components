@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef, useState } from 'react';
+import React, { Ref, useCallback, useRef } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import Calendar from './calendar';
@@ -59,10 +59,25 @@ const DatePicker = React.forwardRef(
   ) => {
     const { __internalRootRef } = useBaseComponent('DatePicker');
 
+    const baseProps = getBaseProps(rest);
+
+    const internalInputRef = useRef<HTMLInputElement>(null);
+    const buttonRef = useRef<ButtonProps.Ref>(null);
+    const calendarRef = useRef<HTMLDivElement>(null);
+    useForwardFocus(ref, internalInputRef);
+
+    const rootRef = useRef<HTMLDivElement>(null);
+    const dropdownId = useUniqueId('calender');
+    const mergedRef = useMergeRefs(rootRef, __internalRootRef);
+
+    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
+
     const {
       normalizedLocale,
       normalizedStartOfWeek,
       defaultDisplayedDate,
+      isDropDownOpen,
+      setIsDropDownOpen,
       displayedDate,
       setDisplayedDate,
       selectedDate,
@@ -77,27 +92,13 @@ const DatePicker = React.forwardRef(
       startOfWeek,
       value,
       onChange,
+      buttonRef,
     });
-
-    const baseProps = getBaseProps(rest);
-    const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-
-    const internalInputRef = useRef<HTMLInputElement>(null);
-    const buttonRef = useRef<ButtonProps.Ref>(null);
-    const calendarRef = useRef<HTMLDivElement>(null);
-    useForwardFocus(ref, internalInputRef);
-
-    const rootRef = useRef<HTMLDivElement>(null);
-    const dropdownId = useUniqueId('calender');
-    const mergedRef = useMergeRefs(rootRef, __internalRootRef);
-
-    useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
-
     const onDropdownCloseHandler = useCallback(() => {
       setDisplayedDate(defaultDisplayedDate);
       setCalendarHasFocus(false);
       setIsDropDownOpen(false);
-    }, [defaultDisplayedDate, setCalendarHasFocus, setDisplayedDate]);
+    }, [defaultDisplayedDate, setCalendarHasFocus, setDisplayedDate, setIsDropDownOpen]);
 
     const onButtonClickHandler = () => {
       if (!isDropDownOpen) {
