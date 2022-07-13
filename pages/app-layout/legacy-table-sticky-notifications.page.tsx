@@ -1,0 +1,50 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import AppLayout from '~components/app-layout';
+import Flashbar from '~components/flashbar';
+import Table from '~components/table';
+import Header from '~components/header';
+import labels from './utils/labels';
+import { Breadcrumbs } from './utils/content-blocks';
+import ScreenshotArea from '../utils/screenshot-area';
+
+export default function () {
+  return (
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ariaLabels={labels}
+        stickyNotifications={true}
+        breadcrumbs={<Breadcrumbs />}
+        disableBodyScroll={true}
+        contentType="table"
+        notifications={
+          <Flashbar
+            items={[
+              {
+                type: 'success',
+                header: 'Success message',
+              },
+              {
+                type: 'info',
+                header: 'Info message',
+              },
+            ]}
+          />
+        }
+        content={
+          <>
+            <h1>Sticky Notifications + Table Header</h1>
+            <Table
+              header={<Header>Sticky Table Header 1</Header>}
+              footer={<div style={{ height: '100vh' }}></div>}
+              items={[]}
+              columnDefinitions={[]}
+              stickyHeader={true}
+            />
+          </>
+        }
+      />
+    </ScreenshotArea>
+  );
+}

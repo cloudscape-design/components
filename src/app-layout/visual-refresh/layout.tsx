@@ -115,6 +115,7 @@ export default function Layout({ children }: LayoutProps) {
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
+          [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
