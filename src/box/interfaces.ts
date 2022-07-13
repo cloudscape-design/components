@@ -45,6 +45,7 @@ export interface BoxProps extends BaseComponentProps {
    * ```
    *
    * The size can be `n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`, where `n` stands for none.
+   * Sizes are automatically scaled down in compact mode.
    *
    *  For example, `margin="s"` adds a small margin to all sides.
    * `margin={{ right: "l", bottom: "s" }}` adds a small margin to the bottom and a large margin to the right.
@@ -67,6 +68,7 @@ export interface BoxProps extends BaseComponentProps {
    * ```
    *
    * The size can be `n`, `xxxs`, `xxs`, `xs`, `s`, `m`, `l`, `xl`, `xxl`, `xxxl`, where `n` stands for none.
+   * Sizes are automatically scaled down in compact mode.
    *
    *  For example, `padding="s"` adds small padding to all sides.
    * `padding={{ right: "l", bottom: "s" }}` adds small padding to the bottom and large padding to the right.
