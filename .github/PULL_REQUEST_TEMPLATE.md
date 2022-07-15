@@ -1,56 +1,47 @@
-### Changes Done
+### Description
 
-[_Short description of the changes._]
+[_Include a summary of the changes and the related issue._]
 
-### Why?
+[_Also include relevant motivation and context._]
 
-[_Why is this change needed?_]
+### How has this been tested?
 
-### Testing
-
-[_How did you test your changes?_]
-
-[_Did you run screenshot tests in the dev-pipeline?_]
+[_How did you test to verify your changes?_]
 
 [_How can reviewers test these changes efficiently?_]
 
-\[_Check for unexpected visual regressions, see [`CONTRIBUTING.md`](CONTRIBUTING.md) for details._\]
+[_Check for unexpected visual regressions, see [`CONTRIBUTING.md`](CONTRIBUTING.md#run-visual-regression-tests) for details._]
 
-### Writing approval
+### Documentation changes
 
-[*Did you include our UX Writer if there are changes to content that will appear on the website (e.g. API documentation)?*]
+[*Do the changes include any API documentation changes?*]
+- [ ] _Yes, this change contains documentation changes._
+- [ ] _No._
 
 ### Related Links
 
-[*Ticket IDs (no internal links), related pull requests*]
+[*Attach any related links/pull request for this change*]
 
-### Review Checklist
+
+<details>
+   <summary>Review checklist</summary>
 
 _The following items are to be evaluated by the author(s) and the reviewer(s)._
 
 #### Correctness
 
-- [ ] _Changes are backward-compatible if not indicated._
-- [ ] _Changes are covered with automated tests if not indicated._
-- [ ] _Changes do not include unsupported browser features._
-- [ ] _Changes to UX were approved by the designer._
-- [ ] _Changes to UX were manually tested for accessibility._
+- [ ] _Changes are backward-compatible if not indicated, see [`CONTRIBUTING.md`](CONTRIBUTING.md#public-apis)._
+- [ ] _Changes do not include unsupported browser features, see [`CONTRIBUTING.md`](CONTRIBUTING.md#browsers-support)._
+- [ ] _Changes were manually tested for accessibility, see [accessibility guidelines](https://cloudscape.design/foundation/core-principles/accessibility/).
 
 #### Security
 
-- [ ] _Changes do not include XSS vulnerability._
-- [ ] _If the code handles URLs: all URLs are validated through [the `checkSafeUrl` function](https://github.com/cloudscape-design/components/blob/main/src/internal/utils/check-safe-url.ts)._
-
-#### Completeness
-
-- [ ] _All API changes were reviewed by the team and the corresponding doc is linked._
-- [ ] _All API doc strings were reviewed by the writer._
-- [ ] _If a bug bash was conducted to cover the changes, the corresponding doc is linked._
-- [ ] _The code, code comments, readme files, and CR combined provide enough context to understand the changes._
-- [ ] _Tickets are created for unresolved TODOs and comments._
+- [ ] _If the code handles URLs: all URLs are validated through [the `checkSafeUrl` function](https://github.com/cloudscape-design/components/blob/main/src/internal/utils/check-safe-url.ts).
 
 #### Testing
 
-- [ ] _Is there enough coverage with new/existing unit tests?_
-- [ ] _Is there enough coverage with new/existing integration tests?_
-- [ ] _Is there enough coverage with new/existing screenshot tests?_
+- [ ] _Changes are covered with new/existing unit tests?_
+- [ ] _Changes are covered with new/existing integration tests?_
+</details>
+
+By submitting this pull request, I confirm that you can use, modify, copy, and redistribute this contribution, under the terms of your choice.
