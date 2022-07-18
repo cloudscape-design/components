@@ -15,7 +15,7 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
+import { useContainerQuery, useResizeObserver } from '../../internal/hooks/container-queries';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
@@ -49,13 +49,12 @@ interface AppLayoutContextProps extends AppLayoutProps {
   setIsToolsOpen: (value: boolean) => void;
   setOffsetBottom: (value: number) => void;
   setSplitPanelReportedSize: (value: number) => void;
+  headerHeight: number;
+  footerHeight: number;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
-  // overwritten styles - marking as required since we provide default values in the context
-  headerSelector: string;
-  footerSelector: string;
 }
 
 // TODO simplify default params + typings
@@ -68,7 +67,8 @@ const defaults: AppLayoutContextProps = {
   disableContentHeaderOverlap: false,
   disableContentPaddings: false,
   dynamicOverlapHeight: 0,
-  footerSelector: '#b #f',
+  headerHeight: 0,
+  footerHeight: 0,
   handleNavigationClick: (value: boolean) => value,
   handleSplitPanelClick: () => {},
   handleSplitPanelPreferencesChange: () => {},
@@ -76,7 +76,6 @@ const defaults: AppLayoutContextProps = {
   handleToolsClick: (value: boolean) => value,
   hasDefaultToolsWidth: true,
   hasNotificationsContent: false,
-  headerSelector: '#b #h',
   isAnyPanelOpen: false,
   isMobile: false,
   isNavigationOpen: false,
@@ -136,6 +135,8 @@ export const AppLayoutProvider = React.forwardRef(
       navigationHide,
       navigationOpen: controlledNavigationOpen,
       contentType = 'default',
+      headerSelector = '#b #h',
+      footerSelector = '#b #h',
       children,
       ...props
     }: AppLayoutProviderProps,
@@ -281,6 +282,18 @@ export const AppLayoutProvider = React.forwardRef(
       },
       [isMobile, handleNavigationClick, handleToolsClick]
     );
+
+    /**
+     * Query the DOM for the header and footer elements based on the selectors provided
+     * by the properties and pass the heights to the custom property definitions.
+     */
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const getHeader = useCallback(() => document.querySelector(headerSelector), [headerSelector]);
+    useResizeObserver(getHeader, entry => setHeaderHeight(entry.borderBoxHeight));
+
+    const [footerHeight, setFooterHeight] = useState(0);
+    const getFooter = useCallback(() => document.querySelector(footerSelector), [footerSelector]);
+    useResizeObserver(getFooter, entry => setFooterHeight(entry.borderBoxHeight));
 
     /**
      * Set the default values for the minimum and maximum Split Panel width when it is
@@ -494,6 +507,8 @@ export const AppLayoutProvider = React.forwardRef(
           ...props,
           contentType,
           dynamicOverlapHeight,
+          headerHeight,
+          footerHeight,
           hasDefaultToolsWidth,
           handleNavigationClick,
           handleSplitPanelClick,
