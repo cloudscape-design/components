@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps, Focusable } from './interfaces';
+import React, { useEffect, useRef } from 'react';
+import { DateRangePickerProps } from './interfaces';
 import Calendar, { DayIndex } from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -15,9 +15,7 @@ import ModeSwitcher from './mode-switcher';
 import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
-import useFocusVisible from '../internal/hooks/focus-visible';
-
-const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
+import { useDateRangePicker } from './use-date-range-picker';
 
 /**
  * This function fills in a start and end time if they are missing.
@@ -59,23 +57,6 @@ export interface DateRangePickerDropdownProps
   ariaDescribedby?: string;
 }
 
-function getDefaultMode(
-  value: null | DateRangePickerProps.Value,
-  relativeOptions: readonly DateRangePickerProps.RelativeOption[],
-  rangeSelectorMode: DateRangePickerProps.RangeSelectorMode
-) {
-  if (value && value.type) {
-    return value.type;
-  }
-  if (rangeSelectorMode === 'relative-only') {
-    return 'relative';
-  }
-  if (rangeSelectorMode === 'absolute-only') {
-    return 'absolute';
-  }
-  return relativeOptions.length > 0 ? 'relative' : 'absolute';
-}
-
 export function DateRangePickerDropdown({
   locale = '',
   startOfWeek,
@@ -95,27 +76,29 @@ export function DateRangePickerDropdown({
   ariaLabelledby,
   ariaDescribedby,
 }: DateRangePickerDropdownProps) {
-  const focusVisible = useFocusVisible();
-  const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
+  const {
+    focusVisible,
+    focusRefs,
+    scrollableContainerRef,
+    rangeSelectionMode,
+    setRangeSelectionMode,
+    selectedAbsoluteRange,
+    setSelectedAbsoluteRange,
+    selectedRelativeRange,
+    setSelectedRelativeRange,
+    applyClicked,
+    setApplyClicked,
+    validationResult,
+    setValidationResult,
+    VALID_RANGE,
+  } = useDateRangePicker({
+    value,
+    relativeOptions,
+    rangeSelectorMode,
+    isValidRange,
+  });
+
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
-
-  const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
-    getDefaultMode(value, relativeOptions, rangeSelectorMode)
-  );
-
-  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
-    value?.type === 'absolute' ? value : null
-  );
-
-  const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
-    value?.type === 'relative' ? value : null
-  );
-
-  const [applyClicked, setApplyClicked] = useState<boolean>(false);
-
-  const [validationResult, setValidationResult] = useState<
-    DateRangePickerProps.ValidRangeResult | DateRangePickerProps.InvalidRangeResult
-  >(VALID_RANGE);
 
   const closeDropdown = () => {
     setApplyClicked(false);
@@ -147,13 +130,15 @@ export function DateRangePickerDropdown({
       const newValidationResult = isValidRange(visibleRange);
       setValidationResult(newValidationResult || VALID_RANGE);
     }
-  }, [applyClicked, isValidRange, rangeSelectionMode, selectedRelativeRange, selectedAbsoluteRange]);
-
-  const focusRefs = {
-    default: useRef<Focusable>(null),
-    'absolute-only': useRef<Focusable>(null),
-    'relative-only': useRef<Focusable>(null),
-  };
+  }, [
+    applyClicked,
+    isValidRange,
+    rangeSelectionMode,
+    selectedRelativeRange,
+    selectedAbsoluteRange,
+    VALID_RANGE,
+    setValidationResult,
+  ]);
 
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);
 
