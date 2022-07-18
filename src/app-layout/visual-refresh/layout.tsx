@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
 import { SplitPanelContext } from '../../internal/context/split-panel-context';
-import { useResizeObserver } from '../../internal/hooks/container-queries';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { AppLayoutProps } from '../interfaces';
@@ -27,9 +26,9 @@ export default function Layout({ children }: LayoutProps) {
     disableBodyScroll,
     disableContentHeaderOverlap,
     dynamicOverlapHeight,
-    footerSelector,
+    footerHeight,
     hasNotificationsContent,
-    headerSelector,
+    headerHeight,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
@@ -53,18 +52,6 @@ export default function Layout({ children }: LayoutProps) {
   } = useContext(SplitPanelContext);
 
   const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
-
-  /**
-   * Query the DOM for the header and footer elements based on the selectors provided
-   * by the properties and pass the heights to the custom property definitions.
-   */
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const getHeader = useCallback(() => document.querySelector(headerSelector), [headerSelector]);
-  useResizeObserver(getHeader, entry => setHeaderHeight(entry.borderBoxHeight));
-
-  const [footerHeight, setFooterHeight] = useState(0);
-  const getFooter = useCallback(() => document.querySelector(footerSelector), [footerSelector]);
-  useResizeObserver(getFooter, entry => setFooterHeight(entry.borderBoxHeight));
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);

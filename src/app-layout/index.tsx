@@ -22,7 +22,12 @@ import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SplitPanelContextProps, SplitPanelLastInteraction } from '../internal/context/split-panel-context';
-import { getSplitPanelDefaultSize, MAIN_PANEL_MIN_HEIGHT } from '../split-panel/utils/size-utils';
+import {
+  CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
+  CONSTRAINED_PAGE_HEIGHT,
+  getSplitPanelDefaultSize,
+  MAIN_PANEL_MIN_HEIGHT,
+} from '../split-panel/utils/size-utils';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
@@ -255,9 +260,13 @@ const OldAppLayout = React.forwardRef(
       if (typeof document === 'undefined') {
         return 0; // render the split panel in its minimum possible size
       } else if (disableBodyScroll && legacyScrollRootRef.current) {
-        return legacyScrollRootRef.current.clientHeight - MAIN_PANEL_MIN_HEIGHT;
+        const availableHeight = legacyScrollRootRef.current.clientHeight;
+        return availableHeight < CONSTRAINED_PAGE_HEIGHT ? availableHeight : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       } else {
-        return document.documentElement.clientHeight - headerHeight - footerHeight - MAIN_PANEL_MIN_HEIGHT;
+        const availableHeight = document.documentElement.clientHeight - headerHeight - footerHeight;
+        return availableHeight < CONSTRAINED_PAGE_HEIGHT
+          ? availableHeight - CONSTRAINED_MAIN_PANEL_MIN_HEIGHT
+          : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
 

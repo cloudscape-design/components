@@ -114,6 +114,20 @@ test(
   })
 );
 
+test(
+  `should have extended max height for constrained heights`,
+  setupTest(async page => {
+    // Simulating 200% zoom on medium screens (1366x768 / 2 ~= 680x360 ).
+    await page.setWindowSize({ width: 680, height: 360 });
+    await page.openPanel();
+    const { height } = await page.getWindowSize();
+    await page.dragResizerTo({ x: 0, y: height });
+    expect((await page.getSplitPanelSize()).height).toEqual(160);
+    await page.dragResizerTo({ x: 0, y: 0 });
+    expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(277);
+  })
+);
+
 [
   { url: '#/light/app-layout/disable-paddings-with-split-panel', name: 'paddings disabled' },
   { url: '#/light/app-layout/with-split-panel', name: 'paddings enabled' },
