@@ -4,4 +4,17 @@ labels: bug,figma,design
 body:
   - type: markdown
     attributes:
-      value: TBD
+      value: Use this template to report a bug in our [Figma libraries](TBD).
+  - type: textarea
+    attributes:
+      label: Describe the bug
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: Please confirm the following
+      options:
+        - label:
+            I agree to follow this project's [Code of
+            Conduct](../../CODE_OF_CONDUCT.md)
+          required: true
