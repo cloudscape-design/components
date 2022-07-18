@@ -10843,7 +10843,7 @@ character validation. You should use this property only when absolutely necessar
           Object {
             "name": "tagLimit",
             "optional": false,
-            "type": "(availableTags: number) => string",
+            "type": "(availableTags: number, tagLimit: number) => string",
           },
           Object {
             "name": "tagLimitExceeded",
