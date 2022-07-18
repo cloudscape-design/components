@@ -6,7 +6,6 @@ body:
   - type: markdown
     attributes:
       value: Use this template to report an issue or suggest an improvement in our [documentation website](TBD).
-body:
   - type: textarea
     id: description
     attributes:

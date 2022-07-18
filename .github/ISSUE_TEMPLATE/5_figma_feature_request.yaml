@@ -4,4 +4,17 @@ labels: enhancement,design,figma
 body:
   - type: markdown
     attributes:
-      value: TBD
+      value: Use this template to request a feature for our [Figma libraries](TBD).
+  - type: textarea
+    attributes:
+      label: Describe the feature
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: Please confirm the following
+      options:
+        - label:
+            I agree to follow this project's [Code of
+            Conduct](../../CODE_OF_CONDUCT.md)
+          required: true
