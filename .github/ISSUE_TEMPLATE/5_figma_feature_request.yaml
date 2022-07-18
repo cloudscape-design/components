@@ -1,5 +1,5 @@
-name: Figma - Feture request
-description: Request a feature for our [Figma libraries](https://www.figma.com/@cloudscape).
+name: Figma - Feature request
+description: Request a feature for our Figma libraries
 labels: enhancement,design,figma
 body:
   - type: markdown

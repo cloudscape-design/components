@@ -1,5 +1,5 @@
 name: Figma - Bug Report
-description: Report a bug in our [Figma libraries](https://www.figma.com/@cloudscape)
+description: Report a bug in our Figma libraries
 labels: bug,figma,design
 body:
   - type: markdown
