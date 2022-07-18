@@ -1,5 +1,5 @@
 name: Figma - Bug Report
-about: Report a bug in our Figma library
+description: Report a bug in our Figma library
 labels: bug,figma,design
 body:
   - type: markdown
