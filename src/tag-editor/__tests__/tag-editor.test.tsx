@@ -117,7 +117,7 @@ describe('Tag Editor component', () => {
       expect(removeButtonElement).toHaveTextContent(i18nStrings.removeButton);
       expect(undoPromptElement).toHaveTextContent(i18nStrings.undoPrompt);
       expect(undoButtonElement).toHaveTextContent(i18nStrings.undoButton);
-      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(48));
+      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(48, 50));
     });
 
     test('uses the correct string when the component has no tags', () => {
@@ -244,30 +244,30 @@ describe('Tag Editor component', () => {
       const { wrapper } = renderTagEditor();
       const additionalInfoElement = wrapper.findAdditionalInfo()!.getElement();
 
-      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(50));
+      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(50, 50));
     });
 
     test('uses the correct value when component contains existing tags', () => {
       const { wrapper } = renderTagEditor({ tags: [{ key: 'key', value: 'value', existing: true }] });
       const additionalInfoElement = wrapper.findAdditionalInfo()!.getElement();
 
-      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(49));
+      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(49, 50));
     });
 
     test('uses the correct value when tags are added to the component', () => {
       const { wrapper } = renderTagEditor({ tags: [{ key: 'key', value: 'value', existing: false }] });
       const additionalInfoElement = wrapper.findAdditionalInfo()!.getElement();
 
-      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(49));
+      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(49, 50));
     });
 
-    test('uses the correct value when existing tag)s are marked for removal', () => {
+    test('uses the correct value when existing tags are marked for removal', () => {
       const { wrapper } = renderTagEditor({
         tags: [{ key: 'key', value: 'value', existing: false, markedForRemoval: true }],
       });
       const additionalInfoElement = wrapper.findAdditionalInfo()!.getElement();
 
-      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(50));
+      expect(additionalInfoElement).toHaveTextContent(i18nStrings.tagLimit(50, 50));
     });
   });
 

@@ -31,8 +31,12 @@ export const I18N_STRINGS: TagEditorProps.I18nStrings = {
   invalidValueError:
     'Invalid value. Values can only contain alphanumeric characters, spaces and any of the following: _.:/=+@-',
   awsPrefixError: 'Cannot start with aws:',
-  tagLimit: availableTags =>
-    availableTags === 1 ? 'You can add up to 1 more tag.' : `You can add up to ${availableTags} more tags.`,
+  tagLimit: (availableTags, tagLimit) =>
+    availableTags === tagLimit
+      ? `You can up to ${tagLimit} tags.`
+      : availableTags === 1
+      ? 'You can add up to 1 more tag.'
+      : `You can add up to ${availableTags} more tags.`,
   tagLimitReached: tagLimit =>
     tagLimit === 1 ? 'You have reached the limit of 1 tag.' : `You have reached the limit of ${tagLimit} tags.`,
   tagLimitExceeded: tagLimit =>
