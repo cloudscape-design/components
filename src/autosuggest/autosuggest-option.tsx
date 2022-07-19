@@ -21,6 +21,7 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaSetsize?: number;
   ariaPosinset?: number;
+  isKeyboard?: boolean;
 }
 
 const AutosuggestOption = (
@@ -35,6 +36,7 @@ const AutosuggestOption = (
     screenReaderContent,
     ariaSetsize,
     ariaPosinset,
+    isKeyboard,
     ...rest
   }: AutosuggestOptionProps,
   ref: React.Ref<HTMLDivElement>
@@ -82,6 +84,7 @@ const AutosuggestOption = (
       screenReaderContent={screenReaderContent}
       ariaSetsize={ariaSetsize}
       ariaPosinset={ariaPosinset}
+      isKeyboard={isKeyboard}
     >
       {optionContent}
     </SelectableItem>

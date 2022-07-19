@@ -86,6 +86,7 @@ const VirtualList = ({
             screenReaderContent={screenReaderContent}
             ariaSetsize={filteredItems.length}
             ariaPosinset={index + 1}
+            isKeyboard={!usingMouse.current}
             {...optionProps}
           />
         );
