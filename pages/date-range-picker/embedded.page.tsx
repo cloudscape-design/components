@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, DateRangePickerProps, Link, Checkbox, SpaceBetween, SegmentedControl, FormField } from '~components';
-import { DateRangePickerEmbeddedDropdown } from '~components/date-range-picker/date-range-picker-embedded';
+import { DateRangePickerEmbedded } from '~components/date-range-picker/date-range-picker-embedded';
 import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
 export default function DatePickerScenario() {
@@ -34,7 +34,7 @@ export default function DatePickerScenario() {
         </SpaceBetween>
         <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
         <FormField label="Date Range Picker field">
-          <DateRangePickerEmbeddedDropdown
+          <DateRangePickerEmbedded
             startOfWeek={0}
             isSingleGrid={false}
             isDateEnabled={() => true}
