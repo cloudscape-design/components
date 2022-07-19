@@ -34,7 +34,7 @@ export interface DateRangePickerDropdownProps
   ariaDescribedby?: string;
 }
 
-export function DateRangePickerEmbeddedDropdown({
+export function DateRangePickerEmbedded({
   locale = '',
   startOfWeek,
   isDateEnabled,
@@ -59,7 +59,6 @@ export function DateRangePickerEmbeddedDropdown({
     setSelectedAbsoluteRange,
     selectedRelativeRange,
     setSelectedRelativeRange,
-    setApplyClicked,
     validationResult,
     setValidationResult,
     VALID_RANGE,
@@ -76,8 +75,6 @@ export function DateRangePickerEmbeddedDropdown({
       ref={scrollableContainerRef}
       className={styles.dropdown}
       tabIndex={0}
-      role="dialog"
-      aria-modal="true"
       aria-label={i18nStrings.ariaLabel}
       aria-labelledby={ariaLabelledby ?? i18nStrings.ariaLabelledby}
       aria-describedby={ariaDescribedby ?? i18nStrings.ariaDescribedby}
@@ -96,7 +93,6 @@ export function DateRangePickerEmbeddedDropdown({
                   mode={rangeSelectionMode}
                   onChange={(mode: 'absolute' | 'relative') => {
                     setRangeSelectionMode(mode);
-                    setApplyClicked(false);
                     setValidationResult(VALID_RANGE);
                   }}
                   i18nStrings={i18nStrings}
