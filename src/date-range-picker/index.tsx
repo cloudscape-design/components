@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
 import InternalBox from '../box/internal';
-import { DateRangePickerDropdown } from './dropdown';
+import { DateRangePickerEditor } from './editor';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import Dropdown from '../internal/components/dropdown';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker';
@@ -20,7 +20,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
-import { getBrowserTimezoneOffset, shiftTimeOffset, formatOffset, setTimeOffset } from './time-offset';
+import { getBrowserTimezoneOffset, shiftTimeOffset, formatOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -28,6 +28,7 @@ import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useDateRangePicker } from './use-date-range-picker';
 
 export { DateRangePickerProps };
 
@@ -78,23 +79,6 @@ function isDateOnly(value: null | DateRangePickerProps.Value) {
   return dateRegex.test(value.startDate) && dateRegex.test(value.endDate);
 }
 
-function formatValue(
-  value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset: number; dateOnly: boolean }
-): null | DateRangePickerProps.Value {
-  if (!value || value.type === 'relative') {
-    return value;
-  }
-  if (dateOnly) {
-    return {
-      type: 'absolute',
-      startDate: value.startDate.split('T')[0],
-      endDate: value.endDate.split('T')[0],
-    };
-  }
-  return setTimeOffset(value, timeOffset);
-}
-
 const DateRangePicker = React.forwardRef(
   (
     {
@@ -121,6 +105,12 @@ const DateRangePicker = React.forwardRef(
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
   ) => {
+    const { formatValue } = useDateRangePicker({
+      value,
+      relativeOptions,
+      rangeSelectorMode,
+    });
+
     const { __internalRootRef } = useBaseComponent('DateRangePicker');
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
@@ -266,7 +256,7 @@ const DateRangePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <DateRangePickerDropdown
+            <DateRangePickerEditor
               startOfWeek={normalizedStartOfWeek}
               locale={normalizedLocale}
               isSingleGrid={isSingleGrid}

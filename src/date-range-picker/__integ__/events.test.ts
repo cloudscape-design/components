@@ -47,7 +47,7 @@ describe.each<boolean>([false, true])('DatePicker blur events (expandTOViewport=
       await expect(page.isDropdownFocused()).resolves.toBe(true);
 
       // Click below everything
-      await page.clickPosition(100, 600);
+      await page.clickPosition(400, 80);
 
       await expect(page.getText('#onBlurEvent')).resolves.toBe('onBlur event called 1 times.');
       await expect(page.isDropdownOpen()).resolves.toBe(false);

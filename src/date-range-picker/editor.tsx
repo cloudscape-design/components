@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
-import { DateRangePickerProps } from './interfaces';
+import React, { useEffect, useRef, useState } from 'react';
+import { DateRangePickerProps, Focusable } from './interfaces';
 import Calendar, { DayIndex } from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -15,23 +15,10 @@ import ModeSwitcher from './mode-switcher';
 import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
+import useFocusVisible from '../internal/hooks/focus-visible';
 import { useDateRangePicker } from './use-date-range-picker';
 
-/**
- * This function fills in a start and end time if they are missing.
- */
-function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
-  if (!value) {
-    return value;
-  }
-  const [startDate, startTime] = value.startDate.split('T');
-  const [endDate, endTime] = value.endDate.split('T');
-  return {
-    ...value,
-    startDate: startTime ? value.startDate : `${startDate}T00:00:00`,
-    endDate: endTime ? value.endDate : `${endDate}T23:59:59`,
-  };
-}
+export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
 export interface DateRangePickerDropdownProps
   extends Pick<
@@ -57,7 +44,7 @@ export interface DateRangePickerDropdownProps
   ariaDescribedby?: string;
 }
 
-export function DateRangePickerDropdown({
+export function DateRangePickerEditor({
   locale = '',
   startOfWeek,
   isDateEnabled,
@@ -77,28 +64,26 @@ export function DateRangePickerDropdown({
   ariaDescribedby,
 }: DateRangePickerDropdownProps) {
   const {
-    focusVisible,
-    focusRefs,
-    scrollableContainerRef,
+    fillMissingTime,
     rangeSelectionMode,
     setRangeSelectionMode,
     selectedAbsoluteRange,
     setSelectedAbsoluteRange,
     selectedRelativeRange,
     setSelectedRelativeRange,
-    applyClicked,
-    setApplyClicked,
     validationResult,
     setValidationResult,
-    VALID_RANGE,
   } = useDateRangePicker({
     value,
     relativeOptions,
     rangeSelectorMode,
-    isValidRange,
   });
 
+  const focusVisible = useFocusVisible();
+  const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
+
+  const [applyClicked, setApplyClicked] = useState<boolean>(false);
 
   const closeDropdown = () => {
     setApplyClicked(false);
@@ -136,9 +121,15 @@ export function DateRangePickerDropdown({
     rangeSelectionMode,
     selectedRelativeRange,
     selectedAbsoluteRange,
-    VALID_RANGE,
+    fillMissingTime,
     setValidationResult,
   ]);
+
+  const focusRefs = {
+    default: useRef<Focusable>(null),
+    'absolute-only': useRef<Focusable>(null),
+    'relative-only': useRef<Focusable>(null),
+  };
 
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);
 
@@ -205,20 +196,20 @@ export function DateRangePickerDropdown({
                   />
                 )}
               </SpaceBetween>
+            </InternalBox>
 
-              <InternalBox
-                className={styles['validation-section']}
-                margin={!validationResult.valid ? { top: 's' } : undefined}
-              >
-                {!validationResult.valid && (
-                  <>
-                    <InternalAlert type="error">
-                      <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
-                    </InternalAlert>
-                    <LiveRegion>{validationResult.errorMessage}</LiveRegion>
-                  </>
-                )}
-              </InternalBox>
+            <InternalBox
+              className={styles['validation-section']}
+              margin={!validationResult.valid ? { top: 's' } : undefined}
+            >
+              {!validationResult.valid && (
+                <>
+                  <InternalAlert type="error">
+                    <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
+                  </InternalAlert>
+                  <LiveRegion>{validationResult.errorMessage}</LiveRegion>
+                </>
+              )}
             </InternalBox>
 
             <div

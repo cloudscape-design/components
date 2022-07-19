@@ -6,7 +6,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 
-export interface DateRangePickerProps extends BaseComponentProps, FormFieldValidationControlProps, ExpandToViewport {
+export interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
    * or a relative time range.
@@ -17,11 +17,6 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
    * A list of relative time ranges that are shown as suggestions.
    */
   relativeOptions: ReadonlyArray<DateRangePickerProps.RelativeOption>;
-
-  /**
-   * Specifies the placeholder text that is rendered when the value is empty.
-   */
-  placeholder?: string;
 
   /**
    * A function that defines whether a particular date should be enabled
@@ -39,6 +34,73 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
    * are as-per the [JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
    */
   locale?: string;
+
+  /**
+   * A function that defines whether a particular range is valid or not.
+   *
+   * Ensure that your function checks for missing fields in the value.
+   */
+  isValidRange: DateRangePickerProps.ValidationFunction;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings: DateRangePickerProps.I18nStrings;
+
+  /**
+   * Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
+   *
+   * Do not use `dateOnly` flag conditionally. The component does not trigger the value update
+   * when the flag changes which means the value format can become inconsistent.
+   *
+   * Default: `false`.
+   */
+  dateOnly?: boolean;
+
+  /**
+   * Determines the range selector mode as follows:
+   * * `default` for combined absolute/relative range selector.
+   * * `absolute-only` for absolute-only range selector.
+   * * `relative-only` for relative-only range selector.
+   *
+   * By default, the range selector mode is `default`.
+   */
+  rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
+
+  /**
+   * Specifies the format of the time input for absolute ranges.
+   *
+   * Use to restrict the granularity of time that the user can enter.
+   *
+   * Has no effect when `dateOnly` is true.
+   */
+  timeInputFormat?: TimeInputProps.Format;
+
+  /**
+   * Fired whenever a user changes the component's value.
+   * The event `detail` contains the current value of the field.
+   */
+  onChange?: NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>;
+
+  /**
+   * The time offset from UTC in minutes that should be used to
+   * display and produce values.
+   *
+   * Has no effect when `dateOnly` is true.
+   *
+   * Default: the user's current time offset as provided by the browser.
+   */
+  timeOffset?: number;
+}
+export interface DateRangePickerProps
+  extends BaseComponentProps,
+    FormFieldValidationControlProps,
+    ExpandToViewport,
+    DateRangePickerBaseProps {
+  /**
+   * Specifies the placeholder text that is rendered when the value is empty.
+   */
+  placeholder?: string;
 
   /**
    * Starting day of the week. [0-6] maps to [Sunday-Saturday].
@@ -70,67 +132,10 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
   onBlur?: NonCancelableEventHandler<null>;
 
   /**
-   * Fired whenever a user changes the component's value.
-   * The event `detail` contains the current value of the field.
-   */
-  onChange?: NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>;
-
-  /**
-   * A function that defines whether a particular range is valid or not.
-   *
-   * Ensure that your function checks for missing fields in the value.
-   */
-  isValidRange: DateRangePickerProps.ValidationFunction;
-
-  /**
-   * An object containing all the necessary localized strings required by the component.
-   */
-  i18nStrings: DateRangePickerProps.I18nStrings;
-
-  /**
    * Specifies whether the component should show a button that
    * allows the user to clear the selected value.
    */
   showClearButton?: boolean;
-
-  /**
-   * Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
-   *
-   * Do not use `dateOnly` flag conditionally. The component does not trigger the value update
-   * when the flag changes which means the value format can become inconsistent.
-   *
-   * Default: `false`.
-   */
-  dateOnly?: boolean;
-
-  /**
-   * Determines the range selector mode as follows:
-   * * `default` for combined absolute/relative range selector.
-   * * `absolute-only` for absolute-only range selector.
-   * * `relative-only` for relative-only range selector.
-   *
-   * By default, the range selector mode is `default`.
-   */
-  rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
-
-  /**
-   * The time offset from UTC in minutes that should be used to
-   * display and produce values.
-   *
-   * Has no effect when `dateOnly` is true.
-   *
-   * Default: the user's current time offset as provided by the browser.
-   */
-  timeOffset?: number;
-
-  /**
-   * Specifies the format of the time input for absolute ranges.
-   *
-   * Use to restrict the granularity of time that the user can enter.
-   *
-   * Has no effect when `dateOnly` is true.
-   */
-  timeInputFormat?: TimeInputProps.Format;
 }
 
 export namespace DateRangePickerProps {
