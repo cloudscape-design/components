@@ -119,9 +119,6 @@ jobs:
         run: tar -xzf components.tgz
       - name: Unit tests
         run: npm run test:unit
-      - name: Codecov
-        uses: codecov/codecov-action@v1.5.2
-        if: ${{ github.repository == 'cloudscape-design/components' }}
 
   integTest:
     name: Components integration tests
