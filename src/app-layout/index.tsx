@@ -459,6 +459,7 @@ const OldAppLayout = React.forwardRef(
               ref={legacyScrollRootRef}
               className={clsx(styles['layout-main'], {
                 [styles['layout-main-scrollable']]: disableBodyScroll,
+                [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
                 [styles.unfocusable]: isMobile && anyPanelOpen,
               })}
             >
@@ -471,7 +472,7 @@ const OldAppLayout = React.forwardRef(
                 {notifications && (
                   <DarkHeader
                     {...contentHeaderProps}
-                    topOffset={headerHeight}
+                    topOffset={disableBodyScroll ? 0 : headerHeight}
                     sticky={!isMobile && darkStickyHeaderContentType && stickyNotifications}
                   >
                     <Notifications
@@ -542,7 +543,8 @@ const OldAppLayout = React.forwardRef(
                   <AppLayoutDomContext.RootProvider
                     value={{
                       stickyOffsetTop:
-                        headerHeight + (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                        (disableBodyScroll ? 0 : headerHeight) +
+                        (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
                     }}
                     // eslint-disable-next-line react/forbid-component-props

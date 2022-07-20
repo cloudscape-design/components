@@ -165,7 +165,7 @@ export const getDropdownPosition = (
   const dropUp = availableSpace.below < dropdown.offsetHeight && availableSpace.above > availableSpace.below;
   const availableHeight = dropUp ? availableSpace.above : availableSpace.below;
   // Try and crop the bottom item when all options can't be displayed, affordance for "there's more"
-  const croppedHeight = Math.floor(availableHeight / 31) * 31 + 16;
+  const croppedHeight = stretchHeight ? availableHeight : Math.floor(availableHeight / 31) * 31 + 16;
 
   return {
     dropUp,
