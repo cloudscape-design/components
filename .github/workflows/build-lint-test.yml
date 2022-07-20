@@ -10,4 +10,4 @@ permissions:
 
 jobs:
   build:
-    uses: cloudscape-design/.github/workflows/build-lint-test.yml@main
+    uses: cloudscape-design/.github/.github/workflows/build-lint-test.yml@chore/gasda-test-workflow
