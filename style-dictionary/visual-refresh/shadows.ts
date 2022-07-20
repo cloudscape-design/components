@@ -36,6 +36,10 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     dark: '-1px 0px 1px 0px #192534, -36px 6px 36px -36px rgba(0, 7, 22, 1)',
   },
   shadowSticky: '{shadowDropdown}',
+  shadowStickyEmbedded: {
+    light: '0px 2px 0px 0px #e9ebed, 0px 16px 16px -12px rgba(0, 7, 22, 0.10)', // 2px grey-200 faux bottom border
+    dark: '0px 2px 0px 0px #414d5c, 0px 16px 16px -12px rgba(0, 7, 22, 1)', // 2px grey-600 faux bottom border
+  },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

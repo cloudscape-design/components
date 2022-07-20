@@ -645,7 +645,8 @@ export type ShadowsTokenName =
   | 'shadowPopover'
   | 'shadowSplitBottom'
   | 'shadowSplitSide'
-  | 'shadowSticky';
+  | 'shadowSticky'
+  | 'shadowStickyEmbedded';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
