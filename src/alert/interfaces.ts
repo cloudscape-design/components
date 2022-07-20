@@ -14,6 +14,7 @@ export interface AlertProps extends BaseComponentProps {
   type?: AlertProps.Type;
   /**
    * Determines whether the alert is displayed.
+   * @deprecated Use conditional rendering in your code instead of this prop
    */
   visible?: boolean;
   /**
