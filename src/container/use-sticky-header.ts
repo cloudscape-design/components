@@ -3,7 +3,7 @@
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext, useMemo } from 'react';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { supportsStickyPosition } from '../internal/utils/dom';
+import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import customCssProps from '../internal/generated/custom-css-properties';
@@ -32,19 +32,28 @@ export const useStickyHeader = (
     return containerRootBorder + headerBorder;
   }, [currentRootRef, currentHeaderRef]);
 
-  // Having no overflow parents, means that the component uses body scroll.
-  // In that case, we reach into AppLayoutContext in case sticky header needs to be
-  //  offset down by the height of other sticky elements positioned on top of the view.
-  const [usesBodyScroll, setState] = useState<boolean>(false);
-  const [isStuck, setIsStuck] = useState(false);
-  useLayoutEffect(() => {
-    const overflowParents = rootRef.current && getOverflowParents(rootRef.current).length;
-    setState(!overflowParents);
-  }, [rootRef]);
+  // We reach into AppLayoutContext in case sticky header needs to be offset down by the height
+  // of other sticky elements positioned on top of the view.
   const { stickyOffsetTop } = useAppLayoutContext();
-  const effectiveStickyOffset = __stickyOffset ?? (usesBodyScroll ? stickyOffsetTop : 0);
   const isSticky = useSupportsStickyHeader() && !!__stickyHeader;
   const isRefresh = useVisualRefresh(rootRef);
+
+  // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
+  const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
+  const [isStuck, setIsStuck] = useState(false);
+  useLayoutEffect(() => {
+    if (rootRef.current) {
+      const overflowParents = getOverflowParents(rootRef.current);
+      const mainElement = findUpUntil(rootRef.current, elem => elem.tagName === 'MAIN');
+      // In both versions of the app layout, the scrolling element for disableBodyScroll
+      // is the <main>. If the closest overflow parent is also the closest <main> and we have
+      // offset values, it's safe to assume that it's the app layout scroll root and we
+      // should stop there.
+      setHasInnerOverflowParents(overflowParents.length > 0 && overflowParents[0] !== mainElement);
+    }
+  }, [rootRef]);
+
+  const effectiveStickyOffset = __stickyOffset ?? (hasInnerOverflowParents ? 0 : stickyOffsetTop);
 
   /**
    * The AppLayout refactor removed the need for passing the sticky offset in px all the time through the
@@ -54,7 +63,7 @@ export const useStickyHeader = (
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset - totalBorder}px`;
-  if (usesBodyScroll && isRefresh) {
+  if (isRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
 
