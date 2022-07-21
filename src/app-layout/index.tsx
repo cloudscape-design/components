@@ -17,7 +17,7 @@ import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
-import { AppLayoutDomContext } from '../internal/context/app-layout-context';
+import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -540,14 +540,7 @@ const OldAppLayout = React.forwardRef(
                       styles['content-wrapper-first-child']
                   )}
                 >
-                  <AppLayoutDomContext.RootProvider
-                    value={{
-                      stickyOffsetTop:
-                        (disableBodyScroll ? 0 : headerHeight) +
-                        (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                      stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
-                    }}
-                    // eslint-disable-next-line react/forbid-component-props
+                  <div
                     className={clsx(
                       styles.content,
                       testutilStyles.content,
@@ -555,8 +548,17 @@ const OldAppLayout = React.forwardRef(
                     )}
                     style={contentWidthStyles}
                   >
-                    {content}
-                  </AppLayoutDomContext.RootProvider>
+                    <AppLayoutContext.Provider
+                      value={{
+                        stickyOffsetTop:
+                          (disableBodyScroll ? 0 : headerHeight) +
+                          (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                        stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                      }}
+                    >
+                      {content}
+                    </AppLayoutContext.Provider>
+                  </div>
                 </ContentWrapper>
               </div>
               {finalSplitPanePosition === 'bottom' && (
