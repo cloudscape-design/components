@@ -64,7 +64,6 @@
   }
 
   &.selected {
-    z-index: 3;
     background-color: awsui.$color-background-dropdown-item-selected;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
