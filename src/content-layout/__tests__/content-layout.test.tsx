@@ -10,22 +10,39 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
   return createWrapper(renderResult.container).findContentLayout()!;
 }
 
-describe('Content layout component', () => {
-  test('renders header slot', () => {
-    const wrapper = renderContentLayout({ header: <>Header text</> });
+describe('ContentLayout component', () => {
+  test('It renders the header slot', () => {
+    const wrapper = renderContentLayout({
+      header: <>Header text</>,
+    });
+
     expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
     expect(wrapper.findContent()).toBeNull();
   });
 
-  test('render content', () => {
-    const wrapper = renderContentLayout({ children: <>Content text</> });
+  test('It renders the content slot', () => {
+    const wrapper = renderContentLayout({
+      children: <>Content text</>,
+    });
+
     expect(wrapper.findHeader()).toBeNull();
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
   });
 
-  test('renders both header and content', () => {
-    const wrapper = renderContentLayout({ header: <>Header text</>, children: <>Content text</> });
-    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
+  test('It renders the header and content slots', () => {
+    const wrapper = renderContentLayout({
+      children: <>Content text</>,
+      header: <>Header text</>,
+    });
+
     expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
+    expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
+  });
+
+  test('It renders nothing', () => {
+    const wrapper = renderContentLayout({});
+
+    expect(wrapper.findHeader()).toBeNull();
+    expect(wrapper.findContent()).toBeNull();
   });
 });

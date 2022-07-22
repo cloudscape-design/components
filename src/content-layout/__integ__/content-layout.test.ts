@@ -3,9 +3,6 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import styles from '../../../lib/components/content-layout/styles.selectors.js';
-// import createWrapper from '../../../lib/components/test-utils/selectors';
-
-// const wrapper = createWrapper();
 
 class ContentLayoutPageObject extends BasePageObject {
   async isOverlapEnabled() {
@@ -20,9 +17,9 @@ class ContentLayoutPageObject extends BasePageObject {
   }
 }
 
-describe('Content layout', () => {
+describe('ContentLayout component', () => {
   test(
-    'content overlaps the header by default',
+    'It renders the overlap by default',
     useBrowser(async browser => {
       await browser.url('#/light/content-layout/dark-header-main');
 
@@ -33,7 +30,7 @@ describe('Content layout', () => {
   );
 
   test(
-    'content does not overlaps the header if disableOverlap is set',
+    'It does not render the overlap if disableOverlap is set',
     useBrowser(async browser => {
       await browser.url('#/light/content-layout/dark-header-no-overlap');
 
@@ -44,9 +41,9 @@ describe('Content layout', () => {
   );
 
   test(
-    'content does not overlap the header if there is no header',
+    'It does not render the overlap if the header is removed',
     useBrowser(async browser => {
-      await browser.url('#/light/content-layout/dark-header-main');
+      await browser.url('#/light/content-layout/with-header-toggle');
 
       const page = new ContentLayoutPageObject(browser);
 
