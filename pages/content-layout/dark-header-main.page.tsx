@@ -14,47 +14,31 @@ import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function () {
   const [alertVisible, setVisible] = useState(true);
-  const [renderHeader, setRenderHeader] = useState(true);
 
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
         contentType="form"
         ariaLabels={appLayoutLabels}
-        breadcrumbs={
-          <>
-            <Breadcrumbs />{' '}
-            <label style={{ color: 'white' }}>
-              <input
-                type="checkbox"
-                id="header-present-checkbox"
-                onChange={e => setRenderHeader(e.target.checked)}
-                checked={renderHeader}
-              />
-              Render a header
-            </label>
-          </>
-        }
+        breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
             header={
-              renderHeader && (
-                <SpaceBetween size="m">
-                  <Header
-                    variant="h1"
-                    info={<Link>Info</Link>}
-                    description="When you create an Amazon CloudFront distribution."
-                    actions={<Button variant="primary">Create distribution</Button>}
-                  >
-                    Create distribution
-                  </Header>
-                  {alertVisible && (
-                    <Alert dismissible={true} dismissAriaLabel="Close alert" onDismiss={() => setVisible(false)}>
-                      Demo alert
-                    </Alert>
-                  )}
-                </SpaceBetween>
-              )
+              <SpaceBetween size="m">
+                <Header
+                  variant="h1"
+                  info={<Link>Info</Link>}
+                  description="When you create an Amazon CloudFront distribution."
+                  actions={<Button variant="primary">Create distribution</Button>}
+                >
+                  Create distribution
+                </Header>
+                {alertVisible && (
+                  <Alert dismissible={true} dismissAriaLabel="Close alert" onDismiss={() => setVisible(false)}>
+                    Demo alert
+                  </Alert>
+                )}
+              </SpaceBetween>
             }
           >
             <Containers />
