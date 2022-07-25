@@ -6,8 +6,4 @@ describe('getDateLabel', () => {
   test('should return local date string for the sepcified date', () => {
     expect(getDateLabel('en-US', new Date(2017, 0, 5))).toEqual('Thursday, January 5, 2017');
   });
-
-  test('should return `null` if date is not specified', () => {
-    expect(getDateLabel('en-US', null)).toBeNull();
-  });
 });

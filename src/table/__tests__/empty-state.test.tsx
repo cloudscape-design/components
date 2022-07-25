@@ -15,6 +15,7 @@ jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
   supportsStickyPosition: jest.fn(),
   getContainingBlock: jest.fn(() => null),
+  findUpUntil: jest.fn(),
 }));
 
 beforeEach(() => {

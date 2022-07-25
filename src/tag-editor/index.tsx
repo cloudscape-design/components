@@ -265,7 +265,7 @@ const TagEditor = React.forwardRef(
             ) : remainingTags === 0 ? (
               i18nStrings.tagLimitReached(tagLimit) ?? ''
             ) : (
-              i18nStrings.tagLimit(remainingTags)
+              i18nStrings.tagLimit(remainingTags, tagLimit)
             )}
           </div>
         }

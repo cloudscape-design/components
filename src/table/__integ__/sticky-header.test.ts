@@ -22,7 +22,7 @@ class StickyHeaderPage extends BasePageObject {
       return elements
         .map(element => element.getBoundingClientRect())
         .map(rect => ({
-          width: rect.width,
+          width: Math.round(rect.width),
         }));
     }, selector);
   }

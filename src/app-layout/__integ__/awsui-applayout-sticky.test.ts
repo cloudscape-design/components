@@ -30,7 +30,7 @@ function setupTest(
     const page = new AppLayoutStickyPage(browser);
     await page.setWindowSize(viewport);
     await browser.url(
-      `#/light/app-layout/with-sticky-notifications/${theme === 'visual-refresh' ? '?visualRefresh=true' : ''}`
+      `#/light/app-layout/with-sticky-notifications/?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`
     );
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);

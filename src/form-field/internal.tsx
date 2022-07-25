@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
-import { FormFieldDomContext, useFormFieldContext } from '../internal/context/form-field-context';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
@@ -96,19 +96,19 @@ export default function InternalFormField({
 
       <div className={clsx(styles.controls, __hideLabel && styles['label-hidden'])}>
         <InternalGrid gridDefinition={gridDefinition}>
-          <FormFieldDomContext.RootProvider
+          <FormFieldContext.Provider
             value={{
               controlId: generatedControlId,
               ...contextValuesWithoutControlId,
             }}
           >
             {children && <div className={styles.control}>{children}</div>}
-          </FormFieldDomContext.RootProvider>
+          </FormFieldContext.Provider>
 
           {secondaryControl && (
-            <FormFieldDomContext.RootProvider value={contextValuesWithoutControlId}>
+            <FormFieldContext.Provider value={contextValuesWithoutControlId}>
               <div className={styles['secondary-control']}>{secondaryControl}</div>
-            </FormFieldDomContext.RootProvider>
+            </FormFieldContext.Provider>
           )}
         </InternalGrid>
       </div>

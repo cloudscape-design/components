@@ -1,0 +1,18 @@
+name: Build, lint and test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  build:
+    uses: cloudscape-design/.github/.github/workflows/build-lint-test.yml@main

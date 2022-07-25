@@ -1,5 +1,5 @@
-name: Feture request
-about: Request a feature
+name: Feature request
+description: Request a feature
 title: '[Feature Request]: '
 labels: enhancement
 body:
@@ -21,7 +21,7 @@ body:
       options:
         - label:
             I agree to follow this project's [Code of
-            Conduct](../../CODE_OF_CONDUCT.md)
+            Conduct](https://github.com/cloudscape-design/components/blob/main/CODE_OF_CONDUCT.md)
           required: true
         - label:
             I checked the [current

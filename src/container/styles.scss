@@ -46,7 +46,7 @@
     z-index: 800;
   }
   &-stuck {
-    box-shadow: awsui.$shadow-sticky;
+    box-shadow: awsui.$shadow-sticky-embedded;
     border: 0;
     border-radius: 0;
   }
@@ -75,6 +75,9 @@
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
+  }
+  &-variant-full-page.header-stuck {
+    box-shadow: awsui.$shadow-sticky;
   }
 }
 

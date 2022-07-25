@@ -30,6 +30,8 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     setSplitPanelReportedSize,
     splitPanelPosition,
     splitPanelSize,
+    headerHeight,
+    footerHeight,
   } = useContext(AppLayoutContext);
 
   const [openButtonAriaLabel, setOpenButtonAriaLabel] = useState<undefined | string>(undefined);
@@ -46,7 +48,11 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
 
   const context: SplitPanelContextProps = {
     bottomOffset: 0,
-    getMaxHeight: () => document.documentElement.clientHeight - 250,
+    getMaxHeight: () => {
+      const availableHeight = document.documentElement.clientHeight - headerHeight - footerHeight;
+      // If the page is likely zoomed in at 200%, allow the split panel to fill the content area.
+      return availableHeight < 400 ? availableHeight - 40 : availableHeight - 250;
+    },
     getMaxWidth: () => document.documentElement.clientWidth,
     getHeader: () => splitPanelHeaderRef.current,
     isForcedPosition: isSplitPanelForcedPosition,

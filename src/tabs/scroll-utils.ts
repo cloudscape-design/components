@@ -48,7 +48,7 @@ export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, s
     return;
   }
   // Extra left and right margin to always make the focus ring visible
-  const margin = 1;
+  const margin = 2;
   let updatedLeftScroll = headerBar.scrollLeft;
 
   // Anchor tab to left of scroll parent

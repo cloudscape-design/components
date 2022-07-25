@@ -25,7 +25,7 @@ import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
 import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { renderDayLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
+import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 
 export interface DateChangeHandler {
@@ -153,7 +153,7 @@ function Calendar(
       return (
         i18nStrings.startDateLabel +
         ', ' +
-        renderDayLabel(locale, startDate) +
+        getDateLabel(locale, startDate) +
         ', ' +
         i18nStrings.startTimeLabel +
         ', ' +
@@ -166,7 +166,7 @@ function Calendar(
       return (
         i18nStrings.endDateLabel +
         ', ' +
-        renderDayLabel(locale, endDate) +
+        getDateLabel(locale, endDate) +
         ', ' +
         i18nStrings.endTimeLabel +
         ', ' +
@@ -177,11 +177,11 @@ function Calendar(
 
     const announceRange = (startDate: Date, endDate: Date) => {
       if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
-        return `${renderDayLabel(locale, startDate)} – ${renderDayLabel(locale, endDate)}`;
+        return `${getDateLabel(locale, startDate)} – ${getDateLabel(locale, endDate)}`;
       }
       return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
-        renderDayLabel(locale, startDate),
-        renderDayLabel(locale, endDate)
+        getDateLabel(locale, startDate),
+        getDateLabel(locale, endDate)
       );
     };
 

@@ -44,7 +44,7 @@ test(
 
 test(
   'properly restores vertical offset for sticky headers when resizing to mobile and back to desktop',
-  setupTest({ url: '#/light/app-layout/with-sticky-notifications-and-header' }, async page => {
+  setupTest({ url: '#/light/app-layout/with-sticky-notifications-and-header?visualRefresh=false' }, async page => {
     await page.windowScrollTo({ top: viewports.desktop.height });
     const stickyHeaderSelector = wrapper.findContentRegion().findTable().findHeaderSlot().toSelector();
     const { top: oldTop } = await page.getBoundingBox(stickyHeaderSelector);
@@ -61,10 +61,13 @@ test(
 
 test(
   'sets sticky notifications offset to zero when notifications are not sticky',
-  setupTest({ viewport: { width: 1200, height: 300 }, url: '#/light/app-layout/with-table' }, async page => {
-    await page.windowScrollTo({ top: 200 });
-    const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
-    const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-    expect(tableHeaderTop).toEqual(pageHeaderBottom - 1);
-  })
+  setupTest(
+    { viewport: { width: 1200, height: 300 }, url: '#/light/app-layout/with-table?visualRefresh=false' },
+    async page => {
+      await page.windowScrollTo({ top: 200 });
+      const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
+      const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
+      expect(tableHeaderTop).toEqual(pageHeaderBottom - 1);
+    }
+  )
 );

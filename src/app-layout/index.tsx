@@ -17,12 +17,17 @@ import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 import { findUpUntil } from '../internal/utils/dom';
-import { AppLayoutDomContext } from '../internal/context/app-layout-context';
+import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SplitPanelContextProps, SplitPanelLastInteraction } from '../internal/context/split-panel-context';
-import { getSplitPanelDefaultSize, MAIN_PANEL_MIN_HEIGHT } from '../split-panel/utils/size-utils';
+import {
+  CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
+  CONSTRAINED_PAGE_HEIGHT,
+  getSplitPanelDefaultSize,
+  MAIN_PANEL_MIN_HEIGHT,
+} from '../split-panel/utils/size-utils';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
@@ -255,9 +260,13 @@ const OldAppLayout = React.forwardRef(
       if (typeof document === 'undefined') {
         return 0; // render the split panel in its minimum possible size
       } else if (disableBodyScroll && legacyScrollRootRef.current) {
-        return legacyScrollRootRef.current.clientHeight - MAIN_PANEL_MIN_HEIGHT;
+        const availableHeight = legacyScrollRootRef.current.clientHeight;
+        return availableHeight < CONSTRAINED_PAGE_HEIGHT ? availableHeight : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       } else {
-        return document.documentElement.clientHeight - headerHeight - footerHeight - MAIN_PANEL_MIN_HEIGHT;
+        const availableHeight = document.documentElement.clientHeight - headerHeight - footerHeight;
+        return availableHeight < CONSTRAINED_PAGE_HEIGHT
+          ? availableHeight - CONSTRAINED_MAIN_PANEL_MIN_HEIGHT
+          : availableHeight - MAIN_PANEL_MIN_HEIGHT;
       }
     });
 
@@ -459,6 +468,7 @@ const OldAppLayout = React.forwardRef(
               ref={legacyScrollRootRef}
               className={clsx(styles['layout-main'], {
                 [styles['layout-main-scrollable']]: disableBodyScroll,
+                [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
                 [styles.unfocusable]: isMobile && anyPanelOpen,
               })}
             >
@@ -471,7 +481,7 @@ const OldAppLayout = React.forwardRef(
                 {notifications && (
                   <DarkHeader
                     {...contentHeaderProps}
-                    topOffset={headerHeight}
+                    topOffset={disableBodyScroll ? 0 : headerHeight}
                     sticky={!isMobile && darkStickyHeaderContentType && stickyNotifications}
                   >
                     <Notifications
@@ -539,13 +549,7 @@ const OldAppLayout = React.forwardRef(
                       styles['content-wrapper-first-child']
                   )}
                 >
-                  <AppLayoutDomContext.RootProvider
-                    value={{
-                      stickyOffsetTop:
-                        headerHeight + (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                      stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
-                    }}
-                    // eslint-disable-next-line react/forbid-component-props
+                  <div
                     className={clsx(
                       styles.content,
                       testutilStyles.content,
@@ -553,8 +557,17 @@ const OldAppLayout = React.forwardRef(
                     )}
                     style={contentWidthStyles}
                   >
-                    {content}
-                  </AppLayoutDomContext.RootProvider>
+                    <AppLayoutContext.Provider
+                      value={{
+                        stickyOffsetTop:
+                          (disableBodyScroll ? 0 : headerHeight) +
+                          (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                        stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                      }}
+                    >
+                      {content}
+                    </AppLayoutContext.Provider>
+                  </div>
                 </ContentWrapper>
               </div>
               {finalSplitPanePosition === 'bottom' && (

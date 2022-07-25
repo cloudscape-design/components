@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useContext } from 'react';
-import { createDomContext } from '../hooks/dom-context';
+import { useContext, createContext } from 'react';
 
 export interface FormFieldControlProps {
   /**
@@ -48,7 +47,7 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
   invalid?: boolean;
 }
 
-export const FormFieldDomContext = createDomContext<FormFieldValidationControlProps>('form-field-context', {});
+export const FormFieldContext = createContext<FormFieldValidationControlProps>({});
 
 function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
   const result = <T>{};
@@ -59,6 +58,6 @@ function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
 }
 
 export function useFormFieldContext(props: FormFieldValidationControlProps) {
-  const context = useContext(FormFieldDomContext.context);
+  const context = useContext(FormFieldContext);
   return applyDefault(props, context, ['invalid', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
 }

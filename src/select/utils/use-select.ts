@@ -195,6 +195,7 @@ export function useSelect({
       __nativeAttributes: {
         'aria-activedescendant': highlightedOptionId,
         ['aria-owns']: menuId,
+        ['aria-controls']: menuId,
       },
     };
   };

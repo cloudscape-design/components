@@ -1,6 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-export const MAIN_PANEL_MIN_HEIGHT = 250; // approximate height of breadcrumb, table header, and the first table row
+
+/**
+ * The page height where the page is considered constrained.
+ */
+export const CONSTRAINED_PAGE_HEIGHT = 400;
+
+/**
+ * Based on approximate height of breadcrumb, table header, and the first table row
+ */
+export const MAIN_PANEL_MIN_HEIGHT = 250;
+
+/**
+ * Based on approximate height of app bar on comfortable mode on mobile.
+ */
+export const CONSTRAINED_MAIN_PANEL_MIN_HEIGHT = 40;
+
 /**
  * Estimate a default split panel size for the first render based on the document size.
  */

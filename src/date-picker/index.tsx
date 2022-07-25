@@ -26,6 +26,7 @@ import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import TabTrap from '../internal/components/tab-trap';
 
 export { DatePickerProps };
 
@@ -78,6 +79,7 @@ const DatePicker = React.forwardRef(
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
+    const calendarRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -157,6 +159,9 @@ const DatePicker = React.forwardRef(
       }
     }
 
+    const focusCurrentDate = () =>
+      (calendarRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
+
     const DateInputElement = (
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
@@ -190,7 +195,7 @@ const DatePicker = React.forwardRef(
             ariaLabel={
               openCalendarAriaLabel &&
               openCalendarAriaLabel(
-                getDateLabel(normalizedLocale, value.length === 10 ? memoizedDate('value', value) : null)
+                value.length === 10 ? getDateLabel(normalizedLocale, memoizedDate('value', value)) : null
               )
             }
             disabled={disabled || readOnly}
@@ -227,21 +232,26 @@ const DatePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <Calendar
-              selectedDate={memoizedDate('value', selectedDate)}
-              focusedDate={memoizedDate('focused', focusedDate)}
-              displayedDate={memoizedDate('displayed', displayedDate)}
-              locale={normalizedLocale}
-              startOfWeek={normalizedStartOfWeek}
-              isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
-              calendarHasFocus={calendarHasFocus}
-              nextMonthLabel={nextMonthAriaLabel}
-              previousMonthLabel={previousMonthAriaLabel}
-              todayAriaLabel={todayAriaLabel}
-              onChangeMonth={onChangeMonthHandler}
-              onSelectDate={onSelectDateHandler}
-              onFocusDate={onDateFocusHandler}
-            />
+            <>
+              {calendarHasFocus && <TabTrap focusNextCallback={focusCurrentDate} />}
+              <Calendar
+                ref={calendarRef}
+                selectedDate={memoizedDate('value', selectedDate)}
+                focusedDate={memoizedDate('focused', focusedDate)}
+                displayedDate={memoizedDate('displayed', displayedDate)}
+                locale={normalizedLocale}
+                startOfWeek={normalizedStartOfWeek}
+                isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
+                calendarHasFocus={calendarHasFocus}
+                nextMonthLabel={nextMonthAriaLabel}
+                previousMonthLabel={previousMonthAriaLabel}
+                todayAriaLabel={todayAriaLabel}
+                onChangeMonth={onChangeMonthHandler}
+                onSelectDate={onSelectDateHandler}
+                onFocusDate={onDateFocusHandler}
+              />
+              {calendarHasFocus && <TabTrap focusNextCallback={() => calendarRef.current?.focus()} />}
+            </>
           )}
         </Dropdown>
       </div>
