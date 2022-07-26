@@ -91,7 +91,7 @@ export const parseText = (
       value: negatedGlobalQuery[2],
     };
   }
-  const { property } = filteringProperties?.reduce<{
+  const { property } = (filteringProperties ?? []).reduce<{
     property?: PropertyFilterProps.FilteringProperty;
     length: number;
   }>(
