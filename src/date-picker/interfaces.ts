@@ -119,8 +119,6 @@ export interface DatePickerProps extends BaseComponentProps, FormFieldValidation
    * The event `detail` contains the current value of the field.
    */
   onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail>;
-
-  variant?: 'embedded';
 }
 
 export namespace DatePickerProps {

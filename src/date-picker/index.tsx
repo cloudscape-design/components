@@ -27,6 +27,8 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
+import TabTrap from '../internal/components/tab-trap';
+import DatePickerEmbedded from './embedded';
 
 export { DatePickerProps };
 
@@ -56,7 +58,6 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
-      variant,
       ...rest
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
