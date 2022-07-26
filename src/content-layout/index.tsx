@@ -3,6 +3,7 @@
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from '../app-layout/visual-refresh/context';
+import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ContentLayoutProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -55,3 +56,5 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
     </div>
   );
 }
+
+applyDisplayName(ContentLayout, 'ContentLayout');
