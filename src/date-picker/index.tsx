@@ -28,7 +28,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
 import TabTrap from '../internal/components/tab-trap';
-import DatePickerEmbedded from './embedded';
+import { DatePickerEmbedded } from './embedded';
 
 export { DatePickerProps };
 
@@ -226,8 +226,9 @@ const DatePicker = React.forwardRef(
                 nextMonthLabel={nextMonthAriaLabel}
                 previousMonthLabel={previousMonthAriaLabel}
                 todayAriaLabel={todayAriaLabel}
-                onChangeMonth={onChangeMonthHandler}
-                onSelectDate={onSelectDateHandler}
+                onChangeMonthHandler={onChangeMonthHandler}
+                onSelectDateHandler={onSelectDateHandler}
+                onDateFocusHandler={onDateFocusHandler}
               />
             </FocusLock>
           )}
