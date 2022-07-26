@@ -30,17 +30,22 @@ export function useDensityMode(elementRef: React.RefObject<HTMLElement>) {
   return value;
 }
 
-export function useVisualRefresh(elementRef: React.RefObject<HTMLElement>) {
-  const [value, setValue] = useState(Boolean(ALWAYS_VISUAL_REFRESH));
-  useMutationObserver(elementRef, node => {
-    const supportsCSSVariables = window.CSS?.supports?.('color', 'var(--test-var)');
-    if (!supportsCSSVariables || ALWAYS_VISUAL_REFRESH) {
-      return;
+const supportsCSSVariables = window.CSS?.supports?.('color', 'var(--test-var)');
+
+// We expect VR is to be set only once and before the application is rendered.
+let visualRefreshState: undefined | boolean = undefined;
+
+export function useVisualRefresh() {
+  if (visualRefreshState === undefined) {
+    if (ALWAYS_VISUAL_REFRESH) {
+      visualRefreshState = true;
+    } else if (!supportsCSSVariables) {
+      visualRefreshState = false;
+    } else {
+      visualRefreshState = !!document.querySelector('.awsui-visual-refresh');
     }
-    const visualRefreshParent = findUpUntil(node, node => node.classList.contains('awsui-visual-refresh'));
-    setValue(!!visualRefreshParent);
-  });
-  return value;
+  }
+  return visualRefreshState;
 }
 
 export function useReducedMotion(elementRef: React.RefObject<HTMLElement>) {

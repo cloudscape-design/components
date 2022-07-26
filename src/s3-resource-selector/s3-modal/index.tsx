@@ -108,15 +108,14 @@ export function S3Modal({
   const [{ currentView, breadcrumbs, selectedItem }, dispatch] = useReducer(s3BrowseReducer, initialBrowseState);
   const forwardFocusRef = useRef<ForwardFocusRef>(null);
 
-  const modalWrapperRef = useRef(null);
-  const isVisualRefresh = useVisualRefresh(modalWrapperRef);
+  const isVisualRefresh = useVisualRefresh();
 
   useEffectOnUpdate(() => {
     forwardFocusRef.current?.focus();
   }, [breadcrumbs]);
 
   return (
-    <div ref={modalWrapperRef}>
+    <div>
       <InternalModal
         visible={true}
         size="max"
