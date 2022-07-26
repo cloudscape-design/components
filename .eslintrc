@@ -53,7 +53,7 @@
     "react-hooks/exhaustive-deps": [
       "error",
       {
-        "additionalHooks": "(useContainerQuery|useContainerBreakpoints|useEffectOnUpdate)"
+        "additionalHooks": "(useContainerQuery|useContainerBreakpoints|useEffectOnUpdate|useIsomorphicLayoutEffect)"
       }
     ],
     "unicorn/filename-case": "error",
@@ -160,6 +160,11 @@
               {
                 "group": ["lodash", "lodash/*"],
                 "message": "lodash is a commonjs module, which breaks webpack esm optimizations."
+              },
+              {
+                "group": ["react"],
+                "importNames": ["useLayoutEffect"],
+                "message": "useLayoutEffect prints out warnings during SSR. Prefer internal/hooks/use-isomorphic-layout-effect."
               }
             ]
           }

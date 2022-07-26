@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useContext, useLayoutEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { AppLayoutContext } from '../app-layout/visual-refresh/context';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -10,6 +10,7 @@ import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 import styles from './styles.css.js';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
@@ -56,7 +57,7 @@ export default function InternalContainer({
   const { setDynamicOverlapHeight } = useContext(AppLayoutContext);
   const [overlapContainerQuery, overlapElement] = useContainerQuery(rect => rect.height);
 
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     function handleDynamicOverlapHeight() {
       if (hasDynamicHeight) {
         setDynamicOverlapHeight(overlapContainerQuery ?? 0);

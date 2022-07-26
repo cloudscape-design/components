@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+import { useIsomorphicLayoutEffect } from '../../internal/hooks/use-isomorphic-layout-effect';
 import { usePrevious } from '../../internal/hooks/use-previous';
 
 type Selector<S, R> = (state: S) => R;
@@ -59,7 +60,7 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
 }
 
 export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>, effect: Listener<R>): void {
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     () => {
       const unsubscribe = store.subscribe(selector, (newState, prevState) =>
         effect(selector(newState), selector(prevState))

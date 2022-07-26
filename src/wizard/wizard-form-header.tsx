@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useContext, useLayoutEffect } from 'react';
+import React, { useContext } from 'react';
 import { AppLayoutContext } from '../app-layout/visual-refresh/context.js';
 import { useContainerQuery } from '../internal/hooks/container-queries';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect/index.js';
 import styles from './styles.css.js';
 
 interface WizardFormHeaderProps {
@@ -20,7 +21,7 @@ export default function WizardFormHeader({ children, isVisualRefresh }: WizardFo
   const { setDynamicOverlapHeight } = useContext(AppLayoutContext);
   const [overlapContainerQuery, overlapElement] = useContainerQuery(rect => rect.height);
 
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     function handleDynamicOverlapHeight() {
       if (isVisualRefresh) {
         setDynamicOverlapHeight(overlapContainerQuery ?? 0);

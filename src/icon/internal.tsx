@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { warnOnce } from '../internal/logging';
 import styles from './styles.css.js';
@@ -10,6 +10,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { IconProps } from './interfaces';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 
 type InternalIconProps = IconProps &
   InternalBaseComponentProps & {
@@ -65,7 +66,7 @@ const InternalIcon = ({
   // Possible infinite loop is not a concern here because line
   // height should not change without an external state update.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!contextualSize || !iconRef.current) {
       return;
     }

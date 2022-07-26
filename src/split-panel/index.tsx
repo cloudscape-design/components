@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
@@ -23,6 +23,7 @@ import { getLimitedValue } from './utils/size-utils';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 
 export { SplitPanelProps };
 
@@ -389,7 +390,7 @@ export default function SplitPanel({
     not automatically calculate the new position of the split panel
     _content_ when the split panel moves.
   */
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const root = __internalRootRef.current;
 
     if (root) {

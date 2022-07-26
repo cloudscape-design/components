@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useLayoutEffect } from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
+import { useIsomorphicLayoutEffect } from '../../internal/hooks/use-isomorphic-layout-effect';
 import { SplitPanelContext } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -68,7 +69,7 @@ export default function Layout({ children }: LayoutProps) {
    * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
    * position. Use the size property if it is open and the header height if it is closed.
    */
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     function handleOffsetBottom() {
       let offsetBottom = footerHeight;
 

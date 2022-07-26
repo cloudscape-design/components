@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useState, useLayoutEffect } from 'react';
+import React, { Ref, useState } from 'react';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
 
 import { getBaseProps } from '../../base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
@@ -34,7 +35,7 @@ const MaskedInput = React.forwardRef(
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [cursorPosition, setCursorPosition] = useState<number | null>(null);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (cursorPosition !== null) {
         inputRef.current?.setSelectionRange(cursorPosition, cursorPosition);
       }

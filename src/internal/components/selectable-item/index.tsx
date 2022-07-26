@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect/index.js';
 
 export interface SelectableItemProps extends BaseComponentProps {
   children: React.ReactNode;
@@ -66,7 +67,7 @@ const SelectableItem = (
   const contentRef = useRef<HTMLDivElement>(null);
   const screenReaderContentRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     // the state of aria-hidden and announcement is not set back because NVDA+Firefox would announce
     // the item which lost highlight
     // set aria-hidden true when there is announcement content, so that screen reader still announce

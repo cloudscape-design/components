@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ResizeObserver, ResizeObserverEntry } from '@juggle/resize-observer';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useIsomorphicLayoutEffect } from '../use-isomorphic-layout-effect';
 import { useStableEventHandler } from '../use-stable-event-handler';
 import { ContainerQueryEntry } from './interfaces';
 
@@ -28,7 +29,7 @@ export function useResizeObserver(elementRef: ElementReference, onObserve: (entr
   // This effect provides a synchronous update required to prevent flakiness when initial state and first observed state are different.
   // Can potentially conflict with React concurrent mode: https://17.reactjs.org/docs/concurrent-mode-intro.html.
   // A possible solution would be to make consumers not render any content until the first (asynchronous) observation is available.
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     () => {
       const element = typeof elementRef === 'function' ? elementRef() : elementRef?.current;
       if (element) {

@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext, useMemo } from 'react';
+import { RefObject, useState, useCallback, useEffect, createContext, useMemo } from 'react';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 import customCssProps from '../internal/generated/custom-css-properties';
 
 interface StickyHeaderContextProps {
@@ -41,7 +42,7 @@ export const useStickyHeader = (
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
   const [isStuck, setIsStuck] = useState(false);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (rootRef.current) {
       const overflowParents = getOverflowParents(rootRef.current);
       const mainElement = findUpUntil(rootRef.current, elem => elem.tagName === 'MAIN');

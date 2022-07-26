@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
 
 export interface PortalProps {
   container?: Element;
@@ -15,7 +16,7 @@ export interface PortalProps {
 export default function Portal({ container, children }: PortalProps) {
   const [activeContainer, setActiveContainer] = useState<Element | null>(container ?? null);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (container) {
       setActiveContainer(container);
       return;

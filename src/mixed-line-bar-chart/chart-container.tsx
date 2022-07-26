@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { nodeContains } from '../internal/utils/dom';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -31,6 +31,7 @@ import { usePopover } from './hooks/use-popover';
 import styles from './styles.css.js';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import useContainerWidth from '../internal/utils/use-container-width';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 const LEFT_LABELS_MARGIN = 16;
@@ -277,7 +278,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   };
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (highlightedX !== null) {
       showPopover();
     }

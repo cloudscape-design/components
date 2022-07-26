@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useLayoutEffect, RefObject, useCallback } from 'react';
+import { RefObject, useCallback } from 'react';
 import { useResizeObserver } from '../internal/hooks/container-queries/use-resize-observer';
 import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 
 function syncSizes(from: HTMLElement, to: HTMLElement) {
   const fromCells = Array.prototype.slice.apply(from.children);
@@ -45,7 +46,7 @@ export const useStickyHeader = (
       tableWrapperRef.current.style.marginTop = `-${theadRef.current.offsetHeight}px`;
     }
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     syncColumnHeaderWidths();
     // Content is not going to be layed out until the next frame in angular,
     // so we need to sync the column headers again.

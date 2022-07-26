@@ -1,26 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, {
-  createContext,
-  createRef,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { createContext, createRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { AppLayoutProps } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useContainerQuery, useResizeObserver } from '../../internal/hooks/container-queries';
+import { useIsomorphicLayoutEffect } from '../../internal/hooks/use-isomorphic-layout-effect';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
+import styles from './styles.css.js';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -361,7 +353,7 @@ export const AppLayoutProvider = React.forwardRef(
     const [isSplitPanelForcedPosition, setSplitPanelForcedPosition] = useState(false);
     const splitPanelPosition = getSplitPanelPosition(isSplitPanelForcedPosition, splitPanelPreferences);
 
-    useLayoutEffect(
+    useIsomorphicLayoutEffect(
       function handleSplitPanelForcePosition() {
         setSplitPanelForcedPosition(splitPanelMinWidth > splitPanelMaxWidth);
       },
@@ -425,14 +417,14 @@ export const AppLayoutProvider = React.forwardRef(
     const mainElement = useRef<HTMLDivElement>(null);
     const [mainOffsetLeft, setMainOffsetLeft] = useState(0);
 
-    useLayoutEffect(
+    useIsomorphicLayoutEffect(
       function handleMainOffsetLeft() {
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
       [layoutWidth, isNavigationOpen, isToolsOpen, splitPanelReportedSize]
     );
 
-    useLayoutEffect(
+    useIsomorphicLayoutEffect(
       function handleSplitPanelMaxWidth() {
         /**
          * Warning! This is a hack! In order to accurately calculate if there is adequate

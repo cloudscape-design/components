@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useLayoutEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from '../../../app-layout/visual-refresh/context';
 import { ContentLayoutProps } from './interfaces';
 import { useContainerQuery } from '../../hooks/container-queries';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
 import styles from './styles.css.js';
 
 export { ContentLayoutProps };
@@ -19,7 +20,7 @@ export default function ContentLayout({ children, disableOverlap, header }: Cont
   // Documentation to be added.
   const [overlapContainerQuery, overlapElement] = useContainerQuery(rect => rect.height);
 
-  useLayoutEffect(
+  useIsomorphicLayoutEffect(
     function handleDynamicOverlapHeight() {
       if (isVisualRefresh) {
         setDynamicOverlapHeight(overlapContainerQuery ?? 0);

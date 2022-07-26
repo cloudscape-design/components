@@ -3,7 +3,7 @@
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { fireNonCancelableEvent } from '../../events';
 import { DropdownProps } from './interfaces';
@@ -13,6 +13,7 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import { useMobile } from '../../hooks/use-mobile';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect/index.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -215,7 +216,7 @@ const Dropdown = ({
     }
   };
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
         // calculate scroll width only for dropdowns that has a scrollbar and ignore it for date picker components
@@ -289,7 +290,7 @@ const Dropdown = ({
   }, [open, onDropdownClose]);
 
   // sync dropdown position on scroll and resize
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!expandToViewport || !open) {
       return;
     }

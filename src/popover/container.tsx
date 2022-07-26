@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { CSSProperties, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { CSSProperties, useCallback, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { getContainingBlock, nodeContains } from '../internal/utils/dom';
@@ -10,6 +10,7 @@ import { calculatePosition } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -143,12 +144,12 @@ export default function PopoverContainer({
   }, [position, trackRef, ref, renderWithPortal]);
 
   // Update the handler when properties change.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     updatePositionHandler();
   }, [updatePositionHandler, trackKey, popoverRect]);
 
   // Attach document listeners.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     /*
       This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
       and by tracking the click event we can adapt the popover's position to the new layout.

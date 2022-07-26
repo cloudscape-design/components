@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { arc, PieArcDatum } from 'd3-shape';
 
@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 import { InternalChartDatum } from './pie-chart';
 import { dimensionsBySize, balanceLabelNodes } from './utils';
 import { useResizeObserver } from '../internal/hooks/container-queries';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 import ResponsiveText from './responsive-text';
 
 export interface LabelsProps<T> {
@@ -122,7 +123,7 @@ export default <T extends PieChartProps.Datum>({
 
   const rootRef = useRef<SVGGElement>(null);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!rootRef.current) {
       return;
     }

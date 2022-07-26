@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -23,6 +23,7 @@ import { findIndex, useMemoizedArray } from './utils';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useIsomorphicLayoutEffect } from '../internal/hooks/use-isomorphic-layout-effect';
 
 export { TagEditorProps };
 
@@ -61,7 +62,7 @@ const TagEditor = React.forwardRef(
     const keyDirtyStateRef = useRef<boolean[]>([]);
     const focusEventRef = useRef<() => void>();
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       focusEventRef.current?.apply(undefined);
       focusEventRef.current = undefined;
     });
