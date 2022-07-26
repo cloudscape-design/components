@@ -35,7 +35,7 @@ let visualRefreshState: undefined | boolean = undefined;
 
 export function useVisualRefresh() {
   if (visualRefreshState === undefined) {
-    const supportsCSSVariables = window.CSS?.supports?.('color', 'var(--test-var)');
+    const supportsCSSVariables = typeof window !== 'undefined' && window.CSS?.supports?.('color', 'var(--test-var)');
 
     if (ALWAYS_VISUAL_REFRESH) {
       visualRefreshState = true;

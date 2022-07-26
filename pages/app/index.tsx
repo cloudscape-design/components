@@ -4,7 +4,7 @@ import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
-import { usePrevious } from '~components/internal/hooks/use-previous';
+import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import './polyfills';
 
 // import font-size reset and Ember font
@@ -25,12 +25,9 @@ function App() {
     urlParams: { density, motionDisabled, visualRefresh },
   } = useContext(AppContext);
 
-  const previousVisualRefresh = usePrevious(visualRefresh);
-  useEffect(() => {
-    if (previousVisualRefresh !== undefined && previousVisualRefresh !== visualRefresh) {
-      window.location.reload();
-    }
-  }, [previousVisualRefresh, visualRefresh]);
+  useEffectOnUpdate(() => {
+    window.location.reload();
+  }, [visualRefresh]);
 
   const isAppLayout =
     pageId !== undefined && (pageId.indexOf('app-layout') > -1 || pageId.indexOf('content-layout') > -1);
