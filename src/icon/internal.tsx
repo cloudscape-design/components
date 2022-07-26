@@ -16,19 +16,22 @@ type InternalIconProps = IconProps &
     badge?: boolean;
   };
 
-function iconSizeMap(height: number) {
-  if (height) {
-    if (height >= 50) {
-      return 'large';
-    } else if (height >= 36) {
-      return 'big';
-    } else if (height >= 24) {
-      return 'medium';
-    } else if (height <= 16) {
-      return 'small';
-    } else {
-      return 'normal';
-    }
+function iconSizeMap(height: number | null) {
+  if (height === null) {
+    // This is the best guess for the contextual height while server rendering.
+    return 'normal';
+  }
+
+  if (height >= 50) {
+    return 'large';
+  } else if (height >= 36) {
+    return 'big';
+  } else if (height >= 24) {
+    return 'medium';
+  } else if (height <= 16) {
+    return 'small';
+  } else {
+    return 'normal';
   }
 }
 
@@ -46,10 +49,10 @@ const InternalIcon = ({
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
   useVisualRefresh(iconRef);
-  const [parentHeight, setParentHeight] = useState(0);
+  const [parentHeight, setParentHeight] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;
-  const inlineStyles = { height: contextualSize ? `${parentHeight}px` : '' };
+  const inlineStyles = contextualSize && parentHeight !== null ? { height: `${parentHeight}px` } : {};
   const baseProps = getBaseProps(props);
 
   baseProps.className = clsx(

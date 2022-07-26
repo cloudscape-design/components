@@ -39,10 +39,6 @@ describe('Icon Component', () => {
       const { container } = render(<Icon size="inherit" name="settings" />);
       expect(container.firstElementChild).toHaveClass(styles['icon-flex-height']);
     });
-    it('renders with inline style for height', () => {
-      const { container } = render(<Icon size="inherit" name="settings" />);
-      expect(container.firstElementChild).toHaveAttribute('style', 'height: 0px;');
-    });
   });
 
   describe('custom icons', () => {
