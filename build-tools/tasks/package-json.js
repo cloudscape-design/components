@@ -50,7 +50,7 @@ function getSideEffects() {
 
 function generatePackageJson(target, baseContent, { injectDependencies } = {}) {
   return task(`package-json:${baseContent.name}`, () => {
-    const content = { ...baseContent, version: pkg.version };
+    const content = { ...baseContent, version: pkg.version, repository: pkg.repository, homepage: pkg.homepage };
     if (injectDependencies) {
       content.dependencies = pkg.dependencies;
       content.peerDependencies = pkg.peerDependencies;

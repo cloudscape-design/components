@@ -37,7 +37,7 @@ export const getOverflowParentDimensions = (
         };
       });
 
-  if (canExpandOutsideViewport) {
+  if (canExpandOutsideViewport && !expandToViewport) {
     const documentDimensions = document.documentElement.getBoundingClientRect();
     parents.push({
       width: Math.max(documentDimensions.width, document.documentElement.clientWidth),

@@ -119,7 +119,7 @@ export namespace TagEditorProps {
     invalidKeyError: string;
     invalidValueError: string;
     awsPrefixError: string;
-    tagLimit: (availableTags: number) => string;
+    tagLimit: (availableTags: number, tagLimit: number) => string;
     tagLimitReached: (tagLimit: number) => string;
     tagLimitExceeded: (tagLimit: number) => string;
     enteredKeyLabel: (enteredText: string) => string;

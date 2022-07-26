@@ -175,7 +175,7 @@ function Tutorial({
             <InternalSpaceBetween size="l">
               <InternalSpaceBetween size="m">
                 {tutorial.prerequisitesNeeded && tutorial.prerequisitesAlert && (
-                  <InternalAlert type="info" className={styles['prerequisites-alert']} visible={true}>
+                  <InternalAlert type="info" className={styles['prerequisites-alert']}>
                     {tutorial.prerequisitesAlert}
                   </InternalAlert>
                 )}

@@ -12,7 +12,7 @@ const packageLock = require(filename);
 
 Object.keys(packageLock.dependencies).forEach(dependencyName => {
   const dependency = packageLock.dependencies[dependencyName];
-  if (dependencyName.startsWith('@cloudscape-design/')) {
+  if (dependencyName.startsWith('@cloudscape-design/') || dependencyName.startsWith('@awsui/')) {
     delete packageLock.dependencies[dependencyName];
   } else if (dependency.resolved && dependency.resolved.indexOf('codeartifact.us-west-2.amazonaws.com') !== -1) {
     throw Error('package-lock.json file contains a reference to CodeArtifact. Use regular npm to update the packages.');

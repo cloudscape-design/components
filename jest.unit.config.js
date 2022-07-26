@@ -9,6 +9,7 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
   verbose: true,
   testEnvironment: 'jsdom',
   reporters: ['default', 'github-actions'],
+  collectCoverage: true,
   coveragePathIgnorePatterns: [
     '__tests__',
     '__integ__',
@@ -27,7 +28,9 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
     },
   },
   transform: {
-    '(?!node_modules).*/lib/(components|design-tokens)/.*\\.js$': require.resolve('@cloudscape-design/jest-preset/js-transformer'),
+    '(?!node_modules).*/lib/(components|design-tokens)/.*\\.js$': require.resolve(
+      '@cloudscape-design/jest-preset/js-transformer'
+    ),
     '(?!node_modules).*/lib/components/.*\\.css$': require.resolve('@cloudscape-design/jest-preset/css-transformer'),
   },
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'jest', 'setup.js')],

@@ -1370,7 +1370,7 @@ receive focus.",
       "type": "boolean",
     },
     Object {
-      "description": "Specifies a function that generates the custom value indicator (for example, \`\\\\\`Use \\"\${value}\\"\\\\\`\`).",
+      "description": "Specifies a function that generates the custom value indicator (for example, \`Use \\"\${value}\\"\`).",
       "inlineType": Object {
         "name": "AutosuggestProps.EnteredTextLabel",
         "parameters": Array [
@@ -2172,6 +2172,7 @@ Note: If you don't set it, the display depends on the variant.
 \`\`\`
 
 The size can be \`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`, where \`n\` stands for none.
+Sizes are automatically scaled down in compact mode.
 
  For example, \`margin=\\"s\\"\` adds a small margin to all sides.
 \`margin={{ right: \\"l\\", bottom: \\"s\\" }}\` adds a small margin to the bottom and a large margin to the right.
@@ -2196,6 +2197,7 @@ The size can be \`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \
 \`\`\`
 
 The size can be \`n\`, \`xxxs\`, \`xxs\`, \`xs\`, \`s\`, \`m\`, \`l\`, \`xl\`, \`xxl\`, \`xxxl\`, where \`n\` stands for none.
+Sizes are automatically scaled down in compact mode.
 
  For example, \`padding=\\"s\\"\` adds small padding to all sides.
 \`padding={{ right: \\"l\\", bottom: \\"s\\" }}\` adds small padding to the bottom and large padding to the right.
@@ -2585,6 +2587,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "menu",
           "microphone",
           "notification",
+          "redo",
           "refresh",
           "search",
           "settings",
@@ -4907,15 +4910,15 @@ our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
 When a user clicks on this button the \`onButtonClick\` handler is called. If the \`action\` property is set, this property is ignored.
 **Deprecated**, replaced by \`action\`.
-*\`id\` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
-1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
-2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.",
+* \`onButtonClick\` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
+  using the \`action\` property. **Deprecated**, replaced by \`action\`.
+* \`id\` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
+  1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
+  2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
-      "visualRefreshTag": "\`id\` property
-* \`onButtonClick\` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
-  using the \`action\` property. **Deprecated**, replaced by \`action\`.",
+      "visualRefreshTag": "\`id\` property",
     },
   ],
   "regions": Array [],
@@ -5425,6 +5428,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "menu",
           "microphone",
           "notification",
+          "redo",
           "refresh",
           "search",
           "settings",
@@ -10841,7 +10845,7 @@ character validation. You should use this property only when absolutely necessar
           Object {
             "name": "tagLimit",
             "optional": false,
-            "type": "(availableTags: number) => string",
+            "type": "(availableTags: number, tagLimit: number) => string",
           },
           Object {
             "name": "tagLimitExceeded",

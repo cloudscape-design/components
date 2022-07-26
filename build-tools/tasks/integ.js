@@ -9,7 +9,6 @@ module.exports = task('test:integ', async () => {
   const devServer = execa('webpack', ['serve', '--config', 'pages/webpack.config.integ.js'], {
     env: {
       NODE_ENV: 'development',
-      THEME: 'dev',
     },
   });
   await waitOn({ resources: ['http://localhost:8080'] });

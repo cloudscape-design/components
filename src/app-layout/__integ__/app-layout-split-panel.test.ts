@@ -66,7 +66,7 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new AppLayoutSplitViewPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(url);
+    await browser.url(`${url}?visualRefresh=false`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
@@ -77,7 +77,7 @@ test(
   useBrowser(async browser => {
     const page = new AppLayoutSplitViewPage(browser);
     await page.setWindowSize(viewports.desktop);
-    await browser.url(`#/light/app-layout/with-split-panel?splitPanelPosition=side`);
+    await browser.url(`#/light/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await page.openPanel();
     await expect(page.getPanelPosition()).resolves.toEqual('side');
@@ -111,6 +111,20 @@ test(
 
     await page.click(wrapper.findToolsClose().toSelector());
     await expect(page.getPanelPosition()).resolves.toEqual('side');
+  })
+);
+
+test(
+  `should have extended max height for constrained heights`,
+  setupTest(async page => {
+    // Simulating 200% zoom on medium screens (1366x768 / 2 ~= 680x360 ).
+    await page.setWindowSize({ width: 680, height: 360 });
+    await page.openPanel();
+    const { height } = await page.getWindowSize();
+    await page.dragResizerTo({ x: 0, y: height });
+    expect((await page.getSplitPanelSize()).height).toEqual(160);
+    await page.dragResizerTo({ x: 0, y: 0 });
+    expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(277);
   })
 );
 

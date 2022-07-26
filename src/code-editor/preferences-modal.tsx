@@ -11,7 +11,7 @@ import InternalModal from '../modal/internal';
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalSpaceBetween from '../space-between/internal';
-import { FormFieldDomContext } from '../internal/context/form-field-context';
+import { FormFieldContext } from '../internal/context/form-field-context';
 import { NonCancelableCustomEvent } from '../internal/events';
 import { LightThemes, DarkThemes } from './ace-themes';
 import { CodeEditorProps } from './interfaces';
@@ -50,7 +50,7 @@ export default (props: PreferencesModalProps) => {
   };
 
   return (
-    <FormFieldDomContext.RootProvider value={{}}>
+    <FormFieldContext.Provider value={{}}>
       <InternalModal
         size="medium"
         visible={true}
@@ -89,6 +89,6 @@ export default (props: PreferencesModalProps) => {
           </div>
         </InternalColumnLayout>
       </InternalModal>
-    </FormFieldDomContext.RootProvider>
+    </FormFieldContext.Provider>
   );
 };

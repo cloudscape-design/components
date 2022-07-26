@@ -1,7 +1,23 @@
 name: Figma - Bug Report
-about: Report a bug in our Figma library
+description: Report a bug in our Figma libraries
 labels: bug,figma,design
 body:
   - type: markdown
     attributes:
-      value: TBD
+      value: Use this template to report a bug in our [Figma libraries](https://www.figma.com/@cloudscape).
+  - type: textarea
+    attributes:
+      label: Describe the bug
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: Please confirm the following
+      options:
+        - label:
+            I agree to follow this project's [Code of
+            Conduct](https://github.com/cloudscape-design/components/blob/main/CODE_OF_CONDUCT.md)
+          required: true
+        - label:
+            I checked the [current
+            issues](https://github.com/cloudscape-design/components/issues) for duplicate requests

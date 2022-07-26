@@ -1,5 +1,5 @@
 name: Bug Report
-about: Report a bug
+description: Report a bug
 title: '[Bug]: '
 labels: bug
 body:
@@ -48,7 +48,7 @@ body:
     id: reproduction
     attributes:
       label: Reproduction
-      description: Recreate the issue using [CodeSandbox](https://codesandbox.io/). Use this [template](TBD) as a starting point
+      description: Recreate the issue using [CodeSandbox](https://codesandbox.io/). Use this [template](https://codesandbox.io/s/cloudscape-design-system-react-javascript-ljs1t7) as a starting point
   - type: checkboxes
     id: terms
     attributes:
@@ -57,7 +57,7 @@ body:
       options:
         - label:
             I agree to follow this project's [Code of
-            Conduct](../../CODE_OF_CONDUCT.md)
+            Conduct](https://github.com/cloudscape-design/components/blob/main/CODE_OF_CONDUCT.md)
           required: true
         - label:
             I checked the [current

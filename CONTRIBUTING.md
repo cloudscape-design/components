@@ -98,7 +98,6 @@ The package contains three types of tests:
 - **Build-tool tests** test the build-tools code in a NodeJS context.
 - **Unit tests** emulate a browser environment using JSDOM.
 - **Integration tests** test against real browser behavior on Chrome.
-- Screenshot tests are located in a separate `AWS-UI-IntegrationTests` package.
 
 #### Run all tests:
 

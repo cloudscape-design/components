@@ -1,12 +1,11 @@
 name: Documentation
-about: Report an issue or suggest an improvement in our [documentation website](TBD).
+description: Report an issue or suggest an improvement in our documentation website
 title: '[Documentation]: '
 labels: documentation
 body:
   - type: markdown
     attributes:
-      value: Use this template to report an issue or suggest an improvement in our [documentation website](TBD).
-body:
+      value: Use this template to report an issue or suggest an improvement in our [documentation website](https://cloudscape.design/).
   - type: textarea
     id: description
     attributes:
@@ -22,5 +21,8 @@ body:
       options:
         - label:
             I agree to follow this project's [Code of
-            Conduct](../../CODE_OF_CONDUCT.md)
+            Conduct](https://github.com/cloudscape-design/components/blob/main/CODE_OF_CONDUCT.md)
           required: true
+        - label:
+            I checked the [current
+            issues](https://github.com/cloudscape-design/components/issues) for duplicate requests

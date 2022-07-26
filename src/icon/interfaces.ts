@@ -102,6 +102,7 @@ export namespace IconProps {
     | 'menu'
     | 'microphone'
     | 'notification'
+    | 'redo'
     | 'refresh'
     | 'search'
     | 'settings'

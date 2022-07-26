@@ -18,7 +18,7 @@ import { useKeyboardEvents } from './utils/use-keyboard-events';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { AppLayoutDomContext } from '../internal/context/app-layout-context';
+import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { getLimitedValue } from './utils/size-utils';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
@@ -328,14 +328,14 @@ export default function SplitPanel({
   }, [lastInteraction]);
 
   const wrappedChildren = (
-    <AppLayoutDomContext.RootProvider
+    <AppLayoutContext.Provider
       value={{
         stickyOffsetTop: topOffset,
         stickyOffsetBottom: bottomOffset,
       }}
     >
       {children}
-    </AppLayoutDomContext.RootProvider>
+    </AppLayoutContext.Provider>
   );
 
   const paneHeader = (

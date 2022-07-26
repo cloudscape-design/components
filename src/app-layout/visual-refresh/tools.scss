@@ -117,6 +117,7 @@ viewport size and state of the Tools drawer.
   position: absolute;
   right: awsui.$space-m;
   top: awsui.$size-vertical-panel-icon-offset;
+  z-index: 1;
 }
 
 /*

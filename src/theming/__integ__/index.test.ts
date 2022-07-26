@@ -31,7 +31,7 @@ class ThemingPage extends BasePageObject {
 const setupTest = (testFn: (page: ThemingPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new ThemingPage(browser);
-    await browser.url('#/light/theming/integration');
+    await browser.url('#/light/theming/integration?visualRefresh=false');
     await testFn(page);
   });
 };
