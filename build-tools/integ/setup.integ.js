@@ -3,7 +3,7 @@
 const { configure } = require('@cloudscape-design/browser-test-tools/use-browser');
 
 configure({
-  browserName: 'Chrome',
+  browserName: 'ChromeHeadlessIntegration',
   browserCreatorOptions: {
     seleniumUrl: 'http://localhost:9515',
   },
@@ -12,4 +12,4 @@ configure({
   },
 });
 
-// jest.retryTimes(3, { logErrorsBeforeRetry: true });
+jest.retryTimes(3, { logErrorsBeforeRetry: true });
