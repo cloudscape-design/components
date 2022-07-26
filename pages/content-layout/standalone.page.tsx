@@ -14,32 +14,34 @@ export default function () {
   const [alertVisible, setVisible] = useState(true);
 
   return (
-    <ScreenshotArea gutters={false}>
-      <ContentLayout
-        header={
-          <div style={{ padding: '20px 40px 0' }}>
-            <SpaceBetween size="m">
-              <Header
-                variant="h1"
-                info={<Link>Info</Link>}
-                description="When you create an Amazon CloudFront distribution."
-                actions={<Button variant="primary">Create distribution</Button>}
-              >
-                Create distribution
-              </Header>
-              {alertVisible && (
-                <Alert dismissible={true} dismissAriaLabel="Close alert" onDismiss={() => setVisible(false)}>
-                  Demo alert
-                </Alert>
-              )}
-            </SpaceBetween>
+    <main>
+      <ScreenshotArea gutters={false}>
+        <ContentLayout
+          header={
+            <div style={{ padding: '20px 40px 0' }}>
+              <SpaceBetween size="m">
+                <Header
+                  variant="h1"
+                  info={<Link>Info</Link>}
+                  description="When you create an Amazon CloudFront distribution."
+                  actions={<Button variant="primary">Create distribution</Button>}
+                >
+                  Create distribution
+                </Header>
+                {alertVisible && (
+                  <Alert dismissible={true} dismissAriaLabel="Close alert" onDismiss={() => setVisible(false)}>
+                    Demo alert
+                  </Alert>
+                )}
+              </SpaceBetween>
+            </div>
+          }
+        >
+          <div style={{ padding: '0 40px 20px' }}>
+            <Containers />
           </div>
-        }
-      >
-        <div style={{ padding: '0 40px 20px' }}>
-          <Containers />
-        </div>
-      </ContentLayout>
-    </ScreenshotArea>
+        </ContentLayout>
+      </ScreenshotArea>
+    </main>
   );
 }
