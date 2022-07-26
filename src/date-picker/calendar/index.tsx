@@ -10,7 +10,7 @@ import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { DatePickerProps } from '../interfaces';
 import { CalendarTypes } from './definitions';
 import CalendarHeader from './header';
-import Grid, { DateChangeHandlerNullable } from './grid';
+import Grid from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 import { formatDate, memoizedDate } from './utils/date.js';
@@ -32,7 +32,7 @@ interface HeaderChangeMonthHandler {
 
 interface CalendarProps extends BaseComponentProps {
   locale: string;
-  startOfWeek: DayIndex;
+  startOfWeek: number | undefined;
   selectedDate: Date | null;
   displayedDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
@@ -162,4 +162,4 @@ const Calendar = ({
   );
 };
 
-export default Calendar;
+export default Calendar;ƒ

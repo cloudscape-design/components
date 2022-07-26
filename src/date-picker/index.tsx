@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
-import Calendar, { DayIndex } from './calendar';
+import Calendar from './calendar';
 import { normalizeLocale } from './calendar/utils/locales';
 import { getDateLabel } from './calendar/utils/intl';
 import { displayToIso, isoToDisplay, memoizedDate } from './calendar/utils/date';
