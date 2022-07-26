@@ -108,9 +108,13 @@ describe('Date picker Dropdown interactions', () => {
     setupTest(async page => {
       await page.clickOpenCalendar();
       await page.clickDate(3, 3);
+
       await page.clickOpenCalendar();
+      await page.keys('\uE052'); // Corresponds to right Alt key. Workaround for an issue with useFocusVisible
+
       await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
       await expect(page.isDropdownFocused()).resolves.toBe(true);
+
       await page.keys(['Shift', 'Tab', 'Null']);
       await expect(page.isDateFocused()).resolves.toBe(true);
     })
@@ -121,9 +125,12 @@ describe('Date picker Dropdown interactions', () => {
     setupTest(async page => {
       await page.setInputValue('2012/02/03', false);
       await page.clickOpenCalendar();
+      await page.keys('\uE052'); // Corresponds to right Alt key. Workaround for an issue with useFocusVisible
+
       // select next month button
       await page.keys(['Tab', 'Tab', 'Enter']);
       await expect(page.isDropdownOpen()).resolves.toBe(true);
+
       // select first date of month
       await page.keys(['Tab', 'Enter']);
       await expect(page.isDropdownOpen()).resolves.toBe(false);
