@@ -47,7 +47,7 @@ export default function InternalContainer({
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
   const isRefresh = useVisualRefresh(rootRef);
   const hasDynamicHeight = isRefresh && variant === 'full-page';
-  const overlapElement = useDynamicOverlap({ disabled: hasDynamicHeight });
+  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
