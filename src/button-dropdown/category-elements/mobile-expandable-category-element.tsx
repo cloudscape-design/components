@@ -22,6 +22,7 @@ const MobileExpandableCategoryElement = ({
   highlightItem,
   disabled,
   variant,
+  isKeyboard,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -53,6 +54,7 @@ const MobileExpandableCategoryElement = ({
         [styles.highlighted]: highlighted,
         [styles['rolled-down']]: expanded,
         [styles.disabled]: disabled,
+        [styles['is-keyboard']]: isKeyboard,
       })}
       // We are using the roving tabindex technique to manage the focus state of the dropdown.
       // The current element will always have tabindex=0 which means that it can be tabbed to,
@@ -99,6 +101,7 @@ const MobileExpandableCategoryElement = ({
               highlightItem={highlightItem}
               hasCategoryHeader={true}
               variant={variant}
+              isKeyboard={isKeyboard}
             />
           </ul>
         )}

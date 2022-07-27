@@ -58,6 +58,7 @@ export default function ItemsList({
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
+            isKeyboard={isKeyboard}
           />
         ) : (
           <ExpandableCategoryElement
