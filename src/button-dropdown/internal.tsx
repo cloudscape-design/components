@@ -77,9 +77,6 @@ const InternalButtonDropdown = React.forwardRef(
     useForwardFocus(ref, dropdownRef);
 
     const clickHandler = () => {
-      if (!usingMouse.current) {
-        return;
-      }
       if (!loading && !disabled) {
         toggleDropdown();
         if (dropdownRef.current) {
