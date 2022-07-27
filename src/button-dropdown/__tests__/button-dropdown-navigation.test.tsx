@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, act, fireEvent } from '@testing-library/react';
 
 import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
 import { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button-dropdown/styles.css.js';
+import itemStyls from '../../../lib/components/button-dropdown/item-element/styles.css.js';
+import { KeyCode } from '../../internal/keycode';
 
 const items: ButtonDropdownProps.Items = [
   { id: 'i1', text: 'item1', description: 'Item 1 description' },
@@ -57,5 +59,18 @@ describe('Button dropdown header', () => {
 
     wrapper.openDropdown();
     expect(findHeader(wrapper).getElement()).toHaveTextContent('Description');
+  });
+});
+
+describe('Button dropdown navigate with mouse or keyboard', () => {
+  it('should add class is-keyboard if highligted with keyboard and remove when using mouse', () => {
+    const wrapper = renderInternalButtonDropdown({ items });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyls['is-keyboard']);
+
+    fireEvent.mouseMove(wrapper.findItemById('i4')!.getElement());
+    fireEvent.mouseEnter(wrapper.findItemById('i4')!.getElement());
+    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyls['is-keyboard']);
   });
 });
