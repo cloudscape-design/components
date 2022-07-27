@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useContext, useLayoutEffect, useRef } from 'react';
-import { AppLayoutContext } from '../app-layout/visual-refresh/context';
+import React, { useRef } from 'react';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
-import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
@@ -45,25 +44,10 @@ export default function InternalContainer({
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
   const isRefresh = useVisualRefresh(rootRef);
   const hasDynamicHeight = isRefresh && variant === 'full-page';
-  const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
-
-  /**
-   * Observe the dynamic height of the full page container variant in
-   * visual refresh and update the AppLayout dynamicOverlapHeight property.
-   */
-  const { setDynamicOverlapHeight } = useContext(AppLayoutContext);
-  const [overlapContainerQuery, overlapElement] = useContainerQuery(rect => rect.height);
-
-  useLayoutEffect(
-    function handleDynamicOverlapHeight() {
-      if (hasDynamicHeight) {
-        setDynamicOverlapHeight(overlapContainerQuery ?? 0);
-      }
-    },
-    [hasDynamicHeight, overlapContainerQuery, setDynamicOverlapHeight]
-  );
+  const overlapElement = useDynamicOverlap({ disabled: hasDynamicHeight });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
