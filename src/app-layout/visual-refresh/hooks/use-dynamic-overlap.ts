@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { RefObject, useContext, useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 
 import { AppLayoutContext } from '../context';
 import { useContainerQuery } from '../../../internal/hooks/container-queries';
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 
 export interface UseDynamicOverlapProps {
   /**
@@ -24,9 +23,8 @@ export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const disabled = props?.disabled ?? false;
   const { setDynamicOverlapHeight } = useContext(AppLayoutContext);
   const [overlapContainerQuery, overlapElementRef] = useContainerQuery(rect => rect.height);
-  const isVisualRefresh = useVisualRefresh(overlapElementRef as RefObject<HTMLElement>);
 
-  const hasOverlap = isVisualRefresh && !disabled && overlapContainerQuery !== null;
+  const hasOverlap = !disabled && overlapContainerQuery !== null;
   useLayoutEffect(
     function handleDynamicOverlapHeight() {
       setDynamicOverlapHeight(hasOverlap ? overlapContainerQuery : 0);
