@@ -80,12 +80,11 @@
     outline: none;
   }
 
-  /* stylelint-disable selector-max-type */
+  /* stylelint-disable-next-line selector-max-type */
   .has-category-header > &,
   .has-category-header > span > & {
     padding-left: awsui.$space-xxl;
   }
-  /* stylelint-enable selector-max-type */
 }
 
 .icon {

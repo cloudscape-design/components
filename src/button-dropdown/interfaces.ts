@@ -158,6 +158,7 @@ export interface CategoryProps extends HighlightProps {
   disabled: boolean;
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
+  isKeyboard?: boolean;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -169,6 +170,7 @@ export interface ItemListProps extends HighlightProps {
   hasCategoryHeader?: boolean;
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
+  isKeyboard?: boolean;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -185,6 +187,7 @@ export interface ItemProps {
   last: boolean;
   hasCategoryHeader: boolean;
   variant?: ItemListProps['variant'];
+  isKeyboard?: boolean;
 }
 
 export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {

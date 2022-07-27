@@ -7,6 +7,7 @@ import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import InternalIcon from '../../icon/internal.js';
 
 export interface ItemProps {
   option: DropdownOption;
@@ -76,6 +77,11 @@ const Item = (
           wrappedOption.label || wrappedOption.value
         ) : (
           <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} />
+        )}
+        {!hasCheckbox && !isParent && selected && (
+          <div className={styles['selected-icon']}>
+            <InternalIcon name="confirm" />
+          </div>
         )}
       </div>
     </SelectableItem>

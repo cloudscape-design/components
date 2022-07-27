@@ -140,6 +140,7 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
+        onMouseMove={handleMouseEvent}
         className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
@@ -188,6 +189,7 @@ const InternalButtonDropdown = React.forwardRef(
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
               variant={variant}
+              isKeyboard={!usingMouse.current}
             />
           </OptionsList>
         </Dropdown>
