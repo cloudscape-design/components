@@ -78,8 +78,8 @@ test(
 
     await page.resizeBeyondTableWidth();
 
-    const currenWidth = await page.getTableWidth();
-    expect(previousWidth).toEqual(currenWidth);
+    const currentWidth = await page.getTableWidth();
+    expect(previousWidth).toEqual(currentWidth);
   })
 );
 
@@ -97,5 +97,35 @@ test(
     await page.waitForJsTimers();
     // ensure there are no ongoing resizes after we flushed the expected ones above
     await expect(page.flushObservations()).resolves.toEqual([]);
+  })
+);
+
+// Known issue: the table is flickering when rendered in a flex container and has resizeable columns.
+// As a mitigation we ask customers to use a non-flexible container, e.g. based on a Grid.
+// The test below and the corresponding test page reproduce the behaviour.
+test.skip(
+  'should not oscillate when resizing table rendered in flex container',
+  useBrowser({ width: 800, height: 800 }, async browser => {
+    const page = new ResizableColumnsPage(browser);
+    await browser.url('#/light/table/resizable-coloumns-flex-grow/?visualRefresh=true');
+    await page.waitForVisible(wrapper.toSelector());
+
+    const resizerSelector = wrapper.findColumnResizer(2).toSelector();
+    await page.dragAndDrop(resizerSelector, 100);
+
+    await page.setWindowSize({ width: 700, height: 800 });
+
+    const expectedTableWidth = await page.getTableWidth();
+    const expected: number[] = [];
+    const actual: number[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      await new Promise(resolve => setTimeout(resolve, 1));
+      const actualTableWidth = await page.getTableWidth();
+      expected.push(expectedTableWidth);
+      actual.push(actualTableWidth);
+    }
+
+    expect(expected).toEqual(actual);
   })
 );
