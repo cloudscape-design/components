@@ -4,7 +4,7 @@ This package contains the source code of the React components for the [Cloudscap
 
 Cloudscape is an open source design system for building intuitive, engaging, and inclusive user experiences at scale. It consists of an extensive set of guidelines to create web applications, along with the design resources and front-end components to streamline implementation.
 
-Cloudscape was built for and is used by Amazon Web Services (AWS) products and services. We created it in 2016 to improve the user experience across AWS web applications, and also to help teams implement those applications faster. Since then, we have continued enhancing the system based on customer feedback and research.
+Cloudscape was built for and is used by [Amazon Web Services (AWS)](https://aws.amazon.com/) products and services. We created it in 2016 to improve the user experience across AWS web applications, and also to help teams implement those applications faster. Since then, we have continued enhancing the system based on customer feedback and research.
 
 Components APIs and guidelines can be found in the [Components section of the Cloudscape website](https://cloudscape.design/components/).
 
