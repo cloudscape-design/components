@@ -49,3 +49,8 @@ $checkbox-size: awsui.$size-control;
 .list-bottom {
   /* used in unit-tests */
 }
+
+.selected-icon {
+  padding-left: awsui.$space-scaled-s;
+  color: awsui.$color-border-item-focused;
+}

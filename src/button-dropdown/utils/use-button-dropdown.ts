@@ -104,11 +104,13 @@ export function useButtonDropdown({
   const onKeyDown = (event: React.KeyboardEvent) => {
     switch (event.keyCode) {
       case KeyCode.down: {
+        usingMouse.current = false;
         doVerticalNavigation(1);
         event.preventDefault();
         break;
       }
       case KeyCode.up: {
+        usingMouse.current = false;
         doVerticalNavigation(-1);
         event.preventDefault();
         break;

@@ -79,7 +79,7 @@
 
   &.highlighted.is-keyboard {
     border-color: awsui.$color-border-item-focused;
-    box-shadow: inset 0 0 0 1px awsui.$color-border-item-focused;
+    box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
   }
 
   &.parent {

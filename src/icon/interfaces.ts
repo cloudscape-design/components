@@ -85,6 +85,7 @@ export namespace IconProps {
     | 'contact'
     | 'close'
     | 'copy'
+    | 'confirm'
     | 'download'
     | 'edit'
     | 'ellipsis'
