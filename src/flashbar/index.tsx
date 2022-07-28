@@ -21,7 +21,7 @@ export { FlashbarProps };
 export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const { __internalRootRef } = useBaseComponent('Flashbar');
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
-  const isRefresh = useVisualRefresh(__internalRootRef);
+  const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(restProps);
 
   const mergedRef = useMergeRefs(ref, __internalRootRef);
