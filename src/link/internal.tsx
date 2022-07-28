@@ -77,7 +77,7 @@ const InternalLink = React.forwardRef(
     };
 
     const linkRef = useRef<HTMLElement>(null);
-    const isVisualRefresh = useVisualRefresh();
+    const isVisualRefresh = useVisualRefresh(linkRef);
     useForwardFocus(ref, linkRef);
 
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)

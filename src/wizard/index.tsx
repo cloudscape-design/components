@@ -47,7 +47,8 @@ export default function Wizard({
   const baseProps = getBaseProps(rest);
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
-  const ref = useMergeRefs(breakpointsRef, __internalRootRef);
+  const refObject = useRef(null);
+  const ref = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
 
   const smallContainer = breakpoint === 'default';
 
@@ -66,7 +67,7 @@ export default function Wizard({
     scrollToTop(internalRef);
   }, [actualActiveStepIndex]);
 
-  const isVisualRefresh = useVisualRefresh();
+  const isVisualRefresh = useVisualRefresh(refObject);
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {

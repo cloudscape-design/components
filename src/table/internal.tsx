@@ -119,7 +119,7 @@ const InternalTable = React.forwardRef(
       }
     }
 
-    const isRefresh = useVisualRefresh();
+    const isRefresh = useVisualRefresh(tableRefObject);
     const computedVariant = isRefresh
       ? variant
       : ['embedded', 'full-page'].indexOf(variant) > -1

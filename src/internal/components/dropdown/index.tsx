@@ -130,7 +130,7 @@ const Dropdown = ({
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
 
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(triggerRef);
 
   const dropdownClasses = usePortalModeClasses(triggerRef);
   const [position, setPosition] = useState<DropdownContextProviderProps['position']>('bottom-right');

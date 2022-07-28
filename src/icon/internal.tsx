@@ -48,7 +48,7 @@ const InternalIcon = ({
 }: InternalIconProps) => {
   const iconRef = useRef<HTMLElement>(null);
   // To ensure a re-render is triggered on visual mode changes
-  useVisualRefresh();
+  useVisualRefresh(iconRef);
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;

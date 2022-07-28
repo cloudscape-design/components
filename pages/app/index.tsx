@@ -4,7 +4,6 @@ import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
-import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import './polyfills';
 
 // import font-size reset and Ember font
@@ -24,10 +23,6 @@ function App() {
     pageId,
     urlParams: { density, motionDisabled, visualRefresh },
   } = useContext(AppContext);
-
-  useEffectOnUpdate(() => {
-    window.location.reload();
-  }, [visualRefresh]);
 
   const isAppLayout =
     pageId !== undefined && (pageId.indexOf('app-layout') > -1 || pageId.indexOf('content-layout') > -1);

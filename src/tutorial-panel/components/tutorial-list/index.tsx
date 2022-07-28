@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import styles from './styles.css.js';
 import { TutorialPanelProps } from '../../interfaces';
 import InternalBox from '../../../box/internal';
@@ -50,7 +50,8 @@ export default function TutorialList({
   */
 
   const focusVisible = useFocusVisible();
-  const isRefresh = useVisualRefresh();
+  const tutorialListRef = useRef(null);
+  const isRefresh = useVisualRefresh(tutorialListRef);
 
   return (
     <>
@@ -86,7 +87,7 @@ export default function TutorialList({
             <InternalStatusIndicator type="loading">{i18nStrings.loadingText}</InternalStatusIndicator>
           ) : (
             <>
-              <ul className={styles['tutorial-list']} role="list">
+              <ul className={styles['tutorial-list']} role="list" ref={tutorialListRef}>
                 {tutorials.map((tutorial, index) => (
                   <Tutorial
                     tutorial={tutorial}
@@ -119,7 +120,8 @@ function Tutorial({
   const triggerControldId = useUniqueId();
   const headerId = useUniqueId();
 
-  const isRefresh = useVisualRefresh();
+  const tutorialRef = useRef(null);
+  const isRefresh = useVisualRefresh(tutorialRef);
 
   const onStartTutorial = useCallback(() => {
     fireNonCancelableEvent(onStartTutorialEventHandler, { tutorial });
@@ -132,7 +134,7 @@ function Tutorial({
   }, []);
 
   return (
-    <li className={styles['tutorial-box']} role="listitem">
+    <li className={styles['tutorial-box']} role="listitem" ref={tutorialRef}>
       <InternalSpaceBetween size="xs">
         <div className={styles['tutorial-box-title']}>
           <InternalBox

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -14,6 +14,7 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { joinStrings } from '../internal/utils/strings';
 
 interface FormFieldErrorProps {
@@ -49,7 +50,8 @@ export default function InternalFormField({
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
-  const isRefresh = useVisualRefresh();
+  const ref = useRef<HTMLElement>(null);
+  const isRefresh = useVisualRefresh(ref);
 
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
@@ -73,8 +75,10 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
+  const mergedRef = useMergeRefs(ref, __internalRootRef);
+
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
       <div className={clsx(__hideLabel && styles['visually-hidden'])}>
         {label && (
           <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
