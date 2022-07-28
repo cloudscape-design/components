@@ -50,7 +50,7 @@ const Cards = React.forwardRef(function <T = any>(
 ) {
   const { __internalRootRef } = useBaseComponent('Cards');
   const baseProps = getBaseProps(rest);
-  const isRefresh = useVisualRefresh(__internalRootRef);
+  const isRefresh = useVisualRefresh();
   const computedVariant = isRefresh ? variant : 'container';
 
   const [columns, measureRef] = useContainerQuery<number>(
