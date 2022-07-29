@@ -5,7 +5,7 @@ import { Box, Link } from '~components';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 
 export default function DatePickerEditorScenario() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('2022-01-01');
 
   return (
     <Box padding="s">
