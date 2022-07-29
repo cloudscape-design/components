@@ -77,7 +77,7 @@ const DatePicker = React.forwardRef(
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
-    const calendarRef = useRef<HTMLDivElement>(null);
+    const calendarContainerRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -216,21 +216,22 @@ const DatePicker = React.forwardRef(
         >
           {isDropDownOpen && (
             <>
-              <TabTrapBefore containerRef={calendarRef} />
-              <Calendar
-                ref={calendarRef}
-                selectedDate={memoizedDate('value', selectedDate)}
-                displayedDate={memoizedDate('displayed', displayedDate)}
-                locale={normalizedLocale}
-                startOfWeek={normalizedStartOfWeek}
-                isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
-                nextMonthLabel={nextMonthAriaLabel}
-                previousMonthLabel={previousMonthAriaLabel}
-                todayAriaLabel={todayAriaLabel}
-                onChangeMonth={onChangeMonthHandler}
-                onSelectDate={onSelectDateHandler}
-              />
-              <TabTrapAfter containerRef={calendarRef} />
+              <TabTrapBefore containerRef={calendarContainerRef} />
+              <div ref={calendarContainerRef}>
+                <Calendar
+                  selectedDate={memoizedDate('value', selectedDate)}
+                  displayedDate={memoizedDate('displayed', displayedDate)}
+                  locale={normalizedLocale}
+                  startOfWeek={normalizedStartOfWeek}
+                  isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
+                  nextMonthLabel={nextMonthAriaLabel}
+                  previousMonthLabel={previousMonthAriaLabel}
+                  todayAriaLabel={todayAriaLabel}
+                  onChangeMonth={onChangeMonthHandler}
+                  onSelectDate={onSelectDateHandler}
+                />
+              </div>
+              <TabTrapAfter containerRef={calendarContainerRef} />
             </>
           )}
         </Dropdown>
