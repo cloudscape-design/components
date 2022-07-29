@@ -1,4 +1,5 @@
 
+
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
@@ -31,7 +32,7 @@ interface HeaderChangeMonthHandler {
 
 interface CalendarProps extends BaseComponentProps {
   locale: string;
-  startOfWeek: number | undefined;
+  startOfWeek: DayIndex;
   selectedDate: Date | null;
   displayedDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
