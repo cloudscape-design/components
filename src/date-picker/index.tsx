@@ -26,7 +26,7 @@ import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { TabTrapBefore, TabTrapAfter } from '../internal/components/tab-trap';
+import FocusLock from '../internal/components/tab-trap/focus-lock';
 
 export { DatePickerProps };
 
@@ -77,7 +77,6 @@ const DatePicker = React.forwardRef(
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
-    const calendarContainerRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -215,24 +214,20 @@ const DatePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <>
-              <TabTrapBefore containerRef={calendarContainerRef} />
-              <div ref={calendarContainerRef}>
-                <Calendar
-                  selectedDate={memoizedDate('value', selectedDate)}
-                  displayedDate={memoizedDate('displayed', displayedDate)}
-                  locale={normalizedLocale}
-                  startOfWeek={normalizedStartOfWeek}
-                  isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
-                  nextMonthLabel={nextMonthAriaLabel}
-                  previousMonthLabel={previousMonthAriaLabel}
-                  todayAriaLabel={todayAriaLabel}
-                  onChangeMonth={onChangeMonthHandler}
-                  onSelectDate={onSelectDateHandler}
-                />
-              </div>
-              <TabTrapAfter containerRef={calendarContainerRef} />
-            </>
+            <FocusLock>
+              <Calendar
+                selectedDate={memoizedDate('value', selectedDate)}
+                displayedDate={memoizedDate('displayed', displayedDate)}
+                locale={normalizedLocale}
+                startOfWeek={normalizedStartOfWeek}
+                isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
+                nextMonthLabel={nextMonthAriaLabel}
+                previousMonthLabel={previousMonthAriaLabel}
+                todayAriaLabel={todayAriaLabel}
+                onChangeMonth={onChangeMonthHandler}
+                onSelectDate={onSelectDateHandler}
+              />
+            </FocusLock>
           )}
         </Dropdown>
       </div>
