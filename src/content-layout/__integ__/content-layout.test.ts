@@ -19,7 +19,7 @@ class ContentLayoutPageObject extends BasePageObject {
 
 describe('ContentLayout component', () => {
   test(
-    'It renders the overlap by default',
+    'renders the overlap by default',
     useBrowser(async browser => {
       await browser.url('#/light/content-layout/dark-header-main');
 
@@ -30,7 +30,7 @@ describe('ContentLayout component', () => {
   );
 
   test(
-    'It does not render the overlap if disableOverlap is set',
+    'does not render the overlap if disableOverlap is set',
     useBrowser(async browser => {
       await browser.url('#/light/content-layout/dark-header-no-overlap');
 
@@ -41,7 +41,7 @@ describe('ContentLayout component', () => {
   );
 
   test(
-    'It does not render the overlap if the header is removed',
+    'does not render the overlap if the header is removed',
     useBrowser(async browser => {
       await browser.url('#/light/content-layout/with-header-toggle');
 

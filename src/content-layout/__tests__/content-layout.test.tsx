@@ -11,7 +11,7 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
 }
 
 describe('ContentLayout component', () => {
-  test('It renders the header slot', () => {
+  test('renders the header slot', () => {
     const wrapper = renderContentLayout({
       header: <>Header text</>,
     });
@@ -20,7 +20,7 @@ describe('ContentLayout component', () => {
     expect(wrapper.findContent()).toBeNull();
   });
 
-  test('It renders the content slot', () => {
+  test('renders the content slot', () => {
     const wrapper = renderContentLayout({
       children: <>Content text</>,
     });
@@ -29,7 +29,7 @@ describe('ContentLayout component', () => {
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
   });
 
-  test('It renders the header and content slots', () => {
+  test('renders the header and content slots', () => {
     const wrapper = renderContentLayout({
       children: <>Content text</>,
       header: <>Header text</>,
@@ -39,7 +39,7 @@ describe('ContentLayout component', () => {
     expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
   });
 
-  test('It renders nothing', () => {
+  test('renders nothing', () => {
     const wrapper = renderContentLayout({});
 
     expect(wrapper.findHeader()).toBeNull();
