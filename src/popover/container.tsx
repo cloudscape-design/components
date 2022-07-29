@@ -52,7 +52,7 @@ export default function PopoverContainer({
 
   const [inlineStyle, setInlineStyle] = useState<CSSProperties>(INITIAL_STYLES);
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(ref);
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});

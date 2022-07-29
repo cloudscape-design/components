@@ -15,6 +15,7 @@ interface SegmentsProps<T> {
   highlightedSegment: T | null;
   size: NonNullable<PieChartProps['size']>;
   variant: PieChartProps['variant'];
+  containerRef: React.RefObject<HTMLDivElement>;
   focusedSegmentRef: React.RefObject<SVGGElement>;
   popoverTrackRef: React.RefObject<SVGCircleElement>;
   segmentAriaRoleDescription?: string;
@@ -29,6 +30,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   highlightedSegment,
   size,
   variant,
+  containerRef,
   focusedSegmentRef,
   popoverTrackRef,
   segmentAriaRoleDescription,
@@ -36,7 +38,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   onMouseOver,
   onMouseOut,
 }: SegmentsProps<T>) {
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(containerRef);
 
   const { arcFactory, highlightedArcFactory } = useMemo(() => {
     const dimensions = isRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];

@@ -9,7 +9,7 @@ export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
   const colorMode = useCurrentMode(ref);
   const densityMode = useDensityMode(ref);
   const context = useVisualContext(ref);
-  const visualRefresh = useVisualRefresh();
+  const visualRefresh = useVisualRefresh(ref);
   return clsx({
     'awsui-polaris-dark-mode awsui-dark-mode': colorMode === 'dark',
     'awsui-polaris-compact-mode awsui-compact-mode': densityMode === 'compact',

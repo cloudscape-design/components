@@ -46,7 +46,7 @@ export default function InternalModal({
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
 
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(useRef(modalRoot ?? document.body));
 
   const baseProps = getBaseProps(rest);
 

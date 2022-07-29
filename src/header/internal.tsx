@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useContext } from 'react';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import React, { useContext, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -29,9 +30,11 @@ export default function InternalHeader({
   const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
-  const isRefresh = useVisualRefresh();
+  const ref = useRef(null);
+  const isRefresh = useVisualRefresh(ref);
   const dynamicVariant = isStuck ? 'h2' : 'h1';
   const variantOverride = variant === 'awsui-h1-sticky' ? (isRefresh ? dynamicVariant : 'h2') : variant;
+  const mergedRef = useMergeRefs(ref, __internalRootRef);
   return (
     <div
       {...baseProps}
@@ -44,7 +47,7 @@ export default function InternalHeader({
         description && [styles[`root-has-description`]],
         __disableActionsWrapping && [styles['root-no-wrap']]
       )}
-      ref={__internalRootRef}
+      ref={mergedRef}
     >
       <div
         className={clsx(

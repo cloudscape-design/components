@@ -43,7 +43,7 @@ export function TabHeaderBar({
   const activeTabHeaderRef = useRef<HTMLAnchorElement>(null);
   const leftOverflowButton = useRef<HTMLElement>(null);
 
-  const isVisualRefresh = useVisualRefresh();
+  const isVisualRefresh = useVisualRefresh(headerBarRef);
 
   const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.width);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());

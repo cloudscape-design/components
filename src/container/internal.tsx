@@ -45,7 +45,7 @@ export default function InternalContainer({
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(rootRef);
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
 

@@ -36,7 +36,7 @@ export const useStickyHeader = (
   // of other sticky elements positioned on top of the view.
   const { stickyOffsetTop } = useAppLayoutContext();
   const isSticky = useSupportsStickyHeader() && !!__stickyHeader;
-  const isRefresh = useVisualRefresh();
+  const isRefresh = useVisualRefresh(rootRef);
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
