@@ -32,11 +32,11 @@ _The following items are to be evaluated by the author(s) and the reviewer(s)._
 
 - [ ] _Changes are backward-compatible if not indicated, see [`CONTRIBUTING.md`](CONTRIBUTING.md#public-apis)._
 - [ ] _Changes do not include unsupported browser features, see [`CONTRIBUTING.md`](CONTRIBUTING.md#browsers-support)._
-- [ ] _Changes were manually tested for accessibility, see [accessibility guidelines](https://cloudscape.design/foundation/core-principles/accessibility/).
+- [ ] _Changes were manually tested for accessibility, see [accessibility guidelines](https://cloudscape.design/foundation/core-principles/accessibility/)._
 
 #### Security
 
-- [ ] _If the code handles URLs: all URLs are validated through [the `checkSafeUrl` function](https://github.com/cloudscape-design/components/blob/main/src/internal/utils/check-safe-url.ts).
+- [ ] _If the code handles URLs: all URLs are validated through [the `checkSafeUrl` function](https://github.com/cloudscape-design/components/blob/main/src/internal/utils/check-safe-url.ts)._
 
 #### Testing
 
