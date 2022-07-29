@@ -3,7 +3,8 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../attribute-editor/styles.selectors.js';
 import gridstyles from '../../../grid/styles.selectors.js';
-import { ButtonWrapper, FormFieldWrapper } from '..';
+import ButtonWrapper from '../button';
+import FormFieldWrapper from '../form-field';
 
 export class AttributeEditorRowWrapper extends ElementWrapper {
   /**
