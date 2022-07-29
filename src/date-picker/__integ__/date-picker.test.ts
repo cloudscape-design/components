@@ -104,6 +104,30 @@ describe('Date Picker', () => {
   );
 
   test(
+    'should navigate dates within a month',
+    setupTest(async page => {
+      await page.setInputValue('20220101');
+      await page.clickOpenCalendar();
+      await page.keys(['Tab', 'Tab', 'Tab']);
+      await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
+      await page.keys('Enter');
+      await expect(page.getInputText()).resolves.toBe('2022/01/04');
+    })
+  );
+
+  test(
+    'should navigate dates between months',
+    setupTest(async page => {
+      await page.setInputValue('20220131');
+      await page.clickOpenCalendar();
+      await page.keys(['Tab', 'Tab', 'Tab']);
+      await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
+      await page.keys('Enter');
+      await expect(page.getInputText()).resolves.toBe('2022/02/03');
+    })
+  );
+
+  test(
     'should navigate to a different month',
     setupTest(async page => {
       await page.setInputValue('20191122');
