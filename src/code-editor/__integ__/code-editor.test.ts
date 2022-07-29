@@ -8,9 +8,25 @@ const wrapper = createWrapper();
 const codeEditorWrapper = wrapper.findCodeEditor();
 const controlOrCommandKey = process.platform === 'darwin' ? 'Command' : 'Control';
 
+interface AceEditorNode {
+  env: {
+    editor: {
+      getValue(): string;
+    };
+  };
+}
+
 class CodeEditorPageObject extends BasePageObject {
-  getEditorContent() {
-    return this.getText(codeEditorWrapper.findEditor().find('.ace_content').toSelector());
+  getEditorContent(): Promise<string> {
+    // Ace does not store the full editor content in any of the nodes.
+    // The textarea element and .ace_content subtree only contain a subset.
+    // Full value is only accessible through the editor API:
+    // https://ace.c9.io/#nav=api&api=editor
+    const selector = codeEditorWrapper.findEditor().toSelector();
+    return this.browser.execute(selector => {
+      const editor = document.querySelector(selector);
+      return (editor as unknown as AceEditorNode).env.editor.getValue();
+    }, selector);
   }
 
   async typeIntoEditor(keys: string) {
@@ -79,7 +95,7 @@ test(
     await page.keys([controlOrCommandKey, 'a']);
     await page.keys([controlOrCommandKey, '/']);
     await expect(page.getEditorContent()).resolves.toEqual(
-      '// const pi = 3.14;\n// const a = 123;\n// const b = 234;\n// const c = 345;'
+      '// const pi = 3.14;\n// const a = 123;\n// const b = 234;\n// const c = 345;\n'
     );
   })
 );
