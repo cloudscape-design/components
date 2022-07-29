@@ -27,7 +27,7 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
   /**
    * Disable the overlap if the component is missing either a header or child
    * content. If the component is not using visual refresh then the overlap
-   * will not displayed at all. This is handled in the CSS not the JavaScript.
+   * will not be displayed at all. This is handled in the CSS not the JavaScript.
    */
   const isOverlapDisabled = !children || !header || disableOverlap;
 

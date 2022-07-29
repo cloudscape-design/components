@@ -21,11 +21,7 @@ export default function () {
         content={
           <ContentLayout
             header={
-              <Header
-                variant="h1"
-                info={<Link>Info</Link>}
-                description="When you create an Amazon CloudFront distribution."
-              >
+              <Header variant="h1" info={<Link>Info</Link>} description="When you create a distribution.">
                 Create distribution
               </Header>
             }

@@ -43,7 +43,7 @@ export default function () {
                   <Header
                     variant="h1"
                     info={<Link>Info</Link>}
-                    description="When you create an Amazon CloudFront distribution."
+                    description="When you create a distribution."
                     actions={<Button variant="primary">Create distribution</Button>}
                   >
                     Create distribution

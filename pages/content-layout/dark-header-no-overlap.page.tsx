@@ -23,7 +23,7 @@ export default function () {
             header={
               <Header
                 variant="h1"
-                description="When you create an Amazon CloudFront distribution, you tell CloudFront where to find your content by specifying your origin servers."
+                description="When you create a distribution, you tell it where to find your content by specifying your origin servers."
               >
                 Content header
               </Header>

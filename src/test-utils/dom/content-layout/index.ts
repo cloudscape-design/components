@@ -7,10 +7,10 @@ export default class ContentLayoutWrapper extends ComponentWrapper<HTMLDivElemen
   static rootSelector: string = styles.layout;
 
   findHeader(): ElementWrapper | null {
-    return this.find(`.${styles.header}`);
+    return this.findByClassName(styles.header);
   }
 
   findContent(): ElementWrapper | null {
-    return this.find(`.${styles.content}`);
+    return this.findByClassName(styles.content);
   }
 }
