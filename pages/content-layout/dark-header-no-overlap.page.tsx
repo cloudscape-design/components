@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import AppLayout from '~components/app-layout';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Header from '~components/header';
 import Box from '~components/box';
 import appLayoutLabels from '../app-layout/utils/labels';
