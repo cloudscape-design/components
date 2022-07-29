@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '~components';
 import Alert from '~components/alert';
 import AppLayout from '~components/app-layout';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';

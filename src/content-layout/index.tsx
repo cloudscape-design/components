@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from '../../../app-layout/visual-refresh/context';
+import { AppLayoutContext } from '../app-layout/visual-refresh/context';
 import { ContentLayoutProps } from './interfaces';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useDynamicOverlap } from '../../../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 
 export { ContentLayoutProps };
 
