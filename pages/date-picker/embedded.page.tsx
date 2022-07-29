@@ -5,12 +5,12 @@ import { Box, Link } from '~components';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 
 export default function DatePickerEditorScenario() {
-  const [value, setValue] = useState('2022-01-01');
+  const [value, setValue] = useState('');
 
   return (
     <Box padding="s">
       <h1>Date picker embedded version</h1>
-      <Link id="focus-dismiss-helper">Focusable element before the date picker</Link>
+      <Link id="focusable-element-before-date-picker">Focusable element before the date picker</Link>
       <br />
       <DatePickerEmbedded
         value={value}
