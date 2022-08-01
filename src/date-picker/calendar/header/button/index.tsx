@@ -16,7 +16,6 @@ const HeaderButton = ({ ariaLabel, isPrevious, onChangeMonth }: HeaderButtonProp
   const iconName = isPrevious ? 'angle-left' : 'angle-right';
   const additionalAttributes: React.HTMLAttributes<HTMLButtonElement> = {
     className: isPrevious ? styles['calendar-prev-month-btn'] : styles['calendar-next-month-btn'],
-    tabIndex: 0,
   };
 
   const onClick: CancelableEventHandler<ButtonProps.ClickDetail> = e => {
