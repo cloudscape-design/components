@@ -26,7 +26,7 @@ import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import TabTrap from '../internal/components/tab-trap';
+import FocusLock from '../internal/components/focus-lock';
 
 export { DatePickerProps };
 
@@ -77,7 +77,6 @@ const DatePicker = React.forwardRef(
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
-    const calendarRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -144,9 +143,6 @@ const DatePicker = React.forwardRef(
         setSelectedDate(value);
       }
     }
-
-    const focusCurrentDate = () =>
-      (calendarRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
 
     const DateInputElement = (
       <div className={styles['date-picker-trigger']}>
@@ -218,10 +214,8 @@ const DatePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <>
-              <TabTrap focusNextCallback={focusCurrentDate} />
+            <FocusLock>
               <Calendar
-                ref={calendarRef}
                 selectedDate={memoizedDate('value', selectedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
                 locale={normalizedLocale}
@@ -233,8 +227,7 @@ const DatePicker = React.forwardRef(
                 onChangeMonth={onChangeMonthHandler}
                 onSelectDate={onSelectDateHandler}
               />
-              <TabTrap focusNextCallback={() => calendarRef.current?.focus()} />
-            </>
+            </FocusLock>
           )}
         </Dropdown>
       </div>

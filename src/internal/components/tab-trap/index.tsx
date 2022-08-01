@@ -14,8 +14,6 @@ export interface FocusNextElement {
 // This component handles focus-forwarding when navigating through the calendar grid.
 // When the customer focuses that component the `next` callback function is called
 // with forwards the focus.
-const TabTrap = ({ focusNextCallback, disabled = false }: TabTrapProps) => {
+export default function TabTrap({ focusNextCallback, disabled = false }: TabTrapProps) {
   return <div tabIndex={disabled ? -1 : 0} onFocus={focusNextCallback} />;
-};
-
-export default TabTrap;
+}
