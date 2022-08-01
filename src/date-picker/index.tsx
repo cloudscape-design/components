@@ -75,7 +75,6 @@ const DatePicker = React.forwardRef(
 
     const defaultDisplayedDate = value.length >= 10 ? value : formatDate(new Date());
     const [displayedDate, setDisplayedDate] = useState<string>(defaultDisplayedDate);
-    const [focusedDate, setFocusedDate] = useState<string | null>(null);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
@@ -90,7 +89,6 @@ const DatePicker = React.forwardRef(
 
     const onChangeMonthHandler = (newMonth: Date) => {
       setDisplayedDate(formatDate(newMonth));
-      setFocusedDate(null);
     };
 
     const onSelectDateHandler = ({ date }: CalendarTypes.DateDetail) => {
@@ -100,15 +98,7 @@ const DatePicker = React.forwardRef(
       setSelectedDate(formattedDate);
       setDisplayedDate(formattedDate);
       setCalendarHasFocus(false);
-      setFocusedDate(null);
       fireNonCancelableEvent(onChange, { value: formattedDate });
-    };
-
-    const onDateFocusHandler = ({ date }: CalendarTypes.DateDetailNullable) => {
-      if (date) {
-        const value = formatDate(date);
-        setFocusedDate(value);
-      }
     };
 
     const onDropdownCloseHandler = useCallback(() => {
@@ -237,7 +227,6 @@ const DatePicker = React.forwardRef(
               <Calendar
                 ref={calendarRef}
                 selectedDate={memoizedDate('value', selectedDate)}
-                focusedDate={memoizedDate('focused', focusedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
                 locale={normalizedLocale}
                 startOfWeek={normalizedStartOfWeek}
@@ -248,7 +237,6 @@ const DatePicker = React.forwardRef(
                 todayAriaLabel={todayAriaLabel}
                 onChangeMonth={onChangeMonthHandler}
                 onSelectDate={onSelectDateHandler}
-                onFocusDate={onDateFocusHandler}
               />
               {calendarHasFocus && <TabTrap focusNextCallback={() => calendarRef.current?.focus()} />}
             </>
