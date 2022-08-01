@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import TabTrap from './index';
+import TabTrap from '../tab-trap/index';
 import { getFirstFocusable, getLastFocusable } from './utils';
 
 export interface FocusLockProps {

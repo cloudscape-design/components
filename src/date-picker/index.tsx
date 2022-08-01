@@ -26,7 +26,7 @@ import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import FocusLock from '../internal/components/tab-trap/focus-lock';
+import FocusLock from '../internal/components/focus-lock';
 
 export { DatePickerProps };
 
