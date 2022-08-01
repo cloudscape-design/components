@@ -5,7 +5,7 @@ import { Box, Link } from '~components';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 
 export default function DatePickerEditorScenario() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('2022-01-01');
 
   return (
     <Box padding="s">
@@ -17,7 +17,7 @@ export default function DatePickerEditorScenario() {
         locale={'en-EN'}
         previousMonthAriaLabel={'Previous month'}
         nextMonthAriaLabel={'Next month'}
-        todayAriaLabel={'TEST TODAY'}
+        todayAriaLabel="Today"
         onChange={event => setValue(event.detail.value)}
       />
       <br />

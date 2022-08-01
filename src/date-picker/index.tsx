@@ -24,7 +24,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
-import TabTrap from '../internal/components/tab-trap';
 import { useDatePicker } from './use-date-picker.js';
 
 export { DatePickerProps };
@@ -192,14 +191,12 @@ const DatePicker = React.forwardRef(
                 selectedDate={memoizedDate('value', selectedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
                 locale={normalizedLocale}
-                startOfWeek={normalizedStartOfWeek}
+                startOfWeek={startOfWeek}
                 isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
                 nextMonthLabel={nextMonthAriaLabel}
                 previousMonthLabel={previousMonthAriaLabel}
                 todayAriaLabel={todayAriaLabel}
-                onChangeMonth={e => {
-                  onChangeMonthHandler(e);
-                }}
+                onChangeMonth={onChangeMonthHandler}
                 onSelectDate={e => {
                   onSelectDateHandler(e);
                   buttonRef?.current?.focus();

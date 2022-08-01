@@ -138,6 +138,7 @@ describe('Date picker - direct date input', () => {
         value: '2018-03-01',
         onBlur: onBlurSpy,
       }));
+      act(() => wrapper.focus());
     });
 
     afterEach(() => {
@@ -145,7 +146,6 @@ describe('Date picker - direct date input', () => {
     });
 
     test('should fire blur handler when focusing another element', () => {
-      act(() => wrapper.focus());
       act(() => getByTestId(outsideId).focus());
       expect(onBlurSpy).toHaveBeenCalledTimes(1);
     });

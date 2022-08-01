@@ -222,6 +222,7 @@ describe('Date picker calendar', () => {
       beforeEach(() => {
         onChangeSpy = jest.fn();
         ({ wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy }));
+        wrapper.focus();
         act(() => wrapper.findOpenCalendarButton().click());
       });
 
@@ -255,6 +256,7 @@ describe('Date picker calendar', () => {
 
       test('should go to the previous month', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy, value: '2018-03-03' });
+        wrapper.focus();
         act(() => wrapper.findOpenCalendarButton().click());
         act(() => {
           wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.up);
@@ -265,6 +267,7 @@ describe('Date picker calendar', () => {
 
       test('should go to the next month', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, onChange: onChangeSpy, value: '2018-03-29' });
+        wrapper.focus();
         act(() => wrapper.findOpenCalendarButton().click());
         act(() => {
           wrapper.findCalendar()!.findSelectedDate().keydown(KeyCode.down);
