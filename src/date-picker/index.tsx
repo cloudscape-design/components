@@ -214,7 +214,7 @@ const DatePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <FocusLock>
+            <FocusLock autoFocus={true}>
               <Calendar
                 selectedDate={memoizedDate('value', selectedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
