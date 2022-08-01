@@ -95,7 +95,7 @@ export function shiftTimeOffset(
  * = "2020-01-01T08:00:00"
  * ```
  */
-function doShiftTimeOffset(value: string, targetOffsetInMinutes: number) {
+export function doShiftTimeOffset(value: string, targetOffsetInMinutes: number) {
   const [valueWithoutOffset, offsetInMinutes] = splitOffset(value);
 
   const differenceBetweenValueAndTarget = targetOffsetInMinutes - offsetInMinutes;
