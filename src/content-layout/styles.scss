@@ -8,7 +8,7 @@
 /*
 Pass through the header and child content if not rendering in 
 visual refresh mode. The padding is still added to the header 
-in this scenario because otherwise the the header and child 
+in this scenario because otherwise the header and child 
 nodes will directly touch with no gap between them.
 */
 .layout:not(.is-visual-refresh) {
