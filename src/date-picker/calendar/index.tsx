@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { addDays, addMonths, isSameMonth, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
-import { FocusNextElement } from '../../internal/components/tab-trap';
 import { BaseComponentProps } from '../../internal/base-component';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { DatePickerProps } from '../interfaces';
@@ -13,6 +12,7 @@ import Grid, { DateChangeHandlerNullable } from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 import { formatDate, memoizedDate } from './utils/date.js';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 export interface DateChangeHandler {
   (detail: CalendarTypes.DateDetail): void;
@@ -58,9 +58,7 @@ const Calendar = ({
   const headerId = useUniqueId('calendar-dialog-title-');
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
-  const [gridHasFocus, setGridHasFocus] = useState(false);
-  const [focusedDate, setFocusedDate] = useState<string | null>(null);
-  let focusedDateMemoized: null | Date = memoizedDate('focused', focusedDate);
+  const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
     if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
@@ -85,9 +83,7 @@ const Calendar = ({
   };
 
   const baseDate: Date = getBaseDate(displayedDate);
-
-  const focusCurrentDate: FocusNextElement = () =>
-    (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
+  const focusedOrSelectedDate = focusedDate || selectFocusedDate(selectedDate, baseDate);
 
   const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
     onChangeMonth(addMonths(baseDate, isPrevious ? -1 : 1));
@@ -101,7 +97,7 @@ const Calendar = ({
 
   const onGridFocusDateHandler: DateChangeHandlerNullable = ({ date }) => {
     if (date) {
-      const value = formatDate(date);
+      const value = memoizedDate('focused', formatDate(date));
       setFocusedDate(value);
     }
   };
@@ -111,37 +107,18 @@ const Calendar = ({
     setFocusedDate(null);
   };
 
-  useEffect(() => {
-    // focus current date if the focus is already inside the calendar grid
-    if (focusedDateMemoized instanceof Date && isSameMonth(focusedDateMemoized, baseDate) && gridHasFocus) {
-      focusCurrentDate();
+  // The focused date changes as a feedback to keyboard navigation in the grid.
+  // Once changed, the corresponding day button needs to receive the actual focus.
+  useEffectOnUpdate(() => {
+    if (focusedDate) {
+      (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
     }
-  }, [baseDate, focusedDateMemoized, gridHasFocus]);
-
-  useEffect(() => {
-    const calendarHasFocus = elementRef.current?.contains(document.activeElement);
-
-    if (!calendarHasFocus) {
-      elementRef.current?.focus();
-    }
-
-    // When the baseDate or isDateEnabled changes, there might not be a focusable date in the grid anymore
-  }, [baseDate, isDateEnabled]);
-
-  if (!focusedDate) {
-    focusedDateMemoized = selectFocusedDate(selectedDate, baseDate);
-  }
+  }, [focusedDate]);
 
   const onGridBlur = (event: React.FocusEvent) => {
     const newFocusTargetIsInGrid = event.relatedTarget && gridWrapperRef.current?.contains(event.relatedTarget as Node);
     if (!newFocusTargetIsInGrid) {
-      setGridHasFocus(false);
-    }
-  };
-
-  const onGridFocus = () => {
-    if (!gridHasFocus) {
-      setGridHasFocus(true);
+      setFocusedDate(null);
     }
   };
 
@@ -163,12 +140,12 @@ const Calendar = ({
           previousMonthLabel={previousMonthLabel}
           nextMonthLabel={nextMonthLabel}
         />
-        <div onBlur={onGridBlur} onFocus={onGridFocus} ref={gridWrapperRef}>
+        <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
             locale={locale}
             baseDate={baseDate}
             isDateEnabled={isDateEnabled}
-            focusedDate={focusedDateMemoized}
+            focusedDate={focusedOrSelectedDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
             onChangeMonth={onGridChangeMonthHandler}
