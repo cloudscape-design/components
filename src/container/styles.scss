@@ -11,28 +11,28 @@
   @include styles.styles-reset;
   display: block;
   word-wrap: break-word;
-  &.variant {
-    &-default,
-    &-stacked {
-      @include shared.borders-and-shadows;
-      background-color: awsui.$color-background-container-content;
-    }
-    &-stacked:not(:last-child) {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-    &-stacked + &-stacked {
-      @include shared.divider;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-      box-shadow: awsui.$shadow-container-stacked;
-    }
+
+  &.variant-default,
+  &.variant-stacked {
+    @include shared.borders-and-shadows;
+    background-color: awsui.$color-background-container-content;
+  }
+
+  &.variant-stacked:not(:last-child) {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.variant-stacked + &.variant-stacked {
+    @include shared.divider;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: awsui.$shadow-container-stacked;
   }
 }
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-radius: awsui.$border-container-radius;
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
   &-sticky-disabled {
@@ -94,6 +94,31 @@ the default white background of the container component.
   .header + & {
     padding-top: awsui.$space-container-content-top;
   }
+}
+
+/*
+ * Applies border-radius constraint from parent to children with `overflow:auto`
+ * to prevent content exceeding the parent container if border-radius is not 0.
+ * Stacked containers mirror the parent behavior by having border-radius set to 0.
+ */
+.root.header,
+.root.content:first-child {
+  border-top-left-radius: awsui.$border-container-radius;
+  border-top-right-radius: awsui.$border-container-radius;
+  overflow: auto;
+}
+
+.root.header:last-child,
+.root.content:last-child {
+  border-bottom-left-radius: awsui.$border-container-radius;
+  border-bottom-right-radius: awsui.$border-container-radius;
+  overflow: auto;
+}
+
+.root.variant-stacked + .root.variant-stacked > .header,
+.root.variant-stacked + .root.variant-stacked > .content:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .footer {
