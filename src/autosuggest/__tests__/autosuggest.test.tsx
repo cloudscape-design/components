@@ -6,6 +6,14 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import { expectNoAxeViolations } from '../../__a11y__/axe';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+
+let uniqueId = 1;
+
+jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => ({
+  useUniqueId: () => 'random-' + uniqueId++,
+  generateUniqueId: () => 'random-' + uniqueId++,
+}));
 
 const defaultOptions: AutosuggestProps.Options = [{ value: '1', label: 'One' }, { value: '2' }];
 const defaultProps: AutosuggestProps = {
@@ -147,5 +155,45 @@ describe('Dropdown states', () => {
 
       await expectNoAxeViolations(container);
     });
+  });
+});
+
+describe('a11y props', () => {
+  test('adds combobox role to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('role', 'combobox');
+  });
+
+  test('adds correct aria properties to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('aria-autocomplete', 'list');
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
+    expect(input).not.toHaveAttribute('aria-label');
+    expect(input).not.toHaveAttribute('aria-activedescendant');
+  });
+
+  test('adds correct aria properties to input when expanded', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    const input = wrapper.findNativeInput().getElement();
+    wrapper.focus();
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('can add an aria-label to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} ariaLabel="input label" />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(input).toHaveAttribute('aria-label', 'input label');
+  });
+
+  test('adds id of highlighted item as aria-activedescendant to input', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    const input = wrapper.findNativeInput().getElement();
+    const highlightedOption = wrapper.findDropdown().findHighlightedOption()!.getElement();
+    expect(highlightedOption).toHaveAttribute('id', expect.stringContaining('random-'));
+    expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 });

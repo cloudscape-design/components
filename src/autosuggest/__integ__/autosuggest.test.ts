@@ -4,10 +4,10 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import AutosuggestPage from './page-objects/autosuggest-page';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
-function setupTest(testFn: (page: AutosuggestPage) => Promise<void>) {
+function setupTest(testFn: (page: AutosuggestPage) => Promise<void>, url = '/#/light/autosuggest/simple') {
   return useBrowser(async browser => {
     const page = new AutosuggestPage(browser);
-    await browser.url('/#/light/autosuggest/simple');
+    await browser.url(url);
     await testFn(page);
   });
 }
@@ -122,5 +122,28 @@ describe(`Simple Autosuggest`, () => {
       await page.doubleClick(wrapper.findNativeInput().toSelector());
       await expect(page.getSelectedText()).resolves.toEqual('selectme');
     })
+  );
+
+  test(
+    'should lock focus when recovery link is present',
+    setupTest(async page => {
+      await page.focusInput();
+      const wrapper = createWrapper().findAutosuggest();
+      const inputSelector = wrapper.findNativeInput().toSelector();
+      const dropdownSelector = wrapper.findDropdown({ expandToViewport: true }).toSelector();
+      const recoveryButtonSelector = wrapper.findErrorRecoveryButton({ expandToViewport: true }).toSelector();
+
+      await expect(page.isFocused(inputSelector)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isFocused(recoveryButtonSelector)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isFocused(inputSelector)).resolves.toBe(true);
+      await page.keys(['Tab']);
+      await expect(page.isFocused(recoveryButtonSelector)).resolves.toBe(true);
+      await page.keys(['Shift', 'Tab', 'Null']);
+      await expect(page.isFocused(inputSelector)).resolves.toBe(true);
+      await page.keys(['Shift', 'Tab', 'Null']);
+      await expect(page.isExisting(dropdownSelector)).resolves.toBe(false);
+    }, '/#/light/autosuggest/recovery-test')
   );
 });
