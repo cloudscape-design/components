@@ -5,16 +5,11 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface DatePickerProps extends BaseComponentProps, FormFieldValidationControlProps, ExpandToViewport {
+export interface DatePickerBaseProps {
   /**
    * The current input value, in YYYY-MM-DD format.
    */
   value: string;
-
-  /**
-   * Specifies the placeholder text rendered when the value is an empty string.
-   */
-  placeholder?: string;
 
   /**
    * Defines whether a particular date is enabled in the calendar or not.
@@ -53,6 +48,23 @@ export interface DatePickerProps extends BaseComponentProps, FormFieldValidation
    * Specifies an `aria-label` for the 'previous month' button.
    */
   previousMonthAriaLabel: string;
+
+  /**
+   * Called whenever a user changes the input value (by typing, pasting, or selecting a value).
+   * The event `detail` contains the current value of the field.
+   */
+  onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail>;
+}
+
+export interface DatePickerProps
+  extends BaseComponentProps,
+    FormFieldValidationControlProps,
+    ExpandToViewport,
+    DatePickerBaseProps {
+  /**
+   * Specifies the placeholder text rendered when the value is an empty string.
+   */
+  placeholder?: string;
 
   /**
    * Specifies a function that generates the `aria-label` for the 'open calendar' button. The `selectedDate` parameter is
@@ -113,12 +125,6 @@ export interface DatePickerProps extends BaseComponentProps, FormFieldValidation
    * Called when input focus is removed from the UI control.
    */
   onBlur?: NonCancelableEventHandler<null>;
-
-  /**
-   * Called whenever a user changes the input value (by typing, pasting, or selecting a value).
-   * The event `detail` contains the current value of the field.
-   */
-  onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail>;
 }
 
 export namespace DatePickerProps {
