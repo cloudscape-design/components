@@ -493,6 +493,7 @@ export type BordersTokenName =
   | 'borderRadiusItem'
   | 'borderRadiusPopover'
   | 'borderRadiusTabsFocusRing'
+  | 'borderRadiusTutorialPanelItem'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread';
