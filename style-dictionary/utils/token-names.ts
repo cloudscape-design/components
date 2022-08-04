@@ -484,6 +484,7 @@ export type BordersTokenName =
   | 'borderRadiusBadge'
   | 'borderRadiusButton'
   | 'borderRadiusCalendarDayFocused'
+  | 'borderRadiusCodeEditor'
   | 'borderRadiusContainer'
   | 'borderRadiusControl'
   | 'borderRadiusControlFocusRingCircle'

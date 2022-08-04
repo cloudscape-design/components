@@ -24,6 +24,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusAlert: '{borderRadiusFlashbar}',
   borderRadiusButton: '20px',
   borderRadiusCalendarDayFocused: '3px',
+  borderRadiusCodeEditor: '{borderRadiusControl}',
   borderRadiusContainer: '16px',
   borderRadiusControl: '8px',
   borderRadiusControlFocusRingCircle: '4px',
