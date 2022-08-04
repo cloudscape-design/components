@@ -4,7 +4,6 @@ import { StyleDictionary } from '../utils/interfaces';
 
 export const tokens: StyleDictionary.BordersDictionary = {
   borderActiveWidth: '4px',
-  borderRadiusBadge: '4px',
   borderCodeEditorStatusDividerWidth: '{borderDividerSectionWidth}',
   borderContainerStickyWidth: '0px',
   borderContainerTopWidth: '0px',
@@ -22,6 +21,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderPanelHeaderWidth: '2px',
   borderPanelTopWidth: '1px',
   borderRadiusAlert: '{borderRadiusFlashbar}',
+  borderRadiusBadge: '4px',
   borderRadiusButton: '20px',
   borderRadiusCalendarDayFocused: '3px',
   borderRadiusCodeEditor: '{borderRadiusControl}',
