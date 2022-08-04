@@ -177,7 +177,7 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
 
   border-top: 1px solid #{awsui.$color-border-container-top};
   border-bottom: 1px solid #{awsui.$color-border-container-top};
-  border-radius: awsui.$border-dropdown-radius;
+  border-radius: awsui.$border-radius-dropdown;
 
   &:focus {
     outline: none;

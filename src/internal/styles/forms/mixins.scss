@@ -17,7 +17,7 @@
   outline-offset: 2px;
   outline-color: awsui.$color-border-item-focused;
   // For visual refresh
-  border-radius: awsui.$border-control-focus-ring-radius-default;
+  border-radius: awsui.$border-radius-control-focus-ring-default;
   box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
 }
 
@@ -30,13 +30,13 @@
   outline: 2px dotted transparent;
   outline-offset: 2px;
 
-  border-radius: awsui.$border-container-radius;
+  border-radius: awsui.$border-radius-container;
   box-shadow: foundation.$box-shadow-focused;
 }
 
 @mixin focus-highlight(
   $gutter,
-  $border-radius: awsui.$border-control-focus-ring-radius-default,
+  $border-radius: awsui.$border-radius-control-focus-ring-default,
   $box-shadow: foundation.$box-shadow-focused
 ) {
   $gutter-vertical: $gutter;
@@ -133,7 +133,7 @@
 @mixin container-shadow {
   box-shadow: awsui.$shadow-container;
   border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-  border-radius: awsui.$border-container-radius;
+  border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
 
   // HACK: because of the issues with IE's box shadow rendering we draw
@@ -145,7 +145,7 @@
 
 @mixin dropdown-shadow {
   box-shadow: awsui.$shadow-dropdown;
-  border-radius: awsui.$border-dropdown-radius;
+  border-radius: awsui.$border-radius-dropdown;
   border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
   box-sizing: border-box;
 
@@ -159,7 +159,7 @@
     right: 0px;
     background-color: transparent;
     border: awsui.$border-field-width solid awsui.$color-border-dropdown-container;
-    border-radius: awsui.$border-dropdown-radius;
+    border-radius: awsui.$border-radius-dropdown;
     pointer-events: none;
   }
 }

@@ -7,7 +7,7 @@
 @use '../tokens' as awsui;
 
 $control-border-width: awsui.$border-field-width;
-$control-border-radius: awsui.$border-field-radius;
+$control-border-radius: awsui.$border-radius-field;
 
 // Use for options in dropdowns
 $option-padding-vertical: awsui.$space-xxs;

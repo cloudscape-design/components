@@ -107,7 +107,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     text-align: center;
     border-bottom: $calendar-grid-border;
     border-right: $calendar-grid-border;
-    border-radius: awsui.$border-calendar-grid-radius;
+    border-radius: awsui.$border-radius-calendar-grid;
     padding: awsui.$space-xxs 0;
     color: $calendar-grid-disabled-day-color;
     position: relative;
@@ -136,7 +136,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
           &:not(.calendar-day-selected) {
             &::after {
               border: awsui.$border-item-width solid $calendar-grid-hover-border-color;
-              border-radius: awsui.$border-calendar-grid-radius;
+              border-radius: awsui.$border-radius-calendar-grid;
             }
           }
         }
@@ -165,7 +165,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
       outline: none;
       @include styles.focus-highlight(
         awsui.$space-calendar-grid-focus-outline-gutter,
-        awsui.$border-calendar-grid-focus-ring-radius
+        awsui.$border-radius-calendar-grid-focus-ring
       );
       &::before {
         z-index: 2;
@@ -178,7 +178,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
       &::after {
         background-color: $calendar-grid-selected-background-color;
         border: awsui.$border-item-width solid $calendar-grid-selected-border-color;
-        border-radius: awsui.$border-calendar-grid-radius;
+        border-radius: awsui.$border-radius-calendar-grid;
       }
       > .day-inner {
         color: awsui.$color-text-calendar-day-selected;
