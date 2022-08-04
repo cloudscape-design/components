@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { useSelectVisibleOption, useHighlightVisibleOption, getParentGroup } from './controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -66,16 +66,10 @@ export default function AutosuggestOptionsList({
   listBottom,
   usingMouse,
 }: AutosuggestOptionsListProps) {
-  const listRef = useRef<(index: number) => void>(null);
-
   const highlightVisibleOption = useHighlightVisibleOption(options, setHighlightedIndex, isHighlightable);
   const selectVisibleOption = useSelectVisibleOption(options, selectOption, isInteractive);
   const handleMouseUp = createMouseEventHandler(selectVisibleOption, usingMouse);
   const handleMouseMove = createMouseEventHandler(highlightVisibleOption, usingMouse);
-
-  useEffect(() => {
-    listRef.current?.(highlightedIndex);
-  }, [highlightedIndex]);
 
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
@@ -89,13 +83,13 @@ export default function AutosuggestOptionsList({
 
   return (
     <ListComponent
-      ref={listRef}
       listBottom={listBottom}
       handleLoadMore={handleLoadMore}
       filteredItems={options}
       highlightText={highlightText}
       usingMouse={usingMouse}
       highlightedOption={highlightedOption}
+      highlightedIndex={highlightedIndex}
       enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}

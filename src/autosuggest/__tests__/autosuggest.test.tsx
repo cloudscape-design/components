@@ -6,7 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import { expectNoAxeViolations } from '../../__a11y__/axe';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 let uniqueId = 1;
 
