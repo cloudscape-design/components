@@ -25,7 +25,7 @@ nodes will directly touch with no gap between them.
 
 .layout.is-visual-refresh {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto #{awsui.$space-dark-header-overlap-distance} 1fr;
   min-height: 100%;
 
