@@ -12,10 +12,10 @@ We release patch versions on a daily basis to release bug fixes and new features
 
 Our public API consists of
 
-* Components APIs (properties, slots, events, functions)
-* Test utilities (link to website)
-* Typescript definitions
-* Design tokens (link to website)
+- [Components APIs](https://cloudscape.design/components) (properties, slots, events, functions)
+- [Test utilities](https://cloudscape.design/get-started/testing/introduction/)
+- Typescript definitions
+- [Design tokens](https://cloudscape.design/foundation/visual-foundation/design-tokens)
 
 The inner HTML structure and class names of our components are not part of our APIs. Modifications to those are not considered breaking changes.
 
@@ -23,20 +23,19 @@ The inner HTML structure and class names of our components are not part of our A
 
 We support
 
-* React 16.8+
-* Jest 25+
+- React 16.8+
+- Jest 25+
 
 ## Browsers support
 
 We support the latest 3 major versions of these browsers for desktop.
 
-* Google Chrome
-* Mozilla Firefox
-* Microsoft Edge
-* Apple Safari for macOS
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+- Apple Safari for macOS
 
 We do not support Microsoft Internet Explorer or mobile browsers. We support all viewport sizes across desktop browsers.
-
 
 ## How to contribute code
 
@@ -44,7 +43,7 @@ Currently we only accept code contributions for bug fixes. Follow the steps belo
 
 Before sending us a pull request, ensure that:
 
-1. You are working against the latest source on the *main* branch.
+1. You are working against the latest source on the _main_ branch.
 2. You check existing open, and recently merged, pull requests to make sure someone else hasn't addressed the problem already.
 3. You open an issue to discuss any significant work - we would hate for your time to be wasted.
 
@@ -149,6 +148,7 @@ npx jest -c jest.build-tools.config.js build-tools/stylelint
 Visual regression tests for the permutation pages are automatically run when opening a pull request in GitHub.
 
 #### Checking results in a pull requests
+
 To look at the results of the tests, check the details of the "Visual Regression Tests" action in the pull request.
 The logs of the "Test for regressions" step should indicate what pages failed the regression tests.
 
@@ -159,6 +159,7 @@ If there are unexpected regressions, fix your pull request.
 If the changes are expected, call this out in your pull request comments.
 
 #### Running visual tests locally
+
 The visual tests use `backstopjs`, which is installed in the `backstop` folder to keep the dependencies separate from the main dependencies.
 Install it from inside the `backstop` folder with: `cd backstop && npm install`.
 
@@ -225,12 +226,15 @@ After the test is done, you can find a report in `backstop/html_report/index.htm
 ```
 
 ## Code of Conduct
+
 This project has adopted the [Amazon Open Source Code of Conduct](https://aws.github.io/code-of-conduct).
 For more information see the [Code of Conduct FAQ](https://aws.github.io/code-of-conduct-faq) or contact
 opensource-codeofconduct@amazon.com with any additional questions or comments.
 
 ## Security issue notifications
+
 If you discover a potential security issue in this project we ask that you notify AWS/Amazon Security via our [vulnerability reporting page](http://aws.amazon.com/security/vulnerability-reporting/). Please do **not** create a public github issue.
 
 ## Licensing
+
 See the [LICENSE](LICENSE) file for our project's licensing. We will ask you to confirm the licensing of your contribution.

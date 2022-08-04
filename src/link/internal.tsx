@@ -64,14 +64,8 @@ const InternalLink = React.forwardRef(
     };
 
     const handleButtonKeyDown = (event: React.KeyboardEvent) => {
-      // Prevent the page from scrolling down when spacebar is pressed.
-      if (event.keyCode === KeyCode.space) {
-        event.preventDefault();
-      }
-    };
-
-    const handleButtonKeyUp = (event: React.KeyboardEvent) => {
       if (event.keyCode === KeyCode.space || event.keyCode === KeyCode.enter) {
+        event.preventDefault();
         fireFollowEvent(event);
       }
     };
@@ -120,14 +114,7 @@ const InternalLink = React.forwardRef(
 
     if (isButton) {
       return (
-        <a
-          {...sharedProps}
-          role="button"
-          tabIndex={0}
-          onKeyDown={handleButtonKeyDown}
-          onKeyUp={handleButtonKeyUp}
-          onClick={handleButtonClick}
-        >
+        <a {...sharedProps} role="button" tabIndex={0} onKeyDown={handleButtonKeyDown} onClick={handleButtonClick}>
           {content}
         </a>
       );
