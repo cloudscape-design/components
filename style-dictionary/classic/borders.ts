@@ -6,7 +6,6 @@ import merge from 'lodash/merge';
 
 const tokens: StyleDictionary.BordersDictionary = {
   borderActiveWidth: '2px',
-  borderRadiusCalendarGridFocusRing: '2px',
   borderCodeEditorStatusDividerWidth: '0px',
   borderContainerStickyWidth: '1px',
   borderContainerTopWidth: '1px',
@@ -23,6 +22,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusAlert: '{borderRadiusField}',
   borderRadiusBadge: '16px',
   borderRadiusButton: '2px',
+  borderRadiusCalendarDayFocused: '2px',
   borderRadiusContainer: '0px',
   borderRadiusControlFocusRingCircle: '50%',
   borderRadiusControlFocusRingDefault: '{borderRadiusField}',

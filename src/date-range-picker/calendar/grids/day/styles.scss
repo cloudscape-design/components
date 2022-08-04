@@ -85,7 +85,7 @@ $calendar-grid-width: 234px;
     z-index: 2;
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-focus-outline-gutter,
-      awsui.$border-radius-calendar-grid-focus-ring
+      awsui.$border-radius-calendar-day-focused
     );
   }
 }
@@ -120,7 +120,7 @@ $calendar-grid-width: 234px;
     &.no-range {
       &,
       &::after {
-        border-radius: awsui.$border-radius-calendar-grid;
+        border-radius: awsui.$border-radius-item;
       }
     }
     &:hover {
@@ -137,7 +137,7 @@ $calendar-grid-width: 234px;
 
 .today:not(.in-range) {
   background-color: $calendar-grid-today-background-color;
-  border-radius: awsui.$border-radius-calendar-grid;
+  border-radius: awsui.$border-radius-item;
 }
 
 .selected {
@@ -148,7 +148,7 @@ $calendar-grid-width: 234px;
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-selected-focus-outline-gutter,
-      awsui.$border-radius-calendar-grid-focus-ring,
+      awsui.$border-radius-calendar-day-focused,
       $calendar-grid-selected-focused-box-shadow
     );
     &::before {
