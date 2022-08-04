@@ -3,7 +3,7 @@
 import { StyleDictionary } from '../../utils/interfaces';
 
 const metadata: StyleDictionary.MetadataIndex = {
-  borderRadiusActive: { description: 'The border radius of the active tab indicator.' },
+  borderRadiusTabsFocusRing: { description: 'The border radius of the active tab indicator.' },
   borderActiveWidth: { description: 'The height of the active tab indicator.' },
   borderDividerListWidth: { description: 'Used for divider between repeated items such as dropdowns and tables.' },
   borderDividerSectionWidth: {
