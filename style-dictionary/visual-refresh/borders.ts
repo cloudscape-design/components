@@ -31,6 +31,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusDropdown: '{borderRadiusItem}',
   borderRadiusFlashbar: '12px',
   borderRadiusItem: '8px',
+  borderRadiusPopover: '{borderRadiusControl}',
   borderRadiusTabsFocusRing: '20px',
   borderTableStickyWidth: '2px',
   borderLinkFocusRingOutline: '0',

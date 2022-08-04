@@ -491,6 +491,7 @@ export type BordersTokenName =
   | 'borderRadiusDropdown'
   | 'borderRadiusFlashbar'
   | 'borderRadiusItem'
+  | 'borderRadiusPopover'
   | 'borderRadiusTabsFocusRing'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
