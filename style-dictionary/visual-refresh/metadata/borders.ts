@@ -11,7 +11,7 @@ const metadata: StyleDictionary.MetadataIndex = {
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
   borderRadiusDropdown: { description: 'Used for dropdown containers.' },
-  borderRadiusField: {
+  borderRadiusControl: {
     description: 'The border radius of most small elements in the system, e.g. inputs, tiles, alerts, tokens.',
   },
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
