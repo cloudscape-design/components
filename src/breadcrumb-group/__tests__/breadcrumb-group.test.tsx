@@ -58,7 +58,12 @@ describe('BreadcrumbGroup Component', () => {
 
       links.forEach((link, i) => {
         expect(link.getElement()).toHaveTextContent(items[i].text);
-        expect(link.getElement()).toHaveAttribute('href', items[i].href);
+        if (i === links.length - 1) {
+          // last item should not have an href
+          expect(link.getElement()).not.toHaveAttribute('href', items[i].href);
+        } else {
+          expect(link.getElement()).toHaveAttribute('href', items[i].href);
+        }
       });
     });
 
@@ -136,7 +141,12 @@ describe('BreadcrumbGroup Component', () => {
     });
 
     test('does not throw an error when a safe javascript: URL is passed', () => {
-      const element = renderBreadcrumbGroup({ items: [{ text: '', href: 'javascript:void(0)' }] });
+      const element = renderBreadcrumbGroup({
+        items: [
+          { text: '1', href: 'javascript:void(0)' },
+          { text: '2', href: 'javascript:void(0)' },
+        ],
+      });
       expect((element.findBreadcrumbLink(1)!.getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
       expect(console.warn).toHaveBeenCalledTimes(0);
     });
