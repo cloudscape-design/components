@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import InternalAutosuggest from '../../../lib/components/autosuggest/internal';
 import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces';
 
 const options: AutosuggestProps.Options = [{ value: '123' }, { value: 'abc' }];

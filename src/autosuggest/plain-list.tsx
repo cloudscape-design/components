@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
 import { scrollUntilVisible } from '../internal/utils/scrollable-containers';
@@ -16,16 +16,13 @@ export interface ListProps {
   filteredItems: AutosuggestItem[];
   usingMouse: React.MutableRefObject<boolean>;
   highlightedOption?: AutosuggestItem;
+  highlightedIndex: number;
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
   highlightText: string;
   listBottom?: React.ReactNode;
   screenReaderContent?: string;
-}
-
-namespace PlainListProps {
-  export type PlainListRef = (index: number) => void;
 }
 
 export const getOptionProps = (
@@ -45,33 +42,28 @@ export const getOptionProps = (
   return { nativeAttributes, padBottom, ...baseOptionProps };
 };
 
-const PlainList = (
-  {
-    handleLoadMore,
-    filteredItems,
-    usingMouse,
-    menuProps,
-    highlightedOption,
-    enteredTextLabel,
-    highlightedA11yProps,
-    hasDropdownStatus,
-    highlightText,
-    listBottom,
-    screenReaderContent,
-  }: ListProps,
-  ref: React.Ref<PlainListProps.PlainListRef>
-) => {
+const PlainList = ({
+  handleLoadMore,
+  filteredItems,
+  usingMouse,
+  menuProps,
+  highlightedOption,
+  highlightedIndex,
+  enteredTextLabel,
+  highlightedA11yProps,
+  hasDropdownStatus,
+  highlightText,
+  listBottom,
+  screenReaderContent,
+}: ListProps) => {
   const listRef = useRef<HTMLUListElement>(null);
-  useImperativeHandle(
-    ref,
-    () => (index: number) => {
-      const item = listRef.current?.querySelector(`[data-mouse-target="${index}"]`);
-      if (!usingMouse.current && item) {
-        scrollUntilVisible(item as HTMLElement);
-      }
-    },
-    [usingMouse, listRef]
-  );
+
+  useEffect(() => {
+    const item = listRef.current?.querySelector(`[data-mouse-target="${highlightedIndex}"]`);
+    if (!usingMouse.current && item) {
+      scrollUntilVisible(item as HTMLElement);
+    }
+  }, [usingMouse, highlightedIndex]);
 
   return (
     <OptionsList
@@ -114,4 +106,4 @@ const PlainList = (
   );
 };
 
-export default forwardRef(PlainList);
+export default PlainList;

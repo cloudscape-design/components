@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { useVirtual } from 'react-virtual';
 
 import OptionsList from '../internal/components/options-list';
@@ -10,25 +10,20 @@ import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
 
-namespace VirtualListProps {
-  export type VirtualListRef = (index: number) => void;
-}
-const VirtualList = (
-  {
-    handleLoadMore,
-    filteredItems,
-    usingMouse,
-    menuProps,
-    highlightedOption,
-    enteredTextLabel,
-    highlightedA11yProps,
-    hasDropdownStatus,
-    highlightText,
-    listBottom,
-    screenReaderContent,
-  }: ListProps,
-  ref: React.Ref<VirtualListProps.VirtualListRef>
-) => {
+const VirtualList = ({
+  handleLoadMore,
+  filteredItems,
+  usingMouse,
+  menuProps,
+  highlightedOption,
+  highlightedIndex,
+  enteredTextLabel,
+  highlightedA11yProps,
+  hasDropdownStatus,
+  highlightText,
+  listBottom,
+  screenReaderContent,
+}: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
   // update component, when it gets wider or narrower to reposition items
   const [width, strutRef] = useContainerQuery(rect => rect.width, []);
@@ -44,15 +39,12 @@ const VirtualList = (
     estimateSize: useCallback(() => 31, [width, highlightText]),
     overscan: 5,
   });
-  useImperativeHandle(
-    ref,
-    () => (index: number) => {
-      if (!usingMouse.current) {
-        rowVirtualizer.scrollToIndex(index);
-      }
-    },
-    [usingMouse, rowVirtualizer]
-  );
+
+  useEffect(() => {
+    if (!usingMouse.current) {
+      rowVirtualizer.scrollToIndex(highlightedIndex);
+    }
+  }, [usingMouse, rowVirtualizer, highlightedIndex]);
 
   return (
     <OptionsList
@@ -107,4 +99,4 @@ const VirtualList = (
   );
 };
 
-export default forwardRef(VirtualList);
+export default VirtualList;
