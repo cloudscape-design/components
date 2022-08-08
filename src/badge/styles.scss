@@ -12,7 +12,7 @@
   @include styles.font-body-s;
   line-height: awsui.$font-body-m-line-height;
   display: inline-block;
-  border-radius: awsui.$border-badge-radius;
+  border-radius: awsui.$border-radius-badge;
   padding: 0 awsui.$space-xs;
   color: awsui.$color-text-notification-default;
 

@@ -45,7 +45,7 @@
   &.selected {
     color: awsui.$color-text-dropdown-item-highlighted;
     border-width: awsui.$border-item-width;
-    border-radius: awsui.$border-item-radius;
+    border-radius: awsui.$border-radius-item;
     padding: styles.$option-padding-vertical styles.$control-padding-horizontal;
     &.pad-bottom {
       padding-bottom: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));

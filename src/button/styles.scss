@@ -76,7 +76,7 @@
 .button {
   @include styles.styles-reset;
   @include styles.text-wrapping;
-  border-radius: awsui.$border-button-radius;
+  border-radius: awsui.$border-radius-button;
   border: styles.$control-border-width solid;
   padding: styles.$control-padding-vertical awsui.$space-l;
   font-weight: awsui.$font-button-weight;

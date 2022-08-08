@@ -12,7 +12,7 @@
   @include styles.text-flex-wrapping;
 
   box-sizing: border-box;
-  border-radius: awsui.$border-field-radius;
+  border-radius: awsui.$border-radius-control;
   padding: awsui.$space-s awsui.$space-m;
 
   background-color: awsui.$color-background-popover;

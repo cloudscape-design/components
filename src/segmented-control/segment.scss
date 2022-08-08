@@ -58,10 +58,10 @@ $selected-color: awsui.$color-text-segment-active;
   }
   &:last-child {
     border-right-width: styles.$control-border-width;
-    border-radius: 0 awsui.$border-button-radius awsui.$border-button-radius 0;
+    border-radius: 0 awsui.$border-radius-button awsui.$border-radius-button 0;
   }
   &:first-child {
-    border-radius: awsui.$border-button-radius 0 0 awsui.$border-button-radius;
+    border-radius: awsui.$border-radius-button 0 0 awsui.$border-radius-button;
   }
 
   &.disabled {

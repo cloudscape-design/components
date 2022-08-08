@@ -15,7 +15,7 @@
   @include styles.styles-reset;
   display: inline-block;
   border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-radius: awsui.$border-item-radius;
+  border-radius: awsui.$border-radius-item;
   width: 100%;
 }
 
@@ -61,8 +61,8 @@
 }
 
 .code-editor-refresh > .resizable-box > .editor {
-  border-top-left-radius: calc(awsui.$border-item-radius - awsui.$border-item-width);
-  border-top-right-radius: calc(awsui.$border-item-radius - awsui.$border-item-width);
+  border-top-left-radius: calc(awsui.$border-radius-item - awsui.$border-item-width);
+  border-top-right-radius: calc(awsui.$border-radius-item - awsui.$border-item-width);
 }
 
 .status-bar {
@@ -72,8 +72,8 @@
   border-top: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   background-color: awsui.$color-background-code-editor-status-bar;
   &-with-hidden-pane {
-    border-bottom-left-radius: awsui.$border-item-radius;
-    border-bottom-right-radius: awsui.$border-item-radius;
+    border-bottom-left-radius: awsui.$border-radius-item;
+    border-bottom-right-radius: awsui.$border-radius-item;
   }
 
   @include styles.text-wrapping;
@@ -136,7 +136,7 @@
     right: 0;
     bottom: 0;
     height: awsui.$border-active-width;
-    border-radius: awsui.$border-active-radius;
+    border-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-text-status-error;
     opacity: 0;
   }
@@ -200,7 +200,7 @@ $default-height: 480px;
 
   color: awsui.$color-text-body-secondary;
   background: awsui.$color-background-code-editor-loading;
-  border-radius: awsui.$border-item-radius;
+  border-radius: awsui.$border-radius-item;
 }
 
 .error-screen {
