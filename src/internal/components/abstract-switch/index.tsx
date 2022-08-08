@@ -80,6 +80,7 @@ export default function AbstractSwitch({
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
       >
+        {/*Using span, not div for HTML validity*/}
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
@@ -90,9 +91,13 @@ export default function AbstractSwitch({
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
           })}
-          {/*An empty element to display the outline, because the native control is invisible*/}
+          {/*
+          An empty element to display the outline, because the native control is invisible.
+          Using span, not div for HTML validity
+          */}
           <span className={styles.outline} />
         </span>
+        {/*Using span, not div for HTML validity*/}
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (
             <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
@@ -100,6 +105,7 @@ export default function AbstractSwitch({
             </span>
           )}
           {description && (
+            /*Using span, not div for HTML validity*/
             <span
               id={descriptionId}
               className={clsx(styles.description, {
