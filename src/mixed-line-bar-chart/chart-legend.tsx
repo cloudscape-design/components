@@ -18,7 +18,7 @@ interface InternalChartLegendProps<T extends ChartDataTypes> {
   ariaLabel?: string;
 }
 
-function InternalChartLegend<T extends number | string | Date>({
+export default function InternalChartLegend<T extends number | string | Date>({
   series,
   visibleSeries,
   highlightedSeries,
@@ -49,5 +49,3 @@ function InternalChartLegend<T extends number | string | Date>({
     />
   );
 }
-
-export default InternalChartLegend;
