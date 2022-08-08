@@ -21,7 +21,7 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusButton: {
     description: "The border radius of buttons and segmented control's segments.",
   },
-  borderRadiusCalendarDayFocused: {
+  borderRadiusCalendarDayFocusRing: {
     description: 'The border radius of the focused day in date picker and date range picker.',
   },
   borderRadiusCodeEditor: {
