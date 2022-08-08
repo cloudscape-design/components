@@ -484,6 +484,7 @@ export type BordersTokenName =
   | 'borderRadiusBadge'
   | 'borderRadiusButton'
   | 'borderRadiusCalendarDayFocused'
+  | 'borderRadiusCodeEditor'
   | 'borderRadiusContainer'
   | 'borderRadiusControl'
   | 'borderRadiusControlFocusRingCircle'
@@ -491,7 +492,9 @@ export type BordersTokenName =
   | 'borderRadiusDropdown'
   | 'borderRadiusFlashbar'
   | 'borderRadiusItem'
+  | 'borderRadiusPopover'
   | 'borderRadiusTabsFocusRing'
+  | 'borderRadiusTutorialPanelItem'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
   | 'borderLinkFocusRingShadowSpread';

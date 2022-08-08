@@ -198,10 +198,10 @@
 
 .code-editor-refresh :global .ace_editor {
   .ace_gutter {
-    border-top-left-radius: calc(awsui.$border-radius-item - awsui.$border-item-width);
+    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
   .ace_scroller {
-    border-top-right-radius: calc(awsui.$border-radius-item - awsui.$border-item-width);
+    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
 }
 
