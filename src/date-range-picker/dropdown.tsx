@@ -5,7 +5,7 @@ import { DateRangePickerProps, Focusable } from './interfaces';
 import Calendar, { DayIndex } from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
-import TabTrap from '../internal/components/tab-trap';
+import FocusLock from '../internal/components/focus-lock';
 import InternalBox from '../box/internal';
 import SpaceBetween from '../space-between/index.js';
 
@@ -159,123 +159,127 @@ export function DateRangePickerDropdown({
 
   return (
     <>
-      <TabTrap focusNextCallback={() => applyButtonRef.current?.focus()} />
-      <div
-        {...focusVisible}
-        ref={scrollableContainerRef}
-        className={styles.dropdown}
-        tabIndex={0}
-        role="dialog"
-        aria-modal="true"
-        aria-label={i18nStrings.ariaLabel}
-        aria-labelledby={ariaLabelledby ?? i18nStrings.ariaLabelledby}
-        aria-describedby={ariaDescribedby ?? i18nStrings.ariaDescribedby}
-      >
+      <FocusLock autoFocus={true}>
         <div
-          className={clsx(styles['dropdown-content'], {
-            [styles['one-grid']]: isSingleGrid,
-          })}
+          {...focusVisible}
+          ref={scrollableContainerRef}
+          className={styles.dropdown}
+          tabIndex={0}
+          role="dialog"
+          aria-modal="true"
+          aria-label={i18nStrings.ariaLabel}
+          aria-labelledby={ariaLabelledby ?? i18nStrings.ariaLabelledby}
+          aria-describedby={ariaDescribedby ?? i18nStrings.ariaDescribedby}
         >
-          <SpaceBetween size="l">
-            <InternalBox padding={{ top: 'm', horizontal: 'l' }}>
-              <SpaceBetween direction="vertical" size="s">
-                {rangeSelectorMode === 'default' && (
-                  <ModeSwitcher
-                    ref={focusRefs.default}
-                    mode={rangeSelectionMode}
-                    onChange={(mode: 'absolute' | 'relative') => {
-                      setRangeSelectionMode(mode);
-                      setApplyClicked(false);
-                      setValidationResult(VALID_RANGE);
-                    }}
-                    i18nStrings={i18nStrings}
-                  />
-                )}
+          <div
+            className={clsx(styles['dropdown-content'], {
+              [styles['one-grid']]: isSingleGrid,
+            })}
+          >
+            <SpaceBetween size="l">
+              <InternalBox padding={{ top: 'm', horizontal: 'l' }}>
+                <SpaceBetween direction="vertical" size="s">
+                  {rangeSelectorMode === 'default' && (
+                    <ModeSwitcher
+                      ref={focusRefs.default}
+                      mode={rangeSelectionMode}
+                      onChange={(mode: 'absolute' | 'relative') => {
+                        setRangeSelectionMode(mode);
+                        setApplyClicked(false);
+                        setValidationResult(VALID_RANGE);
+                      }}
+                      i18nStrings={i18nStrings}
+                    />
+                  )}
 
-                {rangeSelectionMode === 'absolute' && (
-                  <Calendar
-                    ref={focusRefs['absolute-only']}
-                    isSingleGrid={isSingleGrid}
-                    initialEndDate={selectedAbsoluteRange?.endDate}
-                    initialStartDate={selectedAbsoluteRange?.startDate}
-                    locale={locale}
-                    startOfWeek={startOfWeek}
-                    isDateEnabled={isDateEnabled}
-                    i18nStrings={i18nStrings}
-                    onSelectDateRange={setSelectedAbsoluteRange}
-                    dateOnly={dateOnly}
-                    timeInputFormat={timeInputFormat}
-                  />
-                )}
+                  {rangeSelectionMode === 'absolute' && (
+                    <Calendar
+                      ref={focusRefs['absolute-only']}
+                      isSingleGrid={isSingleGrid}
+                      initialEndDate={selectedAbsoluteRange?.endDate}
+                      initialStartDate={selectedAbsoluteRange?.startDate}
+                      locale={locale}
+                      startOfWeek={startOfWeek}
+                      isDateEnabled={isDateEnabled}
+                      i18nStrings={i18nStrings}
+                      onSelectDateRange={setSelectedAbsoluteRange}
+                      dateOnly={dateOnly}
+                      timeInputFormat={timeInputFormat}
+                    />
+                  )}
 
-                {rangeSelectionMode === 'relative' && (
-                  <RelativeRangePicker
-                    ref={focusRefs['relative-only']}
-                    isSingleGrid={isSingleGrid}
-                    options={relativeOptions}
-                    dateOnly={dateOnly}
-                    initialSelection={selectedRelativeRange}
-                    onChange={range => setSelectedRelativeRange(range)}
-                    i18nStrings={i18nStrings}
-                  />
-                )}
-              </SpaceBetween>
-
-              <InternalBox
-                className={styles['validation-section']}
-                margin={!validationResult.valid ? { top: 's' } : undefined}
-              >
-                {!validationResult.valid && (
-                  <>
-                    <InternalAlert type="error">
-                      <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
-                    </InternalAlert>
-                    <LiveRegion>{validationResult.errorMessage}</LiveRegion>
-                  </>
-                )}
-              </InternalBox>
-            </InternalBox>
-
-            <div
-              className={clsx(styles.footer, {
-                [styles['one-grid']]: isSingleGrid,
-                [styles['has-clear-button']]: showClearButton,
-              })}
-            >
-              {showClearButton && (
-                <div className={styles['footer-button-wrapper']}>
-                  <InternalButton onClick={onClear} className={styles['clear-button']} variant="link" formAction="none">
-                    {i18nStrings.clearButtonLabel}
-                  </InternalButton>
-                </div>
-              )}
-              <div className={styles['footer-button-wrapper']}>
-                <SpaceBetween size="xs" direction="horizontal">
-                  <InternalButton
-                    onClick={closeDropdown}
-                    className={styles['cancel-button']}
-                    variant="link"
-                    formAction="none"
-                  >
-                    {i18nStrings.cancelButtonLabel}
-                  </InternalButton>
-
-                  <InternalButton
-                    onClick={onApply}
-                    className={styles['apply-button']}
-                    ref={applyButtonRef}
-                    formAction="none"
-                  >
-                    {i18nStrings.applyButtonLabel}
-                  </InternalButton>
+                  {rangeSelectionMode === 'relative' && (
+                    <RelativeRangePicker
+                      ref={focusRefs['relative-only']}
+                      isSingleGrid={isSingleGrid}
+                      options={relativeOptions}
+                      dateOnly={dateOnly}
+                      initialSelection={selectedRelativeRange}
+                      onChange={range => setSelectedRelativeRange(range)}
+                      i18nStrings={i18nStrings}
+                    />
+                  )}
                 </SpaceBetween>
-              </div>
-            </div>
-          </SpaceBetween>
 
-          <TabTrap focusNextCallback={() => scrollableContainerRef.current?.focus()} />
+                <InternalBox
+                  className={styles['validation-section']}
+                  margin={!validationResult.valid ? { top: 's' } : undefined}
+                >
+                  {!validationResult.valid && (
+                    <>
+                      <InternalAlert type="error">
+                        <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
+                      </InternalAlert>
+                      <LiveRegion>{validationResult.errorMessage}</LiveRegion>
+                    </>
+                  )}
+                </InternalBox>
+              </InternalBox>
+
+              <div
+                className={clsx(styles.footer, {
+                  [styles['one-grid']]: isSingleGrid,
+                  [styles['has-clear-button']]: showClearButton,
+                })}
+              >
+                {showClearButton && (
+                  <div className={styles['footer-button-wrapper']}>
+                    <InternalButton
+                      onClick={onClear}
+                      className={styles['clear-button']}
+                      variant="link"
+                      formAction="none"
+                    >
+                      {i18nStrings.clearButtonLabel}
+                    </InternalButton>
+                  </div>
+                )}
+                <div className={styles['footer-button-wrapper']}>
+                  <SpaceBetween size="xs" direction="horizontal">
+                    <InternalButton
+                      onClick={closeDropdown}
+                      className={styles['cancel-button']}
+                      variant="link"
+                      formAction="none"
+                    >
+                      {i18nStrings.cancelButtonLabel}
+                    </InternalButton>
+
+                    <InternalButton
+                      onClick={onApply}
+                      className={styles['apply-button']}
+                      ref={applyButtonRef}
+                      formAction="none"
+                    >
+                      {i18nStrings.applyButtonLabel}
+                    </InternalButton>
+                  </SpaceBetween>
+                </div>
+              </div>
+            </SpaceBetween>
+          </div>
         </div>
-      </div>
+      </FocusLock>
     </>
   );
 }
