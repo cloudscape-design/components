@@ -85,7 +85,7 @@ $calendar-grid-width: 234px;
     z-index: 2;
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-focus-outline-gutter,
-      awsui.$border-radius-calendar-day-focused
+      awsui.$border-radius-calendar-day-focus-ring
     );
   }
 }
@@ -148,7 +148,7 @@ $calendar-grid-width: 234px;
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-selected-focus-outline-gutter,
-      awsui.$border-radius-calendar-day-focused,
+      awsui.$border-radius-calendar-day-focus-ring,
       $calendar-grid-selected-focused-box-shadow
     );
     &::before {

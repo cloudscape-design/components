@@ -483,7 +483,7 @@ export type BordersTokenName =
   | 'borderRadiusAlert'
   | 'borderRadiusBadge'
   | 'borderRadiusButton'
-  | 'borderRadiusCalendarDayFocused'
+  | 'borderRadiusCalendarDayFocusRing'
   | 'borderRadiusCodeEditor'
   | 'borderRadiusContainer'
   | 'borderRadiusControl'
