@@ -128,7 +128,7 @@ export function TabHeaderBar({
   };
 
   return (
-    <div className={classes} ref={containerRef}>
+    <span className={classes} ref={containerRef}>
       {horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
           <InternalButton
@@ -161,7 +161,7 @@ export function TabHeaderBar({
           />
         </span>
       )}
-    </div>
+    </span>
   );
 
   function renderTabHeader(tab: TabsProps.Tab) {
