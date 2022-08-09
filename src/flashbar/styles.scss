@@ -22,7 +22,7 @@
   padding: awsui.$space-scaled-xs awsui.$space-flashbar-horizontal;
   @include styles.container-shadow;
   border-top: none;
-  border-radius: awsui.$border-flashbar-radius;
+  border-radius: awsui.$border-radius-flashbar;
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -43,7 +43,7 @@
     bottom: 0px;
     right: 0px;
     background-color: transparent;
-    border-radius: awsui.$border-flashbar-radius;
+    border-radius: awsui.$border-radius-flashbar;
     pointer-events: none;
     box-shadow: awsui.$shadow-flash-sticky;
   }

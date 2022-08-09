@@ -32,7 +32,7 @@
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-radius: awsui.$border-container-radius;
+  border-radius: awsui.$border-radius-container;
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
   &-sticky-disabled {

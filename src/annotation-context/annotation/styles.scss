@@ -57,7 +57,7 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(2px, awsui.$border-control-focus-ring-radius-circle);
+    @include styles.focus-highlight(2px, awsui.$border-radius-control-focus-ring-circle);
   }
 
   > .icon {

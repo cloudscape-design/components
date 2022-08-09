@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { Ref, useCallback, useRef, useState } from 'react';
-import { getWeekStartByLocale } from 'weekstart';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
-import Calendar, { DayIndex } from './calendar';
+import Calendar from './calendar';
 import { normalizeLocale } from './calendar/utils/locales';
 import { getDateLabel } from './calendar/utils/intl';
-import { CalendarTypes } from './calendar/definitions';
-import { displayToIso, formatDate, isoToDisplay, memoizedDate } from './calendar/utils/date';
+import { displayToIso, isoToDisplay, memoizedDate } from './calendar/utils/date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -20,13 +18,13 @@ import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import checkControlled from '../internal/hooks/check-controlled';
 import { useFocusTracker } from '../internal/hooks/use-focus-tracker.js';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { usePrevious } from '../internal/hooks/use-previous';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import TabTrap from '../internal/components/tab-trap';
+import FocusLock from '../internal/components/focus-lock';
+import { useDatePicker } from './use-date-picker.js';
 
 export { DatePickerProps };
 
@@ -62,22 +60,24 @@ const DatePicker = React.forwardRef(
   ) => {
     const { __internalRootRef } = useBaseComponent('DatePicker');
 
+    const {
+      defaultDisplayedDate,
+      displayedDate,
+      setDisplayedDate,
+      selectedDate,
+      onChangeMonthHandler,
+      onSelectDateHandler,
+    } = useDatePicker({
+      value,
+      onChange,
+    });
+
     const baseProps = getBaseProps(rest);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
     const normalizedLocale = normalizeLocale('DatePicker', locale ?? '');
-    const normalizedStartOfWeek = (
-      typeof startOfWeek === 'number' ? startOfWeek : getWeekStartByLocale(normalizedLocale)
-    ) as DayIndex;
-
-    const defaultSelectedDate = value.length >= 10 ? value : null;
-    const [selectedDate, setSelectedDate] = useState<string | null>(defaultSelectedDate);
-
-    const defaultDisplayedDate = value.length >= 10 ? value : formatDate(new Date());
-    const [displayedDate, setDisplayedDate] = useState<string>(defaultDisplayedDate);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
-    const calendarRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, internalInputRef);
 
     const rootRef = useRef<HTMLDivElement>(null);
@@ -86,23 +86,10 @@ const DatePicker = React.forwardRef(
 
     useFocusTracker({ rootRef, onBlur, onFocus, viewportId: expandToViewport ? dropdownId : '' });
 
-    const onChangeMonthHandler = (newMonth: Date) => {
-      setDisplayedDate(formatDate(newMonth));
-    };
-
-    const onSelectDateHandler = ({ date }: CalendarTypes.DateDetail) => {
-      const formattedDate = formatDate(date);
-      buttonRef.current?.focus();
-      setIsDropDownOpen(false);
-      setSelectedDate(formattedDate);
-      setDisplayedDate(formattedDate);
-      fireNonCancelableEvent(onChange, { value: formattedDate });
-    };
-
     const onDropdownCloseHandler = useCallback(() => {
       setDisplayedDate(defaultDisplayedDate);
       setIsDropDownOpen(false);
-    }, [defaultDisplayedDate]);
+    }, [defaultDisplayedDate, setDisplayedDate, setIsDropDownOpen]);
 
     const onButtonClickHandler = () => {
       if (!isDropDownOpen) {
@@ -128,25 +115,6 @@ const DatePicker = React.forwardRef(
         setIsDropDownOpen(false);
       }
     };
-
-    const prevValue = usePrevious(value);
-    if (prevValue !== value) {
-      if (value === '' && selectedDate !== value) {
-        setSelectedDate(value);
-      }
-      // update the displayedDate when inputValue changes in order to
-      // display the correct month when the date picker gets open again.
-      if (value.length >= 4 && displayedDate !== value) {
-        setDisplayedDate(value);
-      }
-      // set the selected date only when a full date (yyyy-mm-dd) is entered
-      if (value.length >= 10 && selectedDate !== value) {
-        setSelectedDate(value);
-      }
-    }
-
-    const focusCurrentDate = () =>
-      (calendarRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
 
     const DateInputElement = (
       <div className={styles['date-picker-trigger']}>
@@ -218,23 +186,24 @@ const DatePicker = React.forwardRef(
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
-            <>
-              <TabTrap focusNextCallback={focusCurrentDate} />
+            <FocusLock autoFocus={true}>
               <Calendar
-                ref={calendarRef}
                 selectedDate={memoizedDate('value', selectedDate)}
                 displayedDate={memoizedDate('displayed', displayedDate)}
                 locale={normalizedLocale}
-                startOfWeek={normalizedStartOfWeek}
+                startOfWeek={startOfWeek}
                 isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
                 nextMonthLabel={nextMonthAriaLabel}
                 previousMonthLabel={previousMonthAriaLabel}
                 todayAriaLabel={todayAriaLabel}
                 onChangeMonth={onChangeMonthHandler}
-                onSelectDate={onSelectDateHandler}
+                onSelectDate={e => {
+                  onSelectDateHandler(e);
+                  buttonRef?.current?.focus();
+                  setIsDropDownOpen(false);
+                }}
               />
-              <TabTrap focusNextCallback={() => calendarRef.current?.focus()} />
-            </>
+            </FocusLock>
           )}
         </Dropdown>
       </div>

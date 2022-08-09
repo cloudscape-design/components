@@ -7,15 +7,13 @@ import styles from '../../../styles.css.js';
 interface HeaderButtonProps {
   ariaLabel: string;
   isPrevious: boolean;
-  focusable: boolean;
   onChangeMonth: (isPrevious: boolean) => void;
 }
 
-const HeaderButton = ({ ariaLabel, isPrevious, onChangeMonth, focusable }: HeaderButtonProps) => {
+const HeaderButton = ({ ariaLabel, isPrevious, onChangeMonth }: HeaderButtonProps) => {
   const iconName = isPrevious ? 'angle-left' : 'angle-right';
   const additionalAttributes: React.HTMLAttributes<HTMLButtonElement> = {
     className: isPrevious ? styles['calendar-prev-month-btn'] : styles['calendar-next-month-btn'],
-    tabIndex: focusable ? 0 : -1,
   };
 
   const onClick = () => onChangeMonth(isPrevious);

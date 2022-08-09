@@ -19,7 +19,7 @@
   @include styles.styles-reset;
   list-style: none;
   border: awsui.$border-divider-section-width solid awsui.$color-border-tutorial;
-  border-radius: awsui.$border-field-radius;
+  border-radius: awsui.$border-radius-tutorial-panel-item;
   padding: awsui.$space-m;
 
   &:not(:first-child) {

@@ -155,7 +155,7 @@ $label-horizontal-spacing: awsui.$space-l;
     width: 100%;
     bottom: calc(-1 * #{awsui.$border-divider-section-width});
     height: awsui.$border-active-width;
-    border-radius: awsui.$border-active-radius;
+    border-radius: awsui.$border-radius-tabs-focus-ring;
     background: awsui.$color-border-tabs-underline;
 
     opacity: 0;

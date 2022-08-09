@@ -301,7 +301,6 @@ function Calendar(
             onChangeMonth={onHeaderChangeMonthHandler}
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
-            calendarHasFocus={true}
             isSingleGrid={isSingleGrid}
           />
 
