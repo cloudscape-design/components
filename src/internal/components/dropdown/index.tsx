@@ -13,6 +13,8 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import { useMobile } from '../../hooks/use-mobile';
+import TabTrap from '../tab-trap/index.js';
+import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -121,6 +123,7 @@ const Dropdown = ({
   minWidth,
   hasContent = true,
   scrollable = true,
+  trapFocus = false,
 }: DropdownProps) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -333,28 +336,46 @@ const Dropdown = ({
       <div className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
         {trigger}
       </div>
+
+      <TabTrap
+        focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
+        disabled={!open || !trapFocus}
+      />
+
       <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
-            <TransitionContent
-              state={state}
-              transitionRef={ref}
-              dropdownClasses={dropdownClasses}
-              open={open}
-              stretchWidth={stretchWidth}
-              interior={interior}
-              header={header}
-              hasContent={hasContent}
-              expandToViewport={expandToViewport}
-              footer={footer}
-              onMouseDown={onMouseDown}
-              isRefresh={isRefresh}
-              dropdownRef={dropdownRef}
-              verticalContainerRef={verticalContainerRef}
-              position={position}
-            >
-              {children}
-            </TransitionContent>
+            <div onBlur={event => trapFocus && event.stopPropagation()}>
+              <TabTrap
+                focusNextCallback={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
+                disabled={!open || !trapFocus}
+              />
+
+              <TransitionContent
+                state={state}
+                transitionRef={ref}
+                dropdownClasses={dropdownClasses}
+                open={open}
+                stretchWidth={stretchWidth}
+                interior={interior}
+                header={header}
+                hasContent={hasContent}
+                expandToViewport={expandToViewport}
+                footer={footer}
+                onMouseDown={onMouseDown}
+                isRefresh={isRefresh}
+                dropdownRef={dropdownRef}
+                verticalContainerRef={verticalContainerRef}
+                position={position}
+              >
+                {children}
+              </TransitionContent>
+
+              <TabTrap
+                focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
+                disabled={!open || !trapFocus}
+              />
+            </div>
           )}
         </Transition>
       </DropdownContainer>
