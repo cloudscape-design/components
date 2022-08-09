@@ -79,7 +79,7 @@ export default function InternalTiles({
                 htmlFor={controlId}
                 id={`${controlId}-wrapper`}
               >
-                <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
+                <span className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
                   <RadioButton
                     checked={item.value === value}
                     name={generatedName}
@@ -91,9 +91,9 @@ export default function InternalTiles({
                     onChange={onChange}
                     controlId={controlId}
                   />
-                </div>
+                </span>
                 {item.image && (
-                  <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>
+                  <span className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</span>
                 )}
               </label>
             );

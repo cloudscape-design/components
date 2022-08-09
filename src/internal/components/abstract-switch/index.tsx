@@ -50,7 +50,7 @@ export default function AbstractSwitch({
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
-  const WrapperElement = withoutLabel ? 'div' : 'label';
+  const WrapperElement = withoutLabel ? 'span' : 'label';
   const wrapperAttributes: Record<string, string | undefined> = {};
   if (!withoutLabel) {
     wrapperAttributes.id = wrapperId;
@@ -74,13 +74,13 @@ export default function AbstractSwitch({
   }
 
   return (
-    <div {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
+    <span {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
       <WrapperElement
         {...wrapperAttributes}
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
       >
-        <div className={clsx(styles.control, controlClassName)}>
+        <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
             ...focusVisible,
@@ -91,16 +91,16 @@ export default function AbstractSwitch({
             'aria-label': ariaLabel,
           })}
           {/*An empty div to display the outline, because the native control is invisible*/}
-          <div className={styles.outline} />
-        </div>
-        <div className={clsx(styles.content, !label && !description && styles['empty-content'])}>
+          <span className={styles.outline} />
+        </span>
+        <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (
-            <div id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
+            <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
               {label}
-            </div>
+            </span>
           )}
           {description && (
-            <div
+            <span
               id={descriptionId}
               className={clsx(styles.description, {
                 [styles['description-disabled']]: disabled,
@@ -108,10 +108,10 @@ export default function AbstractSwitch({
               })}
             >
               {description}
-            </div>
+            </span>
           )}
-        </div>
+        </span>
       </WrapperElement>
-    </div>
+    </span>
   );
 }
