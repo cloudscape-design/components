@@ -8116,18 +8116,7 @@ Object {
       "description": "Fired when the \`query\` gets changed. Filter the dataset in response to this event using the values in the \`detail\` object.",
       "detailInlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "typeOperator",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "detailType": "PropertyFilterProps.Query",
@@ -8493,18 +8482,7 @@ Each token has the following properties:
 ",
       "inlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "typeOperator",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "name": "query",
