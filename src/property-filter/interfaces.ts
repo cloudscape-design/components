@@ -9,7 +9,6 @@ import {
   PropertyFilterOperator,
   PropertyFilterOperation,
   PropertyFilterToken,
-  PropertyFilterQuery,
   PropertyFilterProperty,
   PropertyFilterOption,
 } from '@cloudscape-design/collection-hooks';
@@ -152,11 +151,14 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
-  export type Query = PropertyFilterQuery;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type FilteringProperty = PropertyFilterProperty;
   export type FilteringOption = PropertyFilterOption;
+  export interface Query {
+    tokens: ReadonlyArray<PropertyFilterProps.Token>;
+    operation: PropertyFilterProps.JoinOperation;
+  }
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
