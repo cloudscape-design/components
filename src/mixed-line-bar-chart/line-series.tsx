@@ -22,7 +22,7 @@ export interface LineSeriesProps<T> {
 export default function LineSeries<T>({ axis, series, color, xScale, yScale, chartAreaClipPath }: LineSeriesProps<T>) {
   const commonProps = { 'aria-hidden': true, stroke: color, clipPath: `url(#${chartAreaClipPath})` };
 
-  // Render data path. The chart orientation is ignored as only hhorizontally-oriented lines are supported.
+  // Render data path. The chart orientation is ignored as only horizontally-oriented lines are supported.
   if (series.type === 'line') {
     const lineGenerator = line<MixedLineBarChartProps.Datum<T>>()
       .x((d: MixedLineBarChartProps.Datum<T>) => {

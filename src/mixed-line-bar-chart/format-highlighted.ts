@@ -54,11 +54,11 @@ function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T):
   }
 
   if (isDataSeries(series)) {
-    for (const d of series.data) {
-      if (matchesX(targetX, d.x)) {
+    for (const datum of series.data) {
+      if (matchesX(targetX, datum.x)) {
         return {
           key: series.title,
-          value: series.valueFormatter ? series.valueFormatter(d.y, targetX) : d.y,
+          value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
           color,
           markerType: series.type === 'line' ? 'line' : 'rectangle',
         };
