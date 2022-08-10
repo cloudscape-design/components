@@ -34,10 +34,10 @@ const metadata: StyleDictionary.MetadataIndex = {
   borderRadiusControl: {
     description: 'The border radius of form controls. For example: input, select, tokens.',
   },
-  borderRadiusControlFocusRingCircle: {
+  borderRadiusControlCircularFocusRing: {
     description: 'The border radius of the focus indicator of circular controls. For example: radio button.',
   },
-  borderRadiusControlFocusRingDefault: {
+  borderRadiusControlDefaultFocusRing: {
     description:
       'The border radius of the focus indicator of interactive elements. For example: button, link, toggle, pagination controls, expandable section header, popover trigger.',
   },
