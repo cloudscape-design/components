@@ -18,7 +18,7 @@ import { FormFieldError } from '../form-field/internal';
 import { TagControl, UndoButton } from './internal';
 import { TagEditorProps } from './interfaces';
 import { validate, ValidationError } from './validation';
-import { findIndex, useMemoizedArray } from './utils';
+import { useMemoizedArray } from './utils';
 
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -84,7 +84,7 @@ const TagEditor = React.forwardRef(
       ref,
       () => ({
         focus() {
-          const errorIndex = findIndex(internalTags, ({ error }) => error?.key || error?.value);
+          const errorIndex = internalTags.findIndex(({ error }) => error?.key || error?.value);
           if (errorIndex !== -1) {
             const refArray = internalTags[errorIndex].error?.key ? keyInputRefs : valueInputRefs;
             refArray.current[errorIndex]?.focus();
