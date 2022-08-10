@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Box from '~components/box';
@@ -14,8 +14,21 @@ import * as toolsContent from '../app-layout/utils/tools-content';
 import labels from '../app-layout/utils/labels';
 import { allItems, columnDefinitions, TableItem, i18nStrings, filteringProperties } from './table.data';
 import { useCollection } from '@cloudscape-design/collection-hooks';
+import AppContext, { AppContextType } from '../app/app-context';
+import { SpaceBetween } from '~components';
+
+type PageContext = React.Context<
+  AppContextType<{
+    disableFreeTextFiltering: boolean;
+  }>
+>;
 
 export default function () {
+  const {
+    urlParams: { disableFreeTextFiltering = false },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
+
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',
@@ -67,23 +80,34 @@ export default function () {
           </SplitPanel>
         }
         content={
-          <Table<TableItem>
-            className="main-content"
-            stickyHeader={true}
-            header={<Header headingTagOverride={'h1'}>Instances</Header>}
-            items={items}
-            {...collectionProps}
-            filter={
-              <PropertyFilter
-                {...propertyFilterProps}
-                virtualScroll={true}
-                countText={`${items.length} matches`}
-                i18nStrings={i18nStrings}
-                expandToViewport={true}
-              />
-            }
-            columnDefinitions={columnDefinitions.slice(0, 2)}
-          />
+          <SpaceBetween size="m">
+            <label>
+              <input
+                type="checkbox"
+                checked={disableFreeTextFiltering}
+                onChange={e => setUrlParams({ disableFreeTextFiltering: !!e.target.checked })}
+              />{' '}
+              disableFreeTextFiltering
+            </label>
+            <Table<TableItem>
+              className="main-content"
+              stickyHeader={true}
+              header={<Header headingTagOverride={'h1'}>Instances</Header>}
+              items={items}
+              {...collectionProps}
+              filter={
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  virtualScroll={true}
+                  countText={`${items.length} matches`}
+                  i18nStrings={i18nStrings}
+                  expandToViewport={true}
+                  disableFreeTextFiltering={disableFreeTextFiltering}
+                />
+              }
+              columnDefinitions={columnDefinitions.slice(0, 2)}
+            />
+          </SpaceBetween>
         }
       />
     </ScreenshotArea>

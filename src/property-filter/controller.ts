@@ -122,13 +122,21 @@ export const parseText = (
       property,
       // regex above can't match anything but an operator in the second capturing group
       operator: hasOperator[2] as PropertyFilterProps.ComparisonOperator,
-      value: hasOperator[3].charAt(0) === ' ' ? hasOperator[3].slice(1) : hasOperator[3],
-      // We need to remove the first leading space in case the user presses space
-      // after the operator, for example: Owner: admin, will result in value of ` admin`
-      // and we need to remove the first space, if the user added any more spaces only the
-      // first one will be removed.
+      value: trimLeadingSpace(hasOperator[3]),
     };
   }
+
+  // Insert first operator if user does not select any.
+  // This is helpful when the value is pasted after choosing the property name.
+  if (!hasOperator && textWithoutProperty.trim().length > 0) {
+    return {
+      step: 'property',
+      property,
+      operator: allowedOps[0],
+      value: trimLeadingSpace(textWithoutProperty),
+    };
+  }
+
   const opPrefixesMap = allowedOps.reduce<{ [key in OperatorPrefix]?: true }>((acc, op) => {
     if (op.length > 1) {
       const substr = op.substring(0, 1);
@@ -146,6 +154,14 @@ export const parseText = (
     value: filteringText,
   };
 };
+
+// We need to remove the first leading space in case the user presses space
+// after the operator, for example: Owner: admin, will result in value of ` admin`
+// and we need to remove the first space, if the user added any more spaces only the
+// first one will be removed.
+function trimLeadingSpace(text: string) {
+  return text.charAt(0) === ' ' ? text.slice(1) : text;
+}
 
 export const getPropertyOptions = (
   filteringProperty: PropertyFilterProps.FilteringProperty,
