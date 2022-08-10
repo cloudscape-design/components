@@ -18,12 +18,14 @@ const ExpandableCategoryElement = ({
   onGroupToggle,
   targetItem,
   isHighlighted,
+  isFocusOn,
   isExpanded,
   highlightItem,
   disabled,
   expandToViewport,
   variant,
   isKeyboard,
+  focused,
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
@@ -56,7 +58,7 @@ const ExpandableCategoryElement = ({
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
-        [styles['is-keyboard']]: isKeyboard,
+        [styles['is-focused']]: focused,
       })}
       // We are using the roving tabindex technique to manage the focus state of the dropdown.
       // The current element will always have tabindex=0 which means that it can be tabbed to,
@@ -102,6 +104,7 @@ const ExpandableCategoryElement = ({
               onGroupToggle={onGroupToggle}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
+              isFocusOn={isFocusOn}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               variant={variant}

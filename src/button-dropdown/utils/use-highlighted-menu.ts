@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState, useMemo, useCallback } from 'react';
 
-import { indexIncludes } from './utils';
+import { indexIncludes, indexEquals } from './utils';
 import { ButtonDropdownProps, HighlightProps } from '../interfaces';
 import createItemsTree, { TreeIndex } from './create-items-tree';
 import moveHighlightOneStep from './move-highlight';
@@ -35,8 +35,15 @@ export default function useHighlightedMenu({
   const isHighlighted = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
       const index = getItemIndex(item);
-
       return indexIncludes(index, targetIndex);
+    },
+    [targetIndex, getItemIndex]
+  );
+
+  const isFocusOn = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => {
+      const index = getItemIndex(item);
+      return indexEquals(index, targetIndex);
     },
     [targetIndex, getItemIndex]
   );
@@ -115,6 +122,7 @@ export default function useHighlightedMenu({
   return {
     targetItem,
     isHighlighted,
+    isFocusOn,
     isExpanded,
     moveHighlight,
     highlightItem,

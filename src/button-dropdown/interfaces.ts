@@ -144,6 +144,7 @@ export interface ButtonDropdownSettings {
 export interface HighlightProps {
   targetItem: ButtonDropdownProps.ItemOrGroup | null;
   isHighlighted: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
+  isFocusOn: (item: ButtonDropdownProps.ItemOrGroup) => boolean;
   isExpanded: (group: ButtonDropdownProps.ItemGroup) => boolean;
   highlightItem: (item: ButtonDropdownProps.ItemOrGroup) => void;
 }
@@ -159,6 +160,7 @@ export interface CategoryProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: ItemListProps['variant'];
   isKeyboard?: boolean;
+  focused?: boolean;
 }
 
 export interface ItemListProps extends HighlightProps {
@@ -187,7 +189,7 @@ export interface ItemProps {
   last: boolean;
   hasCategoryHeader: boolean;
   variant?: ItemListProps['variant'];
-  isKeyboard?: boolean;
+  focused?: boolean;
 }
 
 export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {

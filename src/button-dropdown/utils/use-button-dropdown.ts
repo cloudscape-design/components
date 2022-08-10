@@ -33,12 +33,21 @@ export function useButtonDropdown({
   isInRestrictedView = false,
   usingMouse,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
-  const { targetItem, isHighlighted, isExpanded, highlightItem, moveHighlight, expandGroup, collapseGroup, reset } =
-    useHighlightedMenu({
-      items,
-      hasExpandableGroups,
-      isInRestrictedView,
-    });
+  const {
+    targetItem,
+    isHighlighted,
+    isFocusOn,
+    isExpanded,
+    highlightItem,
+    moveHighlight,
+    expandGroup,
+    collapseGroup,
+    reset,
+  } = useHighlightedMenu({
+    items,
+    hasExpandableGroups,
+    isInRestrictedView,
+  });
 
   const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
 
@@ -160,6 +169,7 @@ export function useButtonDropdown({
     isOpen,
     targetItem,
     isHighlighted,
+    isFocusOn,
     isExpanded,
     highlightItem,
     onKeyDown,

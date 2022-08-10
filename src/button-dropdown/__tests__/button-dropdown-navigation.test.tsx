@@ -8,6 +8,7 @@ import InternalButtonDropdown from '../../../lib/components/button-dropdown/inte
 import { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button-dropdown/styles.css.js';
 import itemStyls from '../../../lib/components/button-dropdown/item-element/styles.css.js';
+import categoryElementstyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 
 const items: ButtonDropdownProps.Items = [
@@ -63,14 +64,29 @@ describe('Button dropdown header', () => {
 });
 
 describe('Button dropdown navigate with mouse or keyboard', () => {
-  it('should add class is-keyboard if highligted with keyboard and remove when using mouse', () => {
+  it('should add class is-focused if highligted with keyboard and remove when using mouse', () => {
     const wrapper = renderInternalButtonDropdown({ items });
     wrapper.openDropdown();
     act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyls['is-keyboard']);
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyls['is-focused']);
 
     fireEvent.mouseMove(wrapper.findItemById('i4')!.getElement());
     fireEvent.mouseEnter(wrapper.findItemById('i4')!.getElement());
-    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyls['is-keyboard']);
+    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyls['is-focused']);
+  });
+
+  it('should remove class is-focused from parent item when move focus from parent item to child item', () => {
+    const wrapper = renderInternalButtonDropdown({ items, expandableGroups: true });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findByClassName(categoryElementstyles['expandable-header'])!.getElement()).toHaveClass(
+      categoryElementstyles['is-focused']
+    );
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.right));
+    expect(wrapper.findByClassName(categoryElementstyles['expandable-header'])!.getElement()).not.toHaveClass(
+      categoryElementstyles['is-focused']
+    );
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyls['is-focused']);
   });
 });
