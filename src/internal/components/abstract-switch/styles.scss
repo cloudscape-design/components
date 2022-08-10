@@ -33,6 +33,7 @@
 .label,
 .description {
   padding-left: awsui.$space-xs;
+  display: block;
   &-disabled {
     color: awsui.$color-text-control-disabled;
   }

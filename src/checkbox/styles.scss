@@ -10,7 +10,7 @@
 $checkbox-size: awsui.$size-control;
 
 // tag selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
-div.root {
+.root {
   @include styles.styles-reset;
   display: flex;
 }
