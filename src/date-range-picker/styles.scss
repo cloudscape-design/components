@@ -27,10 +27,6 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
   display: flex;
 }
 
-.preferred-wordbreak {
-  display: inline-block;
-}
-
 .calendar {
   display: block;
   width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
