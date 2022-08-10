@@ -11,9 +11,10 @@ import CalendarHeader from './header';
 import Grid, { DateChangeHandlerNullable } from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
-import { formatDate, memoizedDate } from './utils/date.js';
+import { memoizedDate } from './utils/memoized-date.js';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import { normalizeStartOfWeek } from './utils/locales.js';
+import { formatDate } from '../../internal/utils/date-time';
 export interface DateChangeHandler {
   (detail: CalendarTypes.DateDetail): void;
 }

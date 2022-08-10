@@ -7,7 +7,7 @@ import { DatePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { normalizeLocale } from './calendar/utils/locales';
 import { getDateLabel } from './calendar/utils/intl';
-import { displayToIso, isoToDisplay, memoizedDate } from './calendar/utils/date';
+import { memoizedDate } from './calendar/utils/memoized-date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -25,6 +25,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
 import { useDatePicker } from './use-date-picker.js';
+import { displayToIso, isoToDisplay } from '../internal/utils/date-time/display-format.js';
 
 export { DatePickerProps };
 

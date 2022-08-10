@@ -8,14 +8,6 @@ import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handler';
-import {
-  displayToIso,
-  formatDate,
-  formatTime,
-  formatISOStringWithoutTimezone,
-  isoToDisplay,
-  parseDate,
-} from '../../date-picker/calendar/utils/date';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
@@ -28,6 +20,14 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
+import {
+  displayToIso,
+  formatDate,
+  formatTime,
+  isoToDisplay,
+  joinDateTime,
+  parseDate,
+} from '../../internal/utils/date-time';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -129,8 +129,8 @@ function Calendar(
   useEffect(() => {
     // This effect "synchronizes" the local state update back up to the overall DateRangePicker component
 
-    const startDate = formatISOStringWithoutTimezone(startDateString, startTimeString);
-    const endDate = formatISOStringWithoutTimezone(endDateString, endTimeString);
+    const startDate = joinDateTime(startDateString, startTimeString);
+    const endDate = joinDateTime(endDateString, endTimeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
       onSelectDateRange({

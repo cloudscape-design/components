@@ -18,7 +18,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
-import { getBrowserTimezoneOffset, shiftTimeOffset, formatOffset, setTimeOffset } from './time-offset';
+import { shiftTimeOffset, setTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -26,6 +26,7 @@ import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { formatTimezoneOffset, getBrowserTimezoneOffset, isIsoDateOnly } from '../internal/utils/date-time';
 
 export { DateRangePickerProps };
 
@@ -52,7 +53,7 @@ function formatDateRange(
   }
 
   if (range.type === 'absolute') {
-    const formattedOffset = isDateOnly(range) ? '' : formatOffset(timeOffset);
+    const formattedOffset = isDateOnly(range) ? '' : formatTimezoneOffset(timeOffset);
     return (
       <InternalBox fontWeight="normal" display="inline" color="inherit">
         <span className={styles['preferred-wordbreak']}>
@@ -72,8 +73,7 @@ function isDateOnly(value: null | DateRangePickerProps.Value) {
   if (!value || value.type !== 'absolute') {
     return false;
   }
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  return dateRegex.test(value.startDate) && dateRegex.test(value.endDate);
+  return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate);
 }
 
 function formatValue(

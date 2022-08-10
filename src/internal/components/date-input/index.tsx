@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { getDaysInMonth } from 'date-fns';
 import React, { Ref } from 'react';
+import { displayToIso, parseDate } from '../../utils/date-time';
 
 import MaskedInput from '../masked-input';
 import { MaskArgs } from '../masked-input/utils/mask-format';
 
 import { DateInputProps } from './interfaces';
 
-import { daysInMonth, parseDate, displayToIso } from './utils/date';
-
 function daysMax(value: string): number {
   // force to first day in month, as new Date('2018-02-30') -> March 2nd 2018
   const baseDate = displayToIso(value).substring(0, 7);
-  return daysInMonth(parseDate(baseDate));
+  return getDaysInMonth(parseDate(baseDate));
 }
 
 const maskArgs: MaskArgs = {

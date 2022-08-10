@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { padLeftZeros, insertAt } from './strings';
+import { padLeftZeros } from '../../../utils/strings';
+import { insertAt } from './strings';
 
 interface FormatSegment {
   min: number;
