@@ -24,7 +24,7 @@ const ItemElement = ({
   last,
   hasCategoryHeader,
   variant = 'normal',
-  isKeyboard,
+  focused,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const onClick = (event: React.MouseEvent) => {
@@ -52,7 +52,7 @@ const ItemElement = ({
         [styles.first]: first,
         [styles.last]: last,
         [styles['has-category-header']]: hasCategoryHeader,
-        [styles['is-keyboard']]: isKeyboard,
+        [styles['is-focused']]: focused,
       })}
       role="presentation"
       data-testid={item.id}

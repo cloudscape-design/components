@@ -51,6 +51,7 @@ const InternalButtonDropdown = React.forwardRef(
       isOpen,
       targetItem,
       isHighlighted,
+      isFocusOn,
       isExpanded,
       highlightItem,
       onKeyDown,
@@ -182,6 +183,7 @@ const InternalButtonDropdown = React.forwardRef(
               hasExpandableGroups={expandableGroups}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
+              isFocusOn={isFocusOn}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}

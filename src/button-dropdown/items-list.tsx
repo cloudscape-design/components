@@ -15,6 +15,7 @@ export default function ItemsList({
   onGroupToggle,
   targetItem,
   isHighlighted,
+  isFocusOn,
   isExpanded,
   highlightItem,
   isKeyboard,
@@ -40,7 +41,7 @@ export default function ItemsList({
           last={index === items.length - 1 || isItemGroup(items[index + 1])}
           hasCategoryHeader={hasCategoryHeader}
           variant={variant}
-          isKeyboard={isKeyboard}
+          focused={isKeyboard && isFocusOn(item)}
         />
       );
     }
@@ -54,11 +55,13 @@ export default function ItemsList({
             onGroupToggle={onGroupToggle}
             targetItem={targetItem}
             isHighlighted={isHighlighted}
+            isFocusOn={isFocusOn}
             isExpanded={isExpanded}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             variant={variant}
             isKeyboard={isKeyboard}
+            focused={isKeyboard && isFocusOn(item)}
           />
         ) : (
           <ExpandableCategoryElement
@@ -68,12 +71,14 @@ export default function ItemsList({
             onGroupToggle={onGroupToggle}
             targetItem={targetItem}
             isHighlighted={isHighlighted}
+            isFocusOn={isFocusOn}
             isExpanded={isExpanded}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
             expandToViewport={expandToViewport}
             variant={variant}
             isKeyboard={isKeyboard}
+            focused={isKeyboard && isFocusOn(item)}
           />
         )
       ) : null;
@@ -86,6 +91,7 @@ export default function ItemsList({
         onGroupToggle={onGroupToggle}
         targetItem={targetItem}
         isHighlighted={isHighlighted}
+        isFocusOn={isFocusOn}
         isExpanded={isExpanded}
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}
