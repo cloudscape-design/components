@@ -128,6 +128,7 @@ export function TabHeaderBar({
   };
 
   return (
+    //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
       {horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
