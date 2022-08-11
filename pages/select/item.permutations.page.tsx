@@ -87,7 +87,6 @@ const permutations = createPermutations<ItemProps>([
   {
     option: [options.simpleOption],
     highlighted: [false, true],
-    isKeyboard: [false, true],
     selected: [false, true],
   },
   {
@@ -95,7 +94,7 @@ const permutations = createPermutations<ItemProps>([
     highlighted: [false, true],
     selected: [false, true],
     isKeyboard: [true],
-    hasCheckbox: [false, true],
+    hasCheckbox: [true],
   },
   {
     option: [options.complexOption],
@@ -122,6 +121,13 @@ const permutations = createPermutations<ItemProps>([
   {
     option: [options.complexDisabledOptionWithCustomSvg],
     hasCheckbox: [true],
+  },
+  {
+    option: [options.simpleOption, options.complexOption],
+    highlighted: [false, true],
+    isKeyboard: [true],
+    selected: [true],
+    hasCheckbox: [false],
   },
 ]);
 
