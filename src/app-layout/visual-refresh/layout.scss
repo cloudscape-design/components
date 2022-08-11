@@ -37,7 +37,7 @@
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
-  display: grid;
+  display: block;
   grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr;
   grid-template-columns:
     min-content
