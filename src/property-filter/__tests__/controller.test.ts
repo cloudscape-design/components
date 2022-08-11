@@ -130,6 +130,12 @@ describe('parseText', () => {
       { step: 'property', value: 'value', operator: '!=', property: filteringProperties[0] },
     ],
     ['partial operator', 'string!', false, { step: 'operator', operatorPrefix: '!', property: filteringProperties[0] }],
+    [
+      'partial operator with empty prefix',
+      'string',
+      false,
+      { step: 'operator', operatorPrefix: '', property: filteringProperties[0] },
+    ],
     ['partial operator with text after', 'string! ', false, { step: 'free-text', value: 'string! ' }],
     [
       'partial operator with whitespace before',
@@ -137,7 +143,12 @@ describe('parseText', () => {
       false,
       { step: 'operator', operatorPrefix: '!', property: filteringProperties[0] },
     ],
-    ['partial operator was not completed', 'string !>', false, { step: 'free-text', value: 'string !>' }],
+    [
+      'partial operator was not completed',
+      'string !>',
+      false,
+      { step: 'property', value: '!>', operator: '=', property: filteringProperties[0] },
+    ],
     [
       'range operator greedy (could have been completed by a "=", but is already treated like completed)',
       'range >',
@@ -175,6 +186,18 @@ describe('parseText', () => {
       'string',
       false,
       { step: 'operator', operatorPrefix: '', property: filteringProperties[0] },
+    ],
+    [
+      'operator is inserted when missing and property is matched',
+      'string value',
+      false,
+      { step: 'property', value: 'value', operator: '=', property: filteringProperties[0] },
+    ],
+    [
+      'operator is not inserted when there in no space between matched property and value',
+      'stringvalue',
+      false,
+      { step: 'free-text', value: 'stringvalue' },
     ],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, disableFreeTextFiltering, expected) => {

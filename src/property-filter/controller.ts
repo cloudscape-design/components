@@ -126,17 +126,6 @@ export const parseText = (
     };
   }
 
-  // Insert first operator if user does not select any.
-  // This is helpful when the value is pasted after choosing the property name.
-  if (!hasOperator && textWithoutProperty.trim().length > 0) {
-    return {
-      step: 'property',
-      property,
-      operator: allowedOps[0],
-      value: trimLeadingSpace(textWithoutProperty),
-    };
-  }
-
   const opPrefixesMap = allowedOps.reduce<{ [key in OperatorPrefix]?: true }>((acc, op) => {
     if (op.length > 1) {
       const substr = op.substring(0, 1);
@@ -149,6 +138,18 @@ export const parseText = (
   if (enteringOperator) {
     return { step: 'operator', property, operatorPrefix: enteringOperator[2] || '' };
   }
+
+  // Insert first operator if user does not select any.
+  // This is helpful when the value is pasted after choosing the property name.
+  if (!hasOperator && textWithoutProperty.trim().length > 0 && textWithoutProperty[0] === ' ') {
+    return {
+      step: 'property',
+      property,
+      operator: allowedOps[0],
+      value: trimLeadingSpace(textWithoutProperty),
+    };
+  }
+
   return {
     step: 'free-text',
     value: filteringText,
