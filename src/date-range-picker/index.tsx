@@ -3,9 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from './interfaces';
-import { DayIndex } from './calendar';
 import { normalizeLocale } from '../date-picker/calendar/utils/locales';
-import { getWeekStartByLocale } from 'weekstart';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';
@@ -145,9 +143,6 @@ const DateRangePicker = React.forwardRef(
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
     const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? '');
-    const normalizedStartOfWeek = (
-      typeof startOfWeek === 'number' ? startOfWeek % 7 : getWeekStartByLocale(normalizedLocale)
-    ) as DayIndex;
 
     const closeDropdown = (focusTrigger = false) => {
       setIsDropDownOpen(false);
@@ -267,7 +262,7 @@ const DateRangePicker = React.forwardRef(
         >
           {isDropDownOpen && (
             <DateRangePickerDropdown
-              startOfWeek={normalizedStartOfWeek}
+              startOfWeek={startOfWeek}
               locale={normalizedLocale}
               isSingleGrid={isSingleGrid}
               onDropdownClose={() => closeDropdown(true)}

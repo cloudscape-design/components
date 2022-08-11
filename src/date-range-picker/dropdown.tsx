@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { DateRangePickerProps, Focusable } from './interfaces';
-import Calendar, { DayIndex } from './calendar';
+import Calendar from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import FocusLock from '../internal/components/focus-lock';
@@ -51,7 +51,7 @@ export interface DateRangePickerDropdownProps
   > {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
-  startOfWeek: DayIndex;
+  startOfWeek: number | undefined;
   onDropdownClose: () => void;
   isSingleGrid: boolean;
 
