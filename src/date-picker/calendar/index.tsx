@@ -13,8 +13,7 @@ import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 import { formatDate, memoizedDate } from './utils/date.js';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
-import { getWeekStartByLocale } from 'weekstart';
-
+import { normalizeStartOfWeek } from './utils/locales.js';
 export interface DateChangeHandler {
   (detail: CalendarTypes.DateDetail): void;
 }
@@ -55,9 +54,7 @@ const Calendar = ({
   previousMonthLabel,
   nextMonthLabel,
 }: CalendarProps) => {
-  const normalizedStartOfWeek = (
-    typeof startOfWeek === 'number' ? startOfWeek : getWeekStartByLocale(locale)
-  ) as DayIndex;
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
   const focusVisible = useFocusVisible();
   const headerId = useUniqueId('calendar-dialog-title-');
   const elementRef = useRef<HTMLDivElement>(null);
