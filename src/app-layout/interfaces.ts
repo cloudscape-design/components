@@ -114,12 +114,14 @@ export interface AppLayoutProps extends BaseComponentProps {
 
   /**
    * Top area of the page content.
+   * **Deprecated**, replaced by the content layout `header` slot.
    * @visualrefresh
    */
   contentHeader?: React.ReactNode;
 
   /**
    * Disables overlap between `contentHeader` and `content` slots.
+   * **Deprecated**, replaced by the content layout `disableOverlap` property.
    * @visualrefresh
    */
   disableContentHeaderOverlap?: boolean;
