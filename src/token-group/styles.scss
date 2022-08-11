@@ -23,7 +23,7 @@
   display: flex;
   align-items: flex-start;
   background: constants.$token-background;
-  border-radius: awsui.$border-radius-control;
+  border-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   height: 100%;
   box-sizing: border-box;
@@ -93,7 +93,7 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.form-focus-element(awsui.$border-radius-control-focus-ring-default);
+    @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
   }
 
   > .description {
