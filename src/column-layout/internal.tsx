@@ -59,7 +59,14 @@ export default React.forwardRef(function ColumnLayout(
         __breakpoint={__breakpoint}
         __responsiveClassName={breakpoint => breakpoint && styles[`grid-breakpoint-${breakpoint}`]}
       >
-        {children}
+        {flattenedChildren.map(child => {
+          const key = typeof child !== 'string' && typeof child !== 'number' ? child.key : undefined;
+          return (
+            <div key={key} className={styles['restore-pointer-events']}>
+              {child}
+            </div>
+          );
+        })}
       </InternalGrid>
     </div>
   );

@@ -53,7 +53,7 @@
     "react-hooks/exhaustive-deps": [
       "error",
       {
-        "additionalHooks": "(useContainerQuery|useContainerBreakpoints|useEffectOnUpdate)"
+        "additionalHooks": "(useContainerQuery|useEffectOnUpdate)"
       }
     ],
     "unicorn/filename-case": "error",

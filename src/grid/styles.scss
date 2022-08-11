@@ -7,71 +7,67 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 $grid-columns: 12;
-$grid-gutter-width: awsui.$space-grid-gutter;
 
 .grid {
-  @include styles.styles-reset;
-  display: flex;
-  flex-wrap: wrap;
-  margin: calc(#{$grid-gutter-width} / -2);
-  pointer-events: none;
-
+  // The grid component mostly behaves like a flex layout, but gap with
+  // display flex isn't supported on Safari 13.x and 14.0.
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat($grid-columns, 1fr);
+  gap: var(#{custom-props.$gridGutterGap});
   &.no-gutters {
-    margin: 0;
+    #{custom-props.$gridGutterGap}: 0;
   }
+  @include styles.styles-reset;
+
+  // The gutter width is used for width calculations inside offset-*, push-*,
+  // and pull-* classes. Having "&.no-gutters" checks for each class inside
+  // that for-loop will cause a combinatorial explosion of generated classes.
+  // So we use a custom property instead.
+  #{custom-props.$gridGutterGap}: awsui.$space-grid-gutter;
 }
 
 .grid-column {
-  box-sizing: border-box;
   position: relative;
-  padding: calc(#{$grid-gutter-width} / 2);
-
-  display: flex;
-
-  .grid.no-gutters > & {
-    padding: 0;
-  }
-
-  @for $i from 1 through $grid-columns {
-    &.colspan-#{$i} {
-      flex: 0 0 math.percentage(math.div($i, $grid-columns));
-      // Add a `max-width` to ensure content within each column does not blow out
-      // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
-      // do not appear to require this.
-      max-width: math.percentage(math.div($i, $grid-columns));
-    }
-
-    &.push-#{$i} {
-      left: math.percentage(math.div($i, $grid-columns));
-    }
-
-    &.pull-#{$i} {
-      right: math.percentage(math.div($i, $grid-columns));
-    }
-  }
-
-  &.push-0 {
-    left: auto;
-  }
-
-  &.pull-0 {
-    right: auto;
-  }
-
-  // `$grid-columns - 1` because offsetting by the width of an entire row isn't possible
-  @for $i from 0 through ($grid-columns - 1) {
-    // Avoid emitting useless .offset-0
-    @if $i != 0 {
-      &.offset-#{$i} {
-        margin-left: math.percentage(math.div($i, $grid-columns));
-      }
-    }
-  }
+  place-self: stretch;
+  max-width: 100%;
 }
 
-.restore-pointer-events {
-  pointer-events: auto;
-  width: 100%;
+@for $i from 1 through $grid-columns {
+  .colspan-#{$i} {
+    grid-column: auto / span $i;
+
+    // This is a custom property for the same reason grid gutters are. The
+    // rest of the classes depend on the colspan. Rather than generating
+    // those classes inside an inner loop, we can just set a value here that
+    // will be used inside the calc functions of offset-*, push-*, and pull-*.
+    #{custom-props.$gridColumnSpan}: #{$i};
+  }
+
+  // Since this is a fluid grid, the width of the column is dependent on the
+  // available space, so we need to use percentages. But with CSS grid,
+  // percentages are relative to the colspan, not the grid parent. But since
+  // we know the colspan, we can "reverse engineer" the width to use.
+  //
+  // For example, for a 3-column wide item, `100% + $gridGutterGap` gives
+  // us the width of 3 columns + 3 gutters. Divide that by 3 ($gridColumnSpan),
+  // and you get the width of 1 column + 1 gutter, which is what we shift by.
+  $colspan-width: calc(
+    ((100% + var(#{custom-props.$gridGutterGap})) / #{var(#{custom-props.$gridColumnSpan})}) * #{$i}
+  );
+
+  .offset-#{$i} {
+    margin-left: $colspan-width;
+  }
+
+  .push-#{$i} {
+    left: $colspan-width;
+  }
+
+  .pull-#{$i} {
+    right: $colspan-width;
+  }
 }

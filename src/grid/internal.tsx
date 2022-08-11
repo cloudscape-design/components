@@ -35,16 +35,15 @@ const InternalGrid = React.forwardRef(
     }: InternalGridProps,
     ref: React.Ref<any>
   ) => {
-    let [defaultBreakpoint, defaultRef]: [Breakpoint | null, React.Ref<any>] = useContainerBreakpoints(undefined);
+    let [defaultBreakpoint, defaultRef]: [Breakpoint | null, React.Ref<any>] = useContainerBreakpoints();
     if (__breakpoint !== undefined) {
       defaultBreakpoint = __breakpoint;
       defaultRef = ref;
     }
 
     const baseProps = getBaseProps(restProps);
-    /*
-   Flattening the children allows us to "see through" React Fragments and nested arrays.
-   */
+
+    // Flattening the children allows us to "see through" React Fragments and nested arrays.
     const flattenedChildren = flattenChildren(children);
 
     if (isDevelopment) {
@@ -63,31 +62,31 @@ const InternalGrid = React.forwardRef(
     return (
       <div
         {...baseProps}
+        ref={mergedRef}
         className={clsx(
           styles.grid,
           baseProps.className,
-          { [styles['no-gutters']]: disableGutters },
+          !!disableGutters && styles['no-gutters'],
           __responsiveClassName ? __responsiveClassName(defaultBreakpoint) : null
         )}
-        ref={mergedRef}
       >
         {flattenedChildren.map((child, i) => {
-          // If this react child is a primitive value, the key will be undefined
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const key = (child as any).key;
+          const key = typeof child !== 'string' && typeof child !== 'number' ? child.key : undefined;
+          const colspan = getColumnsFromDefinition(gridDefinition[i]?.colspan, defaultBreakpoint) ?? 0;
+          const offset = getColumnsFromDefinition(gridDefinition[i]?.offset, defaultBreakpoint) ?? 0;
 
           return (
             <div
               key={key}
               className={clsx(
                 styles['grid-column'],
-                getColumnClassNames('colspan', gridDefinition[i]?.colspan, defaultBreakpoint),
+                styles[`colspan-${colspan + offset}`],
                 getColumnClassNames('offset', gridDefinition[i]?.offset, defaultBreakpoint),
                 getColumnClassNames('pull', gridDefinition[i]?.pull, defaultBreakpoint),
                 getColumnClassNames('push', gridDefinition[i]?.push, defaultBreakpoint)
               )}
             >
-              <div className={styles['restore-pointer-events']}>{child}</div>
+              {child}
             </div>
           );
         })}
@@ -96,18 +95,29 @@ const InternalGrid = React.forwardRef(
   }
 );
 
+function getColumnsFromDefinition(
+  mapping: undefined | number | GridProps.BreakpointMapping,
+  breakpoint: Breakpoint | null
+): number | null {
+  if (typeof mapping === 'number') {
+    return mapping;
+  }
+  if (breakpoint === null || mapping === undefined) {
+    return null;
+  }
+  return matchBreakpointMapping(mapping, breakpoint);
+}
+
 function getColumnClassNames(
   prop: string,
   mapping: undefined | number | GridProps.BreakpointMapping,
   breakpoint: Breakpoint | null
 ): string | null {
-  if (typeof mapping === 'number') {
-    return styles[`${prop}-${mapping}`];
-  }
-  if (breakpoint === null || mapping === undefined) {
+  const columns = getColumnsFromDefinition(mapping, breakpoint);
+  if (columns === null) {
     return null;
   }
-  return styles[`${prop}-${matchBreakpointMapping(mapping, breakpoint)}`];
+  return styles[`${prop}-${columns}`];
 }
 
 export default InternalGrid;

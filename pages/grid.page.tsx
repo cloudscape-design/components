@@ -18,20 +18,22 @@ export default function GridPage() {
             { colspan: { default: 12, m: 6 }, offset: { m: 6 } },
 
             // Test push and pull
-            { colspan: 6, push: 6 },
-            { colspan: 6, pull: 6 },
+            { colspan: 3, push: 9 },
+            { colspan: 3, pull: 3 },
+            { colspan: 3 },
           ]}
         >
           {/* Test inner grid + no-gutters + numerical values for mapping */}
           <Grid disableGutters={true} gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
-            <div>Inner Grid / No Gutters / Always Half-Width</div>
-            <div>Inner Grid / No Gutters / Always Half-Width</div>
+            <div>Inner grid / No gutters / Always half-width</div>
+            <div>Inner grid / No gutters / Always half-width</div>
           </Grid>
 
-          <div>Grid Column w/ Offset</div>
+          <div>Grid column w/ medium-only offset</div>
 
-          <div>first semantic column</div>
-          <div>second semantic column</div>
+          <div>First semantic column</div>
+          <div>Second semantic column</div>
+          <div>Third semantic column</div>
         </Grid>
       </ScreenshotArea>
     </>

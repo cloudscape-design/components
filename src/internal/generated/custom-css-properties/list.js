@@ -6,6 +6,7 @@
  */
 
 const customCssPropertiesList = [
+  // App layout
   'offsetTop',
   'offsetTopWithNotifications',
   'contentGapLeft',
@@ -30,5 +31,9 @@ const customCssPropertiesList = [
   'toolsWidth',
   'toolsAnimationStartingOpacity',
   'contentScrollMargin',
+
+  // Grid
+  'gridGutterGap',
+  'gridColumnSpan',
 ];
 module.exports = customCssPropertiesList;

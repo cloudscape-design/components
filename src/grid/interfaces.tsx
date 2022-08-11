@@ -57,11 +57,13 @@ export namespace GridProps {
 
     /**
      * The number of grid elements to pull the column to the left by.
+     * @deprecated The use of this property is not recommended for accessibility reasons.
      */
     pull?: number | GridProps.BreakpointMapping;
 
     /**
      * The number of grid elements to push the column to the right by.
+     * @deprecated The use of this property is not recommended for accessibility reasons.
      */
     push?: number | GridProps.BreakpointMapping;
   }

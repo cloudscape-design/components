@@ -101,6 +101,7 @@ $column-breakpoint-spans: (
 div.column-layout {
   @include styles.styles-reset;
   word-wrap: break-word;
+  pointer-events: none;
 
   > .grid {
     margin: calc(#{$grid-gutter-width} / -2);
@@ -131,4 +132,9 @@ div.column-layout {
       @include make-horizontal-borders;
     }
   }
+}
+
+.restore-pointer-events {
+  pointer-events: auto;
+  width: 100%;
 }

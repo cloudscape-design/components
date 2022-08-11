@@ -11,6 +11,6 @@ export default class GridWrapper extends ComponentWrapper<HTMLDivElement> {
    * @param columnIndex 1-based index of the column to return.
    */
   findColumn(columnIndex: number): ElementWrapper<HTMLDivElement> | null {
-    return this.find(`.${styles['grid-column']}:nth-child(${columnIndex}) > div`);
+    return this.find(`.${styles['grid-column']}:nth-child(${columnIndex})`);
   }
 }

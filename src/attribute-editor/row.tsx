@@ -64,7 +64,7 @@ export const Row = React.memo(
       typeof slot === 'function' ? slot(item, itemIndex) : slot;
 
     return (
-      <InternalBox className={styles.row} margin={{ bottom: 's' }}>
+      <InternalBox className={styles.row} margin={{ bottom: 'l' }}>
         <InternalGrid
           __breakpoint={breakpoint}
           gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}

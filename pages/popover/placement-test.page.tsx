@@ -65,6 +65,7 @@ export default function () {
                 <Popover
                   id={`popover-${row}-${col}`}
                   size="medium"
+                  fixedWidth={true}
                   position={position}
                   header="Info"
                   content={<Content />}
