@@ -31,7 +31,7 @@ $gutter: awsui.$space-grid-gutter;
 .tile-container {
   box-sizing: border-box;
   border: styles.$control-border-width solid awsui.$color-border-input-default;
-  border-radius: styles.$control-border-radius;
+  border-radius: awsui.$border-radius-tiles;
   padding: awsui.$space-xs awsui.$space-scaled-m;
   display: flex;
   flex-direction: column;
