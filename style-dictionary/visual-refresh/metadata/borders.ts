@@ -31,9 +31,6 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.',
   },
-  borderRadiusControl: {
-    description: 'The border radius of form controls. For example: input, select, tokens.',
-  },
   borderRadiusControlCircularFocusRing: {
     description: 'The border radius of the focus indicator of circular controls. For example: radio button.',
   },
@@ -52,11 +49,20 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The border radius of items that can be selected from a list. For example: select options, table rows, calendar days.',
   },
+  borderRadiusInput: {
+    description: 'The border radius of form controls. For example: input, select.',
+  },
   borderRadiusPopover: {
     description: 'The border radius of popovers.',
   },
   borderRadiusTabsFocusRing: {
     description: "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
+  },
+  borderRadiusTiles: {
+    description: 'The border radius of tiles.',
+  },
+  borderRadiusToken: {
+    description: 'The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.',
   },
   borderRadiusTutorialPanelItem: {
     description: 'The border radius of tutorials inside a tutorial panel.',
