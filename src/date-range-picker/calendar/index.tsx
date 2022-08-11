@@ -27,6 +27,7 @@ import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
+import { getWeekStartByLocale } from 'weekstart';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -44,7 +45,7 @@ interface HeaderChangeMonthHandler {
 
 export interface CalendarProps extends BaseComponentProps {
   locale: string;
-  startOfWeek: DayIndex;
+  startOfWeek: number | undefined;
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
   onSelectDateRange: (value: DateRangePickerProps.AbsoluteValue) => void;
   initialStartDate: string | undefined;
@@ -73,6 +74,10 @@ function Calendar(
   ref: React.Ref<Focusable>
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
+
+  const normalizedStartOfWeek = (
+    typeof startOfWeek === 'number' ? startOfWeek % 7 : getWeekStartByLocale(locale)
+  ) as DayIndex;
 
   useImperativeHandle(ref, () => ({
     focus() {
@@ -313,7 +318,7 @@ function Calendar(
             isDateEnabled={isDateEnabled}
             onSelectDate={onSelectDateHandler}
             onChangeMonth={setCurrentMonth}
-            startOfWeek={startOfWeek}
+            startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
