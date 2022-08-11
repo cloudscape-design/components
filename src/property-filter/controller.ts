@@ -4,6 +4,7 @@ import { PropertyFilterProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { InputProps } from '../input/interfaces';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
 
 export const getQueryActions = (
   query: PropertyFilterProps['query'],
@@ -49,9 +50,6 @@ export const getQueryActions = (
   };
 };
 
-// All possible prefixes of the two-character operators
-type OperatorPrefix = '<' | '>' | '!';
-
 export type ParsedText =
   | {
       step: 'property';
@@ -80,7 +78,7 @@ export const getAllowedOperators = (
  */
 export const parseText = (
   filteringText: string,
-  filteringProperties: PropertyFilterProps['filteringProperties'],
+  filteringProperties: PropertyFilterProps['filteringProperties'] = [],
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -91,56 +89,38 @@ export const parseText = (
       value: negatedGlobalQuery[2],
     };
   }
-  const { property } = filteringProperties?.reduce<{
-    property?: PropertyFilterProps.FilteringProperty;
-    length: number;
-  }>(
-    (acc, property) => {
-      if (filteringText.toLowerCase().indexOf(property.propertyLabel.toLowerCase()) === 0) {
-        // find the longest property whose name matches the filtering text
-        if (property.propertyLabel.length > acc.length) {
-          acc.length = property.propertyLabel.length;
-          acc.property = property;
-        }
-      }
-      return acc;
-    },
-    { length: 0 }
-  );
+
+  const property = matchFilteringProperty(filteringProperties, filteringText);
   if (!property) {
     return {
       step: 'free-text',
       value: filteringText,
     };
   }
+
   const allowedOps = getAllowedOperators(property);
   const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
-  const hasOperator = new RegExp(`^(\\s*)(${allowedOps.join('|')})(.*)`).exec(textWithoutProperty);
-  if (hasOperator) {
+  const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
+  if (operator) {
+    const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
+    const textWithoutPropertyAndOperator = textWithoutProperty.slice(operatorLastIndex);
     return {
       step: 'property',
       property,
-      // regex above can't match anything but an operator in the second capturing group
-      operator: hasOperator[2] as PropertyFilterProps.ComparisonOperator,
-      value: hasOperator[3].charAt(0) === ' ' ? hasOperator[3].slice(1) : hasOperator[3],
+      operator,
       // We need to remove the first leading space in case the user presses space
       // after the operator, for example: Owner: admin, will result in value of ` admin`
       // and we need to remove the first space, if the user added any more spaces only the
       // first one will be removed.
+      value: trimFirstSpace(textWithoutPropertyAndOperator),
     };
   }
-  const opPrefixesMap = allowedOps.reduce<{ [key in OperatorPrefix]?: true }>((acc, op) => {
-    if (op.length > 1) {
-      const substr = op.substring(0, 1);
-      acc[substr as OperatorPrefix] = true;
-    }
-    return acc;
-  }, {});
-  const opPrefixes = Object.keys(opPrefixesMap) as OperatorPrefix[];
-  const enteringOperator = new RegExp(`^(\\s*)([${opPrefixes.join(',')}])?$`).exec(textWithoutProperty);
-  if (enteringOperator) {
-    return { step: 'operator', property, operatorPrefix: enteringOperator[2] || '' };
+
+  const operatorPrefix = matchOperatorPrefix(allowedOps, trimStart(textWithoutProperty));
+  if (operatorPrefix !== null) {
+    return { step: 'operator', property, operatorPrefix };
   }
+
   return {
     step: 'free-text',
     value: filteringText,
