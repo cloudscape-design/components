@@ -27,7 +27,7 @@ import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { getWeekStartByLocale } from 'weekstart';
+import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -75,9 +75,7 @@ function Calendar(
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const normalizedStartOfWeek = (
-    typeof startOfWeek === 'number' ? startOfWeek % 7 : getWeekStartByLocale(locale)
-  ) as DayIndex;
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
 
   useImperativeHandle(ref, () => ({
     focus() {
