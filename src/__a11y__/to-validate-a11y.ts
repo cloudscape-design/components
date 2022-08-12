@@ -18,11 +18,20 @@ declare global {
 
 Axe.configure(spec);
 
-const htmlValidator = new HtmlValidate();
+const htmlValidator = new HtmlValidate({
+  extends: ['html-validate:recommended'],
+  rules: {
+    // set relaxed to exclude error that id does not begin with letter
+    'valid-id': ['error', { relaxed: true }],
+    'no-inline-style': 'off',
+    'prefer-native-element': ['error', { exclude: ['listbox'] }],
+  },
+});
 
 async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
   // Disable color-contrast checks as unavailable in unit test environment.
   const axeResult = await Axe.run(element, { ...runOptions, rules: { 'color-contrast': { enabled: false } } });
+
   const htmlValidateResult = htmlValidator.validateString(element.outerHTML);
 
   const pass = axeResult.violations.length === 0 && axeResult.incomplete.length === 0 && htmlValidateResult.valid;

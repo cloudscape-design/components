@@ -8,7 +8,6 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import { cloneDeep } from 'lodash';
-import { expectNoAxeViolations } from '../../__a11y__/axe';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -272,7 +271,7 @@ test.skip('popover a11y check', async () => {
   // Pin popover.
   wrapper.findApplication()!.keydown(KeyCode.enter);
 
-  await expectNoAxeViolations(container);
+  await expect(container).toValidateA11y();
 });
 
 test('popover labels are assigned', () => {

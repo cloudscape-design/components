@@ -35,13 +35,3 @@ export const spec: Axe.Spec = {
 export const runOptions: Axe.RunOptions = {
   resultTypes: ['violations', 'incomplete'],
 };
-
-export const expectNoAxeViolations = async (element: HTMLElement) => {
-  Axe.configure(spec);
-
-  // Disable color-contrast checks as unavailable in unit test environment.
-  const result = await Axe.run(element, { ...runOptions, rules: { 'color-contrast': { enabled: false } } });
-
-  expect(result.violations).toHaveLength(0);
-  expect(result.incomplete).toHaveLength(0);
-};
