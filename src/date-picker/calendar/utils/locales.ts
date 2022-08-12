@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '../../../internal/logging';
+import { getWeekStartByLocale } from 'weekstart';
+import { DayIndex } from '..';
 
 const getHtmlElement = () => (typeof document !== 'undefined' ? document.querySelector('html') : null);
 
@@ -43,4 +45,8 @@ export function normalizeLocale(component: string, locale: string | null): strin
     return mergeLocales(htmlLocale, browserLocale);
   }
   return browserLocale;
+}
+
+export function normalizeStartOfWeek(startOfWeek: number | undefined, locale: string) {
+  return (typeof startOfWeek === 'number' ? startOfWeek % 7 : getWeekStartByLocale(locale)) as DayIndex;
 }

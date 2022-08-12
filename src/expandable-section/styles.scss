@@ -142,6 +142,6 @@
   }
 
   @include focus-visible.when-visible {
-    @include styles.form-focus-element(awsui.$border-control-focus-ring-radius-default);
+    @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
   }
 }

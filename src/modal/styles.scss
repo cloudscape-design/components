@@ -95,7 +95,7 @@ $modal-z-index: 5000;
   padding: awsui.$space-s awsui.$space-modal-horizontal;
   background-color: awsui.$color-background-container-header;
   border-bottom: 1px solid awsui.$color-border-container-divider;
-  border-radius: awsui.$border-container-radius awsui.$border-container-radius 0 0;
+  border-radius: awsui.$border-radius-container awsui.$border-radius-container 0 0;
 }
 
 .header--text {

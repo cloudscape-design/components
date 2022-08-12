@@ -51,11 +51,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding-bottom: $cell-vertical-padding;
     &:first-child {
       border-left: $selected-border;
-      border-radius: awsui.$border-item-radius 0 0 awsui.$border-item-radius;
+      border-radius: awsui.$border-radius-item 0 0 awsui.$border-radius-item;
     }
     &:last-child {
       border-right: $selected-border;
-      border-radius: 0 awsui.$border-item-radius awsui.$border-item-radius 0;
+      border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
     }
   }
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)

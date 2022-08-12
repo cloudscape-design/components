@@ -12,7 +12,6 @@ interface CalendarHeaderProps {
   onChangeMonth: (prev?: boolean) => void;
   previousMonthLabel: string;
   nextMonthLabel: string;
-  calendarHasFocus: boolean;
   isSingleGrid: boolean;
 }
 
@@ -22,17 +21,11 @@ const CalendarHeader = ({
   onChangeMonth,
   previousMonthLabel,
   nextMonthLabel,
-  calendarHasFocus,
   isSingleGrid,
 }: CalendarHeaderProps) => {
   return (
     <div className={styles['calendar-header']}>
-      <HeaderButton
-        ariaLabel={previousMonthLabel}
-        isPrevious={true}
-        onChangeMonth={onChangeMonth}
-        focusable={calendarHasFocus}
-      />
+      <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
       <div aria-live="polite" className={styles['calendar-header-months-wrapper']}>
         {!isSingleGrid && (
           <div className={styles['calendar-header-month']}>
@@ -41,12 +34,7 @@ const CalendarHeader = ({
         )}
         <div className={styles['calendar-header-month']}>{renderMonthAndYear(locale, baseDate)}</div>
       </div>
-      <HeaderButton
-        ariaLabel={nextMonthLabel}
-        isPrevious={false}
-        onChangeMonth={onChangeMonth}
-        focusable={calendarHasFocus}
-      />
+      <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
     </div>
   );
 };

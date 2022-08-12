@@ -48,7 +48,7 @@ $option-padding-horizontal: awsui.$space-l;
       // reset padding when adding border back in
       padding: styles.$option-padding-vertical $option-padding-horizontal;
       border: awsui.$border-item-width solid awsui.$color-border-dropdown-item-hover;
-      border-radius: awsui.$border-item-radius;
+      border-radius: awsui.$border-radius-item;
       z-index: 2;
       &.disabled {
         background-color: awsui.$color-background-dropdown-item-dimmed;

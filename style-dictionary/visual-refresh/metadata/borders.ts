@@ -3,21 +3,70 @@
 import { StyleDictionary } from '../../utils/interfaces';
 
 const metadata: StyleDictionary.MetadataIndex = {
-  borderActiveRadius: { description: 'The border radius of the active tab indicator.' },
   borderActiveWidth: { description: 'The height of the active tab indicator.' },
   borderDividerListWidth: { description: 'Used for divider between repeated items such as dropdowns and tables.' },
   borderDividerSectionWidth: {
     description:
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
-  borderDropdownRadius: { description: 'Used for dropdown containers.' },
-  borderFieldRadius: {
-    description: 'The border radius of most small elements in the system, e.g. inputs, tiles, alerts, tokens.',
-  },
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
-  borderItemRadius: { description: 'Used for list items that can be selected, e.g. dropdown options, table rows.' },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
+  borderRadiusAlert: {
+    description: 'The border radius of alerts.',
+  },
+  borderRadiusBadge: {
+    description: 'The border radius of badges.',
+  },
+  borderRadiusButton: {
+    description: "The border radius of buttons and segmented control's segments.",
+  },
+  borderRadiusCalendarDayFocusRing: {
+    description: 'The border radius of the focused day in date picker and date range picker.',
+  },
+  borderRadiusCodeEditor: {
+    description: 'The border radius of code editors.',
+  },
+  borderRadiusContainer: {
+    description:
+      'The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.',
+  },
+  borderRadiusControlCircularFocusRing: {
+    description: 'The border radius of the focus indicator of circular controls. For example: radio button.',
+  },
+  borderRadiusControlDefaultFocusRing: {
+    description:
+      'The border radius of the focus indicator of interactive elements. For example: button, link, toggle, pagination controls, expandable section header, popover trigger.',
+  },
+  borderRadiusDropdown: {
+    description:
+      'The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker.',
+  },
+  borderRadiusFlashbar: {
+    description: 'The border radius of flash messages in flashbars.',
+  },
+  borderRadiusItem: {
+    description:
+      'The border radius of items that can be selected from a list. For example: select options, table rows, calendar days.',
+  },
+  borderRadiusInput: {
+    description: 'The border radius of form controls. For example: input, select.',
+  },
+  borderRadiusPopover: {
+    description: 'The border radius of popovers.',
+  },
+  borderRadiusTabsFocusRing: {
+    description: "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar.",
+  },
+  borderRadiusTiles: {
+    description: 'The border radius of tiles.',
+  },
+  borderRadiusToken: {
+    description: 'The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens.',
+  },
+  borderRadiusTutorialPanelItem: {
+    description: 'The border radius of tutorials inside a tutorial panel.',
+  },
 };
 
 export default metadata;
