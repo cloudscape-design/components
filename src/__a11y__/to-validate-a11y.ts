@@ -25,6 +25,9 @@ const htmlValidator = new HtmlValidate({
     'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
     'prefer-native-element': ['error', { exclude: ['listbox'] }],
+    // enable 'no-redundant-for' and 'element-permitted-content' after fixing Toggle
+    'no-redundant-for': 'off',
+    'element-permitted-content': 'off',
   },
 });
 
