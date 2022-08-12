@@ -1,13 +1,7 @@
 {
   "compilerOptions": {
-    "lib": [
-      // Config for IE11
-      "es5",
-      "es2015.collection",
-      "dom",
-      // we load promise polyfill
-      "es2015.promise"
-    ],
+    "target": "es2019",
+    "lib": ["es2019", "dom"],
     "declaration": false,
     "declarationMap": false,
     "rootDir": ".",
