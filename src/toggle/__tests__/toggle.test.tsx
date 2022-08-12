@@ -6,6 +6,7 @@ import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
+import "html-validate/jest";
 
 function renderToggle(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -90,3 +91,8 @@ test('does not trigger any change events when value is changed through api', () 
   rerender(<Toggle checked={false} onChange={onChange} />);
   expect(onChange).not.toHaveBeenCalled();
 });
+
+test('html validate', ()=>{
+  const { wrapper } = renderToggle(<Toggle checked={false} onChange={()=>{}} >Toggle label</Toggle>);
+  expect(wrapper.getElement()).toHTMLValidate();
+})

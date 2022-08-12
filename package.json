@@ -99,6 +99,7 @@
     "file-loader": "^6.2.0",
     "glob": "^7.2.0",
     "gulp": "^4.0.2",
+    "html-validate": "^7.3.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^6.0.0",
     "jest": "^28.1.0",

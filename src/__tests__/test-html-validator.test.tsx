@@ -3,8 +3,24 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import { expectNoAxeViolations } from '../__a11y__/axe';
+import "html-validate/jest";
 
 describe('html-validator', () => {
+
+  test('valid', async () => {
+    const { container } = render(
+      <div>
+        <label htmlFor="my-field">
+        <span>My field label</span>
+      </label>
+      <input id="my-field" type="text"/>
+      </div>
+      
+    );
+    
+    expect(container).toHTMLValidate();
+  });
+
   test('html-for', async () => {
     const { container } = render(
       <label htmlFor="not-my-field">
@@ -12,15 +28,15 @@ describe('html-validator', () => {
         <input id="my-field" />
       </label>
     );
-
-    await expectNoAxeViolations(container);
+    
+    expect(container).toHTMLValidate();
   });
 
   test('div-in-label', async () => {
     const { container } = render(
       <label htmlFor="my-field">
         <div>My field label</div>
-        <input id="my-field" />
+        <input id="my-field" aria-labelledby='random-id'/>
       </label>
     );
 
