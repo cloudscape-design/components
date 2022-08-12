@@ -33,7 +33,7 @@ describe('html-validator', () => {
     const { container } = render(
       <label htmlFor="my-field">
         <div>My field label</div>
-        <input id="my-field" aria-labelledby="random-id" />
+        <input id="my-field" aria-labelledby="random-id" role="dialog" />
       </label>
     );
 
