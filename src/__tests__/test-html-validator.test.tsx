@@ -2,44 +2,41 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { expectNoAxeViolations } from '../__a11y__/axe';
-import "html-validate/jest";
+import '../__a11y__/to-validate-a11y';
 
 describe('html-validator', () => {
-
   test('valid', async () => {
     const { container } = render(
       <div>
         <label htmlFor="my-field">
-        <span>My field label</span>
-      </label>
-      <input id="my-field" type="text"/>
+          <span>My field label</span>
+        </label>
+        <input id="my-field" type="text" />
       </div>
-      
     );
-    
-    expect(container).toHTMLValidate();
+
+    await expect(container).toValidateA11y();
   });
 
   test('html-for', async () => {
     const { container } = render(
       <label htmlFor="not-my-field">
         <span>My field label</span>
-        <input id="my-field" />
+        <input id="my-field" type="text" />
       </label>
     );
-    
-    expect(container).toHTMLValidate();
+
+    await expect(container).toValidateA11y();
   });
 
-  test('div-in-label', async () => {
+  test('multiple', async () => {
     const { container } = render(
       <label htmlFor="my-field">
         <div>My field label</div>
-        <input id="my-field" aria-labelledby='random-id'/>
+        <input id="my-field" aria-labelledby="random-id" />
       </label>
     );
 
-    await expectNoAxeViolations(container);
+    await expect(container).toValidateA11y();
   });
 });
