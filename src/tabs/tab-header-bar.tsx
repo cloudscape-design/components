@@ -128,7 +128,8 @@ export function TabHeaderBar({
   };
 
   return (
-    <span className={classes} ref={containerRef}>
+    //converted span to div as list should not be a child of span for HTML validation
+    <div className={classes} ref={containerRef}>
       {horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
           <InternalButton
@@ -161,7 +162,7 @@ export function TabHeaderBar({
           />
         </span>
       )}
-    </span>
+    </div>
   );
 
   function renderTabHeader(tab: TabsProps.Tab) {
