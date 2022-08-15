@@ -104,7 +104,7 @@ export const useKeyboardHandler = (
   moveHighlight: (direction: -1 | 1) => void,
   openDropdown: () => void,
   selectHighlighted: () => void,
-  usingMouse: React.MutableRefObject<boolean>,
+  isKeyboard: React.MutableRefObject<boolean>,
   open: boolean,
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>
 ) => {
@@ -114,14 +114,14 @@ export const useKeyboardHandler = (
         case KeyCode.down: {
           moveHighlight(1);
           openDropdown();
-          usingMouse.current = false;
+          isKeyboard.current = true;
           e.preventDefault();
           break;
         }
         case KeyCode.up: {
           moveHighlight(-1);
           openDropdown();
-          usingMouse.current = false;
+          isKeyboard.current = true;
           e.preventDefault();
           break;
         }
@@ -138,6 +138,6 @@ export const useKeyboardHandler = (
         }
       }
     },
-    [moveHighlight, selectHighlighted, onKeyDown, usingMouse, open, openDropdown]
+    [moveHighlight, selectHighlighted, onKeyDown, isKeyboard, open, openDropdown]
   );
 };

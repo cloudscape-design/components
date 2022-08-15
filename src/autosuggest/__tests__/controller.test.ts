@@ -31,9 +31,9 @@ const flatItems: AutosuggestItem[] = [
   },
 ];
 describe('Autosuggest controller', () => {
-  const usingMouse = { current: false };
+  const isKeyboard = { current: true };
   beforeEach(() => {
-    usingMouse.current = false;
+    isKeyboard.current = true;
   });
   describe('useAutosuggestItems', () => {
     test('"flattens" the list of options, indenting group items', () => {
@@ -154,7 +154,7 @@ describe('Autosuggest controller', () => {
   describe('useKeyboardHandler', () => {
     const moveHighlight: (direction: -1 | 1) => void = jest.fn();
     const selectHighlighted: () => void = jest.fn();
-    const usingMouse = createRef<boolean>() as MutableRefObject<boolean>;
+    const isKeyboard = createRef<boolean>() as MutableRefObject<boolean>;
     const open = true;
     const onKeyDown: CancelableEventHandler<BaseKeyDetail> = jest.fn();
     const openDropdown: () => void = jest.fn();
@@ -168,9 +168,9 @@ describe('Autosuggest controller', () => {
     let handleKeyDown: CancelableEventHandler<BaseKeyDetail>;
     beforeEach(() => {
       jest.resetAllMocks();
-      usingMouse.current = false;
+      isKeyboard.current = true;
       const { result } = renderHook((args: Parameters<typeof useKeyboardHandler>) => useKeyboardHandler(...args), {
-        initialProps: [moveHighlight, openDropdown, selectHighlighted, usingMouse, open, onKeyDown],
+        initialProps: [moveHighlight, openDropdown, selectHighlighted, isKeyboard, open, onKeyDown],
       });
       handleKeyDown = result.current;
     });
@@ -181,12 +181,12 @@ describe('Autosuggest controller', () => {
       fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
       expect(moveHighlight).toBeCalledWith(-1);
     });
-    test('unsets usingMouse ref on arrow keys', () => {
+    test('unsets isKeyboard ref on arrow keys', () => {
       fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.down, ...keyDetail });
-      expect(usingMouse.current).toEqual(false);
-      usingMouse.current = true;
+      expect(isKeyboard.current).toEqual(true);
+      isKeyboard.current = false;
       fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
-      expect(usingMouse.current).toEqual(false);
+      expect(isKeyboard.current).toEqual(true);
     });
     test('selects highlighted item on "enter" key', () => {
       fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
@@ -217,7 +217,7 @@ describe('Autosuggest controller', () => {
       const event = new KeyboardEvent('keydown', { key: 'Enter' });
       const spy = jest.spyOn(event, 'preventDefault');
       const { result } = renderHook((args: Parameters<typeof useKeyboardHandler>) => useKeyboardHandler(...args), {
-        initialProps: [moveHighlight, openDropdown, selectHighlighted, usingMouse, false, onKeyDown],
+        initialProps: [moveHighlight, openDropdown, selectHighlighted, isKeyboard, false, onKeyDown],
       });
       handleKeyDown = result.current;
 

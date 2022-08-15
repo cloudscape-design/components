@@ -11,7 +11,7 @@ export interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;
   getOptionProps: any;
   filteringValue: string;
-  isKeyboard?: boolean;
+  highlightedType: 'mouse' | 'keyboard';
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
@@ -24,7 +24,7 @@ export const renderOptions = ({
   options,
   getOptionProps,
   filteringValue,
-  isKeyboard = false,
+  highlightedType,
   checkboxes = false,
   hasDropdownStatus,
   virtualItems,
@@ -40,7 +40,6 @@ export const renderOptions = ({
       index: globalIndex,
       getOptionProps,
       filteringValue,
-      isKeyboard,
       checkboxes,
     });
 
@@ -58,6 +57,7 @@ export const renderOptions = ({
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
+        highlightedType={highlightedType}
       />
     );
   });

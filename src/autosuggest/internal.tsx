@@ -101,7 +101,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
 
-  const usingMouse = useRef(true);
+  const isKeyboard = useRef(false);
   const [showAll, setShowAll] = useState(false);
   const [open, setOpen] = useState(false);
   const autosuggestItems = useAutosuggestItems(options);
@@ -115,8 +115,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   );
   const openDropdown = () => !readOnly && setOpen(true);
   const scrollToIndex = useRef<(index: number) => void>(null);
-  const { highlightedOption, highlightedIndex, moveHighlight, resetHighlight, setHighlightedIndex } =
-    useHighlightedOption(filteredItems);
+  const { highlightedOption, highlightedIndex, highlightedType, moveHighlight, resetHighlight, setHighlightedIndex } =
+    useHighlightedOption({ options: filteredItems, isKeyboard });
   const closeDropdown = () => {
     setOpen(false);
     resetHighlight();
@@ -158,7 +158,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onChange && onChange(e);
   };
 
-  const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, usingMouse, open, onKeyDown);
+  const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, isKeyboard, open, onKeyDown);
   const handleLoadMore = useCallback(() => {
     options && options.length && statusType === 'pending' && fireLoadMore(false, false);
   }, [fireLoadMore, options, statusType]);
@@ -276,7 +276,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             selectedAriaLabel={selectedAriaLabel}
             renderHighlightedAriaLive={renderHighlightedAriaLive}
             listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-            usingMouse={usingMouse}
+            isKeyboard={isKeyboard}
+            highlightedType={highlightedType}
           />
         )}
       </Dropdown>

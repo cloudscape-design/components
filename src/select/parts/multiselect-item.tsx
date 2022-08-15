@@ -15,13 +15,13 @@ export interface ItemProps {
   indeterminate?: boolean;
   filteringValue?: string;
   hasCheckbox?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
+  highlightedType?: 'mouse' | 'keyboard';
 }
 
 const MultiSelectItem = (
@@ -31,7 +31,6 @@ const MultiSelectItem = (
     selected,
     filteringValue,
     hasCheckbox,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -39,6 +38,7 @@ const MultiSelectItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightedType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -62,7 +62,7 @@ const MultiSelectItem = (
       disabled={disabled}
       isParent={isParent}
       isChild={isChild}
-      isKeyboard={isKeyboard}
+      highlightedType={highlightedType}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}

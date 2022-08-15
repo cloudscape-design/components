@@ -1,14 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useState } from 'react';
+import { MutableRefObject, useCallback, useState } from 'react';
 
 export function createHighlightedOptionHook<OptionType>({
   isHighlightable,
 }: {
   isHighlightable: (option: OptionType) => boolean;
 }) {
-  return function useHighlightedOption(options: ReadonlyArray<OptionType>) {
-    const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  return function useHighlightedOption({
+    options,
+    isKeyboard,
+  }: {
+    options: ReadonlyArray<OptionType>;
+    isKeyboard: MutableRefObject<boolean>;
+  }) {
+    const setHighlightedIndex = useCallback(
+      (index: number) => {
+        setHighlightedIndexState(index);
+        setType(isKeyboard.current ? 'keyboard' : 'mouse');
+      },
+      [isKeyboard]
+    );
+    const [highlightedIndex, setHighlightedIndexState] = useState(-1);
+    const [highlightedType, setType] = useState<'mouse' | 'keyboard'>(isKeyboard.current ? 'keyboard' : 'mouse');
     const highlightedOption =
       options[highlightedIndex] && isHighlightable(options[highlightedIndex]) ? options[highlightedIndex] : undefined;
 
@@ -30,12 +44,13 @@ export function createHighlightedOptionHook<OptionType>({
         const index = options.indexOf(option);
         setHighlightedIndex(index);
       },
-      [options]
+      [options, setHighlightedIndex]
     );
 
     return {
       setHighlightedIndex,
       highlightedIndex,
+      highlightedType,
       highlightedOption,
       moveHighlight,
       resetHighlight: () => setHighlightedIndex(-1),

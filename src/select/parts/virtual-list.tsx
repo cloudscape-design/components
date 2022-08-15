@@ -21,7 +21,7 @@ const VirtualListOpen = forwardRef(
       getOptionProps,
       filteredOptions,
       filteringValue,
-      isKeyboard,
+      highlightedType,
       checkboxes,
       hasDropdownStatus,
       listBottom,
@@ -49,17 +49,17 @@ const VirtualListOpen = forwardRef(
     useImperativeHandle(
       ref,
       () => (index: number) => {
-        if (isKeyboard) {
+        if (highlightedType === 'keyboard') {
           scrollToIndex(index);
         }
       },
-      [isKeyboard, scrollToIndex]
+      [highlightedType, scrollToIndex]
     );
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
       getOptionProps,
       filteringValue,
-      isKeyboard,
+      highlightedType,
       checkboxes,
       hasDropdownStatus,
       virtualItems,
