@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { createRef, MutableRefObject } from 'react';
 import { ButtonDropdownProps } from '../interfaces';
 import { renderHook, act } from '../../__tests__/render-hook';
 import useHighlightedMenu from '../utils/use-highlighted-menu';
@@ -31,9 +32,10 @@ const testItems2: ButtonDropdownProps.Items = [
   { id: 'i4', text: 'item4' },
 ];
 
+const usingMouse = createRef<boolean>() as MutableRefObject<boolean>;
 function render({ items = testItems, hasExpandableGroups = false, isInRestrictedView = false }) {
   return renderHook(useHighlightedMenu, {
-    initialProps: { items, hasExpandableGroups, isInRestrictedView },
+    initialProps: { items, hasExpandableGroups, isInRestrictedView, usingMouse },
   });
 }
 

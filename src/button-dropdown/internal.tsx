@@ -51,6 +51,7 @@ const InternalButtonDropdown = React.forwardRef(
       isOpen,
       targetItem,
       isHighlighted,
+      isFocused,
       isExpanded,
       highlightItem,
       onKeyDown,
@@ -77,9 +78,6 @@ const InternalButtonDropdown = React.forwardRef(
     useForwardFocus(ref, dropdownRef);
 
     const clickHandler = () => {
-      if (!usingMouse.current) {
-        return;
-      }
       if (!loading && !disabled) {
         toggleDropdown();
         if (dropdownRef.current) {
@@ -140,6 +138,7 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
+        onMouseMove={handleMouseEvent}
         className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
@@ -184,6 +183,7 @@ const InternalButtonDropdown = React.forwardRef(
               hasExpandableGroups={expandableGroups}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
+              isFocused={isFocused}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}

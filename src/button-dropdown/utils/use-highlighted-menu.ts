@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState, useMemo, useCallback } from 'react';
 
-import { indexIncludes } from './utils';
+import { indexIncludes, indexEquals } from './utils';
 import { ButtonDropdownProps, HighlightProps } from '../interfaces';
 import createItemsTree, { TreeIndex } from './create-items-tree';
 import moveHighlightOneStep from './move-highlight';
@@ -11,6 +11,7 @@ interface UseHighlightedMenuOptions {
   items: ButtonDropdownProps.Items;
   hasExpandableGroups: boolean;
   isInRestrictedView?: boolean;
+  usingMouse: React.MutableRefObject<boolean>;
 }
 
 interface UseHighlightedMenuApi extends HighlightProps {
@@ -24,6 +25,7 @@ export default function useHighlightedMenu({
   items,
   hasExpandableGroups,
   isInRestrictedView = false,
+  usingMouse,
 }: UseHighlightedMenuOptions): UseHighlightedMenuApi {
   const [targetIndex, setTargetIndex] = useState<TreeIndex>([]);
   const [expandedIndex, setExpandedIndex] = useState<TreeIndex>([]);
@@ -35,10 +37,17 @@ export default function useHighlightedMenu({
   const isHighlighted = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
       const index = getItemIndex(item);
-
       return indexIncludes(index, targetIndex);
     },
     [targetIndex, getItemIndex]
+  );
+
+  const isFocused = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => {
+      const index = getItemIndex(item);
+      return !usingMouse.current && indexEquals(index, targetIndex);
+    },
+    [targetIndex, getItemIndex, usingMouse]
   );
 
   const isExpanded = useCallback(
@@ -115,6 +124,7 @@ export default function useHighlightedMenu({
   return {
     targetItem,
     isHighlighted,
+    isFocused,
     isExpanded,
     moveHighlight,
     highlightItem,

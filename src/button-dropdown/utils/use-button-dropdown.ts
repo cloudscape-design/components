@@ -33,12 +33,22 @@ export function useButtonDropdown({
   isInRestrictedView = false,
   usingMouse,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
-  const { targetItem, isHighlighted, isExpanded, highlightItem, moveHighlight, expandGroup, collapseGroup, reset } =
-    useHighlightedMenu({
-      items,
-      hasExpandableGroups,
-      isInRestrictedView,
-    });
+  const {
+    targetItem,
+    isHighlighted,
+    isFocused,
+    isExpanded,
+    highlightItem,
+    moveHighlight,
+    expandGroup,
+    collapseGroup,
+    reset,
+  } = useHighlightedMenu({
+    items,
+    hasExpandableGroups,
+    isInRestrictedView,
+    usingMouse,
+  });
 
   const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
 
@@ -102,6 +112,7 @@ export function useButtonDropdown({
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
+    usingMouse.current = false;
     switch (event.keyCode) {
       case KeyCode.down: {
         doVerticalNavigation(1);
@@ -115,7 +126,6 @@ export function useButtonDropdown({
       }
       case KeyCode.space: {
         // Prevent scrolling the list of items and highlighting the trigger
-        usingMouse.current = false;
         event.preventDefault();
         break;
       }
@@ -160,6 +170,7 @@ export function useButtonDropdown({
     isOpen,
     targetItem,
     isHighlighted,
+    isFocused,
     isExpanded,
     highlightItem,
     onKeyDown,

@@ -18,6 +18,7 @@ const MobileExpandableCategoryElement = ({
   onGroupToggle,
   targetItem,
   isHighlighted,
+  isFocused,
   isExpanded,
   highlightItem,
   disabled,
@@ -25,6 +26,7 @@ const MobileExpandableCategoryElement = ({
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
+  const focused = isFocused(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const MobileExpandableCategoryElement = ({
         [styles.highlighted]: highlighted,
         [styles['rolled-down']]: expanded,
         [styles.disabled]: disabled,
+        [styles['is-focused']]: focused,
       })}
       // We are using the roving tabindex technique to manage the focus state of the dropdown.
       // The current element will always have tabindex=0 which means that it can be tabbed to,
@@ -95,6 +98,7 @@ const MobileExpandableCategoryElement = ({
               onGroupToggle={onGroupToggle}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
+              isFocused={isFocused}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               hasCategoryHeader={true}
