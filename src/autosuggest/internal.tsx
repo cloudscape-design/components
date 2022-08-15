@@ -28,7 +28,6 @@ import AutosuggestOptionsList from './options-list';
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
   __filterText?: string;
   __dropdownWidth?: number;
-  __onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   __disableShowAll?: boolean;
   __hideEnteredTextOption?: boolean;
   __onOpen?: CancelableEventHandler<null>;
@@ -88,7 +87,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     selectedAriaLabel,
     renderHighlightedAriaLive,
     __dropdownWidth,
-    __onOptionClick,
     __disableShowAll,
     __hideEnteredTextOption,
     __onOpen,
@@ -131,13 +129,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectOption = (option: AutosuggestItem) => {
     const value = option.value || '';
     fireNonCancelableEvent(onChange, { value });
-    const selectedCancelled = fireCancelableEvent(__onOptionClick, option);
+    const selectedCancelled = fireCancelableEvent(onSelect, { value, option: option.option });
     if (!selectedCancelled) {
       closeDropdown();
     } else {
       resetHighlight();
     }
-    fireNonCancelableEvent(onSelect, { value });
   };
   const selectHighlighted = () => {
     if (highlightedOption) {

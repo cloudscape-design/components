@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import { expectNoAxeViolations } from '../../__a11y__/axe';
@@ -103,7 +104,7 @@ describe('onSelect', () => {
     wrapper.focus();
     wrapper.selectSuggestion(1);
     expect(onChange).toHaveBeenCalledWith({ value: '1' });
-    expect(onSelect).toHaveBeenCalledWith({ value: '1' });
+    expect(onSelect).toHaveBeenCalledWith({ value: '1', option: defaultOptions[0] });
   });
 
   test('should select `enteredText` option', () => {
@@ -120,7 +121,59 @@ describe('onSelect', () => {
     wrapper.focus();
     wrapper.findEnteredTextOption()!.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     expect(onChange).toHaveBeenCalledWith({ value: 'test' });
-    expect(onSelect).toHaveBeenCalledWith({ value: 'test' });
+    expect(onSelect).toHaveBeenCalledWith({ value: 'test', option: { value: 'test' } });
+  });
+});
+
+describe('onSelect - more cases', () => {
+  const handleSelectedSpy = jest.fn();
+  let wrapper: AutosuggestWrapper;
+  beforeEach(() => {
+    handleSelectedSpy.mockReset();
+    wrapper = renderAutosuggest(
+      <Autosuggest
+        options={defaultOptions}
+        enteredTextLabel={() => ''}
+        onSelect={handleSelectedSpy}
+        value=""
+        onChange={() => {}}
+        filteringType="auto"
+        statusType="finished"
+        disableBrowserAutocorrect={false}
+      />
+    ).wrapper;
+    wrapper.focus();
+  });
+  test('called when selecting an item with a mouse', () => {
+    wrapper.selectSuggestion(1);
+    expect(handleSelectedSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: defaultOptions[0].value, option: defaultOptions[0] } })
+    );
+  });
+  test('called when selecting an item with a keyboard', () => {
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(handleSelectedSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: defaultOptions[0].value, option: defaultOptions[0] } })
+    );
+  });
+  test('could be prevented to stop dropdown from closing', () => {
+    handleSelectedSpy.mockImplementation(e => {
+      e.preventDefault();
+    });
+    wrapper.selectSuggestion(1);
+    expect(handleSelectedSpy).toHaveBeenCalled();
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
+  });
+  test('highlight gets reset when selecting an option, even if the dropdown did not close', () => {
+    handleSelectedSpy.mockImplementation(e => {
+      e.preventDefault();
+    });
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('OneOne');
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
+    expect(wrapper.findDropdown().findHighlightedOption()).toBeNull();
   });
 });
 

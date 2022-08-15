@@ -43,57 +43,7 @@ describe('Internal autosuggest features', () => {
       expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('123');
     });
   });
-  describe('`__onOptionClick`', () => {
-    const handleSelectedSpy = jest.fn();
-    let wrapper: AutosuggestWrapper;
-    beforeEach(() => {
-      handleSelectedSpy.mockReset();
-      wrapper = renderAutosuggest(
-        <InternalAutosuggest
-          options={options}
-          enteredTextLabel={() => ''}
-          __onOptionClick={handleSelectedSpy}
-          value=""
-          onChange={() => {}}
-          filteringType="auto"
-          statusType="finished"
-          disableBrowserAutocorrect={false}
-        />
-      ).wrapper;
-      wrapper.focus();
-    });
-    test('called when selecting an item with a mouse', () => {
-      wrapper.selectSuggestion(1);
-      expect(handleSelectedSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ detail: { ...options[0], option: options[0] } })
-      );
-    });
-    test('called when selecting an item with a keyboard', () => {
-      wrapper.findNativeInput().keydown(KeyCode.down);
-      wrapper.findNativeInput().keydown(KeyCode.enter);
-      expect(handleSelectedSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ detail: { ...options[0], option: options[0] } })
-      );
-    });
-    test('could be prevented to stop dropdown from closing', () => {
-      handleSelectedSpy.mockImplementation(e => {
-        e.preventDefault();
-      });
-      wrapper.selectSuggestion(1);
-      expect(handleSelectedSpy).toHaveBeenCalled();
-      expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
-    });
-    test('highlight gets reset when selecting an option, even if the dropdown did not close', () => {
-      handleSelectedSpy.mockImplementation(e => {
-        e.preventDefault();
-      });
-      wrapper.findNativeInput().keydown(KeyCode.down);
-      expect(wrapper.findDropdown().findHighlightedOption()!.getElement()).toHaveTextContent('123');
-      wrapper.findNativeInput().keydown(KeyCode.enter);
-      expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
-      expect(wrapper.findDropdown().findHighlightedOption()).toBeNull();
-    });
-  });
+
   test('`__disableShowAll`: forces the list of suggestions to be filtered, when the input is focused', () => {
     const wrapper: AutosuggestWrapper = renderAutosuggest(
       <InternalAutosuggest

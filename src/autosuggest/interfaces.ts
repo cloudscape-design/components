@@ -11,7 +11,7 @@ import {
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { BaseInputProps, InputKeyEvents, InputProps } from '../input/interfaces';
-import { NonCancelableEventHandler } from '../internal/events';
+import { CancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
   extends BaseComponentProps,
@@ -84,7 +84,7 @@ export interface AutosuggestProps
    * Called whenever a user selects an option in the dropdown. Don't use this event as the only way to handle user input.
    * Instead, use `onSelect` in combination with the `onChange` handler only as an optional convenience for the user.
    */
-  onSelect?: NonCancelableEventHandler<AutosuggestProps.SelectDetail>;
+  onSelect?: CancelableEventHandler<AutosuggestProps.SelectDetail>;
 
   /**
    * Specifies the localized string that describes an option as being selected.
@@ -121,6 +121,7 @@ export namespace AutosuggestProps {
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;
+    option: Option | OptionGroup;
   }
 
   export interface ContainingOptionAndGroupString {

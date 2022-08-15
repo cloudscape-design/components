@@ -22,14 +22,12 @@ export default function AutosuggestPage() {
       <h1>Internal autosuggest features</h1>
       <InternalAutosuggest
         __filterText={value.substr(2)}
-        __onOptionClick={e => {
-          e.preventDefault();
-        }}
         __dropdownWidth={300}
         __disableShowAll={true}
         value={value}
         options={options}
         onChange={event => setValue(event.detail.value)}
+        onSelect={event => event.preventDefault()}
         enteredTextLabel={enteredTextLabel}
         ariaLabel={'internal autosuggest'}
         virtualScroll={true}

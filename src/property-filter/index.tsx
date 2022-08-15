@@ -154,26 +154,30 @@ const PropertyFilter = React.forwardRef(
             ...asyncProps,
           }
         : {};
-    const handleSelected: InternalAutosuggestProps['__onOptionClick'] = event => {
+    const handleSelected: InternalAutosuggestProps['onSelect'] = event => {
       // The ignoreKeyDown flag makes sure `createToken` routine runs only once. Autosuggest's `onKeyDown` fires,
       // when an item is selected from the list using "enter" key.
       ignoreKeyDown.current = true;
       setTimeout(() => {
         ignoreKeyDown.current = false;
       }, 0);
-      const { detail: option } = event;
-      const value = option.value || '';
+      const {
+        detail: { value = '', option },
+      } = event;
+
+      // Create a token when property value is selected from the list.
       if ('tokenValue' in option) {
         createToken((option as { tokenValue: string }).tokenValue);
         return;
       }
-      // create a token from the 'use' option
+
+      // Create a token when the 'use' option is selected.
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;
       }
 
-      // stop dropdown from closing
+      // Prevent autosuggest dropdown from closing.
       event.preventDefault();
       const loadMoreDetail = getLoadMoreDetail(parseText(value, filteringProperties, disableFreeTextFiltering), value);
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
@@ -199,12 +203,12 @@ const PropertyFilter = React.forwardRef(
             onKeyDown={handleKeyDown}
             {...autosuggestOptions}
             onChange={event => setFilteringText(event.detail.value)}
+            onSelect={handleSelected}
             empty={filteringEmpty}
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             __disableShowAll={true}
             __dropdownWidth={300}
-            __onOptionClick={handleSelected}
             __onOpen={e => {
               if (preventFocus.current) {
                 e.preventDefault();

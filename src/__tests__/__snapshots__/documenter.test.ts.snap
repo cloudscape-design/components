@@ -1263,12 +1263,17 @@ The detail object contains the following properties:
       "name": "onLoadItems",
     },
     Object {
-      "cancelable": false,
+      "cancelable": true,
       "description": "Called whenever a user selects an option in the dropdown. Don't use this event as the only way to handle user input.
 Instead, use \`onSelect\` in combination with the \`onChange\` handler only as an optional convenience for the user.",
       "detailInlineType": Object {
         "name": "AutosuggestProps.SelectDetail",
         "properties": Array [
+          Object {
+            "name": "option",
+            "optional": false,
+            "type": "AutosuggestProps.Option | AutosuggestProps.OptionGroup",
+          },
           Object {
             "name": "value",
             "optional": false,
