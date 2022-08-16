@@ -209,11 +209,11 @@ export namespace PropertyFilterProps {
     match?: CustomOperatorMatch<TokenValue>;
   }
 
-  export type CustomOperatorForm<TokenValue> = (props: {
+  export type CustomOperatorForm<TokenValue> = React.FC<{
     filter: string;
     value: null | TokenValue;
     onChange: (value: null | TokenValue) => void;
-  }) => React.ReactNode;
+  }>;
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
 
