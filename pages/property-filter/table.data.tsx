@@ -5,7 +5,7 @@ import React from 'react';
 import { PropertyFilterProps } from '~components/property-filter';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 import DateInput from '~components/internal/components/date-input';
-import { Box, FormField, SpaceBetween, TimeInput } from '~components';
+import { FormField, SpaceBetween, TimeInput } from '~components';
 import { isoToDisplay, displayToIso } from '~components/date-picker/calendar/utils/date';
 import { padStart } from 'lodash';
 
@@ -1067,41 +1067,39 @@ const DateTimeForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, 
   };
 
   return (
-    <Box padding="s">
-      <SpaceBetween direction="horizontal" size="s">
-        <DatePickerEmbedded
-          value={value ? parsedValue.dateValue : parsedFilter.dateValue}
-          locale={'en-EN'}
-          previousMonthAriaLabel={'Previous month'}
-          nextMonthAriaLabel={'Next month'}
-          todayAriaLabel="Today"
-          onChange={event => onChangeDate(event.detail.value)}
-        />
+    <SpaceBetween direction="horizontal" size="s">
+      <DatePickerEmbedded
+        value={value ? parsedValue.dateValue : parsedFilter.dateValue}
+        locale={'en-EN'}
+        previousMonthAriaLabel={'Previous month'}
+        nextMonthAriaLabel={'Next month'}
+        todayAriaLabel="Today"
+        onChange={event => onChangeDate(event.detail.value)}
+      />
 
-        <SpaceBetween direction="vertical" size="s">
-          <FormField label="Date">
-            <DateInput
-              name="date"
-              ariaLabel="Enter the date in YYYY/MM/DD"
-              placeholder="YYYY/MM/DD"
-              onChange={event => onChangeDate(displayToIso(event.detail.value))}
-              value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
-              disableAutocompleteOnBlur={true}
-            />
-          </FormField>
+      <SpaceBetween direction="vertical" size="s">
+        <FormField label="Date">
+          <DateInput
+            name="date"
+            ariaLabel="Enter the date in YYYY/MM/DD"
+            placeholder="YYYY/MM/DD"
+            onChange={event => onChangeDate(displayToIso(event.detail.value))}
+            value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
+            disableAutocompleteOnBlur={true}
+          />
+        </FormField>
 
-          <FormField label="Time">
-            <TimeInput
-              format="hh:mm:ss"
-              placeholder="hh:mm:ss"
-              ariaLabel="time-input"
-              value={value ? parsedValue.timeValue : parsedFilter.timeValue}
-              onChange={event => onChangeTime(event.detail.value)}
-            />
-          </FormField>
-        </SpaceBetween>
+        <FormField label="Time">
+          <TimeInput
+            format="hh:mm:ss"
+            placeholder="hh:mm:ss"
+            ariaLabel="time-input"
+            value={value ? parsedValue.timeValue : parsedFilter.timeValue}
+            onChange={event => onChangeTime(event.detail.value)}
+          />
+        </FormField>
       </SpaceBetween>
-    </Box>
+    </SpaceBetween>
   );
 };
 
@@ -1114,29 +1112,27 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
   };
 
   return (
-    <Box padding="s">
-      <SpaceBetween direction="horizontal" size="s">
-        <DatePickerEmbedded
-          value={value ? parsedValue.dateValue : parsedFilter.dateValue}
-          locale={'en-EN'}
-          previousMonthAriaLabel={'Previous month'}
-          nextMonthAriaLabel={'Next month'}
-          todayAriaLabel="Today"
-          onChange={event => onChangeDate(event.detail.value)}
-        />
+    <SpaceBetween direction="horizontal" size="s">
+      <DatePickerEmbedded
+        value={value ? parsedValue.dateValue : parsedFilter.dateValue}
+        locale={'en-EN'}
+        previousMonthAriaLabel={'Previous month'}
+        nextMonthAriaLabel={'Next month'}
+        todayAriaLabel="Today"
+        onChange={event => onChangeDate(event.detail.value)}
+      />
 
-        <FormField label="Date">
-          <DateInput
-            name="date"
-            ariaLabel="Enter the date in YYYY/MM/DD"
-            placeholder="YYYY/MM/DD"
-            onChange={event => onChangeDate(displayToIso(event.detail.value))}
-            value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
-            disableAutocompleteOnBlur={true}
-          />
-        </FormField>
-      </SpaceBetween>
-    </Box>
+      <FormField label="Date">
+        <DateInput
+          name="date"
+          ariaLabel="Enter the date in YYYY/MM/DD"
+          placeholder="YYYY/MM/DD"
+          onChange={event => onChangeDate(displayToIso(event.detail.value))}
+          value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
+          disableAutocompleteOnBlur={true}
+        />
+      </FormField>
+    </SpaceBetween>
   );
 };
 

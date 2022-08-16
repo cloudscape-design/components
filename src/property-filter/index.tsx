@@ -20,6 +20,7 @@ import { getQueryActions, parseText, getAutosuggestOptions, ParsedText } from '.
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import InternalBox from '../box/internal';
 
 export { PropertyFilterProps };
 
@@ -202,7 +203,9 @@ const PropertyFilter = React.forwardRef(
               if (operator.form) {
                 const Form = operator.form;
                 customContent = (
-                  <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                  <InternalBox padding="s">
+                    <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                  </InternalBox>
                 );
               }
             }
