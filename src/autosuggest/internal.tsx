@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { useAutosuggestItems, useFilteredItems, useKeyboardHandler } from './controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -13,7 +13,6 @@ import DropdownFooter from '../internal/components/dropdown-footer';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { fireNonCancelableEvent, CancelableEventHandler } from '../internal/events';
 import { createHighlightedOptionHook } from '../internal/components/options-list/utils/use-highlight-option';
 import InternalInput from '../input/internal';
@@ -62,7 +61,11 @@ const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
   );
 };
 
-const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<InputProps.Ref>) => {
+export interface InternalAutosuggestRef extends InputProps.Ref {
+  close: () => void;
+}
+
+const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<InternalAutosuggestRef>) => {
   const {
     value,
     onChange,
@@ -119,10 +122,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const scrollToIndex = useRef<(index: number) => void>(null);
   const { highlightedOption, highlightedIndex, moveHighlight, resetHighlight, setHighlightedIndex } =
     useHighlightedOption(filteredItems);
-  const closeDropdown = () => {
+  const closeDropdown = useCallback(() => {
     setOpen(false);
     resetHighlight();
-  };
+  }, [resetHighlight]);
   const handleBlur: React.FocusEventHandler = event => {
     if (
       event.currentTarget.contains(event.relatedTarget) ||
@@ -178,7 +181,20 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownContentRef = useRef<HTMLDivElement>(null);
   const dropdownFooterRef = useRef<HTMLDivElement>(null);
-  useForwardFocus(ref, inputRef);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus(...args: Parameters<HTMLElement['focus']>) {
+        inputRef.current?.focus(...args);
+      },
+      select() {},
+      close() {
+        closeDropdown();
+      },
+    }),
+    [inputRef, closeDropdown]
+  );
 
   const selfControlId = useUniqueId('input');
   const controlId = formFieldContext.controlId ?? selfControlId;

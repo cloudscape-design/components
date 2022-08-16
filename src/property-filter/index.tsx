@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
-import InternalAutosuggest, { InternalAutosuggestProps } from '../autosuggest/internal';
+import InternalAutosuggest, { InternalAutosuggestProps, InternalAutosuggestRef } from '../autosuggest/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -55,7 +55,7 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<PropertyFilterProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<InternalAutosuggestRef>(null);
     const preventFocus = useRef<boolean>(false);
     const baseProps = getBaseProps(rest);
     useForwardFocus(ref, inputRef);
@@ -210,7 +210,22 @@ const PropertyFilter = React.forwardRef(
                       vertical: 's',
                     }}
                   >
-                    <TokenEditorForm i18nStrings={i18nStrings} onClose={() => undefined} onSubmit={() => undefined}>
+                    <TokenEditorForm
+                      i18nStrings={i18nStrings}
+                      onClose={() => {
+                        setFilteringText('');
+                        inputRef.current?.close();
+                      }}
+                      onSubmit={() => {
+                        addToken({
+                          value: value,
+                          propertyKey: parsedText.property.key,
+                          operator: parsedText.operator,
+                        });
+                        setFilteringText('');
+                        inputRef.current?.close();
+                      }}
+                    >
                       <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
                     </TokenEditorForm>
                   </InternalBox>
