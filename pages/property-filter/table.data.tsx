@@ -6,6 +6,7 @@ import { PropertyFilterProps } from '~components/property-filter';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 import DateInput from '~components/internal/components/date-input';
 import { Box, FormField, SpaceBetween, TimeInput } from '~components';
+import { padStart } from 'lodash';
 
 export interface TableItem {
   order?: number;
@@ -932,12 +933,28 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ value, onChange }) => {
+const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, value, onChange }) => {
+  const [yearString, monthString, dayString] = filter.split('-');
+  const year = Number(yearString);
+  const month = Number(monthString);
+  const day = Number(dayString);
+
+  let filteredDate = '';
+  if (!isNaN(year) && year > 1970) {
+    filteredDate += year + '-';
+    if (!isNaN(month) && month > 0) {
+      filteredDate += padStart(month.toString(), 2, '0') + '-';
+      if (!isNaN(day) && day > 0) {
+        filteredDate += padStart(day.toString(), 2, '0');
+      }
+    }
+  }
+
   return (
     <Box padding="s">
       <SpaceBetween direction="horizontal" size="s">
         <DatePickerEmbedded
-          value={value}
+          value={filteredDate}
           locale={'en-EN'}
           previousMonthAriaLabel={'Previous month'}
           nextMonthAriaLabel={'Next month'}
@@ -952,7 +969,7 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ value, onCha
               ariaLabel="Enter the date in YYYY/MM/DD"
               placeholder="YYYY/MM/DD"
               onChange={event => undefined}
-              value=""
+              value={filteredDate}
               disableAutocompleteOnBlur={true}
             />
           </FormField>

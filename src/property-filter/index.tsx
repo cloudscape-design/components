@@ -191,7 +191,7 @@ const PropertyFilter = React.forwardRef(
           for (const operator of prop.operators || []) {
             if (typeof operator === 'object' && operator.value === parsedText.operator) {
               if (operator.form) {
-                customContent = operator.form({ value: '2020-01-01', onChange: () => undefined });
+                customContent = operator.form({ filter: parsedText.value, value: null, onChange: () => undefined });
               }
             }
           }

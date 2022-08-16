@@ -210,8 +210,9 @@ export namespace PropertyFilterProps {
   }
 
   export type CustomOperatorForm<TokenValue> = (props: {
-    value: TokenValue;
-    onChange: (value: TokenValue) => void;
+    filter: string;
+    value: null | TokenValue;
+    onChange: (value: null | TokenValue) => void;
   }) => React.ReactNode;
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
