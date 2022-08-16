@@ -885,7 +885,7 @@ export const columnDefinitions = [
     id: 'launchdate',
     sortingField: 'launchdate',
     header: 'Launch date',
-    type: 'range',
+    type: 'date',
     propertyLabel: 'Launch date',
     cell: (item: TableItem) => item.launchdate,
   },
@@ -927,10 +927,44 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
-  key: def.id,
-  operators: def.type === 'text' ? [':', '!:'] : ['=', '!=', '>', '<', '<=', '>='],
-  ...(def.type === 'text' ? { defaultOperator: ':' } : {}),
-  propertyLabel: def.propertyLabel,
-  groupValuesLabel: `${def.propertyLabel} values`,
-}));
+export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
+  let operators: (PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<any>)[] = [];
+
+  if (def.type === 'text') {
+    operators = ['=', '!=', ':', '!:'];
+  }
+
+  if (def.type === 'number') {
+    operators = ['=', '!=', '>', '<', '<=', '>='];
+  }
+
+  if (def.type === 'date') {
+    operators = [
+      {
+        value: '=',
+      },
+      {
+        value: '!=',
+      },
+      {
+        value: '>',
+      },
+      {
+        value: '<',
+      },
+      {
+        value: '<=',
+      },
+      {
+        value: '>=',
+      },
+    ];
+  }
+
+  return {
+    key: def.id,
+    operators: operators,
+    propertyLabel: def.propertyLabel,
+    groupValuesLabel: `${def.propertyLabel} values`,
+  };
+});

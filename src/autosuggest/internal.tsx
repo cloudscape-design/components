@@ -32,6 +32,7 @@ export interface InternalAutosuggestProps extends AutosuggestProps, InternalBase
   __disableShowAll?: boolean;
   __hideEnteredTextOption?: boolean;
   __onOpen?: CancelableEventHandler<null>;
+  __customContent?: React.ReactNode;
 }
 
 const isInteractive = (option?: AutosuggestItem) => {
@@ -92,6 +93,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     __disableShowAll,
     __hideEnteredTextOption,
     __onOpen,
+    __customContent,
     __internalRootRef,
     ...rest
   } = props;
@@ -258,7 +260,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         hasContent={filteredItems.length >= 1 || dropdownStatus.content !== null}
         trapFocus={!!showRecoveryLink}
       >
-        {open && (
+        {open && __customContent ? (
+          __customContent
+        ) : (
           <AutosuggestOptionsList
             options={filteredItems}
             highlightedOption={highlightedOption}

@@ -66,7 +66,12 @@ export const getAllowedOperators = (
   const { operators, defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
   const operatorSet: { [key: string]: true } = { [defaultOperator ?? '=']: true };
-  operators?.forEach(op => (operatorSet[op] = true));
+  operators?.forEach(op => {
+    if (typeof op === 'string') {
+      return (operatorSet[op] = true);
+    }
+    return (operatorSet[op.value] = true);
+  });
   return operatorOrder.filter(op => operatorSet[op]);
 };
 

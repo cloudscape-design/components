@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
@@ -200,11 +202,27 @@ export namespace PropertyFilterProps {
 
   export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
 
+  export interface ExtendedOperator<TokenValue> {
+    value: ComparisonOperator;
+    form?: CustomOperatorForm<TokenValue>;
+    format?: CustomOperatorFormat<TokenValue>;
+    match?: CustomOperatorMatch<TokenValue>;
+  }
+
+  export type CustomOperatorForm<TokenValue> = (props: {
+    value: TokenValue;
+    onChange: (value: TokenValue) => void;
+  }) => React.ReactNode;
+
+  export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
+
+  export type CustomOperatorMatch<TokenValue> = (itemValue: any, tokenValue: TokenValue) => boolean;
+
   export interface FilteringProperty {
     key: string;
     groupValuesLabel: string;
     propertyLabel: string;
-    operators?: readonly ComparisonOperator[];
+    operators?: readonly (ComparisonOperator | ExtendedOperator<any>)[];
     defaultOperator?: ComparisonOperator;
     group?: string;
   }
