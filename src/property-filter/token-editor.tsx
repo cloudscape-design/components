@@ -60,7 +60,6 @@ const EditingFields = ({
   temporaryToken: PropertyFilterProps.Token;
   setTemporaryToken: (token: PropertyFilterProps.Token) => void;
 }) => {
-  const fields = [];
   const property =
     temporaryToken.propertyKey !== undefined
       ? getPropertyByKey(filteringProperties, temporaryToken.propertyKey)
@@ -126,12 +125,6 @@ const EditingFields = ({
       {...asyncPropertySelectProps}
     />
   );
-  fields.push({
-    text: i18nStrings.propertyText,
-    className: styles['property-selector'],
-    control: propertySelect,
-    controlId: propertyControlId,
-  });
 
   const operatorText = temporaryToken.operator;
   const freeTextOperators: PropertyFilterProps.ComparisonOperator[] = [':', '!:'];
@@ -165,12 +158,6 @@ const EditingFields = ({
       disabled={!temporaryToken}
     />
   );
-  fields.push({
-    text: i18nStrings.operatorText,
-    className: styles['operator-selector'],
-    control: operatorSelect,
-    controlId: operatorControlId,
-  });
 
   const valueOptions = property ? getPropertyOptions(property, filteringOptions)?.map(({ value }) => ({ value })) : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
@@ -181,6 +168,7 @@ const EditingFields = ({
       }
     : { empty: asyncProps.empty };
   const valueControlId = useUniqueId('value');
+
   const valueAutosuggest = temporaryToken && (
     <InternalAutosuggest
       controlId={valueControlId}
@@ -198,23 +186,59 @@ const EditingFields = ({
       virtualScroll={true}
     />
   );
-  fields.push({
-    text: i18nStrings.valueText,
-    className: styles['value-selector'],
-    control: valueAutosuggest,
-    controlId: valueControlId,
-  });
+
+  let customValueControl: undefined | React.ReactNode = undefined;
+  if (temporaryToken.propertyKey) {
+    for (const prop of filteringProperties) {
+      if (prop.key === temporaryToken.propertyKey) {
+        for (const operator of prop.operators || []) {
+          if (typeof operator === 'object' && operator.value === temporaryToken.operator) {
+            if (operator.form) {
+              const Form = operator.form;
+              customValueControl = (
+                <Form
+                  value={temporaryToken.value}
+                  onChange={newValue => setTemporaryToken({ ...temporaryToken, value: newValue })}
+                  operator={operator.value}
+                  filter=""
+                />
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+
   return (
     <div>
       <InternalSpaceBetween size="l">
-        {fields.map(({ text, control, className, controlId }) => (
-          <div className={clsx(styles['token-editor-line'], className)} key={text}>
-            <label className={styles['token-editor-label']} htmlFor={controlId}>
-              {text}
-            </label>
-            <div className={styles['token-editor-field']}>{control}</div>
+        <div className={clsx(styles['token-editor-line'], styles['property-selector'])} key={i18nStrings.propertyText}>
+          <label className={styles['token-editor-label']} htmlFor={propertyControlId}>
+            {i18nStrings.propertyText}
+          </label>
+          <div className={styles['token-editor-field']}>{propertySelect}</div>
+        </div>
+
+        <div className={clsx(styles['token-editor-line'], styles['operator-selector'])} key={i18nStrings.operatorText}>
+          <label className={styles['token-editor-label']} htmlFor={operatorControlId}>
+            {i18nStrings.operatorText}
+          </label>
+          <div className={styles['token-editor-field']}>{operatorSelect}</div>
+        </div>
+
+        {customValueControl ? (
+          <div className={clsx(styles['token-editor-line'], styles['value-selector'])} key={i18nStrings.valueText}>
+            {customValueControl}
           </div>
-        ))}
+        ) : (
+          <div className={clsx(styles['token-editor-line'], styles['value-selector'])} key={i18nStrings.valueText}>
+            <label className={styles['token-editor-label']} htmlFor={valueControlId}>
+              {i18nStrings.valueText}
+            </label>
+            <div className={styles['token-editor-field']}>{valueAutosuggest}</div>
+          </div>
+        )}
       </InternalSpaceBetween>
     </div>
   );
