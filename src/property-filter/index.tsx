@@ -219,7 +219,7 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             __disableShowAll={true}
-            __dropdownWidth={300}
+            __dropdownWidth={customContent ? 301 : 300}
             __onOptionClick={handleSelected}
             __onOpen={e => {
               if (preventFocus.current) {
