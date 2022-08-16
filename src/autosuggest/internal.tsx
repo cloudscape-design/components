@@ -223,7 +223,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const handleMouseDown = (event: React.MouseEvent) => {
     // prevent currently focused element from losing it
-    event.preventDefault();
+    if (!__customContent) {
+      event.preventDefault();
+    }
   };
 
   return (

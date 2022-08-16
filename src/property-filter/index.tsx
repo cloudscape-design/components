@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest, { InternalAutosuggestProps } from '../autosuggest/internal';
@@ -184,6 +184,15 @@ const PropertyFilter = React.forwardRef(
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
 
+    const [value, setValue] = useState<null | any>(null);
+
+    const parsedTextPropertyKey = parsedText.step === 'property' && parsedText.property.key;
+    const parsedTextPropertyOperator = parsedText.step === 'property' && parsedText.operator;
+
+    useEffect(() => {
+      setValue(null);
+    }, [parsedTextPropertyKey, parsedTextPropertyOperator]);
+
     let customContent: undefined | React.ReactNode = undefined;
     if (parsedText.step === 'property') {
       for (const prop of filteringProperties) {
@@ -191,7 +200,7 @@ const PropertyFilter = React.forwardRef(
           for (const operator of prop.operators || []) {
             if (typeof operator === 'object' && operator.value === parsedText.operator) {
               if (operator.form) {
-                customContent = operator.form({ filter: parsedText.value, value: null, onChange: () => undefined });
+                customContent = operator.form({ filter: parsedText.value, value, onChange: setValue });
               }
             }
           }

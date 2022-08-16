@@ -6,6 +6,7 @@ import { PropertyFilterProps } from '~components/property-filter';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 import DateInput from '~components/internal/components/date-input';
 import { Box, FormField, SpaceBetween, TimeInput } from '~components';
+import { isoToDisplay, displayToIso } from '~components/date-picker/calendar/utils/date';
 import { padStart } from 'lodash';
 
 export interface TableItem {
@@ -954,12 +955,12 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
     <Box padding="s">
       <SpaceBetween direction="horizontal" size="s">
         <DatePickerEmbedded
-          value={filteredDate}
+          value={value ?? filteredDate}
           locale={'en-EN'}
           previousMonthAriaLabel={'Previous month'}
           nextMonthAriaLabel={'Next month'}
           todayAriaLabel="Today"
-          onChange={event => onChange(event.detail.value)}
+          onChange={event => onChange(event.detail.value.trim() || null)}
         />
 
         <SpaceBetween direction="vertical" size="s">
@@ -968,8 +969,8 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
               name="date"
               ariaLabel="Enter the date in YYYY/MM/DD"
               placeholder="YYYY/MM/DD"
-              onChange={event => undefined}
-              value={filteredDate}
+              onChange={event => onChange(displayToIso(event.detail.value.trim()) || null)}
+              value={value ? isoToDisplay(value) : isoToDisplay(filteredDate)}
               disableAutocompleteOnBlur={true}
             />
           </FormField>
