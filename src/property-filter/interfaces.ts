@@ -202,6 +202,11 @@ export namespace PropertyFilterProps {
 
   export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
 
+  export interface LabelledOperator {
+    value: ComparisonOperator;
+    label: string;
+  }
+
   export interface ExtendedOperator<TokenValue> {
     value: ComparisonOperator;
     label?: string;

@@ -56,6 +56,9 @@ export const Token = ({
 }: TokenProps) => {
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
   const propertyLabel = property && property.propertyLabel;
+  const propertyOperator = property
+    ? property.operators?.find(op => typeof op === 'object' && op.value === token.operator) ?? token.operator
+    : token.operator;
   return (
     <FilteringToken
       showOperation={!first && !hideOperations}
@@ -71,7 +74,7 @@ export const Token = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger property={propertyLabel} operator={token.operator} value={token.value} />
+            <TokenTrigger property={propertyLabel} operator={propertyOperator} value={token.value} />
           </span>
         }
         filteringOptions={filteringOptions}
@@ -89,16 +92,25 @@ export const Token = ({
   );
 };
 
-const TokenTrigger = ({ property, operator, value }: { property?: string; operator?: string; value: string }) => {
+const TokenTrigger = ({
+  property,
+  operator,
+  value,
+}: {
+  property?: string;
+  operator?: PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<any>;
+  value: string;
+}) => {
   if (property) {
     property += ' ';
   }
-  const freeTextContainsToken = operator === ':' && !property;
-  const operatorText = freeTextContainsToken ? '' : operator + ' ';
+  const operatorValue = typeof operator === 'object' ? operator.value : operator;
+  const operatorText = typeof operator === 'object' ? operator.label ?? operator.value : operator;
+  const freeTextContainsToken = operatorValue === ':' && !property;
   return (
     <>
       {property}
-      <span className={styles['token-operator']}>{operatorText}</span>
+      <span className={styles['token-operator']}>{freeTextContainsToken ? '' : operatorText + ' '}</span>
       {value}
     </>
   );
