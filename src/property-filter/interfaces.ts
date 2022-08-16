@@ -204,6 +204,8 @@ export namespace PropertyFilterProps {
 
   export interface ExtendedOperator<TokenValue> {
     value: ComparisonOperator;
+    label?: string;
+    description?: string;
     form?: CustomOperatorForm<TokenValue>;
     format?: CustomOperatorFormat<TokenValue>;
     match?: CustomOperatorMatch<TokenValue>;
