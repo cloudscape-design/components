@@ -934,33 +934,79 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, value, onChange }) => {
-  const [yearString, monthString, dayString] = filter.split('-');
-  const year = Number(yearString);
-  const month = Number(monthString);
-  const day = Number(dayString);
+function parseValue(originalValue: null | string, defaultTime = '00:00:00'): { dateValue: string; timeValue: string } {
+  const [datePart = '', timePart = ''] = (originalValue ?? '').split('T');
+  const [year, month, day] = datePart.split('-');
+  const [hours, minutes, seconds] = timePart.split(':');
 
-  let filteredDate = '';
-  if (!isNaN(year) && year > 1970) {
-    filteredDate += year + '-';
-    if (!isNaN(month) && month > 0) {
-      filteredDate += padStart(month.toString(), 2, '0') + '-';
-      if (!isNaN(day) && day > 0) {
-        filteredDate += padStart(day.toString(), 2, '0');
+  let dateValue = '';
+  if (!isNaN(Number(year)) && Number(year) > 1970) {
+    dateValue += year + '-';
+    if (!isNaN(Number(month)) && Number(month) > 0) {
+      dateValue += padStart(month, 2, '0') + '-';
+      if (!isNaN(Number(day)) && Number(day) > 0) {
+        dateValue += padStart(day, 2, '0');
       }
     }
   }
+
+  let timeValue = '';
+  if (!isNaN(Number(hours)) && Number(hours) > 0) {
+    timeValue += hours + ':';
+  } else {
+    timeValue += '00:';
+  }
+  if (!isNaN(Number(minutes)) && Number(minutes) > 0) {
+    timeValue += padStart(minutes, 2, '0') + ':';
+  } else {
+    timeValue += '00:';
+  }
+  if (!isNaN(Number(seconds)) && Number(seconds) > 0) {
+    timeValue += padStart(seconds, 2, '0');
+  } else {
+    timeValue += '00';
+  }
+
+  if (timeValue === '00:00:00') {
+    timeValue = defaultTime;
+  }
+
+  return { dateValue, timeValue };
+}
+
+const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, operator, value, onChange }) => {
+  const defaultTime = operator === '<' || operator === '>=' ? '00:00:00' : '23:59:59';
+  const parsedFilter = parseValue(filter, defaultTime);
+  const parsedValue = parseValue(value, defaultTime);
+
+  const onChangeDate = (dateValue: string) => {
+    if (!dateValue) {
+      onChange(null);
+    } else {
+      const timeValue = value ? parsedValue.timeValue : parsedFilter.timeValue;
+      onChange(dateValue + 'T' + timeValue);
+    }
+  };
+
+  const onChangeTime = (timeValue: string) => {
+    const dateValue = value ? parsedValue.dateValue : parsedFilter.dateValue;
+    if (!timeValue) {
+      onChange(dateValue + 'T' + '00:00:00');
+    } else {
+      onChange(dateValue + 'T' + timeValue);
+    }
+  };
 
   return (
     <Box padding="s">
       <SpaceBetween direction="horizontal" size="s">
         <DatePickerEmbedded
-          value={value ?? filteredDate}
+          value={value ? parsedValue.dateValue : parsedFilter.dateValue}
           locale={'en-EN'}
           previousMonthAriaLabel={'Previous month'}
           nextMonthAriaLabel={'Next month'}
           todayAriaLabel="Today"
-          onChange={event => onChange(event.detail.value.trim() || null)}
+          onChange={event => onChangeDate(event.detail.value)}
         />
 
         <SpaceBetween direction="vertical" size="s">
@@ -969,8 +1015,8 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
               name="date"
               ariaLabel="Enter the date in YYYY/MM/DD"
               placeholder="YYYY/MM/DD"
-              onChange={event => onChange(displayToIso(event.detail.value.trim()) || null)}
-              value={value ? isoToDisplay(value) : isoToDisplay(filteredDate)}
+              onChange={event => onChangeDate(displayToIso(event.detail.value))}
+              value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
               disableAutocompleteOnBlur={true}
             />
           </FormField>
@@ -980,8 +1026,8 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
               format="hh:mm:ss"
               placeholder="hh:mm:ss"
               ariaLabel="time-input"
-              value=""
-              onChange={event => undefined}
+              value={value ? parsedValue.timeValue : parsedFilter.timeValue}
+              onChange={event => onChangeTime(event.detail.value)}
             />
           </FormField>
         </SpaceBetween>
@@ -992,6 +1038,7 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: (PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<string>)[] = [];
+  let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];
@@ -1002,15 +1049,8 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   }
 
   if (def.type === 'date') {
+    defaultOperator = '>';
     operators = [
-      {
-        value: '=',
-        form: DateForm,
-      },
-      {
-        value: '!=',
-        form: DateForm,
-      },
       {
         value: '>',
         form: DateForm,
@@ -1033,6 +1073,7 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   return {
     key: def.id,
     operators: operators,
+    defaultOperator,
     propertyLabel: def.propertyLabel,
     groupValuesLabel: `${def.propertyLabel} values`,
   };

@@ -210,9 +210,10 @@ export namespace PropertyFilterProps {
   }
 
   export type CustomOperatorForm<TokenValue> = React.FC<{
-    filter: string;
     value: null | TokenValue;
     onChange: (value: null | TokenValue) => void;
+    filter: string;
+    operator: ComparisonOperator;
   }>;
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;

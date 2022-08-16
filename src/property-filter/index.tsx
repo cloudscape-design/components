@@ -201,7 +201,9 @@ const PropertyFilter = React.forwardRef(
             if (typeof operator === 'object' && operator.value === parsedText.operator) {
               if (operator.form) {
                 const Form = operator.form;
-                customContent = <Form filter={parsedText.value} value={value} onChange={setValue} />;
+                customContent = (
+                  <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                );
               }
             }
           }
