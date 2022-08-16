@@ -1,6 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
 import { PropertyFilterProps } from '~components/property-filter';
+import { DatePickerEmbedded } from '~components/date-picker/embedded';
+import DateInput from '~components/internal/components/date-input';
+import { Box, FormField, SpaceBetween, TimeInput } from '~components';
 
 export interface TableItem {
   order?: number;
@@ -927,8 +932,48 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
+const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ value, onChange }) => {
+  return (
+    <Box padding="s">
+      <SpaceBetween direction="horizontal" size="s">
+        <DatePickerEmbedded
+          value={value}
+          locale={'en-EN'}
+          previousMonthAriaLabel={'Previous month'}
+          nextMonthAriaLabel={'Next month'}
+          todayAriaLabel="Today"
+          onChange={event => onChange(event.detail.value)}
+        />
+
+        <SpaceBetween direction="vertical" size="s">
+          <FormField label="Date">
+            <DateInput
+              name="date"
+              ariaLabel="Enter the date in YYYY/MM/DD"
+              placeholder="YYYY/MM/DD"
+              onChange={event => undefined}
+              value=""
+              disableAutocompleteOnBlur={true}
+            />
+          </FormField>
+
+          <FormField label="Time">
+            <TimeInput
+              format="hh:mm:ss"
+              placeholder="hh:mm:ss"
+              ariaLabel="time-input"
+              value=""
+              onChange={event => undefined}
+            />
+          </FormField>
+        </SpaceBetween>
+      </SpaceBetween>
+    </Box>
+  );
+};
+
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
-  let operators: (PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<any>)[] = [];
+  let operators: (PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<string>)[] = [];
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];
@@ -942,21 +987,27 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     operators = [
       {
         value: '=',
+        form: DateForm,
       },
       {
         value: '!=',
+        form: DateForm,
       },
       {
         value: '>',
+        form: DateForm,
       },
       {
         value: '<',
+        form: DateForm,
       },
       {
         value: '<=',
+        form: DateForm,
       },
       {
         value: '>=',
+        form: DateForm,
       },
     ];
   }

@@ -124,7 +124,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     resetHighlight();
   };
   const handleBlur: React.FocusEventHandler = event => {
-    if (event.currentTarget.contains(event.relatedTarget) || dropdownFooterRef.current?.contains(event.relatedTarget)) {
+    if (
+      event.currentTarget.contains(event.relatedTarget) ||
+      dropdownFooterRef.current?.contains(event.relatedTarget) ||
+      dropdownContentRef.current?.contains(event.relatedTarget)
+    ) {
       return;
     }
     closeDropdown();
@@ -172,6 +176,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const formFieldContext = useFormFieldContext(rest);
   const baseProps = getBaseProps(rest);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownContentRef = useRef<HTMLDivElement>(null);
   const dropdownFooterRef = useRef<HTMLDivElement>(null);
   useForwardFocus(ref, inputRef);
 
@@ -258,31 +263,33 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         }
         expandToViewport={expandToViewport}
         hasContent={filteredItems.length >= 1 || dropdownStatus.content !== null}
-        trapFocus={!!showRecoveryLink}
+        trapFocus={!!showRecoveryLink || !!__customContent}
       >
-        {open && __customContent ? (
-          __customContent
-        ) : (
-          <AutosuggestOptionsList
-            options={filteredItems}
-            highlightedOption={highlightedOption}
-            selectOption={selectOption}
-            highlightedIndex={highlightedIndex}
-            setHighlightedIndex={setHighlightedIndex}
-            highlightedOptionId={highlightedOptionId}
-            highlightText={filterText}
-            listId={listId}
-            controlId={controlId}
-            enteredTextLabel={enteredTextLabel}
-            handleLoadMore={handleLoadMore}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            virtualScroll={virtualScroll}
-            selectedAriaLabel={selectedAriaLabel}
-            renderHighlightedAriaLive={renderHighlightedAriaLive}
-            listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-            usingMouse={usingMouse}
-          />
-        )}
+        <div ref={dropdownContentRef}>
+          {open && __customContent ? (
+            __customContent
+          ) : (
+            <AutosuggestOptionsList
+              options={filteredItems}
+              highlightedOption={highlightedOption}
+              selectOption={selectOption}
+              highlightedIndex={highlightedIndex}
+              setHighlightedIndex={setHighlightedIndex}
+              highlightedOptionId={highlightedOptionId}
+              highlightText={filterText}
+              listId={listId}
+              controlId={controlId}
+              enteredTextLabel={enteredTextLabel}
+              handleLoadMore={handleLoadMore}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              virtualScroll={virtualScroll}
+              selectedAriaLabel={selectedAriaLabel}
+              renderHighlightedAriaLive={renderHighlightedAriaLive}
+              listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+              usingMouse={usingMouse}
+            />
+          )}
+        </div>
       </Dropdown>
     </div>
   );

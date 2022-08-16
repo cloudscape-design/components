@@ -183,6 +183,22 @@ const PropertyFilter = React.forwardRef(
     const hasHiddenOptions = tokenLimit !== undefined && tokens.length > tokenLimit;
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
+
+    let customContent: undefined | React.ReactNode = undefined;
+    if (parsedText.step === 'property') {
+      for (const prop of filteringProperties) {
+        if (prop.key === parsedText.property.key) {
+          for (const operator of prop.operators || []) {
+            if (typeof operator === 'object' && operator.value === parsedText.operator) {
+              if (operator.form) {
+                customContent = operator.form({ value: '2020-01-01', onChange: () => undefined });
+              }
+            }
+          }
+        }
+      }
+    }
+
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -211,6 +227,7 @@ const PropertyFilter = React.forwardRef(
                 preventFocus.current = false;
               }
             }}
+            __customContent={customContent}
             __hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
