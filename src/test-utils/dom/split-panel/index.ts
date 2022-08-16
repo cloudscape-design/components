@@ -7,6 +7,10 @@ import styles from '../../../split-panel/styles.selectors.js';
 export default class SplitPanelWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
+  findHeader(): ElementWrapper {
+    return this.find(`.${styles['header-text']}`)!;
+  }
+
   findPreferencesButton(): ButtonWrapper | null {
     return this.findComponent(`.${styles['preferences-button']}`, ButtonWrapper);
   }
