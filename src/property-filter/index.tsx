@@ -20,6 +20,7 @@ import { getQueryActions, parseText, getAutosuggestOptions, ParsedText } from '.
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import TokenEditorForm from './token-editor-form';
 import InternalBox from '../box/internal';
 
 export { PropertyFilterProps };
@@ -203,8 +204,15 @@ const PropertyFilter = React.forwardRef(
               if (operator.form) {
                 const Form = operator.form;
                 customContent = (
-                  <InternalBox padding="s">
-                    <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                  <InternalBox
+                    padding={{
+                      horizontal: 'm',
+                      vertical: 's',
+                    }}
+                  >
+                    <TokenEditorForm i18nStrings={i18nStrings} onClose={() => undefined} onSubmit={() => undefined}>
+                      <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                    </TokenEditorForm>
                   </InternalBox>
                 );
               }

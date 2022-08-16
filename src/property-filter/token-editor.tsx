@@ -9,7 +9,6 @@ import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
-import { InternalButton } from '../button/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 
 import { PropertyFilterProps } from './interfaces';
@@ -22,6 +21,7 @@ import {
   operatorToDescription,
   getPropertySuggestions,
 } from './controller';
+import TokenEditorForm from './token-editor-form';
 
 interface TokenEditorProps
   extends Pick<
@@ -239,23 +239,16 @@ export const TokenEditor = (props: TokenEditorProps) => {
       __onOpen={() => setTemporaryToken(token)}
       renderWithPortal={expandToViewport}
       content={
-        <div className={styles['token-editor']}>
+        <TokenEditorForm
+          onClose={closePopover}
+          onSubmit={() => {
+            setToken(temporaryToken as PropertyFilterProps.Token);
+            closePopover();
+          }}
+          i18nStrings={i18nStrings}
+        >
           <EditingFields {...props} temporaryToken={temporaryToken} setTemporaryToken={setTemporaryToken} />
-          <div className={styles['token-editor-actions']}>
-            <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={closePopover}>
-              {i18nStrings.cancelActionText}
-            </InternalButton>
-            <InternalButton
-              className={styles['token-editor-submit']}
-              onClick={() => {
-                setToken(temporaryToken as PropertyFilterProps.Token);
-                closePopover();
-              }}
-            >
-              {i18nStrings.applyActionText}
-            </InternalButton>
-          </div>
-        </div>
+        </TokenEditorForm>
       }
     >
       {triggerComponent}

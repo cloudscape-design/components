@@ -59,7 +59,9 @@
   &-actions {
     display: flex;
     justify-content: flex-end;
-    margin-top: awsui.$space-scaled-xl;
+    margin-top: awsui.$space-scaled-s;
+    border-top: 1px solid #{awsui.$color-border-dropdown-item-default};
+    padding-top: awsui.$space-scaled-s;
   }
   &-commit {
     margin-left: awsui.$space-xs;
