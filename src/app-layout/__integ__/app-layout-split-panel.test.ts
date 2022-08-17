@@ -57,6 +57,12 @@ class AppLayoutSplitViewPage extends BasePageObject {
   getSplitPanelSize() {
     return this.getBoundingBox(wrapper.findSplitPanel().toSelector());
   }
+
+  getContentMarginBottom() {
+    return this.browser.execute(contentRegion => {
+      return document.querySelector(contentRegion)?.parentElement?.parentElement?.style.marginBottom;
+    }, wrapper.findContentRegion().toSelector());
+  }
 }
 
 function setupTest(
@@ -185,4 +191,23 @@ test(
     await page.dragResizerTo({ x: 0, y: height });
     await expect(page.getPanelPosition()).resolves.toEqual('bottom');
   })
+);
+
+test(
+  'should resize main content area when switching to side',
+  setupTest(async page => {
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+    await page.switchPosition('Side');
+    await expect(page.getContentMarginBottom()).resolves.toEqual('');
+  }, '#/light/app-layout/with-full-page-table-and-split-panel')
+);
+
+test(
+  'should resize main content area when switching to side then back to bottom',
+  setupTest(async page => {
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+    await page.switchPosition('Side');
+    await page.switchPosition('Bottom');
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+  }, '#/light/app-layout/with-full-page-table-and-split-panel')
 );
