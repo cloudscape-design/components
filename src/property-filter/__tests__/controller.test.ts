@@ -191,9 +191,9 @@ describe('getAutosuggestOptions', () => {
       options: [
         { value: 'string', keepOpenOnSelect: true },
         { value: 'string-other', keepOpenOnSelect: true },
-        { value: 'default', keepOpenOnSelect: true },
+        { value: 'default = ', label: 'default', keepOpenOnSelect: true },
         { value: 'string!=', keepOpenOnSelect: true },
-        { value: 'custom column', keepOpenOnSelect: true },
+        { value: 'custom column : ', label: 'custom column', keepOpenOnSelect: true },
       ],
     },
     { options: [{ value: 'range', keepOpenOnSelect: true }], label: 'Group properties' },

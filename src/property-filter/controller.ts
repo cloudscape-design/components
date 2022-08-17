@@ -197,10 +197,15 @@ export const getPropertyByKey = (filteringProperties: PropertyFilterProps['filte
   return propertyMap[key] as PropertyFilterProps.FilteringProperty | undefined;
 };
 
-const filteringPropertyToAutosuggestOption = (filteringProperty: PropertyFilterProps.FilteringProperty) => ({
-  value: filteringProperty.propertyLabel,
-  keepOpenOnSelect: true,
-});
+const filteringPropertyToAutosuggestOption = (filteringProperty: PropertyFilterProps.FilteringProperty) => {
+  const operators = getAllowedOperators(filteringProperty);
+  const label = filteringProperty.propertyLabel;
+
+  // Insert operator automatically if only one operator is defined for the given property.
+  return operators.length === 1
+    ? { value: label + ' ' + operators[0] + ' ', label, keepOpenOnSelect: true }
+    : { value: label, keepOpenOnSelect: true };
+};
 
 export function getPropertySuggestions<T>(
   filteringProperties: PropertyFilterProps['filteringProperties'],
