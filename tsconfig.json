@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "lib": ["es2019", "dom"],
+    "lib": ["es5", "es2015.collection", "dom"],
     "types": [],
     "module": "esnext",
     "moduleResolution": "node",
