@@ -93,7 +93,8 @@ export default function AbstractSwitch({
           })}
           {/*
           An empty element to display the outline, because the native control is invisible.
-          Using span, not div for HTML validity
+          Using span, not div for HTML validity.
+          Note: There is a CSS selector in src/toggle/styles.scss that relies on a span element selector to show focus.
           */}
           <span className={styles.outline} />
         </span>

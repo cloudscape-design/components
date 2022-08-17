@@ -22,7 +22,7 @@ div.root {
 .input {
   @include focus-visible.when-visible {
     /* stylelint-disable-next-line selector-max-type -- Can't access the outline class from focus-visible */
-    & + div {
+    & + span {
       @include styles.focus-highlight(2px);
     }
   }
