@@ -3,7 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -90,5 +92,41 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
+  }
+  &-editor {
+    position: absolute;
+    top: calc(#{$cell-vertical-padding} + #{awsui.$space-scaled-xxs});
+    right: awsui.$space-xs;
+  }
+  &.body-cell-editable {
+    position: relative;
+    cursor: pointer;
+    &:not(.body-cell-edit-active) {
+      & > .body-cell-editor {
+        opacity: 0;
+      }
+      &[data-awsui-focus-visible='true']:focus-within {
+        @include styles.focus-highlight(
+          (
+            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+            'horizontal': calc(-1 * #{awsui.$space-scaled-xs}),
+          )
+        );
+      }
+      &:hover {
+        //TODO border
+        background-color: awsui.$color-background-dropdown-item-hover;
+      }
+      &:hover,
+      &[data-awsui-focus-visible='true']:focus-within {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-editor {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  &.body-cell-edit-active {
+    padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-xxxl} + #{awsui.$space-xs});
   }
 }
