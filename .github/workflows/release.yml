@@ -1,18 +1,45 @@
-# This workflow releases the current package to a dedicated private CodeArtifact repository.
-# One repository may publish more than one package. For more details refer to the release-package Action.
-name: Release
+name: release
 
 on:
-  push:
-    branches:
-      - main
-      - 'dev-v3-*'
-
-permissions:
-  id-token: write
-  contents: read
+  workflow_dispatch:
+    inputs:
+      sha:
+        required: true
+        description: 'Specify the commit sha'
+        type: string
+      tag:
+        required: true
+        description: 'Specify the tag for this release'
+        type: string
 
 jobs:
   release:
-    uses: cloudscape-design/.github/.github/workflows/release.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.sha }}
+          fetch-depth: 0
+      - name: Set git identity
+        run: |-
+          git config user.name "Automation"
+          git config user.email "github-actions@github.com"          
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Generate changelog
+        run: |
+          npx standard-version --skip.commit --skip.tag --header ""
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commitish: ${{ github.event.inputs.sha }}
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: Release ${{ github.event.inputs.tag }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
