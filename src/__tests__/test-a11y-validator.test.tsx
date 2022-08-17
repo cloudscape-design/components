@@ -25,16 +25,10 @@ describe('a11y validator', () => {
         <input id="my-field" type="text" />
       </label>
     );
-    try {
-      await expect(container).toValidateA11y();
-    } catch (e) {
-      // TODO: add <div> element is not permitted as content under <label> error when element-permitted-content is enabled
-      expect(e).toEqual(
-        new Error(
-          'Expected HTML to be valid but had the following errors:\n1. <label> is associated with multiple controls [multiple-labeled-controls]'
-        )
-      );
-    }
+    // TODO: add <div> element is not permitted as content under <label> error when element-permitted-content is enabled
+    await expect(expect(container).toValidateA11y()).rejects.toThrow(
+      'Expected HTML to be valid but had the following errors:\n1. <label> is associated with multiple controls [multiple-labeled-controls]'
+    );
   });
 
   test('invalid aria attribute value', async () => {
@@ -44,14 +38,8 @@ describe('a11y validator', () => {
         <input id="my-field" type="text" aria-labelledby="non-exist-id" />
       </label>
     );
-    try {
-      await expect(container).toValidateA11y();
-    } catch (e) {
-      expect(e).toEqual(
-        new Error(
-          'Expected HTML to be valid but had the following errors:\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
-        )
-      );
-    }
+    await expect(expect(container).toValidateA11y()).rejects.toThrow(
+      'Expected HTML to be valid but had the following errors:\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
+    );
   });
 });
