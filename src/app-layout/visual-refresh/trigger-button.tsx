@@ -14,10 +14,11 @@ interface TriggerButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
   className?: string;
+  ariaExpanded?: boolean;
 }
 
 function TriggerButton(
-  { ariaLabel, iconName, onClick, selected = false, className }: TriggerButtonProps,
+  { ariaLabel, iconName, onClick, selected = false, className, ariaExpanded }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const focusVisible = useFocusVisible();
@@ -25,7 +26,7 @@ function TriggerButton(
   return (
     <button
       aria-label={ariaLabel}
-      aria-expanded={false}
+      aria-expanded={ariaExpanded}
       className={clsx(
         styles.trigger,
         {

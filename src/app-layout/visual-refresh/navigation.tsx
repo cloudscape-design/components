@@ -74,6 +74,7 @@ export default function Navigation() {
               ref={state === 'exiting' ? transitionEventsRef : undefined}
             >
               <TriggerButton
+                ariaExpanded={isNavigationOpen}
                 ariaLabel={ariaLabels?.navigationToggle}
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}

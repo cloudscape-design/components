@@ -123,6 +123,7 @@ export default function Tools({ children }: ToolsProps) {
             >
               {!toolsHide && (
                 <TriggerButton
+                  ariaExpanded={isToolsOpen}
                   ariaLabel={ariaLabels?.toolsToggle}
                   iconName="status-info"
                   onClick={() => handleToolsClick(!isToolsOpen)}
@@ -134,6 +135,7 @@ export default function Tools({ children }: ToolsProps) {
 
               {hasSplitPanel && (
                 <TriggerButton
+                  ariaExpanded={isSplitPanelOpen}
                   ariaLabel={openButtonAriaLabel}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
