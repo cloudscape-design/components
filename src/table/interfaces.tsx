@@ -249,20 +249,38 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Requires the properties firstIndex and totalItemsCount to be set correctly.
    */
   renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;
+  /**
+   * Specifies a function that will be called after user submits an inline edit.
+   * Return a promise to keep loading state while the submit request is in progress.
+   */
+  submitEdit?: TableProps.SubmitEditFunction<T>;
+
+  /**
+   * Called whenever user cancels an inline edit. Use it to reset any
+   * validation states.
+   */
+  onEditCancel?: NonCancelableEventHandler;
 }
 
 export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
-  export type ColumnDefinition<T> = {
+  export interface CellContext<ValueType = string> {
+    isEditing?: boolean;
+    currentValue: ValueType;
+    setValue: React.Dispatch<ValueType>;
+  }
+
+  export type ColumnDefinition<ItemType> = {
     id?: string;
     header: React.ReactNode;
-    cell(item: T): React.ReactNode;
+    cell(item: ItemType, context: CellContext): React.ReactNode;
+    editable?: boolean;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-  } & SortingColumn<T>;
+  } & SortingColumn<ItemType>;
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
@@ -278,6 +296,9 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    activateEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
+    cancelEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
+    submitEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -319,5 +340,12 @@ export namespace TableProps {
      * scroll parent scrolls to reveal the first row of the table.
      */
     scrollToTop(): void;
+
+    /**
+     * Dismiss an inline edit if currently active.
+     */
+    cancelEdit?: () => void;
   }
+
+  export type SubmitEditFunction<T> = (item: T, column: TableProps.ColumnDefinition<T>, newValue: any) => Promise<void>;
 }

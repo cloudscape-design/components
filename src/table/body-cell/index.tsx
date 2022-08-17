@@ -2,72 +2,92 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React from 'react';
+import React, { useRef } from 'react';
+import useFocusVisible from '../../internal/hooks/focus-visible';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
+import Button from '../../button/internal';
+import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { TableTdElement, TableTdElementProps } from './td-element';
+import { InlineEditor } from './inline-editor';
+export { TableTdElement } from './td-element';
 
-interface TableBodyCellProps {
-  className?: string;
-  style?: React.CSSProperties;
-  wrapLines: boolean | undefined;
-  isFirstRow: boolean;
-  isLastRow: boolean;
-  isEvenRow?: boolean;
-  stripedRows?: boolean;
-  isSelected: boolean;
-  isNextSelected: boolean;
-  isPrevSelected: boolean;
-  children?: React.ReactNode;
-  hasSelection?: boolean;
-  hasFooter?: boolean;
+const readonlyState = { isEditActive: false, currentValue: '', setValue: () => {} };
+const submitHandlerFallback = () => {
+  throw new Error('The function `handleSubmit` is required for editable columns');
+};
+
+interface TableBodyCellProps<ItemType> extends TableTdElementProps {
+  column: TableProps.ColumnDefinition<ItemType>;
+  item: ItemType;
+  isEditActive: boolean;
+  onEditStart: () => void;
+  onEditEnd: () => void;
+  submitEdit: TableProps.SubmitEditFunction<ItemType> | undefined;
+  ariaLabels: TableProps['ariaLabels'];
 }
 
-export function TableBodyCell({
+function TableCellEditable<ItemType>({
   className,
-  style,
-  children,
-  wrapLines,
-  isFirstRow,
-  isLastRow,
-  isSelected,
-  isNextSelected,
-  isPrevSelected,
-  isEvenRow,
-  stripedRows,
-  hasSelection,
-  hasFooter,
-}: TableBodyCellProps) {
-  const isVisualRefresh = useVisualRefresh();
+  item,
+  column,
+  isEditActive,
+  onEditStart,
+  onEditEnd,
+  submitEdit,
+  ariaLabels,
+  ...rest
+}: TableBodyCellProps<ItemType>) {
+  const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const focusVisible = useFocusVisible();
+
+  useEffectOnUpdate(() => {
+    if (!isEditActive) {
+      editActivateRef.current!.focus();
+    }
+  }, [isEditActive]);
 
   return (
-    <td
-      style={style}
-      className={clsx(
-        className,
-        styles['body-cell'],
-        wrapLines && styles['body-cell-wrap'],
-        isFirstRow && styles['body-cell-first-row'],
-        isLastRow && styles['body-cell-last-row'],
-        isSelected && styles['body-cell-selected'],
-        isNextSelected && styles['body-cell-next-selected'],
-        isPrevSelected && styles['body-cell-prev-selected'],
-        !isEvenRow && stripedRows && styles['body-cell-shaded'],
-        stripedRows && styles['has-striped-rows'],
-        isVisualRefresh && styles['is-visual-refresh'],
-        hasSelection && styles['has-selection'],
-        hasFooter && styles['has-footer']
-      )}
+    <TableTdElement
+      {...rest}
+      nativeAttributes={focusVisible as TableTdElementProps['nativeAttributes']}
+      className={clsx(className, styles['body-cell-editable'], isEditActive && styles['body-cell-edit-active'])}
+      onClick={!isEditActive ? onEditStart : undefined}
     >
-      {children}
-    </td>
+      {isEditActive ? (
+        <InlineEditor
+          ariaLabels={ariaLabels}
+          column={column}
+          item={item}
+          submitEdit={submitEdit ?? submitHandlerFallback}
+          onEditEnd={onEditEnd}
+        />
+      ) : (
+        <>
+          {column.cell(item, readonlyState)}
+          <span className={styles['body-cell-editor']}>
+            <Button
+              ref={editActivateRef}
+              __hideFocusOutline={true}
+              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
+              formAction="none"
+              iconName="edit"
+              variant="inline-icon"
+            />
+          </span>
+        </>
+      )}
+    </TableTdElement>
   );
 }
 
-interface TableBodyCellContentProps<ItemType> extends TableBodyCellProps {
-  column: TableProps.ColumnDefinition<ItemType>;
-  item: ItemType;
-}
-
-export function TableBodyCellContent<ItemType>({ item, column, ...rest }: TableBodyCellContentProps<ItemType>) {
-  return <TableBodyCell {...rest}>{column.cell(item)}</TableBodyCell>;
+export function TableBodyCell<ItemType>({
+  isEditable,
+  ...rest
+}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+  if (isEditable || rest.isEditActive) {
+    return <TableCellEditable {...rest} />;
+  }
+  const { column, item } = rest;
+  return <TableTdElement {...rest}>{column.cell(item, readonlyState)}</TableTdElement>;
 }
