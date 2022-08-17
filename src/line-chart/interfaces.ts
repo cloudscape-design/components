@@ -3,7 +3,7 @@
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
 import { ChartDataTypes, MixedLineBarChartProps } from '../mixed-line-bar-chart/interfaces';
 
-type LineSeries<T> = MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries;
+type LineSeries<T> = MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 
 export interface LineChartProps<T extends ChartDataTypes>
   extends CartesianChartProps<T, MixedLineBarChartProps.ChartSeries<T>> {

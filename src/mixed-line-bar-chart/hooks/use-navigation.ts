@@ -5,7 +5,7 @@ import { KeyCode } from '../../internal/keycode';
 import { ChartContainerProps } from '../chart-container';
 import { ChartDataTypes, MixedLineBarChartProps } from '../interfaces';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
-import { findNavigableSeries, nextValidDomainIndex } from '../utils';
+import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
 import { ScaledPoint } from '../make-scaled-series';
 import { ScaledBarGroup } from '../make-scaled-bar-groups';
 
@@ -120,25 +120,14 @@ export function useNavigation<T extends ChartDataTypes>({
       }
 
       if (nextSeries.type === 'line') {
-        const nextSeriesData = nextSeries.data as ReadonlyArray<MixedLineBarChartProps.Datum<T>>;
-        const lookingForScaled = targetXPoint; // scaled X in previous series
-
-        const nextPoint = nextSeriesData
-          // scale all points in series
-          .map(d => ({
-            x: (xScale.d3Scale(d.x as any) || 0) + xOffset,
-            y: yScale.d3Scale(d.y) || 0,
-            datum: d,
-          }))
-          // find the closest point to previous X
-          .reduce(
-            (prev, curr) => (Math.abs(curr.x - lookingForScaled) < Math.abs(prev.x - lookingForScaled) ? curr : prev),
-            { x: -Infinity, y: -Infinity }
-          );
-
+        const nextScaledSeries = scaledSeries.filter(it => it.series === nextSeries);
+        const closestNextSeriesPoint = nextScaledSeries.reduce(
+          (prev, curr) => (Math.abs(curr.x - targetXPoint) < Math.abs(prev.x - targetXPoint) ? curr : prev),
+          { x: -Infinity, y: -Infinity }
+        );
         highlightSeries(nextSeries);
-        highlightPoint({ ...nextPoint, color: nextInternalSeries.color, series: nextSeries });
-      } else if (nextSeries.type === 'threshold') {
+        highlightPoint({ ...closestNextSeriesPoint, color: nextInternalSeries.color, series: nextSeries });
+      } else if (isYThreshold(nextSeries)) {
         const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(targetX);
         highlightSeries(nextSeries);
         highlightPoint({
@@ -147,6 +136,15 @@ export function useNavigation<T extends ChartDataTypes>({
           color: nextInternalSeries.color,
           series: nextSeries,
           datum: scaledSeries[scaledTargetIndex]?.datum,
+        });
+      } else if (isXThreshold(nextSeries)) {
+        highlightSeries(nextSeries);
+        highlightPoint({
+          x: xScale.d3Scale(nextSeries.x as any) ?? NaN,
+          y: yScale.d3Scale.range()[0],
+          color: nextInternalSeries.color,
+          series: nextSeries,
+          datum: { x: nextSeries.x, y: NaN },
         });
       }
     },
@@ -169,32 +167,15 @@ export function useNavigation<T extends ChartDataTypes>({
       const series = highlightedSeries || visibleSeries[0].series;
       const previousPoint = highlightedPoint || scaledSeries[0];
 
-      if (series.type === 'line') {
-        // find previous point in series
-        const indexOfPreviousPoint = previousPoint?.datum
-          ? (series.data as ReadonlyArray<MixedLineBarChartProps.Datum<T>>).indexOf(previousPoint.datum)
-          : 0;
-        const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, series.data.length - 1]);
-        const nextPoint = series.data[nextPointIndex];
+      if (series.type === 'line' || isYThreshold(series)) {
+        const targetScaledSeries = scaledSeries.filter(it => it.series === series);
+        const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(previousPoint.x);
+        const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
+        const nextPoint = targetScaledSeries[nextPointIndex];
 
-        // find scaled next point
-        const nextPointScaled = scaledSeries.filter(s => s.datum === nextPoint)[0] || null;
-
-        setTargetX(nextPoint.x as T);
+        setTargetX(nextPoint.datum?.x || null);
         highlightSeries(series);
-        highlightPoint(nextPointScaled);
-      } else if (series.type === 'threshold') {
-        const [scaledThresholdSeries] = scaledSeries.filter(it => it.series === series);
-        const scaledDataSeries = scaledSeries.filter(it => it.datum);
-        const indexOfPreviousPoint = scaledDataSeries.map(it => it.x).indexOf(previousPoint.x);
-        const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, scaledDataSeries.length - 1]);
-        setTargetX(scaledDataSeries[nextPointIndex].datum?.x || null);
-        highlightSeries(series);
-        highlightPoint({
-          ...scaledThresholdSeries,
-          datum: scaledDataSeries[nextPointIndex].datum,
-          x: scaledDataSeries[nextPointIndex].x,
-        });
+        highlightPoint(nextPoint);
       } else if (series.type === 'bar') {
         const xDomain = xScale.domain as T[];
         const MAX_GROUP_INDEX = xDomain.length - 1;
