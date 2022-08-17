@@ -116,7 +116,7 @@ describe('Select all checkbox', () => {
     expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('indeterminate', true);
     expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', false);
   });
-  test('indetermunate, when there are selected items that do not match the items list', () => {
+  test('indeterminate, when there are selected items that do not match the items list', () => {
     tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [{ id: 4, name: 'Apples' }] }).wrapper;
     expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('indeterminate', true);
     expect(getSelectAllInput(tableWrapper)?.getElement()).toHaveProperty('checked', false);
