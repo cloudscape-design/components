@@ -165,7 +165,6 @@ const OldAppLayout = React.forwardRef(
       disableBodyScroll
     );
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
-    const [splitPanelHeight, splitPanelRef] = useContainerQuery(rect => (splitPanel ? rect.height : 0), [splitPanel]);
     const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
       [splitPanel]
@@ -187,6 +186,12 @@ const OldAppLayout = React.forwardRef(
       }
     );
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
+
+    const [splitPanelHeight, splitPanelRef] = useContainerQuery(
+      rect => (splitPanel ? rect.height : 0),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [splitPanel, splitPanelPosition]
+    );
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;

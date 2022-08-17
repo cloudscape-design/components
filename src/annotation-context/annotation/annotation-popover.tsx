@@ -78,10 +78,6 @@ export function AnnotationPopover({
   onPreviousButtonClick,
   i18nStrings,
 }: AnnotationPopoverProps) {
-  const preventDefault = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
-
   const dismissButtonRefCallback = useCallback(
     (element: ButtonProps.Ref) => {
       if (element) {
@@ -101,84 +97,77 @@ export function AnnotationPopover({
       arrow={arrow}
       zIndex={1000}
     >
-      <div onClick={preventDefault}>
-        <PopoverBody
-          size="medium"
-          fixedWidth={false}
-          dismissButton={true}
-          dismissAriaLabel={i18nStrings.labelDismissAnnotation}
-          header={
-            <InternalBox
-              color="text-body-secondary"
-              fontSize="body-s"
-              margin={{ top: 'xxxs' }}
-              className={styles.header}
-            >
-              {title}
-            </InternalBox>
-          }
-          onDismiss={onDismiss}
-          className={styles.annotation}
-          variant="annotation"
-          overflowVisible="content"
-          dismissButtonRef={dismissButtonRefCallback}
-        >
+      <PopoverBody
+        size="medium"
+        fixedWidth={false}
+        dismissButton={true}
+        dismissAriaLabel={i18nStrings.labelDismissAnnotation}
+        header={
+          <InternalBox color="text-body-secondary" fontSize="body-s" margin={{ top: 'xxxs' }} className={styles.header}>
+            {title}
+          </InternalBox>
+        }
+        onDismiss={onDismiss}
+        className={styles.annotation}
+        variant="annotation"
+        overflowVisible="content"
+        dismissButtonRef={dismissButtonRefCallback}
+      >
+        <InternalSpaceBetween size="s">
+          <div className={styles.description}>
+            <InternalBox className={styles.content}>{content}</InternalBox>
+          </div>
+
+          {alert && <InternalAlert type="warning">{alert}</InternalAlert>}
+
           <InternalSpaceBetween size="s">
-            <div className={styles.description}>
-              <InternalBox className={styles.content}>{content}</InternalBox>
-            </div>
+            <div className={styles.divider} />
 
-            {alert && <InternalAlert type="warning">{alert}</InternalAlert>}
-
-            <InternalSpaceBetween size="s">
-              <div className={styles.divider} />
-
-              <div className={styles.actionBar}>
-                <div className={styles.stepCounter}>
-                  <InternalBox className={styles['step-counter-content']} color="text-body-secondary" fontSize="body-s">
-                    {i18nStrings.stepCounterText(taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
-                  </InternalBox>
-                </div>
-                <InternalSpaceBetween size="xs" direction="horizontal">
-                  {showPreviousButton && (
-                    <InternalButton
-                      variant="link"
-                      onClick={onPreviousButtonClick}
-                      disabled={!previousButtonEnabled}
-                      formAction="none"
-                      ariaLabel={i18nStrings.previousButtonText}
-                      className={styles['previous-button']}
-                    >
-                      {i18nStrings.previousButtonText}
-                    </InternalButton>
-                  )}
-
-                  {showFinishButton ? (
-                    <InternalButton
-                      onClick={onFinish}
-                      formAction="none"
-                      ariaLabel={i18nStrings.finishButtonText}
-                      className={styles['finish-button']}
-                    >
-                      {i18nStrings.finishButtonText}
-                    </InternalButton>
-                  ) : (
-                    <InternalButton
-                      onClick={onNextButtonClick}
-                      disabled={!nextButtonEnabled}
-                      formAction="none"
-                      ariaLabel={i18nStrings.nextButtonText}
-                      className={styles['next-button']}
-                    >
-                      {i18nStrings.nextButtonText}
-                    </InternalButton>
-                  )}
-                </InternalSpaceBetween>
+            <div className={styles.actionBar}>
+              <div className={styles.stepCounter}>
+                <InternalBox className={styles['step-counter-content']} color="text-body-secondary" fontSize="body-s">
+                  {i18nStrings.stepCounterText(taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
+                </InternalBox>
               </div>
-            </InternalSpaceBetween>
+              <InternalSpaceBetween size="xs" direction="horizontal">
+                {showPreviousButton && (
+                  <InternalButton
+                    variant="link"
+                    onClick={onPreviousButtonClick}
+                    disabled={!previousButtonEnabled}
+                    formAction="none"
+                    ariaLabel={i18nStrings.previousButtonText}
+                    className={styles['previous-button']}
+                  >
+                    {i18nStrings.previousButtonText}
+                  </InternalButton>
+                )}
+
+                {showFinishButton ? (
+                  <InternalButton
+                    onClick={onFinish}
+                    formAction="none"
+                    ariaLabel={i18nStrings.finishButtonText}
+                    className={styles['finish-button']}
+                  >
+                    {i18nStrings.finishButtonText}
+                  </InternalButton>
+                ) : (
+                  <InternalButton
+                    onClick={onNextButtonClick}
+                    disabled={!nextButtonEnabled}
+                    formAction="none"
+                    ariaLabel={i18nStrings.nextButtonText}
+                    className={styles['next-button']}
+                  >
+                    {i18nStrings.nextButtonText}
+                  </InternalButton>
+                )}
+              </InternalSpaceBetween>
+            </div>
           </InternalSpaceBetween>
-        </PopoverBody>
-      </div>
+        </InternalSpaceBetween>
+      </PopoverBody>
     </PopoverContainer>
   );
 }
