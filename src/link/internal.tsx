@@ -98,8 +98,8 @@ const InternalLink = React.forwardRef(
       <>
         {children}
         {external && (
-          <>
-            {' '}
+          <span className={styles['icon-wrapper']}>
+            &nbsp;
             <span
               className={styles.icon}
               aria-label={externalIconAriaLabel}
@@ -107,7 +107,7 @@ const InternalLink = React.forwardRef(
             >
               <InternalIcon name="external" size="inherit" />
             </span>
-          </>
+          </span>
         )}
       </>
     );
