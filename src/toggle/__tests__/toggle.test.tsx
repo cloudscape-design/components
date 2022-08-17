@@ -92,7 +92,7 @@ test('does not trigger any change events when value is changed through api', () 
   expect(onChange).not.toHaveBeenCalled();
 });
 
-test('html validate', async () => {
+test('check a11y', async () => {
   const { wrapper } = renderToggle(
     <Toggle checked={false} onChange={() => {}}>
       Toggle label

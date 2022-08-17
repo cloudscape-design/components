@@ -7,10 +7,8 @@ import { uniq } from 'lodash';
 import { runOptions, spec } from './axe';
 
 declare global {
-  /* eslint-disable-next-line @typescript-eslint/no-namespace */
   namespace jest {
-    /* eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unused-vars */
-    interface Matchers<R, T = {}> {
+    interface Matchers<R> {
       toValidateA11y(): Promise<R>;
     }
   }
@@ -25,7 +23,7 @@ const htmlValidator = new HtmlValidate({
     'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
     'prefer-native-element': ['error', { exclude: ['listbox'] }],
-    // enable 'no-redundant-for' and 'element-permitted-content' after fixing Toggle
+    //TODO: enable 'no-redundant-for' and 'element-permitted-content' after fixing Toggle
     'no-redundant-for': 'off',
     'element-permitted-content': 'off',
   },
@@ -52,7 +50,7 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
     const allViolations = uniq([...htmlViolations, ...axeViolations]).map(
       (message, index) => `${index + 1}. ${message}`
     );
-    return ['Expected HTML to be valid but had the following errors:', ''].concat(allViolations).join('\n');
+    return ['Expected HTML to be valid but had the following errors:'].concat(allViolations).join('\n');
   };
 
   return { pass, message: generateMessage };
