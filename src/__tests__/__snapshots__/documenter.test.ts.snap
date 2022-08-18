@@ -6654,10 +6654,11 @@ This can only be used when the chart consists exclusively of bar series.",
       "defaultValue": "[]",
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent a line series, bar series, or a threshold, and can have the following properties:
-* \`title\` (string): A human-readable title for this series
-* \`type\` (string): Series type (\`\\"line\\"\`, \`\\"bar\\"\`, or \`\\"threshold\\"\`)
-* \`data\` (Array): An array of data points, represented as objects with \`x\` and \`y\` properties
-* \`color\` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color
+* \`title\` (string): A human-readable title for this series.
+* \`type\` (string): Series type (\`\\"line\\"\`, \`\\"bar\\"\`, or \`\\"threshold\\"\`).
+* \`data\` (Array): For line and bar series, an array of data points, represented as objects with \`x\` and \`y\` properties.
+* \`y\` (number): For threshold series, the value of the threshold.
+* \`color\` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color.
 * \`valueFormatter\` (Function): (Optional) A function that formats data values before rendering in the UI, For example, in the details popover.
 ",
       "name": "series",
