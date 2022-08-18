@@ -42,7 +42,7 @@ const MobileExpandableCategoryElement = ({
     }
   };
 
-  const onHover = (event: React.SyntheticEvent) => {
+  const makeHighlight = (event: React.SyntheticEvent) => {
     event.preventDefault();
     highlightItem(item);
   };
@@ -120,8 +120,8 @@ const MobileExpandableCategoryElement = ({
       })}
       role="presentation"
       onClick={onClick}
-      onMouseEnter={onHover}
-      onTouchStart={onHover}
+      onMouseMove={makeHighlight}
+      onTouchStart={makeHighlight}
       data-testid={item.id}
     >
       {content}

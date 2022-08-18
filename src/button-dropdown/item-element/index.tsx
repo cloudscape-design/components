@@ -39,7 +39,7 @@ const ItemElement = ({
     }
   };
 
-  const onHover = (event: React.SyntheticEvent) => {
+  const makeHighlight = (event: React.SyntheticEvent) => {
     event.preventDefault();
     highlightItem(item);
   };
@@ -58,8 +58,8 @@ const ItemElement = ({
       data-testid={item.id}
       data-description={item.description}
       onClick={onClick}
-      onMouseEnter={onHover}
-      onTouchStart={onHover}
+      onMouseMove={makeHighlight}
+      onTouchStart={makeHighlight}
     >
       <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
     </li>
