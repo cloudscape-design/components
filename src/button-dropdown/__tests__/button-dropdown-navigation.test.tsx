@@ -76,10 +76,17 @@ describe('Button dropdown navigate with mouse or keyboard', () => {
     act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
     expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyles['is-focused']);
 
-    // mouse move on the dropdown to update isKeyboard ref
     fireEvent.mouseMove(wrapper.findItemById('i4')!.getElement());
-    // mouse enter item to update the style on the item
-    fireEvent.mouseEnter(wrapper.findItemById('i4')!.getElement());
+    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyles['is-focused']);
+  });
+
+  it('should add class is-focused if highligted with keyboard and remove when mouse move on the same item', () => {
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyles['is-focused']);
+
+    fireEvent.mouseMove(wrapper.findItemById('i1')!.getElement());
     expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyles['is-focused']);
   });
 

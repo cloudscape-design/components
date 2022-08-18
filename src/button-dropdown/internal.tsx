@@ -41,7 +41,6 @@ const InternalButtonDropdown = React.forwardRef(
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const isInRestrictedView = useMobile();
-    const usingMouse = useRef(true);
     const dropdownId = useUniqueId('dropdown');
     for (const item of items) {
       checkSafeUrl('ButtonDropdown', item.href);
@@ -59,17 +58,17 @@ const InternalButtonDropdown = React.forwardRef(
       onItemActivate,
       onGroupToggle,
       toggleDropdown,
+      setIsUsingMouse,
     } = useButtonDropdown({
       items,
       onItemClick,
       onItemFollow,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
-      usingMouse,
     });
 
     const handleMouseEvent = () => {
-      usingMouse.current = true;
+      setIsUsingMouse(true);
     };
 
     const baseProps = getBaseProps(props);

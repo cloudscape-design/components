@@ -45,7 +45,7 @@ const ExpandableCategoryElement = ({
     }
   };
 
-  const makeHighlight = (event: React.SyntheticEvent) => {
+  const onHover = (event: React.SyntheticEvent) => {
     event.preventDefault();
     highlightItem(item);
   };
@@ -125,8 +125,8 @@ const ExpandableCategoryElement = ({
       data-testid={item.id}
       ref={ref}
       onClick={onClick}
-      onMouseMove={makeHighlight}
-      onTouchStart={makeHighlight}
+      onMouseEnter={onHover}
+      onTouchStart={onHover}
     >
       {content}
     </li>

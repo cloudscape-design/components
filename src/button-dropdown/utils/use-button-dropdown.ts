@@ -13,7 +13,6 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
-  usingMouse: React.MutableRefObject<boolean>;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -23,6 +22,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
   toggleDropdown: () => void;
+  setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
 export function useButtonDropdown({
@@ -31,7 +31,6 @@ export function useButtonDropdown({
   onItemFollow,
   hasExpandableGroups,
   isInRestrictedView = false,
-  usingMouse,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const {
     targetItem,
@@ -43,11 +42,11 @@ export function useButtonDropdown({
     expandGroup,
     collapseGroup,
     reset,
+    setIsUsingMouse,
   } = useHighlightedMenu({
     items,
     hasExpandableGroups,
     isInRestrictedView,
-    usingMouse,
   });
 
   const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
@@ -100,7 +99,7 @@ export function useButtonDropdown({
   };
 
   const activate = (event: React.KeyboardEvent, isEnter?: boolean) => {
-    usingMouse.current = false;
+    setIsUsingMouse(false);
 
     // if item is a link we rely on default behavior of an anchor, no need to prevent
     if (targetItem && isLinkItem(targetItem) && isEnter) {
@@ -112,7 +111,7 @@ export function useButtonDropdown({
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
-    usingMouse.current = false;
+    setIsUsingMouse(false);
     switch (event.keyCode) {
       case KeyCode.down: {
         doVerticalNavigation(1);
@@ -178,5 +177,6 @@ export function useButtonDropdown({
     onItemActivate,
     onGroupToggle,
     toggleDropdown,
+    setIsUsingMouse,
   };
 }

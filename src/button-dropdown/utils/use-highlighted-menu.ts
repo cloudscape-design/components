@@ -11,7 +11,6 @@ interface UseHighlightedMenuOptions {
   items: ButtonDropdownProps.Items;
   hasExpandableGroups: boolean;
   isInRestrictedView?: boolean;
-  usingMouse: React.MutableRefObject<boolean>;
 }
 
 interface UseHighlightedMenuApi extends HighlightProps {
@@ -19,27 +18,17 @@ interface UseHighlightedMenuApi extends HighlightProps {
   expandGroup: (group?: ButtonDropdownProps.ItemGroup) => void;
   collapseGroup: () => void;
   reset: () => void;
+  setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
 export default function useHighlightedMenu({
   items,
   hasExpandableGroups,
   isInRestrictedView = false,
-  usingMouse,
 }: UseHighlightedMenuOptions): UseHighlightedMenuApi {
-  const [targetIndex, setTargetIndexState] = useState<TreeIndex>([]);
+  const [targetIndex, setTargetIndex] = useState<TreeIndex>([]);
   const [expandedIndex, setExpandedIndex] = useState<TreeIndex>([]);
-  const [isUsingMouse, setIsUsingMouse] = useState<boolean>(usingMouse.current);
-
-  const setTargetIndex = useCallback(
-    (index: TreeIndex) => {
-      if (!indexEquals(index, targetIndex)) {
-        setTargetIndexState(index);
-      }
-      setIsUsingMouse(usingMouse.current);
-    },
-    [usingMouse, targetIndex]
-  );
+  const [isUsingMouse, setIsUsingMouse] = useState<boolean>(true);
 
   const { getItem, getItemIndex, getSequentialIndex, getParentIndex } = useMemo(() => createItemsTree(items), [items]);
 
@@ -98,23 +87,14 @@ export default function useHighlightedMenu({
         setTargetIndex(nextIndex);
       }
     },
-    [
-      targetIndex,
-      expandedIndex,
-      getItem,
-      getSequentialIndex,
-      getParentIndex,
-      hasExpandableGroups,
-      isInRestrictedView,
-      setTargetIndex,
-    ]
+    [targetIndex, expandedIndex, getItem, getSequentialIndex, getParentIndex, hasExpandableGroups, isInRestrictedView]
   );
 
   const highlightItem = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
       setTargetIndex(getItemIndex(item));
     },
-    [getItemIndex, setTargetIndex]
+    [getItemIndex]
   );
 
   const expandGroup = useCallback(
@@ -126,7 +106,7 @@ export default function useHighlightedMenu({
       setTargetIndex(isInRestrictedView ? groupIndex : firstChildIndex);
       setExpandedIndex(groupIndex);
     },
-    [targetIndex, getItemIndex, isInRestrictedView, setTargetIndex]
+    [targetIndex, getItemIndex, isInRestrictedView]
   );
 
   const collapseGroup = useCallback(() => {
@@ -134,12 +114,12 @@ export default function useHighlightedMenu({
       setTargetIndex(expandedIndex);
       setExpandedIndex(expandedIndex.slice(0, -1));
     }
-  }, [expandedIndex, setTargetIndex]);
+  }, [expandedIndex]);
 
   const reset = useCallback(() => {
     setTargetIndex([]);
     setExpandedIndex([]);
-  }, [setTargetIndex]);
+  }, []);
 
   return {
     targetItem,
@@ -151,5 +131,6 @@ export default function useHighlightedMenu({
     expandGroup,
     collapseGroup,
     reset,
+    setIsUsingMouse,
   };
 }
