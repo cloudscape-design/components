@@ -10,6 +10,11 @@ const useMutationSingleton = createSingletonHandler<void>(handler => {
   return () => observer.disconnect();
 });
 
+/**
+ * Fires onChange with the given target element as an argument every time any DOM node attribute changes.
+ *
+ * @deprecated The hook has performance implications. Consider alternatives.
+ */
 export function useMutationObserver(
   elementRef: React.RefObject<HTMLElement>,
   onChange: (element: HTMLElement) => void

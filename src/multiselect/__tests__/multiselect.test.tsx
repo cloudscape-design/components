@@ -6,7 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
 import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
-import { expectNoAxeViolations } from '../../__a11y__/axe';
+import '../../__a11y__/to-validate-a11y';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -268,7 +268,7 @@ describe('Dropdown states', () => {
       );
       wrapper.openDropdown();
 
-      await expectNoAxeViolations(container);
+      await expect(container).toValidateA11y();
     });
   });
 });
