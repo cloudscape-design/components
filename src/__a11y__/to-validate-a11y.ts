@@ -29,6 +29,16 @@ const htmlValidator = new HtmlValidate({
   },
 });
 
+// Polyfill for Array.prototype.flatMap
+function flatMap<T>(arr: ReadonlyArray<T>, fn: (t: T) => any[]) {
+  return arr.reduce((acc: T[], item: T) => {
+    for (const flatItem of fn(item)) {
+      acc.push(flatItem);
+    }
+    return acc;
+  }, []);
+}
+
 async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
   // Disable color-contrast checks as unavailable in unit test environment.
   const axeResult = await Axe.run(element, { ...runOptions, rules: { 'color-contrast': { enabled: false } } });
@@ -44,10 +54,12 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
     const htmlViolations = (htmlValidateResult.results[0]?.messages || []).map(
       message => `${message.message} [${message.ruleId}]`
     );
-    const axeViolations = axeResult.violations
-      .concat(axeResult.incomplete)
-      .flatMap(violation => violation.nodes.map(node => `${node.failureSummary} [${violation.id}]`));
-    const allViolations = uniq([...htmlViolations, ...axeViolations]).map(
+    const axeViolations = axeResult.violations.concat(axeResult.incomplete);
+    // TODO: remove polyfill with es2019 support
+    const flattenAxeViolations = flatMap(axeViolations, violation =>
+      violation.nodes.map(node => `${node.failureSummary} [${violation.id}]`)
+    );
+    const allViolations = uniq([...htmlViolations, ...flattenAxeViolations]).map(
       (message, index) => `${index + 1}. ${message}`
     );
     return ['Expected HTML to be valid but had the following errors:'].concat(allViolations).join('\n');
