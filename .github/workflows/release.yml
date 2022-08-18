@@ -31,7 +31,7 @@ jobs:
           node-version: 14.x
       - name: Generate changelog
         run: |
-          npx conventional-changelog-cli -i CHANGELOG.md -s
+          npx conventional-changelog-cli -i CHANGELOG.md -s -p conventionalcommits
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
