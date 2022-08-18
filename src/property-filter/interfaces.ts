@@ -5,6 +5,13 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import {
+  PropertyFilterOperator,
+  PropertyFilterOperation,
+  PropertyFilterToken,
+  PropertyFilterProperty,
+  PropertyFilterOption,
+} from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -54,7 +61,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * * groupValuesLabel [string]: Localized string to display for the 'Values' group label for a specific property.
    * * key [string]: The identifier of this property.
    * * propertyLabel [string]: A human-readable string for the property.
-   * * operators [Array]: A list of all operators supported by this property. Equals operator should always be supported, even if you omit it in the list.
+   * * operators [Array]: A list of all operators supported by this property. If you omit the equals operator because your API does not support it, make sure to set `defaultOperator` to a supported operator from this list.
    * * group [string]: Optional identifier of a custom group that this filtering option is assigned to. Use to create additional groups below the default one. Make sure to also define labels for the group in the customGroupsText property. Notice that only one level of options nesting is supported.
    * * defaultOperator [ComparisonOperator]: Optional parameter that changes the default operator used with this filtering property. Use it only if your API does not support "equals" filtering terms with this property.
    */
@@ -143,12 +150,15 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 }
 
 export namespace PropertyFilterProps {
+  export type Token = PropertyFilterToken;
+  export type JoinOperation = PropertyFilterOperation;
+  export type ComparisonOperator = PropertyFilterOperator;
+  export type FilteringProperty = PropertyFilterProperty;
+  export type FilteringOption = PropertyFilterOption;
   export interface Query {
-    tokens: readonly PropertyFilterProps.Token[];
+    tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
   }
-
-  export type JoinOperation = 'and' | 'or';
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
@@ -198,26 +208,10 @@ export namespace PropertyFilterProps {
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
 
-  export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
-
-  export interface FilteringProperty {
-    key: string;
-    groupValuesLabel: string;
-    propertyLabel: string;
-    operators?: readonly ComparisonOperator[];
-    defaultOperator?: ComparisonOperator;
-    group?: string;
-  }
-
   export interface GroupText {
     properties: string;
     values: string;
     group: string;
-  }
-
-  export interface FilteringOption {
-    propertyKey: string;
-    value: string;
   }
 
   export interface FilteringChangeDetail {
@@ -230,11 +224,5 @@ export namespace PropertyFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
-  }
-
-  export interface Token {
-    value: string;
-    propertyKey?: string;
-    operator: ComparisonOperator;
   }
 }

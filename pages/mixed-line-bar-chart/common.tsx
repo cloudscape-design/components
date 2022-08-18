@@ -136,6 +136,19 @@ export const data4 = [
   { x: 'Oranges', y: 180 },
 ];
 
+export const data5 = [
+  { x: 'Apples', y: 100 },
+  { x: 'Oranges', y: 180 },
+  { x: 'Potatoes', y: 300 },
+  { x: 'Chocolate', y: 280 },
+];
+
+export const data6: { x: number; y: number }[] = [];
+
+for (let i = 0; i < 120; i++) {
+  data6.push({ x: i, y: Math.abs(((i - 75) * 1.5 * ((i % 6) + 1)) / 3 + 3) });
+}
+
 export const logarithmicData = [
   { x: 1, y: 300 },
   { x: 2, y: 20040 },

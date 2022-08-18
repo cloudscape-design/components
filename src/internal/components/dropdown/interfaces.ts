@@ -117,6 +117,10 @@ export interface DropdownProps extends ExpandToViewport {
    * Whether the dropdown will have a scrollbar or not
    */
   scrollable?: boolean;
+  /**
+   * Whether the dropdown will have a focus trap including trigger, header, content and footer.
+   */
+  trapFocus?: boolean;
 }
 
 export interface ExpandToViewport {

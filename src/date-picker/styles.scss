@@ -165,7 +165,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
       outline: none;
       @include styles.focus-highlight(
         awsui.$space-calendar-grid-focus-outline-gutter,
-        awsui.$border-radius-calendar-day-focused
+        awsui.$border-radius-calendar-day-focus-ring
       );
       &::before {
         z-index: 2;

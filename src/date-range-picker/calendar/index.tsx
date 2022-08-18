@@ -9,11 +9,9 @@ import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handler';
 import {
-  displayToIso,
   formatDate,
   formatTime,
   formatISOStringWithoutTimezone,
-  isoToDisplay,
   parseDate,
 } from '../../date-picker/calendar/utils/date';
 import InternalSpaceBetween from '../../space-between/internal';
@@ -27,6 +25,7 @@ import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
+import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -44,7 +43,7 @@ interface HeaderChangeMonthHandler {
 
 export interface CalendarProps extends BaseComponentProps {
   locale: string;
-  startOfWeek: DayIndex;
+  startOfWeek: number | undefined;
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
   onSelectDateRange: (value: DateRangePickerProps.AbsoluteValue) => void;
   initialStartDate: string | undefined;
@@ -73,6 +72,8 @@ function Calendar(
   ref: React.Ref<Focusable>
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
+
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
 
   useImperativeHandle(ref, () => ({
     focus() {
@@ -268,18 +269,16 @@ function Calendar(
   };
 
   const onChangeStartDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setStartDateString(isoDateString);
+    setStartDateString(e.detail.value);
 
-    if (isoDateString.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(isoDateString));
+    if (e.detail.value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
   const onChangeEndDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setEndDateString(isoDateString);
+    setEndDateString(e.detail.value);
   };
 
   let constrainttextId = useUniqueId('awsui-area-date-range-picker');
@@ -313,7 +312,7 @@ function Calendar(
             isDateEnabled={isDateEnabled}
             onSelectDate={onSelectDateHandler}
             onChangeMonth={setCurrentMonth}
-            startOfWeek={startOfWeek}
+            startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
@@ -326,7 +325,7 @@ function Calendar(
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                   <DateInput
-                    value={isoToDisplay(startDateString)}
+                    value={startDateString}
                     autoComplete={false}
                     disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}
@@ -357,7 +356,7 @@ function Calendar(
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                   <DateInput
-                    value={isoToDisplay(endDateString)}
+                    value={endDateString}
                     autoComplete={false}
                     disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}

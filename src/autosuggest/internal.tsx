@@ -23,7 +23,6 @@ import { checkOptionValueField } from '../select/utils/check-option-value-field'
 import checkControlled from '../internal/hooks/check-controlled';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import TabTrap from '../internal/components/tab-trap';
 import AutosuggestOptionsList from './options-list';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
@@ -211,30 +210,24 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         minWidth={__dropdownWidth}
         stretchWidth={!__dropdownWidth}
         trigger={
-          <>
-            <InternalInput
-              type="search"
-              value={value}
-              onChange={handleInputChange}
-              __onDelayedInput={event => fireLoadMore(true, false, event.detail.value)}
-              onFocus={handleInputFocus}
-              onKeyDown={handleKeyDown}
-              onKeyUp={onKeyUp}
-              disabled={disabled}
-              disableBrowserAutocorrect={disableBrowserAutocorrect}
-              readOnly={readOnly}
-              ariaRequired={ariaRequired}
-              ref={inputRef}
-              autoComplete={false}
-              __nativeAttributes={nativeAttributes}
-              {...formFieldContext}
-              controlId={controlId}
-            />
-            <TabTrap
-              focusNextCallback={() => dropdownStatus.focusRecoveryLink()}
-              disabled={!open || !showRecoveryLink}
-            />
-          </>
+          <InternalInput
+            type="search"
+            value={value}
+            onChange={handleInputChange}
+            __onDelayedInput={event => fireLoadMore(true, false, event.detail.value)}
+            onFocus={handleInputFocus}
+            onKeyDown={handleKeyDown}
+            onKeyUp={onKeyUp}
+            disabled={disabled}
+            disableBrowserAutocorrect={disableBrowserAutocorrect}
+            readOnly={readOnly}
+            ariaRequired={ariaRequired}
+            ref={inputRef}
+            autoComplete={false}
+            __nativeAttributes={nativeAttributes}
+            {...formFieldContext}
+            controlId={controlId}
+          />
         }
         onMouseDown={handleMouseDown}
         open={open}
@@ -242,14 +235,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         footer={
           dropdownStatus.isSticky ? (
             <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
-              <TabTrap focusNextCallback={() => inputRef.current?.focus()} disabled={!showRecoveryLink} />
               <DropdownFooter content={dropdownStatus.content} hasItems={items.length >= 1} />
-              <TabTrap focusNextCallback={() => inputRef.current?.focus()} disabled={!showRecoveryLink} />
             </div>
           ) : null
         }
         expandToViewport={expandToViewport}
         hasContent={items.length >= 1 || dropdownStatus.content !== null}
+        trapFocus={!!showRecoveryLink}
       >
         {open && (
           <AutosuggestOptionsList

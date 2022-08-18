@@ -17,7 +17,7 @@
   outline-offset: 2px;
   outline-color: awsui.$color-border-item-focused;
   // For visual refresh
-  border-radius: awsui.$border-radius-control-focus-ring-default;
+  border-radius: awsui.$border-radius-control-default-focus-ring;
   box-shadow: 0 0 0 awsui.$border-link-focus-ring-shadow-spread awsui.$color-border-item-focused;
 }
 
@@ -36,7 +36,7 @@
 
 @mixin focus-highlight(
   $gutter,
-  $border-radius: awsui.$border-radius-control-focus-ring-default,
+  $border-radius: awsui.$border-radius-control-default-focus-ring,
   $box-shadow: foundation.$box-shadow-focused
 ) {
   $gutter-vertical: $gutter;
