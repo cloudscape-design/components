@@ -24,6 +24,7 @@ import { ScaledPoint } from './make-scaled-series';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { nodeContains } from '../internal/utils/dom';
 import { SomeRequired } from '../internal/types';
+import { isXThreshold, isYThreshold } from './utils';
 
 type InternalMixedLineBarChartProps<T extends ChartDataTypes> = SomeRequired<
   MixedLineBarChartProps<T>,
@@ -94,20 +95,27 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
         `Property horizontalBars can only be used with charts that contain only bar or threshold series.`
       );
     }
+
+    for (const s of externalSeries) {
+      if (s.type === 'threshold' && s.x !== undefined && s.y !== undefined) {
+        warnOnce('MixedLineBarChart', `Series of type "threshold" must contain either x or y property.`);
+      }
+      if (s.type === 'threshold' && s.x === undefined && s.y === undefined) {
+        warnOnce('MixedLineBarChart', `Series of type "threshold" must contain either x or y property.`);
+      }
+    }
   }, [xScaleType, horizontalBars, externalSeries]);
 
   const series = useMemo(() => {
+    // Generate series colors if not explicitly provided.
+    // The thresholds use a dedicated colour scale.
     const colors = createCategoryColorScale(
       externalSeries,
-      it => it.type === 'threshold',
+      it => isYThreshold(it) || isXThreshold(it),
       it => it.color || null
     );
 
-    return externalSeries.map((s, i) => ({
-      index: i,
-      color: colors[i],
-      series: s,
-    }));
+    return externalSeries.map((s, i) => ({ index: i, color: colors[i], series: s }));
   }, [externalSeries]);
 
   const [highlightedPoint, setHighlightedPoint] = useState<ScaledPoint<T> | null>(null);

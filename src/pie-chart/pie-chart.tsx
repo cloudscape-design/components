@@ -88,7 +88,7 @@ export default <T extends PieChartProps.Datum>({
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSegmentRef = useRef<SVGGElement>(null);
   const popoverTrackRef = useRef<SVGCircleElement>(null);
-  const isRefresh = useVisualRefresh(containerRef);
+  const isRefresh = useVisualRefresh();
 
   const dimensions = isRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
   const radius = dimensions.outerRadius;
@@ -313,7 +313,6 @@ export default <T extends PieChartProps.Datum>({
               pieData={pieData}
               size={size}
               variant={variant}
-              containerRef={containerRef}
               focusedSegmentRef={focusedSegmentRef}
               popoverTrackRef={popoverTrackRef}
               highlightedSegment={highlightedSegment}

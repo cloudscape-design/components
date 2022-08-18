@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { ScaleContinuousNumeric, ScaleTime } from 'd3-scale';
 
@@ -12,7 +12,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
-  series: MixedLineBarChartProps.DataSeries<T>;
+  series: MixedLineBarChartProps.BarDataSeries<T>;
 
   color: string;
   totalSeriesCount: number;
@@ -47,8 +47,7 @@ export default function BarSeries<T extends ChartDataTypes>({
   plotSize,
   chartAreaClipPath,
 }: BarSeriesProps<T>) {
-  const seriesRef = useRef(null);
-  const isRefresh = useVisualRefresh(seriesRef);
+  const isRefresh = useVisualRefresh();
 
   const xCoordinates = useMemo(() => {
     if (series.type !== 'bar' || !xScale.isCategorical()) {
@@ -110,7 +109,6 @@ export default function BarSeries<T extends ChartDataTypes>({
         [styles['series--highlighted']]: highlighted,
         [styles['series--dimmed']]: dimmed,
       })}
-      ref={seriesRef}
     >
       {xCoordinates.map(
         ({ x, y, width, height }, i) =>

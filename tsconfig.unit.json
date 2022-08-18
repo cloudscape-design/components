@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "lib": ["es2019", "dom"],
+    "target": "es2018",
+    "lib": ["es2018", "dom"],
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "moduleResolution": "node",
     "downlevelIteration": true,
@@ -11,5 +11,11 @@
     "noEmit": true,
     "resolveJsonModule": true
   },
-  "include": ["types", "**/__tests__/**/*.tsx", "**/__tests__/**/*.ts", "**/__mocks__/**/*.ts", "types"]
+  "include": [
+    "types",
+    "**/__tests__/**/*.tsx",
+    "**/__tests__/**/*.ts",
+    "**/__mocks__/**/*.ts",
+    "types"
+  ]
 }

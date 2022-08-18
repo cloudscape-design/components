@@ -451,6 +451,24 @@ describe('Series', () => {
     rerender(<MixedLineBarChart series={[lineSeries]} hideFilter={true} />);
     expect(consoleSpy).not.toBeCalled();
   });
+
+  test('should warn when threshold series definition is incorrect', () => {
+    renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', x: 0 }]} />);
+    expect(consoleSpy).not.toBeCalled();
+
+    renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', y: 0 }]} />);
+    expect(consoleSpy).not.toBeCalled();
+
+    renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', x: 0, y: 0 }]} />);
+    expect(consoleSpy).lastCalledWith(
+      '[AwsUi] [MixedLineBarChart] Series of type "threshold" must contain either x or y property.'
+    );
+
+    renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold' }]} />);
+    expect(consoleSpy).lastCalledWith(
+      '[AwsUi] [MixedLineBarChart] Series of type "threshold" must contain either x or y property.'
+    );
+  });
 });
 
 describe('Scales', () => {
@@ -951,4 +969,14 @@ test('highlighted series are controllable', () => {
   expect(wrapper.findLegend()?.findHighlightedItem()?.getElement()).toEqual(
     wrapper.findLegend()?.findItems()[1].getElement()
   );
+});
+
+test('highlights relevant x-thresholds when navigating line series', () => {
+  const { wrapper } = renderMixedChart(
+    <MixedLineBarChart series={[lineSeries, { type: 'threshold', title: 'X-Threshold 1', x: 0 }]} />
+  );
+  wrapper.findApplication()!.focus();
+
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('Line Series 1');
+  expect(wrapper.findDetailPopover()!.findContent()!.getElement().textContent).toContain('X-Threshold 1');
 });

@@ -8125,7 +8125,7 @@ Object {
           Object {
             "name": "tokens",
             "optional": false,
-            "type": "typeOperator",
+            "type": "ReadonlyArray<PropertyFilterProps.Token>",
           },
         ],
         "type": "object",
@@ -8502,7 +8502,7 @@ Each token has the following properties:
           Object {
             "name": "tokens",
             "optional": false,
-            "type": "typeOperator",
+            "type": "ReadonlyArray<PropertyFilterProps.Token>",
           },
         ],
         "type": "object",

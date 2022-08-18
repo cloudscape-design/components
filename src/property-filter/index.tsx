@@ -16,7 +16,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterProps } from './interfaces';
 import { Token } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, ParsedText } from './controller';
+import { getQueryActions, parseText, getAutosuggestOptions, ParsedText, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -177,8 +177,17 @@ const PropertyFilter = React.forwardRef(
 
       // stop dropdown from closing
       event.preventDefault();
-      const loadMoreDetail = getLoadMoreDetail(parseText(value, filteringProperties, disableFreeTextFiltering), value);
+      const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
+      const loadMoreDetail = getLoadMoreDetail(parsedText, value);
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
+
+      // Insert operator automatically if only one operator is defined for the given property.
+      if (parsedText.step === 'operator') {
+        const operators = getAllowedOperators(parsedText.property);
+        if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
+          setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
+        }
+      }
     };
     const [tokensExpanded, setTokensExpanded] = useState(false);
     const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);

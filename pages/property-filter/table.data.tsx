@@ -6,7 +6,6 @@ import { PropertyFilterProps } from '~components/property-filter';
 import { DatePickerEmbedded } from '~components/date-picker/embedded';
 import DateInput from '~components/internal/components/date-input';
 import { FormField, SpaceBetween, TimeInput } from '~components';
-import { isoToDisplay, displayToIso } from '~components/date-picker/calendar/utils/date';
 import { padStart } from 'lodash';
 
 export interface TableItem {
@@ -1083,8 +1082,8 @@ const DateTimeForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, 
             name="date"
             ariaLabel="Enter the date in YYYY/MM/DD"
             placeholder="YYYY/MM/DD"
-            onChange={event => onChangeDate(displayToIso(event.detail.value))}
-            value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
+            onChange={event => onChangeDate(event.detail.value)}
+            value={value ? parsedValue.dateValue : parsedFilter.dateValue}
             disableAutocompleteOnBlur={true}
           />
         </FormField>
@@ -1127,8 +1126,8 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
           name="date"
           ariaLabel="Enter the date in YYYY/MM/DD"
           placeholder="YYYY/MM/DD"
-          onChange={event => onChangeDate(displayToIso(event.detail.value))}
-          value={value ? isoToDisplay(parsedValue.dateValue) : isoToDisplay(parsedFilter.dateValue)}
+          onChange={event => onChangeDate(event.detail.value)}
+          value={value ? parsedValue.dateValue : parsedFilter.dateValue}
           disableAutocompleteOnBlur={true}
         />
       </FormField>

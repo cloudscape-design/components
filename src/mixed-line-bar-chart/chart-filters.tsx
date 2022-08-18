@@ -19,7 +19,7 @@ interface InternalChartFiltersProps<T extends ChartDataTypes> {
   additionalFilters?: React.ReactNode;
 }
 
-function InternalChartFilters<T extends number | string | Date>({
+export default function InternalChartFilters<T extends number | string | Date>({
   series,
   visibleSeries,
   onChange,
@@ -53,5 +53,3 @@ function InternalChartFilters<T extends number | string | Date>({
     </InternalSpaceBetween>
   );
 }
-
-export default InternalChartFilters;

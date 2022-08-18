@@ -9,6 +9,7 @@ import { ScaledPoint } from '../make-scaled-series';
 import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { MixedLineBarChartProps } from '../interfaces';
+import { isYThreshold } from '../utils';
 
 const MAX_HOVER_MARGIN = 6;
 
@@ -47,7 +48,7 @@ export function useMouseHover<T>({
       .reduce((prev, curr) => (Math.abs(curr - offsetX) < Math.abs(prev - offsetX) ? curr : prev), -Infinity);
 
     const closestY = scaledSeries
-      .filter(v => v.x === closestX || v.series.type === 'threshold')
+      .filter(v => v.x === closestX || isYThreshold(v.series))
       .map(v => v.y)
       .reduce((prev, curr) => (Math.abs(curr - offsetY) < Math.abs(prev - offsetY) ? curr : prev), -Infinity);
 
@@ -59,7 +60,7 @@ export function useMouseHover<T>({
         Math.abs(offsetY - closestY) < MAX_HOVER_MARGIN
       ) {
         const [{ color, datum, series }] = scaledSeries.filter(
-          s => (s.x === closestX || s.series.type === 'threshold') && s.y === closestY
+          s => (s.x === closestX || isYThreshold(s.series)) && s.y === closestY
         );
         highlightSeries(series);
         highlightPoint({ x: closestX, y: closestY, color, datum, series });
