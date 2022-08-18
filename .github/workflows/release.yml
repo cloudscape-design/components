@@ -29,17 +29,17 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
-      - name: Generate changelog
-        run: |
-          npx standard-version --skip.commit --skip.tag --header ""
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          commitish: ${{ github.event.inputs.sha }}
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: Release ${{ github.event.inputs.tag }}
-          body_path: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_commitish: ${{ github.event.inputs.sha }}
           draft: false
           prerelease: false
+          tag_name: ${{ github.event.inputs.tag }}
+          name: Release ${{ github.event.inputs.tag }}
+          generate_release_notes: true
+
+
+          
+
