@@ -80,7 +80,7 @@ const Item = (
         )}
         {!hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
-            <InternalIcon name="confirm" />
+            <InternalIcon name="check" />
           </div>
         )}
       </div>

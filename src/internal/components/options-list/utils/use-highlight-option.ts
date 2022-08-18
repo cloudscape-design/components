@@ -14,15 +14,17 @@ export function createHighlightedOptionHook<OptionType>({
     options: ReadonlyArray<OptionType>;
     isKeyboard: MutableRefObject<boolean>;
   }) {
+    const [highlightedIndex, setHighlightedIndexState] = useState(-1);
+    const [highlightedType, setHighlightedType] = useState<'mouse' | 'keyboard'>(
+      isKeyboard.current ? 'keyboard' : 'mouse'
+    );
     const setHighlightedIndex = useCallback(
       (index: number) => {
         setHighlightedIndexState(index);
-        setType(isKeyboard.current ? 'keyboard' : 'mouse');
+        setHighlightedType(isKeyboard.current ? 'keyboard' : 'mouse');
       },
       [isKeyboard]
     );
-    const [highlightedIndex, setHighlightedIndexState] = useState(-1);
-    const [highlightedType, setType] = useState<'mouse' | 'keyboard'>(isKeyboard.current ? 'keyboard' : 'mouse');
     const highlightedOption =
       options[highlightedIndex] && isHighlightable(options[highlightedIndex]) ? options[highlightedIndex] : undefined;
 
