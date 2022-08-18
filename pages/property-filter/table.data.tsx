@@ -1153,26 +1153,32 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
       {
         value: '=',
         form: DateForm,
+        match: 'date',
       },
       {
         value: '!=',
         form: DateForm,
+        match: 'date',
       },
       {
         value: '>',
         form: DateForm,
+        match: 'date',
       },
       {
         value: '<',
         form: DateForm,
+        match: 'date',
       },
       {
         value: '<=',
         form: DateForm,
+        match: 'date',
       },
       {
         value: '>=',
         form: DateForm,
+        match: 'date',
       },
     ];
   }
@@ -1183,18 +1189,22 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
       {
         value: '>',
         form: DateTimeForm,
+        match: 'date',
       },
       {
         value: '<',
         form: DateTimeForm,
+        match: 'date',
       },
       {
         value: '<=',
         form: DateTimeForm,
+        match: 'date',
       },
       {
         value: '>=',
         form: DateTimeForm,
+        match: 'date',
       },
     ];
   }

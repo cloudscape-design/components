@@ -206,7 +206,7 @@ export namespace PropertyFilterProps {
     value: ComparisonOperator;
     form?: CustomOperatorForm<TokenValue>;
     format?: CustomOperatorFormat<TokenValue>;
-    match?: CustomOperatorMatch<TokenValue>;
+    match?: 'date' | CustomOperatorMatch<TokenValue>;
   }
 
   export type CustomOperatorForm<TokenValue> = React.FC<{
@@ -218,7 +218,7 @@ export namespace PropertyFilterProps {
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
 
-  export type CustomOperatorMatch<TokenValue> = (itemValue: any, tokenValue: TokenValue) => boolean;
+  export type CustomOperatorMatch<TokenValue> = (tokenValue: TokenValue, itemValue: any) => boolean;
 
   export interface FilteringProperty {
     key: string;
