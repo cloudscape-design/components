@@ -202,15 +202,8 @@ export namespace PropertyFilterProps {
 
   export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
 
-  export interface LabelledOperator {
-    value: ComparisonOperator;
-    label: string;
-  }
-
   export interface ExtendedOperator<TokenValue> {
     value: ComparisonOperator;
-    label?: string;
-    description?: string;
     form?: CustomOperatorForm<TokenValue>;
     format?: CustomOperatorFormat<TokenValue>;
     match?: CustomOperatorMatch<TokenValue>;

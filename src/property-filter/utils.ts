@@ -25,17 +25,17 @@ export function matchFilteringProperty(
 
 // Finds the longest operator the filtering text starts from.
 export function matchOperator(
-  allowedOperators: readonly PropertyFilterProps.LabelledOperator[],
+  allowedOperators: readonly PropertyFilterProps.ComparisonOperator[],
   filteringText: string
-): null | PropertyFilterProps.LabelledOperator {
+): null | PropertyFilterProps.ComparisonOperator {
   filteringText = filteringText.toLowerCase();
 
   let maxLength = 0;
-  let matchedOperator: null | PropertyFilterProps.LabelledOperator = null;
+  let matchedOperator: null | PropertyFilterProps.ComparisonOperator = null;
 
   for (const operator of allowedOperators) {
-    if (operator.label.length > maxLength && startsWith(filteringText, operator.label.toLowerCase())) {
-      maxLength = operator.label.length;
+    if (operator.length > maxLength && startsWith(filteringText, operator.toLowerCase())) {
+      maxLength = operator.length;
       matchedOperator = operator;
     }
   }
@@ -45,14 +45,14 @@ export function matchOperator(
 
 // Finds if the filtering text matches any operator prefix.
 export function matchOperatorPrefix(
-  allowedOperators: readonly PropertyFilterProps.LabelledOperator[],
+  allowedOperators: readonly PropertyFilterProps.ComparisonOperator[],
   filteringText: string
 ): null | string {
   if (filteringText.trim().length === 0) {
     return '';
   }
   for (const operator of allowedOperators) {
-    if (startsWith(operator.label.toLowerCase(), filteringText.toLowerCase())) {
+    if (startsWith(operator.toLowerCase(), filteringText.toLowerCase())) {
       return filteringText;
     }
   }

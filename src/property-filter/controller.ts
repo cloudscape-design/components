@@ -55,7 +55,6 @@ export type ParsedText =
       step: 'property';
       property: PropertyFilterProps.FilteringProperty;
       operator: PropertyFilterProps.ComparisonOperator;
-      operatorLabel: string;
       value: string;
     }
   | { step: 'operator'; property: PropertyFilterProps.FilteringProperty; operatorPrefix: string }
@@ -63,17 +62,18 @@ export type ParsedText =
 
 export const getAllowedOperators = (
   property: PropertyFilterProps.FilteringProperty
-): PropertyFilterProps.LabelledOperator[] => {
+): PropertyFilterProps.ComparisonOperator[] => {
   const { operators, defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorMap: { [key: string]: string } = { [defaultOperator ?? '=']: defaultOperator ?? '=' };
+  const operatorSet: { [key: string]: boolean } = { [defaultOperator ?? '=']: true };
   operators?.forEach(op => {
     if (typeof op === 'string') {
-      return (operatorMap[op] = op);
+      operatorSet[op] = true;
+    } else {
+      operatorSet[op.value] = true;
     }
-    operatorMap[op.value] = op.label ?? op.value;
   });
-  return operatorOrder.filter(op => operatorMap[op]).map(op => ({ value: op, label: operatorMap[op] }));
+  return operatorOrder.filter(op => operatorSet[op]);
 };
 
 /*
@@ -108,13 +108,12 @@ export const parseText = (
   const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
   const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
   if (operator) {
-    const operatorLastIndex = textWithoutProperty.indexOf(operator.label) + operator.label.length;
+    const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
     const textWithoutPropertyAndOperator = textWithoutProperty.slice(operatorLastIndex);
     return {
       step: 'property',
       property,
-      operator: operator.value,
-      operatorLabel: operator.label,
+      operator: operator,
       // We need to remove the first leading space in case the user presses space
       // after the operator, for example: Owner: admin, will result in value of ` admin`
       // and we need to remove the first space, if the user added any more spaces only the
@@ -169,11 +168,7 @@ export const getAllValueSuggestions = (
       return;
     }
     // this option's filtering property does not support current operator
-    if (
-      getAllowedOperators(property)
-        .map(o => o.value)
-        .indexOf(operator) === -1
-    ) {
+    if (getAllowedOperators(property).indexOf(operator) === -1) {
       return;
     }
     if (property.group && !customGroups[property.group]) {
@@ -295,9 +290,9 @@ export const getAutosuggestOptions = (
           ),
           {
             options: getAllowedOperators(parsedText.property).map(op => ({
-              value: parsedText.property.propertyLabel + ' ' + op.value + ' ',
-              label: parsedText.property.propertyLabel + ' ' + op.label,
-              description: operatorToDescription(op.value, i18nStrings),
+              value: parsedText.property.propertyLabel + ' ' + op + ' ',
+              label: parsedText.property.propertyLabel + ' ' + op,
+              description: operatorToDescription(op, i18nStrings),
               keepOpenOnSelect: true,
             })),
             label: i18nStrings.operatorsText,

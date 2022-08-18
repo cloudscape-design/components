@@ -110,7 +110,7 @@ const EditingFields = ({
             )
           : undefined;
         const allowedOperators: PropertyFilterProps.ComparisonOperator[] = filteringProperty
-          ? getAllowedOperators(filteringProperty).map(op => op.value)
+          ? getAllowedOperators(filteringProperty)
           : freeTextOperators;
         let operator = temporaryToken.operator;
         if (temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) === -1) {
@@ -128,14 +128,11 @@ const EditingFields = ({
 
   const operatorText = temporaryToken.operator;
   const freeTextOperators: PropertyFilterProps.ComparisonOperator[] = [':', '!:'];
-  const operatorOptions = (
-    property ? getAllowedOperators(property) : freeTextOperators.map(value => ({ value, label: value }))
-  ).map(operator => ({
-    value: operator.value,
-    label: operator.label,
-    description: !operator.label ? operatorToDescription(operator.value, i18nStrings) : '',
+  const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
+    value: operator,
+    label: operator,
+    description: operatorToDescription(operator, i18nStrings),
   }));
-  const matchedOption = operatorOptions.find(o => o.value === operatorText);
   const operatorControlId = useUniqueId('operator');
   const operatorSelect = temporaryToken && (
     <InternalSelect
@@ -145,9 +142,9 @@ const EditingFields = ({
       selectedOption={
         operatorText
           ? {
-              value: matchedOption?.value ?? operatorText,
-              label: matchedOption?.label ?? operatorText,
-              description: !matchedOption?.label ? operatorToDescription(operatorText, i18nStrings) : '',
+              value: operatorText,
+              label: operatorText,
+              description: operatorToDescription(operatorText, i18nStrings),
             }
           : null
       }

@@ -1152,32 +1152,26 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     operators = [
       {
         value: '=',
-        // label: 'is on',
         form: DateForm,
       },
       {
         value: '!=',
-        // label: 'is not on',
         form: DateForm,
       },
       {
         value: '>',
-        // label: 'is after',
         form: DateForm,
       },
       {
         value: '<',
-        // label: 'is before',
         form: DateForm,
       },
       {
         value: '<=',
-        // label: 'is on or before',
         form: DateForm,
       },
       {
         value: '>=',
-        // label: 'is on or after',
         form: DateForm,
       },
     ];
@@ -1188,22 +1182,18 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     operators = [
       {
         value: '>',
-        // label: 'is after',
         form: DateTimeForm,
       },
       {
         value: '<',
-        // label: 'is before',
         form: DateTimeForm,
       },
       {
         value: '<=',
-        // label: 'is at or before',
         form: DateTimeForm,
       },
       {
         value: '>=',
-        // label: 'is at or after',
         form: DateTimeForm,
       },
     ];
