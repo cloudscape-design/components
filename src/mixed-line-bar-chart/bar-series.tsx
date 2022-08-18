@@ -12,7 +12,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 export interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
-  series: MixedLineBarChartProps.DataSeries<T>;
+  series: MixedLineBarChartProps.BarDataSeries<T>;
 
   color: string;
   totalSeriesCount: number;

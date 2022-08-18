@@ -58,7 +58,7 @@ const Option = ({
   );
 
   return (
-    <div
+    <span
       title={option.label || option.value}
       data-value={option.value}
       className={className}
@@ -66,8 +66,8 @@ const Option = ({
       {...baseProps}
     >
       {icon}
-      <div className={clsx(styles.content)}>
-        <div className={clsx(styles['label-content'])}>
+      <span className={clsx(styles.content)}>
+        <span className={clsx(styles['label-content'])}>
           <Label
             label={option.label || option.value}
             prefix={option.__labelPrefix}
@@ -75,7 +75,7 @@ const Option = ({
             triggerVariant={triggerVariant}
           />
           <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
-        </div>
+        </span>
         <Description description={option.description} highlightText={highlightText} triggerVariant={triggerVariant} />
         <Tags tags={option.tags} highlightText={highlightText} triggerVariant={triggerVariant} />
         <FilteringTags
@@ -83,8 +83,8 @@ const Option = ({
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
-      </div>
-    </div>
+      </span>
+    </span>
   );
 };
 

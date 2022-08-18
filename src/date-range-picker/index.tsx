@@ -44,29 +44,37 @@ function formatDateRange(
     );
   }
 
-  if (range.type === 'relative') {
-    return (
-      <InternalBox fontWeight="normal" display="inline" color="inherit">
-        {formatRelativeRange(range)}
-      </InternalBox>
+  const formatted =
+    range.type === 'relative' ? (
+      formatRelativeRange(range)
+    ) : (
+      <BreakSpaces text={formatAbsoluteRange(range, timeOffset)} />
     );
-  }
 
-  if (range.type === 'absolute') {
-    const formattedOffset = isDateOnly(range) ? '' : formatTimezoneOffset(timeOffset);
-    return (
-      <InternalBox fontWeight="normal" display="inline" color="inherit">
-        <span className={styles['preferred-wordbreak']}>
-          {range.startDate}
-          {formattedOffset} &mdash;
-        </span>{' '}
-        <span className={styles['preferred-wordbreak']}>
-          {range.endDate}
-          {formattedOffset}
-        </span>
-      </InternalBox>
-    );
-  }
+  return (
+    <InternalBox fontWeight="normal" display="inline" color="inherit">
+      {formatted}
+    </InternalBox>
+  );
+}
+
+function BreakSpaces({ text }: { text: string }) {
+  const tokens = text.split(/( )/);
+  return (
+    <div style={{ whiteSpace: 'nowrap' }}>
+      {tokens.map((token, index) => (
+        <React.Fragment key={index}>
+          {token}
+          {token === ' ' && <wbr />}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+function formatAbsoluteRange(value: DateRangePickerProps.AbsoluteValue, timeOffset: number): string {
+  const formattedOffset = isDateOnly(value) ? '' : formatOffset(timeOffset);
+  return value.startDate + formattedOffset + ' ' + '—' + ' ' + value.endDate + formattedOffset;
 }
 
 function isDateOnly(value: null | DateRangePickerProps.Value) {

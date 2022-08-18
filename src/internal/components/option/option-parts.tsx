@@ -43,9 +43,9 @@ export const Description = ({ description, highlightText, triggerVariant }: Desc
   description ? (
     // We do not reach AA compliance in Dark mode for highlighted state
     // TODO: Remove aria-disabled={true} when we fix AWSUI-10333
-    <div className={clsx(styles.description, triggerVariant && styles['trigger-variant'])} aria-disabled={true}>
+    <span className={clsx(styles.description, triggerVariant && styles['trigger-variant'])} aria-disabled={true}>
       <HighlightMatch str={description} highlightText={highlightText} />
-    </div>
+    </span>
   ) : null;
 
 interface TagsProps {
@@ -55,7 +55,7 @@ interface TagsProps {
 }
 export const Tags = ({ tags, highlightText, triggerVariant }: TagsProps) =>
   tags ? (
-    <div className={clsx(styles.tags)}>
+    <span className={clsx(styles.tags)}>
       {tags.map((tag, idx) => (
         // We do not reach AA compliance in Dark mode for highlighted state
         // TODO: Remove aria-disabled={true} when we fix AWSUI-10333
@@ -63,7 +63,7 @@ export const Tags = ({ tags, highlightText, triggerVariant }: TagsProps) =>
           <HighlightMatch str={tag} highlightText={highlightText} />
         </span>
       ))}
-    </div>
+    </span>
   ) : null;
 
 interface FilteringTagProps {
@@ -79,7 +79,7 @@ export const FilteringTags = ({ filteringTags, highlightText, triggerVariant }: 
   const searchElement = highlightText.toLowerCase();
 
   return (
-    <div className={clsx(styles.tags)}>
+    <span className={clsx(styles.tags)}>
       {filteringTags.map((filteringTag, key) => {
         const match = filteringTag.toLowerCase().indexOf(searchElement) !== -1;
         if (match) {
@@ -97,7 +97,7 @@ export const FilteringTags = ({ filteringTags, highlightText, triggerVariant }: 
         }
         return null;
       })}
-    </div>
+    </span>
   );
 };
 

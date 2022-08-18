@@ -18,7 +18,8 @@ import VerticalMarker from '../internal/components/cartesian-chart/vertical-mark
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import ChartPopover from './chart-popover';
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType } from './interfaces';
-import { computeDomainX, computeDomainY } from './utils';
+import { computeDomainX, computeDomainY } from './domain';
+import { isXThreshold } from './utils';
 import makeScaledSeries, { ScaledPoint } from './make-scaled-series';
 import makeScaledBarGroups, { ScaledBarGroup } from './make-scaled-bar-groups';
 import formatHighlighted from './format-highlighted';
@@ -354,7 +355,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     () =>
       verticalLineX !== null
         ? scaledSeries
-            .filter(({ x }) => x === verticalLineX || isNaN(x))
+            .filter(({ x, y }) => (x === verticalLineX || isNaN(x)) && !isNaN(y))
             .map(({ x, y, color }, index) => ({
               key: `${index}-${x}-${y}`,
               x: !horizontalBars ? verticalLineX || 0 : y,
@@ -375,13 +376,16 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (highlightedX === null) {
       return null;
     }
-    // If there is a highlighted point - only use its corresponding series details.
-    for (const series of visibleSeries) {
-      if (series.series === highlightedPoint?.series) {
-        return formatHighlighted(highlightedX, [series], xTickFormatter);
-      }
+
+    // When series point is highlighted show the corresponding series and matching x-thresholds.
+    if (highlightedPoint) {
+      const seriesToShow = visibleSeries.filter(
+        series => series.series === highlightedPoint?.series || isXThreshold(series.series)
+      );
+      return formatHighlighted(highlightedX, seriesToShow, xTickFormatter);
     }
-    // Otherwise - use all series details.
+
+    // Otherwise - show all visible series details.
     return formatHighlighted(highlightedX, visibleSeries, xTickFormatter);
   }, [highlightedX, highlightedPoint, visibleSeries, xTickFormatter]);
 
