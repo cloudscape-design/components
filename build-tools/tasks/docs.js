@@ -6,12 +6,10 @@ const { documentComponents, documentTestUtils } = require('@cloudscape-design/do
 const { writeFile } = require('../utils/files');
 const { listPublicItems } = require('../utils/files');
 const workspace = require('../utils/workspace');
-const { buildDocumentation: designTokenDocs } = require('../design-tokens');
 
 module.exports = function docs() {
   componentDocs();
   testUtilDocs();
-  designTokenDocs();
   return Promise.resolve();
 };
 

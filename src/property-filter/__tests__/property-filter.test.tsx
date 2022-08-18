@@ -341,6 +341,17 @@ describe('property filter parts', () => {
         );
         expect(wrapper.findDropdown()?.findOpenDropdown()).toBeFalsy();
       });
+      test('inserts operator when property is selected if only one operator is defined for that property', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent();
+
+        act(() => wrapper.findNativeInput().focus());
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+        expect(wrapper.findNativeInput().getElement()).toHaveValue('default = ');
+        expect(wrapper.findDropdown()?.findOpenDropdown()).toBeTruthy();
+      });
     });
   });
 

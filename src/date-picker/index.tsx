@@ -25,7 +25,6 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
 import { useDatePicker } from './use-date-picker.js';
-import { displayToIso, isoToDisplay } from '../internal/utils/date-time/display-format.js';
 
 export { DatePickerProps };
 
@@ -106,8 +105,7 @@ const DatePicker = React.forwardRef(
     };
 
     const onInputChangeHandler: InputProps['onChange'] = event => {
-      const isoDateString = displayToIso(event.detail.value);
-      fireNonCancelableEvent(onChange, { value: isoDateString });
+      fireNonCancelableEvent(onChange, { value: event.detail.value });
     };
 
     const onInputBlurHandler: InputProps['onBlur'] = () => {
@@ -128,7 +126,7 @@ const DatePicker = React.forwardRef(
             ariaDescribedby={ariaDescribedby}
             ariaLabel={ariaLabel}
             ariaRequired={ariaRequired}
-            value={isoToDisplay(value)}
+            value={value}
             autoComplete={false}
             disableBrowserAutocorrect={true}
             disableAutocompleteOnBlur={isDropDownOpen}

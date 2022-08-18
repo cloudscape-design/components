@@ -20,14 +20,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
-import {
-  displayToIso,
-  formatDate,
-  formatTime,
-  isoToDisplay,
-  joinDateTime,
-  parseDate,
-} from '../../internal/utils/date-time';
+import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -271,18 +264,16 @@ function Calendar(
   };
 
   const onChangeStartDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setStartDateString(isoDateString);
+    setStartDateString(e.detail.value);
 
-    if (isoDateString.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(isoDateString));
+    if (e.detail.value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
   const onChangeEndDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setEndDateString(isoDateString);
+    setEndDateString(e.detail.value);
   };
 
   let constrainttextId = useUniqueId('awsui-area-date-range-picker');
@@ -329,7 +320,7 @@ function Calendar(
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                   <DateInput
-                    value={isoToDisplay(startDateString)}
+                    value={startDateString}
                     autoComplete={false}
                     disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}
@@ -360,7 +351,7 @@ function Calendar(
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                   <DateInput
-                    value={isoToDisplay(endDateString)}
+                    value={endDateString}
                     autoComplete={false}
                     disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}

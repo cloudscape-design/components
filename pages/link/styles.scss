@@ -10,3 +10,8 @@
   padding: 5px;
   background-color: tokens.$color-background-notification-blue;
 }
+
+.narrow {
+  border: 1px solid red;
+  max-width: 12ch;
+}
