@@ -22,7 +22,7 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
   const { __internalRootRef } = useBaseComponent('ContentLayout');
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
   const overlapElement = useDynamicOverlap();
-  const isVisualRefresh = useVisualRefresh(rootElement);
+  const isVisualRefresh = useVisualRefresh();
 
   /**
    * Disable the overlap if the component is missing either a header or child
