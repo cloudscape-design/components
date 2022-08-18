@@ -73,7 +73,7 @@ function BreakSpaces({ text }: { text: string }) {
 }
 
 function formatAbsoluteRange(value: DateRangePickerProps.AbsoluteValue, timeOffset: number): string {
-  const formattedOffset = isDateOnly(value) ? '' : formatOffset(timeOffset);
+  const formattedOffset = isDateOnly(value) ? '' : formatTimezoneOffset(timeOffset);
   return value.startDate + formattedOffset + ' ' + '—' + ' ' + value.endDate + formattedOffset;
 }
 
