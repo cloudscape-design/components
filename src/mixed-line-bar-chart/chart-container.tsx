@@ -116,7 +116,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
 
-  const isRefresh = useVisualRefresh(containerRefObject);
+  const isRefresh = useVisualRefresh();
 
   const linesOnly = series.every(({ series }) => series.type === 'line' || series.type === 'threshold');
 
