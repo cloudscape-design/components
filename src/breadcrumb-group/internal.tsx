@@ -43,10 +43,16 @@ const DropdownTrigger = (
   );
 };
 
-const EllipsisDropdown = ({ dropdownItems, onDropdownItemClick, onDropdownItemFollow }: EllipsisDropdownProps) => {
+const EllipsisDropdown = ({
+  dropdownItems,
+  onDropdownItemClick,
+  onDropdownItemFollow,
+  ariaLabel,
+}: EllipsisDropdownProps) => {
   return (
     <li className={styles.ellipsis}>
       <InternalButtonDropdown
+        ariaLabel={ariaLabel}
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}

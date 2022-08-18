@@ -72,6 +72,12 @@ describe('BreadcrumbGroup Component', () => {
       expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).not.toBe(null);
     });
 
+    test('button dropdown has aria-label', () => {
+      const nodeList = wrapper.findDropdown()?.findNativeButton();
+      console.log(wrapper.findDropdown()?.findNativeButton().getElement().outerHTML);
+      expect(nodeList?.getElement()).toHaveAttribute('aria-label');
+    });
+
     test('test-utils findBreadcrumbLink selector properly skip ellipsis item', () => {
       for (let index = 1; index <= items.length; index++) {
         expect(wrapper.findBreadcrumbLink(index)!.getElement()).toHaveTextContent(`Item ${index}`);

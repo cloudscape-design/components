@@ -110,7 +110,7 @@ const InternalButtonDropdown = React.forwardRef(
           };
 
     const trigger = customTriggerBuilder ? (
-      customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen)
+      customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel)
     ) : (
       <InternalButton
         ref={dropdownRef}
