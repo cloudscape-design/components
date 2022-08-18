@@ -82,6 +82,7 @@ export namespace IconProps {
     | 'caret-right-filled'
     | 'caret-up-filled'
     | 'caret-up'
+    | 'check'
     | 'contact'
     | 'close'
     | 'copy'
