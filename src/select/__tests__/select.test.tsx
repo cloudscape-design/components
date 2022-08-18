@@ -5,7 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
-import { expectNoAxeViolations } from '../../__a11y__/axe';
+import '../../__a11y__/to-validate-a11y';
 
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 const defaultOptions: SelectProps.Options = [
@@ -249,7 +249,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         });
         wrapper.openDropdown();
 
-        await expectNoAxeViolations(container);
+        await expect(container).toValidateA11y();
       });
     });
   });
