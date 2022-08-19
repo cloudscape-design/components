@@ -1135,8 +1135,8 @@ const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, valu
   );
 };
 
-export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
-  let operators: (PropertyFilterProps.ComparisonOperator | PropertyFilterProps.ExtendedOperator<string>)[] = [];
+export const filteringProperties: readonly any[] = columnDefinitions.map(def => {
+  let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
 
   if (def.type === 'text') {
