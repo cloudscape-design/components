@@ -5,6 +5,13 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import {
+  PropertyFilterOperator,
+  PropertyFilterOperation,
+  PropertyFilterToken,
+  PropertyFilterProperty,
+  PropertyFilterOption,
+} from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -143,12 +150,15 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 }
 
 export namespace PropertyFilterProps {
+  export type Token = PropertyFilterToken;
+  export type JoinOperation = PropertyFilterOperation;
+  export type ComparisonOperator = PropertyFilterOperator;
+  export type FilteringProperty = PropertyFilterProperty;
+  export type FilteringOption = PropertyFilterOption;
   export interface Query {
-    tokens: readonly PropertyFilterProps.Token[];
+    tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
   }
-
-  export type JoinOperation = 'and' | 'or';
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
@@ -198,26 +208,10 @@ export namespace PropertyFilterProps {
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
 
-  export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
-
-  export interface FilteringProperty {
-    key: string;
-    groupValuesLabel: string;
-    propertyLabel: string;
-    operators?: readonly ComparisonOperator[];
-    defaultOperator?: ComparisonOperator;
-    group?: string;
-  }
-
   export interface GroupText {
     properties: string;
     values: string;
     group: string;
-  }
-
-  export interface FilteringOption {
-    propertyKey: string;
-    value: string;
   }
 
   export interface FilteringChangeDetail {
@@ -230,11 +224,5 @@ export namespace PropertyFilterProps {
      * Sets focus on the underlying input control.
      */
     focus(): void;
-  }
-
-  export interface Token {
-    value: string;
-    propertyKey?: string;
-    operator: ComparisonOperator;
   }
 }

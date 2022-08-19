@@ -36,7 +36,6 @@ export const Progress = ({ value, isInFlash, labelId }: ProgressProps) => {
         )}
         aria-valuenow={progressValue}
         aria-valuemin={0}
-        aria-valuemax={MAX_VALUE}
         max={MAX_VALUE}
         value={progressValue}
         aria-labelledby={labelId}

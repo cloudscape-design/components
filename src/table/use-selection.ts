@@ -103,22 +103,23 @@ export function useSelection<T>({
     disabled: isItemDisabled(item),
     selected: isItemSelected(item),
   });
-  const [allDisabled, allEnabledSelected, hasSelected] = selectionType
+  const [allDisabled, allEnabledSelected] = selectionType
     ? items.reduce(
-        ([allDisabled, allEnabledSelected, hasSelected], item) => {
+        ([allDisabled, allEnabledSelected], item) => {
           const { disabled, selected } = getItemState(item);
           return [
             // all items are disabled (or none are present)
             allDisabled && disabled,
             // all enabled items are selected (or none are present)
             allEnabledSelected && (selected || disabled),
-            // the page has at least one selected item
-            hasSelected || selected,
           ];
         },
-        [true, true, false]
+        [true, true]
       )
-    : [true, true, false];
+    : [true, true];
+
+  // the page has at least one selected item
+  const hasSelected = finalSelectedItems.length > 0;
 
   const handleToggleAll = () => {
     const requestedItems = new ItemSet(trackBy, items);

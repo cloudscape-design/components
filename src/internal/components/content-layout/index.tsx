@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from '../../../app-layout/visual-refresh/context';
 import { ContentLayoutProps } from './interfaces';
@@ -12,8 +12,7 @@ export { ContentLayoutProps };
 
 export default function ContentLayout({ children, disableOverlap, header }: ContentLayoutProps) {
   const { breadcrumbs } = useContext(AppLayoutContext);
-  const rootElement = useRef<HTMLDivElement>(null);
-  const isVisualRefresh = useVisualRefresh(rootElement);
+  const isVisualRefresh = useVisualRefresh();
   const isOverlapDisabled = !children || !header || disableOverlap;
 
   const overlapElement = useDynamicOverlap();
@@ -24,7 +23,6 @@ export default function ContentLayout({ children, disableOverlap, header }: Cont
         [styles['is-overlap-disabled']]: isOverlapDisabled,
         [styles['is-visual-refresh']]: isVisualRefresh,
       })}
-      ref={rootElement}
     >
       <div
         className={clsx(
