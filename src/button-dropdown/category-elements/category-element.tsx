@@ -12,7 +12,7 @@ const CategoryElement = ({
   onGroupToggle,
   targetItem,
   isHighlighted,
-  isFocused,
+  isKeyboardHighlight,
   isExpanded,
   highlightItem,
   disabled,
@@ -39,7 +39,7 @@ const CategoryElement = ({
             onGroupToggle={onGroupToggle}
             targetItem={targetItem}
             isHighlighted={isHighlighted}
-            isFocused={isFocused}
+            isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
             highlightItem={highlightItem}
             categoryDisabled={disabled}

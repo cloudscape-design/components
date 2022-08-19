@@ -18,7 +18,7 @@ const ExpandableCategoryElement = ({
   onGroupToggle,
   targetItem,
   isHighlighted,
-  isFocused,
+  isKeyboardHighlight,
   isExpanded,
   highlightItem,
   disabled,
@@ -27,7 +27,7 @@ const ExpandableCategoryElement = ({
 }: CategoryProps) => {
   const highlighted = isHighlighted(item);
   const expanded = isExpanded(item);
-  const focused = isFocused(item);
+  const isKeyboardHighlighted = isKeyboardHighlight(item);
   const triggerRef = React.useRef<HTMLSpanElement>(null);
   const ref = useRef<HTMLLIElement>(null);
 
@@ -57,7 +57,7 @@ const ExpandableCategoryElement = ({
       className={clsx(styles.header, styles['expandable-header'], styles[`variant-${variant}`], {
         [styles.disabled]: disabled,
         [styles.highlighted]: highlighted,
-        [styles['is-focused']]: focused,
+        [styles['is-focused']]: isKeyboardHighlighted,
       })}
       // We are using the roving tabindex technique to manage the focus state of the dropdown.
       // The current element will always have tabindex=0 which means that it can be tabbed to,
@@ -103,7 +103,7 @@ const ExpandableCategoryElement = ({
               onGroupToggle={onGroupToggle}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
-              isFocused={isFocused}
+              isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               variant={variant}

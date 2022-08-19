@@ -42,7 +42,8 @@ export default function useHighlightedMenu({
     [targetIndex, getItemIndex]
   );
 
-  const isFocused = useCallback(
+  // check if keyboard focus is on the element
+  const isKeyboardHighlight = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
       const index = getItemIndex(item);
       return !isUsingMouse && indexEquals(index, targetIndex);
@@ -124,7 +125,7 @@ export default function useHighlightedMenu({
   return {
     targetItem,
     isHighlighted,
-    isFocused,
+    isKeyboardHighlight,
     isExpanded,
     moveHighlight,
     highlightItem,

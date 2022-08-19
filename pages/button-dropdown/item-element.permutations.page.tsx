@@ -128,7 +128,7 @@ const permutations = createPermutations<ItemProps>([
     hasCategoryHeader: [false],
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
-    focused: [true],
+    isKeyboardHighlighted: [true],
   },
 ]);
 

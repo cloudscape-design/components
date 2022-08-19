@@ -35,7 +35,7 @@ export function useButtonDropdown({
   const {
     targetItem,
     isHighlighted,
-    isFocused,
+    isKeyboardHighlight,
     isExpanded,
     highlightItem,
     moveHighlight,
@@ -169,7 +169,7 @@ export function useButtonDropdown({
     isOpen,
     targetItem,
     isHighlighted,
-    isFocused,
+    isKeyboardHighlight,
     isExpanded,
     highlightItem,
     onKeyDown,
