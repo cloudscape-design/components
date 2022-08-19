@@ -73,8 +73,16 @@ describe('BreadcrumbGroup Component', () => {
     });
 
     test('dropdown button has aria-label', () => {
-      const nodeList = wrapper.findDropdown()?.findNativeButton();
-      expect(nodeList?.getElement()).toHaveAttribute('aria-label');
+      const nativeButton = wrapper.findDropdown()?.findNativeButton();
+      expect(nativeButton?.getElement()).toHaveAttribute('aria-label', 'Show path');
+    });
+
+    test('can set aria-label to dropdown buttons', () => {
+      wrapper = renderBreadcrumbGroup({ items, expandAriaLabel: 'Custom Show path label' });
+      expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute(
+        'aria-label',
+        'Custom Show path label'
+      );
     });
 
     test('test-utils findBreadcrumbLink selector properly skip ellipsis item', () => {

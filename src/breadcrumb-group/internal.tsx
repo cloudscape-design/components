@@ -36,6 +36,7 @@ const DropdownTrigger = (
       aria-haspopup={true}
       ariaLabel={ariaLabel}
       variant="breadcrumb-group"
+      formAction="none"
     >
       ...
     </InternalButton>
