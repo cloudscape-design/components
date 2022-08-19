@@ -451,7 +451,8 @@ Individual properties will always take precedence over the default coming from t
       "type": "boolean",
     },
     Object {
-      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.",
+      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.
+**Deprecated**, replaced by the content layout \`disableOverlap\` property.",
       "name": "disableContentHeaderOverlap",
       "optional": true,
       "type": "boolean",
@@ -586,7 +587,8 @@ Note that sticky notifications are not supported in Internet Explorer.
       "name": "content",
     },
     Object {
-      "description": "Top area of the page content.",
+      "description": "Top area of the page content.
+**Deprecated**, replaced by the content layout \`header\` slot.",
       "isDefault": false,
       "name": "contentHeader",
       "visualRefreshTag": "",
