@@ -16,22 +16,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.sha }}
-          fetch-depth: 0
-      - name: Set git identity
-        run: |-
-          git config user.name "Automation"
-          git config user.email "github-actions@github.com"          
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-      - name: Generate changelog
-        run: |
-          npx conventional-changelog-cli -i CHANGELOG.md -s -p conventionalcommits
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -41,7 +25,8 @@ jobs:
           prerelease: false
           tag_name: ${{ github.event.inputs.tag }}
           name: Release ${{ github.event.inputs.tag }}
-          body_path: CHANGELOG.md
+          generate_release_notes: true
+          
 
 
           
