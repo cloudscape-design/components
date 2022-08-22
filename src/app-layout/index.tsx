@@ -433,14 +433,6 @@ const OldAppLayout = React.forwardRef(
       }
     })();
 
-    console.log(
-      disableBodyScroll,
-      stickyNotificationsHeight,
-      headerHeight,
-      notificationsRef,
-      (disableBodyScroll ? 0 : headerHeight) + (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0)
-    );
-
     return (
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
