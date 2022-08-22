@@ -491,7 +491,7 @@ const OldAppLayout = React.forwardRef(
                   <Notifications
                     testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
                     labels={ariaLabels}
-                    topOffset={headerHeight}
+                    topOffset={disableBodyScroll ? 0 : headerHeight}
                     sticky={!isMobile && stickyNotifications}
                     ref={notificationsRef}
                     isMobile={isMobile}
