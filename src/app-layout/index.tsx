@@ -164,7 +164,11 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
-    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
+    const [notificationsHeight, notificationsRef] = useContainerQuery(
+      rect => rect.height,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [isMobile, stickyNotifications]
+    );
     const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
       [splitPanel]
@@ -429,6 +433,14 @@ const OldAppLayout = React.forwardRef(
       }
     })();
 
+    console.log(
+      disableBodyScroll,
+      stickyNotificationsHeight,
+      headerHeight,
+      notificationsRef,
+      (disableBodyScroll ? 0 : headerHeight) + (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0)
+    );
+
     return (
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
@@ -484,25 +496,19 @@ const OldAppLayout = React.forwardRef(
                 }}
               >
                 {notifications && (
-                  <DarkHeader
-                    {...contentHeaderProps}
-                    topOffset={disableBodyScroll ? 0 : headerHeight}
-                    sticky={!isMobile && darkStickyHeaderContentType && stickyNotifications}
+                  <Notifications
+                    testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
+                    labels={ariaLabels}
+                    topOffset={headerHeight}
+                    sticky={!isMobile && stickyNotifications}
+                    ref={notificationsRef}
+                    isMobile={isMobile}
+                    navigationPadding={contentWrapperProps.navigationPadding}
+                    toolsPadding={contentWrapperProps.toolsPadding}
+                    contentWidthStyles={contentWidthStyles}
                   >
-                    <Notifications
-                      testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
-                      labels={ariaLabels}
-                      topOffset={headerHeight}
-                      sticky={!isMobile && stickyNotifications}
-                      ref={notificationsRef}
-                      isMobile={isMobile}
-                      navigationPadding={contentWrapperProps.navigationPadding}
-                      toolsPadding={contentWrapperProps.toolsPadding}
-                      contentWidthStyles={contentWidthStyles}
-                    >
-                      {notifications}
-                    </Notifications>
-                  </DarkHeader>
+                    {notifications}
+                  </Notifications>
                 )}
                 {((!isMobile && breadcrumbs) || contentHeader) && (
                   <DarkHeader {...contentHeaderProps}>

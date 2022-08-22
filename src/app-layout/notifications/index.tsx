@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { AppLayoutProps } from '../interfaces';
-import { useStickyPosition } from '../utils/use-sticky-position';
 
 interface NotificationsProps {
   testUtilsClassName: string;
@@ -14,25 +13,25 @@ interface NotificationsProps {
   isMobile: boolean;
 }
 
-const StaticNotifications = ({ testUtilsClassName, children, labels }: NotificationsProps) => {
-  return (
-    <div className={clsx(testUtilsClassName)} role="region" aria-label={labels?.notifications}>
-      {children}
-    </div>
-  );
-};
+const StaticNotifications = React.forwardRef(
+  ({ testUtilsClassName, children, labels }: NotificationsProps, ref: React.Ref<HTMLDivElement>) => {
+    return (
+      <div ref={ref} className={clsx(testUtilsClassName)} role="region" aria-label={labels?.notifications}>
+        {children}
+      </div>
+    );
+  }
+);
 
-const StickyNotifications = (props: NotificationsProps) => {
-  const [stickyRef, placeholder] = useStickyPosition(props.topOffset);
+const StickyNotifications = React.forwardRef(({ ...props }: NotificationsProps, ref: React.Ref<HTMLDivElement>) => {
   return (
     <>
-      <div ref={stickyRef} className={styles['notifications-sticky']}>
+      <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
         <StaticNotifications {...props} />
       </div>
-      {placeholder}
     </>
   );
-};
+});
 
 interface NotificationWrapperProps extends NotificationsProps {
   sticky: boolean | undefined;
@@ -42,22 +41,13 @@ interface NotificationWrapperProps extends NotificationsProps {
 }
 
 export const Notifications = React.forwardRef(
-  (
-    { navigationPadding, toolsPadding, sticky, isMobile, ...rest }: NotificationWrapperProps,
-    ref: React.Ref<HTMLDivElement>
-  ) => {
+  ({ sticky, isMobile, ...rest }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
     const notificationsProps: NotificationsProps = { isMobile, ...rest };
-    return (
-      <div
-        ref={ref}
-        className={clsx(
-          isMobile && styles['root-mobile'],
-          !navigationPadding && styles['root-no-navigation-padding'],
-          !toolsPadding && styles['root-no-tools-padding']
-        )}
-      >
-        {sticky ? <StickyNotifications {...notificationsProps} /> : <StaticNotifications {...notificationsProps} />}
-      </div>
+    console.log(sticky);
+    return sticky ? (
+      <StickyNotifications ref={ref} {...notificationsProps} />
+    ) : (
+      <StaticNotifications ref={ref} {...notificationsProps} />
     );
   }
 );
