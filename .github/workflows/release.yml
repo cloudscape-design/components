@@ -17,15 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          target_commitish: ${{ github.event.inputs.sha }}
-          draft: false
-          prerelease: false
-          tag_name: ${{ github.event.inputs.tag }}
-          name: Release ${{ github.event.inputs.tag }}
-          generate_release_notes: true
+      - uses: ncipollo/release-action@v1
+      - with:
+         artifacts: "release.tar.gz,foo/*.txt"
+         bodyFile: "body.md"
+         token: ${{ secrets.GITHUB_TOKEN }}
+         tag: ${{ github.event.inputs.tag }}
+         generate_release_notes: true
+         commit: ${{ github.event.inputs.sha }}
+
+
           
 
 
