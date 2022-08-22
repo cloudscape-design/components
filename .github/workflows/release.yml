@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Create Release
       - uses: ncipollo/release-action@v1
-      - with:
+        with:
          artifacts: "release.tar.gz,foo/*.txt"
          bodyFile: "body.md"
          token: ${{ secrets.GITHUB_TOKEN }}
