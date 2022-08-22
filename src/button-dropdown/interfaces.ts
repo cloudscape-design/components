@@ -192,7 +192,8 @@ export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, '
     clickHandler: () => void,
     ref: React.Ref<any>,
     isDisabled: boolean,
-    isExpanded: boolean
+    isExpanded: boolean,
+    ariaLabel?: string
   ) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
 
