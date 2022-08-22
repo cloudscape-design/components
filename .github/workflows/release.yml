@@ -16,16 +16,16 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
-        run: GITHUB_SHA_LONG=$(echo git rev-parse ${{ github.event.inputs.sha }})
-      - name: Test
-        run: echo $GITHUB_SHA_LONG
+      - name: Save full commit SHA
+        id: vars
+        run: echo "::set-output name=sha_long::$(git rev-parse ${{ github.event.inputs.sha }})"
+        shell: bash    
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commitish: $GITHUB_SHA_LONG
+          commitish: ${{ steps.vars.outputs.sha_long }}
           tag_name: ${{ github.event.inputs.tag }}
           release_name: Release ${{ github.event.inputs.tag }}
           draft: false
