@@ -164,7 +164,11 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
-    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
+    const [notificationsHeight, notificationsRef] = useContainerQuery(
+      rect => rect.height,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [isMobile, stickyNotifications]
+    );
     const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
       [splitPanel]
@@ -484,25 +488,19 @@ const OldAppLayout = React.forwardRef(
                 }}
               >
                 {notifications && (
-                  <DarkHeader
-                    {...contentHeaderProps}
-                    topOffset={disableBodyScroll ? 0 : headerHeight}
-                    sticky={!isMobile && darkStickyHeaderContentType && stickyNotifications}
+                  <Notifications
+                    testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
+                    labels={ariaLabels}
+                    topOffset={headerHeight}
+                    sticky={!isMobile && stickyNotifications}
+                    ref={notificationsRef}
+                    isMobile={isMobile}
+                    navigationPadding={contentWrapperProps.navigationPadding}
+                    toolsPadding={contentWrapperProps.toolsPadding}
+                    contentWidthStyles={contentWidthStyles}
                   >
-                    <Notifications
-                      testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
-                      labels={ariaLabels}
-                      topOffset={headerHeight}
-                      sticky={!isMobile && stickyNotifications}
-                      ref={notificationsRef}
-                      isMobile={isMobile}
-                      navigationPadding={contentWrapperProps.navigationPadding}
-                      toolsPadding={contentWrapperProps.toolsPadding}
-                      contentWidthStyles={contentWidthStyles}
-                    >
-                      {notifications}
-                    </Notifications>
-                  </DarkHeader>
+                    {notifications}
+                  </Notifications>
                 )}
                 {((!isMobile && breadcrumbs) || contentHeader) && (
                   <DarkHeader {...contentHeaderProps}>
