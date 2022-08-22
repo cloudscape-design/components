@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo "GITHUB_SHA_LONG=$(echo git rev-parse ${{ github.event.inputs.sha }})" >> $GITHUB_ENV
+        run: GITHUB_SHA_LONG=$(echo git rev-parse ${{ github.event.inputs.sha }})
       - name: Test
         run: echo $GITHUB_SHA_LONG
       - name: Create Release
