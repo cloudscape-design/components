@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Set env
         run: echo "GITHUB_SHA_LONG=$(echo git rev-parse ${{ github.event.inputs.sha }})" >> $GITHUB_ENV
+      - name: Test
+        run: echo $GITHUB_SHA_LONG
       - name: Create Release
         uses: actions/create-release@v1
         env:
