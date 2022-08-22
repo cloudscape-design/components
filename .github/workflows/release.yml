@@ -17,12 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.event.inputs.tag }}
-          generateReleaseNotes: true
-          commit: ${{ github.event.inputs.sha }}
+          commitish: ${{ github.event.inputs.sha }}
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: Release ${{ github.event.inputs.tag }}
+          draft: false
+          prerelease: false
 
 
           
