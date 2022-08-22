@@ -15,6 +15,8 @@ const testCases: [args: TestArguments, result: string][] = [
   [{ date: '2020-01-01T09:00:00-01:00', targetOffset: 1 * 60 }, '2020-01-01T11:00:00'],
   [{ date: '2020-01-01T09:00:00+01:00', targetOffset: -1 * 60 }, '2020-01-01T07:00:00'],
   [{ date: '2020-01-01T09:00:00-01:00', targetOffset: -1 * 60 }, '2020-01-01T09:00:00'],
+  [{ date: '2020-01-01T11:22:33Z', targetOffset: 0 }, '2020-01-01T11:22:33'],
+  [{ date: '2020-01-01T11:22:33.444Z', targetOffset: 0 }, '2020-01-01T11:22:33'],
 ];
 
 describe('shiftTimezoneOffset', () => {
