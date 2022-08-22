@@ -25,9 +25,10 @@ describe('a11y validator', () => {
         <input id="my-field" type="text" />
       </label>
     );
-    // TODO: add <div> element is not permitted as content under <label> error when element-permitted-content is enabled
     await expect(expect(container).toValidateA11y()).rejects.toThrow(
-      'Expected HTML to be valid but had the following errors:\n1. <label> is associated with multiple controls [multiple-labeled-controls]'
+      new Error(
+        'Expected HTML to be valid but had the following errors:\n1. <label> is associated with multiple controls [multiple-labeled-controls]\n2. <div> element is not permitted as content under <label> [element-permitted-content]'
+      )
     );
   });
 
@@ -39,7 +40,9 @@ describe('a11y validator', () => {
       </label>
     );
     await expect(expect(container).toValidateA11y()).rejects.toThrow(
-      'Expected HTML to be valid but had the following errors:\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
+      new Error(
+        'Expected HTML to be valid but had the following errors:\n1. Fix all of the following:\n  ARIA attribute element ID does not exist on the page: aria-labelledby="non-exist-id" [aria-valid-attr-value]'
+      )
     );
   });
 });
