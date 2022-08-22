@@ -19,12 +19,10 @@ jobs:
       - name: Create Release
       - uses: ncipollo/release-action@v1
         with:
-         artifacts: "release.tar.gz,foo/*.txt"
-         bodyFile: "body.md"
-         token: ${{ secrets.GITHUB_TOKEN }}
-         tag: ${{ github.event.inputs.tag }}
-         generate_release_notes: true
-         commit: ${{ github.event.inputs.sha }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.event.inputs.tag }}
+          generate_release_notes: true
+          commit: ${{ github.event.inputs.sha }}
 
 
           
