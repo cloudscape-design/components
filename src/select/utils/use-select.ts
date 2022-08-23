@@ -79,13 +79,14 @@ export function useSelect({
   const {
     highlightedOption,
     highlightedIndex,
+    highlightedType,
     moveHighlight,
     resetHighlight,
     setHighlightedIndex,
     highlightOption,
     goHome,
     goEnd,
-  } = useHighlightedOption(options);
+  } = useHighlightedOption({ options, isKeyboard });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown } = useOpenState({
     onOpen: () => fireLoadItems(''),
@@ -291,6 +292,7 @@ export function useSelect({
     isOpen,
     highlightedOption,
     highlightedIndex,
+    highlightedType,
     getTriggerProps,
     getMenuProps,
     getFilterProps,

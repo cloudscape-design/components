@@ -15,6 +15,7 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   highlightText: string;
   option: AutosuggestItem;
   highlighted: boolean;
+  highlightedType: 'mouse' | 'keyboard';
   enteredTextLabel: (value: string) => string;
   virtualPosition?: number;
   padBottom?: boolean;
@@ -29,6 +30,7 @@ const AutosuggestOption = (
     highlightText,
     option,
     highlighted,
+    highlightedType,
     enteredTextLabel,
     virtualPosition,
     padBottom,
@@ -82,6 +84,7 @@ const AutosuggestOption = (
       screenReaderContent={screenReaderContent}
       ariaSetsize={ariaSetsize}
       ariaPosinset={ariaPosinset}
+      highlightedType={highlightedType}
     >
       {optionContent}
     </SelectableItem>

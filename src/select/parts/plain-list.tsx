@@ -14,7 +14,7 @@ export interface SelectListProps {
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
-  isKeyboard: boolean;
+  highlightedType: 'mouse' | 'keyboard';
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
@@ -32,7 +32,7 @@ const PlainList = (
     getOptionProps,
     filteredOptions,
     filteringValue,
-    isKeyboard,
+    highlightedType,
     checkboxes,
     hasDropdownStatus,
     listBottom,
@@ -46,11 +46,11 @@ const PlainList = (
     ref,
     () => (index: number) => {
       const item = menuRef.current?.querySelector(`[data-mouse-target="${index}"]`);
-      if (isKeyboard && item) {
+      if (highlightedType === 'keyboard' && item) {
         scrollUntilVisible(item as HTMLElement);
       }
     },
-    [isKeyboard, menuRef]
+    [highlightedType, menuRef]
   );
 
   return (
@@ -59,7 +59,7 @@ const PlainList = (
         options: filteredOptions,
         getOptionProps,
         filteringValue,
-        isKeyboard,
+        highlightedType,
         checkboxes,
         hasDropdownStatus,
         useInteractiveGroups,

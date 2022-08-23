@@ -14,9 +14,9 @@ export interface ListProps {
   menuProps: Omit<OptionsListProps, 'children'>;
   handleLoadMore: () => void;
   filteredItems: AutosuggestItem[];
-  usingMouse: React.MutableRefObject<boolean>;
   highlightedOption?: AutosuggestItem;
   highlightedIndex: number;
+  highlightedType: 'mouse' | 'keyboard';
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
@@ -45,10 +45,10 @@ export const getOptionProps = (
 const PlainList = ({
   handleLoadMore,
   filteredItems,
-  usingMouse,
   menuProps,
   highlightedOption,
   highlightedIndex,
+  highlightedType,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -57,13 +57,12 @@ const PlainList = ({
   screenReaderContent,
 }: ListProps) => {
   const listRef = useRef<HTMLUListElement>(null);
-
   useEffect(() => {
     const item = listRef.current?.querySelector(`[data-mouse-target="${highlightedIndex}"]`);
-    if (!usingMouse.current && item) {
+    if (highlightedType === 'keyboard' && item) {
       scrollUntilVisible(item as HTMLElement);
     }
-  }, [usingMouse, highlightedIndex]);
+  }, [highlightedType, highlightedIndex]);
 
   return (
     <OptionsList
@@ -93,6 +92,7 @@ const PlainList = ({
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
             screenReaderContent={screenReaderContent}
+            highlightedType={highlightedType}
             {...optionProps}
           />
         );
