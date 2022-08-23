@@ -259,7 +259,7 @@ export const getAutosuggestOptions = (
       const { propertyLabel, groupValuesLabel } = parsedText.property;
       const options = getPropertyOptions(parsedText.property, filteringOptions);
       return {
-        __filterText: parsedText.value,
+        filterText: parsedText.value,
         options: [
           {
             options: (options || []).map(({ value }) => ({
@@ -274,7 +274,7 @@ export const getAutosuggestOptions = (
     }
     case 'operator': {
       return {
-        __filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
+        filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
         options: [
           ...getPropertySuggestions(
             filteringProperties,
@@ -298,7 +298,7 @@ export const getAutosuggestOptions = (
       const needsValueSuggestions = !!parsedText.value;
       const needsPropertySuggestions = !(parsedText.step === 'free-text' && parsedText.operator === '!:');
       return {
-        __filterText: parsedText.value,
+        filterText: parsedText.value,
         options: [
           ...(needsPropertySuggestions
             ? getPropertySuggestions(
