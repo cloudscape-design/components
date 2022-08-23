@@ -160,7 +160,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const expanded = open && items.length > 1;
     const highlightedOptionId = highlightedOption ? generateUniqueId() : undefined;
     const nativeAttributes = {
-      name,
       placeholder,
       onClick: openDropdown,
       role: 'combobox',
