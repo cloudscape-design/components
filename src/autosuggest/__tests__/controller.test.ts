@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useAutosuggestItems, useFilteredItems, useSelectVisibleOption, useKeyboardHandler } from '../controller';
+import { useSelectVisibleOption, useKeyboardHandler } from '../controller';
+import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 import { renderHook, act } from '../../__tests__/render-hook';
 import { AutosuggestItem } from '../interfaces';
 import { CancelableEventHandler, BaseKeyDetail, fireCancelableEvent } from '../../internal/events';
@@ -8,48 +9,39 @@ import { KeyCode } from '../../internal/keycode';
 import { createRef, MutableRefObject } from 'react';
 
 const options = [{ value: 'Option 0' }, { label: 'Group 1', options: [{ value: 'Option 1' }, { value: 'Option 2' }] }];
-const flatItems: AutosuggestItem[] = [
-  {
-    value: 'Option 0',
-    option: { value: 'Option 0' },
-  },
-  {
-    label: 'Group 1',
-    type: 'parent',
-    disabled: true,
-    option: { label: 'Group 1' },
-  },
-  {
-    value: 'Option 1',
-    type: 'child',
-    option: { value: 'Option 1' },
-  },
-  {
-    value: 'Option 2',
-    type: 'child',
-    option: { value: 'Option 2' },
-  },
-];
+
 describe('Autosuggest controller', () => {
   const usingMouse = { current: false };
   beforeEach(() => {
     usingMouse.current = false;
   });
+
   describe('useAutosuggestItems', () => {
+    const defaultProps: UseAutosuggestItemsProps = {
+      options,
+      filterValue: '',
+      filterText: '',
+      filteringType: 'auto',
+    };
+
     test('"flattens" the list of options, indenting group items', () => {
-      const { result } = renderHook(useAutosuggestItems, { initialProps: options });
-      expect(result.current.length).toEqual(4);
-      expect(result.current[1].type).toEqual('parent');
-      expect(result.current[2].type).toEqual('child');
-      expect(result.current[3].type).toEqual('child');
+      const { result } = renderHook(useAutosuggestItems, { initialProps: defaultProps });
+      expect(result.current.items.length).toEqual(4);
+      expect(result.current.items[1].type).toEqual('parent');
+      expect(result.current.items[2].type).toEqual('child');
+      expect(result.current.items[3].type).toEqual('child');
     });
+
     test('disables options inside a disabled group', () => {
       const withDisabledGroup = [options[0], { disabled: true, ...options[1] }];
-      const { result } = renderHook(useAutosuggestItems, { initialProps: withDisabledGroup });
-      expect(result.current.length).toEqual(4);
-      expect(result.current[2].disabled).toEqual(true);
-      expect(result.current[3].disabled).toEqual(true);
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: { ...defaultProps, options: withDisabledGroup },
+      });
+      expect(result.current.items.length).toEqual(4);
+      expect(result.current.items[2].disabled).toEqual(true);
+      expect(result.current.items[3].disabled).toEqual(true);
     });
+
     test('disables group that only contains disabled options', () => {
       const withDisabledOptions = [
         { value: 'Option 0' },
@@ -61,9 +53,11 @@ describe('Autosuggest controller', () => {
           ],
         },
       ];
-      const { result } = renderHook(useAutosuggestItems, { initialProps: withDisabledOptions });
-      expect(result.current.length).toEqual(4);
-      expect(result.current[1].disabled).toEqual(true);
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: { ...defaultProps, options: withDisabledOptions },
+      });
+      expect(result.current.items.length).toEqual(4);
+      expect(result.current.items[1].disabled).toEqual(true);
     });
 
     test('does not disable group with at least one enabled option', () => {
@@ -76,51 +70,114 @@ describe('Autosuggest controller', () => {
       ];
       const {
         result: { current },
-      } = renderHook(useAutosuggestItems, { initialProps: withDisabledOptions });
-      expect(current).toHaveLength(4);
-      expect(current[1].disabled).toBeFalsy();
+      } = renderHook(useAutosuggestItems, {
+        initialProps: { ...defaultProps, options: withDisabledOptions },
+      });
+      expect(current.items).toHaveLength(4);
+      expect(current.items[1].disabled).toBeFalsy();
     });
 
     test('does not filter again, if called with the same list', () => {
-      const { result, rerender } = renderHook(useAutosuggestItems, { initialProps: options });
+      const { result, rerender } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '',
+          filterText: '',
+          filteringType: 'auto',
+        },
+      });
       const firstResult = result.current;
-      rerender(options);
-      expect(result.current).toBe(firstResult);
+      rerender({
+        options,
+        filterValue: '',
+        filterText: '',
+        filteringType: 'auto',
+      });
+      expect(result.current.items).toBe(firstResult.items);
     });
-  });
-  describe('useFilteredItems', () => {
+
     test('filters passed items and generates a "use-entered" item', () => {
-      const { result } = renderHook((args: Parameters<typeof useFilteredItems>) => useFilteredItems(...args), {
-        initialProps: [flatItems, '1', '1', 'auto', false],
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '1',
+          filterText: '1',
+          filteringType: 'auto',
+        },
       });
-      expect(result.current.length).toEqual(3);
-      expect(result.current[0]).toEqual({ value: '1', type: 'use-entered', option: { value: '1' } });
+      expect(result.current.items.length).toEqual(3);
+      expect(result.current.items[0]).toEqual({ value: '1', type: 'use-entered', option: { value: '1' } });
     });
+
     test('does not filter items using "filteringType" "manual"', () => {
-      const { result } = renderHook((args: Parameters<typeof useFilteredItems>) => useFilteredItems(...args), {
-        initialProps: [flatItems, '1', '1', 'manual', false],
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '1',
+          filterText: '1',
+          filteringType: 'manual',
+        },
       });
-      expect(result.current.length).toEqual(5);
+      expect(result.current.items.length).toEqual(5);
     });
+
     test('does not filter items when "showAll" flag is set', () => {
-      const { result } = renderHook((args: Parameters<typeof useFilteredItems>) => useFilteredItems(...args), {
-        initialProps: [flatItems, '1', '1', 'auto', true],
+      const { result } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '1',
+          filterText: '1',
+          filteringType: 'auto',
+        },
       });
-      expect(result.current.length).toEqual(5);
+      act(() => result.current.setShowAll(true));
+      expect(result.current.items.length).toEqual(5);
     });
+
     test('does not filter again when called with the same parameters', () => {
-      const { result, rerender } = renderHook(
-        (args: Parameters<typeof useFilteredItems>) => useFilteredItems(...args),
-        {
-          initialProps: [flatItems, '1', '1', 'auto', false],
-        }
-      );
+      const { result, rerender } = renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '1',
+          filterText: '1',
+          filteringType: 'auto',
+        },
+      });
       const firstResult = result.current;
-      rerender([flatItems, '1', '1', 'auto', false]);
-      expect(firstResult).toBe(result.current);
+      rerender({
+        options,
+        filterValue: '1',
+        filterText: '1',
+        filteringType: 'auto',
+      });
+      expect(firstResult.items).toBe(result.current.items);
     });
   });
+
   describe('useSelectVisibleOption', () => {
+    const flatItems: AutosuggestItem[] = [
+      {
+        value: 'Option 0',
+        option: { value: 'Option 0' },
+      },
+      {
+        label: 'Group 1',
+        type: 'parent',
+        disabled: true,
+        option: { label: 'Group 1' },
+      },
+      {
+        value: 'Option 1',
+        type: 'child',
+        option: { value: 'Option 1' },
+      },
+      {
+        value: 'Option 2',
+        type: 'child',
+        option: { value: 'Option 2' },
+      },
+    ];
+
     const selectOption: (option: AutosuggestItem) => void = jest.fn();
     const isInteractive = jest.fn<boolean, [AutosuggestItem?]>();
     let selectVisible: (index: number) => void;
@@ -151,6 +208,7 @@ describe('Autosuggest controller', () => {
       expect(selectOption).not.toBeCalled();
     });
   });
+
   describe('useKeyboardHandler', () => {
     const moveHighlight: (direction: -1 | 1) => void = jest.fn();
     const selectHighlighted: () => void = jest.fn();
