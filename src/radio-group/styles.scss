@@ -33,7 +33,7 @@ $radio-size: awsui.$size-control;
 .input {
   @include focus-visible.when-visible {
     /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
-    & + div {
+    & + span {
       @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
     }
   }

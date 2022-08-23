@@ -65,7 +65,8 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           />
         )}
         styledControl={
-          <div
+          /*Using span, not div for HTML validity*/
+          <span
             className={clsx(styles['toggle-handle'], {
               [styles['toggle-handle-checked']]: checked,
               [styles['toggle-handle-disabled']]: disabled,
