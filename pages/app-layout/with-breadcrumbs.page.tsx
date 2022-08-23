@@ -2,10 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import AppLayout from '~components/app-layout';
+import BreadcrumbGroup from '~components/breadcrumb-group';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs } from './utils/content-blocks';
 import label from './utils/labels';
 import styles from './styles.scss';
+
+function Breadcrumbs() {
+  return (
+    <BreadcrumbGroup
+      items={[
+        { text: 'Home', href: '#' },
+        { text: 'Service with a long long long long long long long long long long long long long title', href: '#' },
+      ]}
+    />
+  );
+}
 
 export default function () {
   return (

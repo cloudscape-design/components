@@ -13,7 +13,7 @@ section.appbar {
   display: grid;
   grid-column: 3;
   grid-row: 2;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
 
   > .appbar-nav {
     grid-column: 1;
