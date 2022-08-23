@@ -41,7 +41,6 @@ const InternalButtonDropdown = React.forwardRef(
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const isInRestrictedView = useMobile();
-    const usingMouse = useRef(true);
     const dropdownId = useUniqueId('dropdown');
     for (const item of items) {
       checkSafeUrl('ButtonDropdown', item.href);
@@ -51,6 +50,7 @@ const InternalButtonDropdown = React.forwardRef(
       isOpen,
       targetItem,
       isHighlighted,
+      isKeyboardHighlight,
       isExpanded,
       highlightItem,
       onKeyDown,
@@ -58,17 +58,17 @@ const InternalButtonDropdown = React.forwardRef(
       onItemActivate,
       onGroupToggle,
       toggleDropdown,
+      setIsUsingMouse,
     } = useButtonDropdown({
       items,
       onItemClick,
       onItemFollow,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
-      usingMouse,
     });
 
     const handleMouseEvent = () => {
-      usingMouse.current = true;
+      setIsUsingMouse(true);
     };
 
     const baseProps = getBaseProps(props);
@@ -77,9 +77,6 @@ const InternalButtonDropdown = React.forwardRef(
     useForwardFocus(ref, dropdownRef);
 
     const clickHandler = () => {
-      if (!usingMouse.current) {
-        return;
-      }
       if (!loading && !disabled) {
         toggleDropdown();
         if (dropdownRef.current) {
@@ -140,6 +137,7 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
+        onMouseMove={handleMouseEvent}
         className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
@@ -184,6 +182,7 @@ const InternalButtonDropdown = React.forwardRef(
               hasExpandableGroups={expandableGroups}
               targetItem={targetItem}
               isHighlighted={isHighlighted}
+              isKeyboardHighlight={isKeyboardHighlight}
               isExpanded={isExpanded}
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
