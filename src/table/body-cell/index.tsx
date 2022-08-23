@@ -15,21 +15,29 @@ interface TableBodyCellProps {
   isNextSelected: boolean;
   isPrevSelected: boolean;
   children?: React.ReactNode;
+  isSticky?: boolean;
 }
 
-export function TableBodyCell({
-  className,
-  style,
-  children,
-  wrapLines,
-  isFirstRow,
-  isLastRow,
-  isSelected,
-  isNextSelected,
-  isPrevSelected,
-}: TableBodyCellProps) {
+export const TableBodyCell = React.forwardRef(function TableBodyCell(
+  props: TableBodyCellProps,
+  ref: React.Ref<HTMLTableCellElement>
+) {
+  const {
+    className,
+    style,
+    children,
+    wrapLines,
+    isFirstRow,
+    isLastRow,
+    isSelected,
+    isNextSelected,
+    isPrevSelected,
+    isSticky,
+  } = props;
+
   return (
     <td
+      ref={isFirstRow ? ref : undefined}
       style={style}
       className={clsx(
         className,
@@ -39,19 +47,27 @@ export function TableBodyCell({
         isLastRow && styles['body-cell-last-row'],
         isSelected && styles['body-cell-selected'],
         isNextSelected && styles['body-cell-next-selected'],
-        isPrevSelected && styles['body-cell-prev-selected']
+        isPrevSelected && styles['body-cell-prev-selected'],
+        isSticky && styles['body-cell-freeze']
       )}
     >
       {children}
     </td>
   );
-}
+});
 
 interface TableBodyCellContentProps<ItemType> extends TableBodyCellProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
 }
 
-export function TableBodyCellContent<ItemType>({ item, column, ...rest }: TableBodyCellContentProps<ItemType>) {
-  return <TableBodyCell {...rest}>{column.cell(item)}</TableBodyCell>;
-}
+export const TableBodyCellContent = React.forwardRef(function TableBodyCellContent(
+  props: TableBodyCellContentProps<any>,
+  ref: React.Ref<HTMLTableCellElement>
+) {
+  return (
+    <TableBodyCell {...props} ref={ref}>
+      {props.column.cell(props.item)}
+    </TableBodyCell>
+  );
+});

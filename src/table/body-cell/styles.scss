@@ -44,6 +44,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     // skip border for the last row, because container already has a border
     border-bottom: $border-placeholder;
   }
+
+  &-freeze {
+    position: sticky;
+    background: awsui.$color-background-container-content;
+  }
+
   &-selected {
     background-color: awsui.$color-background-item-selected;
     border-top: $selected-border;

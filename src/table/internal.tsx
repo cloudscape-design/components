@@ -84,6 +84,8 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
+    const [tableCellRefs, setTableCellRefs] = React.useState<HTMLTableCellElement[]>([]);
+    const [cellWidths, setCellWidths] = React.useState<number[]>([]);
 
     useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
 
@@ -97,6 +99,29 @@ const InternalTable = React.forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
+
+    const arrLength = visibleColumnDefinitions.length;
+
+    React.useEffect(() => {
+      // add or remove refs
+      setTableCellRefs(tableCellRefs =>
+        Array(arrLength)
+          .fill()
+          .map((_, i) => tableCellRefs[i] || React.createRef())
+      );
+    }, [arrLength]);
+
+    React.useEffect(() => {
+      const getCellWidths = () => {
+        let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
+        widthsArray = widthsArray.filter(x => x);
+        widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+        setCellWidths([0, ...widthsArray]);
+      };
+
+      getCellWidths();
+    }, [tableCellRefs]);
+
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -290,28 +315,40 @@ const InternalTable = React.forwardRef(
                             />
                           </TableBodyCell>
                         )}
-                        {visibleColumnDefinitions.map((column, colIndex) => (
-                          <TableBodyCellContent
-                            key={getColumnKey(column, colIndex)}
-                            style={
-                              resizableColumns
-                                ? {}
-                                : {
-                                    width: column.width,
-                                    minWidth: column.minWidth,
-                                    maxWidth: column.maxWidth,
-                                  }
-                            }
-                            column={column}
-                            item={item}
-                            wrapLines={wrapLines}
-                            isFirstRow={firstVisible}
-                            isLastRow={lastVisible}
-                            isSelected={isSelected}
-                            isNextSelected={isNextSelected}
-                            isPrevSelected={isPrevSelected}
-                          />
-                        ))}
+                        {visibleColumnDefinitions.map((column, colIndex) => {
+                          const currentCell = tableCellRefs[colIndex]?.current;
+                          return (
+                            <TableBodyCellContent
+                              key={getColumnKey(column, colIndex)}
+                              // ref={tableCellRef}
+                              ref={tableCellRefs[colIndex]}
+                              style={
+                                resizableColumns
+                                  ? {}
+                                  : {
+                                      width: column.width,
+                                      minWidth: column.minWidth,
+                                      maxWidth: column.maxWidth,
+                                      left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
+                                      boxShadow:
+                                        currentCell?.nextSibling?.style.left === 'auto' &&
+                                        currentCell?.style.left !== 'auto'
+                                          ? 'inset -2px 0 #eaeded'
+                                          : 'none',
+                                    }
+                              }
+                              isSticky={column.isSticky}
+                              column={column}
+                              item={item}
+                              wrapLines={wrapLines}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                            />
+                          );
+                        })}
                       </tr>
                     );
                   })

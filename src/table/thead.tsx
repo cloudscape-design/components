@@ -68,6 +68,30 @@ const Thead = React.forwardRef(
     );
     const selectionCellClass = clsx(styles['selection-control'], styles['selection-control-header']);
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
+    const [tableCellRefs, setTableCellRefs] = React.useState<any[]>([]);
+    const [cellWidths, setCellWidths] = React.useState<any[]>([]);
+
+    const arrLength = columnDefinitions.length;
+
+    React.useEffect(() => {
+      // add or remove refs
+      setTableCellRefs(tableCellRefs =>
+        Array(arrLength)
+          .fill()
+          .map((_, i) => tableCellRefs[i] || React.createRef())
+      );
+    }, [arrLength]);
+
+    React.useEffect(() => {
+      const getCellWidths = () => {
+        let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
+        widthsArray = widthsArray.filter(x => x);
+        widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+        setCellWidths([0, ...widthsArray]);
+      };
+
+      getCellWidths();
+    }, [tableCellRefs]);
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -104,11 +128,13 @@ const Thead = React.forwardRef(
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
-                className={headerCellClass}
+                ref={tableCellRefs[colIndex]}
+                className={clsx(headerCellClass, column.isSticky && headerCellStyles['header-cell-freeze'])}
                 style={{
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
+                  left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 showFocusRing={colIndex === showFocusRing}

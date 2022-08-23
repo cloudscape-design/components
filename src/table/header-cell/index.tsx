@@ -25,21 +25,26 @@ interface TableHeaderCellProps {
   onBlur?: () => void;
 }
 
-export function TableHeaderCell({
-  className,
-  style,
-  tabIndex,
-  column,
-  activeSortingColumn,
-  sortingDescending,
-  sortingDisabled,
-  wrapLines,
-  resizer,
-  showFocusRing,
-  onClick,
-  onFocus,
-  onBlur,
-}: TableHeaderCellProps) {
+export const TableHeaderCell = React.forwardRef(function TableHeaderCell(
+  props: TableHeaderCellProps,
+  ref: React.Ref<any>
+) {
+  const {
+    className,
+    style,
+    tabIndex,
+    column,
+    activeSortingColumn,
+    sortingDescending,
+    sortingDisabled,
+    wrapLines,
+    resizer,
+    showFocusRing,
+    onClick,
+    onFocus,
+    onBlur,
+  } = props;
+
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -72,6 +77,7 @@ export function TableHeaderCell({
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
+      ref={ref}
     >
       <div
         className={clsx(styles['header-cell-content'], {
@@ -110,4 +116,4 @@ export function TableHeaderCell({
       {resizer}
     </th>
   );
-}
+});

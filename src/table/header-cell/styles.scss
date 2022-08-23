@@ -22,6 +22,11 @@
   &-stuck {
     border-bottom-color: transparent;
   }
+  &-freeze {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 1;
+  }
   &-variant-full-page {
     border-bottom: awsui.$space-scaled-xxs solid transparent;
   }
