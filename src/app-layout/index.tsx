@@ -116,7 +116,6 @@ const OldAppLayout = React.forwardRef(
     const isMotionEnabled = rootRef.current ? !isMotionDisabled(rootRef.current) : false;
 
     const defaults = applyDefaults(contentType, { maxContentWidth, minContentWidth }, false);
-    const darkStickyHeaderContentType = ['cards', 'table'].indexOf(contentType) > -1;
     const [navigationOpen = false, setNavigationOpen] = useControllable(
       controlledNavigationOpen,
       onNavigationChange,
@@ -163,11 +162,7 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
-    const [notificationsHeight, notificationsRef] = useContainerQuery(
-      rect => rect.height,
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [isMobile, stickyNotifications]
-    );
+    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
     const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
       [splitPanel]
@@ -493,12 +488,7 @@ const OldAppLayout = React.forwardRef(
                   <ContentWrapper {...contentWrapperProps} contentWidthStyles={contentWidthStyles}>
                     {!isMobile && breadcrumbs && (
                       <div
-                        className={clsx(
-                          styles.breadcrumbs,
-                          testutilStyles.breadcrumbs,
-                          styles['breadcrumbs-desktop'],
-                          darkStickyHeaderContentType && styles['breadcrumbs-desktop-sticky-header']
-                        )}
+                        className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}
                       >
                         {breadcrumbs}
                       </div>

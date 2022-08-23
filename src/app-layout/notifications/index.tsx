@@ -12,27 +12,6 @@ interface NotificationsProps {
   topOffset: number | undefined;
   isMobile: boolean;
 }
-
-const StaticNotifications = React.forwardRef(
-  ({ testUtilsClassName, children, labels }: NotificationsProps, ref: React.Ref<HTMLDivElement>) => {
-    return (
-      <div ref={ref} className={clsx(testUtilsClassName)} role="region" aria-label={labels?.notifications}>
-        {children}
-      </div>
-    );
-  }
-);
-
-const StickyNotifications = React.forwardRef(({ ...props }: NotificationsProps, ref: React.Ref<HTMLDivElement>) => {
-  return (
-    <>
-      <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
-        <StaticNotifications {...props} />
-      </div>
-    </>
-  );
-});
-
 interface NotificationWrapperProps extends NotificationsProps {
   sticky: boolean | undefined;
   navigationPadding: boolean;
@@ -41,12 +20,17 @@ interface NotificationWrapperProps extends NotificationsProps {
 }
 
 export const Notifications = React.forwardRef(
-  ({ sticky, isMobile, ...rest }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
-    const notificationsProps: NotificationsProps = { isMobile, ...rest };
+  ({ sticky, ...props }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
     return sticky ? (
-      <StickyNotifications ref={ref} {...notificationsProps} />
+      <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
+        <div className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+          {props.children}
+        </div>
+      </div>
     ) : (
-      <StaticNotifications ref={ref} {...notificationsProps} />
+      <div ref={ref} className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+        {props.children}
+      </div>
     );
   }
 );
