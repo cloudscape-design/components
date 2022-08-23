@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
-import { createTopNavigationContext } from '../utils/contexts';
+import { createTopNavigationContext, createFlashbarContext } from '../utils/contexts';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),
@@ -30,6 +30,8 @@ export function buildClassicOpenSource(builder: ThemeBuilder) {
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
 
   return builder.build();
 }
