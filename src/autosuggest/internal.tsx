@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Ref, useCallback, useRef, useState } from 'react';
 
-import { useAutosuggestItems, useFilteredItems, useKeyboardHandler } from './controller';
+import { useKeyboardHandler } from './controller';
+import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
 import Dropdown from '../internal/components/dropdown';
@@ -15,7 +16,6 @@ import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { fireNonCancelableEvent, CancelableEventHandler } from '../internal/events';
-import { createHighlightedOptionHook } from '../internal/components/options-list/utils/use-highlight-option';
 import InternalInput from '../input/internal';
 import { InputProps } from '../input/interfaces';
 import styles from './styles.css.js';
@@ -37,12 +37,6 @@ export interface InternalAutosuggestProps extends AutosuggestProps, InternalBase
 const isInteractive = (option?: AutosuggestItem) => {
   return !!option && !option.disabled && option.type !== 'parent';
 };
-
-const isHighlightable = (option?: AutosuggestItem) => {
-  return !!option && option.type !== 'parent';
-};
-
-const useHighlightedOption = createHighlightedOptionHook({ isHighlightable: isHighlightable });
 
 const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
   const lastFilteringText = useRef<string | null>(null);
@@ -93,30 +87,34 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     __hideEnteredTextOption,
     __onOpen,
     __internalRootRef,
+    __filterText,
     ...rest
   } = props;
-  let { __filterText: filterText } = rest;
-  filterText = filterText === undefined ? value : filterText;
+  const filterText = __filterText === undefined ? value : __filterText;
 
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
 
   const isKeyboard = useRef(false);
-  const [showAll, setShowAll] = useState(false);
   const [open, setOpen] = useState(false);
-  const autosuggestItems = useAutosuggestItems(options);
-  const filteredItems = useFilteredItems(
-    autosuggestItems,
-    value,
+  const {
+    items,
+    setShowAll,
+    highlightedOption,
+    highlightedIndex,
+    highlightedType,
+    moveHighlight,
+    resetHighlight,
+    setHighlightedIndex,
+  } = useAutosuggestItems({
+    options: options || [],
+    filterValue: value,
     filterText,
     filteringType,
-    showAll,
-    __hideEnteredTextOption
-  );
+    isKeyboard,
+    hideEnteredTextLabel: __hideEnteredTextOption,
+  });
   const openDropdown = () => !readOnly && setOpen(true);
-  const scrollToIndex = useRef<(index: number) => void>(null);
-  const { highlightedOption, highlightedIndex, highlightedType, moveHighlight, resetHighlight, setHighlightedIndex } =
-    useHighlightedOption({ options: filteredItems, isKeyboard });
   const closeDropdown = () => {
     setOpen(false);
     resetHighlight();
@@ -179,7 +177,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const listId = useUniqueId('list');
 
   // From an a11y point of view we only count the dropdown as 'expanded' if there are items that a user can dropdown into
-  const expanded = open && filteredItems.length > 1;
+  const expanded = open && items.length > 1;
   const highlightedOptionId = highlightedOption ? generateUniqueId() : undefined;
   const nativeAttributes = {
     name,
@@ -206,11 +204,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onFocus?.(e);
   };
 
-  useEffect(() => {
-    scrollToIndex.current?.(highlightedIndex);
-  }, [highlightedIndex]);
-
-  const isEmpty = !value && !filteredItems.length;
+  const isEmpty = !value && !items.length;
   const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
   const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
@@ -250,17 +244,17 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         footer={
           dropdownStatus.isSticky ? (
             <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
-              <DropdownFooter content={dropdownStatus.content} hasItems={filteredItems.length >= 1} />
+              <DropdownFooter content={dropdownStatus.content} hasItems={items.length >= 1} />
             </div>
           ) : null
         }
         expandToViewport={expandToViewport}
-        hasContent={filteredItems.length >= 1 || dropdownStatus.content !== null}
+        hasContent={items.length >= 1 || dropdownStatus.content !== null}
         trapFocus={!!showRecoveryLink}
       >
         {open && (
           <AutosuggestOptionsList
-            options={filteredItems}
+            options={items}
             highlightedOption={highlightedOption}
             selectOption={selectOption}
             highlightedIndex={highlightedIndex}

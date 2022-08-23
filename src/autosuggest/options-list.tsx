@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useSelectVisibleOption, useHighlightVisibleOption, getParentGroup } from './controller';
+import { useSelectVisibleOption, useHighlightVisibleOption } from './controller';
+import { getParentGroup } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import VirtualList from './virtual-list';
 import PlainList from './plain-list';

@@ -19,7 +19,7 @@ import { parseTimezoneOffset } from './parse-timezone-offset';
  */
 export function shiftTimezoneOffset(dateString: string, targetTimezoneOffset: number) {
   const [datePart, timeAndOffsetPart] = dateString.split('T');
-  const [timePart] = timeAndOffsetPart.split(/-|\+/);
+  const [timePart] = timeAndOffsetPart.split(/-|\+|Z/);
   const valueWithoutOffset = joinDateTime(datePart, timePart);
   const originalTimezoneOffset = parseTimezoneOffset(dateString);
 

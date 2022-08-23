@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState, useMemo, useCallback } from 'react';
 
-import { indexIncludes } from './utils';
+import { indexIncludes, indexEquals } from './utils';
 import { ButtonDropdownProps, HighlightProps } from '../interfaces';
 import createItemsTree, { TreeIndex } from './create-items-tree';
 import moveHighlightOneStep from './move-highlight';
@@ -18,6 +18,7 @@ interface UseHighlightedMenuApi extends HighlightProps {
   expandGroup: (group?: ButtonDropdownProps.ItemGroup) => void;
   collapseGroup: () => void;
   reset: () => void;
+  setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
 export default function useHighlightedMenu({
@@ -27,6 +28,7 @@ export default function useHighlightedMenu({
 }: UseHighlightedMenuOptions): UseHighlightedMenuApi {
   const [targetIndex, setTargetIndex] = useState<TreeIndex>([]);
   const [expandedIndex, setExpandedIndex] = useState<TreeIndex>([]);
+  const [isUsingMouse, setIsUsingMouse] = useState<boolean>(true);
 
   const { getItem, getItemIndex, getSequentialIndex, getParentIndex } = useMemo(() => createItemsTree(items), [items]);
 
@@ -35,10 +37,18 @@ export default function useHighlightedMenu({
   const isHighlighted = useCallback(
     (item: ButtonDropdownProps.ItemOrGroup) => {
       const index = getItemIndex(item);
-
       return indexIncludes(index, targetIndex);
     },
     [targetIndex, getItemIndex]
+  );
+
+  // check if keyboard focus is on the element
+  const isKeyboardHighlight = useCallback(
+    (item: ButtonDropdownProps.ItemOrGroup) => {
+      const index = getItemIndex(item);
+      return !isUsingMouse && indexEquals(index, targetIndex);
+    },
+    [targetIndex, getItemIndex, isUsingMouse]
   );
 
   const isExpanded = useCallback(
@@ -115,11 +125,13 @@ export default function useHighlightedMenu({
   return {
     targetItem,
     isHighlighted,
+    isKeyboardHighlight,
     isExpanded,
     moveHighlight,
     highlightItem,
     expandGroup,
     collapseGroup,
     reset,
+    setIsUsingMouse,
   };
 }
