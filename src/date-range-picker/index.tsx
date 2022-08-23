@@ -18,7 +18,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
-import { shiftTimeOffset, setTimeOffset } from './time-offset';
+import { shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -27,6 +27,7 @@ import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { formatTimezoneOffset, getBrowserTimezoneOffset, isIsoDateOnly } from '../internal/utils/date-time';
+import { formatValue } from './use-date-range-picker.js';
 
 export { DateRangePickerProps };
 
@@ -82,23 +83,6 @@ function isDateOnly(value: null | DateRangePickerProps.Value) {
     return false;
   }
   return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate);
-}
-
-function formatValue(
-  value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset: number; dateOnly: boolean }
-): null | DateRangePickerProps.Value {
-  if (!value || value.type === 'relative') {
-    return value;
-  }
-  if (dateOnly) {
-    return {
-      type: 'absolute',
-      startDate: value.startDate.split('T')[0],
-      endDate: value.endDate.split('T')[0],
-    };
-  }
-  return setTimeOffset(value, timeOffset);
 }
 
 const DateRangePicker = React.forwardRef(
