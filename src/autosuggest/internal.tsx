@@ -15,24 +15,16 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent, CancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import InternalInput from '../input/internal';
 import { InputProps } from '../input/interfaces';
 import styles from './styles.css.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import checkControlled from '../internal/hooks/check-controlled';
-import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from './options-list';
 
-export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
-  __filterText?: string;
-  __dropdownWidth?: number;
-  __onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
-  __disableShowAll?: boolean;
-  __hideEnteredTextOption?: boolean;
-  __onOpen?: CancelableEventHandler<null>;
-}
+export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
 const isInteractive = (option?: AutosuggestItem) => {
   return !!option && !option.disabled && option.type !== 'parent';
@@ -81,16 +73,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onSelect,
     selectedAriaLabel,
     renderHighlightedAriaLive,
-    __dropdownWidth,
-    __onOptionClick,
-    __disableShowAll,
-    __hideEnteredTextOption,
-    __onOpen,
     __internalRootRef,
-    __filterText,
     ...rest
   } = props;
-  const filterText = __filterText === undefined ? value : __filterText;
 
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
@@ -109,10 +94,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   } = useAutosuggestItems({
     options: options || [],
     filterValue: value,
-    filterText,
+    filterText: value,
     filteringType,
     isKeyboard,
-    hideEnteredTextLabel: __hideEnteredTextOption,
+    hideEnteredTextLabel: false,
   });
   const openDropdown = () => !readOnly && setOpen(true);
   const closeDropdown = () => {
@@ -129,12 +114,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selectOption = (option: AutosuggestItem) => {
     const value = option.value || '';
     fireNonCancelableEvent(onChange, { value });
-    const selectedCancelled = fireCancelableEvent(__onOptionClick, option);
-    if (!selectedCancelled) {
-      closeDropdown();
-    } else {
-      resetHighlight();
-    }
+    closeDropdown();
     fireNonCancelableEvent(onSelect, { value });
   };
   const selectHighlighted = () => {
@@ -195,12 +175,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   const handleInputFocus: InputProps['onFocus'] = e => {
-    !__disableShowAll && setShowAll(true);
-    const openPrevented = fireCancelableEvent(__onOpen, null);
-    if (!openPrevented) {
-      openDropdown();
-      fireLoadMore(true, false, '');
-    }
+    setShowAll(true);
+    openDropdown();
+    fireLoadMore(true, false, '');
     onFocus?.(e);
   };
 
@@ -216,8 +193,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   return (
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef} onBlur={handleBlur}>
       <Dropdown
-        minWidth={__dropdownWidth}
-        stretchWidth={!__dropdownWidth}
         trigger={
           <InternalInput
             type="search"
@@ -260,7 +235,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             highlightedIndex={highlightedIndex}
             setHighlightedIndex={setHighlightedIndex}
             highlightedOptionId={highlightedOptionId}
-            highlightText={filterText}
+            highlightText={value}
             listId={listId}
             controlId={controlId}
             enteredTextLabel={enteredTextLabel}

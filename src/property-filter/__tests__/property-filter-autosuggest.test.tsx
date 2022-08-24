@@ -3,10 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import InternalAutosuggest from '../../../lib/components/autosuggest/internal';
 import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces';
+
+import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest';
 
 const options: AutosuggestProps.Options = [{ value: '123' }, { value: 'abc' }];
 
@@ -17,16 +18,16 @@ function renderAutosuggest(jsx: React.ReactElement) {
 }
 
 describe('Internal autosuggest features', () => {
-  describe('`__filterText`', () => {
+  describe('filterText', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
       wrapper = renderAutosuggest(
-        <InternalAutosuggest
+        <PropertyFilterAutosuggest
           options={options}
           enteredTextLabel={value => value}
           value={'123'}
           onChange={() => {}}
-          __filterText={'abc'}
+          filterText={'abc'}
         />
       ).wrapper;
       wrapper.focus();
@@ -39,20 +40,20 @@ describe('Internal autosuggest features', () => {
     test('is used for highlighting', () => {
       expect(wrapper.findDropdown().findHighlightedMatches()[0].getElement()).toHaveTextContent('abc');
     });
-    test('is not used for the `enteredText-` option', () => {
+    test('is not used for the enteredText- option', () => {
       expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('123');
     });
   });
-  describe('`__onOptionClick`', () => {
+  describe('onOptionClick', () => {
     const handleSelectedSpy = jest.fn();
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
       handleSelectedSpy.mockReset();
       wrapper = renderAutosuggest(
-        <InternalAutosuggest
+        <PropertyFilterAutosuggest
           options={options}
           enteredTextLabel={() => ''}
-          __onOptionClick={handleSelectedSpy}
+          onOptionClick={handleSelectedSpy}
           value=""
           onChange={() => {}}
           filteringType="auto"
@@ -94,12 +95,11 @@ describe('Internal autosuggest features', () => {
       expect(wrapper.findDropdown().findHighlightedOption()).toBeNull();
     });
   });
-  test('`__disableShowAll`: forces the list of suggestions to be filtered, when the input is focused', () => {
+  test('the list of suggestions to be filtered, when the input is focused', () => {
     const wrapper: AutosuggestWrapper = renderAutosuggest(
-      <InternalAutosuggest
+      <PropertyFilterAutosuggest
         options={options}
         enteredTextLabel={() => ''}
-        __disableShowAll={true}
         value="123"
         onChange={() => {}}
         filteringType="auto"
@@ -110,12 +110,12 @@ describe('Internal autosuggest features', () => {
     wrapper.focus();
     expect(wrapper.findDropdown().findOptions()).toHaveLength(1);
   });
-  test('`__hideEnteredTextOption`: stops "entered text" option from being created', () => {
+  test('hideEnteredTextOption: stops "entered text" option from being created', () => {
     const wrapper: AutosuggestWrapper = renderAutosuggest(
-      <InternalAutosuggest
+      <PropertyFilterAutosuggest
         options={options}
         enteredTextLabel={() => ''}
-        __hideEnteredTextOption={true}
+        hideEnteredTextOption={true}
         value="123"
         onChange={() => {}}
         filteringType="auto"
@@ -126,14 +126,14 @@ describe('Internal autosuggest features', () => {
     wrapper.focus();
     expect(wrapper.findEnteredTextOption()).toBeNull();
   });
-  describe('`__onOpen`', () => {
+  describe('onOpen', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
       wrapper = renderAutosuggest(
-        <InternalAutosuggest
+        <PropertyFilterAutosuggest
           options={options}
           enteredTextLabel={() => ''}
-          __onOpen={e => e.preventDefault()}
+          onOpen={e => e.preventDefault()}
           value="123"
           onChange={() => {}}
           filteringType="auto"
@@ -151,7 +151,7 @@ describe('Internal autosuggest features', () => {
       expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
     });
   });
-  describe('`_disabled option`', () => {
+  describe('disabled option', () => {
     let wrapper: AutosuggestWrapper;
     const handleSelectedSpy = jest.fn();
     const withDisabledOptions = [
@@ -163,7 +163,7 @@ describe('Internal autosuggest features', () => {
     ];
     beforeEach(() => {
       wrapper = renderAutosuggest(
-        <InternalAutosuggest
+        <PropertyFilterAutosuggest
           options={withDisabledOptions}
           enteredTextLabel={() => ''}
           onSelect={handleSelectedSpy}

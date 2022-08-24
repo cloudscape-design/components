@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import React, { useRef, useState, useMemo } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
-import InternalAutosuggest, { InternalAutosuggestProps } from '../autosuggest/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -20,6 +19,7 @@ import { getQueryActions, parseText, getAutosuggestOptions, ParsedText, getAllow
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 
 export { PropertyFilterProps };
 
@@ -109,7 +109,7 @@ const PropertyFilter = React.forwardRef(
       setFilteringText('');
     };
     const ignoreKeyDown = useRef<boolean>(false);
-    const handleKeyDown: InternalAutosuggestProps['onKeyDown'] = event => {
+    const handleKeyDown: PropertyFilterAutosuggestProps['onKeyDown'] = event => {
       if (filteringText && !ignoreKeyDown.current && event.detail.keyCode === KeyCode.enter) {
         createToken(filteringText);
       }
@@ -154,7 +154,7 @@ const PropertyFilter = React.forwardRef(
             ...asyncProps,
           }
         : {};
-    const handleSelected: InternalAutosuggestProps['__onOptionClick'] = event => {
+    const handleSelected: PropertyFilterAutosuggestProps['onOptionClick'] = event => {
       // The ignoreKeyDown flag makes sure `createToken` routine runs only once. Autosuggest's `onKeyDown` fires,
       // when an item is selected from the list using "enter" key.
       ignoreKeyDown.current = true;
@@ -196,10 +196,10 @@ const PropertyFilter = React.forwardRef(
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
-          <InternalAutosuggest
+          <PropertyFilterAutosuggest
+            ref={inputRef}
             virtualScroll={virtualScroll}
             enteredTextLabel={i18nStrings.enteredTextLabel}
-            ref={inputRef}
             className={styles.input}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
@@ -211,16 +211,14 @@ const PropertyFilter = React.forwardRef(
             empty={filteringEmpty}
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
-            __disableShowAll={true}
-            __dropdownWidth={300}
-            __onOptionClick={handleSelected}
-            __onOpen={e => {
+            onOptionClick={handleSelected}
+            onOpen={e => {
               if (preventFocus.current) {
                 e.preventDefault();
                 preventFocus.current = false;
               }
             }}
-            __hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
             aria-live="polite"

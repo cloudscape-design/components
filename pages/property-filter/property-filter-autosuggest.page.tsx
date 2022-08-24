@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import InternalAutosuggest from '~components/autosuggest/internal';
+import PropertyFilterAutosuggest from '~components/property-filter/property-filter-autosuggest';
 
 const options = [
   {
@@ -15,18 +15,15 @@ const options = [
   { value: 'Option', description: 'description2' },
 ];
 const enteredTextLabel = (value: string) => `Use: ${value}`;
-export default function AutosuggestPage() {
+
+export default function PropertyFilterAutosuggestPage() {
   const [value, setValue] = useState('Option 1');
   return (
     <div style={{ padding: 10 }}>
-      <h1>Internal autosuggest features</h1>
-      <InternalAutosuggest
-        __filterText={value.substr(2)}
-        __onOptionClick={e => {
-          e.preventDefault();
-        }}
-        __dropdownWidth={300}
-        __disableShowAll={true}
+      <h1>Property filter autosuggest features</h1>
+      <PropertyFilterAutosuggest
+        filterText={value.substr(2)}
+        onOptionClick={e => e.preventDefault()}
         value={value}
         options={options}
         onChange={event => setValue(event.detail.value)}
