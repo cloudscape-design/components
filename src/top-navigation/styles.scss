@@ -226,6 +226,8 @@
   padding: awsui.$space-scaled-m;
   border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
+  overflow: hidden;
+
   &-text {
     @include styles.font-panel-header;
     color: awsui.$color-text-heading-default;
@@ -303,6 +305,8 @@
 .overflow-menu-list-item {
   box-sizing: border-box;
   letter-spacing: awsui.$font-button-letter-spacing;
+
+  overflow: hidden;
 
   &-icon {
     margin-right: awsui.$space-xxs;

@@ -36,6 +36,7 @@
 
 .token-content {
   padding: styles.$control-padding-vertical styles.$control-padding-horizontal;
+  overflow: hidden;
 }
 
 .dismiss-button {

@@ -92,6 +92,7 @@
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
+    overflow: hidden;
   }
   &-header {
     @include styles.font-heading-m;

@@ -16,6 +16,8 @@
   margin-top: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
 
+  overflow: hidden;
+
   &.disabled {
     cursor: default;
     color: awsui.$color-text-dropdown-item-disabled;

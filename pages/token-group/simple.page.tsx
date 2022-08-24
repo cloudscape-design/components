@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import TokenGroup, { TokenGroupProps } from '~components/token-group';
 import Box from '~components/box';
 
+const unicodeCombiningCharactersTestString = 'L̷̡̧͔̖̥̱̲͓̘̳͉̤͍͛͗̋̃̈͐̈͘͘ơ̵̻͔̬̲̠̽̈́̏͊͑͒͘̕r̷̰͇̗̯̠̟̣̗̜̻̙̀̎̾̈͘̕͝ȩ̸͖̻͔͔̀̐̆̀̃m̵̬̗̮͍̙̦̗̮̯̽̕ ̸̟͖̩̼̲̓̇͊̊̓î̷̧̨̳̺̥̻̞̣̽͝p̷̞͊s̸̭̗͉̩̲̈̔̑͊́͆͝u̶͎̥̰̥͒̕m̶̨̛̟͚͖͉͉̘̯͓̜͚̎͂̌̽̄͐̕ͅ';
+
 const generateItems = (numberOfItems: number) => {
   return [...new Array(numberOfItems)].map((_item, index) => ({
-    label: `Item ${index + 1}`,
+    label: index === 5 ? unicodeCombiningCharactersTestString : `Item ${index + 1}`,
     disabled: index === 1,
     dismissLabel: `Remove item ${index + 1}`,
   })) as TokenGroupProps.Item[];
@@ -29,7 +31,7 @@ export default function TokenGroupPage() {
   return (
     <Box padding="xl">
       <h1>Token Group</h1>
-      <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={5} />
+      <TokenGroup items={items} onDismiss={onDismiss} i18nStrings={i18nStrings} limit={6} />
     </Box>
   );
 }
