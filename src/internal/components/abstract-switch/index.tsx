@@ -80,7 +80,7 @@ export default function AbstractSwitch({
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
       >
-        <div className={clsx(styles.control, controlClassName)}>
+        <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
             ...focusVisible,
@@ -90,17 +90,20 @@ export default function AbstractSwitch({
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
           })}
-          {/*An empty div to display the outline, because the native control is invisible*/}
-          <div className={styles.outline} />
-        </div>
-        <div className={clsx(styles.content, !label && !description && styles['empty-content'])}>
+          {/*
+          An empty element to display the outline, because the native control is invisible.
+          Note: There is a CSS selector in src/toggle/styles.scss that relies on a span element selector to show focus.
+          */}
+          <span className={styles.outline} />
+        </span>
+        <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (
-            <div id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
+            <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
               {label}
-            </div>
+            </span>
           )}
           {description && (
-            <div
+            <span
               id={descriptionId}
               className={clsx(styles.description, {
                 [styles['description-disabled']]: disabled,
@@ -108,9 +111,9 @@ export default function AbstractSwitch({
               })}
             >
               {description}
-            </div>
+            </span>
           )}
-        </div>
+        </span>
       </WrapperElement>
     </div>
   );

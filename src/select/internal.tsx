@@ -95,6 +95,7 @@ const InternalSelect = React.forwardRef(
       isOpen,
       highlightedOption,
       highlightedIndex,
+      highlightedType,
       getTriggerProps,
       getFilterProps,
       getMenuProps,
@@ -218,10 +219,10 @@ const InternalSelect = React.forwardRef(
             getOptionProps={getOptionProps}
             filteredOptions={filteredOptions}
             filteringValue={filteringValue}
-            isKeyboard={isKeyboard.current}
             ref={scrollToIndex}
             hasDropdownStatus={dropdownStatus.content !== null}
             screenReaderContent={announcement}
+            highlightedType={highlightedType}
           />
         </Dropdown>
       </div>

@@ -13,10 +13,10 @@ import styles from './styles.css.js';
 const VirtualList = ({
   handleLoadMore,
   filteredItems,
-  usingMouse,
   menuProps,
   highlightedOption,
   highlightedIndex,
+  highlightedType,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -41,10 +41,10 @@ const VirtualList = ({
   });
 
   useEffect(() => {
-    if (!usingMouse.current) {
+    if (highlightedType === 'keyboard') {
       rowVirtualizer.scrollToIndex(highlightedIndex);
     }
-  }, [usingMouse, rowVirtualizer, highlightedIndex]);
+  }, [highlightedType, rowVirtualizer, highlightedIndex]);
 
   return (
     <OptionsList
@@ -86,6 +86,7 @@ const VirtualList = ({
             screenReaderContent={screenReaderContent}
             ariaSetsize={filteredItems.length}
             ariaPosinset={index + 1}
+            highlightedType={highlightedType}
             {...optionProps}
           />
         );

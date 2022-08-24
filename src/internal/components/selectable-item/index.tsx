@@ -15,7 +15,6 @@ export interface SelectableItemProps extends BaseComponentProps {
   hasBackground?: boolean;
   isParent?: boolean;
   isChild?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
@@ -23,6 +22,7 @@ export interface SelectableItemProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
+  highlightedType?: 'mouse' | 'keyboard';
 }
 
 const SelectableItem = (
@@ -36,7 +36,6 @@ const SelectableItem = (
     hasBackground,
     isParent,
     isChild,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -44,6 +43,7 @@ const SelectableItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightedType,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -55,7 +55,7 @@ const SelectableItem = (
     [styles['has-background']]: hasBackground,
     [styles.parent]: isParent,
     [styles.child]: isChild,
-    [styles['is-keyboard']]: isKeyboard,
+    [styles['is-keyboard']]: highlightedType === 'keyboard',
     [styles.disabled]: disabled,
     [styles.virtual]: virtualPosition !== undefined,
     [styles['pad-bottom']]: padBottom,

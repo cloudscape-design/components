@@ -40,7 +40,7 @@ const permutations = createPermutations<SelectableItemProps>([
   {
     selected: [false, true],
     highlighted: [true],
-    isKeyboard: [true],
+    highlightedType: ['keyboard'],
     disabled: [false],
     children: [bigOption],
   },

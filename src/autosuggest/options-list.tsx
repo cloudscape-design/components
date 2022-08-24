@@ -28,7 +28,8 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  usingMouse: React.MutableRefObject<boolean>;
+  isKeyboard: React.MutableRefObject<boolean>;
+  highlightedType: 'mouse' | 'keyboard';
 }
 
 const isInteractive = (option?: AutosuggestItem) => {
@@ -40,9 +41,9 @@ const isHighlightable = (option?: AutosuggestItem) => {
 };
 
 const createMouseEventHandler =
-  (handler: (index: number) => void, usingMouse: React.MutableRefObject<boolean>) => (itemIndex: number) => {
+  (handler: (index: number) => void, isKeyboard: React.MutableRefObject<boolean>) => (itemIndex: number) => {
     // prevent mouse events to avoid losing focus from the input
-    usingMouse.current = true;
+    isKeyboard.current = false;
     if (itemIndex > -1) {
       handler(itemIndex);
     }
@@ -65,12 +66,13 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
-  usingMouse,
+  isKeyboard,
+  highlightedType,
 }: AutosuggestOptionsListProps) {
   const highlightVisibleOption = useHighlightVisibleOption(options, setHighlightedIndex, isHighlightable);
   const selectVisibleOption = useSelectVisibleOption(options, selectOption, isInteractive);
-  const handleMouseUp = createMouseEventHandler(selectVisibleOption, usingMouse);
-  const handleMouseMove = createMouseEventHandler(highlightVisibleOption, usingMouse);
+  const handleMouseUp = createMouseEventHandler(selectVisibleOption, isKeyboard);
+  const handleMouseMove = createMouseEventHandler(highlightVisibleOption, isKeyboard);
 
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
@@ -88,7 +90,6 @@ export default function AutosuggestOptionsList({
       handleLoadMore={handleLoadMore}
       filteredItems={options}
       highlightText={highlightText}
-      usingMouse={usingMouse}
       highlightedOption={highlightedOption}
       highlightedIndex={highlightedIndex}
       enteredTextLabel={enteredTextLabel}
@@ -96,6 +97,7 @@ export default function AutosuggestOptionsList({
       hasDropdownStatus={hasDropdownStatus}
       menuProps={{ id: listId, ariaLabelledby: controlId, onMouseUp: handleMouseUp, onMouseMove: handleMouseMove }}
       screenReaderContent={announcement}
+      highlightedType={highlightedType}
     />
   );
 }
