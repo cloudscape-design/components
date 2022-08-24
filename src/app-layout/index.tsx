@@ -31,7 +31,6 @@ import {
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { DarkHeader, DarkHeaderProps } from './dark-header';
 import { isMotionDisabled } from '../internal/motion';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { NavigationPanel } from './navigation-panel';
@@ -117,7 +116,6 @@ const OldAppLayout = React.forwardRef(
     const isMotionEnabled = rootRef.current ? !isMotionDisabled(rootRef.current) : false;
 
     const defaults = applyDefaults(contentType, { maxContentWidth, minContentWidth }, false);
-    const darkStickyHeaderContentType = ['cards', 'table'].indexOf(contentType) > -1;
     const [navigationOpen = false, setNavigationOpen] = useControllable(
       controlledNavigationOpen,
       onNavigationChange,
@@ -407,18 +405,6 @@ const OldAppLayout = React.forwardRef(
       return effectiveNavigationWidth;
     })();
 
-    const contentHeaderProps: DarkHeaderProps = {
-      isMobile,
-      navigationWidth: effectiveNavigationWidth,
-      toolsWidth: disableContentPaddings
-        ? 0
-        : toolsDrawerWidth
-        ? toolsDrawerWidth
-        : isToolsDrawerHidden
-        ? toggleButtonsBarWidth
-        : 0,
-    };
-
     const previousContentWidth = usePreviousFrameValue(
       contentWidthWithSplitPanel - (splitPanelOpenOnTheSide ? splitPanelReportedSize : 0)
     );
@@ -484,57 +470,44 @@ const OldAppLayout = React.forwardRef(
                 }}
               >
                 {notifications && (
-                  <DarkHeader
-                    {...contentHeaderProps}
+                  <Notifications
+                    testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
+                    labels={ariaLabels}
                     topOffset={disableBodyScroll ? 0 : headerHeight}
-                    sticky={!isMobile && darkStickyHeaderContentType && stickyNotifications}
+                    sticky={!isMobile && stickyNotifications}
+                    ref={notificationsRef}
+                    isMobile={isMobile}
+                    navigationPadding={contentWrapperProps.navigationPadding}
+                    toolsPadding={contentWrapperProps.toolsPadding}
+                    contentWidthStyles={contentWidthStyles}
                   >
-                    <Notifications
-                      testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
-                      labels={ariaLabels}
-                      topOffset={headerHeight}
-                      sticky={!isMobile && stickyNotifications}
-                      ref={notificationsRef}
-                      isMobile={isMobile}
-                      navigationPadding={contentWrapperProps.navigationPadding}
-                      toolsPadding={contentWrapperProps.toolsPadding}
-                      contentWidthStyles={contentWidthStyles}
-                    >
-                      {notifications}
-                    </Notifications>
-                  </DarkHeader>
+                    {notifications}
+                  </Notifications>
                 )}
                 {((!isMobile && breadcrumbs) || contentHeader) && (
-                  <DarkHeader {...contentHeaderProps}>
-                    <ContentWrapper {...contentWrapperProps} contentWidthStyles={contentWidthStyles}>
-                      {!isMobile && breadcrumbs && (
-                        <div
-                          className={clsx(
-                            styles.breadcrumbs,
-                            testutilStyles.breadcrumbs,
-                            styles['breadcrumbs-desktop'],
-                            darkStickyHeaderContentType && styles['breadcrumbs-desktop-sticky-header']
-                          )}
-                        >
-                          {breadcrumbs}
-                        </div>
-                      )}
-                      {contentHeader && (
-                        <div
-                          className={clsx(
-                            styles['content-header-wrapper'],
-                            !hasRenderedNotifications &&
-                              (isMobile || !breadcrumbs) &&
-                              styles['content-extra-top-padding'],
-                            !hasRenderedNotifications && !breadcrumbs && styles['content-header-wrapper-first-child'],
-                            !disableContentHeaderOverlap && styles['content-header-wrapper-overlapped']
-                          )}
-                        >
-                          {contentHeader}
-                        </div>
-                      )}
-                    </ContentWrapper>
-                  </DarkHeader>
+                  <ContentWrapper {...contentWrapperProps} contentWidthStyles={contentWidthStyles}>
+                    {!isMobile && breadcrumbs && (
+                      <div
+                        className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}
+                      >
+                        {breadcrumbs}
+                      </div>
+                    )}
+                    {contentHeader && (
+                      <div
+                        className={clsx(
+                          styles['content-header-wrapper'],
+                          !hasRenderedNotifications &&
+                            (isMobile || !breadcrumbs) &&
+                            styles['content-extra-top-padding'],
+                          !hasRenderedNotifications && !breadcrumbs && styles['content-header-wrapper-first-child'],
+                          !disableContentHeaderOverlap && styles['content-header-wrapper-overlapped']
+                        )}
+                      >
+                        {contentHeader}
+                      </div>
+                    )}
+                  </ContentWrapper>
                 )}
                 <ContentWrapper
                   {...contentWrapperProps}
