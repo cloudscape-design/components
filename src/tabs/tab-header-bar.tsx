@@ -133,6 +133,7 @@ export function TabHeaderBar({
       {horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
           <InternalButton
+            formAction="none"
             variant="icon"
             iconName="angle-left"
             __nativeAttributes={paginationButtonAttributes}
@@ -154,6 +155,7 @@ export function TabHeaderBar({
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
           <InternalButton
+            formAction="none"
             variant="icon"
             iconName="angle-right"
             __nativeAttributes={paginationButtonAttributes}

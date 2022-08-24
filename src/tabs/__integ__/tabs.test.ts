@@ -49,6 +49,10 @@ class TabsPage extends BasePageObject {
   async toggleSmallSize() {
     await this.click('#size-toggle');
   }
+
+  getUrl() {
+    return this.browser.getUrl();
+  }
 }
 
 const setupTest = (testFn: (page: TabsPage) => Promise<void>, smallViewport = false) => {
@@ -270,3 +274,15 @@ test(
     }, smallViewport)
   );
 });
+
+test(
+  'header buttons do not trigger form submission',
+  setupTest(async page => {
+    const urlBefore = await page.getUrl();
+    await page.click(wrapper.find(page.paginationButton('left')).toSelector());
+    await page.click(wrapper.find(page.paginationButton('right')).toSelector());
+    const urlAfter = await page.getUrl();
+
+    expect(urlAfter).toEqual(urlBefore);
+  }, true)
+);

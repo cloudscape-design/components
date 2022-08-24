@@ -59,7 +59,9 @@ export default function TabsDemoPage() {
     <div id="container" className={small ? styles.small : ''}>
       <h1>Tabs</h1>
       <input type="text" id="before" aria-label="before" />
-      <Tabs tabs={tabs} activeTabId={selectedTab} onChange={event => setSelectedTab(event.detail.activeTabId)} />
+      <form action="/">
+        <Tabs tabs={tabs} activeTabId={selectedTab} onChange={event => setSelectedTab(event.detail.activeTabId)} />
+      </form>
       <input type="text" id="after" aria-label="after" />
       <button id="size-toggle" onClick={() => setSmall(!small)}>
         Toggle
