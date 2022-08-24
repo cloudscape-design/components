@@ -28,11 +28,12 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
       <a
         {...focusVisible}
-        href={item.href || '#'}
+        href={isLast ? undefined : item.href || '#'}
         className={clsx(styles.anchor, { [styles.compressed]: isCompressed })}
         aria-current={isLast ? 'page' : undefined} // Active breadcrumb item is implemented according to WAI-ARIA 1.1
         aria-disabled={isLast && 'true'}
         onClick={isLast ? preventDefault : onClickHandler}
+        tabIndex={isLast ? 0 : undefined} // tabIndex is added to the last crumb to keep it in the index without an href
       >
         <span className={styles.text}>{item.text}</span>
       </a>
