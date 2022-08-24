@@ -22,6 +22,16 @@ export default () => {
     }
   };
 
+  const getButton = (id: string) => {
+    return (
+      <Button
+        variant="icon"
+        onClick={() => getStickies(id)}
+        iconName={stickies.includes(id) ? 'unlocked' : 'lock-private'}
+      />
+    );
+  };
+
   console.log(stickies);
   return (
     <ScreenshotArea>
@@ -256,12 +266,7 @@ export default () => {
               id: 'variable',
               header: (
                 <Box fontWeight="bold" color="text-body-secondary">
-                  Variable name{' '}
-                  <Button
-                    variant="icon"
-                    onClick={() => getStickies('variable')}
-                    iconName={stickies.includes('variable') ? 'unlocked' : 'lock-private'}
-                  />
+                  Variable name {getButton('variable')}
                 </Box>
               ),
               cell: item => item.name || '-',
@@ -275,12 +280,7 @@ export default () => {
               id: 'alt',
               header: (
                 <Box fontWeight="bold" color="text-body-secondary">
-                  Variable name{' '}
-                  <Button
-                    variant="icon"
-                    onClick={() => getStickies('alt')}
-                    iconName={stickies.includes('alt') ? 'unlocked' : 'lock-private'}
-                  />
+                  Text value {getButton('alt')}
                 </Box>
               ),
               cell: item => item.alt || '-',
@@ -292,38 +292,73 @@ export default () => {
             },
             {
               id: 'description',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description'),
             },
             {
               id: 'description-2',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-2')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-2'),
             },
             {
               id: 'description-3',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-3')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-3'),
             },
             {
               id: 'description-4',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-4')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-4'),
             },
             {
               id: 'description-5',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-5')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-5'),
             },
             {
               id: 'description-6',
-              header: 'Description',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-6')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-6'),
             },
             {
-              id: 'descriptio7',
-              header: 'Description',
+              id: 'description-7',
+              header: (
+                <Box fontWeight="bold" color="text-body-secondary">
+                  Description {getButton('description-7')}
+                </Box>
+              ),
               cell: item => item.description || '-',
+              isSticky: stickies.includes('description-7'),
             },
           ]}
           items={[
