@@ -84,7 +84,7 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
-    const [tableCellRefs, setTableCellRefs] = React.useState<HTMLTableCellElement[]>([]);
+    const [tableCellRefs, setTableCellRefs] = React.useState<any[]>([]);
     const [cellWidths, setCellWidths] = React.useState<number[]>([]);
 
     useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
@@ -106,10 +106,11 @@ const InternalTable = React.forwardRef(
       // add or remove refs
       setTableCellRefs(tableCellRefs =>
         Array(arrLength)
+          // @ts-ignore
           .fill()
-          .map((_, i) => tableCellRefs[i] || React.createRef())
+          .map((_: any, i: any) => tableCellRefs[i] || React.createRef())
       );
-    }, [arrLength]);
+    }, [arrLength, visibleColumnDefinitions]);
 
     React.useEffect(() => {
       const getCellWidths = () => {
@@ -317,6 +318,9 @@ const InternalTable = React.forwardRef(
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const currentCell = tableCellRefs[colIndex]?.current;
+                          const isLastStickyColumn =
+                            currentCell?.nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto';
+                          // console.log(colIndex, isLastStickyColumn);
                           return (
                             <TableBodyCellContent
                               key={getColumnKey(column, colIndex)}
@@ -330,11 +334,7 @@ const InternalTable = React.forwardRef(
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
                                       left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
-                                      boxShadow:
-                                        currentCell?.nextSibling?.style.left === 'auto' &&
-                                        currentCell?.style.left !== 'auto'
-                                          ? 'inset -2px 0 #eaeded'
-                                          : 'none',
+                                      boxShadow: isLastStickyColumn ? 'inset -2px 0 #eaeded' : 'none',
                                     }
                               }
                               isSticky={column.isSticky}
