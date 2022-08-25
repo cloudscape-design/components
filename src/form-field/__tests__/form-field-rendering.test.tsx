@@ -101,7 +101,7 @@ describe('FormField component', () => {
 
     const errorLabel = wrapper.findErrorIconWrapper();
     expect(errorLabel?.getElement()).not.toBeNull();
-    expect(errorLabel?.getElement()).toHaveAttribute('aria-label', 'errorIconLabel');
+    expect(errorLabel?.getElement()).toHaveAttribute('aria-label', errorIconLabel);
   });
 
   test('constraintText region displays constraint content text when error-text is also set', () => {
