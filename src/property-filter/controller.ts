@@ -66,7 +66,12 @@ export const getAllowedOperators = (
   const { operators, defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
   const operatorSet: { [key: string]: true } = { [defaultOperator ?? '=']: true };
-  operators?.forEach(op => (operatorSet[op] = true));
+  // TODO: remove unknown type annotation once extended operators are supported.
+  operators?.forEach((op: unknown) => {
+    if (typeof op === 'string') {
+      operatorSet[op] = true;
+    }
+  });
   return operatorOrder.filter(op => operatorSet[op]);
 };
 

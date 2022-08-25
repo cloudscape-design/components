@@ -153,8 +153,13 @@ export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
-  export type FilteringProperty = PropertyFilterProperty;
   export type FilteringOption = PropertyFilterOption;
+  export interface FilteringProperty extends PropertyFilterProperty {
+    groupValuesLabel: string;
+    propertyLabel: string;
+    group?: string;
+  }
+
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
