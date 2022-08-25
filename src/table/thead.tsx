@@ -76,10 +76,7 @@ const Thead = React.forwardRef(
     React.useEffect(() => {
       // add or remove refs
       setTableCellRefs(tableCellRefs =>
-        Array(arrLength)
-          // @ts-ignore
-          .fill()
-          .map((_: any, i: any) => tableCellRefs[i] || React.createRef())
+        [...new Array(arrLength)].map((_: any, i: any) => tableCellRefs[i] || React.createRef())
       );
     }, [arrLength, columnDefinitions]);
 
