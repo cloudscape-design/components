@@ -328,7 +328,10 @@ const InternalTable = React.forwardRef(
                               ref={tableCellRefs[colIndex]}
                               style={
                                 resizableColumns
-                                  ? {}
+                                  ? {
+                                      left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
+                                      boxShadow: isLastStickyColumn ? 'inset -2px 0 #eaeded' : 'none',
+                                    }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,

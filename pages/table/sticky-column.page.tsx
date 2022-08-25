@@ -37,6 +37,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
+          stickyHeader
           columnDefinitions={[
             {
               id: 'variable',
@@ -145,7 +146,7 @@ export default () => {
               <Button>Create resource</Button>
             </Box>
           }
-          header={<Header>Table with one sticky column</Header>}
+          header={<Header>Table with sticky column and sticky header</Header>}
         />
         <Table
           columnDefinitions={[
@@ -261,6 +262,7 @@ export default () => {
           header={<Header>Table with 3 sticky columns</Header>}
         />
         <Table
+          resizableColumns
           columnDefinitions={[
             {
               id: 'variable',
@@ -416,7 +418,7 @@ export default () => {
               <Button>Create resource</Button>
             </Box>
           }
-          header={<Header>Table with dynamic sticky columns</Header>}
+          header={<Header>Table with dynamic sticky columns and resizable columns</Header>}
         />
       </SpaceBetween>
     </ScreenshotArea>

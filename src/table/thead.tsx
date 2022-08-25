@@ -81,7 +81,7 @@ const Thead = React.forwardRef(
           .fill()
           .map((_: any, i: any) => tableCellRefs[i] || React.createRef())
       );
-    }, [arrLength]);
+    }, [arrLength, columnDefinitions]);
 
     React.useEffect(() => {
       const getCellWidths = () => {
