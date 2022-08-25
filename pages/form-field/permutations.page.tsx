@@ -17,6 +17,7 @@ import Link from '~components/link';
 const permutations = createPermutations<FormFieldProps>([
   {
     label: ['Very long label description oh wow', 'Normal label', 'short'],
+    errorIconLabel: ['Error'],
     errorText: [
       null,
       'An application with that name already exists',
@@ -36,6 +37,7 @@ const permutations = createPermutations<FormFieldProps>([
   },
   {
     label: ['Normal label'],
+    errorIconLabel: ['Error:'],
     errorText: [null, 'An application with that name already exists'],
     constraintText: [null, 'Only normal characters are allowed'],
     description: [null, 'Enter your name'],

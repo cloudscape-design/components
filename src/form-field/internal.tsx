@@ -20,13 +20,16 @@ import { joinStrings } from '../internal/utils/strings';
 interface FormFieldErrorProps {
   id?: string;
   children?: React.ReactNode;
+  errorIconLabel?: string;
 }
 
-export const FormFieldError = ({ id, children }: FormFieldErrorProps) => (
+export const FormFieldError = ({ id, children, errorIconLabel }: FormFieldErrorProps) => (
   <div className={styles.error}>
     <div className={styles['error-icon-shake-wrapper']}>
       <div className={styles['error-icon-scale-wrapper']}>
-        <InternalIcon name="status-warning" size="small" />
+        <span role="img" aria-label={errorIconLabel}>
+          <InternalIcon name="status-warning" size="small" />
+        </span>
       </div>
     </div>
     <span id={id} className={styles.error__message}>
@@ -44,6 +47,7 @@ export default function InternalFormField({
   secondaryControl,
   description,
   constraintText,
+  errorIconLabel,
   errorText,
   __hideLabel,
   __internalRootRef = null,
@@ -115,7 +119,11 @@ export default function InternalFormField({
 
       {(constraintText || errorText) && (
         <div className={styles.hints}>
-          {errorText && <FormFieldError id={slotIds.error}>{errorText}</FormFieldError>}
+          {errorText && (
+            <FormFieldError id={slotIds.error} errorIconLabel={errorIconLabel}>
+              {errorText}
+            </FormFieldError>
+          )}
           {constraintText && (
             <div
               className={clsx(styles.constraint, errorText && styles['constraint-has-error'])}

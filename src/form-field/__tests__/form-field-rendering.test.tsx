@@ -91,6 +91,19 @@ describe('FormField component', () => {
     expect(labelElement?.getElement().tagName).toBe('LABEL');
   });
 
+  test('errorIcon has an accessible text alternative', () => {
+    const errorText = 'Yikes, that is just plan wrong';
+    const errorIconLabel = 'Error';
+    const wrapper = renderFormField({
+      errorText,
+      errorIconLabel,
+    });
+
+    const errorLabel = wrapper.findErrorIconWrapper();
+    expect(errorLabel?.getElement()).not.toBeNull();
+    expect(errorLabel?.getElement()).toHaveAttribute('aria-label', 'errorIconLabel');
+  });
+
   test('constraintText region displays constraint content text when error-text is also set', () => {
     const constraintText = 'let this be a lesson to you';
     const errorText = 'wrong, do it again';

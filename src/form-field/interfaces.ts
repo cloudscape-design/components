@@ -61,6 +61,11 @@ export interface FormFieldProps extends BaseComponentProps {
   constraintText?: React.ReactNode;
 
   /**
+   * Provides a text alternative for the error icon in the error message.
+   */
+  errorIconLabel?: string;
+
+  /**
    * Text that displays as a validation message. If this is set to a
    * non-empty string, it will render the form field as invalid.
    */
