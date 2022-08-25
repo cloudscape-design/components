@@ -27,7 +27,7 @@ export default class FormFieldWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findErrorIconWrapper(): ElementWrapper | null {
-    return this.find(`:scope > .${styles.hints} span`);
+    return this.find(`:scope > .${styles.hints} span[aria-label]`);
   }
 
   findDescription(): ElementWrapper | null {
