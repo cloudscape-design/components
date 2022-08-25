@@ -209,11 +209,23 @@ function ValueInput({
   }
 
   return (
-    <div className={clsx(styles['token-editor-line'], styles['value-selector'])} key={i18nStrings.valueText}>
+    <div
+      className={clsx({
+        [styles['token-editor-line']]: true,
+        [styles['token-editor-line-custom']]: !!customInput,
+        [styles['value-selector']]: true,
+      })}
+      key={i18nStrings.valueText}
+    >
       <label className={styles['token-editor-label']} htmlFor={controlId}>
         {i18nStrings.valueText}
       </label>
-      <div className={styles['token-editor-field']}>
+      <div
+        className={clsx({
+          [styles['token-editor-field']]: true,
+          [styles['token-editor-field-custom']]: !!customInput,
+        })}
+      >
         {customInput || (
           <InternalAutosuggest
             controlId={controlId}

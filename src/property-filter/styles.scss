@@ -47,6 +47,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    &-custom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
   &-label {
     @include styles.text-flex-wrapping;
@@ -55,6 +59,9 @@
     width: 200px;
     flex-shrink: 0;
     margin-left: awsui.$space-xl;
+    &-custom {
+      margin: auto;
+    }
   }
   &-actions {
     display: flex;
