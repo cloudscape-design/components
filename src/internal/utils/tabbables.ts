@@ -20,23 +20,23 @@ const tabbables = [
   'audio[controls]',
   'video[controls]',
 
-  '[tabindex]',
+  '[tabindex]:not([tabindex="-1"])',
   '[contenteditable]',
   '[autofocus]',
 ].join(',');
 
-export function getFocusables(container: HTMLElement): HTMLElement[] {
+export function getTabbables(container: HTMLElement): HTMLElement[] {
   return Array.prototype.slice
     .call(container.querySelectorAll(tabbables))
     .filter((element: HTMLElement) => element.tabIndex !== -1);
 }
 
-export function getFirstFocusable(container: HTMLElement) {
-  const focusables = getFocusables(container);
+export function getFirstTabbable(container: HTMLElement) {
+  const focusables = getTabbables(container);
   return focusables[0] ?? null;
 }
 
-export function getLastFocusable(container: HTMLElement) {
-  const focusables = getFocusables(container);
+export function getLastTabbable(container: HTMLElement) {
+  const focusables = getTabbables(container);
   return focusables[focusables.length - 1] ?? null;
 }

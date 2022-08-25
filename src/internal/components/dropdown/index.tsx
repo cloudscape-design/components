@@ -13,8 +13,8 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { DropdownContextProvider, DropdownContextProviderProps } from './context';
 import { useMobile } from '../../hooks/use-mobile';
-import TabTrap from '../tab-trap/index.js';
-import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
+import FocusDetector from '../focus-detector';
+import { getFirstTabbable, getLastTabbable } from '../../utils/tabbables';
 
 interface DropdownContainerProps {
   children?: React.ReactNode;
@@ -335,8 +335,8 @@ const Dropdown = ({
         {trigger}
       </div>
 
-      <TabTrap
-        focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
+      <FocusDetector
+        onFocus={() => dropdownRef.current && getFirstTabbable(dropdownRef.current)?.focus()}
         disabled={!open || !trapFocus}
       />
 
@@ -344,8 +344,8 @@ const Dropdown = ({
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div onBlur={event => trapFocus && event.stopPropagation()}>
-              <TabTrap
-                focusNextCallback={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
+              <FocusDetector
+                onFocus={() => triggerRef.current && getLastTabbable(triggerRef.current)?.focus()}
                 disabled={!open || !trapFocus}
               />
 
@@ -368,8 +368,8 @@ const Dropdown = ({
                 {children}
               </TransitionContent>
 
-              <TabTrap
-                focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
+              <FocusDetector
+                onFocus={() => triggerRef.current && getFirstTabbable(triggerRef.current)?.focus()}
                 disabled={!open || !trapFocus}
               />
             </div>

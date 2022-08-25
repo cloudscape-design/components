@@ -22,7 +22,7 @@ import {
   InputKeyEvents,
   InputProps,
 } from '../../../input/interfaces';
-import { getFocusables } from '../focus-lock/utils';
+import { getTabbables } from '../../utils/tabbables';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
@@ -238,8 +238,8 @@ const AutosuggestInput = React.forwardRef(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
       setTrapDropdownFocus(
-        (dropdownFooterRef.current ? getFocusables(dropdownFooterRef.current).length > 0 : false) ||
-          (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false)
+        (dropdownFooterRef.current ? getTabbables(dropdownFooterRef.current).length > 0 : false) ||
+          (dropdownContentRef.current ? getTabbables(dropdownContentRef.current).length > 0 : false)
       );
     });
 

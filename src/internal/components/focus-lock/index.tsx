@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import TabTrap from '../tab-trap/index';
-import { getFirstFocusable, getLastFocusable } from './utils';
+import FocusDetector from '../focus-detector';
+import { getFirstTabbable, getLastTabbable } from '../../utils/tabbables';
 
 export interface FocusLockProps {
   disabled?: boolean;
@@ -15,13 +15,13 @@ export default function FocusLock({ disabled, autoFocus, children }: FocusLockPr
 
   const focusFirst = () => {
     if (containerRef.current) {
-      getFirstFocusable(containerRef.current)?.focus();
+      getFirstTabbable(containerRef.current)?.focus();
     }
   };
 
   const focusLast = () => {
     if (containerRef.current) {
-      getLastFocusable(containerRef.current)?.focus();
+      getLastTabbable(containerRef.current)?.focus();
     }
   };
 
@@ -33,9 +33,9 @@ export default function FocusLock({ disabled, autoFocus, children }: FocusLockPr
 
   return (
     <>
-      <TabTrap disabled={disabled} focusNextCallback={focusLast} />
+      <FocusDetector disabled={disabled} onFocus={focusLast} />
       <div ref={containerRef}>{children}</div>
-      <TabTrap disabled={disabled} focusNextCallback={focusFirst} />
+      <FocusDetector disabled={disabled} onFocus={focusFirst} />
     </>
   );
 }
