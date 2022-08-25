@@ -13,6 +13,8 @@ import {
   PropertyFilterToken,
   // PropertyFilterProperty,
   PropertyFilterOption,
+  PropertyFilterProperty,
+  PropertyFilterOperatorExtended,
 } from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
@@ -155,8 +157,14 @@ export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
-  // export type FilteringProperty = PropertyFilterProperty;
   export type FilteringOption = PropertyFilterOption;
+  export interface FilteringProperty extends PropertyFilterProperty {
+    groupValuesLabel: string;
+    propertyLabel: string;
+    group?: string;
+    operators?: readonly (PropertyFilterOperator | ExtendedOperator<any>)[];
+  }
+
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
@@ -164,7 +172,7 @@ export namespace PropertyFilterProps {
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
-    filteringOperator?: ComparisonOperator;
+    filteringOperator?: PropertyFilterOperator;
     filteringText: string;
     firstPage: boolean;
     samePage: boolean;
@@ -210,32 +218,22 @@ export namespace PropertyFilterProps {
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
 
-  export interface ExtendedOperator<TokenValue> {
-    value: ComparisonOperator;
+  export interface ExtendedOperator<TokenValue> extends PropertyFilterOperatorExtended<TokenValue> {
+    value: PropertyFilterOperator;
     form?: CustomOperatorForm<TokenValue>;
     format?: CustomOperatorFormat<TokenValue>;
-    match?: 'date' | CustomOperatorMatch<TokenValue>;
   }
 
   export type CustomOperatorForm<TokenValue> = React.FC<{
     value: null | TokenValue;
     onChange: (value: null | TokenValue) => void;
     filter: string;
-    operator: ComparisonOperator;
+    operator: PropertyFilterOperator;
   }>;
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
 
   export type CustomOperatorMatch<TokenValue> = (tokenValue: TokenValue, itemValue: any) => boolean;
-
-  export interface FilteringProperty {
-    key: string;
-    groupValuesLabel: string;
-    propertyLabel: string;
-    operators?: readonly (ComparisonOperator | ExtendedOperator<any>)[];
-    defaultOperator?: ComparisonOperator;
-    group?: string;
-  }
 
   export interface GroupText {
     properties: string;
