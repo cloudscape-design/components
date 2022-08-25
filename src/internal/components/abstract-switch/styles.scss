@@ -6,6 +6,13 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
+.content,
+.description,
+.label,
+.outline {
+  display: block;
+}
+
 .wrapper {
   @include styles.text-wrapping;
   display: flex;

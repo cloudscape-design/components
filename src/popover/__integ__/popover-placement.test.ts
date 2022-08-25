@@ -155,3 +155,25 @@ describe('Fallback to vertical placement in mobile', () => {
     );
   }
 });
+
+test(
+  `Large size popover should fallback to medium size in mobile`,
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/popover/scenarios');
+
+    const wrapper = createWrapper();
+    const largePopover = wrapper.findPopover('#large-popover');
+    const triggerSelector = largePopover.findTrigger().toSelector();
+    const containerSelector = largePopover.findByClassName(styles.container).toSelector();
+    await page.click(triggerSelector);
+    const { width: desktopContainerWidth } = await page.getBoundingBox(containerSelector);
+    expect(desktopContainerWidth).toEqual(480);
+
+    // Set mobile window size
+    const [width, height] = VIEWPORT_MOBILE;
+    await page.setWindowSize({ width, height });
+    const { width: mobileContainerWidth } = await page.getBoundingBox(containerSelector);
+    expect(mobileContainerWidth).toEqual(310);
+  })
+);

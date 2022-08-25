@@ -5,12 +5,9 @@ import Header from '~components/header';
 import Table, { TableProps } from '~components/table';
 import { NonCancelableCustomEvent } from '~components/interfaces';
 import range from 'lodash/range';
-import { ariaLabels } from './shared-configs';
+import { ariaLabels, Item } from './shared-configs';
 const items = createSimpleItems(5);
-interface Item {
-  number: number;
-  text: string;
-}
+
 function createSimpleItems(count: number): Item[] {
   const texts = ['One', 'Two', 'Three', 'Four', 'Five'];
   return range(count).map(number => ({ number, text: texts[number % texts.length] }));

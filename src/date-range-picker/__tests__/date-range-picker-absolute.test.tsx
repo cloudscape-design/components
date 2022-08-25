@@ -6,7 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
-import { expectNoAxeViolations } from '../../__a11y__/axe';
+import '../../__a11y__/to-validate-a11y';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -65,7 +65,7 @@ describe('Date range picker', () => {
       const wrapper = createWrapper(container).findDateRangePicker()!;
       wrapper.findTrigger().click();
 
-      await expectNoAxeViolations(container);
+      await expect(container).toValidateA11y();
     });
 
     describe('form submission', () => {

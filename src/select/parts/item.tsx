@@ -7,6 +7,7 @@ import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import InternalIcon from '../../icon/internal.js';
 
 export interface ItemProps {
   option: DropdownOption;
@@ -14,13 +15,13 @@ export interface ItemProps {
   selected?: boolean;
   filteringValue?: string;
   hasCheckbox?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
+  highlightedType?: 'mouse' | 'keyboard';
 }
 
 const Item = (
@@ -30,13 +31,13 @@ const Item = (
     selected,
     filteringValue,
     hasCheckbox,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightedType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -57,13 +58,13 @@ const Item = (
       disabled={option.disabled}
       isParent={isParent}
       isChild={isChild}
-      isKeyboard={isKeyboard}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
+      highlightedType={highlightedType}
       {...baseProps}
     >
       <div className={styles.item}>
@@ -76,6 +77,11 @@ const Item = (
           wrappedOption.label || wrappedOption.value
         ) : (
           <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} />
+        )}
+        {!hasCheckbox && !isParent && selected && (
+          <div className={styles['selected-icon']}>
+            <InternalIcon name="check" />
+          </div>
         )}
       </div>
     </SelectableItem>

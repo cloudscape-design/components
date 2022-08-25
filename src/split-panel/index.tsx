@@ -112,6 +112,7 @@ const TransitionContentSide = ({
             variant="icon"
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
+            ariaExpanded={isOpen}
             ref={isRefresh ? null : toggleRef}
           />
         )}
@@ -366,6 +367,7 @@ export default function SplitPanel({
             formAction="none"
             ariaLabel={i18nStrings.closeButtonAriaLabel}
             ref={closeRef}
+            ariaExpanded={isOpen}
           />
         ) : position === 'side' ? null : (
           <InternalButton
@@ -375,6 +377,7 @@ export default function SplitPanel({
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
             ref={toggleRef}
+            ariaExpanded={isOpen}
           />
         )}
       </div>

@@ -21,7 +21,8 @@ const DropdownTrigger = (
   clickHandler: () => void,
   ref: React.Ref<ButtonProps.Ref>,
   isDisabled: boolean,
-  isExpanded: boolean
+  isExpanded: boolean,
+  ariaLabel?: string
 ) => {
   return (
     <InternalButton
@@ -33,7 +34,9 @@ const DropdownTrigger = (
       ref={ref}
       aria-expanded={isExpanded ? true : undefined}
       aria-haspopup={true}
+      ariaLabel={ariaLabel}
       variant="breadcrumb-group"
+      formAction="none"
     >
       ...
     </InternalButton>
@@ -47,8 +50,9 @@ const EllipsisDropdown = ({
   onDropdownItemFollow,
 }: EllipsisDropdownProps) => {
   return (
-    <li className={styles.ellipsis} aria-label={ariaLabel}>
+    <li className={styles.ellipsis}>
       <InternalButtonDropdown
+        ariaLabel={ariaLabel}
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}

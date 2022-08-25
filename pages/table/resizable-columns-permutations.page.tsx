@@ -6,30 +6,25 @@ import Table, { TableProps } from '~components/table';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { ariaLabels } from './shared-configs';
-
-interface Item {
-  id: number;
-  text: string;
-}
+import { ariaLabels, Item } from './shared-configs';
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<TableProps<Item>>([
   {
     selectionType: ['single', undefined],
     resizableColumns: [true, false],
-    items: [[{ id: 1, text: 'Dummy item' }]],
+    items: [[{ number: 1, text: 'Dummy item' }]],
     columnDefinitions: [
       [
-        { header: 'fixed width', cell: item => <Link>{item.id}</Link>, width: 100, minWidth: 80 },
+        { header: 'fixed width', cell: item => <Link>{item.number}</Link>, width: 100, minWidth: 80 },
         { header: 'auto-grow', cell: () => '-' },
       ],
       [
-        { header: 'fixed width', cell: item => <Link>{item.id}</Link>, width: 800 },
+        { header: 'fixed width', cell: item => <Link>{item.number}</Link>, width: 800 },
         { header: 'with overflow', cell: () => '-', width: 500 },
       ],
       [
-        { header: 'fixed width', cell: item => <Link>{item.id}</Link>, width: 600 },
+        { header: 'fixed width', cell: item => <Link>{item.number}</Link>, width: 600 },
         { header: 'no width', cell: item => item.text },
         { header: 'fixed with', cell: () => '-', width: 600 },
       ],

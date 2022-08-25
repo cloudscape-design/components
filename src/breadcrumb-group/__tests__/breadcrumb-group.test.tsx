@@ -69,12 +69,17 @@ describe('BreadcrumbGroup Component', () => {
 
     test('has ellipsis', () => {
       expect(wrapper.findDropdown()!.findNativeButton()).not.toBe(null);
-      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toHaveAttribute('aria-label', 'Show path');
+      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
     });
 
-    test('can set aria-label for ellipsis', () => {
+    test('dropdown button has aria-label', () => {
+      const nativeButton = wrapper.findDropdown()?.findNativeButton();
+      expect(nativeButton?.getElement()).toHaveAttribute('aria-label', 'Show path');
+    });
+
+    test('can set aria-label to dropdown buttons', () => {
       wrapper = renderBreadcrumbGroup({ items, expandAriaLabel: 'Custom Show path label' });
-      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toHaveAttribute(
+      expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute(
         'aria-label',
         'Custom Show path label'
       );

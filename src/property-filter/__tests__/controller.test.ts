@@ -234,7 +234,7 @@ describe('getAutosuggestOptions', () => {
       value: '',
     };
     const expected = {
-      __filterText: '',
+      filterText: '',
       options: expectedPropertySuggestions,
     };
     const actual = getAutosuggestOptions(
@@ -255,7 +255,7 @@ describe('getAutosuggestOptions', () => {
       value: 'text',
     };
     const expected = {
-      __filterText: 'text',
+      filterText: 'text',
       options: [...expectedPropertySuggestions, ...expectedValueSuggestions],
     };
     const actual = getAutosuggestOptions(
@@ -280,7 +280,7 @@ describe('getAutosuggestOptions', () => {
       property: filteringProperties[0],
     };
     const expected = {
-      __filterText: 'string !',
+      filterText: 'string !',
       options: [...expectedPropertySuggestions, ...expectedOperatorSuggestions],
     };
     const actual = getAutosuggestOptions(
@@ -293,7 +293,7 @@ describe('getAutosuggestOptions', () => {
     // Operator suggestions go after the property suggestions
     // Every operator suggestion has `keepOpenOnSelect` set on it
     // Operator suggestions and their group label are taken form the i18nStrings object
-    // `__filterText` should match `value` property of operator suggestions for autosuggest filtering to work
+    // `filterText` should match `value` property of operator suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
   });
   test('returns value suggestions for a given property, when the filteringText starts with this property`s labels followed by a completed operator', () => {
@@ -304,7 +304,7 @@ describe('getAutosuggestOptions', () => {
       property: filteringProperties[0],
     };
     const expected = {
-      __filterText: 'value',
+      filterText: 'value',
       options: [
         {
           label: 'String values',
@@ -322,7 +322,7 @@ describe('getAutosuggestOptions', () => {
       customGroupText,
       i18nStrings
     );
-    // `__filterText` should match `label` property of value suggestions for autosuggest filtering to work
+    // `filterText` should match `label` property of value suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
   });
   test('returns value suggestions for the properies that support `!:` operator, when doing a negated free text search', () => {
@@ -332,7 +332,7 @@ describe('getAutosuggestOptions', () => {
       value: 'value',
     };
     const expected = {
-      __filterText: 'value',
+      filterText: 'value',
       options: [
         {
           label: 'Values',

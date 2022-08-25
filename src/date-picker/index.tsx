@@ -7,7 +7,7 @@ import { DatePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { normalizeLocale } from './calendar/utils/locales';
 import { getDateLabel } from './calendar/utils/intl';
-import { memoizedDate } from './calendar/utils/date';
+import { memoizedDate } from './calendar/utils/memoized-date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
