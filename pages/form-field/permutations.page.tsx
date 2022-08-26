@@ -37,7 +37,7 @@ const permutations = createPermutations<FormFieldProps>([
   },
   {
     label: ['Normal label'],
-    errorIconLabel: ['Error:'],
+    errorIconLabel: ['Error'],
     errorText: [null, 'An application with that name already exists'],
     constraintText: [null, 'Only normal characters are allowed'],
     description: [null, 'Enter your name'],

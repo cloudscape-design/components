@@ -99,7 +99,8 @@ describe('FormField component', () => {
       errorIconLabel,
     });
 
-    const errorLabel = wrapper.findErrorIconWrapper();
+    const errorLabel = wrapper.find(`:scope [aria-label]`);
+
     expect(errorLabel?.getElement()).not.toBeNull();
     expect(errorLabel?.getElement()).toHaveAttribute('aria-label', errorIconLabel);
   });

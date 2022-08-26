@@ -26,10 +26,8 @@ interface FormFieldErrorProps {
 export const FormFieldError = ({ id, children, errorIconLabel }: FormFieldErrorProps) => (
   <div className={styles.error}>
     <div className={styles['error-icon-shake-wrapper']}>
-      <div className={styles['error-icon-scale-wrapper']}>
-        <span role="img" aria-label={errorIconLabel}>
-          <InternalIcon name="status-warning" size="small" />
-        </span>
+      <div role="img" aria-label={errorIconLabel} className={styles['error-icon-scale-wrapper']}>
+        <InternalIcon name="status-warning" size="small" />
       </div>
     </div>
     <span id={id} className={styles.error__message}>
