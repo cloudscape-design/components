@@ -225,4 +225,22 @@ describe('Flashbar component', () => {
     expect(buttonClickSpy).toHaveBeenCalled();
     expect(dismissSpy).not.toHaveBeenCalled();
   });
+
+  test('icon has an aria-label when statusIconLabel is provided', () => {
+    const iconLabel = 'Warning';
+    const wrapper = render(
+      <Flashbar
+        items={[
+          {
+            header: 'The header',
+            content: 'The content',
+            statusIconLabel: iconLabel,
+            action: <Button>Click me</Button>,
+          },
+        ]}
+      />
+    );
+
+    expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute('aria-label', iconLabel);
+  });
 });
