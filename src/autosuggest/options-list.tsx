@@ -10,6 +10,7 @@ import PlainList from './plain-list';
 
 import { useAnnouncement } from '../select/utils/use-announcement';
 import { OptionGroup } from '../internal/components/option/interfaces';
+import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 
 export interface AutosuggestOptionsListProps
   extends Pick<
@@ -28,8 +29,7 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  isKeyboard: React.MutableRefObject<boolean>;
-  highlightedType: 'mouse' | 'keyboard';
+  highlightType: HighlightType;
 }
 
 const isInteractive = (option?: AutosuggestItem) => {
@@ -40,14 +40,12 @@ const isHighlightable = (option?: AutosuggestItem) => {
   return !!option && option.type !== 'parent';
 };
 
-const createMouseEventHandler =
-  (handler: (index: number) => void, isKeyboard: React.MutableRefObject<boolean>) => (itemIndex: number) => {
-    // prevent mouse events to avoid losing focus from the input
-    isKeyboard.current = false;
-    if (itemIndex > -1) {
-      handler(itemIndex);
-    }
-  };
+const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
+  // prevent mouse events to avoid losing focus from the input
+  if (itemIndex > -1) {
+    handler(itemIndex);
+  }
+};
 
 export default function AutosuggestOptionsList({
   options,
@@ -66,13 +64,12 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
-  isKeyboard,
-  highlightedType,
+  highlightType,
 }: AutosuggestOptionsListProps) {
   const highlightVisibleOption = useHighlightVisibleOption(options, setHighlightedIndex, isHighlightable);
   const selectVisibleOption = useSelectVisibleOption(options, selectOption, isInteractive);
-  const handleMouseUp = createMouseEventHandler(selectVisibleOption, isKeyboard);
-  const handleMouseMove = createMouseEventHandler(highlightVisibleOption, isKeyboard);
+  const handleMouseUp = createMouseEventHandler(selectVisibleOption);
+  const handleMouseMove = createMouseEventHandler(highlightVisibleOption);
 
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
@@ -97,7 +94,7 @@ export default function AutosuggestOptionsList({
       hasDropdownStatus={hasDropdownStatus}
       menuProps={{ id: listId, ariaLabelledby: controlId, onMouseUp: handleMouseUp, onMouseMove: handleMouseMove }}
       screenReaderContent={announcement}
-      highlightedType={highlightedType}
+      highlightType={highlightType}
     />
   );
 }

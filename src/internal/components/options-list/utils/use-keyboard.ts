@@ -14,7 +14,6 @@ interface UseMenuKeyboard {
     goHome: () => void;
     goEnd: () => void;
     closeDropdown: () => void;
-    isKeyboard: MutableRefObject<boolean>;
     isSelectingUsingSpace: MutableRefObject<boolean>;
     preventNativeSpace?: boolean;
   }): CancelableEventHandler<BaseKeyDetail>;
@@ -26,13 +25,11 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
   goHome,
   goEnd,
   closeDropdown,
-  isKeyboard,
   isSelectingUsingSpace,
   preventNativeSpace = false,
 }) => {
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
-      isKeyboard.current = true;
       switch (e.detail.keyCode) {
         case KeyCode.up:
           e.preventDefault();
@@ -63,22 +60,17 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
           }
       }
     },
-    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, isKeyboard, isSelectingUsingSpace, preventNativeSpace]
+    [moveHighlight, selectOption, goHome, goEnd, closeDropdown, isSelectingUsingSpace, preventNativeSpace]
   );
 };
 
 interface UseTriggerKeyboard {
-  (inputProps: {
-    openDropdown: () => void;
-    goHome: () => void;
-    isKeyboard: MutableRefObject<boolean>;
-  }): CancelableEventHandler<BaseKeyDetail>;
+  (inputProps: { openDropdown: () => void; goHome: () => void }): CancelableEventHandler<BaseKeyDetail>;
 }
 
-export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome, isKeyboard }) => {
+export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome }) => {
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
-      isKeyboard.current = true;
       switch (e.detail.keyCode) {
         case KeyCode.up:
         case KeyCode.down:
@@ -92,6 +84,6 @@ export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome, i
           break;
       }
     },
-    [openDropdown, goHome, isKeyboard]
+    [openDropdown, goHome]
   );
 };

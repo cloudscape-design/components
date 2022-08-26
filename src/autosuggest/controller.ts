@@ -39,7 +39,6 @@ export const useKeyboardHandler = (
   moveHighlight: (direction: -1 | 1) => void,
   openDropdown: () => void,
   selectHighlighted: () => void,
-  isKeyboard: React.MutableRefObject<boolean>,
   open: boolean,
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>
 ) => {
@@ -47,14 +46,12 @@ export const useKeyboardHandler = (
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.down: {
-          isKeyboard.current = true;
           moveHighlight(1);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.up: {
-          isKeyboard.current = true;
           moveHighlight(-1);
           openDropdown();
           e.preventDefault();
@@ -73,6 +70,6 @@ export const useKeyboardHandler = (
         }
       }
     },
-    [moveHighlight, selectHighlighted, onKeyDown, isKeyboard, open, openDropdown]
+    [moveHighlight, selectHighlighted, onKeyDown, open, openDropdown]
   );
 };

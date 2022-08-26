@@ -8,6 +8,7 @@ import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import InternalIcon from '../../icon/internal.js';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 
 export interface ItemProps {
   option: DropdownOption;
@@ -21,7 +22,7 @@ export interface ItemProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-  highlightedType?: 'mouse' | 'keyboard';
+  highlightType?: HighlightType;
 }
 
 const Item = (
@@ -37,7 +38,7 @@ const Item = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
-    highlightedType,
+    highlightType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -64,7 +65,7 @@ const Item = (
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
-      highlightedType={highlightedType}
+      highlightType={highlightType}
       {...baseProps}
     >
       <div className={styles.item}>

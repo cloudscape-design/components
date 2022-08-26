@@ -77,13 +77,12 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
 
-    const isKeyboard = useRef(false);
     const [open, setOpen] = useState(false);
     const {
       items,
       highlightedOption,
       highlightedIndex,
-      highlightedType,
+      highlightType,
       moveHighlight,
       resetHighlight,
       setHighlightedIndex,
@@ -92,7 +91,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
       filterValue: value,
       filterText: highlightText,
       filteringType,
-      isKeyboard,
       hideEnteredTextLabel: hideEnteredTextOption,
     });
     const openDropdown = () => setOpen(true);
@@ -137,14 +135,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onChange && onChange(e);
     };
 
-    const handleKeyDown = useKeyboardHandler(
-      moveHighlight,
-      openDropdown,
-      selectHighlighted,
-      isKeyboard,
-      open,
-      onKeyDown
-    );
+    const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, open, onKeyDown);
     const handleLoadMore = useCallback(() => {
       options && options.length && statusType === 'pending' && fireLoadMore(false, false);
     }, [fireLoadMore, options, statusType]);
@@ -248,8 +239,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
               hasDropdownStatus={dropdownStatus.content !== null}
               virtualScroll={virtualScroll}
               listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-              isKeyboard={isKeyboard}
-              highlightedType={highlightedType}
+              highlightType={highlightType}
             />
           )}
         </Dropdown>

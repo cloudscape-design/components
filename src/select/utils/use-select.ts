@@ -67,7 +67,6 @@ export function useSelect({
   const menuRef = useRef<HTMLUListElement>(null);
   const hasFilter = filteringType !== 'none';
   const activeRef = hasFilter ? filterRef : menuRef;
-  const isKeyboard = useRef<boolean>(false);
   const isSelectingUsingSpace = useRef<boolean>(false);
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
@@ -77,16 +76,16 @@ export function useSelect({
     return selectedValuesSet;
   }, new Set<string>());
   const {
+    highlightType,
     highlightedOption,
     highlightedIndex,
-    highlightedType,
     moveHighlight,
     resetHighlight,
     setHighlightedIndex,
     highlightOption,
     goHome,
     goEnd,
-  } = useHighlightedOption({ options, isKeyboard });
+  } = useHighlightedOption({ options });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown } = useOpenState({
     onOpen: () => fireLoadItems(''),
@@ -147,12 +146,11 @@ export function useSelect({
       triggerRef.current?.focus();
       closeDropdown();
     },
-    isKeyboard,
     isSelectingUsingSpace,
     preventNativeSpace: !hasFilter,
   });
 
-  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome, isKeyboard });
+  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome });
 
   const getTriggerProps = (disabled = false) => {
     const triggerProps: SelectTriggerProps = {
@@ -209,13 +207,11 @@ export function useSelect({
       onFocus: handleFocus,
       onBlur: handleBlur,
       onMouseUp: itemIndex => {
-        isKeyboard.current = false;
         if (itemIndex > -1) {
           selectOption(options[itemIndex]);
         }
       },
       onMouseMove: itemIndex => {
-        isKeyboard.current = false;
         if (itemIndex > -1) {
           setHighlightedIndex(itemIndex);
         }
@@ -292,12 +288,11 @@ export function useSelect({
     isOpen,
     highlightedOption,
     highlightedIndex,
-    highlightedType,
+    highlightType,
     getTriggerProps,
     getMenuProps,
     getFilterProps,
     getOptionProps,
-    isKeyboard,
     highlightOption,
     selectOption,
     announceSelected,

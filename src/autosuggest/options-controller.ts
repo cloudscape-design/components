@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useMemo, useState, MutableRefObject } from 'react';
+import { useMemo, useState } from 'react';
 import { filterOptions } from './utils/utils';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -14,7 +14,6 @@ export interface UseAutosuggestItemsProps {
   filterValue: string;
   filterText: string;
   filteringType: AutosuggestProps.FilteringType;
-  isKeyboard: MutableRefObject<boolean>;
   hideEnteredTextLabel?: boolean;
 }
 
@@ -32,7 +31,6 @@ export const useAutosuggestItems = ({
   filterValue,
   filterText,
   filteringType,
-  isKeyboard,
   hideEnteredTextLabel,
 }: UseAutosuggestItemsProps) => {
   const [showAll, setShowAll] = useState(false);
@@ -48,15 +46,15 @@ export const useAutosuggestItems = ({
     return filteredItems;
   }, [items, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
 
-  const { highlightedOption, highlightedIndex, highlightedType, moveHighlight, resetHighlight, setHighlightedIndex } =
-    useHighlightedOption({ options: filteredItems, isKeyboard });
+  const { highlightType, highlightedOption, highlightedIndex, moveHighlight, resetHighlight, setHighlightedIndex } =
+    useHighlightedOption({ options: filteredItems });
 
   return {
     showAll,
     setShowAll,
     items: filteredItems,
     highlightedIndex,
-    highlightedType,
+    highlightType,
     highlightedOption,
     setHighlightedIndex,
     moveHighlight,

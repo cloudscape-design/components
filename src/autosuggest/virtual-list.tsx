@@ -16,7 +16,7 @@ const VirtualList = ({
   menuProps,
   highlightedOption,
   highlightedIndex,
-  highlightedType,
+  highlightType,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -41,10 +41,10 @@ const VirtualList = ({
   });
 
   useEffect(() => {
-    if (highlightedType === 'keyboard') {
+    if (highlightType === 'keyboard') {
       rowVirtualizer.scrollToIndex(highlightedIndex);
     }
-  }, [highlightedType, rowVirtualizer, highlightedIndex]);
+  }, [highlightType, rowVirtualizer, highlightedIndex]);
 
   return (
     <OptionsList
@@ -86,7 +86,7 @@ const VirtualList = ({
             screenReaderContent={screenReaderContent}
             ariaSetsize={filteredItems.length}
             ariaPosinset={index + 1}
-            highlightedType={highlightedType}
+            highlightType={highlightType}
             {...optionProps}
           />
         );

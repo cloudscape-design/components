@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import AutosuggestOption from './autosuggest-option';
 import { AutosuggestProps, AutosuggestItem } from './interfaces';
 import styles from './styles.css.js';
+import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 
 export interface ListProps {
   menuProps: Omit<OptionsListProps, 'children'>;
@@ -16,7 +17,7 @@ export interface ListProps {
   filteredItems: AutosuggestItem[];
   highlightedOption?: AutosuggestItem;
   highlightedIndex: number;
-  highlightedType: 'mouse' | 'keyboard';
+  highlightType: HighlightType;
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
@@ -48,7 +49,7 @@ const PlainList = ({
   menuProps,
   highlightedOption,
   highlightedIndex,
-  highlightedType,
+  highlightType,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -59,10 +60,10 @@ const PlainList = ({
   const listRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
     const item = listRef.current?.querySelector(`[data-mouse-target="${highlightedIndex}"]`);
-    if (highlightedType === 'keyboard' && item) {
+    if (highlightType === 'keyboard' && item) {
       scrollUntilVisible(item as HTMLElement);
     }
-  }, [highlightedType, highlightedIndex]);
+  }, [highlightType, highlightedIndex]);
 
   return (
     <OptionsList
@@ -92,7 +93,7 @@ const PlainList = ({
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
             screenReaderContent={screenReaderContent}
-            highlightedType={highlightedType}
+            highlightType={highlightType}
             {...optionProps}
           />
         );

@@ -80,14 +80,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
 
-  const isKeyboard = useRef(false);
   const [open, setOpen] = useState(false);
   const {
     items,
     setShowAll,
     highlightedOption,
     highlightedIndex,
-    highlightedType,
+    highlightType,
     moveHighlight,
     resetHighlight,
     setHighlightedIndex,
@@ -96,7 +95,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filterValue: value,
     filterText: value,
     filteringType,
-    isKeyboard,
     hideEnteredTextLabel: false,
   });
   const openDropdown = () => !readOnly && setOpen(true);
@@ -136,7 +134,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onChange && onChange(e);
   };
 
-  const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, isKeyboard, open, onKeyDown);
+  const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, open, onKeyDown);
   const handleLoadMore = useCallback(() => {
     options && options.length && statusType === 'pending' && fireLoadMore(false, false);
   }, [fireLoadMore, options, statusType]);
@@ -245,8 +243,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             selectedAriaLabel={selectedAriaLabel}
             renderHighlightedAriaLive={renderHighlightedAriaLive}
             listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-            isKeyboard={isKeyboard}
-            highlightedType={highlightedType}
+            highlightType={highlightType}
           />
         )}
       </Dropdown>
