@@ -11,7 +11,6 @@ import { useDateRangePicker } from './use-date-range-picker';
 import { DateRangePickerBaseProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { DateRangePickerProps, Focusable } from './interfaces';
-import { getBrowserTimezoneOffset } from '../internal/utils/date-time';
 import { formatValue } from './use-date-range-picker.js';
 import { useMobile } from '../internal/hooks/use-mobile';
 
@@ -31,7 +30,7 @@ export function DateRangePickerEmbedded({
   timeInputFormat = 'hh:mm:ss',
   rangeSelectorMode = 'default',
   onChange,
-  timeOffset = getBrowserTimezoneOffset(),
+  timeOffset,
 }: DateRangePickerEmbeddedProps) {
   const {
     fillMissingTime,

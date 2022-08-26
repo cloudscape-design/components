@@ -26,7 +26,7 @@ import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { formatTimezoneOffset, getBrowserTimezoneOffset, isIsoDateOnly } from '../internal/utils/date-time';
+import { formatTimezoneOffset, isIsoDateOnly } from '../internal/utils/date-time';
 import { formatValue } from './use-date-range-picker.js';
 
 export { DateRangePickerProps };
@@ -35,7 +35,7 @@ function formatDateRange(
   range: null | DateRangePickerProps.Value,
   placeholder: string,
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset: number
+  timeOffset?: number
 ) {
   if (!range) {
     return (
@@ -73,9 +73,10 @@ function BreakSpaces({ text }: { text: string }) {
   );
 }
 
-function formatAbsoluteRange(value: DateRangePickerProps.AbsoluteValue, timeOffset: number): string {
-  const formattedOffset = isDateOnly(value) ? '' : formatTimezoneOffset(timeOffset);
-  return value.startDate + formattedOffset + ' ' + '—' + ' ' + value.endDate + formattedOffset;
+function formatAbsoluteRange(value: DateRangePickerProps.AbsoluteValue, timeOffset?: number): string {
+  const formattedStartOffset = isDateOnly(value) ? '' : formatTimezoneOffset(value.startDate, timeOffset);
+  const formattedEndOffset = isDateOnly(value) ? '' : formatTimezoneOffset(value.endDate, timeOffset);
+  return value.startDate + formattedStartOffset + ' ' + '—' + ' ' + value.endDate + formattedEndOffset;
 }
 
 function isDateOnly(value: null | DateRangePickerProps.Value) {
@@ -103,7 +104,7 @@ const DateRangePicker = React.forwardRef(
       isValidRange = () => ({ valid: true }),
       showClearButton = true,
       dateOnly = false,
-      timeOffset = getBrowserTimezoneOffset(),
+      timeOffset,
       timeInputFormat = 'hh:mm:ss',
       expandToViewport = false,
       rangeSelectorMode = 'default',
