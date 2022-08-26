@@ -10,7 +10,7 @@ export default class ContentLayoutWrapper extends ComponentWrapper<HTMLDivElemen
     return this.findByClassName(styles.header);
   }
 
-  findContent(): ElementWrapper | null {
-    return this.findByClassName(styles.content);
+  findContent(): ElementWrapper {
+    return this.findByClassName(styles.content)!;
   }
 }

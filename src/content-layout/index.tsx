@@ -57,7 +57,7 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
         </div>
       )}
 
-      {children && <div className={styles.content}>{children}</div>}
+      <div className={styles.content}>{children}</div>
     </div>
   );
 }

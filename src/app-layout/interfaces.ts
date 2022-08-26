@@ -113,15 +113,19 @@ export interface AppLayoutProps extends BaseComponentProps {
   navigation?: React.ReactNode;
 
   /**
+   * Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the app layout.
+   */
+
+  /**
    * Top area of the page content.
-   * **Deprecated**, replaced by the content layout `header` slot.
+   * **Deprecated**, replaced by the `header` slot of the [content layout](/components/content-layout/) component.
    * @visualrefresh
    */
   contentHeader?: React.ReactNode;
 
   /**
    * Disables overlap between `contentHeader` and `content` slots.
-   * **Deprecated**, replaced by the content layout `disableOverlap` property.
+   * **Deprecated**, replaced by the `disableOverlap` property of the [content layout](/components/content-layout/) component.
    * @visualrefresh
    */
   disableContentHeaderOverlap?: boolean;
