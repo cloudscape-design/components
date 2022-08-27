@@ -6,7 +6,7 @@ import { KeyCode } from '../internal/keycode';
 import { AutosuggestItem } from './interfaces';
 
 export const useSelectVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   selectOption: (option: AutosuggestItem) => void,
   isInteractive: (option: AutosuggestItem) => boolean
 ) =>
@@ -21,7 +21,7 @@ export const useSelectVisibleOption = (
   );
 
 export const useHighlightVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   setHighlightedIndex: (index: number) => void,
   isHighlightable: (option: AutosuggestItem) => boolean
 ) =>

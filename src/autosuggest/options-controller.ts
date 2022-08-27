@@ -5,7 +5,11 @@ import { useMemo, useState } from 'react';
 import { filterOptions } from './utils/utils';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
-import { createHighlightedOptionHook } from '../internal/components/options-list/utils/use-highlight-option';
+import {
+  HighlightedOptionHandlers,
+  HighlightedOptionState,
+  useHighlightedOption,
+} from '../internal/components/options-list/utils/use-highlight-option';
 
 type Options = AutosuggestProps.Options;
 
@@ -17,11 +21,18 @@ export interface UseAutosuggestItemsProps {
   hideEnteredTextLabel?: boolean;
 }
 
+export interface AutosuggestItemsState extends HighlightedOptionState<AutosuggestItem> {
+  items: readonly AutosuggestItem[];
+  showAll: boolean;
+}
+
+export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
+  setShowAll(value: boolean): void;
+}
+
 const isHighlightable = (option?: AutosuggestItem) => {
   return !!option && option.type !== 'parent';
 };
-
-const useHighlightedOption = createHighlightedOptionHook({ isHighlightable: isHighlightable });
 
 const parentMap = new WeakMap<AutosuggestItem, AutosuggestItem>();
 export const getParentGroup = (item: AutosuggestItem) => parentMap.get(item);
@@ -32,7 +43,7 @@ export const useAutosuggestItems = ({
   filterText,
   filteringType,
   hideEnteredTextLabel,
-}: UseAutosuggestItemsProps) => {
+}: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
   const [showAll, setShowAll] = useState(false);
 
   const items = useMemo(() => createItems(options), [options]);
@@ -46,20 +57,15 @@ export const useAutosuggestItems = ({
     return filteredItems;
   }, [items, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
 
-  const { highlightType, highlightedOption, highlightedIndex, moveHighlight, resetHighlight, setHighlightedIndex } =
-    useHighlightedOption({ options: filteredItems });
+  const [highlightedOptionState, HighlightedOptionHandlers] = useHighlightedOption({
+    options: filteredItems,
+    isHighlightable,
+  });
 
-  return {
-    showAll,
-    setShowAll,
-    items: filteredItems,
-    highlightedIndex,
-    highlightType,
-    highlightedOption,
-    setHighlightedIndex,
-    moveHighlight,
-    resetHighlight,
-  };
+  return [
+    { items: filteredItems, showAll, ...highlightedOptionState },
+    { setShowAll, ...HighlightedOptionHandlers },
+  ];
 };
 
 function createItems(options: Options): AutosuggestItem[] {

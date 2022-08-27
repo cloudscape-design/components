@@ -4,7 +4,7 @@ import React, { RefObject } from 'react';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isInteractive, isGroupInteractive, isGroup } from '../../internal/components/option/utils/filter-options';
 import { useEffect, useRef, MutableRefObject } from 'react';
-import { createHighlightedOptionHook } from '../../internal/components/options-list/utils/use-highlight-option';
+import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
 import { useIds, getOptionId } from '../../internal/components/options-list/utils/use-ids';
@@ -60,7 +60,6 @@ export function useSelect({
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
   const isHighlightable = (option?: DropdownOption) => !!option && (useInteractiveGroups || option.type !== 'parent');
-  const useHighlightedOption = createHighlightedOptionHook({ isHighlightable: isHighlightable });
 
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -75,22 +74,22 @@ export function useSelect({
     }
     return selectedValuesSet;
   }, new Set<string>());
-  const {
-    highlightType,
-    highlightedOption,
-    highlightedIndex,
-    moveHighlight,
-    resetHighlight,
-    setHighlightedIndex,
-    highlightOption,
-    goHome,
-    goEnd,
-  } = useHighlightedOption({ options });
+  const [
+    { highlightType, highlightedOption, highlightedIndex },
+    {
+      moveHighlightWithKeyboard,
+      resetHighlightWithKeyboard,
+      setHighlightedIndexWithMouse,
+      highlightOptionWithKeyboard,
+      goHomeWithKeyboard,
+      goEndWithKeyboard,
+    },
+  ] = useHighlightedOption({ options, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown } = useOpenState({
     onOpen: () => fireLoadItems(''),
     onClose: () => {
-      resetHighlight();
+      resetHighlightWithKeyboard();
       setFilteringValue('');
     },
   });
@@ -138,10 +137,10 @@ export function useSelect({
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
-    moveHighlight,
+    moveHighlight: moveHighlightWithKeyboard,
     selectOption,
-    goHome,
-    goEnd,
+    goHome: goHomeWithKeyboard,
+    goEnd: goEndWithKeyboard,
     closeDropdown: () => {
       triggerRef.current?.focus();
       closeDropdown();
@@ -150,7 +149,7 @@ export function useSelect({
     preventNativeSpace: !hasFilter,
   });
 
-  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome });
+  const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome: goHomeWithKeyboard });
 
   const getTriggerProps = (disabled = false) => {
     const triggerProps: SelectTriggerProps = {
@@ -186,7 +185,7 @@ export function useSelect({
       onFocus: handleFocus,
       onChange: event => {
         setFilteringValue(event.detail.value);
-        resetHighlight();
+        resetHighlightWithKeyboard();
       },
       __onDelayedInput: event => {
         fireLoadItems(event.detail.value);
@@ -213,7 +212,7 @@ export function useSelect({
       },
       onMouseMove: itemIndex => {
         if (itemIndex > -1) {
-          setHighlightedIndex(itemIndex);
+          setHighlightedIndexWithMouse(itemIndex);
         }
       },
     };
@@ -265,9 +264,9 @@ export function useSelect({
   useEffect(() => {
     // highlight the first selected option, when opening the Select component
     if (isOpen && !prevOpen && hasSelectedOption) {
-      setHighlightedIndex(options.indexOf(__selectedOptions[0]));
+      setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]));
     }
-  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndex, options, prevOpen]);
+  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndexWithMouse, options, prevOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -293,7 +292,7 @@ export function useSelect({
     getMenuProps,
     getFilterProps,
     getOptionProps,
-    highlightOption,
+    highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
   };

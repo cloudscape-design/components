@@ -20,10 +20,10 @@ describe('Autosuggest controller', () => {
 
     test('"flattens" the list of options, indenting group items', () => {
       const { result } = renderHook(useAutosuggestItems, { initialProps: defaultProps });
-      expect(result.current.items.length).toEqual(4);
-      expect(result.current.items[1].type).toEqual('parent');
-      expect(result.current.items[2].type).toEqual('child');
-      expect(result.current.items[3].type).toEqual('child');
+      expect(result.current[0].items.length).toEqual(4);
+      expect(result.current[0].items[1].type).toEqual('parent');
+      expect(result.current[0].items[2].type).toEqual('child');
+      expect(result.current[0].items[3].type).toEqual('child');
     });
 
     test('disables options inside a disabled group', () => {
@@ -31,9 +31,9 @@ describe('Autosuggest controller', () => {
       const { result } = renderHook(useAutosuggestItems, {
         initialProps: { ...defaultProps, options: withDisabledGroup },
       });
-      expect(result.current.items.length).toEqual(4);
-      expect(result.current.items[2].disabled).toEqual(true);
-      expect(result.current.items[3].disabled).toEqual(true);
+      expect(result.current[0].items.length).toEqual(4);
+      expect(result.current[0].items[2].disabled).toEqual(true);
+      expect(result.current[0].items[3].disabled).toEqual(true);
     });
 
     test('disables group that only contains disabled options', () => {
@@ -50,8 +50,8 @@ describe('Autosuggest controller', () => {
       const { result } = renderHook(useAutosuggestItems, {
         initialProps: { ...defaultProps, options: withDisabledOptions },
       });
-      expect(result.current.items.length).toEqual(4);
-      expect(result.current.items[1].disabled).toEqual(true);
+      expect(result.current[0].items.length).toEqual(4);
+      expect(result.current[0].items[1].disabled).toEqual(true);
     });
 
     test('does not disable group with at least one enabled option', () => {
@@ -67,8 +67,8 @@ describe('Autosuggest controller', () => {
       } = renderHook(useAutosuggestItems, {
         initialProps: { ...defaultProps, options: withDisabledOptions },
       });
-      expect(current.items).toHaveLength(4);
-      expect(current.items[1].disabled).toBeFalsy();
+      expect(current[0].items).toHaveLength(4);
+      expect(current[0].items[1].disabled).toBeFalsy();
     });
 
     test('does not filter again, if called with the same list', () => {
@@ -87,7 +87,7 @@ describe('Autosuggest controller', () => {
         filterText: '',
         filteringType: 'auto',
       });
-      expect(result.current.items).toBe(firstResult.items);
+      expect(result.current[0].items).toBe(firstResult[0].items);
     });
 
     test('filters passed items and generates a "use-entered" item', () => {
@@ -99,8 +99,8 @@ describe('Autosuggest controller', () => {
           filteringType: 'auto',
         },
       });
-      expect(result.current.items.length).toEqual(3);
-      expect(result.current.items[0]).toEqual({ value: '1', type: 'use-entered', option: { value: '1' } });
+      expect(result.current[0].items.length).toEqual(3);
+      expect(result.current[0].items[0]).toEqual({ value: '1', type: 'use-entered', option: { value: '1' } });
     });
 
     test('does not filter items using "filteringType" "manual"', () => {
@@ -112,7 +112,7 @@ describe('Autosuggest controller', () => {
           filteringType: 'manual',
         },
       });
-      expect(result.current.items.length).toEqual(5);
+      expect(result.current[0].items.length).toEqual(5);
     });
 
     test('does not filter items when "showAll" flag is set', () => {
@@ -124,8 +124,8 @@ describe('Autosuggest controller', () => {
           filteringType: 'auto',
         },
       });
-      act(() => result.current.setShowAll(true));
-      expect(result.current.items.length).toEqual(5);
+      act(() => result.current[1].setShowAll(true));
+      expect(result.current[0].items.length).toEqual(5);
     });
 
     test('does not filter again when called with the same parameters', () => {
@@ -144,7 +144,7 @@ describe('Autosuggest controller', () => {
         filterText: '1',
         filteringType: 'auto',
       });
-      expect(firstResult.items).toBe(result.current.items);
+      expect(firstResult[0].items).toBe(result.current[0].items);
     });
   });
 

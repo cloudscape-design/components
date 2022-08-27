@@ -81,16 +81,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkOptionValueField('Autosuggest', 'options', options);
 
   const [open, setOpen] = useState(false);
-  const {
-    items,
-    setShowAll,
-    highlightedOption,
-    highlightedIndex,
-    highlightType,
-    moveHighlight,
-    resetHighlight,
-    setHighlightedIndex,
-  } = useAutosuggestItems({
+  const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
@@ -100,7 +91,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const openDropdown = () => !readOnly && setOpen(true);
   const closeDropdown = () => {
     setOpen(false);
-    resetHighlight();
+    autosuggestItemsHandlers.resetHighlightWithKeyboard();
   };
   const handleBlur: React.FocusEventHandler = event => {
     if (event.currentTarget.contains(event.relatedTarget) || dropdownFooterRef.current?.contains(event.relatedTarget)) {
@@ -116,9 +107,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     fireNonCancelableEvent(onSelect, { value });
   };
   const selectHighlighted = () => {
-    if (highlightedOption) {
-      if (isInteractive(highlightedOption)) {
-        selectOption(highlightedOption);
+    if (autosuggestItemsState.highlightedOption) {
+      if (isInteractive(autosuggestItemsState.highlightedOption)) {
+        selectOption(autosuggestItemsState.highlightedOption);
       }
     } else {
       closeDropdown();
@@ -129,12 +120,18 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const handleInputChange: InputProps['onChange'] = e => {
     openDropdown();
-    setShowAll(false);
-    resetHighlight();
+    autosuggestItemsHandlers.setShowAll(false);
+    autosuggestItemsHandlers.resetHighlightWithKeyboard();
     onChange && onChange(e);
   };
 
-  const handleKeyDown = useKeyboardHandler(moveHighlight, openDropdown, selectHighlighted, open, onKeyDown);
+  const handleKeyDown = useKeyboardHandler(
+    autosuggestItemsHandlers.moveHighlightWithKeyboard,
+    openDropdown,
+    selectHighlighted,
+    open,
+    onKeyDown
+  );
   const handleLoadMore = useCallback(() => {
     options && options.length && statusType === 'pending' && fireLoadMore(false, false);
   }, [fireLoadMore, options, statusType]);
@@ -155,8 +152,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const listId = useUniqueId('list');
 
   // From an a11y point of view we only count the dropdown as 'expanded' if there are items that a user can dropdown into
-  const expanded = open && items.length > 1;
-  const highlightedOptionId = highlightedOption ? generateUniqueId() : undefined;
+  const expanded = open && autosuggestItemsState.items.length > 1;
+  const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
   const nativeAttributes = {
     name,
     placeholder,
@@ -173,13 +170,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   const handleInputFocus: InputProps['onFocus'] = e => {
-    setShowAll(true);
+    autosuggestItemsHandlers.setShowAll(true);
     openDropdown();
     fireLoadMore(true, false, '');
     onFocus?.(e);
   };
 
-  const isEmpty = !value && !items.length;
+  const isEmpty = !value && !autosuggestItemsState.items.length;
   const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
   const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
@@ -217,21 +214,19 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         footer={
           dropdownStatus.isSticky ? (
             <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
-              <DropdownFooter content={dropdownStatus.content} hasItems={items.length >= 1} />
+              <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
             </div>
           ) : null
         }
         expandToViewport={expandToViewport}
-        hasContent={items.length >= 1 || dropdownStatus.content !== null}
+        hasContent={autosuggestItemsState.items.length >= 1 || dropdownStatus.content !== null}
         trapFocus={!!showRecoveryLink}
       >
         {open && (
           <AutosuggestOptionsList
-            options={items}
-            highlightedOption={highlightedOption}
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
             selectOption={selectOption}
-            highlightedIndex={highlightedIndex}
-            setHighlightedIndex={setHighlightedIndex}
             highlightedOptionId={highlightedOptionId}
             highlightText={value}
             listId={listId}
@@ -243,7 +238,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             selectedAriaLabel={selectedAriaLabel}
             renderHighlightedAriaLive={renderHighlightedAriaLive}
             listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-            highlightType={highlightType}
           />
         )}
       </Dropdown>

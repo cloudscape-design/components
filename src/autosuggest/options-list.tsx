@@ -3,25 +3,22 @@
 import React from 'react';
 
 import { useSelectVisibleOption, useHighlightVisibleOption } from './controller';
-import { getParentGroup } from './options-controller';
+import { AutosuggestItemsHandlers, AutosuggestItemsState, getParentGroup } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import VirtualList from './virtual-list';
 import PlainList from './plain-list';
 
 import { useAnnouncement } from '../select/utils/use-announcement';
 import { OptionGroup } from '../internal/components/option/interfaces';
-import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 
 export interface AutosuggestOptionsListProps
   extends Pick<
     AutosuggestProps,
     'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
   > {
-  options: AutosuggestItem[];
-  highlightedOption?: AutosuggestItem;
+  autosuggestItemsState: AutosuggestItemsState;
+  autosuggestItemsHandlers: AutosuggestItemsHandlers;
   selectOption: (option: AutosuggestItem) => void;
-  highlightedIndex: number;
-  setHighlightedIndex: (index: number) => void;
   highlightedOptionId?: string;
   highlightText: string;
   listId: string;
@@ -29,7 +26,6 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  highlightType: HighlightType;
 }
 
 const isInteractive = (option?: AutosuggestItem) => {
@@ -48,11 +44,9 @@ const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex
 };
 
 export default function AutosuggestOptionsList({
-  options,
-  highlightedOption,
+  autosuggestItemsState,
+  autosuggestItemsHandlers,
   selectOption,
-  highlightedIndex,
-  setHighlightedIndex,
   highlightedOptionId,
   highlightText,
   listId,
@@ -64,10 +58,13 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
-  highlightType,
 }: AutosuggestOptionsListProps) {
-  const highlightVisibleOption = useHighlightVisibleOption(options, setHighlightedIndex, isHighlightable);
-  const selectVisibleOption = useSelectVisibleOption(options, selectOption, isInteractive);
+  const highlightVisibleOption = useHighlightVisibleOption(
+    autosuggestItemsState.items,
+    autosuggestItemsHandlers.setHighlightedIndexWithMouse,
+    isHighlightable
+  );
+  const selectVisibleOption = useSelectVisibleOption(autosuggestItemsState.items, selectOption, isInteractive);
   const handleMouseUp = createMouseEventHandler(selectVisibleOption);
   const handleMouseMove = createMouseEventHandler(highlightVisibleOption);
 
@@ -75,7 +72,7 @@ export default function AutosuggestOptionsList({
 
   const announcement = useAnnouncement({
     announceSelected: true,
-    highlightedOption,
+    highlightedOption: autosuggestItemsState.highlightedOption,
     getParent: option => getParentGroup(option)?.option as undefined | OptionGroup,
     selectedAriaLabel,
     renderHighlightedAriaLive,
@@ -85,16 +82,13 @@ export default function AutosuggestOptionsList({
     <ListComponent
       listBottom={listBottom}
       handleLoadMore={handleLoadMore}
-      filteredItems={options}
+      autosuggestItemsState={autosuggestItemsState}
       highlightText={highlightText}
-      highlightedOption={highlightedOption}
-      highlightedIndex={highlightedIndex}
       enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}
       menuProps={{ id: listId, ariaLabelledby: controlId, onMouseUp: handleMouseUp, onMouseMove: handleMouseMove }}
       screenReaderContent={announcement}
-      highlightType={highlightType}
     />
   );
 }
