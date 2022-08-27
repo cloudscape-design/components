@@ -30,13 +30,8 @@ $radio-size: awsui.$size-control;
   @include styles.make-control-size($radio-size);
 }
 
-.input {
-  @include focus-visible.when-visible {
-    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
-    & + span {
-      @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
-    }
-  }
+.outline {
+  @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
 }
 
 .styled-circle-border {
