@@ -18,13 +18,8 @@ $shadow-color: rgba(0, 0, 0, 0.25);
   display: flex;
 }
 
-.input {
-  @include focus-visible.when-visible {
-    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
-    & + span {
-      @include styles.focus-highlight(2px);
-    }
-  }
+.outline {
+  @include styles.focus-highlight(2px);
 }
 
 .toggle-control {
