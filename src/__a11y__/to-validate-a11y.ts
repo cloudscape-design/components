@@ -23,9 +23,8 @@ const htmlValidator = new HtmlValidate({
     'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
     'prefer-native-element': ['error', { exclude: ['listbox'] }],
-    //TODO: enable 'no-redundant-for' and 'element-permitted-content' after fixing Toggle
+    //TODO: revisit 'no-redundant-for' when fixing AWSUI-18968
     'no-redundant-for': 'off',
-    'element-permitted-content': 'off',
   },
 });
 
