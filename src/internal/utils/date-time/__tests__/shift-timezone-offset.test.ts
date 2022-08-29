@@ -24,3 +24,7 @@ describe('shiftTimezoneOffset', () => {
     expect(shiftTimezoneOffset(date, targetOffset)).toBe(expectedResult);
   });
 });
+
+test.each(['2020-01-01', '2020-06-01'])('shifts timezone offset against default offset', isoDate => {
+  expect(shiftTimezoneOffset(isoDate)).toBe(shiftTimezoneOffset(isoDate, 0 - new Date(isoDate).getTimezoneOffset()));
+});
