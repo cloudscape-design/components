@@ -29,7 +29,6 @@ describe('ContentLayout component', () => {
       });
 
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
-      expect(wrapper.findContent()).toBeNull();
     });
 
     test('renders the content slot', () => {
@@ -49,13 +48,6 @@ describe('ContentLayout component', () => {
 
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Header text');
       expect(wrapper.findContent()!.getElement()).toHaveTextContent('Content text');
-    });
-
-    test('renders nothing', () => {
-      const { wrapper } = renderContentLayout({});
-
-      expect(wrapper.findHeader()).toBeNull();
-      expect(wrapper.findContent()).toBeNull();
     });
   });
 
