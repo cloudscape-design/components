@@ -73,15 +73,11 @@ describe('useSelect', () => {
       initialProps,
     });
 
-    const { isOpen, highlightedOption, getTriggerProps, getMenuProps, getFilterProps, getOptionProps, isKeyboard } =
+    const { isOpen, highlightedOption, getTriggerProps, getMenuProps, getFilterProps, getOptionProps } =
       hook.result.current;
 
     test('should return isOpen=false as the initial state', () => {
       expect(isOpen).toBe(false);
-    });
-
-    test('should return isKeyboard=false as the initial state', () => {
-      expect(isKeyboard.current).toBe(false);
     });
 
     test('should return highlightedOption=undefined as the initial state', () => {
@@ -160,7 +156,7 @@ describe('useSelect', () => {
         value: 'child1',
       },
     });
-    expect(hook.result.current.isKeyboard.current).toBe(true);
+    expect(hook.result.current.highlightType).toBe('keyboard');
   });
 
   test('should open and navigate to the first option and select', () => {

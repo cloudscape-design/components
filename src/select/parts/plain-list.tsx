@@ -8,13 +8,14 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import { scrollUntilVisible } from '../../internal/utils/scrollable-containers';
 
 import styles from './styles.css.js';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 export interface SelectListProps {
   menuProps: MenuProps;
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
-  highlightedType: 'mouse' | 'keyboard';
+  highlightType: HighlightType;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
@@ -32,7 +33,7 @@ const PlainList = (
     getOptionProps,
     filteredOptions,
     filteringValue,
-    highlightedType,
+    highlightType,
     checkboxes,
     hasDropdownStatus,
     listBottom,
@@ -46,11 +47,11 @@ const PlainList = (
     ref,
     () => (index: number) => {
       const item = menuRef.current?.querySelector(`[data-mouse-target="${index}"]`);
-      if (highlightedType === 'keyboard' && item) {
+      if (highlightType === 'keyboard' && item) {
         scrollUntilVisible(item as HTMLElement);
       }
     },
-    [highlightedType, menuRef]
+    [highlightType, menuRef]
   );
 
   return (
@@ -59,7 +60,7 @@ const PlainList = (
         options: filteredOptions,
         getOptionProps,
         filteringValue,
-        highlightedType,
+        highlightType,
         checkboxes,
         hasDropdownStatus,
         useInteractiveGroups,

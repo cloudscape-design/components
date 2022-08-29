@@ -4,6 +4,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { HighlightType } from '../options-list/utils/use-highlight-option.js';
 
 export interface SelectableItemProps extends BaseComponentProps {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export interface SelectableItemProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-  highlightedType?: 'mouse' | 'keyboard';
+  highlightType?: HighlightType;
 }
 
 const SelectableItem = (
@@ -43,7 +44,7 @@ const SelectableItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
-    highlightedType,
+    highlightType,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -55,7 +56,7 @@ const SelectableItem = (
     [styles['has-background']]: hasBackground,
     [styles.parent]: isParent,
     [styles.child]: isChild,
-    [styles['is-keyboard']]: highlightedType === 'keyboard',
+    [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
     [styles.virtual]: virtualPosition !== undefined,
     [styles['pad-bottom']]: padBottom,
