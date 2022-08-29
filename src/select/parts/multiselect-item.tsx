@@ -8,6 +8,7 @@ import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 export interface ItemProps {
   option: DropdownOption;
   highlighted?: boolean;
@@ -21,7 +22,7 @@ export interface ItemProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-  highlightedType?: 'mouse' | 'keyboard';
+  highlightType?: HighlightType;
 }
 
 const MultiSelectItem = (
@@ -38,7 +39,7 @@ const MultiSelectItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
-    highlightedType,
+    highlightType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -62,7 +63,7 @@ const MultiSelectItem = (
       disabled={disabled}
       isParent={isParent}
       isChild={isChild}
-      highlightedType={highlightedType}
+      highlightType={highlightType}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}

@@ -6,7 +6,7 @@ import { KeyCode } from '../internal/keycode';
 import { AutosuggestItem } from './interfaces';
 
 export const useSelectVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   selectOption: (option: AutosuggestItem) => void,
   isInteractive: (option: AutosuggestItem) => boolean
 ) =>
@@ -21,7 +21,7 @@ export const useSelectVisibleOption = (
   );
 
 export const useHighlightVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   setHighlightedIndex: (index: number) => void,
   isHighlightable: (option: AutosuggestItem) => boolean
 ) =>
@@ -39,7 +39,6 @@ export const useKeyboardHandler = (
   moveHighlight: (direction: -1 | 1) => void,
   openDropdown: () => void,
   selectHighlighted: () => void,
-  isKeyboard: React.MutableRefObject<boolean>,
   open: boolean,
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>
 ) => {
@@ -47,14 +46,12 @@ export const useKeyboardHandler = (
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.down: {
-          isKeyboard.current = true;
           moveHighlight(1);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.up: {
-          isKeyboard.current = true;
           moveHighlight(-1);
           openDropdown();
           e.preventDefault();
@@ -73,6 +70,6 @@ export const useKeyboardHandler = (
         }
       }
     },
-    [moveHighlight, selectHighlighted, onKeyDown, isKeyboard, open, openDropdown]
+    [moveHighlight, selectHighlighted, onKeyDown, open, openDropdown]
   );
 };

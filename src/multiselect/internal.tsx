@@ -132,14 +132,13 @@ const InternalMultiselect = React.forwardRef(
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const {
       isOpen,
+      highlightType,
       highlightedOption,
       highlightedIndex,
-      highlightedType,
       getTriggerProps,
       getFilterProps,
       getMenuProps,
       getOptionProps,
-      isKeyboard,
       highlightOption,
       announceSelected,
     } = useSelect({
@@ -161,7 +160,6 @@ const InternalMultiselect = React.forwardRef(
       options: filteredOptions,
       highlightOption: highlightOption,
       highlightedOption: highlightedOption?.option,
-      isKeyboard,
       useInteractiveGroups,
     });
 
@@ -289,7 +287,7 @@ const InternalMultiselect = React.forwardRef(
             checkboxes={true}
             useInteractiveGroups={useInteractiveGroups}
             screenReaderContent={announcement}
-            highlightedType={highlightedType}
+            highlightType={highlightType}
           />
         </Dropdown>
         {showTokens && (
