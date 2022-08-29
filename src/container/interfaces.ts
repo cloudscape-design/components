@@ -37,4 +37,9 @@ export interface ContainerProps extends BaseComponentProps {
    * @visualrefresh `stacked` variant
    */
   variant?: 'default' | 'stacked';
+
+  /**
+   * Specifies if overflowing content should be clipped at the element edges. This is especially important when paddings are disabled.
+   */
+  clipOverflow?: boolean;
 }

@@ -11,6 +11,7 @@
   @include styles.styles-reset;
   display: block;
   word-wrap: break-word;
+  overflow: clip;
   &.variant {
     &-default,
     &-stacked {
@@ -27,6 +28,14 @@
       border-top-right-radius: 0;
       box-shadow: awsui.$shadow-container-stacked;
     }
+  }
+  &.clip-overflow-with-fallback {
+    /**
+     * Fallback value for Safari, which does not support overflow:clip. However, this creates a new 
+     * block formatting context, which could break existing layouts.
+     */
+    overflow: hidden;
+    overflow: clip;
   }
 }
 

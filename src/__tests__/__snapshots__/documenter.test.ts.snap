@@ -4036,6 +4036,12 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "Specifies if overflowing content should be clipped at the element edges. This is especially important when paddings are disabled.",
+      "name": "clipOverflow",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Determines whether the container content has padding. If \`true\`, removes the default padding from the content area.",
       "name": "disableContentPaddings",

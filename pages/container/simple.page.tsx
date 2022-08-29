@@ -97,6 +97,18 @@ export default function SimpleContainers() {
               tortor, mollis vitae molestie sed, malesuada.
             </Container>
           </div>
+          <Container
+            disableContentPaddings={true}
+            disableHeaderPaddings={true}
+            clipOverflow={true}
+            header={<div style={{ background: 'rgba(255, 0, 0, 0.1)', width: '100%' }}>Header Area</div>}
+            footer="Footer"
+          >
+            <div style={{ background: 'rgba(0, 0, 255, 0.1)', width: '100%' }}>Content Area</div>
+          </Container>
+          <Container disableContentPaddings={true} clipOverflow={true}>
+            <div style={{ background: 'rgba(0, 0, 255, 0.1)', width: '100%' }}>Content Area</div>
+          </Container>
         </SpaceBetween>
       </ScreenshotArea>
     </article>

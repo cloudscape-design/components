@@ -12,7 +12,11 @@ export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
   let node: HTMLElement | null = element;
 
   while ((node = node.parentElement) && node !== document.body) {
-    getComputedStyle(node).overflow !== 'visible' && parents.push(node);
+    const styles = getComputedStyle(node);
+
+    if (['visible', 'clip'].indexOf(styles.overflow) < 0) {
+      parents.push(node);
+    }
   }
   return parents;
 };
