@@ -5,11 +5,16 @@ import { formatTimezoneOffset } from '../../../../../lib/components/internal/uti
 
 test('formatTimezoneOffset', () => {
   for (let offset = -120; offset <= 120; offset++) {
-    const formatted = formatTimezoneOffset(offset);
+    const formatted = formatTimezoneOffset('2020-01-01', offset);
     const sign = Number(formatted[0] + '1');
     const hours = Number(formatted[1] + formatted[2]);
     const minutes = Number(formatted[4] + formatted[5]);
     expect(formatted).toHaveLength(6);
     expect(sign * (hours * 60 + minutes)).toBe(offset);
   }
+});
+
+test.each(['2020-01-01', '2020-06-01'])('uses browser offset by default [%s]', isoDate => {
+  const offset = 0 - new Date(isoDate).getTimezoneOffset();
+  expect(formatTimezoneOffset(isoDate)).toBe(formatTimezoneOffset(isoDate, offset));
 });
