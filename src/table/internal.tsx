@@ -86,7 +86,7 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [tableCellRefs, setTableCellRefs] = React.useState<any[]>([]);
-    const [cellWidths, setCellWidths] = React.useState<number[]>([]);
+    const [leftCellWidths, setLeftCellWidths] = React.useState<number[]>([]);
     const [rightCellWidths, setRightCellWidths] = React.useState<number[]>([]);
 
     useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
@@ -123,16 +123,9 @@ const InternalTable = React.forwardRef(
           .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
           .reverse();
 
-        console.log('first', rightWidthsArray);
-
-        setCellWidths([0, ...widthsArray]);
         setRightCellWidths([...rightWidthsArray, 0]);
+        setLeftCellWidths([0, ...widthsArray]);
       };
-
-      // [ 5, 10, 5, 10] --> reverse
-      // [10, 5, 10, 5] -> sum
-      // [10, 15, 25, 30] -> reverse
-      // [ 30, 25, 15, 10 ]
 
       getCellWidths();
     }, [tableCellRefs]);
@@ -345,37 +338,52 @@ const InternalTable = React.forwardRef(
                             currentCell?.nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto';
                           const isLastRightStickyColumn =
                             currentCell?.previousSibling?.style.right === 'auto' && currentCell?.style.right !== 'auto';
-                          console.log(colIndex, rightCellWidths);
+
+                          const styles = {
+                            width: column.width,
+                            minWidth: column.minWidth,
+                            maxWidth: column.maxWidth,
+                            right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
+                            left: column.isSticky === 'left' ? `${leftCellWidths[colIndex]}px` : 'auto',
+                            boxShadow: isLastRightStickyColumn
+                              ? 'inset 2px 0 #eaeded'
+                              : isLastLeftStickyColumn
+                              ? 'inset -2px 0 #eaeded'
+                              : 'none',
+                          };
+
+                          console.log(
+                            column.cell,
+                            'styles',
+                            styles,
+                            'right cell widths',
+                            rightCellWidths,
+                            'left cell widths',
+                            leftCellWidths,
+                            'is Sticky',
+                            column.isSticky
+                          );
+
+                          console.log(column.header);
+
                           return (
                             <TableBodyCellContent
                               key={getColumnKey(column, colIndex)}
-                              // ref={tableCellRef}
                               ref={tableCellRefs[colIndex]}
                               style={
                                 resizableColumns
                                   ? {
-                                      left: column.isSticky === 'left' ? `${cellWidths[colIndex]}px` : 'auto',
                                       right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
+                                      left: column.isSticky === 'left' ? `${leftCellWidths[colIndex]}px` : 'auto',
                                       boxShadow: isLastLeftStickyColumn
                                         ? 'inset -2px 0 #eaeded'
                                         : isLastRightStickyColumn
                                         ? 'inset 2px 0 #eaeded'
                                         : 'none',
                                     }
-                                  : {
-                                      width: column.width,
-                                      minWidth: column.minWidth,
-                                      maxWidth: column.maxWidth,
-                                      left: column.isSticky === 'left' ? `${cellWidths[colIndex]}px` : 'auto',
-                                      right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
-                                      boxShadow: isLastLeftStickyColumn
-                                        ? 'inset -2px 0 #eaeded'
-                                        : isLastRightStickyColumn
-                                        ? 'inset 2px 0 #eaeded'
-                                        : 'none',
-                                    }
+                                  : styles
                               }
-                              isSticky={column.isSticky === 'left' || column.isSticky === 'right'}
+                              isSticky={column.isSticky === 'right' || column.isSticky === 'left'}
                               column={column}
                               item={item}
                               wrapLines={wrapLines}

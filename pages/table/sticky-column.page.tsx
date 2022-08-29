@@ -32,7 +32,6 @@ export default () => {
     );
   };
 
-  console.log(stickies);
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
