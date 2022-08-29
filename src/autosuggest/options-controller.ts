@@ -10,6 +10,8 @@ import {
   HighlightedOptionState,
   useHighlightedOption,
 } from '../internal/components/options-list/utils/use-highlight-option';
+import { KeyCode } from '../internal/keycode';
+import { BaseKeyDetail } from '../internal/events';
 
 type Options = AutosuggestProps.Options;
 
@@ -19,6 +21,7 @@ export interface UseAutosuggestItemsProps {
   filterText: string;
   filteringType: AutosuggestProps.FilteringType;
   hideEnteredTextLabel?: boolean;
+  onSelectItem: (option: AutosuggestItem) => void;
 }
 
 export interface AutosuggestItemsState extends HighlightedOptionState<AutosuggestItem> {
@@ -28,6 +31,7 @@ export interface AutosuggestItemsState extends HighlightedOptionState<Autosugges
 
 export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
   setShowAll(value: boolean): void;
+  interceptKeyDown(event: CustomEvent<BaseKeyDetail>): boolean;
 }
 
 const isHighlightable = (option?: AutosuggestItem) => {
@@ -37,12 +41,15 @@ const isHighlightable = (option?: AutosuggestItem) => {
 const parentMap = new WeakMap<AutosuggestItem, AutosuggestItem>();
 export const getParentGroup = (item: AutosuggestItem) => parentMap.get(item);
 
+const isInteractive = (option?: AutosuggestItem) => !!option && !option.disabled && option.type !== 'parent';
+
 export const useAutosuggestItems = ({
   options,
   filterValue,
   filterText,
   filteringType,
   hideEnteredTextLabel,
+  onSelectItem,
 }: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
   const [showAll, setShowAll] = useState(false);
 
@@ -57,14 +64,38 @@ export const useAutosuggestItems = ({
     return filteredItems;
   }, [items, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
 
-  const [highlightedOptionState, HighlightedOptionHandlers] = useHighlightedOption({
+  const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
     options: filteredItems,
     isHighlightable,
   });
 
+  const interceptKeyDown = (event: CustomEvent<BaseKeyDetail>): boolean => {
+    switch (event.detail.keyCode) {
+      case KeyCode.down: {
+        highlightedOptionHandlers.moveHighlightWithKeyboard(1);
+        return true;
+      }
+      case KeyCode.up: {
+        highlightedOptionHandlers.moveHighlightWithKeyboard(-1);
+        return true;
+      }
+      case KeyCode.enter: {
+        if (highlightedOptionState.highlightedOption) {
+          if (isInteractive(highlightedOptionState.highlightedOption)) {
+            onSelectItem(highlightedOptionState.highlightedOption);
+            return true;
+          }
+        }
+        return false;
+      }
+      default:
+        return false;
+    }
+  };
+
   return [
     { items: filteredItems, showAll, ...highlightedOptionState },
-    { setShowAll, ...HighlightedOptionHandlers },
+    { setShowAll, interceptKeyDown, ...highlightedOptionHandlers },
   ];
 };
 

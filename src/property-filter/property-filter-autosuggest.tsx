@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef, useState } from 'react';
+import React, { Ref, useCallback, useRef } from 'react';
 
 import { useKeyboardHandler } from '../autosuggest/controller';
 import { useAutosuggestItems } from '../autosuggest/options-controller';
@@ -22,6 +22,7 @@ import styles from '../autosuggest/styles.css.js';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from '../autosuggest/options-list';
+import { useAutosuggestDropdown } from '../autosuggest/dropdown-controller';
 
 const DROPDOWN_WIDTH = 300;
 
@@ -31,10 +32,6 @@ export interface PropertyFilterAutosuggestProps extends AutosuggestProps, Intern
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
 }
-
-const isInteractive = (option?: AutosuggestItem) => {
-  return !!option && !option.disabled && option.type !== 'parent';
-};
 
 const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
   const lastFilteringText = useRef<string | null>(null);
@@ -77,19 +74,28 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
 
-    const [open, setOpen] = useState(false);
+    const selectOption = (option: AutosuggestItem) => {
+      const value = option.value || '';
+      fireNonCancelableEvent(onChange, { value });
+      const selectedCancelled = fireCancelableEvent(onOptionClick, option);
+      if (!selectedCancelled) {
+        autosuggestDropdownHandlers.closeDropdown();
+      } else {
+        autosuggestItemsHandlers.resetHighlightWithKeyboard();
+      }
+    };
+
     const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
       options: options || [],
       filterValue: value,
       filterText: highlightText,
       filteringType,
       hideEnteredTextLabel: hideEnteredTextOption,
+      onSelectItem: selectOption,
     });
-    const openDropdown = () => setOpen(true);
-    const closeDropdown = () => {
-      setOpen(false);
-      autosuggestItemsHandlers.resetHighlightWithKeyboard();
-    };
+    const [{ open }, autosuggestDropdownHandlers] = useAutosuggestDropdown({
+      onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
+    });
     const handleBlur: React.FocusEventHandler = event => {
       if (
         event.currentTarget.contains(event.relatedTarget) ||
@@ -97,41 +103,22 @@ const PropertyFilterAutosuggest = React.forwardRef(
       ) {
         return;
       }
-      closeDropdown();
-    };
-    const selectOption = (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
-      const selectedCancelled = fireCancelableEvent(onOptionClick, option);
-      if (!selectedCancelled) {
-        closeDropdown();
-      } else {
-        autosuggestItemsHandlers.resetHighlightWithKeyboard();
-      }
-    };
-    const selectHighlighted = () => {
-      if (autosuggestItemsState.highlightedOption) {
-        if (isInteractive(autosuggestItemsState.highlightedOption)) {
-          selectOption(autosuggestItemsState.highlightedOption);
-        }
-      } else {
-        closeDropdown();
-      }
+      autosuggestDropdownHandlers.closeDropdown();
     };
 
     const fireLoadMore = useLoadMoreItems(onLoadItems);
 
     const handleInputChange: InputProps['onChange'] = e => {
-      openDropdown();
+      autosuggestDropdownHandlers.openDropdown();
       autosuggestItemsHandlers.resetHighlightWithKeyboard();
       onChange && onChange(e);
     };
 
     const handleKeyDown = useKeyboardHandler(
-      autosuggestItemsHandlers.moveHighlightWithKeyboard,
-      openDropdown,
-      selectHighlighted,
       open,
+      autosuggestDropdownHandlers.openDropdown,
+      autosuggestDropdownHandlers.closeDropdown,
+      autosuggestItemsHandlers.interceptKeyDown,
       onKeyDown
     );
     const handleLoadMore = useCallback(() => {
@@ -158,7 +145,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
     const nativeAttributes = {
       placeholder,
-      onClick: openDropdown,
+      onClick: autosuggestDropdownHandlers.openDropdown,
       role: 'combobox',
       'aria-autocomplete': 'list',
       'aria-expanded': expanded,
@@ -172,7 +159,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const handleInputFocus: InputProps['onFocus'] = () => {
       const openPrevented = fireCancelableEvent(onOpen, null);
       if (!openPrevented) {
-        openDropdown();
+        autosuggestDropdownHandlers.openDropdown();
         fireLoadMore(true, false, '');
       }
     };
