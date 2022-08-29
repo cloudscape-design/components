@@ -86,6 +86,7 @@ const InternalTable = React.forwardRef(
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [tableCellRefs, setTableCellRefs] = React.useState<any[]>([]);
     const [cellWidths, setCellWidths] = React.useState<number[]>([]);
+    const [rightCellWidths, setRightCellWidths] = React.useState<number[]>([]);
 
     useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
 
@@ -114,8 +115,23 @@ const InternalTable = React.forwardRef(
         let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
         widthsArray = widthsArray.filter(x => x);
         widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+
+        let rightWidthsArray = tableCellRefs.map(ref => ref.current?.nextSibling?.offsetWidth);
+        rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
+        rightWidthsArray = rightWidthsArray
+          .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+          .reverse();
+
+        console.log('first', rightWidthsArray);
+
         setCellWidths([0, ...widthsArray]);
+        setRightCellWidths([...rightWidthsArray, 0]);
       };
+
+      // [ 5, 10, 5, 10] --> reverse
+      // [10, 5, 10, 5] -> sum
+      // [10, 15, 25, 30] -> reverse
+      // [ 30, 25, 15, 10 ]
 
       getCellWidths();
     }, [tableCellRefs]);
@@ -315,9 +331,11 @@ const InternalTable = React.forwardRef(
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const currentCell = tableCellRefs[colIndex]?.current;
-                          const isLastStickyColumn =
+                          const isLastLeftStickyColumn =
                             currentCell?.nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto';
-                          // console.log(colIndex, isLastStickyColumn);
+                          const isLastRightStickyColumn =
+                            currentCell?.previousSibling?.style.right === 'auto' && currentCell?.style.right !== 'auto';
+                          console.log(colIndex, rightCellWidths);
                           return (
                             <TableBodyCellContent
                               key={getColumnKey(column, colIndex)}
@@ -326,18 +344,28 @@ const InternalTable = React.forwardRef(
                               style={
                                 resizableColumns
                                   ? {
-                                      left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
-                                      boxShadow: isLastStickyColumn ? 'inset -2px 0 #eaeded' : 'none',
+                                      left: column.isSticky === 'left' ? `${cellWidths[colIndex]}px` : 'auto',
+                                      right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
+                                      boxShadow: isLastLeftStickyColumn
+                                        ? 'inset -2px 0 #eaeded'
+                                        : isLastRightStickyColumn
+                                        ? 'inset 2px 0 #eaeded'
+                                        : 'none',
                                     }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
-                                      left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
-                                      boxShadow: isLastStickyColumn ? 'inset -2px 0 #eaeded' : 'none',
+                                      left: column.isSticky === 'left' ? `${cellWidths[colIndex]}px` : 'auto',
+                                      right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
+                                      boxShadow: isLastLeftStickyColumn
+                                        ? 'inset -2px 0 #eaeded'
+                                        : isLastRightStickyColumn
+                                        ? 'inset 2px 0 #eaeded'
+                                        : 'none',
                                     }
                               }
-                              isSticky={column.isSticky}
+                              isSticky={column.isSticky === 'left' || column.isSticky === 'right'}
                               column={column}
                               item={item}
                               wrapLines={wrapLines}

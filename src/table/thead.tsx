@@ -70,6 +70,7 @@ const Thead = React.forwardRef(
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
     const [tableCellRefs, setTableCellRefs] = React.useState<any[]>([]);
     const [cellWidths, setCellWidths] = React.useState<any[]>([]);
+    const [rightCellWidths, setRightCellWidths] = React.useState<any[]>([]);
 
     const arrLength = columnDefinitions.length;
 
@@ -85,7 +86,15 @@ const Thead = React.forwardRef(
         let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
         widthsArray = widthsArray.filter(x => x);
         widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+
+        let rightWidthsArray = tableCellRefs.map(ref => ref.current?.nextSibling?.offsetWidth);
+        rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
+        rightWidthsArray = rightWidthsArray
+          .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+          .reverse();
+
         setCellWidths([0, ...widthsArray]);
+        setRightCellWidths([...rightWidthsArray, 0]);
       };
 
       getCellWidths();
@@ -127,12 +136,16 @@ const Thead = React.forwardRef(
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
                 ref={tableCellRefs[colIndex]}
-                className={clsx(headerCellClass, column.isSticky && headerCellStyles['header-cell-freeze'])}
+                className={clsx(
+                  headerCellClass,
+                  (column.isSticky === 'left' || column.isSticky === 'right') && headerCellStyles['header-cell-freeze']
+                )}
                 style={{
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  left: column.isSticky ? `${cellWidths[colIndex]}px` : 'auto',
+                  left: column.isSticky === 'left' ? `${cellWidths[colIndex]}px` : 'auto',
+                  right: column.isSticky === 'right' ? `${rightCellWidths[colIndex]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 showFocusRing={colIndex === showFocusRing}

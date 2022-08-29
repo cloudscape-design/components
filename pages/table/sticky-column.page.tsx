@@ -27,7 +27,7 @@ export default () => {
       <Button
         variant="icon"
         onClick={() => getStickies(id)}
-        iconName={stickies.includes(id) ? 'unlocked' : 'lock-private'}
+        iconName={stickies.includes(id) ? 'lock-private' : 'unlocked'}
       />
     );
   };
@@ -37,7 +37,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          stickyHeader
+          stickyHeader={true}
           columnDefinitions={[
             {
               id: 'variable',
@@ -47,7 +47,7 @@ export default () => {
               width: '300px',
               minWidth: '300px',
               maxWidth: '300px',
-              isSticky: true,
+              isSticky: 'left',
             },
             {
               id: 'alt',
@@ -158,20 +158,18 @@ export default () => {
               width: '300px',
               minWidth: '300px',
               maxWidth: '300px',
-              isSticky: true,
+              isSticky: 'left',
             },
             {
               id: 'alt',
               header: 'Text value',
               cell: item => item.alt || '-',
               sortingField: 'alt',
-              isSticky: true,
             },
             {
               id: 'description',
               header: 'Description',
               cell: item => item.description || '-',
-              isSticky: true,
             },
             {
               id: 'description-2',
@@ -199,9 +197,10 @@ export default () => {
               cell: item => item.description || '-',
             },
             {
-              id: 'descriptio7',
+              id: 'description7',
               header: 'Description',
               cell: item => item.description || '-',
+              isSticky: 'right',
             },
           ]}
           items={[
@@ -259,10 +258,10 @@ export default () => {
               <Button>Create resource</Button>
             </Box>
           }
-          header={<Header>Table with 3 sticky columns</Header>}
+          header={<Header>Table with sticky left and right columns</Header>}
         />
         <Table
-          resizableColumns
+          // resizableColumns
           columnDefinitions={[
             {
               id: 'variable',
@@ -276,7 +275,7 @@ export default () => {
               width: '300px',
               minWidth: '300px',
               maxWidth: '300px',
-              isSticky: stickies.includes('variable'),
+              isSticky: stickies.includes('variable') ? 'left' : undefined,
             },
             {
               id: 'alt',
@@ -290,77 +289,53 @@ export default () => {
               minWidth: '300px',
               maxWidth: '300px',
               sortingField: 'alt',
-              isSticky: stickies.includes('alt'),
+              isSticky: stickies.includes('alt') ? 'left' : undefined,
             },
             {
               id: 'description',
-              header: (
-                <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description')}
-                </Box>
-              ),
+              header: 'Desc',
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description'),
             },
             {
               id: 'description-2',
-              header: (
-                <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-2')}
-                </Box>
-              ),
+              header: 'Desc',
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-2'),
             },
             {
               id: 'description-3',
-              header: (
-                <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-3')}
-                </Box>
-              ),
+              header: 'Desc',
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-3'),
             },
             {
               id: 'description-4',
-              header: (
-                <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-4')}
-                </Box>
-              ),
+              header: 'Desc',
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-4'),
             },
             {
               id: 'description-5',
-              header: (
-                <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-5')}
-                </Box>
-              ),
+              header: 'Desc',
+
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-5'),
             },
             {
               id: 'description-6',
               header: (
                 <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-6')}
+                  Desc {getButton('description-6')}
                 </Box>
               ),
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-6'),
+              isSticky: stickies.includes('description-6') ? 'right' : undefined,
             },
             {
               id: 'description-7',
               header: (
                 <Box fontWeight="bold" color="text-body-secondary">
-                  Description {getButton('description-7')}
+                  Desc {getButton('description-7')}
                 </Box>
               ),
               cell: item => item.description || '-',
-              isSticky: stickies.includes('description-7'),
+              isSticky: stickies.includes('description-7') ? 'right' : undefined,
             },
           ]}
           items={[
@@ -418,7 +393,7 @@ export default () => {
               <Button>Create resource</Button>
             </Box>
           }
-          header={<Header>Table with dynamic sticky columns and resizable columns</Header>}
+          header={<Header>Table with dynamic sticky columns</Header>}
         />
       </SpaceBetween>
     </ScreenshotArea>
