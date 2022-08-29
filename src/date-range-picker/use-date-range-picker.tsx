@@ -21,7 +21,7 @@ function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset: number; dateOnly: boolean }
+  { timeOffset, dateOnly }: { timeOffset?: number; dateOnly: boolean }
 ): null | DateRangePickerProps.Value {
   if (!value || value.type === 'relative') {
     return value;

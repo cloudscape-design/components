@@ -28,13 +28,6 @@ const permutations = createPermutations<LinkProps>([
   },
 ]);
 
-const narrowIconPermutations = createPermutations<LinkProps>([
-  {
-    href: ['#', undefined],
-    children: ['Short', 'Hello world', 'Reallylongstringthatcannotwraptothenextline'],
-  },
-]);
-
 export default function LinkPermutations() {
   return (
     <>
@@ -45,16 +38,6 @@ export default function LinkPermutations() {
           render={permutation => (
             <div className={clsx(permutation.color === 'inverted' && styles['container-inverted'])}>
               <Link {...permutation} externalIconAriaLabel={`Opens in a new tab`}>
-                {permutation.children}
-              </Link>
-            </div>
-          )}
-        />
-        <PermutationsView
-          permutations={narrowIconPermutations}
-          render={permutation => (
-            <div className={styles.narrow}>
-              <Link {...permutation} external={true} externalIconAriaLabel={`Opens in a new tab`}>
                 {permutation.children}
               </Link>
             </div>

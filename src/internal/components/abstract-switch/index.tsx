@@ -10,6 +10,7 @@ import { InternalBaseComponentProps } from '../../hooks/use-base-component/index
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
   controlId?: string;
   controlClassName: string;
+  outlineClassName: string;
   disabled?: boolean;
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
@@ -29,6 +30,7 @@ function joinString(values: (string | undefined)[]) {
 export default function AbstractSwitch({
   controlId,
   controlClassName,
+  outlineClassName,
   disabled,
   nativeControl,
   styledControl,
@@ -86,15 +88,12 @@ export default function AbstractSwitch({
             ...focusVisible,
             id,
             disabled,
+            className: styles['native-input'],
             'aria-describedby': ariaDescriptons.length ? joinString(ariaDescriptons) : undefined,
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
           })}
-          {/*
-          An empty element to display the outline, because the native control is invisible.
-          Note: There is a CSS selector in src/toggle/styles.scss that relies on a span element selector to show focus.
-          */}
-          <span className={styles.outline} />
+          <span className={clsx(styles.outline, outlineClassName)} />
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (

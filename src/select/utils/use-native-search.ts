@@ -19,7 +19,6 @@ export const isRepeatedChar = (str: string) => str.split('').every(c => c === st
 
 interface UseNativeSearchProps {
   isEnabled: boolean;
-  isKeyboard: React.MutableRefObject<boolean>;
   options: ReadonlyArray<DropdownOption>;
   highlightOption: (option: DropdownOption) => void;
   highlightedOption: OptionDefinition | undefined | null;
@@ -72,7 +71,6 @@ function findMatchingOption(
 export function useNativeSearch({
   isEnabled,
   options,
-  isKeyboard,
   highlightOption,
   highlightedOption,
   useInteractiveGroups,
@@ -82,7 +80,6 @@ export function useNativeSearch({
   const delayedResetValue = useDebounceCallback(() => (value.current = ''), 500);
 
   return (event: React.KeyboardEvent) => {
-    isKeyboard.current = true;
     if (!isEnabled) {
       return;
     }

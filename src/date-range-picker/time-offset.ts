@@ -9,20 +9,18 @@ import { formatTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/dat
  */
 export function setTimeOffset(
   value: DateRangePickerProps.Value | null,
-  timeOffsetInMinutes: number
+  timeOffsetInMinutes?: number
 ): DateRangePickerProps.Value | null {
   if (!(value?.type === 'absolute')) {
     return value;
   }
 
-  const offsetSuffix = formatTimezoneOffset(timeOffsetInMinutes);
-
   const { startDate, endDate } = value;
 
   return {
     type: 'absolute',
-    startDate: startDate + offsetSuffix,
-    endDate: endDate + offsetSuffix,
+    startDate: startDate + formatTimezoneOffset(startDate, timeOffsetInMinutes),
+    endDate: endDate + formatTimezoneOffset(endDate, timeOffsetInMinutes),
   };
 }
 
@@ -33,7 +31,7 @@ export function setTimeOffset(
  */
 export function shiftTimeOffset(
   value: null | DateRangePickerProps.Value,
-  timeOffsetInMinutes: number
+  timeOffsetInMinutes?: number
 ): DateRangePickerProps.Value | null {
   if (!value || value.type !== 'absolute') {
     return value;

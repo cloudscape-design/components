@@ -93,14 +93,13 @@ const InternalSelect = React.forwardRef(
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const {
       isOpen,
+      highlightType,
       highlightedOption,
       highlightedIndex,
-      highlightedType,
       getTriggerProps,
       getFilterProps,
       getMenuProps,
       getOptionProps,
-      isKeyboard,
       highlightOption,
       selectOption,
       announceSelected,
@@ -121,7 +120,6 @@ const InternalSelect = React.forwardRef(
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
-      isKeyboard,
     });
 
     useEffect(() => {
@@ -222,7 +220,7 @@ const InternalSelect = React.forwardRef(
             ref={scrollToIndex}
             hasDropdownStatus={dropdownStatus.content !== null}
             screenReaderContent={announcement}
-            highlightedType={highlightedType}
+            highlightType={highlightType}
           />
         </Dropdown>
       </div>

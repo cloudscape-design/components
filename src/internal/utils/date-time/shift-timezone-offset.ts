@@ -17,13 +17,14 @@ import { parseTimezoneOffset } from './parse-timezone-offset';
  * shiftTimezoneOffset("2020-01-01T09:00:00+03:00", 2 * 60) === "2020-01-01T08:00:00"
  * ```
  */
-export function shiftTimezoneOffset(dateString: string, targetTimezoneOffset: number) {
-  const [datePart, timeAndOffsetPart] = dateString.split('T');
+export function shiftTimezoneOffset(dateString: string, targetTimezoneOffset?: number) {
+  const [datePart, timeAndOffsetPart = ''] = dateString.split('T');
   const [timePart] = timeAndOffsetPart.split(/-|\+|Z/);
   const valueWithoutOffset = joinDateTime(datePart, timePart);
   const originalTimezoneOffset = parseTimezoneOffset(dateString);
 
   const date = new Date(valueWithoutOffset);
+  targetTimezoneOffset = targetTimezoneOffset ?? 0 - date.getTimezoneOffset();
   const adjustedDate = addMinutes(date, targetTimezoneOffset - originalTimezoneOffset);
 
   return joinDateTime(formatDate(adjustedDate), formatTime(adjustedDate));

@@ -107,7 +107,7 @@ npm test
 #### Run build tool and unit tests:
 
 ```
-npm test:unit
+npm run test:unit
 ```
 
 #### Run integration tests:
@@ -125,7 +125,7 @@ npm start
 ```
 
 ```
-npm test:integ
+npm run test:integ
 ```
 
 #### Run a single test suite

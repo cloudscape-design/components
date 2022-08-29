@@ -4755,7 +4755,6 @@ Has no effect when \`dateOnly\` is true.
       "type": "string",
     },
     Object {
-      "defaultValue": "getBrowserTimezoneOffset()",
       "description": "The time offset from UTC in minutes that should be used to
 display and produce values.
 Has no effect when \`dateOnly\` is true.
