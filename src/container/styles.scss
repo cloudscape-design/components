@@ -11,7 +11,6 @@
   @include styles.styles-reset;
   display: block;
   word-wrap: break-word;
-  overflow: clip;
   &.variant {
     &-default,
     &-stacked {
