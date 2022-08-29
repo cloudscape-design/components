@@ -113,10 +113,6 @@ export interface AppLayoutProps extends BaseComponentProps {
   navigation?: React.ReactNode;
 
   /**
-   * Use this slot to add the [breadcrumb group component](/components/breadcrumb-group/) to the app layout.
-   */
-
-  /**
    * Top area of the page content.
    * **Deprecated**, replaced by the `header` slot of the [content layout](/components/content-layout/) component.
    * @visualrefresh
