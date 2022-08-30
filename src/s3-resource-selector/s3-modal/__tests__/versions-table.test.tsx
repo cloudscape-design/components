@@ -5,7 +5,7 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import { VersionsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/versions-table';
 import { i18nStrings, versions } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent } from './utils';
+import { getTableBodyContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -28,27 +28,13 @@ test('renders correct sorting state', async () => {
   const wrapper = await renderTable(<VersionsTable {...defaultProps} />);
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual([
-    'Version ID, not sorted',
-    'Last modified, not sorted',
-    'Size, not sorted',
-  ]);
+
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()!.getElement()).toHaveTextContent('Version ID');
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual([
-    'Version ID, sorted ascending',
-    'Last modified, not sorted',
-    'Size, not sorted',
-  ]);
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()!.getElement()).toHaveTextContent('Version ID');
-  expect(getColumnAriaLabels(wrapper)).toEqual([
-    'Version ID, sorted descending',
-    'Last modified, not sorted',
-    'Size, not sorted',
-  ]);
 });
 
 test('Renders correct table content', async () => {

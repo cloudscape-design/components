@@ -77,15 +77,6 @@ export function TableHeaderCell({
         className={clsx(styles['header-cell-content'], {
           [styles['header-cell-fake-focus']]: showFocusRing && focusVisible['data-awsui-focus-visible'],
         })}
-        aria-label={
-          column.ariaLabel
-            ? column.ariaLabel({
-                sorted: sorted,
-                descending: sorted && !!sortingDescending,
-                disabled: !!sortingDisabled,
-              })
-            : undefined
-        }
         {...(sortingDisabled || !sortingStatus
           ? { ['aria-disabled']: 'true' }
           : {

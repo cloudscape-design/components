@@ -6,7 +6,7 @@ import createWrapper from '../../../../lib/components/test-utils/dom';
 import icons from '../../../../lib/components/icon/icons';
 import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import { i18nStrings, objects } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getElementsText, getTableBodyContent, getTableColumnContent } from './utils';
+import { getElementsText, getTableBodyContent, getTableColumnContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -31,23 +31,12 @@ test('renders correct sorting state', async () => {
   const wrapper = await renderTable(<ObjectsTable {...defaultProps} />);
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual(['Key, not sorted', 'Last modified, not sorted', 'Size, not sorted']);
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()!.getElement()).toHaveTextContent('Key');
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual([
-    'Key, sorted ascending',
-    'Last modified, not sorted',
-    'Size, not sorted',
-  ]);
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()!.getElement()).toHaveTextContent('Key');
-  expect(getColumnAriaLabels(wrapper)).toEqual([
-    'Key, sorted descending',
-    'Last modified, not sorted',
-    'Size, not sorted',
-  ]);
 });
 
 test('sorts objects by last modified date', async () => {

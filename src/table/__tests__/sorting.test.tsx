@@ -63,10 +63,6 @@ function assertColumnNotSorted(wrapper: TableWrapper, index: number) {
 
 test('adds optional label to sort button', () => {
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={defaultItems} />);
-  expect(wrapper.findColumnSortingArea(1)!.getElement()).toHaveAttribute(
-    'aria-label',
-    'id,sorted=false,descending=false'
-  );
   expect(wrapper.findColumnSortingArea(3)!.getElement()).not.toHaveAttribute('aria-label');
 });
 
@@ -74,27 +70,6 @@ test('does not sort the sortable columns by default', () => {
   const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={defaultItems} />);
   assertColumnNotSorted(wrapper, 1);
   assertColumnNotSorted(wrapper, 3);
-});
-
-test('passes correct sortingState to label', function () {
-  const columnDefinitions = [...defaultColumns];
-  columnDefinitions[0] = {
-    ...defaultColumns[0],
-    ariaLabel: data => `${data.sorted} ${data.descending} ${data.disabled}`,
-  };
-  const { wrapper, rerender } = renderTable(
-    <Table columnDefinitions={columnDefinitions} items={defaultItems} sortingColumn={columnDefinitions[0]} />
-  );
-  expect(wrapper.findColumnSortingArea(1)!.getElement()).toHaveAttribute('aria-label', 'true false false');
-  rerender(
-    <Table
-      columnDefinitions={columnDefinitions}
-      items={defaultItems}
-      sortingColumn={defaultColumns[2]}
-      sortingDescending={true}
-    />
-  );
-  expect(wrapper.findColumnSortingArea(1)!.getElement()).toHaveAttribute('aria-label', 'false false false');
 });
 
 test('with no sorting parameters provided', function () {
@@ -235,12 +210,4 @@ test('matches currently sorted column, when `sortingColumn` value is a copy of t
     />
   );
   assertColumnSorted(wrapper, 1, false);
-  expect(wrapper.findColumnSortingArea(1)!.getElement()).toHaveAttribute(
-    'aria-label',
-    'id,sorted=true,descending=false'
-  );
-  expect(wrapper.findColumnSortingArea(4)!.getElement()).toHaveAttribute(
-    'aria-label',
-    'extra,sorted=false,descending=false'
-  );
 });

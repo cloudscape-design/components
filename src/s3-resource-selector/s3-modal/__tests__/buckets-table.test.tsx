@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table';
 import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent } from './utils';
+import { getTableBodyContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -47,15 +47,12 @@ test('renders correct sorting state', async () => {
   const wrapper = await renderTable(<BucketsTable {...defaultProps} />);
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual(['Name, not sorted', 'Creation date, not sorted']);
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()!.getElement()).toHaveTextContent('Name');
   expect(wrapper.findDescSortedColumn()).toBeNull();
-  expect(getColumnAriaLabels(wrapper)).toEqual(['Name, sorted ascending', 'Creation date, not sorted']);
   wrapper.findColumnSortingArea(2)!.click();
   expect(wrapper.findAscSortedColumn()).toBeNull();
   expect(wrapper.findDescSortedColumn()!.getElement()).toHaveTextContent('Name');
-  expect(getColumnAriaLabels(wrapper)).toEqual(['Name, sorted descending', 'Creation date, not sorted']);
 });
 
 test('Renders correct buckets table content', async () => {
