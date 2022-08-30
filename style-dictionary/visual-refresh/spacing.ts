@@ -21,7 +21,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceContainerContentTop: '0px',
   spaceContainerHeaderVertical: '{spaceS}',
   spaceContainerHorizontal: '{spaceXl}',
-  spaceDarkHeaderPaddingBottom: { comfortable: '24px', compact: '12px' },
+  spaceContentHeaderPaddingBottom: { comfortable: '{spaceXl}', compact: '{spaceS}' },
   spaceDarkHeaderOverlapDistance: { comfortable: '36px', compact: '32px' },
   spaceExpandableSectionIconOffsetTop: '{spaceScaled2xXxs}',
   spaceFieldHorizontal: '{spaceS}',

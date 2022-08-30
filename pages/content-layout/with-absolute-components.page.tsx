@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Flashbar from '~components/flashbar';
 import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';

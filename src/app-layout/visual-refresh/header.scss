@@ -9,7 +9,7 @@
 header.content {
   grid-column: 3;
   grid-row: 3;
-  padding-bottom: awsui.$space-dark-header-padding-bottom;
+  padding-bottom: awsui.$space-content-header-padding-bottom;
 
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     /*
@@ -42,7 +42,7 @@ header.content {
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    padding: awsui.$space-m 0 awsui.$space-dark-header-padding-bottom;
+    padding: awsui.$space-m 0 awsui.$space-content-header-padding-bottom;
 
     /*
     Breadcrumbs has moved to first position and sticky so Notifications 
