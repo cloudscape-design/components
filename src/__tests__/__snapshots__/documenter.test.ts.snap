@@ -5000,10 +5000,21 @@ This only works well if you're using a single control in the form field.
       "type": "string",
     },
     Object {
-      "description": "Provides a text alternative for the error icon in the error message.",
-      "name": "errorIconLabel",
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
       "optional": true,
-      "type": "string",
+      "type": "I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",

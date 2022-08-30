@@ -34,6 +34,11 @@ export interface FormFieldProps extends BaseComponentProps {
   label?: React.ReactNode;
 
   /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: I18nStrings;
+
+  /**
    * Use to display an 'Info' link next to the label.
    */
   info?: React.ReactNode;
@@ -61,15 +66,17 @@ export interface FormFieldProps extends BaseComponentProps {
   constraintText?: React.ReactNode;
 
   /**
-   * Provides a text alternative for the error icon in the error message.
-   */
-  errorIconLabel?: string;
-
-  /**
    * Text that displays as a validation message. If this is set to a
    * non-empty string, it will render the form field as invalid.
    */
   errorText?: React.ReactNode;
+}
+
+export interface I18nStrings {
+  /**
+   * Provides a text alternative for the error icon in the error message.
+   */
+  errorIconAriaLabel?: string;
 }
 
 export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComponentProps {
