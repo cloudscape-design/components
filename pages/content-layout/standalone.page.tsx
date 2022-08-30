@@ -3,27 +3,22 @@
 import React, { useState } from 'react';
 import { Button } from '~components';
 import Alert from '~components/alert';
-import AppLayout from '~components/app-layout';
 import ContentLayout from '~components/content-layout';
 import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
-import { Breadcrumbs, Containers } from '../app-layout/utils/content-blocks';
+import { Containers } from '../app-layout/utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
-import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function () {
   const [alertVisible, setVisible] = useState(true);
 
   return (
-    <ScreenshotArea gutters={false}>
-      <AppLayout
-        contentType="form"
-        ariaLabels={appLayoutLabels}
-        breadcrumbs={<Breadcrumbs />}
-        content={
-          <ContentLayout
-            header={
+    <main>
+      <ScreenshotArea gutters={false}>
+        <ContentLayout
+          header={
+            <div style={{ padding: '20px 40px 0' }}>
               <SpaceBetween size="m">
                 <Header
                   variant="h1"
@@ -39,12 +34,14 @@ export default function () {
                   </Alert>
                 )}
               </SpaceBetween>
-            }
-          >
+            </div>
+          }
+        >
+          <div style={{ padding: '0 40px 20px' }}>
             <Containers />
-          </ContentLayout>
-        }
-      />
-    </ScreenshotArea>
+          </div>
+        </ContentLayout>
+      </ScreenshotArea>
+    </main>
   );
 }
