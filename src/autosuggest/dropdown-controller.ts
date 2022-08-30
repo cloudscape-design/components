@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 export interface UseAutosuggestDropdownProps {
   readOnly?: boolean;
   onClose?: () => void;
+  onBlur?: () => void;
 }
 
 export interface AutosuggestDropdownState {
@@ -15,13 +16,20 @@ export interface AutosuggestDropdownState {
 export interface AutosuggestDropdownHandlers {
   openDropdown(): void;
   closeDropdown(): void;
+  handleBlur: React.FocusEventHandler;
+}
+
+export interface AutosuggestDropdownRefs {
+  footerRef: React.Ref<HTMLDivElement>;
 }
 
 export const useAutosuggestDropdown = ({
   readOnly,
   onClose,
-}: UseAutosuggestDropdownProps): [AutosuggestDropdownState, AutosuggestDropdownHandlers] => {
+  onBlur,
+}: UseAutosuggestDropdownProps): [AutosuggestDropdownState, AutosuggestDropdownHandlers, AutosuggestDropdownRefs] => {
   const [open, setOpen] = useState(false);
+  const footerRef = useRef<HTMLDivElement>(null);
 
   const openDropdown = () => !readOnly && setOpen(true);
 
@@ -30,5 +38,13 @@ export const useAutosuggestDropdown = ({
     onClose?.();
   };
 
-  return [{ open }, { openDropdown, closeDropdown }];
+  const handleBlur: React.FocusEventHandler = event => {
+    if (event.currentTarget.contains(event.relatedTarget) || footerRef.current?.contains(event.relatedTarget)) {
+      return;
+    }
+    closeDropdown();
+    onBlur?.();
+  };
+
+  return [{ open }, { openDropdown, closeDropdown, handleBlur }, { footerRef }];
 };

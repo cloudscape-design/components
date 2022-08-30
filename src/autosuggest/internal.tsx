@@ -92,18 +92,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     hideEnteredTextLabel: false,
     onSelectItem: selectOption,
   });
-  const [{ open }, autosuggestDropdownHandlers] = useAutosuggestDropdown({
+  const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
     readOnly,
     onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
+    onBlur: () => fireNonCancelableEvent(onBlur),
   });
-
-  const handleBlur: React.FocusEventHandler = event => {
-    if (event.currentTarget.contains(event.relatedTarget) || dropdownFooterRef.current?.contains(event.relatedTarget)) {
-      return;
-    }
-    autosuggestDropdownHandlers.closeDropdown();
-    fireNonCancelableEvent(onBlur);
-  };
 
   const fireLoadMore = useLoadMoreItems(onLoadItems);
 
@@ -132,7 +125,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const formFieldContext = useFormFieldContext(rest);
   const baseProps = getBaseProps(rest);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownFooterRef = useRef<HTMLDivElement>(null);
   useForwardFocus(ref, inputRef);
 
   const selfControlId = useUniqueId('input');
@@ -175,7 +167,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   };
 
   return (
-    <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef} onBlur={handleBlur}>
+    <div
+      {...baseProps}
+      className={clsx(styles.root, baseProps.className)}
+      ref={__internalRootRef}
+      onBlur={autosuggestDropdownHandlers.handleBlur}
+    >
       <Dropdown
         trigger={
           <InternalInput
@@ -202,7 +199,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
         dropdownId={dropdownId}
         footer={
           dropdownStatus.isSticky ? (
-            <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
+            <div ref={autosuggestDropdownRefs.footerRef} className={styles['dropdown-footer']}>
               <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
             </div>
           ) : null

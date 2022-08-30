@@ -93,18 +93,9 @@ const PropertyFilterAutosuggest = React.forwardRef(
       hideEnteredTextLabel: hideEnteredTextOption,
       onSelectItem: selectOption,
     });
-    const [{ open }, autosuggestDropdownHandlers] = useAutosuggestDropdown({
+    const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
       onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
     });
-    const handleBlur: React.FocusEventHandler = event => {
-      if (
-        event.currentTarget.contains(event.relatedTarget) ||
-        dropdownFooterRef.current?.contains(event.relatedTarget)
-      ) {
-        return;
-      }
-      autosuggestDropdownHandlers.closeDropdown();
-    };
 
     const fireLoadMore = useLoadMoreItems(onLoadItems);
 
@@ -132,7 +123,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const formFieldContext = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const inputRef = useRef<HTMLInputElement>(null);
-    const dropdownFooterRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, inputRef);
 
     const selfControlId = useUniqueId('input');
@@ -174,7 +164,11 @@ const PropertyFilterAutosuggest = React.forwardRef(
     };
 
     return (
-      <div {...baseProps} className={clsx(styles.root, baseProps.className)} onBlur={handleBlur}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        onBlur={autosuggestDropdownHandlers.handleBlur}
+      >
         <Dropdown
           minWidth={DROPDOWN_WIDTH}
           stretchWidth={false}
@@ -199,7 +193,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
           dropdownId={dropdownId}
           footer={
             dropdownStatus.isSticky ? (
-              <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
+              <div ref={autosuggestDropdownRefs.footerRef} className={styles['dropdown-footer']}>
                 <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
               </div>
             ) : null
