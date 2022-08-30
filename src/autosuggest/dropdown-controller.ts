@@ -17,6 +17,7 @@ export interface AutosuggestDropdownHandlers {
   openDropdown(): void;
   closeDropdown(): void;
   handleBlur: React.FocusEventHandler;
+  handleMouseDown: React.MouseEventHandler;
 }
 
 export interface AutosuggestDropdownRefs {
@@ -46,5 +47,10 @@ export const useAutosuggestDropdown = ({
     onBlur?.();
   };
 
-  return [{ open }, { openDropdown, closeDropdown, handleBlur }, { footerRef }];
+  const handleMouseDown: React.MouseEventHandler = event => {
+    // Prevent currently focused element from losing focus.
+    event.preventDefault();
+  };
+
+  return [{ open }, { openDropdown, closeDropdown, handleBlur, handleMouseDown }, { footerRef }];
 };

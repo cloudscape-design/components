@@ -158,11 +158,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
     const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
-    const handleMouseDown = (event: React.MouseEvent) => {
-      // prevent currently focused element from losing it
-      event.preventDefault();
-    };
-
     return (
       <div
         {...baseProps}
@@ -188,7 +183,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
               controlId={controlId}
             />
           }
-          onMouseDown={handleMouseDown}
+          onMouseDown={autosuggestDropdownHandlers.handleMouseDown}
           open={open}
           dropdownId={dropdownId}
           footer={

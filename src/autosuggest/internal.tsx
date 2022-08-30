@@ -161,11 +161,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
   const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    // prevent currently focused element from losing it
-    event.preventDefault();
-  };
-
   return (
     <div
       {...baseProps}
@@ -194,7 +189,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             controlId={controlId}
           />
         }
-        onMouseDown={handleMouseDown}
+        onMouseDown={autosuggestDropdownHandlers.handleMouseDown}
         open={open}
         dropdownId={dropdownId}
         footer={
