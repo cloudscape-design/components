@@ -80,11 +80,9 @@ export const useAutosuggestItems = ({
         return true;
       }
       case KeyCode.enter: {
-        if (highlightedOptionState.highlightedOption) {
-          if (isInteractive(highlightedOptionState.highlightedOption)) {
-            onSelectItem(highlightedOptionState.highlightedOption);
-            return true;
-          }
+        if (highlightedOptionState.highlightedOption && isInteractive(highlightedOptionState.highlightedOption)) {
+          onSelectItem(highlightedOptionState.highlightedOption);
+          return true;
         }
         return false;
       }
