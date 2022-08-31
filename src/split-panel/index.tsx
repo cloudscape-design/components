@@ -74,15 +74,15 @@ const TransitionContentSide = ({
       className={clsx(baseProps.className, styles.drawer, styles.root, styles['position-side'], {
         [styles['drawer-closed']]: !isOpen,
       })}
-      style={{
-        top: topOffset,
-        bottom: bottomOffset,
-        width: isOpen ? cappedSize : undefined,
-        maxWidth: isRefresh ? '100%' : undefined,
-      }}
       ref={splitPanelRef}
     >
       <aside
+        style={{
+          top: topOffset,
+          bottom: bottomOffset,
+          width: isOpen ? cappedSize : undefined,
+          maxWidth: isRefresh ? '100%' : undefined,
+        }}
         className={clsx(styles['drawer-content-side'], {
           [styles.refresh]: isRefresh,
         })}
