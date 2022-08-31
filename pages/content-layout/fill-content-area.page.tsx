@@ -3,7 +3,7 @@
 import React from 'react';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
 import * as toolsContent from '../app-layout/utils/tools-content';

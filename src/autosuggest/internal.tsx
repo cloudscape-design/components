@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef, useState } from 'react';
+import React, { Ref, useCallback, useRef } from 'react';
 
 import { useKeyboardHandler } from './controller';
 import { useAutosuggestItems } from './options-controller';
@@ -23,12 +23,9 @@ import { checkOptionValueField } from '../select/utils/check-option-value-field'
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from './options-list';
+import { useAutosuggestDropdown } from './dropdown-controller';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
-
-const isInteractive = (option?: AutosuggestItem) => {
-  return !!option && !option.disabled && option.type !== 'parent';
-};
 
 const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
   const lastFilteringText = useRef<string | null>(null);
@@ -80,56 +77,41 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
 
-  const [open, setOpen] = useState(false);
+  const selectOption = (option: AutosuggestItem) => {
+    const value = option.value || '';
+    fireNonCancelableEvent(onChange, { value });
+    autosuggestDropdownHandlers.closeDropdown();
+    fireNonCancelableEvent(onSelect, { value });
+  };
+
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
     hideEnteredTextLabel: false,
+    onSelectItem: selectOption,
   });
-  const openDropdown = () => !readOnly && setOpen(true);
-  const closeDropdown = () => {
-    setOpen(false);
-    autosuggestItemsHandlers.resetHighlightWithKeyboard();
-  };
-  const handleBlur: React.FocusEventHandler = event => {
-    if (event.currentTarget.contains(event.relatedTarget) || dropdownFooterRef.current?.contains(event.relatedTarget)) {
-      return;
-    }
-    closeDropdown();
-    fireNonCancelableEvent(onBlur);
-  };
-  const selectOption = (option: AutosuggestItem) => {
-    const value = option.value || '';
-    fireNonCancelableEvent(onChange, { value });
-    closeDropdown();
-    fireNonCancelableEvent(onSelect, { value });
-  };
-  const selectHighlighted = () => {
-    if (autosuggestItemsState.highlightedOption) {
-      if (isInteractive(autosuggestItemsState.highlightedOption)) {
-        selectOption(autosuggestItemsState.highlightedOption);
-      }
-    } else {
-      closeDropdown();
-    }
-  };
+  const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
+    readOnly,
+    onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
+    onBlur: () => fireNonCancelableEvent(onBlur),
+  });
 
   const fireLoadMore = useLoadMoreItems(onLoadItems);
 
   const handleInputChange: InputProps['onChange'] = e => {
-    openDropdown();
+    autosuggestDropdownHandlers.openDropdown();
     autosuggestItemsHandlers.setShowAll(false);
     autosuggestItemsHandlers.resetHighlightWithKeyboard();
     onChange && onChange(e);
   };
 
   const handleKeyDown = useKeyboardHandler(
-    autosuggestItemsHandlers.moveHighlightWithKeyboard,
-    openDropdown,
-    selectHighlighted,
     open,
+    autosuggestDropdownHandlers.openDropdown,
+    autosuggestDropdownHandlers.closeDropdown,
+    autosuggestItemsHandlers.interceptKeyDown,
     onKeyDown
   );
   const handleLoadMore = useCallback(() => {
@@ -143,7 +125,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const formFieldContext = useFormFieldContext(rest);
   const baseProps = getBaseProps(rest);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownFooterRef = useRef<HTMLDivElement>(null);
   useForwardFocus(ref, inputRef);
 
   const selfControlId = useUniqueId('input');
@@ -158,7 +139,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     name,
     placeholder,
     autoFocus,
-    onClick: openDropdown,
+    onClick: autosuggestDropdownHandlers.openDropdown,
     role: 'combobox',
     'aria-autocomplete': 'list',
     'aria-expanded': expanded,
@@ -171,7 +152,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const handleInputFocus: InputProps['onFocus'] = e => {
     autosuggestItemsHandlers.setShowAll(true);
-    openDropdown();
+    autosuggestDropdownHandlers.openDropdown();
     fireLoadMore(true, false, '');
     onFocus?.(e);
   };
@@ -180,13 +161,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
   const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    // prevent currently focused element from losing it
-    event.preventDefault();
-  };
-
   return (
-    <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef} onBlur={handleBlur}>
+    <div
+      {...baseProps}
+      className={clsx(styles.root, baseProps.className)}
+      ref={__internalRootRef}
+      onBlur={autosuggestDropdownHandlers.handleBlur}
+    >
       <Dropdown
         trigger={
           <InternalInput
@@ -208,12 +189,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             controlId={controlId}
           />
         }
-        onMouseDown={handleMouseDown}
+        onMouseDown={autosuggestDropdownHandlers.handleMouseDown}
         open={open}
         dropdownId={dropdownId}
         footer={
           dropdownStatus.isSticky ? (
-            <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
+            <div ref={autosuggestDropdownRefs.footerRef} className={styles['dropdown-footer']}>
               <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
             </div>
           ) : null

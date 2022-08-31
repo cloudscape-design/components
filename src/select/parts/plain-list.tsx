@@ -5,7 +5,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { renderOptions } from '../utils/render-options';
 import { MenuProps, GetOptionProps } from '../utils/use-select';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { scrollUntilVisible } from '../../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 
 import styles from './styles.css.js';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
@@ -46,9 +46,9 @@ const PlainList = (
   useImperativeHandle(
     ref,
     () => (index: number) => {
-      const item = menuRef.current?.querySelector(`[data-mouse-target="${index}"]`);
+      const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
       if (highlightType === 'keyboard' && item) {
-        scrollUntilVisible(item as HTMLElement);
+        scrollElementIntoView(item);
       }
     },
     [highlightType, menuRef]
