@@ -36,7 +36,7 @@ export interface FormFieldProps extends BaseComponentProps {
   /**
    * An object containing all the necessary localized strings required by the component.
    */
-  i18nStrings?: I18nStrings;
+  i18nStrings?: FormFieldProps.I18nStrings;
 
   /**
    * Use to display an 'Info' link next to the label.
@@ -72,11 +72,13 @@ export interface FormFieldProps extends BaseComponentProps {
   errorText?: React.ReactNode;
 }
 
-export interface I18nStrings {
-  /**
-   * Provides a text alternative for the error icon in the error message.
-   */
-  errorIconAriaLabel?: string;
+export namespace FormFieldProps {
+  export interface I18nStrings {
+    /**
+     * Provides a text alternative for the error icon in the error message.
+     */
+    errorIconAriaLabel?: string;
+  }
 }
 
 export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComponentProps {
