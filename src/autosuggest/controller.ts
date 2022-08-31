@@ -36,30 +36,32 @@ export const useHighlightVisibleOption = (
   );
 
 export const useKeyboardHandler = (
-  moveHighlight: (direction: -1 | 1) => void,
-  openDropdown: () => void,
-  selectHighlighted: () => void,
   open: boolean,
+  openDropdown: () => void,
+  closeDropdown: () => void,
+  interceptKeyDown: (e: CustomEvent<BaseKeyDetail>) => boolean,
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>
 ) => {
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.down: {
-          moveHighlight(1);
+          interceptKeyDown(e);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.up: {
-          moveHighlight(-1);
+          interceptKeyDown(e);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.enter: {
           if (open) {
-            selectHighlighted();
+            if (!interceptKeyDown(e)) {
+              closeDropdown();
+            }
             e.preventDefault();
           }
           onKeyDown && onKeyDown(e);
@@ -70,6 +72,6 @@ export const useKeyboardHandler = (
         }
       }
     },
-    [moveHighlight, selectHighlighted, onKeyDown, open, openDropdown]
+    [open, openDropdown, closeDropdown, interceptKeyDown, onKeyDown]
   );
 };
