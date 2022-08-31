@@ -101,7 +101,9 @@ function createItems(options: Options): AutosuggestItem[] {
   const items: AutosuggestItem[] = [];
   for (const option of options) {
     if (isGroup(option)) {
-      items.push(...flattenGroup(option));
+      for (const item of flattenGroup(option)) {
+        items.push(item);
+      }
     } else {
       items.push({ ...option, option });
     }
@@ -115,20 +117,30 @@ function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is Autos
 
 function flattenGroup(group: AutosuggestProps.OptionGroup): AutosuggestItem[] {
   const { options, ...rest } = group;
-  const hasOnlyDisabledChildren = options.every(option => option.disabled);
-  const parent: AutosuggestItem = {
-    ...rest,
-    type: 'parent',
-    disabled: rest.disabled || hasOnlyDisabledChildren,
-    option: group,
-  };
-  const children: AutosuggestItem[] = options.map(option => ({
-    ...option,
-    type: 'child',
-    disabled: option.disabled || parent.disabled,
-    option,
-  }));
-  // TODO: Refactor parentMap and remove this side effect
-  children.forEach(child => parentMap.set(child, { ...group, option: group }));
-  return [parent].concat(children);
+
+  let hasOnlyDisabledChildren = true;
+
+  const items: AutosuggestItem[] = [{ ...rest, type: 'parent', option: group }];
+
+  for (const option of options) {
+    if (!option.disabled) {
+      hasOnlyDisabledChildren = false;
+    }
+
+    const childOption: AutosuggestItem = {
+      ...option,
+      type: 'child',
+      disabled: option.disabled || rest.disabled,
+      option,
+    };
+
+    items.push(childOption);
+
+    // TODO: Refactor parentMap and remove this side effect
+    parentMap.set(childOption, { ...group, option: group });
+  }
+
+  items[0].disabled = items[0].disabled || hasOnlyDisabledChildren;
+
+  return items;
 }
