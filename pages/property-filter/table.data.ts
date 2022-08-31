@@ -929,7 +929,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
   key: def.id,
-  operators: def.type === 'text' ? [':', '!:'] : ['=', '!=', '>', '<', '<=', '>='],
+  operators: def.type === 'text' ? ['=', '!=', ':', '!:'] : ['=', '!=', '>', '<', '<=', '>='],
   ...(def.type === 'text' ? { defaultOperator: ':' } : {}),
   propertyLabel: def.propertyLabel,
   groupValuesLabel: `${def.propertyLabel} values`,
