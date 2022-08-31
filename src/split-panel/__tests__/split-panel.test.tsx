@@ -174,7 +174,7 @@ describe('Split panel', () => {
         if (position === 'bottom') {
           return wrapper.findOpenPanelBottom()!.getElement().style.height;
         }
-        return (wrapper.findOpenPanelSide()!.getElement() as HTMLElement).style.width;
+        return (wrapper.findOpenPanelSide()!.getElement().firstElementChild as HTMLElement).style.width;
       }
 
       // layout calculation is delayed by one frame to wait for app-layout to finish its rendering
