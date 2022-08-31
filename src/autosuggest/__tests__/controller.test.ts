@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useSelectVisibleOption, useKeyboardHandler } from '../controller';
+import { useKeyboardHandler } from '../controller';
 import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 import { renderHook, act } from '../../__tests__/render-hook';
 import { AutosuggestItem } from '../interfaces';
@@ -204,57 +204,34 @@ describe('Autosuggest controller', () => {
     });
   });
 
-  describe('useSelectVisibleOption', () => {
-    const flatItems: AutosuggestItem[] = [
-      {
-        value: 'Option 0',
-        option: { value: 'Option 0' },
-      },
-      {
-        label: 'Group 1',
-        type: 'parent',
-        disabled: true,
-        option: { label: 'Group 1' },
-      },
-      {
-        value: 'Option 1',
-        type: 'child',
-        option: { value: 'Option 1' },
-      },
-      {
-        value: 'Option 2',
-        type: 'child',
-        option: { value: 'Option 2' },
-      },
-    ];
-
-    const selectOption: (option: AutosuggestItem) => void = jest.fn();
-    const isInteractive = jest.fn<boolean, [AutosuggestItem?]>();
-    let selectVisible: (index: number) => void;
-    beforeEach(() => {
-      jest.resetAllMocks();
-      isInteractive.mockReturnValue(true);
-      const { result } = renderHook(
-        (args: Parameters<typeof useSelectVisibleOption>) => useSelectVisibleOption(...args),
-        {
-          initialProps: [flatItems, selectOption, isInteractive],
-        }
-      );
-      selectVisible = result.current;
-    });
+  describe('selectVisibleOption', () => {
+    function render(onSelectItem: (option: AutosuggestItem) => void) {
+      return renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '',
+          filterText: '',
+          filteringType: 'auto',
+          onSelectItem,
+        },
+      });
+    }
     test('invokes the callback if the selected index is inside the options array and the corresponding option is interactive', () => {
-      act(() => selectVisible(2));
-      expect(isInteractive).toBeCalledWith(flatItems[2]);
-      expect(selectOption).toBeCalledWith(flatItems[2]);
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(2));
+      expect(selectOption).toBeCalledWith(result.current[0].items[2]);
     });
     test('does not invoke the callback if the selected index is not in the options array', () => {
-      act(() => selectVisible(5));
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(5));
       expect(selectOption).not.toBeCalled();
     });
     test('does not invoke the callback if the corresponding option is not interactive', () => {
-      isInteractive.mockReturnValueOnce(false);
-      act(() => selectVisible(1));
-      expect(isInteractive).toBeCalledWith(flatItems[1]);
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(1));
       expect(selectOption).not.toBeCalled();
     });
   });

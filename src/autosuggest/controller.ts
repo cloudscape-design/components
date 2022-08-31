@@ -3,37 +3,6 @@
 import { useCallback } from 'react';
 import { CancelableEventHandler, BaseKeyDetail } from '../internal/events';
 import { KeyCode } from '../internal/keycode';
-import { AutosuggestItem } from './interfaces';
-
-export const useSelectVisibleOption = (
-  filteredItems: readonly AutosuggestItem[],
-  selectOption: (option: AutosuggestItem) => void,
-  isInteractive: (option: AutosuggestItem) => boolean
-) =>
-  useCallback(
-    (index: number) => {
-      const option = filteredItems[index];
-      if (option && isInteractive(option)) {
-        selectOption(option);
-      }
-    },
-    [filteredItems, selectOption, isInteractive]
-  );
-
-export const useHighlightVisibleOption = (
-  filteredItems: readonly AutosuggestItem[],
-  setHighlightedIndex: (index: number) => void,
-  isHighlightable: (option: AutosuggestItem) => boolean
-) =>
-  useCallback(
-    (index: number) => {
-      const option = filteredItems[index];
-      if (option && isHighlightable(option)) {
-        setHighlightedIndex(index);
-      }
-    },
-    [filteredItems, setHighlightedIndex, isHighlightable]
-  );
 
 export const useKeyboardHandler = (
   open: boolean,

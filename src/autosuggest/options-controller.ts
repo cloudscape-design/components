@@ -32,6 +32,8 @@ export interface AutosuggestItemsState extends HighlightedOptionState<Autosugges
 export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
   setShowAll(value: boolean): void;
   interceptKeyDown(event: CustomEvent<BaseKeyDetail>): boolean;
+  highlightVisibleOptionWithMouse(index: number): void;
+  selectVisibleOptionWithMouse(index: number): void;
 }
 
 const isHighlightable = (option?: AutosuggestItem) => {
@@ -91,9 +93,27 @@ export const useAutosuggestItems = ({
     }
   };
 
+  const highlightVisibleOptionWithMouse = (index: number) => {
+    if (filteredItems[index] && isHighlightable(filteredItems[index])) {
+      highlightedOptionHandlers.setHighlightedIndexWithMouse(index);
+    }
+  };
+
+  const selectVisibleOptionWithMouse = (index: number) => {
+    if (filteredItems[index] && isInteractive(filteredItems[index])) {
+      onSelectItem(filteredItems[index]);
+    }
+  };
+
   return [
-    { items: filteredItems, showAll, ...highlightedOptionState },
-    { setShowAll, interceptKeyDown, ...highlightedOptionHandlers },
+    { ...highlightedOptionState, items: filteredItems, showAll },
+    {
+      ...highlightedOptionHandlers,
+      setShowAll,
+      interceptKeyDown,
+      highlightVisibleOptionWithMouse,
+      selectVisibleOptionWithMouse,
+    },
   ];
 };
 
