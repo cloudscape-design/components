@@ -248,5 +248,38 @@ describe('Internal autosuggest features', () => {
       expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '123' } }));
       expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
     });
+
+    test('closes dropdown and clears input on esc', () => {
+      const onChange = jest.fn();
+      const { wrapper, rerender } = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          value="123"
+          options={options}
+          onChange={onChange}
+          enteredTextLabel={value => value}
+        />
+      );
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.down);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(0);
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(1);
+      expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+
+      rerender(
+        <PropertyFilterAutosuggest value="" options={options} onChange={onChange} enteredTextLabel={value => value} />
+      );
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(1);
+    });
   });
 });

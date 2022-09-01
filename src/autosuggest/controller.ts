@@ -40,6 +40,7 @@ interface KeyboardHandlerOptions {
   onPressArrowDown(): void;
   onPressArrowUp(): void;
   onPressEnter(): void;
+  onPressEsc(): void;
   onKeyDown(event: CustomEvent<BaseKeyDetail>): void;
 }
 
@@ -48,6 +49,7 @@ export const useKeyboardHandler = ({
   onPressArrowDown,
   onPressArrowUp,
   onPressEnter,
+  onPressEsc,
   onKeyDown,
 }: KeyboardHandlerOptions) => {
   return (e: CustomEvent<BaseKeyDetail>) => {
@@ -67,6 +69,12 @@ export const useKeyboardHandler = ({
           onPressEnter();
           e.preventDefault();
         }
+        onKeyDown(e);
+        break;
+      }
+      case KeyCode.escape: {
+        onPressEsc();
+        e.preventDefault();
         onKeyDown(e);
         break;
       }
