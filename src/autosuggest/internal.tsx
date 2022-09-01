@@ -15,7 +15,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import InternalInput from '../input/internal';
 import { InputProps } from '../input/interfaces';
 import styles from './styles.css.js';
@@ -107,13 +107,24 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onChange && onChange(e);
   };
 
-  const handleKeyDown = useKeyboardHandler(
+  const handleKeyDown = useKeyboardHandler({
     open,
-    autosuggestDropdownHandlers.openDropdown,
-    autosuggestDropdownHandlers.closeDropdown,
-    autosuggestItemsHandlers.interceptKeyDown,
-    onKeyDown
-  );
+    onPressArrowDown() {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+      autosuggestDropdownHandlers.openDropdown();
+    },
+    onPressArrowUp() {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+      autosuggestDropdownHandlers.openDropdown();
+    },
+    onPressEnter() {
+      autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
+      autosuggestDropdownHandlers.closeDropdown();
+    },
+    onKeyDown(e) {
+      fireCancelableEvent(onKeyDown, e.detail);
+    },
+  });
   const handleLoadMore = useCallback(() => {
     options && options.length && statusType === 'pending' && fireLoadMore(false, false);
   }, [fireLoadMore, options, statusType]);

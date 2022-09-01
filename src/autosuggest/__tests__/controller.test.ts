@@ -1,26 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useSelectVisibleOption, useKeyboardHandler } from '../controller';
+import { useSelectVisibleOption } from '../controller';
 import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 import { renderHook, act } from '../../__tests__/render-hook';
 import { AutosuggestItem, AutosuggestProps } from '../interfaces';
-import { CancelableEventHandler, BaseKeyDetail, fireCancelableEvent, createCustomEvent } from '../../internal/events';
-import { KeyCode } from '../../internal/keycode';
 
 const options = [{ value: 'Option 0' }, { label: 'Group 1', options: [{ value: 'Option 1' }, { value: 'Option 2' }] }];
-
-function createKeyboardEvent(keyCode: number) {
-  return createCustomEvent({
-    detail: {
-      keyCode,
-      key: '?',
-      ctrlKey: false,
-      shiftKey: false,
-      altKey: false,
-      metaKey: false,
-    },
-  });
-}
 
 describe('Autosuggest controller', () => {
   describe('useAutosuggestItems', () => {
@@ -168,41 +153,6 @@ describe('Autosuggest controller', () => {
       expect(firstResult[0].items).toBe(result.current[0].items);
     });
 
-    test('creates keydown interceptor', () => {
-      const onSelectItem = jest.fn();
-      const { result } = renderHook(useAutosuggestItems, {
-        initialProps: {
-          options,
-          filterValue: '1',
-          filterText: '1',
-          filteringType: 'auto',
-          onSelectItem,
-        },
-      });
-
-      expect(result.current[0].highlightedIndex).toBe(-1);
-
-      result.current[1].interceptKeyDown(createKeyboardEvent(KeyCode.down));
-
-      expect(result.current[0].highlightedIndex).toBe(0);
-
-      result.current[1].interceptKeyDown(createKeyboardEvent(KeyCode.down));
-
-      expect(result.current[0].highlightedIndex).toBe(2);
-
-      result.current[1].interceptKeyDown(createKeyboardEvent(KeyCode.up));
-
-      expect(result.current[0].highlightedIndex).toBe(0);
-
-      result.current[1].interceptKeyDown(createKeyboardEvent(KeyCode.up));
-
-      expect(result.current[0].highlightedIndex).toBe(0);
-
-      result.current[1].interceptKeyDown(createKeyboardEvent(KeyCode.enter));
-
-      expect(onSelectItem).toBeCalledWith(result.current[0].items[0]);
-    });
-
     test('handles large amount of nested options', () => {
       const options: AutosuggestProps.Option[] = [];
       for (let i = 0; i < 200_000; i++) {
@@ -277,72 +227,23 @@ describe('Autosuggest controller', () => {
     });
   });
 
-  describe('useKeyboardHandler', () => {
-    const interceptKeyDown: () => boolean = jest.fn();
-    const open = true;
-    const onKeyDown: CancelableEventHandler<BaseKeyDetail> = jest.fn();
-    const openDropdown: () => void = jest.fn();
-    const closeDropdown = () => undefined;
-    const keyDetail = {
-      key: '',
-      ctrlKey: false,
-      shiftKey: false,
-      altKey: false,
-      metaKey: false,
-    };
-    let handleKeyDown: CancelableEventHandler<BaseKeyDetail>;
-    beforeEach(() => {
-      jest.resetAllMocks();
-      const { result } = renderHook((args: Parameters<typeof useKeyboardHandler>) => useKeyboardHandler(...args), {
-        initialProps: [open, openDropdown, closeDropdown, interceptKeyDown, onKeyDown],
-      });
-      handleKeyDown = result.current;
+  test('selectHighlightedOptionWithKeyboard', () => {
+    const onSelectItem = jest.fn();
+    const { result } = renderHook(useAutosuggestItems, {
+      initialProps: {
+        options,
+        filterValue: '1',
+        filterText: '1',
+        filteringType: 'auto',
+        onSelectItem,
+      },
     });
-    test('moves highlight on arrow keys', () => {
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.down, ...keyDetail });
-      expect(interceptKeyDown).toBeCalled();
-      expect(openDropdown).toBeCalled();
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
-      expect(interceptKeyDown).toBeCalled();
-      expect(openDropdown).toBeCalled();
-    });
-    test('selects highlighted item on "enter" key', () => {
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
-      expect(interceptKeyDown).toBeCalled();
-    });
-    test('does not proxy "arrowDown" and "arrowUp" key downs to customer`s handler', () => {
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.down, ...keyDetail });
-      expect(onKeyDown).not.toBeCalled();
-    });
-    test('proxies every other keys to the customer`s handler', () => {
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.left, ...keyDetail });
-      expect(onKeyDown).toBeCalled();
-    });
-    test(`proxies "enter" key to customer's handler`, () => {
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
-      expect(onKeyDown).toBeCalled();
-    });
-    test(`prevents default on "enter" key when dropdown is open`, () => {
-      const event = new KeyboardEvent('keydown', { key: 'Enter' });
-      const spy = jest.spyOn(event, 'preventDefault');
 
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail }, event);
+    result.current[1].selectHighlightedOptionWithKeyboard();
+    expect(onSelectItem).not.toBeCalled();
 
-      expect(spy).toBeCalled();
-    });
-    test(`does not prevent default on "enter" key when dropdown is closed`, () => {
-      const event = new KeyboardEvent('keydown', { key: 'Enter' });
-      const spy = jest.spyOn(event, 'preventDefault');
-      const { result } = renderHook((args: Parameters<typeof useKeyboardHandler>) => useKeyboardHandler(...args), {
-        initialProps: [false, openDropdown, closeDropdown, interceptKeyDown, onKeyDown],
-      });
-      handleKeyDown = result.current;
-
-      fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail }, event);
-
-      expect(spy).not.toBeCalled();
-      expect(interceptKeyDown).not.toBeCalled();
-    });
+    result.current[1].moveHighlightWithKeyboard(1);
+    result.current[1].selectHighlightedOptionWithKeyboard();
+    expect(onSelectItem).toBeCalledWith(result.current[0].items[0]);
   });
 });
