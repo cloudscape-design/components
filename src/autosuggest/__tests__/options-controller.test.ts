@@ -189,36 +189,36 @@ describe('useAutosuggestItems', () => {
       },
     });
   });
-});
 
-describe('selectVisibleOption', () => {
-  function render(onSelectItem: (option: AutosuggestItem) => void) {
-    return renderHook(useAutosuggestItems, {
-      initialProps: {
-        options,
-        filterValue: '',
-        filterText: '',
-        filteringType: 'auto',
-        onSelectItem,
-      },
+  describe('selectVisibleOption', () => {
+    function render(onSelectItem: (option: AutosuggestItem) => void) {
+      return renderHook(useAutosuggestItems, {
+        initialProps: {
+          options,
+          filterValue: '',
+          filterText: '',
+          filteringType: 'auto',
+          onSelectItem,
+        },
+      });
+    }
+    test('invokes the callback if the selected index is inside the options array and the corresponding option is interactive', () => {
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(2));
+      expect(selectOption).toBeCalledWith(result.current[0].items[2]);
     });
-  }
-  test('invokes the callback if the selected index is inside the options array and the corresponding option is interactive', () => {
-    const selectOption = jest.fn();
-    const { result } = render(selectOption);
-    act(() => result.current[1].selectVisibleOptionWithMouse(2));
-    expect(selectOption).toBeCalledWith(result.current[0].items[2]);
-  });
-  test('does not invoke the callback if the selected index is not in the options array', () => {
-    const selectOption = jest.fn();
-    const { result } = render(selectOption);
-    act(() => result.current[1].selectVisibleOptionWithMouse(5));
-    expect(selectOption).not.toBeCalled();
-  });
-  test('does not invoke the callback if the corresponding option is not interactive', () => {
-    const selectOption = jest.fn();
-    const { result } = render(selectOption);
-    act(() => result.current[1].selectVisibleOptionWithMouse(1));
-    expect(selectOption).not.toBeCalled();
+    test('does not invoke the callback if the selected index is not in the options array', () => {
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(5));
+      expect(selectOption).not.toBeCalled();
+    });
+    test('does not invoke the callback if the corresponding option is not interactive', () => {
+      const selectOption = jest.fn();
+      const { result } = render(selectOption);
+      act(() => result.current[1].selectVisibleOptionWithMouse(1));
+      expect(selectOption).not.toBeCalled();
+    });
   });
 });

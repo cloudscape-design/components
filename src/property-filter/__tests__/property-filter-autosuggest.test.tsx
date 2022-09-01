@@ -17,7 +17,7 @@ function renderAutosuggest(jsx: React.ReactElement) {
   return { wrapper, rerender };
 }
 
-describe('Internal autosuggest features', () => {
+describe('Property filter autosuggest', () => {
   describe('filterText', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
@@ -183,6 +183,69 @@ describe('Internal autosuggest features', () => {
       wrapper.findNativeInput().keydown(KeyCode.down);
       wrapper.findNativeInput().keydown(KeyCode.enter);
       expect(handleSelectedSpy).not.toHaveBeenCalled();
+    });
+  });
+  describe('keyboard interactions', () => {
+    test('selects option on enter', () => {
+      const onChange = jest.fn();
+      const onOptionClick = jest.fn();
+      const { wrapper } = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          value=""
+          options={options}
+          onChange={onChange}
+          onOptionClick={onOptionClick}
+          enteredTextLabel={value => value}
+        />
+      );
+      wrapper.findNativeInput().keydown(KeyCode.down);
+      wrapper.findNativeInput().keydown(KeyCode.enter);
+      expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '123' } }));
+      expect(onOptionClick).toBeCalledWith(
+        expect.objectContaining({ detail: { option: { value: '123' }, value: '123' } })
+      );
+    });
+
+    test('closes dropdown on enter and opens it on arrow keys', () => {
+      const { wrapper } = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          value=""
+          options={options}
+          onChange={() => undefined}
+          enteredTextLabel={value => value}
+        />
+      );
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.down);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.enter);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.up);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+    });
+
+    test('onOptionClick can prevent dropdown from closing', () => {
+      const onChange = jest.fn();
+      const { wrapper } = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          value=""
+          options={options}
+          onChange={onChange}
+          onOptionClick={event => event.preventDefault()}
+          enteredTextLabel={value => value}
+        />
+      );
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.down);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.enter);
+      expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '123' } }));
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
     });
   });
 });

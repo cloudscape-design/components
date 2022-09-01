@@ -104,9 +104,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       autosuggestDropdownHandlers.openDropdown();
     },
     onEnter() {
-      if (!autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard()) {
-        autosuggestDropdownHandlers.closeDropdown();
-      }
+      autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
+      autosuggestDropdownHandlers.closeDropdown();
     },
     onKeyDown(e) {
       fireCancelableEvent(onKeyDown, e.detail);
