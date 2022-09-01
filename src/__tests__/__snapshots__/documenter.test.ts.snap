@@ -5002,7 +5002,7 @@ This only works well if you're using a single control in the form field.
     Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "inlineType": Object {
-        "name": "I18nStrings",
+        "name": "FormFieldProps.I18nStrings",
         "properties": Array [
           Object {
             "name": "errorIconAriaLabel",
@@ -5014,7 +5014,7 @@ This only works well if you're using a single control in the form field.
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "I18nStrings",
+      "type": "FormFieldProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
