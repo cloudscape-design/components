@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { Ref, useRef } from 'react';
 
-import { useKeyboardHandler } from '../autosuggest/controller';
+import { useInputKeydownHandler } from '../autosuggest/input-controller';
 import { useAutosuggestItems } from '../autosuggest/options-controller';
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 
@@ -91,13 +91,25 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onChange && onChange(e);
     };
 
-    const handleKeyDown = useKeyboardHandler(
+    const handleKeyDown = useInputKeydownHandler({
       open,
-      autosuggestDropdownHandlers.openDropdown,
-      autosuggestDropdownHandlers.closeDropdown,
-      autosuggestItemsHandlers.interceptKeyDown,
-      onKeyDown
-    );
+      onArrowDown() {
+        autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+        autosuggestDropdownHandlers.openDropdown();
+      },
+      onArrowUp() {
+        autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+        autosuggestDropdownHandlers.openDropdown();
+      },
+      onEnter() {
+        if (!autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard()) {
+          autosuggestDropdownHandlers.closeDropdown();
+        }
+      },
+      onKeyDown(e) {
+        fireCancelableEvent(onKeyDown, e.detail);
+      },
+    });
 
     const handleRecoveryClick = () => {
       autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();

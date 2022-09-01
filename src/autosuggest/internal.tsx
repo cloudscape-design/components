@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { Ref, useRef } from 'react';
 
-import { useKeyboardHandler } from './controller';
+import { useInputKeydownHandler } from './input-controller';
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
@@ -15,7 +15,7 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import InternalInput from '../input/internal';
 import { InputProps } from '../input/interfaces';
 import styles from './styles.css.js';
@@ -86,20 +86,32 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
   });
 
-  const handleInputChange: InputProps['onChange'] = e => {
+  const handleInputChange = (value: string) => {
     autosuggestDropdownHandlers.openDropdown();
     autosuggestItemsHandlers.setShowAll(false);
     autosuggestItemsHandlers.resetHighlightWithKeyboard();
-    onChange && onChange(e);
+    fireNonCancelableEvent(onChange, { value });
   };
 
-  const handleKeyDown = useKeyboardHandler(
+  const handleKeyDown = useInputKeydownHandler({
     open,
-    autosuggestDropdownHandlers.openDropdown,
-    autosuggestDropdownHandlers.closeDropdown,
-    autosuggestItemsHandlers.interceptKeyDown,
-    onKeyDown
-  );
+    onArrowDown() {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+      autosuggestDropdownHandlers.openDropdown();
+    },
+    onArrowUp() {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+      autosuggestDropdownHandlers.openDropdown();
+    },
+    onEnter() {
+      if (!autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard()) {
+        autosuggestDropdownHandlers.closeDropdown();
+      }
+    },
+    onKeyDown(e) {
+      fireCancelableEvent(onKeyDown, e.detail);
+    },
+  });
 
   const handleRecoveryClick = () => {
     autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
@@ -134,11 +146,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     'aria-activedescendant': highlightedOptionId,
   };
 
-  const handleInputFocus: InputProps['onFocus'] = e => {
+  const handleInputFocus = () => {
     autosuggestItemsHandlers.setShowAll(true);
     autosuggestDropdownHandlers.openDropdown();
     autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
-    onFocus?.(e);
+    fireNonCancelableEvent(onFocus, null);
   };
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
@@ -157,7 +169,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <InternalInput
             type="search"
             value={value}
-            onChange={handleInputChange}
+            onChange={event => handleInputChange(event.detail.value)}
             __onDelayedInput={event => autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value)}
             onFocus={handleInputFocus}
             onKeyDown={handleKeyDown}
