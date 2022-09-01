@@ -197,3 +197,11 @@ describe('a11y props', () => {
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 });
+
+test('Option should have aria-selected', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.focus();
+  expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute('aria-selected', 'false');
+  wrapper.findNativeInput().keydown(KeyCode.down);
+  expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute('aria-selected', 'true');
+});

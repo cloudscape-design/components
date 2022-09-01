@@ -393,3 +393,19 @@ test('closes dropdown after selecting a group option when keepOpen=false', () =>
   wrapper.selectOptionByValue('group');
   expect(wrapper.findDropdown().findOptionByValue('group')).toBeFalsy();
 });
+
+test('Option should have aria-checked', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[{ label: 'Second', value: '2' }]} options={groupOptions} />
+  );
+  wrapper.openDropdown();
+  expect(wrapper.findDropdown()!.find('[data-mouse-target="0"]')!.getElement()).toHaveAttribute(
+    'aria-checked',
+    'mixed'
+  );
+  expect(wrapper.findDropdown()!.find('[data-mouse-target="1"]')!.getElement()).toHaveAttribute(
+    'aria-checked',
+    'false'
+  );
+  expect(wrapper.findDropdown()!.find('[data-mouse-target="2"]')!.getElement()).toHaveAttribute('aria-checked', 'true');
+});
