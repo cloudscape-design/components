@@ -89,6 +89,23 @@ test('should display entered text option/label', () => {
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
 });
 
+test('should not close dropdown when no realted target in blur', () => {
+  const { wrapper, container } = renderAutosuggest(
+    <div>
+      <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
+      <button id="focus-target">focus target</button>
+    </div>
+  );
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  document.body.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  createWrapper(container).find('#focus-target')!.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+});
+
 describe('onSelect', () => {
   test('should select normal value', () => {
     const onChange = jest.fn();
