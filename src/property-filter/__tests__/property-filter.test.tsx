@@ -707,12 +707,13 @@ describe('property filter parts', () => {
       act(() => wrapper.findRemoveAllButton()!.click());
       expect(spy).toHaveBeenCalledWith(expect.objectContaining({ detail: { tokens: [], operation: 'or' } }));
     });
-    test('moves focus to the input', () => {
+    test('moves focus to the input but keeps dropdown closed', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
       });
       act(() => wrapper.findRemoveAllButton()!.click());
       expect(wrapper.findNativeInput()!.getElement()).toHaveFocus();
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
     test('disabled, when the component is disabled', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({

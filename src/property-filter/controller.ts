@@ -4,8 +4,8 @@
 import { PropertyFilterProps as I } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { InputProps } from '../input/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
+import { PropertyFilterAutosuggestRef } from './property-filter-autosuggest';
 
 export type ParsedText =
   | { step: 'property'; property: I.FilteringProperty; operator: I.ComparisonOperator; value: string }
@@ -15,8 +15,7 @@ export type ParsedText =
 export const getQueryActions = (
   query: I.Query,
   onChange: NonCancelableEventHandler<I.Query>,
-  inputRef: React.RefObject<InputProps.Ref>,
-  preventFocus: React.MutableRefObject<boolean>
+  inputRef: React.RefObject<PropertyFilterAutosuggestRef>
 ) => {
   const { tokens, operation } = query;
   const fireOnChange = (tokens: readonly I.Token[], operation: I.JoinOperation) =>
@@ -31,13 +30,11 @@ export const getQueryActions = (
   const removeToken = (index: number) => {
     const newTokens = tokens.filter((_, i) => i !== index);
     fireOnChange(newTokens, operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focusNoOpen();
   };
   const removeAllTokens = () => {
     fireOnChange([], operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focusNoOpen();
   };
   const addToken = (newToken: I.Token) => {
     const newTokens = [...tokens];

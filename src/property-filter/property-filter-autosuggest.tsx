@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef } from 'react';
+import React, { Ref, useCallback, useRef, useImperativeHandle } from 'react';
 
 import { useKeyboardHandler } from '../autosuggest/controller';
 import { useAutosuggestItems } from '../autosuggest/options-controller';
@@ -14,8 +14,7 @@ import DropdownFooter from '../internal/components/dropdown-footer';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent, CancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent, CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import InternalInput from '../input/internal';
 import { InputProps } from '../input/interfaces';
 import styles from '../autosuggest/styles.css.js';
@@ -28,9 +27,13 @@ const DROPDOWN_WIDTH = 300;
 
 export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
   filterText?: string;
-  onOpen?: CancelableEventHandler<null>;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
+}
+
+export interface PropertyFilterAutosuggestRef {
+  focus(): void;
+  focusNoOpen(): void;
 }
 
 const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
@@ -51,7 +54,7 @@ const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
 };
 
 const PropertyFilterAutosuggest = React.forwardRef(
-  (props: PropertyFilterAutosuggestProps, ref: Ref<InputProps.Ref>) => {
+  (props: PropertyFilterAutosuggestProps, ref: Ref<PropertyFilterAutosuggestRef>) => {
     const {
       value,
       onChange,
@@ -67,12 +70,13 @@ const PropertyFilterAutosuggest = React.forwardRef(
       virtualScroll,
       expandToViewport,
       filterText,
-      onOpen,
       onOptionClick,
       hideEnteredTextOption,
       ...rest
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
+
+    const preventOpenOnFocusRef = useRef(false);
 
     const selectOption = (option: AutosuggestItem) => {
       const value = option.value || '';
@@ -136,7 +140,20 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const formFieldContext = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const inputRef = useRef<HTMLInputElement>(null);
-    useForwardFocus(ref, inputRef);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus() {
+          inputRef.current?.focus();
+        },
+        focusNoOpen() {
+          preventOpenOnFocusRef.current = true;
+          inputRef.current?.focus();
+        },
+      }),
+      [inputRef]
+    );
 
     const selfControlId = useUniqueId('input');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -159,12 +176,12 @@ const PropertyFilterAutosuggest = React.forwardRef(
       'aria-activedescendant': highlightedOptionId,
     };
 
-    const handleInputFocus: InputProps['onFocus'] = () => {
-      const openPrevented = fireCancelableEvent(onOpen, null);
-      if (!openPrevented) {
+    const handleInputFocus: NonCancelableEventHandler<null> = () => {
+      if (!preventOpenOnFocusRef.current) {
         autosuggestDropdownHandlers.openDropdown();
         fireLoadMore(true, false, '');
       }
+      preventOpenOnFocusRef.current = false;
     };
 
     const isEmpty = !value && !autosuggestItemsState.items.length;
