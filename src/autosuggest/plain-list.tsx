@@ -3,20 +3,18 @@
 import React, { useEffect, useRef } from 'react';
 
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
-import { scrollUntilVisible } from '../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { getBaseProps } from '../internal/base-component';
 
 import AutosuggestOption from './autosuggest-option';
 import { AutosuggestProps, AutosuggestItem } from './interfaces';
 import styles from './styles.css.js';
+import { AutosuggestItemsState } from './options-controller';
 
 export interface ListProps {
+  autosuggestItemsState: AutosuggestItemsState;
   menuProps: Omit<OptionsListProps, 'children'>;
   handleLoadMore: () => void;
-  filteredItems: AutosuggestItem[];
-  highlightedOption?: AutosuggestItem;
-  highlightedIndex: number;
-  highlightedType: 'mouse' | 'keyboard';
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   highlightedA11yProps: Record<string, string | number | boolean>;
   hasDropdownStatus?: boolean;
@@ -28,9 +26,9 @@ export interface ListProps {
 export const getOptionProps = (
   index: number,
   item: AutosuggestItem,
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   highlightedA11yProps: ListProps['highlightedA11yProps'],
-  highlightedOption?: ListProps['highlightedOption'],
+  highlightedOption?: AutosuggestItem,
   hasDropdownStatus?: boolean
 ) => {
   const nativeAttributes = item === highlightedOption ? highlightedA11yProps : {};
@@ -43,12 +41,9 @@ export const getOptionProps = (
 };
 
 const PlainList = ({
+  autosuggestItemsState,
   handleLoadMore,
-  filteredItems,
   menuProps,
-  highlightedOption,
-  highlightedIndex,
-  highlightedType,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -58,11 +53,13 @@ const PlainList = ({
 }: ListProps) => {
   const listRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
-    const item = listRef.current?.querySelector(`[data-mouse-target="${highlightedIndex}"]`);
-    if (highlightedType === 'keyboard' && item) {
-      scrollUntilVisible(item as HTMLElement);
+    const item = listRef.current?.querySelector<HTMLElement>(
+      `[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`
+    );
+    if (autosuggestItemsState.highlightType === 'keyboard' && item) {
+      scrollElementIntoView(item);
     }
-  }, [highlightedType, highlightedIndex]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex]);
 
   return (
     <OptionsList
@@ -73,13 +70,13 @@ const PlainList = ({
       // to prevent closing the list when clicking the scrollbar on IE11
       nativeAttributes={{ unselectable: 'on' }}
     >
-      {filteredItems.map((item, index) => {
+      {autosuggestItemsState.items.map((item, index) => {
         const optionProps = getOptionProps(
           index,
           item,
-          filteredItems,
+          autosuggestItemsState.items,
           highlightedA11yProps,
-          highlightedOption,
+          autosuggestItemsState.highlightedOption,
           hasDropdownStatus
         );
 
@@ -87,12 +84,12 @@ const PlainList = ({
           <AutosuggestOption
             highlightText={highlightText}
             option={item}
-            highlighted={item === highlightedOption}
+            highlighted={item === autosuggestItemsState.highlightedOption}
             key={index}
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
             screenReaderContent={screenReaderContent}
-            highlightedType={highlightedType}
+            highlightType={autosuggestItemsState.highlightType}
             {...optionProps}
           />
         );

@@ -1,11 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useMemo, useState, MutableRefObject } from 'react';
+import { useMemo, useState } from 'react';
 import { filterOptions } from './utils/utils';
 import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
-import { createHighlightedOptionHook } from '../internal/components/options-list/utils/use-highlight-option';
+import {
+  HighlightedOptionHandlers,
+  HighlightedOptionState,
+  useHighlightedOption,
+} from '../internal/components/options-list/utils/use-highlight-option';
+import { KeyCode } from '../internal/keycode';
+import { BaseKeyDetail } from '../internal/events';
 
 type Options = AutosuggestProps.Options;
 
@@ -14,27 +20,37 @@ export interface UseAutosuggestItemsProps {
   filterValue: string;
   filterText: string;
   filteringType: AutosuggestProps.FilteringType;
-  isKeyboard: MutableRefObject<boolean>;
   hideEnteredTextLabel?: boolean;
+  onSelectItem: (option: AutosuggestItem) => void;
+}
+
+export interface AutosuggestItemsState extends HighlightedOptionState<AutosuggestItem> {
+  items: readonly AutosuggestItem[];
+  showAll: boolean;
+}
+
+export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
+  setShowAll(value: boolean): void;
+  interceptKeyDown(event: CustomEvent<BaseKeyDetail>): boolean;
 }
 
 const isHighlightable = (option?: AutosuggestItem) => {
   return !!option && option.type !== 'parent';
 };
 
-const useHighlightedOption = createHighlightedOptionHook({ isHighlightable: isHighlightable });
-
 const parentMap = new WeakMap<AutosuggestItem, AutosuggestItem>();
 export const getParentGroup = (item: AutosuggestItem) => parentMap.get(item);
+
+const isInteractive = (option?: AutosuggestItem) => !!option && !option.disabled && option.type !== 'parent';
 
 export const useAutosuggestItems = ({
   options,
   filterValue,
   filterText,
   filteringType,
-  isKeyboard,
   hideEnteredTextLabel,
-}: UseAutosuggestItemsProps) => {
+  onSelectItem,
+}: UseAutosuggestItemsProps): [AutosuggestItemsState, AutosuggestItemsHandlers] => {
   const [showAll, setShowAll] = useState(false);
 
   const items = useMemo(() => createItems(options), [options]);
@@ -48,27 +64,46 @@ export const useAutosuggestItems = ({
     return filteredItems;
   }, [items, filterValue, filterText, filteringType, showAll, hideEnteredTextLabel]);
 
-  const { highlightedOption, highlightedIndex, highlightedType, moveHighlight, resetHighlight, setHighlightedIndex } =
-    useHighlightedOption({ options: filteredItems, isKeyboard });
+  const [highlightedOptionState, highlightedOptionHandlers] = useHighlightedOption({
+    options: filteredItems,
+    isHighlightable,
+  });
 
-  return {
-    showAll,
-    setShowAll,
-    items: filteredItems,
-    highlightedIndex,
-    highlightedType,
-    highlightedOption,
-    setHighlightedIndex,
-    moveHighlight,
-    resetHighlight,
+  const interceptKeyDown = (event: CustomEvent<BaseKeyDetail>): boolean => {
+    switch (event.detail.keyCode) {
+      case KeyCode.down: {
+        highlightedOptionHandlers.moveHighlightWithKeyboard(1);
+        return true;
+      }
+      case KeyCode.up: {
+        highlightedOptionHandlers.moveHighlightWithKeyboard(-1);
+        return true;
+      }
+      case KeyCode.enter: {
+        if (highlightedOptionState.highlightedOption && isInteractive(highlightedOptionState.highlightedOption)) {
+          onSelectItem(highlightedOptionState.highlightedOption);
+          return true;
+        }
+        return false;
+      }
+      default:
+        return false;
+    }
   };
+
+  return [
+    { items: filteredItems, showAll, ...highlightedOptionState },
+    { setShowAll, interceptKeyDown, ...highlightedOptionHandlers },
+  ];
 };
 
 function createItems(options: Options): AutosuggestItem[] {
   const items: AutosuggestItem[] = [];
   for (const option of options) {
     if (isGroup(option)) {
-      items.push(...flattenGroup(option));
+      for (const item of flattenGroup(option)) {
+        items.push(item);
+      }
     } else {
       items.push({ ...option, option });
     }
@@ -82,20 +117,30 @@ function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is Autos
 
 function flattenGroup(group: AutosuggestProps.OptionGroup): AutosuggestItem[] {
   const { options, ...rest } = group;
-  const hasOnlyDisabledChildren = options.every(option => option.disabled);
-  const parent: AutosuggestItem = {
-    ...rest,
-    type: 'parent',
-    disabled: rest.disabled || hasOnlyDisabledChildren,
-    option: group,
-  };
-  const children: AutosuggestItem[] = options.map(option => ({
-    ...option,
-    type: 'child',
-    disabled: option.disabled || parent.disabled,
-    option,
-  }));
-  // TODO: Refactor parentMap and remove this side effect
-  children.forEach(child => parentMap.set(child, { ...group, option: group }));
-  return [parent].concat(children);
+
+  let hasOnlyDisabledChildren = true;
+
+  const items: AutosuggestItem[] = [{ ...rest, type: 'parent', option: group }];
+
+  for (const option of options) {
+    if (!option.disabled) {
+      hasOnlyDisabledChildren = false;
+    }
+
+    const childOption: AutosuggestItem = {
+      ...option,
+      type: 'child',
+      disabled: option.disabled || rest.disabled,
+      option,
+    };
+
+    items.push(childOption);
+
+    // TODO: Refactor parentMap and remove this side effect
+    parentMap.set(childOption, { ...group, option: group });
+  }
+
+  items[0].disabled = items[0].disabled || hasOnlyDisabledChildren;
+
+  return items;
 }

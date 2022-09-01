@@ -5,7 +5,6 @@ export { isoToDisplay, displayToIso } from './display-format';
 export { formatDate } from './format-date';
 export { formatTime } from './format-time';
 export { formatTimezoneOffset } from './format-timezone-offset';
-export { getBrowserTimezoneOffset } from './get-browser-timezone-offset';
 export { isIsoDateOnly } from './is-iso-date-only';
 export { joinDateTime } from './join-date-time';
 export { parseDate } from './parse-date';

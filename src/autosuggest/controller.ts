@@ -6,7 +6,7 @@ import { KeyCode } from '../internal/keycode';
 import { AutosuggestItem } from './interfaces';
 
 export const useSelectVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   selectOption: (option: AutosuggestItem) => void,
   isInteractive: (option: AutosuggestItem) => boolean
 ) =>
@@ -21,7 +21,7 @@ export const useSelectVisibleOption = (
   );
 
 export const useHighlightVisibleOption = (
-  filteredItems: AutosuggestItem[],
+  filteredItems: readonly AutosuggestItem[],
   setHighlightedIndex: (index: number) => void,
   isHighlightable: (option: AutosuggestItem) => boolean
 ) =>
@@ -36,33 +36,32 @@ export const useHighlightVisibleOption = (
   );
 
 export const useKeyboardHandler = (
-  moveHighlight: (direction: -1 | 1) => void,
-  openDropdown: () => void,
-  selectHighlighted: () => void,
-  isKeyboard: React.MutableRefObject<boolean>,
   open: boolean,
+  openDropdown: () => void,
+  closeDropdown: () => void,
+  interceptKeyDown: (e: CustomEvent<BaseKeyDetail>) => boolean,
   onKeyDown?: CancelableEventHandler<BaseKeyDetail>
 ) => {
   return useCallback(
     (e: CustomEvent<BaseKeyDetail>) => {
       switch (e.detail.keyCode) {
         case KeyCode.down: {
-          isKeyboard.current = true;
-          moveHighlight(1);
+          interceptKeyDown(e);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.up: {
-          isKeyboard.current = true;
-          moveHighlight(-1);
+          interceptKeyDown(e);
           openDropdown();
           e.preventDefault();
           break;
         }
         case KeyCode.enter: {
           if (open) {
-            selectHighlighted();
+            if (!interceptKeyDown(e)) {
+              closeDropdown();
+            }
             e.preventDefault();
           }
           onKeyDown && onKeyDown(e);
@@ -73,6 +72,6 @@ export const useKeyboardHandler = (
         }
       }
     },
-    [moveHighlight, selectHighlighted, onKeyDown, isKeyboard, open, openDropdown]
+    [open, openDropdown, closeDropdown, interceptKeyDown, onKeyDown]
   );
 };

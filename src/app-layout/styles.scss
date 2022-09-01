@@ -157,7 +157,7 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
 }
 
 .content-header-wrapper {
-  padding-bottom: awsui.$space-scaled-m;
+  padding-bottom: awsui.$space-content-header-padding-bottom;
 }
 
 .content-wrapper {

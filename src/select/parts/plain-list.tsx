@@ -5,16 +5,17 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { renderOptions } from '../utils/render-options';
 import { MenuProps, GetOptionProps } from '../utils/use-select';
 import { DropdownOption } from '../../internal/components/option/interfaces';
-import { scrollUntilVisible } from '../../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 
 import styles from './styles.css.js';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 export interface SelectListProps {
   menuProps: MenuProps;
   getOptionProps: GetOptionProps;
   filteredOptions: ReadonlyArray<DropdownOption>;
   filteringValue: string;
-  highlightedType: 'mouse' | 'keyboard';
+  highlightType: HighlightType;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
@@ -32,7 +33,7 @@ const PlainList = (
     getOptionProps,
     filteredOptions,
     filteringValue,
-    highlightedType,
+    highlightType,
     checkboxes,
     hasDropdownStatus,
     listBottom,
@@ -45,12 +46,12 @@ const PlainList = (
   useImperativeHandle(
     ref,
     () => (index: number) => {
-      const item = menuRef.current?.querySelector(`[data-mouse-target="${index}"]`);
-      if (highlightedType === 'keyboard' && item) {
-        scrollUntilVisible(item as HTMLElement);
+      const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
+      if (highlightType === 'keyboard' && item) {
+        scrollElementIntoView(item);
       }
     },
-    [highlightedType, menuRef]
+    [highlightType, menuRef]
   );
 
   return (
@@ -59,7 +60,7 @@ const PlainList = (
         options: filteredOptions,
         getOptionProps,
         filteringValue,
-        highlightedType,
+        highlightType,
         checkboxes,
         hasDropdownStatus,
         useInteractiveGroups,

@@ -31,6 +31,7 @@ export default function RadioButton({
     <AbstractSwitch
       className={clsx(styles.radio, description && styles['radio--has-description'])}
       controlClassName={styles['radio-control']}
+      outlineClassName={styles.outline}
       label={label}
       description={description}
       disabled={disabled}
@@ -38,7 +39,6 @@ export default function RadioButton({
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
-          className={styles.input}
           type="radio"
           name={name}
           value={value}
