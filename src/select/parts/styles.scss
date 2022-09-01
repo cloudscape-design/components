@@ -51,6 +51,9 @@ $checkbox-size: awsui.$size-control;
 }
 
 .selected-icon {
-  padding-left: awsui.$space-scaled-s;
   color: awsui.$color-border-item-focused;
+}
+
+.show-label-tag > .selected-icon {
+  padding-left: awsui.$space-scaled-s;
 }
