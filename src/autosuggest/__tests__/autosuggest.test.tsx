@@ -214,3 +214,29 @@ describe('a11y props', () => {
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 });
+
+describe('keyboard interactions', () => {
+  test('selects option on enter', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+  });
+
+  test('closes dropdown on enter and opens it on arrow keys', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={() => undefined} />);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+  });
+});
