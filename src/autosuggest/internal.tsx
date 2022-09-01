@@ -95,15 +95,15 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const handleKeyDown = useInputKeydownHandler({
     open,
-    onArrowDown() {
+    onPressArrowDown() {
       autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
       autosuggestDropdownHandlers.openDropdown();
     },
-    onArrowUp() {
+    onPressArrowUp() {
       autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
       autosuggestDropdownHandlers.openDropdown();
     },
-    onEnter() {
+    onPressEnter() {
       autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
       autosuggestDropdownHandlers.closeDropdown();
     },

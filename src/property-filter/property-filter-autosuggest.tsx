@@ -93,15 +93,15 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const handleKeyDown = useInputKeydownHandler({
       open,
-      onArrowDown() {
+      onPressArrowDown() {
         autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
         autosuggestDropdownHandlers.openDropdown();
       },
-      onArrowUp() {
+      onPressArrowUp() {
         autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
         autosuggestDropdownHandlers.openDropdown();
       },
-      onEnter() {
+      onPressEnter() {
         if (!autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard()) {
           autosuggestDropdownHandlers.closeDropdown();
         }

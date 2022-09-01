@@ -3,14 +3,13 @@
 
 import { useInputKeydownHandler } from '../input-controller';
 import { renderHook } from '../../__tests__/render-hook';
-import { CancelableEventHandler, BaseKeyDetail, fireCancelableEvent } from '../../internal/events';
+import { fireCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 
 describe('useInputKeydownHandler', () => {
-  const open = true;
-  const onArrowDown = jest.fn();
-  const onArrowUp = jest.fn();
-  const onEnter = jest.fn();
+  const onPressArrowDown = jest.fn();
+  const onPressArrowUp = jest.fn();
+  const onPressEnter = jest.fn();
   const onKeyDown = jest.fn();
   const keyDetail = {
     key: '',
@@ -19,42 +18,47 @@ describe('useInputKeydownHandler', () => {
     altKey: false,
     metaKey: false,
   };
-  let handleKeyDown: CancelableEventHandler<BaseKeyDetail>;
+
+  function render(open = true) {
+    return renderHook(useInputKeydownHandler, {
+      initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onKeyDown },
+    });
+  }
 
   beforeEach(() => {
     jest.resetAllMocks();
-    const { result } = renderHook(useInputKeydownHandler, {
-      initialProps: { open, onArrowDown, onArrowUp, onEnter, onKeyDown },
-    });
-    handleKeyDown = result.current;
   });
 
   test('triggers respective key handlers', () => {
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.down, ...keyDetail });
-    expect(onArrowDown).toBeCalled();
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
-    expect(onArrowUp).toBeCalled();
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
-    expect(onEnter).toBeCalled();
+    const { result } = render();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.down, ...keyDetail });
+    expect(onPressArrowDown).toBeCalled();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.up, ...keyDetail });
+    expect(onPressArrowUp).toBeCalled();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail });
+    expect(onPressEnter).toBeCalled();
   });
 
   test('does not proxy "arrowDown" and "arrowUp" key downs to customer`s handler', () => {
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.up, ...keyDetail });
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.down, ...keyDetail });
+    const { result } = render();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.up, ...keyDetail });
+    fireCancelableEvent(result.current, { keyCode: KeyCode.down, ...keyDetail });
     expect(onKeyDown).not.toBeCalled();
   });
 
-  test('proxies every other keys to the customer`s handler', () => {
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.left, ...keyDetail });
+  test("proxies every other key to the customer's handler", () => {
+    const { result } = render();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail });
+    fireCancelableEvent(result.current, { keyCode: KeyCode.left, ...keyDetail });
     expect(onKeyDown).toBeCalledTimes(2);
   });
 
   test(`prevents default on "enter" key when dropdown is open`, () => {
+    const { result } = render();
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     const spy = jest.spyOn(event, 'preventDefault');
 
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail }, event);
+    fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail }, event);
 
     expect(spy).toBeCalled();
   });
@@ -62,14 +66,11 @@ describe('useInputKeydownHandler', () => {
   test(`does not prevent default on "enter" key when dropdown is closed`, () => {
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     const spy = jest.spyOn(event, 'preventDefault');
-    const { result } = renderHook(useInputKeydownHandler, {
-      initialProps: { open: false, onArrowDown, onArrowUp, onEnter, onKeyDown },
-    });
-    handleKeyDown = result.current;
+    const { result } = render(false);
 
-    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail }, event);
+    fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail }, event);
 
     expect(spy).not.toBeCalled();
-    expect(onEnter).not.toBeCalled();
+    expect(onPressEnter).not.toBeCalled();
   });
 });

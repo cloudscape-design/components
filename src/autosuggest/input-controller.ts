@@ -6,34 +6,34 @@ import { KeyCode } from '../internal/keycode';
 
 interface UseInputKeydownHandlerOptions {
   open: boolean;
-  onArrowDown(): void;
-  onArrowUp(): void;
-  onEnter(): void;
-  onKeyDown(e: CustomEvent<BaseKeyDetail>): void;
+  onPressArrowDown(): void;
+  onPressArrowUp(): void;
+  onPressEnter(): void;
+  onKeyDown(event: CustomEvent<BaseKeyDetail>): void;
 }
 
 export const useInputKeydownHandler = ({
   open,
-  onArrowDown,
-  onArrowUp,
-  onEnter,
+  onPressArrowDown,
+  onPressArrowUp,
+  onPressEnter,
   onKeyDown,
 }: UseInputKeydownHandlerOptions) => {
   return (e: CustomEvent<BaseKeyDetail>) => {
     switch (e.detail.keyCode) {
-      case KeyCode.up: {
-        onArrowUp();
+      case KeyCode.down: {
+        onPressArrowDown();
         e.preventDefault();
         break;
       }
-      case KeyCode.down: {
-        onArrowDown();
+      case KeyCode.up: {
+        onPressArrowUp();
         e.preventDefault();
         break;
       }
       case KeyCode.enter: {
         if (open) {
-          onEnter();
+          onPressEnter();
           e.preventDefault();
         }
         onKeyDown(e);
