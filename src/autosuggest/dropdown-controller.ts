@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef, useState } from 'react';
+import { getBlurEventRelatedTarget } from '../internal/events';
 
 export interface UseAutosuggestDropdownProps {
   readOnly?: boolean;
@@ -40,7 +41,8 @@ export const useAutosuggestDropdown = ({
   };
 
   const handleBlur: React.FocusEventHandler = event => {
-    if (event.currentTarget.contains(event.relatedTarget) || footerRef.current?.contains(event.relatedTarget)) {
+    const relatedTarget = getBlurEventRelatedTarget(event.nativeEvent);
+    if (event.currentTarget.contains(relatedTarget) || footerRef.current?.contains(relatedTarget)) {
       return;
     }
     closeDropdown();
