@@ -6,6 +6,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { AutosuggestProps } from '../autosuggest/interfaces';
 
 import { PropertyFilterProps } from './interfaces';
+
 /**
  * This hook generates `onBlur`, `onFocus` and `onLoadItems` handlers that make sure an `onLoadItems` event
  * fires exactly once every time control they are used on gets focused.
@@ -14,7 +15,7 @@ import { PropertyFilterProps } from './interfaces';
  * `onLoadItems` firing, but sometimes not.
  */
 export const useLoadItems = (
-  onLoadItems: PropertyFilterProps['onLoadItems'],
+  onLoadItems?: NonCancelableEventHandler<PropertyFilterProps.LoadItemsDetail>,
   focusFilteringText?: string,
   currentFilteringProperty?: PropertyFilterProps.FilteringProperty,
   currentFilteringText?: string,
