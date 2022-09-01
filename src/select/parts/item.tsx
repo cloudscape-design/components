@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 import styles from './styles.css.js';
 import Option from '../../internal/components/option';
 import SelectableItem from '../../internal/components/selectable-item';
@@ -68,7 +69,7 @@ const Item = (
       highlightType={highlightType}
       {...baseProps}
     >
-      <div className={styles.item}>
+      <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
         {hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
