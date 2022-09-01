@@ -3,7 +3,7 @@
 
 import { useAutosuggestItems, UseAutosuggestItemsProps } from '../options-controller';
 import { renderHook, act } from '../../__tests__/render-hook';
-import { AutosuggestItem } from '../interfaces';
+import { AutosuggestItem, AutosuggestProps } from '../interfaces';
 
 const options = [{ value: 'Option 0' }, { label: 'Group 1', options: [{ value: 'Option 1' }, { value: 'Option 2' }] }];
 
@@ -170,6 +170,24 @@ describe('useAutosuggestItems', () => {
     result.current[1].moveHighlightWithKeyboard(1);
     result.current[1].selectHighlightedOptionWithKeyboard();
     expect(onSelectItem).toBeCalledWith(result.current[0].items[0]);
+  });
+
+  test('handles large amount of nested options', () => {
+    const options: AutosuggestProps.Option[] = [];
+    for (let i = 0; i < 200_000; i++) {
+      options.push({ value: i + '' });
+    }
+    // Throws "RangeError: Maximum call stack size exceeded" if options are copied using destructuring into Array.prototype.push.
+    // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply.
+    renderHook(useAutosuggestItems, {
+      initialProps: {
+        options: [{ options: options }],
+        filterValue: '',
+        filterText: '',
+        filteringType: 'auto',
+        onSelectItem: () => undefined,
+      },
+    });
   });
 });
 
