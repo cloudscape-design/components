@@ -11,6 +11,7 @@ describe('useKeyboardHandler', () => {
   const onPressArrowDown = jest.fn();
   const onPressArrowUp = jest.fn();
   const onPressEnter = jest.fn();
+  const onPressEsc = jest.fn();
   const onKeyDown = jest.fn();
   const keyDetail = {
     key: '',
@@ -24,7 +25,7 @@ describe('useKeyboardHandler', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     const { result } = renderHook(useKeyboardHandler, {
-      initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onKeyDown },
+      initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onPressEsc, onKeyDown },
     });
     handleKeyDown = result.current;
   });
@@ -45,9 +46,10 @@ describe('useKeyboardHandler', () => {
   });
 
   test('proxies every other keys to the customer`s handler', () => {
+    fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.escape, ...keyDetail });
     fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.enter, ...keyDetail });
     fireCancelableEvent(handleKeyDown, { keyCode: KeyCode.left, ...keyDetail });
-    expect(onKeyDown).toBeCalledTimes(2);
+    expect(onKeyDown).toBeCalledTimes(3);
   });
 
   test(`prevents default on "enter" key when dropdown is open`, () => {
@@ -63,7 +65,7 @@ describe('useKeyboardHandler', () => {
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     const spy = jest.spyOn(event, 'preventDefault');
     const { result } = renderHook(useKeyboardHandler, {
-      initialProps: { open: false, onPressArrowDown, onPressArrowUp, onPressEnter, onKeyDown },
+      initialProps: { open: false, onPressArrowDown, onPressArrowUp, onPressEnter, onPressEsc, onKeyDown },
     });
     handleKeyDown = result.current;
 
