@@ -105,13 +105,26 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onChange && onChange(e);
     };
 
-    const handleKeyDown = useKeyboardHandler(
+    const handleKeyDown = useKeyboardHandler({
       open,
-      autosuggestDropdownHandlers.openDropdown,
-      autosuggestDropdownHandlers.closeDropdown,
-      autosuggestItemsHandlers.interceptKeyDown,
-      onKeyDown
-    );
+      onPressArrowDown() {
+        autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+        autosuggestDropdownHandlers.openDropdown();
+      },
+      onPressArrowUp() {
+        autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+        autosuggestDropdownHandlers.openDropdown();
+      },
+      onPressEnter() {
+        if (!autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard()) {
+          autosuggestDropdownHandlers.closeDropdown();
+        }
+      },
+      onKeyDown(e) {
+        fireCancelableEvent(onKeyDown, e.detail);
+      },
+    });
+
     const handleLoadMore = useCallback(() => {
       options && options.length && statusType === 'pending' && fireLoadMore(false, false);
     }, [fireLoadMore, options, statusType]);
