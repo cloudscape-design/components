@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useKeyboardHandler } from '../controller';
+import { useInputKeydownHandler } from '../input-controller';
 import { renderHook } from '../../__tests__/render-hook';
 import { fireCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 
-describe('useKeyboardHandler', () => {
+describe('useInputKeydownHandler', () => {
   const onPressArrowDown = jest.fn();
   const onPressArrowUp = jest.fn();
   const onPressEnter = jest.fn();
@@ -21,7 +21,7 @@ describe('useKeyboardHandler', () => {
   };
 
   function render(open = true) {
-    return renderHook(useKeyboardHandler, {
+    return renderHook(useInputKeydownHandler, {
       initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onPressEsc, onKeyDown },
     });
   }

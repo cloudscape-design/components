@@ -17,7 +17,7 @@ function renderAutosuggest(jsx: React.ReactElement) {
   return { wrapper, rerender };
 }
 
-describe('Internal autosuggest features', () => {
+describe('Property filter autosuggest', () => {
   describe('filterText', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
@@ -185,7 +185,6 @@ describe('Internal autosuggest features', () => {
       expect(handleSelectedSpy).not.toHaveBeenCalled();
     });
   });
-
   describe('keyboard interactions', () => {
     test('selects option on enter', () => {
       const onChange = jest.fn();

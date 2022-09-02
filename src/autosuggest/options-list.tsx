@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useSelectVisibleOption, useHighlightVisibleOption } from './controller';
 import { AutosuggestItemsHandlers, AutosuggestItemsState, getParentGroup } from './options-controller';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { AutosuggestProps } from './interfaces';
 import VirtualList from './virtual-list';
 import PlainList from './plain-list';
 
@@ -18,7 +17,6 @@ export interface AutosuggestOptionsListProps
   > {
   autosuggestItemsState: AutosuggestItemsState;
   autosuggestItemsHandlers: AutosuggestItemsHandlers;
-  selectOption: (option: AutosuggestItem) => void;
   highlightedOptionId?: string;
   highlightText: string;
   listId: string;
@@ -27,14 +25,6 @@ export interface AutosuggestOptionsListProps
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
 }
-
-const isInteractive = (option?: AutosuggestItem) => {
-  return !!option && !option.disabled && option.type !== 'parent';
-};
-
-const isHighlightable = (option?: AutosuggestItem) => {
-  return !!option && option.type !== 'parent';
-};
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
   // prevent mouse events to avoid losing focus from the input
@@ -46,7 +36,6 @@ const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex
 export default function AutosuggestOptionsList({
   autosuggestItemsState,
   autosuggestItemsHandlers,
-  selectOption,
   highlightedOptionId,
   highlightText,
   listId,
@@ -59,14 +48,8 @@ export default function AutosuggestOptionsList({
   renderHighlightedAriaLive,
   listBottom,
 }: AutosuggestOptionsListProps) {
-  const highlightVisibleOption = useHighlightVisibleOption(
-    autosuggestItemsState.items,
-    autosuggestItemsHandlers.setHighlightedIndexWithMouse,
-    isHighlightable
-  );
-  const selectVisibleOption = useSelectVisibleOption(autosuggestItemsState.items, selectOption, isInteractive);
-  const handleMouseUp = createMouseEventHandler(selectVisibleOption);
-  const handleMouseMove = createMouseEventHandler(highlightVisibleOption);
+  const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
+  const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
 
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
