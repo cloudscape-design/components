@@ -89,6 +89,23 @@ test('should display entered text option/label', () => {
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
 });
 
+test('should not close dropdown when no realted target in blur', () => {
+  const { wrapper, container } = renderAutosuggest(
+    <div>
+      <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
+      <button id="focus-target">focus target</button>
+    </div>
+  );
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  document.body.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  createWrapper(container).find('#focus-target')!.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+});
+
 describe('onSelect', () => {
   test('should select normal value', () => {
     const onChange = jest.fn();
@@ -196,12 +213,68 @@ describe('a11y props', () => {
     expect(highlightedOption).toHaveAttribute('id', expect.stringContaining('random-'));
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
+
+  test('Option should have aria-selected', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    wrapper.focus();
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  });
 });
 
-test('Option should have aria-selected', () => {
-  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
-  wrapper.focus();
-  expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute('aria-selected', 'false');
-  wrapper.findNativeInput().keydown(KeyCode.down);
-  expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute('aria-selected', 'true');
+describe('keyboard interactions', () => {
+  test('selects option on enter', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+  });
+
+  test('closes dropdown on enter and opens it on arrow keys', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={() => undefined} />);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.enter);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+  });
+
+  test('closes dropdown and clears input on esc', () => {
+    const onChange = jest.fn();
+    const { wrapper, rerender } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" onChange={onChange} />);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toBeCalledTimes(0);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toBeCalledTimes(1);
+    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+
+    rerender(<Autosuggest {...defaultProps} value="" onChange={onChange} />);
+
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    expect(onChange).toBeCalledTimes(1);
+  });
 });
