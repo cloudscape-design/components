@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef } from 'react';
+import React, { Ref, useRef } from 'react';
 
-import { useKeyboardHandler } from './controller';
+import { useInputKeydownHandler } from './input-controller';
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
@@ -24,25 +24,10 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from './options-list';
 import { useAutosuggestDropdown } from './dropdown-controller';
+import { useAutosuggestLoadMore } from './load-more-controller';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
-
-const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
-  const lastFilteringText = useRef<string | null>(null);
-  return useCallback(
-    (firstPage: boolean, samePage: boolean, filteringText?: string) => {
-      if (samePage || !firstPage || filteringText === undefined || lastFilteringText.current !== filteringText) {
-        if (filteringText !== undefined) {
-          lastFilteringText.current = filteringText;
-        }
-        if (lastFilteringText.current !== null && onLoadItems) {
-          fireNonCancelableEvent(onLoadItems, { filteringText: lastFilteringText.current, firstPage, samePage });
-        }
-      }
-    },
-    [onLoadItems]
-  );
-};
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<InputProps.Ref>) => {
   const {
@@ -77,37 +62,38 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
   checkOptionValueField('Autosuggest', 'options', options);
 
-  const selectOption = (option: AutosuggestItem) => {
-    const value = option.value || '';
-    fireNonCancelableEvent(onChange, { value });
-    autosuggestDropdownHandlers.closeDropdown();
-    fireNonCancelableEvent(onSelect, { value });
-  };
-
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
     filterText: value,
     filteringType,
     hideEnteredTextLabel: false,
-    onSelectItem: selectOption,
+    onSelectItem: (option: AutosuggestItem) => {
+      const value = option.value || '';
+      fireNonCancelableEvent(onChange, { value });
+      autosuggestDropdownHandlers.closeDropdown();
+      fireNonCancelableEvent(onSelect, { value });
+    },
   });
   const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
     readOnly,
     onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
     onBlur: () => fireNonCancelableEvent(onBlur),
   });
+  const autosuggestLoadMoreHandlers = useAutosuggestLoadMore({
+    options,
+    statusType,
+    onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
+  });
 
-  const fireLoadMore = useLoadMoreItems(onLoadItems);
-
-  const handleInputChange: InputProps['onChange'] = e => {
+  const handleInputChange = (value: string) => {
     autosuggestDropdownHandlers.openDropdown();
     autosuggestItemsHandlers.setShowAll(false);
     autosuggestItemsHandlers.resetHighlightWithKeyboard();
-    onChange && onChange(e);
+    fireNonCancelableEvent(onChange, { value });
   };
 
-  const handleKeyDown = useKeyboardHandler({
+  const handleKeyDown = useInputKeydownHandler({
     open,
     onPressArrowDown() {
       autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
@@ -121,17 +107,22 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
       autosuggestDropdownHandlers.closeDropdown();
     },
+    onPressEsc() {
+      if (open) {
+        autosuggestDropdownHandlers.closeDropdown();
+      } else if (value) {
+        fireNonCancelableEvent(onChange, { value: '' });
+      }
+    },
     onKeyDown(e) {
       fireCancelableEvent(onKeyDown, e.detail);
     },
   });
-  const handleLoadMore = useCallback(() => {
-    options && options.length && statusType === 'pending' && fireLoadMore(false, false);
-  }, [fireLoadMore, options, statusType]);
-  const handleRecoveryClick = useCallback(() => {
-    fireLoadMore(false, true);
+
+  const handleRecoveryClick = () => {
+    autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
     inputRef.current?.focus();
-  }, [fireLoadMore]);
+  };
 
   const formFieldContext = useFormFieldContext(rest);
   const baseProps = getBaseProps(rest);
@@ -161,11 +152,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     'aria-activedescendant': highlightedOptionId,
   };
 
-  const handleInputFocus: InputProps['onFocus'] = e => {
+  const handleInputFocus = () => {
     autosuggestItemsHandlers.setShowAll(true);
     autosuggestDropdownHandlers.openDropdown();
-    fireLoadMore(true, false, '');
-    onFocus?.(e);
+    autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+    fireNonCancelableEvent(onFocus, null);
   };
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
@@ -184,8 +175,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <InternalInput
             type="search"
             value={value}
-            onChange={handleInputChange}
-            __onDelayedInput={event => fireLoadMore(true, false, event.detail.value)}
+            onChange={event => handleInputChange(event.detail.value)}
+            __onDelayedInput={event => autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value)}
             onFocus={handleInputFocus}
             onKeyDown={handleKeyDown}
             onKeyUp={onKeyUp}
@@ -218,13 +209,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <AutosuggestOptionsList
             autosuggestItemsState={autosuggestItemsState}
             autosuggestItemsHandlers={autosuggestItemsHandlers}
-            selectOption={selectOption}
             highlightedOptionId={highlightedOptionId}
             highlightText={value}
             listId={listId}
             controlId={controlId}
             enteredTextLabel={enteredTextLabel}
-            handleLoadMore={handleLoadMore}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
             hasDropdownStatus={dropdownStatus.content !== null}
             virtualScroll={virtualScroll}
             selectedAriaLabel={selectedAriaLabel}

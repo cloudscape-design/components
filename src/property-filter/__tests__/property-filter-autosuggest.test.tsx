@@ -17,7 +17,7 @@ function renderAutosuggest(jsx: React.ReactElement) {
   return { wrapper, rerender };
 }
 
-describe('Internal autosuggest features', () => {
+describe('Property filter autosuggest', () => {
   describe('filterText', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
@@ -160,7 +160,6 @@ describe('Internal autosuggest features', () => {
       expect(handleSelectedSpy).not.toHaveBeenCalled();
     });
   });
-
   describe('keyboard interactions', () => {
     test('selects option on enter', () => {
       const onChange = jest.fn();
@@ -222,6 +221,39 @@ describe('Internal autosuggest features', () => {
       wrapper.findNativeInput().keydown(KeyCode.enter);
       expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '123' } }));
       expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+    });
+
+    test('closes dropdown and clears input on esc', () => {
+      const onChange = jest.fn();
+      const { wrapper, rerender } = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          value="123"
+          options={options}
+          onChange={onChange}
+          enteredTextLabel={value => value}
+        />
+      );
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.down);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(0);
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(1);
+      expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+
+      rerender(
+        <PropertyFilterAutosuggest value="" options={options} onChange={onChange} enteredTextLabel={value => value} />
+      );
+
+      wrapper.findNativeInput().keydown(KeyCode.escape);
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledTimes(1);
     });
   });
 });

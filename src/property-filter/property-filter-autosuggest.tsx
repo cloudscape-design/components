@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref, useCallback, useRef, useImperativeHandle } from 'react';
+import React, { Ref, useRef, useImperativeHandle } from 'react';
 
-import { useKeyboardHandler } from '../autosuggest/controller';
+import { useInputKeydownHandler } from '../autosuggest/input-controller';
 import { useAutosuggestItems } from '../autosuggest/options-controller';
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 
@@ -22,6 +22,8 @@ import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from '../autosuggest/options-list';
 import { useAutosuggestDropdown } from '../autosuggest/dropdown-controller';
+import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 
 const DROPDOWN_WIDTH = 300;
 
@@ -35,23 +37,6 @@ export interface PropertyFilterAutosuggestRef {
   focus(): void;
   focusNoOpen(): void;
 }
-
-const useLoadMoreItems = (onLoadItems: AutosuggestProps['onLoadItems']) => {
-  const lastFilteringText = useRef<string | null>(null);
-  return useCallback(
-    (firstPage: boolean, samePage: boolean, filteringText?: string) => {
-      if (samePage || !firstPage || filteringText === undefined || lastFilteringText.current !== filteringText) {
-        if (filteringText !== undefined) {
-          lastFilteringText.current = filteringText;
-        }
-        if (lastFilteringText.current !== null && onLoadItems) {
-          fireNonCancelableEvent(onLoadItems, { filteringText: lastFilteringText.current, firstPage, samePage });
-        }
-      }
-    },
-    [onLoadItems]
-  );
-};
 
 const PropertyFilterAutosuggest = React.forwardRef(
   (props: PropertyFilterAutosuggestProps, ref: Ref<PropertyFilterAutosuggestRef>) => {
@@ -78,30 +63,31 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const preventOpenOnFocusRef = useRef(false);
 
-    const selectOption = (option: AutosuggestItem) => {
-      const value = option.value || '';
-      fireNonCancelableEvent(onChange, { value });
-      const selectedCancelled = fireCancelableEvent(onOptionClick, option);
-      if (!selectedCancelled) {
-        autosuggestDropdownHandlers.closeDropdown();
-      } else {
-        autosuggestItemsHandlers.resetHighlightWithKeyboard();
-      }
-    };
-
     const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
       options: options || [],
       filterValue: value,
       filterText: highlightText,
       filteringType,
       hideEnteredTextLabel: hideEnteredTextOption,
-      onSelectItem: selectOption,
+      onSelectItem: (option: AutosuggestItem) => {
+        const value = option.value || '';
+        fireNonCancelableEvent(onChange, { value });
+        const selectedCancelled = fireCancelableEvent(onOptionClick, option);
+        if (!selectedCancelled) {
+          autosuggestDropdownHandlers.closeDropdown();
+        } else {
+          autosuggestItemsHandlers.resetHighlightWithKeyboard();
+        }
+      },
     });
     const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
       onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
     });
-
-    const fireLoadMore = useLoadMoreItems(onLoadItems);
+    const autosuggestLoadMoreHandlers = useAutosuggestLoadMore({
+      options,
+      statusType,
+      onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
+    });
 
     const handleInputChange: InputProps['onChange'] = e => {
       autosuggestDropdownHandlers.openDropdown();
@@ -109,7 +95,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onChange && onChange(e);
     };
 
-    const handleKeyDown = useKeyboardHandler({
+    const handleKeyDown = useInputKeydownHandler({
       open,
       onPressArrowDown() {
         autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
@@ -124,18 +110,22 @@ const PropertyFilterAutosuggest = React.forwardRef(
           autosuggestDropdownHandlers.closeDropdown();
         }
       },
+      onPressEsc() {
+        if (open) {
+          autosuggestDropdownHandlers.closeDropdown();
+        } else if (value) {
+          fireNonCancelableEvent(onChange, { value: '' });
+        }
+      },
       onKeyDown(e) {
         fireCancelableEvent(onKeyDown, e.detail);
       },
     });
 
-    const handleLoadMore = useCallback(() => {
-      options && options.length && statusType === 'pending' && fireLoadMore(false, false);
-    }, [fireLoadMore, options, statusType]);
-    const handleRecoveryClick = useCallback(() => {
-      fireLoadMore(false, true);
+    const handleRecoveryClick = () => {
+      autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
       inputRef.current?.focus();
-    }, [fireLoadMore]);
+    };
 
     const formFieldContext = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
@@ -179,7 +169,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const handleInputFocus: NonCancelableEventHandler<null> = () => {
       if (!preventOpenOnFocusRef.current) {
         autosuggestDropdownHandlers.openDropdown();
-        fireLoadMore(true, false, '');
+        autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
       }
       preventOpenOnFocusRef.current = false;
     };
@@ -202,7 +192,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
               type="search"
               value={value}
               onChange={handleInputChange}
-              __onDelayedInput={event => fireLoadMore(true, false, event.detail.value)}
+              __onDelayedInput={event => autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value)}
               onFocus={handleInputFocus}
               onKeyDown={handleKeyDown}
               disabled={disabled}
@@ -231,13 +221,12 @@ const PropertyFilterAutosuggest = React.forwardRef(
             <AutosuggestOptionsList
               autosuggestItemsState={autosuggestItemsState}
               autosuggestItemsHandlers={autosuggestItemsHandlers}
-              selectOption={selectOption}
               highlightedOptionId={highlightedOptionId}
               highlightText={highlightText}
               listId={listId}
               controlId={controlId}
               enteredTextLabel={enteredTextLabel}
-              handleLoadMore={handleLoadMore}
+              handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
               hasDropdownStatus={dropdownStatus.content !== null}
               virtualScroll={virtualScroll}
               listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}

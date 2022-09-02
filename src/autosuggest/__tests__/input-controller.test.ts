@@ -1,15 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useKeyboardHandler } from '../controller';
+import { useInputKeydownHandler } from '../input-controller';
 import { renderHook } from '../../__tests__/render-hook';
 import { fireCancelableEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 
-describe('useKeyboardHandler', () => {
+describe('useInputKeydownHandler', () => {
   const onPressArrowDown = jest.fn();
   const onPressArrowUp = jest.fn();
   const onPressEnter = jest.fn();
+  const onPressEsc = jest.fn();
   const onKeyDown = jest.fn();
   const keyDetail = {
     key: '',
@@ -20,8 +21,8 @@ describe('useKeyboardHandler', () => {
   };
 
   function render(open = true) {
-    return renderHook(useKeyboardHandler, {
-      initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onKeyDown },
+    return renderHook(useInputKeydownHandler, {
+      initialProps: { open, onPressArrowDown, onPressArrowUp, onPressEnter, onPressEsc, onKeyDown },
     });
   }
 
@@ -48,9 +49,10 @@ describe('useKeyboardHandler', () => {
 
   test("proxies every other key to the customer's handler", () => {
     const { result } = render();
+    fireCancelableEvent(result.current, { keyCode: KeyCode.escape, ...keyDetail });
     fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail });
     fireCancelableEvent(result.current, { keyCode: KeyCode.left, ...keyDetail });
-    expect(onKeyDown).toBeCalledTimes(2);
+    expect(onKeyDown).toBeCalledTimes(3);
   });
 
   test(`prevents default on "enter" key when dropdown is open`, () => {
@@ -64,9 +66,9 @@ describe('useKeyboardHandler', () => {
   });
 
   test(`does not prevent default on "enter" key when dropdown is closed`, () => {
+    const { result } = render(false);
     const event = new KeyboardEvent('keydown', { key: 'Enter' });
     const spy = jest.spyOn(event, 'preventDefault');
-    const { result } = render(false);
 
     fireCancelableEvent(result.current, { keyCode: KeyCode.enter, ...keyDetail }, event);
 

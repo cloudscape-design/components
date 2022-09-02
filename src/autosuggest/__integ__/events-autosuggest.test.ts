@@ -52,7 +52,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
     'should not blur when closing dropdown with ESC',
     setupTest(async page => {
       await page.focusInput();
-      await page.keys(['o', 'ArrowDown', 'Escape']);
+      await page.keys(['o', 'ArrowDown', 'Escape', 'Escape']);
       await page.assertEventsFired(['onFocus', 'onChange', 'onChange']);
     })
   );

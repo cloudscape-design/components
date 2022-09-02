@@ -46,4 +46,17 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
     await expect(container).toValidateA11y();
   });
+
+  test('Option should have aria-selected', () => {
+    const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    expect(wrapper.findDropdown({ expandToViewport })!.find('[data-test-index="2"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
+  });
 });
