@@ -70,7 +70,7 @@ const AutosuggestOption = (
     <SelectableItem
       {...baseProps}
       className={styles.option}
-      ariaSelected={highlighted || undefined}
+      ariaSelected={highlighted}
       highlighted={highlighted}
       disabled={option.disabled}
       hasBackground={useEntered}
