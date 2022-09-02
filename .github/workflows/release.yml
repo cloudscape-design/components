@@ -19,7 +19,15 @@ jobs:
       - name: Save full commit SHA
         id: vars
         run: echo "::set-output name=sha_long::$(git rev-parse ${{ github.event.inputs.sha }})"
-        shell: bash    
+        shell: bash
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+      - run: git checkout ${{ steps.vars.outputs.sha_long }}
+      - name: Generate Changelog
+        run: npx conventional-changelog-cli -i CHANGELOG.md -s       
       - name: Create Release
         uses: actions/create-release@v1
         env:
