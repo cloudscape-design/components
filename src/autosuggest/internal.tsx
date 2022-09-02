@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import React, { Ref, useRef } from 'react';
 
-import { useInputKeydownHandler } from './input-controller';
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
 
@@ -23,9 +22,9 @@ import { checkOptionValueField } from '../select/utils/check-option-value-field'
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from './options-list';
-import { useAutosuggestDropdown } from './dropdown-controller';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
+import { useAutosuggestInputController } from './input-controller';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
@@ -71,14 +70,19 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
-      autosuggestDropdownHandlers.closeDropdown();
+      autosuggestInputHandlers.closeDropdown();
       fireNonCancelableEvent(onSelect, { value });
     },
   });
-  const [{ open }, autosuggestDropdownHandlers, autosuggestDropdownRefs] = useAutosuggestDropdown({
+  const [{ open }, autosuggestInputHandlers, autosuggestInputRefs] = useAutosuggestInputController({
     readOnly,
     onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
     onBlur: () => fireNonCancelableEvent(onBlur),
+    onPressArrowDown: () => autosuggestItemsHandlers.moveHighlightWithKeyboard(1),
+    onPressArrowUp: () => autosuggestItemsHandlers.moveHighlightWithKeyboard(-1),
+    onPressEnter: () => autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard(),
+    onPressEsc: () => value && fireNonCancelableEvent(onChange, { value: '' }),
+    onKeyDown: e => fireCancelableEvent(onKeyDown, e.detail),
   });
   const autosuggestLoadMoreHandlers = useAutosuggestLoadMore({
     options,
@@ -87,37 +91,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   });
 
   const handleInputChange = (value: string) => {
-    autosuggestDropdownHandlers.openDropdown();
+    autosuggestInputHandlers.openDropdown();
     autosuggestItemsHandlers.setShowAll(false);
     autosuggestItemsHandlers.resetHighlightWithKeyboard();
     fireNonCancelableEvent(onChange, { value });
   };
-
-  const handleKeyDown = useInputKeydownHandler({
-    open,
-    onPressArrowDown() {
-      autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
-      autosuggestDropdownHandlers.openDropdown();
-    },
-    onPressArrowUp() {
-      autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
-      autosuggestDropdownHandlers.openDropdown();
-    },
-    onPressEnter() {
-      autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
-      autosuggestDropdownHandlers.closeDropdown();
-    },
-    onPressEsc() {
-      if (open) {
-        autosuggestDropdownHandlers.closeDropdown();
-      } else if (value) {
-        fireNonCancelableEvent(onChange, { value: '' });
-      }
-    },
-    onKeyDown(e) {
-      fireCancelableEvent(onKeyDown, e.detail);
-    },
-  });
 
   const handleRecoveryClick = () => {
     autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
@@ -141,7 +119,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     name,
     placeholder,
     autoFocus,
-    onClick: autosuggestDropdownHandlers.openDropdown,
+    onClick: autosuggestInputHandlers.openDropdown,
     role: 'combobox',
     'aria-autocomplete': 'list',
     'aria-expanded': expanded,
@@ -154,7 +132,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const handleInputFocus = () => {
     autosuggestItemsHandlers.setShowAll(true);
-    autosuggestDropdownHandlers.openDropdown();
+    autosuggestInputHandlers.openDropdown();
     autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
     fireNonCancelableEvent(onFocus, null);
   };
@@ -168,7 +146,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       {...baseProps}
       className={clsx(styles.root, baseProps.className)}
       ref={__internalRootRef}
-      onBlur={autosuggestDropdownHandlers.handleBlur}
+      onBlur={autosuggestInputHandlers.handleBlur}
     >
       <Dropdown
         trigger={
@@ -178,7 +156,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             onChange={event => handleInputChange(event.detail.value)}
             __onDelayedInput={event => autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value)}
             onFocus={handleInputFocus}
-            onKeyDown={handleKeyDown}
+            onKeyDown={autosuggestInputHandlers.handleKeyDown}
             onKeyUp={onKeyUp}
             disabled={disabled}
             disableBrowserAutocorrect={disableBrowserAutocorrect}
@@ -191,12 +169,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
             controlId={controlId}
           />
         }
-        onMouseDown={autosuggestDropdownHandlers.handleMouseDown}
+        onMouseDown={autosuggestInputHandlers.handleMouseDown}
         open={open}
         dropdownId={dropdownId}
         footer={
           dropdownStatus.isSticky ? (
-            <div ref={autosuggestDropdownRefs.footerRef} className={styles['dropdown-footer']}>
+            <div ref={autosuggestInputRefs.dropdownFooterRef} className={styles['dropdown-footer']}>
               <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
             </div>
           ) : null
