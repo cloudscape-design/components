@@ -1,7 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { PropertyFilterProps as I } from './interfaces';
+import {
+  FilteringOption,
+  FilteringProperty,
+  GroupText,
+  I18nStrings,
+  JoinOperation,
+  LoadItemsDetail,
+  Token,
+} from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
 import { getPropertyByKey } from './controller';
@@ -13,24 +21,24 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 interface TokenProps {
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
-  customGroupsText: readonly I.GroupText[];
+  customGroupsText: readonly GroupText[];
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly I.FilteringOption[];
-  filteringProperties: readonly I.FilteringProperty[];
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
   first?: boolean;
   hideOperations?: boolean;
-  i18nStrings: I.I18nStrings;
-  onLoadItems?: NonCancelableEventHandler<I.LoadItemsDetail>;
-  operation: I.JoinOperation;
+  i18nStrings: I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  operation: JoinOperation;
   removeToken: () => void;
-  setOperation: (newOperation: I.JoinOperation) => void;
-  setToken: (newToken: I.Token) => void;
-  token: I.Token;
+  setOperation: (newOperation: JoinOperation) => void;
+  setToken: (newToken: Token) => void;
+  token: Token;
 }
 
-export const Token = ({
+export const TokenButton = ({
   token,
   operation = 'and',
   first,

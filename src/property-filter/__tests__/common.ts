@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PropertyFilterProps } from '../interfaces';
+
+import { Token } from '../interfaces';
 
 export const i18nStrings = {
   filteringAriaLabel: 'your choice',
@@ -34,7 +35,7 @@ export const i18nStrings = {
   tokenLimitShowMore: 'Show more',
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
-  removeTokenButtonAriaLabel: (token: PropertyFilterProps.Token) =>
+  removeTokenButtonAriaLabel: (token: Token) =>
     'Remove token ' + token.propertyKey + ' ' + token.operator + ' ' + token.value,
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 } as const;

@@ -1,26 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyFilterProps as I } from './interfaces';
+import {
+  ComparisonOperator,
+  FilteringOption,
+  FilteringProperty,
+  GroupText,
+  I18nStrings,
+  JoinOperation,
+  ParsedText,
+  Query,
+  Token,
+} from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
 import { PropertyFilterAutosuggestRef } from './property-filter-autosuggest';
 
-export type ParsedText =
-  | { step: 'property'; property: I.FilteringProperty; operator: I.ComparisonOperator; value: string }
-  | { step: 'operator'; property: I.FilteringProperty; operatorPrefix: string }
-  | { step: 'free-text'; operator?: I.ComparisonOperator; value: string };
-
 export const getQueryActions = (
-  query: I.Query,
-  onChange: NonCancelableEventHandler<I.Query>,
+  query: Query,
+  onChange: NonCancelableEventHandler<Query>,
   inputRef: React.RefObject<PropertyFilterAutosuggestRef>
 ) => {
   const { tokens, operation } = query;
-  const fireOnChange = (tokens: readonly I.Token[], operation: I.JoinOperation) =>
+  const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
     fireNonCancelableEvent(onChange, { tokens, operation });
-  const setToken = (index: number, newToken: I.Token) => {
+  const setToken = (index: number, newToken: Token) => {
     const newTokens = [...tokens];
     if (newTokens && index < newTokens.length) {
       newTokens[index] = newToken;
@@ -36,12 +41,12 @@ export const getQueryActions = (
     fireOnChange([], operation);
     inputRef.current?.focusNoOpen();
   };
-  const addToken = (newToken: I.Token) => {
+  const addToken = (newToken: Token) => {
     const newTokens = [...tokens];
     newTokens.push(newToken);
     fireOnChange(newTokens, operation);
   };
-  const setOperation = (newOperation: I.JoinOperation) => {
+  const setOperation = (newOperation: JoinOperation) => {
     fireOnChange(tokens, newOperation);
   };
   return {
@@ -53,7 +58,7 @@ export const getQueryActions = (
   };
 };
 
-export const getAllowedOperators = (property: I.FilteringProperty): I.ComparisonOperator[] => {
+export const getAllowedOperators = (property: FilteringProperty): ComparisonOperator[] => {
   const { operators, defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
   const operatorSet: { [key: string]: true } = { [defaultOperator ?? '=']: true };
@@ -74,7 +79,7 @@ export const getAllowedOperators = (property: I.FilteringProperty): I.Comparison
  */
 export const parseText = (
   filteringText: string,
-  filteringProperties: readonly I.FilteringProperty[] = [],
+  filteringProperties: readonly FilteringProperty[] = [],
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -124,8 +129,8 @@ export const parseText = (
 };
 
 export const getPropertyOptions = (
-  filteringProperty: I.FilteringProperty,
-  filteringOptions: readonly I.FilteringOption[]
+  filteringProperty: FilteringProperty,
+  filteringOptions: readonly FilteringOption[]
 ) => {
   return filteringOptions.filter(option => option.propertyKey === filteringProperty.key);
 };
@@ -140,11 +145,11 @@ interface ExtendedAutosuggestOption extends AutosuggestProps.Option {
 }
 
 export const getAllValueSuggestions = (
-  filteringOptions: readonly I.FilteringOption[],
-  filteringProperties: readonly I.FilteringProperty[],
-  operator: I.ComparisonOperator | undefined = '=',
-  i18nStrings: I.I18nStrings,
-  customGroupsText: readonly I.GroupText[]
+  filteringOptions: readonly FilteringOption[],
+  filteringProperties: readonly FilteringProperty[],
+  operator: ComparisonOperator | undefined = '=',
+  i18nStrings: I18nStrings,
+  customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<ExtendedAutosuggestOption> = {
     label: i18nStrings.groupValuesText,
@@ -181,24 +186,24 @@ export const getAllValueSuggestions = (
   return [defaultGroup, ...Object.keys(customGroups).map(group => customGroups[group])];
 };
 
-export const getPropertyByKey = (filteringProperties: readonly I.FilteringProperty[], key: string) => {
-  const propertyMap = filteringProperties.reduce<{ [K: string]: I.FilteringProperty }>((acc, property) => {
+export const getPropertyByKey = (filteringProperties: readonly FilteringProperty[], key: string) => {
+  const propertyMap = filteringProperties.reduce<{ [K: string]: FilteringProperty }>((acc, property) => {
     acc[property.key] = property;
     return acc;
   }, {});
-  return propertyMap[key] as I.FilteringProperty | undefined;
+  return propertyMap[key] as FilteringProperty | undefined;
 };
 
-const filteringPropertyToAutosuggestOption = (filteringProperty: I.FilteringProperty) => ({
+const filteringPropertyToAutosuggestOption = (filteringProperty: FilteringProperty) => ({
   value: filteringProperty.propertyLabel,
   keepOpenOnSelect: true,
 });
 
 export function getPropertySuggestions<T>(
-  filteringProperties: readonly I.FilteringProperty[],
-  customGroupsText: readonly I.GroupText[],
-  i18nStrings: I.I18nStrings,
-  filteringPropertyToOption: (filteringProperty: I.FilteringProperty) => T
+  filteringProperties: readonly FilteringProperty[],
+  customGroupsText: readonly GroupText[],
+  i18nStrings: I18nStrings,
+  filteringPropertyToOption: (filteringProperty: FilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
     label: i18nStrings.groupPropertiesText,
@@ -228,10 +233,10 @@ export function getPropertySuggestions<T>(
 
 export const getAutosuggestOptions = (
   parsedText: ParsedText,
-  filteringOptions: readonly I.FilteringOption[],
-  filteringProperties: readonly I.FilteringProperty[],
-  customGroupsText: readonly I.GroupText[],
-  i18nStrings: I.I18nStrings
+  filteringOptions: readonly FilteringOption[],
+  filteringProperties: readonly FilteringProperty[],
+  customGroupsText: readonly GroupText[],
+  i18nStrings: I18nStrings
 ) => {
   switch (parsedText.step) {
     case 'property': {
@@ -302,8 +307,8 @@ export const getAutosuggestOptions = (
   }
 };
 
-export const operatorToDescription = (operator: I.ComparisonOperator, i18nStrings: I.I18nStrings) => {
-  const mapping: { [K in I.ComparisonOperator]: string } = {
+export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
+  const mapping: { [K in ComparisonOperator]: string } = {
     ['<']: i18nStrings.operatorLessText,
     ['<=']: i18nStrings.operatorLessOrEqualText,
     ['>']: i18nStrings.operatorGreaterText,

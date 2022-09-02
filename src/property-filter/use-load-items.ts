@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 
-import { PropertyFilterProps } from './interfaces';
+import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces';
 
 /**
  * This hook generates `onBlur`, `onFocus` and `onLoadItems` handlers that make sure an `onLoadItems` event
@@ -15,11 +15,11 @@ import { PropertyFilterProps } from './interfaces';
  * `onLoadItems` firing, but sometimes not.
  */
 export const useLoadItems = (
-  onLoadItems?: NonCancelableEventHandler<PropertyFilterProps.LoadItemsDetail>,
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>,
   focusFilteringText?: string,
-  currentFilteringProperty?: PropertyFilterProps.FilteringProperty,
+  currentFilteringProperty?: FilteringProperty,
   currentFilteringText?: string,
-  currentFilteringOperator?: PropertyFilterProps.ComparisonOperator
+  currentFilteringOperator?: ComparisonOperator
 ) => {
   const focusIn = useRef<boolean>(false);
   const handleBlur = () => {

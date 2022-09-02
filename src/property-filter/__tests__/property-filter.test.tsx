@@ -10,10 +10,11 @@ import createWrapper, {
   PropertyFilterWrapper,
   PopoverWrapper,
 } from '../../../lib/components/test-utils/dom';
-import PropertyFilter, { PropertyFilterProps } from '../../../lib/components/property-filter';
+import PropertyFilter from '../../../lib/components/property-filter';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { FilteringOption, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
 
 const filteringProperties = [
   {
@@ -52,7 +53,7 @@ const filteringProperties = [
   },
 ] as const;
 
-const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
+const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
   { propertyKey: 'string', value: 'value2' },
@@ -72,7 +73,7 @@ const defaultProps: PropertyFilterProps = {
   id: 'property-filter',
 };
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<PropertyFilterProps.Ref> }>) => {
+const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
   const { container } = render(
     <div>
       <button id="button" />
@@ -135,7 +136,7 @@ describe('property filter parts', () => {
       });
     });
     test('can be focused using the property filter ref', () => {
-      const focusRef: React.Ref<PropertyFilterProps.Ref> = { current: null };
+      const focusRef: React.Ref<Ref> = { current: null };
       const { propertyFilterWrapper: wrapper } = renderComponent({ ref: focusRef });
       act(() => focusRef.current!.focus());
       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
