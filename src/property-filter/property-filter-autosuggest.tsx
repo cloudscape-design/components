@@ -1,41 +1,41 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import clsx from 'clsx';
+
 import React, { Ref, useRef } from 'react';
 
 import { useAutosuggestItems } from '../autosuggest/options-controller';
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
 
-import Dropdown from '../internal/components/dropdown';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import DropdownFooter from '../internal/components/dropdown-footer';
 
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import { getBaseProps } from '../internal/base-component';
 import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { fireNonCancelableEvent, CancelableEventHandler } from '../internal/events';
-import InternalInput from '../input/internal';
-import { InputProps } from '../input/interfaces';
+import {
+  fireNonCancelableEvent,
+  CancelableEventHandler,
+  NonCancelableCustomEvent,
+  BaseKeyDetail,
+} from '../internal/events';
+import { BaseChangeDetail } from '../input/interfaces';
 import styles from '../autosuggest/styles.css.js';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from '../autosuggest/options-list';
 import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import { useAutosuggestInputController } from '../autosuggest/input-controller';
+import AutosuggestInput, { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 const DROPDOWN_WIDTH = 300;
 
 export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
   filterText?: string;
-  onOpen?: CancelableEventHandler<null>;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
 }
 
 const PropertyFilterAutosuggest = React.forwardRef(
-  (props: PropertyFilterAutosuggestProps, ref: Ref<InputProps.Ref>) => {
+  (props: PropertyFilterAutosuggestProps, ref: Ref<AutosuggestInputRef>) => {
     const {
       value,
       onChange,
@@ -51,12 +51,14 @@ const PropertyFilterAutosuggest = React.forwardRef(
       virtualScroll,
       expandToViewport,
       filterText,
-      onOpen,
       onOptionClick,
       hideEnteredTextOption,
       ...rest
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
+
+    const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
+    const mergedRef = useMergeRefs(autosuggestInputRef, ref);
 
     const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
       options: options || [],
@@ -69,131 +71,109 @@ const PropertyFilterAutosuggest = React.forwardRef(
         fireNonCancelableEvent(onChange, { value });
         const selectedCancelled = fireCancelableEvent(onOptionClick, option);
         if (!selectedCancelled) {
-          autosuggestInputHandlers.closeDropdown();
+          autosuggestInputRef.current?.close();
         } else {
           autosuggestItemsHandlers.resetHighlightWithKeyboard();
         }
       },
     });
-    const [{ open }, autosuggestInputHandlers, autosuggestInputRefs] = useAutosuggestInputController({
-      onClose: () => autosuggestItemsHandlers.resetHighlightWithKeyboard(),
-      onPressArrowDown: () => autosuggestItemsHandlers.moveHighlightWithKeyboard(1),
-      onPressArrowUp: () => autosuggestItemsHandlers.moveHighlightWithKeyboard(-1),
-      onPressEnter: () => autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard(),
-      onPressEsc: () => value && fireNonCancelableEvent(onChange, { value: '' }),
-      onKeyDown: e => fireCancelableEvent(onKeyDown, e.detail),
-    });
+
     const autosuggestLoadMoreHandlers = useAutosuggestLoadMore({
       options,
       statusType,
       onLoadItems: (detail: OptionsLoadItemsDetail) => fireNonCancelableEvent(onLoadItems, detail),
     });
 
-    const handleInputChange: InputProps['onChange'] = e => {
-      autosuggestInputHandlers.openDropdown();
+    const handleChange = (event: NonCancelableCustomEvent<BaseChangeDetail>) => {
       autosuggestItemsHandlers.resetHighlightWithKeyboard();
-      onChange && onChange(e);
+      fireNonCancelableEvent(onChange, event.detail);
+    };
+
+    const handleDelayedInput = (event: NonCancelableCustomEvent<BaseChangeDetail>) => {
+      autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value);
+    };
+
+    const handleFocus = () => {
+      autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+    };
+
+    const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
+      fireCancelableEvent(onKeyDown, e.detail);
+    };
+
+    const handlePressArrowDown = () => {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+    };
+
+    const handlePressArrowUp = () => {
+      autosuggestItemsHandlers.moveHighlightWithKeyboard(-1);
+    };
+
+    const handlePressEnter = () => {
+      return autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
+    };
+
+    const handleCloseDropdown = () => {
+      autosuggestItemsHandlers.resetHighlightWithKeyboard();
     };
 
     const handleRecoveryClick = () => {
       autosuggestLoadMoreHandlers.fireLoadMoreOnRecoveryClick();
-      inputRef.current?.focus();
+      autosuggestInputRef.current?.focus();
     };
-
-    const formFieldContext = useFormFieldContext(rest);
-    const baseProps = getBaseProps(rest);
-    const inputRef = useRef<HTMLInputElement>(null);
-    useForwardFocus(ref, inputRef);
 
     const selfControlId = useUniqueId('input');
-    const controlId = formFieldContext.controlId ?? selfControlId;
-    const dropdownId = useUniqueId('dropdown');
+    const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
-
-    // From an a11y point of view we only count the dropdown as 'expanded' if there are items that a user can dropdown into
-    const expanded = open && autosuggestItemsState.items.length > 1;
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
-    const nativeAttributes = {
-      placeholder,
-      onClick: autosuggestInputHandlers.openDropdown,
-      role: 'combobox',
-      'aria-autocomplete': 'list',
-      'aria-expanded': expanded,
-      'aria-controls': listId,
-      // 'aria-owns' needed for safari+vo to announce activedescendant content
-      'aria-owns': listId,
-      'aria-label': ariaLabel,
-      'aria-activedescendant': highlightedOptionId,
-    };
-
-    const handleInputFocus: InputProps['onFocus'] = () => {
-      const openPrevented = fireCancelableEvent(onOpen, null);
-      if (!openPrevented) {
-        autosuggestInputHandlers.openDropdown();
-        autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
-      }
-    };
 
     const isEmpty = !value && !autosuggestItemsState.items.length;
-    const showRecoveryLink = open && statusType === 'error' && props.recoveryText;
     const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
     return (
-      <div
-        {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
-        onBlur={autosuggestInputHandlers.handleBlur}
-      >
-        <Dropdown
-          minWidth={DROPDOWN_WIDTH}
-          stretchWidth={false}
-          trigger={
-            <InternalInput
-              type="search"
-              value={value}
-              onChange={handleInputChange}
-              __onDelayedInput={event => autosuggestLoadMoreHandlers.fireLoadMoreOnInputChange(event.detail.value)}
-              onFocus={handleInputFocus}
-              onKeyDown={autosuggestInputHandlers.handleKeyDown}
-              disabled={disabled}
-              ref={inputRef}
-              autoComplete={false}
-              __nativeAttributes={nativeAttributes}
-              {...formFieldContext}
-              controlId={controlId}
-            />
-          }
-          onMouseDown={autosuggestInputHandlers.handleMouseDown}
-          open={open}
-          dropdownId={dropdownId}
-          footer={
-            dropdownStatus.isSticky ? (
-              <div ref={autosuggestInputRefs.dropdownFooterRef} className={styles['dropdown-footer']}>
-                <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
-              </div>
-            ) : null
-          }
-          expandToViewport={expandToViewport}
-          hasContent={autosuggestItemsState.items.length >= 1 || dropdownStatus.content !== null}
-          trapFocus={!!showRecoveryLink}
-        >
-          {open && (
-            <AutosuggestOptionsList
-              autosuggestItemsState={autosuggestItemsState}
-              autosuggestItemsHandlers={autosuggestItemsHandlers}
-              highlightedOptionId={highlightedOptionId}
-              highlightText={highlightText}
-              listId={listId}
-              controlId={controlId}
-              enteredTextLabel={enteredTextLabel}
-              handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-              hasDropdownStatus={dropdownStatus.content !== null}
-              virtualScroll={virtualScroll}
-              listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-            />
-          )}
-        </Dropdown>
-      </div>
+      <AutosuggestInput
+        ref={mergedRef}
+        className={styles.root}
+        value={value}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onKeyDown={handleKeyDown}
+        controlId={controlId}
+        placeholder={placeholder}
+        disabled={disabled}
+        ariaLabel={ariaLabel}
+        expandToViewport={expandToViewport}
+        ariaControls={listId}
+        ariaActivedescendant={highlightedOptionId}
+        dropdownExpanded={autosuggestItemsState.items.length > 1}
+        dropdownContent={
+          <AutosuggestOptionsList
+            autosuggestItemsState={autosuggestItemsState}
+            autosuggestItemsHandlers={autosuggestItemsHandlers}
+            highlightedOptionId={highlightedOptionId}
+            highlightText={highlightText}
+            listId={listId}
+            controlId={controlId}
+            enteredTextLabel={enteredTextLabel}
+            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+            hasDropdownStatus={dropdownStatus.content !== null}
+            virtualScroll={virtualScroll}
+            listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          />
+        }
+        dropdownFooter={
+          dropdownStatus.isSticky ? (
+            <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+          ) : null
+        }
+        dropdownWidth={DROPDOWN_WIDTH}
+        onCloseDropdown={handleCloseDropdown}
+        onDelayedInput={handleDelayedInput}
+        onPressArrowDown={handlePressArrowDown}
+        onPressArrowUp={handlePressArrowUp}
+        onPressEnter={handlePressEnter}
+        {...rest}
+      />
     );
   }
 );

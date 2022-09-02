@@ -35,6 +35,7 @@ export interface AutosuggestInputProps
   dropdownExpanded?: boolean;
   dropdownContent: React.ReactNode;
   dropdownFooter: React.ReactNode;
+  dropdownWidth?: number;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   onPressArrowDown?: () => void;
@@ -71,6 +72,7 @@ const AutosuggestInput = React.forwardRef(
       dropdownExpanded,
       dropdownContent,
       dropdownFooter,
+      dropdownWidth,
       onCloseDropdown,
       onDelayedInput,
       onPressArrowDown,
@@ -209,6 +211,8 @@ const AutosuggestInput = React.forwardRef(
     return (
       <div {...baseProps} ref={__internalRootRef} className={baseProps.className} onBlur={handleBlur}>
         <Dropdown
+          minWidth={dropdownWidth}
+          stretchWidth={!dropdownWidth}
           trigger={
             <InternalInput
               type="search"
