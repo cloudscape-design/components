@@ -16,10 +16,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.inputs.sha }})
       - name: Save full commit SHA
         id: vars
-        run: echo "::set-output name=sha_long::$(git rev-parse ${{ github.event.inputs.sha }})"
+        run: echo ::set-output name=sha_long::$(git rev-parse ${{ github.event.inputs.sha }})
         shell: bash
       - run: echo ${{ steps.vars.outputs.sha_long }}   
       - name: Checkout
