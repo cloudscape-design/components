@@ -20,6 +20,7 @@ jobs:
         id: vars
         run: echo "::set-output name=sha_long::$(git rev-parse ${{ github.event.inputs.sha }})"
         shell: bash
+      - run: echo ${{ steps.vars.outputs.sha_long }}   
       - name: Checkout
         uses: actions/checkout@v3
         with:
