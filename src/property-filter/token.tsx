@@ -13,7 +13,7 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 interface TokenProps {
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
-  customGroupsText: I.GroupText[];
+  customGroupsText: readonly I.GroupText[];
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;

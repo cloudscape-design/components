@@ -29,7 +29,7 @@ const freeTextOperators: I.ComparisonOperator[] = [':', '!:'];
 interface TokenEditorProps {
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
-  customGroupsText: I.GroupText[];
+  customGroupsText: readonly I.GroupText[];
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
@@ -44,7 +44,7 @@ interface TokenEditorProps {
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
-  customGroupsText: I.GroupText[];
+  customGroupsText: readonly I.GroupText[];
   disableFreeTextFiltering?: boolean;
   filteringProperties: readonly I.FilteringProperty[];
   i18nStrings: I.I18nStrings;

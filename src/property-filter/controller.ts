@@ -144,7 +144,7 @@ export const getAllValueSuggestions = (
   filteringProperties: readonly I.FilteringProperty[],
   operator: I.ComparisonOperator | undefined = '=',
   i18nStrings: I.I18nStrings,
-  customGroupsText: I.GroupText[]
+  customGroupsText: readonly I.GroupText[]
 ) => {
   const defaultGroup: OptionGroup<ExtendedAutosuggestOption> = {
     label: i18nStrings.groupValuesText,
@@ -196,7 +196,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: I.FilteringProp
 
 export function getPropertySuggestions<T>(
   filteringProperties: readonly I.FilteringProperty[],
-  customGroupsText: I.GroupText[],
+  customGroupsText: readonly I.GroupText[],
   i18nStrings: I.I18nStrings,
   filteringPropertyToOption: (filteringProperty: I.FilteringProperty) => T
 ) {
@@ -230,7 +230,7 @@ export const getAutosuggestOptions = (
   parsedText: ParsedText,
   filteringOptions: readonly I.FilteringOption[],
   filteringProperties: readonly I.FilteringProperty[],
-  customGroupsText: I.GroupText[],
+  customGroupsText: readonly I.GroupText[],
   i18nStrings: I.I18nStrings
 ) => {
   switch (parsedText.step) {
