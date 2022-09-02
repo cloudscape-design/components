@@ -53,7 +53,7 @@ const Item = (
 
   return (
     <SelectableItem
-      ariaSelected={selected}
+      ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}
