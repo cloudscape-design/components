@@ -107,6 +107,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       autosuggestItemsHandlers.selectHighlightedOptionWithKeyboard();
       autosuggestDropdownHandlers.closeDropdown();
     },
+    onPressEsc() {
+      if (open) {
+        autosuggestDropdownHandlers.closeDropdown();
+      } else if (value) {
+        fireNonCancelableEvent(onChange, { value: '' });
+      }
+    },
     onKeyDown(e) {
       fireCancelableEvent(onKeyDown, e.detail);
     },

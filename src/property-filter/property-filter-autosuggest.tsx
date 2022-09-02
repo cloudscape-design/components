@@ -106,6 +106,13 @@ const PropertyFilterAutosuggest = React.forwardRef(
           autosuggestDropdownHandlers.closeDropdown();
         }
       },
+      onPressEsc() {
+        if (open) {
+          autosuggestDropdownHandlers.closeDropdown();
+        } else if (value) {
+          fireNonCancelableEvent(onChange, { value: '' });
+        }
+      },
       onKeyDown(e) {
         fireCancelableEvent(onKeyDown, e.detail);
       },
