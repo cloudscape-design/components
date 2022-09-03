@@ -170,7 +170,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       expandToViewport={expandToViewport}
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
-      dropdownExpanded={autosuggestItemsState.items.length > 1}
+      dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
       dropdownContent={
         <AutosuggestOptionsList
           autosuggestItemsState={autosuggestItemsState}
