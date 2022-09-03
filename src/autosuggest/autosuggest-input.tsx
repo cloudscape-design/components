@@ -209,7 +209,7 @@ const AutosuggestInput = React.forwardRef(
       (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false);
 
     return (
-      <div {...baseProps} ref={__internalRootRef} className={baseProps.className} onBlur={handleBlur}>
+      <div {...baseProps} ref={__internalRootRef} onBlur={handleBlur}>
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}

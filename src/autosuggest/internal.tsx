@@ -26,6 +26,7 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from './autosuggest-input';
 import useForwardFocus from '../internal/hooks/forward-focus';
+import { useFormFieldContext } from '../contexts/form-field';
 import clsx from 'clsx';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
@@ -57,7 +58,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     selectedAriaLabel,
     renderHighlightedAriaLive,
     __internalRootRef,
-    ...rest
+    ...restProps
   } = props;
 
   checkControlled('Autosuggest', 'value', value, 'onChange', onChange);
@@ -136,8 +137,9 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     autosuggestInputRef.current?.focus();
   };
 
+  const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
-  const controlId = rest.controlId ?? selfControlId;
+  const controlId = formFieldContext.controlId ?? selfControlId;
   const listId = useUniqueId('list');
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
 
@@ -146,8 +148,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   return (
     <AutosuggestInput
+      {...restProps}
+      className={clsx(styles.root, restProps.className)}
       ref={autosuggestInputRef}
-      className={clsx(styles.root, rest.className)}
+      __internalRootRef={__internalRootRef}
       value={value}
       onChange={handleChange}
       onBlur={handleBlur}
@@ -194,8 +198,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       onPressArrowDown={handlePressArrowDown}
       onPressArrowUp={handlePressArrowUp}
       onPressEnter={handlePressEnter}
-      __internalRootRef={__internalRootRef}
-      {...rest}
     />
   );
 });
