@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useRef, useState, useImperativeHandle } from 'react';
+import React, { Ref, useRef, useState, useImperativeHandle, useEffect } from 'react';
 
 import Dropdown from '../internal/components/dropdown';
 
@@ -204,9 +204,16 @@ const AutosuggestInput = React.forwardRef(
       'aria-activedescendant': ariaActivedescendant,
     };
 
-    const trapDropdownFocus =
-      (dropdownFooterRef.current ? getFocusables(dropdownFooterRef.current).length > 0 : false) ||
-      (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false);
+    const [trapDropdownFocus, setTrapDropdownFocus] = useState(false);
+
+    // Run this effect on every render to determine if necessary to trap focus around input and dropdown.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+      setTrapDropdownFocus(
+        (dropdownFooterRef.current ? getFocusables(dropdownFooterRef.current).length > 0 : false) ||
+          (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false)
+      );
+    });
 
     return (
       <div {...baseProps} ref={__internalRootRef} onBlur={handleBlur}>
@@ -246,7 +253,9 @@ const AutosuggestInput = React.forwardRef(
           hasContent={expanded}
           trapFocus={trapDropdownFocus}
         >
-          <div ref={dropdownContentRef}>{open && dropdownContent}</div>
+          <div ref={dropdownContentRef} className={styles['dropdown-content']}>
+            {open && dropdownContent}
+          </div>
         </Dropdown>
       </div>
     );
