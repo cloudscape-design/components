@@ -33,8 +33,8 @@ export interface AutosuggestInputProps
   ariaControls?: string;
   ariaActivedescendant?: string;
   dropdownExpanded?: boolean;
-  dropdownContent: React.ReactNode;
-  dropdownFooter: React.ReactNode;
+  dropdownContent?: React.ReactNode;
+  dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
@@ -70,8 +70,8 @@ const AutosuggestInput = React.forwardRef(
       ariaControls,
       ariaActivedescendant,
       dropdownExpanded,
-      dropdownContent,
-      dropdownFooter,
+      dropdownContent = null,
+      dropdownFooter = null,
       dropdownWidth,
       onCloseDropdown,
       onDelayedInput,
@@ -166,8 +166,8 @@ const AutosuggestInput = React.forwardRef(
         case KeyCode.escape: {
           if (open) {
             closeDropdown();
-          } else {
-            handleChange('');
+          } else if (value) {
+            fireNonCancelableEvent(onChange, { value: '' });
           }
           e.preventDefault();
           fireCancelableEvent(onKeyDown, e.detail);
