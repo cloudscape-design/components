@@ -39,6 +39,8 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const {
       value,
       onChange,
+      onFocus,
+      onBlur,
       onLoadItems,
       options,
       filteringType = 'auto',
@@ -95,6 +97,11 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const handleFocus = () => {
       autosuggestLoadMoreHandlers.fireLoadMoreOnInputFocus();
+      fireCancelableEvent(onFocus, null);
+    };
+
+    const handleBlur = () => {
+      fireCancelableEvent(onBlur, null);
     };
 
     const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
@@ -137,6 +144,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         value={value}
         onChange={handleChange}
         onFocus={handleFocus}
+        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         controlId={controlId}
         placeholder={placeholder}
