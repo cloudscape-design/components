@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { render as renderJsx } from '@testing-library/react';
 import dropdownStyles from '../../../lib/components/internal/components/dropdown/styles.selectors.js';
+import { getFocusables } from '../../../lib/components/internal/components/focus-lock/utils';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import AutosuggestInput, { AutosuggestInputRef } from '../../../lib/components/autosuggest/autosuggest-input';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -11,16 +12,15 @@ import { act } from 'react-dom/test-utils';
 
 function render(jsx: React.ReactElement) {
   const { container, rerender } = renderJsx(jsx);
-  const wrapper = createWrapper(container);
+  const wrapper = createWrapper(container) as ElementWrapper<HTMLElement>;
   return { container, wrapper, rerender };
 }
 
 function findInput(wrapper: ElementWrapper<Element>) {
   return wrapper.find('input')!;
 }
-
 function findOpenDropdown(wrapper: ElementWrapper<Element>) {
-  return wrapper.find(`.${dropdownStyles.dropdown}[data-open=true]`);
+  return wrapper.find(`.${dropdownStyles.dropdown}[data-open=true]`)!;
 }
 
 describe('imperative interface', () => {
@@ -158,5 +158,57 @@ describe('keyboard interactions', () => {
 
     findInput(wrapper).keydown(KeyCode.right);
     expect(onKeyDown).toBeCalledTimes(5);
+  });
+});
+
+describe('dropdown focus trap', () => {
+  test('does not trap drodpown focus when content and footer are not interactive', () => {
+    const { wrapper } = render(
+      <AutosuggestInput
+        value="1"
+        onChange={() => undefined}
+        dropdownContent={<div>content</div>}
+        dropdownFooter={<div>footer</div>}
+      />
+    );
+    findInput(wrapper).keydown(KeyCode.down);
+    expect(findOpenDropdown(wrapper)).not.toBe(null);
+    expect(getFocusables(wrapper.getElement()).length).toBe(1);
+  });
+
+  test('traps drodpown focus when content is interactive', () => {
+    const { wrapper } = render(
+      <AutosuggestInput
+        value="1"
+        onChange={() => undefined}
+        dropdownContent={
+          <div>
+            <button>content click</button>
+          </div>
+        }
+        dropdownFooter={<div>footer</div>}
+      />
+    );
+    findInput(wrapper).keydown(KeyCode.down);
+    expect(findOpenDropdown(wrapper)).not.toBe(null);
+    expect(getFocusables(wrapper.getElement()).length).toBeGreaterThan(2);
+  });
+
+  test('traps drodpown focus when footer is interactive', () => {
+    const { wrapper } = render(
+      <AutosuggestInput
+        value="1"
+        onChange={() => undefined}
+        dropdownContent={<div>content</div>}
+        dropdownFooter={
+          <div>
+            <button>footer click</button>
+          </div>
+        }
+      />
+    );
+    findInput(wrapper).keydown(KeyCode.down);
+    expect(findOpenDropdown(wrapper)).not.toBe(null);
+    expect(getFocusables(wrapper.getElement()).length).toBeGreaterThan(2);
   });
 });
