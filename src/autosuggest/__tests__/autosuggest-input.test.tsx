@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
+import { act, Simulate } from 'react-dom/test-utils';
 import { render as renderJsx } from '@testing-library/react';
 import dropdownStyles from '../../../lib/components/internal/components/dropdown/styles.selectors.js';
 import { getFocusables } from '../../../lib/components/internal/components/focus-lock/utils';
@@ -8,7 +9,6 @@ import createWrapper, { ElementWrapper } from '../../../lib/components/test-util
 import AutosuggestInput, { AutosuggestInputRef } from '../../../lib/components/autosuggest/autosuggest-input';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
-import { act } from 'react-dom/test-utils';
 
 function render(jsx: React.ReactElement) {
   const { container, rerender } = renderJsx(jsx);
@@ -210,5 +210,55 @@ describe('dropdown focus trap', () => {
     findInput(wrapper).keydown(KeyCode.down);
     expect(findOpenDropdown(wrapper)).not.toBe(null);
     expect(getFocusables(wrapper.getElement()).length).toBeGreaterThan(2);
+  });
+});
+
+describe('input events', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test('opens dropdown and calls onChange when input changes', () => {
+    const onChange = jest.fn();
+    const { wrapper } = render(<AutosuggestInput value="1" onChange={onChange} />);
+    expect(findOpenDropdown(wrapper)).toBe(null);
+    act(() => {
+      Simulate.change(findInput(wrapper).getElement(), { target: { value: '2' } as unknown as EventTarget });
+    });
+    expect(findOpenDropdown(wrapper)).not.toBe(null);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2' } }));
+  });
+
+  test('opens dropdown and calls onFocus when input receives focus', () => {
+    const onFocus = jest.fn();
+    const { wrapper } = render(<AutosuggestInput value="1" onChange={() => undefined} onFocus={onFocus} />);
+    expect(findOpenDropdown(wrapper)).toBe(null);
+    findInput(wrapper).focus();
+    expect(findOpenDropdown(wrapper)).not.toBe(null);
+    expect(onFocus).toHaveBeenCalled();
+  });
+
+  test('opens dropdown and calls onFocus when input loses focus', () => {
+    const onBlur = jest.fn();
+    const { wrapper } = render(<AutosuggestInput value="1" onChange={() => undefined} onBlur={onBlur} />);
+    expect(findOpenDropdown(wrapper)).toBe(null);
+    findInput(wrapper).focus();
+    findInput(wrapper).blur();
+    expect(findOpenDropdown(wrapper)).toBe(null);
+    expect(onBlur).toHaveBeenCalled();
+  });
+
+  test('calls onDelayedInput after small interval following the input value change', () => {
+    jest.useFakeTimers();
+    const onDelayedInput = jest.fn();
+    const { wrapper } = render(
+      <AutosuggestInput value="1" onChange={() => undefined} onDelayedInput={onDelayedInput} />
+    );
+    act(() => {
+      Simulate.change(findInput(wrapper).getElement(), { target: { value: '2' } as unknown as EventTarget });
+    });
+    expect(onDelayedInput).not.toHaveBeenCalled();
+    jest.runAllTimers();
+    expect(onDelayedInput).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2' } }));
   });
 });
