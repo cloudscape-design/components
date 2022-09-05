@@ -20,6 +20,7 @@ import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
+import { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
 
 export { PropertyFilterProps };
 
@@ -53,7 +54,7 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<PropertyFilterProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<AutosuggestInputRef>(null);
     const preventFocus = useRef<boolean>(false);
     const baseProps = getBaseProps(rest);
     useForwardFocus(ref, inputRef);
@@ -212,12 +213,6 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
-            onOpen={e => {
-              if (preventFocus.current) {
-                e.preventDefault();
-                preventFocus.current = false;
-              }
-            }}
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
