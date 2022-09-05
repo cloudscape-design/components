@@ -19,10 +19,8 @@ import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators 
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import PropertyFilterAutosuggest, {
-  PropertyFilterAutosuggestProps,
-  PropertyFilterAutosuggestRef,
-} from './property-filter-autosuggest';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
+import { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
 
 export { PropertyFilterProps };
 
@@ -56,7 +54,7 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
-    const inputRef = useRef<PropertyFilterAutosuggestRef>(null);
+    const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
     useForwardFocus(ref, inputRef);
     const { tokens, operation } = query;
