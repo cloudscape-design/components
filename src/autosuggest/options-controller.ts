@@ -87,7 +87,6 @@ export const useAutosuggestItems = ({
     if (filteredItems[index] && isInteractive(filteredItems[index])) {
       onSelectItem(filteredItems[index]);
     }
-    return false;
   };
 
   return [
