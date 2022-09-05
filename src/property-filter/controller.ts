@@ -15,12 +15,12 @@ import {
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
-import { PropertyFilterAutosuggestRef } from './property-filter-autosuggest';
+import { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
 
 export const getQueryActions = (
   query: Query,
   onChange: NonCancelableEventHandler<Query>,
-  inputRef: React.RefObject<PropertyFilterAutosuggestRef>
+  inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
   const { tokens, operation } = query;
   const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>

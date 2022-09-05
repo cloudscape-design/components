@@ -34,11 +34,6 @@ export interface PropertyFilterAutosuggestProps extends AutosuggestProps, Intern
   hideEnteredTextOption?: boolean;
 }
 
-export interface PropertyFilterAutosuggestRef {
-  focus(): void;
-  focusNoOpen(): void;
-}
-
 const PropertyFilterAutosuggest = React.forwardRef(
   (props: PropertyFilterAutosuggestProps, ref: Ref<AutosuggestInputRef>) => {
     const {
