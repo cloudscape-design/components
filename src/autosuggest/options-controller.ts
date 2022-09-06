@@ -10,8 +10,6 @@ import {
   HighlightedOptionState,
   useHighlightedOption,
 } from '../internal/components/options-list/utils/use-highlight-option';
-import { KeyCode } from '../internal/keycode';
-import { BaseKeyDetail } from '../internal/events';
 
 type Options = AutosuggestProps.Options;
 
@@ -31,7 +29,9 @@ export interface AutosuggestItemsState extends HighlightedOptionState<Autosugges
 
 export interface AutosuggestItemsHandlers extends HighlightedOptionHandlers<AutosuggestItem> {
   setShowAll(value: boolean): void;
-  interceptKeyDown(event: CustomEvent<BaseKeyDetail>): boolean;
+  selectHighlightedOptionWithKeyboard(): boolean;
+  highlightVisibleOptionWithMouse(index: number): void;
+  selectVisibleOptionWithMouse(index: number): void;
 }
 
 const isHighlightable = (option?: AutosuggestItem) => {
@@ -69,31 +69,35 @@ export const useAutosuggestItems = ({
     isHighlightable,
   });
 
-  const interceptKeyDown = (event: CustomEvent<BaseKeyDetail>): boolean => {
-    switch (event.detail.keyCode) {
-      case KeyCode.down: {
-        highlightedOptionHandlers.moveHighlightWithKeyboard(1);
-        return true;
-      }
-      case KeyCode.up: {
-        highlightedOptionHandlers.moveHighlightWithKeyboard(-1);
-        return true;
-      }
-      case KeyCode.enter: {
-        if (highlightedOptionState.highlightedOption && isInteractive(highlightedOptionState.highlightedOption)) {
-          onSelectItem(highlightedOptionState.highlightedOption);
-          return true;
-        }
-        return false;
-      }
-      default:
-        return false;
+  const selectHighlightedOptionWithKeyboard = () => {
+    if (highlightedOptionState.highlightedOption && isInteractive(highlightedOptionState.highlightedOption)) {
+      onSelectItem(highlightedOptionState.highlightedOption);
+      return true;
+    }
+    return false;
+  };
+
+  const highlightVisibleOptionWithMouse = (index: number) => {
+    if (filteredItems[index] && isHighlightable(filteredItems[index])) {
+      highlightedOptionHandlers.setHighlightedIndexWithMouse(index);
+    }
+  };
+
+  const selectVisibleOptionWithMouse = (index: number) => {
+    if (filteredItems[index] && isInteractive(filteredItems[index])) {
+      onSelectItem(filteredItems[index]);
     }
   };
 
   return [
-    { items: filteredItems, showAll, ...highlightedOptionState },
-    { setShowAll, interceptKeyDown, ...highlightedOptionHandlers },
+    { ...highlightedOptionState, items: filteredItems, showAll },
+    {
+      ...highlightedOptionHandlers,
+      setShowAll,
+      selectHighlightedOptionWithKeyboard,
+      highlightVisibleOptionWithMouse,
+      selectVisibleOptionWithMouse,
+    },
   ];
 };
 

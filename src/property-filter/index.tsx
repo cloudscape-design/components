@@ -19,12 +19,10 @@ import { getQueryActions, parseText, getAutosuggestOptions, ParsedText, getAllow
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import PropertyFilterAutosuggest, {
-  PropertyFilterAutosuggestProps,
-  PropertyFilterAutosuggestRef,
-} from './property-filter-autosuggest';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import InternalBox from '../box/internal';
 import TokenEditorForm from './token-editor-form';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
 
@@ -58,8 +56,7 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<PropertyFilterProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
-    const inputRef = useRef<PropertyFilterAutosuggestRef>(null);
-    const preventFocus = useRef<boolean>(false);
+    const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
     useForwardFocus(ref, inputRef);
     const { tokens, operation } = query;
@@ -67,8 +64,7 @@ const PropertyFilter = React.forwardRef(
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
-      inputRef,
-      preventFocus
+      inputRef
     );
     const [filteringText, setFilteringText] = useState<string>('');
     const parsedText = parseText(filteringText, filteringProperties, disableFreeTextFiltering);
@@ -269,12 +265,6 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
-            onOpen={e => {
-              if (preventFocus.current) {
-                e.preventDefault();
-                preventFocus.current = false;
-              }
-            }}
             customContent={customContent}
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />

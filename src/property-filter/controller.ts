@@ -3,14 +3,13 @@
 import { PropertyFilterProps } from './interfaces';
 import { fireNonCancelableEvent } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { InputProps } from '../input/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
   query: PropertyFilterProps['query'],
   onChange: PropertyFilterProps['onChange'],
-  inputRef: React.RefObject<InputProps.Ref>,
-  preventFocus: React.MutableRefObject<boolean>
+  inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
   const { tokens, operation } = query;
   const fireOnChange = (tokens: readonly PropertyFilterProps.Token[], operation: PropertyFilterProps.JoinOperation) =>
@@ -25,13 +24,11 @@ export const getQueryActions = (
   const removeToken = (index: number) => {
     const newTokens = tokens.filter((_, i) => i !== index);
     fireOnChange(newTokens, operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focusNoOpen();
   };
   const removeAllTokens = () => {
     fireOnChange([], operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focusNoOpen();
   };
   const addToken = (newToken: PropertyFilterProps.Token) => {
     const newTokens = [...tokens];

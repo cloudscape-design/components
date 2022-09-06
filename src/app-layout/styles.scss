@@ -55,6 +55,10 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   visibility: hidden;
 }
 
+.navigation-panel {
+  overflow-anchor: none;
+}
+
 .drawer {
   flex-shrink: 0;
   position: relative;

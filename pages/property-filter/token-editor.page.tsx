@@ -52,6 +52,7 @@ export default function () {
                 operator: ':',
                 value: 'filtering token',
               },
+              { operator: ':', value: 'second filtering token' },
             ],
             operation: 'and',
           }}

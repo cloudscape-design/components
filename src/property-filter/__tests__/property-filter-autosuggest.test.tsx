@@ -17,7 +17,7 @@ function renderAutosuggest(jsx: React.ReactElement) {
   return { wrapper, rerender };
 }
 
-describe('Internal autosuggest features', () => {
+describe('Property filter autosuggest', () => {
   describe('filterText', () => {
     let wrapper: AutosuggestWrapper;
     beforeEach(() => {
@@ -126,31 +126,7 @@ describe('Internal autosuggest features', () => {
     wrapper.focus();
     expect(wrapper.findEnteredTextOption()).toBeNull();
   });
-  describe('onOpen', () => {
-    let wrapper: AutosuggestWrapper;
-    beforeEach(() => {
-      wrapper = renderAutosuggest(
-        <PropertyFilterAutosuggest
-          options={options}
-          enteredTextLabel={() => ''}
-          onOpen={e => e.preventDefault()}
-          value="123"
-          onChange={() => {}}
-          filteringType="auto"
-          statusType="finished"
-          disableBrowserAutocorrect={false}
-        />
-      ).wrapper;
-      wrapper.focus();
-    });
-    test('stops the dropdown from opening, if prevented', () => {
-      expect(wrapper.findDropdown().findOpenDropdown()).toBeNull();
-    });
-    test('the dropdown can be reopened by clicking on the input', () => {
-      wrapper.findNativeInput().click();
-      expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
-    });
-  });
+
   describe('disabled option', () => {
     let wrapper: AutosuggestWrapper;
     const handleSelectedSpy = jest.fn();
