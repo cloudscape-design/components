@@ -8,7 +8,7 @@ import { PropertyFilterProps } from '~components/property-filter/interfaces';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './table.data';
+import { i18nStrings } from './common-properties';
 
 type PropertyFilterDemoContext = React.Context<
   AppContextType<{
