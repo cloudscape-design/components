@@ -20,7 +20,7 @@ import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
-import { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
 

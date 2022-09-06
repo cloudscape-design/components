@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.root {
+  // Used in test-utils.
+}
+
+.dropdown-footer {
+  // Fixes incorrect flex height calculation in IE11.
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dropdown-content {
+  display: contents;
+}
