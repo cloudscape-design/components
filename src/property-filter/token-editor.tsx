@@ -197,10 +197,10 @@ function ValueInput({
     for (const prop of filteringProperties) {
       if (prop.key === propertyKey) {
         for (const operator of prop.operators || []) {
-          if (typeof operator === 'object' && operator.value === selectedOperator) {
+          if (typeof operator === 'object' && operator.operator === selectedOperator) {
             if (operator.form) {
               const Form = operator.form;
-              customInput = <Form value={value} onChange={onChangeValue} operator={operator.value} filter="" />;
+              customInput = <Form value={value} onChange={onChangeValue} operator={operator.operator} filter="" />;
             }
           }
         }

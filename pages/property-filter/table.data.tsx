@@ -1150,32 +1150,32 @@ export const filteringProperties: readonly any[] = columnDefinitions.map(def => 
   if (def.type === 'date') {
     operators = [
       {
-        value: '=',
+        operator: '=',
         form: DateForm,
         match: 'date',
       },
       {
-        value: '!=',
+        operator: '!=',
         form: DateForm,
         match: 'date',
       },
       {
-        value: '>',
+        operator: '>',
         form: DateForm,
         match: 'date',
       },
       {
-        value: '<',
+        operator: '<',
         form: DateForm,
         match: 'date',
       },
       {
-        value: '<=',
+        operator: '<=',
         form: DateForm,
         match: 'date',
       },
       {
-        value: '>=',
+        operator: '>=',
         form: DateForm,
         match: 'date',
       },
@@ -1186,22 +1186,22 @@ export const filteringProperties: readonly any[] = columnDefinitions.map(def => 
     defaultOperator = '>';
     operators = [
       {
-        value: '>',
+        operator: '>',
         form: DateTimeForm,
         match: 'date',
       },
       {
-        value: '<',
+        operator: '<',
         form: DateTimeForm,
         match: 'date',
       },
       {
-        value: '<=',
+        operator: '<=',
         form: DateTimeForm,
         match: 'date',
       },
       {
-        value: '>=',
+        operator: '>=',
         form: DateTimeForm,
         match: 'date',
       },

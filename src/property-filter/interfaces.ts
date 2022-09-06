@@ -11,10 +11,8 @@ import {
   PropertyFilterOperator,
   PropertyFilterOperation,
   PropertyFilterToken,
-  // PropertyFilterProperty,
   PropertyFilterOption,
   PropertyFilterProperty,
-  PropertyFilterOperatorExtended,
 } from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
@@ -158,13 +156,7 @@ export namespace PropertyFilterProps {
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type FilteringOption = PropertyFilterOption;
-  export interface FilteringProperty extends PropertyFilterProperty {
-    groupValuesLabel: string;
-    propertyLabel: string;
-    group?: string;
-    operators?: readonly (PropertyFilterOperator | ExtendedOperator<any>)[];
-  }
-
+  export type FilteringProperty = PropertyFilterProperty;
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
@@ -218,12 +210,6 @@ export namespace PropertyFilterProps {
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
 
-  export interface ExtendedOperator<TokenValue> extends PropertyFilterOperatorExtended<TokenValue> {
-    value: PropertyFilterOperator;
-    form?: CustomOperatorForm<TokenValue>;
-    format?: CustomOperatorFormat<TokenValue>;
-  }
-
   export type CustomOperatorForm<TokenValue> = React.FC<{
     value: null | TokenValue;
     onChange: (value: null | TokenValue) => void;
@@ -232,8 +218,6 @@ export namespace PropertyFilterProps {
   }>;
 
   export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
-
-  export type CustomOperatorMatch<TokenValue> = (tokenValue: TokenValue, itemValue: any) => boolean;
 
   export interface GroupText {
     properties: string;

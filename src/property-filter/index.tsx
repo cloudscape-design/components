@@ -208,7 +208,7 @@ const PropertyFilter = React.forwardRef(
       for (const prop of filteringProperties) {
         if (prop.key === parsedText.property.key) {
           for (const operator of prop.operators || []) {
-            if (typeof operator === 'object' && operator.value === parsedText.operator) {
+            if (typeof operator === 'object' && operator.operator === parsedText.operator) {
               if (operator.form) {
                 const Form = operator.form;
                 customContent = (
@@ -234,7 +234,7 @@ const PropertyFilter = React.forwardRef(
                         inputRef.current?.close();
                       }}
                     >
-                      <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.value} />
+                      <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.operator} />
                     </TokenEditorForm>
                   </InternalBox>
                 );

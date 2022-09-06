@@ -67,7 +67,7 @@ export const getAllowedOperators = (
     if (typeof op === 'string') {
       operatorSet[op] = true;
     } else {
-      operatorSet[op.value] = true;
+      operatorSet[op.operator] = true;
     }
   });
   return operatorOrder.filter(op => operatorSet[op]);
