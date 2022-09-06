@@ -179,7 +179,7 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
     outline: none;
   }
   @include focus-visible.when-visible {
-    @include styles.container-focus();
+    @include styles.container-focus(awsui.$border-radius-dropdown);
   }
 }
 
