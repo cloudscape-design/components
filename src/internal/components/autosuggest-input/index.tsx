@@ -3,25 +3,26 @@
 
 import React, { Ref, useRef, useState, useImperativeHandle, useEffect } from 'react';
 
-import Dropdown from '../internal/components/dropdown';
+import Dropdown from '../dropdown';
 
-import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
-import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
+import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { useUniqueId } from '../../hooks/use-unique-id';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
   fireNonCancelableEvent,
   getBlurEventRelatedTarget,
   NonCancelableEventHandler,
-} from '../internal/events';
-import InternalInput from '../input/internal';
-import { BaseChangeDetail, BaseInputProps, InputKeyEvents, InputProps } from '../input/interfaces';
-import { getFocusables } from '../internal/components/focus-lock/utils';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { KeyCode } from '../internal/keycode';
+} from '../../events';
+import InternalInput from '../../../input/internal';
+import { BaseChangeDetail, BaseInputProps, InputKeyEvents, InputProps } from '../../../input/interfaces';
+import { getFocusables } from '../focus-lock/utils';
+import { ExpandToViewport } from '../dropdown/interfaces';
+import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { KeyCode } from '../../keycode';
 import styles from './styles.css.js';
+import clsx from 'clsx';
 
 export interface AutosuggestInputProps
   extends BaseComponentProps,
@@ -216,7 +217,12 @@ const AutosuggestInput = React.forwardRef(
     });
 
     return (
-      <div {...baseProps} ref={__internalRootRef} onBlur={handleBlur}>
+      <div
+        {...baseProps}
+        className={clsx(baseProps.className, styles.root)}
+        ref={__internalRootRef}
+        onBlur={handleBlur}
+      >
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}

@@ -23,7 +23,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import AutosuggestOptionsList from '../autosuggest/options-list';
 import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import AutosuggestInput, { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 const DROPDOWN_WIDTH = 300;
