@@ -30,6 +30,7 @@ export default function AutosuggestInputPage() {
           </Box>
         }
         dropdownWidth={300}
+        ariaLabel="autosuggest input"
       />
     </Box>
   );
