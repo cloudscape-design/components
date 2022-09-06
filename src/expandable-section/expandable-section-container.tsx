@@ -33,6 +33,7 @@ export const ExpandableSectionContainer = ({
         variant="default"
         disableContentPaddings={disableContentPaddings || !expanded}
         disableHeaderPaddings={true}
+        __hiddenContent={!expanded}
         __internalRootRef={__internalRootRef}
       >
         {children}
