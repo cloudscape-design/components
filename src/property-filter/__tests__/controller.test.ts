@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PropertyFilterProps } from '../interfaces';
-import { parseText, getAllowedOperators, getAutosuggestOptions, ParsedText } from '../controller';
+
+import { ComparisonOperator, FilteringOption, FilteringProperty, GroupText, ParsedText } from '../interfaces';
+import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
 import { i18nStrings } from './common';
 
 const filteringProperties = [
@@ -47,11 +48,11 @@ const filteringProperties = [
   },
 ] as const;
 
-const customGroupText: PropertyFilterProps['customGroupsText'] = [
+const customGroupText: readonly GroupText[] = [
   { group: 'group-name', properties: 'Group properties', values: 'Group values' },
 ];
 
-const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
+const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
   { propertyKey: 'string', value: 'value2' },
@@ -64,10 +65,10 @@ const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
 ] as const;
 
 describe('getAllowedOperators', () => {
-  type TestCase = [string, PropertyFilterProps.FilteringProperty, PropertyFilterProps.ComparisonOperator[]];
+  type TestCase = [string, FilteringProperty, ComparisonOperator[]];
   const getFilteringProperty = (
-    operators: PropertyFilterProps.FilteringProperty['operators'],
-    defaultOperator?: PropertyFilterProps.FilteringProperty['defaultOperator']
+    operators: FilteringProperty['operators'],
+    defaultOperator?: FilteringProperty['defaultOperator']
   ) => ({
     operators,
     defaultOperator,
@@ -84,11 +85,7 @@ describe('getAllowedOperators', () => {
       ['=', '!=', ':', '!:', '>=', '<=', '<', '>'],
     ],
     ['removes duplicates', getFilteringProperty(['=', '=']), ['=']],
-    [
-      'removes unsupported',
-      getFilteringProperty(['<>' as PropertyFilterProps.ComparisonOperator, '>', '=']),
-      ['=', '>'],
-    ],
+    ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, exepcted) => {
