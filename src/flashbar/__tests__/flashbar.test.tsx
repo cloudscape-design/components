@@ -226,7 +226,7 @@ describe('Flashbar component', () => {
     expect(dismissSpy).not.toHaveBeenCalled();
   });
 
-  test('icon has an aria-label when statusIconLabel is provided', () => {
+  test('icon has an aria-label when statusIconAriaLabel is provided', () => {
     const iconLabel = 'Warning';
     const wrapper = render(
       <Flashbar
@@ -234,7 +234,7 @@ describe('Flashbar component', () => {
           {
             header: 'The header',
             content: 'The content',
-            statusIconLabel: iconLabel,
+            statusIconAriaLabel: iconLabel,
             action: <Button>Click me</Button>,
           },
         ]}

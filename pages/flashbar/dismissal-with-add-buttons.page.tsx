@@ -16,7 +16,7 @@ export default function FlashbarPermutations(this: any) {
       dismissLabel: 'Dismiss',
       onDismiss: () => dismiss(randomKey),
       buttonText: 'Do Action',
-      statusIconLabel: 'Info',
+      statusIconAriaLabel: 'Info',
       content: `This is a flash item with key ${randomKey.split('_').join(' ')}`,
       ...(hasHeader && { header: 'Has Header Content' }),
     };
