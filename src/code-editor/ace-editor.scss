@@ -73,6 +73,11 @@
   .ace_gutter {
     background-color: awsui.$color-background-code-editor-gutter-default;
     color: awsui.$color-text-code-editor-gutter-default;
+    border-top-left-radius: max(awsui.$border-radius-code-editor - awsui.$border-item-width, 0px);
+  }
+
+  .ace_scroller {
+    border-top-right-radius: max(awsui.$border-radius-code-editor - awsui.$border-item-width, 0px);
   }
 
   .ace_fold-widget.ace_open {
@@ -193,15 +198,6 @@
         }
       }
     }
-  }
-}
-
-.code-editor-refresh :global .ace_editor {
-  .ace_gutter {
-    border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
-  }
-  .ace_scroller {
-    border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   }
 }
 

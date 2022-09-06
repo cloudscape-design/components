@@ -24,7 +24,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import AutosuggestOptionsList from './options-list';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import AutosuggestInput, { AutosuggestInputRef } from './autosuggest-input';
+import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { useFormFieldContext } from '../contexts/form-field';
 import clsx from 'clsx';

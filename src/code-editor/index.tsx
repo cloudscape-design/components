@@ -253,11 +253,7 @@ export default function CodeEditor(props: CodeEditorProps) {
   const onPreferencesDismiss = () => setPreferencesModalVisible(false);
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
-      ref={mergedRef}
-    >
+    <div {...baseProps} className={clsx(styles['code-editor'], baseProps.className)} ref={mergedRef}>
       {props.loading && <LoadingScreen>{i18nStrings.loadingState}</LoadingScreen>}
 
       {!ace && !props.loading && (

@@ -15,7 +15,7 @@ import {
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
-import { AutosuggestInputRef } from '../autosuggest/autosuggest-input';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
   query: Query,
