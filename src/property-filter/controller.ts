@@ -26,12 +26,12 @@ export const getQueryActions = (
     const newTokens = tokens.filter((_, i) => i !== index);
     fireOnChange(newTokens, operation);
     preventFocus.current = true;
-    inputRef.current?.focusNoOpen();
+    inputRef.current?.focus({ preventDropdown: true });
   };
   const removeAllTokens = () => {
     fireOnChange([], operation);
     preventFocus.current = true;
-    inputRef.current?.focusNoOpen();
+    inputRef.current?.focus({ preventDropdown: true });
   };
   const addToken = (newToken: PropertyFilterProps.Token) => {
     const newTokens = [...tokens];

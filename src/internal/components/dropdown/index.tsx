@@ -124,6 +124,7 @@ const Dropdown = ({
   hasContent = true,
   scrollable = true,
   trapFocus = false,
+  contentKey,
 }: DropdownProps) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -264,7 +265,7 @@ const Dropdown = ({
     }
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile]);
+  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
 
   // subscribe to outside click
   useEffect(() => {
