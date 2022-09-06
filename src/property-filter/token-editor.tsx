@@ -7,12 +7,19 @@ import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest from '../autosuggest/internal';
-import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import { InternalButton } from '../button/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 
-import { PropertyFilterProps } from './interfaces';
+import {
+  ComparisonOperator,
+  FilteringOption,
+  FilteringProperty,
+  GroupText,
+  I18nStrings,
+  LoadItemsDetail,
+  Token,
+} from './interfaces';
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
 import {
@@ -22,41 +29,36 @@ import {
   operatorToDescription,
   getPropertySuggestions,
 } from './controller';
+import { NonCancelableEventHandler } from '../internal/events';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 
-const freeTextOperators: PropertyFilterProps.ComparisonOperator[] = [':', '!:'];
+const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
-type AsyncProps = Pick<
-  AutosuggestProps,
-  'empty' | 'loadingText' | 'finishedText' | 'errorText' | 'recoveryText' | 'statusType'
->;
-
-interface TokenEditorProps
-  extends Pick<
-    PropertyFilterProps,
-    | 'filteringProperties'
-    | 'filteringOptions'
-    | 'onLoadItems'
-    | 'i18nStrings'
-    | 'asyncProperties'
-    | 'customGroupsText'
-    | 'disableFreeTextFiltering'
-    | 'disabled'
-    | 'expandToViewport'
-  > {
-  token: PropertyFilterProps.Token;
+interface TokenEditorProps {
+  asyncProperties?: boolean;
+  asyncProps: DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  disabled?: boolean;
+  disableFreeTextFiltering?: boolean;
+  expandToViewport?: boolean;
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  setToken: (newToken: Token) => void;
+  token: Token;
   triggerComponent?: React.ReactNode;
-  setToken: (newToken: PropertyFilterProps.Token) => void;
-  asyncProps: AsyncProps;
 }
 
-interface PropertyInputProps
-  extends Pick<
-    PropertyFilterProps,
-    'filteringProperties' | 'onLoadItems' | 'i18nStrings' | 'customGroupsText' | 'disableFreeTextFiltering'
-  > {
-  propertyKey: undefined | string;
+interface PropertyInputProps {
+  asyncProps: null | DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  disableFreeTextFiltering?: boolean;
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
   onChangePropertyKey: (propertyKey: undefined | string) => void;
-  asyncProps: null | AsyncProps;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  propertyKey: undefined | string;
 }
 
 function PropertyInput({
@@ -116,10 +118,12 @@ function PropertyInput({
   );
 }
 
-interface OperatorInputProps extends Pick<PropertyFilterProps, 'filteringProperties' | 'i18nStrings'> {
+interface OperatorInputProps {
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onChangeOperator: (operator: ComparisonOperator) => void;
+  operator: undefined | ComparisonOperator;
   propertyKey: undefined | string;
-  operator: undefined | PropertyFilterProps.ComparisonOperator;
-  onChangeOperator: (operator: PropertyFilterProps.ComparisonOperator) => void;
 }
 
 function OperatorInput({
@@ -130,7 +134,7 @@ function OperatorInput({
   i18nStrings,
 }: OperatorInputProps) {
   const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
-  const freeTextOperators: PropertyFilterProps.ComparisonOperator[] = [':', '!:'];
+  const freeTextOperators: ComparisonOperator[] = [':', '!:'];
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
     value: operator,
     label: operator,
@@ -157,20 +161,23 @@ function OperatorInput({
                 }
               : null
           }
-          onChange={e => onChangeOperator(e.detail.selectedOption.value as PropertyFilterProps.ComparisonOperator)}
+          onChange={e => onChangeOperator(e.detail.selectedOption.value as ComparisonOperator)}
         />
       </div>
     </div>
   );
 }
 
-interface ValueInputProps
-  extends Pick<PropertyFilterProps, 'filteringProperties' | 'filteringOptions' | 'onLoadItems' | 'i18nStrings'> {
-  propertyKey: undefined | string;
-  operator: undefined | PropertyFilterProps.ComparisonOperator;
-  value: undefined | string;
+interface ValueInputProps {
+  asyncProps: DropdownStatusProps;
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
   onChangeValue: (value: string) => void;
-  asyncProps: AsyncProps;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  operator: undefined | ComparisonOperator;
+  propertyKey: undefined | string;
+  value: undefined | string;
 }
 
 function ValueInput({
@@ -185,7 +192,7 @@ function ValueInput({
   i18nStrings,
 }: ValueInputProps) {
   const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
-  const valueOptions = property ? getPropertyOptions(property, filteringOptions)?.map(({ value }) => ({ value })) : [];
+  const valueOptions = property ? getPropertyOptions(property, filteringOptions).map(({ value }) => ({ value })) : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
   const asyncValueAutosuggesProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
@@ -227,7 +234,7 @@ export const TokenEditor = ({
   token,
   triggerComponent,
 }: TokenEditorProps) => {
-  const [temporaryToken, setTemporaryToken] = useState<PropertyFilterProps.Token>(token);
+  const [temporaryToken, setTemporaryToken] = useState<Token>(token);
   const popoverRef = useRef<InternalPopoverRef>(null);
   const closePopover = () => {
     popoverRef.current && popoverRef.current.dismissPopover();
@@ -235,7 +242,7 @@ export const TokenEditor = ({
 
   const propertyKey = temporaryToken.propertyKey;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
-    const filteringProperty = filteringProperties.reduce<PropertyFilterProps.FilteringProperty | undefined>(
+    const filteringProperty = filteringProperties.reduce<FilteringProperty | undefined>(
       (acc, property) => (property.key === newPropertyKey ? property : acc),
       undefined
     );
@@ -248,7 +255,7 @@ export const TokenEditor = ({
   };
 
   const operator = temporaryToken.operator;
-  const onChangeOperator = (newOperator: PropertyFilterProps.ComparisonOperator) => {
+  const onChangeOperator = (newOperator: ComparisonOperator) => {
     setTemporaryToken({ ...temporaryToken, operator: newOperator });
   };
 
@@ -310,7 +317,7 @@ export const TokenEditor = ({
             <InternalButton
               className={styles['token-editor-submit']}
               onClick={() => {
-                setToken(temporaryToken as PropertyFilterProps.Token);
+                setToken(temporaryToken as Token);
                 closePopover();
               }}
             >

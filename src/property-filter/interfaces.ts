@@ -231,3 +231,24 @@ export namespace PropertyFilterProps {
     focus(): void;
   }
 }
+
+// Re-exported namespace interfaces to use module-style imports internally
+
+export type Token = PropertyFilterProps.Token;
+export type JoinOperation = PropertyFilterProps.JoinOperation;
+export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
+export type FilteringOption = PropertyFilterProps.FilteringOption;
+export type FilteringProperty = PropertyFilterProps.FilteringProperty;
+export type Query = PropertyFilterProps.Query;
+export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
+export type I18nStrings = PropertyFilterProps.I18nStrings;
+export type GroupText = PropertyFilterProps.GroupText;
+export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
+export type Ref = PropertyFilterProps.Ref;
+
+// Utility types
+
+export type ParsedText =
+  | { step: 'property'; property: FilteringProperty; operator: ComparisonOperator; value: string }
+  | { step: 'operator'; property: FilteringProperty; operatorPrefix: string }
+  | { step: 'free-text'; operator?: ComparisonOperator; value: string };
