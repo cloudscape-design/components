@@ -24,7 +24,7 @@ const Autosuggest = React.forwardRef(
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         {...externalProps}
         {...baseComponentProps}
-        ref={ref as any}
+        ref={ref}
       />
     );
   }

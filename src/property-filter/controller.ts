@@ -110,7 +110,7 @@ export const parseText = (
     return {
       step: 'property',
       property,
-      operator: operator,
+      operator,
       // We need to remove the first leading space in case the user presses space
       // after the operator, for example: Owner: admin, will result in value of ` admin`
       // and we need to remove the first space, if the user added any more spaces only the
@@ -286,10 +286,10 @@ export const getAutosuggestOptions = (
             filteringPropertyToAutosuggestOption
           ),
           {
-            options: getAllowedOperators(parsedText.property).map(op => ({
-              value: parsedText.property.propertyLabel + ' ' + op + ' ',
-              label: parsedText.property.propertyLabel + ' ' + op,
-              description: operatorToDescription(op, i18nStrings),
+            options: getAllowedOperators(parsedText.property).map(value => ({
+              value: parsedText.property.propertyLabel + ' ' + value + ' ',
+              label: parsedText.property.propertyLabel + ' ' + value,
+              description: operatorToDescription(value, i18nStrings),
               keepOpenOnSelect: true,
             })),
             label: i18nStrings.operatorsText,

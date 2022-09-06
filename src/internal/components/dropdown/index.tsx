@@ -264,7 +264,7 @@ const Dropdown = ({
     }
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, minWidth]);
+  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile]);
 
   // subscribe to outside click
   useEffect(() => {

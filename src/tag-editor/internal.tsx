@@ -109,7 +109,7 @@ export const TagControl = React.forwardRef(
 
     return (
       <InternalAutosuggest
-        ref={ref as any}
+        ref={ref}
         value={value}
         readOnly={readOnly}
         statusType={statusType}

@@ -34,6 +34,8 @@ export interface AutosuggestInputProps
   ariaControls?: string;
   ariaActivedescendant?: string;
   dropdownExpanded?: boolean;
+  dropdownContentKey?: string;
+  dropdownContentClickable?: boolean;
   dropdownContent?: React.ReactNode;
   dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
@@ -71,6 +73,8 @@ const AutosuggestInput = React.forwardRef(
       ariaControls,
       ariaActivedescendant,
       dropdownExpanded,
+      dropdownContentKey,
+      dropdownContentClickable = false,
       dropdownContent = null,
       dropdownFooter = null,
       dropdownWidth,
@@ -120,7 +124,11 @@ const AutosuggestInput = React.forwardRef(
 
     const handleBlur: React.FocusEventHandler = event => {
       const relatedTarget = getBlurEventRelatedTarget(event.nativeEvent);
-      if (event.currentTarget.contains(relatedTarget) || dropdownFooterRef.current?.contains(relatedTarget)) {
+      if (
+        event.currentTarget.contains(relatedTarget) ||
+        dropdownContentRef.current?.contains(relatedTarget) ||
+        dropdownFooterRef.current?.contains(relatedTarget)
+      ) {
         return;
       }
       closeDropdown();
@@ -137,7 +145,9 @@ const AutosuggestInput = React.forwardRef(
 
     const handleMouseDown: React.MouseEventHandler = event => {
       // Prevent currently focused element from losing focus.
-      event.preventDefault();
+      if (!dropdownContentClickable) {
+        event.preventDefault();
+      }
     };
 
     const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
@@ -224,6 +234,7 @@ const AutosuggestInput = React.forwardRef(
         onBlur={handleBlur}
       >
         <Dropdown
+          key={dropdownContentKey}
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
           trigger={

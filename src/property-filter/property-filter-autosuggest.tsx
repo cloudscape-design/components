@@ -156,6 +156,8 @@ const PropertyFilterAutosuggest = React.forwardRef(
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
         dropdownExpanded={autosuggestItemsState.items.length > 1}
+        dropdownContentKey={customContent ? 'custom' : 'options'}
+        dropdownContentClickable={!!customContent}
         dropdownContent={
           customContent || (
             <AutosuggestOptionsList
