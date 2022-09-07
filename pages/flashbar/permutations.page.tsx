@@ -19,6 +19,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     dismissible: [true],
     onDismiss: [noop],
     dismissLabel: ['Dismiss'],
+    statusIconAriaLabel: ['success', 'warning', 'error', 'info'],
     header: [<span>Simple span content. The &apos;H&apos; in HTML stands for Pizza</span>],
     content: [<span>Simple span content</span>],
   },
@@ -27,6 +28,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     dismissible: [true, false],
     onDismiss: [noop],
     dismissLabel: ['Dismiss'],
+    statusIconAriaLabel: ['info'],
     header: [
       '',
       <>
@@ -65,6 +67,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'error', 'warning', 'info'],
+    statusIconAriaLabel: ['success', 'warning', 'error', 'info'],
     header: ['Flash header'],
     action: [
       <Button iconName="external" iconAlign="right">
@@ -74,6 +77,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'warning', 'error'],
+    statusIconAriaLabel: ['success', 'warning', 'error', 'info'],
     loading: [true, false],
     header: [
       <Link color="inverted" href="#" variant="primary">
@@ -90,6 +94,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'error', 'warning', 'info'],
+    statusIconAriaLabel: ['success', 'warning', 'error', 'info'],
     header: [
       <span>
         Header with a button{' '}
