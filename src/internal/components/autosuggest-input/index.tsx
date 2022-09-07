@@ -227,7 +227,6 @@ const AutosuggestInput = React.forwardRef(
         onBlur={handleBlur}
       >
         <Dropdown
-          key={dropdownContentKey}
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
           contentKey={dropdownContentKey}

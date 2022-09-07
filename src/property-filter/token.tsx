@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import {
+  ComparisonOperator,
   FilteringOption,
   FilteringProperty,
   GroupText,
@@ -98,7 +99,7 @@ const TokenTrigger = ({
   value,
 }: {
   property?: string;
-  operator?: PropertyFilterProps.ComparisonOperator;
+  operator?: ComparisonOperator;
   value: string;
 }) => {
   if (property) {
