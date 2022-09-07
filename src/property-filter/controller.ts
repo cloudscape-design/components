@@ -35,11 +35,11 @@ export const getQueryActions = (
   const removeToken = (index: number) => {
     const newTokens = tokens.filter((_, i) => i !== index);
     fireOnChange(newTokens, operation);
-    inputRef.current?.focusNoOpen();
+    inputRef.current?.focus({ preventDropdown: true });
   };
   const removeAllTokens = () => {
     fireOnChange([], operation);
-    inputRef.current?.focusNoOpen();
+    inputRef.current?.focus({ preventDropdown: true });
   };
   const addToken = (newToken: Token) => {
     const newTokens = [...tokens];
