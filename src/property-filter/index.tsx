@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
 import SelectToggle from '../token-group/toggle';
@@ -56,7 +55,7 @@ const PropertyFilter = React.forwardRef(
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
-    useForwardFocus(ref, inputRef);
+    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
     const showResults = tokens?.length && !disabled;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
