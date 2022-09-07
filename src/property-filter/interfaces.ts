@@ -9,6 +9,7 @@ import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import {
   PropertyFilterOperator,
+  PropertyFilterOperatorExtended,
   PropertyFilterOperation,
   PropertyFilterToken,
   PropertyFilterOption,
@@ -155,6 +156,7 @@ export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
+  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
   export interface Query {
@@ -237,3 +239,25 @@ export namespace PropertyFilterProps {
     focus(): void;
   }
 }
+
+// Re-exported namespace interfaces to use module-style imports internally
+
+export type Token = PropertyFilterProps.Token;
+export type JoinOperation = PropertyFilterProps.JoinOperation;
+export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
+export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
+export type FilteringOption = PropertyFilterProps.FilteringOption;
+export type FilteringProperty = PropertyFilterProps.FilteringProperty;
+export type Query = PropertyFilterProps.Query;
+export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
+export type I18nStrings = PropertyFilterProps.I18nStrings;
+export type GroupText = PropertyFilterProps.GroupText;
+export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
+export type Ref = PropertyFilterProps.Ref;
+
+// Utility types
+
+export type ParsedText =
+  | { step: 'property'; property: FilteringProperty; operator: ComparisonOperator; value: string }
+  | { step: 'operator'; property: FilteringProperty; operatorPrefix: string }
+  | { step: 'free-text'; operator?: ComparisonOperator; value: string };

@@ -1,17 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyFilterProps } from './interfaces';
+import { ComparisonOperator, FilteringProperty } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
-  filteringProperties: readonly PropertyFilterProps.FilteringProperty[],
+  filteringProperties: readonly FilteringProperty[],
   filteringText: string
-): null | PropertyFilterProps.FilteringProperty {
+): null | FilteringProperty {
   filteringText = filteringText.toLowerCase();
 
   let maxLength = 0;
-  let matchedProperty: null | PropertyFilterProps.FilteringProperty = null;
+  let matchedProperty: null | FilteringProperty = null;
 
   for (const property of filteringProperties) {
     if (property.propertyLabel.length > maxLength && startsWith(filteringText, property.propertyLabel.toLowerCase())) {
@@ -25,13 +25,13 @@ export function matchFilteringProperty(
 
 // Finds the longest operator the filtering text starts from.
 export function matchOperator(
-  allowedOperators: readonly PropertyFilterProps.ComparisonOperator[],
+  allowedOperators: readonly ComparisonOperator[],
   filteringText: string
-): null | PropertyFilterProps.ComparisonOperator {
+): null | ComparisonOperator {
   filteringText = filteringText.toLowerCase();
 
   let maxLength = 0;
-  let matchedOperator: null | PropertyFilterProps.ComparisonOperator = null;
+  let matchedOperator: null | ComparisonOperator = null;
 
   for (const operator of allowedOperators) {
     if (operator.length > maxLength && startsWith(filteringText, operator.toLowerCase())) {
@@ -45,7 +45,7 @@ export function matchOperator(
 
 // Finds if the filtering text matches any operator prefix.
 export function matchOperatorPrefix(
-  allowedOperators: readonly PropertyFilterProps.ComparisonOperator[],
+  allowedOperators: readonly ComparisonOperator[],
   filteringText: string
 ): null | string {
   if (filteringText.trim().length === 0) {

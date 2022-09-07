@@ -5413,7 +5413,7 @@ Object {
   "name": "Icon",
   "properties": Array [
     Object {
-      "description": "Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+      "description": "Specifies alternate text for a custom icon (using the \`url\` attribute). We recommend that you provide this for accessibility.
 This property is ignored if you use a predefined icon or if you set your custom icon using the \`svg\` slot.",
       "name": "alt",
       "optional": true,
@@ -8259,6 +8259,7 @@ The count text is only displayed when \`query.tokens\` isn't empty.
       "type": "string",
     },
     Object {
+      "defaultValue": "[]",
       "description": "An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
 * properties [string]: The group label in the filtering dropdown that contains the list of properties from this group. For example: Tags.
 * values [string]: The group label in the filtering dropdown that contains the list of values from this group. For example: Tags values.
@@ -8314,6 +8315,7 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "defaultValue": "[]",
       "description": "An array of possible values of the individual \`filteringProperties\`. Each element has the following properties:
 * \`propertyKey\` [string]: The key of the corresponding filtering property in the \`filteringProperties\` array.
 * \`value\` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.

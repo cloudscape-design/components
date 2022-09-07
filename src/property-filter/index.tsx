@@ -1,21 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo, useEffect } from 'react';
+import React, { useRef, useState, useMemo, useEffect, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
 import SelectToggle from '../token-group/toggle';
 import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
-import { PropertyFilterProps } from './interfaces';
-import { Token } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, ParsedText, getAllowedOperators } from './controller';
+import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
+import { TokenButton } from './token';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -36,8 +35,8 @@ const PropertyFilter = React.forwardRef(
       hideOperations,
       onChange,
       filteringProperties,
-      filteringOptions,
-      customGroupsText,
+      filteringOptions = [],
+      customGroupsText = [],
       disableFreeTextFiltering = false,
       onLoadItems,
       virtualScroll,
@@ -53,12 +52,12 @@ const PropertyFilter = React.forwardRef(
       expandToViewport,
       ...rest
     }: PropertyFilterProps,
-    ref: React.Ref<PropertyFilterProps.Ref>
+    ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
-    useForwardFocus(ref, inputRef);
+    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
     const showResults = tokens?.length && !disabled;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
@@ -78,7 +77,7 @@ const PropertyFilter = React.forwardRef(
 
     const createToken = (currentText: string) => {
       const parsedText = parseText(currentText, filteringProperties, disableFreeTextFiltering);
-      let newToken: PropertyFilterProps.Token;
+      let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
           newToken = {
@@ -117,9 +116,9 @@ const PropertyFilter = React.forwardRef(
     };
     const getLoadMoreDetail = (parsedText: ParsedText, filteringText: string) => {
       const loadMoreDetail: {
-        filteringProperty: PropertyFilterProps.FilteringProperty | undefined;
+        filteringProperty: FilteringProperty | undefined;
         filteringText: string;
-        filteringOperator: PropertyFilterProps.ComparisonOperator | undefined;
+        filteringOperator: ComparisonOperator | undefined;
       } = {
         filteringProperty: undefined,
         filteringText,
@@ -280,13 +279,13 @@ const PropertyFilter = React.forwardRef(
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
               {slicedTokens.map((token, index) => (
-                <Token
+                <TokenButton
                   token={token}
                   first={index === 0}
                   operation={operation}
                   key={index}
                   removeToken={() => removeToken(index)}
-                  setToken={(newToken: PropertyFilterProps.Token) => setToken(index, newToken)}
+                  setToken={(newToken: Token) => setToken(index, newToken)}
                   setOperation={setOperation}
                   filteringOptions={filteringOptions}
                   filteringProperties={filteringProperties}

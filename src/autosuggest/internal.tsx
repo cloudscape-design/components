@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useRef } from 'react';
 
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -25,7 +25,6 @@ import AutosuggestOptionsList from './options-list';
 import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { useFormFieldContext } from '../contexts/form-field';
 import clsx from 'clsx';
 
@@ -65,8 +64,14 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   checkOptionValueField('Autosuggest', 'options', options);
 
   const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
-
-  useForwardFocus(ref, autosuggestInputRef);
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => autosuggestInputRef.current?.focus(),
+      select: () => autosuggestInputRef.current?.select(),
+    }),
+    []
+  );
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
@@ -137,6 +142,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     autosuggestInputRef.current?.focus();
   };
 
+  const handleDropdownMouseDown: React.MouseEventHandler = event => {
+    // Prevent currently focused element from losing focus.
+    event.preventDefault();
+  };
+
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
   const controlId = formFieldContext.controlId ?? selfControlId;
@@ -193,6 +203,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
         ) : null
       }
+      onDropdownMouseDown={handleDropdownMouseDown}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}
       onPressArrowDown={handlePressArrowDown}

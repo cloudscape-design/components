@@ -36,13 +36,7 @@ export default function () {
         </Box>
       ),
       filteringProperties,
-      defaultQuery: {
-        tokens: [
-          { propertyKey: 'averagelatency', operator: '!=', value: '30' },
-          { propertyKey: 'launchdate', operator: '<=', value: '2022-01-01' },
-        ],
-        operation: 'and',
-      },
+      defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
     },
     sorting: {},
   });
@@ -53,6 +47,7 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
+        splitPanelOpen={true}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -69,9 +64,7 @@ export default function () {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            <div style={{ whiteSpace: 'pre', fontFamily: 'monospace' }}>
-              {JSON.stringify(propertyFilterProps.query, null, 2)}
-            </div>
+            {' '}
           </SplitPanel>
         }
         content={
