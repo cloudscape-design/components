@@ -52,14 +52,17 @@
   right: 0;
   bottom: 0;
   left: 0;
-  border-top-left-radius: max(awsui.$border-radius-code-editor - awsui.$border-item-width, 0px);
-  border-top-right-radius: max(awsui.$border-radius-code-editor - awsui.$border-item-width, 0px);
 
   &:focus {
     @include styles.focus-highlight(3px);
     position: absolute;
     overflow: visible;
   }
+}
+
+.code-editor-refresh > .resizable-box > .editor {
+  border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
+  border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
 }
 
 .status-bar {

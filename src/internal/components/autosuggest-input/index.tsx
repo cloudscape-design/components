@@ -7,7 +7,6 @@ import Dropdown from '../dropdown';
 
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useUniqueId } from '../../hooks/use-unique-id';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
@@ -34,9 +33,11 @@ export interface AutosuggestInputProps
   ariaControls?: string;
   ariaActivedescendant?: string;
   dropdownExpanded?: boolean;
+  dropdownContentKey?: string;
   dropdownContent?: React.ReactNode;
   dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
+  onDropdownMouseDown?: React.MouseEventHandler;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   onPressArrowDown?: () => void;
@@ -44,8 +45,12 @@ export interface AutosuggestInputProps
   onPressEnter?: () => boolean;
 }
 
+export interface AutosuggestInputFocusOptions {
+  preventDropdown?: boolean;
+}
+
 export interface AutosuggestInputRef extends InputProps.Ref {
-  focusNoOpen(): void;
+  focus(options?: AutosuggestInputFocusOptions): void;
   open(): void;
   close(): void;
 }
@@ -71,9 +76,11 @@ const AutosuggestInput = React.forwardRef(
       ariaControls,
       ariaActivedescendant,
       dropdownExpanded,
+      dropdownContentKey,
       dropdownContent = null,
       dropdownFooter = null,
       dropdownWidth,
+      onDropdownMouseDown,
       onCloseDropdown,
       onDelayedInput,
       onPressArrowDown,
@@ -86,8 +93,6 @@ const AutosuggestInput = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
-
-    const dropdownId = useUniqueId('dropdown');
 
     const inputRef = useRef<HTMLInputElement>(null);
     const dropdownContentRef = useRef<HTMLDivElement>(null);
@@ -104,15 +109,14 @@ const AutosuggestInput = React.forwardRef(
     };
 
     useImperativeHandle(ref, () => ({
-      focus() {
+      focus(options?: AutosuggestInputFocusOptions) {
+        if (options?.preventDropdown) {
+          preventOpenOnFocusRef.current = true;
+        }
         inputRef.current?.focus();
       },
       select() {
         inputRef.current?.select();
-      },
-      focusNoOpen() {
-        preventOpenOnFocusRef.current = true;
-        inputRef.current?.focus();
       },
       open: openDropdown,
       close: closeDropdown,
@@ -120,7 +124,11 @@ const AutosuggestInput = React.forwardRef(
 
     const handleBlur: React.FocusEventHandler = event => {
       const relatedTarget = getBlurEventRelatedTarget(event.nativeEvent);
-      if (event.currentTarget.contains(relatedTarget) || dropdownFooterRef.current?.contains(relatedTarget)) {
+      if (
+        event.currentTarget.contains(relatedTarget) ||
+        dropdownContentRef.current?.contains(relatedTarget) ||
+        dropdownFooterRef.current?.contains(relatedTarget)
+      ) {
         return;
       }
       closeDropdown();
@@ -133,11 +141,6 @@ const AutosuggestInput = React.forwardRef(
         fireNonCancelableEvent(onFocus, null);
       }
       preventOpenOnFocusRef.current = false;
-    };
-
-    const handleMouseDown: React.MouseEventHandler = event => {
-      // Prevent currently focused element from losing focus.
-      event.preventDefault();
     };
 
     const handleKeyDown = (e: CustomEvent<BaseKeyDetail>) => {
@@ -226,6 +229,7 @@ const AutosuggestInput = React.forwardRef(
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
+          contentKey={dropdownContentKey}
           trigger={
             <InternalInput
               type="search"
@@ -245,9 +249,8 @@ const AutosuggestInput = React.forwardRef(
               {...formFieldContext}
             />
           }
-          onMouseDown={handleMouseDown}
+          onMouseDown={onDropdownMouseDown}
           open={open}
-          dropdownId={dropdownId}
           footer={
             dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>

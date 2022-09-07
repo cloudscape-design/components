@@ -34,8 +34,6 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   borderRadiusCodeEditor: {
     description: 'The border radius of code editors.',
-    public: true,
-    themeable: true,
   },
   borderRadiusContainer: {
     description:
