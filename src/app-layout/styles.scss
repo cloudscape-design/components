@@ -55,6 +55,10 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   visibility: hidden;
 }
 
+.navigation-panel {
+  overflow-anchor: none;
+}
+
 .drawer {
   flex-shrink: 0;
   position: relative;
@@ -157,7 +161,7 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
 }
 
 .content-header-wrapper {
-  padding-bottom: awsui.$space-scaled-m;
+  padding-bottom: awsui.$space-content-header-padding-bottom;
 }
 
 .content-wrapper {

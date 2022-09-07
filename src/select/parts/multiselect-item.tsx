@@ -56,7 +56,7 @@ const MultiSelectItem = (
 
   return (
     <SelectableItem
-      ariaChecked={selected}
+      ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}

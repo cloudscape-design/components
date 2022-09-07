@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import OptionsList, { OptionsListProps } from '../internal/components/options-list';
-import { scrollUntilVisible } from '../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { getBaseProps } from '../internal/base-component';
 
 import AutosuggestOption from './autosuggest-option';
@@ -53,9 +53,11 @@ const PlainList = ({
 }: ListProps) => {
   const listRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
-    const item = listRef.current?.querySelector(`[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`);
+    const item = listRef.current?.querySelector<HTMLElement>(
+      `[data-mouse-target="${autosuggestItemsState.highlightedIndex}"]`
+    );
     if (autosuggestItemsState.highlightType === 'keyboard' && item) {
-      scrollUntilVisible(item as HTMLElement);
+      scrollElementIntoView(item);
     }
   }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex]);
 

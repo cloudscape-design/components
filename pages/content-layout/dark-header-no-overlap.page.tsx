@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import AppLayout from '~components/app-layout';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Header from '~components/header';
 import Box from '~components/box';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -23,7 +23,7 @@ export default function () {
             header={
               <Header
                 variant="h1"
-                description="When you create an Amazon CloudFront distribution, you tell CloudFront where to find your content by specifying your origin servers."
+                description="When you create a distribution, you tell it where to find your content by specifying your origin servers."
               >
                 Content header
               </Header>

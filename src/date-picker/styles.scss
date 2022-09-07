@@ -186,8 +186,9 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
       }
     }
   }
+
   @include styles.styles-reset;
   @include focus-visible.when-visible {
-    @include styles.container-focus();
+    @include styles.container-focus(awsui.$border-radius-dropdown);
   }
 }

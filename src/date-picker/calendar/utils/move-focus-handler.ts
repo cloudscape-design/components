@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { differenceInMonths } from 'date-fns';
+import { differenceInYears } from 'date-fns';
 import { DatePickerProps } from '../../interfaces';
 
 export interface MoveFocusHandler {
@@ -18,7 +18,9 @@ const moveFocusHandler: MoveFocusHandler = (focussed: Date, isDateEnabled, moveC
   }
 
   while (!isDateEnabled(current)) {
-    if (Math.abs(differenceInMonths(focussed, current)) > 1) {
+    // Get the first enabled date within the one year max.
+    // Used when using keyboard navigation on calendar days.
+    if (Math.abs(differenceInYears(focussed, current)) > 1) {
       return focussed;
     }
     current = moveCallback(current);
