@@ -75,8 +75,6 @@ const TransitionContentSide = ({
         [styles['drawer-closed']]: !isOpen,
       })}
       style={{
-        top: topOffset,
-        bottom: bottomOffset,
         width: isOpen ? cappedSize : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
       }}
@@ -86,6 +84,10 @@ const TransitionContentSide = ({
         className={clsx(styles['drawer-content-side'], {
           [styles.refresh]: isRefresh,
         })}
+        style={{
+          top: topOffset,
+          bottom: bottomOffset,
+        }}
         onClick={() => !isOpen && onToggle()}
       >
         {isOpen ? (
