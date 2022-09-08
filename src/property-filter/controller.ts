@@ -59,16 +59,12 @@ export const getQueryActions = (
 };
 
 export const getAllowedOperators = (property: FilteringProperty): ComparisonOperator[] => {
-  const { operators, defaultOperator } = property;
+  const { operators = [], defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorSet: { [key: string]: true } = { [defaultOperator ?? '=']: true };
-  // TODO: remove unknown type annotation once extended operators are supported.
-  operators?.forEach((op: unknown) => {
-    if (typeof op === 'string') {
-      operatorSet[op] = true;
-    }
-  });
-  return operatorOrder.filter(op => operatorSet[op]);
+  const operatorSet = new Set<ComparisonOperator>();
+  operatorSet.add(defaultOperator ?? '=');
+  operators.forEach(op => operatorSet.add(typeof op === 'string' ? op : op.operator));
+  return operatorOrder.filter(op => operatorSet.has(op));
 };
 
 /*

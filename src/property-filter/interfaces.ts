@@ -6,11 +6,12 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import {
-  PropertyFilterOperator,
   PropertyFilterOperation,
-  PropertyFilterToken,
-  PropertyFilterProperty,
+  PropertyFilterOperator,
+  PropertyFilterOperatorExtended,
   PropertyFilterOption,
+  PropertyFilterProperty,
+  PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
@@ -153,7 +154,9 @@ export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
+  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
+
   export interface FilteringProperty extends PropertyFilterProperty {
     groupValuesLabel: string;
     propertyLabel: string;
@@ -237,6 +240,7 @@ export namespace PropertyFilterProps {
 export type Token = PropertyFilterProps.Token;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
+export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;
