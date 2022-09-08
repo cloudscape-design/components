@@ -8,12 +8,15 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import {
+  PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
-  PropertyFilterOperation,
-  PropertyFilterToken,
+  PropertyFilterOperatorForm,
+  PropertyFilterOperatorFormat,
+  PropertyFilterOperatorFormProps,
   PropertyFilterOption,
   PropertyFilterProperty,
+  PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
@@ -157,8 +160,12 @@ export namespace PropertyFilterProps {
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+  export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
+
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
@@ -246,6 +253,9 @@ export type Token = PropertyFilterProps.Token;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
 export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
+export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterProps.ExtendedOperatorFormProps<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterProps.ExtendedOperatorForm<TokenValue>;
+export type ExtendedOperatorFormat<TokenValue> = PropertyFilterProps.ExtendedOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;
