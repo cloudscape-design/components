@@ -85,8 +85,8 @@ const TransitionContentSide = ({
           [styles.refresh]: isRefresh,
         })}
         style={{
-          bottom: bottomOffset,
           top: topOffset,
+          bottom: bottomOffset,
         }}
         onClick={() => !isOpen && onToggle()}
       >

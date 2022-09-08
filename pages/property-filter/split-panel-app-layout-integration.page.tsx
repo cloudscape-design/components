@@ -12,7 +12,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import labels from '../app-layout/utils/labels';
-import { allItems, columnDefinitions, TableItem, i18nStrings, filteringProperties } from './table.data';
+import { allItems, TableItem } from './table.data';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 export default function () {
