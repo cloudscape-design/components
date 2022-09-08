@@ -10,6 +10,7 @@ import { InternalBaseComponentProps } from '../../hooks/use-base-component/index
 export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, InternalBaseComponentProps {
   controlId?: string;
   controlClassName: string;
+  outlineClassName: string;
   disabled?: boolean;
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
@@ -29,6 +30,7 @@ function joinString(values: (string | undefined)[]) {
 export default function AbstractSwitch({
   controlId,
   controlClassName,
+  outlineClassName,
   disabled,
   nativeControl,
   styledControl,
@@ -80,27 +82,27 @@ export default function AbstractSwitch({
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
       >
-        <div className={clsx(styles.control, controlClassName)}>
+        <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
             ...focusVisible,
             id,
             disabled,
+            className: styles['native-input'],
             'aria-describedby': ariaDescriptons.length ? joinString(ariaDescriptons) : undefined,
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
           })}
-          {/*An empty div to display the outline, because the native control is invisible*/}
-          <div className={styles.outline} />
-        </div>
-        <div className={clsx(styles.content, !label && !description && styles['empty-content'])}>
+          <span className={clsx(styles.outline, outlineClassName)} />
+        </span>
+        <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (
-            <div id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
+            <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
               {label}
-            </div>
+            </span>
           )}
           {description && (
-            <div
+            <span
               id={descriptionId}
               className={clsx(styles.description, {
                 [styles['description-disabled']]: disabled,
@@ -108,9 +110,9 @@ export default function AbstractSwitch({
               })}
             >
               {description}
-            </div>
+            </span>
           )}
-        </div>
+        </span>
       </WrapperElement>
     </div>
   );

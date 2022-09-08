@@ -1,25 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
-import InternalAutosuggest, { InternalAutosuggestProps } from '../autosuggest/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
-import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
 import SelectToggle from '../token-group/toggle';
 import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
-import { PropertyFilterProps } from './interfaces';
-import { Token } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, ParsedText } from './controller';
+import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
+import { TokenButton } from './token';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
 
@@ -33,8 +33,8 @@ const PropertyFilter = React.forwardRef(
       hideOperations,
       onChange,
       filteringProperties,
-      filteringOptions,
-      customGroupsText,
+      filteringOptions = [],
+      customGroupsText = [],
       disableFreeTextFiltering = false,
       onLoadItems,
       virtualScroll,
@@ -50,20 +50,18 @@ const PropertyFilter = React.forwardRef(
       expandToViewport,
       ...rest
     }: PropertyFilterProps,
-    ref: React.Ref<PropertyFilterProps.Ref>
+    ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
-    const inputRef = useRef<HTMLInputElement>(null);
-    const preventFocus = useRef<boolean>(false);
+    const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
-    useForwardFocus(ref, inputRef);
+    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
     const showResults = tokens?.length && !disabled;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
-      inputRef,
-      preventFocus
+      inputRef
     );
     const [filteringText, setFilteringText] = useState<string>('');
     const parsedText = parseText(filteringText, filteringProperties, disableFreeTextFiltering);
@@ -77,7 +75,7 @@ const PropertyFilter = React.forwardRef(
 
     const createToken = (currentText: string) => {
       const parsedText = parseText(currentText, filteringProperties, disableFreeTextFiltering);
-      let newToken: PropertyFilterProps.Token;
+      let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
           newToken = {
@@ -109,16 +107,16 @@ const PropertyFilter = React.forwardRef(
       setFilteringText('');
     };
     const ignoreKeyDown = useRef<boolean>(false);
-    const handleKeyDown: InternalAutosuggestProps['onKeyDown'] = event => {
+    const handleKeyDown: PropertyFilterAutosuggestProps['onKeyDown'] = event => {
       if (filteringText && !ignoreKeyDown.current && event.detail.keyCode === KeyCode.enter) {
         createToken(filteringText);
       }
     };
     const getLoadMoreDetail = (parsedText: ParsedText, filteringText: string) => {
       const loadMoreDetail: {
-        filteringProperty: PropertyFilterProps.FilteringProperty | undefined;
+        filteringProperty: FilteringProperty | undefined;
         filteringText: string;
-        filteringOperator: PropertyFilterProps.ComparisonOperator | undefined;
+        filteringOperator: ComparisonOperator | undefined;
       } = {
         filteringProperty: undefined,
         filteringText,
@@ -154,7 +152,7 @@ const PropertyFilter = React.forwardRef(
             ...asyncProps,
           }
         : {};
-    const handleSelected: InternalAutosuggestProps['__onOptionClick'] = event => {
+    const handleSelected: PropertyFilterAutosuggestProps['onOptionClick'] = event => {
       // The ignoreKeyDown flag makes sure `createToken` routine runs only once. Autosuggest's `onKeyDown` fires,
       // when an item is selected from the list using "enter" key.
       ignoreKeyDown.current = true;
@@ -175,8 +173,17 @@ const PropertyFilter = React.forwardRef(
 
       // stop dropdown from closing
       event.preventDefault();
-      const loadMoreDetail = getLoadMoreDetail(parseText(value, filteringProperties, disableFreeTextFiltering), value);
+      const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
+      const loadMoreDetail = getLoadMoreDetail(parsedText, value);
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
+
+      // Insert operator automatically if only one operator is defined for the given property.
+      if (parsedText.step === 'operator') {
+        const operators = getAllowedOperators(parsedText.property);
+        if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
+          setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
+        }
+      }
     };
     const [tokensExpanded, setTokensExpanded] = useState(false);
     const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);
@@ -187,10 +194,10 @@ const PropertyFilter = React.forwardRef(
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
-          <InternalAutosuggest
+          <PropertyFilterAutosuggest
+            ref={inputRef}
             virtualScroll={virtualScroll}
             enteredTextLabel={i18nStrings.enteredTextLabel}
-            ref={inputRef}
             className={styles.input}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
@@ -202,16 +209,8 @@ const PropertyFilter = React.forwardRef(
             empty={filteringEmpty}
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
-            __disableShowAll={true}
-            __dropdownWidth={300}
-            __onOptionClick={handleSelected}
-            __onOpen={e => {
-              if (preventFocus.current) {
-                e.preventDefault();
-                preventFocus.current = false;
-              }
-            }}
-            __hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            onOptionClick={handleSelected}
+            hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
             aria-live="polite"
@@ -225,13 +224,13 @@ const PropertyFilter = React.forwardRef(
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
               {slicedTokens.map((token, index) => (
-                <Token
+                <TokenButton
                   token={token}
                   first={index === 0}
                   operation={operation}
                   key={index}
                   removeToken={() => removeToken(index)}
-                  setToken={(newToken: PropertyFilterProps.Token) => setToken(index, newToken)}
+                  setToken={(newToken: Token) => setToken(index, newToken)}
                   setOperation={setOperation}
                   filteringOptions={filteringOptions}
                   filteringProperties={filteringProperties}

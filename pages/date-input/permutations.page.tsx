@@ -10,7 +10,7 @@ import Box from '~components/box';
 
 const permutations = createPermutations<DateInputProps>([
   {
-    value: ['', '2020/01/01'],
+    value: ['', '2020-01-01'],
     placeholder: ['', 'YYYY/MM/DD'],
     ariaLabel: ['Some label'],
     invalid: [false, true],

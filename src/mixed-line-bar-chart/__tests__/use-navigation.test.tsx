@@ -11,7 +11,15 @@ import { useNavigation, UseNavigationProps } from '../../../lib/components/mixed
 import { ChartDataTypes } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import makeScaledBarGroups from '../../../lib/components/mixed-line-bar-chart/make-scaled-bar-groups';
 import makeScaledSeries from '../../../lib/components/mixed-line-bar-chart/make-scaled-series';
-import { lineSeries1, lineSeries2, lineSeries3, barSeries, barSeries2, thresholdSeries } from './common';
+import {
+  lineSeries1,
+  lineSeries2,
+  lineSeries3,
+  barSeries,
+  barSeries2,
+  thresholdSeries,
+  xThresholdSeries1,
+} from './common';
 
 const xScale = new ChartScale('linear', [0, 3], [0, 3]);
 const yScale = new NumericChartScale('linear', [0, 15], [0, 15], null);
@@ -132,6 +140,11 @@ describe('Line charts', () => {
       color: 'grey',
       series: thresholdSeries,
     },
+    {
+      index: 3,
+      color: 'red',
+      series: xThresholdSeries1,
+    },
   ];
 
   const lineProps = { xScale, yScale, series };
@@ -152,6 +165,9 @@ describe('Line charts', () => {
 
     act(() => wrapper.keydown(KeyCode.down));
     expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(thresholdSeries.title);
+
+    act(() => wrapper.keydown(KeyCode.down));
+    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(xThresholdSeries1.title);
 
     // Loop around to the first series
     act(() => wrapper.keydown(KeyCode.down));

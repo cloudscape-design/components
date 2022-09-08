@@ -56,7 +56,6 @@ const defaultItemProps = {
   index: 1,
   getOptionProps: getOptionProps(false, false),
   filteringValue: 'child',
-  isKeyboard: false,
   checkboxes: false,
 };
 
@@ -71,7 +70,6 @@ describe('getItemProps', () => {
       filteringValue: 'child',
       hasCheckbox: false,
       highlighted: false,
-      isKeyboard: false,
       key: 1,
       option: {
         option: { label: 'Child 1' },
@@ -85,7 +83,6 @@ describe('getItemProps', () => {
     const props = getItemProps({
       ...defaultItemProps,
       checkboxes: true,
-      isKeyboard: true,
     });
     expect(props).toEqual({
       'data-child-index': 1,
@@ -95,7 +92,6 @@ describe('getItemProps', () => {
       filteringValue: 'child',
       hasCheckbox: true,
       highlighted: false,
-      isKeyboard: true,
       key: 1,
       option: {
         option: { label: 'Child 1' },
@@ -118,7 +114,6 @@ describe('getItemProps', () => {
       filteringValue: 'child',
       hasCheckbox: false,
       highlighted: true,
-      isKeyboard: false,
       key: 1,
       option: {
         option: {
@@ -143,7 +138,6 @@ describe('getItemProps', () => {
       filteringValue: 'child',
       hasCheckbox: false,
       highlighted: false,
-      isKeyboard: false,
       key: 1,
       option: {
         option: {
@@ -167,7 +161,6 @@ describe('getItemProps', () => {
       filteringValue: 'child',
       hasCheckbox: false,
       highlighted: false,
-      isKeyboard: false,
       key: 3,
       option: {
         option: {

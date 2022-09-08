@@ -20,10 +20,11 @@ export interface MixedLineBarChartProps<T extends ChartDataTypes>
    * Array that represents the source of data for the displayed chart.
    * Each element can represent a line series, bar series, or a threshold, and can have the following properties:
    *
-   * * `title` (string): A human-readable title for this series
-   * * `type` (string): Series type (`"line"`, `"bar"`, or `"threshold"`)
-   * * `data` (Array): An array of data points, represented as objects with `x` and `y` properties
-   * * `color` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color
+   * * `title` (string): A human-readable title for this series.
+   * * `type` (string): Series type (`"line"`, `"bar"`, or `"threshold"`).
+   * * `data` (Array): For line and bar series, an array of data points, represented as objects with `x` and `y` properties.
+   * * `y` (number): For threshold series, the value of the threshold.
+   * * `color` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color.
    * * `valueFormatter` (Function): (Optional) A function that formats data values before rendering in the UI, For example, in the details popover.
    */
   series: ReadonlyArray<MixedLineBarChartProps.ChartSeries<T>>;
@@ -73,15 +74,27 @@ export namespace MixedLineBarChartProps {
     type: 'line';
   }
 
-  export interface ThresholdSeries extends Omit<IDataSeries<never>, 'data' | 'valueFormatter'> {
+  export interface ThresholdSeries<T = any> extends Omit<IDataSeries<never>, 'data' | 'valueFormatter'> {
+    type: 'threshold';
+    y?: number;
+    x?: T;
+    valueFormatter?: CartesianChartProps.TickFormatter<number>;
+  }
+
+  export interface YThresholdSeries extends Omit<ThresholdSeries<never>, 'x'> {
     type: 'threshold';
     y: number;
     valueFormatter?: CartesianChartProps.TickFormatter<number>;
   }
 
+  export interface XThresholdSeries<T> extends Omit<ThresholdSeries<T>, 'y' | 'valueFormatter'> {
+    type: 'threshold';
+    x: T;
+  }
+
   export type DataSeries<T> = LineDataSeries<T> | BarDataSeries<T>;
 
-  export type ChartSeries<T> = DataSeries<T> | ThresholdSeries;
+  export type ChartSeries<T> = DataSeries<T> | ThresholdSeries<T>;
 
   export type FilterChangeDetail<T> = CartesianChartProps.FilterChangeDetail<ChartSeries<T>>;
 

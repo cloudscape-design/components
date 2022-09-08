@@ -3,7 +3,7 @@
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/interfaces';
 import formatHighlighted from '../../../lib/components/mixed-line-bar-chart/format-highlighted';
 
-import { barSeries, barSeries2, lineSeries1, lineSeries3, thresholdSeries } from './common';
+import { barSeries, barSeries2, lineSeries1, lineSeries3, thresholdSeries, xThresholdSeries1 } from './common';
 
 function createInternalSeries<T>(externalSeries: readonly MixedLineBarChartProps.ChartSeries<T>[]) {
   return externalSeries.map((series, index) => ({ series, index, color: '' }));
@@ -70,6 +70,14 @@ describe('formatHighlighted', () => {
     expect(formatted.details).toEqual([
       { key: 'Bar Series 1', value: 'POTATOES77', markerType: 'rectangle', color: '' },
       { key: 'Threshold 1', value: '8.00', markerType: 'dashed', color: '' },
+    ]);
+  });
+
+  it('includes x-thresholds if x matched', () => {
+    const formatted = formatHighlighted(3, createInternalSeries([lineSeries1, xThresholdSeries1]));
+    expect(formatted.details).toEqual([
+      { key: 'Line Series 1', value: 10, markerType: 'line', color: '' },
+      { key: 'X-Threshold 1', value: '', markerType: 'dashed', color: '' },
     ]);
   });
 });

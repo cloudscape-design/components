@@ -9,7 +9,7 @@ import SpaceBetween from '~components/space-between';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import Popover from '~components/popover';
 import Button from '~components/button';
-import { i18nStrings as propertyFilterI18n } from '../property-filter/table.data';
+import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
 import { range } from 'lodash';
 import AppContext, { AppContextType } from '../app/app-context';
 import { SampleDropdown, SampleModal } from './common';

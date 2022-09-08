@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
-import { addDays, addMonths, isSameMonth, startOfMonth } from 'date-fns';
+import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
@@ -11,9 +11,10 @@ import CalendarHeader from './header';
 import Grid, { DateChangeHandlerNullable } from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
-import { formatDate, memoizedDate } from './utils/date.js';
+import { memoizedDate } from './utils/memoized-date.js';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import { normalizeStartOfWeek } from './utils/locales.js';
+import { formatDate } from '../../internal/utils/date-time';
 export interface DateChangeHandler {
   (detail: CalendarTypes.DateDetail): void;
 }
@@ -75,12 +76,17 @@ const Calendar = ({
     return null;
   };
 
+  // Get the first enabled date of the month. If no day is enabled in the given month, return the first day of the month.
+  // This is needed because `baseDate` is used as the first focusable date, for example when navigating to the calendar area.
   const getBaseDate = (date: Date) => {
     const startDate = startOfMonth(date);
-    if (isDateEnabled(startDate)) {
-      return startDate;
+    for (let i = 0; i < getDaysInMonth(date); i++) {
+      const currentDate = addDays(startDate, i);
+      if (isDateEnabled(currentDate)) {
+        return currentDate;
+      }
     }
-    return moveFocusHandler(startDate, isDateEnabled, (date: Date) => addDays(date, 1));
+    return startDate;
   };
 
   const baseDate: Date = getBaseDate(displayedDate);

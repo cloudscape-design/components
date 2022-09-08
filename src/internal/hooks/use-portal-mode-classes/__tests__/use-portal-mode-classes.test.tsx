@@ -4,6 +4,16 @@ import React, { useRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes';
 import VisualContext from '../../../../../lib/components/internal/components/visual-context';
+import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
+
+jest.mock('../../../../../lib/components/internal/hooks/use-visual-mode', () => {
+  const original = jest.requireActual('../../../../../lib/components/internal/hooks/use-visual-mode');
+  return { ...original, useVisualRefresh: jest.fn() };
+});
+
+afterEach(() => {
+  (useVisualRefresh as jest.Mock).mockReset();
+});
 
 describe('usePortalModeClasses', () => {
   function RenderTest({ refClasses }: { refClasses: string }) {
@@ -43,7 +53,9 @@ describe('usePortalModeClasses', () => {
     // as an integration test.
     window.CSS.supports = jest.fn(() => true);
 
-    render(<RenderTest refClasses="awsui-visual-refresh" />);
+    (useVisualRefresh as jest.Mock).mockImplementation(() => true);
+
+    render(<RenderTest refClasses="" />);
     expect(screen.getByTestId('subject')).toHaveClass('awsui-visual-refresh', { exact: true });
   });
 

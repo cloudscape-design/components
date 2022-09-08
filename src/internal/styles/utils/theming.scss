@@ -2,9 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
-@use 'awsui:environment' as environment;
-
 @mixin dark-mode-only($selector: '') {
   /* stylelint-disable selector-combinator-disallowed-list, selector-class-pattern */
   :global(#{$selector}.awsui-polaris-dark-mode) &,

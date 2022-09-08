@@ -95,7 +95,7 @@ export const paginationLabels: PaginationProps.Labels = {
   previousPageLabel: 'Previous page',
 };
 
-export const ariaLabels: Required<TableProps<{ text: string }>>['ariaLabels'] = {
+export const ariaLabels: Required<TableProps<Item>>['ariaLabels'] = {
   selectionGroupLabel: 'group label',
   allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
   itemSelectionLabel: ({ selectedItems }, item) =>

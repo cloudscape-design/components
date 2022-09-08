@@ -11,12 +11,9 @@ import { getOptionProps, ListProps } from './plain-list';
 import styles from './styles.css.js';
 
 const VirtualList = ({
+  autosuggestItemsState,
   handleLoadMore,
-  filteredItems,
-  usingMouse,
   menuProps,
-  highlightedOption,
-  highlightedIndex,
   enteredTextLabel,
   highlightedA11yProps,
   hasDropdownStatus,
@@ -29,7 +26,7 @@ const VirtualList = ({
   const [width, strutRef] = useContainerQuery(rect => rect.width, []);
   useImperativeHandle(strutRef, () => scrollRef.current);
   const rowVirtualizer = useVirtual({
-    size: filteredItems.length,
+    size: autosuggestItemsState.items.length,
     parentRef: scrollRef,
     // estimateSize is a dependency of measurements memo. We update it to force full recalculation
     // when the height of any option could have changed:
@@ -41,10 +38,10 @@ const VirtualList = ({
   });
 
   useEffect(() => {
-    if (!usingMouse.current) {
-      rowVirtualizer.scrollToIndex(highlightedIndex);
+    if (autosuggestItemsState.highlightType === 'keyboard') {
+      rowVirtualizer.scrollToIndex(autosuggestItemsState.highlightedIndex);
     }
-  }, [usingMouse, rowVirtualizer, highlightedIndex]);
+  }, [autosuggestItemsState.highlightType, autosuggestItemsState.highlightedIndex, rowVirtualizer]);
 
   return (
     <OptionsList
@@ -59,17 +56,17 @@ const VirtualList = ({
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
-        style={{ height: rowVirtualizer.totalSize + (filteredItems.length === 1 ? 1 : 0) }}
+        style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
       {rowVirtualizer.virtualItems.map(virtualRow => {
         const { index, start, measureRef } = virtualRow;
-        const item = filteredItems[index];
+        const item = autosuggestItemsState.items[index];
         const optionProps = getOptionProps(
           index,
           item,
-          filteredItems,
+          autosuggestItemsState.items,
           highlightedA11yProps,
-          highlightedOption,
+          autosuggestItemsState.highlightedOption,
           hasDropdownStatus
         );
 
@@ -79,13 +76,14 @@ const VirtualList = ({
             ref={measureRef}
             highlightText={highlightText}
             option={item}
-            highlighted={item === highlightedOption}
+            highlighted={item === autosuggestItemsState.highlightedOption}
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
             virtualPosition={start + (index === 0 ? 1 : 0)}
             screenReaderContent={screenReaderContent}
-            ariaSetsize={filteredItems.length}
+            ariaSetsize={autosuggestItemsState.items.length}
             ariaPosinset={index + 1}
+            highlightType={autosuggestItemsState.highlightType}
             {...optionProps}
           />
         );

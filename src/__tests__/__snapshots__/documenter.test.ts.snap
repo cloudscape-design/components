@@ -451,7 +451,8 @@ Individual properties will always take precedence over the default coming from t
       "type": "boolean",
     },
     Object {
-      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.",
+      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.
+**Deprecated**, replaced by the \`disableOverlap\` property of the [content layout](/components/content-layout/) component.",
       "name": "disableContentHeaderOverlap",
       "optional": true,
       "type": "boolean",
@@ -586,7 +587,8 @@ Note that sticky notifications are not supported in Internet Explorer.
       "name": "content",
     },
     Object {
-      "description": "Top area of the page content.",
+      "description": "Top area of the page content.
+**Deprecated**, replaced by the \`header\` slot of the [content layout](/components/content-layout/) component.",
       "isDefault": false,
       "name": "contentHeader",
       "visualRefreshTag": "",
@@ -2567,6 +2569,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "check",
           "contact",
           "close",
           "copy",
@@ -4095,6 +4098,50 @@ Object {
 }
 `;
 
+exports[`Documenter definition for content-layout matches the snapshot: content-layout 1`] = `
+Object {
+  "events": Array [],
+  "functions": Array [],
+  "name": "ContentLayout",
+  "properties": Array [
+    Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Determines whether the layout has an overlap between the header and content.
+If true, the overlap will be removed.",
+      "name": "disableOverlap",
+      "optional": true,
+      "type": "boolean",
+      "visualRefreshTag": "",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Use this slot to render the main content of the layout below the header.",
+      "displayName": "content",
+      "isDefault": true,
+      "name": "children",
+    },
+    Object {
+      "description": "Use this slot to render the header content for the layout.",
+      "isDefault": false,
+      "name": "header",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-picker matches the snapshot: date-picker 1`] = `
 Object {
   "events": Array [
@@ -4754,7 +4801,6 @@ Has no effect when \`dateOnly\` is true.
       "type": "string",
     },
     Object {
-      "defaultValue": "getBrowserTimezoneOffset()",
       "description": "The time offset from UTC in minutes that should be used to
 display and produce values.
 Has no effect when \`dateOnly\` is true.
@@ -5368,7 +5414,7 @@ Object {
   "name": "Icon",
   "properties": Array [
     Object {
-      "description": "Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+      "description": "Specifies alternate text for a custom icon (using the \`url\` attribute). We recommend that you provide this for accessibility.
 This property is ignored if you use a predefined icon or if you set your custom icon using the \`svg\` slot.",
       "name": "alt",
       "optional": true,
@@ -5409,6 +5455,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "caret-right-filled",
           "caret-up-filled",
           "caret-up",
+          "check",
           "contact",
           "close",
           "copy",
@@ -6655,10 +6702,11 @@ This can only be used when the chart consists exclusively of bar series.",
       "defaultValue": "[]",
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent a line series, bar series, or a threshold, and can have the following properties:
-* \`title\` (string): A human-readable title for this series
-* \`type\` (string): Series type (\`\\"line\\"\`, \`\\"bar\\"\`, or \`\\"threshold\\"\`)
-* \`data\` (Array): An array of data points, represented as objects with \`x\` and \`y\` properties
-* \`color\` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color
+* \`title\` (string): A human-readable title for this series.
+* \`type\` (string): Series type (\`\\"line\\"\`, \`\\"bar\\"\`, or \`\\"threshold\\"\`).
+* \`data\` (Array): For line and bar series, an array of data points, represented as objects with \`x\` and \`y\` properties.
+* \`y\` (number): For threshold series, the value of the threshold.
+* \`color\` (string): (Optional) A color hex value for this series. When assigned, it takes priority over the automatically assigned color.
 * \`valueFormatter\` (Function): (Optional) A function that formats data values before rendering in the UI, For example, in the details popover.
 ",
       "name": "series",
@@ -8126,7 +8174,7 @@ Object {
           Object {
             "name": "tokens",
             "optional": false,
-            "type": "typeOperator",
+            "type": "ReadonlyArray<PropertyFilterProps.Token>",
           },
         ],
         "type": "object",
@@ -8212,6 +8260,7 @@ The count text is only displayed when \`query.tokens\` isn't empty.
       "type": "string",
     },
     Object {
+      "defaultValue": "[]",
       "description": "An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
 * properties [string]: The group label in the filtering dropdown that contains the list of properties from this group. For example: Tags.
 * values [string]: The group label in the filtering dropdown that contains the list of values from this group. For example: Tags values.
@@ -8267,6 +8316,7 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "defaultValue": "[]",
       "description": "An array of possible values of the individual \`filteringProperties\`. Each element has the following properties:
 * \`propertyKey\` [string]: The key of the corresponding filtering property in the \`filteringProperties\` array.
 * \`value\` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
@@ -8503,7 +8553,7 @@ Each token has the following properties:
           Object {
             "name": "tokens",
             "optional": false,
-            "type": "typeOperator",
+            "type": "ReadonlyArray<PropertyFilterProps.Token>",
           },
         ],
         "type": "object",

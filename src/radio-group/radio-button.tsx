@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React from 'react';
 import AbstractSwitch from '../internal/components/abstract-switch';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -26,12 +26,12 @@ export default function RadioButton({
   controlId,
   onChange,
 }: RadioButtonProps) {
-  const radioRef = useRef(null);
-  const isVisualRefresh = useVisualRefresh(radioRef);
+  const isVisualRefresh = useVisualRefresh();
   return (
     <AbstractSwitch
       className={clsx(styles.radio, description && styles['radio--has-description'])}
       controlClassName={styles['radio-control']}
+      outlineClassName={styles.outline}
       label={label}
       description={description}
       disabled={disabled}
@@ -39,7 +39,6 @@ export default function RadioButton({
       nativeControl={nativeControlProps => (
         <input
           {...nativeControlProps}
-          className={styles.input}
           type="radio"
           name={name}
           value={value}
@@ -48,7 +47,7 @@ export default function RadioButton({
         />
       )}
       styledControl={
-        <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true" ref={radioRef}>
+        <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
           <circle
             className={clsx(styles['styled-circle-border'], { [styles['styled-circle-disabled']]: disabled })}
             strokeWidth={isVisualRefresh ? 12 : 8}

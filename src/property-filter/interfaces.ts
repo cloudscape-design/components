@@ -5,6 +5,13 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import {
+  PropertyFilterOperator,
+  PropertyFilterOperation,
+  PropertyFilterToken,
+  PropertyFilterProperty,
+  PropertyFilterOption,
+} from '@cloudscape-design/collection-hooks';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
   /**
@@ -143,12 +150,20 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 }
 
 export namespace PropertyFilterProps {
-  export interface Query {
-    tokens: readonly PropertyFilterProps.Token[];
-    operation: PropertyFilterProps.JoinOperation;
+  export type Token = PropertyFilterToken;
+  export type JoinOperation = PropertyFilterOperation;
+  export type ComparisonOperator = PropertyFilterOperator;
+  export type FilteringOption = PropertyFilterOption;
+  export interface FilteringProperty extends PropertyFilterProperty {
+    groupValuesLabel: string;
+    propertyLabel: string;
+    group?: string;
   }
 
-  export type JoinOperation = 'and' | 'or';
+  export interface Query {
+    tokens: ReadonlyArray<PropertyFilterProps.Token>;
+    operation: PropertyFilterProps.JoinOperation;
+  }
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
@@ -198,26 +213,10 @@ export namespace PropertyFilterProps {
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
 
-  export type ComparisonOperator = '<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=';
-
-  export interface FilteringProperty {
-    key: string;
-    groupValuesLabel: string;
-    propertyLabel: string;
-    operators?: readonly ComparisonOperator[];
-    defaultOperator?: ComparisonOperator;
-    group?: string;
-  }
-
   export interface GroupText {
     properties: string;
     values: string;
     group: string;
-  }
-
-  export interface FilteringOption {
-    propertyKey: string;
-    value: string;
   }
 
   export interface FilteringChangeDetail {
@@ -231,10 +230,25 @@ export namespace PropertyFilterProps {
      */
     focus(): void;
   }
-
-  export interface Token {
-    value: string;
-    propertyKey?: string;
-    operator: ComparisonOperator;
-  }
 }
+
+// Re-exported namespace interfaces to use module-style imports internally
+
+export type Token = PropertyFilterProps.Token;
+export type JoinOperation = PropertyFilterProps.JoinOperation;
+export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
+export type FilteringOption = PropertyFilterProps.FilteringOption;
+export type FilteringProperty = PropertyFilterProps.FilteringProperty;
+export type Query = PropertyFilterProps.Query;
+export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
+export type I18nStrings = PropertyFilterProps.I18nStrings;
+export type GroupText = PropertyFilterProps.GroupText;
+export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
+export type Ref = PropertyFilterProps.Ref;
+
+// Utility types
+
+export type ParsedText =
+  | { step: 'property'; property: FilteringProperty; operator: ComparisonOperator; value: string }
+  | { step: 'operator'; property: FilteringProperty; operatorPrefix: string }
+  | { step: 'free-text'; operator?: ComparisonOperator; value: string };

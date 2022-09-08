@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useSelectVisibleOption, useHighlightVisibleOption, getParentGroup } from './controller';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
+import { AutosuggestItemsHandlers, AutosuggestItemsState, getParentGroup } from './options-controller';
+import { AutosuggestProps } from './interfaces';
 import VirtualList from './virtual-list';
 import PlainList from './plain-list';
 
@@ -15,11 +15,8 @@ export interface AutosuggestOptionsListProps
     AutosuggestProps,
     'enteredTextLabel' | 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'
   > {
-  options: AutosuggestItem[];
-  highlightedOption?: AutosuggestItem;
-  selectOption: (option: AutosuggestItem) => void;
-  highlightedIndex: number;
-  setHighlightedIndex: (index: number) => void;
+  autosuggestItemsState: AutosuggestItemsState;
+  autosuggestItemsHandlers: AutosuggestItemsHandlers;
   highlightedOptionId?: string;
   highlightText: string;
   listId: string;
@@ -27,32 +24,18 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
-  usingMouse: React.MutableRefObject<boolean>;
 }
 
-const isInteractive = (option?: AutosuggestItem) => {
-  return !!option && !option.disabled && option.type !== 'parent';
+const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
+  // prevent mouse events to avoid losing focus from the input
+  if (itemIndex > -1) {
+    handler(itemIndex);
+  }
 };
-
-const isHighlightable = (option?: AutosuggestItem) => {
-  return !!option && option.type !== 'parent';
-};
-
-const createMouseEventHandler =
-  (handler: (index: number) => void, usingMouse: React.MutableRefObject<boolean>) => (itemIndex: number) => {
-    // prevent mouse events to avoid losing focus from the input
-    usingMouse.current = true;
-    if (itemIndex > -1) {
-      handler(itemIndex);
-    }
-  };
 
 export default function AutosuggestOptionsList({
-  options,
-  highlightedOption,
-  selectOption,
-  highlightedIndex,
-  setHighlightedIndex,
+  autosuggestItemsState,
+  autosuggestItemsHandlers,
   highlightedOptionId,
   highlightText,
   listId,
@@ -64,18 +47,15 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
-  usingMouse,
 }: AutosuggestOptionsListProps) {
-  const highlightVisibleOption = useHighlightVisibleOption(options, setHighlightedIndex, isHighlightable);
-  const selectVisibleOption = useSelectVisibleOption(options, selectOption, isInteractive);
-  const handleMouseUp = createMouseEventHandler(selectVisibleOption, usingMouse);
-  const handleMouseMove = createMouseEventHandler(highlightVisibleOption, usingMouse);
+  const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
+  const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
 
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
   const announcement = useAnnouncement({
     announceSelected: true,
-    highlightedOption,
+    highlightedOption: autosuggestItemsState.highlightedOption,
     getParent: option => getParentGroup(option)?.option as undefined | OptionGroup,
     selectedAriaLabel,
     renderHighlightedAriaLive,
@@ -85,11 +65,8 @@ export default function AutosuggestOptionsList({
     <ListComponent
       listBottom={listBottom}
       handleLoadMore={handleLoadMore}
-      filteredItems={options}
+      autosuggestItemsState={autosuggestItemsState}
       highlightText={highlightText}
-      usingMouse={usingMouse}
-      highlightedOption={highlightedOption}
-      highlightedIndex={highlightedIndex}
       enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}

@@ -124,6 +124,7 @@ const Dropdown = ({
   hasContent = true,
   scrollable = true,
   trapFocus = false,
+  contentKey,
 }: DropdownProps) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -133,7 +134,7 @@ const Dropdown = ({
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
 
-  const isRefresh = useVisualRefresh(triggerRef);
+  const isRefresh = useVisualRefresh();
 
   const dropdownClasses = usePortalModeClasses(triggerRef);
   const [position, setPosition] = useState<DropdownContextProviderProps['position']>('bottom-right');
@@ -264,7 +265,7 @@ const Dropdown = ({
     }
     // See AWSUI-13040
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile]);
+  }, [open, dropdownRef, triggerRef, verticalContainerRef, interior, stretchWidth, isMobile, contentKey]);
 
   // subscribe to outside click
   useEffect(() => {

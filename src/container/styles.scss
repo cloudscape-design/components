@@ -32,7 +32,9 @@
 
 .header {
   background-color: awsui.$color-background-container-header;
-  border-radius: awsui.$border-radius-container;
+  border-top-left-radius: awsui.$border-radius-container;
+  border-top-right-radius: awsui.$border-radius-container;
+
   // sticky positioning may be disabled (on mobile or if browser does not support it),
   // but some markup still requires a new stacking context
   &-sticky-disabled {
@@ -60,8 +62,13 @@
   &.with-paddings {
     padding: shared.$header-padding;
   }
+  &.with-hidden-content {
+    border-bottom-left-radius: awsui.$border-radius-container;
+    border-bottom-right-radius: awsui.$border-radius-container;
+  }
   &-variant-cards {
     @include shared.borders-and-shadows;
+
     &:not(:empty) {
       // bottom shadow does not appear in IE11 due to the presence of background color
       // Adding a bottom border

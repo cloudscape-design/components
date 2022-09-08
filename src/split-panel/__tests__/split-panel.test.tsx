@@ -96,7 +96,7 @@ describe('Split panel', () => {
   describe.each(['bottom', 'side'] as const)('Position %s', position => {
     test('displays header, content and aria-label', () => {
       const { wrapper } = renderSplitPanel({ contextProps: { position } });
-      expect(wrapper.getElement()).toHaveTextContent('Split panel header');
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('Split panel header');
       expect(wrapper.getElement()).toHaveTextContent('Split panel content');
       expect(wrapper.findSlider()!.getElement()).toHaveAttribute('aria-label', 'resizeHandleAriaLabel');
     });
@@ -174,7 +174,7 @@ describe('Split panel', () => {
         if (position === 'bottom') {
           return wrapper.findOpenPanelBottom()!.getElement().style.height;
         }
-        return (wrapper.findOpenPanelSide()!.getElement().firstElementChild as HTMLElement).style.width;
+        return (wrapper.findOpenPanelSide()!.getElement() as HTMLElement).style.width;
       }
 
       // layout calculation is delayed by one frame to wait for app-layout to finish its rendering

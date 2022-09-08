@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyFilterProps } from '../interfaces';
+import { ComparisonOperator, FilteringProperty } from '../interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix } from '../utils';
 
-const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
+const filteringProperties: FilteringProperty[] = [
   {
     key: 'instanceId',
     propertyLabel: 'Instance ID',
@@ -19,7 +19,7 @@ const filteringProperties: PropertyFilterProps.FilteringProperty[] = [
   },
 ];
 
-const operators: PropertyFilterProps.ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
+const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
 
 describe('matchFilteringProperty', () => {
   test('should match property by label when filtering text equals to it', () => {

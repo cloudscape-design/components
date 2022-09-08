@@ -11,7 +11,6 @@ class AppLayoutSplitViewPage extends BasePageObject {
   async openPanel() {
     await this.click(wrapper.findSplitPanel().findOpenButton().toSelector());
   }
-
   // the argument here is the visible label text
   async switchPosition(position: 'Bottom' | 'Side') {
     await this.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
@@ -57,6 +56,12 @@ class AppLayoutSplitViewPage extends BasePageObject {
   getSplitPanelSize() {
     return this.getBoundingBox(wrapper.findSplitPanel().toSelector());
   }
+
+  getContentMarginBottom() {
+    return this.browser.execute(contentRegion => {
+      return document.querySelector(contentRegion)?.parentElement?.parentElement?.style.marginBottom;
+    }, wrapper.findContentRegion().toSelector());
+  }
 }
 
 function setupTest(
@@ -71,6 +76,35 @@ function setupTest(
     await testFn(page);
   });
 }
+
+test(
+  'slider is accessible by keyboard in side position',
+  setupTest(async page => {
+    await page.openPanel();
+    await page.switchPosition('Side');
+    await page.keys(['Shift', 'Tab', 'Shift']);
+    await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
+
+    const { width } = await page.getSplitPanelSize();
+    await page.keys(['ArrowLeft', 'ArrowLeft', 'ArrowLeft']);
+    const expectedWidth = width + 30;
+    await expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth);
+  })
+);
+
+test(
+  'slider is accessible by keyboard in bottom position',
+  setupTest(async page => {
+    await page.openPanel();
+    await page.keys(['Shift', 'Tab', 'Shift', 'Shift', 'Tab', 'Shift']);
+    await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
+
+    const { height } = await page.getSplitPanelSize();
+    await page.keys(['ArrowUp', 'ArrowUp', 'ArrowUp']);
+    const expectedHeight = height + 30;
+    await expect((await page.getSplitPanelSize()).height).toEqual(expectedHeight);
+  })
+);
 
 test(
   'renders with initial side position',
@@ -185,4 +219,23 @@ test(
     await page.dragResizerTo({ x: 0, y: height });
     await expect(page.getPanelPosition()).resolves.toEqual('bottom');
   })
+);
+
+test(
+  'should resize main content area when switching to side',
+  setupTest(async page => {
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+    await page.switchPosition('Side');
+    await expect(page.getContentMarginBottom()).resolves.toEqual('');
+  }, '#/light/app-layout/with-full-page-table-and-split-panel')
+);
+
+test(
+  'should resize main content area when switching to side then back to bottom',
+  setupTest(async page => {
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+    await page.switchPosition('Side');
+    await page.switchPosition('Bottom');
+    await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
+  }, '#/light/app-layout/with-full-page-table-and-split-panel')
 );

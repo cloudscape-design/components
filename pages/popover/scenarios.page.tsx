@@ -81,6 +81,7 @@ export default function () {
               position="bottom"
               size="large"
               fixedWidth={true}
+              id="large-popover"
               header="Network interface eth0"
               content={<KeyValuePair />}
               dismissAriaLabel="Close"

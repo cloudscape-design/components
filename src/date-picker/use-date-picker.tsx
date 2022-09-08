@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
 import { CalendarTypes } from './calendar/definitions';
-import { formatDate } from './calendar/utils/date';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { DatePickerProps } from './interfaces';
+import { formatDate } from '../internal/utils/date-time';
 
 export function useDatePicker({ value, onChange }: UseDatePickerProps) {
   const defaultSelectedDate = value.length >= 10 ? value : null;

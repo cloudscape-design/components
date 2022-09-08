@@ -50,6 +50,10 @@ $font-sizes: ('body-s', 'body-m', 'heading-xs', 'heading-s', 'heading-m', 'headi
   }
 }
 
+.icon-wrapper {
+  white-space: nowrap;
+}
+
 .icon {
   display: inline-block;
 }

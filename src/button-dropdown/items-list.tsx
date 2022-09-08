@@ -15,6 +15,7 @@ export default function ItemsList({
   onGroupToggle,
   targetItem,
   isHighlighted,
+  isKeyboardHighlight,
   isExpanded,
   highlightItem,
   categoryDisabled = false,
@@ -34,6 +35,7 @@ export default function ItemsList({
           onItemActivate={onItemActivate}
           disabled={item.disabled ?? categoryDisabled}
           highlighted={isHighlighted(item)}
+          isKeyboardHighlighted={isKeyboardHighlight(item)}
           highlightItem={highlightItem}
           first={index === 0 || isItemGroup(items[index - 1])}
           last={index === items.length - 1 || isItemGroup(items[index + 1])}
@@ -52,6 +54,7 @@ export default function ItemsList({
             onGroupToggle={onGroupToggle}
             targetItem={targetItem}
             isHighlighted={isHighlighted}
+            isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
@@ -65,6 +68,7 @@ export default function ItemsList({
             onGroupToggle={onGroupToggle}
             targetItem={targetItem}
             isHighlighted={isHighlighted}
+            isKeyboardHighlight={isKeyboardHighlight}
             isExpanded={isExpanded}
             highlightItem={highlightItem}
             disabled={item.disabled ?? false}
@@ -82,6 +86,7 @@ export default function ItemsList({
         onGroupToggle={onGroupToggle}
         targetItem={targetItem}
         isHighlighted={isHighlighted}
+        isKeyboardHighlight={isKeyboardHighlight}
         isExpanded={isExpanded}
         highlightItem={highlightItem}
         disabled={item.disabled ?? false}

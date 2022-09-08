@@ -61,24 +61,6 @@ export const getOverflowParentDimensions = (
   return parents;
 };
 
-/**
- * If the element is out of view, scrolls the scroll parent until
- * the element is visible.
- *
- * Basically an IE11/Safari polyfill for `elem.scrollIntoView({ block: 'nearest' })`
- */
-export function scrollUntilVisible(element: HTMLElement): void {
-  const parent = element.offsetParent ?? document.documentElement;
-  // Anchor to top of scroll parent.
-  if (element.offsetTop < parent.scrollTop) {
-    parent.scrollTop = element.offsetTop;
-  }
-  // Anchor to bottom of scroll parent.
-  if (element.offsetTop + element.clientHeight > parent.scrollTop + parent.clientHeight) {
-    parent.scrollTop = element.offsetTop + element.clientHeight - parent.clientHeight;
-  }
-}
-
 type ScrollIntoViewOptions = Parameters<HTMLElement['scrollIntoView']>[0];
 
 /**

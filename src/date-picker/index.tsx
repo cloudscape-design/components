@@ -7,7 +7,7 @@ import { DatePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { normalizeLocale } from './calendar/utils/locales';
 import { getDateLabel } from './calendar/utils/intl';
-import { displayToIso, isoToDisplay, memoizedDate } from './calendar/utils/date';
+import { memoizedDate } from './calendar/utils/memoized-date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -105,8 +105,7 @@ const DatePicker = React.forwardRef(
     };
 
     const onInputChangeHandler: InputProps['onChange'] = event => {
-      const isoDateString = displayToIso(event.detail.value);
-      fireNonCancelableEvent(onChange, { value: isoDateString });
+      fireNonCancelableEvent(onChange, { value: event.detail.value });
     };
 
     const onInputBlurHandler: InputProps['onBlur'] = () => {
@@ -127,7 +126,7 @@ const DatePicker = React.forwardRef(
             ariaDescribedby={ariaDescribedby}
             ariaLabel={ariaLabel}
             ariaRequired={ariaRequired}
-            value={isoToDisplay(value)}
+            value={value}
             autoComplete={false}
             disableBrowserAutocorrect={true}
             disableAutocompleteOnBlur={isDropDownOpen}

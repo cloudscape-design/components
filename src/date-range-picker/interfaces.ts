@@ -6,7 +6,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 
-export interface DateRangePickerProps extends BaseComponentProps, FormFieldValidationControlProps, ExpandToViewport {
+export interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
    * or a relative time range.
@@ -17,11 +17,6 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
    * A list of relative time ranges that are shown as suggestions.
    */
   relativeOptions: ReadonlyArray<DateRangePickerProps.RelativeOption>;
-
-  /**
-   * Specifies the placeholder text that is rendered when the value is empty.
-   */
-  placeholder?: string;
 
   /**
    * A function that defines whether a particular date should be enabled
@@ -48,50 +43,9 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
   startOfWeek?: number;
 
   /**
-   * Specifies that the component is disabled, preventing the user from
-   * modifying the value. A disabled component cannot receive focus.
-   */
-  disabled?: boolean;
-
-  /**
-   * Specifies that the component is read-only, preventing the user from
-   * modifying the value. A read-only component can receive focus.
-   */
-  readOnly?: boolean;
-
-  /**
-   * Fired when keyboard focus is set onto the UI control.
-   */
-  onFocus?: NonCancelableEventHandler<null>;
-
-  /**
-   * Fired when keyboard focus is removed from the UI control.
-   */
-  onBlur?: NonCancelableEventHandler<null>;
-
-  /**
-   * Fired whenever a user changes the component's value.
-   * The event `detail` contains the current value of the field.
-   */
-  onChange?: NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>;
-
-  /**
-   * A function that defines whether a particular range is valid or not.
-   *
-   * Ensure that your function checks for missing fields in the value.
-   */
-  isValidRange: DateRangePickerProps.ValidationFunction;
-
-  /**
    * An object containing all the necessary localized strings required by the component.
    */
   i18nStrings: DateRangePickerProps.I18nStrings;
-
-  /**
-   * Specifies whether the component should show a button that
-   * allows the user to clear the selected value.
-   */
-  showClearButton?: boolean;
 
   /**
    * Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
@@ -114,6 +68,21 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
   rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
 
   /**
+   * Specifies the format of the time input for absolute ranges.
+   *
+   * Use to restrict the granularity of time that the user can enter.
+   *
+   * Has no effect when `dateOnly` is true.
+   */
+  timeInputFormat?: TimeInputProps.Format;
+
+  /**
+   * Fired whenever a user changes the component's value.
+   * The event `detail` contains the current value of the field.
+   */
+  onChange?: NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>;
+
+  /**
    * The time offset from UTC in minutes that should be used to
    * display and produce values.
    *
@@ -122,15 +91,51 @@ export interface DateRangePickerProps extends BaseComponentProps, FormFieldValid
    * Default: the user's current time offset as provided by the browser.
    */
   timeOffset?: number;
+}
+export interface DateRangePickerProps
+  extends BaseComponentProps,
+    FormFieldValidationControlProps,
+    ExpandToViewport,
+    DateRangePickerBaseProps {
+  /**
+   * Specifies the placeholder text that is rendered when the value is empty.
+   */
+  placeholder?: string;
 
   /**
-   * Specifies the format of the time input for absolute ranges.
-   *
-   * Use to restrict the granularity of time that the user can enter.
-   *
-   * Has no effect when `dateOnly` is true.
+   * Specifies that the component is disabled, preventing the user from
+   * modifying the value. A disabled component cannot receive focus.
    */
-  timeInputFormat?: TimeInputProps.Format;
+  disabled?: boolean;
+
+  /**
+   * Specifies that the component is read-only, preventing the user from
+   * modifying the value. A read-only component can receive focus.
+   */
+  readOnly?: boolean;
+
+  /**
+   * Fired when keyboard focus is set onto the UI control.
+   */
+  onFocus?: NonCancelableEventHandler<null>;
+
+  /**
+   * Fired when keyboard focus is removed from the UI control.
+   */
+  onBlur?: NonCancelableEventHandler<null>;
+
+  /**
+   * A function that defines whether a particular range is valid or not.
+   *
+   * Ensure that your function checks for missing fields in the value.
+   */
+  isValidRange: DateRangePickerProps.ValidationFunction;
+
+  /**
+   * Specifies whether the component should show a button that
+   * allows the user to clear the selected value.
+   */
+  showClearButton?: boolean;
 }
 
 export namespace DateRangePickerProps {

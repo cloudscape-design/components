@@ -1,18 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { getDaysInMonth } from 'date-fns';
 import React, { Ref } from 'react';
+import { fireNonCancelableEvent } from '../../events';
+import { displayToIso, isoToDisplay, parseDate } from '../../utils/date-time';
 
 import MaskedInput from '../masked-input';
 import { MaskArgs } from '../masked-input/utils/mask-format';
 
 import { DateInputProps } from './interfaces';
 
-import { daysInMonth, parseDate, displayToIso } from './utils/date';
+export { DateInputProps };
 
 function daysMax(value: string): number {
   // force to first day in month, as new Date('2018-02-30') -> March 2nd 2018
   const baseDate = displayToIso(value).substring(0, 7);
-  return daysInMonth(parseDate(baseDate));
+  return getDaysInMonth(parseDate(baseDate));
 }
 
 const maskArgs: MaskArgs = {
@@ -26,9 +29,11 @@ const maskArgs: MaskArgs = {
 };
 
 const DateInput = React.forwardRef(
-  ({ __internalRootRef = null, ...props }: DateInputProps, ref: Ref<DateInputProps.Ref>) => {
+  ({ __internalRootRef = null, value, onChange, ...props }: DateInputProps, ref: Ref<DateInputProps.Ref>) => {
     return (
       <MaskedInput
+        value={isoToDisplay(value)}
+        onChange={event => fireNonCancelableEvent(onChange, { value: displayToIso(event.detail.value) })}
         {...props}
         ref={ref}
         disableBrowserAutocorrect={true}
@@ -40,5 +45,4 @@ const DateInput = React.forwardRef(
   }
 );
 
-export { DateInputProps };
 export default DateInput;

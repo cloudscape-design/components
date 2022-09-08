@@ -3,7 +3,8 @@
 import React from 'react';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import ScreenshotArea from '../utils/screenshot-area';
-import { allItems, columnDefinitions, TableItem, i18nStrings, filteringProperties } from './table.data';
+import { allItems, TableItem } from './table.data';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 

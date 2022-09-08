@@ -3,7 +3,7 @@
 import React from 'react';
 import { DatePickerBaseProps } from './interfaces';
 import Calendar from './calendar';
-import { memoizedDate } from './calendar/utils/date';
+import { memoizedDate } from './calendar/utils/memoized-date';
 import { useDatePicker } from './use-date-picker';
 
 export const DatePickerEmbedded = ({
