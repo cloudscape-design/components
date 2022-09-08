@@ -13,7 +13,7 @@ import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-bloc
 import * as toolsContent from '../app-layout/utils/tools-content';
 import labels from '../app-layout/utils/labels';
 import { allItems, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties } from './common-properties';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 export default function () {

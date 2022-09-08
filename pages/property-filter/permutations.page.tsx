@@ -4,7 +4,7 @@ import React from 'react';
 import PropertyFilter, { PropertyFilterProps } from '~components/property-filter';
 import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties } from './common-properties';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 

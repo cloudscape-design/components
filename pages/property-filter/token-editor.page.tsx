@@ -4,7 +4,7 @@ import React from 'react';
 import PropertyFilter from '~components/property-filter';
 import ScreenshotArea from '../utils/screenshot-area';
 import { PropertyFilterProps } from '~components/property-filter/interfaces';
-import { columnDefinitions, i18nStrings } from './common-properties';
+import { columnDefinitions, i18nStrings } from './common-props';
 
 const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
   key: def.id,
