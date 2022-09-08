@@ -20,6 +20,7 @@ export default function () {
                 type: 'success',
                 header: 'Success message',
                 buttonText: 'Toggle sticky notifications',
+                statusIconAriaLabel: 'success',
                 onButtonClick: () => setSticky(sticky => !sticky),
               },
             ]}

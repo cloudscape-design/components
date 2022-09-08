@@ -23,6 +23,7 @@ export default function () {
               {
                 type: 'success',
                 header: 'Nice notification message!',
+                statusIconAriaLabel: 'success',
               },
             ]}
           />
