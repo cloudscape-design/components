@@ -67,7 +67,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
       options: options || [],
       filterValue: value,
-      filterText: value,
+      filterText: highlightText,
       filteringType,
       hideEnteredTextLabel: hideEnteredTextOption,
       onSelectItem: (option: AutosuggestItem) => {

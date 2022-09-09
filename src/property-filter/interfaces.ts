@@ -173,7 +173,7 @@ export namespace PropertyFilterProps {
 
   export interface LoadItemsDetail {
     filteringProperty?: FilteringProperty;
-    filteringOperator?: PropertyFilterOperator;
+    filteringOperator?: ComparisonOperator;
     filteringText: string;
     firstPage: boolean;
     samePage: boolean;
@@ -218,15 +218,6 @@ export namespace PropertyFilterProps {
     removeTokenButtonAriaLabel: (token: PropertyFilterProps.Token) => string;
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }
-
-  export type CustomOperatorForm<TokenValue> = React.FC<{
-    value: null | TokenValue;
-    onChange: (value: null | TokenValue) => void;
-    filter: string;
-    operator: PropertyFilterOperator;
-  }>;
-
-  export type CustomOperatorFormat<TokenValue> = (value: TokenValue) => string;
 
   export interface GroupText {
     properties: string;

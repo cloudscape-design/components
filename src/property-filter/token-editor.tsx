@@ -189,14 +189,11 @@ function ValueInput({
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
 
-  if (propertyKey && operator) {
-    const OperatorForm = getOperatorForm(filteringProperties, propertyKey, operator);
-    if (OperatorForm) {
-      return <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />;
-    }
-  }
+  const OperatorForm = propertyKey && operator && getOperatorForm(filteringProperties, propertyKey, operator);
 
-  return (
+  return OperatorForm ? (
+    <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />
+  ) : (
     <InternalAutosuggest
       controlId={controlId}
       enteredTextLabel={i18nStrings.enteredTextLabel}

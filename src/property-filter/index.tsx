@@ -19,7 +19,6 @@ import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
-import InternalBox from '../box/internal';
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
@@ -193,42 +192,9 @@ const PropertyFilter = React.forwardRef(
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
 
-    let customContent: undefined | React.ReactNode = undefined;
-    if (parsedText.step === 'property') {
-      const OperatorForm = getOperatorForm(filteringProperties, parsedText.property.key, parsedText.operator);
-      if (OperatorForm) {
-        customContent = (
-          <InternalBox
-            padding={{
-              horizontal: 'm',
-              vertical: 's',
-            }}
-          >
-            <PropertyEditor
-              i18nStrings={i18nStrings}
-              onCancel={() => {
-                setFilteringText('');
-                inputRef.current?.close();
-              }}
-              onSubmit={value => {
-                addToken({ value: value, propertyKey: parsedText.property.key, operator: parsedText.operator });
-                setFilteringText('');
-                inputRef.current?.close();
-              }}
-            >
-              {({ value, onChange }) => (
-                <OperatorForm
-                  value={value}
-                  onChange={onChange}
-                  filter={parsedText.value}
-                  operator={parsedText.operator}
-                />
-              )}
-            </PropertyEditor>
-          </InternalBox>
-        );
-      }
-    }
+    const OperatorForm =
+      parsedText.step === 'property' &&
+      getOperatorForm(filteringProperties, parsedText.property.key, parsedText.operator);
 
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -250,7 +216,31 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
-            customContent={customContent}
+            customContent={
+              OperatorForm && (
+                <PropertyEditor
+                  i18nStrings={i18nStrings}
+                  onCancel={() => {
+                    setFilteringText('');
+                    inputRef.current?.close();
+                  }}
+                  onSubmit={value => {
+                    addToken({ value: value, propertyKey: parsedText.property.key, operator: parsedText.operator });
+                    setFilteringText('');
+                    inputRef.current?.close();
+                  }}
+                >
+                  {({ value, onChange }) => (
+                    <OperatorForm
+                      value={value}
+                      onChange={onChange}
+                      filter={parsedText.value}
+                      operator={parsedText.operator}
+                    />
+                  )}
+                </PropertyEditor>
+              )
+            }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
