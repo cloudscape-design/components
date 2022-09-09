@@ -27,6 +27,7 @@ import {
   getPropertyByKey,
   operatorToDescription,
   getPropertySuggestions,
+  getOperatorForm,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
@@ -172,7 +173,7 @@ interface ValueInputProps {
 function ValueInput({
   controlId,
   propertyKey,
-  operator: selectedOperator,
+  operator,
   value,
   onChangeValue,
   asyncProps,
@@ -188,18 +189,10 @@ function ValueInput({
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
 
-  if (propertyKey) {
-    for (const prop of filteringProperties) {
-      if (prop.key === propertyKey) {
-        for (const operator of prop.operators || []) {
-          if (typeof operator === 'object' && operator.operator === selectedOperator) {
-            if (operator.form) {
-              const Form = operator.form;
-              return <Form value={value} onChange={onChangeValue} operator={operator.operator} filter="" />;
-            }
-          }
-        }
-      }
+  if (propertyKey && operator) {
+    const OperatorForm = getOperatorForm(filteringProperties, propertyKey, operator);
+    if (OperatorForm) {
+      return <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />;
     }
   }
 
@@ -209,7 +202,7 @@ function ValueInput({
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={value ?? ''}
       onChange={e => onChangeValue(e.detail.value)}
-      disabled={!selectedOperator}
+      disabled={!operator}
       options={valueOptions}
       {...asyncValueAutosuggesProps}
       virtualScroll={true}

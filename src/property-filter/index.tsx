@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo, useEffect, useImperativeHandle } from 'react';
+import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
@@ -14,13 +14,13 @@ import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
 import { TokenButton } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators, getOperatorForm } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import InternalBox from '../box/internal';
-import { TokenEditorForm } from './token-editor';
+import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
@@ -193,54 +193,40 @@ const PropertyFilter = React.forwardRef(
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
 
-    const [value, setValue] = useState<null | any>(null);
-
-    const parsedTextPropertyKey = parsedText.step === 'property' && parsedText.property.key;
-    const parsedTextPropertyOperator = parsedText.step === 'property' && parsedText.operator;
-
-    useEffect(() => {
-      setValue(null);
-    }, [parsedTextPropertyKey, parsedTextPropertyOperator]);
-
     let customContent: undefined | React.ReactNode = undefined;
     if (parsedText.step === 'property') {
-      for (const prop of filteringProperties) {
-        if (prop.key === parsedText.property.key) {
-          for (const operator of prop.operators || []) {
-            if (typeof operator === 'object' && operator.operator === parsedText.operator) {
-              if (operator.form) {
-                const Form = operator.form;
-                customContent = (
-                  <InternalBox
-                    padding={{
-                      horizontal: 'm',
-                      vertical: 's',
-                    }}
-                  >
-                    <TokenEditorForm
-                      i18nStrings={i18nStrings}
-                      onCancel={() => {
-                        setFilteringText('');
-                        inputRef.current?.close();
-                      }}
-                      onSubmit={() => {
-                        addToken({
-                          value: value,
-                          propertyKey: parsedText.property.key,
-                          operator: parsedText.operator,
-                        });
-                        setFilteringText('');
-                        inputRef.current?.close();
-                      }}
-                    >
-                      <Form value={value} onChange={setValue} filter={parsedText.value} operator={operator.operator} />
-                    </TokenEditorForm>
-                  </InternalBox>
-                );
-              }
-            }
-          }
-        }
+      const OperatorForm = getOperatorForm(filteringProperties, parsedText.property.key, parsedText.operator);
+      if (OperatorForm) {
+        customContent = (
+          <InternalBox
+            padding={{
+              horizontal: 'm',
+              vertical: 's',
+            }}
+          >
+            <PropertyEditor
+              i18nStrings={i18nStrings}
+              onCancel={() => {
+                setFilteringText('');
+                inputRef.current?.close();
+              }}
+              onSubmit={value => {
+                addToken({ value: value, propertyKey: parsedText.property.key, operator: parsedText.operator });
+                setFilteringText('');
+                inputRef.current?.close();
+              }}
+            >
+              {({ value, onChange }) => (
+                <OperatorForm
+                  value={value}
+                  onChange={onChange}
+                  filter={parsedText.value}
+                  operator={parsedText.operator}
+                />
+              )}
+            </PropertyEditor>
+          </InternalBox>
+        );
       }
     }
 
