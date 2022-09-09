@@ -125,6 +125,14 @@ test('should render table with primitive content', () => {
   expect(wrapper.findBodyCell(2, 2)!.getElement()).toContainHTML('Oranges');
 });
 
+test('should render table with accessible headers', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={defaultColumns} items={defaultItems} />);
+  const columnHeaders = wrapper.findColumnHeaders();
+  columnHeaders.forEach(header => {
+    expect(header.getElement()).toHaveAttribute('scope', 'col');
+  });
+});
+
 test('should render table with react content', () => {
   const columns: TableProps.ColumnDefinition<Item>[] = [
     ...defaultColumns,
