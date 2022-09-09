@@ -4,7 +4,8 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import DateInput, { DateInputProps } from '../../../lib/components/date-input';
-import createWrapper, { DateInputWrapper } from '../../../lib/components/test-utils/dom';
+import DateInputWrapper from '../../../lib/components/test-utils/dom/date-input';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderDateInput(props: DateInputProps) {
   const onChangeSpy = jest.fn();

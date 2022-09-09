@@ -3,7 +3,8 @@
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper, { DateInputWrapper } from '../../../lib/components/test-utils/selectors';
+import DateInputWrapper from '../../../lib/components/test-utils/selectors/date-input';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const dateInputWrapper = createWrapper().findComponent('.testing-date-input', DateInputWrapper);
 const defaultSelector = dateInputWrapper.findNativeInput().toSelector();
