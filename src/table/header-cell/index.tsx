@@ -78,6 +78,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell(
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
       ref={ref}
+      scope="col"
     >
       <div
         className={clsx(styles['header-cell-content'], {
