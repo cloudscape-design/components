@@ -18,26 +18,22 @@ export default function CalendarPage() {
       >
         <Calendar
           selectedDate={new Date('2021-8-20')}
-          displayedDate={new Date('2021-8-13')}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
           nextMonthLabel="Next month"
           previousMonthLabel="Previous month"
           todayAriaLabel="Today"
-          onChangeMonth={() => {}}
           onSelectDate={() => {}}
         />
         <Calendar
-          selectedDate={null}
-          displayedDate={new Date()}
+          selectedDate={new Date()}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
           nextMonthLabel="Next month"
           previousMonthLabel="Previous month"
           todayAriaLabel="Today"
-          onChangeMonth={() => {}}
           onSelectDate={() => {}}
         />
       </Dropdown>

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
@@ -33,24 +33,19 @@ interface CalendarProps extends BaseComponentProps {
   locale: string;
   startOfWeek: number | undefined;
   selectedDate: Date | null;
-  displayedDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   nextMonthLabel: string;
   previousMonthLabel: string;
   todayAriaLabel: string;
-
-  onChangeMonth: MonthChangeHandler;
   onSelectDate: DateChangeHandler;
 }
 
 const Calendar = ({
   locale,
   startOfWeek,
-  displayedDate,
   todayAriaLabel,
   selectedDate,
   isDateEnabled,
-  onChangeMonth,
   onSelectDate,
   previousMonthLabel,
   nextMonthLabel,
@@ -61,6 +56,13 @@ const Calendar = ({
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
+
+  const defaultDisplayedDate = selectedDate ?? new Date();
+  const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
+
+  useEffect(() => {
+    selectedDate && setDisplayedDate(prev => (prev.getTime() !== selectedDate.getTime() ? selectedDate : prev));
+  }, [selectedDate]);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
     if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
@@ -93,12 +95,12 @@ const Calendar = ({
   const focusedOrSelectedDate = focusedDate || selectFocusedDate(selectedDate, baseDate);
 
   const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
-    onChangeMonth(addMonths(baseDate, isPrevious ? -1 : 1));
+    setDisplayedDate(addMonths(baseDate, isPrevious ? -1 : 1));
     setFocusedDate(null);
   };
 
   const onGridChangeMonthHandler: MonthChangeHandler = newMonth => {
-    onChangeMonth(newMonth);
+    setDisplayedDate(newMonth);
     setFocusedDate(null);
   };
 

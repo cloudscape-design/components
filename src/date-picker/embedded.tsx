@@ -4,7 +4,8 @@ import React from 'react';
 import { DatePickerBaseProps } from './interfaces';
 import Calendar from './calendar';
 import { memoizedDate } from './calendar/utils/memoized-date';
-import { useDatePicker } from './use-date-picker';
+import { formatDate } from '../internal/utils/date-time';
+import { fireNonCancelableEvent } from '../internal/events';
 
 export const DatePickerEmbedded = ({
   value,
@@ -16,23 +17,16 @@ export const DatePickerEmbedded = ({
   todayAriaLabel,
   onChange,
 }: DatePickerBaseProps) => {
-  const { displayedDate, selectedDate, onChangeMonthHandler, onSelectDateHandler } = useDatePicker({
-    value,
-    onChange,
-  });
-
   return (
     <Calendar
-      selectedDate={memoizedDate('value', selectedDate)}
-      displayedDate={memoizedDate('displayed', displayedDate)}
+      selectedDate={memoizedDate('value', value)}
       locale={locale}
       startOfWeek={startOfWeek}
       isDateEnabled={isDateEnabled ? isDateEnabled : () => true}
       nextMonthLabel={nextMonthAriaLabel}
       previousMonthLabel={previousMonthAriaLabel}
       todayAriaLabel={todayAriaLabel}
-      onChangeMonth={onChangeMonthHandler}
-      onSelectDate={onSelectDateHandler}
+      onSelectDate={e => fireNonCancelableEvent(onChange, { value: formatDate(e.date) })}
     />
   );
 };

@@ -181,12 +181,6 @@ describe('Date picker calendar', () => {
       expect(findCalendarHeaderText(wrapper)).toBe(monthYear);
     };
 
-    const checkNoDateHighlighted = (value: string) => {
-      const { wrapper } = renderDatePicker({ ...defaultProps, value: value });
-      act(() => wrapper.findOpenCalendarButton().click());
-      expect(wrapper.findCalendar()!.findSelectedDate()).toBeNull();
-    };
-
     test('should open with the current month/year if input is empty', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '' });
       act(() => wrapper.findOpenCalendarButton().click());
@@ -211,11 +205,6 @@ describe('Date picker calendar', () => {
         ['2012-11', 'November 2012'],
       ])("for input '%s', '%s' is expected", checkMonthAndYear);
     });
-
-    it.each(['', '2012-', '2012-03', '2012-03-0', '2012-03-1'])(
-      "should not highlight partial dates when '%s' is typed in",
-      checkNoDateHighlighted
-    );
   });
 
   describe('keyboard navigation', () => {
