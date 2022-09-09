@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import styles from '../../../styles.css.js';
-import { DatePickerProps } from '../../../interfaces';
+import { DatePickerProps } from '../../../date-picker/interfaces';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { getDateLabel } from '../../utils/intl';
 import clsx from 'clsx';

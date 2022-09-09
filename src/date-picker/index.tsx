@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
-import Calendar from './calendar';
-import { normalizeLocale } from './calendar/utils/locales';
-import { getDateLabel } from './calendar/utils/intl';
-import { memoizedDate } from './calendar/utils/memoized-date';
+import InternalCalendar from '../calendar/internal';
+import { normalizeLocale } from '../calendar/utils/locales';
+import { getDateLabel } from '../calendar/utils/intl';
+import { memoizedDate } from '../calendar/utils/memoized-date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -168,7 +168,7 @@ const DatePicker = React.forwardRef(
         >
           {isDropDownOpen && (
             <FocusLock autoFocus={true}>
-              <Calendar
+              <InternalCalendar
                 value={value}
                 onChange={e => {
                   fireNonCancelableEvent(onChange, e.detail);

@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from './interfaces';
-import { normalizeLocale } from '../date-picker/calendar/utils/locales';
+import { normalizeLocale } from '../calendar/utils/locales';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';

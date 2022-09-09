@@ -5,7 +5,7 @@ import { KeyCode } from '../../../internal/keycode';
 import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
-import { MoveFocusHandler } from '../../../date-picker/calendar/utils/move-focus-handler';
+import { MoveFocusHandler } from '../../../calendar/utils/move-focus-handler';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';

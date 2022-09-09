@@ -7,7 +7,7 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handler';
+import moveFocusHandler from '../../calendar/utils/move-focus-handler';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
@@ -17,9 +17,9 @@ import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
 import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
+import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
+import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 
 export interface DateChangeHandler {

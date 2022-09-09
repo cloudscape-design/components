@@ -1,0 +1,176 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/styles/typography/index' as typographyConstants;
+@use './motion';
+
+$calendar-header-color: awsui.$color-text-dropdown-item-default;
+$calendar-grid-border-color: awsui.$color-border-calendar-grid;
+$calendar-grid-day-color: awsui.$color-text-dropdown-item-default;
+$calendar-grid-day-name-color: awsui.$color-text-calendar-month;
+$calendar-grid-disabled-day-color: awsui.$color-text-dropdown-item-disabled;
+$calendar-grid-nonmonth-day-color: awsui.$color-text-dropdown-item-secondary;
+$calendar-grid-hover-background-color: awsui.$color-background-dropdown-item-hover;
+$calendar-grid-hover-border-color: awsui.$color-border-dropdown-item-hover;
+$calendar-grid-today-background-color: awsui.$color-background-calendar-today;
+$calendar-grid-selected-background-color: awsui.$color-background-dropdown-item-selected;
+$calendar-grid-selected-border-color: awsui.$color-border-dropdown-item-selected;
+$calendar-grid-border: 1px solid $calendar-grid-border-color;
+
+.root {
+  /* used in test-utils */
+}
+
+.calendar {
+  display: block;
+  // IE11 does not calculate the height correctly when in nested flex containers (@see https://github.com/philipwalton/flexbugs#flexbug-3)
+  width: 234px;
+  overflow: auto;
+  &:focus {
+    outline: none;
+  }
+
+  &-inner {
+    margin: awsui.$space-xs;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-header-month {
+    @include styles.font-body-m;
+    font-weight: typographyConstants.$font-weight-bold;
+    color: $calendar-header-color;
+  }
+
+  &-next-month-btn {
+    /* used for identifying element */
+  }
+
+  &-prev-month-btn {
+    /* used for identifying element */
+  }
+
+  &-day-names {
+    display: flex;
+    justify-content: stretch;
+  }
+
+  &-day-name {
+    flex: 1 1 0%;
+    width: 0;
+    word-break: break-word;
+    text-align: center;
+    padding: awsui.$space-s 0 awsui.$space-xxs;
+    color: $calendar-grid-day-name-color;
+    @include styles.font-body-s;
+  }
+
+  &-dates {
+    border: $calendar-grid-border;
+  }
+  &-week {
+    display: flex;
+    justify-content: stretch;
+  }
+
+  &-day {
+    flex: 1 1 0%;
+    width: 0;
+    word-break: break-word;
+    text-align: center;
+    border-bottom: $calendar-grid-border;
+    border-right: $calendar-grid-border;
+    border-radius: awsui.$border-radius-item;
+    padding: awsui.$space-xxs 0;
+    color: $calendar-grid-disabled-day-color;
+    position: relative;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &-in-last-week {
+      border-bottom: none;
+    }
+
+    &-focusable {
+      /* used for identifying element */
+    }
+
+    &-enabled {
+      cursor: pointer;
+      color: $calendar-grid-nonmonth-day-color;
+
+      &.calendar-day-current-month {
+        color: $calendar-grid-day-color;
+        &:hover {
+          color: awsui.$color-text-calendar-day-hover;
+          background-color: $calendar-grid-hover-background-color;
+          &:not(.calendar-day-selected) {
+            &::after {
+              border: awsui.$border-item-width solid $calendar-grid-hover-border-color;
+              border-radius: awsui.$border-radius-item;
+            }
+          }
+        }
+      }
+    }
+
+    &-today {
+      background-color: $calendar-grid-today-background-color;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      bottom: -1px;
+      right: -1px;
+      background-color: transparent;
+    }
+    > .day-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    &:focus {
+      outline: none;
+      @include styles.focus-highlight(
+        awsui.$space-calendar-grid-focus-outline-gutter,
+        awsui.$border-radius-calendar-day-focus-ring
+      );
+      &::before {
+        z-index: 2;
+      }
+    }
+
+    &-selected {
+      border-color: transparent;
+      position: relative;
+      &::after {
+        background-color: $calendar-grid-selected-background-color;
+        border: awsui.$border-item-width solid $calendar-grid-selected-border-color;
+        border-radius: awsui.$border-radius-item;
+      }
+      > .day-inner {
+        color: awsui.$color-text-calendar-day-selected;
+        position: relative;
+      }
+    }
+  }
+
+  @include styles.styles-reset;
+  @include focus-visible.when-visible {
+    @include styles.container-focus(awsui.$border-radius-dropdown);
+  }
+}

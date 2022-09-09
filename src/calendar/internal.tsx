@@ -1,21 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useRef, useState } from 'react';
 import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
-import styles from '../styles.css.js';
-import { BaseComponentProps } from '../../internal/base-component';
-import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
+import styles from './styles.css.js';
+import { BaseComponentProps } from '../internal/base-component';
+import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import CalendarHeader from './header';
 import Grid from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
-import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { memoizedDate } from './utils/memoized-date.js';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
-import { formatDate } from '../../internal/utils/date-time';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index.js';
-import { DatePickerProps } from '../interfaces.js';
-import checkControlled from '../../internal/hooks/check-controlled/index.js';
+import { formatDate } from '../internal/utils/date-time';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { DatePickerProps } from '../date-picker/interfaces.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import clsx from 'clsx';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -130,7 +132,7 @@ export default function Calendar({
   return (
     <div
       {...focusVisible}
-      className={styles.calendar}
+      className={clsx(styles.root, styles.calendar)}
       tabIndex={0}
       role="application"
       aria-describedby={headerId}
