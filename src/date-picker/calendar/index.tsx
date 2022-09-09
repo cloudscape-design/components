@@ -5,51 +5,44 @@ import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'd
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
-import { DatePickerProps } from '../interfaces';
-import { CalendarTypes } from './definitions';
 import CalendarHeader from './header';
-import Grid, { DateChangeHandlerNullable } from './grid';
+import Grid from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
 import { memoizedDate } from './utils/memoized-date.js';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
-import { normalizeStartOfWeek } from './utils/locales.js';
+import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
 import { formatDate } from '../../internal/utils/date-time';
-export interface DateChangeHandler {
-  (detail: CalendarTypes.DateDetail): void;
-}
-
-export interface MonthChangeHandler {
-  (newMonth: Date): void;
-}
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index.js';
+import { DatePickerProps } from '../interfaces.js';
+import checkControlled from '../../internal/hooks/check-controlled/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-interface HeaderChangeMonthHandler {
-  (isPreviousButtonClick?: boolean): void;
-}
-
 interface CalendarProps extends BaseComponentProps {
-  locale: string;
-  startOfWeek: number | undefined;
-  selectedDate: Date | null;
-  isDateEnabled: DatePickerProps.IsDateEnabledFunction;
-  nextMonthLabel: string;
-  previousMonthLabel: string;
+  value: string;
+  onChange?: NonCancelableEventHandler<DatePickerProps.ChangeDetail>;
+  locale?: string;
+  startOfWeek?: number;
+  isDateEnabled?: (date: Date) => boolean;
   todayAriaLabel: string;
-  onSelectDate: DateChangeHandler;
+  nextMonthAriaLabel: string;
+  previousMonthAriaLabel: string;
 }
 
-const Calendar = ({
-  locale,
+export default function Calendar({
+  value,
+  locale = '',
   startOfWeek,
+  isDateEnabled = () => true,
   todayAriaLabel,
-  selectedDate,
-  isDateEnabled,
-  onSelectDate,
-  previousMonthLabel,
-  nextMonthLabel,
-}: CalendarProps) => {
+  nextMonthAriaLabel,
+  previousMonthAriaLabel,
+  onChange,
+}: CalendarProps) {
+  checkControlled('Calendar', 'value', value, 'onChange', onChange);
+
+  const normalizedLocale = normalizeLocale('Calendar', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
   const focusVisible = useFocusVisible();
   const headerId = useUniqueId('calendar-dialog-title-');
@@ -57,12 +50,15 @@ const Calendar = ({
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
-  const defaultDisplayedDate = selectedDate ?? new Date();
+  // Set displayed date to value if defined or to current date otherwise.
+  const memoizedValue = memoizedDate('value', value);
+  const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
+  // Update displayed date if value changes.
   useEffect(() => {
-    selectedDate && setDisplayedDate(prev => (prev.getTime() !== selectedDate.getTime() ? selectedDate : prev));
-  }, [selectedDate]);
+    memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
+  }, [memoizedValue]);
 
   const selectFocusedDate = (selected: Date | null, baseDate: Date): Date | null => {
     if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
@@ -92,27 +88,27 @@ const Calendar = ({
   };
 
   const baseDate: Date = getBaseDate(displayedDate);
-  const focusedOrSelectedDate = focusedDate || selectFocusedDate(selectedDate, baseDate);
+  const focusedOrSelectedDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
-    setDisplayedDate(addMonths(baseDate, isPrevious ? -1 : 1));
+  const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
+    setDisplayedDate(addMonths(baseDate, isPreviousButtonClick ? -1 : 1));
     setFocusedDate(null);
   };
 
-  const onGridChangeMonthHandler: MonthChangeHandler = newMonth => {
+  const onGridChangeMonthHandler = (newMonth: Date) => {
     setDisplayedDate(newMonth);
     setFocusedDate(null);
   };
 
-  const onGridFocusDateHandler: DateChangeHandlerNullable = ({ date }) => {
+  const onGridFocusDateHandler = (date: null | Date) => {
     if (date) {
       const value = memoizedDate('focused', formatDate(date));
       setFocusedDate(value);
     }
   };
 
-  const onGridSelectDateHandler: DateChangeHandler = detail => {
-    onSelectDate(detail);
+  const onGridSelectDateHandler = (date: Date) => {
+    fireNonCancelableEvent(onChange, { value: formatDate(date) });
     setFocusedDate(null);
   };
 
@@ -144,14 +140,14 @@ const Calendar = ({
         <CalendarHeader
           headerId={headerId}
           baseDate={baseDate}
-          locale={locale}
+          locale={normalizedLocale}
           onChangeMonth={onHeaderChangeMonthHandler}
-          previousMonthLabel={previousMonthLabel}
-          nextMonthLabel={nextMonthLabel}
+          previousMonthLabel={previousMonthAriaLabel}
+          nextMonthLabel={nextMonthAriaLabel}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
-            locale={locale}
+            locale={normalizedLocale}
             baseDate={baseDate}
             isDateEnabled={isDateEnabled}
             focusedDate={focusedOrSelectedDate}
@@ -160,13 +156,11 @@ const Calendar = ({
             onChangeMonth={onGridChangeMonthHandler}
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={todayAriaLabel}
-            selectedDate={selectedDate}
+            selectedDate={memoizedValue}
             handleFocusMove={moveFocusHandler}
           />
         </div>
       </div>
     </div>
   );
-};
-
-export default Calendar;
+}

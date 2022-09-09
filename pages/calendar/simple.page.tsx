@@ -17,24 +17,24 @@ export default function CalendarPage() {
         trigger={null}
       >
         <Calendar
-          selectedDate={new Date('2021-8-20')}
+          value="2021-8-20"
+          onChange={() => {}}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthLabel="Next month"
-          previousMonthLabel="Previous month"
+          nextMonthAriaLabel="Next month"
+          previousMonthAriaLabel="Previous month"
           todayAriaLabel="Today"
-          onSelectDate={() => {}}
         />
         <Calendar
-          selectedDate={new Date()}
+          value=""
+          onChange={() => {}}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthLabel="Next month"
-          previousMonthLabel="Previous month"
+          nextMonthAriaLabel="Next month"
+          previousMonthAriaLabel="Previous month"
           todayAriaLabel="Today"
-          onSelectDate={() => {}}
         />
       </Dropdown>
     </article>
