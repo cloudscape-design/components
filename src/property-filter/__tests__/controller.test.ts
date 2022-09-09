@@ -84,7 +84,7 @@ describe('getAllowedOperators', () => {
       getFilteringProperty(['>', '>=', '<', '<=', '!=', '=', ':', '!:']),
       ['=', '!=', ':', '!:', '>=', '<=', '<', '>'],
     ],
-    ['removes duplicates', getFilteringProperty(['=', '=']), ['=']],
+    ['removes duplicates', getFilteringProperty(['=', { operator: '=' }]), ['=']],
     ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
   ];
