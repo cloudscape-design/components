@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box } from '~components';
 
-import DateInput from '~components/internal/components/date-input';
+import DateInput from '~components/date-input';
 
 export default function DateInputScenario() {
   const [value, setValue] = useState('');

@@ -12,7 +12,7 @@ import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
 import Dropdown from '../internal/components/dropdown';
-import DateInput from '../internal/components/date-input';
+import InternalDateInput from '../date-input/internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -118,7 +118,7 @@ const DatePicker = React.forwardRef(
     const DateInputElement = (
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
-          <DateInput
+          <InternalDateInput
             name={name}
             invalid={invalid}
             controlId={controlId}
@@ -127,8 +127,6 @@ const DatePicker = React.forwardRef(
             ariaLabel={ariaLabel}
             ariaRequired={ariaRequired}
             value={value}
-            autoComplete={false}
-            disableBrowserAutocorrect={true}
             disableAutocompleteOnBlur={isDropDownOpen}
             disabled={disabled}
             readOnly={readOnly}

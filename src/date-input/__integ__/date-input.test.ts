@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+import createWrapper, { DateInputWrapper } from '../../../lib/components/test-utils/selectors';
 
-import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/selectors';
-
-const dateInputWrapper = createWrapper().findComponent('.testing-date-input', InputWrapper);
+const dateInputWrapper = createWrapper().findComponent('.testing-date-input', DateInputWrapper);
 const defaultSelector = dateInputWrapper.findNativeInput().toSelector();
 
 class DateInputPage extends BasePageObject {

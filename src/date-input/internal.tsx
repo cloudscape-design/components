@@ -1,16 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import clsx from 'clsx';
 import { getDaysInMonth } from 'date-fns';
 import React, { Ref } from 'react';
-import { fireNonCancelableEvent } from '../../events';
-import { displayToIso, isoToDisplay, parseDate } from '../../utils/date-time';
+import { fireNonCancelableEvent } from '../internal/events';
+import { displayToIso, isoToDisplay, parseDate } from '../internal/utils/date-time';
 
-import MaskedInput from '../masked-input';
-import { MaskArgs } from '../masked-input/utils/mask-format';
+import MaskedInput from '../internal/components/masked-input';
+import { MaskArgs } from '../internal/components/masked-input/utils/mask-format';
 
+import styles from './styles.css.js';
 import { DateInputProps } from './interfaces';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-export { DateInputProps };
+type InternalDateInputProps = DateInputProps & InternalBaseComponentProps;
 
 function daysMax(value: string): number {
   // force to first day in month, as new Date('2018-02-30') -> March 2nd 2018
@@ -28,21 +32,26 @@ const maskArgs: MaskArgs = {
   ],
 };
 
-const DateInput = React.forwardRef(
-  ({ __internalRootRef = null, value, onChange, ...props }: DateInputProps, ref: Ref<DateInputProps.Ref>) => {
+const InternalDateInput = React.forwardRef(
+  (
+    { value, onChange, disableBrowserAutocorrect = true, __internalRootRef = null, ...props }: InternalDateInputProps,
+    ref: Ref<DateInputProps.Ref>
+  ) => {
     return (
       <MaskedInput
+        ref={ref}
+        {...props}
         value={isoToDisplay(value)}
         onChange={event => fireNonCancelableEvent(onChange, { value: displayToIso(event.detail.value) })}
-        {...props}
-        ref={ref}
-        disableBrowserAutocorrect={true}
+        className={clsx(styles.root, props.className)}
         mask={maskArgs}
         autofix={true}
+        autoComplete={false}
+        disableBrowserAutocorrect={disableBrowserAutocorrect}
         __internalRootRef={__internalRootRef}
       />
     );
   }
 );
 
-export default DateInput;
+export default InternalDateInput;

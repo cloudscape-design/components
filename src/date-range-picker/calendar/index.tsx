@@ -11,7 +11,7 @@ import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handle
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
-import DateInput from '../../internal/components/date-input';
+import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
@@ -319,10 +319,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                  <DateInput
+                  <InternalDateInput
                     value={startDateString}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}
                     className={styles['start-date-input']}
                     onChange={onChangeStartDate}
@@ -350,10 +348,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                  <DateInput
+                  <InternalDateInput
                     value={endDateString}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
                     disableAutocompleteOnBlur={false}
                     className={styles['end-date-input']}
                     onChange={onChangeEndDate}
