@@ -28,29 +28,32 @@ import {
   operatorToDescription,
   getPropertySuggestions,
 } from './controller';
-import TokenEditorForm from './token-editor-form';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import InternalButton from '../button/internal';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
-interface TokenEditorProps {
-  asyncProperties?: boolean;
-  asyncProps: DropdownStatusProps;
-  customGroupsText: readonly GroupText[];
-  disabled?: boolean;
-  disableFreeTextFiltering?: boolean;
-  expandToViewport?: boolean;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
-  i18nStrings: I18nStrings;
-  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  setToken: (newToken: Token) => void;
-  token: Token;
-  triggerComponent?: React.ReactNode;
+interface TokenEditorFieldProps {
+  label: React.ReactNode;
+  className: string;
+  children: ({ controlId }: { controlId: string }) => React.ReactNode;
+}
+
+function TokenEditorField({ className, label, children }: TokenEditorFieldProps) {
+  const controlId = useUniqueId();
+  return (
+    <div className={clsx(styles['token-editor-line'], className)}>
+      <label className={styles['token-editor-label']} htmlFor={controlId}>
+        {label}
+      </label>
+      <div className={styles['token-editor-field']}>{children({ controlId })}</div>
+    </div>
+  );
 }
 
 interface PropertyInputProps {
+  controlId: string;
   asyncProps: null | DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disableFreeTextFiltering?: boolean;
@@ -62,6 +65,7 @@ interface PropertyInputProps {
 }
 
 function PropertyInput({
+  controlId,
   propertyKey,
   onChangePropertyKey,
   asyncProps,
@@ -91,34 +95,26 @@ function PropertyInput({
   if (!disableFreeTextFiltering) {
     propertyOptions.unshift(allPropertiesOption);
   }
-  const controlId = useUniqueId('property');
-
   return (
-    <div className={clsx(styles['token-editor-line'], styles['property-selector'])} key={i18nStrings.propertyText}>
-      <label className={styles['token-editor-label']} htmlFor={controlId}>
-        {i18nStrings.propertyText}
-      </label>
-      <div className={styles['token-editor-field']}>
-        <InternalSelect
-          controlId={controlId}
-          options={propertyOptions}
-          selectedOption={
-            property
-              ? {
-                  value: propertyKey ?? undefined,
-                  label: property.propertyLabel,
-                }
-              : allPropertiesOption
-          }
-          onChange={e => onChangePropertyKey(e.detail.selectedOption.value)}
-          {...asyncPropertySelectProps}
-        />
-      </div>
-    </div>
+    <InternalSelect
+      controlId={controlId}
+      options={propertyOptions}
+      selectedOption={
+        property
+          ? {
+              value: propertyKey ?? undefined,
+              label: property.propertyLabel,
+            }
+          : allPropertiesOption
+      }
+      onChange={e => onChangePropertyKey(e.detail.selectedOption.value)}
+      {...asyncPropertySelectProps}
+    />
   );
 }
 
 interface OperatorInputProps {
+  controlId: string;
   filteringProperties: readonly FilteringProperty[];
   i18nStrings: I18nStrings;
   onChangeOperator: (operator: ComparisonOperator) => void;
@@ -127,6 +123,7 @@ interface OperatorInputProps {
 }
 
 function OperatorInput({
+  controlId,
   propertyKey,
   operator,
   onChangeOperator,
@@ -140,35 +137,27 @@ function OperatorInput({
     label: operator,
     description: operatorToDescription(operator, i18nStrings),
   }));
-  const contorlId = useUniqueId('operator');
-
   return (
-    <div className={clsx(styles['token-editor-line'], styles['operator-selector'])} key={i18nStrings.operatorText}>
-      <label className={styles['token-editor-label']} htmlFor={contorlId}>
-        {i18nStrings.operatorText}
-      </label>
-      <div className={styles['token-editor-field']}>
-        <InternalSelect
-          controlId={contorlId}
-          options={operatorOptions}
-          triggerVariant="option"
-          selectedOption={
-            operator
-              ? {
-                  value: operator,
-                  label: operator,
-                  description: operatorToDescription(operator, i18nStrings),
-                }
-              : null
-          }
-          onChange={e => onChangeOperator(e.detail.selectedOption.value as ComparisonOperator)}
-        />
-      </div>
-    </div>
+    <InternalSelect
+      controlId={controlId}
+      options={operatorOptions}
+      triggerVariant="option"
+      selectedOption={
+        operator
+          ? {
+              value: operator,
+              label: operator,
+              description: operatorToDescription(operator, i18nStrings),
+            }
+          : null
+      }
+      onChange={e => onChangeOperator(e.detail.selectedOption.value as ComparisonOperator)}
+    />
   );
 }
 
 interface ValueInputProps {
+  controlId: string;
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly FilteringOption[];
   filteringProperties: readonly FilteringProperty[];
@@ -181,6 +170,7 @@ interface ValueInputProps {
 }
 
 function ValueInput({
+  controlId,
   propertyKey,
   operator: selectedOperator,
   value,
@@ -197,9 +187,7 @@ function ValueInput({
   const asyncValueAutosuggesProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
-  const controlId = useUniqueId('value');
 
-  let customInput: undefined | React.ReactNode = undefined;
   if (propertyKey) {
     for (const prop of filteringProperties) {
       if (prop.key === propertyKey) {
@@ -207,7 +195,7 @@ function ValueInput({
           if (typeof operator === 'object' && operator.operator === selectedOperator) {
             if (operator.form) {
               const Form = operator.form;
-              customInput = <Form value={value} onChange={onChangeValue} operator={operator.operator} filter="" />;
+              return <Form value={value} onChange={onChangeValue} operator={operator.operator} filter="" />;
             }
           }
         }
@@ -216,41 +204,60 @@ function ValueInput({
   }
 
   return (
-    <div
-      className={clsx({
-        [styles['token-editor-line']]: true,
-        [styles['token-editor-line-custom']]: !!customInput,
-        [styles['value-selector']]: true,
-      })}
-      key={i18nStrings.valueText}
-    >
-      <label className={styles['token-editor-label']} htmlFor={controlId}>
-        {i18nStrings.valueText}
-      </label>
-      <div
-        className={clsx({
-          [styles['token-editor-field']]: true,
-          [styles['token-editor-field-custom']]: !!customInput,
-        })}
-      >
-        {customInput || (
-          <InternalAutosuggest
-            controlId={controlId}
-            enteredTextLabel={i18nStrings.enteredTextLabel}
-            value={value ?? ''}
-            onChange={e => onChangeValue(e.detail.value)}
-            disabled={!selectedOperator}
-            options={valueOptions}
-            {...asyncValueAutosuggesProps}
-            virtualScroll={true}
-          />
-        )}
+    <InternalAutosuggest
+      controlId={controlId}
+      enteredTextLabel={i18nStrings.enteredTextLabel}
+      value={value ?? ''}
+      onChange={e => onChangeValue(e.detail.value)}
+      disabled={!selectedOperator}
+      options={valueOptions}
+      {...asyncValueAutosuggesProps}
+      virtualScroll={true}
+    />
+  );
+}
+
+interface TokenEditorFormProps {
+  i18nStrings: I18nStrings;
+  onCancel(): void;
+  onSubmit(): void;
+  children: React.ReactNode;
+}
+
+export function TokenEditorForm({ i18nStrings, onCancel, onSubmit, children }: TokenEditorFormProps) {
+  return (
+    <div className={styles['token-editor']}>
+      {children}
+
+      <div className={styles['token-editor-actions']}>
+        <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={onCancel}>
+          {i18nStrings.cancelActionText}
+        </InternalButton>
+        <InternalButton className={styles['token-editor-submit']} onClick={onSubmit}>
+          {i18nStrings.applyActionText}
+        </InternalButton>
       </div>
     </div>
   );
 }
 
-export const TokenEditor = ({
+interface TokenEditorProps {
+  asyncProperties?: boolean;
+  asyncProps: DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  disabled?: boolean;
+  disableFreeTextFiltering?: boolean;
+  expandToViewport?: boolean;
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  setToken: (newToken: Token) => void;
+  token: Token;
+  triggerComponent?: React.ReactNode;
+}
+
+export function TokenEditor({
   asyncProperties,
   asyncProps,
   customGroupsText,
@@ -263,7 +270,7 @@ export const TokenEditor = ({
   setToken,
   token,
   triggerComponent,
-}: TokenEditorProps) => {
+}: TokenEditorProps) {
   const [temporaryToken, setTemporaryToken] = useState<Token>(token);
   const popoverRef = useRef<InternalPopoverRef>(null);
   const closePopover = () => {
@@ -307,44 +314,59 @@ export const TokenEditor = ({
       renderWithPortal={expandToViewport}
       content={
         <TokenEditorForm
-          onClose={closePopover}
+          i18nStrings={i18nStrings}
+          onCancel={closePopover}
           onSubmit={() => {
             setToken(temporaryToken as Token);
             closePopover();
           }}
-          i18nStrings={i18nStrings}
         >
           <InternalSpaceBetween size="l">
-            <PropertyInput
-              propertyKey={propertyKey}
-              onChangePropertyKey={onChangePropertyKey}
-              asyncProps={asyncProperties ? asyncProps : null}
-              filteringProperties={filteringProperties}
-              onLoadItems={onLoadItems}
-              customGroupsText={customGroupsText}
-              i18nStrings={i18nStrings}
-              disableFreeTextFiltering={disableFreeTextFiltering}
-            />
+            <TokenEditorField label={i18nStrings.propertyText} className={styles['property-selector']}>
+              {({ controlId }) => (
+                <PropertyInput
+                  controlId={controlId}
+                  propertyKey={propertyKey}
+                  onChangePropertyKey={onChangePropertyKey}
+                  asyncProps={asyncProperties ? asyncProps : null}
+                  filteringProperties={filteringProperties}
+                  onLoadItems={onLoadItems}
+                  customGroupsText={customGroupsText}
+                  i18nStrings={i18nStrings}
+                  disableFreeTextFiltering={disableFreeTextFiltering}
+                />
+              )}
+            </TokenEditorField>
 
-            <OperatorInput
-              propertyKey={propertyKey}
-              operator={operator}
-              onChangeOperator={onChangeOperator}
-              filteringProperties={filteringProperties}
-              i18nStrings={i18nStrings}
-            />
+            <TokenEditorField label={i18nStrings.operatorText} className={styles['operator-selector']}>
+              {({ controlId }) => (
+                <OperatorInput
+                  controlId={controlId}
+                  propertyKey={propertyKey}
+                  operator={operator}
+                  onChangeOperator={onChangeOperator}
+                  filteringProperties={filteringProperties}
+                  i18nStrings={i18nStrings}
+                />
+              )}
+            </TokenEditorField>
 
-            <ValueInput
-              propertyKey={propertyKey}
-              operator={operator}
-              value={value}
-              onChangeValue={onChangeValue}
-              asyncProps={asyncProps}
-              filteringProperties={filteringProperties}
-              filteringOptions={filteringOptions}
-              onLoadItems={onLoadItems}
-              i18nStrings={i18nStrings}
-            />
+            <TokenEditorField label={i18nStrings.valueText} className={styles['value-selector']}>
+              {({ controlId }) => (
+                <ValueInput
+                  controlId={controlId}
+                  propertyKey={propertyKey}
+                  operator={operator}
+                  value={value}
+                  onChangeValue={onChangeValue}
+                  asyncProps={asyncProps}
+                  filteringProperties={filteringProperties}
+                  filteringOptions={filteringOptions}
+                  onLoadItems={onLoadItems}
+                  i18nStrings={i18nStrings}
+                />
+              )}
+            </TokenEditorField>
           </InternalSpaceBetween>
         </TokenEditorForm>
       }
@@ -352,4 +374,4 @@ export const TokenEditor = ({
       {triggerComponent}
     </InternalPopover>
   );
-};
+}

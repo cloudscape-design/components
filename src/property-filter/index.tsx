@@ -20,7 +20,7 @@ import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import InternalBox from '../box/internal';
-import TokenEditorForm from './token-editor-form';
+import { TokenEditorForm } from './token-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
@@ -219,7 +219,7 @@ const PropertyFilter = React.forwardRef(
                   >
                     <TokenEditorForm
                       i18nStrings={i18nStrings}
-                      onClose={() => {
+                      onCancel={() => {
                         setFilteringText('');
                         inputRef.current?.close();
                       }}

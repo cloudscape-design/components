@@ -61,9 +61,10 @@ export const getQueryActions = (
 export const getAllowedOperators = (property: FilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorSet = new Set<ComparisonOperator>();
-  operatorSet.add(defaultOperator ?? '=');
-  operators.forEach(op => operatorSet.add(typeof op === 'string' ? op : op.operator));
+  const operatorSet = new Set([
+    defaultOperator ?? '=',
+    ...operators.map(op => (typeof op === 'string' ? op : op.operator)),
+  ]);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
 
