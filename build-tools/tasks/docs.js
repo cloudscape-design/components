@@ -13,8 +13,9 @@ module.exports = function docs() {
   return Promise.resolve();
 };
 
+const publicDirs = listPublicItems('src');
+
 function validatePublicFiles(definitionFiles) {
-  const publicDirs = listPublicItems('src');
   for (const publicDir of publicDirs) {
     if (!definitionFiles.includes(publicDir)) {
       throw new Error(`Directory src/${publicDir} does not have a corresponding API definition`);
@@ -25,11 +26,20 @@ function validatePublicFiles(definitionFiles) {
 function componentDocs() {
   const definitions = documentComponents(require.resolve('../../tsconfig.json'), 'src/*/index.tsx');
   const outDir = path.join(workspace.apiDocsPath, 'components');
-  const fileNames = definitions.map(definition => {
-    const fileName = paramCase(definition.name);
-    writeFile(path.join(outDir, fileName + '.js'), `module.exports = ${JSON.stringify(definition, null, 2)};`);
-    return fileName;
-  });
+  const fileNames = definitions
+    .filter(definition => {
+      const fileName = paramCase(definition.name);
+      if (!publicDirs.includes(fileName)) {
+        console.warn(`Excluded "${fileName}" from components definitions.`);
+        return false;
+      }
+      return true;
+    })
+    .map(definition => {
+      const fileName = paramCase(definition.name);
+      writeFile(path.join(outDir, fileName + '.js'), `module.exports = ${JSON.stringify(definition, null, 2)};`);
+      return fileName;
+    });
   validatePublicFiles(fileNames);
   const indexContent = `module.exports = {
     ${fileNames.map(name => `${JSON.stringify(name)}:require('./${name}')`).join(',\n')}
