@@ -21,7 +21,7 @@ describe('Date picker calendar interactions', () => {
     'should focus the element after the date picker',
     setupTest(async page => {
       await page.click('#focusable-element-before-date-picker');
-      await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
       await expect(page.isFocused('#focusable-element-after-date-picker')).resolves.toBeTruthy();
     })
   );
@@ -30,7 +30,7 @@ describe('Date picker calendar interactions', () => {
     'should focus the element before the date picker when shift tabing',
     setupTest(async page => {
       await page.click('#focusable-element-after-date-picker');
-      await page.keys(['Shift', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Null']);
+      await page.keys(['Shift', 'Tab', 'Tab', 'Tab', 'Tab', 'Null']);
       await expect(page.isFocused('#focusable-element-before-date-picker')).resolves.toBeTruthy();
     })
   );
@@ -39,7 +39,7 @@ describe('Date picker calendar interactions', () => {
     'should navigate dates within a month',
     setupTest(async page => {
       await page.click('#focusable-element-before-date-picker');
-      await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
       await page.keys('Enter');
 
