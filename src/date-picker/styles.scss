@@ -12,6 +12,19 @@
   @include styles.styles-reset;
 }
 
+.calendar {
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.container-focus(awsui.$border-radius-dropdown);
+  }
+}
+
+.screenreader-only {
+  @include styles.awsui-util-hide;
+}
+
 .date-picker-container {
   position: relative;
   max-width: 234px;

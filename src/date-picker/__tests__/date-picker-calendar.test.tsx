@@ -153,7 +153,7 @@ describe('Date picker calendar', () => {
       expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
       // we render 2018/03/22 which results in
       // -> 35 (5 weeks á 7 days) + 7 (weekday names) + 1 (month name)
-      expect(localStringMock).toHaveBeenCalledTimes(43);
+      expect(localStringMock).toHaveBeenCalledTimes(44);
       expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
       window.Date.prototype.toLocaleDateString = oldImpl;
     });

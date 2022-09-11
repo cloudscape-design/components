@@ -31,9 +31,6 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
   // IE11 does not calculate the height correctly when in nested flex containers (@see https://github.com/philipwalton/flexbugs#flexbug-3)
   width: 234px;
   overflow: auto;
-  &:focus {
-    outline: none;
-  }
 
   &-inner {
     margin: awsui.$space-xs;
@@ -170,7 +167,4 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
   }
 
   @include styles.styles-reset;
-  @include focus-visible.when-visible {
-    @include styles.container-focus(awsui.$border-radius-dropdown);
-  }
 }

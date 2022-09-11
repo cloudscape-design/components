@@ -3,7 +3,6 @@
 
 import { ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../date-picker/styles.selectors.js';
-import calendarStyles from '../../../calendar/styles.selectors.js';
 import ButtonWrapper from '../button';
 import CalendarWrapper from '../calendar';
 import BaseInputWrapper from '../input/base-input';
@@ -18,7 +17,7 @@ export default class DatePickerWrapper extends BaseInputWrapper {
    */
   findCalendar(options = { expandToViewport: false }): CalendarWrapper | null {
     const wrapper = options.expandToViewport ? createWrapper() : this;
-    return wrapper.findComponent(`.${calendarStyles.root}`, CalendarWrapper);
+    return wrapper.findComponent(`.${styles.calendar}`, CalendarWrapper);
   }
 
   findCalendarDropdown(): ElementWrapper | null {

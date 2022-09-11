@@ -4,11 +4,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
 import styles from './styles.css.js';
-import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import CalendarHeader from './header';
 import Grid from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { memoizedDate } from './utils/memoized-date.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
@@ -34,8 +32,6 @@ export default function Calendar({
 
   const normalizedLocale = normalizeLocale('Calendar', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
-  const focusVisible = useFocusVisible();
-  const headerId = useUniqueId('calendar-dialog-title-');
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
@@ -118,17 +114,9 @@ export default function Calendar({
   };
 
   return (
-    <div
-      {...focusVisible}
-      className={clsx(styles.root, styles.calendar)}
-      tabIndex={0}
-      role="application"
-      aria-describedby={headerId}
-      ref={elementRef}
-    >
+    <div className={clsx(styles.root, styles.calendar)} ref={elementRef}>
       <div className={styles['calendar-inner']}>
         <CalendarHeader
-          headerId={headerId}
           baseDate={baseDate}
           locale={normalizedLocale}
           onChangeMonth={onHeaderChangeMonthHandler}

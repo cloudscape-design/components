@@ -6,7 +6,6 @@ import { renderMonthAndYear } from '../utils/intl';
 import HeaderButton from './button';
 
 interface CalendarHeaderProps {
-  headerId: string;
   baseDate: Date;
   locale: string;
   onChangeMonth: (prev?: boolean) => void;
@@ -15,7 +14,6 @@ interface CalendarHeaderProps {
 }
 
 const CalendarHeader = ({
-  headerId,
   baseDate,
   locale,
   onChangeMonth,
@@ -25,9 +23,7 @@ const CalendarHeader = ({
   return (
     <div className={styles['calendar-header']}>
       <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
-      <div className={styles['calendar-header-month']} id={headerId} aria-live="polite">
-        {renderMonthAndYear(locale, baseDate)}
-      </div>
+      <div className={styles['calendar-header-month']}>{renderMonthAndYear(locale, baseDate)}</div>
       <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
     </div>
   );
