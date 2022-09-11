@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Calendar from '~components/date-picker/calendar';
+import Calendar from '~components/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 
 export default function CalendarPage() {

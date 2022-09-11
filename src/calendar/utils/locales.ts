@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { warnOnce } from '../../internal/logging';
 import { getWeekStartByLocale } from 'weekstart';
-import { DayIndex } from '..';
+import { DayIndex } from '../internal';
 
 const getHtmlElement = () => (typeof document !== 'undefined' ? document.querySelector('html') : null);
 

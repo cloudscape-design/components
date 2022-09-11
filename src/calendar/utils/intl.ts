@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DayIndex } from '../index';
+
+import { DayIndex } from '../internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 
 function setDayIndex(date: Date, dayIndex: DayIndex): void {

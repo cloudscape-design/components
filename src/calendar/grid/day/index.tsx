@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import styles from '../../../styles.css.js';
+import styles from '../../styles.css.js';
 import { DatePickerProps } from '../../../date-picker/interfaces';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { getDateLabel } from '../../utils/intl';
