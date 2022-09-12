@@ -184,7 +184,7 @@ function parseValue(originalValue: null | string, defaultTime = '00:00:00'): { d
   return { dateValue, timeValue };
 }
 
-const DateTimeForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, operator, value, onChange }) => {
+const DateTimeForm: PropertyFilterProps.ExtendedOperatorForm<string> = ({ filter, operator, value, onChange }) => {
   const defaultTime = operator === '<' || operator === '>=' ? '00:00:00' : '23:59:59';
   const parsedFilter = parseValue(filter, defaultTime);
   const parsedValue = parseValue(value, defaultTime);
@@ -244,7 +244,7 @@ const DateTimeForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, 
   );
 };
 
-const DateForm: PropertyFilterProps.CustomOperatorForm<string> = ({ filter, value, onChange }) => {
+const DateForm: PropertyFilterProps.ExtendedOperatorForm<string> = ({ filter, value, onChange }) => {
   const parsedFilter = parseValue(filter);
   const parsedValue = parseValue(value);
 
