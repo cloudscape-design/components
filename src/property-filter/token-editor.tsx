@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
-import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
@@ -37,19 +36,21 @@ const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
 interface TokenEditorFieldProps {
   label: React.ReactNode;
-  className: string;
+  type: 'property' | 'opeartor' | 'value';
   children: ({ controlId }: { controlId: string }) => React.ReactNode;
 }
 
-function TokenEditorField({ className, label, children }: TokenEditorFieldProps) {
+function TokenEditorField({ label, type, children }: TokenEditorFieldProps) {
   const controlId = useUniqueId();
   return (
-    <div className={clsx(styles['token-editor-line'], className)}>
-      <label className={styles['token-editor-label']} htmlFor={controlId}>
+    <>
+      <label className={clsx(styles['token-editor-label'], styles[`token-editor-label-${type}`])} htmlFor={controlId}>
         {label}
       </label>
-      <div className={styles['token-editor-field']}>{children({ controlId })}</div>
-    </div>
+      <div className={clsx(styles['token-editor-field'], styles[`token-editor-field-${type}`])}>
+        {children({ controlId })}
+      </div>
+    </>
   );
 }
 
@@ -281,8 +282,8 @@ export function TokenEditor({
       content={
         <div className={styles['token-editor']}>
           <div className={styles['token-editor-form']}>
-            <InternalSpaceBetween size="l">
-              <TokenEditorField label={i18nStrings.propertyText} className={styles['property-selector']}>
+            <div className={styles['token-editor-fields']}>
+              <TokenEditorField label={i18nStrings.propertyText} type="property">
                 {({ controlId }) => (
                   <PropertyInput
                     controlId={controlId}
@@ -298,7 +299,7 @@ export function TokenEditor({
                 )}
               </TokenEditorField>
 
-              <TokenEditorField label={i18nStrings.operatorText} className={styles['operator-selector']}>
+              <TokenEditorField label={i18nStrings.operatorText} type="opeartor">
                 {({ controlId }) => (
                   <OperatorInput
                     controlId={controlId}
@@ -311,7 +312,7 @@ export function TokenEditor({
                 )}
               </TokenEditorField>
 
-              <TokenEditorField label={i18nStrings.valueText} className={styles['value-selector']}>
+              <TokenEditorField label={i18nStrings.valueText} type="value">
                 {({ controlId }) => (
                   <ValueInput
                     controlId={controlId}
@@ -327,7 +328,7 @@ export function TokenEditor({
                   />
                 )}
               </TokenEditorField>
-            </InternalSpaceBetween>
+            </div>
           </div>
 
           <div className={styles['token-editor-actions']}>
