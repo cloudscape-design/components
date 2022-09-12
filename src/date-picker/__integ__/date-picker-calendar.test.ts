@@ -7,12 +7,12 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 
 const calendarWrapper = createWrapper().findComponent('', CalendarWrapper);
 
-describe('Date picker embedded interactions', () => {
+describe('Date picker calendar interactions', () => {
   const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
 
-      await browser.url('#/light/date-picker/embedded');
+      await browser.url('#/light/date-picker/calendar');
       await testFn(page);
     });
   };

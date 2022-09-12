@@ -17,7 +17,8 @@ import {
   BaseKeyDetail,
 } from '../internal/events';
 import { BaseChangeDetail } from '../input/interfaces';
-import styles from '../autosuggest/styles.css.js';
+import autosuggestStyles from '../autosuggest/styles.css.js';
+import styles from './styles.css.js';
 import { fireCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import AutosuggestOptionsList from '../autosuggest/options-list';
@@ -25,6 +26,7 @@ import { useAutosuggestLoadMore } from '../autosuggest/load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import clsx from 'clsx';
 
 const DROPDOWN_WIDTH = 300;
 
@@ -147,7 +149,8 @@ const PropertyFilterAutosuggest = React.forwardRef(
     return (
       <AutosuggestInput
         ref={mergedRef}
-        className={styles.root}
+        {...rest}
+        className={clsx(autosuggestStyles.root, styles.input)}
         value={value}
         onChange={handleChange}
         onFocus={handleFocus}
@@ -191,7 +194,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
         onPressArrowDown={handlePressArrowDown}
         onPressArrowUp={handlePressArrowUp}
         onPressEnter={handlePressEnter}
-        {...rest}
       />
     );
   }

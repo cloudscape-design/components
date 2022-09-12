@@ -217,7 +217,7 @@ interface TokenEditorFormProps {
 export function TokenEditorForm({ i18nStrings, onCancel, onSubmit, children }: TokenEditorFormProps) {
   return (
     <div className={styles['token-editor']}>
-      {children}
+      <div className={styles['token-editor-form']}>{children}</div>
 
       <div className={styles['token-editor-actions']}>
         <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={onCancel}>

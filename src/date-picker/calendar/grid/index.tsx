@@ -6,9 +6,8 @@ import GridDay from './day';
 import { KeyCode } from '../../../internal/keycode';
 import { addDays, addWeeks, isSameMonth } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
+import { DayIndex } from '../index';
 import { MoveFocusHandler } from '../utils/move-focus-handler';
-import { CalendarTypes } from '../definitions';
 import { DatePickerProps } from '../../interfaces';
 import rotateDayIndexes from '../utils/rotate-day-indexes';
 import { renderDayName } from '../utils/intl';
@@ -18,17 +17,13 @@ export interface GridProps {
   baseDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   focusedDate: Date | null;
-  onSelectDate: DateChangeHandler;
-  onFocusDate: DateChangeHandlerNullable;
-  onChangeMonth: MonthChangeHandler;
+  onSelectDate: (date: Date) => void;
+  onFocusDate: (date: null | Date) => void;
+  onChangeMonth: (date: Date) => void;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
   selectedDate: Date | null;
   handleFocusMove: MoveFocusHandler;
-}
-
-export interface DateChangeHandlerNullable {
-  (detail: CalendarTypes.DateDetailNullable): void;
 }
 
 const Grid = ({
@@ -55,8 +50,8 @@ const Grid = ({
       case KeyCode.enter:
         event.preventDefault();
         if (focusedDate) {
-          onFocusDate({ date: null });
-          onSelectDate({ date: focusedDate });
+          onFocusDate(null);
+          onSelectDate(focusedDate);
         }
         return;
       case KeyCode.right:
@@ -82,7 +77,7 @@ const Grid = ({
     if (!isSameMonth(updatedFocusDate, baseDate)) {
       onChangeMonth(updatedFocusDate);
     }
-    onFocusDate({ date: updatedFocusDate });
+    onFocusDate(updatedFocusDate);
   };
 
   const weeks = useMemo<Date[][]>(
@@ -115,9 +110,7 @@ const Grid = ({
                     date={date}
                     focusedDate={focusedDate}
                     todayAriaLabel={todayAriaLabel}
-                    onSelectDate={date => {
-                      onSelectDate({ date });
-                    }}
+                    onSelectDate={date => onSelectDate(date)}
                     isDateEnabled={isDateEnabled}
                     isDateInLastWeek={isDateInLastWeek}
                   />
