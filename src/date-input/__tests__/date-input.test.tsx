@@ -3,17 +3,15 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import DateInput, { DateInputProps } from '../../../../../lib/components/internal/components/date-input';
-import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/dom';
+import DateInput, { DateInputProps } from '../../../lib/components/date-input';
+import DateInputWrapper from '../../../lib/components/test-utils/dom/date-input';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 function renderDateInput(props: DateInputProps) {
   const onChangeSpy = jest.fn();
-  const onKeyDownSpy = jest.fn();
-  const { container } = render(
-    <DateInput className="testing-date-input" onChange={onChangeSpy} onKeyDown={onKeyDownSpy} {...props} />
-  );
-  const wrapper = createWrapper(container).findComponent('.testing-date-input', InputWrapper)!;
-  return { wrapper, onChangeSpy, onKeyDownSpy };
+  const { container } = render(<DateInput className="testing-date-input" onChange={onChangeSpy} {...props} />);
+  const wrapper = createWrapper(container).findComponent('.testing-date-input', DateInputWrapper)!;
+  return { wrapper, onChangeSpy };
 }
 
 describe('Date Input component', () => {
@@ -25,13 +23,6 @@ describe('Date Input component', () => {
     expect(inputElement).toHaveAttribute('autoCapitalize', 'off');
   });
 
-  test('should proxy events through', () => {
-    const { wrapper, onKeyDownSpy } = renderDateInput({ value: '' });
-
-    wrapper.findNativeInput().keydown(KeyCode.enter);
-    expect(onKeyDownSpy).toHaveBeenCalledTimes(1);
-  });
-
   test('should pass input props down to the native input', () => {
     const { wrapper } = renderDateInput({
       value: '',
@@ -39,7 +30,6 @@ describe('Date Input component', () => {
       ariaLabel: 'ariaLabel',
       ariaDescribedby: 'ariaDescribedby',
       ariaLabelledby: 'ariaLabelledby',
-      autoComplete: false,
       disabled: true,
       readOnly: true,
       controlId: 'custom-id',
