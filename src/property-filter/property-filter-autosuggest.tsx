@@ -136,7 +136,9 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const handleDropdownMouseDown: React.MouseEventHandler = event => {
       // Prevent currently focused element from losing focus.
-      event.preventDefault();
+      if (!customForm) {
+        event.preventDefault();
+      }
     };
 
     const selfControlId = useUniqueId('input');
