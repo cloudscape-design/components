@@ -36,7 +36,7 @@ const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
 interface TokenEditorFieldProps {
   label: React.ReactNode;
-  type: 'property' | 'opeartor' | 'value';
+  type: 'property' | 'operator' | 'value';
   children: ({ controlId }: { controlId: string }) => React.ReactNode;
 }
 
@@ -299,7 +299,7 @@ export function TokenEditor({
                 )}
               </TokenEditorField>
 
-              <TokenEditorField label={i18nStrings.operatorText} type="opeartor">
+              <TokenEditorField label={i18nStrings.operatorText} type="operator">
                 {({ controlId }) => (
                   <OperatorInput
                     controlId={controlId}
