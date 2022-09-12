@@ -330,7 +330,7 @@ export function TokenEditor({
             <InternalButton
               className={styles['token-editor-submit']}
               onClick={() => {
-                setToken(temporaryToken as Token);
+                setToken(temporaryToken);
                 closePopover();
               }}
             >
