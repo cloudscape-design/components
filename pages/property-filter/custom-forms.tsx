@@ -7,13 +7,6 @@ import Calendar from '~components/date-picker/calendar';
 import DateInput from '~components/internal/components/date-input';
 import { FormField, SpaceBetween, TimeInput } from '~components';
 
-// Split value in date and time parts and provide masking if needed.
-function parseValue(value: null | string, defaultTime = '00:00:00'): { dateValue: string; timeValue: string } {
-  const [datePart = '', timePart = ''] = (value ?? '').split('T');
-  const [year] = datePart.split('-');
-  return { dateValue: Number(year) < 9999 ? datePart : '', timeValue: timePart || defaultTime };
-}
-
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
   // Using the most reasonable default time per operator.
   const defaultTime = operator === '<' || operator === '>=' ? '00:00:00' : '23:59:59';
@@ -119,4 +112,26 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
       />
     </SpaceBetween>
   );
+}
+
+export function formatDateTime(isoDate: string): string {
+  return isoDate + formatTimezoneOffset(isoDate);
+}
+
+// Split value in date and time parts and provide masking if needed.
+function parseValue(value: null | string, defaultTime = '00:00:00'): { dateValue: string; timeValue: string } {
+  const [datePart = '', timePart = ''] = (value ?? '').split('T');
+  const [year] = datePart.split('-');
+  return { dateValue: Number(year) < 9999 ? datePart : '', timeValue: timePart || defaultTime };
+}
+
+function formatTimezoneOffset(isoDate: string, offsetInMinutes: number = 0 - new Date(isoDate).getTimezoneOffset()) {
+  const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60)
+    .toFixed(0)
+    .padStart(2, '0');
+  const minuteOffset = Math.abs(offsetInMinutes % 60)
+    .toFixed(0)
+    .padStart(2, '0');
+  const sign = offsetInMinutes < 0 ? '-' : '+';
+  return `${sign}${hoursOffset}:${minuteOffset}`;
 }

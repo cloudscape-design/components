@@ -191,7 +191,7 @@ export const getPropertyByKey = (filteringProperties: readonly FilteringProperty
   return propertyMap[key] as FilteringProperty | undefined;
 };
 
-export function getOperatorForm(
+export function getExtendedOperator(
   filteringProperties: readonly FilteringProperty[],
   selectedProperty: string,
   selectedOperator: ComparisonOperator
@@ -199,7 +199,7 @@ export function getOperatorForm(
   const property = getPropertyByKey(filteringProperties, selectedProperty);
   for (const operator of property?.operators || []) {
     if (typeof operator === 'object' && operator.operator === selectedOperator && operator.form) {
-      return operator.form;
+      return operator;
     }
   }
   return null;

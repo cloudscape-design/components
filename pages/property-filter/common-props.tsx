@@ -3,7 +3,7 @@
 
 import { PropertyFilterProps } from '~components/property-filter';
 import { TableItem } from './table.data';
-import { DateForm, DateTimeForm } from './custom-forms';
+import { DateForm, DateTimeForm, formatDateTime } from './custom-forms';
 
 export const columnDefinitions = [
   {
@@ -153,64 +153,17 @@ export const filteringProperties: readonly any[] = columnDefinitions.map(def => 
   }
 
   if (def.type === 'date') {
-    operators = [
-      {
-        operator: '=',
-        form: DateForm,
-        match: 'date',
-      },
-      {
-        operator: '!=',
-        form: DateForm,
-        match: 'date',
-      },
-      {
-        operator: '>',
-        form: DateForm,
-        match: 'date',
-      },
-      {
-        operator: '<',
-        form: DateForm,
-        match: 'date',
-      },
-      {
-        operator: '<=',
-        form: DateForm,
-        match: 'date',
-      },
-      {
-        operator: '>=',
-        form: DateForm,
-        match: 'date',
-      },
-    ];
+    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({ operator, form: DateForm, match: 'date' }));
   }
 
   if (def.type === 'datetime') {
     defaultOperator = '>';
-    operators = [
-      {
-        operator: '>',
-        form: DateTimeForm,
-        match: 'date',
-      },
-      {
-        operator: '<',
-        form: DateTimeForm,
-        match: 'date',
-      },
-      {
-        operator: '<=',
-        form: DateTimeForm,
-        match: 'date',
-      },
-      {
-        operator: '>=',
-        form: DateTimeForm,
-        match: 'date',
-      },
-    ];
+    operators = ['<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateTimeForm,
+      format: formatDateTime,
+      match: 'datetime',
+    }));
   }
 
   return {

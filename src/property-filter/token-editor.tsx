@@ -26,7 +26,7 @@ import {
   getPropertyByKey,
   operatorToDescription,
   getPropertySuggestions,
-  getOperatorForm,
+  getExtendedOperator,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
@@ -190,7 +190,7 @@ function ValueInput({
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
 
-  const OperatorForm = propertyKey && operator && getOperatorForm(filteringProperties, propertyKey, operator);
+  const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
 
   return OperatorForm ? (
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />

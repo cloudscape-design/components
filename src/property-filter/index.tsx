@@ -14,7 +14,13 @@ import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
 import { TokenButton } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators, getOperatorForm } from './controller';
+import {
+  getQueryActions,
+  parseText,
+  getAutosuggestOptions,
+  getAllowedOperators,
+  getExtendedOperator,
+} from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -194,7 +200,7 @@ const PropertyFilter = React.forwardRef(
 
     const OperatorForm =
       parsedText.step === 'property' &&
-      getOperatorForm(filteringProperties, parsedText.property.key, parsedText.operator);
+      getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
 
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
