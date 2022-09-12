@@ -127,7 +127,6 @@ const DatePicker = React.forwardRef(
             ariaLabel={ariaLabel}
             ariaRequired={ariaRequired}
             value={value}
-            disableAutocompleteOnBlur={isDropDownOpen}
             disabled={disabled}
             readOnly={readOnly}
             onChange={onInputChangeHandler}

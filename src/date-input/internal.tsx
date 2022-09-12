@@ -47,6 +47,7 @@ const InternalDateInput = React.forwardRef(
         mask={maskArgs}
         autofix={true}
         autoComplete={false}
+        disableAutocompleteOnBlur={false}
         disableBrowserAutocorrect={disableBrowserAutocorrect}
         __internalRootRef={__internalRootRef}
       />

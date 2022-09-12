@@ -67,7 +67,6 @@ const createSetupTest = (url: string) => (testFn: (page: DateInputPage) => Promi
 };
 
 const setupTest = createSetupTest('#/light/date-input/simple');
-const setupTestDisabledAutocomplete = createSetupTest('#/light/date-input/disabled-autocomplete');
 
 describe('Date Input', () => {
   test(
@@ -180,16 +179,6 @@ describe('Date Input', () => {
       })
     );
   });
-
-  test(
-    'should not autocomplete on Blur when `disableAutocompleteOnBlur` is set to true',
-    setupTestDisabledAutocomplete(async page => {
-      await page.focusInput();
-      await page.type('2');
-      await page.keys('Tab');
-      await expect(page.getValue(defaultSelector)).resolves.toBe('2');
-    })
-  );
 
   test(
     'should append a colons between each group',

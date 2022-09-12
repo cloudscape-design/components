@@ -321,7 +321,6 @@ function Calendar(
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                   <InternalDateInput
                     value={startDateString}
-                    disableAutocompleteOnBlur={false}
                     className={styles['start-date-input']}
                     onChange={onChangeStartDate}
                     placeholder="YYYY/MM/DD"
@@ -350,7 +349,6 @@ function Calendar(
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                   <InternalDateInput
                     value={endDateString}
-                    disableAutocompleteOnBlur={false}
                     className={styles['end-date-input']}
                     onChange={onChangeEndDate}
                     placeholder="YYYY/MM/DD"
