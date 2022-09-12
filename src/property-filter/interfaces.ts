@@ -159,10 +159,10 @@ export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
-  export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
-  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
-  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
-  export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
+  // export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+  // export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+  // export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+  // export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
 
@@ -243,10 +243,10 @@ export namespace PropertyFilterProps {
 export type Token = PropertyFilterProps.Token;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
-export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
-export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterProps.ExtendedOperatorFormProps<TokenValue>;
-export type ExtendedOperatorForm<TokenValue> = PropertyFilterProps.ExtendedOperatorForm<TokenValue>;
-export type ExtendedOperatorFormat<TokenValue> = PropertyFilterProps.ExtendedOperatorFormat<TokenValue>;
+export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;
