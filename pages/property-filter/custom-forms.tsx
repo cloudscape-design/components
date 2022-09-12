@@ -15,7 +15,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   // Sync filter and value allowing the filter value to be submitted.
   useEffect(
     () => {
-      onChange(filter);
+      filter && onChange(filter);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filter]
@@ -79,7 +79,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
   // Sync filter and value allowing the filter value to be submitted.
   useEffect(
     () => {
-      onChange(filter);
+      filter && onChange(filter);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filter]
