@@ -18,6 +18,7 @@ export function getAllComponents(): string[] {
         name !== 'theming' &&
         name !== 'contexts' &&
         name !== 'calendar' &&
+        name !== 'date-input' &&
         !name.includes('.') &&
         !name.includes('LICENSE')
     );
