@@ -45,14 +45,16 @@
   justify-content: space-between;
   &-form {
     display: grid;
-    grid-template-columns: max-content minmax(awsui.$space-xl, auto) minmax(200px, min-content);
+    grid-template-columns: max-content minmax(awsui.$space-xl, 1fr) minmax(200px, min-content);
     grid-row-gap: awsui.$space-scaled-l;
     margin-bottom: awsui.$space-scaled-l;
   }
   &-label {
-    display: flex;
-    align-items: center;
-    @include styles.text-flex-wrapping;
+    max-width: 200px;
+    align-self: center;
+    &-text {
+      @include styles.text-flex-wrapping;
+    }
   }
   &-label-property {
     grid-row: 1;

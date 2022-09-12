@@ -44,7 +44,7 @@ function TokenEditorField({ type, label, children }: TokenEditorFieldProps) {
   return (
     <>
       <label className={clsx(styles['token-editor-label'], styles[`token-editor-label-${type}`])} htmlFor={controlId}>
-        {label}
+        <span className={styles['token-editor-label-text']}>{label}</span>
       </label>
       <div className={clsx(styles['token-editor-field'], styles[`token-editor-field-${type}`])}>
         {children({ controlId })}
