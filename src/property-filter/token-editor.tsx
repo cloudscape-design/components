@@ -207,30 +207,6 @@ function ValueInput({
   );
 }
 
-interface TokenEditorFormProps {
-  i18nStrings: I18nStrings;
-  onCancel(): void;
-  onSubmit(): void;
-  children: React.ReactNode;
-}
-
-export function TokenEditorForm({ i18nStrings, onCancel, onSubmit, children }: TokenEditorFormProps) {
-  return (
-    <div className={styles['token-editor']}>
-      <div className={styles['token-editor-form']}>{children}</div>
-
-      <div className={styles['token-editor-actions']}>
-        <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={onCancel}>
-          {i18nStrings.cancelActionText}
-        </InternalButton>
-        <InternalButton className={styles['token-editor-submit']} onClick={onSubmit}>
-          {i18nStrings.applyActionText}
-        </InternalButton>
-      </div>
-    </div>
-  );
-}
-
 interface TokenEditorProps {
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
@@ -303,62 +279,72 @@ export function TokenEditor({
       __onOpen={() => setTemporaryToken(token)}
       renderWithPortal={expandToViewport}
       content={
-        <TokenEditorForm
-          i18nStrings={i18nStrings}
-          onCancel={closePopover}
-          onSubmit={() => {
-            setToken(temporaryToken as Token);
-            closePopover();
-          }}
-        >
-          <InternalSpaceBetween size="l">
-            <TokenEditorField label={i18nStrings.propertyText} className={styles['property-selector']}>
-              {({ controlId }) => (
-                <PropertyInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  onChangePropertyKey={onChangePropertyKey}
-                  asyncProps={asyncProperties ? asyncProps : null}
-                  filteringProperties={filteringProperties}
-                  onLoadItems={onLoadItems}
-                  customGroupsText={customGroupsText}
-                  i18nStrings={i18nStrings}
-                  disableFreeTextFiltering={disableFreeTextFiltering}
-                />
-              )}
-            </TokenEditorField>
+        <div className={styles['token-editor']}>
+          <div className={styles['token-editor-form']}>
+            <InternalSpaceBetween size="l">
+              <TokenEditorField label={i18nStrings.propertyText} className={styles['property-selector']}>
+                {({ controlId }) => (
+                  <PropertyInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    onChangePropertyKey={onChangePropertyKey}
+                    asyncProps={asyncProperties ? asyncProps : null}
+                    filteringProperties={filteringProperties}
+                    onLoadItems={onLoadItems}
+                    customGroupsText={customGroupsText}
+                    i18nStrings={i18nStrings}
+                    disableFreeTextFiltering={disableFreeTextFiltering}
+                  />
+                )}
+              </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.operatorText} className={styles['operator-selector']}>
-              {({ controlId }) => (
-                <OperatorInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  operator={operator}
-                  onChangeOperator={onChangeOperator}
-                  filteringProperties={filteringProperties}
-                  i18nStrings={i18nStrings}
-                />
-              )}
-            </TokenEditorField>
+              <TokenEditorField label={i18nStrings.operatorText} className={styles['operator-selector']}>
+                {({ controlId }) => (
+                  <OperatorInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    operator={operator}
+                    onChangeOperator={onChangeOperator}
+                    filteringProperties={filteringProperties}
+                    i18nStrings={i18nStrings}
+                  />
+                )}
+              </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.valueText} className={styles['value-selector']}>
-              {({ controlId }) => (
-                <ValueInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  operator={operator}
-                  value={value}
-                  onChangeValue={onChangeValue}
-                  asyncProps={asyncProps}
-                  filteringProperties={filteringProperties}
-                  filteringOptions={filteringOptions}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                />
-              )}
-            </TokenEditorField>
-          </InternalSpaceBetween>
-        </TokenEditorForm>
+              <TokenEditorField label={i18nStrings.valueText} className={styles['value-selector']}>
+                {({ controlId }) => (
+                  <ValueInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    operator={operator}
+                    value={value}
+                    onChangeValue={onChangeValue}
+                    asyncProps={asyncProps}
+                    filteringProperties={filteringProperties}
+                    filteringOptions={filteringOptions}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                  />
+                )}
+              </TokenEditorField>
+            </InternalSpaceBetween>
+          </div>
+
+          <div className={styles['token-editor-actions']}>
+            <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={closePopover}>
+              {i18nStrings.cancelActionText}
+            </InternalButton>
+            <InternalButton
+              className={styles['token-editor-submit']}
+              onClick={() => {
+                setToken(temporaryToken as Token);
+                closePopover();
+              }}
+            >
+              {i18nStrings.applyActionText}
+            </InternalButton>
+          </div>
+        </div>
       }
     >
       {triggerComponent}

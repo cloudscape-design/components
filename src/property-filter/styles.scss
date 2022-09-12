@@ -37,6 +37,7 @@
   font-weight: bold;
 }
 
+.property-editor,
 .token-editor {
   margin: awsui.$space-xxs;
   min-width: 300px;
@@ -72,6 +73,9 @@
   &-commit {
     margin-left: awsui.$space-xs;
   }
+}
+.property-editor {
+  min-width: unset;
 }
 
 .custom-control {

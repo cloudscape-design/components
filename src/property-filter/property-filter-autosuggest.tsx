@@ -28,10 +28,11 @@ import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/au
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 
-const DROPDOWN_WIDTH = 300;
+const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
+const DROPDOWN_WIDTH_CUSTOM_FORM = 100;
 
 export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
-  customContent?: React.ReactNode;
+  customForm?: React.ReactNode;
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
@@ -55,7 +56,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onKeyDown,
       virtualScroll,
       expandToViewport,
-      customContent,
+      customForm,
       filterText,
       onOptionClick,
       hideEnteredTextOption,
@@ -164,9 +165,9 @@ const PropertyFilterAutosuggest = React.forwardRef(
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
         dropdownExpanded={autosuggestItemsState.items.length > 1}
-        dropdownContentKey={customContent ? 'custom' : 'options'}
+        dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={
-          customContent || (
+          customForm || (
             <AutosuggestOptionsList
               autosuggestItemsState={autosuggestItemsState}
               autosuggestItemsHandlers={autosuggestItemsHandlers}
@@ -187,7 +188,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
             <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
           ) : null
         }
-        dropdownWidth={DROPDOWN_WIDTH}
+        dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}
         onDropdownMouseDown={handleDropdownMouseDown}
         onCloseDropdown={handleCloseDropdown}
         onDelayedInput={handleDelayedInput}

@@ -32,38 +32,36 @@ export const DateTimeForm: ExtendedOperatorForm<string> = ({ filter, operator, v
   };
 
   return (
-    <SpaceBetween direction="horizontal" size="s">
+    <SpaceBetween direction="vertical" size="s">
+      <FormField label="Date">
+        <DateInput
+          name="date"
+          ariaLabel="Enter the date in YYYY/MM/DD"
+          placeholder="YYYY/MM/DD"
+          onChange={event => onChangeDate(event.detail.value)}
+          value={value ? parsedValue.dateValue : parsedFilter.dateValue}
+          disableAutocompleteOnBlur={true}
+        />
+      </FormField>
+
       <Calendar
         value={value ? parsedValue.dateValue : parsedFilter.dateValue}
-        locale={'en-EN'}
-        previousMonthAriaLabel={'Previous month'}
-        nextMonthAriaLabel={'Next month'}
+        locale="en-EN"
+        previousMonthAriaLabel="Previous month"
+        nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
 
-      <SpaceBetween direction="vertical" size="s">
-        <FormField label="Date">
-          <DateInput
-            name="date"
-            ariaLabel="Enter the date in YYYY/MM/DD"
-            placeholder="YYYY/MM/DD"
-            onChange={event => onChangeDate(event.detail.value)}
-            value={value ? parsedValue.dateValue : parsedFilter.dateValue}
-            disableAutocompleteOnBlur={true}
-          />
-        </FormField>
-
-        <FormField label="Time">
-          <TimeInput
-            format="hh:mm:ss"
-            placeholder="hh:mm:ss"
-            ariaLabel="time-input"
-            value={value ? parsedValue.timeValue : parsedFilter.timeValue}
-            onChange={event => onChangeTime(event.detail.value)}
-          />
-        </FormField>
-      </SpaceBetween>
+      <FormField label="Time">
+        <TimeInput
+          format="hh:mm:ss"
+          placeholder="hh:mm:ss"
+          ariaLabel="time-input"
+          value={value ? parsedValue.timeValue : parsedFilter.timeValue}
+          onChange={event => onChangeTime(event.detail.value)}
+        />
+      </FormField>
     </SpaceBetween>
   );
 };
@@ -91,9 +89,9 @@ export const DateForm: ExtendedOperatorForm<string> = ({ filter, value, onChange
 
       <Calendar
         value={value ? parsedValue.dateValue : parsedFilter.dateValue}
-        locale={'en-EN'}
-        previousMonthAriaLabel={'Previous month'}
-        nextMonthAriaLabel={'Next month'}
+        locale="en-EN"
+        previousMonthAriaLabel="Previous month"
+        nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />

@@ -215,7 +215,7 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
-            customContent={
+            customForm={
               OperatorForm && (
                 <PropertyEditor
                   i18nStrings={i18nStrings}
