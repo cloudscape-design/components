@@ -19,6 +19,9 @@ const defaultProps: Record<string, Record<string, any>> = {
       submitButton: '',
     },
   },
+  'date-input': {
+    value: '',
+  },
   'time-input': {
     value: '',
   },

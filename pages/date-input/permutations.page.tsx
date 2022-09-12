@@ -5,7 +5,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-import DateInput, { DateInputProps } from '~components/internal/components/date-input';
+import DateInput, { DateInputProps } from '~components/date-input';
 import Box from '~components/box';
 
 const permutations = createPermutations<DateInputProps>([
