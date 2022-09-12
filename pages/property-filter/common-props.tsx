@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PropertyFilterProps } from '~components/property-filter';
-import { DatePickerEmbedded } from '~components/date-picker/embedded';
+import Calendar from '~components/date-picker/calendar';
 import DateInput from '~components/internal/components/date-input';
 import { FormField, SpaceBetween, TimeInput } from '~components';
 import { padStart } from 'lodash';
@@ -209,7 +209,7 @@ const DateTimeForm: PropertyFilterProps.ExtendedOperatorForm<string> = ({ filter
 
   return (
     <SpaceBetween direction="horizontal" size="s">
-      <DatePickerEmbedded
+      <Calendar
         value={value ? parsedValue.dateValue : parsedFilter.dateValue}
         locale={'en-EN'}
         previousMonthAriaLabel={'Previous month'}
@@ -254,7 +254,7 @@ const DateForm: PropertyFilterProps.ExtendedOperatorForm<string> = ({ filter, va
 
   return (
     <SpaceBetween direction="horizontal" size="s">
-      <DatePickerEmbedded
+      <Calendar
         value={value ? parsedValue.dateValue : parsedFilter.dateValue}
         locale={'en-EN'}
         previousMonthAriaLabel={'Previous month'}
