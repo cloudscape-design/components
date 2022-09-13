@@ -3,7 +3,7 @@
 
 import { PropertyFilterProps } from '~components/property-filter';
 import { TableItem } from './table.data';
-import { DateForm, DateTimeForm, formatDateTime } from './custom-forms';
+import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 
 export const columnDefinitions = [
   {
@@ -140,7 +140,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-export const filteringProperties: readonly any[] = columnDefinitions.map(def => {
+export const filteringProperties: PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
 
@@ -173,4 +173,11 @@ export const filteringProperties: readonly any[] = columnDefinitions.map(def => 
     propertyLabel: def.propertyLabel,
     groupValuesLabel: `${def.propertyLabel} values`,
   };
+});
+
+filteringProperties.push({
+  key: 'stopped',
+  operators: [{ operator: '=', form: YesNoForm, format: yesNoFormat }],
+  propertyLabel: 'Stopped',
+  groupValuesLabel: 'Stopped value',
 });

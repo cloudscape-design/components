@@ -5,7 +5,27 @@ import React, { useEffect } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 import Calendar from '~components/date-picker/calendar';
 import DateInput from '~components/date-input';
-import { FormField, SpaceBetween, TimeInput } from '~components';
+import { FormField, RadioGroup, SpaceBetween, TimeInput } from '~components';
+
+export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
+  return (
+    <RadioGroup
+      value={value !== null ? value.toString() : null}
+      onChange={event => onChange(event.detail.value === 'true')}
+      items={[
+        { value: 'true', label: 'Yes' },
+        { value: 'false', label: 'No' },
+      ]}
+    />
+  );
+}
+
+export function yesNoFormat(value: null | boolean) {
+  if (value === null) {
+    return '';
+  }
+  return value === true ? 'Yes' : 'No';
+}
 
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
   // Using the most reasonable default time per operator.
