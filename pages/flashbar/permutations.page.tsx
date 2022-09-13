@@ -116,6 +116,7 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     buttonText: ['Go for it!'],
     header: ['header'],
     content: ['content'],
+    statusIconAriaLabel: ['info'],
   },
 ]);
 /* eslint-enable react/jsx-key */
