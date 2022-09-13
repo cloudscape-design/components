@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+import DateInputWrapper from '../../../lib/components/test-utils/selectors/date-input';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 
-import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/selectors';
-
-const dateInputWrapper = createWrapper().findComponent('.testing-date-input', InputWrapper);
+const dateInputWrapper = createWrapper().findComponent('.testing-date-input', DateInputWrapper);
 const defaultSelector = dateInputWrapper.findNativeInput().toSelector();
 
 class DateInputPage extends BasePageObject {
@@ -66,7 +67,6 @@ const createSetupTest = (url: string) => (testFn: (page: DateInputPage) => Promi
 };
 
 const setupTest = createSetupTest('#/light/date-input/simple');
-const setupTestDisabledAutocomplete = createSetupTest('#/light/date-input/disabled-autocomplete');
 
 describe('Date Input', () => {
   test(
@@ -179,16 +179,6 @@ describe('Date Input', () => {
       })
     );
   });
-
-  test(
-    'should not autocomplete on Blur when `disableAutocompleteOnBlur` is set to true',
-    setupTestDisabledAutocomplete(async page => {
-      await page.focusInput();
-      await page.type('2');
-      await page.keys('Tab');
-      await expect(page.getValue(defaultSelector)).resolves.toBe('2');
-    })
-  );
 
   test(
     'should append a colons between each group',

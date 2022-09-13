@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 import Calendar from '~components/date-picker/calendar';
-import DateInput from '~components/internal/components/date-input';
+import DateInput from '~components/date-input';
 import { FormField, SpaceBetween, TimeInput } from '~components';
 
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
@@ -47,7 +47,6 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
           placeholder="YYYY/MM/DD"
           onChange={event => onChangeDate(event.detail.value)}
           value={dateValue}
-          disableAutocompleteOnBlur={true}
         />
       </FormField>
 
@@ -98,7 +97,6 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
           placeholder="YYYY/MM/DD"
           onChange={event => onChangeDate(event.detail.value)}
           value={dateValue}
-          disableAutocompleteOnBlur={true}
         />
       </FormField>
 
