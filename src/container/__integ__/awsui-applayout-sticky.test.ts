@@ -16,7 +16,7 @@ const stickyToggleSelector = createWrapper().findFlashbar().findItems().get(1).f
 const headerSelector = '#b #h';
 const scrollableDivSelector = '#scrollable-div';
 
-const CONTAINER_ROOT_BORDER = 1;
+const CONTAINER_ROOT_BORDER = 0;
 
 class AppLayoutStickyPage extends BasePageObject {
   async isNotificationVisible() {

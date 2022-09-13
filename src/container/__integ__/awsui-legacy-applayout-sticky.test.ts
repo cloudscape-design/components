@@ -12,7 +12,7 @@ const containerWrapper = appLayoutWrapper.findContentRegion().findContainer();
 const containerHeaderSelector = containerWrapper.findHeader().toSelector();
 const flashBarSelector = createWrapper().findFlashbar().toSelector();
 
-const CLASSIC_STICKY_OFFSET_SPACE = -1; // Container border (1px) offset
+const CLASSIC_STICKY_OFFSET_SPACE = 0; // Container border (0px) offset
 const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 4; // space-xxs (container border offset is 0px)
 
 class AppLayoutLegacyStickyPage extends BasePageObject {

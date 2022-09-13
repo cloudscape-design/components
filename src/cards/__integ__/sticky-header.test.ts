@@ -4,7 +4,7 @@ import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-too
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper, { CardsWrapper, ContainerWrapper } from '../../../lib/components/test-utils/selectors';
 
-const CONTAINER_ROOT_BORDER = 1;
+const CONTAINER_ROOT_BORDER = 0;
 
 export default class StickyHeaderCardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());
@@ -47,7 +47,7 @@ describe('Cards Sticky Header', () => {
   const toggleVerticalOffsetBtn = '#toggle-vertical-offset-btn';
   const overflowParentPageHeight = 300;
   const verticalOffset = 50;
-  const containerBorder = 1;
+  const containerBorder = CONTAINER_ROOT_BORDER;
 
   test(
     'non-sticky header is not visible when scrolling',

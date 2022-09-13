@@ -6,6 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
 
 const wrapper = createWrapper().findAppLayout();
+const CONTAINER_ROOT_BORDER = 0;
 
 class AppLayoutStickyPage extends BasePageObject {
   findNotificationByIndex(index: number) {
@@ -67,7 +68,7 @@ test(
       await page.windowScrollTo({ top: 200 });
       const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
       const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-      expect(tableHeaderTop).toEqual(pageHeaderBottom - 1);
+      expect(tableHeaderTop).toEqual(pageHeaderBottom - CONTAINER_ROOT_BORDER);
     }
   )
 );
