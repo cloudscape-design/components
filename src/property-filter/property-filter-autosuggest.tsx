@@ -134,13 +134,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
       autosuggestInputRef.current?.focus();
     };
 
-    const handleDropdownMouseDown: React.MouseEventHandler = event => {
-      // Prevent currently focused element from losing focus.
-      if (!customForm) {
-        event.preventDefault();
-      }
-    };
-
     const selfControlId = useUniqueId('input');
     const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
@@ -191,7 +184,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
           ) : null
         }
         dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}
-        onDropdownMouseDown={handleDropdownMouseDown}
+        dropdownContentFocusable={!!customForm}
         onCloseDropdown={handleCloseDropdown}
         onDelayedInput={handleDelayedInput}
         onPressArrowDown={handlePressArrowDown}
