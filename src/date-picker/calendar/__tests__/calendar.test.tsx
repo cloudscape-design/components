@@ -92,7 +92,9 @@ describe('Date picker calendar', () => {
       act(() => button.click());
 
       expect(findCalendarHeaderText(wrapper)).toBe('December 2017');
-      act(() => getByTestId(outsideId).click());
+      act(() => {
+        getByTestId(outsideId).dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      });
       expect(wrapper.findCalendar()).toBeNull();
       wrapper.findOpenCalendarButton().click();
       expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
