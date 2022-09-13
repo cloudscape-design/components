@@ -17,3 +17,11 @@ export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | 
     tokens,
   };
 };
+
+export const createFlashbarContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'flashbar',
+    selector: '.awsui-context-flashbar',
+    tokens,
+  };
+};
