@@ -54,6 +54,14 @@ const filteringProperties = [
   },
 ] as const;
 
+function openEditor(wrapper: PropertyFilterWrapper, index = 0) {
+  const tokenWrapper = createWrapper(wrapper.findTokens()![index].getElement());
+  const popoverWrapper = tokenWrapper.findPopover()!;
+  act(() => popoverWrapper.findTrigger().click());
+  const contentWrapper = popoverWrapper.findContent()!;
+  return [contentWrapper, popoverWrapper] as const;
+}
+
 const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
@@ -463,13 +471,6 @@ describe('property filter parts', () => {
   });
 
   describe('token editor', () => {
-    const openEditor = (wrapper: PropertyFilterWrapper) => {
-      const tokenWrapper = createWrapper(wrapper.findTokens()![0].getElement());
-      const popoverWrapper = tokenWrapper.findPopover()!;
-      act(() => popoverWrapper.findTrigger().click());
-      const contentWrapper = popoverWrapper.findContent()!;
-      return [contentWrapper, popoverWrapper] as const;
-    };
     test('uses i18nStrings to populate header', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
@@ -860,6 +861,33 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()).toHaveLength(2);
       expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('index = EQ1');
       expect(wrapper.findTokens()[1].getElement()).toHaveTextContent('index != NEQ2');
+    });
+
+    test('property filter uses operator form in the token editor', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              { operator: '=', form: () => <div data-testid="form="></div> },
+              { operator: '!=', form: () => <div data-testid="form!="></div> },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+        query: {
+          tokens: [
+            { propertyKey: 'index', value: '1', operator: '=' },
+            { propertyKey: 'index', value: '2', operator: '!=' },
+          ],
+          operation: 'and',
+        },
+      });
+      expect(wrapper.findTokens()).toHaveLength(2);
+      expect(openEditor(wrapper, 0)[0].find('[data-testid="form="]')).not.toBe(null);
+      expect(openEditor(wrapper, 1)[0].find('[data-testid="form!="]')).not.toBe(null);
     });
   });
 
