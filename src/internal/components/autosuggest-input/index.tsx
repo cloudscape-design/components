@@ -34,10 +34,10 @@ export interface AutosuggestInputProps
   ariaActivedescendant?: string;
   dropdownExpanded?: boolean;
   dropdownContentKey?: string;
+  dropdownContentFocusable?: boolean;
   dropdownContent?: React.ReactNode;
   dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
-  onDropdownMouseDown?: React.MouseEventHandler;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   onPressArrowDown?: () => void;
@@ -77,10 +77,10 @@ const AutosuggestInput = React.forwardRef(
       ariaActivedescendant,
       dropdownExpanded,
       dropdownContentKey,
+      dropdownContentFocusable = false,
       dropdownContent = null,
       dropdownFooter = null,
       dropdownWidth,
-      onDropdownMouseDown,
       onCloseDropdown,
       onDelayedInput,
       onPressArrowDown,
@@ -98,6 +98,7 @@ const AutosuggestInput = React.forwardRef(
     const dropdownContentRef = useRef<HTMLDivElement>(null);
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
     const preventOpenOnFocusRef = useRef(false);
+    const preventCloseOnBlurRef = useRef(false);
 
     const [open, setOpen] = useState(false);
 
@@ -131,8 +132,10 @@ const AutosuggestInput = React.forwardRef(
       ) {
         return;
       }
-      closeDropdown();
-      fireNonCancelableEvent(onBlur, null);
+      if (!preventCloseOnBlurRef.current) {
+        closeDropdown();
+        fireNonCancelableEvent(onBlur, null);
+      }
     };
 
     const handleFocus = () => {
@@ -192,12 +195,30 @@ const AutosuggestInput = React.forwardRef(
       fireNonCancelableEvent(onDelayedInput, { value });
     };
 
+    const handleDropdownMouseDown: React.MouseEventHandler = event => {
+      // Prevent currently focused element from losing focus.
+      if (!dropdownContentFocusable) {
+        event.preventDefault();
+      }
+      // Prevent closing dropdown on click inside.
+      else {
+        preventCloseOnBlurRef.current = true;
+        requestAnimationFrame(() => {
+          preventCloseOnBlurRef.current = false;
+        });
+      }
+    };
+
     const expanded = open && (dropdownExpanded ?? !!dropdownContent);
     const nativeAttributes = {
       name,
       placeholder,
       autoFocus,
-      onClick: openDropdown,
+      onClick: (event: React.MouseEvent) => {
+        // Prevents this event to be captured by the dropdown issuing close.
+        event.stopPropagation();
+        openDropdown();
+      },
       role: 'combobox',
       'aria-autocomplete': 'list',
       'aria-expanded': expanded,
@@ -249,7 +270,8 @@ const AutosuggestInput = React.forwardRef(
               {...formFieldContext}
             />
           }
-          onMouseDown={onDropdownMouseDown}
+          onMouseDown={handleDropdownMouseDown}
+          onDropdownClose={closeDropdown}
           open={open}
           footer={
             dropdownFooterRef && (

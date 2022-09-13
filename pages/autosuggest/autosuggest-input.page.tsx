@@ -24,6 +24,7 @@ export default function AutosuggestInputPage() {
         value={value}
         onChange={e => setValue(e.detail.value)}
         dropdownContentKey={dropdownContentKey}
+        dropdownContentFocusable={true}
         dropdownContent={
           <Box padding="m">
             <DropdownContent />
@@ -41,13 +42,25 @@ function ContentNoMatch() {
 }
 
 function ContentSmall() {
-  return <div style={{ width: 200 }}>Small</div>;
+  return (
+    <div style={{ width: 200 }}>
+      <button>Small</button>
+    </div>
+  );
 }
 
 function ContentMedium() {
-  return <div style={{ width: 350 }}>Medium</div>;
+  return (
+    <div style={{ width: 350 }}>
+      <button>Medium</button>
+    </div>
+  );
 }
 
 function ContentLarge() {
-  return <div style={{ width: 500 }}>Large</div>;
+  return (
+    <div style={{ width: 500 }}>
+      <button>Large</button>
+    </div>
+  );
 }
