@@ -21,6 +21,14 @@ export const columnDefinitions = [
     cell: (item: TableItem) => item.state,
   },
   {
+    id: 'stopped',
+    sortingField: 'stopped',
+    header: 'Stopped',
+    type: 'boolean',
+    propertyLabel: 'Stopped',
+    cell: (item: TableItem) => item.state === 'Stopped',
+  },
+  {
     id: 'instancetype',
     sortingField: 'instancetype',
     header: 'Instance type',
@@ -91,6 +99,14 @@ export const columnDefinitions = [
     type: 'range',
     propertyLabel: 'Launch date',
     cell: (item: TableItem) => item.launchdate,
+  },
+  {
+    id: 'lasteventat',
+    sortingField: 'lasteventat',
+    header: 'Last event occurrence',
+    type: 'datetime',
+    propertyLabel: 'Last event occurrence',
+    cell: (item: TableItem) => item.lasteventat,
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
