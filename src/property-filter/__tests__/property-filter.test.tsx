@@ -83,7 +83,7 @@ const defaultProps: PropertyFilterProps = {
 };
 
 const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
-  const { container, getByTestId } = render(
+  const { container } = render(
     <div>
       <button id="button" />
       <PropertyFilter {...defaultProps} {...props} />
@@ -92,7 +92,6 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
   const pageWrapper = createWrapper(container);
   return {
     container,
-    getByTestId,
     propertyFilterWrapper: pageWrapper.findPropertyFilter()!,
     pageWrapper,
   };
@@ -772,7 +771,7 @@ describe('property filter parts', () => {
     });
 
     test('extended operator form takes value/onChange state', () => {
-      const { propertyFilterWrapper: wrapper, getByTestId } = renderComponent({
+      const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({
         filteringProperties: [
           ...filteringProperties,
           {
@@ -793,9 +792,59 @@ describe('property filter parts', () => {
         ],
       });
       wrapper.setInputValue('index =');
-      expect(getByTestId('change')).toHaveTextContent('0');
-      act(() => getByTestId('change').click());
-      expect(getByTestId('change')).toHaveTextContent('1');
+      expect(pageWrapper.find('[data-testid="change"]')!.getElement()).toHaveTextContent('0');
+      act(() => pageWrapper.find('[data-testid="change"]')!.click());
+      expect(pageWrapper.find('[data-testid="change"]')!.getElement()).toHaveTextContent('1');
+    });
+
+    test('extended operator form can be cancelled/submitted', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              {
+                operator: '=',
+                form: ({ value, onChange }) => (
+                  <button data-testid="change" onClick={() => onChange((value || 0) + 1)}>
+                    {value || 0}
+                  </button>
+                ),
+              },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+        onChange,
+      });
+
+      // Increment value
+      wrapper.setInputValue('index =');
+      act(() => pageWrapper.find('[data-testid="change"]')!.click());
+
+      // Click cancel
+      act(() => pageWrapper.findButton(`.${styles['property-editor-cancel']}`)!.click());
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).not.toBeCalled();
+
+      // Increment value
+      wrapper.setInputValue('index =');
+      act(() => pageWrapper.find('[data-testid="change"]')!.click());
+
+      // Click submit
+      act(() => pageWrapper.findButton(`.${styles['property-editor-submit']}`)!.click());
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+      expect(onChange).toBeCalledWith(
+        expect.objectContaining({
+          detail: {
+            operation: 'and',
+            tokens: [{ propertyKey: 'index', operator: '=', value: 1 }],
+          },
+        })
+      );
     });
 
     test('extended operator form takes chosen operator and entered filter text', () => {
@@ -805,7 +854,7 @@ describe('property filter parts', () => {
           <span data-testid="filter">{filter}</span>
         </div>
       );
-      const { propertyFilterWrapper: wrapper, getByTestId } = renderComponent({
+      const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({
         filteringProperties: [
           ...filteringProperties,
           {
@@ -820,20 +869,20 @@ describe('property filter parts', () => {
         ],
       });
       wrapper.setInputValue('index =');
-      expect(getByTestId('operator')).toHaveTextContent('=');
-      expect(getByTestId('filter')).toHaveTextContent('');
+      expect(pageWrapper.find('[data-testid="operator"]')!.getElement()).toHaveTextContent('=');
+      expect(pageWrapper.find('[data-testid="filter"]')!.getElement()).toHaveTextContent('');
 
       wrapper.setInputValue('index !=');
-      expect(getByTestId('operator')).toHaveTextContent('!=');
-      expect(getByTestId('filter')).toHaveTextContent('');
+      expect(pageWrapper.find('[data-testid="operator"]')!.getElement()).toHaveTextContent('!=');
+      expect(pageWrapper.find('[data-testid="filter"]')!.getElement()).toHaveTextContent('');
 
       wrapper.setInputValue('index != ');
-      expect(getByTestId('operator')).toHaveTextContent('!=');
-      expect(getByTestId('filter')).toHaveTextContent('');
+      expect(pageWrapper.find('[data-testid="operator"]')!.getElement()).toHaveTextContent('!=');
+      expect(pageWrapper.find('[data-testid="filter"]')!.getElement()).toHaveTextContent('');
 
       wrapper.setInputValue('index != filter text ');
-      expect(getByTestId('operator')).toHaveTextContent('!=');
-      expect(getByTestId('filter')).toHaveTextContent('filter text');
+      expect(pageWrapper.find('[data-testid="operator"]')!.getElement()).toHaveTextContent('!=');
+      expect(pageWrapper.find('[data-testid="filter"]')!.getElement()).toHaveTextContent('filter text');
     });
 
     test('property filter uses operator formatter to render token value', () => {
