@@ -23,6 +23,14 @@ export const columnDefinitions = [
     cell: (item: TableItem) => item.state,
   },
   {
+    id: 'stopped',
+    sortingField: 'stopped',
+    header: 'Stopped',
+    type: 'boolean',
+    propertyLabel: 'Stopped',
+    cell: (item: TableItem) => item.state === 'Stopped',
+  },
+  {
     id: 'instancetype',
     sortingField: 'instancetype',
     header: 'Instance type',

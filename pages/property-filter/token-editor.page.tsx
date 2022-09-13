@@ -61,12 +61,22 @@ export default function () {
           i18nStrings={i18nStrings}
         />
         <PropertyFilter
-          className="property-filter-custom-forms"
+          className="property-filter-custom-prop-boolean"
           query={{
-            tokens: [
-              { propertyKey: 'stopped', operator: '=', value: 'true' },
-              { propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' },
-            ],
+            tokens: [{ propertyKey: 'stopped', operator: '=', value: 'true' }],
+            operation: 'and',
+          }}
+          onChange={() => {}}
+          filteringProperties={commonFilteringProperties}
+          filteringOptions={[]}
+          virtualScroll={true}
+          countText="5 matches"
+          i18nStrings={i18nStrings}
+        />
+        <PropertyFilter
+          className="property-filter-custom-prop-datetime"
+          query={{
+            tokens: [{ propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' }],
             operation: 'and',
           }}
           onChange={() => {}}
