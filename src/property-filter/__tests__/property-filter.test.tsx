@@ -89,13 +89,13 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
 };
 
 function findPropertySelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['property-selector'])!.findSelect()!;
+  return wrapper.findByClassName(styles['token-editor-field-property'])!.findSelect()!;
 }
 function findOperatorSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['operator-selector'])!.findSelect()!;
+  return wrapper.findByClassName(styles['token-editor-field-operator'])!.findSelect()!;
 }
 function findValueSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['value-selector'])!.findAutosuggest()!;
+  return wrapper.findByClassName(styles['token-editor-field-value'])!.findAutosuggest()!;
 }
 
 describe('property filter parts', () => {
