@@ -58,9 +58,7 @@ describe('Dropdown Component', () => {
       );
       await runPendingEvents();
 
-      act(() => {
-        outsideElement.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-      });
+      act(() => outsideElement.click());
       expect(handleCloseDropdown).toBeCalled();
     });
   });

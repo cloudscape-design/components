@@ -214,11 +214,7 @@ const AutosuggestInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      onClick: (event: React.MouseEvent) => {
-        // Prevents this event to be captured by the dropdown issuing close.
-        event.stopPropagation();
-        openDropdown();
-      },
+      onClick: openDropdown,
       role: 'combobox',
       'aria-autocomplete': 'list',
       'aria-expanded': expanded,
@@ -239,6 +235,32 @@ const AutosuggestInput = React.forwardRef(
           (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false)
       );
     });
+
+    // Closes dropdown when outside click is detected.
+    // Similar to the internal dropdown implementation but includes the target as well.
+    useEffect(() => {
+      if (!open) {
+        return;
+      }
+
+      const clickListener = (event: MouseEvent) => {
+        if (
+          !inputRef.current?.contains(event.target as Node) &&
+          !dropdownContentRef.current?.contains(event.target as Node) &&
+          !dropdownFooterRef.current?.contains(event.target as Node)
+        ) {
+          closeDropdown();
+        }
+      };
+
+      window.addEventListener('mousedown', clickListener);
+
+      return () => {
+        window.removeEventListener('mousedown', clickListener);
+      };
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
 
     return (
       <div
@@ -271,7 +293,6 @@ const AutosuggestInput = React.forwardRef(
             />
           }
           onMouseDown={handleDropdownMouseDown}
-          onDropdownClose={closeDropdown}
           open={open}
           footer={
             dropdownFooterRef && (
