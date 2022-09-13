@@ -283,12 +283,12 @@ const Dropdown = ({
      * finish bubbling, so that it is not immediately captured here.
      */
     const timeout = setTimeout(() => {
-      window.addEventListener('click', clickListener);
+      window.addEventListener('mousedown', clickListener);
     }, 0);
 
     return () => {
       clearTimeout(timeout);
-      window.removeEventListener('click', clickListener);
+      window.removeEventListener('mousedown', clickListener);
     };
   }, [open, onDropdownClose]);
 
