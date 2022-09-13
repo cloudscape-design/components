@@ -198,7 +198,7 @@ export function getExtendedOperator(
 ) {
   const property = getPropertyByKey(filteringProperties, selectedProperty);
   for (const operator of property?.operators || []) {
-    if (typeof operator === 'object' && operator.operator === selectedOperator && operator.form) {
+    if (typeof operator === 'object' && operator.operator === selectedOperator) {
       return operator;
     }
   }

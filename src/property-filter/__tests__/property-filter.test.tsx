@@ -11,6 +11,7 @@ import createWrapper, {
   PopoverWrapper,
 } from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
+import { ExtendedOperatorFormProps } from '../../../lib/components/property-filter/interfaces';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -74,7 +75,7 @@ const defaultProps: PropertyFilterProps = {
 };
 
 const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
-  const { container } = render(
+  const { container, getByTestId } = render(
     <div>
       <button id="button" />
       <PropertyFilter {...defaultProps} {...props} />
@@ -83,6 +84,7 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
   const pageWrapper = createWrapper(container);
   return {
     container,
+    getByTestId,
     propertyFilterWrapper: pageWrapper.findPropertyFilter()!,
     pageWrapper,
   };
@@ -744,6 +746,121 @@ describe('property filter parts', () => {
     expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('error');
     wrapper.selectSuggestion(2, { expandToViewport: true });
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
+  });
+
+  describe('extended operators', () => {
+    test('property filter renders operator form instead of options list', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              { operator: '=', form: () => <div data-testid="form="></div> },
+              { operator: '!=', form: () => <div data-testid="form!="></div> },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+      });
+      wrapper.setInputValue('index =');
+      expect(wrapper.findDropdown()!.findOpenDropdown()!.find('[data-testid="form="]')).not.toBe(null);
+      wrapper.setInputValue('index !=');
+      expect(wrapper.findDropdown()!.findOpenDropdown()!.find('[data-testid="form!="]')).not.toBe(null);
+    });
+
+    test('extended operator form takes value/onChange state', () => {
+      const { propertyFilterWrapper: wrapper, getByTestId } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              {
+                operator: '=',
+                form: ({ value, onChange }) => (
+                  <button data-testid="change" onClick={() => onChange((value || 0) + 1)}>
+                    {value || 0}
+                  </button>
+                ),
+              },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+      });
+      wrapper.setInputValue('index =');
+      expect(getByTestId('change')).toHaveTextContent('0');
+      act(() => getByTestId('change').click());
+      expect(getByTestId('change')).toHaveTextContent('1');
+    });
+
+    test('extended operator form takes chosen operator and entered filter text', () => {
+      const form = ({ operator, filter }: ExtendedOperatorFormProps<any>) => (
+        <div>
+          <span data-testid="operator">{operator}</span>
+          <span data-testid="filter">{filter}</span>
+        </div>
+      );
+      const { propertyFilterWrapper: wrapper, getByTestId } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              { operator: '=', form },
+              { operator: '!=', form },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+      });
+      wrapper.setInputValue('index =');
+      expect(getByTestId('operator')).toHaveTextContent('=');
+      expect(getByTestId('filter')).toHaveTextContent('');
+
+      wrapper.setInputValue('index !=');
+      expect(getByTestId('operator')).toHaveTextContent('!=');
+      expect(getByTestId('filter')).toHaveTextContent('');
+
+      wrapper.setInputValue('index != ');
+      expect(getByTestId('operator')).toHaveTextContent('!=');
+      expect(getByTestId('filter')).toHaveTextContent('');
+
+      wrapper.setInputValue('index != filter text ');
+      expect(getByTestId('operator')).toHaveTextContent('!=');
+      expect(getByTestId('filter')).toHaveTextContent('filter text');
+    });
+
+    test('property filter uses operator formatter to render token value', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringProperties: [
+          ...filteringProperties,
+          {
+            key: 'index',
+            operators: [
+              { operator: '=', format: value => `EQ${value}` },
+              { operator: '!=', format: value => `NEQ${value}` },
+            ],
+            propertyLabel: 'index',
+            groupValuesLabel: 'index values',
+          },
+        ],
+        query: {
+          tokens: [
+            { propertyKey: 'index', value: '1', operator: '=' },
+            { propertyKey: 'index', value: '2', operator: '!=' },
+          ],
+          operation: 'and',
+        },
+      });
+      expect(wrapper.findTokens()).toHaveLength(2);
+      expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('index = EQ1');
+      expect(wrapper.findTokens()[1].getElement()).toHaveTextContent('index != NEQ2');
+    });
   });
 
   test('property filter input can be found with autosuggest selector', () => {
