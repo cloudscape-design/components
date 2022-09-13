@@ -131,10 +131,23 @@
 }
 
 @mixin container-shadow {
-  box-shadow: awsui.$shadow-container;
   border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: -1px;
+    width: 100%;
+    height: 100%;
+    border-radius: awsui.$border-radius-container;
+    box-shadow: awsui.$shadow-container;
+    box-sizing: border-box;
+    background: transparent;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
 
   // HACK: because of the issues with IE's box shadow rendering we draw
   // a border and don't mind the pixel fitting

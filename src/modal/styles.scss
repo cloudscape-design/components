@@ -76,12 +76,15 @@ $modal-z-index: 5000;
 }
 
 .container {
-  @include styles.styles-reset;
   display: block;
   background-color: awsui.$color-background-container-content;
-  @include styles.container-shadow;
   box-shadow: awsui.$shadow-modal;
   word-wrap: break-word;
+  &::after {
+    content: none;
+  }
+  @include styles.styles-reset;
+  @include styles.container-shadow;
 }
 
 .content {

@@ -10,6 +10,7 @@
 .root {
   @include styles.styles-reset;
   word-wrap: break-word;
+  position: relative;
 
   &-fit-height {
     display: flex;
@@ -25,12 +26,17 @@
       background-color: awsui.$color-background-container-content;
     }
 
-    &-stacked:not(:last-child) {
+    &-stacked:not(:last-child),
+    &-stacked + &-stacked {
+      border-radius: 0;
+    }
+
+    &-stacked:not(:last-child)::after {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
     }
 
-    &-stacked + &-stacked {
+    &-stacked + &-stacked::after {
       @include shared.divider;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -58,7 +64,7 @@
     z-index: 800;
   }
 
-  &-stuck {
+  &-stuck:not(.header-variant-cards) {
     box-shadow: awsui.$shadow-sticky-embedded;
     border: 0;
     border-radius: 0;
@@ -83,6 +89,9 @@
   }
 
   &-variant-cards {
+    &:not(.header-sticky-enabled) {
+      position: relative;
+    }
     @include shared.borders-and-shadows;
 
     &:not(:empty) {
@@ -97,8 +106,10 @@
     }
 
     &.header-stuck {
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
+      &::after {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
     }
   }
 
