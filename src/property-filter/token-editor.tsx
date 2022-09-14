@@ -6,7 +6,6 @@ import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 
 import {
   ComparisonOperator,
@@ -31,26 +30,10 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import InternalSpaceBetween from '../space-between/internal';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
-interface TokenEditorFieldProps {
-  label: React.ReactNode;
-  children: ({ controlId }: { controlId: string }) => React.ReactNode;
-}
-
-function TokenEditorField({ label, children }: TokenEditorFieldProps) {
-  const controlId = useUniqueId();
-  return (
-    <InternalFormField controlId={controlId} label={label}>
-      {children({ controlId })}
-    </InternalFormField>
-  );
-}
-
 interface PropertyInputProps {
-  controlId: string;
   asyncProps: null | DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disableFreeTextFiltering?: boolean;
@@ -62,7 +45,6 @@ interface PropertyInputProps {
 }
 
 function PropertyInput({
-  controlId,
   propertyKey,
   onChangePropertyKey,
   asyncProps,
@@ -94,7 +76,6 @@ function PropertyInput({
   }
   return (
     <InternalSelect
-      controlId={controlId}
       options={propertyOptions}
       selectedOption={
         property
@@ -111,7 +92,6 @@ function PropertyInput({
 }
 
 interface OperatorInputProps {
-  controlId: string;
   filteringProperties: readonly FilteringProperty[];
   i18nStrings: I18nStrings;
   onChangeOperator: (operator: ComparisonOperator) => void;
@@ -120,7 +100,6 @@ interface OperatorInputProps {
 }
 
 function OperatorInput({
-  controlId,
   propertyKey,
   operator,
   onChangeOperator,
@@ -136,7 +115,6 @@ function OperatorInput({
   }));
   return (
     <InternalSelect
-      controlId={controlId}
       options={operatorOptions}
       triggerVariant="option"
       selectedOption={
@@ -154,7 +132,6 @@ function OperatorInput({
 }
 
 interface ValueInputProps {
-  controlId: string;
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly FilteringOption[];
   filteringProperties: readonly FilteringProperty[];
@@ -167,7 +144,6 @@ interface ValueInputProps {
 }
 
 function ValueInput({
-  controlId,
   propertyKey,
   operator,
   value,
@@ -191,7 +167,6 @@ function ValueInput({
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />
   ) : (
     <InternalAutosuggest
-      controlId={controlId}
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={value ?? ''}
       onChange={e => onChangeValue(e.detail.value)}
@@ -277,53 +252,42 @@ export function TokenEditor({
       content={
         <div className={styles['token-editor']}>
           <div className={styles['token-editor-form']}>
-            <InternalSpaceBetween size="l">
-              <TokenEditorField label={i18nStrings.propertyText}>
-                {({ controlId }) => (
-                  <PropertyInput
-                    controlId={controlId}
-                    propertyKey={propertyKey}
-                    onChangePropertyKey={onChangePropertyKey}
-                    asyncProps={asyncProperties ? asyncProps : null}
-                    filteringProperties={filteringProperties}
-                    onLoadItems={onLoadItems}
-                    customGroupsText={customGroupsText}
-                    i18nStrings={i18nStrings}
-                    disableFreeTextFiltering={disableFreeTextFiltering}
-                  />
-                )}
-              </TokenEditorField>
+            <InternalFormField controlId="property" label={i18nStrings.propertyText}>
+              <PropertyInput
+                propertyKey={propertyKey}
+                onChangePropertyKey={onChangePropertyKey}
+                asyncProps={asyncProperties ? asyncProps : null}
+                filteringProperties={filteringProperties}
+                onLoadItems={onLoadItems}
+                customGroupsText={customGroupsText}
+                i18nStrings={i18nStrings}
+                disableFreeTextFiltering={disableFreeTextFiltering}
+              />
+            </InternalFormField>
 
-              <TokenEditorField label={i18nStrings.operatorText}>
-                {({ controlId }) => (
-                  <OperatorInput
-                    controlId={controlId}
-                    propertyKey={propertyKey}
-                    operator={operator}
-                    onChangeOperator={onChangeOperator}
-                    filteringProperties={filteringProperties}
-                    i18nStrings={i18nStrings}
-                  />
-                )}
-              </TokenEditorField>
+            <InternalFormField controlId="operator" label={i18nStrings.operatorText}>
+              <OperatorInput
+                propertyKey={propertyKey}
+                operator={operator}
+                onChangeOperator={onChangeOperator}
+                filteringProperties={filteringProperties}
+                i18nStrings={i18nStrings}
+              />
+            </InternalFormField>
 
-              <TokenEditorField label={i18nStrings.valueText}>
-                {({ controlId }) => (
-                  <ValueInput
-                    controlId={controlId}
-                    propertyKey={propertyKey}
-                    operator={operator}
-                    value={value}
-                    onChangeValue={onChangeValue}
-                    asyncProps={asyncProps}
-                    filteringProperties={filteringProperties}
-                    filteringOptions={filteringOptions}
-                    onLoadItems={onLoadItems}
-                    i18nStrings={i18nStrings}
-                  />
-                )}
-              </TokenEditorField>
-            </InternalSpaceBetween>
+            <InternalFormField label={i18nStrings.valueText}>
+              <ValueInput
+                propertyKey={propertyKey}
+                operator={operator}
+                value={value}
+                onChangeValue={onChangeValue}
+                asyncProps={asyncProps}
+                filteringProperties={filteringProperties}
+                filteringOptions={filteringOptions}
+                onLoadItems={onLoadItems}
+                i18nStrings={i18nStrings}
+              />
+            </InternalFormField>
           </div>
 
           <div className={styles['token-editor-actions']}>

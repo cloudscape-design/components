@@ -64,15 +64,27 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   };
 
   return (
-    <SpaceBetween direction="vertical" size="s">
-      <FormField description="Specify date">
-        <DateInput
-          ariaLabelledby={ariaLabelledby}
-          placeholder="YYYY/MM/DD"
-          onChange={event => onChangeDate(event.detail.value)}
-          value={dateValue}
-        />
-      </FormField>
+    <>
+      <SpaceBetween direction="horizontal" size="s">
+        <FormField description="Specify date">
+          <DateInput
+            placeholder="YYYY/MM/DD"
+            ariaLabelledby={ariaLabelledby}
+            onChange={event => onChangeDate(event.detail.value)}
+            value={dateValue}
+          />
+        </FormField>
+
+        <FormField description="Specify time">
+          <TimeInput
+            format="hh:mm:ss"
+            placeholder="hh:mm:ss"
+            ariaLabelledby={ariaLabelledby}
+            value={timeValue}
+            onChange={event => onChangeTime(event.detail.value)}
+          />
+        </FormField>
+      </SpaceBetween>
 
       <Calendar
         value={dateValue}
@@ -82,17 +94,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-
-      <FormField description="Specify time">
-        <TimeInput
-          format="hh:mm:ss"
-          placeholder="hh:mm:ss"
-          ariaLabelledby={ariaLabelledby}
-          value={timeValue}
-          onChange={event => onChangeTime(event.detail.value)}
-        />
-      </FormField>
-    </SpaceBetween>
+    </>
   );
 }
 
