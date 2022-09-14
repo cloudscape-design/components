@@ -45,40 +45,9 @@
   justify-content: space-between;
   &-form {
     display: grid;
-    grid-template-columns: max-content minmax(awsui.$space-xl, 1fr) minmax(200px, min-content);
+    grid-template-columns: minmax(max-content, 100%);
     grid-row-gap: awsui.$space-scaled-l;
     margin-bottom: awsui.$space-scaled-l;
-  }
-  &-label {
-    max-width: 200px;
-    align-self: center;
-    &-text {
-      @include styles.text-flex-wrapping;
-    }
-  }
-  &-label-property {
-    grid-row: 1;
-    grid-column: 1;
-  }
-  &-label-operator {
-    grid-row: 2;
-    grid-column: 1;
-  }
-  &-label-value {
-    grid-row: 3;
-    grid-column: 1;
-  }
-  &-field-property {
-    grid-row: 1;
-    grid-column: 3;
-  }
-  &-field-operator {
-    grid-row: 2;
-    grid-column: 3;
-  }
-  &-field-value {
-    grid-row: 3;
-    grid-column: 3;
   }
   &-actions {
     display: flex;
@@ -136,6 +105,9 @@
 .remove-all,
 .token-label,
 .join-operation,
+.token-editor-field-property,
+.token-editor-field-operator,
+.token-editor-field-value,
 .token-editor-submit {
   /* used in test-utils */
 }
