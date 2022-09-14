@@ -4156,7 +4156,7 @@ Object {
       "description": "Called whenever a user changes the input value (by typing, pasting, or selecting a value).
 The event \`detail\` contains the current value of the field.",
       "detailInlineType": Object {
-        "name": "DatePickerProps.ChangeDetail",
+        "name": "CalendarProps.ChangeDetail",
         "properties": Array [
           Object {
             "name": "value",
@@ -4166,7 +4166,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "DatePickerProps.ChangeDetail",
+      "detailType": "CalendarProps.ChangeDetail",
       "name": "onChange",
     },
     Object {
@@ -4295,7 +4295,7 @@ If you disable a date in the calendar, users can still enter this date using a k
 We recommend that you also validate these constraints on the client-side and server-side
 as you would for other form elements.",
       "inlineType": Object {
-        "name": "DatePickerProps.IsDateEnabledFunction",
+        "name": "CalendarProps.IsDateEnabledFunction",
         "parameters": Array [
           Object {
             "name": "date",
@@ -4307,7 +4307,7 @@ as you would for other form elements.",
       },
       "name": "isDateEnabled",
       "optional": true,
-      "type": "DatePickerProps.IsDateEnabledFunction",
+      "type": "CalendarProps.IsDateEnabledFunction",
     },
     Object {
       "defaultValue": "''",

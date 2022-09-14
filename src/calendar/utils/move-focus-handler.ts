@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { differenceInYears } from 'date-fns';
-import { DatePickerProps } from '../../interfaces';
+import { DatePickerProps } from '../../date-picker/interfaces';
 
 export interface MoveFocusHandler {
   (focusedDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction, moveHandler: (date: Date) => Date): Date;

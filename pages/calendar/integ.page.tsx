@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, Link } from '~components';
-import Calendar from '~components/date-picker/calendar';
+import Calendar from '~components/calendar';
 
 export default function DatePickerEditorScenario() {
   const [value, setValue] = useState('2022-01-01');

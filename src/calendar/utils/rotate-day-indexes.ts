@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DayIndex } from '../index';
+
+import { DayIndex } from '../internal';
 
 const days: DayIndex[] = [0, 1, 2, 3, 4, 5, 6];
 
