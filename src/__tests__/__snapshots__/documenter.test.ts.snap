@@ -10850,6 +10850,11 @@ character validation. You should use this property only when absolutely necessar
             "type": "(enteredText: string) => string",
           },
           Object {
+            "name": "errorIconAriaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
             "name": "invalidKeyError",
             "optional": false,
             "type": "string",

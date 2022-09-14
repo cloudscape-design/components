@@ -23,15 +23,13 @@ interface FormFieldErrorProps {
 }
 
 export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => (
-  <div className={styles.error}>
+  <div id={id} className={styles.error}>
     <div className={styles['error-icon-shake-wrapper']}>
       <div role="img" aria-label={errorIconAriaLabel} className={styles['error-icon-scale-wrapper']}>
         <InternalIcon name="status-warning" size="small" />
       </div>
     </div>
-    <span id={id} className={styles.error__message}>
-      {children}
-    </span>
+    <span className={styles.error__message}>{children}</span>
   </div>
 );
 
@@ -112,9 +110,11 @@ export default function InternalFormField({
       </div>
 
       {(constraintText || errorText) && (
-        <div id={slotIds.error} className={styles.hints}>
+        <div className={styles.hints}>
           {errorText && (
-            <FormFieldError errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>{errorText}</FormFieldError>
+            <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              {errorText}
+            </FormFieldError>
           )}
           {constraintText && (
             <div
