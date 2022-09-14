@@ -17,7 +17,9 @@ export default function () {
         disableBodyScroll={true}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
-        notifications={<Flashbar items={[{ type: 'success', header: 'Success message' }]} />}
+        notifications={
+          <Flashbar items={[{ type: 'success', header: 'Success message', statusIconAriaLabel: 'success' }]} />
+        }
         stickyNotifications={true}
         tools={<Tools>{toolsContent.long}</Tools>}
         content={
