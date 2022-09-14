@@ -252,7 +252,7 @@ export function TokenEditor({
       content={
         <div className={styles['token-editor']}>
           <div className={styles['token-editor-form']}>
-            <InternalFormField controlId="property" label={i18nStrings.propertyText}>
+            <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
               <PropertyInput
                 propertyKey={propertyKey}
                 onChangePropertyKey={onChangePropertyKey}
@@ -265,7 +265,7 @@ export function TokenEditor({
               />
             </InternalFormField>
 
-            <InternalFormField controlId="operator" label={i18nStrings.operatorText}>
+            <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
               <OperatorInput
                 propertyKey={propertyKey}
                 operator={operator}
@@ -275,7 +275,7 @@ export function TokenEditor({
               />
             </InternalFormField>
 
-            <InternalFormField label={i18nStrings.valueText}>
+            <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
               <ValueInput
                 propertyKey={propertyKey}
                 operator={operator}

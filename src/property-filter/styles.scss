@@ -45,10 +45,16 @@
   flex-direction: column;
   justify-content: space-between;
   &-form {
-    display: grid;
-    grid-template-columns: minmax(max-content, 100%);
-    grid-row-gap: awsui.$space-scaled-l;
     margin-bottom: awsui.$space-scaled-l;
+  }
+  &-field-property {
+    /* used in test-utils */
+  }
+  &-field-operator {
+    margin-top: awsui.$space-scaled-l;
+  }
+  &-field-value {
+    margin-top: awsui.$space-scaled-l;
   }
   &-actions {
     display: flex;
