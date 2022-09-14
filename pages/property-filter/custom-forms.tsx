@@ -56,10 +56,12 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
 
   // Always use 00:00:00 as default if the input was tocuhed to avoid user confusion.
   const onChangeTime = (timeValue: string) => {
-    if (!timeValue) {
-      onChange(dateValue + 'T' + '00:00:00');
-    } else {
-      onChange(dateValue + 'T' + timeValue);
+    if (dateValue) {
+      if (!timeValue) {
+        onChange(dateValue + 'T' + '00:00:00');
+      } else {
+        onChange(dateValue + 'T' + timeValue);
+      }
     }
   };
 
@@ -139,7 +141,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
 }
 
 export function formatDateTime(isoDate: string): string {
-  return isoDate + formatTimezoneOffset(isoDate);
+  return isoDate ? isoDate + formatTimezoneOffset(isoDate) : '';
 }
 
 // Split value in date and time parts and provide masking if needed.

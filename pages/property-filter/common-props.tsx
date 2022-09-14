@@ -163,7 +163,11 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = colu
 
   if (def.type === 'date') {
     groupValuesLabel = `${def.propertyLabel} value`;
-    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({ operator, form: DateForm, match: 'date' }));
+    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateForm,
+      match: 'date',
+    }));
   }
 
   if (def.type === 'datetime') {
