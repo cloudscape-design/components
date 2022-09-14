@@ -6,20 +6,19 @@ import { ExtendedOperatorFormProps } from '~components/property-filter/interface
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
 import { FormField, RadioGroup, SpaceBetween, TimeInput } from '~components';
-import { useFormFieldContext } from '~components/internal/context/form-field-context';
 
 export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
-  const { ariaLabelledby } = useFormFieldContext({});
   return (
-    <RadioGroup
-      value={value !== null ? value.toString() : null}
-      onChange={event => onChange(event.detail.value === 'true')}
-      items={[
-        { value: 'true', label: 'Yes' },
-        { value: 'false', label: 'No' },
-      ]}
-      ariaLabelledby={ariaLabelledby}
-    />
+    <FormField>
+      <RadioGroup
+        value={value !== null ? value.toString() : null}
+        onChange={event => onChange(event.detail.value === 'true')}
+        items={[
+          { value: 'true', label: 'Yes' },
+          { value: 'false', label: 'No' },
+        ]}
+      />
+    </FormField>
   );
 }
 
@@ -31,8 +30,6 @@ export function yesNoFormat(value: null | boolean) {
 }
 
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
-  const { ariaLabelledby } = useFormFieldContext({});
-
   // Using the most reasonable default time per operator.
   const defaultTime = operator === '<' || operator === '>=' ? '00:00:00' : '23:59:59';
   const { dateValue, timeValue } = value !== filter ? parseValue(value, defaultTime) : parseValue(filter, defaultTime);
@@ -66,22 +63,16 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   };
 
   return (
-    <>
+    <FormField>
       <SpaceBetween direction="horizontal" size="s">
         <FormField description="Specify date">
-          <DateInput
-            placeholder="YYYY/MM/DD"
-            ariaLabelledby={ariaLabelledby}
-            onChange={event => onChangeDate(event.detail.value)}
-            value={dateValue}
-          />
+          <DateInput placeholder="YYYY/MM/DD" onChange={event => onChangeDate(event.detail.value)} value={dateValue} />
         </FormField>
 
         <FormField description="Specify time">
           <TimeInput
             format="hh:mm:ss"
             placeholder="hh:mm:ss"
-            ariaLabelledby={ariaLabelledby}
             value={timeValue}
             onChange={event => onChangeTime(event.detail.value)}
           />
@@ -96,13 +87,11 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </>
+    </FormField>
   );
 }
 
 export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
-  const { ariaLabelledby } = useFormFieldContext({});
-
   const { dateValue } = value !== filter ? parseValue(value) : parseValue(filter);
 
   // Sync filter and value allowing the filter value to be submitted.
@@ -119,10 +108,9 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
   };
 
   return (
-    <SpaceBetween direction="vertical" size="s">
+    <FormField>
       <DateInput
         name="date"
-        ariaLabelledby={ariaLabelledby}
         placeholder="YYYY/MM/DD"
         onChange={event => onChangeDate(event.detail.value)}
         value={dateValue}
@@ -136,7 +124,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </SpaceBetween>
+    </FormField>
   );
 }
 
