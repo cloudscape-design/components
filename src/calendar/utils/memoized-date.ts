@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { parseDate } from '../../../internal/utils/date-time';
+import { parseDate } from '../../internal/utils/date-time';
 
 // reuse date instances, to allow shallow equality checking
 const memoCache: Record<string, Date> = {};

@@ -12,6 +12,7 @@ export function PageTwo({ onFollowLink }: { onFollowLink: () => void }) {
           {
             type: 'success',
             header: 'Successfully created bucket "MyDemoBucket101"',
+            statusIconAriaLabel: 'success',
             content: (
               <>
                 To upload files and folders, or to configure additional bucket settings such as Bucket Versioning, tags,

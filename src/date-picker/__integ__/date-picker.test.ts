@@ -121,7 +121,9 @@ describe('Date Picker', () => {
       await page.setInputValue('20220131');
       await page.clickOpenCalendar();
       await page.keys(['Tab', 'Tab', 'Tab']);
-      await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
+      await page.keys(['ArrowRight']);
+      await page.keys(['ArrowRight']);
+      await page.keys(['ArrowRight']);
       await page.keys('Enter');
       await expect(page.getInputText()).resolves.toBe('2022/02/03');
     })

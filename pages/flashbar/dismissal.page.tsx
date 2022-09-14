@@ -17,6 +17,7 @@ export default function FlashbarPermutations() {
       index,
       dismissible: true,
       dismissLabel: 'Dismiss',
+      statusIconAriaLabel: 'Info',
       onDismiss: () => dismiss(index),
     }))
   );

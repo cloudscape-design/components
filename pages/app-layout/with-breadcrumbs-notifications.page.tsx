@@ -27,6 +27,7 @@ export default function () {
             items={[
               {
                 type: 'success',
+                statusIconAriaLabel: 'success',
                 header: (
                   <div>
                     This is a very very very long flash message that will cause the notifications to wrap over multiple

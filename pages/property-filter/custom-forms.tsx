@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
-import Calendar from '~components/date-picker/calendar';
+import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
 import { FormField, RadioGroup, SpaceBetween, TimeInput } from '~components';
 import { useFormFieldContext } from '~components/internal/context/form-field-context';

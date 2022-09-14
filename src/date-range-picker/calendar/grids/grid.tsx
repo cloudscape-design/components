@@ -7,8 +7,8 @@ import { isSameMonth, isAfter, isBefore, isSameDay, addWeeks, addDays } from 'da
 import { getCalendarMonth } from 'mnth';
 import { DateChangeHandler, DayIndex } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
-import rotateDayIndexes from '../../../date-picker/calendar/utils/rotate-day-indexes';
-import { renderDayName } from '../../../date-picker/calendar/utils/intl';
+import rotateDayIndexes from '../../../calendar/utils/rotate-day-indexes';
+import { renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 
 export interface GridProps {

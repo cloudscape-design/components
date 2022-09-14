@@ -37,6 +37,7 @@ function listPublicItems(baseDir) {
         elem !== 'test-utils' &&
         elem !== 'theming' &&
         elem !== 'contexts' &&
+        elem !== 'calendar' &&
         elem !== 'date-input'
     );
 }

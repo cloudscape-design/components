@@ -3,7 +3,7 @@
 import { add } from 'date-fns';
 import React from 'react';
 import styles from '../../styles.css.js';
-import { renderMonthAndYear } from '../../../date-picker/calendar/utils/intl';
+import { renderMonthAndYear } from '../../../calendar/utils/intl';
 import HeaderButton from './button';
 
 interface CalendarHeaderProps {

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { CalendarWrapper } from '../../../lib/components/test-utils/selectors/date-picker';
+import CalendarWrapper from '../../../lib/components/test-utils/selectors/calendar';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 const calendarWrapper = createWrapper().findComponent('', CalendarWrapper);
@@ -12,7 +12,7 @@ describe('Date picker calendar interactions', () => {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
 
-      await browser.url('#/light/date-picker/calendar');
+      await browser.url('#/light/calendar/integ');
       await testFn(page);
     });
   };
@@ -21,7 +21,7 @@ describe('Date picker calendar interactions', () => {
     'should focus the element after the date picker',
     setupTest(async page => {
       await page.click('#focusable-element-before-date-picker');
-      await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
       await expect(page.isFocused('#focusable-element-after-date-picker')).resolves.toBeTruthy();
     })
   );
@@ -30,7 +30,7 @@ describe('Date picker calendar interactions', () => {
     'should focus the element before the date picker when shift tabing',
     setupTest(async page => {
       await page.click('#focusable-element-after-date-picker');
-      await page.keys(['Shift', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Null']);
+      await page.keys(['Shift', 'Tab', 'Tab', 'Tab', 'Tab', 'Null']);
       await expect(page.isFocused('#focusable-element-before-date-picker')).resolves.toBeTruthy();
     })
   );
@@ -39,7 +39,7 @@ describe('Date picker calendar interactions', () => {
     'should navigate dates within a month',
     setupTest(async page => {
       await page.click('#focusable-element-before-date-picker');
-      await page.keys(['Tab', 'Tab', 'Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
       await page.keys('Enter');
 
