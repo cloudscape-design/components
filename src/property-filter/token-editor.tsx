@@ -6,7 +6,6 @@ import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
-
 import {
   ComparisonOperator,
   FilteringOption,
