@@ -5,6 +5,26 @@
 
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
+@use '../../hooks/focus-visible' as focus-visible;
+
+.content,
+.description,
+.label {
+  display: block;
+}
+
+.outline {
+  display: none;
+}
+
+.native-input {
+  @include focus-visible.when-visible {
+    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
+    & + .outline {
+      display: block;
+    }
+  }
+}
 
 .wrapper {
   @include styles.text-wrapping;

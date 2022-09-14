@@ -58,7 +58,12 @@ describe('BreadcrumbGroup Component', () => {
 
       links.forEach((link, i) => {
         expect(link.getElement()).toHaveTextContent(items[i].text);
-        expect(link.getElement()).toHaveAttribute('href', items[i].href);
+        if (i === links.length - 1) {
+          // last item should not have an href
+          expect(link.getElement()).not.toHaveAttribute('href', items[i].href);
+        } else {
+          expect(link.getElement()).toHaveAttribute('href', items[i].href);
+        }
       });
     });
 
@@ -69,12 +74,17 @@ describe('BreadcrumbGroup Component', () => {
 
     test('has ellipsis', () => {
       expect(wrapper.findDropdown()!.findNativeButton()).not.toBe(null);
-      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toHaveAttribute('aria-label', 'Show path');
+      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
     });
 
-    test('can set aria-label for ellipsis', () => {
+    test('dropdown button has aria-label', () => {
+      const nativeButton = wrapper.findDropdown()?.findNativeButton();
+      expect(nativeButton?.getElement()).toHaveAttribute('aria-label', 'Show path');
+    });
+
+    test('can set aria-label to dropdown buttons', () => {
       wrapper = renderBreadcrumbGroup({ items, expandAriaLabel: 'Custom Show path label' });
-      expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toHaveAttribute(
+      expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute(
         'aria-label',
         'Custom Show path label'
       );
@@ -136,7 +146,12 @@ describe('BreadcrumbGroup Component', () => {
     });
 
     test('does not throw an error when a safe javascript: URL is passed', () => {
-      const element = renderBreadcrumbGroup({ items: [{ text: '', href: 'javascript:void(0)' }] });
+      const element = renderBreadcrumbGroup({
+        items: [
+          { text: '1', href: 'javascript:void(0)' },
+          { text: '2', href: 'javascript:void(0)' },
+        ],
+      });
       expect((element.findBreadcrumbLink(1)!.getElement() as HTMLAnchorElement).href).toBe('javascript:void(0)');
       expect(console.warn).toHaveBeenCalledTimes(0);
     });

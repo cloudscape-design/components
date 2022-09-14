@@ -71,7 +71,7 @@ const InternalLink = React.forwardRef(
     };
 
     const linkRef = useRef<HTMLElement>(null);
-    const isVisualRefresh = useVisualRefresh(linkRef);
+    const isVisualRefresh = useVisualRefresh();
     useForwardFocus(ref, linkRef);
 
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
@@ -98,8 +98,8 @@ const InternalLink = React.forwardRef(
       <>
         {children}
         {external && (
-          <>
-            {' '}
+          <span className={styles['icon-wrapper']}>
+            &nbsp;
             <span
               className={styles.icon}
               aria-label={externalIconAriaLabel}
@@ -107,7 +107,7 @@ const InternalLink = React.forwardRef(
             >
               <InternalIcon name="external" size="inherit" />
             </span>
-          </>
+          </span>
         )}
       </>
     );

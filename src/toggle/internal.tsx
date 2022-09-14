@@ -43,6 +43,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           [styles['toggle-control-checked']]: checked,
           [styles['toggle-control-disabled']]: disabled,
         })}
+        outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
         label={children}
@@ -55,7 +56,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           <input
             {...nativeControlProps}
             ref={checkboxRef}
-            className={styles.input}
             type="checkbox"
             checked={checked}
             name={name}
@@ -65,7 +65,8 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           />
         )}
         styledControl={
-          <div
+          /*Using span, not div for HTML validity*/
+          <span
             className={clsx(styles['toggle-handle'], {
               [styles['toggle-handle-checked']]: checked,
               [styles['toggle-handle-disabled']]: disabled,

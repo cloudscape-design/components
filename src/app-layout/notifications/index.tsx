@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { AppLayoutProps } from '../interfaces';
-import { useStickyPosition } from '../utils/use-sticky-position';
 
 interface NotificationsProps {
   testUtilsClassName: string;
@@ -13,27 +12,6 @@ interface NotificationsProps {
   topOffset: number | undefined;
   isMobile: boolean;
 }
-
-const StaticNotifications = ({ testUtilsClassName, children, labels }: NotificationsProps) => {
-  return (
-    <div className={clsx(testUtilsClassName)} role="region" aria-label={labels?.notifications}>
-      {children}
-    </div>
-  );
-};
-
-const StickyNotifications = (props: NotificationsProps) => {
-  const [stickyRef, placeholder] = useStickyPosition(props.topOffset);
-  return (
-    <>
-      <div ref={stickyRef} className={styles['notifications-sticky']}>
-        <StaticNotifications {...props} />
-      </div>
-      {placeholder}
-    </>
-  );
-};
-
 interface NotificationWrapperProps extends NotificationsProps {
   sticky: boolean | undefined;
   navigationPadding: boolean;
@@ -42,21 +20,16 @@ interface NotificationWrapperProps extends NotificationsProps {
 }
 
 export const Notifications = React.forwardRef(
-  (
-    { navigationPadding, toolsPadding, sticky, isMobile, ...rest }: NotificationWrapperProps,
-    ref: React.Ref<HTMLDivElement>
-  ) => {
-    const notificationsProps: NotificationsProps = { isMobile, ...rest };
-    return (
-      <div
-        ref={ref}
-        className={clsx(
-          isMobile && styles['root-mobile'],
-          !navigationPadding && styles['root-no-navigation-padding'],
-          !toolsPadding && styles['root-no-tools-padding']
-        )}
-      >
-        {sticky ? <StickyNotifications {...notificationsProps} /> : <StaticNotifications {...notificationsProps} />}
+  ({ sticky, ...props }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
+    return sticky ? (
+      <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
+        <div className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+          {props.children}
+        </div>
+      </div>
+    ) : (
+      <div ref={ref} className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+        {props.children}
       </div>
     );
   }

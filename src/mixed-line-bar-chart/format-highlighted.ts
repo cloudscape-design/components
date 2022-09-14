@@ -3,17 +3,15 @@
 import { ChartDataTypes, InternalChartSeries } from './interfaces';
 import { ChartSeriesDetailItem } from '../internal/components/chart-series-details';
 import { CartesianChartProps } from '../internal/components/cartesian-chart/interfaces';
-import { matchesX } from './utils';
+import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 
 export interface HighlightDetails {
   position: string;
   details: ChartSeriesDetailItem[];
 }
 
-/**
- * Formats provided x-position and its corresponding series values.
- */
-export default function formatPosition<T extends ChartDataTypes>(
+/** Formats provided x-position and its corresponding series values. */
+export default function formatHighlighted<T extends ChartDataTypes>(
   position: T,
   series: readonly InternalChartSeries<T>[],
   xTickFormatter?: CartesianChartProps.TickFormatter<T>
@@ -34,7 +32,19 @@ export default function formatPosition<T extends ChartDataTypes>(
 function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T): ChartSeriesDetailItem | null {
   const { series, color } = internalSeries;
 
-  if (series.type === 'threshold') {
+  // X-thresholds are only shown when X matches.
+  if (isXThreshold(series)) {
+    return series.x === targetX
+      ? {
+          key: series.title,
+          value: '',
+          color,
+          markerType: 'dashed',
+        }
+      : null;
+  }
+
+  if (isYThreshold(series)) {
     return {
       key: series.title,
       value: series.valueFormatter ? series.valueFormatter(series.y) : series.y,
@@ -43,14 +53,16 @@ function getSeriesDetail<T>(internalSeries: InternalChartSeries<T>, targetX: T):
     };
   }
 
-  for (const d of series.data) {
-    if (matchesX(targetX, d.x)) {
-      return {
-        key: series.title,
-        value: series.valueFormatter ? series.valueFormatter(d.y, targetX) : d.y,
-        color,
-        markerType: series.type === 'line' ? 'line' : 'rectangle',
-      };
+  if (isDataSeries(series)) {
+    for (const datum of series.data) {
+      if (matchesX(targetX, datum.x)) {
+        return {
+          key: series.title,
+          value: series.valueFormatter ? series.valueFormatter(datum.y, targetX) : datum.y,
+          color,
+          markerType: series.type === 'line' ? 'line' : 'rectangle',
+        };
+      }
     }
   }
 

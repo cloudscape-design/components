@@ -119,6 +119,17 @@ const permutations = createPermutations<ItemProps>([
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
   },
+  // keyboard nav
+  {
+    item: [{ id: '1', text: 'keyboard nav' }],
+    disabled: [false, true],
+    highlighted: [false, true],
+    last: [false],
+    hasCategoryHeader: [false],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+    isKeyboardHighlighted: [true],
+  },
 ]);
 
 export default function () {

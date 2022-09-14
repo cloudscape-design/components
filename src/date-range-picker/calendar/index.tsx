@@ -8,18 +8,10 @@ import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handler';
-import {
-  displayToIso,
-  formatDate,
-  formatTime,
-  formatISOStringWithoutTimezone,
-  isoToDisplay,
-  parseDate,
-} from '../../date-picker/calendar/utils/date';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
-import DateInput from '../../internal/components/date-input';
+import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
@@ -28,6 +20,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
+import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -129,8 +122,8 @@ function Calendar(
   useEffect(() => {
     // This effect "synchronizes" the local state update back up to the overall DateRangePicker component
 
-    const startDate = formatISOStringWithoutTimezone(startDateString, startTimeString);
-    const endDate = formatISOStringWithoutTimezone(endDateString, endTimeString);
+    const startDate = joinDateTime(startDateString, startTimeString);
+    const endDate = joinDateTime(endDateString, endTimeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
       onSelectDateRange({
@@ -271,18 +264,16 @@ function Calendar(
   };
 
   const onChangeStartDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setStartDateString(isoDateString);
+    setStartDateString(e.detail.value);
 
-    if (isoDateString.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(isoDateString));
+    if (e.detail.value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
   const onChangeEndDate: InputProps['onChange'] = e => {
-    const isoDateString = displayToIso(e.detail.value);
-    setEndDateString(isoDateString);
+    setEndDateString(e.detail.value);
   };
 
   let constrainttextId = useUniqueId('awsui-area-date-range-picker');
@@ -328,11 +319,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                  <DateInput
-                    value={isoToDisplay(startDateString)}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
-                    disableAutocompleteOnBlur={false}
+                  <InternalDateInput
+                    value={startDateString}
                     className={styles['start-date-input']}
                     onChange={onChangeStartDate}
                     placeholder="YYYY/MM/DD"
@@ -359,11 +347,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                  <DateInput
-                    value={isoToDisplay(endDateString)}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
-                    disableAutocompleteOnBlur={false}
+                  <InternalDateInput
+                    value={endDateString}
                     className={styles['end-date-input']}
                     onChange={onChangeEndDate}
                     placeholder="YYYY/MM/DD"

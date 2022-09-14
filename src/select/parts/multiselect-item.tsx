@@ -8,6 +8,7 @@ import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 export interface ItemProps {
   option: DropdownOption;
   highlighted?: boolean;
@@ -15,13 +16,13 @@ export interface ItemProps {
   indeterminate?: boolean;
   filteringValue?: string;
   hasCheckbox?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
+  highlightType?: HighlightType;
 }
 
 const MultiSelectItem = (
@@ -31,7 +32,6 @@ const MultiSelectItem = (
     selected,
     filteringValue,
     hasCheckbox,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -39,6 +39,7 @@ const MultiSelectItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -55,14 +56,14 @@ const MultiSelectItem = (
 
   return (
     <SelectableItem
-      ariaChecked={selected}
+      ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}
       disabled={disabled}
       isParent={isParent}
       isChild={isChild}
-      isKeyboard={isKeyboard}
+      highlightType={highlightType}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}

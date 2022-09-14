@@ -9,12 +9,14 @@ import { getTestOptionIndexes } from '../internal/components/options-list/utils/
 
 import styles from './styles.css.js';
 import { AutosuggestItem } from './interfaces';
+import { HighlightType } from '../internal/components/options-list/utils/use-highlight-option';
 
 export interface AutosuggestOptionProps extends BaseComponentProps {
   nativeAttributes?: Record<string, any>;
   highlightText: string;
   option: AutosuggestItem;
   highlighted: boolean;
+  highlightType: HighlightType;
   enteredTextLabel: (value: string) => string;
   virtualPosition?: number;
   padBottom?: boolean;
@@ -29,6 +31,7 @@ const AutosuggestOption = (
     highlightText,
     option,
     highlighted,
+    highlightType,
     enteredTextLabel,
     virtualPosition,
     padBottom,
@@ -67,7 +70,7 @@ const AutosuggestOption = (
     <SelectableItem
       {...baseProps}
       className={styles.option}
-      ariaSelected={highlighted || undefined}
+      ariaSelected={highlighted}
       highlighted={highlighted}
       disabled={option.disabled}
       hasBackground={useEntered}
@@ -82,6 +85,7 @@ const AutosuggestOption = (
       screenReaderContent={screenReaderContent}
       ariaSetsize={ariaSetsize}
       ariaPosinset={ariaPosinset}
+      highlightType={highlightType}
     >
       {optionContent}
     </SelectableItem>

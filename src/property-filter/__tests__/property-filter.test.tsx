@@ -10,10 +10,11 @@ import createWrapper, {
   PropertyFilterWrapper,
   PopoverWrapper,
 } from '../../../lib/components/test-utils/dom';
-import PropertyFilter, { PropertyFilterProps } from '../../../lib/components/property-filter';
+import PropertyFilter from '../../../lib/components/property-filter';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { FilteringOption, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
 
 const filteringProperties = [
   {
@@ -52,7 +53,7 @@ const filteringProperties = [
   },
 ] as const;
 
-const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
+const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
   { propertyKey: 'string', value: 'value2' },
@@ -72,7 +73,7 @@ const defaultProps: PropertyFilterProps = {
   id: 'property-filter',
 };
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<PropertyFilterProps.Ref> }>) => {
+const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
   const { container } = render(
     <div>
       <button id="button" />
@@ -81,19 +82,20 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
   );
   const pageWrapper = createWrapper(container);
   return {
+    container,
     propertyFilterWrapper: pageWrapper.findPropertyFilter()!,
     pageWrapper,
   };
 };
 
 function findPropertySelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['property-selector'])!.findSelect()!;
+  return wrapper.findByClassName(styles['token-editor-field-property'])!.findSelect()!;
 }
 function findOperatorSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['operator-selector'])!.findSelect()!;
+  return wrapper.findByClassName(styles['token-editor-field-operator'])!.findSelect()!;
 }
 function findValueSelector(wrapper: ElementWrapper) {
-  return wrapper.findByClassName(styles['value-selector'])!.findAutosuggest()!;
+  return wrapper.findByClassName(styles['token-editor-field-value'])!.findAutosuggest()!;
 }
 
 describe('property filter parts', () => {
@@ -135,7 +137,7 @@ describe('property filter parts', () => {
       });
     });
     test('can be focused using the property filter ref', () => {
-      const focusRef: React.Ref<PropertyFilterProps.Ref> = { current: null };
+      const focusRef: React.Ref<Ref> = { current: null };
       const { propertyFilterWrapper: wrapper } = renderComponent({ ref: focusRef });
       act(() => focusRef.current!.focus());
       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
@@ -340,6 +342,17 @@ describe('property filter parts', () => {
           })
         );
         expect(wrapper.findDropdown()?.findOpenDropdown()).toBeFalsy();
+      });
+      test('inserts operator when property is selected if only one operator is defined for that property', () => {
+        const { propertyFilterWrapper: wrapper } = renderComponent();
+
+        act(() => wrapper.findNativeInput().focus());
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+        expect(wrapper.findNativeInput().getElement()).toHaveValue('default = ');
+        expect(wrapper.findDropdown()?.findOpenDropdown()).toBeTruthy();
       });
     });
   });
@@ -696,12 +709,13 @@ describe('property filter parts', () => {
       act(() => wrapper.findRemoveAllButton()!.click());
       expect(spy).toHaveBeenCalledWith(expect.objectContaining({ detail: { tokens: [], operation: 'or' } }));
     });
-    test('moves focus to the input', () => {
+    test('moves focus to the input but keeps dropdown closed', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
       });
       act(() => wrapper.findRemoveAllButton()!.click());
       expect(wrapper.findNativeInput()!.getElement()).toHaveFocus();
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
     test('disabled, when the component is disabled', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -730,5 +744,14 @@ describe('property filter parts', () => {
     expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('error');
     wrapper.selectSuggestion(2, { expandToViewport: true });
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
+  });
+
+  test('property filter input can be found with autosuggest selector', () => {
+    const { container } = renderComponent();
+    expect(createWrapper(container).findAutosuggest()!.getElement()).not.toBe(null);
+  });
+  test('property filter input can be found with styles.input', () => {
+    const { container } = renderComponent();
+    expect(createWrapper(container).findByClassName(styles.input)!.getElement()).not.toBe(null);
   });
 });

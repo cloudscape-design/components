@@ -72,6 +72,7 @@ export function TableHeaderCell({
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
+      scope="col"
     >
       <div
         className={clsx(styles['header-cell-content'], {

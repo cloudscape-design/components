@@ -5,8 +5,9 @@ import { unstable_batchedUpdates } from 'react-dom';
 
 type ValueCallback<T> = (value: T) => void;
 type CleanupCallback = () => void;
+export type UseSingleton<T> = (listener: ValueCallback<T>) => void;
 
-export function createSingletonHandler<T>(factory: (handler: ValueCallback<T>) => CleanupCallback) {
+export function createSingletonHandler<T>(factory: (handler: ValueCallback<T>) => CleanupCallback): UseSingleton<T> {
   const listeners: Array<ValueCallback<T>> = [];
   const callback: ValueCallback<T> = value => {
     unstable_batchedUpdates(() => {

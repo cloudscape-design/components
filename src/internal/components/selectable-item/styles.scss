@@ -64,9 +64,7 @@
   }
 
   &.selected {
-    z-index: 3;
     background-color: awsui.$color-background-dropdown-item-selected;
-    border-color: awsui.$color-border-dropdown-item-selected;
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-bottom-left-radius: 0;
@@ -79,8 +77,9 @@
     border-top-right-radius: 0;
   }
 
-  &.highlighted.selected.is-keyboard {
-    box-shadow: inset 0 0 0 1px awsui.$color-border-item-focused;
+  &.highlighted.is-keyboard {
+    border-color: awsui.$color-border-item-focused;
+    box-shadow: inset 0 0 0 awsui.$border-control-focus-ring-shadow-spread awsui.$color-border-item-focused;
   }
 
   &.parent {

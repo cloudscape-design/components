@@ -47,11 +47,7 @@ export function NavigationPanel({
   toggleRefs,
 }: NavigationPanelProps) {
   return (
-    <div
-      style={{
-        width: navigationDrawerWidth,
-      }}
-    >
+    <div className={styles['navigation-panel']} style={{ width: navigationDrawerWidth }}>
       <div
         className={clsx(styles['panel-wrapper-outer'], {
           [styles.mobile]: isMobile,

@@ -16,24 +16,9 @@ import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
 import useFocusVisible from '../internal/hooks/focus-visible';
+import { useDateRangePicker } from './use-date-range-picker';
 
-const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
-
-/**
- * This function fills in a start and end time if they are missing.
- */
-function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
-  if (!value) {
-    return value;
-  }
-  const [startDate, startTime] = value.startDate.split('T');
-  const [endDate, endTime] = value.endDate.split('T');
-  return {
-    ...value,
-    startDate: startTime ? value.startDate : `${startDate}T00:00:00`,
-    endDate: endTime ? value.endDate : `${endDate}T23:59:59`,
-  };
-}
+export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
 export interface DateRangePickerDropdownProps
   extends Pick<
@@ -59,23 +44,6 @@ export interface DateRangePickerDropdownProps
   ariaDescribedby?: string;
 }
 
-function getDefaultMode(
-  value: null | DateRangePickerProps.Value,
-  relativeOptions: readonly DateRangePickerProps.RelativeOption[],
-  rangeSelectorMode: DateRangePickerProps.RangeSelectorMode
-) {
-  if (value && value.type) {
-    return value.type;
-  }
-  if (rangeSelectorMode === 'relative-only') {
-    return 'relative';
-  }
-  if (rangeSelectorMode === 'absolute-only') {
-    return 'absolute';
-  }
-  return relativeOptions.length > 0 ? 'relative' : 'absolute';
-}
-
 export function DateRangePickerDropdown({
   locale = '',
   startOfWeek,
@@ -95,21 +63,23 @@ export function DateRangePickerDropdown({
   ariaLabelledby,
   ariaDescribedby,
 }: DateRangePickerDropdownProps) {
+  const {
+    fillMissingTime,
+    rangeSelectionMode,
+    setRangeSelectionMode,
+    selectedAbsoluteRange,
+    setSelectedAbsoluteRange,
+    selectedRelativeRange,
+    setSelectedRelativeRange,
+  } = useDateRangePicker({
+    value,
+    relativeOptions,
+    rangeSelectorMode,
+  });
+
   const focusVisible = useFocusVisible();
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
-
-  const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
-    getDefaultMode(value, relativeOptions, rangeSelectorMode)
-  );
-
-  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
-    value?.type === 'absolute' ? value : null
-  );
-
-  const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
-    value?.type === 'relative' ? value : null
-  );
 
   const [applyClicked, setApplyClicked] = useState<boolean>(false);
 
@@ -147,7 +117,15 @@ export function DateRangePickerDropdown({
       const newValidationResult = isValidRange(visibleRange);
       setValidationResult(newValidationResult || VALID_RANGE);
     }
-  }, [applyClicked, isValidRange, rangeSelectionMode, selectedRelativeRange, selectedAbsoluteRange]);
+  }, [
+    applyClicked,
+    isValidRange,
+    rangeSelectionMode,
+    selectedRelativeRange,
+    selectedAbsoluteRange,
+    fillMissingTime,
+    setValidationResult,
+  ]);
 
   const focusRefs = {
     default: useRef<Focusable>(null),

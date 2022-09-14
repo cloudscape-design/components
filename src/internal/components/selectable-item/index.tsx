@@ -4,18 +4,16 @@ import React, { useRef, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
+import { HighlightType } from '../options-list/utils/use-highlight-option.js';
 
-export interface SelectableItemProps extends BaseComponentProps {
+export type SelectableItemProps = BaseComponentProps & {
   children: React.ReactNode;
-  ariaSelected?: boolean;
-  ariaChecked?: boolean;
   selected?: boolean;
   highlighted?: boolean;
   disabled?: boolean;
   hasBackground?: boolean;
   isParent?: boolean;
   isChild?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
@@ -23,7 +21,8 @@ export interface SelectableItemProps extends BaseComponentProps {
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
-}
+  highlightType?: HighlightType;
+} & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 const SelectableItem = (
   {
@@ -36,7 +35,6 @@ const SelectableItem = (
     hasBackground,
     isParent,
     isChild,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
@@ -44,6 +42,7 @@ const SelectableItem = (
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightType,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -55,7 +54,7 @@ const SelectableItem = (
     [styles['has-background']]: hasBackground,
     [styles.parent]: isParent,
     [styles.child]: isChild,
-    [styles['is-keyboard']]: isKeyboard,
+    [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
     [styles.virtual]: virtualPosition !== undefined,
     [styles['pad-bottom']]: padBottom,
@@ -97,12 +96,12 @@ const SelectableItem = (
     a11yProperties['aria-hidden'] = true;
   }
 
-  if (ariaSelected) {
+  if (ariaSelected !== undefined) {
     a11yProperties['aria-selected'] = ariaSelected;
   }
 
   // Safari+VO needs aria-checked for multi-selection. Otherwise it only announces selected option even though another option is highlighted.
-  if (ariaChecked) {
+  if (ariaChecked !== undefined) {
     a11yProperties['aria-checked'] = ariaChecked;
   }
 

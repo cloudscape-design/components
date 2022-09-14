@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '~components';
 import Alert from '~components/alert';
 import AppLayout from '~components/app-layout';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Header from '~components/header';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
@@ -14,6 +14,7 @@ import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function () {
   const [alertVisible, setVisible] = useState(true);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -27,7 +28,7 @@ export default function () {
                 <Header
                   variant="h1"
                   info={<Link>Info</Link>}
-                  description="When you create an Amazon CloudFront distribution."
+                  description="When you create a new distribution."
                   actions={<Button variant="primary">Create distribution</Button>}
                 >
                   Create distribution

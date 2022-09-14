@@ -97,10 +97,9 @@ export default function CodeEditor(props: CodeEditorProps) {
   const warningsTabRef = useRef<HTMLButtonElement>(null);
 
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
-  const refObject = useRef(null);
-  const mergedRef = useMergeRefs(codeEditorMeasureRef, refObject, __internalRootRef);
+  const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
 
-  const isRefresh = useVisualRefresh(refObject);
+  const isRefresh = useVisualRefresh();
 
   useEffect(() => {
     editor?.resize();

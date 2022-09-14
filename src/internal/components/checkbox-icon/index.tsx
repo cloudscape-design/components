@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React from 'react';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import styles from './styles.css.js';
@@ -42,18 +42,10 @@ export const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimen
 
 const CheckboxIcon = ({ checked, indeterminate, disabled = false, ...restProps }: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
-  const checkboxRef = useRef(null);
-  const theme = useVisualRefresh(checkboxRef) ? 'refresh' : 'default';
+  const theme = useVisualRefresh() ? 'refresh' : 'default';
   const dimensions = dimensionsByTheme[theme];
   return (
-    <svg
-      className={styles.root}
-      viewBox={dimensions.viewBox}
-      aria-hidden="true"
-      focusable="false"
-      ref={checkboxRef}
-      {...baseProps}
-    >
+    <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>
       <rect
         className={clsx(styles['styled-box'], {
           [styles['styled-box-checked']]: checked,

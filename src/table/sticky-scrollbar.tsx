@@ -19,7 +19,7 @@ export default forwardRef(StickyScrollbar);
 function StickyScrollbar({ wrapperRef, tableRef, onScroll }: StickyScrollbarProps, ref: React.Ref<HTMLDivElement>) {
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
-  const isRefresh = useVisualRefresh(scrollbarRef);
+  const isRefresh = useVisualRefresh();
   const mergedRef = useMergeRefs(ref, scrollbarRef);
 
   /**

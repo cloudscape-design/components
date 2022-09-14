@@ -16,6 +16,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __stickyOffset?: number;
   __disableFooterDivider?: boolean;
   __disableFooterPaddings?: boolean;
+  __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
   /**
    * Additional internal variant:
@@ -38,6 +39,7 @@ export default function InternalContainer({
   __internalRootRef = null,
   __disableFooterDivider = false,
   __disableFooterPaddings = false,
+  __hiddenContent = false,
   __headerRef,
   ...restProps
 }: InternalContainerProps) {
@@ -45,7 +47,7 @@ export default function InternalContainer({
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
-  const isRefresh = useVisualRefresh(rootRef);
+  const isRefresh = useVisualRefresh();
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
@@ -67,6 +69,7 @@ export default function InternalContainer({
               [styles['header-dynamic-height']]: hasDynamicHeight,
               [styles['header-stuck']]: isStuck,
               [styles['with-paddings']]: !disableHeaderPaddings,
+              [styles['with-hidden-content']]: __hiddenContent,
             })}
             {...stickyStyles}
             ref={headerMergedRef}

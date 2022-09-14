@@ -74,18 +74,20 @@ const TransitionContentSide = ({
       className={clsx(baseProps.className, styles.drawer, styles.root, styles['position-side'], {
         [styles['drawer-closed']]: !isOpen,
       })}
+      style={{
+        width: isOpen ? cappedSize : undefined,
+        maxWidth: isRefresh ? '100%' : undefined,
+      }}
       ref={splitPanelRef}
     >
       <aside
-        style={{
-          top: topOffset,
-          bottom: bottomOffset,
-          width: isOpen ? cappedSize : undefined,
-          maxWidth: isRefresh ? '100%' : undefined,
-        }}
         className={clsx(styles['drawer-content-side'], {
           [styles.refresh]: isRefresh,
         })}
+        style={{
+          top: topOffset,
+          bottom: bottomOffset,
+        }}
         onClick={() => !isOpen && onToggle()}
       >
         {isOpen ? (
@@ -112,6 +114,7 @@ const TransitionContentSide = ({
             variant="icon"
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
+            ariaExpanded={isOpen}
             ref={isRefresh ? null : toggleRef}
           />
         )}
@@ -366,6 +369,7 @@ export default function SplitPanel({
             formAction="none"
             ariaLabel={i18nStrings.closeButtonAriaLabel}
             ref={closeRef}
+            ariaExpanded={isOpen}
           />
         ) : position === 'side' ? null : (
           <InternalButton
@@ -375,6 +379,7 @@ export default function SplitPanel({
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
             ref={toggleRef}
+            ariaExpanded={isOpen}
           />
         )}
       </div>

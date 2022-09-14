@@ -107,7 +107,7 @@ npm test
 #### Run build tool and unit tests:
 
 ```
-npm test:unit
+npm run test:unit
 ```
 
 #### Run integration tests:
@@ -125,7 +125,7 @@ npm start
 ```
 
 ```
-npm test:integ
+npm run test:integ
 ```
 
 #### Run a single test suite
@@ -219,7 +219,7 @@ After the test is done, you can find a report in `backstop/html_report/index.htm
 │
 ├── lib                         - build output
 |   ├── components              - the primary components package
-|   ├── components-definitions  – generated metadata for components and design tokens
+|   ├── components-definitions  – generated metadata for components
 |   └── design-tokens           - exported design tokens
 |
 └── style-dictionary            - style dictionary tokens and roles

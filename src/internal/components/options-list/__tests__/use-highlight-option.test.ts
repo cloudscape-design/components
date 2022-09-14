@@ -2,12 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { renderHook, act } from '../../../../__tests__/render-hook';
 import { flattenOptions } from '../../option/utils/flatten-options';
-import { createHighlightedOptionHook } from '../utils/use-highlight-option';
+import { useHighlightedOption } from '../utils/use-highlight-option';
 import { DropdownOption } from '../../option/interfaces';
 
-const useHighlightedOption = createHighlightedOptionHook({
-  isHighlightable: (option: DropdownOption) => option && option.type !== 'parent',
-});
+const isHighlightable = (option: DropdownOption) => option && option.type !== 'parent';
 
 const options = [
   {
@@ -41,20 +39,20 @@ const options = [
   },
 ];
 
-const initialProps = flattenOptions(options).flatOptions;
+const optionProp = flattenOptions(options).flatOptions;
 
 describe('useHighlightedOption', () => {
   test('should move highlight and also highlight disabled options', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    expect(hook.result.current.highlightedOption).toBe(undefined);
-    act(() => hook.result.current.moveHighlight(1));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
-    act(() => hook.result.current.moveHighlight(1));
-    act(() => hook.result.current.moveHighlight(1));
-    act(() => hook.result.current.moveHighlight(1));
-    expect(hook.result.current.highlightedOption).toEqual({
+    expect(hook.result.current[0].highlightedOption).toBe(undefined);
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({
       option: { label: 'Child 1' },
       type: 'child',
       disabled: true,
@@ -63,16 +61,16 @@ describe('useHighlightedOption', () => {
 
   test('should go to the end and do not move further', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    act(() => hook.result.current.goEnd());
-    expect(hook.result.current.highlightedOption).toEqual({
+    act(() => hook.result.current[1].goEndWithKeyboard());
+    expect(hook.result.current[0].highlightedOption).toEqual({
       option: { label: 'Child 2', disabled: true },
       type: 'child',
       disabled: true,
     });
-    act(() => hook.result.current.moveHighlight(1));
-    expect(hook.result.current.highlightedOption).toEqual({
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({
       option: { label: 'Child 2', disabled: true },
       type: 'child',
       disabled: true,
@@ -81,41 +79,51 @@ describe('useHighlightedOption', () => {
 
   test('should move highlight to the beginning to do not go further', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    expect(hook.result.current.highlightedOption).toBe(undefined);
-    act(() => hook.result.current.moveHighlight(1));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
-    act(() => hook.result.current.goHome());
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
-    act(() => hook.result.current.moveHighlight(-1));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    expect(hook.result.current[0].highlightedOption).toBe(undefined);
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].goHomeWithKeyboard());
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(-1));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
   });
 
   test('should reset highlight', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    expect(hook.result.current.highlightedOption).toBe(undefined);
-    act(() => hook.result.current.moveHighlight(1));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
-    act(() => hook.result.current.resetHighlight());
-    expect(hook.result.current.highlightedOption).toEqual(undefined);
+    expect(hook.result.current[0].highlightedOption).toBe(undefined);
+    act(() => hook.result.current[1].moveHighlightWithKeyboard(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].resetHighlightWithKeyboard());
+    expect(hook.result.current[0].highlightedOption).toEqual(undefined);
   });
 
   test('should set highlighted index', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    act(() => hook.result.current.setHighlightedIndex(1));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].setHighlightedIndexWithMouse(1));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
   });
 
   test('should highlight option by value', () => {
     const hook = renderHook(useHighlightedOption, {
-      initialProps,
+      initialProps: { options: optionProp, isHighlightable },
     });
-    act(() => hook.result.current.highlightOption(initialProps[1]));
-    expect(hook.result.current.highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+    act(() => hook.result.current[1].highlightOptionWithKeyboard(optionProp[1]));
+    expect(hook.result.current[0].highlightedOption).toEqual({ option: { label: 'Child 1' }, type: 'child' });
+  });
+
+  test('should update highlightType when highligh option', () => {
+    const hook = renderHook(useHighlightedOption, {
+      initialProps: { options: optionProp, isHighlightable },
+    });
+    act(() => hook.result.current[1].setHighlightedIndexWithMouse(1));
+    expect(hook.result.current[0].highlightType).toEqual('mouse');
+    act(() => hook.result.current[1].highlightOptionWithKeyboard(optionProp[1]));
+    expect(hook.result.current[0].highlightType).toEqual('keyboard');
   });
 });

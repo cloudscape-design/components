@@ -9,7 +9,7 @@ import { NonCancelableEventHandler } from '../../../lib/components/internal/even
 import { i18nStrings } from './i18n-strings';
 import { changeMode } from './change-mode';
 import { isValidRange } from './is-valid-range';
-import { expectNoAxeViolations } from '../../__a11y__/axe';
+import '../../__a11y__/to-validate-a11y';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -60,7 +60,7 @@ describe('Date range picker', () => {
       });
       act(() => wrapper.findLabel().click());
 
-      await expectNoAxeViolations(container);
+      await expect(container).toValidateA11y();
     });
 
     test('selecting a pre-defined option', () => {

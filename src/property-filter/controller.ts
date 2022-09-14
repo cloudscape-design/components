@@ -1,21 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PropertyFilterProps } from './interfaces';
-import { fireNonCancelableEvent } from '../internal/events';
+
+import {
+  ComparisonOperator,
+  FilteringOption,
+  FilteringProperty,
+  GroupText,
+  I18nStrings,
+  JoinOperation,
+  ParsedText,
+  Query,
+  Token,
+} from './interfaces';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { InputProps } from '../input/interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
+import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
-  query: PropertyFilterProps['query'],
-  onChange: PropertyFilterProps['onChange'],
-  inputRef: React.RefObject<InputProps.Ref>,
-  preventFocus: React.MutableRefObject<boolean>
+  query: Query,
+  onChange: NonCancelableEventHandler<Query>,
+  inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
   const { tokens, operation } = query;
-  const fireOnChange = (tokens: readonly PropertyFilterProps.Token[], operation: PropertyFilterProps.JoinOperation) =>
+  const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
     fireNonCancelableEvent(onChange, { tokens, operation });
-  const setToken = (index: number, newToken: PropertyFilterProps.Token) => {
+  const setToken = (index: number, newToken: Token) => {
     const newTokens = [...tokens];
     if (newTokens && index < newTokens.length) {
       newTokens[index] = newToken;
@@ -25,20 +35,18 @@ export const getQueryActions = (
   const removeToken = (index: number) => {
     const newTokens = tokens.filter((_, i) => i !== index);
     fireOnChange(newTokens, operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventDropdown: true });
   };
   const removeAllTokens = () => {
     fireOnChange([], operation);
-    preventFocus.current = true;
-    inputRef.current?.focus();
+    inputRef.current?.focus({ preventDropdown: true });
   };
-  const addToken = (newToken: PropertyFilterProps.Token) => {
+  const addToken = (newToken: Token) => {
     const newTokens = [...tokens];
     newTokens.push(newToken);
     fireOnChange(newTokens, operation);
   };
-  const setOperation = (newOperation: PropertyFilterProps.JoinOperation) => {
+  const setOperation = (newOperation: JoinOperation) => {
     fireOnChange(tokens, newOperation);
   };
   return {
@@ -50,24 +58,14 @@ export const getQueryActions = (
   };
 };
 
-export type ParsedText =
-  | {
-      step: 'property';
-      property: PropertyFilterProps.FilteringProperty;
-      operator: PropertyFilterProps.ComparisonOperator;
-      value: string;
-    }
-  | { step: 'operator'; property: PropertyFilterProps.FilteringProperty; operatorPrefix: string }
-  | { step: 'free-text'; operator?: PropertyFilterProps.ComparisonOperator; value: string };
-
-export const getAllowedOperators = (
-  property: PropertyFilterProps.FilteringProperty
-): PropertyFilterProps.ComparisonOperator[] => {
-  const { operators, defaultOperator } = property;
+export const getAllowedOperators = (property: FilteringProperty): ComparisonOperator[] => {
+  const { operators = [], defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorSet: { [key: string]: true } = { [defaultOperator ?? '=']: true };
-  operators?.forEach(op => (operatorSet[op] = true));
-  return operatorOrder.filter(op => operatorSet[op]);
+  const operatorSet = new Set([
+    defaultOperator ?? '=',
+    ...operators.map(op => (typeof op === 'string' ? op : op.operator)),
+  ]);
+  return operatorOrder.filter(op => operatorSet.has(op));
 };
 
 /*
@@ -78,7 +76,7 @@ export const getAllowedOperators = (
  */
 export const parseText = (
   filteringText: string,
-  filteringProperties: PropertyFilterProps['filteringProperties'] = [],
+  filteringProperties: readonly FilteringProperty[] = [],
   disableFreeTextFiltering: boolean
 ): ParsedText => {
   const negatedGlobalQuery = /^(!:|!)(.*)/.exec(filteringText);
@@ -128,10 +126,10 @@ export const parseText = (
 };
 
 export const getPropertyOptions = (
-  filteringProperty: PropertyFilterProps.FilteringProperty,
-  filteringOptions: PropertyFilterProps['filteringOptions']
+  filteringProperty: FilteringProperty,
+  filteringOptions: readonly FilteringOption[]
 ) => {
-  return filteringOptions?.filter(option => option.propertyKey === filteringProperty.key);
+  return filteringOptions.filter(option => option.propertyKey === filteringProperty.key);
 };
 
 interface OptionGroup<T> {
@@ -144,18 +142,18 @@ interface ExtendedAutosuggestOption extends AutosuggestProps.Option {
 }
 
 export const getAllValueSuggestions = (
-  filteringOptions: PropertyFilterProps['filteringOptions'],
-  filteringProperties: PropertyFilterProps['filteringProperties'],
-  operator: PropertyFilterProps.ComparisonOperator | undefined = '=',
-  i18nStrings: Pick<PropertyFilterProps.I18nStrings, 'groupValuesText'>,
-  customGroupsText: PropertyFilterProps['customGroupsText']
+  filteringOptions: readonly FilteringOption[],
+  filteringProperties: readonly FilteringProperty[],
+  operator: ComparisonOperator | undefined = '=',
+  i18nStrings: I18nStrings,
+  customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<ExtendedAutosuggestOption> = {
     label: i18nStrings.groupValuesText,
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<ExtendedAutosuggestOption> } = {};
-  filteringOptions?.forEach(filteringOption => {
+  filteringOptions.forEach(filteringOption => {
     const property = getPropertyByKey(filteringProperties, filteringOption.propertyKey);
     // given option refers to a non-existent filtering property
     if (!property) {
@@ -166,11 +164,10 @@ export const getAllValueSuggestions = (
       return;
     }
     if (property.group && !customGroups[property.group]) {
-      const label =
-        customGroupsText?.reduce<string>(
-          (acc, customGroup) => (customGroup.group === property.group ? customGroup.values : acc),
-          ''
-        ) || '';
+      const label = customGroupsText.reduce<string>(
+        (acc, customGroup) => (customGroup.group === property.group ? customGroup.values : acc),
+        ''
+      );
       customGroups[property.group] = {
         label,
         options: [],
@@ -186,27 +183,24 @@ export const getAllValueSuggestions = (
   return [defaultGroup, ...Object.keys(customGroups).map(group => customGroups[group])];
 };
 
-export const getPropertyByKey = (filteringProperties: PropertyFilterProps['filteringProperties'], key: string) => {
-  const propertyMap = filteringProperties.reduce<{ [K: string]: PropertyFilterProps.FilteringProperty }>(
-    (acc, property) => {
-      acc[property.key] = property;
-      return acc;
-    },
-    {}
-  );
-  return propertyMap[key] as PropertyFilterProps.FilteringProperty | undefined;
+export const getPropertyByKey = (filteringProperties: readonly FilteringProperty[], key: string) => {
+  const propertyMap = filteringProperties.reduce<{ [K: string]: FilteringProperty }>((acc, property) => {
+    acc[property.key] = property;
+    return acc;
+  }, {});
+  return propertyMap[key] as FilteringProperty | undefined;
 };
 
-const filteringPropertyToAutosuggestOption = (filteringProperty: PropertyFilterProps.FilteringProperty) => ({
+const filteringPropertyToAutosuggestOption = (filteringProperty: FilteringProperty) => ({
   value: filteringProperty.propertyLabel,
   keepOpenOnSelect: true,
 });
 
 export function getPropertySuggestions<T>(
-  filteringProperties: PropertyFilterProps['filteringProperties'],
-  customGroupsText: PropertyFilterProps['customGroupsText'],
-  i18nStrings: Pick<PropertyFilterProps['i18nStrings'], 'groupPropertiesText'>,
-  filteringPropertyToOption: (filteringProperty: PropertyFilterProps.FilteringProperty) => T
+  filteringProperties: readonly FilteringProperty[],
+  customGroupsText: readonly GroupText[],
+  i18nStrings: I18nStrings,
+  filteringPropertyToOption: (filteringProperty: FilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
     label: i18nStrings.groupPropertiesText,
@@ -219,11 +213,10 @@ export function getPropertySuggestions<T>(
     let optionsGroup = defaultGroup;
     if (group) {
       if (!customGroups[group]) {
-        const label =
-          customGroupsText?.reduce<string>(
-            (acc, customGroup) => (customGroup.group === group ? customGroup.properties : acc),
-            ''
-          ) || '';
+        const label = customGroupsText.reduce<string>(
+          (acc, customGroup) => (customGroup.group === group ? customGroup.properties : acc),
+          ''
+        );
         customGroups[group] = { options: [], label };
       }
       optionsGroup = customGroups[group];
@@ -235,34 +228,22 @@ export function getPropertySuggestions<T>(
   return [...defaultGroupArray, ...customGroupsArray];
 }
 
-export type OperatorStrings =
-  | 'operatorLessText'
-  | 'operatorLessOrEqualText'
-  | 'operatorGreaterText'
-  | 'operatorGreaterOrEqualText'
-  | 'operatorContainsText'
-  | 'operatorDoesNotContainText'
-  | 'operatorEqualsText'
-  | 'operatorDoesNotEqualText';
 export const getAutosuggestOptions = (
   parsedText: ParsedText,
-  filteringOptions: PropertyFilterProps['filteringOptions'],
-  filteringProperties: PropertyFilterProps['filteringProperties'],
-  customGroupsText: PropertyFilterProps['customGroupsText'],
-  i18nStrings: Pick<
-    PropertyFilterProps['i18nStrings'],
-    'groupPropertiesText' | 'groupValuesText' | 'operatorsText' | OperatorStrings
-  >
+  filteringOptions: readonly FilteringOption[],
+  filteringProperties: readonly FilteringProperty[],
+  customGroupsText: readonly GroupText[],
+  i18nStrings: I18nStrings
 ) => {
   switch (parsedText.step) {
     case 'property': {
       const { propertyLabel, groupValuesLabel } = parsedText.property;
       const options = getPropertyOptions(parsedText.property, filteringOptions);
       return {
-        __filterText: parsedText.value,
+        filterText: parsedText.value,
         options: [
           {
-            options: (options || []).map(({ value }) => ({
+            options: options.map(({ value }) => ({
               tokenValue: propertyLabel + parsedText.operator + value,
               label: value,
               __labelPrefix: propertyLabel + ' ' + parsedText.operator,
@@ -274,7 +255,7 @@ export const getAutosuggestOptions = (
     }
     case 'operator': {
       return {
-        __filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
+        filterText: parsedText.property.propertyLabel + ' ' + parsedText.operatorPrefix,
         options: [
           ...getPropertySuggestions(
             filteringProperties,
@@ -298,7 +279,7 @@ export const getAutosuggestOptions = (
       const needsValueSuggestions = !!parsedText.value;
       const needsPropertySuggestions = !(parsedText.step === 'free-text' && parsedText.operator === '!:');
       return {
-        __filterText: parsedText.value,
+        filterText: parsedText.value,
         options: [
           ...(needsPropertySuggestions
             ? getPropertySuggestions(
@@ -323,11 +304,8 @@ export const getAutosuggestOptions = (
   }
 };
 
-export const operatorToDescription = (
-  operator: PropertyFilterProps.ComparisonOperator,
-  i18nStrings: Pick<PropertyFilterProps['i18nStrings'], OperatorStrings>
-) => {
-  const mapping: { [K in PropertyFilterProps.ComparisonOperator]: string } = {
+export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
+  const mapping: { [K in ComparisonOperator]: string } = {
     ['<']: i18nStrings.operatorLessText,
     ['<=']: i18nStrings.operatorLessOrEqualText,
     ['>']: i18nStrings.operatorGreaterText,
