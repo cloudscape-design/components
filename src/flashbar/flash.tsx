@@ -58,6 +58,7 @@ export const Flash = React.forwardRef(
       content,
       dismissible,
       dismissLabel,
+      statusIconAriaLabel,
       loading,
       action,
       buttonText,
@@ -112,7 +113,9 @@ export const Flash = React.forwardRef(
             : ''
         )}
       >
-        <div className={clsx(styles['flash-icon'], styles['flash-text'])}>{icon}</div>
+        <div className={clsx(styles['flash-icon'], styles['flash-text'])} role="img" aria-label={statusIconAriaLabel}>
+          {icon}
+        </div>
         <div className={styles['flash-body']}>
           <div className={clsx(styles['flash-message'], styles['flash-text'])}>
             <div className={styles['flash-header']}>{header}</div>

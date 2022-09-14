@@ -11,16 +11,19 @@ const items: FlashbarProps.MessageDefinition[] = [
     dismissible: true,
     onDismiss: noop,
     dismissLabel: 'Dismiss',
+    statusIconAriaLabel: 'Success',
     type: 'success',
     header: 'Instance created',
   },
   {
     type: 'warning',
+    statusIconAriaLabel: 'Warning',
     header: 'Something weird may have happened...',
   },
   {
     type: 'error',
     header: 'Unrecoverable error',
+    statusIconAriaLabel: 'Error',
     content: 'It all broke, like, really bad.',
   },
 ];
