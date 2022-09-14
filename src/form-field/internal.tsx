@@ -116,11 +116,9 @@ export default function InternalFormField({
       </div>
 
       {(constraintText || errorText) && (
-        <div className={styles.hints}>
+        <div id={slotIds.error} className={styles.hints}>
           {errorText && (
-            <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
-              {errorText}
-            </FormFieldError>
+            <FormFieldError errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>{errorText}</FormFieldError>
           )}
           {constraintText && (
             <div
