@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useRef } from 'react';
-import clsx from 'clsx';
 
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
@@ -31,26 +30,22 @@ import {
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
+import InternalFormField from '../form-field/internal';
+import InternalSpaceBetween from '../space-between/internal';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
 interface TokenEditorFieldProps {
   label: React.ReactNode;
-  type: 'property' | 'operator' | 'value';
   children: ({ controlId }: { controlId: string }) => React.ReactNode;
 }
 
-function TokenEditorField({ type, label, children }: TokenEditorFieldProps) {
+function TokenEditorField({ label, children }: TokenEditorFieldProps) {
   const controlId = useUniqueId();
   return (
-    <>
-      <label className={clsx(styles['token-editor-label'], styles[`token-editor-label-${type}`])} htmlFor={controlId}>
-        <span className={styles['token-editor-label-text']}>{label}</span>
-      </label>
-      <div className={clsx(styles['token-editor-field'], styles[`token-editor-field-${type}`])}>
-        {children({ controlId })}
-      </div>
-    </>
+    <InternalFormField controlId={controlId} label={label}>
+      {children({ controlId })}
+    </InternalFormField>
   );
 }
 
@@ -282,51 +277,53 @@ export function TokenEditor({
       content={
         <div className={styles['token-editor']}>
           <div className={styles['token-editor-form']}>
-            <TokenEditorField label={i18nStrings.propertyText} type="property">
-              {({ controlId }) => (
-                <PropertyInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  onChangePropertyKey={onChangePropertyKey}
-                  asyncProps={asyncProperties ? asyncProps : null}
-                  filteringProperties={filteringProperties}
-                  onLoadItems={onLoadItems}
-                  customGroupsText={customGroupsText}
-                  i18nStrings={i18nStrings}
-                  disableFreeTextFiltering={disableFreeTextFiltering}
-                />
-              )}
-            </TokenEditorField>
+            <InternalSpaceBetween size="l">
+              <TokenEditorField label={i18nStrings.propertyText}>
+                {({ controlId }) => (
+                  <PropertyInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    onChangePropertyKey={onChangePropertyKey}
+                    asyncProps={asyncProperties ? asyncProps : null}
+                    filteringProperties={filteringProperties}
+                    onLoadItems={onLoadItems}
+                    customGroupsText={customGroupsText}
+                    i18nStrings={i18nStrings}
+                    disableFreeTextFiltering={disableFreeTextFiltering}
+                  />
+                )}
+              </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.operatorText} type="operator">
-              {({ controlId }) => (
-                <OperatorInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  operator={operator}
-                  onChangeOperator={onChangeOperator}
-                  filteringProperties={filteringProperties}
-                  i18nStrings={i18nStrings}
-                />
-              )}
-            </TokenEditorField>
+              <TokenEditorField label={i18nStrings.operatorText}>
+                {({ controlId }) => (
+                  <OperatorInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    operator={operator}
+                    onChangeOperator={onChangeOperator}
+                    filteringProperties={filteringProperties}
+                    i18nStrings={i18nStrings}
+                  />
+                )}
+              </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.valueText} type="value">
-              {({ controlId }) => (
-                <ValueInput
-                  controlId={controlId}
-                  propertyKey={propertyKey}
-                  operator={operator}
-                  value={value}
-                  onChangeValue={onChangeValue}
-                  asyncProps={asyncProps}
-                  filteringProperties={filteringProperties}
-                  filteringOptions={filteringOptions}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                />
-              )}
-            </TokenEditorField>
+              <TokenEditorField label={i18nStrings.valueText}>
+                {({ controlId }) => (
+                  <ValueInput
+                    controlId={controlId}
+                    propertyKey={propertyKey}
+                    operator={operator}
+                    value={value}
+                    onChangeValue={onChangeValue}
+                    asyncProps={asyncProps}
+                    filteringProperties={filteringProperties}
+                    filteringOptions={filteringOptions}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                  />
+                )}
+              </TokenEditorField>
+            </InternalSpaceBetween>
           </div>
 
           <div className={styles['token-editor-actions']}>
