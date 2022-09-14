@@ -198,7 +198,6 @@ const PropertyFilter = React.forwardRef(
             ref={inputRef}
             virtualScroll={virtualScroll}
             enteredTextLabel={i18nStrings.enteredTextLabel}
-            className={styles.input}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
             value={filteringText}

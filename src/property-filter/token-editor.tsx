@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
-import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import { InternalButton } from '../button/internal';
@@ -36,19 +35,21 @@ const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
 interface TokenEditorFieldProps {
   label: React.ReactNode;
-  className: string;
+  type: 'property' | 'operator' | 'value';
   children: ({ controlId }: { controlId: string }) => React.ReactNode;
 }
 
-function TokenEditorField({ className, label, children }: TokenEditorFieldProps) {
+function TokenEditorField({ type, label, children }: TokenEditorFieldProps) {
   const controlId = useUniqueId();
   return (
-    <div className={clsx(styles['token-editor-line'], className)}>
-      <label className={styles['token-editor-label']} htmlFor={controlId}>
-        {label}
+    <>
+      <label className={clsx(styles['token-editor-label'], styles[`token-editor-label-${type}`])} htmlFor={controlId}>
+        <span className={styles['token-editor-label-text']}>{label}</span>
       </label>
-      <div className={styles['token-editor-field']}>{children({ controlId })}</div>
-    </div>
+      <div className={clsx(styles['token-editor-field'], styles[`token-editor-field-${type}`])}>
+        {children({ controlId })}
+      </div>
+    </>
   );
 }
 
@@ -201,30 +202,6 @@ function ValueInput({
   );
 }
 
-interface TokenEditorFormProps {
-  i18nStrings: I18nStrings;
-  onCancel(): void;
-  onSubmit(): void;
-  children: React.ReactNode;
-}
-
-function TokenEditorForm({ i18nStrings, onCancel, onSubmit, children }: TokenEditorFormProps) {
-  return (
-    <div className={styles['token-editor']}>
-      {children}
-
-      <div className={styles['token-editor-actions']}>
-        <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={onCancel}>
-          {i18nStrings.cancelActionText}
-        </InternalButton>
-        <InternalButton className={styles['token-editor-submit']} onClick={onSubmit}>
-          {i18nStrings.applyActionText}
-        </InternalButton>
-      </div>
-    </div>
-  );
-}
-
 interface TokenEditorProps {
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
@@ -297,16 +274,9 @@ export function TokenEditor({
       __onOpen={() => setTemporaryToken(token)}
       renderWithPortal={expandToViewport}
       content={
-        <TokenEditorForm
-          i18nStrings={i18nStrings}
-          onCancel={closePopover}
-          onSubmit={() => {
-            setToken(temporaryToken as Token);
-            closePopover();
-          }}
-        >
-          <InternalSpaceBetween size="l">
-            <TokenEditorField label={i18nStrings.propertyText} className={styles['property-selector']}>
+        <div className={styles['token-editor']}>
+          <div className={styles['token-editor-form']}>
+            <TokenEditorField label={i18nStrings.propertyText} type="property">
               {({ controlId }) => (
                 <PropertyInput
                   controlId={controlId}
@@ -322,7 +292,7 @@ export function TokenEditor({
               )}
             </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.operatorText} className={styles['operator-selector']}>
+            <TokenEditorField label={i18nStrings.operatorText} type="operator">
               {({ controlId }) => (
                 <OperatorInput
                   controlId={controlId}
@@ -335,7 +305,7 @@ export function TokenEditor({
               )}
             </TokenEditorField>
 
-            <TokenEditorField label={i18nStrings.valueText} className={styles['value-selector']}>
+            <TokenEditorField label={i18nStrings.valueText} type="value">
               {({ controlId }) => (
                 <ValueInput
                   controlId={controlId}
@@ -351,8 +321,23 @@ export function TokenEditor({
                 />
               )}
             </TokenEditorField>
-          </InternalSpaceBetween>
-        </TokenEditorForm>
+          </div>
+
+          <div className={styles['token-editor-actions']}>
+            <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={closePopover}>
+              {i18nStrings.cancelActionText}
+            </InternalButton>
+            <InternalButton
+              className={styles['token-editor-submit']}
+              onClick={() => {
+                setToken(temporaryToken);
+                closePopover();
+              }}
+            >
+              {i18nStrings.applyActionText}
+            </InternalButton>
+          </div>
+        </div>
       }
     >
       {triggerComponent}

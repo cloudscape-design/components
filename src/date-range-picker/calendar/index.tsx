@@ -7,19 +7,19 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import moveFocusHandler from '../../date-picker/calendar/utils/move-focus-handler';
+import moveFocusHandler from '../../calendar/utils/move-focus-handler';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
-import DateInput from '../../internal/components/date-input';
+import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
 import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { getDateLabel, renderTimeLabel } from '../../date-picker/calendar/utils/intl';
+import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeStartOfWeek } from '../../date-picker/calendar/utils/locales';
+import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 
 export interface DateChangeHandler {
@@ -319,11 +319,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                  <DateInput
+                  <InternalDateInput
                     value={startDateString}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
-                    disableAutocompleteOnBlur={false}
                     className={styles['start-date-input']}
                     onChange={onChangeStartDate}
                     placeholder="YYYY/MM/DD"
@@ -350,11 +347,8 @@ function Calendar(
             <div className={styles['date-and-time-wrapper']}>
               <div className={styles['date-and-time-wrapper__date']}>
                 <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                  <DateInput
+                  <InternalDateInput
                     value={endDateString}
-                    autoComplete={false}
-                    disableBrowserAutocorrect={true}
-                    disableAutocompleteOnBlur={false}
                     className={styles['end-date-input']}
                     onChange={onChangeEndDate}
                     placeholder="YYYY/MM/DD"

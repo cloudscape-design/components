@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import Calendar from '~components/date-picker/calendar';
+import Calendar from '~components/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 
 export default function CalendarPage() {
@@ -17,28 +17,24 @@ export default function CalendarPage() {
         trigger={null}
       >
         <Calendar
-          selectedDate={new Date('2021-8-20')}
-          displayedDate={new Date('2021-8-13')}
+          value="2021-8-20"
+          onChange={() => {}}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthLabel="Next month"
-          previousMonthLabel="Previous month"
+          nextMonthAriaLabel="Next month"
+          previousMonthAriaLabel="Previous month"
           todayAriaLabel="Today"
-          onChangeMonth={() => {}}
-          onSelectDate={() => {}}
         />
         <Calendar
-          selectedDate={null}
-          displayedDate={new Date()}
+          value=""
+          onChange={() => {}}
           locale="en-EN"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
-          nextMonthLabel="Next month"
-          previousMonthLabel="Previous month"
+          nextMonthAriaLabel="Next month"
+          previousMonthAriaLabel="Previous month"
           todayAriaLabel="Today"
-          onChangeMonth={() => {}}
-          onSelectDate={() => {}}
         />
       </Dropdown>
     </article>
