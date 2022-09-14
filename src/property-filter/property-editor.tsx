@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { I18nStrings } from './interfaces';
+import { FilteringProperty, I18nStrings } from './interfaces';
 import InternalBox from '../box/internal';
 import styles from './styles.css.js';
 import InternalButton from '../button/internal';
@@ -13,6 +13,7 @@ interface PorpertyEditorRenderProps<TokenValue> {
 }
 
 interface PorpertyEditorProps<TokenValue = any> {
+  property: FilteringProperty;
   children: (props: PorpertyEditorRenderProps<TokenValue>) => React.ReactNode;
   onCancel: () => void;
   onSubmit: (value: null | TokenValue) => void;
@@ -20,6 +21,7 @@ interface PorpertyEditorProps<TokenValue = any> {
 }
 
 export function PropertyEditor<TokenValue = any>({
+  property,
   children,
   onCancel,
   onSubmit,
@@ -29,6 +31,8 @@ export function PropertyEditor<TokenValue = any>({
   return (
     <InternalBox padding={{ horizontal: 'm', vertical: 's' }}>
       <div className={styles['property-editor']}>
+        <div className={styles['property-editor-form-header']}>{property.groupValuesLabel}</div>
+
         <div className={styles['property-editor-form']}>{children({ value, onChange })}</div>
 
         <div className={styles['property-editor-actions']}>

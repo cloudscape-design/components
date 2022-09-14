@@ -224,6 +224,7 @@ const PropertyFilter = React.forwardRef(
             customForm={
               OperatorForm && (
                 <PropertyEditor
+                  property={parsedText.property}
                   i18nStrings={i18nStrings}
                   onCancel={() => {
                     setFilteringText('');

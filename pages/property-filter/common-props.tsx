@@ -151,6 +151,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
 export const filteringProperties: PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
+  let groupValuesLabel = `${def.propertyLabel} values`;
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];
@@ -161,10 +162,12 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = colu
   }
 
   if (def.type === 'date') {
+    groupValuesLabel = `${def.propertyLabel} value`;
     operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({ operator, form: DateForm, match: 'date' }));
   }
 
   if (def.type === 'datetime') {
+    groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
     operators = ['<', '<=', '>', '>='].map(operator => ({
       operator,
@@ -174,18 +177,16 @@ export const filteringProperties: PropertyFilterProps.FilteringProperty[] = colu
     }));
   }
 
+  if (def.type === 'boolean') {
+    groupValuesLabel = `${def.propertyLabel} value`;
+    operators = [{ operator: '=', form: YesNoForm, format: yesNoFormat }];
+  }
+
   return {
     key: def.id,
     operators: operators,
     defaultOperator,
     propertyLabel: def.propertyLabel,
-    groupValuesLabel: `${def.propertyLabel} values`,
+    groupValuesLabel,
   };
-});
-
-filteringProperties.push({
-  key: 'stopped',
-  operators: [{ operator: '=', form: YesNoForm, format: yesNoFormat }],
-  propertyLabel: 'Stopped',
-  groupValuesLabel: 'Stopped value',
 });

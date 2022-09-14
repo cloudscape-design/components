@@ -102,6 +102,11 @@
   &-form {
     margin-bottom: awsui.$space-scaled-l;
   }
+  &-form-header {
+    color: awsui.$color-text-dropdown-group-label;
+    font-weight: bold;
+    padding-bottom: awsui.$space-xs;
+  }
 }
 
 .custom-control {
