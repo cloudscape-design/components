@@ -155,7 +155,7 @@ describe('Textarea', () => {
     });
   });
 
-  describe('disableBrowserSpellcheck', () => {
+  describe.skip('disableBrowserSpellcheck', () => {
     test('does not modify spellcheck default', () => {
       const { textarea } = renderTextarea();
       expect(textarea).not.toHaveAttribute('spellcheck');

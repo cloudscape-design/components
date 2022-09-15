@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { CancelableEventHandler } from '../../../../internal/events';
-import { ButtonProps } from '../../../../button/interfaces';
-import { InternalButton } from '../../../../button/internal';
-import styles from '../../../styles.css.js';
+import { CancelableEventHandler } from '../../../internal/events';
+import { ButtonProps } from '../../../button/interfaces';
+import { InternalButton } from '../../../button/internal';
+import styles from '../../styles.css.js';
 
 interface HeaderButtonProps {
   ariaLabel: string;

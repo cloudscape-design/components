@@ -3,13 +3,13 @@
 import * as React from 'react';
 import MockDate from 'mockdate';
 import { act, render } from '@testing-library/react';
-import DatePickerWrapper from '../../../../lib/components/test-utils/dom/date-picker';
-import DatePicker, { DatePickerProps } from '../../../../lib/components/date-picker';
-import styles from '../../../../lib/components/date-picker/styles.selectors.js';
-import { KeyCode } from '../../../../lib/components/internal/keycode';
-import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
+import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
+import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
+import { KeyCode } from '../../../lib/components/internal/keycode';
+import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import createWrapper from '../../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 describe('Date picker calendar', () => {
   const outsideId = 'outside';
@@ -40,7 +40,7 @@ describe('Date picker calendar', () => {
   }
 
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
-    return wrapper.findCalendar()!.find(`.${styles['calendar-day-focusable']}`);
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-focusable']}`);
   };
 
   const findFocusableDateText = (wrapper: DatePickerWrapper) => {
@@ -55,12 +55,12 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${styles['calendar-day-name']}`)
+      .findAll(`.${calendarStyles['calendar-day-name']}`)
       .map(day => day.getElement().textContent!.trim());
   };
 
   const findToday = (wrapper: DatePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findCalendar()!.find(`.${styles['calendar-day-today']}`)!;
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-today']}`)!;
   };
 
   beforeEach(() => {
@@ -153,7 +153,7 @@ describe('Date picker calendar', () => {
       expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
       // we render 2018/03/22 which results in
       // -> 35 (5 weeks á 7 days) + 7 (weekday names) + 1 (month name)
-      expect(localStringMock).toHaveBeenCalledTimes(43);
+      expect(localStringMock).toHaveBeenCalledTimes(44);
       expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
       window.Date.prototype.toLocaleDateString = oldImpl;
     });

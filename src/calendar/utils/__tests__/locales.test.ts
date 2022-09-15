@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import setOptions from './utils/intl-polyfill';
-import { mergeLocales, normalizeLocale } from '../../../../../lib/components/date-picker/calendar/utils/locales';
+import { mergeLocales, normalizeLocale } from '../../../../lib/components/calendar/utils/locales';
 
 function withDocumentLang(lang: string, callback: () => void) {
   const htmlElement = document.querySelector('html');
