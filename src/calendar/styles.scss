@@ -17,8 +17,10 @@ $calendar-grid-nonmonth-day-color: awsui.$color-text-dropdown-item-secondary;
 $calendar-grid-hover-background-color: awsui.$color-background-dropdown-item-hover;
 $calendar-grid-hover-border-color: awsui.$color-border-dropdown-item-hover;
 $calendar-grid-today-background-color: awsui.$color-background-calendar-today;
-$calendar-grid-selected-background-color: awsui.$color-background-dropdown-item-selected;
-$calendar-grid-selected-border-color: awsui.$color-border-dropdown-item-selected;
+$calendar-grid-selected-text-color: awsui.$color-background-control-default;
+$calendar-grid-selected-background-color: awsui.$color-background-control-checked;
+$calendar-grid-selected-border-color: awsui.$color-background-control-checked;
+$calendar-grid-selected-focused-box-shadow: 0 0 0 2px awsui.$color-border-calendar-grid-selected-focus-ring;
 $calendar-grid-border: 1px solid $calendar-grid-border-color;
 
 .root {
@@ -153,13 +155,21 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     &-selected {
       border-color: transparent;
       position: relative;
+      z-index: 2;
+      &:focus {
+        @include styles.focus-highlight(
+          awsui.$space-calendar-grid-focus-outline-gutter,
+          awsui.$border-radius-calendar-day-focus-ring,
+          $calendar-grid-selected-focused-box-shadow
+        );
+      }
       &::after {
         background-color: $calendar-grid-selected-background-color;
         border: awsui.$border-item-width solid $calendar-grid-selected-border-color;
         border-radius: awsui.$border-radius-item;
       }
       > .day-inner {
-        color: awsui.$color-text-calendar-day-selected;
+        color: $calendar-grid-selected-text-color;
         position: relative;
       }
     }
