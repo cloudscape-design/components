@@ -63,7 +63,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   };
 
   return (
-    <FormField>
+    <>
       <SpaceBetween direction="horizontal" size="s">
         <FormField description="Specify date">
           <DateInput placeholder="YYYY/MM/DD" onChange={event => onChangeDate(event.detail.value)} value={dateValue} />
@@ -87,7 +87,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </FormField>
+    </>
   );
 }
 
@@ -108,13 +108,15 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
   };
 
   return (
-    <FormField>
-      <DateInput
-        name="date"
-        placeholder="YYYY/MM/DD"
-        onChange={event => onChangeDate(event.detail.value)}
-        value={dateValue}
-      />
+    <>
+      <FormField>
+        <DateInput
+          name="date"
+          placeholder="YYYY/MM/DD"
+          onChange={event => onChangeDate(event.detail.value)}
+          value={dateValue}
+        />
+      </FormField>
 
       <Calendar
         value={dateValue}
@@ -124,7 +126,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </FormField>
+    </>
   );
 }
 
