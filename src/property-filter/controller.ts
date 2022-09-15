@@ -193,13 +193,13 @@ export const getPropertyByKey = (filteringProperties: readonly FilteringProperty
 
 export function getExtendedOperator(
   filteringProperties: readonly FilteringProperty[],
-  selectedProperty: string,
-  selectedOperator: ComparisonOperator
+  property: string,
+  operator: ComparisonOperator
 ) {
-  const property = getPropertyByKey(filteringProperties, selectedProperty);
-  for (const operator of property?.operators || []) {
-    if (typeof operator === 'object' && operator.operator === selectedOperator) {
-      return operator;
+  const matchedProperty = getPropertyByKey(filteringProperties, property);
+  for (const matchedOperator of matchedProperty?.operators || []) {
+    if (typeof matchedOperator === 'object' && matchedOperator.operator === operator) {
+      return matchedOperator;
     }
   }
   return null;

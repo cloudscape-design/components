@@ -58,10 +58,11 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const valueFormat =
+  const valueFormater =
     token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
   const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormater ? valueFormater(token.value) : token.value;
   return (
     <FilteringToken
       showOperation={!first && !hideOperations}
@@ -77,11 +78,7 @@ export const TokenButton = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger
-              property={propertyLabel}
-              operator={token.operator}
-              value={valueFormat ? valueFormat(token.value) : token.value}
-            />
+            <TokenTrigger property={propertyLabel} operator={token.operator} value={tokenValue} />
           </span>
         }
         filteringOptions={filteringOptions}

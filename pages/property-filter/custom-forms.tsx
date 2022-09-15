@@ -142,12 +142,12 @@ function parseValue(value: null | string, defaultTime = '00:00:00'): { dateValue
 }
 
 function formatTimezoneOffset(isoDate: string, offsetInMinutes: number = 0 - new Date(isoDate).getTimezoneOffset()) {
+  const sign = offsetInMinutes < 0 ? '-' : '+';
   const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60)
     .toFixed(0)
     .padStart(2, '0');
   const minuteOffset = Math.abs(offsetInMinutes % 60)
     .toFixed(0)
     .padStart(2, '0');
-  const sign = offsetInMinutes < 0 ? '-' : '+';
   return `${sign}${hoursOffset}:${minuteOffset}`;
 }

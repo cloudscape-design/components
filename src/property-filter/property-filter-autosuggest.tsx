@@ -29,7 +29,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
-const DROPDOWN_WIDTH_CUSTOM_FORM = 100;
+const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 
 export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
   customForm?: React.ReactNode;

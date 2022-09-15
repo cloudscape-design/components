@@ -3,7 +3,6 @@
 
 import React, { useState } from 'react';
 import { FilteringProperty, I18nStrings, Token, ExtendedOperatorForm, ComparisonOperator } from './interfaces';
-import InternalBox from '../box/internal';
 import styles from './styles.css.js';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
@@ -28,28 +27,23 @@ export function PropertyEditor<TokenValue = any>({
   i18nStrings,
 }: PorpertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
-
+  const submitToken = () => onSubmit({ propertyKey: property.key, operator, value });
   return (
-    <InternalBox padding={{ horizontal: 'm', vertical: 's' }}>
-      <div className={styles['property-editor']}>
-        <div className={styles['property-editor-form']}>
-          <InternalFormField label={property.groupValuesLabel}>
-            {operatorForm({ value, onChange, operator, filter })}
-          </InternalFormField>
-        </div>
-
-        <div className={styles['property-editor-actions']}>
-          <InternalButton variant="link" className={styles['property-editor-cancel']} onClick={onCancel}>
-            {i18nStrings.cancelActionText}
-          </InternalButton>
-          <InternalButton
-            className={styles['property-editor-submit']}
-            onClick={() => onSubmit({ propertyKey: property.key, operator, value })}
-          >
-            {i18nStrings.applyActionText}
-          </InternalButton>
-        </div>
+    <div className={styles['property-editor']}>
+      <div className={styles['property-editor-form']}>
+        <InternalFormField label={property.groupValuesLabel}>
+          {operatorForm({ value, onChange, operator, filter })}
+        </InternalFormField>
       </div>
-    </InternalBox>
+
+      <div className={styles['property-editor-actions']}>
+        <InternalButton variant="link" className={styles['property-editor-cancel']} onClick={onCancel}>
+          {i18nStrings.cancelActionText}
+        </InternalButton>
+        <InternalButton className={styles['property-editor-submit']} onClick={submitToken}>
+          {i18nStrings.applyActionText}
+        </InternalButton>
+      </div>
+    </div>
   );
 }

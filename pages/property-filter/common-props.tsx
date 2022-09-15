@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import { PropertyFilterProps } from '~components/property-filter';
 import { TableItem } from './table.data';
 import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
@@ -148,7 +147,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-export const filteringProperties: PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
+export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
   let groupValuesLabel = `${def.propertyLabel} values`;

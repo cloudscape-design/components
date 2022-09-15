@@ -40,21 +40,22 @@
 .property-editor,
 .token-editor {
   margin: awsui.$space-xxs;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   &-form {
     margin-bottom: awsui.$space-scaled-l;
   }
-  &-field-property {
-    /* used in test-utils */
-  }
   &-field-operator {
     margin-top: awsui.$space-scaled-l;
   }
   &-field-value {
     margin-top: awsui.$space-scaled-l;
+  }
+  &-field-property,
+  &-submit,
+  &-cancel {
+    /* used in test-utils */
   }
   &-actions {
     display: flex;
@@ -69,9 +70,6 @@
   &-commit {
     margin-left: awsui.$space-xs;
   }
-}
-.property-editor {
-  min-width: unset;
 }
 
 .custom-control {
@@ -114,9 +112,6 @@
 
 .remove-all,
 .token-label,
-.join-operation,
-.token-editor-submit,
-.property-editor-cancel,
-.property-editor-submit {
+.join-operation {
   /* used in test-utils */
 }
