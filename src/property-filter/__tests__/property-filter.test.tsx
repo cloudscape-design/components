@@ -97,6 +97,13 @@ function findOperatorSelector(wrapper: ElementWrapper) {
 function findValueSelector(wrapper: ElementWrapper) {
   return wrapper.findByClassName(styles['token-editor-field-value'])!.findAutosuggest()!;
 }
+function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
+  const tokenWrapper = createWrapper(wrapper.findTokens()![index].getElement());
+  const popoverWrapper = tokenWrapper.findPopover()!;
+  act(() => popoverWrapper.findTrigger().click());
+  const contentWrapper = popoverWrapper.findContent()!;
+  return [contentWrapper, popoverWrapper] as const;
+}
 
 describe('property filter parts', () => {
   describe('filtering input', () => {
@@ -461,18 +468,11 @@ describe('property filter parts', () => {
   });
 
   describe('token editor', () => {
-    const openEditor = (wrapper: PropertyFilterWrapper) => {
-      const tokenWrapper = createWrapper(wrapper.findTokens()![0].getElement());
-      const popoverWrapper = tokenWrapper.findPopover()!;
-      act(() => popoverWrapper.findTrigger().click());
-      const contentWrapper = popoverWrapper.findContent()!;
-      return [contentWrapper, popoverWrapper] as const;
-    };
     test('uses i18nStrings to populate header', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
       });
-      const [, popoverWrapper] = openEditor(wrapper);
+      const [, popoverWrapper] = openTokenEditor(wrapper);
       expect(popoverWrapper.findHeader()!.getElement()).toHaveTextContent(i18nStrings.editTokenHeader);
     });
     describe('form controls content', () => {
@@ -480,7 +480,7 @@ describe('property filter parts', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
           query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
         });
-        const [contentWrapper] = openEditor(wrapper);
+        const [contentWrapper] = openTokenEditor(wrapper);
         expect(contentWrapper.getElement()).toHaveTextContent(
           'PropertystringOperator!:Does not containValueCancelApply'
         );
@@ -516,7 +516,7 @@ describe('property filter parts', () => {
           disableFreeTextFiltering: true,
           query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
         });
-        const [contentWrapper] = openEditor(wrapper);
+        const [contentWrapper] = openTokenEditor(wrapper);
         expect(contentWrapper.getElement()).toHaveTextContent(
           'PropertystringOperator!:Does not containValueCancelApply'
         );
@@ -534,7 +534,7 @@ describe('property filter parts', () => {
           disableFreeTextFiltering: true,
           query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
         });
-        const [contentWrapper] = openEditor(wrapper);
+        const [contentWrapper] = openTokenEditor(wrapper);
         const propertySelectWrapper = findPropertySelector(contentWrapper);
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         const valueSelectWrapper = findValueSelector(contentWrapper);
@@ -560,7 +560,7 @@ describe('property filter parts', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
           query: { tokens: [{ propertyKey: 'range', value: '123', operator: '>' }], operation: 'or' },
         });
-        const [contentWrapper] = openEditor(wrapper);
+        const [contentWrapper] = openTokenEditor(wrapper);
         const propertySelectWrapper = findPropertySelector(contentWrapper);
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
 
@@ -587,7 +587,7 @@ describe('property filter parts', () => {
           query: { tokens: [{ propertyKey: 'string', value: 'first', operator: '!:' }], operation: 'or' },
         });
         wrapper = propertyFilterWrapper;
-        const openResult = openEditor(wrapper);
+        const openResult = openTokenEditor(wrapper);
         contentWrapper = openResult[0];
         popoverWrapper = openResult[1];
       });
@@ -605,7 +605,7 @@ describe('property filter parts', () => {
         expect(popoverWrapper.findContent()).toBeNull();
         expect(handleChange).not.toHaveBeenCalled();
 
-        const openResult = openEditor(wrapper);
+        const openResult = openTokenEditor(wrapper);
         contentWrapper = openResult[0];
         expect(contentWrapper.getElement()).toHaveTextContent(
           'PropertystringOperator!:Does not containValueCancelApply'
@@ -626,7 +626,7 @@ describe('property filter parts', () => {
         expect(popoverWrapper.findContent()).toBeNull();
         expect(handleChange).not.toHaveBeenCalled();
 
-        const openResult = openEditor(wrapper);
+        const openResult = openTokenEditor(wrapper);
         contentWrapper = openResult[0];
         expect(contentWrapper.getElement()).toHaveTextContent(
           'PropertystringOperator!:Does not containValueCancelApply'
