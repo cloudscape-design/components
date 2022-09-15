@@ -5,7 +5,8 @@ import React, { useEffect } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
-import { FormField, RadioGroup, SpaceBetween, TimeInput } from '~components';
+import { FormField, RadioGroup, TimeInput } from '~components';
+import styles from './custom-forms.scss';
 
 export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
   return (
@@ -63,21 +64,19 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   };
 
   return (
-    <>
-      <SpaceBetween direction="horizontal" size="s">
-        <FormField description="Specify date">
-          <DateInput placeholder="YYYY/MM/DD" onChange={event => onChangeDate(event.detail.value)} value={dateValue} />
-        </FormField>
+    <div className={styles['date-time-form']}>
+      <FormField description="Date">
+        <DateInput placeholder="YYYY/MM/DD" onChange={event => onChangeDate(event.detail.value)} value={dateValue} />
+      </FormField>
 
-        <FormField description="Specify time">
-          <TimeInput
-            format="hh:mm:ss"
-            placeholder="hh:mm:ss"
-            value={timeValue}
-            onChange={event => onChangeTime(event.detail.value)}
-          />
-        </FormField>
-      </SpaceBetween>
+      <FormField description="Time">
+        <TimeInput
+          format="hh:mm:ss"
+          placeholder="hh:mm:ss"
+          value={timeValue}
+          onChange={event => onChangeTime(event.detail.value)}
+        />
+      </FormField>
 
       <Calendar
         value={dateValue}
@@ -87,7 +86,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </>
+    </div>
   );
 }
 
@@ -108,7 +107,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
   };
 
   return (
-    <>
+    <div className={styles['date-form']}>
       <FormField>
         <DateInput
           name="date"
@@ -126,7 +125,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         todayAriaLabel="Today"
         onChange={event => onChangeDate(event.detail.value)}
       />
-    </>
+    </div>
   );
 }
 
