@@ -317,58 +317,50 @@ function Calendar(
         <InternalSpaceBetween direction="vertical" size="xxs">
           <InternalSpaceBetween size="xs" direction={isSingleGrid ? 'vertical' : 'horizontal'}>
             <div className={styles['date-and-time-wrapper']}>
-              <div className={styles['date-and-time-wrapper__date']}>
-                <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                  <InternalDateInput
-                    value={startDateString}
-                    className={styles['start-date-input']}
-                    onChange={onChangeStartDate}
-                    placeholder="YYYY/MM/DD"
+              <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
+                <InternalDateInput
+                  value={startDateString}
+                  className={styles['start-date-input']}
+                  onChange={onChangeStartDate}
+                  placeholder="YYYY/MM/DD"
+                  ariaDescribedby={constrainttextId}
+                />
+              </InternalFormField>
+              {!dateOnly && (
+                <InternalFormField label={i18nStrings.startTimeLabel} stretch={true}>
+                  <InternalTimeInput
+                    value={startTimeString}
+                    onChange={e => setStartTimeString(e.detail.value)}
+                    format={timeInputFormat}
+                    placeholder={timeInputFormat}
+                    className={styles['start-time-input']}
                     ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
-              </div>
-              {!dateOnly && (
-                <div className={styles['date-and-time-wrapper__time']}>
-                  <InternalFormField label={i18nStrings.startTimeLabel} stretch={true}>
-                    <InternalTimeInput
-                      value={startTimeString}
-                      onChange={e => setStartTimeString(e.detail.value)}
-                      format={timeInputFormat}
-                      placeholder={timeInputFormat}
-                      className={styles['start-time-input']}
-                      ariaDescribedby={constrainttextId}
-                    />
-                  </InternalFormField>
-                </div>
               )}
             </div>
 
             <div className={styles['date-and-time-wrapper']}>
-              <div className={styles['date-and-time-wrapper__date']}>
-                <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                  <InternalDateInput
-                    value={endDateString}
-                    className={styles['end-date-input']}
-                    onChange={onChangeEndDate}
-                    placeholder="YYYY/MM/DD"
+              <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
+                <InternalDateInput
+                  value={endDateString}
+                  className={styles['end-date-input']}
+                  onChange={onChangeEndDate}
+                  placeholder="YYYY/MM/DD"
+                  ariaDescribedby={constrainttextId}
+                />
+              </InternalFormField>
+              {!dateOnly && (
+                <InternalFormField label={i18nStrings.endTimeLabel} stretch={true}>
+                  <InternalTimeInput
+                    value={endTimeString}
+                    onChange={e => setEndTimeString(e.detail.value)}
+                    format={timeInputFormat}
+                    placeholder={timeInputFormat}
+                    className={styles['end-time-input']}
                     ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
-              </div>
-              {!dateOnly && (
-                <div className={styles['date-and-time-wrapper__time']}>
-                  <InternalFormField label={i18nStrings.endTimeLabel} stretch={true}>
-                    <InternalTimeInput
-                      value={endTimeString}
-                      onChange={e => setEndTimeString(e.detail.value)}
-                      format={timeInputFormat}
-                      placeholder={timeInputFormat}
-                      className={styles['end-time-input']}
-                      ariaDescribedby={constrainttextId}
-                    />
-                  </InternalFormField>
-                </div>
               )}
             </div>
           </InternalSpaceBetween>
