@@ -2,44 +2,39 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import { ParsedText, I18nStrings, Token, FilteringProperty } from './interfaces';
+import { FilteringProperty, I18nStrings, Token, ExtendedOperatorForm, ComparisonOperator } from './interfaces';
 import InternalBox from '../box/internal';
 import styles from './styles.css.js';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { getExtendedOperator } from './controller';
 
-interface PorpertyEditorProps {
-  filteringProperties: readonly FilteringProperty[];
-  parsedText: ParsedText;
+interface PorpertyEditorProps<TokenValue> {
+  property: FilteringProperty;
+  operator: ComparisonOperator;
+  filter: string;
+  operatorForm: ExtendedOperatorForm<TokenValue>;
   onCancel: () => void;
   onSubmit: (value: Token) => void;
   i18nStrings: I18nStrings;
 }
 
 export function PropertyEditor<TokenValue = any>({
-  filteringProperties,
-  parsedText,
+  property,
+  operator,
+  filter,
+  operatorForm,
   onCancel,
   onSubmit,
   i18nStrings,
-}: PorpertyEditorProps) {
-  const OperatorForm =
-    parsedText.step === 'property' &&
-    getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
-
+}: PorpertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
-
-  if (!OperatorForm) {
-    return null;
-  }
 
   return (
     <InternalBox padding={{ horizontal: 'm', vertical: 's' }}>
       <div className={styles['property-editor']}>
         <div className={styles['property-editor-form']}>
-          <InternalFormField label={parsedText.property.groupValuesLabel}>
-            <OperatorForm value={value} onChange={onChange} operator={parsedText.operator} filter={parsedText.value} />
+          <InternalFormField label={property.groupValuesLabel}>
+            {operatorForm({ value, onChange, operator, filter })}
           </InternalFormField>
         </div>
 
@@ -49,7 +44,7 @@ export function PropertyEditor<TokenValue = any>({
           </InternalButton>
           <InternalButton
             className={styles['property-editor-submit']}
-            onClick={() => onSubmit({ propertyKey: parsedText.property.key, operator: parsedText.operator, value })}
+            onClick={() => onSubmit({ propertyKey: property.key, operator, value })}
           >
             {i18nStrings.applyActionText}
           </InternalButton>
