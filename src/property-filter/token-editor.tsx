@@ -163,7 +163,8 @@ function ValueInput({
   const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
 
   return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter="" />
+    // TODO: remove filter property once collection-hooks type is updated
+    <OperatorForm value={value} onChange={onChangeValue} operator={operator} filter={undefined as any} />
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}

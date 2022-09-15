@@ -14,13 +14,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
 import { TokenButton } from './token';
-import {
-  getQueryActions,
-  parseText,
-  getAutosuggestOptions,
-  getAllowedOperators,
-  getExtendedOperator,
-} from './controller';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -198,10 +192,6 @@ const PropertyFilter = React.forwardRef(
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
 
-    const OperatorForm =
-      parsedText.step === 'property' &&
-      getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
-
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -222,30 +212,20 @@ const PropertyFilter = React.forwardRef(
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
             customForm={
-              OperatorForm && (
-                <PropertyEditor
-                  property={parsedText.property}
-                  i18nStrings={i18nStrings}
-                  onCancel={() => {
-                    setFilteringText('');
-                    inputRef.current?.close();
-                  }}
-                  onSubmit={value => {
-                    addToken({ value: value, propertyKey: parsedText.property.key, operator: parsedText.operator });
-                    setFilteringText('');
-                    inputRef.current?.close();
-                  }}
-                >
-                  {({ value, onChange }) => (
-                    <OperatorForm
-                      value={value}
-                      onChange={onChange}
-                      filter={parsedText.value}
-                      operator={parsedText.operator}
-                    />
-                  )}
-                </PropertyEditor>
-              )
+              <PropertyEditor
+                filteringProperties={filteringProperties}
+                parsedText={parsedText}
+                i18nStrings={i18nStrings}
+                onCancel={() => {
+                  setFilteringText('');
+                  inputRef.current?.close();
+                }}
+                onSubmit={token => {
+                  addToken(token);
+                  setFilteringText('');
+                  inputRef.current?.close();
+                }}
+              />
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
