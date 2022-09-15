@@ -162,7 +162,7 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <input ref={mergedRef} {...attributes} />
+      <input ref={mergedRef} {...attributes} spellCheck={false} />
       {__rightIcon && (
         <span
           onClick={__onRightIconClick}
