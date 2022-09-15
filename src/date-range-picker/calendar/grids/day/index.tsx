@@ -4,11 +4,11 @@ import React from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from '../../../interfaces';
 import { getDaysInMonth, isAfter, isBefore, isLastDayOfMonth, isSameMonth, isToday as isTodayFn } from 'date-fns';
-import { getDateLabel } from '../../../../date-picker/calendar/utils/intl';
+import { getDateLabel } from '../../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { KeyCode } from '../../../../internal/keycode.js';
-import { formatDate } from '../../../../date-picker/calendar/utils/date.js';
 import useFocusVisible from '../../../../internal/hooks/focus-visible';
+import { formatDate } from '../../../../internal/utils/date-time';
 
 interface GridDayProps {
   locale: string;

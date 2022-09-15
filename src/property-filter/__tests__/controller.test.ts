@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { PropertyFilterProps } from '../interfaces';
-import { parseText, getAllowedOperators, getAutosuggestOptions, ParsedText } from '../controller';
+
+import { ComparisonOperator, FilteringOption, FilteringProperty, GroupText, ParsedText } from '../interfaces';
+import { parseText, getAllowedOperators, getAutosuggestOptions } from '../controller';
 import { i18nStrings } from './common';
 
 const filteringProperties = [
@@ -47,11 +48,11 @@ const filteringProperties = [
   },
 ] as const;
 
-const customGroupText: PropertyFilterProps['customGroupsText'] = [
+const customGroupText: readonly GroupText[] = [
   { group: 'group-name', properties: 'Group properties', values: 'Group values' },
 ];
 
-const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
+const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
   { propertyKey: 'string', value: 'value2' },
@@ -64,10 +65,10 @@ const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
 ] as const;
 
 describe('getAllowedOperators', () => {
-  type TestCase = [string, PropertyFilterProps.FilteringProperty, PropertyFilterProps.ComparisonOperator[]];
+  type TestCase = [string, FilteringProperty, ComparisonOperator[]];
   const getFilteringProperty = (
-    operators: PropertyFilterProps.FilteringProperty['operators'],
-    defaultOperator?: PropertyFilterProps.FilteringProperty['defaultOperator']
+    operators: FilteringProperty['operators'],
+    defaultOperator?: FilteringProperty['defaultOperator']
   ) => ({
     operators,
     defaultOperator,
@@ -83,12 +84,8 @@ describe('getAllowedOperators', () => {
       getFilteringProperty(['>', '>=', '<', '<=', '!=', '=', ':', '!:']),
       ['=', '!=', ':', '!:', '>=', '<=', '<', '>'],
     ],
-    ['removes duplicates', getFilteringProperty(['=', '=']), ['=']],
-    [
-      'removes unsupported',
-      getFilteringProperty(['<>' as PropertyFilterProps.ComparisonOperator, '>', '=']),
-      ['=', '>'],
-    ],
+    ['removes duplicates', getFilteringProperty(['=', { operator: '=' }]), ['=']],
+    ['removes unsupported', getFilteringProperty(['<>' as ComparisonOperator, '>', '=']), ['=', '>']],
     ['adds default custom operator', getFilteringProperty(undefined, ':'), [':']],
   ];
   test.each<TestCase>(cases)('%s', (__description, input, exepcted) => {
@@ -234,7 +231,7 @@ describe('getAutosuggestOptions', () => {
       value: '',
     };
     const expected = {
-      __filterText: '',
+      filterText: '',
       options: expectedPropertySuggestions,
     };
     const actual = getAutosuggestOptions(
@@ -255,7 +252,7 @@ describe('getAutosuggestOptions', () => {
       value: 'text',
     };
     const expected = {
-      __filterText: 'text',
+      filterText: 'text',
       options: [...expectedPropertySuggestions, ...expectedValueSuggestions],
     };
     const actual = getAutosuggestOptions(
@@ -280,7 +277,7 @@ describe('getAutosuggestOptions', () => {
       property: filteringProperties[0],
     };
     const expected = {
-      __filterText: 'string !',
+      filterText: 'string !',
       options: [...expectedPropertySuggestions, ...expectedOperatorSuggestions],
     };
     const actual = getAutosuggestOptions(
@@ -293,7 +290,7 @@ describe('getAutosuggestOptions', () => {
     // Operator suggestions go after the property suggestions
     // Every operator suggestion has `keepOpenOnSelect` set on it
     // Operator suggestions and their group label are taken form the i18nStrings object
-    // `__filterText` should match `value` property of operator suggestions for autosuggest filtering to work
+    // `filterText` should match `value` property of operator suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
   });
   test('returns value suggestions for a given property, when the filteringText starts with this property`s labels followed by a completed operator', () => {
@@ -304,7 +301,7 @@ describe('getAutosuggestOptions', () => {
       property: filteringProperties[0],
     };
     const expected = {
-      __filterText: 'value',
+      filterText: 'value',
       options: [
         {
           label: 'String values',
@@ -322,7 +319,7 @@ describe('getAutosuggestOptions', () => {
       customGroupText,
       i18nStrings
     );
-    // `__filterText` should match `label` property of value suggestions for autosuggest filtering to work
+    // `filterText` should match `label` property of value suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
   });
   test('returns value suggestions for the properies that support `!:` operator, when doing a negated free text search', () => {
@@ -332,7 +329,7 @@ describe('getAutosuggestOptions', () => {
       value: 'value',
     };
     const expected = {
-      __filterText: 'value',
+      filterText: 'value',
       options: [
         {
           label: 'Values',

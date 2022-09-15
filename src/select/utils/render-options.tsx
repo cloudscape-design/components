@@ -6,12 +6,13 @@ import Item from '../parts/item';
 import MutliselectItem from '../parts/multiselect-item';
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import { getItemProps } from './get-item-props';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 export interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;
   getOptionProps: any;
   filteringValue: string;
-  isKeyboard?: boolean;
+  highlightType: HighlightType;
   checkboxes?: boolean;
   hasDropdownStatus?: boolean;
   virtualItems?: VirtualItem[];
@@ -24,7 +25,7 @@ export const renderOptions = ({
   options,
   getOptionProps,
   filteringValue,
-  isKeyboard = false,
+  highlightType,
   checkboxes = false,
   hasDropdownStatus,
   virtualItems,
@@ -40,7 +41,6 @@ export const renderOptions = ({
       index: globalIndex,
       getOptionProps,
       filteringValue,
-      isKeyboard,
       checkboxes,
     });
 
@@ -58,6 +58,7 @@ export const renderOptions = ({
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
+        highlightType={highlightType}
       />
     );
   });

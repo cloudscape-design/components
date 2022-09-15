@@ -5,12 +5,12 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-import DateInput, { DateInputProps } from '~components/internal/components/date-input';
+import DateInput, { DateInputProps } from '~components/date-input';
 import Box from '~components/box';
 
 const permutations = createPermutations<DateInputProps>([
   {
-    value: ['', '2020/01/01'],
+    value: ['', '2020-01-01'],
     placeholder: ['', 'YYYY/MM/DD'],
     ariaLabel: ['Some label'],
     invalid: [false, true],

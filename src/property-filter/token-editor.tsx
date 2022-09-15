@@ -1,18 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useRef } from 'react';
-import clsx from 'clsx';
 
 import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
-import InternalSpaceBetween from '../space-between/internal';
 import InternalAutosuggest from '../autosuggest/internal';
-import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import { InternalButton } from '../button/internal';
-import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 
-import { PropertyFilterProps } from './interfaces';
+import {
+  ComparisonOperator,
+  FilteringOption,
+  FilteringProperty,
+  GroupText,
+  I18nStrings,
+  LoadItemsDetail,
+  Token,
+} from './interfaces';
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
 import {
@@ -22,56 +26,36 @@ import {
   operatorToDescription,
   getPropertySuggestions,
 } from './controller';
+import { NonCancelableEventHandler } from '../internal/events';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import InternalFormField from '../form-field/internal';
 
-interface TokenEditorProps
-  extends Pick<
-    PropertyFilterProps,
-    | 'filteringProperties'
-    | 'filteringOptions'
-    | 'onLoadItems'
-    | 'i18nStrings'
-    | 'asyncProperties'
-    | 'customGroupsText'
-    | 'disableFreeTextFiltering'
-    | 'disabled'
-    | 'expandToViewport'
-  > {
-  token: PropertyFilterProps.Token;
-  triggerComponent?: React.ReactNode;
-  setToken: (newToken: PropertyFilterProps.Token) => void;
-  asyncProps: Pick<
-    AutosuggestProps,
-    'empty' | 'loadingText' | 'finishedText' | 'errorText' | 'recoveryText' | 'statusType'
-  >;
+const freeTextOperators: ComparisonOperator[] = [':', '!:'];
+
+interface PropertyInputProps {
+  asyncProps: null | DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  disableFreeTextFiltering?: boolean;
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onChangePropertyKey: (propertyKey: undefined | string) => void;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  propertyKey: undefined | string;
 }
 
-const EditingFields = ({
-  temporaryToken,
-  setTemporaryToken,
+function PropertyInput({
+  propertyKey,
+  onChangePropertyKey,
   asyncProps,
-  asyncProperties,
   filteringProperties,
-  filteringOptions,
   onLoadItems,
   customGroupsText,
   i18nStrings,
   disableFreeTextFiltering,
-}: TokenEditorProps & {
-  temporaryToken: PropertyFilterProps.Token;
-  setTemporaryToken: (token: PropertyFilterProps.Token) => void;
-}) => {
-  const fields = [];
-  const property =
-    temporaryToken.propertyKey !== undefined
-      ? getPropertyByKey(filteringProperties, temporaryToken.propertyKey)
-      : undefined;
+}: PropertyInputProps) {
+  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
   const propertySelectHandlers = useLoadItems(onLoadItems);
-  const asyncPropertySelectProps = asyncProperties
-    ? {
-        ...asyncProps,
-        ...propertySelectHandlers,
-      }
-    : {};
+  const asyncPropertySelectProps = asyncProps ? { ...asyncProps, ...propertySelectHandlers } : {};
   const propertyOptions: (SelectProps.Option | SelectProps.OptionGroup)[] = getPropertySuggestions(
     filteringProperties,
     customGroupsText,
@@ -89,144 +73,165 @@ const EditingFields = ({
   if (!disableFreeTextFiltering) {
     propertyOptions.unshift(allPropertiesOption);
   }
-
-  const propertyControlId = useUniqueId('property');
-  const propertySelect = (
+  return (
     <InternalSelect
-      controlId={propertyControlId}
       options={propertyOptions}
       selectedOption={
         property
           ? {
-              value: temporaryToken.propertyKey,
+              value: propertyKey ?? undefined,
               label: property.propertyLabel,
             }
           : allPropertiesOption
       }
-      onChange={e => {
-        const filteringProperty = e.detail.selectedOption?.value
-          ? filteringProperties.reduce<PropertyFilterProps.FilteringProperty | undefined>(
-              (acc, property) => (property.key === e.detail.selectedOption.value ? property : acc),
-              undefined
-            )
-          : undefined;
-        const allowedOperators: PropertyFilterProps.ComparisonOperator[] = filteringProperty
-          ? getAllowedOperators(filteringProperty)
-          : freeTextOperators;
-        let operator = temporaryToken.operator;
-        if (temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) === -1) {
-          operator = allowedOperators[0];
-        }
-        setTemporaryToken({
-          ...temporaryToken,
-          operator,
-          propertyKey: e.detail.selectedOption.value,
-        });
-      }}
+      onChange={e => onChangePropertyKey(e.detail.selectedOption.value)}
       {...asyncPropertySelectProps}
     />
   );
-  fields.push({
-    text: i18nStrings.propertyText,
-    className: styles['property-selector'],
-    control: propertySelect,
-    controlId: propertyControlId,
-  });
+}
 
-  const operatorText = temporaryToken.operator;
-  const freeTextOperators: PropertyFilterProps.ComparisonOperator[] = [':', '!:'];
+interface OperatorInputProps {
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onChangeOperator: (operator: ComparisonOperator) => void;
+  operator: undefined | ComparisonOperator;
+  propertyKey: undefined | string;
+}
+
+function OperatorInput({
+  propertyKey,
+  operator,
+  onChangeOperator,
+  filteringProperties,
+  i18nStrings,
+}: OperatorInputProps) {
+  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
+  const freeTextOperators: ComparisonOperator[] = [':', '!:'];
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
     value: operator,
     label: operator,
     description: operatorToDescription(operator, i18nStrings),
   }));
-  const operatorControlId = useUniqueId('operator');
-  const operatorSelect = temporaryToken && (
+  return (
     <InternalSelect
-      controlId={operatorControlId}
       options={operatorOptions}
       triggerVariant="option"
       selectedOption={
-        operatorText
+        operator
           ? {
-              value: operatorText,
-              label: operatorText,
-              description: operatorToDescription(operatorText, i18nStrings),
+              value: operator,
+              label: operator,
+              description: operatorToDescription(operator, i18nStrings),
             }
           : null
       }
-      onChange={e => {
-        e.detail.selectedOption.value &&
-          setTemporaryToken({
-            ...temporaryToken,
-            operator: e.detail.selectedOption.value as PropertyFilterProps.ComparisonOperator,
-          });
-      }}
-      disabled={!temporaryToken}
+      onChange={e => onChangeOperator(e.detail.selectedOption.value as ComparisonOperator)}
     />
   );
-  fields.push({
-    text: i18nStrings.operatorText,
-    className: styles['operator-selector'],
-    control: operatorSelect,
-    controlId: operatorControlId,
-  });
+}
 
-  const valueOptions = property ? getPropertyOptions(property, filteringOptions)?.map(({ value }) => ({ value })) : [];
+interface ValueInputProps {
+  asyncProps: DropdownStatusProps;
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onChangeValue: (value: string) => void;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  operator: undefined | ComparisonOperator;
+  propertyKey: undefined | string;
+  value: undefined | string;
+}
+
+function ValueInput({
+  propertyKey,
+  operator,
+  value,
+  onChangeValue,
+  asyncProps,
+  filteringProperties,
+  filteringOptions,
+  onLoadItems,
+  i18nStrings,
+}: ValueInputProps) {
+  const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
+  const valueOptions = property ? getPropertyOptions(property, filteringOptions).map(({ value }) => ({ value })) : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
-  const asyncValueAutosuggesProps = temporaryToken.propertyKey
-    ? {
-        ...valueAutosuggestHandlers,
-        ...asyncProps,
-      }
+  const asyncValueAutosuggesProps = propertyKey
+    ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
-  const valueControlId = useUniqueId('value');
-  const valueAutosuggest = temporaryToken && (
+  return (
     <InternalAutosuggest
-      controlId={valueControlId}
       enteredTextLabel={i18nStrings.enteredTextLabel}
-      value={temporaryToken.value || ''}
-      onChange={e => {
-        setTemporaryToken({
-          ...temporaryToken,
-          value: e.detail.value,
-        });
-      }}
-      disabled={!operatorText}
+      value={value ?? ''}
+      onChange={e => onChangeValue(e.detail.value)}
+      disabled={!operator}
       options={valueOptions}
       {...asyncValueAutosuggesProps}
       virtualScroll={true}
     />
   );
-  fields.push({
-    text: i18nStrings.valueText,
-    className: styles['value-selector'],
-    control: valueAutosuggest,
-    controlId: valueControlId,
-  });
-  return (
-    <div>
-      <InternalSpaceBetween size="l">
-        {fields.map(({ text, control, className, controlId }) => (
-          <div className={clsx(styles['token-editor-line'], className)} key={text}>
-            <label className={styles['token-editor-label']} htmlFor={controlId}>
-              {text}
-            </label>
-            <div className={styles['token-editor-field']}>{control}</div>
-          </div>
-        ))}
-      </InternalSpaceBetween>
-    </div>
-  );
-};
+}
 
-export const TokenEditor = (props: TokenEditorProps) => {
-  const { token, triggerComponent, setToken, i18nStrings, expandToViewport } = props;
-  const [temporaryToken, setTemporaryToken] = useState<PropertyFilterProps.Token>(token);
+interface TokenEditorProps {
+  asyncProperties?: boolean;
+  asyncProps: DropdownStatusProps;
+  customGroupsText: readonly GroupText[];
+  disabled?: boolean;
+  disableFreeTextFiltering?: boolean;
+  expandToViewport?: boolean;
+  filteringOptions: readonly FilteringOption[];
+  filteringProperties: readonly FilteringProperty[];
+  i18nStrings: I18nStrings;
+  onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
+  setToken: (newToken: Token) => void;
+  token: Token;
+  triggerComponent?: React.ReactNode;
+}
+
+export function TokenEditor({
+  asyncProperties,
+  asyncProps,
+  customGroupsText,
+  disableFreeTextFiltering,
+  expandToViewport,
+  filteringOptions,
+  filteringProperties,
+  i18nStrings,
+  onLoadItems,
+  setToken,
+  token,
+  triggerComponent,
+}: TokenEditorProps) {
+  const [temporaryToken, setTemporaryToken] = useState<Token>(token);
   const popoverRef = useRef<InternalPopoverRef>(null);
   const closePopover = () => {
     popoverRef.current && popoverRef.current.dismissPopover();
   };
+
+  const propertyKey = temporaryToken.propertyKey;
+  const onChangePropertyKey = (newPropertyKey: undefined | string) => {
+    const filteringProperty = filteringProperties.reduce<FilteringProperty | undefined>(
+      (acc, property) => (property.key === newPropertyKey ? property : acc),
+      undefined
+    );
+    const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextOperators;
+    const operator =
+      temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
+        ? temporaryToken.operator
+        : allowedOperators[0];
+    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator });
+  };
+
+  const operator = temporaryToken.operator;
+  const onChangeOperator = (newOperator: ComparisonOperator) => {
+    setTemporaryToken({ ...temporaryToken, operator: newOperator });
+  };
+
+  const value = temporaryToken.value;
+  const onChangeValue = (newValue: string) => {
+    setTemporaryToken({ ...temporaryToken, value: newValue });
+  };
+
   return (
     <InternalPopover
       ref={popoverRef}
@@ -240,7 +245,45 @@ export const TokenEditor = (props: TokenEditorProps) => {
       renderWithPortal={expandToViewport}
       content={
         <div className={styles['token-editor']}>
-          <EditingFields {...props} temporaryToken={temporaryToken} setTemporaryToken={setTemporaryToken} />
+          <div className={styles['token-editor-form']}>
+            <InternalFormField label={i18nStrings.propertyText} className={styles['token-editor-field-property']}>
+              <PropertyInput
+                propertyKey={propertyKey}
+                onChangePropertyKey={onChangePropertyKey}
+                asyncProps={asyncProperties ? asyncProps : null}
+                filteringProperties={filteringProperties}
+                onLoadItems={onLoadItems}
+                customGroupsText={customGroupsText}
+                i18nStrings={i18nStrings}
+                disableFreeTextFiltering={disableFreeTextFiltering}
+              />
+            </InternalFormField>
+
+            <InternalFormField label={i18nStrings.operatorText} className={styles['token-editor-field-operator']}>
+              <OperatorInput
+                propertyKey={propertyKey}
+                operator={operator}
+                onChangeOperator={onChangeOperator}
+                filteringProperties={filteringProperties}
+                i18nStrings={i18nStrings}
+              />
+            </InternalFormField>
+
+            <InternalFormField label={i18nStrings.valueText} className={styles['token-editor-field-value']}>
+              <ValueInput
+                propertyKey={propertyKey}
+                operator={operator}
+                value={value}
+                onChangeValue={onChangeValue}
+                asyncProps={asyncProps}
+                filteringProperties={filteringProperties}
+                filteringOptions={filteringOptions}
+                onLoadItems={onLoadItems}
+                i18nStrings={i18nStrings}
+              />
+            </InternalFormField>
+          </div>
+
           <div className={styles['token-editor-actions']}>
             <InternalButton variant="link" className={styles['token-editor-cancel']} onClick={closePopover}>
               {i18nStrings.cancelActionText}
@@ -248,7 +291,7 @@ export const TokenEditor = (props: TokenEditorProps) => {
             <InternalButton
               className={styles['token-editor-submit']}
               onClick={() => {
-                setToken(temporaryToken as PropertyFilterProps.Token);
+                setToken(temporaryToken);
                 closePopover();
               }}
             >
@@ -261,4 +304,4 @@ export const TokenEditor = (props: TokenEditorProps) => {
       {triggerComponent}
     </InternalPopover>
   );
-};
+}

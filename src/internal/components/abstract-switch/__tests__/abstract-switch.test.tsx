@@ -14,6 +14,7 @@ describe('Abstract switch component, aria-labelledby', () => {
   test('should not have a labelId if a label is not provided', () => {
     const wrapper = renderAbstractSwitch({
       controlClassName: '',
+      outlineClassName: '',
       styledControl: <div />,
       controlId: 'custom-id',
       description: 'Description goes here',
@@ -28,6 +29,7 @@ describe('Abstract switch component, aria-labelledby', () => {
   test('should be set to labelId if a label is provided', () => {
     const wrapper = renderAbstractSwitch({
       controlClassName: '',
+      outlineClassName: '',
       styledControl: <div />,
       label: 'Label goes here',
       controlId: 'custom-id',
@@ -47,6 +49,7 @@ describe('Abstract switch component, aria-labelledby', () => {
   test('should include labelId if an ariaLabelledBy id is provided', () => {
     const wrapper = renderAbstractSwitch({
       controlClassName: '',
+      outlineClassName: '',
       styledControl: <div />,
       controlId: 'custom-id',
       ariaLabelledby: 'some-custom-label',

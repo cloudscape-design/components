@@ -44,6 +44,10 @@
 
 .body-size-large {
   max-width: 480px;
+  @media (max-width: 480px) {
+    // On viewports smaller than 480px, we default to the body-size-medium width
+    max-width: 310px;
+  }
   &.fixed-width {
     width: 480px;
   }

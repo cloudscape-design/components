@@ -41,6 +41,18 @@ export const thresholdSeries: MixedLineBarChartProps.ThresholdSeries = {
   y: 8,
 };
 
+export const xThresholdSeries1: MixedLineBarChartProps.ThresholdSeries = {
+  type: 'threshold',
+  title: 'X-Threshold 1',
+  x: 3,
+};
+
+export const xThresholdSeries2: MixedLineBarChartProps.ThresholdSeries = {
+  type: 'threshold',
+  title: 'X-Threshold 2',
+  x: 10,
+};
+
 export const barSeries: MixedLineBarChartProps.BarDataSeries<string> = {
   type: 'bar',
   title: 'Bar Series 1',

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { TutorialPanelProps } from '../../interfaces';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
@@ -25,8 +25,7 @@ export default function TutorialDetailView({
   onFeedbackClick: TutorialPanelProps['onFeedbackClick'];
   i18nStrings: TutorialPanelProps['i18nStrings'];
 }) {
-  const refreshRef = useRef(null);
-  const isRefresh = useVisualRefresh(refreshRef);
+  const isRefresh = useVisualRefresh();
 
   const onExitTutorial = useCallback(() => {
     fireNonCancelableEvent(onExitTutorialHandler, { tutorial });
@@ -39,7 +38,7 @@ export default function TutorialDetailView({
   return (
     <>
       <InternalSpaceBetween size="xl">
-        <div className={styles['tutorial-title']} ref={refreshRef}>
+        <div className={styles['tutorial-title']}>
           <InternalButton
             variant="icon"
             onClick={onExitTutorial}

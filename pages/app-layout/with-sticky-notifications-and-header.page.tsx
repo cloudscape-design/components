@@ -22,10 +22,12 @@ export default function () {
               {
                 type: 'success',
                 header: 'Success message',
+                statusIconAriaLabel: 'success',
               },
               {
                 type: 'info',
                 header: 'Info message',
+                statusIconAriaLabel: 'info',
               },
             ]}
           />

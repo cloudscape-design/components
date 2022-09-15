@@ -52,6 +52,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
         controlClassName={styles['checkbox-control']}
+        outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
         label={children}
@@ -64,7 +65,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
           <input
             {...nativeControlProps}
             ref={checkboxRef}
-            className={styles.input}
             type="checkbox"
             checked={checked}
             name={name}

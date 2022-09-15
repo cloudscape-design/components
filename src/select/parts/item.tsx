@@ -1,12 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 import styles from './styles.css.js';
 import Option from '../../internal/components/option';
 import SelectableItem from '../../internal/components/selectable-item';
 import { getBaseProps } from '../../internal/base-component';
 import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import InternalIcon from '../../icon/internal.js';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
 
 export interface ItemProps {
   option: DropdownOption;
@@ -14,13 +17,13 @@ export interface ItemProps {
   selected?: boolean;
   filteringValue?: string;
   hasCheckbox?: boolean;
-  isKeyboard?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
   screenReaderContent?: string;
   ariaPosinset?: number;
   ariaSetsize?: number;
+  highlightType?: HighlightType;
 }
 
 const Item = (
@@ -30,13 +33,13 @@ const Item = (
     selected,
     filteringValue,
     hasCheckbox,
-    isKeyboard,
     virtualPosition,
     padBottom,
     isNextSelected,
     screenReaderContent,
     ariaPosinset,
     ariaSetsize,
+    highlightType,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -50,23 +53,23 @@ const Item = (
 
   return (
     <SelectableItem
-      ariaSelected={selected}
+      ariaSelected={Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}
       disabled={option.disabled}
       isParent={isParent}
       isChild={isChild}
-      isKeyboard={isKeyboard}
       ref={ref}
       virtualPosition={virtualPosition}
       padBottom={padBottom}
       screenReaderContent={screenReaderContent}
       ariaPosinset={ariaPosinset}
       ariaSetsize={ariaSetsize}
+      highlightType={highlightType}
       {...baseProps}
     >
-      <div className={styles.item}>
+      <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
         {hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
@@ -76,6 +79,11 @@ const Item = (
           wrappedOption.label || wrappedOption.value
         ) : (
           <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} />
+        )}
+        {!hasCheckbox && !isParent && selected && (
+          <div className={styles['selected-icon']}>
+            <InternalIcon name="check" />
+          </div>
         )}
       </div>
     </SelectableItem>

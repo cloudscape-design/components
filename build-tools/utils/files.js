@@ -36,7 +36,9 @@ function listPublicItems(baseDir) {
         elem !== 'interfaces.ts' &&
         elem !== 'test-utils' &&
         elem !== 'theming' &&
-        elem !== 'contexts'
+        elem !== 'contexts' &&
+        elem !== 'calendar' &&
+        elem !== 'date-input'
     );
 }
 

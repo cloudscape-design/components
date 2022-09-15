@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
 import { ChartScale } from '../internal/components/cartesian-chart/scales';
-import { matchesX } from './utils';
+import { isDataSeries, isXThreshold, isYThreshold, matchesX } from './utils';
 
 export interface ScaledBarGroup<T> {
   x: T;
@@ -38,11 +38,18 @@ export default function makeScaledBarGroups<T extends ChartDataTypes>(
       x,
       isValid,
       hasData: series.some(({ series }) => {
-        if (series.type === 'threshold') {
-          // If there is a threshold series, every valid group will have a data point
+        // If there is a threshold series, every valid group will have a data point.
+        if (isYThreshold(series)) {
           return true;
         }
-        return (series.data as ReadonlyArray<MixedLineBarChartProps.Datum<T>>).some(datum => matchesX(datum.x, x));
+        // X-thresholds do not have associated value.
+        if (isXThreshold(series)) {
+          return false;
+        }
+        if (isDataSeries(series)) {
+          return (series.data as ReadonlyArray<MixedLineBarChartProps.Datum<T>>).some(datum => matchesX(datum.x, x));
+        }
+        return false;
       }),
       position:
         axis === 'x'

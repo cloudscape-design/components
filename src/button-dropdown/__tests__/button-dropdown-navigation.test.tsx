@@ -1,12 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, act, fireEvent } from '@testing-library/react';
 
 import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
-import { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, { ButtonDropdownWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button-dropdown/styles.css.js';
+import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
+import categoryElementStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
+import { KeyCode } from '../../internal/keycode';
+import ButtonDropdown from '../../../lib/components/button-dropdown';
 
 const items: ButtonDropdownProps.Items = [
   { id: 'i1', text: 'item1', description: 'Item 1 description' },
@@ -23,6 +27,11 @@ const items: ButtonDropdownProps.Items = [
 const renderInternalButtonDropdown = (props: InternalButtonDropdownProps) => {
   const { baseElement } = render(<InternalButtonDropdown {...props} />);
   return new ButtonDropdownWrapper(baseElement as HTMLElement);
+};
+
+const renderButtonDropdown = (props: ButtonDropdownProps) => {
+  const renderResult = render(<ButtonDropdown {...props} />);
+  return createWrapper(renderResult.container).findButtonDropdown()!;
 };
 
 function findHeader(wrapper: ButtonDropdownWrapper): ElementWrapper<HTMLElement> {
@@ -57,5 +66,42 @@ describe('Button dropdown header', () => {
 
     wrapper.openDropdown();
     expect(findHeader(wrapper).getElement()).toHaveTextContent('Description');
+  });
+});
+
+describe('Button dropdown navigate with mouse or keyboard', () => {
+  it('should add class is-focused if highligted with keyboard and remove when using mouse', () => {
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyles['is-focused']);
+
+    fireEvent.mouseMove(wrapper.findItemById('i4')!.getElement());
+    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyles['is-focused']);
+  });
+
+  it('should add class is-focused if highligted with keyboard and remove when mouse move on the same item', () => {
+    const wrapper = renderButtonDropdown({ items });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyles['is-focused']);
+
+    fireEvent.mouseMove(wrapper.findItemById('i1')!.getElement());
+    expect(wrapper.findHighlightedItem()!.getElement()).not.toHaveClass(itemStyles['is-focused']);
+  });
+
+  it('should remove class is-focused from parent item when move focus from parent item to child item', () => {
+    const wrapper = renderButtonDropdown({ items, expandableGroups: true });
+    wrapper.openDropdown();
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
+    expect(wrapper.findByClassName(categoryElementStyles['expandable-header'])!.getElement()).toHaveClass(
+      categoryElementStyles['is-focused']
+    );
+    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.right));
+    expect(wrapper.findByClassName(categoryElementStyles['expandable-header'])!.getElement()).not.toHaveClass(
+      categoryElementStyles['is-focused']
+    );
+    expect(wrapper.findHighlightedItem()!.getElement()).toHaveClass(itemStyles['is-focused']);
   });
 });

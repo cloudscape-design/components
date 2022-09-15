@@ -43,7 +43,7 @@ export function TabHeaderBar({
   const activeTabHeaderRef = useRef<HTMLAnchorElement>(null);
   const leftOverflowButton = useRef<HTMLElement>(null);
 
-  const isVisualRefresh = useVisualRefresh(headerBarRef);
+  const isVisualRefresh = useVisualRefresh();
 
   const [widthChange, containerRef] = useContainerQuery<number>(rect => rect.width);
   const tabRefs = useRef<Map<string, HTMLElement>>(new Map());
@@ -133,6 +133,7 @@ export function TabHeaderBar({
       {horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
           <InternalButton
+            formAction="none"
             variant="icon"
             iconName="angle-left"
             __nativeAttributes={paginationButtonAttributes}
@@ -154,6 +155,7 @@ export function TabHeaderBar({
       {horizontalOverflow && (
         <span className={rightButtonClasses}>
           <InternalButton
+            formAction="none"
             variant="icon"
             iconName="angle-right"
             __nativeAttributes={paginationButtonAttributes}

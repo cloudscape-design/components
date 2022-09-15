@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from './interfaces';
-import { normalizeLocale } from '../date-picker/calendar/utils/locales';
+import { normalizeLocale } from '../calendar/utils/locales';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';
@@ -18,7 +18,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
-import { getBrowserTimezoneOffset, shiftTimeOffset, formatOffset, setTimeOffset } from './time-offset';
+import { shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -26,14 +26,16 @@ import { isDevelopment } from '../internal/is-development.js';
 import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
+import { formatValue } from './use-date-range-picker.js';
 
 export { DateRangePickerProps };
 
-function formatDateRange(
+function renderDateRange(
   range: null | DateRangePickerProps.Value,
   placeholder: string,
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset: number
+  timeOffset?: number
 ) {
   if (!range) {
     return (
@@ -43,54 +45,39 @@ function formatDateRange(
     );
   }
 
-  if (range.type === 'relative') {
-    return (
-      <InternalBox fontWeight="normal" display="inline" color="inherit">
-        {formatRelativeRange(range)}
-      </InternalBox>
+  const formatted =
+    range.type === 'relative' ? (
+      formatRelativeRange(range)
+    ) : (
+      <BreakSpaces text={formatDateRange(range.startDate, range.endDate, timeOffset)} />
     );
-  }
 
-  if (range.type === 'absolute') {
-    const formattedOffset = isDateOnly(range) ? '' : formatOffset(timeOffset);
-    return (
-      <InternalBox fontWeight="normal" display="inline" color="inherit">
-        <span className={styles['preferred-wordbreak']}>
-          {range.startDate}
-          {formattedOffset} &mdash;
-        </span>{' '}
-        <span className={styles['preferred-wordbreak']}>
-          {range.endDate}
-          {formattedOffset}
-        </span>
-      </InternalBox>
-    );
-  }
+  return (
+    <InternalBox fontWeight="normal" display="inline" color="inherit">
+      {formatted}
+    </InternalBox>
+  );
+}
+
+function BreakSpaces({ text }: { text: string }) {
+  const tokens = text.split(/( )/);
+  return (
+    <div style={{ whiteSpace: 'nowrap' }}>
+      {tokens.map((token, index) => (
+        <React.Fragment key={index}>
+          {token}
+          {token === ' ' && <wbr />}
+        </React.Fragment>
+      ))}
+    </div>
+  );
 }
 
 function isDateOnly(value: null | DateRangePickerProps.Value) {
   if (!value || value.type !== 'absolute') {
     return false;
   }
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  return dateRegex.test(value.startDate) && dateRegex.test(value.endDate);
-}
-
-function formatValue(
-  value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset: number; dateOnly: boolean }
-): null | DateRangePickerProps.Value {
-  if (!value || value.type === 'relative') {
-    return value;
-  }
-  if (dateOnly) {
-    return {
-      type: 'absolute',
-      startDate: value.startDate.split('T')[0],
-      endDate: value.endDate.split('T')[0],
-    };
-  }
-  return setTimeOffset(value, timeOffset);
+  return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate);
 }
 
 const DateRangePicker = React.forwardRef(
@@ -111,7 +98,7 @@ const DateRangePicker = React.forwardRef(
       isValidRange = () => ({ valid: true }),
       showClearButton = true,
       dateOnly = false,
-      timeOffset = getBrowserTimezoneOffset(),
+      timeOffset,
       timeInputFormat = 'hh:mm:ss',
       expandToViewport = false,
       rangeSelectorMode = 'default',
@@ -235,7 +222,7 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            {formatDateRange(value, placeholder ?? '', i18nStrings.formatRelativeRange, timeOffset)}
+            {renderDateRange(value, placeholder ?? '', i18nStrings.formatRelativeRange, timeOffset)}
           </span>
         </ButtonTrigger>
       </div>

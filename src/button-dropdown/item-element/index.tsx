@@ -23,6 +23,7 @@ const ItemElement = ({
   first = false,
   last,
   hasCategoryHeader,
+  isKeyboardHighlighted = false,
   variant = 'normal',
 }: ItemProps) => {
   const isLink = isLinkItem(item);
@@ -51,6 +52,7 @@ const ItemElement = ({
         [styles.first]: first,
         [styles.last]: last,
         [styles['has-category-header']]: hasCategoryHeader,
+        [styles['is-focused']]: isKeyboardHighlighted,
       })}
       role="presentation"
       data-testid={item.id}

@@ -19,11 +19,6 @@ $checkbox-size: awsui.$size-control;
   @include styles.make-control-size($checkbox-size);
 }
 
-.input {
-  @include focus-visible.when-visible {
-    /* stylelint-disable-next-line selector-max-type -- Can't access the outline class from focus-visible */
-    & + div {
-      @include styles.focus-highlight(2px);
-    }
-  }
+.outline {
+  @include styles.focus-highlight(2px);
 }

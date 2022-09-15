@@ -3,7 +3,7 @@
 import React from 'react';
 import AppLayout from '~components/app-layout';
 import Container from '~components/container';
-import ContentLayout from '~components/internal/components/content-layout';
+import ContentLayout from '~components/content-layout';
 import Grid from '~components/grid';
 import Header from '~components/header';
 import Link from '~components/link';
@@ -21,11 +21,7 @@ export default function () {
         content={
           <ContentLayout
             header={
-              <Header
-                variant="h1"
-                info={<Link>Info</Link>}
-                description="When you create an Amazon CloudFront distribution."
-              >
+              <Header variant="h1" info={<Link>Info</Link>} description="When you create a distribution.">
                 Create distribution
               </Header>
             }

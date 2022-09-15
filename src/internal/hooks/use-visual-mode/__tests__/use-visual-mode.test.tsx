@@ -77,32 +77,15 @@ describe('useCurrentMode', () => {
   });
 });
 
-// most of the functionality is covered by the suite above, which uses the same implementation
-// here we only test the specific stuff
 describe('useVisualRefresh', () => {
-  function RefreshRender() {
-    const ref = useRef(null);
-    const isRefresh = useVisualRefresh(ref);
-    return (
-      <div ref={ref} data-testid="current-mode">
-        {isRefresh.toString()}
-      </div>
-    );
+  function App() {
+    const isRefresh = useVisualRefresh();
+    return <div data-testid="current-mode">{isRefresh.toString()}</div>;
   }
-  test('should detect mode switch both ways', async () => {
-    const { container } = render(<RefreshRender />);
-    expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
-    await mutate(() => container.classList.add('awsui-visual-refresh'));
-    expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
-    await mutate(() => container.classList.remove('awsui-visual-refresh'));
-    expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
-  });
 
-  test('should return false when CSS-variables are not supported', async () => {
+  test('should return false when CSS-variables are not supported', () => {
     (window.CSS.supports as jest.Mock).mockReturnValue(false);
-    const { container } = render(<RefreshRender />);
-    expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
-    await mutate(() => container.classList.add('awsui-visual-refresh'));
+    render(<App />);
     expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
   });
 });

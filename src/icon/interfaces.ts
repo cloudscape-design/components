@@ -32,7 +32,7 @@ export interface IconProps extends BaseComponentProps {
    */
   url?: string;
   /**
-   * Specifies alternate text for a custom icon. We recommend that you provide this for accessibility.
+   * Specifies alternate text for a custom icon (using the `url` attribute). We recommend that you provide this for accessibility.
    * This property is ignored if you use a predefined icon or if you set your custom icon using the `svg` slot.
    */
   alt?: string;
@@ -82,6 +82,7 @@ export namespace IconProps {
     | 'caret-right-filled'
     | 'caret-up-filled'
     | 'caret-up'
+    | 'check'
     | 'contact'
     | 'close'
     | 'copy'

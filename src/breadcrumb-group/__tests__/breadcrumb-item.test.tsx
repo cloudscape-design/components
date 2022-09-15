@@ -105,8 +105,8 @@ describe('BreadcrumbGroup Item', () => {
       lastLink = links[links.length - 1];
     });
 
-    test('has a link', () => {
-      expect(lastLink.getElement()).toHaveAttribute('href', '#');
+    test('does not have an href', () => {
+      expect(lastLink.getElement()).not.toHaveAttribute('href', '#');
     });
 
     test('has correct aria attributes', () => {

@@ -16,8 +16,14 @@ declare let window: ExtendedWindow;
 const wrapper = createWrapper().findPropertyFilter();
 const inputSelector = wrapper.findNativeInput().toSelector();
 const popoverWrapper = createWrapper(wrapper.findTokens().get(1).toSelector()).findPopover();
-const propertyEditWrapper = popoverWrapper.findContent().findByClassName(styles['property-selector']).findSelect();
-const valueEditWrapper = popoverWrapper.findContent().findByClassName(styles['value-selector']).findAutosuggest();
+const propertyEditWrapper = popoverWrapper
+  .findContent()
+  .findByClassName(styles['token-editor-field-property'])
+  .findSelect();
+const valueEditWrapper = popoverWrapper
+  .findContent()
+  .findByClassName(styles['token-editor-field-value'])
+  .findAutosuggest();
 
 class AsyncPropertyFilterPage extends BasePageObject {
   expectLoadItemsEvents = async (expected: PropertyFilterProps.LoadItemsDetail[]) => {
