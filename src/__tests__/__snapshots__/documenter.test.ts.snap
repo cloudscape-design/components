@@ -4156,7 +4156,7 @@ Object {
       "description": "Called whenever a user changes the input value (by typing, pasting, or selecting a value).
 The event \`detail\` contains the current value of the field.",
       "detailInlineType": Object {
-        "name": "CalendarProps.ChangeDetail",
+        "name": "DatePickerProps.ChangeDetail",
         "properties": Array [
           Object {
             "name": "value",
@@ -4166,7 +4166,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "CalendarProps.ChangeDetail",
+      "detailType": "DatePickerProps.ChangeDetail",
       "name": "onChange",
     },
     Object {
@@ -4295,7 +4295,7 @@ If you disable a date in the calendar, users can still enter this date using a k
 We recommend that you also validate these constraints on the client-side and server-side
 as you would for other form elements.",
       "inlineType": Object {
-        "name": "CalendarProps.IsDateEnabledFunction",
+        "name": "DatePickerProps.IsDateEnabledFunction",
         "parameters": Array [
           Object {
             "name": "date",
@@ -4307,7 +4307,7 @@ as you would for other form elements.",
       },
       "name": "isDateEnabled",
       "optional": true,
-      "type": "CalendarProps.IsDateEnabledFunction",
+      "type": "DatePickerProps.IsDateEnabledFunction",
     },
     Object {
       "defaultValue": "''",
@@ -4951,7 +4951,6 @@ A flash message object contains the following properties:
 * \`dismissible\` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
-* \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
