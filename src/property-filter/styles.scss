@@ -39,6 +39,7 @@
 
 .property-editor,
 .token-editor {
+  user-select: text;
   margin: awsui.$space-xxs;
   display: flex;
   flex-direction: column;
@@ -70,6 +71,9 @@
   &-commit {
     margin-left: awsui.$space-xs;
   }
+}
+.property-editor {
+  margin: awsui.$space-m;
 }
 
 .custom-control {
