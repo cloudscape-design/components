@@ -47,15 +47,19 @@
   &-form {
     margin-bottom: awsui.$space-scaled-l;
   }
+  &-field-property {
+    /* used in test-utils */
+  }
   &-field-operator {
     margin-top: awsui.$space-scaled-l;
   }
   &-field-value {
     margin-top: awsui.$space-scaled-l;
   }
-  &-field-property,
-  &-submit,
   &-cancel {
+    margin-right: awsui.$space-xs;
+  }
+  &-submit {
     /* used in test-utils */
   }
   &-actions {
@@ -67,9 +71,6 @@
     padding-right: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
     margin-left: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
     margin-right: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
-  }
-  &-commit {
-    margin-left: awsui.$space-xs;
   }
 }
 .property-editor {
@@ -110,10 +111,6 @@
 
 .token-trigger {
   @include styles.text-wrapping;
-}
-
-.token-editor-cancel {
-  margin-right: awsui.$space-xs;
 }
 
 .remove-all,
