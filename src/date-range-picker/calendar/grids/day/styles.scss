@@ -63,13 +63,6 @@ $calendar-grid-width: 234px;
 
   &:focus {
     outline: none;
-    @include focus-visible.when-visible {
-      z-index: 2;
-      @include styles.focus-highlight(
-        awsui.$space-calendar-grid-focus-outline-gutter,
-        awsui.$border-radius-calendar-day-focus-ring
-      );
-    }
   }
 
   &::after {
@@ -81,6 +74,14 @@ $calendar-grid-width: 234px;
     bottom: -1px;
     right: calc(-1 * #{awsui.$border-item-width});
     background-color: transparent;
+  }
+
+  @include focus-visible.when-visible {
+    z-index: 2;
+    @include styles.focus-highlight(
+      awsui.$space-calendar-grid-focus-outline-gutter,
+      awsui.$border-radius-calendar-day-focus-ring
+    );
   }
 
   > .day-inner {
