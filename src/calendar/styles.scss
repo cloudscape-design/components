@@ -92,6 +92,14 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     color: $calendar-grid-disabled-day-color;
     position: relative;
 
+    &:last-child {
+      border-right: none;
+    }
+
+    &-in-last-week {
+      border-bottom: none;
+    }
+
     &-focusable {
       /* used for identifying element */
     }
