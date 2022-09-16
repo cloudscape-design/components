@@ -131,10 +131,10 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     &::after {
       content: '';
       position: absolute;
-      top: -1px;
+      top: calc(-1 * #{awsui.$border-item-width});
       left: -1px;
       bottom: -1px;
-      right: -1px;
+      right: calc(-1 * #{awsui.$border-item-width});
       background-color: transparent;
     }
     > .day-inner {
