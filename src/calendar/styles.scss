@@ -88,18 +88,9 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     text-align: center;
     border-bottom: $calendar-grid-border;
     border-right: $calendar-grid-border;
-    border-radius: awsui.$border-radius-item;
     padding: awsui.$space-xxs 0;
     color: $calendar-grid-disabled-day-color;
     position: relative;
-
-    &:last-child {
-      border-right: none;
-    }
-
-    &-in-last-week {
-      border-bottom: none;
-    }
 
     &-focusable {
       /* used for identifying element */
@@ -117,7 +108,6 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
           &:not(.calendar-day-selected) {
             &::after {
               border: awsui.$border-item-width solid $calendar-grid-hover-border-color;
-              border-radius: awsui.$border-radius-item;
             }
           }
         }
@@ -126,15 +116,17 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
 
     &-today {
       background-color: $calendar-grid-today-background-color;
+      border-radius: awsui.$border-radius-item;
     }
 
     &::after {
       content: '';
       position: absolute;
-      top: -1px;
+      z-index: 1;
+      top: calc(-1 * #{awsui.$border-item-width});
       left: -1px;
       bottom: -1px;
-      right: -1px;
+      right: calc(-1 * #{awsui.$border-item-width});
       background-color: transparent;
     }
     > .day-inner {

@@ -17,7 +17,6 @@ interface GridDayProps {
   isDateEnabled?: DatePickerProps.IsDateEnabledFunction;
   todayAriaLabel: string;
   onSelectDate: (date: Date) => void;
-  isDateInLastWeek: boolean;
 }
 
 export default function GridDay({
@@ -29,7 +28,6 @@ export default function GridDay({
   isDateEnabled,
   todayAriaLabel,
   onSelectDate,
-  isDateInLastWeek,
 }: GridDayProps) {
   const labels = [getDateLabel(locale, date)];
   const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
@@ -38,7 +36,6 @@ export default function GridDay({
   const isDateOnSameDay = isSameDay(date, new Date());
   const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
   const classNames = clsx(styles['calendar-day'], {
-    [styles['calendar-day-in-last-week']]: isDateInLastWeek,
     [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
     [styles['calendar-day-enabled']]: isEnabled,
     [styles['calendar-day-selected']]: isSelected,
