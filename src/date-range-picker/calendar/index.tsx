@@ -316,7 +316,7 @@ function Calendar(
         </div>
         <InternalSpaceBetween direction="vertical" size="xxs">
           <InternalSpaceBetween size="xs" direction={isSingleGrid ? 'vertical' : 'horizontal'}>
-            <div className={styles['date-and-time-wrapper']}>
+            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
               <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                 <InternalDateInput
                   value={startDateString}
@@ -340,7 +340,7 @@ function Calendar(
               )}
             </div>
 
-            <div className={styles['date-and-time-wrapper']}>
+            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
               <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                 <InternalDateInput
                   value={endDateString}
