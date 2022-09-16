@@ -9,7 +9,7 @@ export default function DatePickerEditorScenario() {
 
   return (
     <Box padding="s">
-      <h1>Date picker embedded version</h1>
+      <h1>Calendar</h1>
       <Link id="focusable-element-before-date-picker">Focusable element before the date picker</Link>
       <br />
       <Calendar
