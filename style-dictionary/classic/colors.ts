@@ -82,7 +82,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorStrokeCodeEditorGutterActiveLineDefault: { dark: '{colorGrey650}' },
   colorTextAccent: { light: '{colorBlue600}', dark: '{colorBlue400}' },
   colorTextBreadcrumbCurrent: { dark: '{colorGrey300}' },
-  colorTextBreadcrumbIcon: { light: '{colorTextInteractiveDisabled}' },
+  colorTextBreadcrumbIcon: { light: '{colorGrey550}' },
   colorTextButtonInlineIconDefault: '{colorTextInteractiveDefault}',
   colorTextButtonInlineIconHover: '{colorTextInteractiveHover}',
   colorTextButtonNormalActive: { light: '{colorGrey900}', dark: '{colorGrey100}' },
