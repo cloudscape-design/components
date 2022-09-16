@@ -19,7 +19,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     dismissible: [true],
     onDismiss: [noop],
     dismissLabel: ['Dismiss'],
-    statusIconAriaLabel: ['success'],
     header: [<span>Simple span content. The &apos;H&apos; in HTML stands for Pizza</span>],
     content: [<span>Simple span content</span>],
   },
@@ -28,7 +27,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     dismissible: [true, false],
     onDismiss: [noop],
     dismissLabel: ['Dismiss'],
-    statusIconAriaLabel: ['info'],
     header: [
       '',
       <>
@@ -67,7 +65,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'error', 'warning', 'info'],
-    statusIconAriaLabel: ['info'],
     header: ['Flash header'],
     action: [
       <Button iconName="external" iconAlign="right">
@@ -77,7 +74,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'warning', 'error'],
-    statusIconAriaLabel: ['info'],
     loading: [true, false],
     header: [
       <Link color="inverted" href="#" variant="primary">
@@ -94,7 +90,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   },
   {
     type: ['success', 'error', 'warning', 'info'],
-    statusIconAriaLabel: ['info'],
     header: [
       <span>
         Header with a button{' '}
@@ -116,7 +111,6 @@ const permutations = createPermutations<FlashbarProps.MessageDefinition>([
     buttonText: ['Go for it!'],
     header: ['header'],
     content: ['content'],
-    statusIconAriaLabel: ['info'],
   },
 ]);
 /* eslint-enable react/jsx-key */
@@ -126,7 +120,12 @@ export default function FlashbarPermutations() {
     <>
       <h1>Flashbar permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Flashbar items={[permutation]} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <Flashbar items={[{ ...permutation, statusIconAriaLabel: permutation.type ?? 'info' }]} />
+          )}
+        />
       </ScreenshotArea>
     </>
   );
