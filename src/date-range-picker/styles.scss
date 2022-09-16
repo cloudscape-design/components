@@ -110,6 +110,9 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
   column-gap: awsui.$space-xs;
   grid-template-columns: 1fr 1fr;
   width: $calendar-grid-width;
+  &.date-only {
+    grid-template-columns: unset;
+  }
 }
 
 .date-and-time-constrainttext {
