@@ -99,7 +99,9 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     &-enabled {
       cursor: pointer;
       color: $calendar-grid-nonmonth-day-color;
-
+      &::after {
+        border-radius: awsui.$border-radius-item;
+      }
       &.calendar-day-current-month {
         color: $calendar-grid-day-color;
         &:hover {
@@ -150,6 +152,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     &-selected {
       border-color: transparent;
       position: relative;
+      z-index: 2;
       &:focus {
         @include focus-visible.when-visible {
           @include styles.focus-highlight(
@@ -168,6 +171,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
         border-radius: awsui.$border-radius-item;
       }
       > .day-inner {
+        z-index: 2;
         color: $calendar-grid-selected-text-color;
         position: relative;
       }
