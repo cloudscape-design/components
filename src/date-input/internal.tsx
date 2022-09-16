@@ -41,7 +41,7 @@ const InternalDateInput = React.forwardRef(
       <MaskedInput
         ref={ref}
         {...props}
-        value={isoToDisplay(value)}
+        value={isoToDisplay(value || '')}
         onChange={event => fireNonCancelableEvent(onChange, { value: displayToIso(event.detail.value) })}
         className={clsx(styles.root, props.className)}
         mask={maskArgs}
