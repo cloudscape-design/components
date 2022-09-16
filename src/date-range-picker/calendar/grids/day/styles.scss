@@ -63,12 +63,12 @@ $calendar-grid-width: 234px;
 
   &:focus {
     outline: none;
-    @include styles.focus-highlight(
-      awsui.$space-calendar-grid-focus-outline-gutter,
-      awsui.$border-radius-calendar-day-focus-ring
-    );
-    &::before {
+    @include focus-visible.when-visible {
       z-index: 2;
+      @include styles.focus-highlight(
+        awsui.$space-calendar-grid-focus-outline-gutter,
+        awsui.$border-radius-calendar-day-focus-ring
+      );
     }
   }
 

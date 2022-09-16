@@ -5,6 +5,7 @@
 
 @use '../internal/styles/index' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/typography/index' as typographyConstants;
 @use './motion';
 
@@ -143,25 +144,31 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
 
     &:focus {
       outline: none;
-      @include styles.focus-highlight(
-        awsui.$space-calendar-grid-focus-outline-gutter,
-        awsui.$border-radius-calendar-day-focus-ring
-      );
-      &::before {
-        z-index: 2;
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight(
+          awsui.$space-calendar-grid-focus-outline-gutter,
+          awsui.$border-radius-calendar-day-focus-ring
+        );
+        &::before {
+          z-index: 2;
+        }
       }
     }
 
     &-selected {
       border-color: transparent;
       position: relative;
-      z-index: 2;
       &:focus {
-        @include styles.focus-highlight(
-          awsui.$space-calendar-grid-focus-outline-gutter,
-          awsui.$border-radius-calendar-day-focus-ring,
-          $calendar-grid-selected-focused-box-shadow
-        );
+        @include focus-visible.when-visible {
+          @include styles.focus-highlight(
+            awsui.$space-calendar-grid-focus-outline-gutter,
+            awsui.$border-radius-calendar-day-focus-ring,
+            $calendar-grid-selected-focused-box-shadow
+          );
+          &::before {
+            z-index: 2;
+          }
+        }
       }
       &::after {
         background-color: $calendar-grid-selected-background-color;
