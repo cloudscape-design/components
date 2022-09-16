@@ -13,8 +13,8 @@ export interface TableItem {
   publicdns?: string;
   ipv4publicip?: string;
   securitygroup?: string;
-  launchdate?: string;
-  lasteventat?: string;
+  launchdate?: Date;
+  lasteventat?: Date;
 }
 
 export const allItems: TableItem[] = [
@@ -858,4 +858,9 @@ export const allItems: TableItem[] = [
     launchdate: '2019-05-10',
     lasteventat: '2022-02-06T19:58:40',
   },
-].map((item, indx) => ({ order: indx, ...item }));
+].map((item, indx) => ({
+  order: indx,
+  ...item,
+  launchdate: new Date(item.launchdate),
+  lasteventat: new Date(item.lasteventat),
+}));

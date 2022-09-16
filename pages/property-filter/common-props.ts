@@ -96,9 +96,9 @@ export const columnDefinitions = [
     id: 'launchdate',
     sortingField: 'launchdate',
     header: 'Launch date',
-    type: 'range',
+    type: 'date',
     propertyLabel: 'Launch date',
-    cell: (item: TableItem) => item.launchdate,
+    cell: (item: TableItem) => item.launchdate?.toISOString(),
   },
   {
     id: 'lasteventat',
@@ -106,7 +106,7 @@ export const columnDefinitions = [
     header: 'Last event occurrence',
     type: 'datetime',
     propertyLabel: 'Last event occurrence',
-    cell: (item: TableItem) => item.lasteventat,
+    cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
