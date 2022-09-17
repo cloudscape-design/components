@@ -76,17 +76,17 @@ $calendar-grid-width: 234px;
     background-color: transparent;
   }
 
-  > .day-inner {
-    position: relative;
-    z-index: 1;
-  }
-
   @include focus-visible.when-visible {
     z-index: 2;
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-focus-outline-gutter,
       awsui.$border-radius-calendar-day-focus-ring
     );
+  }
+
+  > .day-inner {
+    position: relative;
+    z-index: 1;
   }
 }
 

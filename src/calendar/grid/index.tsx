@@ -97,7 +97,6 @@ const Grid = ({
       <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           const isDateInLastWeek = weeks.length - 1 === weekIndex;
-
           return (
             <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
               {week.map((date, dateIndex) => {
