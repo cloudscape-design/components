@@ -94,17 +94,20 @@ export default function ChartPopover({
           </div>
         )}
       >
-        <PopoverBody
-          size={size}
-          fixedWidth={fixedWidth}
-          dismissButton={dismissButton}
-          dismissAriaLabel={dismissAriaLabel}
-          returnFocus={false}
-          header={title}
-          onDismiss={onDismiss}
-        >
-          {children}
-        </PopoverBody>
+        {style => (
+          <PopoverBody
+            size={size}
+            fixedWidth={fixedWidth}
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            returnFocus={false}
+            header={title}
+            onDismiss={onDismiss}
+            style={style}
+          >
+            {children}
+          </PopoverBody>
+        )}
       </PopoverContainer>
     </span>
   );

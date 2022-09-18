@@ -28,6 +28,7 @@ export interface PopoverBodyProps {
   dismissButtonRef?: React.Ref<ButtonProps.Ref>;
 
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export default function PopoverBody({
@@ -43,6 +44,7 @@ export default function PopoverBody({
   overflowVisible,
   dismissButtonRef,
   className,
+  style,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
 
@@ -76,6 +78,7 @@ export default function PopoverBody({
         [styles[`variant-${variant}`]]: variant,
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
+      style={style}
       role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}

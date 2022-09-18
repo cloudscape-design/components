@@ -27,7 +27,7 @@ export interface PopoverContainerProps {
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
-  children: React.ReactNode;
+  children: (style: React.CSSProperties) => React.ReactNode;
   renderWithPortal?: boolean;
 }
 
@@ -47,10 +47,11 @@ export default function PopoverContainer({
     return prev?.width === roundedRect.width && prev?.height === roundedRect.height ? prev : rect;
   }) as [ContainerQueryEntry | null, React.MutableRefObject<HTMLDivElement | null>];
 
-  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
 
-  const [inlineStyle, setInlineStyle] = useState<CSSProperties>(INITIAL_STYLES);
+  const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
+  const [bodyStyle, setBodyStyle] = useState<CSSProperties>({});
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
@@ -59,29 +60,29 @@ export default function PopoverContainer({
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(() => {
-    if (!trackRef.current || !ref.current || !bodyRef.current || !arrowRef.current) {
+    if (!trackRef.current || !ref.current || !popoverRef.current || !arrowRef.current) {
       return;
     }
 
     // Get important elements
-    const body = bodyRef.current;
+    const popover = popoverRef.current;
     const arrow = arrowRef.current;
     const document = ref.current.ownerDocument;
     const track = trackRef.current;
 
     // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
     // or track does not belong to the document - bail on calculating dimensions.
-    if (body.offsetWidth === 0 || body.offsetHeight === 0 || !nodeContains(document.body, track)) {
+    if (popover.offsetWidth === 0 || popover.offsetHeight === 0 || !nodeContains(document.body, track)) {
       return;
     }
 
     // Imperatively move body off-screen to give it room to expand.
     // Not doing this in React because this recalculation should happen
     // in the span of a single frame without rerendering anything.
-    const prevTop = body.style.top;
-    const prevLeft = body.style.left;
-    body.style.top = '0';
-    body.style.left = '0';
+    const prevTop = popover.style.top;
+    const prevLeft = popover.style.left;
+    popover.style.top = '0';
+    popover.style.left = '0';
 
     // Get rects representing key elements
     // Use getComputedStyle for arrowRect to avoid modifications made by transform
@@ -91,24 +92,28 @@ export default function PopoverContainer({
       width: parseFloat(getComputedStyle(arrow).width),
       height: parseFloat(getComputedStyle(arrow).height),
     };
-    const containingBlock = getContainingBlock(body);
+    const containingBlock = getContainingBlock(popover);
     const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
 
     // Round up dimensions (IE11 doesn't handle subpixels too accurately)
-    const bodyRect = body.getBoundingClientRect();
-    const bodyRectCeil = {
-      top: bodyRect.top,
-      left: bodyRect.left,
-      width: Math.ceil(bodyRect.width),
-      height: Math.ceil(bodyRect.height),
+    const popoverRect = popover.getBoundingClientRect();
+    const popoverRectCeil = {
+      top: popoverRect.top,
+      left: popoverRect.left,
+      width: Math.ceil(popoverRect.width),
+      height: Math.ceil(popoverRect.height),
     };
 
     // Calculate the arrow direction and viewport-relative position of the popover.
-    const { internalPosition: newInternalPosition, boundingOffset } = calculatePosition(
+    const {
+      scrollable,
+      internalPosition: newInternalPosition,
+      boundingOffset,
+    } = calculatePosition(
       position,
       trackRect,
       arrowRect,
-      bodyRectCeil,
+      popoverRectCeil,
       containingBlock ? containingBlockRect : getDocumentRect(document),
       viewportRect,
       renderWithPortal
@@ -123,19 +128,20 @@ export default function PopoverContainer({
 
     // Bring back the container to its original position to prevent any
     // flashing.
-    body.style.top = prevTop;
-    body.style.left = prevLeft;
+    popover.style.top = prevTop;
+    popover.style.left = prevLeft;
 
     // Position the popover
     setInternalPosition(newInternalPosition);
-    setInlineStyle({ top: popoverOffset.top, left: popoverOffset.left });
+    setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
+    setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto' } : {});
 
     positionHandlerRef.current = () => {
       const newTrackOffset = toRelativePosition(
         track.getBoundingClientRect(),
         containingBlock ? containingBlock.getBoundingClientRect() : viewportRect
       );
-      setInlineStyle({
+      setPopoverStyle({
         top: newTrackOffset.top + trackRelativeOffset.top,
         left: newTrackOffset.left + trackRelativeOffset.left,
       });
@@ -168,12 +174,12 @@ export default function PopoverContainer({
     };
   }, [updatePositionHandler]);
 
-  const mergedRef = useMergeRefs(bodyRef, ref);
+  const mergedRef = useMergeRefs(popoverRef, ref);
 
   return (
     <div
       ref={mergedRef}
-      style={{ ...inlineStyle, zIndex }}
+      style={{ ...popoverStyle, zIndex }}
       className={clsx(styles.container, isRefresh && styles.refresh)}
     >
       <div
@@ -183,7 +189,8 @@ export default function PopoverContainer({
       >
         {arrow(internalPosition)}
       </div>
-      {children}
+
+      {children(bodyStyle)}
     </div>
   );
 }

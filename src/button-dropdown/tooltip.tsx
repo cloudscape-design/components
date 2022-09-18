@@ -36,19 +36,22 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
               renderWithPortal={true}
               zIndex={7000}
             >
-              <PopoverBody
-                size="small"
-                fixedWidth={false}
-                dismissButton={false}
-                dismissAriaLabel={undefined}
-                header={null}
-                onDismiss={() => {}}
-                overflowVisible="both"
-              >
-                <span data-testid="button-dropdown-disabled-reason" role="tooltip">
-                  {content}
-                </span>
-              </PopoverBody>
+              {style => (
+                <PopoverBody
+                  size="small"
+                  fixedWidth={false}
+                  dismissButton={false}
+                  dismissAriaLabel={undefined}
+                  header={null}
+                  onDismiss={() => {}}
+                  overflowVisible="both"
+                  style={style}
+                >
+                  <span data-testid="button-dropdown-disabled-reason" role="tooltip">
+                    {content}
+                  </span>
+                </PopoverBody>
+              )}
             </PopoverContainer>
           </span>
         </Portal>

@@ -72,7 +72,7 @@ export default function () {
               </div>
             )}
           >
-            <div id={`content-${hoverId}`}>Content {hoverId}</div>
+            {() => <div id={`content-${hoverId}`}>Content {hoverId}</div>}
           </PopoverContainer>
         ) : null}
       </ScreenshotArea>

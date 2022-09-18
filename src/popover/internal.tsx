@@ -124,17 +124,20 @@ function InternalPopover(
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
         >
-          <PopoverBody
-            size={size}
-            fixedWidth={fixedWidth}
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            header={header}
-            onDismiss={onDismiss}
-            overflowVisible="both"
-          >
-            {content}
-          </PopoverBody>
+          {style => (
+            <PopoverBody
+              size={size}
+              fixedWidth={fixedWidth}
+              dismissButton={dismissButton}
+              dismissAriaLabel={dismissAriaLabel}
+              header={header}
+              onDismiss={onDismiss}
+              overflowVisible="both"
+              style={style}
+            >
+              {content}
+            </PopoverBody>
+          )}
         </PopoverContainer>
       )}
     </span>
