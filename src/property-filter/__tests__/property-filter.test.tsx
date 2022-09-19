@@ -539,22 +539,25 @@ describe('property filter parts', () => {
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         const valueSelectWrapper = findValueSelector(contentWrapper);
 
+        // Change operator
+        act(() => operatorSelectWrapper.openDropdown());
+        act(() => operatorSelectWrapper.selectOption(1));
+        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
+        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
+
+        // Change value
+        act(() => valueSelectWrapper.setInputValue('123'));
+        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
+        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+
+        // Change property
         act(() => propertySelectWrapper.openDropdown());
         act(() => propertySelectWrapper.selectOption(2));
         expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
-        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent(':Contains');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
-
-        act(() => operatorSelectWrapper.openDropdown());
-        act(() => operatorSelectWrapper.selectOption(1));
-        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
         expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
-
-        act(() => valueSelectWrapper.setInputValue('123'));
-        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
-        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '');
       });
       test('might change the operation if the old one is not supported, when switching the property', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -633,14 +636,14 @@ describe('property filter parts', () => {
         );
       });
       test('submit button closes the popover and saves the changes', () => {
-        const valueAutosuggestWrapper = findValueSelector(contentWrapper);
-        act(() => valueAutosuggestWrapper.setInputValue('123'));
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         act(() => operatorSelectWrapper.openDropdown());
         act(() => operatorSelectWrapper.selectOption(1));
         const propertySelectWrapper = findPropertySelector(contentWrapper);
         act(() => propertySelectWrapper.openDropdown());
         act(() => propertySelectWrapper.selectOption(1));
+        const valueAutosuggestWrapper = findValueSelector(contentWrapper);
+        act(() => valueAutosuggestWrapper.setInputValue('123'));
 
         act(() => contentWrapper.findButton(`.${styles['token-editor-submit']}`)!.click());
         popoverWrapper = wrapper.findTokens()[0]!.find('*')!.findPopover()!;
