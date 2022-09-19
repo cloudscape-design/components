@@ -70,6 +70,38 @@ describe('calculatePosition', () => {
     const position = calculatePosition('bottom', trigger, arrow, body, container, viewport, true);
     expect(position.internalPosition).toBe('bottom-center');
   });
+
+  (
+    [
+      // bottom-right
+      [
+        { left: 200, top: 200, height: 25, width: 25 },
+        { width: 250, height: 1000 },
+      ],
+      // bottom-left
+      [
+        { left: 800, top: 200, height: 25, width: 25 },
+        { width: 250, height: 1000 },
+      ],
+      // top-right
+      [
+        { left: 200, top: 800, height: 25, width: 25 },
+        { width: 250, height: 1000 },
+      ],
+      // top-left
+      [
+        { left: 800, top: 800, height: 25, width: 25 },
+        { width: 250, height: 1000 },
+      ],
+    ] as const
+  ).forEach(([trigger, body], index) => {
+    test(`index=${index} returns scrollable=true if can't fit popover into viewport`, () => {
+      const position = calculatePosition('top', trigger, arrow, body, viewport, viewport);
+      expect(position.scrollable).toBe(true);
+      expect(position.boundingOffset.width).toBe(250);
+      expect(position.boundingOffset.height).toBeLessThan(1000);
+    });
+  });
 });
 
 describe('intersectRectangles', () => {
