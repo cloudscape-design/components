@@ -121,7 +121,6 @@ const Dropdown = ({
   preferCenter = false,
   interior = false,
   minWidth,
-  hasContent = true,
   scrollable = true,
   trapFocus = false,
   contentKey,
@@ -360,7 +359,7 @@ const Dropdown = ({
                 stretchWidth={stretchWidth}
                 interior={interior}
                 header={header}
-                hasContent={hasContent}
+                hasContent={!!children}
                 expandToViewport={expandToViewport}
                 footer={footer}
                 onMouseDown={onMouseDown}

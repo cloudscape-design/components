@@ -302,11 +302,10 @@ const AutosuggestInput = React.forwardRef(
             )
           }
           expandToViewport={expandToViewport}
-          hasContent={!!dropdownContent}
           trapFocus={trapDropdownFocus}
         >
           <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-            {open && dropdownContent}
+            {open ? dropdownContent : null}
           </div>
         </Dropdown>
       </div>
