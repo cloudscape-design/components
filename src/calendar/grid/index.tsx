@@ -96,6 +96,7 @@ const Grid = ({
       </div>
       <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
+          const isDateInLastWeek = weeks.length - 1 === weekIndex;
           return (
             <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
               {week.map((date, dateIndex) => {
@@ -110,6 +111,7 @@ const Grid = ({
                     todayAriaLabel={todayAriaLabel}
                     onSelectDate={date => onSelectDate(date)}
                     isDateEnabled={isDateEnabled}
+                    isDateInLastWeek={isDateInLastWeek}
                   />
                 );
               })}
