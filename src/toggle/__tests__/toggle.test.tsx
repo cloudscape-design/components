@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
+import FormField from '../../../lib/components/form-field';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
+import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
+import { joinStrings } from '../../../lib/components/internal/utils/strings/join-strings';
 import '../../__a11y__/to-validate-a11y';
 
 function renderToggle(jsx: React.ReactElement) {
@@ -99,4 +102,56 @@ test('check a11y', async () => {
     </Toggle>
   );
   await expect(wrapper.getElement()).toValidateA11y();
+});
+
+test('Should set aria-describedby and aria-labelledby from Formfield', () => {
+  const { container } = render(
+    <FormField description="This is a formfield description." label="Form field label">
+      <Toggle checked={false} description="This is description">
+        Toggle label
+      </Toggle>
+    </FormField>
+  );
+  const formFieldWrapper = createWrapper(container).findFormField();
+  const toggleWrapper = createWrapper(container).findToggle()!;
+  const toggleAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const toggleAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  expect(toggleAriaDescribedby).toBe(
+    joinStrings(
+      formFieldWrapper?.findDescription()?.getElement().id,
+      container?.querySelector(`.${abstractSwitchStyles.description}`)?.id
+    )
+  );
+  expect(toggleAriaLabelledby).toBe(
+    joinStrings(
+      container?.querySelector(`.${abstractSwitchStyles.label}`)?.id,
+      formFieldWrapper?.findLabel()?.getElement().id
+    )
+  );
+});
+
+test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ariaDescribedby', () => {
+  const { container } = render(
+    <FormField description="This is a description." label="Form field label">
+      <div id="label-id">it is label</div>
+      <div id="description-id">it is label</div>
+      <Toggle
+        checked={false}
+        description="This is description"
+        ariaLabelledby="label-id"
+        ariaDescribedby="description-id"
+      />
+    </FormField>
+  );
+  const toggleWrapper = createWrapper(container).findToggle()!;
+  const toggleAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const toggleAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  expect(toggleAriaDescribedby).toBe(
+    joinStrings('description-id', container?.querySelector(`.${abstractSwitchStyles.description}`)?.id)
+  );
+  expect(toggleAriaLabelledby).toBe(
+    joinStrings(container?.querySelector(`.${abstractSwitchStyles.label}`)?.id, 'label-id')
+  );
 });

@@ -3,8 +3,11 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
+import FormField from '../../../lib/components/form-field';
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
+import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
+import { joinStrings } from '../../../lib/components/internal/utils/strings/join-strings';
 import { createCommonTests } from './common-tests';
 
 function renderCheckbox(jsx: React.ReactElement) {
@@ -153,5 +156,73 @@ test('does not trigger any change events when value is changed through api', () 
   expect(wrapper.findNativeInput().getElement()).toBeChecked();
 
   rerender(<Checkbox checked={false} onChange={onChange} />);
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+test('Should set aria-describedby and aria-labelledby from Formfield', () => {
+  const { container } = render(
+    <FormField description="This is a formfield description." label="Form field label">
+      <Checkbox checked={false} description="This is description">
+        Checkbox label
+      </Checkbox>
+    </FormField>
+  );
+  const formFieldWrapper = createWrapper(container).findFormField();
+  const checkboxWrapper = createWrapper(container).findCheckbox()!;
+  const checkboxAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  expect(checkboxAriaDescribedby).toBe(
+    joinStrings(
+      formFieldWrapper?.findDescription()?.getElement().id,
+      container?.querySelector(`.${abstractSwitchStyles.description}`)?.id
+    )
+  );
+  expect(checkboxAriaLabelledby).toBe(
+    joinStrings(
+      container?.querySelector(`.${abstractSwitchStyles.label}`)?.id,
+      formFieldWrapper?.findLabel()?.getElement().id
+    )
+  );
+});
+
+test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ariaDescribedby', () => {
+  const { container } = render(
+    <FormField description="This is a description." label="Form field label">
+      <div id="label-id">it is label</div>
+      <div id="description-id">it is label</div>
+      <Checkbox
+        checked={false}
+        description="This is description"
+        ariaLabelledby="label-id"
+        ariaDescribedby="description-id"
+      >
+        Checkbox label
+      </Checkbox>
+    </FormField>
+  );
+  const checkboxWrapper = createWrapper(container).findCheckbox()!;
+  const checkboxAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  expect(checkboxAriaDescribedby).toBe(
+    joinStrings('description-id', container?.querySelector(`.${abstractSwitchStyles.description}`)?.id)
+  );
+  expect(checkboxAriaLabelledby).toBe(
+    joinStrings(container?.querySelector(`.${abstractSwitchStyles.label}`)?.id, 'label-id')
+  );
+});
+
+test('clicking on formfield label area wont call onchange', () => {
+  const onChange = jest.fn();
+  const { container } = render(
+    <FormField description="This is a formfield description." label="Form field label">
+      <Checkbox checked={false} description="This is description" onChange={onChange}>
+        Checkbox label
+      </Checkbox>
+    </FormField>
+  );
+  const formFieldWrapper = createWrapper(container).findFormField();
+  formFieldWrapper!.findLabel()!.click();
   expect(onChange).not.toHaveBeenCalled();
 });
