@@ -8,7 +8,6 @@ import FormField from '../../../lib/components/form-field';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
 import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
-import { joinStrings } from '../../../lib/components/internal/utils/strings/join-strings';
 import '../../__a11y__/to-validate-a11y';
 
 function renderToggle(jsx: React.ReactElement) {
@@ -114,21 +113,16 @@ test('Should set aria-describedby and aria-labelledby from Formfield', () => {
   );
   const formFieldWrapper = createWrapper(container).findFormField();
   const toggleWrapper = createWrapper(container).findToggle()!;
-  const toggleAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
-  const toggleAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+  const toggleInputAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const toggleInputAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
 
-  expect(toggleAriaDescribedby).toBe(
-    joinStrings(
-      formFieldWrapper?.findDescription()?.getElement().id,
-      container?.querySelector(`.${abstractSwitchStyles.description}`)?.id
-    )
-  );
-  expect(toggleAriaLabelledby).toBe(
-    joinStrings(
-      container?.querySelector(`.${abstractSwitchStyles.label}`)?.id,
-      formFieldWrapper?.findLabel()?.getElement().id
-    )
-  );
+  const formFieldLabelId = formFieldWrapper?.findLabel()?.getElement().id;
+  const formFieldDescriptionId = formFieldWrapper?.findDescription()?.getElement().id;
+  const toggleLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const toggleDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(toggleInputAriaLabelledby).toBe(toggleLabelId + ' ' + formFieldLabelId);
+  expect(toggleInputAriaDescribedby).toBe(formFieldDescriptionId + ' ' + toggleDescriptionId);
 });
 
 test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ariaDescribedby', () => {
@@ -141,17 +135,18 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
         description="This is description"
         ariaLabelledby="label-id"
         ariaDescribedby="description-id"
-      />
+      >
+        Toggle label
+      </Toggle>
     </FormField>
   );
   const toggleWrapper = createWrapper(container).findToggle()!;
-  const toggleAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
-  const toggleAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+  const toggleInputAriaDescribedby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const toggleInputAriaLabelledby = toggleWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
 
-  expect(toggleAriaDescribedby).toBe(
-    joinStrings('description-id', container?.querySelector(`.${abstractSwitchStyles.description}`)?.id)
-  );
-  expect(toggleAriaLabelledby).toBe(
-    joinStrings(container?.querySelector(`.${abstractSwitchStyles.label}`)?.id, 'label-id')
-  );
+  const toggleLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const toggleDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(toggleInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
+  expect(toggleInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
 });

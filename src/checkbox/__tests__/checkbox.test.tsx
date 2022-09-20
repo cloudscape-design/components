@@ -7,7 +7,6 @@ import FormField from '../../../lib/components/form-field';
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
 import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
-import { joinStrings } from '../../../lib/components/internal/utils/strings/join-strings';
 import { createCommonTests } from './common-tests';
 
 function renderCheckbox(jsx: React.ReactElement) {
@@ -169,21 +168,16 @@ test('Should set aria-describedby and aria-labelledby from Formfield', () => {
   );
   const formFieldWrapper = createWrapper(container).findFormField();
   const checkboxWrapper = createWrapper(container).findCheckbox()!;
-  const checkboxAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
-  const checkboxAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+  const checkboxInputAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxInputAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
 
-  expect(checkboxAriaDescribedby).toBe(
-    joinStrings(
-      formFieldWrapper?.findDescription()?.getElement().id,
-      container?.querySelector(`.${abstractSwitchStyles.description}`)?.id
-    )
-  );
-  expect(checkboxAriaLabelledby).toBe(
-    joinStrings(
-      container?.querySelector(`.${abstractSwitchStyles.label}`)?.id,
-      formFieldWrapper?.findLabel()?.getElement().id
-    )
-  );
+  const formFieldLabelId = formFieldWrapper?.findLabel()?.getElement().id;
+  const formFieldDescriptionId = formFieldWrapper?.findDescription()?.getElement().id;
+  const checkboxLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const checkboxDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(checkboxInputAriaDescribedby).toBe(formFieldDescriptionId + ' ' + checkboxDescriptionId);
+  expect(checkboxInputAriaLabelledby).toBe(checkboxLabelId + ' ' + formFieldLabelId);
 });
 
 test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ariaDescribedby', () => {
@@ -202,15 +196,14 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
     </FormField>
   );
   const checkboxWrapper = createWrapper(container).findCheckbox()!;
-  const checkboxAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
-  const checkboxAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+  const checkboxInputAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxInputAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
 
-  expect(checkboxAriaDescribedby).toBe(
-    joinStrings('description-id', container?.querySelector(`.${abstractSwitchStyles.description}`)?.id)
-  );
-  expect(checkboxAriaLabelledby).toBe(
-    joinStrings(container?.querySelector(`.${abstractSwitchStyles.label}`)?.id, 'label-id')
-  );
+  const toggleLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const toggleDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(checkboxInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
+  expect(checkboxInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
 });
 
 test('clicking on formfield label area wont call onchange', () => {
