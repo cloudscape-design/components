@@ -54,9 +54,7 @@ describe('FormField component', () => {
           const wrapper = renderFormField(props);
 
           expect(finder(wrapper)?.getElement()).toHaveTextContent('this is a formatted value');
-          expect(finder(wrapper)?.getElement().innerHTML).toEqual(
-            '<div>this is a <strong>formatted</strong> value</div>'
-          );
+          expect(finder(wrapper)?.getElement()).toContainHTML('<div>this is a <strong>formatted</strong> value</div>');
         });
 
         test(`${slot} re-renders content correctly`, () => {
@@ -89,6 +87,20 @@ describe('FormField component', () => {
     expect(labelElement).not.toBeNull();
     expect(labelElement?.getElement()).toHaveTextContent(testLabel);
     expect(labelElement?.getElement().tagName).toBe('LABEL');
+  });
+
+  test('errorIcon has an accessible text alternative', () => {
+    const errorText = 'Yikes, that is just plan wrong';
+    const errorIconAriaLabel = 'Error';
+    const wrapper = renderFormField({
+      errorText,
+      i18nStrings: { errorIconAriaLabel },
+    });
+
+    const errorLabel = wrapper.find(`:scope [aria-label]`);
+
+    expect(errorLabel?.getElement()).not.toBeNull();
+    expect(errorLabel?.getElement()).toHaveAttribute('aria-label', errorIconAriaLabel);
   });
 
   test('constraintText region displays constraint content text when error-text is also set', () => {
