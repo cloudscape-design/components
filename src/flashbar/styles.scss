@@ -2,10 +2,11 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/styles' as styles;
 @use './motion';
+
 .flashbar {
   position: relative;
 }
@@ -121,4 +122,35 @@
 
 .flash-type-info {
   background-color: awsui.$color-background-notification-blue;
+}
+
+.stacking-option {
+  margin: #{awsui.$space-xs} 0;
+}
+
+// Enabled Flashbar Stacking
+
+.stack {
+  display: grid;
+  grid-template-rows: repeat(var(#{custom-props.$flashbarStackDepth}), minmax(8px, auto));
+  grid-template-columns: repeat(var(#{custom-props.$flashbarStackDepth}), 12px) 1fr repeat(
+      var(#{custom-props.$flashbarStackDepth}),
+      12px
+    );
+
+  > .item {
+    grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+    grid-column-end: calc(var(#{custom-props.$flashbarStackDepth}) * 2 + 2 - var(#{custom-props.$flashbarStackIndex}));
+    grid-row-start: 1;
+    grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+    z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
+  }
+
+  > .item:not(:first-of-type) {
+    align-self: end;
+  }
+
+  > .item:not(:last-of-type) > :first-child {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 }
