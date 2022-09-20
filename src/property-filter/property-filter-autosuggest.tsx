@@ -156,21 +156,23 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        dropdownExpanded={autosuggestItemsState.items.length > 1}
+        dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
         dropdownContent={
-          <AutosuggestOptionsList
-            autosuggestItemsState={autosuggestItemsState}
-            autosuggestItemsHandlers={autosuggestItemsHandlers}
-            highlightedOptionId={highlightedOptionId}
-            highlightText={highlightText}
-            listId={listId}
-            controlId={controlId}
-            enteredTextLabel={enteredTextLabel}
-            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            virtualScroll={virtualScroll}
-            listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-          />
+          autosuggestItemsState.items.length > 0 ? (
+            <AutosuggestOptionsList
+              autosuggestItemsState={autosuggestItemsState}
+              autosuggestItemsHandlers={autosuggestItemsHandlers}
+              highlightedOptionId={highlightedOptionId}
+              highlightText={highlightText}
+              listId={listId}
+              controlId={controlId}
+              enteredTextLabel={enteredTextLabel}
+              handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              virtualScroll={virtualScroll}
+              listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+            />
+          ) : null
         }
         dropdownFooter={
           dropdownStatus.isSticky ? (
