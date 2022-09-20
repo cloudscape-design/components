@@ -32,7 +32,7 @@ export function yesNoFormat(value: null | boolean) {
 
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
   // Using the most reasonable default time per operator.
-  const defaultTime = operator === '<' || operator === '>=' ? '00:00:00' : '23:59:59';
+  const defaultTime = operator === '<' || operator === '>=' ? undefined : '23:59:59';
   const { dateValue, timeValue } = value !== filter ? parseValue(value, defaultTime) : parseValue(filter, defaultTime);
 
   // Sync filter and value allowing the filter value to be submitted.
@@ -55,11 +55,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   // Always use 00:00:00 as default if the input was tocuhed to avoid user confusion.
   const onChangeTime = (timeValue: string) => {
     if (dateValue) {
-      if (!timeValue) {
-        onChange(dateValue + 'T' + '00:00:00');
-      } else {
-        onChange(dateValue + 'T' + timeValue);
-      }
+      onChange(dateValue + 'T' + timeValue || '00:00:00');
     }
   };
 
@@ -102,17 +98,13 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
     [filter]
   );
 
-  const onChangeDate = (dateValue: string) => {
-    onChange(dateValue || null);
-  };
-
   return (
     <div className={styles['date-form']}>
       <FormField>
         <DateInput
           name="date"
           placeholder="YYYY/MM/DD"
-          onChange={event => onChangeDate(event.detail.value)}
+          onChange={event => onChange(event.detail.value || null)}
           value={dateValue}
         />
       </FormField>
@@ -123,7 +115,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         previousMonthAriaLabel="Previous month"
         nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
-        onChange={event => onChangeDate(event.detail.value)}
+        onChange={event => onChange(event.detail.value || null)}
       />
     </div>
   );
@@ -134,13 +126,16 @@ export function formatDateTime(isoDate: string): string {
 }
 
 // Split value in date and time parts and provide masking if needed.
-function parseValue(value: null | string, defaultTime = '00:00:00'): { dateValue: string; timeValue: string } {
+function parseValue(value: null | string, defaultTime = ''): { dateValue: string; timeValue: string } {
   const [datePart = '', timePart = ''] = (value ?? '').split('T');
   const [year] = datePart.split('-');
   return { dateValue: Number(year) < 9999 ? datePart : '', timeValue: timePart || defaultTime };
 }
 
-function formatTimezoneOffset(isoDate: string, offsetInMinutes: number = 0 - new Date(isoDate).getTimezoneOffset()) {
+function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
+  // Using default browser offset if not explicitly specified.
+  offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
+
   const sign = offsetInMinutes < 0 ? '-' : '+';
   const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60)
     .toFixed(0)
