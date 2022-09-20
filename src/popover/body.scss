@@ -11,19 +11,18 @@
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
 
-  box-sizing: border-box;
-  border-radius: awsui.$border-radius-popover;
-
-  background-color: awsui.$color-background-popover;
-  box-shadow: awsui.$shadow-popover;
-  border: awsui.$border-field-width solid awsui.$color-border-popover;
   &-overflow-visible {
     overflow: visible;
   }
 }
 
 .body-content {
+  border-radius: awsui.$border-radius-popover;
   padding: awsui.$space-s awsui.$space-m;
+
+  background-color: awsui.$color-background-popover;
+  box-shadow: awsui.$shadow-popover;
+  border: awsui.$border-field-width solid awsui.$color-border-popover;
 }
 
 .variant-annotation {
