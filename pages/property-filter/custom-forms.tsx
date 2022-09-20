@@ -36,15 +36,11 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   const [{ dateValue, timeValue }, setState] = useState(parseValue(value ?? '', defaultTime));
 
   const onChangeDate = (dateValue: string) => {
-    if (!dateValue) {
-      setState({ dateValue: '', timeValue: '' });
-    } else {
-      setState(state => ({ ...state, dateValue }));
-    }
+    setState(state => ({ ...state, dateValue }));
   };
 
   const onChangeTime = (timeValue: string) => {
-    setState(state => (state.dateValue ? { ...state, timeValue } : state));
+    setState(state => ({ ...state, timeValue }));
   };
 
   // Parse value from filter text when it changes.
@@ -59,10 +55,12 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
   // Call onChange only when the value is valid.
   useEffect(
     () => {
+      const dateAndTimeValue = dateValue + 'T' + (timeValue || '00:00:00');
+
       if (!dateValue.trim()) {
         onChange(null);
-      } else if (isValidIsoDate(dateValue + 'T' + timeValue)) {
-        onChange(dateValue + 'T' + timeValue);
+      } else if (isValidIsoDate(dateAndTimeValue)) {
+        onChange(dateAndTimeValue);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,8 +97,8 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
 export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
   const [{ dateValue }, setState] = useState(parseValue(value ?? ''));
 
-  const onChangeDate = (isoDate: string) => {
-    setState({ dateValue: isoDate, timeValue: '' });
+  const onChangeDate = (dateValue: string) => {
+    setState(state => ({ ...state, dateValue }));
   };
 
   // Parse value from filter text when it changes.
