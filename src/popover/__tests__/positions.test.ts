@@ -96,11 +96,23 @@ describe('calculatePosition', () => {
     ] as const
   ).forEach(([trigger, body], index) => {
     test(`index=${index} returns scrollable=true if can't fit popover into viewport`, () => {
-      const position = calculatePosition('top', trigger, arrow, body, viewport, viewport);
+      const container = { ...viewport, height: viewport.height * 2 };
+      const position = calculatePosition('top', trigger, arrow, body, container, viewport, true);
       expect(position.scrollable).toBe(true);
       expect(position.boundingOffset.width).toBe(250);
-      expect(position.boundingOffset.height).toBeLessThan(1000);
+      expect(position.boundingOffset.height).toBeLessThan(900);
     });
+  });
+
+  test('Prefers container over viewport when fitting the body if it is larger and renderWithPortal = false', () => {
+    const container = { ...viewport, height: viewport.height + 100 };
+    const trigger = { left: 200, top: 200, height: 25, width: 25 };
+    const body = { width: 250, height: 1000 };
+    const position = calculatePosition('top', trigger, arrow, body, container, viewport);
+    expect(position.scrollable).toBe(true);
+    expect(position.boundingOffset.width).toBe(250);
+    expect(position.boundingOffset.height).toBeGreaterThan(900);
+    expect(position.boundingOffset.height).toBeLessThan(1000);
   });
 });
 
