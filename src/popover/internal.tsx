@@ -124,7 +124,7 @@ function InternalPopover(
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
         >
-          {style => (
+          {(style, contentRef) => (
             <PopoverBody
               size={size}
               fixedWidth={fixedWidth}
@@ -134,6 +134,7 @@ function InternalPopover(
               onDismiss={onDismiss}
               overflowVisible="both"
               style={style}
+              contentRef={contentRef}
             >
               {content}
             </PopoverBody>

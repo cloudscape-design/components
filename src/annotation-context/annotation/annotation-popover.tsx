@@ -98,7 +98,7 @@ export function AnnotationPopover({
         arrow={arrow}
         zIndex={1000}
       >
-        {style => (
+        {(style, contentRef) => (
           <PopoverBody
             size="medium"
             fixedWidth={false}
@@ -119,6 +119,7 @@ export function AnnotationPopover({
             variant="annotation"
             overflowVisible="content"
             dismissButtonRef={dismissButtonRefCallback}
+            contentRef={contentRef}
             style={style}
           >
             <InternalSpaceBetween size="s">

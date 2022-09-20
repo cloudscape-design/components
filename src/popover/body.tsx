@@ -25,6 +25,7 @@ export interface PopoverBodyProps {
   returnFocus?: boolean;
   overflowVisible?: 'content' | 'both';
 
+  contentRef: React.Ref<HTMLDivElement>;
   dismissButtonRef?: React.Ref<ButtonProps.Ref>;
 
   className?: string;
@@ -42,6 +43,7 @@ export default function PopoverBody({
   variant,
   returnFocus = true,
   overflowVisible,
+  contentRef,
   dismissButtonRef,
   className,
   style,
@@ -84,22 +86,24 @@ export default function PopoverBody({
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
-        {header && (
-          <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
-            {dismissButton}
-            <div className={styles.header} id={labelledById}>
-              <h2>{header}</h2>
+      <div ref={contentRef} className={styles['body-content']}>
+        <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+          {header && (
+            <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
+              {dismissButton}
+              <div className={styles.header} id={labelledById}>
+                <h2>{header}</h2>
+              </div>
+            </div>
+          )}
+          <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
+            {!header && dismissButton}
+            <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
+              {children}
             </div>
           </div>
-        )}
-        <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
-          {!header && dismissButton}
-          <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
-            {children}
-          </div>
-        </div>
-      </FocusLock>
+        </FocusLock>
+      </div>
     </div>
   );
 }

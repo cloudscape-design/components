@@ -36,7 +36,7 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
               renderWithPortal={true}
               zIndex={7000}
             >
-              {style => (
+              {(style, contentRef) => (
                 <PopoverBody
                   size="small"
                   fixedWidth={false}
@@ -46,6 +46,7 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
                   onDismiss={() => {}}
                   overflowVisible="both"
                   style={style}
+                  contentRef={contentRef}
                 >
                   <span data-testid="button-dropdown-disabled-reason" role="tooltip">
                     {content}

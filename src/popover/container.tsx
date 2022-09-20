@@ -27,7 +27,7 @@ export interface PopoverContainerProps {
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
-  children: (style: React.CSSProperties) => React.ReactNode;
+  children: (style: React.CSSProperties, contentRef: React.Ref<HTMLDivElement>) => React.ReactNode;
   renderWithPortal?: boolean;
 }
 
@@ -47,6 +47,8 @@ export default function PopoverContainer({
     return prev?.width === roundedRect.width && prev?.height === roundedRect.height ? prev : rect;
   }) as [ContainerQueryEntry | null, React.MutableRefObject<HTMLDivElement | null>];
 
+  // Content ref is used to measure the actual width/height of the content no matter if the container is scrollable or not.
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
 
@@ -60,7 +62,7 @@ export default function PopoverContainer({
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(() => {
-    if (!trackRef.current || !ref.current || !popoverRef.current || !arrowRef.current) {
+    if (!trackRef.current || !ref.current || !popoverRef.current || !contentRef.current || !arrowRef.current) {
       return;
     }
 
@@ -95,14 +97,8 @@ export default function PopoverContainer({
     const containingBlock = getContainingBlock(popover);
     const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
 
-    // Round up dimensions (IE11 doesn't handle subpixels too accurately)
-    const popoverRect = popover.getBoundingClientRect();
-    const popoverRectCeil = {
-      top: popoverRect.top,
-      left: popoverRect.left,
-      width: Math.ceil(popoverRect.width),
-      height: Math.ceil(popoverRect.height),
-    };
+    const contentRect = contentRef.current.getBoundingClientRect();
+    const contentBoundingBox = { width: contentRect.width, height: contentRect.height };
 
     // Calculate the arrow direction and viewport-relative position of the popover.
     const {
@@ -113,7 +109,7 @@ export default function PopoverContainer({
       position,
       trackRect,
       arrowRect,
-      popoverRectCeil,
+      contentBoundingBox,
       containingBlock ? containingBlockRect : getDocumentRect(document),
       viewportRect,
       renderWithPortal
@@ -190,7 +186,7 @@ export default function PopoverContainer({
         {arrow(internalPosition)}
       </div>
 
-      {children(bodyStyle)}
+      {children(bodyStyle, contentRef)}
     </div>
   );
 }

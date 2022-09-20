@@ -94,7 +94,7 @@ export default function ChartPopover({
           </div>
         )}
       >
-        {style => (
+        {(style, contentRef) => (
           <PopoverBody
             size={size}
             fixedWidth={fixedWidth}
@@ -104,6 +104,7 @@ export default function ChartPopover({
             header={title}
             onDismiss={onDismiss}
             style={style}
+            contentRef={contentRef}
           >
             {children}
           </PopoverBody>
