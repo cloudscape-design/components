@@ -29,6 +29,12 @@ export default function FlashbarPermutations() {
   return (
     <>
       <h1>Flashbar dismissal test</h1>
+      <p>
+        Click here to focus so we can tab to the content below{' '}
+        <button type="button" id="focus-target">
+          focus
+        </button>
+      </p>
       <ScreenshotArea disableAnimations={true}>
         <Flashbar items={items} />
       </ScreenshotArea>

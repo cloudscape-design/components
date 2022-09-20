@@ -548,22 +548,25 @@ describe('property filter parts', () => {
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         const valueSelectWrapper = findValueSelector(contentWrapper);
 
+        // Change operator
+        act(() => operatorSelectWrapper.openDropdown());
+        act(() => operatorSelectWrapper.selectOption(1));
+        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
+        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
+
+        // Change value
+        act(() => valueSelectWrapper.setInputValue('123'));
+        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string');
+        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+
+        // Change property
         act(() => propertySelectWrapper.openDropdown());
         act(() => propertySelectWrapper.selectOption(2));
         expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
-        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent(':Contains');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
-
-        act(() => operatorSelectWrapper.openDropdown());
-        act(() => operatorSelectWrapper.selectOption(1));
-        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
         expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', 'first');
-
-        act(() => valueSelectWrapper.setInputValue('123'));
-        expect(propertySelectWrapper.findTrigger().getElement()).toHaveTextContent('string-other');
-        expect(operatorSelectWrapper.findTrigger().getElement()).toHaveTextContent('=Equals');
-        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '123');
+        expect(valueSelectWrapper.findNativeInput().getElement()).toHaveAttribute('value', '');
       });
       test('might change the operation if the old one is not supported, when switching the property', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -642,14 +645,14 @@ describe('property filter parts', () => {
         );
       });
       test('submit button closes the popover and saves the changes', () => {
-        const valueAutosuggestWrapper = findValueSelector(contentWrapper);
-        act(() => valueAutosuggestWrapper.setInputValue('123'));
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         act(() => operatorSelectWrapper.openDropdown());
         act(() => operatorSelectWrapper.selectOption(1));
         const propertySelectWrapper = findPropertySelector(contentWrapper);
         act(() => propertySelectWrapper.openDropdown());
         act(() => propertySelectWrapper.selectOption(1));
+        const valueAutosuggestWrapper = findValueSelector(contentWrapper);
+        act(() => valueAutosuggestWrapper.setInputValue('123'));
 
         act(() => contentWrapper.findButton(`.${styles['token-editor-submit']}`)!.click());
         popoverWrapper = wrapper.findTokens()[0]!.find('*')!.findPopover()!;
@@ -885,6 +888,21 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()).toHaveLength(2);
       expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('index = EQ1');
       expect(wrapper.findTokens()[1].getElement()).toHaveTextContent('index != NEQ2');
+    });
+  });
+
+  describe('dropdown states', () => {
+    it('when free text filtering is allowed and no property is matched dropdown is visible but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: false });
+      wrapper.setInputValue('free-text');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
+    });
+    it('when free text filtering is not allowed and no property is matched dropdown is hidden but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
+      wrapper.setInputValue('free-text');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('');
     });
   });
 

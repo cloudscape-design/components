@@ -75,7 +75,7 @@ const AutosuggestInput = React.forwardRef(
       expandToViewport,
       ariaControls,
       ariaActivedescendant,
-      dropdownExpanded,
+      dropdownExpanded = true,
       dropdownContentKey,
       dropdownContentFocusable = false,
       dropdownContent = null,
@@ -209,7 +209,7 @@ const AutosuggestInput = React.forwardRef(
       }
     };
 
-    const expanded = open && (dropdownExpanded ?? !!dropdownContent);
+    const expanded = open && dropdownExpanded;
     const nativeAttributes = {
       name,
       placeholder,
@@ -302,12 +302,13 @@ const AutosuggestInput = React.forwardRef(
             )
           }
           expandToViewport={expandToViewport}
-          hasContent={expanded}
           trapFocus={trapDropdownFocus}
         >
-          <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-            {open && dropdownContent}
-          </div>
+          {open && dropdownContent ? (
+            <div ref={dropdownContentRef} className={styles['dropdown-content']}>
+              {dropdownContent}
+            </div>
+          ) : null}
         </Dropdown>
       </div>
     );

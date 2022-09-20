@@ -224,7 +224,7 @@ export function TokenEditor({
       temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
         ? temporaryToken.operator
         : allowedOperators[0];
-    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator });
+    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator, value: '' });
   };
 
   const operator = temporaryToken.operator;

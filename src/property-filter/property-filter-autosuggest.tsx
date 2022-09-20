@@ -159,10 +159,11 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        dropdownExpanded={autosuggestItemsState.items.length > 1}
+        dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={
-          customForm || (
+          customForm ||
+          (autosuggestItemsState.items.length > 0 ? (
             <AutosuggestOptionsList
               autosuggestItemsState={autosuggestItemsState}
               autosuggestItemsHandlers={autosuggestItemsHandlers}
@@ -176,7 +177,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
               virtualScroll={virtualScroll}
               listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
             />
-          )
+          ) : null)
         }
         dropdownFooter={
           dropdownStatus.isSticky ? (
