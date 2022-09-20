@@ -825,6 +825,7 @@ describe('property filter parts', () => {
       act(() => pageWrapper.findButton(`.${styles['property-editor-cancel']}`)!.click());
       expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
       expect(onChange).not.toBeCalled();
+      expect(wrapper.findNativeInput().getElement()).toHaveFocus();
 
       // Decrement value
       wrapper.setInputValue('index <');
@@ -841,6 +842,7 @@ describe('property filter parts', () => {
           },
         })
       );
+      expect(wrapper.findNativeInput().getElement()).toHaveFocus();
     });
 
     test('extended operator form takes chosen operator and entered filter text', () => {

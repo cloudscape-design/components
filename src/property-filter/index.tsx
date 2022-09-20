@@ -232,10 +232,12 @@ const PropertyFilter = React.forwardRef(
                   onCancel={() => {
                     setFilteringText('');
                     inputRef.current?.close();
+                    inputRef.current?.focus({ preventDropdown: true });
                   }}
                   onSubmit={token => {
                     addToken(token);
                     setFilteringText('');
+                    inputRef.current?.focus({ preventDropdown: true });
                     inputRef.current?.close();
                   }}
                 />
