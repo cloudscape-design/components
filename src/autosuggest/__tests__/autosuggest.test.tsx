@@ -173,6 +173,13 @@ describe('Dropdown states', () => {
       await expect(container).toValidateA11y();
     });
   });
+
+  it('when no options is matched the dropdown is shown but aria-expanded is false', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} statusType="finished" value="free-text" />);
+    wrapper.setInputValue('free-text');
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+  });
 });
 
 describe('a11y props', () => {

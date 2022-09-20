@@ -746,6 +746,21 @@ describe('property filter parts', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
   });
 
+  describe('dropdown states', () => {
+    it('when free text filtering is allowed and no property is matched dropdown is visible but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: false });
+      wrapper.setInputValue('free-text');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
+    });
+    it('when free text filtering is not allowed and no property is matched dropdown is hidden but aria-expanded is false', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
+      wrapper.setInputValue('free-text');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('');
+    });
+  });
+
   test('property filter input can be found with autosuggest selector', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findAutosuggest()!.getElement()).not.toBe(null);
