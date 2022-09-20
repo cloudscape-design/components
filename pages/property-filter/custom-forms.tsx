@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 import Calendar from '~components/calendar';
 import DateInput from '~components/date-input';
@@ -33,31 +33,41 @@ export function yesNoFormat(value: null | boolean) {
 export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOperatorFormProps<string>) {
   // Using the most reasonable default time per operator.
   const defaultTime = operator === '<' || operator === '>=' ? undefined : '23:59:59';
-  const { dateValue, timeValue } = value !== filter ? parseValue(value, defaultTime) : parseValue(filter, defaultTime);
+  const [{ dateValue, timeValue }, setState] = useState(parseValue(value ?? '', defaultTime));
 
-  // Sync filter and value allowing the filter value to be submitted.
+  const onChangeDate = (dateValue: string) => {
+    if (!dateValue) {
+      setState({ dateValue: '', timeValue: '' });
+    } else {
+      setState(state => ({ ...state, dateValue }));
+    }
+  };
+
+  const onChangeTime = (timeValue: string) => {
+    setState(state => (state.dateValue ? { ...state, timeValue } : state));
+  };
+
+  // Parse value from filter text when it changes.
   useEffect(
     () => {
-      filter && onChange(filter);
+      filter && setState(parseDateTimeFilter(filter.trim()));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filter]
   );
 
-  const onChangeDate = (dateValue: string) => {
-    if (!dateValue) {
-      onChange(null);
-    } else {
-      onChange(dateValue + 'T' + timeValue);
-    }
-  };
-
-  // Always use 00:00:00 as default if the input was tocuhed to avoid user confusion.
-  const onChangeTime = (timeValue: string) => {
-    if (dateValue) {
-      onChange(dateValue + 'T' + timeValue || '00:00:00');
-    }
-  };
+  // Call onChange only when the value is valid.
+  useEffect(
+    () => {
+      if (!dateValue.trim()) {
+        onChange(null);
+      } else if (isValidIsoDate(dateValue + 'T' + timeValue)) {
+        onChange(dateValue + 'T' + timeValue);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dateValue, timeValue]
+  );
 
   return (
     <div className={styles['date-time-form']}>
@@ -87,15 +97,28 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
 }
 
 export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
-  const { dateValue } = value !== filter ? parseValue(value) : parseValue(filter);
+  const [{ dateValue }, setState] = useState(parseValue(value ?? ''));
 
-  // Sync filter and value allowing the filter value to be submitted.
+  const onChangeDate = (isoDate: string) => {
+    setState({ dateValue: isoDate, timeValue: '' });
+  };
+
+  // Parse value from filter text when it changes.
+  useEffect(() => {
+    filter && setState(parseDateTimeFilter(filter.trim()));
+  }, [filter]);
+
+  // Call onChange only when the value is valid.
   useEffect(
     () => {
-      filter && onChange(filter);
+      if (!dateValue.trim()) {
+        onChange(null);
+      } else if (isValidIsoDate(dateValue)) {
+        onChange(dateValue);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filter]
+    [dateValue]
   );
 
   return (
@@ -104,7 +127,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         <DateInput
           name="date"
           placeholder="YYYY/MM/DD"
-          onChange={event => onChange(event.detail.value || null)}
+          onChange={event => onChangeDate(event.detail.value)}
           value={dateValue}
         />
       </FormField>
@@ -115,7 +138,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
         previousMonthAriaLabel="Previous month"
         nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
-        onChange={event => onChange(event.detail.value || null)}
+        onChange={event => onChangeDate(event.detail.value)}
       />
     </div>
   );
@@ -125,11 +148,28 @@ export function formatDateTime(isoDate: string): string {
   return isoDate ? isoDate + formatTimezoneOffset(isoDate) : '';
 }
 
-// Split value in date and time parts and provide masking if needed.
+function parseDateTimeFilter(filter: string): { dateValue: string; timeValue: string } {
+  const regexDate = /^(\d\d\d\d(-\d\d)?(-\d\d)?)(T\d\d(:\d\d)?(:\d\d)?)?/;
+  const dateTime = filter.match(regexDate)?.[0] || '';
+  const [dateValue, timeValue] = dateTime.split('T');
+
+  if (!timeValue) {
+    return { dateValue: isValidIsoDate(dateValue) ? dateValue : '', timeValue: ' ' };
+  }
+
+  const [hours = '00', minutes = '00', seconds = '00'] = timeValue.split(':');
+  return isValidIsoDate(dateValue + `T${hours}:${minutes}:${seconds}`)
+    ? { dateValue, timeValue }
+    : { dateValue: '', timeValue: '' };
+}
+
+function isValidIsoDate(isoDate: string): boolean {
+  return !isNaN(new Date(isoDate).getTime());
+}
+
 function parseValue(value: null | string, defaultTime = ''): { dateValue: string; timeValue: string } {
   const [datePart = '', timePart = ''] = (value ?? '').split('T');
-  const [year] = datePart.split('-');
-  return { dateValue: Number(year) < 9999 ? datePart : '', timeValue: timePart || defaultTime };
+  return { dateValue: datePart, timeValue: timePart || defaultTime };
 }
 
 function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
