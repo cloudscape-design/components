@@ -161,11 +161,6 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
 }
 
 .dropdown {
-  // There needs to be an outer container because we set a fixed width on the
-  // actual dropdown and calendar grid, so the scrollbar would mess up the
-  // widths.
-  overflow: auto;
-
   border-top: 1px solid #{awsui.$color-border-container-top};
   border-bottom: 1px solid #{awsui.$color-border-container-top};
   border-radius: awsui.$border-radius-dropdown;

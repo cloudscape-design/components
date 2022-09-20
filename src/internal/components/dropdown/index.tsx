@@ -88,14 +88,12 @@ const TransitionContent = ({
       onMouseDown={onMouseDown}
     >
       <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>
-        <div className={styles['ie11-wrapper']}>
-          <div ref={verticalContainerRef} className={styles['dropdown-content']}>
-            <DropdownContextProvider position={position}>
-              {header}
-              {children}
-              {footer}
-            </DropdownContextProvider>
-          </div>
+        <div ref={verticalContainerRef} className={styles['dropdown-content']}>
+          <DropdownContextProvider position={position}>
+            {header}
+            {children}
+            {footer}
+          </DropdownContextProvider>
         </div>
       </div>
     </div>
@@ -119,7 +117,6 @@ const Dropdown = ({
   preferCenter = false,
   interior = false,
   minWidth,
-  scrollable = true,
   trapFocus = false,
   contentKey,
 }: DropdownProps) => {
@@ -220,9 +217,7 @@ const Dropdown = ({
     const onDropdownOpen = () => {
       if (open && dropdownRef.current && triggerRef.current && verticalContainerRef.current) {
         // calculate scroll width only for dropdowns that has a scrollbar and ignore it for date picker components
-        if (scrollable) {
-          dropdownRef.current.classList.add(styles.nowrap);
-        }
+        dropdownRef.current.classList.add(styles.nowrap);
         setDropdownPosition(
           ...calculatePosition(
             dropdownRef.current,
@@ -239,9 +234,7 @@ const Dropdown = ({
           dropdownRef.current,
           verticalContainerRef.current
         );
-        if (scrollable) {
-          dropdownRef.current.classList.remove(styles.nowrap);
-        }
+        dropdownRef.current.classList.remove(styles.nowrap);
       }
     };
     onDropdownOpen();

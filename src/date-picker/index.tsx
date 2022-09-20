@@ -164,7 +164,6 @@ const DatePicker = React.forwardRef(
           onMouseDown={handleMouseDown}
           trigger={DateInputElement}
           expandToViewport={expandToViewport}
-          scrollable={false}
           dropdownId={dropdownId}
         >
           {isDropDownOpen && (
