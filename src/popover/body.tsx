@@ -20,7 +20,7 @@ export interface PopoverBodyProps {
   children: React.ReactNode;
   variant?: 'annotation';
   returnFocus?: boolean;
-  overflowVisible?: boolean;
+  overflowVisible?: 'content' | 'both';
 
   dismissButtonRef?: React.Ref<ButtonProps.Ref>;
 
@@ -66,7 +66,9 @@ export default function PopoverBody({
 
   return (
     <div
-      className={clsx(styles.body, className)}
+      className={clsx(styles.body, className, {
+        [styles['body-overflow-visible']]: overflowVisible === 'both',
+      })}
       role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}

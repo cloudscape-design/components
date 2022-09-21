@@ -31,7 +31,6 @@ export interface PopoverContainerProps {
   size: PopoverProps.Size;
   fixedWidth: boolean;
   variant?: 'annotation';
-  overflowVisible?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
@@ -47,7 +46,6 @@ export default function PopoverContainer({
   size,
   fixedWidth,
   variant,
-  overflowVisible,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -103,8 +101,12 @@ export default function PopoverContainer({
     const containingBlock = getContainingBlock(popover);
     const containingBlockRect = containingBlock ? containingBlock.getBoundingClientRect() : viewportRect;
 
+    const bodyBorderWidth = getBorderWidth(body);
     const contentRect = contentRef.current.getBoundingClientRect();
-    const contentBoundingBox = { width: contentRect.width, height: contentRect.height };
+    const contentBoundingBox = {
+      width: contentRect.width + 2 * bodyBorderWidth,
+      height: contentRect.height + 2 * bodyBorderWidth,
+    };
 
     // Calculate the arrow direction and viewport-relative position of the popover.
     const {
@@ -203,15 +205,16 @@ export default function PopoverContainer({
         className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
           [styles[`container-body-variant-${variant}`]]: variant,
-          [styles['container-body-overflow-visible']]: overflowVisible,
         })}
       >
-        <div ref={contentRef} className={styles['container-body-content']}>
-          {children}
-        </div>
+        <div ref={contentRef}>{children}</div>
       </div>
     </div>
   );
+}
+
+function getBorderWidth(element: HTMLElement) {
+  return parseInt(getComputedStyle(element).borderWidth) || 0;
 }
 
 /**

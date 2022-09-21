@@ -37,7 +37,7 @@ const permutations = createPermutations<PopoverBodyProps & { size: PopoverProps.
     // Required internal properties
     dismissAriaLabel: ['Close'],
     onDismiss: [noop],
-    overflowVisible: [true],
+    overflowVisible: ['both'],
   },
 ]);
 /* eslint-enable react/jsx-key */

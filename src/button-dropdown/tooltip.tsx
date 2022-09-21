@@ -37,14 +37,13 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
               arrow={position => <Arrow position={position} />}
               renderWithPortal={true}
               zIndex={7000}
-              overflowVisible={true}
             >
               <PopoverBody
                 dismissButton={false}
                 dismissAriaLabel={undefined}
                 header={null}
                 onDismiss={() => {}}
-                overflowVisible={true}
+                overflowVisible="both"
               >
                 <span data-testid="button-dropdown-disabled-reason" role="tooltip">
                   {content}

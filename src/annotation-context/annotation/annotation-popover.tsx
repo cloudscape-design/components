@@ -117,7 +117,7 @@ export function AnnotationPopover({
           onDismiss={onDismiss}
           className={styles.annotation}
           variant="annotation"
-          overflowVisible={true}
+          overflowVisible="content"
           dismissButtonRef={dismissButtonRefCallback}
         >
           <InternalSpaceBetween size="s">

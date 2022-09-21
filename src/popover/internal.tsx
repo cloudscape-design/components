@@ -125,14 +125,13 @@ function InternalPopover(
           arrow={position => <Arrow position={position} />}
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
-          overflowVisible={true}
         >
           <PopoverBody
             dismissButton={dismissButton}
             dismissAriaLabel={dismissAriaLabel}
             header={header}
             onDismiss={onDismiss}
-            overflowVisible={true}
+            overflowVisible="both"
           >
             {content}
           </PopoverBody>
