@@ -49,11 +49,11 @@ export default function () {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={({size, ...permutation }) => (
+          render={({ size, ...permutation }) => (
             <div
               style={{
-                width: sizeMap[permutation.size],
-                maxWidth: sizeMap[permutation.size],
+                width: sizeMap[size],
+                maxWidth: sizeMap[size],
               }}
             >
               <PopoverBody {...permutation} />
