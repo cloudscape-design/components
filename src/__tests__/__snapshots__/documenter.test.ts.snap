@@ -2943,6 +2943,18 @@ The event \`detail\` contains the current value of the field.",
   "name": "Calendar",
   "properties": Array [
     Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Defines whether a particular date is enabled in the calendar or not.
 If you disable a date in the calendar, users can still enter this date using a keyboard.
 We recommend that you also validate these constraints on the client-side and server-side

@@ -15,6 +15,9 @@ import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -27,14 +30,18 @@ export default function Calendar({
   nextMonthAriaLabel,
   previousMonthAriaLabel,
   onChange,
-}: CalendarProps) {
+  __internalRootRef,
+  ...rest
+}: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
+  const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
+  const ref = useMergeRefs(elementRef, __internalRootRef);
 
   // Set displayed date to value if defined or to current date otherwise.
   const memoizedValue = memoizedDate('value', value);
@@ -114,7 +121,7 @@ export default function Calendar({
   };
 
   return (
-    <div className={clsx(styles.root, styles.calendar)} ref={elementRef}>
+    <div ref={ref} {...baseProps} className={clsx(styles.root, styles.calendar, baseProps.className)}>
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}
