@@ -2,8 +2,8 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '../internal/styles/tokens' as awsui;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use './motion';
 
