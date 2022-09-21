@@ -49,7 +49,7 @@ export default function () {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
+          render={({size, ...permutation }) => (
             <div
               style={{
                 width: sizeMap[permutation.size],
