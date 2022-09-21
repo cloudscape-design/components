@@ -11,7 +11,6 @@ import styles from './styles.css.js';
 interface RadioButtonProps extends RadioGroupProps.RadioButtonDefinition {
   name: string;
   checked: boolean;
-  withoutLabel?: boolean;
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
 }
 
@@ -20,7 +19,6 @@ export default function RadioButton({
   label,
   value,
   checked,
-  withoutLabel,
   description,
   disabled,
   controlId,
@@ -43,9 +41,11 @@ export default function RadioButton({
           name={name}
           value={value}
           checked={checked}
-          onChange={onChange && (() => fireNonCancelableEvent(onChange, { value }))}
+          // empty handler to suppress React controllability warning
+          onChange={() => {}}
         />
       )}
+      onClick={() => !checked && fireNonCancelableEvent(onChange, { value })}
       styledControl={
         <svg viewBox="0 0 100 100" focusable="false" aria-hidden="true">
           <circle
@@ -67,7 +67,6 @@ export default function RadioButton({
           />
         </svg>
       }
-      withoutLabel={withoutLabel}
     />
   );
 }

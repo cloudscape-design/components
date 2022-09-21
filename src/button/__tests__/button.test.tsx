@@ -100,7 +100,6 @@ describe('Button Component', () => {
   describe('ariaExpanded property', () => {
     test('adds aria-expanded property to button', () => {
       const wrapper = renderButton({ ariaExpanded: true });
-      console.log(wrapper.getElement());
       expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
   });
