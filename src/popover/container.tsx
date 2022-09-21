@@ -143,8 +143,6 @@ export default function PopoverContainer({
     setInternalPosition(newInternalPosition);
     setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
 
-    // setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto', overflowX: 'hidden' } : {});
-
     positionHandlerRef.current = () => {
       const newTrackOffset = toRelativePosition(
         track.getBoundingClientRect(),
