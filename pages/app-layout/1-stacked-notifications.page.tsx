@@ -32,14 +32,7 @@ export default function () {
     newNotifications.push({
       type: 'success',
       id: Math.floor(Math.random() * 999999),
-      header: (
-        <div>
-          This is a very very very long flash message that will cause the notifications to wrap over multiple lines. I
-          hope it wont overlap with the breadcrumbs, that would be awkward. This is a very very very long flash message
-          that will cause the notifications to wrap over multiple lines. I hope it wont overlap with the breadcrumbs,
-          that would be awkward.
-        </div>
-      ),
+      header: 'This is a notification',
       statusIconAriaLabel: 'success',
     });
 
@@ -64,7 +57,7 @@ export default function () {
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-        notifications={<Flashbar items={notifications} />}
+        notifications={<Flashbar {...{ enableStackingOption: true }} items={notifications} />}
         content={
           <Table<Instance>
             header={
