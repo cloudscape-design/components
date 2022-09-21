@@ -18,12 +18,13 @@ export interface PopoverBodyProps {
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  returnFocus?: boolean;
   variant?: 'annotation';
-  className?: string;
+  returnFocus?: boolean;
   overflowVisible?: boolean;
 
   dismissButtonRef?: React.Ref<ButtonProps.Ref>;
+
+  className?: string;
 }
 
 export default function PopoverBody({
@@ -32,11 +33,11 @@ export default function PopoverBody({
   header,
   children,
   onDismiss,
-  returnFocus = true,
   variant,
-  className,
+  returnFocus = true,
   overflowVisible,
   dismissButtonRef,
+  className,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
 

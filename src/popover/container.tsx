@@ -197,7 +197,7 @@ export default function PopoverContainer({
       <div
         className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
-          [styles[`container-variant-${variant}`]]: variant,
+          [styles[`container-body-variant-${variant}`]]: variant,
           [styles['container-body-overflow-visible']]: overflowVisible,
         })}
         style={bodyStyle}
