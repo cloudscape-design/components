@@ -124,25 +124,84 @@
   background-color: awsui.$color-background-notification-blue;
 }
 
+// `enableStackingOption` feature beta test
+
+/*
+When conditionally rendered the isFlashbarStacked toggle will be the first 
+element in the AppLayout DOM for non-mobile viewports requiring additional 
+vertical space on top. In mobile viewports the appbar is lifted to the first 
+position and only bottom space is needed between the toggle and the first item.
+*/
 .stacking-option {
-  margin: #{awsui.$space-xs} 0;
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    margin: #{awsui.$space-xs} 0;
+  }
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    margin: 0 0 #{awsui.$space-xs};
+  }
 }
 
-// Enabled Flashbar Stacking
-
+/*
+The stack is a dynamic grid that creates the necessary number of rows and columns 
+based on the depth passed to CSS via the `flashbarStackDepth` custom property.
+*/
 .stack {
   display: grid;
-  grid-template-rows: repeat(var(#{custom-props.$flashbarStackDepth}), minmax(8px, auto));
-  grid-template-columns: repeat(var(#{custom-props.$flashbarStackDepth}), 12px) 1fr repeat(
-      var(#{custom-props.$flashbarStackDepth}),
-      12px
-    );
 
+  /*
+  The number of rows will be equal to the stack depth. The `minmax()` function will 
+  enable the first row height to be reactive to the size of the first item. Each 
+  subsequent row up to the limit (3 presently) will render a dummy notification with 
+  no content that will be no smaller than 8px to create an adequate visual overlap.
+  */
+  grid-template-rows: repeat(var(#{custom-props.$flashbarStackDepth}), minmax(8px, auto));
+
+  /*
+  The number of columns will be 2x the stack depth plus and additional column that will 
+  use a fractional unit to consume the remaining space in the grid. 
+  
+  Assuming the stack depth is 3 for explanatory purporses the column layout will be: 
+  [1] [2] [3] [fractional unit] [5] [6] [7]. 
+  
+  This allows each item index to be indented from both the left and the right the 
+  number of columns according to its position in the stack. In other words, the second 
+  index starts at column 2 (0 + 2) and ends at column 5 (7 - 2).
+  */
+  grid-template-columns:
+    repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
+    1fr
+    repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
+
+  /*
+  Each item will have a unique custom property `flashbarStackIndex` that is passed to CSS
+  from the DOM via the map in JavaScript.
+  */
   > .item {
+    /*
+    The column start position of each index will be incremented by one because the array 
+    is indexed at zero but grid positions at indexed at 1.
+    */
     grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+
+    /*
+    The column end position is computed based on the stack depth and item index. 
+    
+    Using the above example of the three item stack:
+    [1] [2] [3] [fractional unit] [5] [6] [7]
+
+    The third item will end at column 5 (3 * 2 + 2 - 3). The reason for the +2 is because
+    the fractional unit needs to be accounted for as well as CSS grid requiring the end 
+    column to be +1 inclusive of the grid target.
+    */
     grid-column-end: calc(var(#{custom-props.$flashbarStackDepth}) * 2 + 2 - var(#{custom-props.$flashbarStackIndex}));
     grid-row-start: 1;
     grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+
+    /*
+    The z-index is deprecated with each subsequent item because the first item should 
+    be visually above the later items even though they come after it in the grid.
+    */
     z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
   }
 
