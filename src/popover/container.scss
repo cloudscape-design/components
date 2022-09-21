@@ -3,12 +3,70 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$body-offset-vertical: calc(#{awsui.$space-s} + #{awsui.$border-field-width});
+$body-offset-horizontal: calc(#{awsui.$space-m} + #{awsui.$border-field-width});
+
 .container {
   display: inline-block;
   position: fixed;
   top: -9999px;
   left: -9999px;
   z-index: 2000;
+}
+
+.container-body {
+  @include styles.styles-reset;
+  @include styles.text-flex-wrapping;
+
+  border-radius: awsui.$border-radius-popover;
+  padding: awsui.$space-s awsui.$space-m;
+
+  background-color: awsui.$color-background-popover;
+  box-shadow: awsui.$shadow-popover;
+  border: awsui.$border-field-width solid awsui.$color-border-popover;
+
+  &-overflow-visible {
+    overflow: visible;
+  }
+}
+
+// The content border box needs to be the same as body border box for correct placement computation.
+.container-body-content {
+  padding: $body-offset-vertical $body-offset-horizontal;
+  margin: calc(-1 * #{$body-offset-vertical}) calc(-1 * #{$body-offset-horizontal});
+}
+
+.container-body-variant-annotation {
+  background-color: awsui.$color-background-status-info;
+  border-color: awsui.$color-border-status-info;
+}
+
+.container-body-size-small {
+  max-width: 210px;
+  &.fixed-width {
+    width: 210px;
+  }
+}
+
+.container-body-size-medium {
+  max-width: 310px;
+  &.fixed-width {
+    width: 310px;
+  }
+}
+
+.container-body-size-large {
+  max-width: 480px;
+  @media (max-width: 480px) {
+    // On viewports smaller than 480px, we default to the body-size-medium width
+    max-width: 310px;
+  }
+  &.fixed-width {
+    width: 480px;
+  }
 }
 
 .container-arrow {

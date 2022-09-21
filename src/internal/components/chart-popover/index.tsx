@@ -84,6 +84,8 @@ export default function ChartPopover({
       ref={popoverRef}
     >
       <PopoverContainer
+        size={size}
+        fixedWidth={fixedWidth}
         position={position}
         trackRef={trackRef}
         trackKey={trackKey}
@@ -94,21 +96,15 @@ export default function ChartPopover({
           </div>
         )}
       >
-        {(style, contentRef) => (
-          <PopoverBody
-            size={size}
-            fixedWidth={fixedWidth}
-            dismissButton={dismissButton}
-            dismissAriaLabel={dismissAriaLabel}
-            returnFocus={false}
-            header={title}
-            onDismiss={onDismiss}
-            style={style}
-            contentRef={contentRef}
-          >
-            {children}
-          </PopoverBody>
-        )}
+        <PopoverBody
+          dismissButton={dismissButton}
+          dismissAriaLabel={dismissAriaLabel}
+          returnFocus={false}
+          header={title}
+          onDismiss={onDismiss}
+        >
+          {children}
+        </PopoverBody>
       </PopoverContainer>
     </span>
   );

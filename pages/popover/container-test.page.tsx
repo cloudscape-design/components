@@ -62,6 +62,8 @@ export default function () {
 
         {hoverId ? (
           <PopoverContainer
+            size="small"
+            fixedWidth={false}
             position="bottom"
             trackRef={hoverRef}
             trackKey={hoverId}
@@ -72,11 +74,7 @@ export default function () {
               </div>
             )}
           >
-            {(style, contentRef) => (
-              <div ref={contentRef} id={`content-${hoverId}`} style={style}>
-                Content {hoverId}
-              </div>
-            )}
+            <div id={`content-${hoverId}`}>Content {hoverId}</div>
           </PopoverContainer>
         ) : null}
       </ScreenshotArea>

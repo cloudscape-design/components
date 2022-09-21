@@ -27,8 +27,12 @@ export interface PopoverContainerProps {
   position: PopoverProps.Position;
   zIndex?: React.CSSProperties['zIndex'];
   arrow: (position: InternalPosition | null) => React.ReactNode;
-  children: (style: React.CSSProperties, contentRef: React.Ref<HTMLDivElement>) => React.ReactNode;
+  children: React.ReactNode;
   renderWithPortal?: boolean;
+  size: PopoverProps.Size;
+  fixedWidth: boolean;
+  variant?: 'annotation';
+  overflowVisible?: boolean;
 }
 
 const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
@@ -41,6 +45,10 @@ export default function PopoverContainer({
   children,
   zIndex,
   renderWithPortal,
+  size,
+  fixedWidth,
+  variant,
+  overflowVisible,
 }: PopoverContainerProps) {
   const [popoverRect, ref] = useContainerQuery((rect, prev) => {
     const roundedRect = { width: Math.round(rect.width), height: Math.round(rect.height) };
@@ -186,7 +194,18 @@ export default function PopoverContainer({
         {arrow(internalPosition)}
       </div>
 
-      {children(bodyStyle, contentRef)}
+      <div
+        className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
+          [styles['fixed-width']]: fixedWidth,
+          [styles[`container-variant-${variant}`]]: variant,
+          [styles['container-body-overflow-visible']]: overflowVisible,
+        })}
+        style={bodyStyle}
+      >
+        <div ref={contentRef} className={styles['container-body-content']}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

@@ -30,29 +30,26 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
         <Portal>
           <span className={portalClasses}>
             <PopoverContainer
+              size="small"
+              fixedWidth={false}
               position={position}
               trackRef={ref}
               arrow={position => <Arrow position={position} />}
               renderWithPortal={true}
               zIndex={7000}
+              overflowVisible={true}
             >
-              {(style, contentRef) => (
-                <PopoverBody
-                  size="small"
-                  fixedWidth={false}
-                  dismissButton={false}
-                  dismissAriaLabel={undefined}
-                  header={null}
-                  onDismiss={() => {}}
-                  overflowVisible="both"
-                  style={style}
-                  contentRef={contentRef}
-                >
-                  <span data-testid="button-dropdown-disabled-reason" role="tooltip">
-                    {content}
-                  </span>
-                </PopoverBody>
-              )}
+              <PopoverBody
+                dismissButton={false}
+                dismissAriaLabel={undefined}
+                header={null}
+                onDismiss={() => {}}
+                overflowVisible={true}
+              >
+                <span data-testid="button-dropdown-disabled-reason" role="tooltip">
+                  {content}
+                </span>
+              </PopoverBody>
             </PopoverContainer>
           </span>
         </Portal>

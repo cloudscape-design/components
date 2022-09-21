@@ -9,44 +9,34 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 
-import { PopoverProps } from './interfaces';
 import styles from './styles.css.js';
 
 export interface PopoverBodyProps {
-  size: PopoverProps.Size;
-  fixedWidth: boolean;
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
   onDismiss: () => void;
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  variant?: 'annotation';
   returnFocus?: boolean;
-  overflowVisible?: 'content' | 'both';
-
-  contentRef: React.Ref<HTMLDivElement>;
-  dismissButtonRef?: React.Ref<ButtonProps.Ref>;
-
+  variant?: 'annotation';
   className?: string;
-  style?: React.CSSProperties;
+  overflowVisible?: boolean;
+
+  dismissButtonRef?: React.Ref<ButtonProps.Ref>;
 }
 
 export default function PopoverBody({
-  size,
-  fixedWidth,
   dismissButton: showDismissButton,
   dismissAriaLabel,
   header,
   children,
   onDismiss,
-  variant,
   returnFocus = true,
-  overflowVisible,
-  contentRef,
-  dismissButtonRef,
+  variant,
   className,
-  style,
+  overflowVisible,
+  dismissButtonRef,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
 
@@ -75,35 +65,28 @@ export default function PopoverBody({
 
   return (
     <div
-      className={clsx(styles.body, className, styles[`body-size-${size}`], {
-        [styles['fixed-width']]: fixedWidth,
-        [styles[`variant-${variant}`]]: variant,
-        [styles['body-overflow-visible']]: overflowVisible === 'both',
-      })}
-      style={style}
+      className={clsx(styles.body, className)}
       role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <div ref={contentRef} className={styles['body-content']}>
-        <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
-          {header && (
-            <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
-              {dismissButton}
-              <div className={styles.header} id={labelledById}>
-                <h2>{header}</h2>
-              </div>
-            </div>
-          )}
-          <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
-            {!header && dismissButton}
-            <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
-              {children}
+      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+        {header && (
+          <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
+            {dismissButton}
+            <div className={styles.header} id={labelledById}>
+              <h2>{header}</h2>
             </div>
           </div>
-        </FocusLock>
-      </div>
+        )}
+        <div className={!header && showDismissButton ? styles['has-dismiss'] : undefined}>
+          {!header && dismissButton}
+          <div className={clsx(styles.content, { [styles['content-overflow-visible']]: !!overflowVisible })}>
+            {children}
+          </div>
+        </div>
+      </FocusLock>
     </div>
   );
 }

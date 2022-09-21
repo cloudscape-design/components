@@ -118,27 +118,24 @@ function InternalPopover(
     >
       {visible && (
         <PopoverContainer
+          size={size}
+          fixedWidth={fixedWidth}
           position={position}
           trackRef={triggerRef}
           arrow={position => <Arrow position={position} />}
           renderWithPortal={renderWithPortal}
           zIndex={renderWithPortal ? 7000 : undefined}
+          overflowVisible={true}
         >
-          {(style, contentRef) => (
-            <PopoverBody
-              size={size}
-              fixedWidth={fixedWidth}
-              dismissButton={dismissButton}
-              dismissAriaLabel={dismissAriaLabel}
-              header={header}
-              onDismiss={onDismiss}
-              overflowVisible="both"
-              style={style}
-              contentRef={contentRef}
-            >
-              {content}
-            </PopoverBody>
-          )}
+          <PopoverBody
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            header={header}
+            onDismiss={onDismiss}
+            overflowVisible={true}
+          >
+            {content}
+          </PopoverBody>
         </PopoverContainer>
       )}
     </span>
