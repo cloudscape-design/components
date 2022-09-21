@@ -8682,11 +8682,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
+      "description": "Deprecated, has no effect.",
       "name": "controlId",
       "optional": true,
       "type": "string",
