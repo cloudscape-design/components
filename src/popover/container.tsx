@@ -4,12 +4,11 @@ import React, { CSSProperties, useCallback, useLayoutEffect, useRef, useState } 
 import clsx from 'clsx';
 
 import { getContainingBlock, nodeContains } from '../internal/utils/dom';
-import { ContainerQueryEntry, useContainerQuery } from '../internal/hooks/container-queries';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 import { BoundingOffset, InternalPosition, Offset, PopoverProps } from './interfaces';
 import { calculatePosition } from './utils/positions';
 import styles from './styles.css.js';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export interface PopoverContainerProps {
   /** References the element the container is positioned against. */
@@ -50,11 +49,6 @@ export default function PopoverContainer({
   variant,
   overflowVisible,
 }: PopoverContainerProps) {
-  const [popoverRect, popoverQueryRef] = useContainerQuery((rect, prev) => {
-    const roundedRect = { width: Math.round(rect.width), height: Math.round(rect.height) };
-    return prev?.width === roundedRect.width && prev?.height === roundedRect.height ? prev : rect;
-  }) as [ContainerQueryEntry | null, React.MutableRefObject<HTMLDivElement | null>];
-
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
@@ -163,12 +157,15 @@ export default function PopoverContainer({
     };
   }, [position, trackRef, renderWithPortal]);
 
-  // Update the handler when properties change.
+  // Recalculate position when properties change.
   useLayoutEffect(() => {
     updatePositionHandler();
-  }, [updatePositionHandler, trackKey, popoverRect]);
+  }, [updatePositionHandler, trackKey]);
 
-  // Attach document listeners.
+  // Recalculate position when content size changes.
+  useResizeObserver(contentRef, () => updatePositionHandler());
+
+  // Recalculate position on DOM events.
   useLayoutEffect(() => {
     /*
       This is a heuristic. Some layout changes are caused by user clicks (e.g. toggling the tools panel, submitting a form),
@@ -189,11 +186,9 @@ export default function PopoverContainer({
     };
   }, [updatePositionHandler]);
 
-  const popoverMergedRef = useMergeRefs(popoverRef, popoverQueryRef);
-
   return (
     <div
-      ref={popoverMergedRef}
+      ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}
       className={clsx(styles.container, isRefresh && styles.refresh)}
     >
