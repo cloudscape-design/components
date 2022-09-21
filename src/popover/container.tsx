@@ -130,7 +130,7 @@ export default function PopoverContainer({
     // Position the popover
     setInternalPosition(newInternalPosition);
     setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
-    setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto' } : {});
+    setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto', overflowX: 'hidden' } : {});
 
     positionHandlerRef.current = () => {
       const newTrackOffset = toRelativePosition(

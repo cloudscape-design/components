@@ -7,24 +7,29 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
 
+$body-offset-vertical: calc(#{awsui.$space-s} + #{awsui.$border-field-width});
+$body-offset-horizontal: calc(#{awsui.$space-m} + #{awsui.$border-field-width});
+
 .body {
   @include styles.styles-reset;
   @include styles.text-flex-wrapping;
 
   border-radius: awsui.$border-radius-popover;
+  padding: awsui.$space-s awsui.$space-m;
+
+  background-color: awsui.$color-background-popover;
   box-shadow: awsui.$shadow-popover;
+  border: awsui.$border-field-width solid awsui.$color-border-popover;
 
   &-overflow-visible {
     overflow: visible;
   }
 }
 
+// The content border box needs to be the same as body border box for correct placement computation.
 .body-content {
-  border-radius: awsui.$border-radius-popover;
-  padding: awsui.$space-s awsui.$space-m;
-
-  background-color: awsui.$color-background-popover;
-  border: awsui.$border-field-width solid awsui.$color-border-popover;
+  padding: calc(#{$body-offset-vertical}) calc(#{$body-offset-horizontal});
+  margin: calc(-1 * #{$body-offset-vertical}) calc(-1 * #{$body-offset-horizontal});
 }
 
 .variant-annotation {
