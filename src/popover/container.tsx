@@ -50,18 +50,17 @@ export default function PopoverContainer({
   variant,
   overflowVisible,
 }: PopoverContainerProps) {
-  const [popoverRect, ref] = useContainerQuery((rect, prev) => {
+  const [popoverRect, popoverQueryRef] = useContainerQuery((rect, prev) => {
     const roundedRect = { width: Math.round(rect.width), height: Math.round(rect.height) };
     return prev?.width === roundedRect.width && prev?.height === roundedRect.height ? prev : rect;
   }) as [ContainerQueryEntry | null, React.MutableRefObject<HTMLDivElement | null>];
 
-  // Content ref is used to measure the actual width/height of the content no matter if the container is scrollable or not.
+  const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
 
   const [popoverStyle, setPopoverStyle] = useState<CSSProperties>(INITIAL_STYLES);
-  const [bodyStyle, setBodyStyle] = useState<CSSProperties>({});
   const [internalPosition, setInternalPosition] = useState<InternalPosition | null>(null);
   const isRefresh = useVisualRefresh();
 
@@ -70,14 +69,15 @@ export default function PopoverContainer({
 
   // Updates the position handler.
   const updatePositionHandler = useCallback(() => {
-    if (!trackRef.current || !ref.current || !popoverRef.current || !contentRef.current || !arrowRef.current) {
+    if (!trackRef.current || !popoverRef.current || !bodyRef.current || !contentRef.current || !arrowRef.current) {
       return;
     }
 
     // Get important elements
     const popover = popoverRef.current;
+    const body = bodyRef.current;
     const arrow = arrowRef.current;
-    const document = ref.current.ownerDocument;
+    const document = popover.ownerDocument;
     const track = trackRef.current;
 
     // If the popover body isn't being rendered for whatever reason (e.g. "display: none" or JSDOM),
@@ -93,6 +93,10 @@ export default function PopoverContainer({
     const prevLeft = popover.style.left;
     popover.style.top = '0';
     popover.style.left = '0';
+    // Imperatively remove body styles that can remain from the previous computation.
+    body.style.maxHeight = '';
+    body.style.overflowX = '';
+    body.style.overflowY = '';
 
     // Get rects representing key elements
     // Use getComputedStyle for arrowRect to avoid modifications made by transform
@@ -130,15 +134,22 @@ export default function PopoverContainer({
     // and use that to recalculate the new popover position.
     const trackRelativeOffset = toRelativePosition(popoverOffset, toRelativePosition(trackRect, containingBlockRect));
 
-    // Bring back the container to its original position to prevent any
-    // flashing.
+    // Bring back the container to its original position to prevent any flashing.
     popover.style.top = prevTop;
     popover.style.left = prevLeft;
+
+    // Allow popover body to scroll if can't fit the popover into the container/viewport otherwise.
+    if (scrollable) {
+      body.style.maxHeight = boundingOffset.height + 'px';
+      body.style.overflowX = 'hidden';
+      body.style.overflowY = 'auto';
+    }
 
     // Position the popover
     setInternalPosition(newInternalPosition);
     setPopoverStyle({ top: popoverOffset.top, left: popoverOffset.left });
-    setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto', overflowX: 'hidden' } : {});
+
+    // setBodyStyle(scrollable ? { maxHeight: boundingOffset.height + 'px', overflowY: 'auto', overflowX: 'hidden' } : {});
 
     positionHandlerRef.current = () => {
       const newTrackOffset = toRelativePosition(
@@ -150,7 +161,7 @@ export default function PopoverContainer({
         left: newTrackOffset.left + trackRelativeOffset.left,
       });
     };
-  }, [position, trackRef, ref, renderWithPortal]);
+  }, [position, trackRef, renderWithPortal]);
 
   // Update the handler when properties change.
   useLayoutEffect(() => {
@@ -178,11 +189,11 @@ export default function PopoverContainer({
     };
   }, [updatePositionHandler]);
 
-  const mergedRef = useMergeRefs(popoverRef, ref);
+  const popoverMergedRef = useMergeRefs(popoverRef, popoverQueryRef);
 
   return (
     <div
-      ref={mergedRef}
+      ref={popoverMergedRef}
       style={{ ...popoverStyle, zIndex }}
       className={clsx(styles.container, isRefresh && styles.refresh)}
     >
@@ -195,12 +206,12 @@ export default function PopoverContainer({
       </div>
 
       <div
+        ref={bodyRef}
         className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
           [styles[`container-body-variant-${variant}`]]: variant,
           [styles['container-body-overflow-visible']]: overflowVisible,
         })}
-        style={bodyStyle}
       >
         <div ref={contentRef} className={styles['container-body-content']}>
           {children}
