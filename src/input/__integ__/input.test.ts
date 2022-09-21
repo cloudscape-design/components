@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+import createWrapper from '../../../lib/components/test-utils/selectors';
 import InputPage from './page-objects/input';
 
 describe('Input', () => {
@@ -28,6 +29,19 @@ describe('Input', () => {
       await page.focusInput();
       await page.keys(['Enter']);
       await expect(page.isFormSubmitted()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'Clicking on form field label should focus the input',
+    useBrowser(async browser => {
+      await browser.url('#/light/input/inputs');
+      const page = new InputPage(browser);
+      const wrapper = createWrapper();
+      await page.click(wrapper.findFormField().findLabel().toSelector());
+      await expect(
+        page.isFocused(wrapper.find('#formfield-with-input').findInput().findNativeInput().toSelector())
+      ).resolves.toBe(true);
     })
   );
 });

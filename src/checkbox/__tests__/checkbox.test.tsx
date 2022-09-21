@@ -205,17 +205,3 @@ test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ar
   expect(checkboxInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
   expect(checkboxInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
 });
-
-test('clicking on formfield label area wont call onchange', () => {
-  const onChange = jest.fn();
-  const { container } = render(
-    <FormField description="This is a formfield description." label="Form field label">
-      <Checkbox checked={false} description="This is description" onChange={onChange}>
-        Checkbox label
-      </Checkbox>
-    </FormField>
-  );
-  const formFieldWrapper = createWrapper(container).findFormField();
-  formFieldWrapper!.findLabel()!.click();
-  expect(onChange).not.toHaveBeenCalled();
-});
