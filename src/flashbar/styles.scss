@@ -144,30 +144,22 @@ position and only bottom space is needed between the toggle and the first item.
 
 /*
 The stack is a dynamic grid that creates the necessary number of rows and columns 
-based on the depth passed to CSS via the `flashbarStackDepth` custom property.
+based on the number of items passed to CSS via the `flashbarStackDepth` custom property.
+Assuming there are three flashbar items, the grid layout will be: 
+
+[item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
+[12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
+[12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
 */
 .stack {
   display: grid;
 
   /*
-  The number of rows will be equal to the stack depth. The `minmax()` function will 
-  enable the first row height to be reactive to the size of the first item. Each 
-  subsequent row up to the limit (3 presently) will render a dummy notification with 
-  no content that will be no smaller than 8px to create an adequate visual overlap.
+  The `minmax()` function will enable the first row height to be reactive to the size of the first item. 
+  Each subsequent row will render a dummy notification with no content that will be no smaller than 
+  8px vertical space to create an adequate visual overlap.
   */
   grid-template-rows: repeat(var(#{custom-props.$flashbarStackDepth}), minmax(8px, auto));
-
-  /*
-  The number of columns will be 2x the stack depth plus and additional column that will 
-  use a fractional unit to consume the remaining space in the grid. 
-  
-  Assuming the stack depth is 3 for explanatory purporses the column layout will be: 
-  [1] [2] [3] [fractional unit] [5] [6] [7]. 
-  
-  This allows each item index to be indented from both the left and the right the 
-  number of columns according to its position in the stack. In other words, the second 
-  index starts at column 2 (0 + 2) and ends at column 5 (7 - 2).
-  */
   grid-template-columns:
     repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
     1fr
@@ -179,28 +171,22 @@ based on the depth passed to CSS via the `flashbarStackDepth` custom property.
   */
   > .item {
     /*
-    The column start position of each index will be incremented by one because the array 
-    is indexed at zero but grid positions at indexed at 1.
+    The +1 is because the array is indexed at zero but grid positions are indexed at 1.
     */
     grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
 
     /*
-    The column end position is computed based on the stack depth and item index. 
-    
-    Using the above example of the three item stack:
-    [1] [2] [3] [fractional unit] [5] [6] [7]
-
-    The third item will end at column 5 (3 * 2 + 2 - 3). The reason for the +2 is because
-    the fractional unit needs to be accounted for as well as CSS grid requiring the end 
-    column to be +1 inclusive of the grid target.
+    Add +1 to include the fractional unit in the column count and add + 1 because the array 
+    is indexed at zero but grid positions at indexed at 1.
     */
-    grid-column-end: calc(var(#{custom-props.$flashbarStackDepth}) * 2 + 2 - var(#{custom-props.$flashbarStackIndex}));
+    grid-column-end: calc(
+      var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
+    );
     grid-row-start: 1;
     grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
 
     /*
-    The z-index is deprecated with each subsequent item because the first item should 
-    be visually above the later items even though they come after it in the grid.
+    The first item should have the highest z index than the second item, and so forth...
     */
     z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
   }
