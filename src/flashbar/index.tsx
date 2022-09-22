@@ -41,23 +41,23 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * boolean value by a given user.
    */
   const enableStackingOption = (restProps as any).enableStackingOption;
-  const [isFlashbarStacked, setIsFlashbarStacked] = useState(false);
+  const [isFlashbarStacked, setIsFlashbarStacked] = useState(true);
 
   /**
    * If the stacking feature is enabled and there is more than one item in the flashbar then
    * the toggle will be rendered to change the state from flat to stacked.
    */
   function renderStackingOption() {
+    if (!enableStackingOption || !items || items?.length < 2) {
+      return;
+    }
+
     return (
-      <>
-        {enableStackingOption && items.length > 1 && (
-          <div className={clsx(styles['stacking-option'])}>
-            <Toggle onChange={({ detail }) => setIsFlashbarStacked(detail.checked)} checked={isFlashbarStacked}>
-              Stack Notifications (<strong>{items.length}</strong>)
-            </Toggle>
-          </div>
-        )}
-      </>
+      <div className={clsx(styles['stacking-option'])}>
+        <Toggle onChange={({ detail }) => setIsFlashbarStacked(detail.checked)} checked={isFlashbarStacked}>
+          Stack Notifications (<strong>{items.length}</strong>)
+        </Toggle>
+      </div>
     );
   }
 
@@ -67,29 +67,29 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * two, three, or more items exist in the stack.
    */
   function renderStackedItems() {
+    if (!isFlashbarStacked || !items || items?.length < 1) {
+      return;
+    }
+
     const stackDepth = Math.min(3, items.length);
     const stackedItems = items.slice(0, stackDepth);
 
     return (
-      <>
-        {isFlashbarStacked && items.length > 0 && (
-          <div className={styles.stack} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
-            {stackedItems.map((item, index) => (
-              <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
-                {index === 0 && (
-                  <Flash
-                    key={item.id ?? index}
-                    // eslint-disable-next-line react/forbid-component-props
-                    className={clsx(isRefresh ? styles['flash-refresh'] : '')}
-                    {...item}
-                  />
-                )}
-                {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
-              </div>
-            ))}
+      <div className={styles.stack} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
+        {stackedItems.map((item, index) => (
+          <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
+            {index === 0 && (
+              <Flash
+                key={item.id ?? index}
+                // eslint-disable-next-line react/forbid-component-props
+                className={clsx(isRefresh ? styles['flash-refresh'] : '')}
+                {...item}
+              />
+            )}
+            {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
           </div>
-        )}
-      </>
+        ))}
+      </div>
     );
   }
 
@@ -98,32 +98,32 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * from the flashbar will render with visual transitions.
    */
   function renderFlatItemsWithTransitions() {
+    if (isFlashbarStacked || motionDisabled || !items) {
+      return;
+    }
+
     return (
-      <>
-        {items && !isFlashbarStacked && !motionDisabled && (
-          <TransitionGroup component={null}>
-            {items &&
-              items.map((item, index) => (
-                <Transition
-                  transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
+      <TransitionGroup component={null}>
+        {items &&
+          items.map((item, index) => (
+            <Transition
+              transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
+              key={item.id ?? index}
+              in={true}
+            >
+              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                <Flash
+                  ref={transitionRootElement}
                   key={item.id ?? index}
-                  in={true}
-                >
-                  {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                    <Flash
-                      ref={transitionRootElement}
-                      key={item.id ?? index}
-                      transitionState={state}
-                      // eslint-disable-next-line react/forbid-component-props
-                      className={clsx(isRefresh ? styles['flash-refresh'] : '')}
-                      {...item}
-                    />
-                  )}
-                </Transition>
-              ))}
-          </TransitionGroup>
-        )}
-      </>
+                  transitionState={state}
+                  // eslint-disable-next-line react/forbid-component-props
+                  className={clsx(isRefresh ? styles['flash-refresh'] : '')}
+                  {...item}
+                />
+              )}
+            </Transition>
+          ))}
+      </TransitionGroup>
     );
   }
 
@@ -132,19 +132,20 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * from the flashbar will render without visual transitions.
    */
   function renderFlatItemsWithoutTransitions() {
+    if (isFlashbarStacked || !motionDisabled || !items) {
+      return;
+    }
+
     return (
       <>
-        {items &&
-          !isFlashbarStacked &&
-          motionDisabled &&
-          items.map((item, index) => (
-            <Flash
-              key={item.id ?? index}
-              // eslint-disable-next-line react/forbid-component-props
-              className={clsx(isRefresh ? styles['flash-refresh'] : '')}
-              {...item}
-            />
-          ))}
+        {items.map((item, index) => (
+          <Flash
+            key={item.id ?? index}
+            // eslint-disable-next-line react/forbid-component-props
+            className={clsx(isRefresh ? styles['flash-refresh'] : '')}
+            {...item}
+          />
+        ))}
       </>
     );
   }
