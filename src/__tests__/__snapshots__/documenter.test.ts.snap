@@ -5047,6 +5047,23 @@ This only works well if you're using a single control in the form field.
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "FormFieldProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "FormFieldProps.I18nStrings",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -10832,6 +10849,11 @@ character validation. You should use this property only when absolutely necessar
             "name": "enteredValueLabel",
             "optional": false,
             "type": "(enteredText: string) => string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "invalidKeyError",

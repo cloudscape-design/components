@@ -261,7 +261,9 @@ const TagEditor = React.forwardRef(
         additionalInfo={
           <div aria-live="polite">
             {remainingTags < 0 ? (
-              <FormFieldError>{i18nStrings.tagLimitExceeded(tagLimit) ?? ''}</FormFieldError>
+              <FormFieldError errorIconAriaLabel={i18nStrings.errorIconAriaLabel}>
+                {i18nStrings.tagLimitExceeded(tagLimit) ?? ''}
+              </FormFieldError>
             ) : remainingTags === 0 ? (
               i18nStrings.tagLimitReached(tagLimit) ?? ''
             ) : (

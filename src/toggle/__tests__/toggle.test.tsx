@@ -36,10 +36,19 @@ test('synchronizes native and styled controls', () => {
   expect(findStyledElement(wrapper)).toHaveClass(styles['toggle-handle-checked']);
 });
 
-test('fires onChange event on label click', () => {
+test('fires a single onChange event on label click', () => {
   const onChange = jest.fn();
   const { wrapper } = renderToggle(<Toggle checked={false} onChange={onChange} />);
   wrapper.findLabel().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
+});
+
+test('fires a single onChange event on input click', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderToggle(<Toggle checked={false} onChange={onChange} />);
+  wrapper.findNativeInput().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
 });
 

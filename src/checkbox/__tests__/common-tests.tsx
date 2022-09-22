@@ -29,9 +29,13 @@ export function createCommonTests(Component: React.ComponentType<BaseCheckboxPro
     });
 
     test('renders component this controlId', () => {
-      const { wrapper } = renderComponent(<Component checked={false} controlId="something-specific" />);
+      const { wrapper } = renderComponent(
+        <Component checked={false} controlId="something-specific">
+          Label
+        </Component>
+      );
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('id', 'something-specific');
-      expect(wrapper.findLabel().getElement()).toHaveAttribute('for', 'something-specific');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'something-specific-label');
     });
 
     test('name is being rendered only if provided', () => {

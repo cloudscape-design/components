@@ -223,9 +223,8 @@ describe('value', () => {
 
   describe('tile controlId', () => {
     function check(tile: TileWrapper, controlId: string) {
-      expect(tile.getElement()).toHaveAttribute('for', controlId);
-      expect(tile.getElement()).toHaveAttribute('id', `${controlId}-wrapper`);
       expect(tile.findNativeInput().getElement()).toHaveAttribute('id', controlId);
+      expect(tile.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', `${controlId}-label`);
     }
 
     test('uses controlId for setting up label relations when set', () => {

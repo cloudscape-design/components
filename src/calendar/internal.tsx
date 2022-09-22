@@ -114,7 +114,8 @@ export default function Calendar({
   };
 
   return (
-    <div className={clsx(styles.root, styles.calendar)} ref={elementRef}>
+    // The application role is necessary for screen-readers to allow arrow navigation by default.
+    <div role="application" className={clsx(styles.root, styles.calendar)} ref={elementRef}>
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}
