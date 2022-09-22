@@ -114,7 +114,7 @@ export default function Calendar({
   };
 
   return (
-    // The application role is necessary for the screen-readers to allow arrow navigation by default.
+    // The application role is necessary for screen-readers to allow arrow navigation by default.
     <div role="application" className={clsx(styles.root, styles.calendar)} ref={elementRef}>
       <div className={styles['calendar-inner']}>
         <CalendarHeader
