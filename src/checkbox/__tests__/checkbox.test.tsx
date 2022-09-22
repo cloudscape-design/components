@@ -6,7 +6,7 @@ import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-uti
 import FormField from '../../../lib/components/form-field';
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
-import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import { createCommonTests } from './common-tests';
 
 function renderCheckbox(jsx: React.ReactElement) {

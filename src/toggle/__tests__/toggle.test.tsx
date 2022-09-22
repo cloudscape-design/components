@@ -6,7 +6,7 @@ import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
 import FormField from '../../../lib/components/form-field';
 import styles from '../../../lib/components/toggle/styles.selectors.js';
-import abstractSwitchStyles from '../../../lib/components/internal/components//abstract-switch/styles.css.js';
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import { createCommonTests } from '../../checkbox/__tests__/common-tests';
 import '../../__a11y__/to-validate-a11y';
 

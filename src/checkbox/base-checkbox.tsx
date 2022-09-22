@@ -25,7 +25,7 @@ export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlP
   disabled?: boolean;
 
   /**
-   * Specifies the ID of the native form element. It uses an automatically generated ID by default.
+   * Specifies the ID of the native form element. By default, it uses an automatically generated ID.
    */
   controlId?: string;
 

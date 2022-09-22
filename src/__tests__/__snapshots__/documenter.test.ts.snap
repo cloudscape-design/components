@@ -3318,7 +3318,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. It uses an automatically generated ID by default.",
+      "description": "Specifies the ID of the native form element. By default, it uses an automatically generated ID.",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -11859,7 +11859,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. It uses an automatically generated ID by default.",
+      "description": "Specifies the ID of the native form element. By default, it uses an automatically generated ID.",
       "name": "controlId",
       "optional": true,
       "type": "string",
