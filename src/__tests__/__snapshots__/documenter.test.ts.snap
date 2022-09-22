@@ -10852,7 +10852,7 @@ character validation. You should use this property only when absolutely necessar
           },
           Object {
             "name": "errorIconAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
