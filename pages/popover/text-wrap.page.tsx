@@ -4,12 +4,19 @@ import React from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
+import { PopoverProps } from '~components/popover';
 import PopoverBody, { PopoverBodyProps } from '~components/popover/body';
 
 const noop = () => {};
 
+const sizeMap: Record<PopoverProps.Size, number> = {
+  small: 210,
+  medium: 310,
+  large: 480,
+};
+
 /* eslint-disable react/jsx-key */
-const permutations = createPermutations<PopoverBodyProps>([
+const permutations = createPermutations<PopoverBodyProps & { size: PopoverProps.Size }>([
   {
     size: ['small', 'medium', 'large'],
     header: [
@@ -28,7 +35,6 @@ const permutations = createPermutations<PopoverBodyProps>([
     // to lock focus and break navigation and a11y checks.
     dismissButton: [false],
     // Required internal properties
-    fixedWidth: [true],
     dismissAriaLabel: ['Close'],
     onDismiss: [noop],
     overflowVisible: ['both'],
@@ -41,7 +47,19 @@ export default function () {
     <article>
       <h1>Popover text wrapping</h1>
       <ScreenshotArea>
-        <PermutationsView permutations={permutations} render={permutation => <PopoverBody {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={({ size, ...permutation }) => (
+            <div
+              style={{
+                width: sizeMap[size],
+                maxWidth: sizeMap[size],
+              }}
+            >
+              <PopoverBody {...permutation} />
+            </div>
+          )}
+        />
       </ScreenshotArea>
     </article>
   );

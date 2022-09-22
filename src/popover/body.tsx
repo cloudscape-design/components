@@ -9,12 +9,9 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 
-import { PopoverProps } from './interfaces';
 import styles from './styles.css.js';
 
 export interface PopoverBodyProps {
-  size: PopoverProps.Size;
-  fixedWidth: boolean;
   dismissButton: boolean;
   dismissAriaLabel: string | undefined;
   onDismiss: () => void;
@@ -31,8 +28,6 @@ export interface PopoverBodyProps {
 }
 
 export default function PopoverBody({
-  size,
-  fixedWidth,
   dismissButton: showDismissButton,
   dismissAriaLabel,
   header,
@@ -71,9 +66,7 @@ export default function PopoverBody({
 
   return (
     <div
-      className={clsx(styles.body, className, styles[`body-size-${size}`], {
-        [styles['fixed-width']]: fixedWidth,
-        [styles[`variant-${variant}`]]: variant,
+      className={clsx(styles.body, className, {
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
       role={header ? 'dialog' : undefined}
