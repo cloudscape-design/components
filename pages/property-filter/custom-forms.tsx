@@ -152,7 +152,7 @@ function parseDateTimeFilter(filter: string): { dateValue: string; timeValue: st
   const [dateValue, timeValue] = dateTime.split('T');
 
   if (!timeValue) {
-    return { dateValue: isValidIsoDate(dateValue) ? dateValue : '', timeValue: ' ' };
+    return { dateValue: isValidIsoDate(dateValue) ? dateValue : '', timeValue: '' };
   }
 
   const [hours = '00', minutes = '00', seconds = '00'] = timeValue.split(':');
