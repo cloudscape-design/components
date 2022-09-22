@@ -23,7 +23,7 @@ export default class FormFieldWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findError(): ElementWrapper | null {
-    return this.find(`:scope > .${styles.hints} .${styles.error}`);
+    return this.find(`:scope > .${styles.hints} .${styles.error__message}`);
   }
 
   findDescription(): ElementWrapper | null {
