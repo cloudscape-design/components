@@ -106,17 +106,12 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
 }
 
 .date-and-time-wrapper {
-  display: flex;
   width: $calendar-grid-width;
-
-  &__date {
-    margin-right: awsui.$space-xs;
-  }
-
-  & > .date-and-time-wrapper__time,
-  & > .date-and-time-wrapper__date {
-    flex-grow: 1;
-  }
+}
+.date-and-time-wrapper:not(.date-only) {
+  display: grid;
+  column-gap: awsui.$space-xs;
+  grid-template-columns: 1fr 1fr;
 }
 
 .date-and-time-constrainttext {

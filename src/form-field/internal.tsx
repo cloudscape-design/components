@@ -19,18 +19,17 @@ import { joinStrings } from '../internal/utils/strings';
 interface FormFieldErrorProps {
   id?: string;
   children?: React.ReactNode;
+  errorIconAriaLabel?: string;
 }
 
-export const FormFieldError = ({ id, children }: FormFieldErrorProps) => (
-  <div className={styles.error}>
+export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => (
+  <div id={id} className={styles.error}>
     <div className={styles['error-icon-shake-wrapper']}>
-      <div className={styles['error-icon-scale-wrapper']}>
+      <div role="img" aria-label={errorIconAriaLabel} className={styles['error-icon-scale-wrapper']}>
         <InternalIcon name="status-warning" size="small" />
       </div>
     </div>
-    <span id={id} className={styles.error__message}>
-      {children}
-    </span>
+    <span className={styles.error__message}>{children}</span>
   </div>
 );
 
@@ -39,6 +38,7 @@ export default function InternalFormField({
   stretch = false,
   label,
   info,
+  i18nStrings,
   children,
   secondaryControl,
   description,
@@ -111,7 +111,11 @@ export default function InternalFormField({
 
       {(constraintText || errorText) && (
         <div className={styles.hints}>
-          {errorText && <FormFieldError id={slotIds.error}>{errorText}</FormFieldError>}
+          {errorText && (
+            <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              {errorText}
+            </FormFieldError>
+          )}
           {constraintText && (
             <div
               className={clsx(styles.constraint, errorText && styles['constraint-has-error'])}

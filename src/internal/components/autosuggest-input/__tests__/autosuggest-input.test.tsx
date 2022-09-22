@@ -253,23 +253,29 @@ describe('input events', () => {
 });
 
 describe('dropdown events', () => {
-  test('fires onDropdownMouseDown when clicked inside dropdown', () => {
-    const onDropdownMouseDown = jest.fn().mockImplementation(e => e.preventDefault());
-    const { wrapper, getByTestId } = render(
-      <div>
-        <AutosuggestInput
-          value="1"
-          onChange={() => undefined}
-          onDropdownMouseDown={onDropdownMouseDown}
-          dropdownContent={<button data-testid="target">target</button>}
-        />
-      </div>
-    );
-    wrapper.findInput().findNativeInput().focus();
-    getByTestId('target').dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-    expect(onDropdownMouseDown).toBeCalledTimes(1);
-    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
-  });
+  test.each([false, true])(
+    'should close dropdown when focusing outside dropdownContentFocusable=%s',
+    dropdownContentFocusable => {
+      const onBlur = jest.fn();
+      const { wrapper, getByTestId } = render(
+        <div>
+          <button data-testid="target">target</button>
+          <AutosuggestInput
+            value="1"
+            onChange={() => undefined}
+            onBlur={onBlur}
+            dropdownContentFocusable={dropdownContentFocusable}
+            dropdownContent="content"
+          />
+        </div>
+      );
+      wrapper.findInput().findNativeInput().focus();
+      getByTestId('target').focus();
+      expect(onBlur).toHaveBeenCalled();
+      expect(wrapper.findInput().findNativeInput().getElement()).not.toHaveFocus();
+      expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
+    }
+  );
 });
 
 describe('blur handling', () => {

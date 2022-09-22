@@ -16,6 +16,7 @@ export const I18N_STRINGS: TagEditorProps.I18nStrings = {
   keySuggestion: 'Custom tag key',
   valueSuggestion: 'Custom tag value',
   emptyTags: 'No tags associated with the resource.',
+  errorIconAriaLabel: 'Error',
   tooManyKeysSuggestion: 'You have more keys than can be displayed',
   tooManyValuesSuggestion: 'You have more values than can be displayed',
   keysSuggestionLoading: 'Loading key values',

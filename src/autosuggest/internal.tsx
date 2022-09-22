@@ -142,11 +142,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     autosuggestInputRef.current?.focus();
   };
 
-  const handleDropdownMouseDown: React.MouseEventHandler = event => {
-    // Prevent currently focused element from losing focus.
-    event.preventDefault();
-  };
-
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
   const controlId = formFieldContext.controlId ?? selfControlId;
@@ -203,7 +198,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
         ) : null
       }
-      onDropdownMouseDown={handleDropdownMouseDown}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}
       onPressArrowDown={handlePressArrowDown}

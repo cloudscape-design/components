@@ -27,6 +27,15 @@ describe('Link component', () => {
     expect(createWrapper(wrapper.getElement()).find('[aria-label="External link"]')).toBeTruthy();
   });
 
+  test('ariaLabel and externalIconAriaLabel are applied the same time', () => {
+    const wrapper = renderLink({
+      ariaLabel: 'Learn more about S3',
+      externalIconAriaLabel: 'External link',
+      external: true,
+    });
+    expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Learn more about S3, External link');
+  });
+
   describe('"info" variant', () => {
     test('negates fontSize and color', () => {
       const wrapper = renderLink({ variant: 'info', fontSize: 'heading-xl', color: 'inverted' });

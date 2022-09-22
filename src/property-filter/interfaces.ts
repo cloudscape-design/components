@@ -156,12 +156,7 @@ export namespace PropertyFilterProps {
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
-
-  export interface FilteringProperty extends PropertyFilterProperty {
-    groupValuesLabel: string;
-    propertyLabel: string;
-    group?: string;
-  }
+  export type FilteringProperty = PropertyFilterProperty;
 
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;

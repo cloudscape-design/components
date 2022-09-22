@@ -18,7 +18,9 @@ export default function () {
   return (
     <AppLayout
       ariaLabels={labels}
-      notifications={<Flashbar items={[{ type: 'success', header: 'Success message' }]} />}
+      notifications={
+        <Flashbar items={[{ type: 'success', header: 'Success message', statusIconAriaLabel: 'success' }]} />
+      }
       navigation={<Navigation />}
       navigationOpen={navigationOpen}
       tools={<Tools>{toolsContent.long}</Tools>}

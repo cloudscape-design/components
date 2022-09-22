@@ -92,10 +92,19 @@ describe('native and styled control synchronization', () => {
   });
 });
 
-test('fires onChange event on label click', () => {
+test('fires a single onChange event on label click', () => {
   const onChange = jest.fn();
   const { wrapper } = renderCheckbox(<Checkbox checked={false} onChange={onChange} />);
   wrapper.findLabel().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true, indeterminate: false } }));
+});
+
+test('fires a single onChange event on input click', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderCheckbox(<Checkbox checked={false} onChange={onChange} />);
+  wrapper.findNativeInput().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true, indeterminate: false } }));
 });
 

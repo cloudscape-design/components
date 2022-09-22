@@ -12,7 +12,6 @@ import CheckboxIcon from '../internal/components/checkbox-icon';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
-  withoutLabel?: boolean;
   tabIndex?: -1;
 }
 
@@ -32,7 +31,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       onFocus,
       onBlur,
       onChange,
-      withoutLabel,
       tabIndex,
       __internalRootRef,
       ...rest
@@ -47,6 +45,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         checkboxRef.current.indeterminate = Boolean(indeterminate);
       }
     });
+
     return (
       <AbstractSwitch
         {...baseProps}
@@ -69,25 +68,20 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             checked={checked}
             name={name}
             tabIndex={tabIndex}
-            onFocus={onFocus && (() => fireNonCancelableEvent(onFocus))}
-            onBlur={onBlur && (() => fireNonCancelableEvent(onBlur))}
+            onFocus={() => fireNonCancelableEvent(onFocus)}
+            onBlur={() => fireNonCancelableEvent(onBlur)}
             // empty handler to suppress React controllability warning
             onChange={() => {}}
-            onClick={
-              // Using onClick because onChange does not fire in indeterminate state in Internet Explorer and Legacy Edge
-              // https://stackoverflow.com/questions/33523130/ie-does-not-fire-change-event-on-indeterminate-checkbox-when-you-click-on-it
-              onChange &&
-              (() =>
-                fireNonCancelableEvent(
-                  onChange,
-                  // for deterministic transitions "indeterminate" -> "checked" -> "unchecked"
-                  indeterminate ? { checked: true, indeterminate: false } : { checked: !checked, indeterminate: false }
-                ))
-            }
           />
         )}
+        onClick={() =>
+          fireNonCancelableEvent(
+            onChange,
+            // for deterministic transitions "indeterminate" -> "checked" -> "unchecked"
+            indeterminate ? { checked: true, indeterminate: false } : { checked: !checked, indeterminate: false }
+          )
+        }
         styledControl={<CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} />}
-        withoutLabel={withoutLabel}
         __internalRootRef={__internalRootRef}
       />
     );

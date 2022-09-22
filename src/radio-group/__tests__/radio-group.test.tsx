@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
+import '../../__a11y__/to-validate-a11y';
 
 const defaultItems: RadioGroupProps.RadioButtonDefinition[] = [
   { value: 'val1', label: 'Option one' },
@@ -196,9 +197,8 @@ describe('value', () => {
 
   describe('radiobutton controlId', () => {
     function check(radioButton: RadioButtonWrapper, controlId: string) {
-      expect(radioButton.findLabel().getElement()).toHaveAttribute('for', controlId);
-      expect(radioButton.findLabel().getElement()).toHaveAttribute('id', `${controlId}-wrapper`);
       expect(radioButton.findNativeInput().getElement()).toHaveAttribute('id', controlId);
+      expect(radioButton.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', `${controlId}-label`);
     }
 
     test('uses controlId for setting up label relations when set', () => {
@@ -266,6 +266,11 @@ describe('value', () => {
     test(`is not set for undefined value`, () => {
       const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={defaultItems} />);
       expect(wrapper.getElement()).not.toHaveAttribute('aria-required');
+    });
+
+    test('check a11y', async () => {
+      const { wrapper } = renderRadioGroup(<RadioGroup ariaRequired={false} value={null} items={defaultItems} />);
+      await expect(wrapper.getElement()).toValidateA11y();
     });
   });
 });

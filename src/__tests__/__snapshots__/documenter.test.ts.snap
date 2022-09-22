@@ -4951,6 +4951,7 @@ A flash message object contains the following properties:
 * \`dismissible\` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
+* \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
@@ -5044,6 +5045,23 @@ This only works well if you're using a single control in the form field.
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "FormFieldProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "FormFieldProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -10831,6 +10849,11 @@ character validation. You should use this property only when absolutely necessar
             "name": "enteredValueLabel",
             "optional": false,
             "type": "(enteredText: string) => string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": false,
+            "type": "string",
           },
           Object {
             "name": "invalidKeyError",
