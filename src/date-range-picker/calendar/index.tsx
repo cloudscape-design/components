@@ -282,7 +282,7 @@ function Calendar(
   return (
     <>
       <InternalSpaceBetween size="m">
-        {/* The application role is necessary for the screen-readers to allow arrow navigation by default. */}
+        {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
         <div
           ref={elementRef}
           role="application"
