@@ -31,7 +31,7 @@ export default function Calendar({
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const normalizedLocale = normalizeLocale('Calendar', locale);
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
