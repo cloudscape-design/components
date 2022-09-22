@@ -6,6 +6,7 @@ import Textarea from '~components/textarea';
 import Container from '~components/container';
 import Button from '~components/button';
 import SpaceBetween from '~components/space-between';
+import FormField from '~components/form-field';
 
 function Inputs() {
   const [inputValue, setInputValue] = useState('something');
@@ -63,6 +64,9 @@ export default function InputsPage() {
       <h1>Inputs demo</h1>
       <Inputs />
       <SimpleForm />
+      <FormField description="This is a description." label="Form field label" id="formfield-with-input">
+        <Input value={''} onChange={() => {}} />
+      </FormField>
     </div>
   );
 }
