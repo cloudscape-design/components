@@ -62,6 +62,8 @@ export default function () {
 
         {hoverId ? (
           <PopoverContainer
+            size="small"
+            fixedWidth={false}
             position="bottom"
             trackRef={hoverRef}
             trackKey={hoverId}
