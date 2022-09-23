@@ -11,12 +11,10 @@ class AppLayoutSplitViewPage extends BasePageObject {
   async openPanel() {
     await this.click(wrapper.findSplitPanel().findOpenButton().toSelector());
   }
-
-  // the argument here is the position value
-  async switchPosition(position: 'bottom' | 'side') {
+  // the argument here is the visible label text
+  async switchPosition(position: 'Bottom' | 'Side') {
     await this.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-    const tile = createWrapper().findModal().findContent().findTiles().findItemByValue(position);
-    await this.click(tile.toSelector());
+    await this.click(`label=${position}`);
     await this.click('button=Confirm');
   }
 
@@ -83,7 +81,7 @@ test(
   'slider is accessible by keyboard in side position',
   setupTest(async page => {
     await page.openPanel();
-    await page.switchPosition('side');
+    await page.switchPosition('Side');
     await page.keys(['Shift', 'Tab', 'Shift']);
     await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
 
@@ -124,7 +122,7 @@ test(
   'switches to bottom position when screen is too narrow and restores back on resize',
   setupTest(async page => {
     await page.openPanel();
-    await page.switchPosition('side');
+    await page.switchPosition('Side');
     await expect(page.getPanelPosition()).resolves.toEqual('side');
 
     // narrow enough to force bottom position, but still not mobile
@@ -141,7 +139,7 @@ test(
   'switches to bottom position when when tools panel opens and available space is too small',
   setupTest(async page => {
     await page.openPanel();
-    await page.switchPosition('side');
+    await page.switchPosition('Side');
     await page.click(wrapper.findToolsToggle().toSelector());
     await expect(page.getPanelPosition()).resolves.toEqual('bottom');
 
@@ -172,7 +170,7 @@ test(
     `should not allow resize split panel beyond min and max limits (side position) (${name})}`,
     setupTest(async page => {
       await page.openPanel();
-      await page.switchPosition('side');
+      await page.switchPosition('Side');
       const { width } = await page.getWindowSize();
       await page.dragResizerTo({ x: width, y: 0 });
       expect((await page.getSplitPanelSize()).width).toEqual(280);
@@ -214,7 +212,7 @@ test(
   'should keep split panel position during drag',
   setupTest(async page => {
     await page.openPanel();
-    await page.switchPosition('side');
+    await page.switchPosition('Side');
     await page.dragResizerTo({ x: 0, y: 0 });
     await page.setWindowSize({ ...viewports.desktop, width: 820 });
     const { height } = await page.getWindowSize();
@@ -227,7 +225,7 @@ test(
   'should resize main content area when switching to side',
   setupTest(async page => {
     await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
-    await page.switchPosition('side');
+    await page.switchPosition('Side');
     await expect(page.getContentMarginBottom()).resolves.toEqual('');
   }, '#/light/app-layout/with-full-page-table-and-split-panel')
 );
@@ -236,8 +234,8 @@ test(
   'should resize main content area when switching to side then back to bottom',
   setupTest(async page => {
     await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
-    await page.switchPosition('side');
-    await page.switchPosition('bottom');
+    await page.switchPosition('Side');
+    await page.switchPosition('Bottom');
     await expect(page.getContentMarginBottom()).resolves.toEqual('400px');
   }, '#/light/app-layout/with-full-page-table-and-split-panel')
 );

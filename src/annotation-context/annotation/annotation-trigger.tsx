@@ -23,7 +23,6 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
-      event.stopPropagation();
       onClickHandler();
     },
     [onClickHandler]
