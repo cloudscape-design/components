@@ -40,7 +40,7 @@ export default function DatePickerScenario() {
               value={'2020-10-26'}
               name={'date-picker-name'}
               ariaLabel={'date-picker-label'}
-              locale={'en-EN'}
+              locale="en-GB"
               previousMonthAriaLabel={'Previous month'}
               nextMonthAriaLabel={'Next month'}
               todayAriaLabel={'TEST TODAY'}

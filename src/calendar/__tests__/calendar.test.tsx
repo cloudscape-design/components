@@ -11,22 +11,52 @@ import CalendarWrapper from '../../../lib/components/test-utils/dom/calendar';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
 
+const defaultProps: CalendarProps = {
+  todayAriaLabel: 'Today',
+  nextMonthAriaLabel: 'next month',
+  previousMonthAriaLabel: 'prev month',
+  value: '',
+};
+
+function renderCalendar(props: CalendarProps = defaultProps) {
+  const { container } = render(<Calendar {...props} />);
+  const wrapper = createWrapper(container) as unknown as CalendarWrapper;
+  return { container, wrapper };
+}
+
+function findCalendarWeekdays(wrapper: CalendarWrapper) {
+  return wrapper.findAll(`.${styles['calendar-day-name']}`).map(day => day.getElement().textContent!.trim());
+}
+
 describe('Calendar', () => {
-  const defaultProps: CalendarProps = {
-    todayAriaLabel: 'Today',
-    nextMonthAriaLabel: 'next month',
-    previousMonthAriaLabel: 'prev month',
-    value: '2018-03-22',
-  };
-
-  function renderCalendar(props: CalendarProps = defaultProps) {
-    const { container, getByTestId } = render(<Calendar {...props} />);
-    const wrapper = createWrapper(container).findComponent(`.${styles.root}`, CalendarWrapper);
-    return { container, wrapper, getByTestId };
-  }
-
   test('check a11y', async () => {
     const { container } = renderCalendar();
     await expect(container).toValidateA11y();
+  });
+});
+
+describe('Calendar locale US', () => {
+  beforeEach(() => {
+    const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'EST' });
+    jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
+  });
+  afterEach(() => jest.restoreAllMocks());
+
+  test('start of the week is Sunday', () => {
+    const { wrapper } = renderCalendar();
+    expect(findCalendarWeekdays(wrapper)[0]).toBe('Sun');
+  });
+});
+
+describe('Calendar locale DE', () => {
+  beforeEach(() => {
+    const locale = new Intl.DateTimeFormat('de-DE', { timeZone: 'GMT' });
+    jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
+  });
+  afterEach(() => jest.restoreAllMocks());
+
+  test('start of the week is Monday', () => {
+    const { wrapper } = renderCalendar();
+    expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
   });
 });

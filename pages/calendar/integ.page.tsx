@@ -14,7 +14,7 @@ export default function DatePickerEditorScenario() {
       <br />
       <Calendar
         value={value}
-        locale={'en-EN'}
+        locale="en-GB"
         previousMonthAriaLabel={'Previous month'}
         nextMonthAriaLabel={'Next month'}
         todayAriaLabel="Today"

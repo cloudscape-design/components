@@ -22,7 +22,7 @@ export default function DatePickerScenario() {
             startOfWeek={0}
             isDateEnabled={() => true}
             value={value}
-            locale={'en-EN'}
+            locale="en-GB"
             i18nStrings={i18nStrings}
             relativeOptions={relativeOptions}
             dateOnly={false}
