@@ -59,8 +59,27 @@ function defineProperty(name, message, namespace) {
   }
 }
 
-function definePropertyType() {
-  return 'any';
+function definePropertyType(message) {
+  const variables = captureVariables(message);
+  return variables.length === 0
+    ? 'string'
+    : `({ ${variables.join(',')} }: { ${[...variables, ''].join(': string,')} }) => string`;
+}
+
+function captureVariables(message) {
+  const variables = [];
+
+  let searchIndex = 0;
+  do {
+    const startIndex = message.indexOf('${', searchIndex);
+    const endIndex = startIndex !== -1 ? message.indexOf('}', startIndex) : -1;
+    if (startIndex !== -1 && endIndex !== -1) {
+      variables.push(message.slice(startIndex + 2, endIndex));
+    }
+    searchIndex = endIndex;
+  } while (searchIndex !== -1);
+
+  return variables;
 }
 
 function listMessagesPaths() {

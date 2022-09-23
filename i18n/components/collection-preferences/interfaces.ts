@@ -3,17 +3,17 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CollectionPreferencesI18n {
-  cancelLabel: any;
-  confirmLabel: any;
+  cancelLabel: string;
+  confirmLabel: string;
   pageSizePreference: {
-    title: any;
+    title: string;
   };
-  title: any;
+  title: string;
   visibleContentPreference: {
-    title: any;
+    title: string;
   };
   wrapLinesPreference: {
-    description: any;
-    title: any;
+    description: string;
+    title: string;
   };
 }

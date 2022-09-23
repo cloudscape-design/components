@@ -3,6 +3,6 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BreadcrumbGroupI18n {
-  ariaLabel: any;
-  expandAriaLabel: any;
+  ariaLabel: string;
+  expandAriaLabel: string;
 }

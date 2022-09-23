@@ -4,23 +4,23 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DateRangePickerI18n {
   i18nStrings: {
-    absoluteModeTitle: any;
-    applyButtonLabel: any;
-    cancelButtonLabel: any;
-    clearButtonLabel: any;
-    customRelativeRangeDurationLabel: any;
-    customRelativeRangeDurationPlaceholder: any;
-    customRelativeRangeOptionDescription: any;
-    customRelativeRangeOptionLabel: any;
-    customRelativeRangeUnitLabel: any;
-    endDateLabel: any;
-    endTimeLabel: any;
-    nextMonthAriaLabel: any;
-    previousMonthAriaLabel: any;
-    relativeModeTitle: any;
-    relativeRangeSelectionHeading: any;
-    startDateLabel: any;
-    startTimeLabel: any;
-    todayAriaLabel: any;
+    absoluteModeTitle: string;
+    applyButtonLabel: string;
+    cancelButtonLabel: string;
+    clearButtonLabel: string;
+    customRelativeRangeDurationLabel: string;
+    customRelativeRangeDurationPlaceholder: string;
+    customRelativeRangeOptionDescription: string;
+    customRelativeRangeOptionLabel: string;
+    customRelativeRangeUnitLabel: string;
+    endDateLabel: string;
+    endTimeLabel: string;
+    nextMonthAriaLabel: string;
+    previousMonthAriaLabel: string;
+    relativeModeTitle: string;
+    relativeRangeSelectionHeading: string;
+    startDateLabel: string;
+    startTimeLabel: string;
+    todayAriaLabel: string;
   };
 }

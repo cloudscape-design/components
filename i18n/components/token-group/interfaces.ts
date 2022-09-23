@@ -4,7 +4,7 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TokenGroupI18n {
   i18nStrings: {
-    limitShowFewer: any;
-    limitShowMore: any;
+    limitShowFewer: string;
+    limitShowMore: string;
   };
 }

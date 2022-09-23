@@ -3,5 +3,5 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AlertI18n {
-  dismissAriaLabel: any;
+  dismissAriaLabel: string;
 }

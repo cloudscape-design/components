@@ -4,11 +4,11 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface WizardI18n {
   i18nStrings: {
-    stepNumberLabel: any;
-    collapsedStepsLabel: any;
-    cancelButton: any;
-    previousButton: any;
-    nextButton: any;
-    optional: any;
+    stepNumberLabel: ({ stepNumber }: { stepNumber: string }) => string;
+    collapsedStepsLabel: ({ stepNumber, stepsCount }: { stepNumber: string; stepsCount: string }) => string;
+    cancelButton: string;
+    previousButton: string;
+    nextButton: string;
+    optional: string;
   };
 }

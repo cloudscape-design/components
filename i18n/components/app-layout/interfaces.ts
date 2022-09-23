@@ -4,12 +4,12 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppLayoutI18n {
   ariaLabels: {
-    navigation: any;
-    navigationClose: any;
-    navigationToggle: any;
-    notifications: any;
-    tools: any;
-    toolsClose: any;
-    toolsToggle: any;
+    navigation: string;
+    navigationClose: string;
+    navigationToggle: string;
+    notifications: string;
+    tools: string;
+    toolsClose: string;
+    toolsToggle: string;
   };
 }

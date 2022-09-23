@@ -4,8 +4,8 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PaginationI18n {
   ariaLabels: {
-    nextPageLabel: any;
-    pageLabel: any;
-    previousPageLabel: any;
+    nextPageLabel: string;
+    pageLabel: ({ pageNumber }: { pageNumber: string }) => string;
+    previousPageLabel: string;
   };
 }

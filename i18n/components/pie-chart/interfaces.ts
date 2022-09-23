@@ -4,10 +4,10 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PieChartI18n {
   i18nStrings: {
-    chartAriaRoleDescription: any;
-    detailPopoverDismissAriaLabel: any;
-    filterSelectedAriaLabel: any;
-    legendAriaLabel: any;
-    segmentAriaRoleDescription: any;
+    chartAriaRoleDescription: string;
+    detailPopoverDismissAriaLabel: string;
+    filterSelectedAriaLabel: string;
+    legendAriaLabel: string;
+    segmentAriaRoleDescription: string;
   };
 }

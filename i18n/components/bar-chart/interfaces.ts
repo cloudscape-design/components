@@ -4,11 +4,11 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BarChartI18n {
   i18nStrings: {
-    chartAriaRoleDescription: any;
-    detailPopoverDismissAriaLabel: any;
-    filterSelectedAriaLabel: any;
-    legendAriaLabel: any;
-    xAxisAriaRoleDescription: any;
-    yAxisAriaRoleDescription: any;
+    chartAriaRoleDescription: string;
+    detailPopoverDismissAriaLabel: string;
+    filterSelectedAriaLabel: string;
+    legendAriaLabel: string;
+    xAxisAriaRoleDescription: string;
+    yAxisAriaRoleDescription: string;
   };
 }

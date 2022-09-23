@@ -4,7 +4,7 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TableI18n {
   ariaLabels: {
-    allItemsSelectionLabel: any;
-    itemSelectionLabel: any;
+    allItemsSelectionLabel: string;
+    itemSelectionLabel: ({ itemName }: { itemName: string }) => string;
   };
 }

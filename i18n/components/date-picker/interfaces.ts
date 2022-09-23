@@ -3,9 +3,9 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DatePickerI18n {
-  nextMonthAriaLabel: any;
-  'openCalendarAriaLabel:empty': any;
-  'openCalendarAriaLabel:selected': any;
-  previousMonthAriaLabel: any;
-  todayAriaLabel: any;
+  nextMonthAriaLabel: string;
+  'openCalendarAriaLabel:empty': string;
+  'openCalendarAriaLabel:selected': ({ selectedDate }: { selectedDate: string }) => string;
+  previousMonthAriaLabel: string;
+  todayAriaLabel: string;
 }

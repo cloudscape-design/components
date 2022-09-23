@@ -3,10 +3,10 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MultiselectI18n {
-  deselectAriaLabel: any;
-  selectedAriaLabel: any;
+  deselectAriaLabel: ({ optionLabel }: { optionLabel: string }) => string;
+  selectedAriaLabel: string;
   i18nStrings: {
-    tokenLimitShowFewer: any;
-    tokenLimitShowMore: any;
+    tokenLimitShowFewer: string;
+    tokenLimitShowMore: string;
   };
 }

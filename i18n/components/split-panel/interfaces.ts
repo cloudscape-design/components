@@ -4,15 +4,15 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SplitPanelI18n {
   i18nStrings: {
-    closeButtonAriaLabel: any;
-    openButtonAriaLabel: any;
-    preferencesCancel: any;
-    preferencesConfirm: any;
-    preferencesPositionBottom: any;
-    preferencesPositionDescription: any;
-    preferencesPositionLabel: any;
-    preferencesPositionSide: any;
-    preferencesTitle: any;
-    resizeHandleAriaLabel: any;
+    closeButtonAriaLabel: string;
+    openButtonAriaLabel: string;
+    preferencesCancel: string;
+    preferencesConfirm: string;
+    preferencesPositionBottom: string;
+    preferencesPositionDescription: string;
+    preferencesPositionLabel: string;
+    preferencesPositionSide: string;
+    preferencesTitle: string;
+    resizeHandleAriaLabel: string;
   };
 }

@@ -5,21 +5,21 @@
 export interface TutorialPanelI18n {
   i18nStrings: {
     labelsTaskStatus: {
-      pending: any;
-      'in-progress': any;
-      success: any;
+      pending: string;
+      'in-progress': string;
+      success: string;
     };
-    loadingText: any;
-    tutorialCompletedText: any;
-    labelExitTutorial: any;
-    learnMoreLinkText: any;
-    startTutorialButtonText: any;
-    restartTutorialButtonText: any;
-    feedbackLinkText: any;
-    dismissTutorialButtonText: any;
-    taskTitle: any;
-    stepTitle: any;
-    labelTotalSteps: any;
-    labelLearnMoreExternalIcon: any;
+    loadingText: string;
+    tutorialCompletedText: string;
+    labelExitTutorial: string;
+    learnMoreLinkText: string;
+    startTutorialButtonText: string;
+    restartTutorialButtonText: string;
+    feedbackLinkText: string;
+    dismissTutorialButtonText: string;
+    taskTitle: ({ taskIndex, taskTitle }: { taskIndex: string; taskTitle: string }) => string;
+    stepTitle: ({ stepIndex, stepTitle }: { stepIndex: string; stepTitle: string }) => string;
+    labelTotalSteps: ({ totalStepCount }: { totalStepCount: string }) => string;
+    labelLearnMoreExternalIcon: string;
   };
 }

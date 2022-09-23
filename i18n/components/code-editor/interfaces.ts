@@ -4,22 +4,22 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CodeEditorI18n {
   i18nStrings: {
-    cursorPosition: any;
-    editorGroupAriaLabel: any;
-    errorsTab: any;
-    errorState: any;
-    errorStateRecovery: any;
-    loadingState: any;
-    paneCloseButtonAriaLabel: any;
-    preferencesButtonAriaLabel: any;
-    preferencesModalCancel: any;
-    preferencesModalConfirm: any;
-    preferencesModalDarkThemes: any;
-    preferencesModalHeader: any;
-    preferencesModalLightThemes: any;
-    preferencesModalTheme: any;
-    preferencesModalWrapLines: any;
-    statusBarGroupAriaLabel: any;
-    warningsTab: any;
+    cursorPosition: ({ row, column }: { row: string; column: string }) => string;
+    editorGroupAriaLabel: string;
+    errorsTab: string;
+    errorState: string;
+    errorStateRecovery: string;
+    loadingState: string;
+    paneCloseButtonAriaLabel: string;
+    preferencesButtonAriaLabel: string;
+    preferencesModalCancel: string;
+    preferencesModalConfirm: string;
+    preferencesModalDarkThemes: string;
+    preferencesModalHeader: string;
+    preferencesModalLightThemes: string;
+    preferencesModalTheme: string;
+    preferencesModalWrapLines: string;
+    statusBarGroupAriaLabel: string;
+    warningsTab: string;
   };
 }

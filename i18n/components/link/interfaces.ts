@@ -3,5 +3,5 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface LinkI18n {
-  externalIconAriaLabel: any;
+  externalIconAriaLabel: string;
 }
