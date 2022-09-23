@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface CalendarProps {
+export interface CalendarProps extends BaseComponentProps {
   /**
    * The current input value, in YYYY-MM-DD format.
    */

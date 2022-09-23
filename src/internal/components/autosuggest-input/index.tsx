@@ -15,7 +15,13 @@ import {
   NonCancelableEventHandler,
 } from '../../events';
 import InternalInput from '../../../input/internal';
-import { BaseChangeDetail, BaseInputProps, InputKeyEvents, InputProps } from '../../../input/interfaces';
+import {
+  BaseChangeDetail,
+  BaseInputProps,
+  InputAutoCorrect,
+  InputKeyEvents,
+  InputProps,
+} from '../../../input/interfaces';
 import { getFocusables } from '../focus-lock/utils';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -26,6 +32,7 @@ import clsx from 'clsx';
 export interface AutosuggestInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     InputKeyEvents,
     FormFieldValidationControlProps,
     ExpandToViewport,
