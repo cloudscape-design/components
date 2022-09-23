@@ -197,8 +197,9 @@ describe('value', () => {
 
   describe('radiobutton controlId', () => {
     function check(radioButton: RadioButtonWrapper, controlId: string) {
+      expect(radioButton.findLabel().getElement()).toHaveAttribute('for', controlId);
+      expect(radioButton.findLabel().getElement()).toHaveAttribute('id', `${controlId}-wrapper`);
       expect(radioButton.findNativeInput().getElement()).toHaveAttribute('id', controlId);
-      expect(radioButton.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', `${controlId}-label`);
     }
 
     test('uses controlId for setting up label relations when set', () => {

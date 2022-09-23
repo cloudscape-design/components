@@ -20,7 +20,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
-  onClick: () => void;
+  withoutLabel?: boolean;
 }
 
 function joinString(values: (string | undefined)[]) {
@@ -40,7 +40,7 @@ export default function AbstractSwitch({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
-  onClick,
+  withoutLabel,
   __internalRootRef,
   ...rest
 }: AbstractSwitchProps) {
@@ -48,10 +48,16 @@ export default function AbstractSwitch({
   const id = controlId || uniqueId;
 
   const focusVisible = useFocusVisible();
+  const wrapperId = `${id}-wrapper`;
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
+  const WrapperElement = withoutLabel ? 'div' : 'label';
   const wrapperAttributes: Record<string, string | undefined> = {};
+  if (!withoutLabel) {
+    wrapperAttributes.id = wrapperId;
+    wrapperAttributes.htmlFor = id;
+  }
 
   const ariaLabelledByIds = [];
   if (label) {
@@ -71,11 +77,10 @@ export default function AbstractSwitch({
 
   return (
     <div {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
-      <div
+      <WrapperElement
         {...wrapperAttributes}
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
-        onClick={disabled ? undefined : onClick}
       >
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
@@ -108,7 +113,7 @@ export default function AbstractSwitch({
             </span>
           )}
         </span>
-      </div>
+      </WrapperElement>
     </div>
   );
 }
