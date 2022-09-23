@@ -1,0 +1,12 @@
+{
+  "i18nStrings.closeButtonAriaLabel": "Close panel",
+  "i18nStrings.openButtonAriaLabel": "Open panel",
+  "i18nStrings.preferencesCancel": "Cancel",
+  "i18nStrings.preferencesConfirm": "Confirm",
+  "i18nStrings.preferencesPositionBottom": "Bottom",
+  "i18nStrings.preferencesPositionDescription": "Choose the default split panel position for the service.",
+  "i18nStrings.preferencesPositionLabel": "Split panel position",
+  "i18nStrings.preferencesPositionSide": "Side",
+  "i18nStrings.preferencesTitle": "Split panel preferences",
+  "i18nStrings.resizeHandleAriaLabel": "Resize split panel"
+}

@@ -1,0 +1,9 @@
+{
+  "ariaLabels.navigation": "Side navigation",
+  "ariaLabels.navigationClose": "Close side navigation",
+  "ariaLabels.navigationToggle": "Open side navigation",
+  "ariaLabels.notifications": "Notifications",
+  "ariaLabels.tools": "Help panel",
+  "ariaLabels.toolsClose": "Open help panel",
+  "ariaLabels.toolsToggle": "Close help panel"
+}

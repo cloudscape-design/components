@@ -1,0 +1,9 @@
+{
+  "cancelLabel": "Cancel",
+  "confirmLabel": "Confirm",
+  "pageSizePreference.title": "Page size",
+  "title": "Preferences",
+  "visibleContentPreference.title": "Select visible columns",
+  "wrapLinesPreference.description": "Check to see all the text and wrap the lines",
+  "wrapLinesPreference.title": "Wrap lines"
+}

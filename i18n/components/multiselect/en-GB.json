@@ -1,0 +1,6 @@
+{
+  "deselectAriaLabel": "Remove option ${optionLabel} from selection",
+  "selectedAriaLabel": "Selected",
+  "i18nStrings.tokenLimitShowFewer": "Show fewer",
+  "i18nStrings.tokenLimitShowMore": "Show more"
+}

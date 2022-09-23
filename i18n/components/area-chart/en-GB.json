@@ -1,0 +1,8 @@
+{
+  "i18nStrings.chartAriaRoleDescription": "Area chart",
+  "i18nStrings.detailPopoverDismissAriaLabel": "Dismiss",
+  "i18nStrings.filterSelectedAriaLabel": "Selected",
+  "i18nStrings.legendAriaLabel": "Legend",
+  "i18nStrings.xAxisAriaRoleDescription": "X axis",
+  "i18nStrings.yAxisAriaRoleDescription": "Y axis"
+}

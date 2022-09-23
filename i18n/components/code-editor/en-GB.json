@@ -1,0 +1,19 @@
+{
+  "i18nStrings.cursorPosition": "Ln ${row}, Col ${column}",
+  "i18nStrings.editorGroupAriaLabel": "Code editor",
+  "i18nStrings.errorsTab": "Errors",
+  "i18nStrings.errorState": "There was an error in loading the code editor.",
+  "i18nStrings.errorStateRecovery": "Retry",
+  "i18nStrings.loadingState": "Loading code editor",
+  "i18nStrings.paneCloseButtonAriaLabel": "Close",
+  "i18nStrings.preferencesButtonAriaLabel": "Preferences",
+  "i18nStrings.preferencesModalCancel": "Cancel",
+  "i18nStrings.preferencesModalConfirm": "Confirm",
+  "i18nStrings.preferencesModalDarkThemes": "Dark themes",
+  "i18nStrings.preferencesModalHeader": "Preferences",
+  "i18nStrings.preferencesModalLightThemes": "Light themes",
+  "i18nStrings.preferencesModalTheme": "Theme",
+  "i18nStrings.preferencesModalWrapLines": "Wrap lines",
+  "i18nStrings.statusBarGroupAriaLabel": "Status bar",
+  "i18nStrings.warningsTab": "Warning"
+}
