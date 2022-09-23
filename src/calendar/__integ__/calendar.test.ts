@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import CalendarWrapper from '../../../lib/components/test-utils/selectors/calendar';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-const calendarWrapper = createWrapper().findComponent('', CalendarWrapper);
+const calendarWrapper = createWrapper().findCalendar();
 
 describe('Date picker calendar interactions', () => {
   const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {

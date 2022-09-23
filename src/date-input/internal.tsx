@@ -33,10 +33,7 @@ const maskArgs: MaskArgs = {
 };
 
 const InternalDateInput = React.forwardRef(
-  (
-    { value, onChange, disableBrowserAutocorrect = true, __internalRootRef = null, ...props }: InternalDateInputProps,
-    ref: Ref<HTMLInputElement>
-  ) => {
+  ({ value, onChange, __internalRootRef = null, ...props }: InternalDateInputProps, ref: Ref<HTMLInputElement>) => {
     return (
       <MaskedInput
         ref={ref}
@@ -48,7 +45,7 @@ const InternalDateInput = React.forwardRef(
         autofix={true}
         autoComplete={false}
         disableAutocompleteOnBlur={false}
-        disableBrowserAutocorrect={disableBrowserAutocorrect}
+        disableBrowserAutocorrect={true}
         __internalRootRef={__internalRootRef}
       />
     );
