@@ -18,7 +18,7 @@ export default function DatePickerScenario() {
           value={''}
           name={'date-picker-name'}
           ariaLabel={'date-picker-label'}
-          locale={'en-EN'}
+          locale="en-GB"
           previousMonthAriaLabel={'Previous month'}
           nextMonthAriaLabel={'Next month'}
           todayAriaLabel={'TEST TODAY'}

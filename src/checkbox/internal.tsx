@@ -10,6 +10,7 @@ import { CheckboxProps } from './interfaces';
 import styles from './styles.css.js';
 import CheckboxIcon from '../internal/components/checkbox-icon';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useFormFieldContext } from '../internal/context/form-field-context';
 
 interface InternalProps extends CheckboxProps, InternalBaseComponentProps {
   tabIndex?: -1;
@@ -26,8 +27,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       children,
       description,
       ariaLabel,
-      ariaLabelledby,
-      ariaDescribedby,
       onFocus,
       onBlur,
       onChange,
@@ -37,6 +36,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
     },
     ref
   ) => {
+    const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, checkboxRef);

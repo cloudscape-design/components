@@ -37,7 +37,7 @@ export default function Calendar({
 
   const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const elementRef = useRef<HTMLDivElement>(null);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
