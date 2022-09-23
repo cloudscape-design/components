@@ -77,7 +77,9 @@ export default function InternalTiles({
                 )}
                 key={item.value}
                 data-value={item.value}
-                onClick={() => item.value !== value && fireNonCancelableEvent(onChange, { value: item.value })}
+                onClick={() =>
+                  !item.disabled && item.value !== value && fireNonCancelableEvent(onChange, { value: item.value })
+                }
               >
                 <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
                   <RadioButton
