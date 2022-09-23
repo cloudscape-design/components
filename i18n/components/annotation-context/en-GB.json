@@ -1,8 +1,8 @@
 {
   "i18nStrings.finishButtonText": "Finish",
   "i18nStrings.labelDismissAnnotation": "Dismiss",
-  "i18nStrings.labelHotspot:open": "Open annotation",
-  "i18nStrings.labelHotspot:close": "Close annotation",
+  "i18nStrings.labelHotspotOpen": "Open annotation",
+  "i18nStrings.labelHotspotClose": "Close annotation",
   "i18nStrings.nextButtonText": "Next",
   "i18nStrings.previousButtonText": "Previous",
   "i18nStrings.stepCounterText": "Step ${stepIndex} / ${totalStepCount}",

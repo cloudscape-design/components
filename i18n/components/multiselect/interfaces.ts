@@ -5,6 +5,8 @@
 export interface MultiselectI18n {
   deselectAriaLabel: any;
   selectedAriaLabel: any;
-  'i18nStrings.tokenLimitShowFewer': any;
-  'i18nStrings.tokenLimitShowMore': any;
+  i18nStrings: {
+    tokenLimitShowFewer: any;
+    tokenLimitShowMore: any;
+  };
 }

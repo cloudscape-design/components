@@ -3,12 +3,14 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AnnotationContextI18n {
-  'i18nStrings.finishButtonText': any;
-  'i18nStrings.labelDismissAnnotation': any;
-  'i18nStrings.labelHotspot:open': any;
-  'i18nStrings.labelHotspot:close': any;
-  'i18nStrings.nextButtonText': any;
-  'i18nStrings.previousButtonText': any;
-  'i18nStrings.stepCounterText': any;
-  'i18nStrings.taskTitle': any;
+  i18nStrings: {
+    finishButtonText: any;
+    labelDismissAnnotation: any;
+    labelHotspotOpen: any;
+    labelHotspotClose: any;
+    nextButtonText: any;
+    previousButtonText: any;
+    stepCounterText: any;
+    taskTitle: any;
+  };
 }

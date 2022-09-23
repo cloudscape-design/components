@@ -3,5 +3,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface FormFieldI18n {
-  'i18nStrings.errorIconAriaLabel': any;
+  i18nStrings: {
+    errorIconAriaLabel: any;
+  };
 }

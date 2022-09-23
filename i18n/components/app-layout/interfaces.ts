@@ -3,11 +3,13 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppLayoutI18n {
-  'ariaLabels.navigation': any;
-  'ariaLabels.navigationClose': any;
-  'ariaLabels.navigationToggle': any;
-  'ariaLabels.notifications': any;
-  'ariaLabels.tools': any;
-  'ariaLabels.toolsClose': any;
-  'ariaLabels.toolsToggle': any;
+  ariaLabels: {
+    navigation: any;
+    navigationClose: any;
+    navigationToggle: any;
+    notifications: any;
+    tools: any;
+    toolsClose: any;
+    toolsToggle: any;
+  };
 }

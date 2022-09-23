@@ -18,7 +18,10 @@ async function generateTypes() {
     const interfacesFilePath = messagesFilePath.replace(/en-GB\.json/, 'interfaces.ts');
     const messages = JSON.parse(await fs.readFile(messagesFilePath, 'utf-8'));
 
-    const properties = Object.entries(messages).map(([name, message]) => `'${name}': ${definePropertyType(message)}`);
+    const namespace = {};
+    Object.entries(messages).forEach(([name, message]) => {
+      defineProperty(name, message, namespace);
+    });
 
     const content = prettify(
       interfacesFilePath,
@@ -27,13 +30,32 @@ async function generateTypes() {
         // SPDX-License-Identifier: Apache-2.0
 
         // eslint-disable-next-line @typescript-eslint/no-empty-interface
-        export interface ${componentName}I18n {
-            ${properties.join(';\n')}
-        }
+        export interface ${componentName}I18n ${renderNamespace(namespace)}
     `
     );
 
     await fs.writeFile(interfacesFilePath, content);
+  }
+}
+
+function renderNamespace(namespace) {
+  return `{
+      ${Object.entries(namespace)
+        .map(([name, value]) => `'${name}': ${typeof value === 'string' ? value : renderNamespace(value)}`)
+        .join(';\n')}
+  }`;
+}
+
+function defineProperty(name, message, namespace) {
+  const [rootName, ...restName] = name.split('.');
+
+  if (restName.length === 0) {
+    namespace[rootName] = definePropertyType(message);
+  } else {
+    if (!namespace[rootName]) {
+      namespace[rootName] = {};
+    }
+    defineProperty(restName.join('.'), message, namespace[rootName]);
   }
 }
 

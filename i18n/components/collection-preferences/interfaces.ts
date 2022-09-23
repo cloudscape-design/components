@@ -5,9 +5,15 @@
 export interface CollectionPreferencesI18n {
   cancelLabel: any;
   confirmLabel: any;
-  'pageSizePreference.title': any;
+  pageSizePreference: {
+    title: any;
+  };
   title: any;
-  'visibleContentPreference.title': any;
-  'wrapLinesPreference.description': any;
-  'wrapLinesPreference.title': any;
+  visibleContentPreference: {
+    title: any;
+  };
+  wrapLinesPreference: {
+    description: any;
+    title: any;
+  };
 }

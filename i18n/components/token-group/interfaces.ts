@@ -3,6 +3,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TokenGroupI18n {
-  'i18nStrings.limitShowFewer': any;
-  'i18nStrings.limitShowMore': any;
+  i18nStrings: {
+    limitShowFewer: any;
+    limitShowMore: any;
+  };
 }

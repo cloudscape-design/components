@@ -3,21 +3,23 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CodeEditorI18n {
-  'i18nStrings.cursorPosition': any;
-  'i18nStrings.editorGroupAriaLabel': any;
-  'i18nStrings.errorsTab': any;
-  'i18nStrings.errorState': any;
-  'i18nStrings.errorStateRecovery': any;
-  'i18nStrings.loadingState': any;
-  'i18nStrings.paneCloseButtonAriaLabel': any;
-  'i18nStrings.preferencesButtonAriaLabel': any;
-  'i18nStrings.preferencesModalCancel': any;
-  'i18nStrings.preferencesModalConfirm': any;
-  'i18nStrings.preferencesModalDarkThemes': any;
-  'i18nStrings.preferencesModalHeader': any;
-  'i18nStrings.preferencesModalLightThemes': any;
-  'i18nStrings.preferencesModalTheme': any;
-  'i18nStrings.preferencesModalWrapLines': any;
-  'i18nStrings.statusBarGroupAriaLabel': any;
-  'i18nStrings.warningsTab': any;
+  i18nStrings: {
+    cursorPosition: any;
+    editorGroupAriaLabel: any;
+    errorsTab: any;
+    errorState: any;
+    errorStateRecovery: any;
+    loadingState: any;
+    paneCloseButtonAriaLabel: any;
+    preferencesButtonAriaLabel: any;
+    preferencesModalCancel: any;
+    preferencesModalConfirm: any;
+    preferencesModalDarkThemes: any;
+    preferencesModalHeader: any;
+    preferencesModalLightThemes: any;
+    preferencesModalTheme: any;
+    preferencesModalWrapLines: any;
+    statusBarGroupAriaLabel: any;
+    warningsTab: any;
+  };
 }

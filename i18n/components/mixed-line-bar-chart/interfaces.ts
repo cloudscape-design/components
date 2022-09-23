@@ -3,10 +3,12 @@
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MixedLineBarChartI18n {
-  'i18nStrings.chartAriaRoleDescription': any;
-  'i18nStrings.detailPopoverDismissAriaLabel': any;
-  'i18nStrings.filterSelectedAriaLabel': any;
-  'i18nStrings.legendAriaLabel': any;
-  'i18nStrings.xAxisAriaRoleDescription': any;
-  'i18nStrings.yAxisAriaRoleDescription': any;
+  i18nStrings: {
+    chartAriaRoleDescription: any;
+    detailPopoverDismissAriaLabel: any;
+    filterSelectedAriaLabel: any;
+    legendAriaLabel: any;
+    xAxisAriaRoleDescription: any;
+    yAxisAriaRoleDescription: any;
+  };
 }
