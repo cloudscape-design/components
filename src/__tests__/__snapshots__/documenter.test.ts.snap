@@ -4349,17 +4349,6 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
-      "defaultValue": "true",
-      "description": "Specifies whether to disable browser autocorrect and related features.
-If you set this to \`true\`, it disables any native browser capabilities
-that automatically correct user input, such as \`autocorrect\` and
-\`autocapitalize\`. If you don't set it, the behavior follows the default behavior
-of the user's browser.",
-      "name": "disableBrowserAutocorrect",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
