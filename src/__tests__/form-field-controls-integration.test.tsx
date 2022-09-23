@@ -23,6 +23,10 @@ const formFieldControlComponents = [
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findRadioGroup()?.getElement(),
   },
   {
+    componentName: 'date-input',
+    findNativeElement: (wrapper: ElementWrapper) => wrapper.findDateInput()?.findNativeInput()?.getElement(),
+  },
+  {
     componentName: 'time-input',
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findTimeInput()?.findNativeInput()?.getElement(),
   },

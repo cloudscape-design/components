@@ -12,7 +12,7 @@ import {
   NonCancelableEventHandler,
   getBlurEventRelatedTarget,
 } from '../internal/events';
-import { InputProps, BaseInputProps, BaseChangeDetail } from './interfaces';
+import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
@@ -22,6 +22,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     InputProps,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
