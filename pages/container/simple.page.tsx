@@ -22,7 +22,7 @@ export default function SimpleContainers() {
                 description={
                   <>
                     Some additional text{' '}
-                    <Link fontSize="body-s" variant="primary">
+                    <Link fontSize="inherit" variant="primary">
                       with a link
                     </Link>
                     .
