@@ -23,11 +23,11 @@ class TablePage extends BasePageObject {
   }
 
   async toggleStickyHeader() {
-    await this.click(wrapper.findCheckbox('#sticky-header-toggle').findLabel().toSelector());
+    await this.click('#sticky-header-toggle label');
   }
 
   async toggleResizableColumns() {
-    await this.click(wrapper.findCheckbox('#resizable-columns-toggle').findLabel().toSelector());
+    await this.click('#resizable-columns-toggle label');
   }
 
   async getHeaderTopOffset() {

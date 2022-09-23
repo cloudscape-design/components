@@ -35,7 +35,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, checkboxRef);
-
     return (
       <AbstractSwitch
         {...baseProps}
@@ -60,13 +59,11 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             type="checkbox"
             checked={checked}
             name={name}
-            onFocus={() => fireNonCancelableEvent(onFocus)}
-            onBlur={() => fireNonCancelableEvent(onBlur)}
-            // empty handler to suppress React controllability warning
-            onChange={() => {}}
+            onFocus={onFocus && (() => fireNonCancelableEvent(onFocus))}
+            onBlur={onBlur && (() => fireNonCancelableEvent(onBlur))}
+            onChange={onChange && (event => fireNonCancelableEvent(onChange, { checked: event.target.checked }))}
           />
         )}
-        onClick={() => fireNonCancelableEvent(onChange, { checked: !checked })}
         styledControl={
           /*Using span, not div for HTML validity*/
           <span
