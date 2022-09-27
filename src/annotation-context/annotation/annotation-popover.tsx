@@ -96,6 +96,7 @@ export function AnnotationPopover({
       position={direction}
       trackRef={trackRef}
       trackKey={taskLocalStepIndex}
+      variant="annotation"
       arrow={arrow}
       zIndex={1000}
     >
