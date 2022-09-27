@@ -9,18 +9,22 @@
 
 .root {
   @include styles.styles-reset;
-  display: block;
+  display: flex;
+  flex-flow: column nowrap;
   word-wrap: break-word;
+
   &.variant {
     &-default,
     &-stacked {
       @include shared.borders-and-shadows;
       background-color: awsui.$color-background-container-content;
     }
+
     &-stacked:not(:last-child) {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
     }
+
     &-stacked + &-stacked {
       @include shared.divider;
       border-top-left-radius: 0;
@@ -31,6 +35,7 @@
 }
 
 .header {
+  flex: 0 0 auto;
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
@@ -41,31 +46,38 @@
     position: relative;
     z-index: 1;
   }
+
   &-sticky-enabled {
     top: 0;
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     position: sticky;
     z-index: 800;
   }
+
   &-stuck {
     box-shadow: awsui.$shadow-sticky-embedded;
     border: 0;
     border-radius: 0;
   }
+
   &-dynamic-height.header-stuck {
     // to prevent the block from changing its height when variant dynamically changes
     margin-bottom: calc(#{awsui.$font-heading-xl-line-height} - #{awsui.$font-heading-l-line-height});
   }
+
   &:not(:empty) {
     border-bottom: awsui.$border-container-sticky-width solid awsui.$color-border-container-divider;
   }
+
   &.with-paddings {
     padding: shared.$header-padding;
   }
+
   &.with-hidden-content {
     border-bottom-left-radius: awsui.$border-radius-container;
     border-bottom-right-radius: awsui.$border-radius-container;
   }
+
   &-variant-cards {
     @include shared.borders-and-shadows;
 
@@ -73,16 +85,19 @@
       // bottom shadow does not appear in IE11 due to the presence of background color
       // Adding a bottom border
       border-bottom: 1px solid #d5dbdb;
+
       /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       @supports (--css-variable-support-check: #000) {
         border-bottom: 0;
       }
     }
+
     &.header-stuck {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
   }
+
   &-variant-full-page.header-stuck {
     box-shadow: awsui.$shadow-sticky;
   }
@@ -96,17 +111,25 @@ the default white background of the container component.
   background-color: awsui.$color-background-layout-main;
 }
 
-.content.with-paddings {
-  padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
-  .header + & {
-    padding-top: awsui.$space-container-content-top;
+.content {
+  flex: auto;
+
+  &.with-paddings {
+    padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
+
+    .header + & {
+      padding-top: awsui.$space-container-content-top;
+    }
   }
 }
 
 .footer {
+  flex: 0 0 auto;
+
   &.with-paddings {
     padding: shared.$footer-padding;
   }
+
   &.with-divider {
     @include shared.divider;
   }
