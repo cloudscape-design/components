@@ -126,76 +126,121 @@
 
 // `enableStackingOption` feature beta test
 
-/*
-When conditionally rendered the isFlashbarStacked toggle will be the first 
-element in the AppLayout DOM for non-mobile viewports requiring additional 
-vertical space on top. In mobile viewports the appbar is lifted to the first 
-position and only bottom space is needed between the toggle and the first item.
-*/
-.stacking-option {
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    margin: #{awsui.$space-xs} 0;
+.details {
+  /*
+  The details stack element will be the first element in the AppLayout DOM for 
+  non-mobile viewports requiring additional vertical space on top.
+  In mobile viewports the appbar is lifted to the first position.
+  */
+  &.is-visual-refresh {
+    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+      margin-top: calc(#{awsui.$space-xxs} + 1px);
+    }
   }
 
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    margin: 0 0 #{awsui.$space-xs};
+  /* 
+  Safari needs the webkit prefix to remove the summary marker. All other 
+  browsers use the list-style: none.
+  */
+  > .summary::-webkit-details-marker {
+    display: none;
   }
-}
-
-/*
-The stack is a dynamic grid that creates the necessary number of rows and columns 
-based on the number of items passed to CSS via the `flashbarStackDepth` custom property.
-Assuming there are three flashbar items, the grid layout will be: 
-
-[item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
-[12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
-[12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
-*/
-.stack {
-  display: grid;
 
   /*
-  The `minmax()` function will enable the first row height to be reactive to the size of the first item. 
-  Each subsequent row will render a dummy notification with no content that will be no smaller than 
-  8px vertical space to create an adequate visual overlap.
+  The stack summary is a dynamic grid that creates the necessary number of 
+  rows and columns based on the number of items passed to CSS via the 
+  `flashbarStackDepth` custom property.Assuming there are three flashbar items, 
+  the grid layout will be: 
+
+  [item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
+  [12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
+  [12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
   */
-  grid-template-rows: repeat(var(#{custom-props.$flashbarStackDepth}), minmax(8px, auto));
-  grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
-    1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
-
-  /*
-  Each item will have a unique custom property `flashbarStackIndex` that is passed to CSS
-  from the DOM via the map in JavaScript.
-  */
-  > .item {
-    /*
-    The +1 is because the array is indexed at zero but grid positions are indexed at 1.
-    */
-    grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+  > .summary {
+    cursor: pointer;
+    display: grid;
+    list-style: none;
 
     /*
-    Add +1 to include the fractional unit in the column count and add + 1 because the array 
-    is indexed at zero but grid positions at indexed at 1.
+    The first row will be the item that persists when the details element is open. 
+    Each subsequent row will render a dummy notification with no content that 
+    will only be visible when the details is closed.
     */
-    grid-column-end: calc(
-      var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
-    );
-    grid-row-start: 1;
-    grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+    grid-template-columns:
+      repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
+      1fr
+      repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
+    row-gap: 8px;
 
     /*
-    The first item should have the highest z index than the second item, and so forth...
+    Each item will have a unique custom property `flashbarStackIndex` that is passed to CSS
+    from the DOM via the map in JavaScript.
     */
-    z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
+    > .item {
+      /*
+      The +1 is because the array is indexed at zero but grid positions are indexed at 1.
+      */
+      grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+
+      /*
+      Add +1 to include the fractional unit in the column count and add + 1 because the array 
+      is indexed at zero but grid positions at indexed at 1.
+      */
+      grid-column-end: calc(
+        var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
+      );
+      grid-row-start: 1;
+      grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+
+      /*
+      The first item should have the highest z index than the second item, and so forth...
+      */
+      z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
+    }
+
+    > .item:first-of-type > .flash > .content {
+      display: flex;
+      gap: 8px;
+      padding: awsui.$space-scaled-xxs 0;
+    }
+
+    > .item:first-of-type > .flash > .content > .icon {
+      transform: rotate(-90deg);
+
+      @include styles.with-motion {
+        transition: transform tokens.$motion-duration-rotate-90 tokens.$motion-easing-rotate-90;
+      }
+    }
+
+    > .item:first-of-type > .flash > .content > .badge {
+      background-color: awsui.$color-background-progress-bar-content-in-flash;
+      color: awsui.$color-background-notification-blue;
+    }
+
+    > .item:not(:first-of-type) {
+      align-self: end;
+    }
+
+    > .item:not(:last-of-type) > :first-child {
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
   }
 
-  > .item:not(:first-of-type) {
-    align-self: end;
-  }
+  &[open] {
+    > .summary {
+      margin-bottom: 2px;
+    }
 
-  > .item:not(:last-of-type) > :first-child {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    > .summary > .item:first-of-type > .flash > .content > .icon {
+      transform: rotate(0deg);
+    }
+
+    > .summary > .item:not(:last-of-type) > :first-child {
+      box-shadow: none;
+    }
+
+    > .summary > .item:not(:first-of-type) {
+      display: none;
+    }
   }
 }
