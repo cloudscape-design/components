@@ -18,6 +18,7 @@ export interface ButtonIconProps {
   iconSize?: IconProps.Size;
   variant?: string;
   iconClass?: string;
+  i18nStrings?: ButtonProps['i18nStrings'];
 }
 
 function getIconAlign(props: ButtonIconProps) {
@@ -45,7 +46,13 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, ...props }
 
 export function LeftIcon(props: ButtonIconProps) {
   if (props.loading) {
-    return <InternalSpinner className={clsx(styles.icon, styles['icon-left'])} />;
+    return (
+      <InternalSpinner
+        className={clsx(styles.icon, styles['icon-left'])}
+        ariaLiveAnnounce={true}
+        i18nStrings={props.i18nStrings}
+      />
+    );
   } else if (getIconAlign(props) === 'left') {
     return <IconWrapper {...props} />;
   }

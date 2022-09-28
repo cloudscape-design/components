@@ -120,6 +120,12 @@ export interface ButtonProps extends BaseComponentProps {
    */
 
   ariaExpanded?: boolean;
+
+  /**
+   * An object containing all the necessary localized strings required by
+   * the component.
+   */
+  i18nStrings?: ButtonProps.I18nStrings;
 }
 
 export namespace ButtonProps {
@@ -135,5 +141,9 @@ export namespace ButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
+  }
+
+  export interface I18nStrings {
+    loadingAltText?: string;
   }
 }

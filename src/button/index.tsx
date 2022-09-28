@@ -30,6 +30,7 @@ const Button = React.forwardRef(
       onClick,
       onFollow,
       ariaExpanded,
+      i18nStrings,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -58,6 +59,7 @@ const Button = React.forwardRef(
         onClick={onClick}
         onFollow={onFollow}
         ariaExpanded={ariaExpanded}
+        i18nStrings={i18nStrings}
       >
         {children}
       </InternalButton>

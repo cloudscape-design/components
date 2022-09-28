@@ -88,13 +88,13 @@ function LiveRegion({ assertive = false, delay = 10, children }: LiveRegionProps
   });
 
   return (
-    <div className={styles.root}>
+    <span className={styles.root}>
       <span aria-hidden="true">
         <span ref={sourceRef}>{children}</span>
       </span>
 
       <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
-    </div>
+    </span>
   );
 }
 

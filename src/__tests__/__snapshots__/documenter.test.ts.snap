@@ -9936,6 +9936,12 @@ Object {
   "name": "Spinner",
   "properties": Array [
     Object {
+      "description": "Determines if the spinner announces with aria-live. If true the text of loadingAltText will be announced.",
+      "name": "ariaLiveAnnounce",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -9944,6 +9950,12 @@ Object {
     Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "A string used to label the spinner icon, if ariaLiveAnnounce is true then this is the text that is announced.",
+      "name": "loadingAltText",
       "optional": true,
       "type": "string",
     },

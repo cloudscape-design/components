@@ -12,7 +12,7 @@ export default function TabNavigationPage() {
       <Button href="#" disabled={true}>
         Disabled with href
       </Button>{' '}
-      <Button href="#" loading={true}>
+      <Button href="#" loading={true} i18nStrings={{ loadingAltText: 'loading' }}>
         Loading with href
       </Button>{' '}
       <Button href="#" variant="link">
