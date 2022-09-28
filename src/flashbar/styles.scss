@@ -125,7 +125,6 @@
 }
 
 // `enableStackingOption` feature beta test
-
 .details {
   /*
   The details stack element will be the first element in the AppLayout DOM for 
@@ -138,10 +137,7 @@
     }
   }
 
-  /* 
-  Safari needs the webkit prefix to remove the summary marker. All other 
-  browsers use the list-style: none.
-  */
+  // Safari needs the webkit prefix to remove the summary marker
   > .summary::-webkit-details-marker {
     display: none;
   }
@@ -172,29 +168,20 @@
       repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
     row-gap: 8px;
 
-    /*
-    Each item will have a unique custom property `flashbarStackIndex` that is passed to CSS
-    from the DOM via the map in JavaScript.
-    */
+    // Each item will have a unique custom property `flashbarStackIndex`
     > .item {
-      /*
-      The +1 is because the array is indexed at zero but grid positions are indexed at 1.
-      */
+      // Add +1 is because the array is indexed at zero but grid positions are indexed at 1.
       grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
 
-      /*
-      Add +1 to include the fractional unit in the column count and add + 1 because the array 
-      is indexed at zero but grid positions at indexed at 1.
-      */
+      // Add +1 to include the fractional unit in the column count
+      // Add +1 because the array indexed at zero but grid positions at indexed at 1.
       grid-column-end: calc(
         var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
       );
       grid-row-start: 1;
       grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
 
-      /*
-      The first item should have the highest z index than the second item, and so forth...
-      */
+      // The first item should have the highest z index than the second item, and so forth...
       z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
     }
 
@@ -208,7 +195,7 @@
       transform: rotate(-90deg);
 
       @include styles.with-motion {
-        transition: transform tokens.$motion-duration-rotate-90 tokens.$motion-easing-rotate-90;
+        transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
       }
     }
 
