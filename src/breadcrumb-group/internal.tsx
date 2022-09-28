@@ -32,8 +32,7 @@ const DropdownTrigger = (
         clickHandler();
       }}
       ref={ref}
-      aria-expanded={isExpanded ? true : undefined}
-      aria-haspopup={true}
+      ariaExpanded={isExpanded}
       ariaLabel={ariaLabel}
       variant="breadcrumb-group"
       formAction="none"
