@@ -46,13 +46,7 @@ function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, ...props }
 
 export function LeftIcon(props: ButtonIconProps) {
   if (props.loading) {
-    return (
-      <InternalSpinner
-        className={clsx(styles.icon, styles['icon-left'])}
-        ariaLiveAnnounce={true}
-        i18nStrings={props.i18nStrings}
-      />
-    );
+    return <InternalSpinner className={clsx(styles.icon, styles['icon-left'])} i18nStrings={props.i18nStrings} />;
   } else if (getIconAlign(props) === 'left') {
     return <IconWrapper {...props} />;
   }

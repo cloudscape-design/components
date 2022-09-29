@@ -144,6 +144,6 @@ export namespace ButtonProps {
   }
 
   export interface I18nStrings {
-    loadingAltText?: string;
+    loadingAriaLiveText?: string;
   }
 }

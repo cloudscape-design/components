@@ -11,7 +11,6 @@ import LiveRegion from '../internal/components/live-region';
 interface InternalSpinnerProps extends SpinnerProps, InternalBaseComponentProps {}
 
 export default function InternalSpinner({
-  ariaLiveAnnounce,
   size = 'normal',
   variant = 'normal',
   i18nStrings,
@@ -21,10 +20,10 @@ export default function InternalSpinner({
   const baseProps = getBaseProps(props);
 
   const [liveRegionText, setliveRegionText] = useState('');
-  const loadingText = i18nStrings?.loadingAltText;
+  const loadingText = i18nStrings?.loadingAriaLiveText;
 
   useEffect(() => {
-    if (ariaLiveAnnounce && loadingText) {
+    if (loadingText) {
       let nextText = loadingText;
       setliveRegionText(nextText);
 
@@ -39,7 +38,7 @@ export default function InternalSpinner({
         clearInterval(announceTimer);
       };
     }
-  }, [ariaLiveAnnounce, loadingText]);
+  }, [loadingText]);
 
   return (
     <span
@@ -47,7 +46,7 @@ export default function InternalSpinner({
       className={clsx(baseProps.className, styles.root, styles[`size-${size}`], styles[`variant-${variant}`])}
       ref={__internalRootRef}
     >
-      <LiveRegion delay={0}>{liveRegionText}</LiveRegion>
+      <LiveRegion>{liveRegionText}</LiveRegion>
       <span className={clsx(styles.circle, styles['circle-left'])} />
       <span className={clsx(styles.circle, styles['circle-right'])} />
     </span>
