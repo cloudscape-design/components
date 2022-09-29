@@ -2525,6 +2525,24 @@ For example, if you have a 'help' button that links to a documentation page.",
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "inlineType": Object {
+        "name": "ButtonProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "loadingAltText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
+    },
+    Object {
       "defaultValue": "'left'",
       "description": "Specifies the alignment of the icon.",
       "inlineType": Object {
@@ -9946,6 +9964,24 @@ Object {
       "name": "className",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by
+the component.",
+      "inlineType": Object {
+        "name": "SpinnerProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "loadingAltText",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SpinnerProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
