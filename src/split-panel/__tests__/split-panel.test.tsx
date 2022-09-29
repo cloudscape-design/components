@@ -15,9 +15,9 @@ jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () =>
   useKeyboardEvents: () => onKeyDown,
 }));
 
-const onSliderMouseDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-mouse-events', () => ({
-  useMouseEvents: () => onSliderMouseDown,
+const onSliderPointerDown = jest.fn();
+jest.mock('../../../lib/components/split-panel/utils/use-pointer-events', () => ({
+  usePointerEvents: () => onSliderPointerDown,
 }));
 
 const i18nStrings = {
@@ -159,11 +159,11 @@ describe('Split panel', () => {
         expect(onKeyDown).toHaveBeenCalledTimes(1);
       });
 
-      test('fires mouseDown', () => {
-        onSliderMouseDown.mockClear();
+      test('fires pointerDown', () => {
+        onSliderPointerDown.mockClear();
         const { wrapper } = renderSplitPanel({ contextProps: { position } });
-        fireEvent.mouseDown(wrapper.findSlider()!.getElement());
-        expect(onSliderMouseDown).toHaveBeenCalledTimes(1);
+        fireEvent.pointerDown(wrapper.findSlider()!.getElement());
+        expect(onSliderPointerDown).toHaveBeenCalledTimes(1);
       });
     });
 
