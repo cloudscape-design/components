@@ -112,7 +112,7 @@ the default white background of the container component.
 }
 
 .content {
-  flex: auto;
+  flex: 1 0 auto;
 
   &.with-paddings {
     padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
