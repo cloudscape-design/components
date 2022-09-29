@@ -13,11 +13,11 @@ import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import VisualContext from '../internal/components/visual-context';
 import styles from './styles.css.js';
-import stylesBadge from '../badge/styles.css.js';
 
 export { FlashbarProps };
 
@@ -26,6 +26,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const baseProps = getBaseProps(restProps);
   const mergedRef = useMergeRefs(ref, __internalRootRef);
+  const isFocusVisible = useFocusVisible();
   const isVisualRefresh = useVisualRefresh();
 
   /**
@@ -42,6 +43,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    */
   const enableStackingOption = (restProps as any).enableStackingOption;
   const [isFlashbarStacked, setIsFlashbarStacked] = useState(false);
+  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
   useEffect(
     function handleIsFlashbardStacked() {
@@ -68,36 +70,51 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     const stackedItems = items.slice(0, stackDepth);
 
     return (
-      <details className={clsx(styles.details, isVisualRefresh && styles['is-visual-refresh'])}>
-        <summary className={clsx(styles.summary)} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
-          <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: 0 }}>
-            <div className={clsx(styles.flash, styles['flash-type-info'])}>
-              <div className={styles.content}>
-                <InternalIcon size="normal" className={styles.icon} name="caret-down-filled" />
+      <div className={styles.stack} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
+        {!isFlashbarStackExpanded && (
+          <div className={styles.collapsed}>
+            {stackedItems.map((item, index) => (
+              <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
+                {index === 0 && (
+                  <Flash
+                    key={item.id ?? index}
+                    // eslint-disable-next-line react/forbid-component-props
+                    className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
+                    {...item}
+                  />
+                )}
 
-                <span className={styles['flash-header']}>Notifications</span>
-
-                <span className={clsx(stylesBadge.badge, styles.badge)}>{items.length}</span>
+                {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
               </div>
-            </div>
+            ))}
           </div>
+        )}
 
-          {stackedItems.map((item, index) => (
-            <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index + 1 }} key={index}>
-              <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />
-            </div>
-          ))}
-        </summary>
+        {isFlashbarStackExpanded && (
+          <div className={styles.expanded}>
+            {items.map((item, index) => (
+              <Flash
+                key={item.id ?? index}
+                // eslint-disable-next-line react/forbid-component-props
+                className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
+                {...item}
+              />
+            ))}
+          </div>
+        )}
 
-        {items.map((item, index) => (
-          <Flash
-            key={item.id ?? index}
-            // eslint-disable-next-line react/forbid-component-props
-            className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
-            {...item}
+        <button
+          className={clsx(styles.toggle)}
+          onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
+          {...isFocusVisible}
+        >
+          <InternalIcon
+            className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}
+            size="small"
+            name="angle-down"
           />
-        ))}
-      </details>
+        </button>
+      </div>
     );
   }
 

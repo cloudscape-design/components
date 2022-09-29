@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 @use './motion';
@@ -125,109 +126,96 @@
 }
 
 // `enableStackingOption` feature beta test
-.details {
-  /*
-  The details stack element will be the first element in the AppLayout DOM for 
-  non-mobile viewports requiring additional vertical space on top.
-  In mobile viewports the appbar is lifted to the first position.
-  */
-  &.is-visual-refresh {
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      margin-top: calc(#{awsui.$space-xxs} + 1px);
-    }
-  }
 
-  // Safari needs the webkit prefix to remove the summary marker
-  > .summary::-webkit-details-marker {
-    display: none;
-  }
+.stack {
+  display: grid;
+  grid-template-columns: 1fr minmax(70px, auto) 1fr;
+}
 
-  /*
-  The stack summary is a dynamic grid that creates the necessary number of 
-  rows and columns based on the number of items passed to CSS via the 
-  `flashbarStackDepth` custom property.Assuming there are three flashbar items, 
-  the grid layout will be: 
+.stack > .expanded {
+  grid-column: 1 / 4;
+}
 
-  [item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
-  [12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
-  [12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
-  */
-  > .summary {
-    cursor: pointer;
-    display: grid;
-    list-style: none;
+/*
+The collapsed stack is a dynamic grid that creates the necessary number of 
+rows and columns based on the number of items passed to CSS via the 
+`flashbarStackDepth` custom property. Assuming there are three flashbar items, 
+the grid layout will be: 
 
-    /*
-    The first row will be the item that persists when the details element is open. 
-    Each subsequent row will render a dummy notification with no content that 
-    will only be visible when the details is closed.
-    */
-    grid-template-columns:
-      repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
-      1fr
-      repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
-    row-gap: 8px;
+[item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
+[12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
+[12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
+*/
+.stack > .collapsed {
+  display: grid;
+  grid-column: 1 / 4;
+  grid-template-columns:
+    repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
+    1fr
+    repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
+  row-gap: 8px;
 
+  > .item {
     // Each item will have a unique custom property `flashbarStackIndex`
-    > .item {
-      // Add +1 is because the array is indexed at zero but grid positions are indexed at 1.
-      grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
+    // Add +1 is because the array is indexed at zero but grid positions are indexed at 1.
+    grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
 
-      // Add +1 to include the fractional unit in the column count
-      // Add +1 because the array indexed at zero but grid positions at indexed at 1.
-      grid-column-end: calc(
-        var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
-      );
-      grid-row-start: 1;
-      grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+    // Add +1 to include the fractional unit in the column count
+    // Add +1 because the array indexed at zero but grid positions at indexed at 1.
+    grid-column-end: calc(
+      var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
+    );
+    grid-row-start: 1;
+    grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
 
-      // The first item should have the highest z index than the second item, and so forth...
-      z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
-    }
-
-    > .item:first-of-type > .flash > .content {
-      display: flex;
-      gap: 8px;
-      padding: awsui.$space-scaled-xxs 0;
-    }
-
-    > .item:first-of-type > .flash > .content > .icon {
-      transform: rotate(-90deg);
-
-      @include styles.with-motion {
-        transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
-      }
-    }
-
-    > .item:first-of-type > .flash > .content > .badge {
-      background-color: awsui.$color-background-progress-bar-content-in-flash;
-      color: awsui.$color-background-notification-blue;
-    }
-
-    > .item:not(:first-of-type) {
-      align-self: end;
-    }
-
-    > .item:not(:last-of-type) > :first-child {
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    }
+    // The first item should have the highest z index than the second item, and so forth...
+    z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
   }
 
-  &[open] {
-    > .summary {
-      margin-bottom: 2px;
+  > .item:not(:first-of-type) {
+    align-self: end;
+  }
+
+  > .item:not(:last-of-type) > :first-child {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.stack > .toggle {
+  background: awsui.$color-background-layout-toggle-default;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  box-shadow: awsui.$shadow-panel-toggle;
+  color: awsui.$color-text-layout-toggle;
+  cursor: pointer;
+  grid-column: 2;
+  grid-row: 2;
+  padding: awsui.$space-scaled-xxs;
+  z-index: var(#{custom-props.$flashbarStackDepth});
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(3px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: awsui.$color-background-layout-toggle-hover;
+  }
+
+  &:active {
+    background: awsui.$color-background-layout-toggle-active;
+  }
+
+  > .icon {
+    @include styles.with-motion {
+      transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
     }
 
-    > .summary > .item:first-of-type > .flash > .content > .icon {
-      transform: rotate(0deg);
-    }
-
-    > .summary > .item:not(:last-of-type) > :first-child {
-      box-shadow: none;
-    }
-
-    > .summary > .item:not(:first-of-type) {
-      display: none;
+    &.expanded {
+      transform: rotate(180deg);
     }
   }
 }
