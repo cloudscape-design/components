@@ -33,6 +33,7 @@ const DropdownTrigger = (
       }}
       ref={ref}
       ariaExpanded={isExpanded}
+      aria-haspopup={true}
       ariaLabel={ariaLabel}
       variant="breadcrumb-group"
       formAction="none"
