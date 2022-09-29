@@ -21,24 +21,25 @@ export default function InternalSpinner({
   const baseProps = getBaseProps(props);
 
   const [liveRegionText, setliveRegionText] = useState('');
+  const loadingText = i18nStrings?.loadingAltText;
 
   useEffect(() => {
-    if (ariaLiveAnnounce && i18nStrings?.loadingAltText) {
-      const loadingText = i18nStrings?.loadingAltText || '';
-      setliveRegionText(loadingText);
+    if (ariaLiveAnnounce && loadingText) {
+      let nextText = loadingText;
+      setliveRegionText(nextText);
 
-      const updateAnnouncer = () => {
-        setliveRegionText('');
-        setliveRegionText(loadingText);
+      const toggleAnnouncer = () => {
+        nextText = nextText === loadingText ? '' : loadingText;
+        setliveRegionText(nextText);
       };
 
-      const announceTimer = setInterval(updateAnnouncer, 3000);
+      const announceTimer = setInterval(toggleAnnouncer, 2000);
 
       return () => {
         clearInterval(announceTimer);
       };
     }
-  }, [ariaLiveAnnounce, i18nStrings?.loadingAltText]);
+  }, [ariaLiveAnnounce, loadingText]);
 
   return (
     <span
