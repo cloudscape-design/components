@@ -41,7 +41,6 @@ interface TransitionContentProps {
   dropdownClasses: string;
   stretchWidth: boolean;
   interior: boolean;
-  hasContent: boolean;
   isRefresh: boolean;
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
@@ -60,7 +59,6 @@ const TransitionContent = ({
   dropdownClasses,
   stretchWidth,
   interior,
-  hasContent,
   isRefresh,
   dropdownRef,
   verticalContainerRef,
@@ -80,7 +78,7 @@ const TransitionContent = ({
         [styles['with-limited-width']]: !stretchWidth,
         [styles['hide-upper-border']]: stretchWidth,
         [styles.interior]: interior,
-        [styles['is-empty']]: !header && !hasContent,
+        [styles['is-empty']]: !header && !children,
         [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
       })}
@@ -121,7 +119,6 @@ const Dropdown = ({
   preferCenter = false,
   interior = false,
   minWidth,
-  hasContent = true,
   scrollable = true,
   trapFocus = false,
   contentKey,
@@ -360,7 +357,6 @@ const Dropdown = ({
                 stretchWidth={stretchWidth}
                 interior={interior}
                 header={header}
-                hasContent={hasContent}
                 expandToViewport={expandToViewport}
                 footer={footer}
                 onMouseDown={onMouseDown}

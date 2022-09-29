@@ -15,7 +15,13 @@ import {
   NonCancelableEventHandler,
 } from '../../events';
 import InternalInput from '../../../input/internal';
-import { BaseChangeDetail, BaseInputProps, InputKeyEvents, InputProps } from '../../../input/interfaces';
+import {
+  BaseChangeDetail,
+  BaseInputProps,
+  InputAutoCorrect,
+  InputKeyEvents,
+  InputProps,
+} from '../../../input/interfaces';
 import { getFocusables } from '../focus-lock/utils';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -26,6 +32,7 @@ import clsx from 'clsx';
 export interface AutosuggestInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     InputKeyEvents,
     FormFieldValidationControlProps,
     ExpandToViewport,
@@ -75,7 +82,7 @@ const AutosuggestInput = React.forwardRef(
       expandToViewport,
       ariaControls,
       ariaActivedescendant,
-      dropdownExpanded,
+      dropdownExpanded = true,
       dropdownContentKey,
       dropdownContentFocusable = false,
       dropdownContent = null,
@@ -209,7 +216,7 @@ const AutosuggestInput = React.forwardRef(
       }
     };
 
-    const expanded = open && (dropdownExpanded ?? !!dropdownContent);
+    const expanded = open && dropdownExpanded;
     const nativeAttributes = {
       name,
       placeholder,
@@ -302,12 +309,13 @@ const AutosuggestInput = React.forwardRef(
             )
           }
           expandToViewport={expandToViewport}
-          hasContent={expanded}
           trapFocus={trapDropdownFocus}
         >
-          <div ref={dropdownContentRef} className={styles['dropdown-content']}>
-            {open && dropdownContent}
-          </div>
+          {open && dropdownContent ? (
+            <div ref={dropdownContentRef} className={styles['dropdown-content']}>
+              {dropdownContent}
+            </div>
+          ) : null}
         </Dropdown>
       </div>
     );

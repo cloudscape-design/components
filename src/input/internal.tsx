@@ -12,7 +12,7 @@ import {
   NonCancelableEventHandler,
   getBlurEventRelatedTarget,
 } from '../internal/events';
-import { InputProps, BaseInputProps, BaseChangeDetail } from './interfaces';
+import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
@@ -22,6 +22,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     InputProps,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
@@ -139,6 +140,14 @@ function InternalInput(
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
   };
+
+  if (type === 'number') {
+    // Chrome and Safari have a weird built-in behavior of letting focused
+    // number inputs be controlled by scrolling on them. However, they don't
+    // lock the browser's scroll, so it's very easy to accidentally increment
+    // the input while scrolling down the page.
+    attributes.onWheel = event => event.currentTarget.blur();
+  }
 
   if (disableBrowserAutocorrect) {
     attributes.autoCorrect = 'off';

@@ -76,7 +76,7 @@ export default function ContainerHeadersDemo() {
               description={
                 <>
                   Some additional text{' '}
-                  <Link fontSize="body-s" variant="primary" external={true} externalIconAriaLabel="(External)">
+                  <Link fontSize="inherit" variant="primary" external={true} externalIconAriaLabel="(External)">
                     with a link
                   </Link>
                   .
