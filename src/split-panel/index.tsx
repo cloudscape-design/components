@@ -12,7 +12,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SplitPanelProps, SizeControlProps } from './interfaces';
 import ResizeHandler from './icons/resize-handler';
 import PreferencesModal from './preferences-modal';
-import { useMouseEvents } from './utils/use-mouse-events';
+import { usePointerEvents } from './utils/use-pointer-events';
 import { useKeyboardEvents } from './utils/use-keyboard-events';
 
 import styles from './styles.css.js';
@@ -39,7 +39,7 @@ interface TransitionContentProps {
   i18nStrings: SplitPanelProps.I18nStrings;
   relativeSize: number;
   onKeyDown: (event: React.KeyboardEvent<Element>) => void;
-  onSliderMouseDown: () => void;
+  onSliderPointerDown: () => void;
   focusVisible: { 'data-awsui-focus-visible': true } | { 'data-awsui-focus-visible'?: undefined };
   paneHeader: JSX.Element;
   wrappedChildren: JSX.Element;
@@ -62,7 +62,7 @@ const TransitionContentSide = ({
   i18nStrings,
   relativeSize,
   onKeyDown,
-  onSliderMouseDown,
+  onSliderPointerDown,
   focusVisible,
   toggleRef,
   paneHeader,
@@ -101,7 +101,7 @@ const TransitionContentSide = ({
               aria-valuenow={relativeSize}
               className={clsx(styles.slider, styles['slider-side'])}
               onKeyDown={onKeyDown}
-              onMouseDown={onSliderMouseDown}
+              onPointerDown={onSliderPointerDown}
               {...focusVisible}
             >
               <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-side'])} />
@@ -151,7 +151,7 @@ const TransitionContentBottom = ({
   i18nStrings,
   relativeSize,
   onKeyDown,
-  onSliderMouseDown,
+  onSliderPointerDown,
   focusVisible,
   paneHeader,
   wrappedChildren,
@@ -196,7 +196,7 @@ const TransitionContentBottom = ({
             aria-valuenow={relativeSize}
             className={clsx(styles.slider, styles['slider-bottom'])}
             onKeyDown={onKeyDown}
-            onMouseDown={onSliderMouseDown}
+            onPointerDown={onSliderPointerDown}
             {...focusVisible}
           >
             <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-bottom'])} />
@@ -310,7 +310,7 @@ export default function SplitPanel({
     setSidePanelWidth,
     setBottomPanelHeight,
   };
-  const onSliderMouseDown = useMouseEvents(sizeControlProps);
+  const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
   const toggleRef = useRef<ButtonProps.Ref>(null);
@@ -446,7 +446,7 @@ export default function SplitPanel({
               i18nStrings={i18nStrings}
               relativeSize={relativeSize}
               onKeyDown={onKeyDown}
-              onSliderMouseDown={onSliderMouseDown}
+              onSliderPointerDown={onSliderPointerDown}
               focusVisible={focusVisible}
               toggleRef={toggleRef}
               paneHeader={paneHeader}
@@ -466,7 +466,7 @@ export default function SplitPanel({
               i18nStrings={i18nStrings}
               relativeSize={relativeSize}
               onKeyDown={onKeyDown}
-              onSliderMouseDown={onSliderMouseDown}
+              onSliderPointerDown={onSliderPointerDown}
               focusVisible={focusVisible}
               paneHeader={paneHeader}
               wrappedChildren={wrappedChildren}
