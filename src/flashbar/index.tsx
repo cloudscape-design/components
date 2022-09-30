@@ -76,15 +76,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           <div className={clsx(styles.collapsed, isVisualRefresh && styles['visual-refresh'])}>
             {stackedItems.map((item, index) => (
               <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
-                {index === 0 && (
-                  <Flash
-                    key={item.id ?? index}
-                    // eslint-disable-next-line react/forbid-component-props
-                    className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
-                    {...item}
-                  />
-                )}
-
+                {index === 0 && renderItem(item, item.id ?? index)}
                 {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
               </div>
             ))}
@@ -92,16 +84,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         {isFlashbarStackExpanded && (
-          <div className={styles.expanded}>
-            {items.map((item, index) => (
-              <Flash
-                key={item.id ?? index}
-                // eslint-disable-next-line react/forbid-component-props
-                className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
-                {...item}
-              />
-            ))}
-          </div>
+          <div className={styles.expanded}>{items.map((item, index) => renderItem(item, item.id ?? index))}</div>
         )}
 
         <button
@@ -137,16 +120,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
               key={item.id ?? index}
               in={true}
             >
-              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                <Flash
-                  ref={transitionRootElement}
-                  key={item.id ?? index}
-                  transitionState={state}
-                  // eslint-disable-next-line react/forbid-component-props
-                  className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
-                  {...item}
-                />
-              )}
+              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) =>
+                renderItem(item, item.id ?? index, transitionRootElement, state)
+              }
             </Transition>
           ))}
       </TransitionGroup>
@@ -162,17 +138,27 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       return;
     }
 
+    return <>{items.map((item, index) => renderItem(item, item.id ?? index))}</>;
+  }
+
+  /**
+   *
+   */
+  function renderItem(
+    item: FlashbarProps.MessageDefinition,
+    key: string | number,
+    transitionRootElement?: React.Ref<HTMLDivElement> | undefined,
+    transitionState?: string | undefined
+  ) {
     return (
-      <>
-        {items.map((item, index) => (
-          <Flash
-            key={item.id ?? index}
-            // eslint-disable-next-line react/forbid-component-props
-            className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
-            {...item}
-          />
-        ))}
-      </>
+      <Flash
+        // eslint-disable-next-line react/forbid-component-props
+        className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
+        key={key}
+        ref={transitionRootElement}
+        transitionState={transitionState}
+        {...item}
+      />
     );
   }
 
