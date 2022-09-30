@@ -175,7 +175,8 @@ const DatePicker = React.forwardRef(
                 className={styles.calendar}
                 role="dialog"
                 aria-describedby={calendarDescriptionId}
-                aria-label={'Calendar dialog'}
+                aria-label={ariaLabel}
+                aria-labelledby={ariaLabelledby}
               >
                 <InternalCalendar
                   value={value}
