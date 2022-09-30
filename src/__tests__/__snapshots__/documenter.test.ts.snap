@@ -9183,6 +9183,11 @@ The return type of the function should be a promise that resolves to a list of v
             "type": "string",
           },
           Object {
+            "name": "inContextViewButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "labelBreadcrumbs",
             "optional": false,
             "type": "string",

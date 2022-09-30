@@ -169,6 +169,7 @@ export namespace S3ResourceSelectorProps {
     inContextSelectPlaceholder: string;
     inContextBrowseButton: string;
     inContextViewButton: string;
+    inContextViewButtonAriaLabel?: string;
     inContextLoadingText: string;
     inContextUriLabel: string;
     inContextVersionSelectLabel: string;
