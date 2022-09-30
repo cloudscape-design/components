@@ -118,5 +118,15 @@ describe('Expandable Section', () => {
       const header = wrapper.findHeader().getElement();
       expect(header).toHaveAttribute('aria-expanded', 'true');
     });
+
+    test('can assign a different label to the header', () => {
+      const wrapper = renderExpandableSection({
+        headerAriaLabel: 'ARIA Label',
+      });
+      const header = wrapper.findHeader().getElement();
+      const content = wrapper.findContent().getElement();
+      expect(header).toHaveAttribute('aria-label', 'ARIA Label');
+      expect(content).toHaveAttribute('aria-label', 'ARIA Label');
+    });
   });
 });
