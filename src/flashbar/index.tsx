@@ -142,7 +142,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   }
 
   /**
-   *
+   * This is a shared render function for a single flashbar item to be used
+   * by the stacking, motion, and non-motion item group render functions.
    */
   function renderItem(
     item: FlashbarProps.MessageDefinition,
