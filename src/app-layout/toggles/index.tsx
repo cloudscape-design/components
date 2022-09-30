@@ -45,6 +45,7 @@ export const AppLayoutButton = React.forwardRef(
         iconName={iconName}
         disabled={disabled}
         ariaExpanded={ariaExpanded}
+        __nativeAttributes={ariaExpanded !== false ? {} : { 'aria-haspopup': true }}
       />
     );
   }

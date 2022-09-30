@@ -117,10 +117,12 @@ describeEachAppLayout(() => {
         }
       });
 
-      test('Renders aria-expanded only on toggle', () => {
+      test('Renders aria-expanded and aria-haspopup only on toggle', () => {
         const { wrapper } = renderComponent(<AppLayout />);
         expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
+        expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
         expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
+        expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-haspopup');
       });
 
       test('Does not add a label to the toggle and landmark when they are not defined', () => {
