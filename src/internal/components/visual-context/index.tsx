@@ -21,6 +21,10 @@ interface VisualContextProps {
   children: React.ReactNode;
 }
 
+export function getVisualContextClassname(contextName: string) {
+  return `awsui-context-${contextName}`;
+}
+
 export default function VisualContext({ contextName, className, children }: VisualContextProps) {
   return <div className={clsx(`awsui-context-${contextName}`, className)}>{children}</div>;
 }

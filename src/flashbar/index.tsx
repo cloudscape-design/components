@@ -16,7 +16,7 @@ import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import VisualContext from '../internal/components/visual-context';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import styles from './styles.css.js';
 
 export { FlashbarProps };
@@ -154,7 +154,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(isVisualRefresh ? styles['flash-refresh'] : '')}
+        className={clsx(getVisualContextClassname('flashbar'), isVisualRefresh ? styles['flash-refresh'] : '')}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}
@@ -169,11 +169,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       className={clsx(baseProps.className, styles.flashbar, styles[`breakpoint-${breakpoint}`])}
       ref={mergedRef}
     >
-      <VisualContext contextName="flashbar">
-        {renderStackedItems()}
-        {renderFlatItemsWithTransitions()}
-        {renderFlatItemsWithoutTransitions()}
-      </VisualContext>
+      {renderStackedItems()}
+      {renderFlatItemsWithTransitions()}
+      {renderFlatItemsWithoutTransitions()}
     </div>
   );
 }

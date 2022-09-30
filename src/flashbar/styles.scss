@@ -4,9 +4,7 @@
 */
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/hooks/focus-visible' as focus-visible;
-@use '../internal/styles/foundation' as foundation;
 @use '../internal/styles/tokens' as awsui;
-
 @use '../internal/styles' as styles;
 @use './motion';
 
@@ -191,6 +189,10 @@ the grid layout will be:
   grid-column: 2;
   grid-row: 2;
 
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+
   &.visual-refresh {
     background: awsui.$color-background-layout-toggle-default;
     border: none;
@@ -200,10 +202,6 @@ the grid layout will be:
     cursor: pointer;
     padding: awsui.$space-scaled-xxs;
     z-index: var(#{custom-props.$flashbarStackDepth});
-
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(3px);
-    }
 
     &:focus {
       outline: none;
@@ -220,7 +218,7 @@ the grid layout will be:
 
   &:not(.visual-refresh) {
     background: awsui.$color-background-button-normal-default;
-    border: styles.$control-border-width solid;
+    border: styles.$control-border-width solid awsui.$color-border-button-normal-default;
     border-radius: awsui.$border-radius-button;
     border-top: none;
     cursor: pointer;
@@ -241,14 +239,6 @@ the grid layout will be:
     &:active {
       background: awsui.$color-background-button-normal-active;
       border-color: awsui.$color-border-button-normal-active;
-    }
-
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(
-        awsui.$space-button-focus-outline-gutter,
-        awsui.$border-radius-control-default-focus-ring,
-        0 0 2px orange //foundation.$box-shadow-focused
-      );
     }
   }
 
