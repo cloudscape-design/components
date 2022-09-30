@@ -88,7 +88,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         <button
-          className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'], 'awsui-context-content-header')}
+          className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'])}
           onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
           {...isFocusVisible}
         >
