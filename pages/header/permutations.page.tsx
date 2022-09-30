@@ -17,11 +17,14 @@ const permutations = createPermutations<HeaderProps>([
       </Link>,
       null,
     ],
-    description: ['description', null],
-    counter: ['counter', undefined],
+    description: [
+      'A description text with some content to simulate a text shown below the title of this header.',
+      null,
+    ],
+    counter: ['(1/10)', undefined],
     actions: [
       <Button key="button" variant="primary">
-        Primary Button
+        Create Resource
       </Button>,
       null,
     ],
