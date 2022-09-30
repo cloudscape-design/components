@@ -11,7 +11,7 @@ const permutations = createPermutations<ButtonProps>([
   {
     disabled: [false, true],
     loading: [false, true],
-    i18nStrings: [{ loadingAriaLiveText: 'loading' }],
+    loadingAriaLiveText: ['loading'],
     iconName: [undefined, 'settings'],
     iconAlign: ['left', 'right'],
     children: [

@@ -41,7 +41,7 @@ export const InternalButton = React.forwardRef(
       formAction = 'submit',
       ariaLabel,
       ariaExpanded,
-      i18nStrings,
+      loadingAriaLiveText,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -103,7 +103,7 @@ export const InternalButton = React.forwardRef(
       variant,
       iconClass: __iconClass,
       iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
-      i18nStrings,
+      loadingAriaLiveText,
     };
     const buttonContent = (
       <>

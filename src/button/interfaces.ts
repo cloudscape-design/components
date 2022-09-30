@@ -122,10 +122,9 @@ export interface ButtonProps extends BaseComponentProps {
   ariaExpanded?: boolean;
 
   /**
-   * An object containing all the necessary localized strings required by
-   * the component.
+   * Provides the string that will be announced by aria-live when the button in in loading mode
    */
-  i18nStrings?: ButtonProps.I18nStrings;
+  loadingAriaLiveText?: string;
 }
 
 export namespace ButtonProps {
@@ -141,9 +140,5 @@ export namespace ButtonProps {
      * Focuses the underlying native button.
      */
     focus(options?: FocusOptions): void;
-  }
-
-  export interface I18nStrings {
-    loadingAriaLiveText?: string;
   }
 }

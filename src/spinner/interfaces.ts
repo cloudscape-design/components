@@ -13,20 +13,12 @@ export interface SpinnerProps extends BaseComponentProps {
   variant?: SpinnerProps.Variant;
 
   /**
-   * An object containing all the necessary localized strings required by
-   * the component.
+   * Provides the string that will be announced by aria-live when the spinner is present
    */
-  i18nStrings?: SpinnerProps.I18nStrings;
+  loadingAriaLiveText?: string;
 }
 
 export namespace SpinnerProps {
   export type Size = 'normal' | 'big' | 'large';
   export type Variant = 'normal' | 'disabled' | 'inverted';
-
-  export interface I18nStrings {
-    /**
-     * Provides text for an aria-live announcement which provides an accessible alternative to the "spinner" visual
-     */
-    loadingAriaLiveText?: string;
-  }
 }

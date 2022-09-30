@@ -13,32 +13,35 @@ interface InternalSpinnerProps extends SpinnerProps, InternalBaseComponentProps 
 export default function InternalSpinner({
   size = 'normal',
   variant = 'normal',
-  i18nStrings,
+  loadingAriaLiveText,
   __internalRootRef,
   ...props
 }: InternalSpinnerProps) {
   const baseProps = getBaseProps(props);
 
   const [liveRegionText, setliveRegionText] = useState('');
-  const loadingText = i18nStrings?.loadingAriaLiveText;
+  /* Results in the message repeating at twice the value of messageToggleTiming.
+   * In this case 4 seconds was the interval that "felt right" to the a11y team
+   */
+  const messageToggleTiming = 2000;
 
   useEffect(() => {
-    if (loadingText) {
-      let nextText = loadingText;
+    if (loadingAriaLiveText) {
+      let nextText = loadingAriaLiveText;
       setliveRegionText(nextText);
 
       const toggleAnnouncer = () => {
-        nextText = nextText === loadingText ? '' : loadingText;
+        nextText = nextText === loadingAriaLiveText ? '' : loadingAriaLiveText;
         setliveRegionText(nextText);
       };
 
-      const announceTimer = setInterval(toggleAnnouncer, 2000);
+      const announceTimer = setInterval(toggleAnnouncer, messageToggleTiming);
 
       return () => {
         clearInterval(announceTimer);
       };
     }
-  }, [loadingText]);
+  }, [loadingAriaLiveText]);
 
   return (
     <span

@@ -12,7 +12,7 @@ export default function TabNavigationPage() {
       <Button href="#" disabled={true}>
         Disabled with href
       </Button>{' '}
-      <Button href="#" loading={true} i18nStrings={{ loadingAriaLiveText: 'loading' }}>
+      <Button href="#" loading={true} loadingAriaLiveText="loading">
         Loading with href
       </Button>{' '}
       <Button href="#" variant="link">
