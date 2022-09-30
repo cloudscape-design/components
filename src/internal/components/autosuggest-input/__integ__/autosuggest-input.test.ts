@@ -29,3 +29,23 @@ test(
     expect(smallDropdownSize).not.toEqual(mediumDropdownSize);
   })
 );
+
+test(
+  'should keep dropdown open when clicking inside',
+  setupTest(async page => {
+    await page.click(wrapper.findInput().findNativeInput().toSelector());
+    await page.waitForVisible(wrapper.findDropdown()!.findOpenDropdown().toSelector());
+    await page.click(wrapper.findDropdown()!.findOpenDropdown().toSelector());
+    await expect(page.isDisplayed(wrapper.findDropdown()!.findOpenDropdown().toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'should close dropdown when clicking outside',
+  setupTest(async page => {
+    await page.click(wrapper.findInput().findNativeInput().toSelector());
+    await page.waitForVisible(wrapper.findDropdown()!.findOpenDropdown().toSelector());
+    await page.click('h1');
+    await expect(page.isDisplayed(wrapper.findDropdown()!.findOpenDropdown().toSelector())).resolves.toBe(false);
+  })
+);

@@ -84,6 +84,8 @@ export default function ChartPopover({
       ref={popoverRef}
     >
       <PopoverContainer
+        size={size}
+        fixedWidth={fixedWidth}
         position={position}
         trackRef={trackRef}
         trackKey={trackKey}
@@ -95,8 +97,6 @@ export default function ChartPopover({
         )}
       >
         <PopoverBody
-          size={size}
-          fixedWidth={fixedWidth}
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
           returnFocus={false}

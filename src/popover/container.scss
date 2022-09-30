@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
 .container {
@@ -11,6 +12,46 @@
   top: -9999px;
   left: -9999px;
   z-index: 2000;
+}
+
+.container-body {
+  @include styles.styles-reset;
+
+  border-radius: awsui.$border-radius-popover;
+
+  background-color: awsui.$color-background-popover;
+  box-shadow: awsui.$shadow-popover;
+  border: awsui.$border-field-width solid awsui.$color-border-popover;
+}
+
+.container-body-variant-annotation {
+  background-color: awsui.$color-background-status-info;
+  border-color: awsui.$color-border-status-info;
+}
+
+.container-body-size-small {
+  max-width: 210px;
+  &.fixed-width {
+    width: 210px;
+  }
+}
+
+.container-body-size-medium {
+  max-width: 310px;
+  &.fixed-width {
+    width: 310px;
+  }
+}
+
+.container-body-size-large {
+  max-width: 480px;
+  @media (max-width: 480px) {
+    // On viewports smaller than 480px, we default to the body-size-medium width
+    max-width: 310px;
+  }
+  &.fixed-width {
+    width: 480px;
+  }
 }
 
 .container-arrow {

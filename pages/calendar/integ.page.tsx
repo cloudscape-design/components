@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, Link } from '~components';
-import Calendar from '~components/date-picker/calendar';
+import Calendar from '~components/calendar';
 
 export default function DatePickerEditorScenario() {
   const [value, setValue] = useState('2022-01-01');
 
   return (
     <Box padding="s">
-      <h1>Date picker embedded version</h1>
+      <h1>Calendar</h1>
       <Link id="focusable-element-before-date-picker">Focusable element before the date picker</Link>
       <br />
       <Calendar
         value={value}
-        locale={'en-EN'}
+        locale="en-GB"
         previousMonthAriaLabel={'Previous month'}
         nextMonthAriaLabel={'Next month'}
         todayAriaLabel="Today"

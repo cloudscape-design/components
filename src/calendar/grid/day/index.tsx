@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import styles from '../../../styles.css.js';
-import { DatePickerProps } from '../../../interfaces';
+import styles from '../../styles.css.js';
+import { DatePickerProps } from '../../../date-picker/interfaces';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { getDateLabel } from '../../utils/intl';
 import clsx from 'clsx';
+import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 
 interface GridDayProps {
   locale: string;
@@ -19,7 +20,7 @@ interface GridDayProps {
   isDateInLastWeek: boolean;
 }
 
-const GridDay = ({
+export default function GridDay({
   locale,
   baseDate,
   date,
@@ -29,7 +30,7 @@ const GridDay = ({
   todayAriaLabel,
   onSelectDate,
   isDateInLastWeek,
-}: GridDayProps) => {
+}: GridDayProps) {
   const labels = [getDateLabel(locale, date)];
   const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
   const isSelected = !!selectedDate && isSameDay(date, selectedDate);
@@ -44,6 +45,7 @@ const GridDay = ({
     [styles['calendar-day-today']]: isDateOnSameDay,
     [styles['calendar-day-focusable']]: isFocusable && isEnabled,
   });
+  const focusVisible = useFocusVisible();
 
   if (isSelected) {
     computedAttributes['aria-current'] = 'date';
@@ -65,10 +67,8 @@ const GridDay = ({
   }
 
   return (
-    <div className={classNames} aria-label={labels.join('. ')} role="button" {...computedAttributes}>
+    <div className={classNames} aria-label={labels.join('. ')} role="button" {...computedAttributes} {...focusVisible}>
       <span className={styles['day-inner']}>{date.getDate()}</span>
     </div>
   );
-};
-
-export default GridDay;
+}

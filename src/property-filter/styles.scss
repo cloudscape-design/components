@@ -39,46 +39,17 @@
 
 .token-editor {
   margin: awsui.$space-xxs;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   &-form {
-    display: grid;
-    grid-template-columns: max-content minmax(awsui.$space-xl, 1fr) minmax(200px, min-content);
-    grid-row-gap: awsui.$space-scaled-l;
     margin-bottom: awsui.$space-scaled-l;
   }
-  &-label {
-    max-width: 200px;
-    align-self: center;
-    &-text {
-      @include styles.text-flex-wrapping;
-    }
-  }
-  &-label-property {
-    grid-row: 1;
-    grid-column: 1;
-  }
-  &-label-operator {
-    grid-row: 2;
-    grid-column: 1;
-  }
-  &-label-value {
-    grid-row: 3;
-    grid-column: 1;
-  }
   &-field-property {
-    grid-row: 1;
-    grid-column: 3;
+    /* used in test-utils */
   }
   &-field-operator {
-    grid-row: 2;
-    grid-column: 3;
+    margin-top: awsui.$space-scaled-l;
   }
   &-field-value {
-    grid-row: 3;
-    grid-column: 3;
+    margin-top: awsui.$space-scaled-l;
   }
   &-actions {
     display: flex;
@@ -90,8 +61,11 @@
     margin-left: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
     margin-right: calc(-1 * #{awsui.$space-m} + -1 * #{awsui.$space-xxs});
   }
-  &-commit {
-    margin-left: awsui.$space-xs;
+  &-cancel {
+    margin-right: awsui.$space-xs;
+  }
+  &-submit {
+    /* used in test-utils */
   }
 }
 
@@ -129,13 +103,8 @@
   @include styles.text-wrapping;
 }
 
-.token-editor-cancel {
-  margin-right: awsui.$space-xs;
-}
-
 .remove-all,
 .token-label,
-.join-operation,
-.token-editor-submit {
+.join-operation {
   /* used in test-utils */
 }

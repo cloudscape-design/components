@@ -82,7 +82,7 @@ const Textarea = React.forwardRef(
 
     return (
       <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
-        <textarea ref={textareaRef} id={controlId} {...attributes} />
+        <textarea ref={textareaRef} id={controlId} {...attributes} spellCheck={false} />
       </span>
     );
   }

@@ -72,6 +72,7 @@ export function Notifications() {
         {
           type: 'success',
           header: 'Success message',
+          statusIconAriaLabel: 'success',
           dismissLabel: 'Dismiss notification',
           dismissible: true,
           onDismiss: () => setVisible(false),

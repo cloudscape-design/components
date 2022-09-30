@@ -44,7 +44,7 @@ export default function DatePickerScenario() {
         <FormField label="Date Range Picker field">
           <DateRangePicker
             value={value}
-            locale={'en-EN'}
+            locale="en-GB"
             i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
             placeholder={'Filter by a date and time range'}
             onChange={e => setValue(e.detail.value)}

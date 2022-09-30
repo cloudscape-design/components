@@ -17,7 +17,6 @@ export function getAllComponents(): string[] {
         name !== 'test-utils' &&
         name !== 'theming' &&
         name !== 'contexts' &&
-        name !== 'date-input' &&
         !name.includes('.') &&
         !name.includes('LICENSE')
     );

@@ -10,12 +10,13 @@ import {
   OptionsFilteringType,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { BaseInputProps, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputProps } from '../input/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     BaseDropdownHostProps,
     InputKeyEvents,
     FormFieldValidationControlProps,

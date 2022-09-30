@@ -1,14 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
-import styles from '../../styles.css.js';
+import styles from '../styles.css.js';
 import GridDay from './day';
-import { KeyCode } from '../../../internal/keycode';
+import { KeyCode } from '../../internal/keycode';
 import { addDays, addWeeks, isSameMonth } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DayIndex } from '../index';
+import { DayIndex } from '../internal';
 import { MoveFocusHandler } from '../utils/move-focus-handler';
-import { DatePickerProps } from '../../interfaces';
+import { DatePickerProps } from '../../date-picker/interfaces';
 import rotateDayIndexes from '../utils/rotate-day-indexes';
 import { renderDayName } from '../utils/intl';
 
@@ -97,7 +97,6 @@ const Grid = ({
       <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           const isDateInLastWeek = weeks.length - 1 === weekIndex;
-
           return (
             <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
               {week.map((date, dateIndex) => {

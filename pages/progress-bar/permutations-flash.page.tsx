@@ -15,6 +15,7 @@ export default function ProgressBarPermutations() {
           items={permutations.map(permutation => ({
             content: <ProgressBar {...permutation} variant="flash" />,
             buttonText: permutation.resultButtonText,
+            statusIconAriaLabel: 'info',
           }))}
         />
       </ScreenshotArea>

@@ -74,6 +74,12 @@
   letter-spacing: awsui.$font-display-l-letter-spacing;
 }
 
+@mixin font-inherit {
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
 @mixin font-label {
   @include font-body-m();
   font-weight: awsui.$font-display-label-weight;
@@ -119,5 +125,8 @@
   }
   @if $font-size == display-l {
     @include font-display-l;
+  }
+  @if $font-size == inherit {
+    @include font-inherit;
   }
 }

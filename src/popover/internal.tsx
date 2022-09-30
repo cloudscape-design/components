@@ -118,6 +118,8 @@ function InternalPopover(
     >
       {visible && (
         <PopoverContainer
+          size={size}
+          fixedWidth={fixedWidth}
           position={position}
           trackRef={triggerRef}
           arrow={position => <Arrow position={position} />}
@@ -125,8 +127,6 @@ function InternalPopover(
           zIndex={renderWithPortal ? 7000 : undefined}
         >
           <PopoverBody
-            size={size}
-            fixedWidth={fixedWidth}
             dismissButton={dismissButton}
             dismissAriaLabel={dismissAriaLabel}
             header={header}
