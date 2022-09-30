@@ -100,6 +100,12 @@ describe('Date picker - direct date input', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, ariaLabelledby: 'my-custom-id' });
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
     });
+
+    test('aria-labelledby can be passed to calendar', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, ariaLabelledby: 'my-custom-id' });
+      wrapper.findOpenCalendarButton().click();
+      expect(wrapper.findCalendar()?.getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
+    });
   });
 
   describe('aria-required', () => {
@@ -123,6 +129,12 @@ describe('Date picker - direct date input', () => {
     test('aria-label is not added if not defined', () => {
       const { wrapper } = renderDatePicker();
       expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-label');
+    });
+
+    test('aria-label can be passed to calendar', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, ariaLabel: 'my-custom-label' });
+      wrapper.findOpenCalendarButton().click();
+      expect(wrapper.findCalendar()?.getElement()).toHaveAttribute('aria-label', 'my-custom-label');
     });
   });
 
