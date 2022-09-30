@@ -19,7 +19,12 @@ const permutations = createPermutations<HeaderProps>([
     ],
     description: ['description', null],
     counter: ['counter', undefined],
-    actions: [<Button key="button" variant="primary"></Button>, null],
+    actions: [
+      <Button key="button" variant="primary">
+        Primary Button
+      </Button>,
+      null,
+    ],
   },
 ]);
 
