@@ -132,6 +132,7 @@ test('has view button with href and target', () => {
   const viewButton = wrapper.findViewButton().getElement();
   expect(viewButton).toHaveAttribute('href', 'https://s3.console.aws.amazon.com/');
   expect(viewButton).toHaveAttribute('target', '_blank');
+  expect(viewButton).toHaveAttribute('aria-label', 'View (opens a new tab)');
 });
 
 describe('fetchVersions', () => {
