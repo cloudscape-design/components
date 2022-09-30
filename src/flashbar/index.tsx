@@ -51,6 +51,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         setIsFlashbarStacked(true);
       } else {
         setIsFlashbarStacked(false);
+        setIsFlashbarStackExpanded(false);
       }
     },
     [enableStackingOption, isFlashbarStacked, items]
@@ -72,7 +73,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     return (
       <div className={styles.stack} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
         {!isFlashbarStackExpanded && (
-          <div className={styles.collapsed}>
+          <div className={clsx(styles.collapsed, isVisualRefresh && styles['visual-refresh'])}>
             {stackedItems.map((item, index) => (
               <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
                 {index === 0 && (
@@ -104,7 +105,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         <button
-          className={clsx(styles.toggle)}
+          className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'], 'awsui-context-content-header')}
           onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
           {...isFocusVisible}
         >
