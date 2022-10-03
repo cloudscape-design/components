@@ -232,7 +232,7 @@ const AutosuggestInput = React.forwardRef(
           contentKey={dropdownContentKey}
           trigger={
             <InternalInput
-              type="search"
+              type="visualSearch"
               value={value}
               onChange={event => handleChange(event.detail.value)}
               __onDelayedInput={event => handleDelayedInput(event.detail.value)}

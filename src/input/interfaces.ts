@@ -139,7 +139,7 @@ export interface InputProps
 }
 
 export namespace InputProps {
-  export type Type = 'text' | 'password' | 'search' | 'number' | 'email' | 'url';
+  export type Type = 'text' | 'password' | 'search' | 'number' | 'email' | 'url' | 'visualSearch';
   export type InputMode = 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
   export type Step = number | 'any';
 
