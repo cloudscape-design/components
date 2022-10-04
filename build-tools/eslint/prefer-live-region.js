@@ -7,7 +7,8 @@ module.exports = {
       'prefer-live-region': 'JSX element uses aria-live property. Prefer using LiveRegion component instead.',
     },
     docs: {
-      description: 'prevents direct use of aria-live attributes to avoid a known issue with NVDA (described in the internal LiveRegion component).',
+      description:
+        'Prevents direct use of aria-live attributes to avoid a known issue with NVDA (see https://github.com/nvaccess/nvda/issues/7996).',
     },
   },
   create(context) {
