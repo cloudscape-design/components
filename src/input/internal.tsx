@@ -22,9 +22,10 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
-    InputProps,
+    Omit<InputProps, 'type'>,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
+  type?: InputProps['type'] | 'visualSearch';
   __leftIcon?: IconProps['name'];
   __leftIconVariant?: IconProps['variant'];
   __onLeftIconClick?: () => void;
