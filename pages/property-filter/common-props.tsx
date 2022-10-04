@@ -94,6 +94,14 @@ export const columnDefinitions = [
     cell: (item: TableItem) => item.securitygroup,
   },
   {
+    id: 'releasedate',
+    sortingField: 'releasedate',
+    header: 'Release date',
+    type: 'date',
+    propertyLabel: 'Release date',
+    cell: (item: TableItem) => item.releasedate?.toISOString(),
+  },
+  {
     id: 'launchdate',
     sortingField: 'launchdate',
     header: 'Launch date',

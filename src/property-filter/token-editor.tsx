@@ -18,6 +18,7 @@ import {
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
 import {
+  createPropertiesCompatibilityMap,
   getAllowedOperators,
   getPropertyOptions,
   getPropertyByKey,
@@ -66,6 +67,19 @@ function PropertyInput({
       dontCloseOnSelect: true,
     })
   );
+
+  // Disallow selecting properties that have different representation.
+  const checkPropertiesCompatible = createPropertiesCompatibilityMap(filteringProperties);
+  propertyOptions.forEach(optionGroup => {
+    if ('options' in optionGroup) {
+      optionGroup.options.forEach(option => {
+        if (propertyKey && option.value) {
+          option.disabled = !checkPropertiesCompatible(option.value, propertyKey);
+        }
+      });
+    }
+  });
+
   const allPropertiesOption = {
     label: i18nStrings.allPropertiesLabel,
     value: undefined,
@@ -224,7 +238,7 @@ export function TokenEditor({
       temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
         ? temporaryToken.operator
         : allowedOperators[0];
-    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator, value: '' });
+    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator });
   };
 
   const operator = temporaryToken.operator;
