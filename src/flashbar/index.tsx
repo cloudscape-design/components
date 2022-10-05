@@ -88,6 +88,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         <button
+          aria-label={!isFlashbarStackExpanded ? 'Expand stacked notifications' : 'Collapse stacked notifications'}
           className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'])}
           onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
           {...isFocusVisible}
