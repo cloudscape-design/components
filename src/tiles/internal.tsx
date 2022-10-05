@@ -13,7 +13,6 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { fireNonCancelableEvent } from '../internal/events';
 
 const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
 
@@ -67,7 +66,7 @@ export default function InternalTiles({
           items.map(item => {
             const controlId = item.controlId || `${generatedName}-value-${item.value}`;
             return (
-              <div
+              <label
                 className={clsx(
                   styles['tile-container'],
                   { [styles['has-metadata']]: item.description || item.image },
@@ -77,23 +76,26 @@ export default function InternalTiles({
                 )}
                 key={item.value}
                 data-value={item.value}
-                onClick={() => item.value !== value && fireNonCancelableEvent(onChange, { value: item.value })}
+                htmlFor={controlId}
+                id={`${controlId}-wrapper`}
               >
                 <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
                   <RadioButton
                     checked={item.value === value}
                     name={generatedName}
+                    withoutLabel={true}
                     value={item.value}
                     label={item.label}
                     description={item.description}
                     disabled={item.disabled}
+                    onChange={onChange}
                     controlId={controlId}
                   />
                 </div>
                 {item.image && (
                   <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>
                 )}
-              </div>
+              </label>
             );
           })}
       </div>

@@ -173,8 +173,10 @@ const DatePicker = React.forwardRef(
                 {...focusVisible}
                 tabIndex={0}
                 className={styles.calendar}
-                role="application"
+                role="dialog"
                 aria-describedby={calendarDescriptionId}
+                aria-label={ariaLabel}
+                aria-labelledby={ariaLabelledby}
               >
                 <InternalCalendar
                   value={value}

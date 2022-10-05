@@ -1008,6 +1008,60 @@ describe('property filter parts', () => {
     });
   });
 
+  describe('async loading', () => {
+    test('calls onLoadItems with parsed property and operator when operator is selected', () => {
+      const onLoadItems = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onLoadItems });
+
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(wrapper.findNativeInput().getElement()).toHaveValue('string');
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            filteringText: 'string',
+            filteringProperty: undefined,
+            filteringOperator: undefined,
+          }),
+        })
+      );
+
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(wrapper.findNativeInput().getElement()).toHaveValue('string = ');
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            filteringText: '',
+            filteringProperty: expect.objectContaining({ key: 'string' }),
+            filteringOperator: '=',
+          }),
+        })
+      );
+    });
+
+    test('calls onLoadItems with parsed property and operator when operator is inserted', () => {
+      const onLoadItems = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onLoadItems });
+
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.down));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(wrapper.findNativeInput().getElement()).toHaveValue('default = ');
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: expect.objectContaining({
+            filteringText: '',
+            filteringProperty: expect.objectContaining({ key: 'default-operator' }),
+            filteringOperator: '=',
+          }),
+        })
+      );
+    });
+  });
+
   test('property filter input can be found with autosuggest selector', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findAutosuggest()!.getElement()).not.toBe(null);

@@ -6668,6 +6668,7 @@ This property is overridden if the variant is \`info\`.",
           "heading-l",
           "heading-xl",
           "display-l",
+          "inherit",
         ],
       },
       "name": "fontSize",
@@ -9179,6 +9180,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "inContextViewButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "inContextViewButtonAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

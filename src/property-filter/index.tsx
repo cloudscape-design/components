@@ -180,17 +180,22 @@ const PropertyFilter = React.forwardRef(
 
       // stop dropdown from closing
       event.preventDefault();
+
       const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
-      fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
 
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
+          loadMoreDetail.filteringProperty = parsedText.property;
+          loadMoreDetail.filteringOperator = operators[0];
+          loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
         }
       }
+
+      fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
     const [tokensExpanded, setTokensExpanded] = useState(false);
     const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);

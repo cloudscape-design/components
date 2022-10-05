@@ -399,4 +399,13 @@ describe('Input', () => {
       expect(keyUpSpy).toHaveBeenCalledTimes(1);
     });
   });
+
+  test('input is blurred when type=number and scrolled over', () => {
+    const blurSpy = jest.fn();
+    const { wrapper, input } = renderInput({ type: 'number', onBlur: blurSpy });
+    wrapper.focus();
+    expect(blurSpy).not.toHaveBeenCalled();
+    fireEvent.wheel(input);
+    expect(blurSpy).toHaveBeenCalledTimes(1);
+  });
 });
