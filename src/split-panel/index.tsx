@@ -32,6 +32,7 @@ interface TransitionContentProps {
   baseProps: BaseComponentProps;
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;
+  handleRef: React.RefObject<HTMLDivElement>;
   bottomOffset: number;
   cappedSize: number;
   isRefresh: boolean;
@@ -54,6 +55,7 @@ const TransitionContentSide = ({
   baseProps,
   isOpen,
   splitPanelRef,
+  handleRef,
   topOffset,
   bottomOffset,
   cappedSize,
@@ -102,6 +104,7 @@ const TransitionContentSide = ({
               className={clsx(styles.slider, styles['slider-side'])}
               onKeyDown={onKeyDown}
               onPointerDown={onSliderPointerDown}
+              ref={handleRef}
               {...focusVisible}
             >
               <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-side'])} />
@@ -144,6 +147,7 @@ const TransitionContentBottom = ({
   baseProps,
   isOpen,
   splitPanelRef,
+  handleRef,
   bottomOffset,
   cappedSize,
   isRefresh,
@@ -197,6 +201,7 @@ const TransitionContentBottom = ({
             className={clsx(styles.slider, styles['slider-bottom'])}
             onKeyDown={onKeyDown}
             onPointerDown={onSliderPointerDown}
+            ref={handleRef}
             {...focusVisible}
           >
             <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-bottom'])} />
@@ -303,10 +308,13 @@ export default function SplitPanel({
     }
   };
 
-  const splitPanelRefObject = useRef(null);
+  const splitPanelRefObject = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
+
   const sizeControlProps: SizeControlProps = {
     position,
     splitPanelRef: splitPanelRefObject,
+    handleRef,
     setSidePanelWidth,
     setBottomPanelHeight,
   };
@@ -438,6 +446,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
+              handleRef={handleRef}
               topOffset={topOffset}
               bottomOffset={bottomOffset}
               cappedSize={cappedSize}
@@ -459,6 +468,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
+              handleRef={handleRef}
               bottomOffset={bottomOffset}
               cappedSize={cappedSize}
               isRefresh={isRefresh}
