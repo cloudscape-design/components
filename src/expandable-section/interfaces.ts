@@ -53,7 +53,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
 
   /**
    * Adds `aria-label` to the header element.
-   * It should be used to assign unique labels when there are multiple expandable sections with the same header text on one page.
+   * Use to assign unique labels when there are multiple expandable sections with the same header text on one page.
    */
   headerAriaLabel?: string;
 
