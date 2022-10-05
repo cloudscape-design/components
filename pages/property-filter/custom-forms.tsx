@@ -147,18 +147,17 @@ export function formatDateTime(isoDate: string): string {
 }
 
 function parseDateTimeFilter(filter: string): { dateValue: string; timeValue: string } {
-  const regexDate = /^(\d\d\d\d(-\d\d)?(-\d\d)?)(T\d\d(:\d\d)?(:\d\d)?)?/;
+  const regexDate = /^(\d\d\d\d(-|\/\d\d)?(-|\/\d\d)?)(T\d\d(:\d\d)?(:\d\d)?)?/;
   const dateTime = filter.match(regexDate)?.[0] || '';
-  const [dateValue, timeValue] = dateTime.split('T');
 
-  if (!timeValue) {
-    return { dateValue: isValidIsoDate(dateValue) ? dateValue : '', timeValue: '' };
-  }
-
+  let [dateValue, timeValue = ''] = dateTime.split('T');
+  const [year, month = '01', day = '01'] = dateValue.split(/-|\//);
   const [hours = '00', minutes = '00', seconds = '00'] = timeValue.split(':');
-  return isValidIsoDate(dateValue + `T${hours}:${minutes}:${seconds}`)
-    ? { dateValue, timeValue }
-    : { dateValue: '', timeValue: '' };
+  dateValue = year.length === 4 ? `${year}-${month}-${day}` : '';
+  timeValue = timeValue ? `${hours}:${minutes}:${seconds}` : '';
+
+  const value = !timeValue ? dateValue : dateValue + 'T' + timeValue;
+  return isValidIsoDate(value) ? { dateValue, timeValue } : { dateValue: '', timeValue: '' };
 }
 
 function isValidIsoDate(isoDate: string): boolean {
