@@ -70,7 +70,7 @@ describe('Date range picker calendar', () => {
   };
 
   const findToday = (wrapper: DateRangePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findDropdown()!.findByClassName(gridDayStyles.today)!;
+    return wrapper.findDropdown()!.find(`.${gridDayStyles.day}[data-current-day="true"]`)!;
   };
 
   beforeEach(() => {

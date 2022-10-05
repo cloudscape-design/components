@@ -83,37 +83,8 @@
       border-right: none;
     }
 
-    &-in-last-week {
+    &[data-last-week='true'] {
       border-bottom: none;
-    }
-
-    &-focusable {
-      /* used for identifying element */
-    }
-
-    &-enabled {
-      cursor: pointer;
-      color: calendar.$grid-nonmonth-day-color;
-      &::after {
-        border-radius: awsui.$border-radius-item;
-      }
-      &.calendar-day-current-month {
-        color: calendar.$grid-day-color;
-        &:hover {
-          color: awsui.$color-text-calendar-day-hover;
-          background-color: calendar.$grid-hover-background-color;
-          &:not(.calendar-day-selected) {
-            &::after {
-              border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
-            }
-          }
-        }
-      }
-    }
-
-    &-today {
-      background-color: calendar.$grid-today-background-color;
-      border-radius: awsui.$border-radius-item;
     }
 
     &::after {
@@ -126,6 +97,32 @@
       right: calc(-1 * #{awsui.$border-item-width});
       background-color: transparent;
     }
+
+    &:not([aria-disabled='true']) {
+      cursor: pointer;
+      color: calendar.$grid-nonmonth-day-color;
+      &::after {
+        border-radius: awsui.$border-radius-item;
+      }
+      &[data-current-month='true'] {
+        color: calendar.$grid-day-color;
+        &:hover {
+          color: awsui.$color-text-calendar-day-hover;
+          background-color: calendar.$grid-hover-background-color;
+          &:not([aria-current]) {
+            &::after {
+              border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+            }
+          }
+        }
+      }
+    }
+
+    &[data-current-day='true'] {
+      background-color: calendar.$grid-today-background-color;
+      border-radius: awsui.$border-radius-item;
+    }
+
     > .day-inner {
       position: relative;
       z-index: 1;
@@ -144,7 +141,7 @@
       }
     }
 
-    &-selected {
+    &[aria-current] {
       border-color: transparent;
       position: relative;
       z-index: 2;

@@ -116,20 +116,13 @@ const GridDay = React.memo(
       }
 
       const classNames = clsx(styles.day, baseClasses, {
-        [styles['in-current-month']]: isSameMonth(date, baseDate),
         [styles.enabled]: isEnabled,
         [styles.selected]: isSelected,
-        [styles['start-date']]: isStartDate,
-        [styles['end-date']]: isEndDate,
-        [styles['range-start-date']]: isRangeStartDate,
-        [styles['range-end-date']]: isRangeEndDate,
         [styles['no-range']]: isSelected && onlyOneSelected,
-        [styles['in-range']]: isInRange,
         [styles['in-range-border-top']]: isDateInSelectionStartWeek || date.getDate() <= 7,
         [styles['in-range-border-bottom']]: isDateInSelectionEndWeek || date.getDate() > getDaysInMonth(date) - 7,
         [styles['in-range-border-left']]: isDateInFirstColumn || date.getDate() === 1 || isRangeStartDate,
         [styles['in-range-border-right']]: isDateInLastColumn || isLastDayOfMonth(date) || isRangeEndDate,
-        [styles.today]: isToday,
       });
 
       computedAttributes['aria-pressed'] = isSelected || isInRange;
@@ -158,10 +151,17 @@ const GridDay = React.memo(
 
       return (
         <div
+          role="button"
           className={classNames}
           aria-label={labels.join('. ')}
           data-date={formatDate(date)}
-          role="button"
+          data-current-day={isToday}
+          data-current-month={isSameMonth(date, baseDate)}
+          data-in-range={isInRange}
+          data-start-date={isStartDate}
+          data-end-date={isEndDate}
+          data-range-start-date={isRangeStartDate}
+          data-range-end-date={isRangeEndDate}
           {...computedAttributes}
           ref={ref}
           onKeyDown={onKeyDown}

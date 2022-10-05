@@ -5,7 +5,6 @@ import styles from '../../styles.css.js';
 import { DatePickerProps } from '../../../date-picker/interfaces';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { getDateLabel } from '../../utils/intl';
-import clsx from 'clsx';
 import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 
 interface GridDayProps {
@@ -37,14 +36,6 @@ export default function GridDay({
   const isEnabled = !isDateEnabled || isDateEnabled(date);
   const isDateOnSameDay = isSameDay(date, new Date());
   const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
-  const classNames = clsx(styles['calendar-day'], {
-    [styles['calendar-day-in-last-week']]: isDateInLastWeek,
-    [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
-    [styles['calendar-day-enabled']]: isEnabled,
-    [styles['calendar-day-selected']]: isSelected,
-    [styles['calendar-day-today']]: isDateOnSameDay,
-    [styles['calendar-day-focusable']]: isFocusable && isEnabled,
-  });
   const focusVisible = useFocusVisible();
 
   if (isSelected) {
@@ -67,7 +58,16 @@ export default function GridDay({
   }
 
   return (
-    <div className={classNames} aria-label={labels.join('. ')} role="button" {...computedAttributes} {...focusVisible}>
+    <div
+      role="button"
+      className={styles['calendar-day']}
+      data-current-day={isDateOnSameDay}
+      data-current-month={isSameMonth(date, baseDate)}
+      data-last-week={isDateInLastWeek}
+      aria-label={labels.join('. ')}
+      {...computedAttributes}
+      {...focusVisible}
+    >
       <span className={styles['day-inner']}>{date.getDate()}</span>
     </div>
   );

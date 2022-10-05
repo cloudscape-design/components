@@ -116,11 +116,11 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   }
 
   findSelectedStartDate(): ElementWrapper | null {
-    return this.findByClassName(dayStyles['start-date']);
+    return this.find(`.${dayStyles.day}[data-start-date="true"]`);
   }
 
   findSelectedEndDate(): ElementWrapper | null {
-    return this.findByClassName(dayStyles['end-date']);
+    return this.find(`.${dayStyles.day}[data-end-date="true"]`);
   }
 
   findStartDateInput(): InputWrapper | null {

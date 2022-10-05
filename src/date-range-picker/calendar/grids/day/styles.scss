@@ -68,6 +68,22 @@
     position: relative;
     z-index: 1;
   }
+
+  &[data-current-day='true']:not([data-in-range='true']) {
+    background-color: calendar.$grid-today-background-color;
+    border-radius: awsui.$border-radius-item;
+  }
+
+  &[data-in-range='true'] {
+    background-color: calendar.$grid-in-range-background-color;
+
+    @include in-range-borders;
+
+    @include in-range-border-radius(top, right);
+    @include in-range-border-radius(bottom, right);
+    @include in-range-border-radius(bottom, left);
+    @include in-range-border-radius(top, left);
+  }
 }
 
 .in-first-row:not(.in-previous-month) {
@@ -85,7 +101,7 @@
 .in-first-column {
   border-left: 1px solid transparent;
 
-  &.in-current-month {
+  &[data-current-month='true'] {
     border-left: calendar.$grid-border;
   }
 }
@@ -93,10 +109,10 @@
 .enabled {
   cursor: pointer;
 
-  &.in-current-month {
+  &[data-current-month='true'] {
     color: calendar.$grid-day-color;
-    &:not(.in-range),
-    &.end-date.start-date,
+    &:not([data-in-range='true']),
+    &[data-start-date='true'][data-end-date='true'],
     &.no-range {
       &,
       &::after {
@@ -113,11 +129,6 @@
       }
     }
   }
-}
-
-.today:not(.in-range) {
-  background-color: calendar.$grid-today-background-color;
-  border-radius: awsui.$border-radius-item;
 }
 
 .selected {
@@ -142,16 +153,16 @@
     z-index: 0;
   }
 
-  &.start-date,
-  &.range-start-date {
+  &[data-start-date='true'],
+  &[data-range-start-date='true'] {
     @include border-radius(top, left);
     &.in-range-border-bottom {
       @include border-radius(bottom, left);
     }
   }
 
-  &.end-date,
-  &.range-end-date {
+  &[data-end-date='true'],
+  &[data-range-end-date='true'] {
     @include border-radius(bottom, right);
     &.in-range-border-top {
       @include border-radius(top, right);
@@ -163,15 +174,4 @@
     position: relative;
     z-index: 2;
   }
-}
-
-.in-range {
-  background-color: calendar.$grid-in-range-background-color;
-
-  @include in-range-borders;
-
-  @include in-range-border-radius(top, right);
-  @include in-range-border-radius(bottom, right);
-  @include in-range-border-radius(bottom, left);
-  @include in-range-border-radius(top, left);
 }
