@@ -96,7 +96,7 @@
   margin-left: awsui.$space-flashbar-action-left;
 }
 /* stylelint-disable selector-max-type */
-.flashbar.breakpoint-default > div > .flash > .flash-body {
+.flashbar.breakpoint-default > .flash > .flash-body {
   display: block;
   & > .action-button-wrapper {
     margin-left: awsui.$space-xxs;
