@@ -20,8 +20,9 @@ export default function InternalSpinner({
   const baseProps = getBaseProps(props);
 
   const [liveRegionText, setliveRegionText] = useState('');
-  /* Results in the message repeating at twice the value of messageToggleTiming.
-   * In this case 4 seconds was the interval that "felt right" to the a11y team
+  /* Results in the message repeating at twice the value of messageToggleTiming
+   * because every other change clears the live region.
+   * The 2000ms timer yields an announcement every 4 seconds, the interval choosen by the a11y team
    */
   const messageToggleTiming = 2000;
 
