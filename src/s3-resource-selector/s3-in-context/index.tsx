@@ -122,6 +122,7 @@ export const S3InContext = React.forwardRef(
               iconName="external"
               iconAlign="right"
               formAction="none"
+              ariaLabel={i18nStrings?.inContextViewButtonAriaLabel}
             >
               {i18nStrings?.inContextViewButton}
             </InternalButton>
