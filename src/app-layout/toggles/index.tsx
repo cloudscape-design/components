@@ -45,7 +45,7 @@ export const AppLayoutButton = React.forwardRef(
         iconName={iconName}
         disabled={disabled}
         ariaExpanded={ariaExpanded}
-        __nativeAttributes={ariaExpanded !== false ? {} : { 'aria-haspopup': true }}
+        __nativeAttributes={{ 'aria-haspopup': true }}
       />
     );
   }
@@ -62,7 +62,14 @@ export const CloseButton = React.forwardRef(
   ({ className, ariaLabel, onClick, iconName }: CloseButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
     return (
       <span className={styles['close-button']}>
-        <AppLayoutButton ref={ref} className={className} ariaLabel={ariaLabel} iconName={iconName} onClick={onClick} />
+        <AppLayoutButton
+          ref={ref}
+          className={className}
+          ariaExpanded={true}
+          ariaLabel={ariaLabel}
+          iconName={iconName}
+          onClick={onClick}
+        />
       </span>
     );
   }
