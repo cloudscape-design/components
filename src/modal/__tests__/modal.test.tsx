@@ -140,6 +140,24 @@ describe('Modal component', () => {
       const wrapper = renderModal({ visible: true });
       expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
     });
+
+    it('restores focus to previous element on unmount', async () => {
+      const textfield = document.createElement('input');
+      textfield.type = 'text';
+      document.body.appendChild(textfield);
+
+      textfield.focus();
+      expect(document.activeElement).toBe(textfield);
+
+      const { rerender } = render(<Modal onDismiss={() => null} visible={true} />);
+      expect(document.activeElement).not.toBe(textfield);
+
+      rerender(<></>);
+      // react-focus-lock returns focus asyncronousy as Promise.resolve().then(() => element.focus())
+      // so need to wait before checking the active element.
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(document.activeElement).toBe(textfield);
+    });
   });
 
   describe('ESC key behavior', () => {
