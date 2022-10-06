@@ -14,7 +14,8 @@ interface ExpandableSectionHeaderProps {
   children?: ReactNode;
   expanded: boolean;
   ariaControls: string;
-  ariaLabelledBy: string;
+  ariaLabelledBy?: string;
+  ariaLabel?: string;
   onKeyUp: KeyboardEventHandler;
   onKeyDown: KeyboardEventHandler;
   onClick: MouseEventHandler;
@@ -27,6 +28,7 @@ export const ExpandableSectionHeader = ({
   children,
   expanded,
   ariaControls,
+  ariaLabel,
   ariaLabelledBy,
   onKeyUp,
   onKeyDown,
@@ -54,6 +56,7 @@ export const ExpandableSectionHeader = ({
           className={styles['icon-container']}
           type="button"
           aria-labelledby={ariaLabelledBy}
+          aria-label={ariaLabel}
           {...focusVisible}
           {...ariaAttributes}
         >
@@ -73,6 +76,7 @@ export const ExpandableSectionHeader = ({
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
       onClick={onClick}
+      aria-label={ariaLabel}
       {...focusVisible}
       {...ariaAttributes}
     >
