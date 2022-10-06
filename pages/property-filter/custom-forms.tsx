@@ -84,7 +84,7 @@ export function DateTimeForm({ filter, operator, value, onChange }: ExtendedOper
 
       <Calendar
         value={dateValue}
-        locale="en-EN"
+        locale="en-GB"
         previousMonthAriaLabel="Previous month"
         nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
@@ -132,7 +132,7 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
 
       <Calendar
         value={dateValue}
-        locale="en-EN"
+        locale="en-GB"
         previousMonthAriaLabel="Previous month"
         nextMonthAriaLabel="Next month"
         todayAriaLabel="Today"
