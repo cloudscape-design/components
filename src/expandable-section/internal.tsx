@@ -27,6 +27,7 @@ export default function InternalExpandableSection({
   children,
   header,
   disableContentPaddings,
+  headerAriaLabel,
   __internalRootRef,
   ...props
 }: InternalExpandableSectionProps) {
@@ -73,7 +74,8 @@ export default function InternalExpandableSection({
 
   const triggerProps = {
     ariaControls: controlId,
-    ariaLabelledBy: triggerControlId,
+    ariaLabel: headerAriaLabel,
+    ariaLabelledBy: headerAriaLabel ? undefined : triggerControlId,
     onKeyUp,
     onKeyDown,
     onClick,
@@ -105,7 +107,8 @@ export default function InternalExpandableSection({
           ref={ref}
           className={clsx(styles.content, styles[`content-${variant}`], expanded && styles['content-expanded'])}
           role="group"
-          aria-labelledby={triggerControlId}
+          aria-label={triggerProps.ariaLabel}
+          aria-labelledby={triggerProps.ariaLabelledBy}
         >
           {children}
         </div>
