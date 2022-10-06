@@ -85,14 +85,12 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = (
       <span
         ref={recoveryProps ? recoveryProps.ref : null}
-        onBlur={
-          recoveryProps?.onBlur &&
-          (event =>
-            fireCancelableEvent(
-              recoveryProps?.onBlur,
-              { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) },
-              event
-            ))
+        onBlur={event =>
+          fireCancelableEvent(
+            recoveryProps?.onBlur,
+            { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) },
+            event
+          )
         }
       >
         <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
