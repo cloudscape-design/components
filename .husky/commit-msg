@@ -1,6 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+npx --no-install commitlint --edit "$1"
+
 # Section for git-secrets
 
 if ! command -v git-secrets &> /dev/null

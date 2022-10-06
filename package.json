@@ -56,6 +56,8 @@
     "@cloudscape-design/jest-preset": "^2.0.0",
     "@cloudscape-design/test-utils-converter": "^1.0.0",
     "@cloudscape-design/theming-build": "^1.0.0",
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@tsconfig/node14": "^1.0.3",
