@@ -140,21 +140,6 @@ describe('Modal component', () => {
       const wrapper = renderModal({ visible: true });
       expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
     });
-
-    it('restores focus to previous element on unmount', () => {
-      const textfield = document.createElement('input');
-      textfield.type = 'text';
-      document.body.appendChild(textfield);
-
-      textfield.focus();
-      expect(document.activeElement).toBe(textfield);
-
-      const { rerender } = render(<Modal onDismiss={() => null} visible={true} />);
-      expect(document.activeElement).not.toBe(textfield);
-
-      rerender(<></>);
-      expect(document.activeElement).toBe(textfield);
-    });
   });
 
   describe('ESC key behavior', () => {
