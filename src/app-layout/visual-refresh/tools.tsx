@@ -98,6 +98,8 @@ export default function Tools({ children }: ToolsProps) {
                     formAction="none"
                     className={testutilStyles['tools-close']}
                     ref={focusRefs.close}
+                    ariaExpanded={true}
+                    __nativeAttributes={{ 'aria-haspopup': true }}
                   />
                 </div>
 
