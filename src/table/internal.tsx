@@ -157,6 +157,7 @@ const InternalTable = React.forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
+    const isKyboardFocus = !!focusVisibleProps['data-awsui-focus-visible'];
 
     return (
       <ColumnWidthsProvider
@@ -267,7 +268,14 @@ const InternalTable = React.forwardRef(
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
                         className={clsx(styles.row, isSelected && styles['row-selected'])}
-                        onFocus={({ currentTarget }) => stickyHeaderRef.current?.scrollToRow(currentTarget)}
+                        onFocus={({ currentTarget }) => {
+                          // When an element inside table row receives focus we want to adjust the scroll.
+                          // However, that behaviour is unwanted when the focus is received as result of a click
+                          // as it causes the click to never reach the target element.
+                          if (isKyboardFocus) {
+                            stickyHeaderRef.current?.scrollToRow(currentTarget);
+                          }
+                        }}
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
