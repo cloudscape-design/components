@@ -95,7 +95,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextCalendarDaySelected: '{colorTextDropdownItemHighlighted}',
   colorTextCalendarMonth: '{colorTextBodySecondary}',
   colorTextColumnHeader: { dark: '{colorGrey450}' },
-  colorTextColumnSortingIcon: '{colorTextIconCaret}',
+  colorTextColumnSortingIcon: '{colorGrey550}',
   colorTextGroupLabel: '{colorTextLabel}',
   colorTextExpandableSectionDefault: '{colorTextInteractiveDefault}',
   colorTextExpandableSectionHover: '{colorTextInteractiveHover}',
