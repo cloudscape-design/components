@@ -862,6 +862,7 @@ export const allItems: TableItem[] = [
 ].map((item, indx) => ({
   order: indx,
   ...item,
+  stopped: item.state === 'Stopped',
   releasedate: new Date(new Date(item.launchdate).getTime() - getRandomTimeHours(10, 2000)),
   launchdate: new Date(item.launchdate),
   lasteventat: new Date(item.lasteventat),

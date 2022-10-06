@@ -58,11 +58,11 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const valueFormater =
+  const valueFormatter =
     token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
   const propertyLabel = property && property.propertyLabel;
-  const tokenValue = valueFormater ? valueFormater(token.value) : token.value;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   return (
     <FilteringToken
       showOperation={!first && !hideOperations}

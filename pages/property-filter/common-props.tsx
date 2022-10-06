@@ -190,7 +190,14 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
 
   if (def.type === 'boolean') {
     groupValuesLabel = `${def.propertyLabel} value`;
-    operators = [{ operator: '=', form: YesNoForm, format: yesNoFormat }];
+    operators = [
+      {
+        operator: '=',
+        form: YesNoForm,
+        format: yesNoFormat,
+        match: (itemValue: boolean, tokenValue: boolean) => itemValue === tokenValue,
+      },
+    ];
   }
 
   return {
