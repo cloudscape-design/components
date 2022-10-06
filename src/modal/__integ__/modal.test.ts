@@ -24,3 +24,30 @@ test.each(['destructible', 'controlled'])(`should reset focus to previously acti
     await expect(page.isFocused(`#${name}`)).resolves.toBe(true);
   })()
 );
+
+test(
+  'should not move focus to the modal close button when content focus gets lost',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/focus-restoration');
+
+    // Open modal
+    await page.click('#destructible');
+
+    // Select 5th "Remove" button
+    await page.keys(['Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab', 'Tab', 'Tab']);
+    await page.keys(['Tab', 'Tab', 'Tab']);
+    await expect(page.getFocusedElementText()).resolves.toBe('Remove');
+
+    // Remove attributes until focus moves away from the "Remove" button.
+    do {
+      await page.keys(['Enter']);
+    } while ((await page.getFocusedElementText()) === 'Remove');
+
+    // Expected the focus to go to the body but not the first focusable element of the modal.
+    await expect(page.isFocused('body')).resolves.toBe(true);
+  })
+);
