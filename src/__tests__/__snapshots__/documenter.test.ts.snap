@@ -5107,7 +5107,14 @@ The event \`detail\` contains the current value of the \`expanded\` property.",
       "name": "onChange",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets the browser focus on the UI control",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "ExpandableSection",
   "properties": Array [
     Object {
@@ -5150,7 +5157,7 @@ Use to assign unique labels when there are multiple expandable sections with the
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"default\\"",
+      "defaultValue": "'default'",
       "description": "The possible variants of an expandable section are as follows:
  * \`default\` - Use this variant in any context.
  * \`footer\` - Use this variant in container footers.
