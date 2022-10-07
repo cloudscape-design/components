@@ -28,6 +28,7 @@ import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import useMouseDownTarget from './use-mouse-down-target';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -197,6 +198,8 @@ const InternalTable = React.forwardRef(
       : {};
     const focusVisibleProps = useFocusVisible();
 
+    const getMouseDownTarget = useMouseDownTarget();
+
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -306,7 +309,14 @@ const InternalTable = React.forwardRef(
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
                         className={clsx(styles.row, isSelected && styles['row-selected'])}
-                        onFocus={({ currentTarget }) => stickyHeaderRef.current?.scrollToRow(currentTarget)}
+                        onFocus={({ currentTarget }) => {
+                          // When an element inside table row receives focus we want to adjust the scroll.
+                          // However, that behaviour is unwanted when the focus is received as result of a click
+                          // as it causes the click to never reach the target element.
+                          if (!currentTarget.contains(getMouseDownTarget())) {
+                            stickyHeaderRef.current?.scrollToRow(currentTarget);
+                          }
+                        }}
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
