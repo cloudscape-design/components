@@ -28,6 +28,7 @@ import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import useMouseDownTarget from './use-mouse-down-target';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -157,7 +158,8 @@ const InternalTable = React.forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
-    const isKyboardFocus = !!focusVisibleProps['data-awsui-focus-visible'];
+
+    const getMouseDownTarget = useMouseDownTarget();
 
     return (
       <ColumnWidthsProvider
@@ -272,7 +274,7 @@ const InternalTable = React.forwardRef(
                           // When an element inside table row receives focus we want to adjust the scroll.
                           // However, that behaviour is unwanted when the focus is received as result of a click
                           // as it causes the click to never reach the target element.
-                          if (isKyboardFocus) {
+                          if (!currentTarget.contains(getMouseDownTarget())) {
                             stickyHeaderRef.current?.scrollToRow(currentTarget);
                           }
                         }}
