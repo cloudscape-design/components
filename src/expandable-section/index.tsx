@@ -9,9 +9,12 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { ExpandableSectionProps };
 
-export default function ExpandableSection({ variant = 'default', ...props }: ExpandableSectionProps) {
-  const baseComponentProps = useBaseComponent('ExpandableSection');
-  return <InternalExpandableSection variant={variant} {...props} {...baseComponentProps} />;
-}
+const ExpandableSection = React.forwardRef(
+  ({ variant = 'default', ...props }: ExpandableSectionProps, ref: React.Ref<ExpandableSectionProps.Ref>) => {
+    const baseComponentProps = useBaseComponent('ExpandableSection');
+    return <InternalExpandableSection ref={ref} variant={variant} {...props} {...baseComponentProps} />;
+  }
+);
 
 applyDisplayName(ExpandableSection, 'ExpandableSection');
+export default ExpandableSection;

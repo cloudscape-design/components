@@ -9,6 +9,13 @@ export namespace ExpandableSectionProps {
   export interface ChangeDetail {
     expanded: boolean;
   }
+
+  export interface Ref {
+    /**
+     * Sets the browser focus on the UI control
+     */
+    focus(): void;
+  }
 }
 
 export interface ExpandableSectionProps extends BaseComponentProps {

@@ -129,4 +129,14 @@ describe('Expandable Section', () => {
       expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     });
   });
+
+  describe('focus', () => {
+    test('can be focused through the API', () => {
+      let expandableSection: ExpandableSectionProps.Ref | null = null;
+      const renderResult = render(<ExpandableSection ref={el => (expandableSection = el)} />);
+      const wrapper = createWrapper(renderResult.container);
+      expandableSection!.focus();
+      expect(document.activeElement).toBe(wrapper.findExpandableSection()?.findHeader()!.getElement());
+    });
+  });
 });

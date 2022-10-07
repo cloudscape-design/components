@@ -9,6 +9,7 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
+import useForwardFocus from '../internal/hooks/forward-focus';
 
 import { ExpandableSectionProps } from './interfaces';
 
@@ -19,100 +20,110 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
-export default function InternalExpandableSection({
-  expanded: controlledExpanded,
-  defaultExpanded,
-  onChange,
-  variant = 'default',
-  children,
-  header,
-  disableContentPaddings,
-  headerAriaLabel,
-  __internalRootRef,
-  ...props
-}: InternalExpandableSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const controlId = useUniqueId();
-  const triggerControlId = `${controlId}-trigger`;
+const InternalExpandableSection = React.forwardRef(
+  (
+    {
+      expanded: controlledExpanded,
+      defaultExpanded,
+      onChange,
+      variant = 'default',
+      children,
+      header,
+      disableContentPaddings,
+      headerAriaLabel,
+      __internalRootRef,
+      ...props
+    }: InternalExpandableSectionProps,
+    ref: React.Ref<ExpandableSectionProps.Ref>
+  ) => {
+    const contentRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const controlId = useUniqueId();
+    const triggerControlId = `${controlId}-trigger`;
 
-  const baseProps = getBaseProps(props);
-  const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
-    componentName: 'ExpandableSection',
-    controlledProp: 'expanded',
-    changeHandler: 'onChange',
-  });
+    useForwardFocus(ref, headerRef);
 
-  const onExpandChange = useCallback(
-    (expanded: boolean) => {
-      setExpanded(expanded);
-      fireNonCancelableEvent(onChange, { expanded });
-    },
-    [onChange, setExpanded]
-  );
+    const baseProps = getBaseProps(props);
+    const [expanded, setExpanded] = useControllable(controlledExpanded, onChange, defaultExpanded, {
+      componentName: 'ExpandableSection',
+      controlledProp: 'expanded',
+      changeHandler: 'onChange',
+    });
 
-  const onClick = useCallback(() => {
-    onExpandChange(!expanded);
-  }, [onExpandChange, expanded]);
+    const onExpandChange = useCallback(
+      (expanded: boolean) => {
+        setExpanded(expanded);
+        fireNonCancelableEvent(onChange, { expanded });
+      },
+      [onChange, setExpanded]
+    );
 
-  const onKeyUp = useCallback(
-    (event: KeyboardEvent<Element>) => {
-      const interactionKeys = [KeyCode.enter, KeyCode.space];
+    const onClick = useCallback(() => {
+      onExpandChange(!expanded);
+    }, [onExpandChange, expanded]);
 
-      if (interactionKeys.indexOf(event.keyCode) !== -1) {
-        onExpandChange(!expanded);
+    const onKeyUp = useCallback(
+      (event: KeyboardEvent<Element>) => {
+        const interactionKeys = [KeyCode.enter, KeyCode.space];
+
+        if (interactionKeys.indexOf(event.keyCode) !== -1) {
+          onExpandChange(!expanded);
+        }
+      },
+      [onExpandChange, expanded]
+    );
+
+    const onKeyDown = useCallback((event: KeyboardEvent<Element>) => {
+      if (event.keyCode === KeyCode.space) {
+        // Prevent the page from scrolling when toggling the component with the space bar.
+        event.preventDefault();
       }
-    },
-    [onExpandChange, expanded]
-  );
+    }, []);
 
-  const onKeyDown = useCallback((event: KeyboardEvent<Element>) => {
-    if (event.keyCode === KeyCode.space) {
-      // Prevent the page from scrolling when toggling the component with the space bar.
-      event.preventDefault();
-    }
-  }, []);
+    const triggerProps = {
+      ariaControls: controlId,
+      ariaLabel: headerAriaLabel,
+      ariaLabelledBy: headerAriaLabel ? undefined : triggerControlId,
+      onKeyUp,
+      onKeyDown,
+      onClick,
+    };
 
-  const triggerProps = {
-    ariaControls: controlId,
-    ariaLabel: headerAriaLabel,
-    ariaLabelledBy: headerAriaLabel ? undefined : triggerControlId,
-    onKeyUp,
-    onKeyDown,
-    onClick,
-  };
-
-  return (
-    <ExpandableSectionContainer
-      {...baseProps}
-      expanded={expanded}
-      className={clsx(baseProps.className, styles.root)}
-      variant={variant}
-      disableContentPaddings={disableContentPaddings}
-      header={
-        <ExpandableSectionHeader
-          id={triggerControlId}
-          className={clsx(styles.header, styles[`header-${variant}`])}
-          variant={variant}
-          expanded={!!expanded}
-          {...triggerProps}
-        >
-          {header}
-        </ExpandableSectionHeader>
-      }
-      __internalRootRef={__internalRootRef}
-    >
-      <CSSTransition in={expanded} timeout={30} classNames={{ enter: styles['content-enter'] }} nodeRef={ref}>
-        <div
-          id={controlId}
-          ref={ref}
-          className={clsx(styles.content, styles[`content-${variant}`], expanded && styles['content-expanded'])}
-          role="group"
-          aria-label={triggerProps.ariaLabel}
-          aria-labelledby={triggerProps.ariaLabelledBy}
-        >
-          {children}
-        </div>
-      </CSSTransition>
-    </ExpandableSectionContainer>
-  );
-}
+    return (
+      <ExpandableSectionContainer
+        {...baseProps}
+        expanded={expanded}
+        className={clsx(baseProps.className, styles.root)}
+        variant={variant}
+        disableContentPaddings={disableContentPaddings}
+        header={
+          <ExpandableSectionHeader
+            id={triggerControlId}
+            className={clsx(styles.header, styles[`header-${variant}`])}
+            variant={variant}
+            expanded={!!expanded}
+            ref={headerRef}
+            {...triggerProps}
+          >
+            {header}
+          </ExpandableSectionHeader>
+        }
+        __internalRootRef={__internalRootRef}
+      >
+        <CSSTransition in={expanded} timeout={30} classNames={{ enter: styles['content-enter'] }} nodeRef={contentRef}>
+          <div
+            id={controlId}
+            ref={contentRef}
+            className={clsx(styles.content, styles[`content-${variant}`], expanded && styles['content-expanded'])}
+            role="group"
+            aria-label={triggerProps.ariaLabel}
+            aria-labelledby={triggerProps.ariaLabelledBy}
+          >
+            {children}
+          </div>
+        </CSSTransition>
+      </ExpandableSectionContainer>
+    );
+  }
+);
+export default InternalExpandableSection;
