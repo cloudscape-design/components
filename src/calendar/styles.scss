@@ -45,34 +45,28 @@
     /* used for identifying element */
   }
 
-  &-day-names {
-    display: flex;
-    justify-content: stretch;
+  &-grid {
+    width: 100%;
+    border-spacing: 0;
   }
-
-  &-day-name {
-    flex: 1 1 0%;
-    width: 0;
+  &-grid-body {
+    border: calendar.$grid-border;
+  }
+  &-grid-row {
+    display: flex;
+  }
+  &-grid-cell {
+    width: 100%;
     word-break: break-word;
     text-align: center;
+    font-weight: unset;
+  }
+  &-day-header {
     padding: awsui.$space-s 0 awsui.$space-xxs;
     color: calendar.$grid-day-name-color;
     @include styles.font-body-s;
   }
-
-  &-dates {
-    border: calendar.$grid-border;
-  }
-  &-week {
-    display: flex;
-    justify-content: stretch;
-  }
-
   &-day {
-    flex: 1 1 0%;
-    width: 0;
-    word-break: break-word;
-    text-align: center;
     border-bottom: calendar.$grid-border;
     border-right: calendar.$grid-border;
     padding: awsui.$space-xxs 0;
@@ -170,4 +164,8 @@
   }
 
   @include styles.styles-reset;
+}
+
+.visually-hidden {
+  @include styles.awsui-util-hide;
 }

@@ -89,19 +89,21 @@ export default function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <div>
-      <div className={styles['calendar-day-names']}>
-        {rotateDayIndexes(startOfWeek).map(i => (
-          <div key={`day-name-${i}`} className={styles['calendar-day-name']}>
-            {renderDayName(locale, i)}
-          </div>
-        ))}
-      </div>
-      <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
+    <table role="grid" className={styles['calendar-grid']}>
+      <thead>
+        <tr className={styles['calendar-grid-row']}>
+          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+            <th key={dayIndex} className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}>
+              {renderDayName(locale, dayIndex)}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody className={styles['calendar-grid-body']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           const isDateInLastWeek = weeks.length - 1 === weekIndex;
           return (
-            <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
+            <tr key={weekIndex} className={styles['calendar-grid-row']}>
               {week.map((date, dateIndex) => {
                 const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
                 const isSelected = !!selectedDate && isSameDay(date, selectedDate);
@@ -130,11 +132,9 @@ export default function Grid({
                 }
 
                 return (
-                  <div
+                  <td
                     key={`${weekIndex}:${dateIndex}`}
-                    role="button"
-                    aria-label={ariaLabel}
-                    className={clsx(styles['calendar-day'], {
+                    className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
                       [styles['calendar-day-in-last-week']]: isDateInLastWeek,
                       [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
                       [styles['calendar-day-enabled']]: isEnabled,
@@ -144,14 +144,17 @@ export default function Grid({
                     {...computedAttributes}
                     {...focusVisible}
                   >
-                    <span className={styles['day-inner']}>{date.getDate()}</span>
-                  </div>
+                    <span className={styles['day-inner']} aria-hidden="true">
+                      {date.getDate()}
+                    </span>
+                    <span className={styles['visually-hidden']}>{ariaLabel}</span>
+                  </td>
                 );
               })}
-            </div>
+            </tr>
           );
         })}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 }
