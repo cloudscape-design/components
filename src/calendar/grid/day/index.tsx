@@ -43,7 +43,6 @@ export default function GridDay({
     [styles['calendar-day-enabled']]: isEnabled,
     [styles['calendar-day-selected']]: isSelected,
     [styles['calendar-day-today']]: isDateOnSameDay,
-    [styles['calendar-day-focusable']]: isFocusable && isEnabled,
   });
   const focusVisible = useFocusVisible();
 
