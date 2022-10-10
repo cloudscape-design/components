@@ -109,7 +109,7 @@ export default function Calendar({
   // Once changed, the corresponding day button needs to receive the actual focus.
   useEffectOnUpdate(() => {
     if (focusedDate) {
-      (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
+      (elementRef.current?.querySelector(`.${styles['calendar-day']}[tabindex="0"]`) as HTMLDivElement)?.focus();
     }
   }, [focusedDate]);
 
