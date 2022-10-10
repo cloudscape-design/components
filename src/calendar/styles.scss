@@ -55,6 +55,9 @@
   &-grid-row {
     display: flex;
   }
+  &-week {
+    /* used in test-utils */
+  }
   &-grid-cell {
     width: 100%;
     word-break: break-word;

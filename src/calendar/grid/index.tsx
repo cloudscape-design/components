@@ -93,7 +93,11 @@ export default function Grid({
       <thead>
         <tr className={styles['calendar-grid-row']}>
           {rotateDayIndexes(startOfWeek).map(dayIndex => (
-            <th key={dayIndex} className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}>
+            <th
+              key={dayIndex}
+              scope="col"
+              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+            >
               {renderDayName(locale, dayIndex)}
             </th>
           ))}
@@ -101,7 +105,7 @@ export default function Grid({
       </thead>
       <tbody className={styles['calendar-grid-body']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={styles['calendar-grid-row']}>
+          <tr key={weekIndex} className={clsx(styles['calendar-grid-row'], styles['calendar-week'])}>
             {week.map((date, dateIndex) => {
               const isDateInLastWeek = weeks.length - 1 === weekIndex;
               const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
