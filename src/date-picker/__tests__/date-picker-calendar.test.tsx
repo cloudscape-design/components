@@ -55,7 +55,7 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-day-name']}`)
+      .findAll(`.${calendarStyles['calendar-day-header']}`)
       .map(day => day.getElement().textContent!.trim());
   };
 

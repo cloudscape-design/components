@@ -89,7 +89,7 @@ export default function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <table role="grid" className={styles['calendar-grid']}>
+    <table role="none" className={styles['calendar-grid']}>
       <thead>
         <tr className={styles['calendar-grid-row']}>
           {rotateDayIndexes(startOfWeek).map(dayIndex => (
@@ -100,60 +100,59 @@ export default function Grid({
         </tr>
       </thead>
       <tbody className={styles['calendar-grid-body']} onKeyDown={onGridKeyDownHandler}>
-        {weeks.map((week, weekIndex) => {
-          const isDateInLastWeek = weeks.length - 1 === weekIndex;
-          return (
-            <tr key={weekIndex} className={styles['calendar-grid-row']}>
-              {week.map((date, dateIndex) => {
-                const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
-                const isSelected = !!selectedDate && isSameDay(date, selectedDate);
-                const isEnabled = !isDateEnabled || isDateEnabled(date);
-                const isDateOnSameDay = isSameDay(date, new Date());
+        {weeks.map((week, weekIndex) => (
+          <tr key={weekIndex} className={styles['calendar-grid-row']}>
+            {week.map((date, dateIndex) => {
+              const isDateInLastWeek = weeks.length - 1 === weekIndex;
+              const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
+              const isSelected = !!selectedDate && isSameDay(date, selectedDate);
+              const isEnabled = !isDateEnabled || isDateEnabled(date);
+              const isDateOnSameDay = isSameDay(date, new Date());
 
-                const ariaLabel = isDateOnSameDay
-                  ? `${getDateLabel(locale, date)}. ${todayAriaLabel}`
-                  : getDateLabel(locale, date);
+              const dayAnnouncement = isDateOnSameDay
+                ? `${getDateLabel(locale, date)}. ${todayAriaLabel}`
+                : getDateLabel(locale, date);
 
-                const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
+              const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
 
-                if (isSelected) {
-                  computedAttributes['aria-current'] = 'date';
-                }
+              if (isSelected) {
+                computedAttributes['aria-current'] = 'date';
+              }
 
-                if (isEnabled) {
-                  computedAttributes.onClick = () => onSelectDate(date);
-                  computedAttributes.tabIndex = -1;
-                } else {
-                  computedAttributes['aria-disabled'] = true;
-                }
+              if (isEnabled) {
+                computedAttributes.onClick = () => onSelectDate(date);
+                computedAttributes.tabIndex = -1;
+              } else {
+                computedAttributes['aria-disabled'] = true;
+              }
 
-                if (isFocusable && isEnabled) {
-                  computedAttributes.tabIndex = 0;
-                }
+              if (isFocusable && isEnabled) {
+                computedAttributes.tabIndex = 0;
+              }
 
-                return (
-                  <td
-                    key={`${weekIndex}:${dateIndex}`}
-                    className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
-                      [styles['calendar-day-in-last-week']]: isDateInLastWeek,
-                      [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
-                      [styles['calendar-day-enabled']]: isEnabled,
-                      [styles['calendar-day-selected']]: isSelected,
-                      [styles['calendar-day-today']]: isDateOnSameDay,
-                    })}
-                    {...computedAttributes}
-                    {...focusVisible}
-                  >
-                    <span className={styles['day-inner']} aria-hidden="true">
-                      {date.getDate()}
-                    </span>
-                    <span className={styles['visually-hidden']}>{ariaLabel}</span>
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
+              return (
+                <td
+                  key={`${weekIndex}:${dateIndex}`}
+                  role="button"
+                  aria-label={dayAnnouncement}
+                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
+                    [styles['calendar-day-in-last-week']]: isDateInLastWeek,
+                    [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
+                    [styles['calendar-day-enabled']]: isEnabled,
+                    [styles['calendar-day-selected']]: isSelected,
+                    [styles['calendar-day-today']]: isDateOnSameDay,
+                  })}
+                  {...computedAttributes}
+                  {...focusVisible}
+                >
+                  <span className={styles['day-inner']} aria-hidden="true">
+                    {date.getDate()}
+                  </span>
+                </td>
+              );
+            })}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
