@@ -7,12 +7,11 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/typography/index' as typographyConstants;
+@use '../calendar/calendar' as calendar;
 @use './motion';
 
-$calendar-header-color: awsui.$color-text-body-default;
-$calendar-grid-day-name-color: awsui.$color-text-calendar-month;
-
 $calendar-grid-width: awsui.$size-calendar-grid-width;
+$calendar-header-color: awsui.$color-text-body-default;
 
 .root {
   @include styles.styles-reset;
@@ -86,7 +85,7 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
     word-break: break-word;
     text-align: center;
     padding: awsui.$space-s 0 awsui.$space-xxs;
-    color: $calendar-grid-day-name-color;
+    color: calendar.$grid-day-name-color;
     @include styles.font-body-s;
   }
 

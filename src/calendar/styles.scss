@@ -87,10 +87,6 @@
       border-bottom: none;
     }
 
-    &-focusable {
-      /* used for identifying element */
-    }
-
     &-enabled {
       cursor: pointer;
       color: calendar.$grid-nonmonth-day-color;

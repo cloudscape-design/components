@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 import styles from '../styles.css.js';
-import GridDay from './day';
 import { KeyCode } from '../../internal/keycode';
-import { addDays, addWeeks, isSameMonth } from 'date-fns';
+import { addDays, addWeeks, isSameDay, isSameMonth } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
 import { MoveFocusHandler } from '../utils/move-focus-handler';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import rotateDayIndexes from '../utils/rotate-day-indexes';
-import { renderDayName } from '../utils/intl';
+import { getDateLabel, renderDayName } from '../utils/intl';
+import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
+import clsx from 'clsx';
 
 export interface GridProps {
   locale: string;
@@ -26,7 +27,7 @@ export interface GridProps {
   handleFocusMove: MoveFocusHandler;
 }
 
-const Grid = ({
+export default function Grid({
   locale,
   baseDate,
   isDateEnabled,
@@ -38,7 +39,7 @@ const Grid = ({
   todayAriaLabel,
   selectedDate,
   handleFocusMove,
-}: GridProps) => {
+}: GridProps) {
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
@@ -85,6 +86,8 @@ const Grid = ({
     [baseDate, startOfWeek]
   );
 
+  const focusVisible = useFocusVisible();
+
   return (
     <div>
       <div className={styles['calendar-day-names']}>
@@ -100,19 +103,49 @@ const Grid = ({
           return (
             <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
               {week.map((date, dateIndex) => {
+                const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
+                const isSelected = !!selectedDate && isSameDay(date, selectedDate);
+                const isEnabled = !isDateEnabled || isDateEnabled(date);
+                const isDateOnSameDay = isSameDay(date, new Date());
+
+                const ariaLabel = isDateOnSameDay
+                  ? `${getDateLabel(locale, date)}. ${todayAriaLabel}`
+                  : getDateLabel(locale, date);
+
+                const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
+
+                if (isSelected) {
+                  computedAttributes['aria-current'] = 'date';
+                }
+
+                if (isEnabled) {
+                  computedAttributes.onClick = () => onSelectDate(date);
+                  computedAttributes.tabIndex = -1;
+                } else {
+                  computedAttributes['aria-disabled'] = true;
+                }
+
+                if (isFocusable && isEnabled) {
+                  computedAttributes.tabIndex = 0;
+                }
+
                 return (
-                  <GridDay
-                    key={`date-${weekIndex}-${dateIndex}`}
-                    locale={locale}
-                    baseDate={baseDate}
-                    selectedDate={selectedDate}
-                    date={date}
-                    focusedDate={focusedDate}
-                    todayAriaLabel={todayAriaLabel}
-                    onSelectDate={date => onSelectDate(date)}
-                    isDateEnabled={isDateEnabled}
-                    isDateInLastWeek={isDateInLastWeek}
-                  />
+                  <div
+                    key={`${weekIndex}:${dateIndex}`}
+                    role="button"
+                    aria-label={ariaLabel}
+                    className={clsx(styles['calendar-day'], {
+                      [styles['calendar-day-in-last-week']]: isDateInLastWeek,
+                      [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
+                      [styles['calendar-day-enabled']]: isEnabled,
+                      [styles['calendar-day-selected']]: isSelected,
+                      [styles['calendar-day-today']]: isDateOnSameDay,
+                    })}
+                    {...computedAttributes}
+                    {...focusVisible}
+                  >
+                    <span className={styles['day-inner']}>{date.getDate()}</span>
+                  </div>
                 );
               })}
             </div>
@@ -121,6 +154,4 @@ const Grid = ({
       </div>
     </div>
   );
-};
-
-export default Grid;
+}
