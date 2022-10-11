@@ -902,7 +902,7 @@ Object {
   "color-text-code-editor-status-bar-disabled": "#687078",
   "color-text-code-editor-tab-button-error": "#16191f",
   "color-text-column-header": "#95a5a6",
-  "color-text-column-sorting-icon": "#687078",
+  "color-text-column-sorting-icon": "#95a5a6",
   "color-text-control-disabled": "#687078",
   "color-text-counter": "#95a5a6",
   "color-text-disabled": "#687078",
