@@ -103,11 +103,10 @@ export default function Grid({
           ))}
         </tr>
       </thead>
-      <tbody className={styles['calendar-grid-body']} onKeyDown={onGridKeyDownHandler}>
+      <tbody onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => (
           <tr key={weekIndex} className={clsx(styles['calendar-grid-row'], styles['calendar-week'])}>
             {week.map((date, dateIndex) => {
-              const isDateInLastWeek = weeks.length - 1 === weekIndex;
               const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
               const isSelected = !!selectedDate && isSameDay(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
@@ -140,7 +139,6 @@ export default function Grid({
                   role="button"
                   aria-label={dayAnnouncement}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
-                    [styles['calendar-day-in-last-week']]: isDateInLastWeek,
                     [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
                     [styles['calendar-day-enabled']]: isEnabled,
                     [styles['calendar-day-selected']]: isSelected,
