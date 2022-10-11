@@ -68,16 +68,16 @@ export function Grid({
   return (
     <div className={clsx(styles.grid, className)}>
       <div className={styles['calendar-day-names']}>
-        {rotateDayIndexes(startOfWeek).map(i => (
-          <div key={`day-name-${i}`} className={styles['calendar-day-name']}>
-            {renderDayName(locale, i, 'short')}
+        {rotateDayIndexes(startOfWeek).map(dayIndex => (
+          <div key={dayIndex} className={styles['calendar-day-name']}>
+            {renderDayName(locale, dayIndex, 'short')}
           </div>
         ))}
       </div>
       <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           return (
-            <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
+            <div key={weekIndex} className={styles['calendar-week']}>
               {week.map((date, dateIndex) => {
                 const isStartDate = !!selectedStartDate && isSameDay(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameDay(date, selectedEndDate);
@@ -99,8 +99,9 @@ export function Grid({
 
                 return (
                   <GridDay
-                    key={`date-${weekIndex}-${dateIndex}`}
+                    key={`${weekIndex}:${dateIndex}`}
                     locale={locale}
+                    date={date}
                     baseDate={baseDate}
                     isSelected={isSelected}
                     isStartDate={isStartDate}
@@ -108,9 +109,8 @@ export function Grid({
                     onlyOneSelected={onlyOneSelected}
                     isRangeStartDate={isRangeStartDate}
                     isRangeEndDate={isRangeEndDate}
-                    date={date}
                     isFocusedDate={isFocused}
-                    ref={isFocused ? focusedDateRef : undefined}
+                    focusedDateRef={focusedDateRef}
                     todayAriaLabel={todayAriaLabel}
                     onSelectDate={onSelectDate}
                     onFocusDate={onFocusedDateChange}

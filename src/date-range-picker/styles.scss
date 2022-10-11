@@ -155,6 +155,10 @@ $calendar-header-color: awsui.$color-text-body-default;
   @include styles.form-placeholder;
 }
 
+.label-token-nowrap {
+  white-space: nowrap;
+}
+
 .mode-switch {
   /* used in test-utils */
 }
