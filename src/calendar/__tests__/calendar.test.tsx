@@ -24,7 +24,9 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 }
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
-  return wrapper.findAll(`.${styles['calendar-day-header']}`).map(day => day.getElement().textContent!.trim());
+  return wrapper
+    .findAll(`.${styles['calendar-day-header']} :not(.${styles['visually-hidden']})`)
+    .map(day => day.getElement().textContent!.trim());
 }
 
 describe('Calendar', () => {

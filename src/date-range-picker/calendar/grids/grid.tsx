@@ -70,7 +70,7 @@ export function Grid({
       <div className={styles['calendar-day-names']}>
         {rotateDayIndexes(startOfWeek).map(i => (
           <div key={`day-name-${i}`} className={styles['calendar-day-name']}>
-            {renderDayName(locale, i)}
+            {renderDayName(locale, i, 'short')}
           </div>
         ))}
       </div>

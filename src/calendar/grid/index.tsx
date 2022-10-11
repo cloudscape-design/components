@@ -14,6 +14,15 @@ import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
+/**
+ * There are some known issues with screenreaders, they are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog
+ * 1. Chrome+VO+screenreader table navigation — day name in the column header are announced twice
+ * 2. Safari+VO+screenreader table navigation — “dimmed” day state is announced twice
+ * 3. NVDA+Firefox+application navigation — every day is announced as “not selected”
+ * 4. NVDA+Firefox+screenreader table navigation - can not move focus by arrow up/down
+ * 5. VO+application navigation - doesn't announce column header when focusing on days
+ * 6. VO+application navigation - no indication that the days are clickable(not selected, clickable...)
+ */
 export interface GridProps {
   locale: string;
   baseDate: Date;
@@ -102,7 +111,7 @@ export default function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <table role="none" className={styles['calendar-grid']}>
+    <table role="grid" className={styles['calendar-grid']}>
       <thead>
         <tr>
           {rotateDayIndexes(startOfWeek).map(dayIndex => (
@@ -111,7 +120,8 @@ export default function Grid({
               scope="col"
               className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
             >
-              {renderDayName(locale, dayIndex)}
+              <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
+              <span className={styles['visually-hidden']}>{renderDayName(locale, dayIndex, 'long')}</span>
             </th>
           ))}
         </tr>
@@ -136,7 +146,7 @@ export default function Grid({
               }
 
               // Screen-reader announcement for the focused day.
-              let dayAnnouncement = getDateLabel(locale, date);
+              let dayAnnouncement = getDateLabel(locale, date, 'short');
               if (isDateOnSameDay) {
                 dayAnnouncement += '. ' + todayAriaLabel;
               }
@@ -151,10 +161,9 @@ export default function Grid({
                 <td
                   key={`${weekIndex}:${dateIndex}`}
                   ref={tabIndex === 0 ? focusedDateRef : undefined}
-                  role="button"
                   tabIndex={tabIndex}
-                  aria-label={dayAnnouncement}
-                  aria-current={isSelected ? 'date' : undefined}
+                  aria-current={isDateOnSameDay ? 'date' : undefined}
+                  aria-selected={isSelected}
                   aria-disabled={!isEnabled}
                   onClick={onClick}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
@@ -168,6 +177,7 @@ export default function Grid({
                   <span className={styles['day-inner']} aria-hidden="true">
                     {date.getDate()}
                   </span>
+                  <span className={styles['visually-hidden']}>{dayAnnouncement}</span>
                 </td>
               );
             })}
