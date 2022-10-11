@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { addDays, addWeeks, isSameDay, isSameMonth } from 'date-fns';
@@ -12,12 +12,14 @@ import rotateDayIndexes from '../utils/rotate-day-indexes';
 import { getDateLabel, renderDayName } from '../utils/intl';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 export interface GridProps {
   locale: string;
   baseDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   focusedDate: Date | null;
+  focusableDate: Date | null;
   onSelectDate: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
   onChangeMonth: (date: Date) => void;
@@ -32,6 +34,7 @@ export default function Grid({
   baseDate,
   isDateEnabled,
   focusedDate,
+  focusableDate,
   onSelectDate,
   onFocusDate,
   onChangeMonth,
@@ -40,36 +43,38 @@ export default function Grid({
   selectedDate,
   handleFocusMove,
 }: GridProps) {
+  const focusedDateRef = useRef<HTMLTableCellElement>(null);
+
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    if (focusedDate === null) {
+    if (focusableDate === null) {
       return;
     }
 
     switch (event.keyCode) {
       case KeyCode.enter:
         event.preventDefault();
-        if (focusedDate) {
+        if (focusableDate) {
           onFocusDate(null);
-          onSelectDate(focusedDate);
+          onSelectDate(focusableDate);
         }
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, 1));
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, -1));
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, -1));
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, 1));
         break;
       default:
         return;
@@ -80,6 +85,14 @@ export default function Grid({
     }
     onFocusDate(updatedFocusDate);
   };
+
+  // The focused date changes as a feedback to keyboard navigation in the grid.
+  // Once changed, the corresponding day button needs to receive the actual focus.
+  useEffectOnUpdate(() => {
+    if (focusedDate && focusedDateRef.current) {
+      (focusedDateRef.current as HTMLDivElement).focus();
+    }
+  }, [focusedDate]);
 
   const weeks = useMemo<Date[][]>(
     () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
@@ -107,7 +120,7 @@ export default function Grid({
         {weeks.map((week, weekIndex) => (
           <tr key={weekIndex} className={clsx(styles['calendar-grid-row'], styles['calendar-week'])}>
             {week.map((date, dateIndex) => {
-              const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
+              const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
               const isSelected = !!selectedDate && isSameDay(date, selectedDate);
               const isEnabled = !isDateEnabled || isDateEnabled(date);
               const isDateOnSameDay = isSameDay(date, new Date());
@@ -136,6 +149,7 @@ export default function Grid({
               return (
                 <td
                   key={`${weekIndex}:${dateIndex}`}
+                  ref={computedAttributes.tabIndex === 0 ? focusedDateRef : undefined}
                   role="button"
                   aria-label={dayAnnouncement}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
