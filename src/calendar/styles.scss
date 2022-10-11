@@ -97,7 +97,7 @@
     &-today {
       background-color: calendar.$grid-today-background-color;
       border-radius: awsui.$border-radius-item;
-      font-weight: bold;
+      font-weight: styles.$font-weight-bold;
     }
 
     &::after {
@@ -132,7 +132,7 @@
       border-color: transparent;
       position: relative;
       z-index: 2;
-      font-weight: bold;
+      font-weight: styles.$font-weight-bold;
       &:focus {
         @include focus-visible.when-visible {
           @include styles.focus-highlight(
