@@ -98,6 +98,7 @@ const InternalSelect = React.forwardRef(
       highlightedIndex,
       getTriggerProps,
       getFilterProps,
+      getRecoveryProps,
       getMenuProps,
       getOptionProps,
       highlightOption,
@@ -172,6 +173,7 @@ const InternalSelect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
+      recoveryProps: getRecoveryProps(),
     });
 
     const announcement = useAnnouncement({

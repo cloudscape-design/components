@@ -41,7 +41,12 @@ export interface SelectTriggerProps {
   onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
   ariaLabelledby?: string;
   onFocus: NonCancelableEventHandler;
-  onBlur: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
+  onBlur: CancelableEventHandler<{ relatedTarget: Node | null }>;
+}
+
+export interface RecoveryLinkProp {
+  ref: RefObject<HTMLAnchorElement>;
+  onBlur: CancelableEventHandler<{ relatedTarget: Node | null }>;
 }
 
 export function useSelect({
@@ -64,6 +69,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const hasFilter = filteringType !== 'none';
   const activeRef = hasFilter ? filterRef : menuRef;
   const isSelectingUsingSpace = useRef<boolean>(false);
@@ -103,9 +109,12 @@ export function useSelect({
   };
   const handleBlur = ({ detail }: { detail: { relatedTarget: Node | null } }) => {
     const { relatedTarget } = detail;
+
     const nextFocusedIsTrigger = relatedTarget ? containsOrEqual(triggerRef.current, relatedTarget) : false;
     const nextFocusedInsideDropdown = relatedTarget
-      ? containsOrEqual(menuRef.current, relatedTarget) || containsOrEqual(filterRef.current, relatedTarget)
+      ? containsOrEqual(menuRef.current, relatedTarget) ||
+        containsOrEqual(filterRef.current, relatedTarget) ||
+        containsOrEqual(linkRef.current, relatedTarget)
       : false;
     const nextFocusedInsideComponent = nextFocusedIsTrigger || nextFocusedInsideDropdown;
     const focusingOut = focused.current && !nextFocusedInsideComponent;
@@ -195,6 +204,13 @@ export function useSelect({
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
       },
+    };
+  };
+
+  const getRecoveryProps = () => {
+    return {
+      ref: linkRef,
+      onBlur: handleBlur,
     };
   };
 
@@ -291,6 +307,7 @@ export function useSelect({
     getTriggerProps,
     getMenuProps,
     getFilterProps,
+    getRecoveryProps,
     getOptionProps,
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
