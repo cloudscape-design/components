@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
 import { addDays, addWeeks, isSameDay, isSameMonth } from 'date-fns';
@@ -12,12 +12,14 @@ import rotateDayIndexes from '../utils/rotate-day-indexes';
 import { getDateLabel, renderDayName } from '../utils/intl';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 export interface GridProps {
   locale: string;
   baseDate: Date;
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   focusedDate: Date | null;
+  focusableDate: Date | null;
   onSelectDate: (date: Date) => void;
   onFocusDate: (date: null | Date) => void;
   onChangeMonth: (date: Date) => void;
@@ -32,6 +34,7 @@ export default function Grid({
   baseDate,
   isDateEnabled,
   focusedDate,
+  focusableDate,
   onSelectDate,
   onFocusDate,
   onChangeMonth,
@@ -40,36 +43,38 @@ export default function Grid({
   selectedDate,
   handleFocusMove,
 }: GridProps) {
+  const focusedDateRef = useRef<HTMLTableCellElement>(null);
+
   const onGridKeyDownHandler = (event: React.KeyboardEvent) => {
     let updatedFocusDate;
 
-    if (focusedDate === null) {
+    if (focusableDate === null) {
       return;
     }
 
     switch (event.keyCode) {
       case KeyCode.enter:
         event.preventDefault();
-        if (focusedDate) {
+        if (focusableDate) {
           onFocusDate(null);
-          onSelectDate(focusedDate);
+          onSelectDate(focusableDate);
         }
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, 1));
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, -1));
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, -1));
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, 1));
         break;
       default:
         return;
@@ -81,6 +86,14 @@ export default function Grid({
     onFocusDate(updatedFocusDate);
   };
 
+  // The focused date changes as a feedback to keyboard navigation in the grid.
+  // Once changed, the corresponding day button needs to receive the actual focus.
+  useEffectOnUpdate(() => {
+    if (focusedDate && focusedDateRef.current) {
+      (focusedDateRef.current as HTMLDivElement).focus();
+    }
+  }, [focusedDate]);
+
   const weeks = useMemo<Date[][]>(
     () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
     [baseDate, startOfWeek]
@@ -89,69 +102,78 @@ export default function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <div>
-      <div className={styles['calendar-day-names']}>
-        {rotateDayIndexes(startOfWeek).map(i => (
-          <div key={`day-name-${i}`} className={styles['calendar-day-name']}>
-            {renderDayName(locale, i)}
-          </div>
-        ))}
-      </div>
-      <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
-        {weeks.map((week, weekIndex) => {
-          const isDateInLastWeek = weeks.length - 1 === weekIndex;
-          return (
-            <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
-              {week.map((date, dateIndex) => {
-                const isFocusable = !!focusedDate && isSameDay(date, focusedDate);
-                const isSelected = !!selectedDate && isSameDay(date, selectedDate);
-                const isEnabled = !isDateEnabled || isDateEnabled(date);
-                const isDateOnSameDay = isSameDay(date, new Date());
+    <table role="none" className={styles['calendar-grid']}>
+      <thead>
+        <tr>
+          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+            <th
+              key={dayIndex}
+              scope="col"
+              className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
+            >
+              {renderDayName(locale, dayIndex)}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody onKeyDown={onGridKeyDownHandler}>
+        {weeks.map((week, weekIndex) => (
+          <tr key={weekIndex} className={styles['calendar-week']}>
+            {week.map((date, dateIndex) => {
+              const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
+              const isSelected = !!selectedDate && isSameDay(date, selectedDate);
+              const isEnabled = !isDateEnabled || isDateEnabled(date);
+              const isDateOnSameDay = isSameDay(date, new Date());
 
-                const ariaLabel = isDateOnSameDay
-                  ? `${getDateLabel(locale, date)}. ${todayAriaLabel}`
-                  : getDateLabel(locale, date);
+              // Can't be focused.
+              let tabIndex = undefined;
+              if (isFocusable && isEnabled) {
+                // Next focus target.
+                tabIndex = 0;
+              } else if (isEnabled) {
+                // Can be focused programmatically.
+                tabIndex = -1;
+              }
 
-                const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
+              // Screen-reader announcement for the focused day.
+              let dayAnnouncement = getDateLabel(locale, date);
+              if (isDateOnSameDay) {
+                dayAnnouncement += '. ' + todayAriaLabel;
+              }
 
-                if (isSelected) {
-                  computedAttributes['aria-current'] = 'date';
-                }
-
+              const onClick = () => {
                 if (isEnabled) {
-                  computedAttributes.onClick = () => onSelectDate(date);
-                  computedAttributes.tabIndex = -1;
-                } else {
-                  computedAttributes['aria-disabled'] = true;
+                  onSelectDate(date);
                 }
+              };
 
-                if (isFocusable && isEnabled) {
-                  computedAttributes.tabIndex = 0;
-                }
-
-                return (
-                  <div
-                    key={`${weekIndex}:${dateIndex}`}
-                    role="button"
-                    aria-label={ariaLabel}
-                    className={clsx(styles['calendar-day'], {
-                      [styles['calendar-day-in-last-week']]: isDateInLastWeek,
-                      [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
-                      [styles['calendar-day-enabled']]: isEnabled,
-                      [styles['calendar-day-selected']]: isSelected,
-                      [styles['calendar-day-today']]: isDateOnSameDay,
-                    })}
-                    {...computedAttributes}
-                    {...focusVisible}
-                  >
-                    <span className={styles['day-inner']}>{date.getDate()}</span>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+              return (
+                <td
+                  key={`${weekIndex}:${dateIndex}`}
+                  ref={tabIndex === 0 ? focusedDateRef : undefined}
+                  role="button"
+                  tabIndex={tabIndex}
+                  aria-label={dayAnnouncement}
+                  aria-current={isSelected ? 'date' : undefined}
+                  aria-disabled={!isEnabled}
+                  onClick={onClick}
+                  className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
+                    [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
+                    [styles['calendar-day-enabled']]: isEnabled,
+                    [styles['calendar-day-selected']]: isSelected,
+                    [styles['calendar-day-today']]: isDateOnSameDay,
+                  })}
+                  {...focusVisible}
+                >
+                  <span className={styles['day-inner']} aria-hidden="true">
+                    {date.getDate()}
+                  </span>
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
