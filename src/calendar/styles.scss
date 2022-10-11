@@ -50,12 +50,8 @@
     border-spacing: 0;
   }
 
-  &-grid-row {
-    display: flex;
-  }
-
   &-grid-cell {
-    width: 100%;
+    width: calc(100% / 7);
     word-break: break-word;
     text-align: center;
     font-weight: unset;

@@ -104,7 +104,7 @@ export default function Grid({
   return (
     <table role="none" className={styles['calendar-grid']}>
       <thead>
-        <tr className={styles['calendar-grid-row']}>
+        <tr>
           {rotateDayIndexes(startOfWeek).map(dayIndex => (
             <th
               key={dayIndex}
@@ -118,7 +118,7 @@ export default function Grid({
       </thead>
       <tbody onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => (
-          <tr key={weekIndex} className={clsx(styles['calendar-grid-row'], styles['calendar-week'])}>
+          <tr key={weekIndex} className={styles['calendar-week']}>
             {week.map((date, dateIndex) => {
               const isFocusable = !!focusableDate && isSameDay(date, focusableDate);
               const isSelected = !!selectedDate && isSameDay(date, selectedDate);
