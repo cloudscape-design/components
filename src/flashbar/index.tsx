@@ -38,27 +38,27 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     useReducedMotion(ref as any) || !isVisualRefresh || (items && !items.every(item => 'id' in item));
 
   /**
-   * The `enableStackingOption` property is a hidden boolean that allows for teams
+   * The `stackItems` property is a hidden boolean that allows for teams
    * to beta test the flashbar stacking feature.
    */
-  const enableStackingOption = (restProps as any).enableStackingOption;
+  const stackItems = (restProps as any).stackItems;
   const [isFlashbarStacked, setIsFlashbarStacked] = useState(false);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
   useEffect(
     function handleIsFlashbardStacked() {
-      if (enableStackingOption && items?.length > 3) {
+      if (stackItems && items?.length > 3) {
         setIsFlashbarStacked(true);
       } else {
         setIsFlashbarStacked(false);
         setIsFlashbarStackExpanded(false);
       }
     },
-    [enableStackingOption, isFlashbarStacked, items]
+    [stackItems, isFlashbarStacked, items]
   );
 
   /**
-   * If the `isFlashbarStacked` is true (which is only possible if `enableStackingOption` is true)
+   * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
    * then the first item should be rendered followed by two dummy items that visually indicate
    * two, three, or more items exist in the stack.
    */
