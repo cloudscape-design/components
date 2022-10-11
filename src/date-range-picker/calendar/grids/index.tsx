@@ -114,6 +114,7 @@ export const Grids = ({
     }
 
     switch (e.keyCode) {
+      case KeyCode.space:
       case KeyCode.enter:
         e.preventDefault();
         if (focusedDate) {
