@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 /**
- * There are some known issues with screenreaders, they are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog
+ * There are known issues with browser/screenreader combinations also reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog
  * 1. Chrome+VO+screenreader table navigation — day name in the column header are announced twice
  * 2. Safari+VO+screenreader table navigation — “dimmed” day state is announced twice
  * 3. NVDA+Firefox+application navigation — every day is announced as “not selected”
