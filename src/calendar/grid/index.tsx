@@ -125,40 +125,44 @@ export default function Grid({
               const isEnabled = !isDateEnabled || isDateEnabled(date);
               const isDateOnSameDay = isSameDay(date, new Date());
 
-              const dayAnnouncement = isDateOnSameDay
-                ? `${getDateLabel(locale, date)}. ${todayAriaLabel}`
-                : getDateLabel(locale, date);
-
-              const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
-
-              if (isSelected) {
-                computedAttributes['aria-current'] = 'date';
-              }
-
-              if (isEnabled) {
-                computedAttributes.onClick = () => onSelectDate(date);
-                computedAttributes.tabIndex = -1;
-              } else {
-                computedAttributes['aria-disabled'] = true;
-              }
-
+              // Can't be focused.
+              let tabIndex = undefined;
               if (isFocusable && isEnabled) {
-                computedAttributes.tabIndex = 0;
+                // Next focus target.
+                tabIndex = 0;
+              } else if (isEnabled) {
+                // Can be focused programmatically.
+                tabIndex = -1;
               }
+
+              // Screen-reader announcement for the focused day.
+              let dayAnnouncement = getDateLabel(locale, date);
+              if (isDateOnSameDay) {
+                dayAnnouncement += '. ' + todayAriaLabel;
+              }
+
+              const onClick = () => {
+                if (isEnabled) {
+                  onSelectDate(date);
+                }
+              };
 
               return (
                 <td
                   key={`${weekIndex}:${dateIndex}`}
-                  ref={computedAttributes.tabIndex === 0 ? focusedDateRef : undefined}
+                  ref={tabIndex === 0 ? focusedDateRef : undefined}
                   role="button"
+                  tabIndex={tabIndex}
                   aria-label={dayAnnouncement}
+                  aria-current={isSelected ? 'date' : undefined}
+                  aria-disabled={!isEnabled}
+                  onClick={onClick}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
                     [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
                     [styles['calendar-day-enabled']]: isEnabled,
                     [styles['calendar-day-selected']]: isSelected,
                     [styles['calendar-day-today']]: isDateOnSameDay,
                   })}
-                  {...computedAttributes}
                   {...focusVisible}
                 >
                   <span className={styles['day-inner']} aria-hidden="true">
