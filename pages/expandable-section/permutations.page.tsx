@@ -105,6 +105,13 @@ const permutations = createPermutations<ExpandableSectionProps>([
     ],
     children: ['Navigation content'],
   },
+  {
+    expanded: [true],
+    headerAriaLabel: ['Header with ARIA label (ARIA)'],
+    variant: ['default', 'footer', 'navigation'],
+    header: ['Header with ARIA label'],
+    children: ['Sample content'],
+  },
 ]);
 /* eslint-enable react/jsx-key */
 

@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
+import FormField from '../../../lib/components/form-field';
 import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';
+import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import { createCommonTests } from './common-tests';
 
 function renderCheckbox(jsx: React.ReactElement) {
@@ -92,19 +94,10 @@ describe('native and styled control synchronization', () => {
   });
 });
 
-test('fires a single onChange event on label click', () => {
+test('fires onChange event on label click', () => {
   const onChange = jest.fn();
   const { wrapper } = renderCheckbox(<Checkbox checked={false} onChange={onChange} />);
   wrapper.findLabel().click();
-  expect(onChange).toHaveBeenCalledTimes(1);
-  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true, indeterminate: false } }));
-});
-
-test('fires a single onChange event on input click', () => {
-  const onChange = jest.fn();
-  const { wrapper } = renderCheckbox(<Checkbox checked={false} onChange={onChange} />);
-  wrapper.findNativeInput().click();
-  expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true, indeterminate: false } }));
 });
 
@@ -163,4 +156,52 @@ test('does not trigger any change events when value is changed through api', () 
 
   rerender(<Checkbox checked={false} onChange={onChange} />);
   expect(onChange).not.toHaveBeenCalled();
+});
+
+test('Should set aria-describedby and aria-labelledby from Formfield', () => {
+  const { container } = render(
+    <FormField description="This is a formfield description." label="Form field label">
+      <Checkbox checked={false} description="This is description">
+        Checkbox label
+      </Checkbox>
+    </FormField>
+  );
+  const formFieldWrapper = createWrapper(container).findFormField();
+  const checkboxWrapper = createWrapper(container).findCheckbox()!;
+  const checkboxInputAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxInputAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  const formFieldLabelId = formFieldWrapper?.findLabel()?.getElement().id;
+  const formFieldDescriptionId = formFieldWrapper?.findDescription()?.getElement().id;
+  const checkboxLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const checkboxDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(checkboxInputAriaDescribedby).toBe(formFieldDescriptionId + ' ' + checkboxDescriptionId);
+  expect(checkboxInputAriaLabelledby).toBe(checkboxLabelId + ' ' + formFieldLabelId);
+});
+
+test('Should set aria-describedby and aria-labelledby from ariaLabelledby and ariaDescribedby', () => {
+  const { container } = render(
+    <FormField description="This is a description." label="Form field label">
+      <div id="label-id">it is label</div>
+      <div id="description-id">it is label</div>
+      <Checkbox
+        checked={false}
+        description="This is description"
+        ariaLabelledby="label-id"
+        ariaDescribedby="description-id"
+      >
+        Checkbox label
+      </Checkbox>
+    </FormField>
+  );
+  const checkboxWrapper = createWrapper(container).findCheckbox()!;
+  const checkboxInputAriaDescribedby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-describedby');
+  const checkboxInputAriaLabelledby = checkboxWrapper.findNativeInput().getElement().getAttribute('aria-labelledby');
+
+  const toggleLabelId = container?.querySelector(`.${abstractSwitchStyles.label}`)?.id;
+  const toggleDescriptionId = container?.querySelector(`.${abstractSwitchStyles.description}`)?.id;
+
+  expect(checkboxInputAriaDescribedby).toBe('description-id' + ' ' + toggleDescriptionId);
+  expect(checkboxInputAriaLabelledby).toBe(toggleLabelId + ' ' + 'label-id');
 });

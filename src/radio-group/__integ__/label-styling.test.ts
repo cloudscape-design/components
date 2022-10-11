@@ -22,7 +22,7 @@ test(
   setupTest(async page => {
     const radioButtonWrapper = radioGroupWrapper.findButtons().get(1);
     const { width: elementWidth } = await page.getBoundingBox(radioButtonWrapper.toSelector());
-    const { width: labelWidth } = await page.getBoundingBox(radioButtonWrapper.findLabel().toSelector());
+    const { width: labelWidth } = await page.getBoundingBox(radioButtonWrapper.find('label').toSelector());
     expect(labelWidth).toBeLessThan(elementWidth);
   })
 );

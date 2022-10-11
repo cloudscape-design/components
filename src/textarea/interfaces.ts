@@ -3,11 +3,12 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseKeyDetail } from '../internal/events';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { BaseInputProps, InputAutoComplete, InputKeyEvents } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputAutoComplete, InputKeyEvents } from '../input/interfaces';
 
 export interface TextareaProps
   extends BaseInputProps,
     InputKeyEvents,
+    InputAutoCorrect,
     InputAutoComplete,
     BaseComponentProps,
     FormFieldValidationControlProps {

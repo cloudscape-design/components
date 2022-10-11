@@ -95,7 +95,8 @@ export namespace LinkProps {
     | 'heading-m'
     | 'heading-l'
     | 'heading-xl'
-    | 'display-l';
+    | 'display-l'
+    | 'inherit';
   export type Color = 'normal' | 'inverted';
 
   export type FollowDetail = BaseNavigationDetail;

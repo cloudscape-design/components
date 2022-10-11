@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { ToggleProps } from './interfaces';
+import { useFormFieldContext } from '../internal/context/form-field-context';
 
 type InternalToggleProps = ToggleProps & InternalBaseComponentProps;
 
@@ -22,8 +23,6 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       children,
       description,
       ariaLabel,
-      ariaDescribedby,
-      ariaLabelledby,
       onFocus,
       onBlur,
       onChange,
@@ -32,10 +31,10 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     },
     ref
   ) => {
+    const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, checkboxRef);
-
     return (
       <AbstractSwitch
         {...baseProps}
@@ -60,13 +59,11 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             type="checkbox"
             checked={checked}
             name={name}
-            onFocus={() => fireNonCancelableEvent(onFocus)}
-            onBlur={() => fireNonCancelableEvent(onBlur)}
-            // empty handler to suppress React controllability warning
-            onChange={() => {}}
+            onFocus={onFocus && (() => fireNonCancelableEvent(onFocus))}
+            onBlur={onBlur && (() => fireNonCancelableEvent(onBlur))}
+            onChange={onChange && (event => fireNonCancelableEvent(onChange, { checked: event.target.checked }))}
           />
         )}
-        onClick={() => fireNonCancelableEvent(onChange, { checked: !checked })}
         styledControl={
           /*Using span, not div for HTML validity*/
           <span

@@ -33,6 +33,7 @@
     }
     > .anchor {
       color: awsui.$color-text-breadcrumb-current;
+      font-weight: styles.$font-weight-bold;
       text-decoration: none;
       cursor: default;
       pointer-events: none;

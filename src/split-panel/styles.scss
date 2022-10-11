@@ -133,6 +133,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   cursor: ns-resize;
   margin: 2px 0 0 0;
   height: $slider-width;
+  // Desktop Safari doesn't support touch events, but Safari on iOS does.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: none;
 
   &:focus {
     outline: none;

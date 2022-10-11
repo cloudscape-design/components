@@ -30,6 +30,8 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
         <Portal>
           <span className={portalClasses}>
             <PopoverContainer
+              size="small"
+              fixedWidth={false}
               position={position}
               trackRef={ref}
               arrow={position => <Arrow position={position} />}
@@ -37,8 +39,6 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
               zIndex={7000}
             >
               <PopoverBody
-                size="small"
-                fixedWidth={false}
                 dismissButton={false}
                 dismissAriaLabel={undefined}
                 header={null}

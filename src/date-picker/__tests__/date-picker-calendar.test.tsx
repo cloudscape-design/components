@@ -40,7 +40,7 @@ describe('Date picker calendar', () => {
   }
 
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day-focusable']}`);
+    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`);
   };
 
   const findFocusableDateText = (wrapper: DatePickerWrapper) => {
@@ -55,7 +55,7 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-day-name']}`)
+      .findAll(`.${calendarStyles['calendar-day-header']}`)
       .map(day => day.getElement().textContent!.trim());
   };
 

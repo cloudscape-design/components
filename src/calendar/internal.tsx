@@ -8,13 +8,14 @@ import CalendarHeader from './header';
 import Grid from './grid';
 import moveFocusHandler from './utils/move-focus-handler';
 import { memoizedDate } from './utils/memoized-date.js';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
 import { formatDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -27,12 +28,14 @@ export default function Calendar({
   nextMonthAriaLabel,
   previousMonthAriaLabel,
   onChange,
-}: CalendarProps) {
+  __internalRootRef,
+  ...rest
+}: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
+  const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
@@ -74,7 +77,7 @@ export default function Calendar({
   };
 
   const baseDate: Date = getBaseDate(displayedDate);
-  const focusedOrSelectedDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
+  const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
   const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
     setDisplayedDate(addMonths(baseDate, isPreviousButtonClick ? -1 : 1));
@@ -98,14 +101,6 @@ export default function Calendar({
     setFocusedDate(null);
   };
 
-  // The focused date changes as a feedback to keyboard navigation in the grid.
-  // Once changed, the corresponding day button needs to receive the actual focus.
-  useEffectOnUpdate(() => {
-    if (focusedDate) {
-      (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
-    }
-  }, [focusedDate]);
-
   const onGridBlur = (event: React.FocusEvent) => {
     const newFocusTargetIsInGrid = event.relatedTarget && gridWrapperRef.current?.contains(event.relatedTarget as Node);
     if (!newFocusTargetIsInGrid) {
@@ -114,7 +109,12 @@ export default function Calendar({
   };
 
   return (
-    <div className={clsx(styles.root, styles.calendar)} ref={elementRef}>
+    <div
+      ref={__internalRootRef}
+      role="application"
+      {...baseProps}
+      className={clsx(styles.root, styles.calendar, baseProps.className)}
+    >
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}
@@ -128,7 +128,8 @@ export default function Calendar({
             locale={normalizedLocale}
             baseDate={baseDate}
             isDateEnabled={isDateEnabled}
-            focusedDate={focusedOrSelectedDate}
+            focusedDate={focusedDate}
+            focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
             onChangeMonth={onGridChangeMonthHandler}
