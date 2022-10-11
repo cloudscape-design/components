@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash } from './flash';
@@ -42,20 +42,26 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * to beta test the flashbar stacking feature.
    */
   const stackItems = (restProps as any).stackItems;
-  const [isFlashbarStacked, setIsFlashbarStacked] = useState(false);
+  const ariaLabels = (restProps as any).ariaLabels;
+  const isFlashbarStacked = stackItems && items?.length > 3;
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
-  useEffect(
-    function handleIsFlashbardStacked() {
-      if (stackItems && items?.length > 3) {
-        setIsFlashbarStacked(true);
-      } else {
-        setIsFlashbarStacked(false);
-        setIsFlashbarStackExpanded(false);
-      }
-    },
-    [stackItems, isFlashbarStacked, items]
-  );
+  /**
+   * Compute the appropriate aria label for the stacked notifications toggle button
+   * based on the expanded/collapsed state of the stack and the presence of
+   * corresponding aria label properties.
+   */
+  function getStackButtonAriaLabel() {
+    let stackButtonAriaLabel;
+
+    if (isFlashbarStackExpanded) {
+      stackButtonAriaLabel = ariaLabels?.stackCollapseLabel ?? 'Collapse stacked notifications';
+    } else {
+      stackButtonAriaLabel = ariaLabels?.stackExpandLabel ?? 'Expand stacked notifications';
+    }
+
+    return stackButtonAriaLabel;
+  }
 
   /**
    * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
@@ -88,7 +94,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         <button
-          aria-label={!isFlashbarStackExpanded ? 'Expand stacked notifications' : 'Collapse stacked notifications'}
+          aria-label={getStackButtonAriaLabel()}
           className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'])}
           onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
           {...isFocusVisible}
