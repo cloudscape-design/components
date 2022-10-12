@@ -22,10 +22,11 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    Omit<InputProps, 'type'>,
     InputAutoCorrect,
-    InputProps,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
+  type?: InputProps['type'] | 'visualSearch';
   __leftIcon?: IconProps['name'];
   __leftIconVariant?: IconProps['variant'];
   __onLeftIconClick?: () => void;
@@ -163,6 +164,11 @@ function InternalInput(
   }
 
   const mergedRef = useMergeRefs(ref, inputRef);
+
+  // type = "visualSearch" renders a type="text' input
+  if (attributes.type === 'visualSearch') {
+    attributes.type = 'text';
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
