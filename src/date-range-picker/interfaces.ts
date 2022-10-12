@@ -335,6 +335,11 @@ export namespace DateRangePickerProps {
     dateTimeConstraintText?: string;
 
     /**
+     * Provides a text alternative for the error icon in the error alert.
+     */
+    errorIconAriaLabel?: string;
+
+    /**
      * When the property is set, screen readers announce the selected range when the absolute range gets selected.
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;

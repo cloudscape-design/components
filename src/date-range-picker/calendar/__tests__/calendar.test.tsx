@@ -65,7 +65,7 @@ describe('Date range picker calendar', () => {
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${styles['calendar-day-name']}`)
+      .findAll(`.${gridDayStyles['day-header']}`)
       .map(day => day.getElement().textContent!.trim());
   };
 

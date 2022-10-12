@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -12,6 +13,12 @@ export interface AlertProps extends BaseComponentProps {
    * Specifies the type of message you want to display.
    */
   type?: AlertProps.Type;
+
+  /**
+   * Provides a text alternative for the icon.
+   */
+  statusIconAriaLabel?: string;
+
   /**
    * Determines whether the alert is displayed.
    * @deprecated Use conditional rendering in your code instead of this prop
