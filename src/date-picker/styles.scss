@@ -21,10 +21,6 @@
   }
 }
 
-.screenreader-only {
-  @include styles.awsui-util-hide;
-}
-
 .date-picker-container {
   position: relative;
   max-width: 234px;
