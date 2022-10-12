@@ -14,7 +14,7 @@ export default function () {
       <ScreenshotArea>
         <S3ResourceSelector
           alert={
-            <Alert type="error" header="Resource cannot be found">
+            <Alert type="error" statusIconAriaLabel="Error" header="Resource cannot be found">
               The specified path does not exist
             </Alert>
           }
