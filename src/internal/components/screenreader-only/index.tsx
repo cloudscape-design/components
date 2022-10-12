@@ -10,13 +10,16 @@ type ScreenreaderOnlyProps = Exclude<React.HTMLAttributes<HTMLDivElement>, 'clas
  * Makes content now shown on a screen but still announced by screen-reader users.
  * The component is suitable when the aria-label cannot be used, e.g. to avoid elemnts being announced as "blank".
  *
- * To exclude screenreader-only content use `:not([data-screenreader-only])` selector, for example:
+ * To exclude screenreader-only content use `:not(.${screenreaderOnlyStyles.root})` selector, for example:
  *
  * ```
- * let visibleContent = wrapper.find(`${styles.label}`).find(':not([data-screenreader-only])').getElement().textContent
- * let screenreaderContent = wrapper.find(`${styles.label}`).find('[data-screenreader-only]').getElement().textContent
+ * import screenreaderOnlyStyles from '~internal/components/screenreader-only/styles.css.js'
+ *
+ * let visibleContent = wrapper.find(`${styles.label}`).find(`:not(.${screenreaderOnlyStyles.root})`).getElement().textContent
+ *
+ * let screenreaderContent = wrapper.find(`${styles.label}`).find(`.${screenreaderOnlyStyles.root}`).getElement().textContent
  * ```
  */
 export default function ScreenreaderOnly(props: ScreenreaderOnlyProps) {
-  return <div {...props} className={styles.root} data-screenreader-only={true} />;
+  return <div {...props} className={styles.root} />;
 }
