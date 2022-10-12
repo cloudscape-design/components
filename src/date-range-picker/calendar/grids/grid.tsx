@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
-import styles from '../../styles.css.js';
-import dayStyles from './styles.css.js';
+import styles from './styles.css.js';
 import {
   isSameMonth,
   isAfter,
@@ -32,7 +31,7 @@ export interface GridProps {
   rangeEndDate: Date | null;
 
   focusedDate: Date | null;
-  focusedDateRef: React.RefObject<HTMLDivElement>;
+  focusedDateRef: React.RefObject<HTMLTableCellElement>;
 
   onSelectDate: DateChangeHandler;
   onGridKeyDownHandler: (e: React.KeyboardEvent) => void;
@@ -80,18 +79,20 @@ export function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <div className={clsx(styles.grid, className)}>
-      <div className={styles['calendar-day-names']}>
-        {rotateDayIndexes(startOfWeek).map(dayIndex => (
-          <div key={dayIndex} className={styles['calendar-day-name']}>
-            {renderDayName(locale, dayIndex)}
-          </div>
-        ))}
-      </div>
-      <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
+    <table role="none" className={clsx(styles.grid, className)}>
+      <thead>
+        <tr>
+          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+            <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
+              {renderDayName(locale, dayIndex)}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           return (
-            <div key={weekIndex} className={styles['calendar-week']}>
+            <tr key={weekIndex} className={styles.week}>
               {week.map((date, dateIndex) => {
                 const isStartDate = !!selectedStartDate && isSameDay(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameDay(date, selectedEndDate);
@@ -113,31 +114,32 @@ export function Grid({
 
                 const isEnabled = !isDateEnabled || isDateEnabled(date);
                 const isFocusable = isFocused && isEnabled;
-                const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
 
                 const baseClasses = {
-                  [dayStyles.day]: true,
-                  [dayStyles['in-first-row']]: weekIndex === 0,
-                  [dayStyles['in-first-column']]: dateIndex === 0,
+                  [styles.day]: true,
+                  [styles['grid-cell']]: true,
+                  [styles['in-first-row']]: weekIndex === 0,
+                  [styles['in-first-column']]: dateIndex === 0,
                 };
 
                 if (!isSameMonth(date, baseDate)) {
                   return (
-                    <div
+                    <td
                       key={`${weekIndex}:${dateIndex}`}
-                      className={clsx(baseClasses, {
-                        [dayStyles['in-previous-month']]: isBefore(date, baseDate),
-                        [dayStyles['last-day-of-month']]: isLastDayOfMonth(date),
-                        [dayStyles['in-next-month']]: isAfter(date, baseDate),
-                      })}
                       ref={isFocused ? focusedDateRef : undefined}
-                    ></div>
+                      className={clsx(baseClasses, {
+                        [styles['in-previous-month']]: isBefore(date, baseDate),
+                        [styles['last-day-of-month']]: isLastDayOfMonth(date),
+                        [styles['in-next-month']]: isAfter(date, baseDate),
+                      })}
+                    ></td>
                   );
                 }
 
+                const handlers: React.HTMLAttributes<HTMLDivElement> = {};
                 if (isEnabled) {
-                  computedAttributes.onClick = () => onSelectDate(date);
-                  computedAttributes.onFocus = () => onFocusedDateChange(date);
+                  handlers.onClick = () => onSelectDate(date);
+                  handlers.onFocus = () => onFocusedDateChange(date);
                 }
 
                 // Can't be focused.
@@ -157,25 +159,25 @@ export function Grid({
                 }
 
                 return (
-                  <div
+                  <td
+                    ref={isFocused ? focusedDateRef : undefined}
                     key={`${weekIndex}:${dateIndex}`}
                     className={clsx(baseClasses, {
-                      [dayStyles['in-current-month']]: isSameMonth(date, baseDate),
-                      [dayStyles.enabled]: isEnabled,
-                      [dayStyles.selected]: isSelected,
-                      [dayStyles['start-date']]: isStartDate,
-                      [dayStyles['end-date']]: isEndDate,
-                      [dayStyles['range-start-date']]: isRangeStartDate,
-                      [dayStyles['range-end-date']]: isRangeEndDate,
-                      [dayStyles['no-range']]: isSelected && onlyOneSelected,
-                      [dayStyles['in-range']]: dateIsInRange,
-                      [dayStyles['in-range-border-top']]: !!inRangeStartWeek || date.getDate() <= 7,
-                      [dayStyles['in-range-border-bottom']]:
-                        !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
-                      [dayStyles['in-range-border-left']]: dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
-                      [dayStyles['in-range-border-right']]:
+                      [styles['in-current-month']]: isSameMonth(date, baseDate),
+                      [styles.enabled]: isEnabled,
+                      [styles.selected]: isSelected,
+                      [styles['start-date']]: isStartDate,
+                      [styles['end-date']]: isEndDate,
+                      [styles['range-start-date']]: isRangeStartDate,
+                      [styles['range-end-date']]: isRangeEndDate,
+                      [styles['no-range']]: isSelected && onlyOneSelected,
+                      [styles['in-range']]: dateIsInRange,
+                      [styles['in-range-border-top']]: !!inRangeStartWeek || date.getDate() <= 7,
+                      [styles['in-range-border-bottom']]: !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
+                      [styles['in-range-border-left']]: dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
+                      [styles['in-range-border-right']]:
                         dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
-                      [dayStyles.today]: isToday(date),
+                      [styles.today]: isToday(date),
                     })}
                     aria-label={dayAnnouncement}
                     aria-pressed={isSelected || dateIsInRange}
@@ -183,19 +185,18 @@ export function Grid({
                     data-date={formatDate(date)}
                     role="button"
                     tabIndex={tabIndex}
-                    {...computedAttributes}
-                    ref={isFocused ? focusedDateRef : undefined}
+                    {...handlers}
                     {...focusVisible}
                   >
-                    <span className={dayStyles['day-inner']}>{date.getDate()}</span>
-                  </div>
+                    <span className={styles['day-inner']}>{date.getDate()}</span>
+                  </td>
                 );
               })}
-            </div>
+            </tr>
           );
         })}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 }
 
