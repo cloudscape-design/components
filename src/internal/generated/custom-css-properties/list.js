@@ -30,5 +30,7 @@ const customCssPropertiesList = [
   'toolsWidth',
   'toolsAnimationStartingOpacity',
   'contentScrollMargin',
+  'flashbarStackDepth',
+  'flashbarStackIndex',
 ];
 module.exports = customCssPropertiesList;
