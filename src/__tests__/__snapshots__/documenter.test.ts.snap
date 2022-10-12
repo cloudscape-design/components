@@ -342,6 +342,14 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Opens the tools panel if it is not already open. Note that it is preferable
 to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`.",
       "name": "openTools",

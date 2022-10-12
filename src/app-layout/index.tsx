@@ -352,8 +352,8 @@ const OldAppLayout = React.forwardRef(
       isMobile,
     };
 
-    const navigationRefs = useFocusControl(navigationOpen);
-    const toolsRefs = useFocusControl(toolsOpen);
+    const { refs: navigationRefs } = useFocusControl(navigationOpen);
+    const { refs: toolsRefs, setFocus: focusToolsClose, loseFocus: loseToolsFocus } = useFocusControl(toolsOpen, true);
 
     useImperativeHandle(
       ref,
@@ -364,8 +364,9 @@ const OldAppLayout = React.forwardRef(
             onNavigationToggle(false);
           }
         },
+        focusToolsClose,
       }),
-      [isMobile, onNavigationToggle, onToolsToggle]
+      [isMobile, onNavigationToggle, onToolsToggle, focusToolsClose]
     );
 
     const splitPanelBottomOffset =
@@ -571,6 +572,7 @@ const OldAppLayout = React.forwardRef(
               splitPanelOpen={splitPanelOpenOnTheSide}
               splitPanelReportedSize={splitPanelReportedSize}
               toggleRefs={toolsRefs}
+              onLoseToolsFocus={loseToolsFocus}
               tools={tools}
               toolsHide={Boolean(toolsHide)}
               toolsOpen={toolsOpen}
