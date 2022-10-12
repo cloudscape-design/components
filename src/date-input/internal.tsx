@@ -33,22 +33,19 @@ const maskArgs: MaskArgs = {
 };
 
 const InternalDateInput = React.forwardRef(
-  (
-    { value, onChange, disableBrowserAutocorrect = true, __internalRootRef = null, ...props }: InternalDateInputProps,
-    ref: Ref<HTMLInputElement>
-  ) => {
+  ({ value, onChange, __internalRootRef = null, ...props }: InternalDateInputProps, ref: Ref<HTMLInputElement>) => {
     return (
       <MaskedInput
         ref={ref}
         {...props}
-        value={isoToDisplay(value)}
+        value={isoToDisplay(value || '')}
         onChange={event => fireNonCancelableEvent(onChange, { value: displayToIso(event.detail.value) })}
         className={clsx(styles.root, props.className)}
         mask={maskArgs}
         autofix={true}
         autoComplete={false}
         disableAutocompleteOnBlur={false}
-        disableBrowserAutocorrect={disableBrowserAutocorrect}
+        disableBrowserAutocorrect={true}
         __internalRootRef={__internalRootRef}
       />
     );

@@ -21,6 +21,7 @@ const items: FlashbarProps.MessageDefinition[] = [
 
     dismissible: true,
     onDismiss: noop,
+    statusIconAriaLabel: 'Info',
     dismissLabel: 'Dismiss',
   },
   {
@@ -38,7 +39,7 @@ const items: FlashbarProps.MessageDefinition[] = [
     dismissible: true,
     onDismiss: noop,
     dismissLabel: 'Dismiss',
-
+    statusIconAriaLabel: 'Info',
     buttonText: 'Button text',
     onButtonClick: noop,
   },

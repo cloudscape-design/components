@@ -137,6 +137,7 @@ const InternalMultiselect = React.forwardRef(
       highlightedIndex,
       getTriggerProps,
       getFilterProps,
+      getRecoveryProps,
       getMenuProps,
       getOptionProps,
       highlightOption,
@@ -176,6 +177,7 @@ const InternalMultiselect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
+      recoveryProps: getRecoveryProps(),
     });
 
     const filter = (

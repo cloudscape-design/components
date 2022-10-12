@@ -5,7 +5,7 @@ import { KeyCode } from '../../../internal/keycode';
 import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
-import { MoveFocusHandler } from '../../../date-picker/calendar/utils/move-focus-handler';
+import { MoveFocusHandler } from '../../../calendar/utils/move-focus-handler';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
@@ -85,7 +85,7 @@ export const Grids = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
 
-  const focusedDateRef = useRef<HTMLDivElement>(null);
+  const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
   const baseDateTime = baseDate?.getTime();
   const focusedDateTime = focusedDate?.getTime();
@@ -114,6 +114,7 @@ export const Grids = ({
     }
 
     switch (e.keyCode) {
+      case KeyCode.space:
       case KeyCode.enter:
         e.preventDefault();
         if (focusedDate) {

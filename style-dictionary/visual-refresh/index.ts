@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
-import { createTopNavigationContext, createHeaderContext } from '../utils/contexts';
-import flashbarContextTokens from './contexts/flashbar';
+import { createTopNavigationContext, createHeaderContext, createFlashbarContext } from '../utils/contexts';
 import alertContextTokens from './contexts/alert';
 
 const modes = [
@@ -35,11 +34,7 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createHeaderContext(require('./contexts/header').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext({
-    id: 'flashbar',
-    selector: '.awsui-context-flashbar',
-    tokens: flashbarContextTokens,
-  });
+  builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
   builder.addContext({
     id: 'alert',
     selector: '.awsui-context-alert',

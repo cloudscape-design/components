@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from './interfaces';
-import { normalizeLocale } from '../date-picker/calendar/utils/locales';
+import { normalizeLocale } from '../calendar/utils/locales';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';
@@ -62,14 +62,14 @@ function renderDateRange(
 function BreakSpaces({ text }: { text: string }) {
   const tokens = text.split(/( )/);
   return (
-    <div style={{ whiteSpace: 'nowrap' }}>
+    <>
       {tokens.map((token, index) => (
         <React.Fragment key={index}>
-          {token}
+          {token.length > 1 ? <span className={styles['label-token-nowrap']}>{token}</span> : token}
           {token === ' ' && <wbr />}
         </React.Fragment>
       ))}
-    </div>
+    </>
   );
 }
 

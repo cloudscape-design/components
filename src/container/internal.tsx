@@ -18,6 +18,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __disableFooterPaddings?: boolean;
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
+  __headerId?: string;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -41,6 +42,7 @@ export default function InternalContainer({
   __disableFooterPaddings = false,
   __hiddenContent = false,
   __headerRef,
+  __headerId,
   ...restProps
 }: InternalContainerProps) {
   const baseProps = getBaseProps(restProps);
@@ -53,6 +55,8 @@ export default function InternalContainer({
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
+
+  const headerIdProp = __headerId ? { id: __headerId } : {};
 
   return (
     <div
@@ -71,6 +75,7 @@ export default function InternalContainer({
               [styles['with-paddings']]: !disableHeaderPaddings,
               [styles['with-hidden-content']]: __hiddenContent,
             })}
+            {...headerIdProp}
             {...stickyStyles}
             ref={headerMergedRef}
           >

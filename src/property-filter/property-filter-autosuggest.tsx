@@ -27,10 +27,13 @@ import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfac
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 
-const DROPDOWN_WIDTH = 300;
+const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
+const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 
 export interface PropertyFilterAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {
+  customForm?: React.ReactNode;
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
@@ -54,6 +57,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onKeyDown,
       virtualScroll,
       expandToViewport,
+      customForm,
       filterText,
       onOptionClick,
       hideEnteredTextOption,
@@ -61,6 +65,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
 
+    const customFormRef = useRef<HTMLDivElement>(null);
     const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
     const mergedRef = useMergeRefs(autosuggestInputRef, ref);
 
@@ -112,6 +117,9 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const handlePressArrowDown = () => {
       autosuggestItemsHandlers.moveHighlightWithKeyboard(1);
+      if (customFormRef.current) {
+        getFirstFocusable(customFormRef.current)?.focus();
+      }
     };
 
     const handlePressArrowUp = () => {
@@ -131,11 +139,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
       autosuggestInputRef.current?.focus();
     };
 
-    const handleDropdownMouseDown: React.MouseEventHandler = event => {
-      // Prevent currently focused element from losing focus.
-      event.preventDefault();
-    };
-
     const selfControlId = useUniqueId('input');
     const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
@@ -143,6 +146,27 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const isEmpty = !value && !autosuggestItemsState.items.length;
     const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
+
+    let content = null;
+    if (customForm) {
+      content = <div ref={customFormRef}>{customForm}</div>;
+    } else if (autosuggestItemsState.items.length > 0) {
+      content = (
+        <AutosuggestOptionsList
+          autosuggestItemsState={autosuggestItemsState}
+          autosuggestItemsHandlers={autosuggestItemsHandlers}
+          highlightedOptionId={highlightedOptionId}
+          highlightText={highlightText}
+          listId={listId}
+          controlId={controlId}
+          enteredTextLabel={enteredTextLabel}
+          handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
+          hasDropdownStatus={dropdownStatus.content !== null}
+          virtualScroll={virtualScroll}
+          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+        />
+      );
+    }
 
     return (
       <AutosuggestInput
@@ -161,29 +185,16 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        dropdownExpanded={autosuggestItemsState.items.length > 1}
-        dropdownContent={
-          <AutosuggestOptionsList
-            autosuggestItemsState={autosuggestItemsState}
-            autosuggestItemsHandlers={autosuggestItemsHandlers}
-            highlightedOptionId={highlightedOptionId}
-            highlightText={highlightText}
-            listId={listId}
-            controlId={controlId}
-            enteredTextLabel={enteredTextLabel}
-            handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            virtualScroll={virtualScroll}
-            listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
-          />
-        }
+        dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
+        dropdownContentKey={customForm ? 'custom' : 'options'}
+        dropdownContent={content}
         dropdownFooter={
           dropdownStatus.isSticky ? (
             <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
           ) : null
         }
-        dropdownWidth={DROPDOWN_WIDTH}
-        onDropdownMouseDown={handleDropdownMouseDown}
+        dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}
+        dropdownContentFocusable={!!customForm}
         onCloseDropdown={handleCloseDropdown}
         onDelayedInput={handleDelayedInput}
         onPressArrowDown={handlePressArrowDown}

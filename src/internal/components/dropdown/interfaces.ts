@@ -114,10 +114,6 @@ export interface DropdownProps extends ExpandToViewport {
    */
   minWidth?: number;
   /**
-   * Whether there are items in the dropdown vs. an empty list
-   */
-  hasContent?: boolean;
-  /**
    * Whether the dropdown will have a scrollbar or not
    */
   scrollable?: boolean;

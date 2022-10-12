@@ -120,7 +120,12 @@ export default function FlashbarPermutations() {
     <>
       <h1>Flashbar permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Flashbar items={[permutation]} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <Flashbar items={[{ ...permutation, statusIconAriaLabel: permutation.type ?? 'info' }]} />
+          )}
+        />
       </ScreenshotArea>
     </>
   );

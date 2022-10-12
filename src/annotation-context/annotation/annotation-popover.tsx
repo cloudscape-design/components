@@ -91,15 +91,16 @@ export function AnnotationPopover({
 
   return (
     <PopoverContainer
+      size="medium"
+      fixedWidth={false}
       position={direction}
       trackRef={trackRef}
       trackKey={taskLocalStepIndex}
+      variant="annotation"
       arrow={arrow}
       zIndex={1000}
     >
       <PopoverBody
-        size="medium"
-        fixedWidth={false}
         dismissButton={true}
         dismissAriaLabel={i18nStrings.labelDismissAnnotation}
         header={

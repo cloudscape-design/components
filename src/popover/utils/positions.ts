@@ -4,6 +4,7 @@ import { PopoverProps, InternalPosition, BoundingOffset, BoundingBox } from '../
 
 // A structure describing how the popover should be positioned
 export interface CalculatePosition {
+  scrollable?: boolean;
   internalPosition: InternalPosition;
   boundingOffset: BoundingOffset;
 }
@@ -162,6 +163,37 @@ function canRectFit(inner: BoundingOffset, outer: BoundingOffset): boolean {
   );
 }
 
+function fitIntoContainer(inner: BoundingOffset, outer: BoundingOffset): BoundingOffset {
+  let { left, width, top, height } = inner;
+
+  // Adjust left boundary.
+  if (left < outer.left) {
+    width = left + width - outer.left;
+    left = outer.left;
+  }
+  // Adjust right boundary.
+  else if (left + width > outer.left + outer.width) {
+    width = outer.left + outer.width - left;
+  }
+  // Adjust top boundary.
+  if (top < outer.top) {
+    height = top + height - outer.top;
+    top = outer.top;
+  }
+  // Adjust bottom boundary.
+  else if (top + height > outer.top + outer.height) {
+    height = outer.top + outer.height - top;
+  }
+
+  return { left, width, top, height };
+}
+
+function getLargestRect(rect1: BoundingOffset, rect2: BoundingOffset): BoundingOffset {
+  const area1 = rect1.height * rect1.width;
+  const area2 = rect2.height * rect2.width;
+  return area1 >= area2 ? rect1 : rect2;
+}
+
 /**
  * Returns the area of the intersection of passed in rectangles or a null, if there is no intersection
  */
@@ -225,15 +257,17 @@ export function calculatePosition(
     }
   }
 
-  // Position it in the best position outside the viewport. The user will need to scroll to view
-  // the contents, but at least it's accessible once they do.
-  if (bestPositionOutsideViewport !== null) {
-    return bestPositionOutsideViewport;
-  }
+  // Use best possible placement.
+  const internalPosition = bestPositionOutsideViewport?.internalPosition || 'right-top';
+  // Get default rect for that placement.
+  const defaultOffset = RECTANGLE_CALCULATIONS[internalPosition]({ body, trigger, arrow });
+  // Get largest possible rect that fits into viewport or container.
+  const optimisedOffset = fitIntoContainer(
+    defaultOffset,
+    renderWithPortal ? viewport : getLargestRect(container, viewport)
+  );
+  // If largest possible rect is smaller than original - set body scroll.
+  const scrollable = optimisedOffset.height < defaultOffset.height;
 
-  // Resort to right-top
-  return {
-    internalPosition: 'right-top',
-    boundingOffset: RECTANGLE_CALCULATIONS['right-top']({ body, trigger, arrow }),
-  };
+  return { internalPosition, boundingOffset: optimisedOffset, scrollable };
 }

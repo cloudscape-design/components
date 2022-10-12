@@ -52,6 +52,12 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   header?: React.ReactNode;
 
   /**
+   * Adds `aria-label` to the header element.
+   * Use to assign unique labels when there are multiple expandable sections with the same header text on one page.
+   */
+  headerAriaLabel?: string;
+
+  /**
    * Called when the state changes (that is, when the user expands or collapses the component).
    * The event `detail` contains the current value of the `expanded` property.
    */

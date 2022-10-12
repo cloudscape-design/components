@@ -205,7 +205,7 @@ export function DateRangePickerDropdown({
                 >
                   {!validationResult.valid && (
                     <>
-                      <InternalAlert type="error">
+                      <InternalAlert type="error" statusIconAriaLabel={i18nStrings.errorIconAriaLabel}>
                         <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
                       </InternalAlert>
                       <LiveRegion>{validationResult.errorMessage}</LiveRegion>

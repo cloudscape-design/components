@@ -45,6 +45,12 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
+      "description": "Provides a text alternative for the icon.",
+      "name": "statusIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"info\\"",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
@@ -2917,6 +2923,110 @@ It prevents clicks.",
 }
 `;
 
+exports[`Documenter definition for calendar matches the snapshot: calendar 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called whenever a user changes the input value (by typing, pasting, or selecting a value).
+The event \`detail\` contains the current value of the field.",
+      "detailInlineType": Object {
+        "name": "CalendarProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CalendarProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [],
+  "name": "Calendar",
+  "properties": Array [
+    Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Defines whether a particular date is enabled in the calendar or not.
+If you disable a date in the calendar, users can still enter this date using a keyboard.
+We recommend that you also validate these constraints on the client-side and server-side
+as you would for other form elements.",
+      "inlineType": Object {
+        "name": "CalendarProps.IsDateEnabledFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "boolean",
+        "type": "function",
+      },
+      "name": "isDateEnabled",
+      "optional": true,
+      "type": "CalendarProps.IsDateEnabledFunction",
+    },
+    Object {
+      "defaultValue": "\\"\\"",
+      "description": "Specifies the locale to use to render month names and determine the starting day of the week.
+If you don't provide this, the locale is determined by the page and browser locales.
+Supported values and formats are listed in the
+[JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
+      "name": "locale",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies an \`aria-label\` for the 'next month' button.",
+      "name": "nextMonthAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies an \`aria-label\` for the 'previous month' button.",
+      "name": "previousMonthAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "Determines the starting day of the week. The values 0-6 map to Sunday-Saturday.
+By default the starting day of the week is defined by the locale, but you can use this property to override it.",
+      "name": "startOfWeek",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
+      "name": "todayAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The current input value, in YYYY-MM-DD format.",
+      "name": "value",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for cards matches the snapshot: cards 1`] = `
 Object {
   "events": Array [
@@ -3318,11 +3428,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
+      "description": "Specifies the ID of the native form element. By default, it uses an automatically generated ID.",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -4142,6 +4248,167 @@ If true, the overlap will be removed.",
 }
 `;
 
+exports[`Documenter definition for date-input matches the snapshot: date-input 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when input focus is removed from the UI control.",
+      "detailType": "null",
+      "name": "onBlur",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called whenever a user changes the input value (by typing or pasting).
+The event \`detail\` contains the current value of the field.",
+      "detailInlineType": Object {
+        "name": "InputProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InputProps.ChangeDetail",
+      "name": "onChange",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called when input focus is moved to the UI control.",
+      "detailType": "null",
+      "name": "onFocus",
+    },
+  ],
+  "functions": Array [],
+  "name": "DateInput",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the native control.
+Use this if you don't have a visible label for this control.
+",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates whether the control should be focused as
+soon as the page loads, which enables the user to
+start typing without having to manually focus the control. Don't
+use this option on pages where the control may be
+scrolled out of the viewport.",
+      "name": "autoFocus",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is disabled, which prevents the
+user from modifying the value and prevents the value from
+being included in a form submission. A disabled control can't
+receive focus.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the name of the control used in HTML forms.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the placeholder text rendered when the value is an empty string.",
+      "name": "placeholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is read only, which prevents the
+user from modifying the value but includes it in a form
+submission. A read-only control can receive focus.
+Don't use read-only inputs outside a form.
+",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the text entered into the form element.",
+      "name": "value",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-picker matches the snapshot: date-picker 1`] = `
 Object {
   "events": Array [
@@ -4156,7 +4423,7 @@ Object {
       "description": "Called whenever a user changes the input value (by typing, pasting, or selecting a value).
 The event \`detail\` contains the current value of the field.",
       "detailInlineType": Object {
-        "name": "DatePickerProps.ChangeDetail",
+        "name": "CalendarProps.ChangeDetail",
         "properties": Array [
           Object {
             "name": "value",
@@ -4166,7 +4433,7 @@ The event \`detail\` contains the current value of the field.",
         ],
         "type": "object",
       },
-      "detailType": "DatePickerProps.ChangeDetail",
+      "detailType": "CalendarProps.ChangeDetail",
       "name": "onChange",
     },
     Object {
@@ -4295,7 +4562,7 @@ If you disable a date in the calendar, users can still enter this date using a k
 We recommend that you also validate these constraints on the client-side and server-side
 as you would for other form elements.",
       "inlineType": Object {
-        "name": "DatePickerProps.IsDateEnabledFunction",
+        "name": "CalendarProps.IsDateEnabledFunction",
         "parameters": Array [
           Object {
             "name": "date",
@@ -4307,7 +4574,7 @@ as you would for other form elements.",
       },
       "name": "isDateEnabled",
       "optional": true,
-      "type": "DatePickerProps.IsDateEnabledFunction",
+      "type": "CalendarProps.IsDateEnabledFunction",
     },
     Object {
       "defaultValue": "''",
@@ -4598,6 +4865,11 @@ in a slight, visible lag when scrolling complex pages.",
             "type": "string",
           },
           Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "formatRelativeRange",
             "optional": false,
             "type": "(value: DateRangePickerProps.RelativeValue) => string",
@@ -4876,6 +5148,13 @@ manner if you provide a value for this property.",
       "type": "boolean",
     },
     Object {
+      "description": "Adds \`aria-label\` to the header element.
+Use to assign unique labels when there are multiple expandable sections with the same header text on one page.",
+      "name": "headerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4951,6 +5230,7 @@ A flash message object contains the following properties:
 * \`dismissible\` (boolean) - Determines whether the component includes a close button icon. By default, the close button is not included.
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
+* \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
@@ -4981,6 +5261,12 @@ Object {
     Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error alert.",
+      "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -5044,6 +5330,23 @@ This only works well if you're using a single control in the form field.
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "FormFieldProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "FormFieldProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -6389,6 +6692,7 @@ This property is overridden if the variant is \`info\`.",
           "heading-l",
           "heading-xl",
           "display-l",
+          "inherit",
         ],
       },
       "name": "fontSize",
@@ -8664,11 +8968,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
+      "description": "Deprecated, has no effect.",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -8904,6 +9204,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "inContextViewButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "inContextViewButtonAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10833,6 +11138,11 @@ character validation. You should use this property only when absolutely necessar
             "type": "(enteredText: string) => string",
           },
           Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "invalidKeyError",
             "optional": false,
             "type": "string",
@@ -11862,11 +12172,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
+      "description": "Specifies the ID of the native form element. By default, it uses an automatically generated ID.",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -12460,6 +12766,11 @@ Defaults to \`false\`.
           Object {
             "name": "cancelButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

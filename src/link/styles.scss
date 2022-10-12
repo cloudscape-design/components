@@ -9,7 +9,17 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use './constants' as constants;
 
-$font-sizes: ('body-s', 'body-m', 'heading-xs', 'heading-s', 'heading-m', 'heading-l', 'heading-xl', 'display-l');
+$font-sizes: (
+  'body-s',
+  'body-m',
+  'heading-xs',
+  'heading-s',
+  'heading-m',
+  'heading-l',
+  'heading-xl',
+  'display-l',
+  'inherit'
+);
 
 .link {
   @include styles.styles-reset;

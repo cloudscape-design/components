@@ -108,6 +108,7 @@ export namespace TagEditorProps {
     tooManyKeysSuggestion: string;
     tooManyValuesSuggestion: string;
     emptyTags: string;
+    errorIconAriaLabel?: string;
     keysSuggestionLoading: string;
     keysSuggestionError: string;
     valuesSuggestionError: string;

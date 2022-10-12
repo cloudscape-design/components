@@ -1,0 +1,168 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/index' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
+@use '../internal/styles/typography/index' as typographyConstants;
+@use './motion';
+
+@use './calendar' as calendar;
+
+.root {
+  /* used in test-utils */
+}
+
+.calendar {
+  display: block;
+  // IE11 does not calculate the height correctly when in nested flex containers (@see https://github.com/philipwalton/flexbugs#flexbug-3)
+  width: awsui.$size-calendar-grid-width;
+  overflow: auto;
+
+  &-inner {
+    margin: awsui.$space-xs;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-header-month {
+    @include styles.font-body-m;
+    font-weight: typographyConstants.$font-weight-bold;
+    color: calendar.$header-color;
+  }
+
+  &-next-month-btn {
+    /* used for identifying element */
+  }
+
+  &-prev-month-btn {
+    /* used for identifying element */
+  }
+
+  &-grid {
+    width: 100%;
+    border-spacing: 0;
+  }
+
+  &-grid-cell {
+    width: calc(100% / 7);
+    word-break: break-word;
+    text-align: center;
+    font-weight: unset;
+  }
+
+  &-day-header {
+    padding: awsui.$space-s 0 awsui.$space-xxs;
+    color: calendar.$grid-day-name-color;
+    @include styles.font-body-s;
+  }
+
+  &-day {
+    border-bottom: calendar.$grid-border;
+    border-right: calendar.$grid-border;
+    padding: awsui.$space-xxs 0;
+    color: calendar.$grid-disabled-day-color;
+    position: relative;
+
+    &:first-child {
+      border-left: calendar.$grid-border;
+    }
+
+    &-enabled {
+      cursor: pointer;
+      color: calendar.$grid-nonmonth-day-color;
+      &::after {
+        border-radius: awsui.$border-radius-item;
+      }
+      &.calendar-day-current-month {
+        color: calendar.$grid-day-color;
+        &:hover {
+          color: awsui.$color-text-calendar-day-hover;
+          background-color: calendar.$grid-hover-background-color;
+          &:not(.calendar-day-selected) {
+            &::after {
+              border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+            }
+          }
+        }
+      }
+    }
+
+    &-today {
+      background-color: calendar.$grid-today-background-color;
+      border-radius: awsui.$border-radius-item;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: calc(-1 * #{awsui.$border-item-width});
+      left: -1px;
+      bottom: -1px;
+      right: calc(-1 * #{awsui.$border-item-width});
+      background-color: transparent;
+    }
+    > .day-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    &:focus {
+      outline: none;
+      @include focus-visible.when-visible {
+        @include styles.focus-highlight(
+          awsui.$space-calendar-grid-focus-outline-gutter,
+          awsui.$border-radius-calendar-day-focus-ring
+        );
+        &::before {
+          z-index: 2;
+        }
+      }
+    }
+
+    &-selected {
+      border-color: transparent;
+      position: relative;
+      z-index: 2;
+      &:focus {
+        @include focus-visible.when-visible {
+          @include styles.focus-highlight(
+            awsui.$space-calendar-grid-focus-outline-gutter,
+            awsui.$border-radius-calendar-day-focus-ring,
+            calendar.$grid-selected-focused-box-shadow
+          );
+          &::before {
+            z-index: 2;
+          }
+        }
+      }
+      &::after {
+        background-color: calendar.$grid-selected-background-color;
+        border: awsui.$border-item-width solid calendar.$grid-selected-border-color;
+        border-radius: awsui.$border-radius-item;
+      }
+      > .day-inner {
+        z-index: 2;
+        color: calendar.$grid-selected-text-color;
+        position: relative;
+      }
+    }
+  }
+
+  &-week {
+    &:first-child {
+      > .calendar-day {
+        border-top: calendar.$grid-border;
+      }
+    }
+  }
+
+  @include styles.styles-reset;
+}

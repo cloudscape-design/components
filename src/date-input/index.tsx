@@ -10,19 +10,10 @@ import InternalDateInput from './internal';
 
 export { DateInputProps };
 
-const DateInput = React.forwardRef(
-  ({ disableBrowserAutocorrect = true, ...props }: DateInputProps, ref: Ref<HTMLInputElement>) => {
-    const baseComponentProps = useBaseComponent('DateInput');
-    return (
-      <InternalDateInput
-        {...props}
-        {...baseComponentProps}
-        disableBrowserAutocorrect={disableBrowserAutocorrect}
-        ref={ref}
-      />
-    );
-  }
-);
+const DateInput = React.forwardRef((props: DateInputProps, ref: Ref<HTMLInputElement>) => {
+  const baseComponentProps = useBaseComponent('DateInput');
+  return <InternalDateInput {...props} {...baseComponentProps} ref={ref} />;
+});
 
 applyDisplayName(DateInput, 'DateInput');
 

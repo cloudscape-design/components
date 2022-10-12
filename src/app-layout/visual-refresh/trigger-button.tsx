@@ -26,6 +26,7 @@ function TriggerButton(
     <button
       aria-label={ariaLabel}
       aria-expanded={false}
+      aria-haspopup={true}
       className={clsx(
         styles.trigger,
         {

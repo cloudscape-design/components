@@ -66,6 +66,15 @@ describe('Cards', () => {
       expect(wrapper.findItems()).toHaveLength(defaultItems.length);
     });
 
+    it('uses correct role for cards list based on selectionType', () => {
+      wrapper = renderCards(
+        <Cards<Item> cardDefinition={cardDefinition} items={defaultItems} selectionType="single" />
+      ).wrapper;
+
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAttribute('role', 'group');
+    });
+
     it('correctly renders card header', () => {
       defaultItems.forEach((item, idx) => {
         wrapper = renderCards(<Cards<Item> cardDefinition={cardDefinition} items={defaultItems} />).wrapper;
@@ -158,6 +167,15 @@ describe('Cards', () => {
     it('is displayed', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
       expect(wrapper.findHeader()?.getElement()).toHaveTextContent('abcedefg');
+    });
+
+    it('maintains logical relationship between header and cards', () => {
+      wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
+      const headerElement = wrapper.findHeader()!.getElement();
+      expect(headerElement).toHaveAttribute('id');
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAttribute('aria-labelledby', headerElement!.getAttribute('id'));
+      expect(cardsOrderedList).toHaveAttribute('aria-describedby', headerElement!.getAttribute('id'));
     });
   });
 

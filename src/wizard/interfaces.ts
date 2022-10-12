@@ -114,6 +114,7 @@ export namespace WizardProps {
     stepNumberLabel(stepNumber: number): string;
     collapsedStepsLabel(stepNumber: number, stepsCount: number): string;
     skipToButtonLabel?(targetStep: WizardProps.Step, targetStepNumber: number): string;
+    errorIconAriaLabel?: string;
     cancelButton: string;
     previousButton: string;
     nextButton: string;

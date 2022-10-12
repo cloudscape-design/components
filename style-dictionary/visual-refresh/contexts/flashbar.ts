@@ -22,4 +22,4 @@ const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColor
   merge({}, parentTokens, tokens)
 );
 
-export default expandedTokens;
+export { expandedTokens as tokens };
