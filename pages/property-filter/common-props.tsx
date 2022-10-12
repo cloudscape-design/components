@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
 import { TableItem } from './table.data';
+import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 
 export const columnDefinitions = [
   {
@@ -93,6 +94,14 @@ export const columnDefinitions = [
     cell: (item: TableItem) => item.securitygroup,
   },
   {
+    id: 'releasedate',
+    sortingField: 'releasedate',
+    header: 'Release date',
+    type: 'date',
+    propertyLabel: 'Release date',
+    cell: (item: TableItem) => item.releasedate?.toISOString(),
+  },
+  {
     id: 'launchdate',
     sortingField: 'launchdate',
     header: 'Launch date',
@@ -146,10 +155,56 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
 
-export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
-  key: def.id,
-  operators: def.type === 'text' ? [':', '!:'] : ['=', '!=', '>', '<', '<=', '>='],
-  ...(def.type === 'text' ? { defaultOperator: ':' } : {}),
-  propertyLabel: def.propertyLabel,
-  groupValuesLabel: `${def.propertyLabel} values`,
-}));
+export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
+  let operators: any[] = [];
+  let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
+  let groupValuesLabel = `${def.propertyLabel} values`;
+
+  if (def.type === 'text') {
+    operators = ['=', '!=', ':', '!:'];
+  }
+
+  if (def.type === 'number') {
+    operators = ['=', '!=', '>', '<', '<=', '>='];
+  }
+
+  if (def.type === 'date') {
+    groupValuesLabel = `${def.propertyLabel} value`;
+    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateForm,
+      match: 'date',
+    }));
+  }
+
+  if (def.type === 'datetime') {
+    groupValuesLabel = `${def.propertyLabel} value`;
+    defaultOperator = '>';
+    operators = ['<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateTimeForm,
+      format: formatDateTime,
+      match: 'datetime',
+    }));
+  }
+
+  if (def.type === 'boolean') {
+    groupValuesLabel = `${def.propertyLabel} value`;
+    operators = [
+      {
+        operator: '=',
+        form: YesNoForm,
+        format: yesNoFormat,
+        match: (itemValue: boolean, tokenValue: boolean) => itemValue === tokenValue,
+      },
+    ];
+  }
+
+  return {
+    key: def.id,
+    operators: operators,
+    defaultOperator,
+    propertyLabel: def.propertyLabel,
+    groupValuesLabel,
+  };
+});
