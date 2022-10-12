@@ -157,7 +157,9 @@ function InternalInput(
   const mergedRef = useMergeRefs(ref, inputRef);
 
   // type = "visualSearch" renders a type="text' input
-  attributes.type === 'visualSearch' ? (attributes.type = 'text') : attributes.type;
+  if (attributes.type === 'visualSearch') {
+    attributes.type = 'text';
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
