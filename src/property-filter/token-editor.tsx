@@ -6,8 +6,6 @@ import { SelectProps } from '../select/interfaces';
 import InternalSelect from '../select/internal';
 import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
-import { InternalButton } from '../button/internal';
-
 import {
   ComparisonOperator,
   FilteringOption,
@@ -20,14 +18,17 @@ import {
 import styles from './styles.css.js';
 import { useLoadItems } from './use-load-items';
 import {
+  createPropertiesCompatibilityMap,
   getAllowedOperators,
   getPropertyOptions,
   getPropertyByKey,
   operatorToDescription,
   getPropertySuggestions,
+  getExtendedOperator,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
@@ -66,6 +67,19 @@ function PropertyInput({
       dontCloseOnSelect: true,
     })
   );
+
+  // Disallow selecting properties that have different representation.
+  const checkPropertiesCompatible = createPropertiesCompatibilityMap(filteringProperties);
+  propertyOptions.forEach(optionGroup => {
+    if ('options' in optionGroup) {
+      optionGroup.options.forEach(option => {
+        if (propertyKey && option.value) {
+          option.disabled = !checkPropertiesCompatible(option.value, propertyKey);
+        }
+      });
+    }
+  });
+
   const allPropertiesOption = {
     label: i18nStrings.allPropertiesLabel,
     value: undefined,
@@ -159,7 +173,12 @@ function ValueInput({
   const asyncValueAutosuggesProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
-  return (
+
+  const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
+
+  return OperatorForm ? (
+    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
+  ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={value ?? ''}
@@ -219,7 +238,7 @@ export function TokenEditor({
       temporaryToken.operator && allowedOperators.indexOf(temporaryToken.operator) !== -1
         ? temporaryToken.operator
         : allowedOperators[0];
-    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator, value: '' });
+    setTemporaryToken({ ...temporaryToken, propertyKey: newPropertyKey, operator });
   };
 
   const operator = temporaryToken.operator;
