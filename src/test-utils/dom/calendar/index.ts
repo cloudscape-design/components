@@ -29,6 +29,6 @@ export default class CalendarWrapper extends ComponentWrapper {
   }
 
   findSelectedDate(): ElementWrapper {
-    return this.find(`.${styles['calendar-day-selected']}`)!;
+    return this.find(`.${styles['calendar-day-selected']} :not(.${styles['visually-hidden']})`)!;
   }
 }

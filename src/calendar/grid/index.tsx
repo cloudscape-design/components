@@ -159,21 +159,16 @@ export default function Grid({
                 dayAnnouncement += '. ' + todayAriaLabel;
               }
 
-              const onClick = () => {
-                if (isEnabled) {
-                  onSelectDate(date);
-                }
-              };
-
               return (
                 <td
                   key={`${weekIndex}:${dateIndex}`}
                   ref={tabIndex === 0 ? focusedDateRef : undefined}
                   tabIndex={tabIndex}
                   aria-current={isDateOnSameDay ? 'date' : undefined}
-                  aria-selected={isSelected}
+                  aria-selected={isEnabled ? isSelected : undefined}
                   aria-disabled={!isEnabled}
-                  onClick={onClick}
+                  // Do not attach click event when the date is disabled, otherwise VO+safari announces clickable
+                  onClick={isEnabled ? () => onSelectDate(date) : undefined}
                   className={clsx(styles['calendar-grid-cell'], styles['calendar-day'], {
                     [styles['calendar-day-current-month']]: isSameMonth(date, baseDate),
                     [styles['calendar-day-enabled']]: isEnabled,

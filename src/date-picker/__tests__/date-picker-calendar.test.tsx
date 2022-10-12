@@ -437,10 +437,7 @@ describe('Date picker calendar', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, value: '2018-03-21', isDateEnabled });
         act(() => wrapper.findOpenCalendarButton().click());
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(
-          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${calendarStyles['visually-hidden']})`)?.getElement()
-            .textContent
-        ).toBe('21');
+        expect(wrapper.findCalendar()!.findSelectedDate()?.getElement().textContent).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();
       });
 
@@ -501,7 +498,20 @@ describe('Date picker calendar', () => {
     test('should add aria-selected="true" to selected date in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '2017-05-06' });
       act(() => wrapper.findOpenCalendarButton().click());
-      expect(wrapper.findCalendar()!.findSelectedDate().getElement().getAttribute('aria-selected')).toBe('true');
+      expect(
+        wrapper
+          .findCalendar()!
+          .find(`.${calendarStyles['calendar-day-selected']}`)
+          ?.getElement()
+          .getAttribute('aria-selected')
+      ).toBe('true');
+    });
+
+    test('should not set aria-selected when the date is disabled', () => {
+      const isDateEnabled = (date: Date) => date.getDate() !== 4;
+      const { wrapper } = renderDatePicker({ ...defaultProps, isDateEnabled, value: '2017-05-06' });
+      act(() => wrapper.findOpenCalendarButton().click());
+      expect(wrapper.findCalendar()!.findDateAt(1, 5)?.getElement().getAttribute('aria-selected')).toBe(null);
     });
 
     test('should add aria-current="date" to the date of today in the calendar', () => {
@@ -530,7 +540,10 @@ describe('Date picker calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '2022-02-10' });
       act(() => wrapper.findOpenCalendarButton().click());
       expect(
-        wrapper.findCalendar()!.findSelectedDate().find(`:not([aria-hidden=true])`)?.getElement().textContent
+        wrapper
+          .findCalendar()!
+          .find(`.${calendarStyles['calendar-day-selected']} :not([aria-hidden=true])`)
+          ?.getElement().textContent
       ).toBe('February 10, 2022');
     });
   });
