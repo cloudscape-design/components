@@ -15,19 +15,18 @@ import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 /**
- * Calendar uses table markup to meet a11y requirement.
- * With table markup, users can access calendar with screenreader table navigation.
- * Following are known issues with screenreader table navigation which are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog :
- * 1. Chrome+VO — day name in the column header are announced twice
- * 2. Safari+VO — “dimmed” day state is announced twice
- * 3. NVDA+Firefox - can not move focus by arrow up/down
- * 4. Chrome+NVDA - seems to not use table navigation. Using Control+Alt+Arrow-keys just moves the application focus
- * Alternatively, users can access calendar with keyboard application navigation.
- * Following are known issues with keyboard application navigation which are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog :
- * 1. NVDA+Firefox — every day is announced as “not selected”
- * 2. VO - doesn't announce column header when focusing on days
- * 3. VO - no indication that the days are clickable(not selected, clickable...)
- * 4. VO - announcements are not assertive and if navigating fast some dates will be skipped
+ * Calendar grid supports two mechanisms of keyboard navigation:
+ * - Native screen-reader table navigation (semantic table markup);
+ * - Keyboard arrow-keys navigation (a custom key-down handler).
+ *
+ * The implementation largely follows the w3 example (https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog) and shares the following issues:
+ * - (table navigation) Chrome+VO - weekday is announced twice when navigating to the calendar's header;
+ * - (table navigation) Safari+VO - "dimmed" state is announced twice;
+ * - (table navigation) Firefox/Chrome+NVDA - cannot use table navigation if any cell has a focus;
+ * - (keyboard navigation) Firefox+NVDA - every day is announced as "not selected";
+ * - (keyboard navigation) Safari/Chrome+VO - weekdays are not announced;
+ * - (keyboard navigation) Safari/Chrome+VO - days are not announced as interactive (clickable or selectable);
+ * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
  */
 
 export interface GridProps {
