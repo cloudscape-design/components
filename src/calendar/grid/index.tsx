@@ -53,6 +53,7 @@ export default function Grid({
     }
 
     switch (event.keyCode) {
+      case KeyCode.space:
       case KeyCode.enter:
         event.preventDefault();
         if (focusableDate) {

@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../../../internal/styles/index' as styles;
-@use '../../../../internal/styles/tokens' as awsui;
-@use '../../../../internal/hooks/focus-visible' as focus-visible;
-@use '../../../../calendar/calendar' as calendar;
+@use '../../../internal/styles/index' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/hooks/focus-visible' as focus-visible;
+@use '../../../calendar/calendar' as calendar;
 
 @mixin border-radius($horizontal, $vertical) {
   &,
