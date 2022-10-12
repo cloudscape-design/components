@@ -6,7 +6,7 @@ import { act, render } from '@testing-library/react';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
 import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
-import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/day/styles.selectors.js';
+import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
