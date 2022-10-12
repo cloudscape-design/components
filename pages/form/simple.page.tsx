@@ -33,6 +33,7 @@ export default function FormScenario() {
             </SpaceBetween>
           }
           errorText="This is an error!"
+          errorIconAriaLabel="Error"
         >
           <SpaceBetween direction="vertical" size="l">
             <Container header={<Header variant="h2">Form section header 1</Header>}>
