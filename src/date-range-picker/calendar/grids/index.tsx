@@ -85,7 +85,7 @@ export const Grids = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
 
-  const focusedDateRef = useRef<HTMLDivElement>(null);
+  const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
   const baseDateTime = baseDate?.getTime();
   const focusedDateTime = focusedDate?.getTime();
