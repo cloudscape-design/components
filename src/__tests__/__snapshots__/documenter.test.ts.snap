@@ -45,6 +45,12 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
+      "description": "Provides a text alternative for the icon.",
+      "name": "statusIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"info\\"",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
@@ -4859,6 +4865,11 @@ in a slight, visible lag when scrolling complex pages.",
             "type": "string",
           },
           Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "formatRelativeRange",
             "optional": false,
             "type": "(value: DateRangePickerProps.RelativeValue) => string",
@@ -5250,6 +5261,12 @@ Object {
     Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error alert.",
+      "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -12750,6 +12767,11 @@ Defaults to \`false\`.
           Object {
             "name": "cancelButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

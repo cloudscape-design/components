@@ -7,6 +7,7 @@ const i18nStrings: WizardProps.I18nStrings = {
   collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
   skipToButtonLabel: step => `Skip to ${step.title}`,
   navigationAriaLabel: 'Steps',
+  errorIconAriaLabel: 'Error',
   cancelButton: 'Cancel',
   previousButton: 'Previous',
   nextButton: 'Next',

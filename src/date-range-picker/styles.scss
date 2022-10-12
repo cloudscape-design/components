@@ -7,7 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/typography/index' as typographyConstants;
-@use '../calendar/calendar' as calendar;
 @use './motion';
 
 $calendar-grid-width: awsui.$size-calendar-grid-width;
@@ -73,35 +72,11 @@ $calendar-header-color: awsui.$color-text-body-default;
   &-prev-month-btn {
     /* used for identifying element */
   }
-
-  &-day-names {
-    display: flex;
-    justify-content: stretch;
-  }
-
-  &-day-name {
-    flex: 1 1 0%;
-    width: 0;
-    word-break: break-word;
-    text-align: center;
-    padding: awsui.$space-s 0 awsui.$space-xxs;
-    color: calendar.$grid-day-name-color;
-    @include styles.font-body-s;
-  }
-
-  &-week {
-    display: flex;
-    justify-content: stretch;
-  }
 }
 
 .first-grid,
 .second-grid {
   /* used in test-utils */
-}
-
-.grid {
-  width: $calendar-grid-width;
 }
 
 .date-and-time-wrapper {
