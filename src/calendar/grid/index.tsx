@@ -15,14 +15,21 @@ import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 
 /**
- * There are known issues with browser/screenreader combinations also reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog
- * 1. Chrome+VO+screenreader table navigation — day name in the column header are announced twice
- * 2. Safari+VO+screenreader table navigation — “dimmed” day state is announced twice
- * 3. NVDA+Firefox+application navigation — every day is announced as “not selected”
- * 4. NVDA+Firefox+screenreader table navigation - can not move focus by arrow up/down
- * 5. VO+application navigation - doesn't announce column header when focusing on days
- * 6. VO+application navigation - no indication that the days are clickable(not selected, clickable...)
+ * Calendar uses table markup to meet a11y requirement.
+ * With table markup, users can access calendar with screenreader table navigation.
+ * Following are known issues with screenreader table navigation which are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog :
+ * 1. Chrome+VO — day name in the column header are announced twice
+ * 2. Safari+VO — “dimmed” day state is announced twice
+ * 3. NVDA+Firefox - can not move focus by arrow up/down
+ * 4. Chrome+NVDA - seems to not use table navigation. Using Control+Alt+Arrow-keys just moves the application focus
+ * Alternatively, users can access calendar with keyboard application navigation.
+ * Following are known issues with keyboard application navigation which are reproducible on https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog :
+ * 1. NVDA+Firefox — every day is announced as “not selected”
+ * 2. VO - doesn't announce column header when focusing on days
+ * 3. VO - no indication that the days are clickable(not selected, clickable...)
+ * 4. VO - announcements are not assertive and if navigating fast some dates will be skipped
  */
+
 export interface GridProps {
   locale: string;
   baseDate: Date;
