@@ -2,14 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 import styles from '../../styles.css.js';
-import GridDay from './day';
-import { isSameMonth, isAfter, isBefore, isSameDay, addWeeks, addDays } from 'date-fns';
+import dayStyles from './styles.css.js';
+import {
+  isSameMonth,
+  isAfter,
+  isBefore,
+  isSameDay,
+  addWeeks,
+  addDays,
+  isLastDayOfMonth,
+  getDaysInMonth,
+  isToday,
+} from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 import { DateChangeHandler, DayIndex } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
 import rotateDayIndexes from '../../../calendar/utils/rotate-day-indexes';
-import { renderDayName } from '../../../calendar/utils/intl';
+import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
+import { formatDate } from '../../../internal/utils/date-time';
+import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 
 export interface GridProps {
   baseDate: Date;
@@ -65,6 +77,8 @@ export function Grid({
     [baseDateTime, startOfWeek]
   );
 
+  const focusVisible = useFocusVisible();
+
   return (
     <div className={clsx(styles.grid, className)}>
       <div className={styles['calendar-day-names']}>
@@ -97,31 +111,84 @@ export function Grid({
                     ? isSameDay(rangeStartDate, rangeEndDate)
                     : !selectedStartDate || !selectedEndDate;
 
+                const isEnabled = !isDateEnabled || isDateEnabled(date);
+                const isFocusable = isFocused && isEnabled;
+                const computedAttributes: React.HTMLAttributes<HTMLDivElement> = {};
+
+                const baseClasses = {
+                  [dayStyles.day]: true,
+                  [dayStyles['in-first-row']]: weekIndex === 0,
+                  [dayStyles['in-first-column']]: dateIndex === 0,
+                };
+
+                if (!isSameMonth(date, baseDate)) {
+                  return (
+                    <div
+                      key={`${weekIndex}:${dateIndex}`}
+                      className={clsx(baseClasses, {
+                        [dayStyles['in-previous-month']]: isBefore(date, baseDate),
+                        [dayStyles['last-day-of-month']]: isLastDayOfMonth(date),
+                        [dayStyles['in-next-month']]: isAfter(date, baseDate),
+                      })}
+                      ref={isFocused ? focusedDateRef : undefined}
+                    ></div>
+                  );
+                }
+
+                if (isEnabled) {
+                  computedAttributes.onClick = () => onSelectDate(date);
+                  computedAttributes.onFocus = () => onFocusedDateChange(date);
+                }
+
+                // Can't be focused.
+                let tabIndex = undefined;
+                if (isFocusable && isEnabled) {
+                  // Next focus target.
+                  tabIndex = 0;
+                } else if (isEnabled) {
+                  // Can be focused programmatically.
+                  tabIndex = -1;
+                }
+
+                // Screen-reader announcement for the focused day.
+                let dayAnnouncement = getDateLabel(locale, date);
+                if (isToday(date)) {
+                  dayAnnouncement += '. ' + todayAriaLabel;
+                }
+
                 return (
-                  <GridDay
+                  <div
                     key={`${weekIndex}:${dateIndex}`}
-                    locale={locale}
-                    date={date}
-                    baseDate={baseDate}
-                    isSelected={isSelected}
-                    isStartDate={isStartDate}
-                    isEndDate={isEndDate}
-                    onlyOneSelected={onlyOneSelected}
-                    isRangeStartDate={isRangeStartDate}
-                    isRangeEndDate={isRangeEndDate}
-                    isFocusedDate={isFocused}
-                    focusedDateRef={focusedDateRef}
-                    todayAriaLabel={todayAriaLabel}
-                    onSelectDate={onSelectDate}
-                    onFocusDate={onFocusedDateChange}
-                    isInRange={dateIsInRange}
-                    isDateEnabled={isDateEnabled}
-                    isDateInFirstRow={weekIndex === 0}
-                    isDateInFirstColumn={dateIndex === 0}
-                    isDateInLastColumn={dateIndex === week.length - 1}
-                    isDateInSelectionStartWeek={!!inRangeStartWeek}
-                    isDateInSelectionEndWeek={!!inRangeEndWeek}
-                  />
+                    className={clsx(baseClasses, {
+                      [dayStyles['in-current-month']]: isSameMonth(date, baseDate),
+                      [dayStyles.enabled]: isEnabled,
+                      [dayStyles.selected]: isSelected,
+                      [dayStyles['start-date']]: isStartDate,
+                      [dayStyles['end-date']]: isEndDate,
+                      [dayStyles['range-start-date']]: isRangeStartDate,
+                      [dayStyles['range-end-date']]: isRangeEndDate,
+                      [dayStyles['no-range']]: isSelected && onlyOneSelected,
+                      [dayStyles['in-range']]: dateIsInRange,
+                      [dayStyles['in-range-border-top']]: !!inRangeStartWeek || date.getDate() <= 7,
+                      [dayStyles['in-range-border-bottom']]:
+                        !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
+                      [dayStyles['in-range-border-left']]: dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
+                      [dayStyles['in-range-border-right']]:
+                        dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
+                      [dayStyles.today]: isToday(date),
+                    })}
+                    aria-label={dayAnnouncement}
+                    aria-pressed={isSelected || dateIsInRange}
+                    aria-current={isToday(date) ? 'date' : undefined}
+                    data-date={formatDate(date)}
+                    role="button"
+                    tabIndex={tabIndex}
+                    {...computedAttributes}
+                    ref={isFocused ? focusedDateRef : undefined}
+                    {...focusVisible}
+                  >
+                    <span className={dayStyles['day-inner']}>{date.getDate()}</span>
+                  </div>
                 );
               })}
             </div>
