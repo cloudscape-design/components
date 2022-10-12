@@ -3,7 +3,7 @@
 import { act } from 'react-dom/test-utils';
 import { ComponentWrapper, ElementWrapper, usesDom, createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../date-range-picker/styles.selectors.js';
-import dayStyles from '../../../date-range-picker/calendar/grids/day/styles.selectors.js';
+import dayStyles from '../../../date-range-picker/calendar/grids/styles.selectors.js';
 import relativeRangeStyles from '../../../date-range-picker/relative-range/styles.selectors.js';
 import SelectWrapper from '../select';
 import ButtonWrapper from '../button';
