@@ -4,6 +4,7 @@ import * as React from 'react';
 import MockDate from 'mockdate';
 import { act, render } from '@testing-library/react';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import { CalendarDayWrapper } from '../../../lib/components/test-utils/dom/calendar';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
@@ -42,7 +43,8 @@ describe('Date picker calendar', () => {
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"] :not(.${calendarStyles['visually-hidden']})`);
+      .findComponent(`.${calendarStyles['calendar-day']}[tabIndex="0"]`, CalendarDayWrapper)
+      ?.findLabel();
   };
 
   const findFocusableDateText = (wrapper: DatePickerWrapper) => {
