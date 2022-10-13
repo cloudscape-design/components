@@ -372,9 +372,7 @@ function Calendar(
           )}
         </InternalSpaceBetween>
       </InternalSpaceBetween>
-      <LiveRegion>
-        <span className={styles['calendar-aria-live']}>{announcement}</span>
-      </LiveRegion>
+      <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>
   );
 }
