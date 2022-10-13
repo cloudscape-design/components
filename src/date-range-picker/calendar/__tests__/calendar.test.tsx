@@ -14,6 +14,7 @@ import createWrapper from '../../../../lib/components/test-utils/dom';
 import { i18nStrings } from '../../__tests__/i18n-strings';
 import { changeMode } from '../../__tests__/change-mode';
 import { isValidRange } from '../../__tests__/is-valid-range';
+import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
 afterEach(() => Mockdate.reset());
@@ -50,7 +51,10 @@ describe('Date range picker calendar', () => {
   }
 
   const findFocusableDate = (wrapper: DateRangePickerWrapper) => {
-    return wrapper.findDropdown()!.find(`.${gridDayStyles.day}[tabIndex="0"]`);
+    return wrapper
+      .findDropdown()!
+      .find(`.${gridDayStyles.day}[tabIndex="0"]`)
+      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
   const findFocusableDateText = (wrapper: DateRangePickerWrapper) => {
@@ -65,7 +69,7 @@ describe('Date range picker calendar', () => {
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${gridDayStyles['day-header']}`)
+      .findAll(`.${gridDayStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -176,7 +180,7 @@ describe('Date range picker calendar', () => {
       test('should have the current date focusable if no date is selected', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });
         changeMode(wrapper, 'absolute');
-        expect(findFocusableDate(wrapper)!.getElement()).toBe(findToday(wrapper)!.getElement());
+        expect(findToday(wrapper)!.getElement()).toContainElement(findFocusableDate(wrapper)!.getElement());
         expect(findFocusableDateText(wrapper)).toBe('20');
       });
 
@@ -386,21 +390,23 @@ describe('Date range picker calendar', () => {
   });
 
   describe('aria labels', () => {
-    test('should add `todayAriaLabel` to today in the calendar', () => {
+    test('should add `todayAriaLabel` to screenreader node in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(findToday(wrapper).getElement()!.getAttribute('aria-label')).toMatch('TEST TODAY');
+      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+        'TEST TODAY'
+      );
     });
 
-    test('should add aria-pressed="true" to selected range in the calendar', () => {
+    test('should add aria-selected="true" to selected range in the calendar', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
         value: { type: 'absolute', startDate: '2017-05-06T00:00:00', endDate: '2017-05-09T00:00:00' },
       });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement().getAttribute('aria-pressed')).toBe('true');
-      expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement().getAttribute('aria-pressed')).toBe('true');
-      expect(wrapper.findDropdown()!.findDateAt('left', 2, 1).getElement().getAttribute('aria-pressed')).toBe('true');
+      expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement().getAttribute('aria-selected')).toBe('true');
+      expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement().getAttribute('aria-selected')).toBe('true');
+      expect(wrapper.findDropdown()!.findDateAt('left', 2, 1).getElement().getAttribute('aria-selected')).toBe('true');
     });
 
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
@@ -478,6 +484,14 @@ describe('Date range picker calendar', () => {
       expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])?.getElement()).toHaveTextContent(
         new RegExp(i18nStrings.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
+    });
+
+    test('should set aria-disabled="true" and unset aria-selected to disabled date', () => {
+      const isDateEnabled = (date: Date) => date.getDate() !== 15;
+      const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings, isDateEnabled });
+      changeMode(wrapper, 'absolute');
+      expect(wrapper.findDropdown()!.findDateAt('left', 3, 3).getElement().getAttribute('aria-disabled')).toBe('true');
+      expect(wrapper.findDropdown()!.findDateAt('left', 3, 3).getElement().getAttribute('aria-selected')).toBe(null);
     });
   });
 });
