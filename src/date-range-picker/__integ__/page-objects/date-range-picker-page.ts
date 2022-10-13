@@ -3,7 +3,6 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/selectors/date-range-picker';
 import DropdownWrapper from '../../../../lib/components/test-utils/selectors/internal/dropdown';
-import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
 
 export default class DateRangePickerPage extends BasePageObject {
   public dateRangePickerWrapper: DateRangePickerWrapper;
@@ -87,10 +86,6 @@ export default class DateRangePickerPage extends BasePageObject {
 
   isPreviousMonthButtonFocused() {
     return this.isFocused(this.findDropdown().findPreviousMonthButton().getElement());
-  }
-
-  isDateFocused() {
-    return this.isFocused(this.findDropdown().find(`.${styles['calendar-day-focusable']}`).getElement());
   }
 
   async clickDate(grid: 'left' | 'right', row: 1 | 2 | 3 | 4 | 5 | 6, column: 1 | 2 | 3 | 4 | 5 | 6 | 7) {

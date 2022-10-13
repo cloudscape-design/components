@@ -31,8 +31,8 @@ const customCssPropertiesList = [
   'toolsWidth',
   'toolsAnimationStartingOpacity',
   'contentScrollMargin',
-
-  // Grid
+  'flashbarStackDepth',
+  'flashbarStackIndex',
   'gridGutterGap',
   'gridColumnSpan',
 ];

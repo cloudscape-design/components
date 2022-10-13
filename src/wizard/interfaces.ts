@@ -44,6 +44,7 @@ export interface WizardProps extends BaseComponentProps {
    *    - `stepsCount` (number) - The total number of steps in the wizard.
    * - `skipToButtonLabel`: ((targetStep: WizardProps.Step, targetStepNumber: number) => string) - An optional function that accepts the target step object
    *    and the target step number (1-based indexing), and returns a string to be used as the *skip-to* button label. For example, "Skip to Step 2" or "Skip to end".
+   * - `navigationAriaLabel` (string) - The aria label for the navigation pane.
    * - `cancelButton` (string) - The text of the button that enables the user to exit the flow.
    * - `previousButton` (string) - The text of the button that enables the user to return to the previous step.
    * - `nextButton` (string) - The text of the button that enables the user to move to the next step.
@@ -114,6 +115,8 @@ export namespace WizardProps {
     stepNumberLabel(stepNumber: number): string;
     collapsedStepsLabel(stepNumber: number, stepsCount: number): string;
     skipToButtonLabel?(targetStep: WizardProps.Step, targetStepNumber: number): string;
+    navigationAriaLabel?: string;
+    errorIconAriaLabel?: string;
     cancelButton: string;
     previousButton: string;
     nextButton: string;

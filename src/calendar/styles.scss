@@ -45,50 +45,33 @@
     /* used for identifying element */
   }
 
-  &-day-names {
-    display: flex;
-    justify-content: stretch;
+  &-grid {
+    width: 100%;
+    border-spacing: 0;
   }
 
-  &-day-name {
-    flex: 1 1 0%;
-    width: 0;
+  &-grid-cell {
+    width: calc(100% / 7);
     word-break: break-word;
     text-align: center;
+    font-weight: unset;
+  }
+
+  &-day-header {
     padding: awsui.$space-s 0 awsui.$space-xxs;
     color: calendar.$grid-day-name-color;
     @include styles.font-body-s;
   }
 
-  &-dates {
-    border: calendar.$grid-border;
-  }
-  &-week {
-    display: flex;
-    justify-content: stretch;
-  }
-
   &-day {
-    flex: 1 1 0%;
-    width: 0;
-    word-break: break-word;
-    text-align: center;
     border-bottom: calendar.$grid-border;
     border-right: calendar.$grid-border;
     padding: awsui.$space-xxs 0;
     color: calendar.$grid-disabled-day-color;
     position: relative;
 
-    &:last-child {
-      border-right: none;
-    }
-
-    &-in-last-week {
-      border-bottom: none;
-    }
-
-    &-focusable {
-      /* used for identifying element */
+    &:first-child {
+      border-left: calendar.$grid-border;
     }
 
     &-enabled {
@@ -169,6 +152,14 @@
         z-index: 2;
         color: calendar.$grid-selected-text-color;
         position: relative;
+      }
+    }
+  }
+
+  &-week {
+    &:first-child {
+      > .calendar-day {
+        border-top: calendar.$grid-border;
       }
     }
   }
