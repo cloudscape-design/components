@@ -390,7 +390,7 @@ describe('Date range picker calendar', () => {
   });
 
   describe('aria labels', () => {
-    test('should add `todayAriaLabel` to screenreader node in the calendar', () => {
+    test('should add `todayAriaLabel` to today in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings });
       changeMode(wrapper, 'absolute');
       expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
