@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
@@ -9,6 +11,9 @@ import {
   PropertyFilterOperation,
   PropertyFilterOperator,
   PropertyFilterOperatorExtended,
+  PropertyFilterOperatorForm,
+  PropertyFilterOperatorFormat,
+  PropertyFilterOperatorFormProps,
   PropertyFilterOption,
   PropertyFilterProperty,
   PropertyFilterToken,
@@ -155,6 +160,9 @@ export namespace PropertyFilterProps {
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+  export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+  export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+  export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
 
@@ -235,7 +243,10 @@ export namespace PropertyFilterProps {
 export type Token = PropertyFilterProps.Token;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
-export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
+export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
+export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
+export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;

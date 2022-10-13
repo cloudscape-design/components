@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../../../internal/styles/index' as styles;
-@use '../../../../internal/styles/tokens' as awsui;
-@use '../../../../internal/hooks/focus-visible' as focus-visible;
-@use '../../../../calendar/calendar' as calendar;
+@use '../../../internal/styles/index' as styles;
+@use '../../../internal/styles/tokens' as awsui;
+@use '../../../internal/hooks/focus-visible' as focus-visible;
+@use '../../../calendar/calendar' as calendar;
 
 @mixin border-radius($horizontal, $vertical) {
   &,
@@ -30,11 +30,27 @@
   }
 }
 
-.day {
-  flex: 1 1 0%;
-  width: 0;
+.grid {
+  width: awsui.$size-calendar-grid-width;
+  border-spacing: 0;
+}
+.grid-cell {
+  width: calc(100% / 7);
   word-break: break-word;
   text-align: center;
+  font-weight: unset;
+}
+.day-header {
+  padding: awsui.$space-s 0 awsui.$space-xxs;
+  color: calendar.$grid-day-name-color;
+  @include styles.font-body-s;
+}
+
+.week {
+  /* used for identifying element */
+}
+
+.day {
   border-bottom: calendar.$grid-border;
   border-right: calendar.$grid-border;
   padding: awsui.$space-xxs 0;
