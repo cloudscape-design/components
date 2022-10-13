@@ -15,6 +15,7 @@ export default function InternalForm({
   children,
   header,
   errorText,
+  errorIconAriaLabel,
   actions,
   secondaryActions,
   __internalRootRef,
@@ -28,7 +29,7 @@ export default function InternalForm({
       <div aria-live="assertive">
         {errorText && (
           <InternalBox margin={{ top: 'l' }}>
-            <InternalAlert type="error">
+            <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
               <div className={styles.error}>{errorText}</div>
             </InternalAlert>
           </InternalBox>
