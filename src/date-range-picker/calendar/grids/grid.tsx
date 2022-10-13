@@ -84,7 +84,7 @@ export function Grid({
         <tr>
           {rotateDayIndexes(startOfWeek).map(dayIndex => (
             <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
-              {renderDayName(locale, dayIndex)}
+              {renderDayName(locale, dayIndex, 'short')}
             </th>
           ))}
         </tr>

@@ -10,6 +10,7 @@ import { KeyCode } from '../../../lib/components/internal/keycode';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 describe('Date picker calendar', () => {
   const outsideId = 'outside';
@@ -40,7 +41,10 @@ describe('Date picker calendar', () => {
   }
 
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
-    return wrapper.findCalendar()!.find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`);
+    return wrapper
+      .findCalendar()!
+      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`)
+      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
   const findFocusableDateText = (wrapper: DatePickerWrapper) => {
@@ -55,7 +59,7 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-day-header']}`)
+      .findAll(`.${calendarStyles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -152,8 +156,8 @@ describe('Date picker calendar', () => {
       act(() => wrapper.findOpenCalendarButton().click());
       expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
       // we render 2018/03/22 which results in
-      // -> 35 (5 weeks á 7 days) + 7 (weekday names) + 1 (month name)
-      expect(localStringMock).toHaveBeenCalledTimes(44);
+      // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
+      expect(localStringMock).toHaveBeenCalledTimes(51);
       expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
       window.Date.prototype.toLocaleDateString = oldImpl;
     });
@@ -435,7 +439,10 @@ describe('Date picker calendar', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, value: '2018-03-21', isDateEnabled });
         act(() => wrapper.findOpenCalendarButton().click());
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(wrapper.findCalendar()!.findSelectedDate().getElement().textContent).toBe('21');
+        expect(
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+            .textContent
+        ).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();
       });
 
@@ -488,13 +495,28 @@ describe('Date picker calendar', () => {
     test('should add `todayAriaLabel` to today in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '', todayAriaLabel: 'TEST TODAY' });
       act(() => wrapper.findOpenCalendarButton().click());
-      expect(findToday(wrapper).getElement()!.getAttribute('aria-label')).toMatch('TEST TODAY');
+      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+        'TEST TODAY'
+      );
     });
 
-    test('should add aria-current="date" to selected date in the calendar', () => {
+    test('should add aria-selected="true" to selected date in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '2017-05-06' });
       act(() => wrapper.findOpenCalendarButton().click());
-      expect(wrapper.findCalendar()!.findSelectedDate().getElement().getAttribute('aria-current')).toBe('date');
+      expect(wrapper.findCalendar()!.findSelectedDate().getElement().getAttribute('aria-selected')).toBe('true');
+    });
+
+    test('should not set aria-selected when the date is disabled', () => {
+      const isDateEnabled = (date: Date) => date.getDate() !== 4;
+      const { wrapper } = renderDatePicker({ ...defaultProps, isDateEnabled, value: '2017-05-06' });
+      act(() => wrapper.findOpenCalendarButton().click());
+      expect(wrapper.findCalendar()!.findDateAt(1, 5)?.getElement().getAttribute('aria-selected')).toBe(null);
+    });
+
+    test('should add aria-current="date" to the date of today in the calendar', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, value: '' });
+      act(() => wrapper.findOpenCalendarButton().click());
+      expect(findToday(wrapper).getElement()!.getAttribute('aria-current')).toBe('date');
     });
 
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
@@ -513,12 +535,12 @@ describe('Date picker calendar', () => {
       );
     });
 
-    test('should add date label to date button in the calendar', () => {
+    test('should add date label to date in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '2022-02-10' });
       act(() => wrapper.findOpenCalendarButton().click());
-      expect(wrapper.findCalendar()!.findSelectedDate().getElement().getAttribute('aria-label')).toBe(
-        'Thursday, February 10, 2022'
-      );
+      expect(
+        wrapper.findCalendar()!.findSelectedDate().find(':not([aria-hidden=true])')?.getElement().textContent
+      ).toBe('February 10, 2022');
     });
   });
 
