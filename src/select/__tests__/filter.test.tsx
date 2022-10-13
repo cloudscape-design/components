@@ -85,8 +85,8 @@ describe('Filter component', () => {
       expect(inputEl).toHaveAttribute('value', defaultProps.value);
     });
 
-    test('should have type=search', () => {
-      expect(inputEl).toHaveAttribute('type', 'search');
+    test('should have type="text"', () => {
+      expect(inputEl).toHaveAttribute('type', 'text');
     });
   });
 });

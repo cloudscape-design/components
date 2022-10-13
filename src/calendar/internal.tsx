@@ -112,12 +112,7 @@ export default function Calendar({
   };
 
   return (
-    <div
-      ref={__internalRootRef}
-      role="application"
-      {...baseProps}
-      className={clsx(styles.root, styles.calendar, baseProps.className)}
-    >
+    <div ref={__internalRootRef} {...baseProps} className={clsx(styles.root, styles.calendar, baseProps.className)}>
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}

@@ -25,6 +25,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
 import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 export { DatePickerProps };
 
@@ -193,9 +194,9 @@ const DatePicker = React.forwardRef(
                   nextMonthAriaLabel={nextMonthAriaLabel}
                   previousMonthAriaLabel={previousMonthAriaLabel}
                 />
-                <div id={calendarDescriptionId} className={styles['screenreader-only']} aria-live="polite">
+                <ScreenreaderOnly id={calendarDescriptionId} aria-live="polite">
                   {renderMonthAndYear(normalizedLocale, baseDate)}
-                </div>
+                </ScreenreaderOnly>
               </div>
             </FocusLock>
           )}

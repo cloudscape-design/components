@@ -9,10 +9,10 @@ function setDayIndex(date: Date, dayIndex: DayIndex): void {
   date.setDate(date.getDate() + diff);
 }
 
-export function renderDayName(locale: string, dayIndex: DayIndex): string {
+export function renderDayName(locale: string, dayIndex: DayIndex, mode: 'short' | 'long'): string {
   const tempDate = new Date();
   setDayIndex(tempDate, dayIndex);
-  return tempDate.toLocaleDateString(locale, { weekday: 'short' });
+  return tempDate.toLocaleDateString(locale, { weekday: mode });
 }
 
 export function renderMonthAndYear(locale: string, baseDate: Date): string {
@@ -28,14 +28,14 @@ export function renderMonthAndYear(locale: string, baseDate: Date): string {
  `toLocaleDateString` is expensive (10+ ms) to calculate in IE11.
 */
 const dayLabelCache = new Map<string, string>();
-export function getDateLabel(locale: string, date: Date): string {
-  const cacheKey = locale + date.getTime();
+export function getDateLabel(locale: string, date: Date, mode: 'full' | 'short' = 'full'): string {
+  const cacheKey = locale + date.getTime() + mode;
   const cachedValue = dayLabelCache.get(cacheKey);
   if (cachedValue) {
     return cachedValue;
   }
   const value = date.toLocaleDateString(locale, {
-    weekday: 'long',
+    weekday: mode === 'full' ? 'long' : undefined,
     month: 'long',
     day: 'numeric',
     year: 'numeric',

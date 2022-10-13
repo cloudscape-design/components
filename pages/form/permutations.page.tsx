@@ -55,6 +55,7 @@ const permutations = createPermutations<FormProps>([
       </SpaceBetween>,
     ],
     errorText: ['', 'This is an error!'],
+    errorIconAriaLabel: ['Error'],
     actions: [
       <SpaceBetween direction="horizontal" size="xs">
         <Button variant="link">Cancel</Button>
