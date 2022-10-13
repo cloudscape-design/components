@@ -28,17 +28,16 @@ export default function CalendarHeader({
   const currentMonthLabel = renderMonthAndYear(locale, baseDate);
 
   return (
-    <div className={styles['calendar-header']}>
-      <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
-      <div className={styles['calendar-header-months-wrapper']}>
-        {!isSingleGrid && <div className={styles['calendar-header-month']}>{prevMonthLabel}</div>}
-        <div className={styles['calendar-header-month']}>{currentMonthLabel}</div>
+    <>
+      <div className={styles['calendar-header']}>
+        <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
+        <div className={styles['calendar-header-months-wrapper']}>
+          {!isSingleGrid && <div className={styles['calendar-header-month']}>{prevMonthLabel}</div>}
+          <div className={styles['calendar-header-month']}>{currentMonthLabel}</div>
+        </div>
+        <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
       </div>
-      <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
-
-      <LiveRegion assertive={true}>
-        {isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}
-      </LiveRegion>
-    </div>
+      <LiveRegion>{isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}</LiveRegion>
+    </>
   );
 }
