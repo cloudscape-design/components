@@ -43,7 +43,7 @@ describe('Date picker calendar', () => {
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"] )`)
+      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 

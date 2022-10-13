@@ -129,7 +129,7 @@ export default function Grid({
               className={clsx(styles['calendar-grid-cell'], styles['calendar-day-header'])}
             >
               <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
-              <span className={styles['visually-hidden']}>{renderDayName(locale, dayIndex, 'long')}</span>
+              <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
             </th>
           ))}
         </tr>
