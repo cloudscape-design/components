@@ -4,9 +4,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Form, { FormProps } from '../../../lib/components/form';
+import alertStyles from '../../../lib/components/alert/styles.selectors.js';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.selectors.js';
 
 function renderForm(props: FormProps = {}) {
-  const { container } = render(<Form {...props} />);
+  const { container } = render(<Form {...props} errorIconAriaLabel="Error icon" />);
   return createWrapper(container).findForm()!;
 }
 
@@ -43,6 +45,13 @@ describe('Form Component', () => {
 
       wrapper = renderForm({ errorText: '' });
       expect(wrapper.findError()).toBeNull();
+    });
+
+    it('form error includes alert and live region', () => {
+      const wrapper = renderForm({ errorText: 'Some error' });
+
+      expect(wrapper.findByClassName(alertStyles.root)!.getElement()).toHaveTextContent('Some error');
+      expect(wrapper.findByClassName(liveRegionStyles.root)!.getElement()).toHaveTextContent('Error icon, Some error');
     });
 
     it('has no actions container when no actions are set', () => {
