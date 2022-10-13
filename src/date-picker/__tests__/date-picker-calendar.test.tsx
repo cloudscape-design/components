@@ -4,13 +4,13 @@ import * as React from 'react';
 import MockDate from 'mockdate';
 import { act, render } from '@testing-library/react';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
-import { CalendarDayWrapper } from '../../../lib/components/test-utils/dom/calendar';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 describe('Date picker calendar', () => {
   const outsideId = 'outside';
@@ -43,8 +43,8 @@ describe('Date picker calendar', () => {
   const findFocusedDay = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findComponent(`.${calendarStyles['calendar-day']}[tabIndex="0"]`, CalendarDayWrapper)
-      ?.findLabel();
+      .find(`.${calendarStyles['calendar-day']}[tabIndex="0"] )`)
+      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
   const findFocusableDateText = (wrapper: DatePickerWrapper) => {
@@ -59,7 +59,7 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-day-header']} :not(.${calendarStyles['visually-hidden']})`)
+      .findAll(`.${calendarStyles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -439,7 +439,10 @@ describe('Date picker calendar', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, value: '2018-03-21', isDateEnabled });
         act(() => wrapper.findOpenCalendarButton().click());
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(wrapper.findCalendar()!.findSelectedDate().findLabel().getElement().textContent).toBe('21');
+        expect(
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+            .textContent
+        ).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();
       });
 
@@ -492,7 +495,7 @@ describe('Date picker calendar', () => {
     test('should add `todayAriaLabel` to today in the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, value: '', todayAriaLabel: 'TEST TODAY' });
       act(() => wrapper.findOpenCalendarButton().click());
-      expect(findToday(wrapper).find(`.${calendarStyles['visually-hidden']}`)?.getElement().textContent).toMatch(
+      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
         'TEST TODAY'
       );
     });

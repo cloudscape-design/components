@@ -13,6 +13,7 @@ import { getDateLabel, renderDayName } from '../utils/intl';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
+import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -179,7 +180,7 @@ export default function Grid({
                   <span className={styles['day-inner']} aria-hidden="true">
                     {date.getDate()}
                   </span>
-                  <span className={styles['visually-hidden']}>{dayAnnouncement}</span>
+                  <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
                 </td>
               );
             })}

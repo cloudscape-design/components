@@ -4,14 +4,6 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import styles from '../../../calendar/styles.selectors.js';
 import ButtonWrapper from '../button';
 
-export class CalendarDayWrapper extends ComponentWrapper {
-  static rootSelector: string = styles['calendar-day'];
-
-  findLabel(): ElementWrapper {
-    return this.find(`:not(.${styles['visually-hidden']})`)!;
-  }
-}
-
 export default class CalendarWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
   /**
@@ -20,11 +12,8 @@ export default class CalendarWrapper extends ComponentWrapper {
    * @param row 1-based row index of the day.
    * @param column 1-based column index of the day.
    */
-  findDateAt(row: number, column: number): CalendarDayWrapper {
-    return this.findComponent(
-      `.${styles['calendar-week']}:nth-child(${row}) .${CalendarDayWrapper.rootSelector}:nth-child(${column})`,
-      CalendarDayWrapper
-    )!;
+  findDateAt(row: number, column: number): ElementWrapper {
+    return this.find(`.${styles['calendar-week']}:nth-child(${row}) .${styles['calendar-day']}:nth-child(${column})`)!;
   }
 
   findHeader(): ElementWrapper {
@@ -39,7 +28,7 @@ export default class CalendarWrapper extends ComponentWrapper {
     return this.findComponent(`.${styles['calendar-next-month-btn']}`, ButtonWrapper)!;
   }
 
-  findSelectedDate(): CalendarDayWrapper {
-    return this.findComponent(`.${styles['calendar-day-selected']}`, CalendarDayWrapper)!;
+  findSelectedDate(): ElementWrapper {
+    return this.find(`.${styles['calendar-day-selected']}`)!;
   }
 }
