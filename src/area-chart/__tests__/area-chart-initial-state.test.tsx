@@ -248,7 +248,7 @@ test('axes labels are assigned', () => {
 });
 
 // TODO: resolve https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
-test.skip('popover a11y check', async () => {
+test('a11y', async () => {
   const { container, wrapper } = renderAreaChart(
     <AreaChart
       series={[areaSeries1]}
