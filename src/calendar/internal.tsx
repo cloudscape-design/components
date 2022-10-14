@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
+import { addMonths, isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import moveFocusHandler from './utils/move-focus-handler';
 import { memoizedDate } from './utils/memoized-date.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
 import { formatDate } from '../internal/utils/date-time';
@@ -16,6 +15,7 @@ import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { getBaseDate } from './utils/navigation';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -63,20 +63,7 @@ export default function Calendar({
     return null;
   };
 
-  // Get the first enabled date of the month. If no day is enabled in the given month, return the first day of the month.
-  // This is needed because `baseDate` is used as the first focusable date, for example when navigating to the calendar area.
-  const getBaseDate = (date: Date) => {
-    const startDate = startOfMonth(date);
-    for (let i = 0; i < getDaysInMonth(date); i++) {
-      const currentDate = addDays(startDate, i);
-      if (isDateEnabled(currentDate)) {
-        return currentDate;
-      }
-    }
-    return startDate;
-  };
-
-  const baseDate: Date = getBaseDate(displayedDate);
+  const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
   const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
@@ -131,7 +118,6 @@ export default function Calendar({
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
-            handleFocusMove={moveFocusHandler}
           />
         </div>
       </div>

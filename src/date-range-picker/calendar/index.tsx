@@ -7,7 +7,6 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import moveFocusHandler from '../../calendar/utils/move-focus-handler';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
@@ -15,12 +14,12 @@ import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
-import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { getBaseDate } from '../../calendar/utils/navigation';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -259,7 +258,7 @@ function Calendar(
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDate(newBaseDateMonth, 1, isDateEnabled);
+    const newBaseDate = getBaseDate(newBaseDateMonth, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
@@ -285,7 +284,6 @@ function Calendar(
         {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
         <div
           ref={elementRef}
-          role="application"
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
@@ -312,7 +310,6 @@ function Calendar(
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
-            handleFocusMove={moveFocusHandler}
           />
         </div>
         <InternalSpaceBetween direction="vertical" size="xxs">
@@ -372,9 +369,7 @@ function Calendar(
           )}
         </InternalSpaceBetween>
       </InternalSpaceBetween>
-      <LiveRegion>
-        <span className={styles['calendar-aria-live']}>{announcement}</span>
-      </LiveRegion>
+      <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>
   );
 }
