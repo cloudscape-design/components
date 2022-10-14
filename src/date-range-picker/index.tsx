@@ -53,7 +53,7 @@ function renderDateRange(
     );
 
   return (
-    <InternalBox fontWeight="normal" display="inline" color="inherit">
+    <InternalBox fontWeight="normal" display="inline" color="inherit" variant="span">
       {formatted}
     </InternalBox>
   );
