@@ -8,6 +8,10 @@
 @use '../internal/hooks/focus-visible/index' as focus-visible;
 
 .root {
+  /* used in test-utils */
+}
+
+.pagination {
   @include styles.styles-reset;
   display: flex;
   flex-direction: row;
@@ -92,6 +96,6 @@
   }
 }
 
-.root-disabled > .dots {
+.pagination-disabled > .dots {
   color: awsui.$color-text-interactive-disabled;
 }

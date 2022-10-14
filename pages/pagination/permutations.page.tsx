@@ -9,6 +9,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 const paginationLabels: PaginationProps.Labels = {
   nextPageLabel: 'Next page',
   previousPageLabel: 'Previous page',
+  renderCurrentAriaLive: (pageIndex, pagesCount) => `Showing page ${pageIndex} of ${pagesCount} total pages`,
   pageLabel: pageNumber => `Page ${pageNumber} of all pages`,
 };
 

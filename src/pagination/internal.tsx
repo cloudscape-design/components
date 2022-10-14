@@ -10,10 +10,12 @@ import styles from './styles.css.js';
 import { getPaginationState, range } from './utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { PaginationProps } from './interfaces';
+import LiveRegion from '../internal/components/live-region';
 
 const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',
   previousPageLabel: '',
+  renderCurrentAriaLive: () => ``,
   pageLabel: pageNumber => `${pageNumber}`,
 };
 
@@ -111,57 +113,58 @@ export default function InternalPagination({
   }
 
   return (
-    <ul
-      {...baseProps}
-      className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
-      ref={__internalRootRef}
-    >
-      <PageButton
-        className={styles.arrow}
-        pageIndex={currentPageIndex - 1}
-        ariaLabel={ariaLabels?.previousPageLabel ?? defaultAriaLabels.nextPageLabel}
-        disabled={disabled || currentPageIndex === 1}
-        onClick={handlePrevPageClick}
-      >
-        <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
-      </PageButton>
-      <PageNumber
-        pageIndex={1}
-        isCurrent={currentPageIndex === 1}
-        disabled={disabled}
-        ariaLabel={pageNumberLabelFn(1)}
-        onClick={handlePageClick}
-      />
-      {leftDots && <li className={styles.dots}>...</li>}
-      {range(leftIndex, rightIndex).map(pageIndex => (
-        <PageNumber
-          key={pageIndex}
-          isCurrent={currentPageIndex === pageIndex}
-          pageIndex={pageIndex}
-          disabled={disabled}
-          ariaLabel={pageNumberLabelFn(pageIndex)}
-          onClick={handlePageClick}
-        />
-      ))}
-      {rightDots && <li className={styles.dots}>...</li>}
-      {!openEnd && pagesCount > 1 && (
-        <PageNumber
-          isCurrent={currentPageIndex === pagesCount}
-          pageIndex={pagesCount}
-          disabled={disabled}
-          ariaLabel={pageNumberLabelFn(pagesCount)}
-          onClick={handlePageClick}
-        />
+    <div ref={__internalRootRef} {...baseProps} className={clsx(baseProps.className, styles.root)}>
+      {ariaLabels?.renderCurrentAriaLive && (
+        <LiveRegion>{ariaLabels.renderCurrentAriaLive(currentPageIndex, pagesCount)}</LiveRegion>
       )}
-      <PageButton
-        className={styles.arrow}
-        pageIndex={currentPageIndex + 1}
-        ariaLabel={ariaLabels?.nextPageLabel ?? defaultAriaLabels.nextPageLabel}
-        disabled={disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount))}
-        onClick={handleNextPageClick}
-      >
-        <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
-      </PageButton>
-    </ul>
+      <ul className={clsx(styles.pagination, disabled && styles['pagination-disabled'])}>
+        <PageButton
+          className={styles.arrow}
+          pageIndex={currentPageIndex - 1}
+          ariaLabel={ariaLabels?.previousPageLabel ?? defaultAriaLabels.nextPageLabel}
+          disabled={disabled || currentPageIndex === 1}
+          onClick={handlePrevPageClick}
+        >
+          <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
+        </PageButton>
+        <PageNumber
+          pageIndex={1}
+          isCurrent={currentPageIndex === 1}
+          disabled={disabled}
+          ariaLabel={pageNumberLabelFn(1)}
+          onClick={handlePageClick}
+        />
+        {leftDots && <li className={styles.dots}>...</li>}
+        {range(leftIndex, rightIndex).map(pageIndex => (
+          <PageNumber
+            key={pageIndex}
+            isCurrent={currentPageIndex === pageIndex}
+            pageIndex={pageIndex}
+            disabled={disabled}
+            ariaLabel={pageNumberLabelFn(pageIndex)}
+            onClick={handlePageClick}
+          />
+        ))}
+        {rightDots && <li className={styles.dots}>...</li>}
+        {!openEnd && pagesCount > 1 && (
+          <PageNumber
+            isCurrent={currentPageIndex === pagesCount}
+            pageIndex={pagesCount}
+            disabled={disabled}
+            ariaLabel={pageNumberLabelFn(pagesCount)}
+            onClick={handlePageClick}
+          />
+        )}
+        <PageButton
+          className={styles.arrow}
+          pageIndex={currentPageIndex + 1}
+          ariaLabel={ariaLabels?.nextPageLabel ?? defaultAriaLabels.nextPageLabel}
+          disabled={disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount))}
+          onClick={handleNextPageClick}
+        >
+          <InternalIcon name="angle-right" variant={disabled ? 'disabled' : 'normal'} />
+        </PageButton>
+      </ul>
+    </div>
   );
 }

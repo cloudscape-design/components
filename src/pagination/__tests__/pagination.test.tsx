@@ -3,7 +3,8 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
-import Pagination from '../../../lib/components/pagination';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.css.js';
+import Pagination, { PaginationProps } from '../../../lib/components/pagination';
 
 const getItemsContent = (wrapper: PaginationWrapper) =>
   wrapper
@@ -238,6 +239,17 @@ describe('aria-labels', () => {
     expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-label', 'Previous page');
     expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-label', 'Next page');
     expect(wrapper.findPageNumberByIndex(1)!.getElement()).toHaveAttribute('aria-label', 'Page 1 of all pages');
+  });
+
+  test('announces current state in live region', () => {
+    const renderCurrentAriaLive: PaginationProps.Labels['renderCurrentAriaLive'] = (pageIndex, pagesCount) =>
+      `Showing page ${pageIndex} of ${pagesCount} total pages`;
+    const { wrapper } = renderPagination(
+      <Pagination currentPageIndex={1} pagesCount={10} ariaLabels={{ renderCurrentAriaLive }} />
+    );
+    expect(wrapper.findByClassName(screenreaderOnlyStyles.root)!.getElement()).toHaveTextContent(
+      'Showing page 1 of 10 total pages'
+    );
   });
 });
 

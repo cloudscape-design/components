@@ -92,6 +92,7 @@ export const columnsConfig: TableProps.ColumnDefinition<Instance>[] = [
 export const paginationLabels: PaginationProps.Labels = {
   nextPageLabel: 'Next page',
   pageLabel: pageNumber => `Go to page ${pageNumber}`,
+  renderCurrentAriaLive: (pageIndex, pagesCount) => `Showing page ${pageIndex} of ${pagesCount} total pages`,
   previousPageLabel: 'Previous page',
 };
 

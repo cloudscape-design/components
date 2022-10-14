@@ -70,6 +70,7 @@ export namespace PaginationProps {
   export interface Labels {
     nextPageLabel?: string;
     previousPageLabel?: string;
+    renderCurrentAriaLive?: (currentPageIndex: number, totalPages: number) => string;
     pageLabel?: (pageNumber: number) => string;
   }
 

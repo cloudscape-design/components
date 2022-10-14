@@ -7806,6 +7806,11 @@ Example:
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "renderCurrentAriaLive",
+            "optional": true,
+            "type": "(currentPageIndex: number, totalPages: number) => string",
+          },
         ],
         "type": "object",
       },
