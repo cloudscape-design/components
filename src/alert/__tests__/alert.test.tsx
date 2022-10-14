@@ -60,6 +60,14 @@ describe('Alert Component', () => {
       const wrapper = renderAlert({ dismissible: true, dismissAriaLabel: 'close' });
       expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close');
     });
+    it('status icon does not have a label by default', () => {
+      const wrapper = renderAlert({});
+      expect(wrapper.find('[role="img"]')!.getElement()).not.toHaveAttribute('aria-label');
+    });
+    it('status icon can have a label', () => {
+      const wrapper = renderAlert({ statusIconAriaLabel: 'Info' });
+      expect(wrapper.find('[role="img"]')!.getElement()).toHaveAttribute('aria-label', 'Info');
+    });
   });
   describe('visibility', () => {
     it('shows the alert by default', () => {

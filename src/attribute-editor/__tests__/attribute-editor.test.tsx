@@ -41,6 +41,9 @@ const defaultProps: AttributeEditorProps<Item> = {
       };
     }),
   empty: 'empty region',
+  i18nStrings: {
+    errorIconAriaLabel: 'Error',
+  },
 };
 
 function renderAttributeEditor(
@@ -245,6 +248,10 @@ describe('Attribute Editor', () => {
       });
 
       test('should display the returned values as error messages', () => {
+        expect(wrapper.findRow(1)!.findFields()[0].find('[role="img"]')!.getElement()).toHaveAttribute(
+          'aria-label',
+          'Error'
+        );
         expectRowErrorTextContent(wrapper, 0, ['Error with key 0']);
         expectRowErrorTextContent(wrapper, 1, ['Error with key 1']);
       });

@@ -272,6 +272,7 @@ const TagEditor = React.forwardRef(
           </div>
         }
         definition={definition}
+        i18nStrings={i18nStrings}
       />
     );
   }

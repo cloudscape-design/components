@@ -3,6 +3,7 @@
 
 import {
   ComparisonOperator,
+  ExtendedOperatorForm,
   FilteringOption,
   FilteringProperty,
   GroupText,
@@ -190,6 +191,53 @@ export const getPropertyByKey = (filteringProperties: readonly FilteringProperty
   }, {});
   return propertyMap[key] as FilteringProperty | undefined;
 };
+
+export function getExtendedOperator(
+  filteringProperties: readonly FilteringProperty[],
+  property: string,
+  operator: ComparisonOperator
+) {
+  const matchedProperty = getPropertyByKey(filteringProperties, property);
+  for (const matchedOperator of matchedProperty?.operators || []) {
+    if (typeof matchedOperator === 'object' && matchedOperator.operator === operator) {
+      return matchedOperator;
+    }
+  }
+  return null;
+}
+
+export function createPropertiesCompatibilityMap(
+  filteringProperties: readonly FilteringProperty[]
+): (propertyA: string, propertyB: string) => boolean {
+  const lookup: {
+    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | undefined }[];
+  } = {};
+
+  for (const property of filteringProperties) {
+    lookup[property.key] = (property.operators || [])
+      .map(operator =>
+        typeof operator === 'object'
+          ? { operator: operator.operator, form: operator.form }
+          : { operator, form: undefined }
+      )
+      .sort((a, b) => a.operator.localeCompare(b.operator));
+  }
+
+  return (propertyA: string, propertyB: string) => {
+    if (lookup[propertyA].length !== lookup[propertyB].length) {
+      return false;
+    }
+    for (let i = 0; i < lookup[propertyA].length; i++) {
+      if (lookup[propertyA][i].operator !== lookup[propertyB][i].operator) {
+        return false;
+      }
+      if (lookup[propertyA][i].form !== lookup[propertyB][i].form) {
+        return false;
+      }
+    }
+    return true;
+  };
+}
 
 const filteringPropertyToAutosuggestOption = (filteringProperty: FilteringProperty) => ({
   value: filteringProperty.propertyLabel,

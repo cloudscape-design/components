@@ -18,7 +18,7 @@ const Filter = React.forwardRef(({ filteringType, ...filterProps }: FilterProps,
   return (
     <InternalInput
       ref={ref}
-      type="search"
+      type="visualSearch"
       className={styles.filter}
       autoComplete={false}
       disableBrowserAutocorrect={true}

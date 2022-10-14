@@ -6,7 +6,7 @@ import { act, render } from '@testing-library/react';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
 import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
-import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/day/styles.selectors.js';
+import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
@@ -58,14 +58,14 @@ describe('Date range picker calendar', () => {
     return focusableItem ? focusableItem.getElement().textContent!.trim() : null;
   };
 
-  const findDropdownHeaderText = (wrapper: DateRangePickerWrapper) => {
+  const findCalendarHeaderText = (wrapper: DateRangePickerWrapper) => {
     return wrapper.findDropdown()!.findHeader()!.getElement().textContent!.trim();
   };
 
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${styles['calendar-day-name']}`)
+      .findAll(`.${gridDayStyles['day-header']}`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -83,7 +83,7 @@ describe('Date range picker calendar', () => {
   describe('localization', () => {
     test('should render calendar with the default locale', () => {
       const { wrapper } = renderDateRangePicker();
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Sun',
         'Mon',
@@ -104,7 +104,7 @@ describe('Date range picker calendar', () => {
 
     test('should allow country override', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, locale: 'en-GB' });
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Mon',
         'Tue',
@@ -130,7 +130,7 @@ describe('Date range picker calendar', () => {
       window.Date.prototype.toLocaleDateString = localStringMock;
       try {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, locale });
-        expect(findDropdownHeaderText(wrapper)).toBe('März 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
       } finally {
         window.Date.prototype.toLocaleDateString = oldImpl;
       }
@@ -138,7 +138,7 @@ describe('Date range picker calendar', () => {
 
     test('should override start day of week', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, startOfWeek: 4 });
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Thu',
         'Fri',
@@ -216,7 +216,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.up));
         expect(findFocusableDateText(wrapper)).toBe('24');
-        expect(findDropdownHeaderText(wrapper)).toBe('February 2018March 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
 
       test('should go to the next month', () => {
@@ -228,7 +228,7 @@ describe('Date range picker calendar', () => {
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.down));
 
         expect(findFocusableDateText(wrapper)).toBe('5');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should allow first date to be focussed after moving dates then navigating between months', () => {
@@ -290,7 +290,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
         expect(findFocusableDateText(wrapper)).toBe('1');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should jump to the previous month when the date is disabled', () => {
@@ -303,7 +303,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
         expect(findFocusableDateText(wrapper)).toBe('28');
-        expect(findDropdownHeaderText(wrapper)).toBe('February 2018March 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
 
       test('should not switch if there are no enabled dates in future', () => {
@@ -317,7 +317,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
         expect(findFocusableDateText(wrapper)).toBe('21');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should not switch if there are no enabled dates in past', () => {
@@ -331,7 +331,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
         expect(findFocusableDateText(wrapper)).toBe('21');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('does not focus anything if all dates are disabled', () => {

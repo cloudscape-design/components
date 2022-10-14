@@ -1,15 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
-import styles from '../../styles.css.js';
-import GridDay from './day';
-import { isSameMonth, isAfter, isBefore, isSameDay, addWeeks, addDays } from 'date-fns';
+import styles from './styles.css.js';
+import {
+  isSameMonth,
+  isAfter,
+  isBefore,
+  isSameDay,
+  addWeeks,
+  addDays,
+  isLastDayOfMonth,
+  getDaysInMonth,
+  isToday,
+} from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 import { DateChangeHandler, DayIndex } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
 import rotateDayIndexes from '../../../calendar/utils/rotate-day-indexes';
-import { renderDayName } from '../../../calendar/utils/intl';
+import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
+import { formatDate } from '../../../internal/utils/date-time';
+import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 
 export interface GridProps {
   baseDate: Date;
@@ -20,7 +31,7 @@ export interface GridProps {
   rangeEndDate: Date | null;
 
   focusedDate: Date | null;
-  focusedDateRef: React.RefObject<HTMLDivElement>;
+  focusedDateRef: React.RefObject<HTMLTableCellElement>;
 
   onSelectDate: DateChangeHandler;
   onGridKeyDownHandler: (e: React.KeyboardEvent) => void;
@@ -65,19 +76,23 @@ export function Grid({
     [baseDateTime, startOfWeek]
   );
 
+  const focusVisible = useFocusVisible();
+
   return (
-    <div className={clsx(styles.grid, className)}>
-      <div className={styles['calendar-day-names']}>
-        {rotateDayIndexes(startOfWeek).map(i => (
-          <div key={`day-name-${i}`} className={styles['calendar-day-name']}>
-            {renderDayName(locale, i)}
-          </div>
-        ))}
-      </div>
-      <div className={styles['calendar-dates']} onKeyDown={onGridKeyDownHandler}>
+    <table role="none" className={clsx(styles.grid, className)}>
+      <thead>
+        <tr>
+          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+            <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
+              {renderDayName(locale, dayIndex, 'short')}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody onKeyDown={onGridKeyDownHandler}>
         {weeks.map((week, weekIndex) => {
           return (
-            <div key={`week-${weekIndex}`} className={styles['calendar-week']}>
+            <tr key={weekIndex} className={styles.week}>
               {week.map((date, dateIndex) => {
                 const isStartDate = !!selectedStartDate && isSameDay(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameDay(date, selectedEndDate);
@@ -97,38 +112,91 @@ export function Grid({
                     ? isSameDay(rangeStartDate, rangeEndDate)
                     : !selectedStartDate || !selectedEndDate;
 
+                const isEnabled = !isDateEnabled || isDateEnabled(date);
+                const isFocusable = isFocused && isEnabled;
+
+                const baseClasses = {
+                  [styles.day]: true,
+                  [styles['grid-cell']]: true,
+                  [styles['in-first-row']]: weekIndex === 0,
+                  [styles['in-first-column']]: dateIndex === 0,
+                };
+
+                if (!isSameMonth(date, baseDate)) {
+                  return (
+                    <td
+                      key={`${weekIndex}:${dateIndex}`}
+                      ref={isFocused ? focusedDateRef : undefined}
+                      className={clsx(baseClasses, {
+                        [styles['in-previous-month']]: isBefore(date, baseDate),
+                        [styles['last-day-of-month']]: isLastDayOfMonth(date),
+                        [styles['in-next-month']]: isAfter(date, baseDate),
+                      })}
+                    ></td>
+                  );
+                }
+
+                const handlers: React.HTMLAttributes<HTMLDivElement> = {};
+                if (isEnabled) {
+                  handlers.onClick = () => onSelectDate(date);
+                  handlers.onFocus = () => onFocusedDateChange(date);
+                }
+
+                // Can't be focused.
+                let tabIndex = undefined;
+                if (isFocusable && isEnabled) {
+                  // Next focus target.
+                  tabIndex = 0;
+                } else if (isEnabled) {
+                  // Can be focused programmatically.
+                  tabIndex = -1;
+                }
+
+                // Screen-reader announcement for the focused day.
+                let dayAnnouncement = getDateLabel(locale, date);
+                if (isToday(date)) {
+                  dayAnnouncement += '. ' + todayAriaLabel;
+                }
+
                 return (
-                  <GridDay
-                    key={`date-${weekIndex}-${dateIndex}`}
-                    locale={locale}
-                    baseDate={baseDate}
-                    isSelected={isSelected}
-                    isStartDate={isStartDate}
-                    isEndDate={isEndDate}
-                    onlyOneSelected={onlyOneSelected}
-                    isRangeStartDate={isRangeStartDate}
-                    isRangeEndDate={isRangeEndDate}
-                    date={date}
-                    isFocusedDate={isFocused}
+                  <td
                     ref={isFocused ? focusedDateRef : undefined}
-                    todayAriaLabel={todayAriaLabel}
-                    onSelectDate={onSelectDate}
-                    onFocusDate={onFocusedDateChange}
-                    isInRange={dateIsInRange}
-                    isDateEnabled={isDateEnabled}
-                    isDateInFirstRow={weekIndex === 0}
-                    isDateInFirstColumn={dateIndex === 0}
-                    isDateInLastColumn={dateIndex === week.length - 1}
-                    isDateInSelectionStartWeek={!!inRangeStartWeek}
-                    isDateInSelectionEndWeek={!!inRangeEndWeek}
-                  />
+                    key={`${weekIndex}:${dateIndex}`}
+                    className={clsx(baseClasses, {
+                      [styles['in-current-month']]: isSameMonth(date, baseDate),
+                      [styles.enabled]: isEnabled,
+                      [styles.selected]: isSelected,
+                      [styles['start-date']]: isStartDate,
+                      [styles['end-date']]: isEndDate,
+                      [styles['range-start-date']]: isRangeStartDate,
+                      [styles['range-end-date']]: isRangeEndDate,
+                      [styles['no-range']]: isSelected && onlyOneSelected,
+                      [styles['in-range']]: dateIsInRange,
+                      [styles['in-range-border-top']]: !!inRangeStartWeek || date.getDate() <= 7,
+                      [styles['in-range-border-bottom']]: !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
+                      [styles['in-range-border-left']]: dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
+                      [styles['in-range-border-right']]:
+                        dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
+                      [styles.today]: isToday(date),
+                    })}
+                    aria-label={dayAnnouncement}
+                    aria-pressed={isSelected || dateIsInRange}
+                    aria-current={isToday(date) ? 'date' : undefined}
+                    data-date={formatDate(date)}
+                    role="button"
+                    tabIndex={tabIndex}
+                    {...handlers}
+                    {...focusVisible}
+                  >
+                    <span className={styles['day-inner']}>{date.getDate()}</span>
+                  </td>
                 );
               })}
-            </div>
+            </tr>
           );
         })}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 }
 
