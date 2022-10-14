@@ -19,7 +19,8 @@ export default function Notifications() {
   }
 
   return (
-    <section
+    <div
+      role="region"
       aria-label={ariaLabels?.notifications ?? undefined}
       className={clsx(
         styles.notifications,
@@ -33,6 +34,6 @@ export default function Notifications() {
       ref={notificationsElement}
     >
       {notifications}
-    </section>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ describeEachAppLayout(() => {
       const notificationsEl = wrapper.findNotifications()!.getElement();
       expect(notificationsEl).toHaveTextContent('abcd');
       expect(notificationsEl).not.toHaveAttribute('aria-live');
-      expect(notificationsEl.tagName.toLowerCase()).toBe('section');
+      expect(notificationsEl).toHaveAttribute('role', 'region');
       expect(notificationsEl).not.toHaveAttribute('aria-label');
     });
 
