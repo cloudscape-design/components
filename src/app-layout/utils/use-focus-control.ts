@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useLayoutEffect, useRef } from 'react';
+import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
 export interface FocusControlState {
@@ -19,7 +19,7 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
   };
   const previousFocusedElement = useRef<HTMLElement>();
 
-  const setFocus = () => {
+  const setFocus = useCallback(() => {
     // due to mounting/remounting, this hook gets called multiple times for a single change,
     // so we ignore any calls where the refs are undefined
     if (!(refs.toggle.current || refs.close.current)) {
@@ -36,11 +36,11 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
         refs.toggle.current?.focus();
       }
     }
-  };
+  }, [isOpen, restoreFocus, refs.close, refs.toggle]);
 
-  const loseFocus = () => {
+  const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;
-  };
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(setFocus, [isOpen, restoreFocus]);
