@@ -60,7 +60,7 @@ export default function InternalHeader({
             isRefresh && styles[`title-variant-${variantOverride}-refresh`]
           )}
         >
-          <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
+          <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])} tabIndex={-1}>
             <span className={styles['heading-text']}>{children}</span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>

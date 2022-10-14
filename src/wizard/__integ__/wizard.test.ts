@@ -63,6 +63,15 @@ describe('Wizard keyboard navigation', () => {
         await expect(page.getText('#content-text')).resolves.toBe('Content 1');
       })
     );
+
+    test(
+      'should focus on header after navigation',
+      setupTest(async page => {
+        await page.resetFocus();
+        await page.keys(['Tab', 'Tab', 'Space']);
+        await expect(page.getFocusedElementText()).resolves.toBe('Step 2');
+      })
+    );
   });
 });
 

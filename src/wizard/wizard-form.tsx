@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
@@ -9,6 +9,7 @@ import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -43,6 +44,14 @@ export default function WizardForm({
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const isMobile = useMobile();
+  const stepHeaderRef = useRef<HTMLDivElement>(null);
+
+  useEffectOnUpdate(() => {
+    if (stepHeaderRef && stepHeaderRef.current) {
+      const headers = stepHeaderRef.current.querySelectorAll('h1');
+      headers[0]?.focus();
+    }
+  }, [activeStepIndex]);
 
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =
@@ -52,7 +61,11 @@ export default function WizardForm({
 
   return (
     <>
-      <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
+      <WizardFormHeader
+        isMobile={isMobile || showCollapsedSteps}
+        isVisualRefresh={isVisualRefresh}
+        __internalHeaderRef={stepHeaderRef}
+      >
         <div
           className={clsx(
             styles['collapsed-steps'],
@@ -88,7 +101,9 @@ export default function WizardForm({
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
-        {content}
+        <div role="region" aria-label={title}>
+          {content}
+        </div>
       </InternalForm>
     </>
   );
