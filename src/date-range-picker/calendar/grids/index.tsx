@@ -11,9 +11,8 @@ import { Grid } from './grid';
 import styles from '../../styles.css.js';
 
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
-import { getBaseDate } from '../get-base-date';
 import { hasValue } from '../../../internal/utils/has-value';
-import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../../../calendar/utils/navigation';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -90,11 +89,10 @@ export const Grids = ({
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
-      // The nearestBaseDate depends on the direction of the month change
-      const direction = isAfter(focusedDate, baseDate) ? 'backwards' : 'forwards';
+      const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
-      const newMonth = !isSingleGrid && direction === 'backwards' ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDate(newMonth, direction === 'backwards' ? -1 : 1, isDateEnabled);
+      const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
+      const nearestBaseDate = getBaseDate(newMonth, isDateEnabled);
 
       const newFocusedDate = selectFocusedDate(focusedDate, nearestBaseDate, isDateEnabled);
 

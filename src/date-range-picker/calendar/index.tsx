@@ -14,12 +14,12 @@ import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
-import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { getBaseDate } from '../../calendar/utils/navigation';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -258,7 +258,7 @@ function Calendar(
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDate(newBaseDateMonth, 1, isDateEnabled);
+    const newBaseDate = getBaseDate(newBaseDateMonth, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
