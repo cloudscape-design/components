@@ -6,12 +6,7 @@ import InternalLink from '../../../link/internal';
 import { RecoveryLinkProp } from '../../../select/utils/use-select';
 
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import {
-  NonCancelableEventHandler,
-  fireNonCancelableEvent,
-  fireCancelableEvent,
-  getBlurEventRelatedTarget,
-} from '../../events';
+import { NonCancelableEventHandler, fireNonCancelableEvent, fireCancelableEvent } from '../../events';
 import { usePrevious } from '../../hooks/use-previous';
 
 import { DropdownStatusProps } from './interfaces';
@@ -85,13 +80,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = (
       <span
         ref={recoveryProps ? recoveryProps.ref : null}
-        onBlur={event =>
-          fireCancelableEvent(
-            recoveryProps?.onBlur,
-            { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) },
-            event
-          )
-        }
+        onBlur={event => fireCancelableEvent(recoveryProps?.onBlur, { relatedTarget: event.relatedTarget }, event)}
       >
         <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
           {errorText}
