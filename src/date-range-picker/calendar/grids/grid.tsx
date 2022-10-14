@@ -16,7 +16,6 @@ import {
 import { getCalendarMonth } from 'mnth';
 import { DateChangeHandler, DayIndex } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
-import rotateDayIndexes from '../../../calendar/utils/rotate-day-indexes';
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
@@ -75,6 +74,7 @@ export function Grid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseDateTime, startOfWeek]
   );
+  const weekdays = weeks[0].map(date => date.getDay());
 
   const focusVisible = useFocusVisible();
 
@@ -82,7 +82,7 @@ export function Grid({
     <table role="none" className={clsx(styles.grid, className)}>
       <thead>
         <tr>
-          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+          {weekdays.map(dayIndex => (
             <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
               {renderDayName(locale, dayIndex, 'short')}
             </th>

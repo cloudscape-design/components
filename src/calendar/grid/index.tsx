@@ -8,7 +8,6 @@ import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
 import { MoveFocusHandler } from '../utils/move-focus-handler';
 import { DatePickerProps } from '../../date-picker/interfaces';
-import rotateDayIndexes from '../utils/rotate-day-indexes';
 import { getDateLabel, renderDayName } from '../utils/intl';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
@@ -115,6 +114,7 @@ export default function Grid({
     () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
     [baseDate, startOfWeek]
   );
+  const weekdays = weeks[0].map(date => date.getDay());
 
   const focusVisible = useFocusVisible();
 
@@ -122,7 +122,7 @@ export default function Grid({
     <table role="grid" className={styles['calendar-grid']}>
       <thead>
         <tr>
-          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+          {weekdays.map(dayIndex => (
             <th
               key={dayIndex}
               scope="col"
