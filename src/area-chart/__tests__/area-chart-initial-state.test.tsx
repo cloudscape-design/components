@@ -247,7 +247,6 @@ test('axes labels are assigned', () => {
   expect(wrapper.find('[aria-roledescription="y-axis"]')).not.toBe(null);
 });
 
-// TODO: resolve https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
 test('a11y', async () => {
   const { container, wrapper } = renderAreaChart(
     <AreaChart
