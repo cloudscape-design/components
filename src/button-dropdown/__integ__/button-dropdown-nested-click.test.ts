@@ -17,22 +17,3 @@ test(
     expect(await browser.getWindowHandles()).toHaveLength(2);
   })
 );
-
-test(
-  'focus on first menu item when dropdown is opened',
-  useBrowser(async browser => {
-    const page = new ButtonDropdownPage('ButtonDropdown1', browser);
-    await browser.url('#/light/button-dropdown/simple');
-
-    await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
-
-    const firstTabbableMenuItemText = await page.getItemText('id1');
-
-    const focusedElement = await browser.execute(function () {
-      return document.activeElement!.textContent;
-    });
-
-    expect(focusedElement).toEqual(` ${firstTabbableMenuItemText} `);
-  })
-);
