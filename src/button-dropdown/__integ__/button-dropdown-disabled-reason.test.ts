@@ -32,9 +32,13 @@ class ButtonDropdownDisabledReasonPage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<void>) => {
+const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<void>, isMobile?: boolean) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownDisabledReasonPage(browser);
+    if (isMobile) {
+      await page.setMobileWindow();
+    }
+
     await browser.url('#/light/button-dropdown/disabled-reason?visualRefresh=false');
     await page.waitForVisible(page.findButtonDropdown().toSelector());
     await page.openDropdown();
@@ -76,9 +80,6 @@ describe('Button Dropdown - Disabled Reason', () => {
     it(
       `opens and closes on click when mobile=${mobile}`,
       setupTest(async page => {
-        if (mobile) {
-          await page.setMobileWindow();
-        }
         await page.click(page.findButtonDropdown().findItemById('manage-state').toSelector());
         await page.waitForVisible(page.findDisabledReason().toSelector());
         expect(await page.getDisabledReason()).toContain('Instance state must not be pending or stopping.');
@@ -89,7 +90,7 @@ describe('Button Dropdown - Disabled Reason', () => {
         await page.waitForAssertion(async () =>
           expect(await page.isDisplayed(page.findDisabledReason().toSelector())).toBeFalsy()
         );
-      })
+      }, mobile)
     );
   });
   it(
