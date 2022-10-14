@@ -6,13 +6,13 @@ import { KeyCode } from '../../internal/keycode';
 import { addDays, addWeeks, isSameDay, isSameMonth } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
-import { MoveFocusHandler } from '../utils/move-focus-handler';
 import { DatePickerProps } from '../../date-picker/interfaces';
 import { getDateLabel, renderDayName } from '../utils/intl';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
+import moveFocusHandler from '../utils/move-focus-handler';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -41,7 +41,6 @@ export interface GridProps {
   startOfWeek: DayIndex;
   todayAriaLabel: string;
   selectedDate: Date | null;
-  handleFocusMove: MoveFocusHandler;
 }
 
 export default function Grid({
@@ -56,7 +55,6 @@ export default function Grid({
   startOfWeek,
   todayAriaLabel,
   selectedDate,
-  handleFocusMove,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
@@ -78,19 +76,19 @@ export default function Grid({
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addDays(date, 1));
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addDays(date, -1));
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addWeeks(date, -1));
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = handleFocusMove(focusableDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addWeeks(date, 1));
         break;
       default:
         return;

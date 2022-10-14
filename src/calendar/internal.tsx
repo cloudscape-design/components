@@ -6,7 +6,6 @@ import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'd
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import moveFocusHandler from './utils/move-focus-handler';
 import { memoizedDate } from './utils/memoized-date.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
 import { formatDate } from '../internal/utils/date-time';
@@ -131,7 +130,6 @@ export default function Calendar({
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
-            handleFocusMove={moveFocusHandler}
           />
         </div>
       </div>

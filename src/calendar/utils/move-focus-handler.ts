@@ -3,15 +3,15 @@
 import { differenceInYears } from 'date-fns';
 import { DatePickerProps } from '../../date-picker/interfaces';
 
-export interface MoveFocusHandler {
-  (focusedDate: Date, isDateEnabled: DatePickerProps.IsDateEnabledFunction, moveHandler: (date: Date) => Date): Date;
-}
-
 // Helper to move the focus to the given moveCallback's date. It checks
 // the availability of that date and moves forward until this date is enabled.
 // If the entire month in the requested direction has no enabled dates,
 // it returns the currently focused date.
-const moveFocusHandler: MoveFocusHandler = (focused: Date, isDateEnabled, moveCallback: (date: Date) => Date) => {
+export default function moveFocusHandler(
+  focused: Date,
+  isDateEnabled: DatePickerProps.IsDateEnabledFunction,
+  moveCallback: (date: Date) => Date
+): Date {
   let current = moveCallback(focused);
   if (!isDateEnabled) {
     return current;
@@ -26,6 +26,4 @@ const moveFocusHandler: MoveFocusHandler = (focused: Date, isDateEnabled, moveCa
     current = moveCallback(current);
   }
   return current;
-};
-
-export default moveFocusHandler;
+}

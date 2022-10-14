@@ -5,7 +5,6 @@ import { KeyCode } from '../../../internal/keycode';
 import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
-import { MoveFocusHandler } from '../../../calendar/utils/move-focus-handler';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
@@ -14,6 +13,7 @@ import styles from '../../styles.css.js';
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
 import { getBaseDate } from '../get-base-date';
 import { hasValue } from '../../../internal/utils/has-value';
+import moveFocusHandler from '../../../calendar/utils/move-focus-handler';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -38,7 +38,6 @@ export interface GridProps {
 
   onSelectDate: DateChangeHandler;
   onChangeMonth: MonthChangeHandler;
-  handleFocusMove: MoveFocusHandler;
 
   locale: string;
   startOfWeek: DayIndex;
@@ -76,7 +75,6 @@ export const Grids = ({
 
   onSelectDate,
   onChangeMonth,
-  handleFocusMove,
 
   locale,
   startOfWeek,
@@ -123,19 +121,19 @@ export const Grids = ({
         return;
       case KeyCode.right:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addDays(date, 1));
         break;
       case KeyCode.left:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addDays(date, -1));
         break;
       case KeyCode.up:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addWeeks(date, -1));
         break;
       case KeyCode.down:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addWeeks(date, 1));
         break;
       default:
         return;
