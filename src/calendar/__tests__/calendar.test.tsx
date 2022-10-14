@@ -7,6 +7,7 @@ import Calendar, { CalendarProps } from '../../../lib/components/calendar';
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
 import '../../__a11y__/to-validate-a11y';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 // The calendar is mostly tested here: src/date-picker/__tests__/date-picker-calendar.test.tsx
 
@@ -24,7 +25,9 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 }
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
-  return wrapper.findAll(`.${styles['calendar-day-header']}`).map(day => day.getElement().textContent!.trim());
+  return wrapper
+    .findAll(`.${styles['calendar-day-header']} :not(.${screenreaderOnlyStyles.root})`)
+    .map(day => day.getElement().textContent!.trim());
 }
 
 describe('Calendar', () => {
