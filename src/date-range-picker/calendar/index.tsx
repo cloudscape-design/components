@@ -284,7 +284,6 @@ function Calendar(
         {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
         <div
           ref={elementRef}
-          role="application"
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
