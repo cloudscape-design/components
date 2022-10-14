@@ -231,7 +231,7 @@ describe('Date range picker calendar', () => {
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
-      test('should allow first date to be focussed after moving dates then navigating between months', () => {
+      test('should allow first date to be focused after moving dates then navigating between months', () => {
         act(() => wrapper.findDropdown()!.findNextMonthButton().click());
         act(() => wrapper.findDropdown()!.findNextMonthButton().click());
 
