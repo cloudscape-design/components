@@ -3,7 +3,7 @@
 import React, { useMemo, useRef } from 'react';
 import styles from '../styles.css.js';
 import { KeyCode } from '../../internal/keycode';
-import { addDays, addWeeks, isSameDay, isSameMonth } from 'date-fns';
+import { isSameDay, isSameMonth } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 import { DayIndex } from '../internal';
 import { DatePickerProps } from '../../date-picker/interfaces';
@@ -12,7 +12,7 @@ import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import clsx from 'clsx';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import moveFocusHandler from '../utils/move-focus-handler';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../utils/navigation';
 
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
@@ -76,19 +76,19 @@ export default function Grid({
         return;
       case KeyCode.right:
         event.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveNextDay(focusableDate, isDateEnabled);
         break;
       case KeyCode.left:
         event.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = movePrevDay(focusableDate, isDateEnabled);
         break;
       case KeyCode.up:
         event.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = movePrevWeek(focusableDate, isDateEnabled);
         break;
       case KeyCode.down:
         event.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusableDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveNextWeek(focusableDate, isDateEnabled);
         break;
       default:
         return;

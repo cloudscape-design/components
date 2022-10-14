@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
-import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
+import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
@@ -13,7 +13,7 @@ import styles from '../../styles.css.js';
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
 import { getBaseDate } from '../get-base-date';
 import { hasValue } from '../../../internal/utils/has-value';
-import moveFocusHandler from '../../../calendar/utils/move-focus-handler';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek } from '../../../calendar/utils/navigation';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -121,19 +121,19 @@ export const Grids = ({
         return;
       case KeyCode.right:
         e.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.left:
         e.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.up:
         e.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled);
         break;
       case KeyCode.down:
         e.preventDefault();
-        updatedFocusDate = moveFocusHandler(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled);
         break;
       default:
         return;
