@@ -276,8 +276,7 @@ function Calendar(
 
   return (
     <>
-      <InternalSpaceBetween size="m">
-        {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
+      <InternalSpaceBetween size="s">
         <div
           ref={elementRef}
           className={clsx(styles.calendar, {
