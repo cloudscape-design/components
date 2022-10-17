@@ -25,6 +25,7 @@ import {
   operatorToDescription,
   getPropertySuggestions,
   getExtendedOperator,
+  getOperatorLabel,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
@@ -123,7 +124,7 @@ function OperatorInput({
   const freeTextOperators: ComparisonOperator[] = [':', '!:'];
   const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
     value: operator,
-    label: operator,
+    label: property ? getOperatorLabel(property, operator) : operator,
     description: operatorToDescription(operator, i18nStrings),
   }));
   return (
@@ -134,7 +135,7 @@ function OperatorInput({
         operator
           ? {
               value: operator,
-              label: operator,
+              label: property ? getOperatorLabel(property, operator) : operator,
               description: operatorToDescription(operator, i18nStrings),
             }
           : null

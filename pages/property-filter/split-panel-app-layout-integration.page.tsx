@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Box from '~components/box';
@@ -17,6 +17,7 @@ import { columnDefinitions, i18nStrings, filteringProperties } from './common-pr
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 export default function () {
+  const [splitPanelOpen, setSplitPanelOpen] = useState(true);
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',
@@ -36,7 +37,13 @@ export default function () {
         </Box>
       ),
       filteringProperties,
-      defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
+      defaultQuery: {
+        tokens: [
+          { propertyKey: 'averagelatency', operator: '!=', value: '30' },
+          { propertyKey: 'launchdate', operator: '>=', value: '2020-01-01' },
+        ],
+        operation: 'and',
+      },
     },
     sorting: {},
   });
@@ -47,7 +54,8 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        splitPanelOpen={true}
+        splitPanelOpen={splitPanelOpen}
+        onSplitPanelToggle={({ detail }) => setSplitPanelOpen(detail.open)}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -64,7 +72,7 @@ export default function () {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            {' '}
+            <pre>{JSON.stringify(propertyFilterProps.query, null, 2)}</pre>
           </SplitPanel>
         }
         content={

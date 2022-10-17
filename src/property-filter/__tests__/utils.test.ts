@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty } from '../interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix } from '../utils';
+import { FilteringProperty } from '../interfaces';
+import { matchFilteringProperty } from '../utils';
 
 const filteringProperties: FilteringProperty[] = [
   {
@@ -18,8 +18,6 @@ const filteringProperties: FilteringProperty[] = [
     groupValuesLabel: '',
   },
 ];
-
-const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
 
 describe('matchFilteringProperty', () => {
   test('should match property by label when filtering text equals to it', () => {
@@ -41,51 +39,5 @@ describe('matchFilteringProperty', () => {
   test('should not match property by label when filtering text has leading space', () => {
     const property = matchFilteringProperty(filteringProperties, ' Averange latency');
     expect(property).toBe(null);
-  });
-});
-
-describe('matchOperator', () => {
-  test('should match operator when filtering text equals to it', () => {
-    const operator = matchOperator(operators, 'does not contain');
-    expect(operator).toBe(operators[3]);
-  });
-  test('should match operator ignoring case', () => {
-    const operator = matchOperator(operators, 'does NOT contain');
-    expect(operator).toBe(operators[3]);
-  });
-  test('should match operator when filtering text has trailing space', () => {
-    const operator = matchOperator(operators, '!: ');
-    expect(operator).toBe(operators[0]);
-  });
-  test('should match operator when filtering text has trailing symbol', () => {
-    const operator = matchOperator(operators, ':!');
-    expect(operator).toBe(operators[1]);
-  });
-  test('should not match operator when filtering text has leading space', () => {
-    const operator = matchOperator(operators, ' :');
-    expect(operator).toBe(null);
-  });
-});
-
-describe('matchOperatorPrefix', () => {
-  test('should return empty string if filtering text is empty', () => {
-    const operatorPrefix = matchOperatorPrefix(operators, '');
-    expect(operatorPrefix).toBe('');
-  });
-  test('should return empty string if filtering text only has spaces', () => {
-    const operatorPrefix = matchOperatorPrefix(operators, '   ');
-    expect(operatorPrefix).toBe('');
-  });
-  test('should return filtering text if it matches some operator prefix', () => {
-    const operatorPrefix = matchOperatorPrefix(operators, '!');
-    expect(operatorPrefix).toBe('!');
-  });
-  test('should return filtering text if it matches some operator prefix ignoring case', () => {
-    const operatorPrefix = matchOperatorPrefix(operators, 'DOES');
-    expect(operatorPrefix).toBe('DOES');
-  });
-  test('should return null if filtering text has leading space', () => {
-    const operatorPrefix = matchOperatorPrefix(operators, ' !');
-    expect(operatorPrefix).toBe(null);
   });
 });

@@ -161,7 +161,12 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   let groupValuesLabel = `${def.propertyLabel} values`;
 
   if (def.type === 'text') {
-    operators = ['=', '!=', ':', '!:'];
+    operators = [
+      { operator: '=', label: 'equals' },
+      { operator: '!=', label: 'not equals' },
+      { operator: ':', label: 'contains' },
+      { operator: '!:', label: 'not contains' },
+    ];
   }
 
   if (def.type === 'number') {
@@ -170,8 +175,16 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
 
   if (def.type === 'date') {
     groupValuesLabel = `${def.propertyLabel} value`;
-    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({
+    operators = [
+      { operator: '=', label: 'is on' },
+      { operator: '!=', label: 'is not on' },
+      { operator: '<', label: 'is before' },
+      { operator: '<=', label: 'is on or before' },
+      { operator: '>', label: 'is after' },
+      { operator: '>=', label: 'is on or after' },
+    ].map(({ operator, label }) => ({
       operator,
+      label,
       form: DateForm,
       match: 'date',
     }));
@@ -180,8 +193,14 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   if (def.type === 'datetime') {
     groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
-    operators = ['<', '<=', '>', '>='].map(operator => ({
+    operators = [
+      { operator: '<', label: 'is before' },
+      { operator: '<=', label: 'is on or before' },
+      { operator: '>', label: 'is after' },
+      { operator: '>=', label: 'is on or after' },
+    ].map(({ operator, label }) => ({
       operator,
+      label,
       form: DateTimeForm,
       format: formatDateTime,
       match: 'datetime',

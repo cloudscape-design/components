@@ -15,7 +15,7 @@ import {
 } from './interfaces';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix, trimFirstSpace, trimStart } from './utils';
+import { isEntering, isMatching, matchFilteringProperty, some, trimFirst } from './utils';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
@@ -98,26 +98,34 @@ export const parseText = (
   }
 
   const allowedOps = getAllowedOperators(property);
-  const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
-  const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
-  if (operator) {
-    const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
-    const textWithoutPropertyAndOperator = textWithoutProperty.slice(operatorLastIndex);
+  const textWithoutProperty = trimFirst(filteringText.substring(property.propertyLabel.length));
+
+  const operatorValues = allowedOps
+    .map(operator => ({ operator, operatorLabel: getOperatorLabel(property, operator) }))
+    .sort((a, b) => a.operatorLabel.length - b.operatorLabel.length);
+  const enteringOperator = some(operatorValues, op => isEntering(op.operatorLabel, textWithoutProperty));
+  const matchingOperator = some(operatorValues.reverse(), op => isMatching(op.operatorLabel, textWithoutProperty));
+
+  if (textWithoutProperty.length === 0) {
+    return { step: 'operator', property, operatorPrefix: '' };
+  }
+
+  if (enteringOperator) {
     return {
-      step: 'property',
+      step: 'operator',
       property,
-      operator,
-      // We need to remove the first leading space in case the user presses space
-      // after the operator, for example: Owner: admin, will result in value of ` admin`
-      // and we need to remove the first space, if the user added any more spaces only the
-      // first one will be removed.
-      value: trimFirstSpace(textWithoutPropertyAndOperator),
+      operatorPrefix: textWithoutProperty.trim(),
     };
   }
 
-  const operatorPrefix = matchOperatorPrefix(allowedOps, trimStart(textWithoutProperty));
-  if (operatorPrefix !== null) {
-    return { step: 'operator', property, operatorPrefix };
+  if (matchingOperator) {
+    return {
+      step: 'property',
+      property,
+      operator: matchingOperator.operator,
+      operatorLabel: matchingOperator.operatorLabel,
+      value: textWithoutProperty.slice(matchingOperator.operatorLabel.length + 1),
+    };
   }
 
   return {
@@ -206,6 +214,13 @@ export function getExtendedOperator(
   return null;
 }
 
+export function getOperatorLabel(property: FilteringProperty, operator: ComparisonOperator): string {
+  const [operatorLabel] = (property.operators || [])
+    .filter(op => typeof op === 'object' && op.operator === operator)
+    .map(op => (typeof op === 'object' ? op.label : undefined));
+  return operatorLabel || operator;
+}
+
 export function createPropertiesCompatibilityMap(
   filteringProperties: readonly FilteringProperty[]
 ): (propertyA: string, propertyB: string) => boolean {
@@ -288,13 +303,13 @@ export const getAutosuggestOptions = (
       const { propertyLabel, groupValuesLabel } = parsedText.property;
       const options = getPropertyOptions(parsedText.property, filteringOptions);
       return {
-        filterText: parsedText.value,
+        filterText: parsedText.value.trim(),
         options: [
           {
             options: options.map(({ value }) => ({
-              tokenValue: propertyLabel + parsedText.operator + value,
+              tokenValue: propertyLabel + ' ' + parsedText.operatorLabel + ' ' + value,
               label: value,
-              __labelPrefix: propertyLabel + ' ' + parsedText.operator,
+              __labelPrefix: propertyLabel + ' ' + parsedText.operatorLabel,
             })),
             label: groupValuesLabel,
           },
@@ -312,12 +327,15 @@ export const getAutosuggestOptions = (
             filteringPropertyToAutosuggestOption
           ),
           {
-            options: getAllowedOperators(parsedText.property).map(value => ({
-              value: parsedText.property.propertyLabel + ' ' + value + ' ',
-              label: parsedText.property.propertyLabel + ' ' + value,
-              description: operatorToDescription(value, i18nStrings),
-              keepOpenOnSelect: true,
-            })),
+            options: getAllowedOperators(parsedText.property).map(operator => {
+              const displayValue = getOperatorLabel(parsedText.property, operator);
+              return {
+                value: parsedText.property.propertyLabel + ' ' + displayValue + ' ',
+                label: parsedText.property.propertyLabel + ' ' + displayValue,
+                description: operatorToDescription(operator, i18nStrings),
+                keepOpenOnSelect: true,
+              };
+            }),
             label: i18nStrings.operatorsText,
           },
         ],
@@ -354,14 +372,14 @@ export const getAutosuggestOptions = (
 
 export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
   const mapping: { [K in ComparisonOperator]: string } = {
-    ['<']: i18nStrings.operatorLessText,
-    ['<=']: i18nStrings.operatorLessOrEqualText,
-    ['>']: i18nStrings.operatorGreaterText,
-    ['>=']: i18nStrings.operatorGreaterOrEqualText,
-    [':']: i18nStrings.operatorContainsText,
-    ['!:']: i18nStrings.operatorDoesNotContainText,
-    ['=']: i18nStrings.operatorEqualsText,
-    ['!=']: i18nStrings.operatorDoesNotEqualText,
+    ['<']: i18nStrings.operatorLessText ?? '',
+    ['<=']: i18nStrings.operatorLessOrEqualText ?? '',
+    ['>']: i18nStrings.operatorGreaterText ?? '',
+    ['>=']: i18nStrings.operatorGreaterOrEqualText ?? '',
+    [':']: i18nStrings.operatorContainsText ?? '',
+    ['!:']: i18nStrings.operatorDoesNotContainText ?? '',
+    ['=']: i18nStrings.operatorEqualsText ?? '',
+    ['!=']: i18nStrings.operatorDoesNotEqualText ?? '',
   };
   return mapping[operator];
 };

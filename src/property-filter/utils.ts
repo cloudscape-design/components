@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty } from './interfaces';
+import { FilteringProperty } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
@@ -23,42 +23,6 @@ export function matchFilteringProperty(
   return matchedProperty;
 }
 
-// Finds the longest operator the filtering text starts from.
-export function matchOperator(
-  allowedOperators: readonly ComparisonOperator[],
-  filteringText: string
-): null | ComparisonOperator {
-  filteringText = filteringText.toLowerCase();
-
-  let maxLength = 0;
-  let matchedOperator: null | ComparisonOperator = null;
-
-  for (const operator of allowedOperators) {
-    if (operator.length > maxLength && startsWith(filteringText, operator.toLowerCase())) {
-      maxLength = operator.length;
-      matchedOperator = operator;
-    }
-  }
-
-  return matchedOperator;
-}
-
-// Finds if the filtering text matches any operator prefix.
-export function matchOperatorPrefix(
-  allowedOperators: readonly ComparisonOperator[],
-  filteringText: string
-): null | string {
-  if (filteringText.trim().length === 0) {
-    return '';
-  }
-  for (const operator of allowedOperators) {
-    if (startsWith(operator.toLowerCase(), filteringText.toLowerCase())) {
-      return filteringText;
-    }
-  }
-  return null;
-}
-
 export function trimStart(source: string): string {
   let spacesLength = 0;
   for (let i = 0; i < source.length; i++) {
@@ -77,4 +41,42 @@ export function trimFirstSpace(source: string): string {
 
 function startsWith(source: string, target: string): boolean {
   return source.indexOf(target) === 0;
+}
+
+export function trimFirst(text: string): string {
+  let trimIndex = 0;
+  for (let i = 0; i < text.length; i++) {
+    if (i === trimIndex && text[i] === ' ') {
+      trimIndex++;
+    }
+  }
+  return text.slice(trimIndex);
+}
+
+export function some<T>(array: T[], predicate: (item: T) => boolean): null | T {
+  for (const item of array) {
+    if (predicate(item)) {
+      return item;
+    }
+  }
+  return null;
+}
+
+export function isEntering(source: string, target: string): boolean {
+  for (let i = 0; i < target.length; i++) {
+    if (source[i] !== target[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function isMatching(source: string, target: string): boolean {
+  source = source + ' ';
+  for (let i = 0; i < source.length; i++) {
+    if (source[i] !== target[i]) {
+      return false;
+    }
+  }
+  return true;
 }
