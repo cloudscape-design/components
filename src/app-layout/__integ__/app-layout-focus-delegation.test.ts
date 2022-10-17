@@ -116,5 +116,56 @@ function setupTest(
         { pageName: 'with-split-panel', visualRefresh, splitPanelPosition: 'side' }
       )
     );
+
+    describe('focus interaction with info links', () => {
+      test(
+        'moves focus to close button when panel is opened from info link',
+        setupTest(
+          async page => {
+            await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
+            await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
+          },
+          { pageName: 'with-fixed-header-footer', visualRefresh }
+        )
+      );
+      test(
+        'moves focus to close button when panel content is changed using second info link',
+        setupTest(
+          async page => {
+            await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
+            await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector());
+            await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
+          },
+          { pageName: 'with-fixed-header-footer', visualRefresh }
+        )
+      );
+      test(
+        'moves focus back to last opened info link when panel is closed',
+        setupTest(
+          async page => {
+            await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
+            const infoLink = wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector();
+            await page.click(infoLink);
+            await page.click(wrapper.findToolsClose().toSelector());
+            await expect(page.isFocused(infoLink)).resolves.toBe(true);
+          },
+          { pageName: 'with-fixed-header-footer', visualRefresh }
+        )
+      );
+      test(
+        'does not move focus back to last opened info link when panel has lost focus - instead focuses tools toggle',
+        setupTest(
+          async page => {
+            const infoLink = wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector();
+            await page.click(infoLink);
+            await page.click(wrapper.findContentRegion().findContainer().toSelector());
+            await page.click(wrapper.findToolsClose().toSelector());
+            await expect(page.isFocused(infoLink)).resolves.toBe(false);
+            await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
+          },
+          { pageName: 'with-fixed-header-footer', visualRefresh }
+        )
+      );
+    });
   })
 );
