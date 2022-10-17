@@ -45,6 +45,12 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
+      "description": "Provides a text alternative for the icon.",
+      "name": "statusIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"info\\"",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
@@ -1047,6 +1053,23 @@ A maximum of four fields are supported.
       "name": "disableAddButton",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AttributeEditorProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -4859,6 +4882,11 @@ in a slight, visible lag when scrolling complex pages.",
             "type": "string",
           },
           Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "formatRelativeRange",
             "optional": false,
             "type": "(value: DateRangePickerProps.RelativeValue) => string",
@@ -5250,6 +5278,12 @@ Object {
     Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error alert.",
+      "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -12737,6 +12771,7 @@ Defaults to \`false\`.
    - \`stepsCount\` (number) - The total number of steps in the wizard.
 - \`skipToButtonLabel\`: ((targetStep: WizardProps.Step, targetStepNumber: number) => string) - An optional function that accepts the target step object
    and the target step number (1-based indexing), and returns a string to be used as the *skip-to* button label. For example, \\"Skip to Step 2\\" or \\"Skip to end\\".
+- \`navigationAriaLabel\` (string) - The aria label for the navigation pane.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
@@ -12749,6 +12784,16 @@ Defaults to \`false\`.
           Object {
             "name": "cancelButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "navigationAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

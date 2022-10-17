@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 
 export interface FormProps extends BaseComponentProps {
@@ -17,6 +18,11 @@ export interface FormProps extends BaseComponentProps {
    * Specifies a form-level validation message.
    */
   errorText?: React.ReactNode;
+
+  /**
+   * Provides a text alternative for the error icon in the error alert.
+   */
+  errorIconAriaLabel?: string;
 
   /**
    * Specifies actions for the form. You should wrap action buttons in a [space between component](/components/space-between) with `direction="horizontal"` and `size="xs"`.

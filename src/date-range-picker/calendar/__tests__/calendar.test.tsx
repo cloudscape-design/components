@@ -14,6 +14,7 @@ import createWrapper from '../../../../lib/components/test-utils/dom';
 import { i18nStrings } from '../../__tests__/i18n-strings';
 import { changeMode } from '../../__tests__/change-mode';
 import { isValidRange } from '../../__tests__/is-valid-range';
+import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
 afterEach(() => Mockdate.reset());
@@ -50,7 +51,10 @@ describe('Date range picker calendar', () => {
   }
 
   const findFocusableDate = (wrapper: DateRangePickerWrapper) => {
-    return wrapper.findDropdown()!.find(`.${gridDayStyles.day}[tabIndex="0"]`);
+    return wrapper
+      .findDropdown()!
+      .find(`.${gridDayStyles.day}[tabIndex="0"]`)
+      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
   const findFocusableDateText = (wrapper: DateRangePickerWrapper) => {
@@ -58,14 +62,14 @@ describe('Date range picker calendar', () => {
     return focusableItem ? focusableItem.getElement().textContent!.trim() : null;
   };
 
-  const findDropdownHeaderText = (wrapper: DateRangePickerWrapper) => {
+  const findCalendarHeaderText = (wrapper: DateRangePickerWrapper) => {
     return wrapper.findDropdown()!.findHeader()!.getElement().textContent!.trim();
   };
 
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${gridDayStyles['day-header']}`)
+      .findAll(`.${gridDayStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -83,7 +87,7 @@ describe('Date range picker calendar', () => {
   describe('localization', () => {
     test('should render calendar with the default locale', () => {
       const { wrapper } = renderDateRangePicker();
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Sun',
         'Mon',
@@ -104,7 +108,7 @@ describe('Date range picker calendar', () => {
 
     test('should allow country override', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, locale: 'en-GB' });
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Mon',
         'Tue',
@@ -130,7 +134,7 @@ describe('Date range picker calendar', () => {
       window.Date.prototype.toLocaleDateString = localStringMock;
       try {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, locale });
-        expect(findDropdownHeaderText(wrapper)).toBe('März 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
       } finally {
         window.Date.prototype.toLocaleDateString = oldImpl;
       }
@@ -138,7 +142,7 @@ describe('Date range picker calendar', () => {
 
     test('should override start day of week', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, startOfWeek: 4 });
-      expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+      expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       expect(findDropdownWeekdays(wrapper)).toEqual([
         'Thu',
         'Fri',
@@ -176,7 +180,7 @@ describe('Date range picker calendar', () => {
       test('should have the current date focusable if no date is selected', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });
         changeMode(wrapper, 'absolute');
-        expect(findFocusableDate(wrapper)!.getElement()).toBe(findToday(wrapper)!.getElement());
+        expect(findToday(wrapper)!.getElement()).toContainElement(findFocusableDate(wrapper)!.getElement());
         expect(findFocusableDateText(wrapper)).toBe('20');
       });
 
@@ -216,7 +220,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.up));
         expect(findFocusableDateText(wrapper)).toBe('24');
-        expect(findDropdownHeaderText(wrapper)).toBe('February 2018March 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
 
       test('should go to the next month', () => {
@@ -228,10 +232,10 @@ describe('Date range picker calendar', () => {
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.down));
 
         expect(findFocusableDateText(wrapper)).toBe('5');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
-      test('should allow first date to be focussed after moving dates then navigating between months', () => {
+      test('should allow first date to be focused after moving dates then navigating between months', () => {
         act(() => wrapper.findDropdown()!.findNextMonthButton().click());
         act(() => wrapper.findDropdown()!.findNextMonthButton().click());
 
@@ -290,7 +294,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
         expect(findFocusableDateText(wrapper)).toBe('1');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should jump to the previous month when the date is disabled', () => {
@@ -303,7 +307,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
         expect(findFocusableDateText(wrapper)).toBe('28');
-        expect(findDropdownHeaderText(wrapper)).toBe('February 2018March 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('February 2018March 2018');
       });
 
       test('should not switch if there are no enabled dates in future', () => {
@@ -317,7 +321,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.right));
         expect(findFocusableDateText(wrapper)).toBe('21');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('should not switch if there are no enabled dates in past', () => {
@@ -331,7 +335,7 @@ describe('Date range picker calendar', () => {
         changeMode(wrapper, 'absolute');
         act(() => findFocusableDate(wrapper)!.keydown(KeyCode.left));
         expect(findFocusableDateText(wrapper)).toBe('21');
-        expect(findDropdownHeaderText(wrapper)).toBe('March 2018April 2018');
+        expect(findCalendarHeaderText(wrapper)).toBe('March 2018April 2018');
       });
 
       test('does not focus anything if all dates are disabled', () => {
@@ -389,18 +393,20 @@ describe('Date range picker calendar', () => {
     test('should add `todayAriaLabel` to today in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(findToday(wrapper).getElement()!.getAttribute('aria-label')).toMatch('TEST TODAY');
+      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
+        'TEST TODAY'
+      );
     });
 
-    test('should add aria-pressed="true" to selected range in the calendar', () => {
+    test('should add aria-selected="true" to selected range in the calendar', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
         value: { type: 'absolute', startDate: '2017-05-06T00:00:00', endDate: '2017-05-09T00:00:00' },
       });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement().getAttribute('aria-pressed')).toBe('true');
-      expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement().getAttribute('aria-pressed')).toBe('true');
-      expect(wrapper.findDropdown()!.findDateAt('left', 2, 1).getElement().getAttribute('aria-pressed')).toBe('true');
+      expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement().getAttribute('aria-selected')).toBe('true');
+      expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement().getAttribute('aria-selected')).toBe('true');
+      expect(wrapper.findDropdown()!.findDateAt('left', 2, 1).getElement().getAttribute('aria-selected')).toBe('true');
     });
 
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
@@ -478,6 +484,14 @@ describe('Date range picker calendar', () => {
       expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])?.getElement()).toHaveTextContent(
         new RegExp(i18nStrings.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
+    });
+
+    test('should set aria-disabled="true" and unset aria-selected to disabled date', () => {
+      const isDateEnabled = (date: Date) => date.getDate() !== 15;
+      const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings, isDateEnabled });
+      changeMode(wrapper, 'absolute');
+      expect(wrapper.findDropdown()!.findDateAt('left', 3, 3).getElement().getAttribute('aria-disabled')).toBe('true');
+      expect(wrapper.findDropdown()!.findDateAt('left', 3, 3).getElement().getAttribute('aria-selected')).toBe(null);
     });
   });
 });

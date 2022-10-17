@@ -3,10 +3,12 @@
 
 /* eslint-disable @cloudscape-design/prefer-live-region */
 
+import clsx from 'clsx';
 import React, { memo, useEffect, useRef } from 'react';
+import ScreenreaderOnly, { ScreenreaderOnlyProps } from '../screenreader-only/index.js';
 import styles from './styles.css.js';
 
-export interface LiveRegionProps {
+export interface LiveRegionProps extends ScreenreaderOnlyProps {
   assertive?: boolean;
   delay?: number;
   children: React.ReactNode;
@@ -47,7 +49,7 @@ export interface LiveRegionProps {
 */
 export default memo(LiveRegion);
 
-function LiveRegion({ assertive = false, delay = 10, children }: LiveRegionProps) {
+function LiveRegion({ assertive = false, delay = 10, children, ...restProps }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement>(null);
   const targetRef = useRef<HTMLSpanElement>(null);
 
@@ -91,13 +93,13 @@ function LiveRegion({ assertive = false, delay = 10, children }: LiveRegionProps
   });
 
   return (
-    <div className={styles.root}>
+    <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
       <span aria-hidden="true">
         <span ref={sourceRef}>{children}</span>
       </span>
 
       <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
-    </div>
+    </ScreenreaderOnly>
   );
 }
 

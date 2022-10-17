@@ -32,6 +32,7 @@ const InternalAttributeEditor = React.forwardRef(
       empty,
       addButtonText,
       removeButtonText,
+      i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
       __internalRootRef = null,
@@ -64,6 +65,7 @@ const InternalAttributeEditor = React.forwardRef(
               breakpoint={breakpoint}
               item={item}
               definition={definition}
+              i18nStrings={i18nStrings}
               removable={isItemRemovable(item)}
               removeButtonText={removeButtonText}
               removeButtonRefs={removeButtonRefs.current}
