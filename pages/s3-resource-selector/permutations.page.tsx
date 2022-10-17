@@ -36,7 +36,7 @@ const permutations: ReadonlyArray<S3ResourceSelectorProps> = [
   {
     ...defaults,
     alert: (
-      <Alert type="error" header="Resource cannot be found">
+      <Alert type="error" statusIconAriaLabel="Error" header="Resource cannot be found">
         The specified path does not exist
       </Alert>
     ),

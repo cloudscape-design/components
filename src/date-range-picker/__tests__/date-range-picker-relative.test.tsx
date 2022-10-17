@@ -30,7 +30,9 @@ function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {
   const ref = React.createRef<HTMLInputElement>();
   const { container, getByTestId } = render(
     <div>
-      <button data-testid={outsideId}>click me</button>
+      <button type="button" data-testid={outsideId}>
+        click me
+      </button>
       <DateRangePicker {...props} ref={ref} />
     </div>
   );
@@ -53,8 +55,7 @@ describe('Date range picker', () => {
     beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
     afterEach(() => Mockdate.reset());
 
-    // TODO: resolve https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
-    test.skip('a11y checks with opened dropdown', async () => {
+    test('a11y', async () => {
       const { container, wrapper } = renderDateRangePicker({
         ...defaultProps,
       });

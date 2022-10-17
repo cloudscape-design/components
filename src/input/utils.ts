@@ -16,7 +16,7 @@ export const useSearchProps = (
     inputRef.current?.focus();
     onChange('');
   }, [inputRef, onChange]);
-  if (type === 'search') {
+  if (type === 'search' || type === 'visualSearch') {
     searchProps.__leftIcon = 'search';
 
     if (!disabled && !readOnly && value) {

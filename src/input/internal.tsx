@@ -6,12 +6,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import {
-  fireNonCancelableEvent,
-  fireKeyboardEvent,
-  NonCancelableEventHandler,
-  getBlurEventRelatedTarget,
-} from '../internal/events';
+import { fireNonCancelableEvent, fireKeyboardEvent, NonCancelableEventHandler } from '../internal/events';
 import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
@@ -22,10 +17,11 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    Omit<InputProps, 'type'>,
     InputAutoCorrect,
-    InputProps,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
+  type?: InputProps['type'] | 'visualSearch';
   __leftIcon?: IconProps['name'];
   __leftIconVariant?: IconProps['variant'];
   __onLeftIconClick?: () => void;
@@ -134,12 +130,19 @@ function InternalInput(
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
       onBlur && fireNonCancelableEvent(onBlur);
-      __onBlurWithDetail &&
-        fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: getBlurEventRelatedTarget(e.nativeEvent) });
+      __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
   };
+
+  if (type === 'number') {
+    // Chrome and Safari have a weird built-in behavior of letting focused
+    // number inputs be controlled by scrolling on them. However, they don't
+    // lock the browser's scroll, so it's very easy to accidentally increment
+    // the input while scrolling down the page.
+    attributes.onWheel = event => event.currentTarget.blur();
+  }
 
   if (disableBrowserAutocorrect) {
     attributes.autoCorrect = 'off';
@@ -155,6 +158,11 @@ function InternalInput(
   }
 
   const mergedRef = useMergeRefs(ref, inputRef);
+
+  // type = "visualSearch" renders a type="text' input
+  if (attributes.type === 'visualSearch') {
+    attributes.type = 'text';
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>

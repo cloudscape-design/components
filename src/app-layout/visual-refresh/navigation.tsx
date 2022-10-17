@@ -33,7 +33,7 @@ export default function Navigation() {
     toolsHide,
   } = useContext(AppLayoutContext);
 
-  const focusRefs = useFocusControl(isNavigationOpen);
+  const { refs: focusRefs } = useFocusControl(isNavigationOpen);
 
   if (navigationHide) {
     return null;
@@ -109,6 +109,8 @@ export default function Navigation() {
                   formAction="none"
                   className={testutilStyles['navigation-close']}
                   ref={focusRefs.close}
+                  ariaExpanded={true}
+                  __nativeAttributes={{ 'aria-haspopup': true }}
                 />
               </div>
               {navigation}

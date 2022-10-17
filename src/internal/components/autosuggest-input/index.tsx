@@ -7,13 +7,7 @@ import Dropdown from '../dropdown';
 
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import {
-  BaseKeyDetail,
-  fireCancelableEvent,
-  fireNonCancelableEvent,
-  getBlurEventRelatedTarget,
-  NonCancelableEventHandler,
-} from '../../events';
+import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import InternalInput from '../../../input/internal';
 import {
   BaseChangeDetail,
@@ -131,11 +125,10 @@ const AutosuggestInput = React.forwardRef(
     }));
 
     const handleBlur: React.FocusEventHandler = event => {
-      const relatedTarget = getBlurEventRelatedTarget(event.nativeEvent);
       if (
-        event.currentTarget.contains(relatedTarget) ||
-        dropdownContentRef.current?.contains(relatedTarget) ||
-        dropdownFooterRef.current?.contains(relatedTarget)
+        event.currentTarget.contains(event.relatedTarget) ||
+        dropdownContentRef.current?.contains(event.relatedTarget) ||
+        dropdownFooterRef.current?.contains(event.relatedTarget)
       ) {
         return;
       }
@@ -282,7 +275,7 @@ const AutosuggestInput = React.forwardRef(
           contentKey={dropdownContentKey}
           trigger={
             <InternalInput
-              type="search"
+              type="visualSearch"
               value={value}
               onChange={event => handleChange(event.detail.value)}
               __onDelayedInput={event => handleDelayedInput(event.detail.value)}

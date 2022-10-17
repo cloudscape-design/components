@@ -58,7 +58,10 @@ export default function AlertScenario() {
     <article>
       <h1>Alert permutations</h1>
       <ScreenshotArea>
-        <PermutationsView permutations={permutations} render={permutation => <Alert {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => <Alert statusIconAriaLabel={permutation.type ?? 'Info'} {...permutation} />}
+        />
       </ScreenshotArea>
     </article>
   );

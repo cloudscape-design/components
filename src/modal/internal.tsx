@@ -20,6 +20,7 @@ import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
@@ -40,7 +41,6 @@ export default function InternalModal({
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const focusLockRef = useRef<HTMLDivElement>(null);
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
-  const initiallyFocusedElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
 
   const refObject = useRef<HTMLDivElement>(null);
@@ -71,16 +71,11 @@ export default function InternalModal({
     if (visible && refObject.current) {
       refObject.current.scrollTop = 0;
     }
-  }, [refObject, visible]);
+  }, [visible]);
 
-  // Handle focus restore
-  const onActivation = () => {
-    initiallyFocusedElementRef.current = document.activeElement as HTMLElement;
-  };
-
-  const onDeactivation = () => {
-    initiallyFocusedElementRef.current?.focus();
-    initiallyFocusedElementRef.current = null;
+  // Imitate autoFocus=true when the modal opens but not when a focused element inside modal gets removed.
+  const onFocusActivation = () => {
+    focusLockRef.current && getFirstFocusable(focusLockRef.current)?.focus();
   };
 
   const dismiss = (reason: string) => fireNonCancelableEvent(onDismiss, { reason });
@@ -117,11 +112,11 @@ export default function InternalModal({
       >
         <FocusLock
           disabled={!visible}
-          autoFocus={true}
+          autoFocus={false}
+          returnFocus={true}
           className={styles['focus-lock']}
           ref={focusLockRef}
-          onActivation={onActivation}
-          onDeactivation={onDeactivation}
+          onActivation={onFocusActivation}
         >
           <div
             className={clsx(

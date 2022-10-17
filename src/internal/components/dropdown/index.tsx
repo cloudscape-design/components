@@ -85,6 +85,7 @@ const TransitionContent = ({
       ref={contentRef}
       data-open={open}
       data-animating={state !== 'exited'}
+      aria-hidden={!open}
       onMouseDown={onMouseDown}
     >
       <div className={clsx(styles['dropdown-content-wrapper'], isRefresh && styles.refresh)}>

@@ -53,7 +53,7 @@ function renderDateRange(
     );
 
   return (
-    <InternalBox fontWeight="normal" display="inline" color="inherit">
+    <InternalBox fontWeight="normal" display="inline" color="inherit" variant="span">
       {formatted}
     </InternalBox>
   );
@@ -62,14 +62,14 @@ function renderDateRange(
 function BreakSpaces({ text }: { text: string }) {
   const tokens = text.split(/( )/);
   return (
-    <div style={{ whiteSpace: 'nowrap' }}>
+    <>
       {tokens.map((token, index) => (
         <React.Fragment key={index}>
-          {token}
+          {token.length > 1 ? <span className={styles['label-token-nowrap']}>{token}</span> : token}
           {token === ' ' && <wbr />}
         </React.Fragment>
       ))}
-    </div>
+    </>
   );
 }
 

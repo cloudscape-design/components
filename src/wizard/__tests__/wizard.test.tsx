@@ -13,6 +13,7 @@ const DEFAULT_I18N_SETS = [
     stepNumberLabel: stepNumber => `Step ${stepNumber}`,
     collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
     skipToButtonLabel: (step: WizardProps.Step, stepNumber) => `Skip to ${step.title}(${stepNumber})`,
+    navigationAriaLabel: 'Steps',
     cancelButton: 'Cancel',
     previousButton: 'Previous',
     nextButton: 'Next',
@@ -22,6 +23,7 @@ const DEFAULT_I18N_SETS = [
   {
     stepNumberLabel: stepNumber => `第 ${stepNumber} 步`,
     collapsedStepsLabel: (stepNumber, stepsCount) => `第 ${stepNumber} 步 / 共 ${stepsCount} 步`,
+    navigationAriaLabel: 'Steps',
     cancelButton: '取消',
     previousButton: '上一步',
     nextButton: '下一步',
@@ -78,6 +80,12 @@ describe('i18nStrings', () => {
         i18nStrings,
         steps: DEFAULT_STEPS,
       });
+
+      expect(wrapper.findByClassName(styles.navigation)!.getElement()).toHaveAttribute(
+        'aria-label',
+        i18nStrings.navigationAriaLabel
+      );
+
       wrapper.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
         const expectedTitle = i18nStrings.stepNumberLabel(index + 1);
         const expectedLabel = DEFAULT_STEPS[index].isOptional
