@@ -50,8 +50,7 @@ afterEach(() => {
 
 describe('Date range picker', () => {
   describe('absolute mode', () => {
-    // TODO: https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
-    test.skip('a11y checks with opened dropdown', async () => {
+    test('a11y', async () => {
       const { container } = render(
         <DateRangePicker
           {...defaultProps}

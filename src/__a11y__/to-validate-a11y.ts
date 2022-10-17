@@ -22,7 +22,7 @@ const htmlValidator = new HtmlValidate({
     // set relaxed to exclude error that id does not begin with letter
     'valid-id': ['error', { relaxed: true }],
     'no-inline-style': 'off',
-    'prefer-native-element': ['error', { exclude: ['listbox', 'button'] }],
+    'prefer-native-element': ['error', { exclude: ['listbox', 'button', 'region'] }],
     //TODO: revisit 'no-redundant-for' when fixing AWSUI-18968
     'no-redundant-for': 'off',
     // innerHTML normalizes attribute values

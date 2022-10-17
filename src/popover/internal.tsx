@@ -53,7 +53,7 @@ function InternalPopover(
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
   const triggerRef = useRef<HTMLElement | null>(null);
-  const popoverRef = useRef<HTMLSpanElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
 
   const [visible, setVisible] = useState(false);
@@ -111,7 +111,7 @@ function InternalPopover(
   };
 
   const popoverContent = (
-    <span
+    <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
       className={popoverClasses}
@@ -137,13 +137,13 @@ function InternalPopover(
           </PopoverBody>
         </PopoverContainer>
       )}
-    </span>
+    </div>
   );
 
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <span
+    <div
       {...baseProps}
       className={clsx(styles.root, baseProps.className)}
       ref={mergedRef}
@@ -162,6 +162,6 @@ function InternalPopover(
         <span {...triggerProps}>{children}</span>
       )}
       {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-    </span>
+    </div>
   );
 }
