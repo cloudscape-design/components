@@ -24,6 +24,9 @@ export default function Calendar({
   locale = '',
   startOfWeek,
   isDateEnabled = () => true,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
   todayAriaLabel,
   nextMonthAriaLabel,
   previousMonthAriaLabel,
@@ -96,7 +99,15 @@ export default function Calendar({
   };
 
   return (
-    <div ref={__internalRootRef} {...baseProps} className={clsx(styles.root, styles.calendar, baseProps.className)}>
+    <div
+      ref={__internalRootRef}
+      {...baseProps}
+      role="group"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
+      className={clsx(styles.root, styles.calendar, baseProps.className)}
+    >
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}

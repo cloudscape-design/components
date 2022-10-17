@@ -23,7 +23,7 @@ class DatePickerBlurPage extends DatePickerPage {
   }
 }
 
-describe.each<boolean>([false, true])('DatePicker blur events (expandTOViewport=%s)', expandToViewport => {
+describe.each<boolean>([false, true])('DatePicker blur events (expandToViewport=%s)', expandToViewport => {
   const setupTest = (testFn: (page: DatePickerBlurPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DatePickerBlurPage(createWrapper().findDatePicker().getElement(), browser, expandToViewport);

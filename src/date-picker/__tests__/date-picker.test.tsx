@@ -5,6 +5,7 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import FormField from '../../../lib/components/form-field';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 
 const defaultProps: DatePickerProps = {
@@ -88,6 +89,27 @@ describe('Date picker - direct date input', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, controlId: undefined, ariaDescribedby: 'my-custom-id' });
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
+
+    test('is inherited from a FormField', () => {
+      const { container } = render(
+        <FormField label="FormField-provided label" constraintText="FormField-provided constraint text">
+          <DatePicker {...defaultProps} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container);
+
+      const formFieldConstraintTextId = wrapper.findFormField()!.findConstraint()!.getElement().id;
+      expect(wrapper.findDatePicker()!.findNativeInput().getElement()).toHaveAttribute(
+        'aria-describedby',
+        formFieldConstraintTextId
+      );
+
+      wrapper.findDatePicker()!.findOpenCalendarButton().click();
+      expect(wrapper.findDatePicker()!.findCalendar()!.getElement()).not.toHaveAttribute(
+        'aria-describedby',
+        expect.stringContaining(formFieldConstraintTextId)
+      );
+    });
   });
 
   describe('aria-labelledby', () => {
@@ -101,10 +123,31 @@ describe('Date picker - direct date input', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
     });
 
-    test('aria-labelledby can be passed to calendar', () => {
+    test('aria-labelledby is passed to the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, ariaLabelledby: 'my-custom-id' });
       wrapper.findOpenCalendarButton().click();
-      expect(wrapper.findCalendar()?.getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
+      expect(wrapper.findCalendar()!.getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
+    });
+
+    test('is inherited from a FormField', () => {
+      const { container } = render(
+        <FormField label="FormField-provided label" constraintText="FormField-provided constraint text">
+          <DatePicker {...defaultProps} />
+        </FormField>
+      );
+      const wrapper = createWrapper(container);
+
+      const formFieldLabelId = wrapper.findFormField()!.findLabel()!.getElement().id;
+      expect(wrapper.findDatePicker()!.findNativeInput().getElement()).toHaveAttribute(
+        'aria-labelledby',
+        formFieldLabelId
+      );
+
+      wrapper.findDatePicker()!.findOpenCalendarButton().click();
+      expect(wrapper.findDatePicker()!.findCalendar()!.getElement()).toHaveAttribute(
+        'aria-labelledby',
+        formFieldLabelId
+      );
     });
   });
 
@@ -131,10 +174,10 @@ describe('Date picker - direct date input', () => {
       expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-label');
     });
 
-    test('aria-label can be passed to calendar', () => {
+    test('aria-label is passed to the calendar', () => {
       const { wrapper } = renderDatePicker({ ...defaultProps, ariaLabel: 'my-custom-label' });
       wrapper.findOpenCalendarButton().click();
-      expect(wrapper.findCalendar()?.getElement()).toHaveAttribute('aria-label', 'my-custom-label');
+      expect(wrapper.findCalendar()!.getElement()).toHaveAttribute('aria-label', 'my-custom-label');
     });
   });
 
