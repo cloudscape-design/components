@@ -315,6 +315,7 @@ export type ColorsTokenName =
   | 'colorBorderStatusInfo'
   | 'colorBorderStatusSuccess'
   | 'colorBorderStatusWarning'
+  | 'colorBorderDividerInteractiveDefault'
   | 'colorBorderTabsDivider'
   | 'colorBorderTabsShadow'
   | 'colorBorderTabsUnderline'
