@@ -107,15 +107,3 @@ export function isPlainLeftClick(event?: React.MouseEvent | React.KeyboardEvent)
     !event.metaKey
   );
 }
-
-/**
- * Returns the element the focus is going to, when a blur event is fired.
- * IE11 does not support `realtedTarget` on blur FocusEvent's. However, it
- * moves the focus before the blur event is fired, so we can get the needed
- * element by accessing `document.activeElement`
- * @param event FocusEvent - native focus event
- * @returns Node | null - the element recieving the focus
- */
-export const getBlurEventRelatedTarget = (event: FocusEvent): Node | null => {
-  return (event.relatedTarget || document.activeElement) as Node | null;
-};
