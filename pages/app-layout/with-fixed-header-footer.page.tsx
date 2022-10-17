@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import AppLayout from '~components/app-layout';
+import React, { useRef, useState } from 'react';
+import AppLayout, { AppLayoutProps } from '~components/app-layout';
 import Header from '~components/header';
 import Link from '~components/link';
 import Container from '~components/container';
@@ -14,15 +14,21 @@ import labels from './utils/labels';
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
+  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
   function openHelp(article: keyof typeof toolsContent) {
-    setToolsOpen(true);
+    if (toolsOpen) {
+      appLayoutRef.current?.focusToolsClose();
+    } else {
+      setToolsOpen(true);
+    }
     setSelectedTool(article);
   }
 
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ref={appLayoutRef}
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
@@ -36,7 +42,7 @@ export default function () {
                 variant="h1"
                 description="Demo page with footer"
                 info={
-                  <Link variant="info" onFollow={() => openHelp('long')}>
+                  <Link variant="info" onFollow={() => openHelp('long')} data-testid="info-link-1">
                     Long help text
                   </Link>
                 }
@@ -50,7 +56,7 @@ export default function () {
                   <Header
                     variant="h2"
                     info={
-                      <Link variant="info" onFollow={() => openHelp('small')}>
+                      <Link variant="info" onFollow={() => openHelp('small')} data-testid="info-link-2">
                         Short info text
                       </Link>
                     }
