@@ -114,7 +114,7 @@ function InternalPopover(
     <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
-      className={clsx(popoverClasses, styles.content)}
+      className={clsx(popoverClasses, styles['popover-content'])}
     >
       {visible && (
         <PopoverContainer
