@@ -47,6 +47,10 @@
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
   }
+
+  &-resizable:not(:last-child):before {
+    border-left-color: awsui.$color-border-divider-interactive-default;
+  }
 }
 
 .sorting-icon {
