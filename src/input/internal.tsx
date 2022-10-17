@@ -6,12 +6,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import {
-  fireNonCancelableEvent,
-  fireKeyboardEvent,
-  NonCancelableEventHandler,
-  getBlurEventRelatedTarget,
-} from '../internal/events';
+import { fireNonCancelableEvent, fireKeyboardEvent, NonCancelableEventHandler } from '../internal/events';
 import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
@@ -135,8 +130,7 @@ function InternalInput(
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
       onBlur && fireNonCancelableEvent(onBlur);
-      __onBlurWithDetail &&
-        fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: getBlurEventRelatedTarget(e.nativeEvent) });
+      __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
