@@ -4,9 +4,13 @@
 import { formatTimezoneOffset } from './format-timezone-offset';
 import { isIsoDateOnly } from './is-iso-date-only';
 
-export function formatDateRange(startDate: string, endDate: string, timeOffset?: number): string {
+export function formatDateRange(
+  startDate: string,
+  endDate: string,
+  timeOffset: { startDate?: number; endDate?: number }
+): string {
   const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
-  const formattedStartOffset = isDateOnly ? '' : formatTimezoneOffset(startDate, timeOffset);
-  const formattedEndOffset = isDateOnly ? '' : formatTimezoneOffset(endDate, timeOffset);
+  const formattedStartOffset = isDateOnly ? '' : formatTimezoneOffset(startDate, timeOffset.startDate);
+  const formattedEndOffset = isDateOnly ? '' : formatTimezoneOffset(endDate, timeOffset.endDate);
   return startDate + formattedStartOffset + ' ' + '—' + ' ' + endDate + formattedEndOffset;
 }

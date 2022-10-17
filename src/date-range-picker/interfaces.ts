@@ -89,8 +89,21 @@ export interface DateRangePickerBaseProps {
    * Has no effect when `dateOnly` is true.
    *
    * Default: the user's current time offset as provided by the browser.
+   *
+   * The property is deprecated, use getTimeOffset instead.
+   * @deprecated
    */
   timeOffset?: number;
+
+  /**
+   * A function from ISO8601 date string to return the desired time offset from UTC in minutes.
+   * Use it to define time relative to the desired timezone.
+   *
+   * Has no effect when `dateOnly` is true.
+   *
+   * Default: the user's current time offset as provided by the browser.
+   */
+  getTimeOffset?: (date: string) => number;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,

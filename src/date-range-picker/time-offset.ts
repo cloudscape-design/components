@@ -9,18 +9,15 @@ import { formatTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/dat
  */
 export function setTimeOffset(
   value: DateRangePickerProps.Value | null,
-  timeOffsetInMinutes?: number
+  timeOffset: { startDate?: number; endDate?: number }
 ): DateRangePickerProps.Value | null {
   if (!(value?.type === 'absolute')) {
     return value;
   }
-
-  const { startDate, endDate } = value;
-
   return {
     type: 'absolute',
-    startDate: startDate + formatTimezoneOffset(startDate, timeOffsetInMinutes),
-    endDate: endDate + formatTimezoneOffset(endDate, timeOffsetInMinutes),
+    startDate: value.startDate + formatTimezoneOffset(value.startDate, timeOffset.startDate),
+    endDate: value.endDate + formatTimezoneOffset(value.endDate, timeOffset.endDate),
   };
 }
 
@@ -31,7 +28,7 @@ export function setTimeOffset(
  */
 export function shiftTimeOffset(
   value: null | DateRangePickerProps.Value,
-  timeOffsetInMinutes?: number
+  timeOffset: { startDate?: number; endDate?: number }
 ): DateRangePickerProps.Value | null {
   if (!value || value.type !== 'absolute') {
     return value;
@@ -56,7 +53,22 @@ export function shiftTimeOffset(
 
   return {
     type: 'absolute',
-    startDate: shiftTimezoneOffset(value.startDate, timeOffsetInMinutes),
-    endDate: shiftTimezoneOffset(value.endDate, timeOffsetInMinutes),
+    startDate: shiftTimezoneOffset(value.startDate, timeOffset.startDate),
+    endDate: shiftTimezoneOffset(value.endDate, timeOffset.endDate),
   };
+}
+
+export function normalizeTimeOffset(
+  value: null | DateRangePickerProps.Value,
+  getTimeOffset?: (date: string) => number,
+  timeOffset?: number
+) {
+  if (value && value.type === 'absolute') {
+    if (getTimeOffset) {
+      return { startDate: getTimeOffset(value.startDate), endDate: getTimeOffset(value.endDate) };
+    } else if (timeOffset !== undefined) {
+      return { startDate: timeOffset, endDate: timeOffset };
+    }
+  }
+  return { startDate: undefined, endDate: undefined };
 }
