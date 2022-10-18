@@ -53,7 +53,6 @@ function PageButton({
         )}
         type="button"
         aria-label={ariaLabel}
-        tabIndex={disabled ? -1 : 0}
         disabled={disabled}
         onClick={handleClick}
         aria-current={isCurrent}
