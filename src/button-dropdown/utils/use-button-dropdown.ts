@@ -13,6 +13,7 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onReturnFocus: () => void;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -29,6 +30,7 @@ export function useButtonDropdown({
   items,
   onItemClick,
   onItemFollow,
+  onReturnFocus,
   hasExpandableGroups,
   isInRestrictedView = false,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
@@ -66,6 +68,7 @@ export function useButtonDropdown({
     if (onItemClick) {
       fireCancelableEvent(onItemClick, details, event);
     }
+    onReturnFocus();
     closeDropdown();
   };
 
@@ -146,6 +149,7 @@ export function useButtonDropdown({
         break;
       }
       case KeyCode.escape: {
+        onReturnFocus();
         closeDropdown();
         event.preventDefault();
         break;
