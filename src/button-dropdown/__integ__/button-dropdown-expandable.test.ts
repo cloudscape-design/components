@@ -117,7 +117,7 @@ describe.each([true, false])(
           'does not expand disabled group header',
           setupTest(expandToViewport, async page => {
             await page.focusOnTheTrigger();
-            await page.keys(['Enter', ...new Array(13).fill('ArrowDown'), key]);
+            await page.keys(['Enter', ...new Array(12).fill('ArrowDown'), key]);
 
             expect(await page.getFocusedElementText()).toBe('category4');
           })
@@ -265,22 +265,11 @@ describe.each([true, false])(
         })
       );
       test(
-        'when opening dropdown with mouse and toggling with keyboard',
-        setupTest(expandToViewport, async page => {
-          await page.openDropdown();
-          await expect(page.isDropdownOpen()).resolves.toBe(true);
-          await page.keys(['Enter']);
-          await expect(page.isDropdownOpen()).resolves.toBe(false);
-          await page.keys(['Enter']);
-          await expect(page.isDropdownOpen()).resolves.toBe(true);
-        })
-      );
-      test(
         'when opening dropdown with mouse and navigating with keyboard',
         setupTest(expandToViewport, async page => {
           await page.openDropdown();
           await expect(page.isDropdownOpen()).resolves.toBe(true);
-          await page.keys(['ArrowDown', 'ArrowDown']);
+          await page.keys(['ArrowDown']);
           expect(await page.getFocusedElementText()).toBe('category2');
         })
       );

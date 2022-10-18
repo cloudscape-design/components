@@ -96,7 +96,6 @@ describe('Button Dropdown - Disabled Reason', () => {
   it(
     'opens and closes on keyboard focus',
     setupTest(async page => {
-      await page.keys('ArrowDown');
       await page.waitForVisible(page.findDisabledReason().toSelector());
       expect(await page.getDisabledReason()).toContain('Instance must be running.');
       await page.keys('ArrowDown');

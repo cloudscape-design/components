@@ -49,6 +49,7 @@ const InternalButtonDropdown = React.forwardRef(
 
     const {
       isOpen,
+      onOpen,
       targetItem,
       isHighlighted,
       isKeyboardHighlight,
@@ -94,16 +95,19 @@ const InternalButtonDropdown = React.forwardRef(
     const wasOpen = usePrevious(isOpen);
 
     useEffect(() => {
+      if (isOpen) {
+        // The timeout is added to not interfere with the next effect which causes
+        // the focus not being transitioned if the user opens one button-dropdown after another.
+        // setTimeout(onOpen, 0);
+        onOpen();
+      }
+    }, [isOpen, onOpen]);
+
+    useEffect(() => {
       if (!isOpen && dropdownRef.current && wasOpen) {
         dropdownRef.current.focus();
       }
     }, [isOpen, wasOpen]);
-
-    useEffect(() => {
-      if (isOpen) {
-        (rootRef?.current?.querySelector(`li:first-child [role="menuitem"][tabindex="-1"]`) as HTMLDivElement)?.focus();
-      }
-    }, [isOpen]);
 
     const triggerVariant = variant === 'navigation' ? undefined : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
