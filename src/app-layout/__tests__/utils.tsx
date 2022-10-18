@@ -35,7 +35,7 @@ export function renderComponent(jsx: React.ReactElement) {
     ? wrapper.getElement()
     : wrapper.findByClassName(styles['layout-wrapper'])!.getElement();
 
-  return { wrapper, rerender, isUsingGridLayout, contentElement };
+  return { wrapper, rerender, isUsingGridLayout, contentElement, container };
 }
 
 export function describeDesktopAppLayout(callback: () => void) {

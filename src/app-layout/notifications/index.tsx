@@ -23,12 +23,12 @@ export const Notifications = React.forwardRef(
   ({ sticky, ...props }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
     return sticky ? (
       <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
-        <div className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+        <div role="region" className={clsx(props.testUtilsClassName)} aria-label={props.labels?.notifications}>
           {props.children}
         </div>
       </div>
     ) : (
-      <div ref={ref} className={clsx(props.testUtilsClassName)} role="region" aria-label={props.labels?.notifications}>
+      <div role="region" ref={ref} className={clsx(props.testUtilsClassName)} aria-label={props.labels?.notifications}>
         {props.children}
       </div>
     );

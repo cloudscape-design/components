@@ -106,7 +106,7 @@ const DatePicker = React.forwardRef(
     const memoizedValue = memoizedDate('value', value);
     const baseDate = memoizedValue || new Date();
 
-    const DateInputElement = (
+    const trigger = (
       <div className={styles['date-picker-trigger']}>
         <div className={styles['date-picker-input']}>
           <InternalDateInput
@@ -146,58 +146,58 @@ const DatePicker = React.forwardRef(
 
     baseProps.className = clsx(baseProps.className, styles.root, styles['date-picker-container']);
 
-    if (readOnly || disabled) {
-      return <div {...baseProps}>{DateInputElement}</div>;
-    }
-
     const handleMouseDown = (event: React.MouseEvent) => {
       // prevent currently focused element from losing it
       event.preventDefault();
     };
 
     return (
-      <div {...baseProps} ref={mergedRef} onKeyDown={onWrapperKeyDownHandler}>
-        <Dropdown
-          stretchWidth={true}
-          stretchHeight={true}
-          open={isDropDownOpen}
-          onDropdownClose={onDropdownCloseHandler}
-          onMouseDown={handleMouseDown}
-          trigger={DateInputElement}
-          expandToViewport={expandToViewport}
-          scrollable={false}
-          dropdownId={dropdownId}
-        >
-          {isDropDownOpen && (
-            <FocusLock autoFocus={true}>
-              <div
-                {...focusVisible}
-                tabIndex={0}
-                className={styles.calendar}
-                role="dialog"
-                aria-describedby={calendarDescriptionId}
-                aria-label={ariaLabel}
-                aria-labelledby={ariaLabelledby}
-              >
-                <InternalCalendar
-                  value={value}
-                  onChange={e => {
-                    fireNonCancelableEvent(onChange, e.detail);
-                    buttonRef?.current?.focus();
-                    setIsDropDownOpen(false);
-                  }}
-                  locale={normalizedLocale}
-                  startOfWeek={startOfWeek}
-                  isDateEnabled={isDateEnabled}
-                  todayAriaLabel={todayAriaLabel}
-                  nextMonthAriaLabel={nextMonthAriaLabel}
-                  previousMonthAriaLabel={previousMonthAriaLabel}
-                />
-                <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
-              </div>
-            </FocusLock>
-          )}
-        </Dropdown>
+      <div {...baseProps} ref={mergedRef} onKeyDown={!disabled && !readOnly ? onWrapperKeyDownHandler : undefined}>
+        {disabled || readOnly ? (
+          trigger
+        ) : (
+          <Dropdown
+            stretchWidth={true}
+            stretchHeight={true}
+            open={isDropDownOpen}
+            onDropdownClose={onDropdownCloseHandler}
+            onMouseDown={handleMouseDown}
+            trigger={trigger}
+            expandToViewport={expandToViewport}
+            scrollable={false}
+            dropdownId={dropdownId}
+          >
+            {isDropDownOpen && (
+              <FocusLock autoFocus={true}>
+                <div
+                  {...focusVisible}
+                  tabIndex={0}
+                  className={styles.calendar}
+                  role="dialog"
+                  aria-describedby={calendarDescriptionId}
+                  aria-label={ariaLabel}
+                  aria-labelledby={ariaLabelledby}
+                >
+                  <InternalCalendar
+                    value={value}
+                    onChange={e => {
+                      fireNonCancelableEvent(onChange, e.detail);
+                      buttonRef?.current?.focus();
+                      setIsDropDownOpen(false);
+                    }}
+                    locale={normalizedLocale}
+                    startOfWeek={startOfWeek}
+                    isDateEnabled={isDateEnabled}
+                    todayAriaLabel={todayAriaLabel}
+                    nextMonthAriaLabel={nextMonthAriaLabel}
+                    previousMonthAriaLabel={previousMonthAriaLabel}
+                  />
+                  <LiveRegion id={calendarDescriptionId}>{renderMonthAndYear(normalizedLocale, baseDate)}</LiveRegion>
+                </div>
+              </FocusLock>
+            )}
+          </Dropdown>
+        )}
       </div>
     );
   }
