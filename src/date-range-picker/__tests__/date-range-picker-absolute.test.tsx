@@ -354,7 +354,7 @@ describe('Date range picker', () => {
 
       test('creates offset as a function from date', () => {
         const onChangeSpy = jest.fn();
-        const getTimeOffset = jest.fn().mockImplementation((date: string) => (date.includes('06') ? 120 : 60));
+        const getTimeOffset = jest.fn().mockImplementation((date: Date) => (date.getUTCMonth() === 5 ? 120 : 60));
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           timeOffset: 6.5 * 60, // to be ignored as getTimeOffset is preferred
@@ -380,8 +380,8 @@ describe('Date range picker', () => {
         );
 
         expect(getTimeOffset).toBeCalledTimes(2);
-        expect(getTimeOffset).toBeCalledWith('2018-01-01T00:00:00');
-        expect(getTimeOffset).toBeCalledWith('2018-06-01T23:59:59');
+        expect(getTimeOffset).toBeCalledWith(expect.any(Date));
+        expect(getTimeOffset).toBeCalledWith(expect.any(Date));
       });
     });
 

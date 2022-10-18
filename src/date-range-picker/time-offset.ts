@@ -60,15 +60,24 @@ export function shiftTimeOffset(
 
 export function normalizeTimeOffset(
   value: null | DateRangePickerProps.Value,
-  getTimeOffset?: (date: string) => number,
+  getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction,
   timeOffset?: number
 ) {
   if (value && value.type === 'absolute') {
     if (getTimeOffset) {
-      return { startDate: getTimeOffset(value.startDate), endDate: getTimeOffset(value.endDate) };
+      return {
+        startDate: getTimeOffset(parseDateUTC(value.startDate)),
+        endDate: getTimeOffset(parseDateUTC(value.endDate)),
+      };
     } else if (timeOffset !== undefined) {
       return { startDate: timeOffset, endDate: timeOffset };
     }
   }
   return { startDate: undefined, endDate: undefined };
+}
+
+function parseDateUTC(isoDateString: string): Date {
+  const date = new Date(isoDateString);
+  date.setMinutes(-1 * date.getTimezoneOffset());
+  return date;
 }
