@@ -143,7 +143,7 @@ export default function InternalPagination({
           onClick={handlePageClick}
         />
       ))}
-      {rightDots && <li className={styles.dots}>...</li>}
+      {rightDots && pagesCount > 1 && <li className={styles.dots}>...</li>}
       {!openEnd && pagesCount > 1 && (
         <PageNumber
           isCurrent={currentPageIndex === pagesCount}
