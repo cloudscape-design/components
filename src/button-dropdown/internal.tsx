@@ -63,6 +63,7 @@ const InternalButtonDropdown = React.forwardRef(
       onItemClick,
       onItemFollow,
       onReturnFocus: () => dropdownRef.current?.focus(),
+      expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
     });

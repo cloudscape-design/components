@@ -14,6 +14,7 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onReturnFocus: () => void;
+  expandToViewport?: boolean;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -33,6 +34,7 @@ export function useButtonDropdown({
   onReturnFocus,
   hasExpandableGroups,
   isInRestrictedView = false,
+  expandToViewport = false,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const {
     targetItem,
@@ -155,6 +157,11 @@ export function useButtonDropdown({
         break;
       }
       case KeyCode.tab: {
+        // When expanded to viewport the focus can't move naturally to the next element.
+        // Returning the focus to the trigger instead.
+        if (expandToViewport) {
+          onReturnFocus();
+        }
         closeDropdown();
         break;
       }
