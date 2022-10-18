@@ -14,6 +14,7 @@ import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../calendar/utils/locales';
@@ -274,6 +275,7 @@ function Calendar(
     setEndDateString(e.detail.value);
   };
 
+  const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
       <InternalSpaceBetween size="s">
@@ -290,6 +292,7 @@ function Calendar(
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
             isSingleGrid={isSingleGrid}
+            headingIdPrefix={headingIdPrefix}
           />
 
           <Grids
@@ -305,6 +308,7 @@ function Calendar(
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
+            headingIdPrefix={headingIdPrefix}
           />
         </div>
         <InternalFormField constraintText={i18nStrings.dateTimeConstraintText}>
