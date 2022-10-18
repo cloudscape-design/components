@@ -17,6 +17,10 @@ $calendar-header-color: awsui.$color-text-body-default;
   max-width: 32em;
 }
 
+.focus-lock {
+  display: contents;
+}
+
 .trigger-wrapper {
   min-width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
 }
