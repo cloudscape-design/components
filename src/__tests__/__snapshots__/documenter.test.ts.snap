@@ -5115,7 +5115,7 @@ Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
 
-The property is deprecated, use getTimeOffset instead.",
+This property is deprecated. Use getTimeOffset instead.
       "name": "timeOffset",
       "optional": true,
       "type": "number",
