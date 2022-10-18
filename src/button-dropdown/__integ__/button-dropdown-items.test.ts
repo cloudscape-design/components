@@ -27,12 +27,6 @@ test(
     await page.waitForVisible(page.getTrigger());
     await page.openDropdown();
 
-    const firstTabbableMenuItemText = await page.getItemText('id1');
-
-    const focusedElement = await browser.execute(function () {
-      return document.activeElement!.textContent;
-    });
-
-    expect(focusedElement).toEqual(` ${firstTabbableMenuItemText} `);
+    await expect(page.getFocusedElementText()).resolves.toBe('Option 1');
   })
 );
