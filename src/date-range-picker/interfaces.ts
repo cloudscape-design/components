@@ -96,7 +96,7 @@ export interface DateRangePickerBaseProps {
   timeOffset?: number;
 
   /**
-   * A function from ISO8601 date string to return the desired time offset from UTC in minutes.
+   * A function that receives an ISO8601 date string and returns the desired time offset from UTC in minutes.
    * Use it to define time relative to the desired timezone.
    *
    * Has no effect when `dateOnly` is true.
