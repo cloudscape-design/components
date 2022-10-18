@@ -89,13 +89,7 @@ export default function InternalExpandableSection({
       variant={variant}
       disableContentPaddings={disableContentPaddings}
       header={
-        <ExpandableSectionHeader
-          id={triggerControlId}
-          className={clsx(styles.header, styles[`header-${variant}`])}
-          variant={variant}
-          expanded={!!expanded}
-          {...triggerProps}
-        >
+        <ExpandableSectionHeader id={triggerControlId} variant={variant} expanded={!!expanded} {...triggerProps}>
           {header}
         </ExpandableSectionHeader>
       }

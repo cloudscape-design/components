@@ -34,9 +34,8 @@
 .trigger {
   cursor: pointer;
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   border: none;
-  width: 100%;
   line-height: awsui.$font-body-m-line-height;
   text-align: left;
 
@@ -53,6 +52,7 @@
   &-footer {
     border: awsui.$border-divider-section-width solid transparent;
   }
+
   &-navigation {
     // not needed for focus ring compensation, but to keep this variant vertically aligned with other variants when used together
     border-left: awsui.$border-divider-section-width solid transparent;
@@ -79,17 +79,14 @@
       padding: container.$header-focus-visible-padding;
     }
   }
-
-  &-default.trigger-expanded {
-    border-bottom-color: awsui.$color-border-divider-default;
-  }
 }
 
 .header {
-  display: flex;
+  display: inline-flex;
 
   &-container {
     width: 100%;
+
     > .icon-container {
       margin-top: awsui.$space-expandable-section-icon-offset-top;
       margin-right: awsui.$space-xs;
@@ -124,6 +121,7 @@
 
   &-default {
     padding: awsui.$space-scaled-xs 0;
+    border-top: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
 
   &-footer {
