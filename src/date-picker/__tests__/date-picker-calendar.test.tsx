@@ -309,7 +309,7 @@ describe('Date picker calendar', () => {
         expect(wrapper.findCalendar()).toBeNull();
       });
 
-      test('should allow first date to be focussed after moving dates then navigating between months', () => {
+      test('should allow first date to be focused after moving dates then navigating between months', () => {
         act(() => wrapper.findCalendar()!.keydown(KeyCode.tab));
         act(() => wrapper.findCalendar()!.keydown(KeyCode.tab));
 

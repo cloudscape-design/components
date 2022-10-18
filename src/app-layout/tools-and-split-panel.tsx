@@ -40,6 +40,8 @@ interface ToolsAndSplitPanelProps {
   onToolsToggle: DesktopDrawerProps['onToggle'];
 
   toggleRefs: DesktopDrawerProps['toggleRefs'];
+
+  onLoseToolsFocus: (event: React.FocusEvent) => void;
 }
 
 export function ToolsAndSplitPanel({
@@ -54,6 +56,7 @@ export function ToolsAndSplitPanel({
   splitPanel,
   splitPanelContext,
   toggleRefs,
+  onLoseToolsFocus,
   tools,
   toolsHide,
   toolsOpen,
@@ -87,6 +90,7 @@ export function ToolsAndSplitPanel({
               isOpen={toolsOpen}
               onToggle={onToolsToggle}
               toggleRefs={toggleRefs}
+              onLoseFocus={onLoseToolsFocus}
               isHidden={isHidden}
               externalizedToggle={Boolean(splitPanel)}
               contentClassName={clsx(styles.tools, testutilStyles.tools)}

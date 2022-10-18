@@ -186,13 +186,13 @@ describeEachAppLayout(() => {
       });
 
       test('updates active element in controlled mode', () => {
-        const { wrapper, rerender } = renderComponent(<AppLayout {...{ [openProp]: true, [handler]: () => {} }} />);
-
-        rerender(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
-        expect(findToggle(wrapper).getElement()).toEqual(document.activeElement);
+        const { wrapper, rerender } = renderComponent(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
 
         rerender(<AppLayout {...{ [openProp]: true, [handler]: () => {} }} />);
         expect(findClose(wrapper).getElement()).toEqual(document.activeElement);
+
+        rerender(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
+        expect(findToggle(wrapper).getElement()).toEqual(document.activeElement);
       });
 
       test(`Should not render the drawer if ${hideProp} is set to true`, () => {

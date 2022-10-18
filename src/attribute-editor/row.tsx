@@ -14,30 +14,24 @@ import clsx from 'clsx';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
-interface AttributeProps {
-  info?: React.ReactNode;
-  label?: React.ReactNode;
-  errorText?: React.ReactNode;
-  control?: React.ReactNode;
-  constraintText?: React.ReactNode;
-  hideLabel?: boolean;
-}
-
-const Attribute = ({ control, hideLabel, ...props }: AttributeProps) => (
-  <InternalFormField __hideLabel={hideLabel} {...props} className={styles.field} stretch={true}>
-    {control}
-  </InternalFormField>
-);
-
 export interface RowProps<T> {
   breakpoint: ColumnLayoutBreakpoint | null;
   item: T;
   definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;
+  i18nStrings: AttributeEditorProps.I18nStrings | undefined;
   index: number;
   removable: boolean;
   removeButtonText: string;
   removeButtonRefs: Array<ButtonProps.Ref | undefined>;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+}
+
+function render<T>(
+  item: T,
+  itemIndex: number,
+  slot: AttributeEditorProps.FieldRenderable<T> | React.ReactNode | undefined
+) {
+  return typeof slot === 'function' ? slot(item, itemIndex) : slot;
 }
 
 const GRID_DEFINITION = [{ colspan: { default: 12, xs: 9 } }];
@@ -47,6 +41,7 @@ export const Row = React.memo(
     breakpoint,
     item,
     definition,
+    i18nStrings = {},
     index,
     removable,
     removeButtonText,
@@ -60,9 +55,6 @@ export const Row = React.memo(
       fireNonCancelableEvent(onRemoveButtonClick, { itemIndex: index });
     }, [onRemoveButtonClick, index]);
 
-    const render = (item: T, itemIndex: number, slot: AttributeEditorProps.FieldRenderable<T> | React.ReactNode) =>
-      typeof slot === 'function' ? slot(item, itemIndex) : slot;
-
     return (
       <InternalBox className={styles.row} margin={{ bottom: 'l' }}>
         <InternalGrid
@@ -71,15 +63,19 @@ export const Row = React.memo(
         >
           <InternalColumnLayout className={styles['row-control']} columns={definition.length} __breakpoint={breakpoint}>
             {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
-              <Attribute
+              <InternalFormField
                 key={defIndex}
+                className={styles.field}
                 label={label}
                 info={info}
-                constraintText={constraintText && render(item, index, constraintText)}
-                errorText={errorText && render(item, index, errorText)}
-                control={control && render(item, index, control)}
-                hideLabel={isWideViewport && index > 0}
-              />
+                constraintText={render(item, index, constraintText)}
+                errorText={render(item, index, errorText)}
+                stretch={true}
+                i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
+                __hideLabel={isWideViewport && index > 0}
+              >
+                {render(item, index, control)}
+              </InternalFormField>
             ))}
           </InternalColumnLayout>
           {removable && (

@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DayIndex } from '../internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 
-function setDayIndex(date: Date, dayIndex: DayIndex): void {
+function setDayIndex(date: Date, dayIndex: number): void {
   const diff = dayIndex - date.getDay();
   date.setDate(date.getDate() + diff);
 }
 
-export function renderDayName(locale: string, dayIndex: DayIndex, mode: 'short' | 'long'): string {
+export function renderDayName(locale: string, dayIndex: number, mode: 'short' | 'long'): string {
   const tempDate = new Date();
   setDayIndex(tempDate, dayIndex);
   return tempDate.toLocaleDateString(locale, { weekday: mode });
