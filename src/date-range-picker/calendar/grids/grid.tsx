@@ -57,6 +57,7 @@ export interface GridProps {
   locale: string;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
+  ariaLabelledby: string;
 
   className?: string;
 }
@@ -80,6 +81,7 @@ export function Grid({
   locale,
   startOfWeek,
   todayAriaLabel,
+  ariaLabelledby,
 
   className,
 }: GridProps) {
@@ -95,7 +97,7 @@ export function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <table role="grid" className={clsx(styles.grid, className)}>
+    <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
       <thead>
         <tr>
           {weekdays.map(dayIndex => (
