@@ -77,6 +77,22 @@ export function normalizeTimeOffset(
   return { startDate: undefined, endDate: undefined };
 }
 
+/*
+  Before the getTimeOffset function is used there is no information on the preferred time offset.
+  
+  Besides, the ISO date string might or might not contain the offset:
+  - 2021-02-03T01:02:03
+  - 2021-02-03T01:02:03Z
+  - 2021-02-03T01:02:03+01:00
+  
+  For every value above the date is converted to UTC and the following is true:
+  date.getUTCFullYear() === 2021
+  date.getUTCMonth() === 1
+  date.getUTCDate() === 3
+  date.getUTCHours() === 1
+  date.getUTCMinutes() === 2
+  date.getUTCSeconds() === 3
+*/
 function parseDateUTC(isoDateString: string): Date {
   const date = new Date(isoDateString);
   return addMinutes(date, parseTimezoneOffset(isoDateString));
