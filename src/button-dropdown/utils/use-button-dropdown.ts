@@ -23,7 +23,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  toggleDropdown: () => void;
+  toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
@@ -53,7 +53,14 @@ export function useButtonDropdown({
     isInRestrictedView,
   });
 
-  const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
+  const { isOpen, closeDropdown, ...openStateProps } = useOpenState({ onClose: reset });
+  const toggleDropdown = (options: { moveHighlightOnOpen?: boolean } = {}) => {
+    const moveHighlightOnOpen = options.moveHighlightOnOpen ?? true;
+    if (!isOpen && moveHighlightOnOpen) {
+      moveHighlight(1);
+    }
+    openStateProps.toggleDropdown();
+  };
 
   const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
 
@@ -82,7 +89,6 @@ export function useButtonDropdown({
 
   const openAndSelectFirst = (event: React.KeyboardEvent) => {
     toggleDropdown();
-    moveHighlight(1);
     event.preventDefault();
   };
 
