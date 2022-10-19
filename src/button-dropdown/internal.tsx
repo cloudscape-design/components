@@ -84,7 +84,8 @@ const InternalButtonDropdown = React.forwardRef(
 
     const clickHandler = () => {
       if (!loading && !disabled) {
-        toggleDropdown();
+        // Prevent moving highlight on mobiles to avoid disabled state reason popup if defined.
+        toggleDropdown({ moveHighlightOnOpen: !isInRestrictedView });
       }
     };
 
@@ -144,9 +145,7 @@ const InternalButtonDropdown = React.forwardRef(
           stretchTriggerHeight={variant === 'navigation'}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
-          onDropdownClose={() => {
-            toggleDropdown();
-          }}
+          onDropdownClose={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
         >

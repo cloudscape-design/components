@@ -117,7 +117,7 @@ describe.each([true, false])(
           'does not expand disabled group header',
           setupTest(expandToViewport, async page => {
             await page.focusOnTheTrigger();
-            await page.keys(['Enter', ...new Array(12).fill('ArrowDown'), key]);
+            await page.keys(['Enter', ...new Array(13).fill('ArrowDown'), key]);
 
             expect(await page.getFocusedElementText()).toBe('category4');
           })

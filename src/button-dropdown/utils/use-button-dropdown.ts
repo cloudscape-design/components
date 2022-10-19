@@ -23,7 +23,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  toggleDropdown: () => void;
+  toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
@@ -54,10 +54,9 @@ export function useButtonDropdown({
   });
 
   const { isOpen, closeDropdown, ...openStateProps } = useOpenState({ onClose: reset });
-  const toggleDropdown = () => {
-    // When dropdown opens we want the first item to be highlighted.
-    // This behaviour is ignored for mobiles to avoid disabled reason popop being shown.
-    if (!isOpen) {
+  const toggleDropdown = (options: { moveHighlightOnOpen?: boolean } = {}) => {
+    const moveHighlightOnOpen = options.moveHighlightOnOpen ?? true;
+    if (!isOpen && moveHighlightOnOpen) {
       moveHighlight(1);
     }
     openStateProps.toggleDropdown();
