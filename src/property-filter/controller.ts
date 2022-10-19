@@ -332,7 +332,7 @@ export const getAutosuggestOptions = (
               return {
                 value: parsedText.property.propertyLabel + ' ' + displayValue + ' ',
                 label: parsedText.property.propertyLabel + ' ' + displayValue,
-                description: operatorToDescription(operator, i18nStrings),
+                description: displayValue === operator ? operatorToDescription(operator, i18nStrings) : '',
                 keepOpenOnSelect: true,
               };
             }),
