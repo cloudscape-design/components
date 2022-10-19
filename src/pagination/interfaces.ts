@@ -29,6 +29,12 @@ export interface PaginationProps {
   disabled?: boolean;
 
   /**
+   * If set to `true`, page number will not be rendered
+   * This is used in the case of pagination where services are dependent on token based navigation
+   */
+   hideNumbers?: false | boolean;
+
+  /**
    * Adds aria-labels to the pagination buttons:
    * * `previousPageLabel` (string) - Previous page button.
    * * `pageLabel` (number => string) - Individual page button, this function is called for every page number that's rendered.

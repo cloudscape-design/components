@@ -21,6 +21,7 @@ interface PageButtonProps {
   className?: string;
   ariaLabel: string;
   disabled?: boolean;
+  hideNumbers?: false | boolean;
   pageIndex: number;
   isCurrent?: boolean;
   children?: React.ReactNode;
@@ -31,6 +32,7 @@ function PageButton({
   className,
   ariaLabel,
   disabled,
+  hideNumbers,
   pageIndex,
   isCurrent = false,
   children,
@@ -79,6 +81,7 @@ export default function InternalPagination({
   ariaLabels,
   pagesCount,
   disabled,
+  hideNumbers,
   onChange,
   onNextPageClick,
   onPreviousPageClick,
@@ -124,33 +127,35 @@ export default function InternalPagination({
       >
         <InternalIcon name="angle-left" variant={disabled ? 'disabled' : 'normal'} />
       </PageButton>
-      <PageNumber
-        pageIndex={1}
-        isCurrent={currentPageIndex === 1}
-        disabled={disabled}
-        ariaLabel={pageNumberLabelFn(1)}
-        onClick={handlePageClick}
-      />
-      {leftDots && <li className={styles.dots}>...</li>}
-      {range(leftIndex, rightIndex).map(pageIndex => (
+      {!hideNumbers && (
         <PageNumber
-          key={pageIndex}
-          isCurrent={currentPageIndex === pageIndex}
-          pageIndex={pageIndex}
+          pageIndex={1}
+          isCurrent={currentPageIndex === 1}
           disabled={disabled}
-          ariaLabel={pageNumberLabelFn(pageIndex)}
+          ariaLabel={pageNumberLabelFn(1)}
           onClick={handlePageClick}
         />
-      ))}
-      {rightDots && pagesCount > 1 && <li className={styles.dots}>...</li>}
-      {!openEnd && pagesCount > 1 && (
-        <PageNumber
-          isCurrent={currentPageIndex === pagesCount}
-          pageIndex={pagesCount}
-          disabled={disabled}
-          ariaLabel={pageNumberLabelFn(pagesCount)}
-          onClick={handlePageClick}
-        />
+        {leftDots && <li className={styles.dots}>...</li>}
+        {range(leftIndex, rightIndex).map(pageIndex => (
+          <PageNumber
+            key={pageIndex}
+            isCurrent={currentPageIndex === pageIndex}
+            pageIndex={pageIndex}
+            disabled={disabled}
+            ariaLabel={pageNumberLabelFn(pageIndex)}
+            onClick={handlePageClick}
+          />
+        ))}
+        {rightDots && pagesCount > 1 && <li className={styles.dots}>...</li>}
+        {!openEnd && pagesCount > 1 && (
+          <PageNumber
+            isCurrent={currentPageIndex === pagesCount}
+            pageIndex={pagesCount}
+            disabled={disabled}
+            ariaLabel={pageNumberLabelFn(pagesCount)}
+            onClick={handlePageClick}
+          />
+        )}
       )}
       <PageButton
         className={styles.arrow}
