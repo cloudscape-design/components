@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { setTimeOffset, shiftTimeOffset } from '../time-offset';
+import { setTimeOffset, shiftTimeOffset, normalizeTimeOffset } from '../time-offset';
 
 describe('Date range picker', () => {
   describe('time offset handling', () => {
@@ -116,6 +116,60 @@ describe('Date range picker', () => {
         startDate: '2020-10-11T14:00:00',
         endDate: '2020-10-12T00:00:00',
       });
+    });
+  });
+
+  describe('normalizeTimeOffset', () => {
+    test('ignores non-absolute value', () => {
+      expect(normalizeTimeOffset(null, undefined, 60)).toEqual({ startDate: undefined, endDate: undefined });
+
+      expect(normalizeTimeOffset({ type: 'relative', unit: 'day', amount: 10 }, undefined, 60)).toEqual({
+        startDate: undefined,
+        endDate: undefined,
+      });
+
+      expect(normalizeTimeOffset(null, () => 60)).toEqual({ startDate: undefined, endDate: undefined });
+
+      expect(normalizeTimeOffset({ type: 'relative', unit: 'day', amount: 10 }, () => 60)).toEqual({
+        startDate: undefined,
+        endDate: undefined,
+      });
+    });
+
+    test('prefers getTimeOffset over timeOffset', () => {
+      const getTimeOffset = jest.fn().mockImplementation(date => (date.getFullYear() === 2021 ? 1 : 2));
+      expect(
+        normalizeTimeOffset({ type: 'absolute', startDate: '2020-06-01', endDate: '2021-06-01' }, getTimeOffset, 3)
+      ).toEqual({ startDate: 2, endDate: 1 });
+      expect(getTimeOffset).toBeCalledTimes(2);
+    });
+
+    test('converts getTimeOffset argument to UTC', () => {
+      const getTimeOffset = jest.fn();
+
+      normalizeTimeOffset(
+        { type: 'absolute', startDate: '2020-01-01T00:00:00', endDate: '2020-06-01T23:59:59' },
+        getTimeOffset
+      );
+
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
+
+      normalizeTimeOffset(
+        { type: 'absolute', startDate: '2020-01-01T00:00:00Z', endDate: '2020-06-01T23:59:59Z' },
+        getTimeOffset
+      );
+
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
+
+      normalizeTimeOffset(
+        { type: 'absolute', startDate: '2020-01-01T00:00:00+01:00', endDate: '2020-06-01T23:59:59+02:00' },
+        getTimeOffset
+      );
+
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
     });
   });
 });

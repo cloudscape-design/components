@@ -380,8 +380,6 @@ describe('Date range picker', () => {
         );
 
         expect(getTimeOffset).toBeCalledTimes(2);
-        expect(getTimeOffset).toBeCalledWith(expect.any(Date));
-        expect(getTimeOffset).toBeCalledWith(expect.any(Date));
       });
     });
 

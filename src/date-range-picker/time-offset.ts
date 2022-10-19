@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from './interfaces';
 import { warnOnce } from '../internal/logging';
-import { formatTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { formatTimezoneOffset, parseTimezoneOffset, shiftTimezoneOffset } from '../internal/utils/date-time';
+import { addMinutes } from 'date-fns';
 
 /**
  * Appends a time zone offset to an offset-less date string.
@@ -78,6 +79,5 @@ export function normalizeTimeOffset(
 
 function parseDateUTC(isoDateString: string): Date {
   const date = new Date(isoDateString);
-  date.setMinutes(-1 * date.getTimezoneOffset());
-  return date;
+  return addMinutes(date, parseTimezoneOffset(isoDateString));
 }
