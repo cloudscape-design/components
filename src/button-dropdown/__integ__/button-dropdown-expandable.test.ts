@@ -265,22 +265,11 @@ describe.each([true, false])(
         })
       );
       test(
-        'when opening dropdown with mouse and toggling with keyboard',
-        setupTest(expandToViewport, async page => {
-          await page.openDropdown();
-          await expect(page.isDropdownOpen()).resolves.toBe(true);
-          await page.keys(['Enter']);
-          await expect(page.isDropdownOpen()).resolves.toBe(false);
-          await page.keys(['Enter']);
-          await expect(page.isDropdownOpen()).resolves.toBe(true);
-        })
-      );
-      test(
         'when opening dropdown with mouse and navigating with keyboard',
         setupTest(expandToViewport, async page => {
           await page.openDropdown();
           await expect(page.isDropdownOpen()).resolves.toBe(true);
-          await page.keys(['ArrowDown', 'ArrowDown']);
+          await page.keys(['ArrowDown']);
           expect(await page.getFocusedElementText()).toBe('category2');
         })
       );
