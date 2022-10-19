@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -48,7 +48,6 @@ const InternalButtonDropdown = React.forwardRef(
 
     const {
       isOpen,
-      onOpen,
       targetItem,
       isHighlighted,
       isKeyboardHighlight,
@@ -86,22 +85,10 @@ const InternalButtonDropdown = React.forwardRef(
     const clickHandler = () => {
       if (!loading && !disabled) {
         toggleDropdown();
-        if (dropdownRef.current) {
-          dropdownRef.current.focus();
-        }
       }
     };
 
     const canBeOpened = !loading && !disabled;
-
-    useEffect(() => {
-      if (isOpen) {
-        // The timeout is added to not interfere with the next effect which causes
-        // the focus not being transitioned if the user opens one button-dropdown after another.
-        // setTimeout(onOpen, 0);
-        onOpen();
-      }
-    }, [isOpen, onOpen]);
 
     const triggerVariant = variant === 'navigation' ? undefined : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =

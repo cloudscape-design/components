@@ -8,7 +8,6 @@ import { fireCancelableEvent, CancelableEventHandler, isPlainLeftClick } from '.
 import { KeyCode } from '../../internal/keycode';
 import { getItemTarget, isItemGroup, isLinkItem } from './utils';
 import useHighlightedMenu from './use-highlighted-menu';
-import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 
 interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
@@ -20,7 +19,6 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
 
 interface UseButtonDropdownApi extends HighlightProps {
   isOpen: boolean;
-  onOpen: () => void;
   onKeyDown: (event: React.KeyboardEvent) => void;
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
@@ -55,7 +53,15 @@ export function useButtonDropdown({
     isInRestrictedView,
   });
 
-  const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
+  const { isOpen, closeDropdown, ...openStateProps } = useOpenState({ onClose: reset });
+  const toggleDropdown = () => {
+    // When dropdown opens we want the first item to be highlighted.
+    // This behaviour is ignored for mobiles to avoid disabled reason popop being shown.
+    if (!isOpen) {
+      moveHighlight(1);
+    }
+    openStateProps.toggleDropdown();
+  };
 
   const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
 
@@ -177,17 +183,8 @@ export function useButtonDropdown({
     }
   };
 
-  // When dropdown opens we want the first item to be highlighted.
-  // This behaviour is ignored for mobiles to avoid disabled reason popop being shown.
-  const onOpen = useStableEventHandler(() => {
-    if (!isInRestrictedView) {
-      doVerticalNavigation(1);
-    }
-  });
-
   return {
     isOpen,
-    onOpen,
     targetItem,
     isHighlighted,
     isKeyboardHighlight,
