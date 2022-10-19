@@ -16,7 +16,6 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -77,9 +76,6 @@ const InternalButtonDropdown = React.forwardRef(
 
     const dropdownRef = useRef<HTMLElement>(null);
 
-    const rootRef = useRef<HTMLDivElement>(null);
-    const mergedRootRef = useMergeRefs(rootRef, __internalRootRef);
-
     useForwardFocus(ref, dropdownRef);
 
     const clickHandler = () => {
@@ -137,7 +133,7 @@ const InternalButtonDropdown = React.forwardRef(
         onMouseMove={handleMouseEvent}
         className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
-        ref={mergedRootRef}
+        ref={__internalRootRef}
       >
         <Dropdown
           open={canBeOpened && isOpen}
