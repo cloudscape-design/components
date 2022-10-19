@@ -19,21 +19,7 @@ test(
 );
 
 test(
-  'focus on first menu item when dropdown is opened',
-  useBrowser(async browser => {
-    const page = new ButtonDropdownPage('ButtonDropdown1', browser);
-    await browser.url('#/light/button-dropdown/simple');
-
-    await page.waitForVisible(page.getTrigger());
-    await page.openDropdown();
-
-    await expect(page.getFocusedElementText()).resolves.toBe('Option 1');
-    await expect(page.getHighlightedElementText()).resolves.toBe('Option 1');
-  })
-);
-
-test(
-  'focus on first menu item when second dropdown is opened',
+  'focuses on correct button-dropdown when the two are opened one after another',
   useBrowser(async browser => {
     const page1 = new ButtonDropdownPage('ButtonDropdown3', browser);
     const page2 = new ButtonDropdownPage('ButtonDropdown1', browser);
@@ -45,6 +31,20 @@ test(
 
     await expect(page2.getFocusedElementText()).resolves.toBe('Option 1');
     await expect(page2.getHighlightedElementText()).resolves.toBe('Option 1');
+  })
+);
+
+test(
+  'focus on first menu item when dropdown is opened',
+  useBrowser(async browser => {
+    const page = new ButtonDropdownPage('ButtonDropdown1', browser);
+    await browser.url('#/light/button-dropdown/simple');
+
+    await page.waitForVisible(page.getTrigger());
+    await page.openDropdown();
+
+    await expect(page.getFocusedElementText()).resolves.toBe('Option 1');
+    await expect(page.getHighlightedElementText()).resolves.toBe('Option 1');
   })
 );
 
