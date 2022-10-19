@@ -94,7 +94,6 @@ describe('Button dropdown navigate with mouse or keyboard', () => {
     const wrapper = renderButtonDropdown({ items, expandableGroups: true });
     wrapper.openDropdown();
     act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
     expect(wrapper.findByClassName(categoryElementStyles['expandable-header'])!.getElement()).toHaveClass(
       categoryElementStyles['is-focused']
     );
