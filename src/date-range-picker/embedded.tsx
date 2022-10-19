@@ -13,6 +13,7 @@ import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { DateRangePickerProps, Focusable } from './interfaces';
 import { formatValue } from './use-date-range-picker.js';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { normalizeTimeOffset } from './time-offset';
 
 export interface DateRangePickerEmbeddedProps extends DateRangePickerBaseProps {
   ariaLabelledby?: string;
@@ -31,6 +32,7 @@ export function DateRangePickerEmbedded({
   rangeSelectorMode = 'default',
   onChange,
   timeOffset,
+  getTimeOffset,
 }: DateRangePickerEmbeddedProps) {
   const {
     fillMissingTime,
@@ -50,8 +52,8 @@ export function DateRangePickerEmbedded({
 
   function updateRange(value: DateRangePickerProps.AbsoluteValue | DateRangePickerProps.RelativeValue) {
     const newValue = value.type === 'relative' ? value : fillMissingTime(value);
-
-    fireNonCancelableEvent(onChange, { value: formatValue(newValue, { dateOnly, timeOffset }) });
+    const normalizedTimeOffset = normalizeTimeOffset(newValue, getTimeOffset, timeOffset);
+    fireNonCancelableEvent(onChange, { value: formatValue(newValue, { dateOnly, timeOffset: normalizedTimeOffset }) });
   }
 
   const focusRefs = {

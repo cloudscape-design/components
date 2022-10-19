@@ -4810,6 +4810,31 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "A function that defines timezone offset from UTC in minutes for selected dates.
+Use it to define time relative to the desired timezone.
+The function is called for the start date and the end date and takes a UTC date
+corresponding the selected value as an argument.
+
+Has no effect when \`dateOnly\` is true.
+
+Default: the user's current time offset as provided by the browser.
+",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.GetTimeOffsetFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "number",
+        "type": "function",
+      },
+      "name": "getTimeOffset",
+      "optional": true,
+      "type": "DateRangePickerProps.GetTimeOffsetFunction",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "inlineType": Object {
         "name": "DateRangePickerProps.I18nStrings",
@@ -5103,7 +5128,8 @@ display and produce values.
 Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
-",
+
+This property is deprecated. Use getTimeOffset instead.",
       "name": "timeOffset",
       "optional": true,
       "type": "number",
