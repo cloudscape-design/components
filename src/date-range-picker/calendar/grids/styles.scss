@@ -134,13 +134,14 @@
 .today:not(.in-range) {
   background-color: calendar.$grid-today-background-color;
   border-radius: awsui.$border-radius-item;
+  font-weight: styles.$font-weight-bold;
 }
 
 .selected {
   border-color: transparent;
   position: relative;
   z-index: 2;
-
+  font-weight: styles.$font-weight-bold;
   @include focus-visible.when-visible {
     @include styles.focus-highlight(
       awsui.$space-calendar-grid-selected-focus-outline-gutter,
@@ -183,7 +184,7 @@
 
 .in-range {
   background-color: calendar.$grid-in-range-background-color;
-
+  font-weight: styles.$font-weight-bold;
   @include in-range-borders;
 
   @include in-range-border-radius(top, right);

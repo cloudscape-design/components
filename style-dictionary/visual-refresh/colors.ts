@@ -119,6 +119,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderStatusInfo: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderStatusSuccess: { light: '{colorGreen600}', dark: '{colorGreen500}' },
   colorBorderStatusWarning: { light: '{colorGrey500}', dark: '{colorGrey450}' },
+  colorBorderDividerInteractiveDefault: '{colorBorderDividerDefault}',
   colorBorderTabsDivider: { light: '{colorGrey200}', dark: '{colorGrey600}' },
   colorBorderTabsShadow: '{colorGreyTransparent}',
   colorBorderTabsUnderline: '{colorTextAccent}',

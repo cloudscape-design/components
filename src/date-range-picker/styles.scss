@@ -47,6 +47,8 @@ $calendar-header-color: awsui.$color-text-body-default;
     top: 0;
     bottom: 0;
 
+    margin: 0;
+
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -79,17 +81,16 @@ $calendar-header-color: awsui.$color-text-body-default;
   /* used in test-utils */
 }
 
+.date-and-time-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($calendar-grid-width, 1fr));
+  gap: awsui.$space-xs;
+}
 .date-and-time-wrapper {
   width: $calendar-grid-width;
-}
-.date-and-time-wrapper:not(.date-only) {
   display: grid;
-  column-gap: awsui.$space-xs;
-  grid-template-columns: 1fr 1fr;
-}
-
-.date-and-time-constrainttext {
-  @include styles.form-control-description;
+  gap: awsui.$space-xs;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }
 
 .footer {

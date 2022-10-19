@@ -14,7 +14,6 @@ import { InternalButton } from '../button/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { usePrevious } from '../internal/hooks/use-previous';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
@@ -65,6 +64,8 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       onItemClick,
       onItemFollow,
+      onReturnFocus: () => dropdownRef.current?.focus(),
+      expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
     });
@@ -92,7 +93,6 @@ const InternalButtonDropdown = React.forwardRef(
     };
 
     const canBeOpened = !loading && !disabled;
-    const wasOpen = usePrevious(isOpen);
 
     useEffect(() => {
       if (isOpen) {
@@ -102,12 +102,6 @@ const InternalButtonDropdown = React.forwardRef(
         onOpen();
       }
     }, [isOpen, onOpen]);
-
-    useEffect(() => {
-      if (!isOpen && dropdownRef.current && wasOpen) {
-        dropdownRef.current.focus();
-      }
-    }, [isOpen, wasOpen]);
 
     const triggerVariant = variant === 'navigation' ? undefined : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =

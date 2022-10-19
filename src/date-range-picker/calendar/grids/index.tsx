@@ -41,6 +41,7 @@ export interface GridProps {
   locale: string;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
+  headingIdPrefix: string;
 }
 
 export function selectFocusedDate(
@@ -78,6 +79,7 @@ export const Grids = ({
   locale,
   startOfWeek,
   todayAriaLabel,
+  headingIdPrefix,
 }: GridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
@@ -210,6 +212,7 @@ export const Grids = ({
             locale={locale}
             startOfWeek={startOfWeek}
             todayAriaLabel={todayAriaLabel}
+            ariaLabelledby={`${headingIdPrefix}-prevmonth`}
           />
         )}
         <Grid
@@ -228,6 +231,7 @@ export const Grids = ({
           locale={locale}
           startOfWeek={startOfWeek}
           todayAriaLabel={todayAriaLabel}
+          ariaLabelledby={`${headingIdPrefix}-currentmonth`}
         />
       </InternalSpaceBetween>
     </div>

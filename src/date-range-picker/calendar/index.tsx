@@ -275,16 +275,12 @@ function Calendar(
     setEndDateString(e.detail.value);
   };
 
-  let constrainttextId = useUniqueId('awsui-area-date-range-picker');
-  constrainttextId = i18nStrings.dateTimeConstraintText ? constrainttextId : '';
-
+  const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
-      <InternalSpaceBetween size="m">
-        {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
+      <InternalSpaceBetween size="s">
         <div
           ref={elementRef}
-          role="application"
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
@@ -296,6 +292,7 @@ function Calendar(
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
             isSingleGrid={isSingleGrid}
+            headingIdPrefix={headingIdPrefix}
           />
 
           <Grids
@@ -311,18 +308,18 @@ function Calendar(
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
+            headingIdPrefix={headingIdPrefix}
           />
         </div>
-        <InternalSpaceBetween direction="vertical" size="xxs">
-          <InternalSpaceBetween size="xs" direction={isSingleGrid ? 'vertical' : 'horizontal'}>
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
+        <InternalFormField constraintText={i18nStrings.dateTimeConstraintText}>
+          <div className={styles['date-and-time-container']}>
+            <div className={styles['date-and-time-wrapper']}>
               <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                 <InternalDateInput
                   value={startDateString}
                   className={styles['start-date-input']}
                   onChange={onChangeStartDate}
                   placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
                 />
               </InternalFormField>
               {!dateOnly && (
@@ -333,20 +330,18 @@ function Calendar(
                     format={timeInputFormat}
                     placeholder={timeInputFormat}
                     className={styles['start-time-input']}
-                    ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
               )}
             </div>
 
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
+            <div className={styles['date-and-time-wrapper']}>
               <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                 <InternalDateInput
                   value={endDateString}
                   className={styles['end-date-input']}
                   onChange={onChangeEndDate}
                   placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
                 />
               </InternalFormField>
               {!dateOnly && (
@@ -357,18 +352,12 @@ function Calendar(
                     format={timeInputFormat}
                     placeholder={timeInputFormat}
                     className={styles['end-time-input']}
-                    ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
               )}
             </div>
-          </InternalSpaceBetween>
-          {i18nStrings.dateTimeConstraintText && (
-            <div className={styles['date-and-time-constrainttext']} id={constrainttextId}>
-              {i18nStrings.dateTimeConstraintText}
-            </div>
-          )}
-        </InternalSpaceBetween>
+          </div>
+        </InternalFormField>
       </InternalSpaceBetween>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>

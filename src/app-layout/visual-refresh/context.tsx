@@ -21,6 +21,7 @@ import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
+import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -36,7 +37,7 @@ interface AppLayoutContextProps extends AppLayoutProps {
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
   isSplitPanelOpen?: boolean;
-  isToolsOpen?: boolean;
+  isToolsOpen: boolean;
   layoutElement: React.Ref<HTMLElement>;
   layoutWidth: number;
   mainElement: React.Ref<HTMLDivElement>;
@@ -55,6 +56,7 @@ interface AppLayoutContextProps extends AppLayoutProps {
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
+  toolsFocusControl: FocusControlState;
 }
 
 // TODO simplify default params + typings
@@ -114,6 +116,7 @@ const defaults: AppLayoutContextProps = {
   splitPanelSize: 0,
   stickyNotifications: false,
   tools: null,
+  toolsFocusControl: {} as FocusControlState,
 };
 
 /**
@@ -228,6 +231,8 @@ export const AppLayoutProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
 
+    const toolsFocusControl = useFocusControl(isToolsOpen, true);
+
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean) {
         setIsToolsOpen(isOpen);
@@ -278,9 +283,10 @@ export const AppLayoutProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
+          focusToolsClose: toolsFocusControl.setFocus,
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick]
+      [isMobile, handleNavigationClick, handleToolsClick, toolsFocusControl.setFocus]
     );
 
     /**
@@ -544,6 +550,7 @@ export const AppLayoutProvider = React.forwardRef(
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,
+          toolsFocusControl,
         }}
       >
         {children}

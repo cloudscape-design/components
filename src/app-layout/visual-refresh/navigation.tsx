@@ -33,7 +33,7 @@ export default function Navigation() {
     toolsHide,
   } = useContext(AppLayoutContext);
 
-  const focusRefs = useFocusControl(isNavigationOpen);
+  const { refs: focusRefs } = useFocusControl(isNavigationOpen);
 
   if (navigationHide) {
     return null;
