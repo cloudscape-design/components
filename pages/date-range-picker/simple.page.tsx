@@ -54,6 +54,7 @@ export default function DatePickerScenario() {
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => date.getDate() !== 15}
+            getTimeOffset={date => -1 * date.getTimezoneOffset()}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>
