@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '~components/box';
 import Table from '~components/table';
 import PropertyFilter from '~components/property-filter/i18n';
@@ -9,19 +9,45 @@ import Button from '~components/button';
 import { allItems, TableItem } from './table.data';
 import { columnDefinitions, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import { GlobalI18NContextProvider } from '~components/i18n/context';
+import { I18NContextProvider } from '~components/i18n/context';
+// import { ComponentsI18N } from '~components/i18n/interfaces';
 
-import propertyFilterMessagesGerman from '~components/i18n/messages/de-DE/property-filter';
-import propertyFilterMessagesDefault from '~components/i18n/messages/default/property-filter';
-import { FormField, Select, SpaceBetween } from '~components';
+import { FormField, Select, SpaceBetween, Spinner } from '~components';
+
+const componentsI18nLoader = {
+  default: {
+    core: () => import('~components/i18n/exports/default/core'),
+    collection: () => import('~components/i18n/exports/default/collection'),
+  },
+  ['de-DE']: {
+    core: () => import('~components/i18n/exports/de-DE/core'),
+    collection: () => import('~components/i18n/exports/de-DE/collection'),
+  },
+};
 
 export default function () {
-  const [language, setLanguage] = useState<'default' | 'german'>('default');
+  const [locale, setLocale] = useState<'default' | 'de-DE'>('default');
 
-  const languageSelectOptions = [
+  const localeSelectOptions = [
     { value: 'default', label: 'Default' },
-    { value: 'german', label: 'German' },
+    { value: 'de-DE', label: 'German' },
   ];
+
+  const [messages, setMessages] = useState<null | {
+    [namespace: string]: Record<string, any>;
+  }>(null);
+
+  useEffect(() => {
+    Promise.all([componentsI18nLoader[locale].core(), componentsI18nLoader[locale].collection()]).then(
+      ([core, collection]) => {
+        setMessages({
+          '@cloudscape-design/components': { ...core.default, ...collection.default },
+        });
+      }
+    );
+  }, [locale]);
+
+  // console.log(locale, messages);
 
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
@@ -47,47 +73,41 @@ export default function () {
     sorting: {},
   });
 
-  const messagesGerman = {
-    'property-filter': propertyFilterMessagesGerman,
-  };
-
-  const messagesDefault = {
-    'property-filter': propertyFilterMessagesDefault,
-  };
-
-  const messages = language === 'german' ? messagesGerman : messagesDefault;
-
   return (
-    <GlobalI18NContextProvider messages={messages}>
+    <I18NContextProvider messages={messages ?? {}}>
       <Box margin="m">
-        <SpaceBetween size="l">
-          <FormField label="Interface language">
-            <Select
-              options={languageSelectOptions}
-              selectedOption={languageSelectOptions.find(o => o.value === language) ?? languageSelectOptions[0]}
-              onChange={event => setLanguage(event.detail.selectedOption.value as 'default' | 'german')}
-            />
-          </FormField>
-
-          <Table<TableItem>
-            className="main-content"
-            stickyHeader={true}
-            header={<Header headingTagOverride={'h1'}>Instances</Header>}
-            items={items}
-            {...collectionProps}
-            filter={
-              <PropertyFilter
-                {...propertyFilterProps}
-                virtualScroll={true}
-                countText={`${items.length} matches`}
-                i18nStrings={{} as any}
-                expandToViewport={true}
+        {messages ? (
+          <SpaceBetween size="l">
+            <FormField label="Interface language">
+              <Select
+                options={localeSelectOptions}
+                selectedOption={localeSelectOptions.find(o => o.value === locale) ?? localeSelectOptions[0]}
+                onChange={event => setLocale(event.detail.selectedOption.value as 'default' | 'de-DE')}
               />
-            }
-            columnDefinitions={columnDefinitions.slice(0, 2)}
-          />
-        </SpaceBetween>
+            </FormField>
+
+            <Table<TableItem>
+              className="main-content"
+              stickyHeader={true}
+              header={<Header headingTagOverride={'h1'}>Instances</Header>}
+              items={items}
+              {...collectionProps}
+              filter={
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  virtualScroll={true}
+                  countText={`${items.length} matches`}
+                  i18nStrings={{} as any}
+                  expandToViewport={true}
+                />
+              }
+              columnDefinitions={columnDefinitions.slice(0, 2)}
+            />
+          </SpaceBetween>
+        ) : (
+          <Spinner />
+        )}
       </Box>
-    </GlobalI18NContextProvider>
+    </I18NContextProvider>
   );
 }

@@ -8,43 +8,31 @@ type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };
 
-interface GlobalI18NContextProviderProps {
+interface I18NContextProviderProps {
   children: React.ReactNode;
-  messages: DeepPartial<ComponentsI18N>;
+  messages: {
+    [namespace: string]: Record<string, any>;
+  };
 }
 
 interface ComponentI18NContext {
-  messages: GlobalI18NContextProviderProps['messages'];
+  messages: {
+    [namespace: string]: Record<string, any>;
+  };
 }
 
-const GlobalI18NContext = createContext<ComponentI18NContext>({
+const I18NContext = createContext<ComponentI18NContext>({
   messages: {},
 });
 
-/**
- * To be used like this:
- *
- * import messagesGerman from '@cloudscape-design/translations/de-DE';
- *
- * function MyApp() {
- *   return (
- *     <GlobalI18NContextProvider messages={messagesGerman}>
- *        <SpaceBetween>... application content ...</SpaceBetween>
- *     </GlobalI18NContextProvider>
- *   )
- * }
- *
- */
-export function GlobalI18NContextProvider({ children, messages }: GlobalI18NContextProviderProps) {
+export function I18NContextProvider({ children, messages }: I18NContextProviderProps) {
   const value = useMemo(() => ({ messages }), [messages]);
-
-  return <GlobalI18NContext.Provider value={value}>{children}</GlobalI18NContext.Provider>;
+  return <I18NContext.Provider value={value}>{children}</I18NContext.Provider>;
 }
 
 export function useI18NContext<ComponentName extends keyof ComponentsI18N>(
   componentName: ComponentName
 ): DeepPartial<ComponentsI18N[ComponentName]> {
-  const i18nContext = useContext(GlobalI18NContext);
-
-  return i18nContext.messages[componentName];
+  const i18nContext = useContext(I18NContext);
+  return i18nContext.messages['@cloudscape-design/components'][componentName];
 }
