@@ -16,10 +16,6 @@ const locales = ['default', 'de-DE'];
 async function buildI18nInterfaces() {
   for (const locale of locales) {
     for (const messagesFilePath of await globby(`${process.cwd()}/i18n/messages/**/${locale}.json`)) {
-      if (!messagesFilePath.includes('property-filter')) {
-        continue;
-      }
-
       const componentName = messagesFilePath
         .split('/')
         .slice(-2)[0]
