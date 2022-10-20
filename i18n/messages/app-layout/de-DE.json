@@ -1,0 +1,9 @@
+{
+  "ariaLabels.navigation": "Seitliche Navigation",
+  "ariaLabels.navigationClose": "Seitennavigation schließen",
+  "ariaLabels.navigationToggle": "Seitennavigation öffnen",
+  "ariaLabels.notifications": "Benachrichtigungen",
+  "ariaLabels.tools": "Bedienfeld Hilfe",
+  "ariaLabels.toolsClose": "Hilfe-Panel öffnen",
+  "ariaLabels.toolsToggle": "Hilfe-Panel schließen"
+}

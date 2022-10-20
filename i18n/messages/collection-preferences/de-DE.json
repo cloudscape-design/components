@@ -1,0 +1,9 @@
+{
+  "cancelLabel": "Abbrechen",
+  "confirmLabel": "Bestätigen",
+  "pageSizePreference.title": "Seitengröße",
+  "title": "Präferenzen",
+  "visibleContentPreference.title": "Sichtbare Spalten auswählen",
+  "wrapLinesPreference.description": "Markieren, um den gesamten Text anzuzeigen und die Zeilen umzubrechen",
+  "wrapLinesPreference.title": "Zeilen umbrechen"
+}

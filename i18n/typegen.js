@@ -13,29 +13,50 @@ const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 generateTypes();
 
 async function generateTypes() {
-  for (const messagesFilePath of await listMessagesPaths()) {
-    const componentName = getComponentNameFromPath(messagesFilePath);
-    const interfacesFilePath = messagesFilePath.replace(/en-GB\.json/, 'interfaces.ts');
+  const components = [];
+
+  for (const messagesFilePath of await globby(`${process.cwd()}/i18n/messages/**/default.json`)) {
+    const componentName = messagesFilePath
+      .split('/')
+      .slice(-2)[0]
+      .replace(/\.json/, '');
+    components.push(componentName);
+
+    const interfacesFolderPath = path.join(process.cwd(), 'i18n', 'interfaces', componentName);
+    const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
+
     const messages = JSON.parse(await fs.readFile(messagesFilePath, 'utf-8'));
-
     const namespace = {};
-    Object.entries(messages).forEach(([name, message]) => {
-      defineProperty(name, message, namespace);
-    });
-
-    const content = prettify(
+    Object.entries(messages).forEach(([name, message]) => defineProperty(name, message, namespace));
+    const interfacesFileContent = prettify(
       interfacesFilePath,
       `
-        // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-        // SPDX-License-Identifier: Apache-2.0
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-interface
-        export interface ${componentName}I18n ${renderNamespace(namespace)}
-    `
+      // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+      // SPDX-License-Identifier: Apache-2.0
+            
+      export interface ${pascalCase(componentName)}I18n ${renderNamespace(namespace)}
+      `
     );
 
-    await fs.writeFile(interfacesFilePath, content);
+    await fs.ensureDir(interfacesFolderPath);
+    await fs.writeFile(interfacesFilePath, interfacesFileContent);
   }
+
+  components.sort();
+
+  const indexFilePath = path.join(process.cwd(), 'i18n', 'interfaces', 'index.ts');
+  const indexFileContent = prettify(
+    indexFilePath,
+    `
+    // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    // SPDX-License-Identifier: Apache-2.0
+
+    ${components
+      .map(componentName => `export { ${pascalCase(componentName)}I18n } from './${componentName}'`)
+      .join('\n')}
+    `
+  );
+  await fs.writeFile(indexFilePath, indexFileContent);
 }
 
 function renderNamespace(namespace) {
@@ -80,19 +101,6 @@ function captureVariables(message) {
   } while (searchIndex !== -1);
 
   return variables;
-}
-
-function listMessagesPaths() {
-  return globby(`${__dirname}/components/**/en-GB.json`);
-}
-
-function getComponentNameFromPath(messagesFilePath) {
-  return pascalCase(
-    messagesFilePath
-      .split('/')
-      .slice(-2)[0]
-      .replace(/\.json/, '')
-  );
 }
 
 function prettify(filepath, content) {

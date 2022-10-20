@@ -1,0 +1,8 @@
+{
+  "i18nStrings.chartAriaRoleDescription": "Flächen-Diagramm",
+  "i18nStrings.detailPopoverDismissAriaLabel": "Verwerfen",
+  "i18nStrings.filterSelectedAriaLabel": "Ausgewählt",
+  "i18nStrings.legendAriaLabel": "Legende",
+  "i18nStrings.xAxisAriaRoleDescription": "X-Achse",
+  "i18nStrings.yAxisAriaRoleDescription": "Y-Achse"
+}

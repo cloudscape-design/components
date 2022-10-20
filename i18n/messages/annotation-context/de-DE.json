@@ -1,0 +1,10 @@
+{
+  "i18nStrings.finishButtonText": "Beenden",
+  "i18nStrings.labelDismissAnnotation": "Verwerfen",
+  "i18nStrings.labelHotspotOpen": "Anmerkung öffnen",
+  "i18nStrings.labelHotspotClose": "Anmerkung schließen",
+  "i18nStrings.nextButtonText": "Weiter",
+  "i18nStrings.previousButtonText": "Zurück",
+  "i18nStrings.stepCounterText": "Schritt",
+  "i18nStrings.taskTitle": "Aufgabe"
+}

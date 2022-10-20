@@ -1,0 +1,20 @@
+{
+  "i18nStrings.absoluteModeTitle": "Absolute Reichweite",
+  "i18nStrings.applyButtonLabel": "Anwenden",
+  "i18nStrings.cancelButtonLabel": "Abbrechen",
+  "i18nStrings.clearButtonLabel": "Klären und verwerfen",
+  "i18nStrings.customRelativeRangeDurationLabel": "Dauer",
+  "i18nStrings.customRelativeRangeDurationPlaceholder": "Dauer eintragen",
+  "i18nStrings.customRelativeRangeOptionDescription": "Stellen Sie einen benutzerdefinierten Bereich ein",
+  "i18nStrings.customRelativeRangeOptionLabel": "Benutzerdefinierter Bereich",
+  "i18nStrings.customRelativeRangeUnitLabel": "Einheit der Zeit",
+  "i18nStrings.endDateLabel": "Enddatum",
+  "i18nStrings.endTimeLabel": "Endzeit",
+  "i18nStrings.nextMonthAriaLabel": "Nächster Monat",
+  "i18nStrings.previousMonthAriaLabel": "Letzter Monat",
+  "i18nStrings.relativeModeTitle": "Relativer Bereich",
+  "i18nStrings.relativeRangeSelectionHeading": "Wählen Sie einen Bereich",
+  "i18nStrings.startDateLabel": "Anfangsdatum",
+  "i18nStrings.startTimeLabel": "Startzeit",
+  "i18nStrings.todayAriaLabel": "Heute"
+}

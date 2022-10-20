@@ -10,6 +10,7 @@
   "scripts": {
     "quick-build": "gulp quick-build",
     "build": "NODE_ENV=production gulp build",
+    "build-i18n": "node ./i18n/typegen.js",
     "test": "gulp test",
     "test:unit": "gulp test:unit",
     "test:a11y": "gulp test:a11y",

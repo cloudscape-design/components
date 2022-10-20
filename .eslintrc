@@ -166,6 +166,12 @@
           }
         ]
       }
+    },
+    {
+      "files": ["i18n/interfaces/**"],
+      "rules": {
+        "@typescript-eslint/no-empty-interface": "off"
+      }
     }
   ]
 }
