@@ -12,6 +12,8 @@ module.exports = {
   unit: require('./unit'),
   typescript: require('./typescript'),
   buildPages: require('./build-pages'),
+  buildI18nInterfaces: require('./build-i18n-interfaces'),
+  buildI18nMessages: require('./build-i18n-messages'),
   testUtils: require('./test-utils'),
   a11y: require('./a11y'),
   integ: require('./integ'),

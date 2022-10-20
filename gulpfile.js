@@ -4,7 +4,7 @@
 // our package builds only on NodeJS 12 and above
 require('please-upgrade-node')(require('./package.json'));
 
-const { series, parallel, watch } = require('gulp');
+const { series, parallel, watch, task } = require('gulp');
 const {
   clean,
   docs,
@@ -17,6 +17,8 @@ const {
   styles,
   typescript,
   buildPages,
+  buildI18nInterfaces,
+  buildI18nMessages,
   testUtils,
   a11y,
   integ,
@@ -31,6 +33,7 @@ const quickBuild = series(
 );
 
 exports.clean = clean;
+exports['build-i18n'] = task('build-i18n', parallel(buildI18nInterfaces, buildI18nMessages));
 exports['quick-build'] = quickBuild;
 exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs));
 exports.test = series(unit, integ, a11y);

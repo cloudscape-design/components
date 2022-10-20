@@ -5,7 +5,7 @@
   "i18nStrings.clearFiltersText": "Filter löschen",
   "i18nStrings.dismissAriaLabel": "Verwerfen",
   "i18nStrings.editTokenHeader": "Token bearbeiten",
-  "i18nStrings.enteredTextLabel": "Verwenden",
+  "i18nStrings.enteredTextLabel": "Verwenden: \"${text}\"",
   "i18nStrings.filteringAriaLabel": "Deine Wahl",
   "filteringPlaceholder": "Suchen",
   "i18nStrings.groupPropertiesText": "Eigenschaften",

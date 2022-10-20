@@ -4,15 +4,19 @@
 import { ComponentsI18N } from './interfaces';
 import React, { createContext } from 'react';
 
+type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
+
 interface GlobalI18NContextProviderProps {
   children: React.ReactNode;
-  messages: ComponentsI18N;
+  messages: DeepPartial<ComponentsI18N>;
 }
 
 interface ComponentI18NContextProviderProps<ComponentName extends keyof ComponentsI18N> {
   children: React.ReactNode;
   componentName: ComponentName;
-  messages: ComponentsI18N[ComponentName];
+  messages: DeepPartial<ComponentsI18N[ComponentName]>;
 }
 
 interface ComponentI18N<ComponentName extends keyof ComponentsI18N> {

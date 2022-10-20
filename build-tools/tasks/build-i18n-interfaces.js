@@ -6,13 +6,12 @@ const path = require('path');
 const globby = require('globby');
 const prettier = require('prettier');
 const { pascalCase } = require('change-case');
+const { task } = require('../utils/gulp-utils');
 
 const prettierConfigPath = path.join(process.cwd(), '.prettierrc');
 const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 
-generateTypes();
-
-async function generateTypes() {
+async function buildI18nInterfaces() {
   const components = [];
 
   for (const messagesFilePath of await globby(`${process.cwd()}/i18n/messages/**/default.json`)) {
@@ -115,3 +114,5 @@ function prettify(filepath, content) {
   }
   return content;
 }
+
+module.exports = task('build-i18n-interfaces', buildI18nInterfaces);
