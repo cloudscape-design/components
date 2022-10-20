@@ -22,7 +22,7 @@ async function generateTypes() {
       .replace(/\.json/, '');
     components.push(componentName);
 
-    const interfacesFolderPath = path.join(process.cwd(), 'i18n', 'interfaces', componentName);
+    const interfacesFolderPath = path.join(process.cwd(), 'src', 'i18n', 'interfaces', componentName);
     const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
 
     const messages = JSON.parse(await fs.readFile(messagesFilePath, 'utf-8'));
@@ -44,7 +44,7 @@ async function generateTypes() {
 
   components.sort();
 
-  const indexFilePath = path.join(process.cwd(), 'i18n', 'interfaces', 'index.ts');
+  const indexFilePath = path.join(process.cwd(), 'src', 'i18n', 'interfaces', 'index.ts');
   const indexFileContent = prettify(
     indexFilePath,
     `
@@ -52,8 +52,14 @@ async function generateTypes() {
     // SPDX-License-Identifier: Apache-2.0
 
     ${components
-      .map(componentName => `export { ${pascalCase(componentName)}I18n } from './${componentName}'`)
+      .map(componentName => `import { ${pascalCase(componentName)}I18n } from './${componentName}'`)
       .join('\n')}
+
+    export interface ComponentsI18N {
+      ${components.map(componentName => `['${componentName}']: ${pascalCase(componentName)}I18n;`).join('\n')}
+    }
+
+    export {${components.map(componentName => `${pascalCase(componentName)}I18n`).join(',')}}
     `
   );
   await fs.writeFile(indexFilePath, indexFileContent);
