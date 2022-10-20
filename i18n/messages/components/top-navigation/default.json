@@ -1,5 +1,5 @@
 {
-  "i18nStrings.searchIconAriaLabel": "${tokens.search}",
+  "i18nStrings.searchIconAriaLabel": "${Tokens.search}",
   "i18nStrings.searchDismissIconAriaLabel": "Close search",
   "i18nStrings.overflowMenuTriggerText": "More",
   "i18nStrings.overflowMenuTitleText": "All",

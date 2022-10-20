@@ -1,13 +1,13 @@
 {
   "i18nStrings.allPropertiesLabel": "Alle Immobilien",
-  "i18nStrings.applyActionText": "${tokens.apply}",
-  "i18nStrings.cancelActionText": "${tokens.cancel}",
+  "i18nStrings.applyActionText": "${Tokens.apply}",
+  "i18nStrings.cancelActionText": "${Tokens.cancel}",
   "i18nStrings.clearFiltersText": "Filter löschen",
-  "i18nStrings.dismissAriaLabel": "${tokens.dismiss}",
+  "i18nStrings.dismissAriaLabel": "${Tokens.dismiss}",
   "i18nStrings.editTokenHeader": "Token bearbeiten",
   "i18nStrings.enteredTextLabel": "Verwenden: \"${text}\"",
   "i18nStrings.filteringAriaLabel": "Deine Wahl",
-  "filteringPlaceholder": "${tokens.search}",
+  "filteringPlaceholder": "${Tokens.search}",
   "i18nStrings.groupPropertiesText": "Eigenschaften",
   "i18nStrings.groupValuesText": "Werte",
   "i18nStrings.operationAndText": "und",
@@ -24,7 +24,7 @@
   "i18nStrings.operatorsText": "Betreiber",
   "i18nStrings.propertyText": "Eigenschaft",
   "i18nStrings.removeTokenButtonAriaLabel": "Token entfernen",
-  "i18nStrings.tokenLimitShowFewer": "${tokens.showFewer}",
-  "i18nStrings.tokenLimitShowMore": "${tokens.showMore}",
+  "i18nStrings.tokenLimitShowFewer": "${Tokens.showFewer}",
+  "i18nStrings.tokenLimitShowMore": "${Tokens.showMore}",
   "i18nStrings.valueText": "Wert"
 }

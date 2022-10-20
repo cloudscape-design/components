@@ -1,8 +1,8 @@
 {
   "i18nStrings.chartAriaRoleDescription": "Balkendiagramm",
-  "i18nStrings.detailPopoverDismissAriaLabel": "${tokens.dismiss}",
-  "i18nStrings.filterSelectedAriaLabel": "${tokens.selected}",
-  "i18nStrings.legendAriaLabel": "${tokens.legend}",
-  "i18nStrings.xAxisAriaRoleDescription": "${tokens.xAxis}",
-  "i18nStrings.yAxisAriaRoleDescription": "${tokens.yAxis}"
+  "i18nStrings.detailPopoverDismissAriaLabel": "${Tokens.dismiss}",
+  "i18nStrings.filterSelectedAriaLabel": "${Tokens.selected}",
+  "i18nStrings.legendAriaLabel": "${Tokens.legend}",
+  "i18nStrings.xAxisAriaRoleDescription": "${Tokens.xAxis}",
+  "i18nStrings.yAxisAriaRoleDescription": "${Tokens.yAxis}"
 }

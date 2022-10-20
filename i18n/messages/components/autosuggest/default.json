@@ -1,4 +1,4 @@
 {
   "enteredTextLabel": "Use: \"${value}\"",
-  "selectedAriaLabel": "${tokens.selected}"
+  "selectedAriaLabel": "${Tokens.selected}"
 }

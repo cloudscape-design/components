@@ -1,8 +1,8 @@
 {
-  "i18nStrings.searchIconAriaLabel": "${tokens.search}",
+  "i18nStrings.searchIconAriaLabel": "${Tokens.search}",
   "i18nStrings.searchDismissIconAriaLabel": "Suche schließen",
   "i18nStrings.overflowMenuTriggerText": "Mehr",
   "i18nStrings.overflowMenuTitleText": "Alle",
-  "i18nStrings.overflowMenuBackIconAriaLabel": "${tokens.previous}",
+  "i18nStrings.overflowMenuBackIconAriaLabel": "${Tokens.previous}",
   "i18nStrings.overflowMenuDismissIconAriaLabel": "Menü schließen"
 }

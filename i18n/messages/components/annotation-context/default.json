@@ -1,10 +1,10 @@
 {
   "i18nStrings.finishButtonText": "Finish",
-  "i18nStrings.labelDismissAnnotation": "${tokens.dismiss}",
+  "i18nStrings.labelDismissAnnotation": "${Tokens.dismiss}",
   "i18nStrings.labelHotspotOpen": "Open annotation",
   "i18nStrings.labelHotspotClose": "Close annotation",
-  "i18nStrings.nextButtonText": "${tokens.next}",
-  "i18nStrings.previousButtonText": "${tokens.previous}",
+  "i18nStrings.nextButtonText": "${Tokens.next}",
+  "i18nStrings.previousButtonText": "${Tokens.previous}",
   "i18nStrings.stepCounterText": "Step ${stepIndex} / ${totalStepCount}",
   "i18nStrings.taskTitle": "Task ${taskIndex}: ${taskTitle}"
 }

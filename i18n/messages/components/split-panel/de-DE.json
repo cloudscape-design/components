@@ -1,8 +1,8 @@
 {
   "i18nStrings.closeButtonAriaLabel": "Bedienfeld schließen",
   "i18nStrings.openButtonAriaLabel": "Panel öffnen",
-  "i18nStrings.preferencesCancel": "${tokens.cancel}",
-  "i18nStrings.preferencesConfirm": "${tokens.confirm}",
+  "i18nStrings.preferencesCancel": "${Tokens.cancel}",
+  "i18nStrings.preferencesConfirm": "${Tokens.confirm}",
   "i18nStrings.preferencesPositionBottom": "Unten",
   "i18nStrings.preferencesPositionDescription": "Wählen Sie die standardmäßige Position des geteilten Panels für den Dienst.",
   "i18nStrings.preferencesPositionLabel": "Geteilte Panel-",

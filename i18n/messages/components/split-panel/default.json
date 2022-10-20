@@ -1,8 +1,8 @@
 {
   "i18nStrings.closeButtonAriaLabel": "Close panel",
   "i18nStrings.openButtonAriaLabel": "Open panel",
-  "i18nStrings.preferencesCancel": "${tokens.cancel}",
-  "i18nStrings.preferencesConfirm": "${tokens.confirm}",
+  "i18nStrings.preferencesCancel": "${Tokens.cancel}",
+  "i18nStrings.preferencesConfirm": "${Tokens.confirm}",
   "i18nStrings.preferencesPositionBottom": "Bottom",
   "i18nStrings.preferencesPositionDescription": "Choose the default split panel position for the service.",
   "i18nStrings.preferencesPositionLabel": "Split panel position",

@@ -1,9 +1,9 @@
 {
-  "cancelLabel": "${tokens.cancel}",
-  "confirmLabel": "${tokens.confirm}",
+  "cancelLabel": "${Tokens.cancel}",
+  "confirmLabel": "${Tokens.confirm}",
   "pageSizePreference.title": "Page size",
-  "title": "${tokens.preferences}",
+  "title": "${Tokens.preferences}",
   "visibleContentPreference.title": "Select visible columns",
   "wrapLinesPreference.description": "Check to see all the text and wrap the lines",
-  "wrapLinesPreference.title": "${tokens.wrapLines}"
+  "wrapLinesPreference.title": "${Tokens.wrapLines}"
 }
