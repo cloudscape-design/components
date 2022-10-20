@@ -1,0 +1,9 @@
+{
+  "cancelLabel": "${tokens.cancel}",
+  "confirmLabel": "${tokens.confirm}",
+  "pageSizePreference.title": "Page size",
+  "title": "${tokens.preferences}",
+  "visibleContentPreference.title": "Select visible columns",
+  "wrapLinesPreference.description": "Check to see all the text and wrap the lines",
+  "wrapLinesPreference.title": "${tokens.wrapLines}"
+}

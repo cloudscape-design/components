@@ -1,0 +1,7 @@
+{
+  "nextMonthAriaLabel": "${tokens.nextMonth}",
+  "openCalendarAriaLabel:empty": "Datum wählen",
+  "openCalendarAriaLabel:selected": "Wählen Sie Datum, ausgewähltes Datum ist ${selectedDate}",
+  "previousMonthAriaLabel": "${tokens.previousMonth}",
+  "todayAriaLabel": "${tokens.today}"
+}

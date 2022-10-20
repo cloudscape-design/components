@@ -5,15 +5,15 @@ const fs = require('fs-extra');
 const path = require('path');
 const globby = require('globby');
 const prettier = require('prettier');
-const { task } = require('../utils/gulp-utils');
 const { pascalCase } = require('change-case');
+const { task } = require('../utils/gulp-utils');
 
 const prettierConfigPath = path.join(process.cwd(), '.prettierrc');
 const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 
 const locales = ['default', 'de-DE'];
 
-async function buildI18nInterfaces() {
+async function buildI18nMessages() {
   for (const locale of locales) {
     for (const messagesFilePath of await globby(`${process.cwd()}/i18n/messages/**/${locale}.json`)) {
       const componentName = messagesFilePath
@@ -102,4 +102,4 @@ function prettify(filepath, content) {
   return content;
 }
 
-module.exports = task('build-i18n-interfaces', buildI18nInterfaces);
+module.exports = task('build-i18n-messages', buildI18nMessages);

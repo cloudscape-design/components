@@ -8,60 +8,82 @@ const prettier = require('prettier');
 const { pascalCase } = require('change-case');
 const { task } = require('../utils/gulp-utils');
 
+const messagesPath = path.join(process.cwd(), 'i18n', 'messages');
+const i18nOutputPath = path.join(process.cwd(), 'src', 'i18n', 'interfaces');
+
 const prettierConfigPath = path.join(process.cwd(), '.prettierrc');
 const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 
 async function buildI18nInterfaces() {
+  const components = await generateComponentTypes();
+
+  await writeIndexFile(components);
+
+  await writeTokensFile();
+}
+
+async function generateComponentTypes() {
   const components = [];
 
-  for (const messagesFilePath of await globby(`${process.cwd()}/i18n/messages/**/default.json`)) {
+  for (const messagesFilePath of await globby(path.join(messagesPath, '**/default.json'))) {
     const componentName = messagesFilePath
       .split('/')
       .slice(-2)[0]
       .replace(/\.json/, '');
     components.push(componentName);
 
-    const interfacesFolderPath = path.join(process.cwd(), 'src', 'i18n', 'interfaces', componentName);
+    const interfacesFileContent = await generateInterfaceForJSON(`${pascalCase(componentName)}I18n`, messagesFilePath);
+
+    const interfacesFolderPath = path.join(i18nOutputPath, componentName);
     const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
-
-    const messages = JSON.parse(await fs.readFile(messagesFilePath, 'utf-8'));
-    const namespace = {};
-    Object.entries(messages).forEach(([name, message]) => defineProperty(name, message, namespace));
-    const interfacesFileContent = prettify(
-      interfacesFilePath,
-      `
-      // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-      // SPDX-License-Identifier: Apache-2.0
-            
-      export interface ${pascalCase(componentName)}I18n ${renderNamespace(namespace)}
-      `
-    );
-
     await fs.ensureDir(interfacesFolderPath);
     await fs.writeFile(interfacesFilePath, interfacesFileContent);
   }
+  return components;
+}
 
-  components.sort();
-
-  const indexFilePath = path.join(process.cwd(), 'src', 'i18n', 'interfaces', 'index.ts');
+async function writeIndexFile(components) {
+  const sorted = [...components].sort();
+  const indexFilePath = path.join(i18nOutputPath, 'index.ts');
   const indexFileContent = prettify(
     indexFilePath,
     `
     // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
     // SPDX-License-Identifier: Apache-2.0
 
-    ${components
-      .map(componentName => `import { ${pascalCase(componentName)}I18n } from './${componentName}'`)
-      .join('\n')}
+    ${sorted.map(componentName => `import { ${pascalCase(componentName)}I18n } from './${componentName}'`).join('\n')}
 
     export interface ComponentsI18N {
-      ${components.map(componentName => `['${componentName}']: ${pascalCase(componentName)}I18n;`).join('\n')}
+      ${sorted.map(componentName => `['${componentName}']: ${pascalCase(componentName)}I18n;`).join('\n')}
     }
 
-    export {${components.map(componentName => `${pascalCase(componentName)}I18n`).join(',')}}
+    export {${sorted.map(componentName => `${pascalCase(componentName)}I18n`).join(',')}}
     `
   );
   await fs.writeFile(indexFilePath, indexFileContent);
+}
+
+async function generateInterfaceForJSON(interfaceName, jsonPath) {
+  const messages = JSON.parse(await fs.readFile(jsonPath, 'utf-8'));
+  const namespace = {};
+  Object.entries(messages).forEach(([name, message]) => defineProperty(name, message, namespace));
+  return prettify(
+    'temp.ts',
+    `
+      // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+      // SPDX-License-Identifier: Apache-2.0
+            
+      export interface ${interfaceName} ${renderNamespace(namespace)}
+      `
+  );
+}
+
+async function writeTokensFile() {
+  const tokensDefinitionPath = path.join(messagesPath, 'tokens', 'default.json');
+
+  const tokensInterface = await generateInterfaceForJSON('Tokens', tokensDefinitionPath);
+
+  await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
 }
 
 function renderNamespace(namespace) {
@@ -100,7 +122,10 @@ function captureVariables(message) {
     const startIndex = message.indexOf('${', searchIndex);
     const endIndex = startIndex !== -1 ? message.indexOf('}', startIndex) : -1;
     if (startIndex !== -1 && endIndex !== -1) {
-      variables.push(message.slice(startIndex + 2, endIndex));
+      const variableName = message.slice(startIndex + 2, endIndex);
+      if (!variableName.startsWith('tokens.')) {
+        variables.push();
+      }
     }
     searchIndex = endIndex;
   } while (searchIndex !== -1);
