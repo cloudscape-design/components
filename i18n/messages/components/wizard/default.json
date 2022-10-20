@@ -1,6 +1,6 @@
 {
-  "i18nStrings.stepNumberLabel": "Step ${stepNumber}",
-  "i18nStrings.collapsedStepsLabel": "Step ${stepNumber} of ${stepsCount}",
+  "i18nStrings.stepNumberLabel": "$ARG{stepNumber}Step ${stepNumber}",
+  "i18nStrings.collapsedStepsLabel": "$ARG{stepNumber}$ARG{stepsCount}Step ${stepNumber} of ${stepsCount}",
   "i18nStrings.cancelButton": "${Tokens.cancel}",
   "i18nStrings.previousButton": "${Tokens.previous}",
   "i18nStrings.nextButton": "${Tokens.next}",

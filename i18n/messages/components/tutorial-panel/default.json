@@ -10,8 +10,8 @@
   "i18nStrings.restartTutorialButtonText": "Restart tutorial",
   "i18nStrings.feedbackLinkText": "Feedback",
   "i18nStrings.dismissTutorialButtonText": "Dismiss tutorial",
-  "i18nStrings.taskTitle": "Task ${taskIndex}: ${taskTitle}",
-  "i18nStrings.stepTitle": "Step ${stepIndex}: ${stepTitle}",
-  "i18nStrings.labelTotalSteps": "Total steps: ${totalStepCount}",
+  "i18nStrings.taskTitle": "$ARG{taskIndex}$ARG{taskTitle}Task ${taskIndex}: ${taskTitle}",
+  "i18nStrings.stepTitle": "$ARG{stepIndex}$ARG{stepTitle}Step ${stepIndex}: ${stepTitle}",
+  "i18nStrings.labelTotalSteps": "$ARG{totalStepCount}Total steps: ${totalStepCount}",
   "i18nStrings.labelLearnMoreExternalIcon": "${Tokens.opensNewTab}"
 }

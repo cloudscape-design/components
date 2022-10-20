@@ -1,7 +1,7 @@
 {
   "nextMonthAriaLabel": "${Tokens.nextMonth}",
   "openCalendarAriaLabel:empty": "Choose Date",
-  "openCalendarAriaLabel:selected": "Choose Date, selected date is ${selectedDate}",
+  "openCalendarAriaLabel:selected": "$ARG{selectedDate}Choose Date, selected date is ${selectedDate}",
   "previousMonthAriaLabel": "${Tokens.previousMonth}",
   "todayAriaLabel": "${Tokens.today}"
 }

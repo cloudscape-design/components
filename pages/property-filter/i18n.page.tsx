@@ -47,11 +47,7 @@ export default function () {
             {...propertyFilterProps}
             virtualScroll={true}
             countText={`${items.length} matches`}
-            i18nStrings={
-              {
-                removeTokenButtonAriaLabel: () => 'Remove token',
-              } as any
-            }
+            i18nStrings={{} as any}
             expandToViewport={true}
           />
         }
