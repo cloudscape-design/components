@@ -113,7 +113,7 @@ function generateInterfaceForJSON(componentName, messages) {
 function generateMessagesForJSON(componentName, defaultMessages, localeMessages) {
   const namespace = {};
   Object.entries(defaultMessages).forEach(([name, message]) =>
-    defineMessagesProperty(componentName, name, message, localeMessages[name], namespace)
+    defineMessagesProperty(componentName, name, message, localeMessages[name] ?? message, namespace)
   );
   const definition = renderMessagesNamespace(namespace);
   return prettify(
@@ -122,11 +122,7 @@ function generateMessagesForJSON(componentName, defaultMessages, localeMessages)
     // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
     // SPDX-License-Identifier: Apache-2.0
 
-    ${
-      definition.indexOf(`${pascalCase(componentName)}Props`) !== -1
-        ? `import {${pascalCase(componentName)}Props} from '../../../${componentName}/interfaces'`
-        : ''
-    }
+    ${definition.indexOf(`Tokens.`) !== -1 ? `import Tokens from './tokens';` : ''}
     import { ${pascalCase(componentName)}I18n } from '../../interfaces';
           
     const messages: ${pascalCase(componentName)}I18n = ${definition};
@@ -138,11 +134,16 @@ function generateMessagesForJSON(componentName, defaultMessages, localeMessages)
 
 async function writeTokensFile() {
   const tokensDefinitionPath = path.join(messagesPath, 'tokens', 'default.json');
-  const messages = JSON.parse(await fs.readFile(tokensDefinitionPath, 'utf-8'));
+  const dictionary = await getDictionary(tokensDefinitionPath);
 
-  const tokensInterface = generateInterfaceForJSON('Tokens', messages);
+  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.default);
 
   await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
+
+  for (const locale of locales) {
+    const tokensMessages = generateMessagesForJSON('Tokens', dictionary.default, dictionary[locale]);
+    await fs.writeFile(path.join(i18nOutputMessagesPath, locale, 'tokens.ts'), tokensMessages);
+  }
 }
 
 function renderNamespace(namespace) {
@@ -194,6 +195,7 @@ function definePropertyType(componentName, message) {
 
 function definePropertyValue(componentName, message, localeMessage) {
   const args = captureArguments(componentName, message);
+  localeMessage = localeMessage.replace(/\$ARG\{\w+\}/g, '');
   return args.length === 0 ? `\`${localeMessage}\`` : `(${args.map(arg => arg[0]).join(',')}) => \`${localeMessage}\``;
 }
 
