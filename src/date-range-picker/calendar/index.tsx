@@ -7,7 +7,6 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import moveFocusHandler from '../../calendar/utils/move-focus-handler';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
@@ -15,12 +14,12 @@ import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
-import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { getBaseDate } from '../../calendar/utils/navigation';
 
 export interface DateChangeHandler {
   (detail: Date): void;
@@ -259,7 +258,7 @@ function Calendar(
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDate(newBaseDateMonth, 1, isDateEnabled);
+    const newBaseDate = getBaseDate(newBaseDateMonth, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
@@ -276,16 +275,12 @@ function Calendar(
     setEndDateString(e.detail.value);
   };
 
-  let constrainttextId = useUniqueId('awsui-area-date-range-picker');
-  constrainttextId = i18nStrings.dateTimeConstraintText ? constrainttextId : '';
-
+  const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
-      <InternalSpaceBetween size="m">
-        {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
+      <InternalSpaceBetween size="s">
         <div
           ref={elementRef}
-          role="application"
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
@@ -297,6 +292,7 @@ function Calendar(
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
             isSingleGrid={isSingleGrid}
+            headingIdPrefix={headingIdPrefix}
           />
 
           <Grids
@@ -312,19 +308,18 @@ function Calendar(
             todayAriaLabel={i18nStrings.todayAriaLabel}
             selectedStartDate={selectedStartDate}
             selectedEndDate={selectedEndDate}
-            handleFocusMove={moveFocusHandler}
+            headingIdPrefix={headingIdPrefix}
           />
         </div>
-        <InternalSpaceBetween direction="vertical" size="xxs">
-          <InternalSpaceBetween size="xs" direction={isSingleGrid ? 'vertical' : 'horizontal'}>
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
+        <InternalFormField constraintText={i18nStrings.dateTimeConstraintText}>
+          <div className={styles['date-and-time-container']}>
+            <div className={styles['date-and-time-wrapper']}>
               <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
                 <InternalDateInput
                   value={startDateString}
                   className={styles['start-date-input']}
                   onChange={onChangeStartDate}
                   placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
                 />
               </InternalFormField>
               {!dateOnly && (
@@ -335,20 +330,18 @@ function Calendar(
                     format={timeInputFormat}
                     placeholder={timeInputFormat}
                     className={styles['start-time-input']}
-                    ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
               )}
             </div>
 
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
+            <div className={styles['date-and-time-wrapper']}>
               <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
                 <InternalDateInput
                   value={endDateString}
                   className={styles['end-date-input']}
                   onChange={onChangeEndDate}
                   placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
                 />
               </InternalFormField>
               {!dateOnly && (
@@ -359,22 +352,14 @@ function Calendar(
                     format={timeInputFormat}
                     placeholder={timeInputFormat}
                     className={styles['end-time-input']}
-                    ariaDescribedby={constrainttextId}
                   />
                 </InternalFormField>
               )}
             </div>
-          </InternalSpaceBetween>
-          {i18nStrings.dateTimeConstraintText && (
-            <div className={styles['date-and-time-constrainttext']} id={constrainttextId}>
-              {i18nStrings.dateTimeConstraintText}
-            </div>
-          )}
-        </InternalSpaceBetween>
+          </div>
+        </InternalFormField>
       </InternalSpaceBetween>
-      <LiveRegion>
-        <span className={styles['calendar-aria-live']}>{announcement}</span>
-      </LiveRegion>
+      <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>
   );
 }

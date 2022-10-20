@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { DateRangePickerProps } from './interfaces';
 import { setTimeOffset } from './time-offset';
+
 /**
  * This function fills in a start and end time if they are missing.
  */
@@ -21,7 +22,7 @@ function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset?: number; dateOnly: boolean }
+  { timeOffset, dateOnly }: { timeOffset: { startDate?: number; endDate?: number }; dateOnly: boolean }
 ): null | DateRangePickerProps.Value {
   if (!value || value.type === 'relative') {
     return value;

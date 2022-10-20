@@ -64,6 +64,7 @@ export function TableHeaderCell({
   return (
     <th
       className={clsx(className, {
+        [styles['header-cell-resizable']]: !!resizer,
         [styles['header-cell-sortable']]: sortingStatus,
         [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
         [styles['header-cell-disabled']]: sortingDisabled,

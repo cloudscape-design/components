@@ -49,7 +49,12 @@ export default function () {
                     Create distribution
                   </Header>
                   {alertVisible && (
-                    <Alert dismissible={true} dismissAriaLabel="Close alert" onDismiss={() => setVisible(false)}>
+                    <Alert
+                      statusIconAriaLabel="Info"
+                      dismissible={true}
+                      dismissAriaLabel="Close alert"
+                      onDismiss={() => setVisible(false)}
+                    >
                       Demo alert
                     </Alert>
                   )}

@@ -65,7 +65,7 @@ const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsBlue11000: { light: '#01437d', dark: '#b3e4f8' },
   colorChartsBlue11100: { light: '#003c75', dark: '#caedfc' },
   colorChartsBlue11200: { light: '#00366d', dark: '#ddf4ff' },
-  colorChartsBlue2300: { light: '#7492e7', dark: '#486de8' },
+  colorChartsBlue2300: { light: '#688ae8', dark: '#486de8' },
   colorChartsBlue2400: { light: '#5978e3', dark: '#6384f5' },
   colorChartsBlue2500: { light: '#4066df', dark: '#7698fe' },
   colorChartsBlue2600: { light: '#3759ce', dark: '#8ea9ff' },

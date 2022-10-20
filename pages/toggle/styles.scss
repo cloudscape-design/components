@@ -4,7 +4,7 @@
 */
 .highlightLabels {
   /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
-  [class*='awsui_label-wrapper'] {
+  label {
     box-shadow: 0 0 0 1px green;
   }
 }

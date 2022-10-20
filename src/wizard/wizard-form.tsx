@@ -86,6 +86,7 @@ export default function WizardForm({
         }
         secondaryActions={secondaryActions}
         errorText={errorText}
+        errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
         {content}
       </InternalForm>

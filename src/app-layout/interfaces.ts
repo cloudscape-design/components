@@ -206,6 +206,13 @@ export namespace AppLayoutProps {
      * to control the state by listening to `toolsChange` and providing `toolsOpen`.
      */
     openTools(): void;
+
+    /**
+     * Focuses the tools panel if it is open. Use this to focus the tools panel
+     * after changing the content, for example when clicking on an 'info' link while
+     * the panel is already open.
+     */
+    focusToolsClose(): void;
   }
 
   export interface Labels {

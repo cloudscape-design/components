@@ -8,6 +8,7 @@ import InternalBox from '../box/internal';
 import styles from './styles.css.js';
 import { FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import LiveRegion from '../internal/components/live-region';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 
@@ -15,6 +16,7 @@ export default function InternalForm({
   children,
   header,
   errorText,
+  errorIconAriaLabel,
   actions,
   secondaryActions,
   __internalRootRef,
@@ -25,15 +27,13 @@ export default function InternalForm({
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
       {header && <div className={styles.header}>{header}</div>}
       {children && <div className={styles.content}>{children}</div>}
-      <div aria-live="assertive">
-        {errorText && (
-          <InternalBox margin={{ top: 'l' }}>
-            <InternalAlert type="error">
-              <div className={styles.error}>{errorText}</div>
-            </InternalAlert>
-          </InternalBox>
-        )}
-      </div>
+      {errorText && (
+        <InternalBox margin={{ top: 'l' }}>
+          <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
+            <div className={styles.error}>{errorText}</div>
+          </InternalAlert>
+        </InternalBox>
+      )}
       {(actions || secondaryActions) && (
         <div className={styles.footer}>
           <div className={styles['actions-section']}>
@@ -41,6 +41,11 @@ export default function InternalForm({
             {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
           </div>
         </div>
+      )}
+      {errorText && (
+        <LiveRegion assertive={true}>
+          {errorIconAriaLabel}, {errorText}
+        </LiveRegion>
       )}
     </div>
   );

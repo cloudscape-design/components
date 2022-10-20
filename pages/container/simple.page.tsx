@@ -22,7 +22,7 @@ export default function SimpleContainers() {
                 description={
                   <>
                     Some additional text{' '}
-                    <Link fontSize="body-s" variant="primary">
+                    <Link fontSize="inherit" variant="primary">
                       with a link
                     </Link>
                     .
@@ -95,6 +95,11 @@ export default function SimpleContainers() {
             <Container variant="stacked" header="Stacked Container 3">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
               tortor, mollis vitae molestie sed, malesuada.
+            </Container>
+          </div>
+          <div style={{ display: 'grid', minHeight: 300 }}>
+            <Container header={<Header variant="h2">Fixed Height Container</Header>} footer="Footer">
+              Content area takes the available vertical space
             </Container>
           </div>
         </SpaceBetween>
