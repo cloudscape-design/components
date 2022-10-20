@@ -1,0 +1,19 @@
+{
+  "i18nStrings.cursorPosition": "Lin${row}, Col${column}",
+  "i18nStrings.editorGroupAriaLabel": "Editor ausblenden",
+  "i18nStrings.errorsTab": "Fehler",
+  "i18nStrings.errorState": "Beim Laden des Code-Editors ist ein Fehler aufgetreten.",
+  "i18nStrings.errorStateRecovery": "Erneut versuchen",
+  "i18nStrings.loadingState": "Code-Editor wird geladen",
+  "i18nStrings.paneCloseButtonAriaLabel": "Schließen",
+  "i18nStrings.preferencesButtonAriaLabel": "${tokens.preferences}",
+  "i18nStrings.preferencesModalCancel": "${tokens.cancel}",
+  "i18nStrings.preferencesModalConfirm": "${tokens.confirm}",
+  "i18nStrings.preferencesModalDarkThemes": "Dunkle Themen",
+  "i18nStrings.preferencesModalHeader": "${tokens.preferences}",
+  "i18nStrings.preferencesModalLightThemes": "Leichte Themen",
+  "i18nStrings.preferencesModalTheme": "Thema",
+  "i18nStrings.preferencesModalWrapLines": "${tokens.wrapLines}",
+  "i18nStrings.statusBarGroupAriaLabel": "Statusleiste",
+  "i18nStrings.warningsTab": "Warnung"
+}

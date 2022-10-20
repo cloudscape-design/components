@@ -1,0 +1,17 @@
+{
+  "i18nStrings.labelsTaskStatus.pending": "${tokens.pending}",
+  "i18nStrings.labelsTaskStatus.in-progress": "${tokens.inProgress}",
+  "i18nStrings.labelsTaskStatus.success": "${tokens.success}",
+  "i18nStrings.loadingText": "${tokens.loading}",
+  "i18nStrings.tutorialCompletedText": "Tutorial completed",
+  "i18nStrings.labelExitTutorial": "Dismiss tutorial",
+  "i18nStrings.learnMoreLinkText": "Learn more",
+  "i18nStrings.startTutorialButtonText": "Start tutorial",
+  "i18nStrings.restartTutorialButtonText": "Restart tutorial",
+  "i18nStrings.feedbackLinkText": "Feedback",
+  "i18nStrings.dismissTutorialButtonText": "Dismiss tutorial",
+  "i18nStrings.taskTitle": "Task ${taskIndex}: ${taskTitle}",
+  "i18nStrings.stepTitle": "Step ${stepIndex}: ${stepTitle}",
+  "i18nStrings.labelTotalSteps": "Total steps: ${totalStepCount}",
+  "i18nStrings.labelLearnMoreExternalIcon": "${tokens.opensNewTab}"
+}

@@ -1,0 +1,4 @@
+{
+  "i18nStrings.limitShowFewer": "${tokens.showFewer}",
+  "i18nStrings.limitShowMore": "${tokens.showMore}"
+}

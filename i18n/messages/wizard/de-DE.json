@@ -1,8 +1,0 @@
-{
-  "i18nStrings.stepNumberLabel": "Schritt",
-  "i18nStrings.collapsedStepsLabel": "Schritt${stepNumber} von${stepsCount}",
-  "i18nStrings.cancelButton": "Abbrechen",
-  "i18nStrings.previousButton": "Zurück",
-  "i18nStrings.nextButton": "Weiter",
-  "i18nStrings.optional": "optional"
-}

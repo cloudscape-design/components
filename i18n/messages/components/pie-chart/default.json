@@ -1,0 +1,7 @@
+{
+  "i18nStrings.chartAriaRoleDescription": "Pie chart",
+  "i18nStrings.detailPopoverDismissAriaLabel": "${tokens.dismiss}",
+  "i18nStrings.filterSelectedAriaLabel": "${tokens.selected}",
+  "i18nStrings.legendAriaLabel": "${tokens.legend}",
+  "i18nStrings.segmentAriaRoleDescription": "Segment"
+}

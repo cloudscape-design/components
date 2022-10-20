@@ -1,7 +1,0 @@
-{
-  "nextMonthAriaLabel": "Nächster Monat",
-  "openCalendarAriaLabel:empty": "Datum wählen",
-  "openCalendarAriaLabel:selected": "Wählen Sie Datum, ausgewähltes Datum ist${selectedDate}",
-  "previousMonthAriaLabel": "Letzter Monat",
-  "todayAriaLabel": "Heute"
-}

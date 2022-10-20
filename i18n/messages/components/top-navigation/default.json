@@ -1,0 +1,8 @@
+{
+  "i18nStrings.searchIconAriaLabel": "${tokens.search}",
+  "i18nStrings.searchDismissIconAriaLabel": "Close search",
+  "i18nStrings.overflowMenuTriggerText": "More",
+  "i18nStrings.overflowMenuTitleText": "All",
+  "i18nStrings.overflowMenuBackIconAriaLabel": "Back",
+  "i18nStrings.overflowMenuDismissIconAriaLabel": "Close menu"
+}

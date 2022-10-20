@@ -1,0 +1,8 @@
+{
+  "i18nStrings.chartAriaRoleDescription": "Gemischtes Diagramm",
+  "i18nStrings.detailPopoverDismissAriaLabel": "${tokens.dismiss}",
+  "i18nStrings.filterSelectedAriaLabel": "${tokens.selected}",
+  "i18nStrings.legendAriaLabel": "${tokens.legend}",
+  "i18nStrings.xAxisAriaRoleDescription": "${tokens.xAxis}",
+  "i18nStrings.yAxisAriaRoleDescription": "${tokens.yAxis}"
+}

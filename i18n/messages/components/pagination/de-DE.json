@@ -1,0 +1,5 @@
+{
+  "ariaLabels.nextPageLabel": "${tokens.nextPage}",
+  "ariaLabels.pageLabel": "Seite ${pageNumber} aller Seiten",
+  "ariaLabels.previousPageLabel": "${tokens.previousPage}"
+}
