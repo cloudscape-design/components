@@ -3,31 +3,16 @@
 
 import React from 'react';
 
-import { PropertyFilterProps } from './interfaces';
-
 // eslint-disable-next-line @cloudscape-design/ban-files
-import PropertyFilter from './index';
+import PropertyFilter, { PropertyFilterProps } from './index';
 import { useI18NContext } from '../i18n/context';
-// import { PropertyFilterI18n } from '../i18n/interfaces';
 
-// TODO: create a utility function to merge PropertyFilterProps and PropertyFilterI18n
 type PropertyFilterI18nProps = PropertyFilterProps & {
-  i18nStrings: Partial<PropertyFilterProps['i18nStrings']>;
+  filteringPlaceholder?: string;
+  i18nStrings?: Partial<PropertyFilterProps['i18nStrings']>;
 };
 
 export default function PropertyFilterI18nComponent(props: PropertyFilterI18nProps) {
-  const messages = useI18NContext('property-filter');
-
-  return (
-    <PropertyFilter
-      {...props}
-      {...messages}
-      i18nStrings={
-        {
-          ...props.i18nStrings,
-          ...messages.i18nStrings,
-        } as any
-      }
-    />
-  );
+  const i18n = useI18NContext('property-filter');
+  return <PropertyFilter {...props} {...i18n} i18nStrings={{ ...props.i18nStrings, ...i18n.i18nStrings }} />;
 }

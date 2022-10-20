@@ -4,10 +4,6 @@
 import { ComponentsI18N } from './interfaces';
 import React, { createContext, useContext, useMemo } from 'react';
 
-type DeepPartial<T> = {
-  [P in keyof T]?: DeepPartial<T[P]>;
-};
-
 interface I18NContextProviderProps {
   children: React.ReactNode;
   messages: {
@@ -32,7 +28,7 @@ export function I18NContextProvider({ children, messages }: I18NContextProviderP
 
 export function useI18NContext<ComponentName extends keyof ComponentsI18N>(
   componentName: ComponentName
-): DeepPartial<ComponentsI18N[ComponentName]> {
+): ComponentsI18N[ComponentName] {
   const i18nContext = useContext(I18NContext);
   return i18nContext.messages['@cloudscape-design/components'][componentName];
 }

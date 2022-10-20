@@ -17,3 +17,7 @@
 export type SomeRequired<Type, Keys extends keyof Type> = Type & {
   [Key in Keys]-?: Type[Key];
 };
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};
