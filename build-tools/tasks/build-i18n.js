@@ -11,11 +11,78 @@ const { task } = require('../utils/gulp-utils');
 const messagesPath = path.join(process.cwd(), 'i18n', 'messages');
 const i18nOutputPath = path.join(process.cwd(), 'src', 'i18n', 'interfaces');
 const i18nOutputMessagesPath = path.join(process.cwd(), 'src', 'i18n', 'messages');
+const i18nOutputExportsPath = path.join(process.cwd(), 'src', 'i18n', 'exports');
 
 const prettierConfigPath = path.join(process.cwd(), '.prettierrc');
 const prettierOptions = prettier.resolveConfig.sync(prettierConfigPath);
 
 const locales = ['default', 'de-DE'];
+
+const messageGroups = [
+  {
+    name: 'core',
+    components: [
+      'alert',
+      'autosuggest',
+      'badge',
+      'box',
+      'button-dropdown',
+      'button',
+      'checkbox',
+      'column-layout',
+      'container',
+      'expandable-section',
+      'flashbar',
+      'form-field',
+      'form',
+      'grid',
+      'header',
+      'icon',
+      'input',
+      'link',
+      'modal',
+      'multiselect',
+      'popover',
+      'progress-bar',
+      'radio-group',
+      'segmented-control',
+      'select',
+      'space-between',
+      'spinner',
+      'status-indicator',
+      'tabs',
+      'text-content',
+      'textarea',
+      'tiles',
+      'toggle',
+      'token-group',
+    ],
+  },
+  {
+    name: 'date-time',
+    components: ['calendar', 'date-input', 'date-picker', 'date-range-picker', 'time-input'],
+  },
+  { name: 'charts', components: ['area-chart', 'bar-chart', 'line-chart', 'mixed-line-bar-chart', 'pie-chart'] },
+  { name: 'collection', components: ['cards', 'collection-preferences', 'table', 'pagination', 'property-filter'] },
+  {
+    name: 'layout',
+    components: [
+      'app-layout',
+      'breadcrumb-group',
+      'content-layout',
+      'help-panel',
+      'side-navigation',
+      'split-panel',
+      'top-navigation',
+    ],
+  },
+  { name: 'code-editor', components: ['code-editor'] },
+  { name: 's3-resource-selector', components: ['s3-resource-selector'] },
+  { name: 'tutorials', components: ['annotation-context', 'tutorial-panel', 'hotspot'] },
+  { name: 'attribute-editor', components: ['attribute-editor'] },
+  { name: 'tag-editor', components: ['tag-editor'] },
+  { name: 'wizard', components: ['wizard'] },
+];
 
 async function buildI18n() {
   const components = await generateComponentTypes();
@@ -28,15 +95,15 @@ async function buildI18n() {
 async function generateComponentTypes() {
   const components = [];
 
-  for (const messagesFilePath of await globby(path.join(messagesPath, '**/default.json'))) {
+  for (const sourceFilePath of await globby(path.join(messagesPath, '**/default.json'))) {
     try {
-      const componentName = messagesFilePath
+      const componentName = sourceFilePath
         .split('/')
         .slice(-2)[0]
         .replace(/\.json/, '');
       components.push(componentName);
 
-      const dictionary = await getDictionary(messagesFilePath);
+      const dictionary = await getDictionary(sourceFilePath);
       const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.default);
 
       const interfacesFolderPath = path.join(i18nOutputPath, componentName);
@@ -51,8 +118,36 @@ async function generateComponentTypes() {
         const messagesFilePath = path.join(messagesFolderPath, `${componentName}.ts`);
         await fs.writeFile(messagesFilePath, messagesFileContent);
       }
+
+      for (const locale of locales) {
+        for (const group of messageGroups) {
+          const exportsFolderPath = path.join(i18nOutputExportsPath, locale);
+          await fs.ensureDir(exportsFolderPath);
+          const exportsFilePath = path.join(exportsFolderPath, `${group.name}.ts`);
+
+          const exportsFileContent = prettify(
+            'temp.ts',
+            `
+            // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+            // SPDX-License-Identifier: Apache-2.0
+        
+            ${group.components
+              .map(
+                componentName => `import ${pascalCase(componentName)} from '../../messages/${locale}/${componentName}';`
+              )
+              .join('\n')}
+            
+            export default {
+              ${group.components.map(componentName => `'${componentName}': ${pascalCase(componentName)},`).join('\n')}
+            }
+            `
+          );
+
+          await fs.writeFile(exportsFilePath, exportsFileContent);
+        }
+      }
     } catch (error) {
-      console.error('ERROR', messagesFilePath, error);
+      console.error('ERROR', sourceFilePath, error);
     }
   }
 
