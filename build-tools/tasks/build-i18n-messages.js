@@ -75,7 +75,12 @@ function defineProperty(name, message, namespace) {
 
 function definePropertyType(message) {
   const variables = captureVariables(message);
-  return variables.length === 0 ? `"${message}"` : `({ ${variables.join(',')} }) => \`${message}\``;
+  return variables.length === 0
+    ? `"${message}"`
+    : `({ ${variables.map(varName => varName.replace(/\?/g, '')).join(',')} }) => \`${message.replace(
+        /\$\{\?\w+\}/g,
+        ''
+      )}\``;
 }
 
 function captureVariables(message) {

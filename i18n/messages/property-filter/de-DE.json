@@ -23,7 +23,7 @@
   "i18nStrings.operatorText": "Operator",
   "i18nStrings.operatorsText": "Betreiber",
   "i18nStrings.propertyText": "Eigenschaft",
-  "i18nStrings.removeTokenButtonAriaLabel": "Token entfernen",
+  "i18nStrings.removeTokenButtonAriaLabel": "${?token}Token entfernen",
   "i18nStrings.tokenLimitShowFewer": "Zeige weniger",
   "i18nStrings.tokenLimitShowMore": "Mehr zeigen",
   "i18nStrings.valueText": "Wert"

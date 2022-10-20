@@ -23,7 +23,7 @@
   "i18nStrings.operatorText": "Operator",
   "i18nStrings.operatorsText": "Operators",
   "i18nStrings.propertyText": "Property",
-  "i18nStrings.removeTokenButtonAriaLabel": "Remove token",
+  "i18nStrings.removeTokenButtonAriaLabel": "${?token}Remove token",
   "i18nStrings.tokenLimitShowFewer": "Show fewer",
   "i18nStrings.tokenLimitShowMore": "Show more",
   "i18nStrings.valueText": "Value"
