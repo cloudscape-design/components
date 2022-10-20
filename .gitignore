@@ -11,3 +11,5 @@ src/index.ts
 src/test-utils/dom/index.ts
 src/test-utils/selectors
 src/internal/generated/custom-css-properties/index.*
+src/i18n/interfaces
+src/i18n/messages
