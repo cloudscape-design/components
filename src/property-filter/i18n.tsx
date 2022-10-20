@@ -16,7 +16,7 @@ type PropertyFilterI18nProps = PropertyFilterProps & {
 };
 
 export default function PropertyFilterI18nComponent(props: PropertyFilterI18nProps) {
-  const messages = useI18NContext({ componentName: 'property-filter' });
+  const messages = useI18NContext('property-filter');
 
   return (
     <PropertyFilter
