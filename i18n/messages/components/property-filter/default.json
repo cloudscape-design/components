@@ -23,14 +23,8 @@
   "i18nStrings.operatorText": "Operator",
   "i18nStrings.operatorsText": "Operators",
   "i18nStrings.propertyText": "Property",
-<<<<<<< HEAD:i18n/messages/property-filter/default.json
-  "i18nStrings.removeTokenButtonAriaLabel": "${?token}Remove token",
-  "i18nStrings.tokenLimitShowFewer": "Show fewer",
-  "i18nStrings.tokenLimitShowMore": "Show more",
-=======
   "i18nStrings.removeTokenButtonAriaLabel": "Remove token",
   "i18nStrings.tokenLimitShowFewer": "${tokens.showFewer}",
   "i18nStrings.tokenLimitShowMore": "${tokens.showMore}",
->>>>>>> d66cd868216976eeeb741c11edc7684a869fe0ad:i18n/messages/components/property-filter/default.json
   "i18nStrings.valueText": "Value"
 }

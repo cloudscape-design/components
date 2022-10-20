@@ -26,18 +26,25 @@ async function generateComponentTypes() {
   const components = [];
 
   for (const messagesFilePath of await globby(path.join(messagesPath, '**/default.json'))) {
-    const componentName = messagesFilePath
-      .split('/')
-      .slice(-2)[0]
-      .replace(/\.json/, '');
-    components.push(componentName);
+    try {
+      const componentName = messagesFilePath
+        .split('/')
+        .slice(-2)[0]
+        .replace(/\.json/, '');
+      components.push(componentName);
 
-    const interfacesFileContent = await generateInterfaceForJSON(`${pascalCase(componentName)}I18n`, messagesFilePath);
+      const interfacesFileContent = await generateInterfaceForJSON(
+        `${pascalCase(componentName)}I18n`,
+        messagesFilePath
+      );
 
-    const interfacesFolderPath = path.join(i18nOutputPath, componentName);
-    const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
-    await fs.ensureDir(interfacesFolderPath);
-    await fs.writeFile(interfacesFilePath, interfacesFileContent);
+      const interfacesFolderPath = path.join(i18nOutputPath, componentName);
+      const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
+      await fs.ensureDir(interfacesFolderPath);
+      await fs.writeFile(interfacesFilePath, interfacesFileContent);
+    } catch (error) {
+      console.error('ERROR', messagesFilePath, error);
+    }
   }
   return components;
 }
@@ -108,7 +115,9 @@ function defineProperty(name, message, namespace) {
 }
 
 function definePropertyType(message) {
-  const variables = captureVariables(message).map(varName => varName.replace(/\?/g, ''));
+  const variables = captureVariables(message)
+    .map(varName => varName.replace(/\?/g, ''))
+    .map(varName => pascalCase(varName));
   return variables.length === 0
     ? 'string'
     : `({ ${variables.join(',')} }: { ${[...variables, ''].join(': string,')} }) => string`;

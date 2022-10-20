@@ -23,14 +23,8 @@
   "i18nStrings.operatorText": "Operator",
   "i18nStrings.operatorsText": "Betreiber",
   "i18nStrings.propertyText": "Eigenschaft",
-<<<<<<< HEAD:i18n/messages/property-filter/de-DE.json
-  "i18nStrings.removeTokenButtonAriaLabel": "${?token}Token entfernen",
-  "i18nStrings.tokenLimitShowFewer": "Zeige weniger",
-  "i18nStrings.tokenLimitShowMore": "Mehr zeigen",
-=======
   "i18nStrings.removeTokenButtonAriaLabel": "Token entfernen",
   "i18nStrings.tokenLimitShowFewer": "${tokens.showFewer}",
   "i18nStrings.tokenLimitShowMore": "${tokens.showMore}",
->>>>>>> d66cd868216976eeeb741c11edc7684a869fe0ad:i18n/messages/components/property-filter/de-DE.json
   "i18nStrings.valueText": "Wert"
 }
