@@ -4,6 +4,11 @@
       "count": "number"
     }
   },
+  "i18nStrings.labelFiltering": {
+    "arguments": {
+      "itemsType": "string"
+    }
+  },
   "i18nStrings.labelNotSorted": {
     "arguments": {
       "columnName": "string"

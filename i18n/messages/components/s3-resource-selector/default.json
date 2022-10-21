@@ -20,6 +20,7 @@
   "i18nStrings.inContextVersionSelectLabel": "Object version",
   "i18nStrings.inContextViewButton": "View",
   "i18nStrings.labelBreadcrumbs": "S3 navigation",
+  "i18nStrings.labelFiltering": "Find ${itemsType}",
   "i18nStrings.labelModalDismiss": "${Tokens.dismiss}",
   "i18nStrings.labelNotSorted": "${columnName}, not sorted",
   "i18nStrings.labelRefresh": "Refresh the data",
