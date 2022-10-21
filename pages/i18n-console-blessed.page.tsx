@@ -103,7 +103,6 @@ export default function () {
                   virtualScroll={true}
                   countText={`${items.length} matches`}
                   expandToViewport={true}
-                  i18nStrings={{} as any}
                 />
               </FormField>
 
