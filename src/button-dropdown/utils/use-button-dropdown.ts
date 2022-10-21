@@ -13,6 +13,8 @@ interface UseButtonDropdownOptions extends ButtonDropdownSettings {
   items: ButtonDropdownProps.Items;
   onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+  onReturnFocus: () => void;
+  expandToViewport?: boolean;
 }
 
 interface UseButtonDropdownApi extends HighlightProps {
@@ -21,7 +23,7 @@ interface UseButtonDropdownApi extends HighlightProps {
   onKeyUp: (event: React.KeyboardEvent) => void;
   onItemActivate: ItemActivate;
   onGroupToggle: GroupToggle;
-  toggleDropdown: () => void;
+  toggleDropdown: (options?: { moveHighlightOnOpen?: boolean }) => void;
   setIsUsingMouse: (isUsingMouse: boolean) => void;
 }
 
@@ -29,8 +31,10 @@ export function useButtonDropdown({
   items,
   onItemClick,
   onItemFollow,
+  onReturnFocus,
   hasExpandableGroups,
   isInRestrictedView = false,
+  expandToViewport = false,
 }: UseButtonDropdownOptions): UseButtonDropdownApi {
   const {
     targetItem,
@@ -49,7 +53,14 @@ export function useButtonDropdown({
     isInRestrictedView,
   });
 
-  const { isOpen, closeDropdown, toggleDropdown } = useOpenState({ onClose: reset });
+  const { isOpen, closeDropdown, ...openStateProps } = useOpenState({ onClose: reset });
+  const toggleDropdown = (options: { moveHighlightOnOpen?: boolean } = {}) => {
+    const moveHighlightOnOpen = options.moveHighlightOnOpen ?? true;
+    if (!isOpen && moveHighlightOnOpen) {
+      moveHighlight(1);
+    }
+    openStateProps.toggleDropdown();
+  };
 
   const onGroupToggle: GroupToggle = item => (!isExpanded(item) ? expandGroup(item) : collapseGroup());
 
@@ -66,6 +77,7 @@ export function useButtonDropdown({
     if (onItemClick) {
       fireCancelableEvent(onItemClick, details, event);
     }
+    onReturnFocus();
     closeDropdown();
   };
 
@@ -77,7 +89,6 @@ export function useButtonDropdown({
 
   const openAndSelectFirst = (event: React.KeyboardEvent) => {
     toggleDropdown();
-    moveHighlight(1);
     event.preventDefault();
   };
 
@@ -146,11 +157,17 @@ export function useButtonDropdown({
         break;
       }
       case KeyCode.escape: {
+        onReturnFocus();
         closeDropdown();
         event.preventDefault();
         break;
       }
       case KeyCode.tab: {
+        // When expanded to viewport the focus can't move naturally to the next element.
+        // Returning the focus to the trigger instead.
+        if (expandToViewport) {
+          onReturnFocus();
+        }
         closeDropdown();
         break;
       }

@@ -2,18 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
-import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
+import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
-import { MoveFocusHandler } from '../../../calendar/utils/move-focus-handler';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
 import styles from '../../styles.css.js';
 
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
-import { getBaseDate } from '../get-base-date';
 import { hasValue } from '../../../internal/utils/has-value';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -38,11 +37,11 @@ export interface GridProps {
 
   onSelectDate: DateChangeHandler;
   onChangeMonth: MonthChangeHandler;
-  handleFocusMove: MoveFocusHandler;
 
   locale: string;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
+  headingIdPrefix: string;
 }
 
 export function selectFocusedDate(
@@ -76,11 +75,11 @@ export const Grids = ({
 
   onSelectDate,
   onChangeMonth,
-  handleFocusMove,
 
   locale,
   startOfWeek,
   todayAriaLabel,
+  headingIdPrefix,
 }: GridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
@@ -92,11 +91,10 @@ export const Grids = ({
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
-      // The nearestBaseDate depends on the direction of the month change
-      const direction = isAfter(focusedDate, baseDate) ? 'backwards' : 'forwards';
+      const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
-      const newMonth = !isSingleGrid && direction === 'backwards' ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDate(newMonth, direction === 'backwards' ? -1 : 1, isDateEnabled);
+      const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
+      const nearestBaseDate = getBaseDate(newMonth, isDateEnabled);
 
       const newFocusedDate = selectFocusedDate(focusedDate, nearestBaseDate, isDateEnabled);
 
@@ -123,19 +121,19 @@ export const Grids = ({
         return;
       case KeyCode.right:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.left:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.up:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled);
         break;
       case KeyCode.down:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled);
         break;
       default:
         return;
@@ -214,6 +212,7 @@ export const Grids = ({
             locale={locale}
             startOfWeek={startOfWeek}
             todayAriaLabel={todayAriaLabel}
+            ariaLabelledby={`${headingIdPrefix}-prevmonth`}
           />
         )}
         <Grid
@@ -232,6 +231,7 @@ export const Grids = ({
           locale={locale}
           startOfWeek={startOfWeek}
           todayAriaLabel={todayAriaLabel}
+          ariaLabelledby={`${headingIdPrefix}-currentmonth`}
         />
       </InternalSpaceBetween>
     </div>

@@ -29,8 +29,8 @@ export default function AppBar() {
     toolsHide,
     isAnyPanelOpen,
   } = useContext(AppLayoutContext);
-  const focusRefsNav = useFocusControl(isNavigationOpen);
-  const focusRefsTools = useFocusControl(isToolsOpen);
+  const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
+  const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
   if (navigationHide && !breadcrumbs && toolsHide) {
     return null;

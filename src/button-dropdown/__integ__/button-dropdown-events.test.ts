@@ -61,7 +61,7 @@ describe('clicking on a ButtonDropdown item', () => {
     'allows navigation on item with href - keyboard',
     setupTest('', async page => {
       const oldLocation = await page.getLocation();
-      await page.keys(new Array(12).fill('ArrowDown'));
+      await page.keys(new Array(11).fill('ArrowDown'));
       await page.keys('Enter');
       await expect(page.getLocation()).resolves.not.toEqual(oldLocation);
     })
@@ -70,7 +70,7 @@ describe('clicking on a ButtonDropdown item', () => {
     'allows navigation to be prevented on item with href - keys',
     setupTest('', async page => {
       const oldLocation = await page.getLocation();
-      await page.keys(new Array(7).fill('ArrowDown'));
+      await page.keys(new Array(6).fill('ArrowDown'));
       await page.keys('Enter');
       await expect(page.getLocation()).resolves.toEqual(oldLocation);
     })

@@ -348,6 +348,14 @@ viewport size.",
       "returnType": "void",
     },
     Object {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "Opens the tools panel if it is not already open. Note that it is preferable
 to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`.",
       "name": "openTools",
@@ -1053,6 +1061,23 @@ A maximum of four fields are supported.
       "name": "disableAddButton",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AttributeEditorProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -4785,6 +4810,31 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "A function that defines timezone offset from UTC in minutes for selected dates.
+Use it to define time relative to the desired timezone.
+The function is called for the start date and the end date and takes a UTC date
+corresponding the selected value as an argument.
+
+Has no effect when \`dateOnly\` is true.
+
+Default: the user's current time offset as provided by the browser.
+",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.GetTimeOffsetFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "number",
+        "type": "function",
+      },
+      "name": "getTimeOffset",
+      "optional": true,
+      "type": "DateRangePickerProps.GetTimeOffsetFunction",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "inlineType": Object {
         "name": "DateRangePickerProps.I18nStrings",
@@ -5078,7 +5128,8 @@ display and produce values.
 Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
-",
+
+This property is deprecated. Use getTimeOffset instead.",
       "name": "timeOffset",
       "optional": true,
       "type": "number",

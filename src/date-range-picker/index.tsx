@@ -18,7 +18,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import ButtonTrigger from '../internal/components/button-trigger';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
-import { shiftTimeOffset } from './time-offset';
+import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -35,7 +35,7 @@ function renderDateRange(
   range: null | DateRangePickerProps.Value,
   placeholder: string,
   formatRelativeRange: DateRangePickerProps.I18nStrings['formatRelativeRange'],
-  timeOffset?: number
+  timeOffset: { startDate?: number; endDate?: number }
 ) {
   if (!range) {
     return (
@@ -53,7 +53,7 @@ function renderDateRange(
     );
 
   return (
-    <InternalBox fontWeight="normal" display="inline" color="inherit">
+    <InternalBox fontWeight="normal" display="inline" color="inherit" variant="span">
       {formatted}
     </InternalBox>
   );
@@ -99,6 +99,7 @@ const DateRangePicker = React.forwardRef(
       showClearButton = true,
       dateOnly = false,
       timeOffset,
+      getTimeOffset,
       timeInputFormat = 'hh:mm:ss',
       expandToViewport = false,
       rangeSelectorMode = 'default',
@@ -109,7 +110,8 @@ const DateRangePicker = React.forwardRef(
     const { __internalRootRef } = useBaseComponent('DateRangePicker');
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
-    value = isDateOnly(value) ? value : shiftTimeOffset(value, timeOffset);
+    const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
+    value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
     const { invalid, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
@@ -166,7 +168,12 @@ const DateRangePicker = React.forwardRef(
           }
         }
       }
-      fireNonCancelableEvent(onChange, { value: formatValue(newValue, { dateOnly, timeOffset }) });
+      fireNonCancelableEvent(onChange, {
+        value: formatValue(newValue, {
+          dateOnly,
+          timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
+        }),
+      });
       return validationResult || { valid: true };
     };
 
@@ -222,7 +229,7 @@ const DateRangePicker = React.forwardRef(
             <span className={styles['icon-wrapper']}>
               <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
             </span>
-            {renderDateRange(value, placeholder ?? '', i18nStrings.formatRelativeRange, timeOffset)}
+            {renderDateRange(value, placeholder ?? '', i18nStrings.formatRelativeRange, normalizedTimeOffset)}
           </span>
         </ButtonTrigger>
       </div>
