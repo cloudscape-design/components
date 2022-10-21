@@ -7,7 +7,7 @@
   "i18nStrings.editTokenHeader": "Token bearbeiten",
   "i18nStrings.enteredTextLabel": "Verwenden: \"${text}\"",
   "i18nStrings.filteringAriaLabel": "Deine Wahl",
-  "filteringPlaceholder": "${Tokens.search}",
+  "i18nStrings.filteringPlaceholder": "${Tokens.search}",
   "i18nStrings.groupPropertiesText": "Eigenschaften",
   "i18nStrings.groupValuesText": "Werte",
   "i18nStrings.operationAndText": "und",
