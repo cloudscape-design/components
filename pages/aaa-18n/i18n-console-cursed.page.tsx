@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import DateRangePicker, { DateRangePickerProps } from '~components/date-range-picker';
 import PropertyFilter from '~components/property-filter';
 import S3ResourceSelector from '~components/s3-resource-selector';
-import { allItems } from './property-filter/table.data';
-import { filteringProperties } from './property-filter/common-props';
+import { allItems } from '../property-filter/table.data';
+import { filteringProperties } from '../property-filter/common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { Box, FormField, Select, SpaceBetween } from '~components';
 
