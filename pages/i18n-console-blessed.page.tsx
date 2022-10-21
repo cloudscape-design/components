@@ -10,7 +10,6 @@ import { filteringProperties } from './property-filter/common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { I18NContextProvider } from '~components/i18n/context';
 import { Box, FormField, Select, SpaceBetween, Spinner } from '~components';
-import { i18nStrings as dateRangePickerI18nStrings } from './date-range-picker/common';
 
 const componentsI18nLoader = {
   default: {
@@ -111,11 +110,7 @@ export default function () {
                 <DateRangePicker
                   locale={locale === 'default' ? 'en-GB' : locale}
                   value={{ type: 'absolute', startDate: '2020-01-01', endDate: '2021-01-01' }}
-                  i18nStrings={
-                    {
-                      formatUnit: dateRangePickerI18nStrings.formatUnit,
-                    } as any
-                  }
+                  i18nStrings={{} as any}
                   placeholder="Filter by a date and time range"
                   onChange={() => undefined}
                   relativeOptions={[]}

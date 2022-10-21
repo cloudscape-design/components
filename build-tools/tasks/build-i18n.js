@@ -198,9 +198,9 @@ async function getDictionary(defaultJsonPath) {
 
 function generateInterfaceForJSON(componentName, messages, messagesMeta) {
   const namespace = {};
-  Object.entries(messages).forEach(([name, message]) =>
-    defineProperty(componentName, name, message, messagesMeta?.[name], namespace)
-  );
+  Object.entries(messages)
+    .filter(([name]) => name !== 'enums')
+    .forEach(([name, message]) => defineProperty(componentName, name, message, messagesMeta?.[name], namespace));
   const definition = renderNamespace(namespace);
   return prettify(
     'temp.ts',
@@ -221,16 +221,18 @@ function generateInterfaceForJSON(componentName, messages, messagesMeta) {
 
 function generateMessagesForJSON(componentName, defaultMessages, localeMessages, messagesMeta) {
   const namespace = {};
-  Object.entries(defaultMessages).forEach(([name, message]) =>
-    defineMessagesProperty(
-      componentName,
-      name,
-      message,
-      localeMessages[name] ?? message,
-      messagesMeta?.[name],
-      namespace
-    )
-  );
+  Object.entries(defaultMessages)
+    .filter(([name]) => name !== 'enums')
+    .forEach(([name, message]) =>
+      defineMessagesProperty(
+        componentName,
+        name,
+        message,
+        localeMessages[name] ?? message,
+        messagesMeta?.[name],
+        namespace
+      )
+    );
   const definition = renderMessagesNamespace(namespace);
   return prettify(
     'temp.ts',
@@ -240,6 +242,8 @@ function generateMessagesForJSON(componentName, defaultMessages, localeMessages,
 
     ${definition.indexOf(`Tokens.`) !== -1 ? `import Tokens from './tokens';` : ''}
     import { ${pascalCase(componentName)}I18n } from '../../interfaces';
+
+    ${localeMessages.enums ? `const enums = ${JSON.stringify(localeMessages.enums)} as const;` : ''}
           
     const messages: ${pascalCase(componentName)}I18n = ${definition};
 

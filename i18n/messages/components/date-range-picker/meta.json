@@ -1,0 +1,8 @@
+{
+  "i18nStrings.formatUnit": {
+    "arguments": {
+      "unit": "TimeUnit",
+      "value": "number"
+    }
+  }
+}

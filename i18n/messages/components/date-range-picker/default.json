@@ -16,5 +16,17 @@
   "i18nStrings.relativeRangeSelectionHeading": "Choose a range",
   "i18nStrings.startDateLabel": "Start date",
   "i18nStrings.startTimeLabel": "Start time",
-  "i18nStrings.todayAriaLabel": "${Tokens.today}"
+  "i18nStrings.todayAriaLabel": "${Tokens.today}",
+  "i18nStrings.formatUnit": "${value === 1 ? enums.unit[unit] : enums.unit[unit] + 's'}",
+  "enums": {
+    "unit": {
+      "second": "second",
+      "minute": "minute",
+      "hour": "hour",
+      "day": "day",
+      "week": "week",
+      "month": "month",
+      "year": "year"
+    }
+  }
 }

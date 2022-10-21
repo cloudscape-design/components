@@ -16,5 +16,28 @@
   "i18nStrings.relativeRangeSelectionHeading": "Wählen Sie einen Bereich",
   "i18nStrings.startDateLabel": "Anfangsdatum",
   "i18nStrings.startTimeLabel": "Startzeit",
-  "i18nStrings.todayAriaLabel": "${Tokens.today}"
+  "i18nStrings.todayAriaLabel": "${Tokens.today}",
+  "i18nStrings.formatUnit": "${value === 1 ? enums.unit.singular[unit] : enums.unit.plural[unit]}",
+  "enums": {
+    "unit": {
+      "singular": {
+        "second": "Sekunde",
+        "minute": "Minute",
+        "hour": "Stunde",
+        "day": "Tag",
+        "week": "Woche",
+        "month": "Monat",
+        "year": "Jahr"
+      },
+      "plural": {
+        "second": "Sekunden",
+        "minute": "Minuten",
+        "hour": "Stunden",
+        "day": "Tage",
+        "week": "Wochen",
+        "month": "Monaten",
+        "year": "Jahren"
+      }
+    }
+  }
 }
