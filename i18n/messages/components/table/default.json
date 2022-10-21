@@ -1,4 +1,3 @@
 {
-  "ariaLabels.allItemsSelectionLabel": "Select all",
-  "ariaLabels.itemSelectionLabel": "Select ${itemName}"
+  "ariaLabels.allItemsSelectionLabel": "Select all"
 }

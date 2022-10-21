@@ -91,7 +91,7 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
   /**
    * An object containing all the necessary localized strings required by the component.
    */
-  i18nStrings?: S3ResourceSelectorProps.I18nStrings;
+  i18nStrings: S3ResourceSelectorProps.I18nStrings;
 
   /**
    * Specifies a function that returns all available buckets. The return type of the function should be a promise

@@ -98,7 +98,7 @@ async function buildI18n() {
 async function generateComponentTypes() {
   const components = [];
 
-  for (const sourceFilePath of await globby(path.join(messagesPath, '**/default.json'))) {
+  for (const sourceFilePath of await globby(path.join(messagesPath, '**', 'default.json'))) {
     try {
       const componentName = sourceFilePath
         .split('/')
@@ -106,8 +106,8 @@ async function generateComponentTypes() {
         .replace(/\.json/, '');
       components.push(componentName);
 
-      const dictionary = await getDictionary(sourceFilePath);
-      const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.default, dictionary.meta);
+      const dictionary = await getDictionary(componentName, sourceFilePath);
+      const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.parsed);
 
       const interfacesFolderPath = path.join(i18nOutputPath, componentName);
       const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
@@ -134,7 +134,7 @@ async function generateComponentTypes() {
           const exportsFilePath = path.join(exportsFolderPath, `${group.name}.ts`);
 
           const exportsFileContent = prettify(
-            'temp.ts',
+            exportsFilePath,
             `
             // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
             // SPDX-License-Identifier: Apache-2.0
@@ -154,6 +154,62 @@ async function generateComponentTypes() {
           await fs.writeFile(exportsFilePath, exportsFileContent);
         }
       }
+
+      if (componentName === 'tokens') {
+        //no component to generate for tokens
+        continue;
+      }
+
+      if (
+        ['area-chart', 'bar-chart', 'line-chart', 'mixed-line-bar-chart', 'attribute-editor'].includes(componentName)
+      ) {
+        //can't generate for components with generic types yet
+        continue;
+      }
+      if (['collection-preferences', 'table', 'cards'].includes(componentName)) {
+        //can't generate for components with deeply nested strings
+        continue;
+      }
+
+      const componentClassName = pascalCase(componentName);
+      const i18nComponentFilePath = path.join(process.cwd(), 'src', componentName, 'i18n.tsx');
+      const i18nComponentContent = prettify(
+        i18nComponentFilePath,
+        `
+        // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+        // SPDX-License-Identifier: Apache-2.0
+
+        import React from 'react';
+
+        // eslint-disable-next-line @cloudscape-design/ban-files
+        import ${componentClassName}, { ${componentClassName}Props } from './index';
+        import { useI18NContext } from '../i18n/context';
+        import { ${componentClassName}I18n } from '../i18n/interfaces/${componentName}';
+
+        type ${componentClassName}I18nProps = Omit<${componentClassName}Props, keyof ${componentClassName}I18n> & {
+          [K in keyof Omit<${componentClassName}I18n, 'i18nStrings'>]?: ${componentClassName}I18n[K];
+        } ${
+          dictionary.parsed.i18nStrings
+            ? ` & (${componentClassName}I18n['i18nStrings'] extends ${componentClassName}Props['i18nStrings']
+                ? {
+                  i18nStrings?: Partial<${componentClassName}Props['i18nStrings']> | undefined
+                } : {
+                  i18nStrings: Omit<${componentClassName}Props['i18nStrings'], keyof ${componentClassName}I18n['i18nStrings']> &
+                      Partial<${componentClassName}I18n['i18nStrings']>;
+                })`
+            : ''
+        }
+        ;
+
+        export default function ${componentClassName}I18nComponent(props: ${componentClassName}I18nProps) {
+          const i18n = useI18NContext('${componentName}');
+          return <${componentClassName} {...i18n} {...props} ${
+          dictionary.parsed.i18nStrings ? `i18nStrings={{ ...i18n.i18nStrings, ...props.i18nStrings }}` : ''
+        } />;
+        }
+        `
+      );
+      await fs.writeFile(i18nComponentFilePath, i18nComponentContent);
     } catch (error) {
       console.error('ERROR', sourceFilePath, error);
     }
@@ -183,7 +239,7 @@ async function writeIndexFile(components) {
   await fs.writeFile(indexFilePath, indexFileContent);
 }
 
-async function getDictionary(defaultJsonPath) {
+async function getDictionary(componentName, defaultJsonPath) {
   const dictionary = {};
   for (const locale of locales) {
     const localeJsonPath = defaultJsonPath.replace(/[\w-]+\.json$/, `${locale}.json`);
@@ -193,15 +249,20 @@ async function getDictionary(defaultJsonPath) {
   if (fs.existsSync(metaJsonPath)) {
     dictionary.meta = JSON.parse(await fs.readFile(metaJsonPath, 'utf-8'));
   }
-  return dictionary;
+
+  const parsed = {};
+  Object.entries(dictionary.default)
+    .filter(([name]) => name !== 'enums')
+    .forEach(([name, message]) => defineProperty(componentName, name, message, dictionary.meta?.[name], parsed));
+
+  return {
+    ...dictionary,
+    parsed,
+  };
 }
 
-function generateInterfaceForJSON(componentName, messages, messagesMeta) {
-  const namespace = {};
-  Object.entries(messages)
-    .filter(([name]) => name !== 'enums')
-    .forEach(([name, message]) => defineProperty(componentName, name, message, messagesMeta?.[name], namespace));
-  const definition = renderNamespace(namespace);
+function generateInterfaceForJSON(componentName, messages) {
+  const definition = renderNamespace(messages);
   return prettify(
     'temp.ts',
     `
@@ -254,9 +315,9 @@ function generateMessagesForJSON(componentName, defaultMessages, localeMessages,
 
 async function writeTokensFile() {
   const tokensDefinitionPath = path.join(messagesPath, 'tokens', 'default.json');
-  const dictionary = await getDictionary(tokensDefinitionPath);
+  const dictionary = await getDictionary('Tokens', tokensDefinitionPath);
 
-  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.default, dictionary.meta);
+  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.parsed);
 
   await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
 
@@ -332,7 +393,7 @@ function captureArguments(componentName, message, messageMeta) {
 }
 
 function prettify(filepath, content) {
-  if (prettierOptions && ['.ts', '.js', '.json'].some(ext => filepath.endsWith(ext))) {
+  if (prettierOptions && ['.ts', '.tsx', '.js', '.json'].some(ext => filepath.endsWith(ext))) {
     return prettier.format(content, { ...prettierOptions, filepath });
   }
   return content;
