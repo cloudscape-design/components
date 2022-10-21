@@ -4,12 +4,11 @@ import React, { useEffect, useState } from 'react';
 import DateRangePicker from '~components/date-range-picker/i18n';
 import PropertyFilter from '~components/property-filter/i18n';
 import S3ResourceSelector from '~components/s3-resource-selector/i18n';
-import Button from '~components/button';
 import { allItems } from './property-filter/table.data';
 import { filteringProperties } from './property-filter/common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { I18NContextProvider } from '~components/i18n/context';
-import { Box, FormField, Select, SpaceBetween, Spinner } from '~components';
+import { Box, DateRangePickerProps, FormField, Select, SpaceBetween, Spinner } from '~components';
 
 const componentsI18nLoader = {
   default: {
@@ -26,13 +25,13 @@ const componentsI18nLoader = {
   },
 };
 
+const localeSelectOptions = [
+  { value: 'default', label: 'Default' },
+  { value: 'de-DE', label: 'German' },
+];
+
 export default function () {
   const [locale, setLocale] = useState<'default' | 'de-DE'>('default');
-
-  const localeSelectOptions = [
-    { value: 'default', label: 'Default' },
-    { value: 'de-DE', label: 'German' },
-  ];
 
   const [messages, setMessages] = useState<null | {
     [namespace: string]: Record<string, any>;
@@ -56,35 +55,20 @@ export default function () {
     });
   }, [locale]);
 
-  const { items, actions, propertyFilterProps } = useCollection(allItems, {
+  const { items, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
-      empty: 'empty',
-      noMatch: (
-        <Box textAlign="center" color="inherit">
-          <Box variant="strong" textAlign="center" color="inherit">
-            No matches
-          </Box>
-          <Box variant="p" padding={{ bottom: 's' }} color="inherit">
-            We can’t find a match.
-          </Box>
-          <Button
-            onClick={() => actions.setPropertyFiltering({ tokens: [], operation: propertyFilterProps.query.operation })}
-          >
-            Clear filter
-          </Button>
-        </Box>
-      ),
       filteringProperties,
       defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
     },
     sorting: {},
   });
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRangePickerProps['value']>(null);
 
   return (
     <I18NContextProvider messages={messages ?? {}}>
       <Box margin="m">
         {messages ? (
-          <SpaceBetween size="l">
+          <SpaceBetween size="xxl">
             <FormField label="Interface language">
               <div style={{ width: '200px' }}>
                 <Select
@@ -95,45 +79,51 @@ export default function () {
               </div>
             </FormField>
 
-            <SpaceBetween size="m">
-              <FormField label={<Box color="text-status-info">property-filter</Box>}>
-                <PropertyFilter
-                  {...propertyFilterProps}
-                  virtualScroll={true}
-                  countText={`${items.length} matches`}
-                  expandToViewport={true}
-                />
-              </FormField>
+            <hr />
 
-              <FormField label={<Box color="text-status-info">date-range-picker</Box>}>
-                <DateRangePicker
-                  locale={locale === 'default' ? 'en-GB' : locale}
-                  value={{ type: 'absolute', startDate: '2020-01-01', endDate: '2021-01-01' }}
-                  i18nStrings={{} as any}
-                  placeholder="Filter by a date and time range"
-                  onChange={() => undefined}
-                  relativeOptions={[]}
-                  isValidRange={() => ({} as any)}
-                />
-              </FormField>
+            <FormField label="Property filter">
+              <PropertyFilter
+                {...propertyFilterProps}
+                virtualScroll={true}
+                countText={locale === 'default' ? `${items.length} matches` : `${items.length} Ergebnisse`}
+                expandToViewport={true}
+              />
+            </FormField>
 
-              <FormField label={<Box color="text-status-info">s3-resource-selector</Box>}>
-                <S3ResourceSelector
-                  resource={{ uri: '' }}
-                  viewHref=""
-                  selectableItemsTypes={['objects']}
-                  bucketsVisibleColumns={['CreationDate', 'Region', 'Name']}
-                  i18nStrings={
-                    {
-                      labelFiltering: (itemsType: string) => `Find ${itemsType}`,
-                    } as any
-                  }
-                  fetchBuckets={() => Promise.resolve([])}
-                  fetchObjects={() => Promise.resolve([])}
-                  fetchVersions={() => Promise.resolve([])}
-                />
-              </FormField>
-            </SpaceBetween>
+            <FormField label="Date range picker">
+              <DateRangePicker
+                locale={locale === 'default' ? 'en-GB' : locale}
+                value={selectedDateRange}
+                onChange={event => setSelectedDateRange(event.detail.value)}
+                relativeOptions={[
+                  {
+                    key: 'previous-1-hour',
+                    amount: 1,
+                    unit: 'hour',
+                    type: 'relative',
+                  },
+                  {
+                    key: 'previous-6-hours',
+                    amount: 6,
+                    unit: 'hour',
+                    type: 'relative',
+                  },
+                ]}
+                isValidRange={() => ({ valid: true })}
+              />
+            </FormField>
+
+            <FormField>
+              <S3ResourceSelector
+                resource={{ uri: '' }}
+                viewHref=""
+                selectableItemsTypes={['objects']}
+                bucketsVisibleColumns={['CreationDate', 'Region', 'Name']}
+                fetchBuckets={() => Promise.resolve([])}
+                fetchObjects={() => Promise.resolve([])}
+                fetchVersions={() => Promise.resolve([])}
+              />
+            </FormField>
           </SpaceBetween>
         ) : (
           <Spinner />

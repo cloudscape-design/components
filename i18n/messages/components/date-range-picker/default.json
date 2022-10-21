@@ -18,6 +18,8 @@
   "i18nStrings.startTimeLabel": "Start time",
   "i18nStrings.todayAriaLabel": "${Tokens.today}",
   "i18nStrings.formatUnit": "${value === 1 ? enums.unit[unit] : enums.unit[unit] + 's'}",
+  "i18nStrings.formatRelativeRange": "${value.amount} ${value.amount === 1 ? enums.unit[value.unit] : enums.unit[value.unit] + 's'}",
+  "placeholder": "Filter by a date and time range",
   "enums": {
     "unit": {
       "second": "second",

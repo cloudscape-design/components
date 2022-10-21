@@ -4,5 +4,10 @@
       "unit": "TimeUnit",
       "value": "number"
     }
+  },
+  "i18nStrings.formatRelativeRange": {
+    "arguments": {
+      "value": "RelativeValue"
+    }
   }
 }
