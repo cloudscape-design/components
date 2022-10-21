@@ -84,6 +84,9 @@ const messageGroups = [
   { name: 'wizard', components: ['wizard'] },
 ];
 
+const allMessages = messageGroups.reduce((acc, { components }) => [...acc, ...components], []);
+messageGroups.push({ name: 'all', components: [...new Set(allMessages)].sort() });
+
 async function buildI18n() {
   const components = await generateComponentTypes();
 
