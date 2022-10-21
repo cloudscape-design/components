@@ -8,7 +8,9 @@ import S3ResourceSelector, { S3ResourceSelectorProps } from './index';
 import { useI18NContext } from '../i18n/context';
 
 type S3ResourceSelectorI18nProps = S3ResourceSelectorProps & {
-  i18nStrings: Partial<S3ResourceSelectorProps['i18nStrings']>;
+  i18nStrings: Partial<S3ResourceSelectorProps['i18nStrings']> & {
+    labelFiltering: (itemsType: string) => string;
+  };
 };
 
 export default function S3ResourceSelectorI18nComponent(props: S3ResourceSelectorI18nProps) {

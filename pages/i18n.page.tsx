@@ -5,6 +5,7 @@ import Box from '~components/box';
 import Table from '~components/table';
 import DateRangePicker from '~components/date-range-picker/i18n';
 import PropertyFilter from '~components/property-filter/i18n';
+import S3ResourceSelector from '~components/s3-resource-selector/i18n';
 import Header from '~components/header';
 import Button from '~components/button';
 import { allItems, TableItem } from './property-filter/table.data';
@@ -18,11 +19,13 @@ const componentsI18nLoader = {
     core: () => import('~components/i18n/exports/default/core'),
     collection: () => import('~components/i18n/exports/default/collection'),
     'date-time': () => import('~components/i18n/exports/default/date-time'),
+    's3-resource-selector': () => import('~components/i18n/exports/default/s3-resource-selector'),
   },
   ['de-DE']: {
     core: () => import('~components/i18n/exports/de-DE/core'),
     collection: () => import('~components/i18n/exports/de-DE/collection'),
     'date-time': () => import('~components/i18n/exports/de-DE/date-time'),
+    's3-resource-selector': () => import('~components/i18n/exports/de-DE/s3-resource-selector'),
   },
 };
 
@@ -43,9 +46,15 @@ export default function () {
       componentsI18nLoader[locale].core(),
       componentsI18nLoader[locale].collection(),
       componentsI18nLoader[locale]['date-time'](),
-    ]).then(([core, collection, dateTime]) => {
+      componentsI18nLoader[locale]['s3-resource-selector'](),
+    ]).then(([core, collection, dateTime, seResourceSelector]) => {
       setMessages({
-        '@cloudscape-design/components': { ...core.default, ...collection.default, ...dateTime.default },
+        '@cloudscape-design/components': {
+          ...core.default,
+          ...collection.default,
+          ...dateTime.default,
+          ...seResourceSelector.default,
+        },
       });
     });
   }, [locale]);
@@ -80,11 +89,13 @@ export default function () {
         {messages ? (
           <SpaceBetween size="l">
             <FormField label="Interface language">
-              <Select
-                options={localeSelectOptions}
-                selectedOption={localeSelectOptions.find(o => o.value === locale) ?? localeSelectOptions[0]}
-                onChange={event => setLocale(event.detail.selectedOption.value as 'default' | 'de-DE')}
-              />
+              <div style={{ width: '200px' }}>
+                <Select
+                  options={localeSelectOptions}
+                  selectedOption={localeSelectOptions.find(o => o.value === locale) ?? localeSelectOptions[0]}
+                  onChange={event => setLocale(event.detail.selectedOption.value as 'default' | 'de-DE')}
+                />
+              </div>
             </FormField>
 
             <Table<TableItem>
@@ -94,13 +105,18 @@ export default function () {
               items={items}
               {...collectionProps}
               filter={
-                <PropertyFilter
-                  {...propertyFilterProps}
-                  virtualScroll={true}
-                  countText={`${items.length} matches`}
-                  expandToViewport={true}
-                  i18nStrings={{} as any}
-                  customControl={
+                <SpaceBetween size="m">
+                  <FormField label="property-filter">
+                    <PropertyFilter
+                      {...propertyFilterProps}
+                      virtualScroll={true}
+                      countText={`${items.length} matches`}
+                      expandToViewport={true}
+                      i18nStrings={{} as any}
+                    />
+                  </FormField>
+
+                  <FormField label="date-range-picker">
                     <DateRangePicker
                       locale={locale === 'default' ? 'en-GB' : locale}
                       value={{ type: 'absolute', startDate: '2020-01-01', endDate: '2021-01-01' }}
@@ -110,8 +126,25 @@ export default function () {
                       relativeOptions={[]}
                       isValidRange={() => ({} as any)}
                     />
-                  }
-                />
+                  </FormField>
+
+                  <FormField label="s3-resource-selector">
+                    <S3ResourceSelector
+                      resource={{ uri: '' }}
+                      viewHref=""
+                      selectableItemsTypes={['objects']}
+                      bucketsVisibleColumns={['CreationDate', 'Region', 'Name']}
+                      i18nStrings={
+                        {
+                          labelFiltering: (itemsType: string) => `Find ${itemsType}`,
+                        } as any
+                      }
+                      fetchBuckets={() => Promise.resolve([])}
+                      fetchObjects={() => Promise.resolve([])}
+                      fetchVersions={() => Promise.resolve([])}
+                    />
+                  </FormField>
+                </SpaceBetween>
               }
               columnDefinitions={columnDefinitions.slice(0, 2)}
             />
