@@ -107,7 +107,7 @@ async function generateComponentTypes() {
       components.push(componentName);
 
       const dictionary = await getDictionary(sourceFilePath);
-      const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.default);
+      const interfacesFileContent = generateInterfaceForJSON(componentName, dictionary.default, dictionary.meta);
 
       const interfacesFolderPath = path.join(i18nOutputPath, componentName);
       const interfacesFilePath = path.join(interfacesFolderPath, 'index.ts');
@@ -115,7 +115,12 @@ async function generateComponentTypes() {
       await fs.writeFile(interfacesFilePath, interfacesFileContent);
 
       for (const locale of locales) {
-        const messagesFileContent = generateMessagesForJSON(componentName, dictionary.default, dictionary[locale]);
+        const messagesFileContent = generateMessagesForJSON(
+          componentName,
+          dictionary.default,
+          dictionary[locale],
+          dictionary.meta
+        );
         const messagesFolderPath = path.join(i18nOutputMessagesPath, locale);
         await fs.ensureDir(messagesFolderPath);
         const messagesFilePath = path.join(messagesFolderPath, `${componentName}.ts`);
@@ -184,12 +189,18 @@ async function getDictionary(defaultJsonPath) {
     const localeJsonPath = defaultJsonPath.replace(/[\w-]+\.json$/, `${locale}.json`);
     dictionary[locale] = JSON.parse(await fs.readFile(localeJsonPath, 'utf-8'));
   }
+  const metaJsonPath = defaultJsonPath.replace(/[\w-]+\.json$/, 'meta.json');
+  if (fs.existsSync(metaJsonPath)) {
+    dictionary.meta = JSON.parse(await fs.readFile(metaJsonPath, 'utf-8'));
+  }
   return dictionary;
 }
 
-function generateInterfaceForJSON(componentName, messages) {
+function generateInterfaceForJSON(componentName, messages, messagesMeta) {
   const namespace = {};
-  Object.entries(messages).forEach(([name, message]) => defineProperty(componentName, name, message, namespace));
+  Object.entries(messages).forEach(([name, message]) =>
+    defineProperty(componentName, name, message, messagesMeta?.[name], namespace)
+  );
   const definition = renderNamespace(namespace);
   return prettify(
     'temp.ts',
@@ -208,10 +219,17 @@ function generateInterfaceForJSON(componentName, messages) {
   );
 }
 
-function generateMessagesForJSON(componentName, defaultMessages, localeMessages) {
+function generateMessagesForJSON(componentName, defaultMessages, localeMessages, messagesMeta) {
   const namespace = {};
   Object.entries(defaultMessages).forEach(([name, message]) =>
-    defineMessagesProperty(componentName, name, message, localeMessages[name] ?? message, namespace)
+    defineMessagesProperty(
+      componentName,
+      name,
+      message,
+      localeMessages[name] ?? message,
+      messagesMeta?.[name],
+      namespace
+    )
   );
   const definition = renderMessagesNamespace(namespace);
   return prettify(
@@ -234,12 +252,12 @@ async function writeTokensFile() {
   const tokensDefinitionPath = path.join(messagesPath, 'tokens', 'default.json');
   const dictionary = await getDictionary(tokensDefinitionPath);
 
-  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.default);
+  const tokensInterface = generateInterfaceForJSON('Tokens', dictionary.default, dictionary.meta);
 
   await fs.writeFile(path.join(i18nOutputPath, 'tokens.ts'), tokensInterface);
 
   for (const locale of locales) {
-    const tokensMessages = generateMessagesForJSON('Tokens', dictionary.default, dictionary[locale]);
+    const tokensMessages = generateMessagesForJSON('Tokens', dictionary.default, dictionary[locale], dictionary.meta);
     await fs.writeFile(path.join(i18nOutputMessagesPath, locale, 'tokens.ts'), tokensMessages);
   }
 }
@@ -260,60 +278,53 @@ function renderMessagesNamespace(namespace) {
   }`;
 }
 
-function defineProperty(componentName, name, message, namespace) {
+function defineProperty(componentName, name, message, messageMeta, namespace) {
   const [rootName, ...restName] = name.split('.');
 
   if (restName.length === 0) {
-    namespace[rootName] = definePropertyType(componentName, message);
+    namespace[rootName] = definePropertyType(componentName, message, messageMeta);
   } else {
     if (!namespace[rootName]) {
       namespace[rootName] = {};
     }
-    defineProperty(componentName, restName.join('.'), message, namespace[rootName]);
+    defineProperty(componentName, restName.join('.'), message, messageMeta, namespace[rootName]);
   }
 }
 
-function defineMessagesProperty(componentName, name, message, localeMessage, namespace) {
+function defineMessagesProperty(componentName, name, message, localeMessage, messageMeta, namespace) {
   const [rootName, ...restName] = name.split('.');
 
   if (restName.length === 0) {
-    namespace[rootName] = definePropertyValue(componentName, message, localeMessage);
+    namespace[rootName] = definePropertyValue(componentName, message, localeMessage, messageMeta);
   } else {
     if (!namespace[rootName]) {
       namespace[rootName] = {};
     }
-    defineMessagesProperty(componentName, restName.join('.'), message, localeMessage, namespace[rootName]);
+    defineMessagesProperty(componentName, restName.join('.'), message, localeMessage, messageMeta, namespace[rootName]);
   }
 }
 
-function definePropertyType(componentName, message) {
-  const args = captureArguments(componentName, message);
+function definePropertyType(componentName, message, messageMeta) {
+  const args = captureArguments(componentName, message, messageMeta);
   return args.length === 0 ? 'string' : `(${args.map(arg => `${arg[0]}: ${arg[1]}`).join(',')}) => string`;
 }
 
-function definePropertyValue(componentName, message, localeMessage) {
-  const args = captureArguments(componentName, message);
+function definePropertyValue(componentName, message, localeMessage, messageMeta) {
+  const args = captureArguments(componentName, message, messageMeta);
   localeMessage = localeMessage.replace(/\$ARG\{\w+\}/g, '');
   return args.length === 0 ? `\`${localeMessage}\`` : `(${args.map(arg => arg[0]).join(',')}) => \`${localeMessage}\``;
 }
 
-function captureArguments(componentName, message) {
-  const variables = [];
-
-  let match = null;
-  const re = /\$ARG\{(\w+)\}/g;
-  while ((match = re.exec(message)) !== null) {
-    variables.push(withType(match[1]));
+function captureArguments(componentName, message, messageMeta) {
+  if (!messageMeta || !messageMeta.arguments) {
+    return [];
   }
-
-  function withType(arg) {
-    if (arg[0] === arg[0].toLowerCase()) {
-      return [arg, 'string'];
+  return Object.entries(messageMeta.arguments).map(([argName, argType]) => {
+    if (argType[0] === argType[0].toLowerCase()) {
+      return [argName, argType];
     }
-    return [arg[0].toLowerCase() + arg.slice(1), `${pascalCase(componentName)}Props.${arg}`];
-  }
-
-  return variables;
+    return [argName, `${pascalCase(componentName)}Props.${argType}`];
+  });
 }
 
 function prettify(filepath, content) {

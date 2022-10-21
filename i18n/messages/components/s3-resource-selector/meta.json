@@ -1,0 +1,45 @@
+{
+  "i18nStrings.filteringCounterText": {
+    "arguments": {
+      "count": "number"
+    }
+  },
+  "i18nStrings.labelNotSorted": {
+    "arguments": {
+      "columnName": "string"
+    }
+  },
+  "i18nStrings.labelSortedAscending": {
+    "arguments": {
+      "columnName": "string"
+    }
+  },
+  "i18nStrings.labelSortedDescending": {
+    "arguments": {
+      "columnName": "string"
+    }
+  },
+  "i18nStrings.labelsPagination.pageLabel": {
+    "arguments": {
+      "pageNumber": "number"
+    }
+  },
+  "i18nStrings.labelsBucketsSelection.itemSelectionLabel": {
+    "arguments": {
+      "data": "any",
+      "item": "any"
+    }
+  },
+  "i18nStrings.labelsObjectsSelection.itemSelectionLabel": {
+    "arguments": {
+      "data": "any",
+      "item": "any"
+    }
+  },
+  "i18nStrings.labelsVersionsSelection.itemSelectionLabel": {
+    "arguments": {
+      "data": "any",
+      "item": "any"
+    }
+  }
+}

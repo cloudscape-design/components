@@ -1,0 +1,27 @@
+{
+  "i18nStrings.enteredKeyLabel": {
+    "arguments": {
+      "key": "string"
+    }
+  },
+  "i18nStrings.enteredValueLabel": {
+    "arguments": {
+      "value": "string"
+    }
+  },
+  "i18nStrings.tagLimit": {
+    "arguments": {
+      "availableTags": "number"
+    }
+  },
+  "i18nStrings.tagLimitExceeded": {
+    "arguments": {
+      "tagLimit": "number"
+    }
+  },
+  "i18nStrings.tagLimitReached": {
+    "arguments": {
+      "tagLimit": "number"
+    }
+  }
+}

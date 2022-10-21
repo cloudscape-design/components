@@ -1,0 +1,12 @@
+{
+  "i18nStrings.enteredTextLabel": {
+    "arguments": {
+      "text": "string"
+    }
+  },
+  "i18nStrings.removeTokenButtonAriaLabel": {
+    "arguments": {
+      "token": "Token"
+    }
+  }
+}

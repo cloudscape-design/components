@@ -1,0 +1,7 @@
+{
+  "openCalendarAriaLabel:selected": {
+    "arguments": {
+      "selectedDate": "string"
+    }
+  }
+}

@@ -25,10 +25,10 @@
   "i18nStrings.invalidKeyError": "Invalid key. Keys can only contain alphanumeric characters, spaces and any of the following: _.:/=+@-",
   "i18nStrings.invalidValueError": "Invalid value. Values can only contain alphanumeric characters, spaces and any of the following: _.:/=+@-",
   "i18nStrings.awsPrefixError": "Cannot start with aws:",
-  "i18nStrings.enteredKeyLabel": "$ARG{key}Use \"${key}\"",
-  "i18nStrings.enteredValueLabel": "$ARG{value}Use \"${value}\"",
+  "i18nStrings.enteredKeyLabel": "Use \"${key}\"",
+  "i18nStrings.enteredValueLabel": "Use \"${value}\"",
   "i18nStrings.errorIconAriaLabel": "${Tokens.error}",
-  "i18nStrings.tagLimit": "$ARG{availableTags}You can add up to ${availableTags} more tag(s).",
-  "i18nStrings.tagLimitExceeded": "$ARG{tagLimit}You have exceeded the limit of ${tagLimit} tags.",
-  "i18nStrings.tagLimitReached": "$ARG{tagLimit}You have reached the limit of ${tagLimit} tags."
+  "i18nStrings.tagLimit": "You can add up to ${availableTags} more tag(s).",
+  "i18nStrings.tagLimitExceeded": "You have exceeded the limit of ${tagLimit} tags.",
+  "i18nStrings.tagLimitReached": "You have reached the limit of ${tagLimit} tags."
 }

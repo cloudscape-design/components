@@ -1,5 +1,5 @@
 {
-  "i18nStrings.cursorPosition": "$ARG{row}$ARG{column}Ln ${row}, Col ${column}",
+  "i18nStrings.cursorPosition": "Ln ${row}, Col ${column}",
   "i18nStrings.editorGroupAriaLabel": "Code editor",
   "i18nStrings.errorsTab": "Errors",
   "i18nStrings.errorState": "There was an error in loading the code editor.",

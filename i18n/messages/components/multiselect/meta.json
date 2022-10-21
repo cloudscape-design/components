@@ -1,0 +1,7 @@
+{
+  "deselectAriaLabel": {
+    "arguments": {
+      "optionLabel": "string"
+    }
+  }
+}

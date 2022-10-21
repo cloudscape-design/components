@@ -1,0 +1,8 @@
+{
+  "i18nStrings.cursorPosition": {
+    "arguments": {
+      "column": "number",
+      "row": "number"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "i18nStrings.stepCounterText": {
+    "arguments": {
+      "stepIndex": "number",
+      "totalStepCount": "number"
+    }
+  },
+  "i18nStrings.taskTitle": {
+    "arguments": {
+      "taskIndex": "number",
+      "taskTitle": "string"
+    }
+  }
+}

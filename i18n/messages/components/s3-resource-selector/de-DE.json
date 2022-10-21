@@ -26,6 +26,7 @@
   "i18nStrings.labelSortedAscending": ", aufsteigend sortiert",
   "i18nStrings.labelSortedDescending": ", absteigend sortiert",
   "i18nStrings.labelsBucketsSelection.selectionGroupLabel": "Buckets",
+  "i18nStrings.labelsBucketsSelection.itemSelectionLabel": "${item.name}",
   "i18nStrings.labelsObjectsSelection.selectionGroupLabel": "Objekte",
   "i18nStrings.labelsPagination.nextPageLabel": "${Tokens.nextPage}",
   "i18nStrings.labelsPagination.previousPageLabel": "${Tokens.previousPage}",

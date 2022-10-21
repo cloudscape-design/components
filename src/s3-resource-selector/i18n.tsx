@@ -15,7 +15,5 @@ type S3ResourceSelectorI18nProps = S3ResourceSelectorProps & {
 
 export default function S3ResourceSelectorI18nComponent(props: S3ResourceSelectorI18nProps) {
   const i18n = useI18NContext('s3-resource-selector');
-
-  // TODO: resolve
-  return <S3ResourceSelector {...props} i18nStrings={{ ...props.i18nStrings, ...i18n.i18nStrings } as any} />;
+  return <S3ResourceSelector {...props} i18nStrings={{ ...props.i18nStrings, ...i18n.i18nStrings }} />;
 }

@@ -1,0 +1,13 @@
+{
+  "i18nStrings.stepNumberLabel": {
+    "arguments": {
+      "stepNumber": "number"
+    }
+  },
+  "i18nStrings.collapsedStepsLabel": {
+    "arguments": {
+      "stepNumber": "number",
+      "stepsCount": "number"
+    }
+  }
+}

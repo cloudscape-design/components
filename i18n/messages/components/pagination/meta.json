@@ -1,0 +1,7 @@
+{
+  "ariaLabels.pageLabel": {
+    "arguments": {
+      "pageNumber": "number"
+    }
+  }
+}
