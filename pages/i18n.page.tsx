@@ -1,18 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
-import Box from '~components/box';
-import Table from '~components/table';
 import DateRangePicker from '~components/date-range-picker/i18n';
 import PropertyFilter from '~components/property-filter/i18n';
 import S3ResourceSelector from '~components/s3-resource-selector/i18n';
-import Header from '~components/header';
 import Button from '~components/button';
-import { allItems, TableItem } from './property-filter/table.data';
-import { columnDefinitions, filteringProperties } from './property-filter/common-props';
+import { allItems } from './property-filter/table.data';
+import { filteringProperties } from './property-filter/common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import { I18NContextProvider } from '~components/i18n/context';
-import { FormField, Select, SpaceBetween, Spinner } from '~components';
+import { Box, FormField, Select, SpaceBetween, Spinner } from '~components';
 
 const componentsI18nLoader = {
   default: {
@@ -59,7 +56,7 @@ export default function () {
     });
   }, [locale]);
 
-  const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
+  const { items, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',
       noMatch: (
@@ -98,56 +95,46 @@ export default function () {
               </div>
             </FormField>
 
-            <Table<TableItem>
-              className="main-content"
-              stickyHeader={true}
-              header={<Header headingTagOverride={'h1'}>Instances</Header>}
-              items={items}
-              {...collectionProps}
-              filter={
-                <SpaceBetween size="m">
-                  <FormField label="property-filter">
-                    <PropertyFilter
-                      {...propertyFilterProps}
-                      virtualScroll={true}
-                      countText={`${items.length} matches`}
-                      expandToViewport={true}
-                      i18nStrings={{} as any}
-                    />
-                  </FormField>
+            <SpaceBetween size="m">
+              <FormField label={<Box color="text-status-info">property-filter</Box>}>
+                <PropertyFilter
+                  {...propertyFilterProps}
+                  virtualScroll={true}
+                  countText={`${items.length} matches`}
+                  expandToViewport={true}
+                  i18nStrings={{} as any}
+                />
+              </FormField>
 
-                  <FormField label="date-range-picker">
-                    <DateRangePicker
-                      locale={locale === 'default' ? 'en-GB' : locale}
-                      value={{ type: 'absolute', startDate: '2020-01-01', endDate: '2021-01-01' }}
-                      i18nStrings={{} as any}
-                      placeholder="Filter by a date and time range"
-                      onChange={() => undefined}
-                      relativeOptions={[]}
-                      isValidRange={() => ({} as any)}
-                    />
-                  </FormField>
+              <FormField label={<Box color="text-status-info">date-range-picker</Box>}>
+                <DateRangePicker
+                  locale={locale === 'default' ? 'en-GB' : locale}
+                  value={{ type: 'absolute', startDate: '2020-01-01', endDate: '2021-01-01' }}
+                  i18nStrings={{} as any}
+                  placeholder="Filter by a date and time range"
+                  onChange={() => undefined}
+                  relativeOptions={[]}
+                  isValidRange={() => ({} as any)}
+                />
+              </FormField>
 
-                  <FormField label="s3-resource-selector">
-                    <S3ResourceSelector
-                      resource={{ uri: '' }}
-                      viewHref=""
-                      selectableItemsTypes={['objects']}
-                      bucketsVisibleColumns={['CreationDate', 'Region', 'Name']}
-                      i18nStrings={
-                        {
-                          labelFiltering: (itemsType: string) => `Find ${itemsType}`,
-                        } as any
-                      }
-                      fetchBuckets={() => Promise.resolve([])}
-                      fetchObjects={() => Promise.resolve([])}
-                      fetchVersions={() => Promise.resolve([])}
-                    />
-                  </FormField>
-                </SpaceBetween>
-              }
-              columnDefinitions={columnDefinitions.slice(0, 2)}
-            />
+              <FormField label={<Box color="text-status-info">s3-resource-selector</Box>}>
+                <S3ResourceSelector
+                  resource={{ uri: '' }}
+                  viewHref=""
+                  selectableItemsTypes={['objects']}
+                  bucketsVisibleColumns={['CreationDate', 'Region', 'Name']}
+                  i18nStrings={
+                    {
+                      labelFiltering: (itemsType: string) => `Find ${itemsType}`,
+                    } as any
+                  }
+                  fetchBuckets={() => Promise.resolve([])}
+                  fetchObjects={() => Promise.resolve([])}
+                  fetchVersions={() => Promise.resolve([])}
+                />
+              </FormField>
+            </SpaceBetween>
           </SpaceBetween>
         ) : (
           <Spinner />
