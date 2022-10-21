@@ -50,8 +50,6 @@ export default function () {
     });
   }, [locale]);
 
-  // console.log(locale, messages);
-
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
       empty: 'empty',

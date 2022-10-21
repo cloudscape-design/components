@@ -33,6 +33,7 @@ const quickBuild = series(
 
 exports.clean = clean;
 exports['build-i18n'] = buildI18n;
+exports['build-pages'] = buildPages;
 exports['quick-build'] = quickBuild;
 exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs));
 exports.test = series(unit, integ, a11y);

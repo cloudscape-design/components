@@ -26,6 +26,7 @@ module.exports = ({
   globalStylesIndex = 'index',
   moduleReplacements,
 } = {}) => {
+  const i18nPath = path.join(componentsPath, 'i18n');
   return {
     stats: isProd ? 'none' : 'minimal',
     context: path.resolve(__dirname),
@@ -34,7 +35,7 @@ module.exports = ({
     output: {
       path: path.resolve(outputPath),
       publicPath: './',
-      chunkFilename: 'chunks/[name].js',
+      chunkFilename: 'chunks/[name].[contenthash].js',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -107,7 +108,8 @@ module.exports = ({
           awsui: {
             test: module =>
               module.resource &&
-              (module.resource.includes(componentsPath) || module.resource.includes(designTokensPath)),
+              (module.resource.includes(componentsPath) || module.resource.includes(designTokensPath)) &&
+              !module.resource.includes(i18nPath),
             name: 'awsui',
             chunks: 'all',
           },
