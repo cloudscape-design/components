@@ -10,19 +10,21 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 import { I18NContextProvider } from '~components/i18n/context';
 import { Box, DateRangePickerProps, FormField, Select, SpaceBetween, Spinner } from '~components';
 
-const componentsI18nLoader = {
-  default: {
-    core: () => import('~components/i18n/exports/default/core'),
-    collection: () => import('~components/i18n/exports/default/collection'),
-    'date-time': () => import('~components/i18n/exports/default/date-time'),
-    's3-resource-selector': () => import('~components/i18n/exports/default/s3-resource-selector'),
-  },
-  ['de-DE']: {
-    core: () => import('~components/i18n/exports/de-DE/core'),
-    collection: () => import('~components/i18n/exports/de-DE/collection'),
-    'date-time': () => import('~components/i18n/exports/de-DE/date-time'),
-    's3-resource-selector': () => import('~components/i18n/exports/de-DE/s3-resource-selector'),
-  },
+const componentsTranslationsModules = {
+  default: () =>
+    [
+      import('~components/i18n/exports/default/core'),
+      import('~components/i18n/exports/default/collection'),
+      import('~components/i18n/exports/default/date-time'),
+      import('~components/i18n/exports/default/s3-resource-selector'),
+    ] as const,
+  ['de-DE']: () =>
+    [
+      import('~components/i18n/exports/de-DE/core'),
+      import('~components/i18n/exports/de-DE/collection'),
+      import('~components/i18n/exports/de-DE/date-time'),
+      import('~components/i18n/exports/de-DE/s3-resource-selector'),
+    ] as const,
 };
 
 const localeSelectOptions = [
@@ -38,21 +40,10 @@ export default function () {
   }>(null);
 
   useEffect(() => {
-    Promise.all([
-      componentsI18nLoader[locale].core(),
-      componentsI18nLoader[locale].collection(),
-      componentsI18nLoader[locale]['date-time'](),
-      componentsI18nLoader[locale]['s3-resource-selector'](),
-    ]).then(([core, collection, dateTime, seResourceSelector]) => {
-      setMessages({
-        '@cloudscape-design/components': {
-          ...core.default,
-          ...collection.default,
-          ...dateTime.default,
-          ...seResourceSelector.default,
-        },
-      });
-    });
+    Promise.all(componentsTranslationsModules[locale]())
+      .then(modules => modules.map(module => module.default))
+      .then(messages => Object.assign({}, ...messages))
+      .then(messages => setMessages({ '@cloudscape-design/components': messages }));
   }, [locale]);
 
   const { items, propertyFilterProps } = useCollection(allItems, {
@@ -63,6 +54,8 @@ export default function () {
     sorting: {},
   });
   const [selectedDateRange, setSelectedDateRange] = useState<DateRangePickerProps['value']>(null);
+
+  useEffect(() => console.log(messages), [messages]);
 
   return (
     <I18NContextProvider messages={messages ?? {}}>
