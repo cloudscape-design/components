@@ -15,5 +15,5 @@ type PropertyFilterI18nProps = Omit<PropertyFilterProps, 'i18nStrings'> & {
 
 export default function PropertyFilterI18nComponent(props: PropertyFilterI18nProps) {
   const i18n = useI18NContext('property-filter');
-  return <PropertyFilter {...props} {...i18n} i18nStrings={{ ...props.i18nStrings, ...i18n.i18nStrings }} />;
+  return <PropertyFilter {...i18n} {...props} i18nStrings={{ ...i18n.i18nStrings, ...props.i18nStrings }} />;
 }
