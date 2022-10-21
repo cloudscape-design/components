@@ -11,8 +11,8 @@ import { Box, FormField, Select, SpaceBetween } from '~components';
 
 const localeSelectOptions = [
   { value: 'default', label: 'Default' },
-  { value: 'de-DE', label: 'German' },
-];
+  { value: 'de-DE', label: 'German', disabled: true, description: 'Not implemented' },
+] as const;
 
 export default function () {
   const [locale, setLocale] = useState<'default' | 'de-DE'>('default');
