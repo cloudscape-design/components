@@ -1,8 +1,8 @@
 {
   "i18nStrings.taskTitle": {
     "arguments": {
-      "stepIndex": "number",
-      "stepTitle": "string"
+      "taskIndex": "number",
+      "taskTitle": "string"
     }
   },
   "i18nStrings.stepTitle": {
