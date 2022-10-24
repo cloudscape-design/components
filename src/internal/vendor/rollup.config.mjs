@@ -3,7 +3,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { readFileSync } from "fs";
+import { readFileSync } from 'fs';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,10 +12,10 @@ export default {
   output: {
     dir: './lib/components/internal/vendor',
     format: 'es',
-    banner: (chunkInfo) => {
+    banner: chunkInfo => {
       // Fetch the banner content from this folder based on the chunk name
       const content = readFileSync(path.join(dirName, `${chunkInfo.name}-licences-banner.txt`));
-      return `/* ${content }*/`
+      return `/* ${content}*/`;
     },
   },
   plugins: [
