@@ -25,6 +25,7 @@ import {
   operatorToDescription,
   getPropertySuggestions,
   getExtendedOperator,
+  getOperatorLabel,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
@@ -121,11 +122,16 @@ function OperatorInput({
 }: OperatorInputProps) {
   const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
   const freeTextOperators: ComparisonOperator[] = [':', '!:'];
-  const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => ({
-    value: operator,
-    label: operator,
-    description: operatorToDescription(operator, i18nStrings),
-  }));
+  const operatorOptions = (property ? getAllowedOperators(property) : freeTextOperators).map(operator => {
+    const operatorLabel = property ? getOperatorLabel(property, operator) : operator;
+    return {
+      value: operator,
+      label: operatorLabel,
+      description: operator === operatorLabel ? operatorToDescription(operator, i18nStrings) : '',
+    };
+  });
+
+  const operatorLabel = property && operator ? getOperatorLabel(property, operator) : operator;
   return (
     <InternalSelect
       options={operatorOptions}
@@ -134,8 +140,8 @@ function OperatorInput({
         operator
           ? {
               value: operator,
-              label: operator,
-              description: operatorToDescription(operator, i18nStrings),
+              label: operatorLabel,
+              description: operator === operatorLabel ? operatorToDescription(operator, i18nStrings) : '',
             }
           : null
       }

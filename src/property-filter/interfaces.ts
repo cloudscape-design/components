@@ -19,6 +19,13 @@ import {
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
+declare module '@cloudscape-design/collection-hooks' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface PropertyFilterOperatorExtended<TokenValue> {
+    label?: string;
+  }
+}
+
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
   /**
    * If set to `true`, the filtering input will be disabled.
@@ -195,14 +202,14 @@ export namespace PropertyFilterProps {
     operationAndText: string;
     operationOrText: string;
 
-    operatorLessText: string;
-    operatorLessOrEqualText: string;
-    operatorGreaterText: string;
-    operatorGreaterOrEqualText: string;
-    operatorContainsText: string;
-    operatorDoesNotContainText: string;
-    operatorEqualsText: string;
-    operatorDoesNotEqualText: string;
+    operatorLessText?: string;
+    operatorLessOrEqualText?: string;
+    operatorGreaterText?: string;
+    operatorGreaterOrEqualText?: string;
+    operatorContainsText?: string;
+    operatorDoesNotContainText?: string;
+    operatorEqualsText?: string;
+    operatorDoesNotEqualText?: string;
 
     editTokenHeader: string;
     propertyText: string;
@@ -243,10 +250,10 @@ export namespace PropertyFilterProps {
 export type Token = PropertyFilterProps.Token;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
-export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
-export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
-export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
-export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
+export type ExtendedOperator<TokenValue> = PropertyFilterProps.ExtendedOperator<TokenValue>;
+export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterProps.ExtendedOperatorFormProps<TokenValue>;
+export type ExtendedOperatorForm<TokenValue> = PropertyFilterProps.ExtendedOperatorForm<TokenValue>;
+export type ExtendedOperatorFormat<TokenValue> = PropertyFilterProps.ExtendedOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;
@@ -259,6 +266,12 @@ export type Ref = PropertyFilterProps.Ref;
 // Utility types
 
 export type ParsedText =
-  | { step: 'property'; property: FilteringProperty; operator: ComparisonOperator; value: string }
+  | {
+      step: 'property';
+      property: FilteringProperty;
+      operator: ComparisonOperator;
+      operatorLabel: string;
+      value: string;
+    }
   | { step: 'operator'; property: FilteringProperty; operatorPrefix: string }
   | { step: 'free-text'; operator?: ComparisonOperator; value: string };

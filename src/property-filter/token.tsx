@@ -13,7 +13,7 @@ import {
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getExtendedOperator, getPropertyByKey } from './controller';
+import { getExtendedOperator, getOperatorLabel, getPropertyByKey } from './controller';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -60,8 +60,7 @@ export const TokenButton = ({
 }: TokenProps) => {
   const valueFormatter =
     token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
+  const property = token.propertyKey ? getPropertyByKey(filteringProperties, token.propertyKey) : undefined;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   return (
     <FilteringToken
@@ -78,7 +77,7 @@ export const TokenButton = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger property={propertyLabel} operator={token.operator} value={tokenValue} />
+            <TokenTrigger property={property} operator={token.operator} value={tokenValue} />
           </span>
         }
         filteringOptions={filteringOptions}
@@ -101,18 +100,21 @@ const TokenTrigger = ({
   operator,
   value,
 }: {
-  property?: string;
+  property?: FilteringProperty;
   operator?: ComparisonOperator;
   value: string;
 }) => {
-  if (property) {
-    property += ' ';
+  let propertyLabel = property ? property.propertyLabel : '';
+
+  if (propertyLabel) {
+    propertyLabel += ' ';
   }
-  const freeTextContainsToken = operator === ':' && !property;
-  const operatorText = freeTextContainsToken ? '' : operator + ' ';
+  const operatorLabel = property && operator ? getOperatorLabel(property, operator) : operator;
+  const freeTextContainsToken = operator === ':' && !propertyLabel;
+  const operatorText = freeTextContainsToken ? '' : operatorLabel + ' ';
   return (
     <>
-      {property}
+      {propertyLabel}
       <span className={styles['token-operator']}>{operatorText}</span>
       {value}
     </>
