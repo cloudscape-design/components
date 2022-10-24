@@ -39,23 +39,6 @@ const permutations = createPermutations<ButtonProps>([
     variant: ['icon', 'inline-icon', 'normal'],
   },
   {
-    disabled: [false],
-    children: ['Report a Bug'],
-    href: ['http://www.example.com'],
-    iconName: ['external'],
-    iconAlign: ['right'],
-    externalIconAriaLabel: ['opens in a new window'],
-  },
-  {
-    disabled: [false],
-    children: ['Report a Bug'],
-    ariaLabel: ['Report a Bug Longer label'],
-    href: ['http://www.example.com'],
-    iconName: ['external'],
-    iconAlign: ['right'],
-    externalIconAriaLabel: ['opens in a new window'],
-  },
-  {
     iconUrl: [img],
     iconAlt: ['letter A'],
     iconAlign: ['left', 'right'],
@@ -90,6 +73,23 @@ const permutations = createPermutations<ButtonProps>([
     children: ['With custom svg icon'],
     ariaLabel: ['With custom svg icon'],
     variant: ['normal', 'icon', 'inline-icon', 'primary'],
+  },
+  {
+    disabled: [false],
+    children: ['Report a Bug'],
+    href: ['http://www.example.com'],
+    iconName: ['external'],
+    iconAlign: ['right'],
+    externalIconAriaLabel: ['opens in a new window'],
+  },
+  {
+    disabled: [false],
+    children: ['Report a Bug'],
+    ariaLabel: ['Report a Bug Longer label'],
+    href: ['http://www.example.com'],
+    iconName: ['external'],
+    iconAlign: ['right'],
+    externalIconAriaLabel: ['opens in a new window'],
   },
 ]);
 
