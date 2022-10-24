@@ -11,7 +11,7 @@ import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from '
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface InternalInputProps
@@ -35,6 +35,8 @@ export interface InternalInputProps
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
+
+  __useFormField?: boolean;
 }
 
 const iconClassName = (position: string, hasHandler: boolean) =>
@@ -48,11 +50,8 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
-    ariaLabelledby,
-    ariaDescribedby,
     name,
     value,
-    controlId,
     placeholder,
     autoFocus,
     disabled,
@@ -64,7 +63,6 @@ function InternalInput(
     __leftIconVariant = 'subtle',
     __onLeftIconClick,
 
-    invalid,
     ariaRequired,
 
     __rightIcon,
@@ -80,6 +78,7 @@ function InternalInput(
     onFocus,
     __nativeAttributes,
     __internalRootRef,
+    __useFormField,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -97,6 +96,9 @@ function InternalInput(
   __leftIcon = __leftIcon ?? searchProps.__leftIcon;
   __rightIcon = __rightIcon ?? searchProps.__rightIcon;
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
+
+  const formFieldContext = useFormFieldContext(rest);
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __useFormField ? formFieldContext : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
