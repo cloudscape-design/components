@@ -186,14 +186,14 @@ describe('getAutosuggestOptions', () => {
     {
       label: 'Properties',
       options: [
-        { value: 'string', keepOpenOnSelect: true },
-        { value: 'string-other', keepOpenOnSelect: true },
-        { value: 'default', keepOpenOnSelect: true },
-        { value: 'string!=', keepOpenOnSelect: true },
-        { value: 'custom column', keepOpenOnSelect: true },
+        { label: 'string', value: 'string', keepOpenOnSelect: true },
+        { label: 'string-other', value: 'string-other', keepOpenOnSelect: true },
+        { label: 'default', value: 'default', keepOpenOnSelect: true },
+        { label: 'string!=', value: 'string!=', keepOpenOnSelect: true },
+        { label: 'custom column', value: 'custom column', keepOpenOnSelect: true },
       ],
     },
-    { options: [{ value: 'range', keepOpenOnSelect: true }], label: 'Group properties' },
+    { options: [{ label: 'range', value: 'range', keepOpenOnSelect: true }], label: 'Group properties' },
   ];
   const expectedValueSuggestions = [
     {

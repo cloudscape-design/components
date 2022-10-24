@@ -241,6 +241,7 @@ export function createPropertiesCompatibilityMap(
 
 const filteringPropertyToAutosuggestOption = (filteringProperty: FilteringProperty) => ({
   value: filteringProperty.propertyLabel,
+  label: filteringProperty.propertyLabel,
   keepOpenOnSelect: true,
 });
 
