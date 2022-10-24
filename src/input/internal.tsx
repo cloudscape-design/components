@@ -36,7 +36,7 @@ export interface InternalInputProps
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
 
-  __useFormField?: boolean;
+  __inheritFormFieldProps?: boolean;
 }
 
 const iconClassName = (position: string, hasHandler: boolean) =>
@@ -78,7 +78,7 @@ function InternalInput(
     onFocus,
     __nativeAttributes,
     __internalRootRef,
-    __useFormField,
+    __inheritFormFieldProps,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -98,7 +98,7 @@ function InternalInput(
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __useFormField ? formFieldContext : rest;
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,

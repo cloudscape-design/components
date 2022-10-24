@@ -88,7 +88,7 @@ const Input = React.forwardRef(
           controlId,
         }}
         className={clsx(styles.root, baseProps.className)}
-        __useFormField={true}
+        __inheritFormFieldProps={true}
       />
     );
   }

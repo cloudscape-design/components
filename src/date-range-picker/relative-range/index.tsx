@@ -147,7 +147,7 @@ function RelativeRangePicker(
                         onChangeRangeSize({ amount, unit: customUnitOfTime, type: 'relative' });
                       }}
                       placeholder={i18nStrings.customRelativeRangeDurationPlaceholder}
-                      __useFormField={true}
+                      __inheritFormFieldProps={true}
                     />
                   </InternalFormField>
                 </div>

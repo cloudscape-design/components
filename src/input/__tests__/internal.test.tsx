@@ -38,7 +38,7 @@ test('should call onDelayedInput and onChange handlers respectively', async () =
 test('inherits form-field properties', () => {
   render(
     <InternalFormField controlId="control-id" label="Label" description="description" errorText="error">
-      <InternalInput value="" __useFormField={true} />
+      <InternalInput value="" __inheritFormFieldProps={true} />
     </InternalFormField>
   );
   const element = createWrapper().find('input')!.getElement();
