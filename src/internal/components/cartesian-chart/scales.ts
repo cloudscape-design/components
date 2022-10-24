@@ -1,7 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { scaleLinear, scaleLog, scaleTime, scaleBand } from '../../vendor/d3-scale';
-import { ScaleContinuousNumeric, ScaleTime, ScaleBand } from 'd3-scale';
+import {
+  scaleLinear,
+  scaleLog,
+  scaleTime,
+  scaleBand,
+  ScaleContinuousNumeric,
+  ScaleTime,
+  ScaleBand,
+} from '../../vendor/d3-scale';
 
 import { ChartDataTypes, ChartDomain, ScaleType, ScaleRange } from './interfaces';
 
