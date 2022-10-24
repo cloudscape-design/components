@@ -26,6 +26,7 @@ import FocusLock from '../internal/components/focus-lock';
 import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
+import { useFormFieldContext } from '../contexts/form-field.js';
 
 export { DatePickerProps };
 
@@ -49,8 +50,6 @@ const DatePicker = React.forwardRef(
       name,
       ariaLabel,
       ariaRequired,
-      ariaLabelledby,
-      ariaDescribedby,
       controlId,
       invalid,
       openCalendarAriaLabel,
@@ -66,6 +65,7 @@ const DatePicker = React.forwardRef(
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
     const normalizedLocale = normalizeLocale('DatePicker', locale);
     const focusVisible = useFocusVisible();
+    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
@@ -170,15 +170,7 @@ const DatePicker = React.forwardRef(
           >
             {isDropDownOpen && (
               <FocusLock autoFocus={true}>
-                <div
-                  {...focusVisible}
-                  tabIndex={0}
-                  className={styles.calendar}
-                  role="dialog"
-                  aria-describedby={calendarDescriptionId}
-                  aria-label={ariaLabel}
-                  aria-labelledby={ariaLabelledby}
-                >
+                <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar
                     value={value}
                     onChange={e => {
@@ -188,6 +180,9 @@ const DatePicker = React.forwardRef(
                     }}
                     locale={normalizedLocale}
                     startOfWeek={startOfWeek}
+                    ariaDescribedby={calendarDescriptionId}
+                    ariaLabel={ariaLabel}
+                    ariaLabelledby={ariaLabelledby}
                     isDateEnabled={isDateEnabled}
                     todayAriaLabel={todayAriaLabel}
                     nextMonthAriaLabel={nextMonthAriaLabel}

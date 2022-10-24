@@ -23,8 +23,14 @@ export default class DatePickerPage extends BasePageObject {
     this.sourceInput = createWrapper().findInput().findNativeInput().toSelector();
     this.expandToViewport = expandToViewport;
   }
+
   findCalendar() {
     return this.datePickerWrapper.findCalendar({ expandToViewport: this.expandToViewport });
+  }
+
+  findDialog() {
+    const wrapper = this.expandToViewport ? createWrapper() : this.datePickerWrapper;
+    return wrapper.find('[role=dialog]');
   }
 
   async getDropdownBoundingBox() {
@@ -91,7 +97,7 @@ export default class DatePickerPage extends BasePageObject {
   }
 
   isDropdownFocused() {
-    return this.isFocused(this.findCalendar().toSelector());
+    return this.isFocused(this.findDialog().toSelector());
   }
 
   getCursorPosition() {
