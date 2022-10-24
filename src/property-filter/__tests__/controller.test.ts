@@ -199,18 +199,18 @@ describe('getAutosuggestOptions', () => {
     {
       label: 'Values',
       options: [
-        { tokenValue: 'string=value1', label: 'value1', __labelPrefix: 'string =' },
-        { tokenValue: 'string-other=value1', label: 'value1', __labelPrefix: 'string-other =' },
-        { tokenValue: 'string=value2', label: 'value2', __labelPrefix: 'string =' },
-        { tokenValue: 'string-other=value2', label: 'value2', __labelPrefix: 'string-other =' },
-        { tokenValue: 'default=value', label: 'value', __labelPrefix: 'default =' },
+        { value: 'string = value1', label: 'value1', __labelPrefix: 'string =' },
+        { value: 'string-other = value1', label: 'value1', __labelPrefix: 'string-other =' },
+        { value: 'string = value2', label: 'value2', __labelPrefix: 'string =' },
+        { value: 'string-other = value2', label: 'value2', __labelPrefix: 'string-other =' },
+        { value: 'default = value', label: 'value', __labelPrefix: 'default =' },
       ],
     },
     {
       label: 'Group values',
       options: [
-        { tokenValue: 'range=1', label: '1', __labelPrefix: 'range =' },
-        { tokenValue: 'range=2', label: '2', __labelPrefix: 'range =' },
+        { value: 'range = 1', label: '1', __labelPrefix: 'range =' },
+        { value: 'range = 2', label: '2', __labelPrefix: 'range =' },
       ],
     },
   ];
@@ -306,8 +306,8 @@ describe('getAutosuggestOptions', () => {
         {
           label: 'String values',
           options: [
-            { tokenValue: 'string!=value1', label: 'value1', __labelPrefix: 'string !=' },
-            { tokenValue: 'string!=value2', label: 'value2', __labelPrefix: 'string !=' },
+            { value: 'string != value1', label: 'value1', __labelPrefix: 'string !=' },
+            { value: 'string != value2', label: 'value2', __labelPrefix: 'string !=' },
           ],
         },
       ],
@@ -334,10 +334,10 @@ describe('getAutosuggestOptions', () => {
         {
           label: 'Values',
           options: [
-            { tokenValue: 'string!:value1', label: 'value1', __labelPrefix: 'string !:' },
-            { tokenValue: 'string-other!:value1', label: 'value1', __labelPrefix: 'string-other !:' },
-            { tokenValue: 'string!:value2', label: 'value2', __labelPrefix: 'string !:' },
-            { tokenValue: 'string-other!:value2', label: 'value2', __labelPrefix: 'string-other !:' },
+            { value: 'string !: value1', label: 'value1', __labelPrefix: 'string !:' },
+            { value: 'string-other !: value1', label: 'value1', __labelPrefix: 'string-other !:' },
+            { value: 'string !: value2', label: 'value2', __labelPrefix: 'string !:' },
+            { value: 'string-other !: value2', label: 'value2', __labelPrefix: 'string-other !:' },
           ],
         },
       ],

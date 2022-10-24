@@ -138,10 +138,6 @@ interface OptionGroup<T> {
   options: T[];
 }
 
-interface ExtendedAutosuggestOption extends AutosuggestProps.Option {
-  tokenValue: string;
-}
-
 export const getAllValueSuggestions = (
   filteringOptions: readonly FilteringOption[],
   filteringProperties: readonly FilteringProperty[],
@@ -149,11 +145,11 @@ export const getAllValueSuggestions = (
   i18nStrings: I18nStrings,
   customGroupsText: readonly GroupText[]
 ) => {
-  const defaultGroup: OptionGroup<ExtendedAutosuggestOption> = {
+  const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
     label: i18nStrings.groupValuesText,
     options: [],
   };
-  const customGroups: { [K in string]: OptionGroup<ExtendedAutosuggestOption> } = {};
+  const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
   filteringOptions.forEach(filteringOption => {
     const property = getPropertyByKey(filteringProperties, filteringOption.propertyKey);
     // given option refers to a non-existent filtering property
@@ -176,7 +172,7 @@ export const getAllValueSuggestions = (
     }
     const propertyGroup = property.group ? customGroups[property.group] : defaultGroup;
     propertyGroup.options.push({
-      tokenValue: property.propertyLabel + (operator || '=') + filteringOption.value,
+      value: property.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
       label: filteringOption.value,
       __labelPrefix: property.propertyLabel + ' ' + (operator || '='),
     });
@@ -293,7 +289,7 @@ export const getAutosuggestOptions = (
         options: [
           {
             options: options.map(({ value }) => ({
-              tokenValue: propertyLabel + parsedText.operator + value,
+              value: propertyLabel + ' ' + parsedText.operator + ' ' + value,
               label: value,
               __labelPrefix: propertyLabel + ' ' + parsedText.operator,
             })),
