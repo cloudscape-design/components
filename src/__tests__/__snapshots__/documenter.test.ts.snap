@@ -2974,6 +2974,24 @@ The event \`detail\` contains the current value of the field.",
   "name": "Calendar",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the calendar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the calendar.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the calendar.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,

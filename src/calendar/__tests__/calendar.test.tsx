@@ -62,3 +62,36 @@ describe('Calendar locale DE', () => {
     expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
   });
 });
+
+describe('aria-label', () => {
+  test('can be set', () => {
+    const { container } = render(<Calendar {...defaultProps} ariaLabel="This is a label for the calendar" />);
+    const wrapper = createWrapper(container);
+
+    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute('aria-label', 'This is a label for the calendar');
+  });
+});
+
+describe('aria-labelledby', () => {
+  test('can be set', () => {
+    const { container } = render(<Calendar {...defaultProps} ariaLabelledby="calendar-label" />);
+    const wrapper = createWrapper(container);
+
+    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
+      'aria-labelledby',
+      expect.stringContaining('calendar-label')
+    );
+  });
+});
+
+describe('aria-describedby', () => {
+  test('can be set', () => {
+    const { container } = render(<Calendar {...defaultProps} ariaDescribedby="calendar-description" />);
+    const wrapper = createWrapper(container);
+
+    expect(wrapper.findCalendar()!.getElement()).toHaveAttribute(
+      'aria-describedby',
+      expect.stringContaining('calendar-description')
+    );
+  });
+});
