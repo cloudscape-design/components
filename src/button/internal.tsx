@@ -40,6 +40,7 @@ export const InternalButton = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      externalIconAriaLabel,
       ariaExpanded,
       __nativeAttributes,
       __internalRootRef = null,
@@ -87,22 +88,27 @@ export const InternalButton = React.forwardRef(
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),
-      'aria-label': ariaLabel,
+      'aria-label':
+        ariaLabel && iconName === 'external' && externalIconAriaLabel
+          ? ariaLabel + ', ' + externalIconAriaLabel
+          : ariaLabel,
       'aria-expanded': ariaExpanded,
       className: buttonClass,
       onClick: handleClick,
     } as const;
+
     const iconProps: ButtonIconProps = {
       loading,
       iconName,
       iconAlign,
       iconUrl,
       iconSvg,
-      iconAlt,
+      iconAlt: !ariaLabel && iconName === 'external' && externalIconAriaLabel ? externalIconAriaLabel : iconAlt,
       variant,
       iconClass: __iconClass,
       iconSize: variant === 'modal-dismiss' ? 'medium' : 'normal',
     };
+
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />

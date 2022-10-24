@@ -337,6 +337,28 @@ describe('Button Component', () => {
       const wrapper = renderButton({ children: 'Button' });
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
+
+    test('renders aria-label on icon wrapper if externalIconAriaLabel is present on "external" icon link button', () => {
+      const extIconLabel = 'opens in a new window';
+      const wrapper = renderButton({
+        children: 'Button',
+        iconName: 'external',
+        externalIconAriaLabel: extIconLabel,
+      });
+      expect(wrapper.find('[role="img"]')?.getElement()).toHaveAttribute('aria-label', extIconLabel);
+    });
+
+    test('renders correct aria-label on anchor if externalIconAriaLabel AND ariaLabel are present on "external" icon link button', () => {
+      const ariaLabelText = 'Report a bug';
+      const extIconLabel = 'opens in a new window';
+      const wrapper = renderButton({
+        children: 'Button',
+        iconName: 'external',
+        ariaLabel: ariaLabelText,
+        externalIconAriaLabel: extIconLabel,
+      });
+      expect(wrapper.getElement()).toHaveAttribute('aria-label', ariaLabelText + ', ' + extIconLabel);
+    });
   });
 
   describe('button links', () => {

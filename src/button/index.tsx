@@ -27,6 +27,7 @@ const Button = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      externalIconAriaLabel,
       onClick,
       onFollow,
       ariaExpanded,
@@ -55,6 +56,7 @@ const Button = React.forwardRef(
         download={download}
         formAction={formAction}
         ariaLabel={ariaLabel}
+        externalIconAriaLabel={externalIconAriaLabel}
         onClick={onClick}
         onFollow={onFollow}
         ariaExpanded={ariaExpanded}

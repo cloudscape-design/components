@@ -65,6 +65,14 @@ export interface ButtonProps extends BaseComponentProps {
    * them accessible.
    */
   ariaLabel?: string;
+
+  /**
+   * Adds a accessible equivalent to the to the external icon.
+   * If there an ariaLabel it is combined with that value to become the aria-label of the external link.
+   * If there is no ariaLabel supplied it will become an aria-label for the icon.
+   */
+  externalIconAriaLabel?: string;
+
   /**
    * Applies button styling to a link. Use this property if you need a link styled as a button (`variant=link`).
    * For example, if you have a 'help' button that links to a documentation page.

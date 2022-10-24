@@ -111,6 +111,8 @@ const InternalIcon = ({
       dangerouslySetInnerHTML={validIcon ? { __html: icons[name] } : undefined}
       ref={mergedRef}
       style={inlineStyles}
+      role={alt ? 'img' : undefined}
+      aria-label={alt}
     />
   );
 };

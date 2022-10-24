@@ -27,7 +27,7 @@ function getIconAlign(props: ButtonIconProps) {
 }
 
 function IconWrapper({ iconName, iconUrl, iconAlt, iconSvg, iconSize, ...props }: ButtonIconProps) {
-  if (!iconName && !iconUrl && !iconSvg) {
+  if (!iconName && !iconUrl && !iconSvg && !iconAlt) {
     return null;
   }
 

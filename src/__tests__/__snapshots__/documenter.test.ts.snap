@@ -2503,6 +2503,12 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     Object {
+      "description": "Adds an aria-label to the external icon.",
+      "name": "externalIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "'submit'",
       "description": "The form action that is performed by a button click.",
       "inlineType": Object {
