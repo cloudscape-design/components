@@ -121,6 +121,7 @@
     "react-test-renderer": "^16.14.0",
     "replace-in-files": "^3.0.0",
     "rollup": "^3.2.3",
+    "rollup-plugin-license": "^2.8.2",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "stylelint": "^14.3.0",

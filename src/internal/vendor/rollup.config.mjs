@@ -1,26 +1,39 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import resolve from '@rollup/plugin-node-resolve';
+import license from 'rollup-plugin-license';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { readFileSync } from 'fs';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
+const d3LicencesFile = path.join(dirName, 'd3-scale-third-party-licenses.txt');
 
 export default {
   input: './lib/components/internal/vendor/d3-scale.js',
   output: {
     dir: './lib/components/internal/vendor',
     format: 'es',
-    banner: chunkInfo => {
-      // Fetch the banner content from this folder based on the chunk name
-      const content = readFileSync(path.join(dirName, `${chunkInfo.name}-licences-banner.txt`));
-      return `/* ${content}*/`;
-    },
   },
   plugins: [
     resolve({
       extensions: ['.js'],
+    }),
+    license({
+      thirdParty: {
+        // Extract d3-scale related 3rd party licences.
+        output: {
+          file: d3LicencesFile,
+          encoding: 'utf-8',
+        },
+      },
+
+      banner: {
+        // Attach d3-scale related 3rd party licences to the bundle.
+        content: {
+          file: d3LicencesFile,
+          encoding: 'utf-8',
+        },
+      },
     }),
   ],
 };
