@@ -6,9 +6,8 @@ import { addMonths, isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import { memoizedDate } from './utils/memoized-date.js';
 import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
-import { formatDate } from '../internal/utils/date-time';
+import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import clsx from 'clsx';
@@ -16,6 +15,7 @@ import { CalendarProps } from './interfaces.js';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseDate } from './utils/navigation';
+import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -39,8 +39,12 @@ export default function Calendar({
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
+  const valueDateCache = useDateCache();
+  const focusedDateCache = useDateCache();
+
   // Set displayed date to value if defined or to current date otherwise.
-  const memoizedValue = memoizedDate('value', value);
+  const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
+  const memoizedValue = parsedValue ? valueDateCache(parsedValue) : null;
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
@@ -78,8 +82,7 @@ export default function Calendar({
 
   const onGridFocusDateHandler = (date: null | Date) => {
     if (date) {
-      const value = memoizedDate('focused', formatDate(date));
-      setFocusedDate(value);
+      setFocusedDate(date ? focusedDateCache(date) : null);
     }
   };
 
