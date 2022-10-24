@@ -11,7 +11,7 @@ import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from '
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface InternalInputProps
@@ -48,11 +48,8 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
-    ariaLabelledby,
-    ariaDescribedby,
     name,
     value,
-    controlId,
     placeholder,
     autoFocus,
     disabled,
@@ -64,7 +61,6 @@ function InternalInput(
     __leftIconVariant = 'subtle',
     __onLeftIconClick,
 
-    invalid,
     ariaRequired,
 
     __rightIcon,
@@ -97,6 +93,8 @@ function InternalInput(
   __leftIcon = __leftIcon ?? searchProps.__leftIcon;
   __rightIcon = __rightIcon ?? searchProps.__rightIcon;
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
+
+  const { ariaDescribedby, ariaLabelledby, controlId, invalid } = useFormFieldContext(rest);
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
