@@ -59,7 +59,7 @@ describe('Date range picker', () => {
       const { container, wrapper } = renderDateRangePicker({
         ...defaultProps,
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       await expect(container).toValidateA11y();
     });
@@ -71,7 +71,7 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('previous-5-minutes')!.click());
       act(() => wrapper.findDropdown()!.findApplyButton().click());
@@ -95,7 +95,7 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
 
       act(() => wrapper.findDropdown()!.findCustomRelativeRangeDuration()!.setInputValue('14'));
@@ -116,12 +116,44 @@ describe('Date range picker', () => {
       );
     });
 
+    test('custom unit and duration has correct aria-attributes', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        onChange: () => undefined,
+      });
+
+      act(() => wrapper.findTrigger().click());
+      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
+
+      const durationAriaLabelId = wrapper
+        .findDropdown()!
+        .findCustomRelativeRangeDuration()!
+        .findNativeInput()
+        .getElement()
+        .getAttribute('aria-labelledby')!
+        .split(' ')[0];
+      expect(wrapper.find(`#${durationAriaLabelId}`)!.getElement()).toHaveTextContent(
+        i18nStrings.customRelativeRangeDurationLabel
+      );
+
+      const unitAriaLabelId = wrapper
+        .findDropdown()!
+        .findCustomRelativeRangeUnit()!
+        .findTrigger()
+        .getElement()
+        .getAttribute('aria-labelledby')!
+        .split(' ')[0];
+      expect(wrapper.find(`#${unitAriaLabelId}`)!.getElement()).toHaveTextContent(
+        i18nStrings.customRelativeRangeUnitLabel
+      );
+    });
+
     test('remembers the selected option when switching modes', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[2].findLabel().click());
 
       changeMode(wrapper, 'absolute');
@@ -141,7 +173,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch().findModesAsSegments();
       expect(modeSelector.findSelectedSegment()!.getElement().textContent).toBe('Absolute range');
@@ -153,7 +185,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       changeMode(wrapper, 'relative');
 
       expect(!!wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBe(false);
@@ -165,7 +197,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       changeMode(wrapper, 'relative');
 
       expect(wrapper.findDropdown()!.getElement().textContent).toContain('Set a custom range in the past');
@@ -177,7 +209,7 @@ describe('Date range picker', () => {
         rangeSelectorMode: 'relative-only',
         relativeOptions: [],
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual([
@@ -198,7 +230,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
         dateOnly: true,
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
