@@ -26,5 +26,5 @@ export interface ScreenreaderOnlyProps {
  * ```
  */
 export default function ScreenreaderOnly(props: ScreenreaderOnlyProps) {
-  return <div {...props} className={clsx(styles.root, props.className)} />;
+  return <span {...props} className={clsx(styles.root, props.className)} />;
 }

@@ -9,8 +9,9 @@ import styles from './styles.css.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import Option from '../../internal/components/option';
-import { generateUniqueId } from '../../internal/hooks/use-unique-id';
+import { generateUniqueId, useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
@@ -67,6 +68,7 @@ const Trigger = React.forwardRef(
     }
 
     const mergedRef = useMergeRefs(triggerProps.ref, ref);
+    const calendarDescriptionId = useUniqueId('select-arialabel-');
 
     return (
       <ButtonTrigger
@@ -77,11 +79,13 @@ const Trigger = React.forwardRef(
         disabled={disabled}
         invalid={invalid}
         inFilteringToken={inFilteringToken}
-        ariaLabel={ariaLabel}
         ariaDescribedby={ariaDescribedby}
-        ariaLabelledby={[ariaLabelledby, triggerProps.ariaLabelledby].filter(label => !!label).join(' ')}
+        ariaLabelledby={[ariaLabelledby, calendarDescriptionId, triggerProps.ariaLabelledby]
+          .filter(label => !!label)
+          .join(' ')}
       >
         {triggerContent}
+        <ScreenreaderOnly id={calendarDescriptionId}>{ariaLabel}</ScreenreaderOnly>
       </ButtonTrigger>
     );
   }
