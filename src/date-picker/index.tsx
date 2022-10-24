@@ -7,7 +7,6 @@ import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
 import { normalizeLocale } from '../calendar/utils/locales';
 import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
-import { memoizedDate } from '../calendar/utils/memoized-date';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -25,6 +24,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
 import useFocusVisible from '../internal/hooks/focus-visible/index.js';
+import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 
 export { DatePickerProps };
@@ -103,8 +103,9 @@ const DatePicker = React.forwardRef(
       }
     };
 
-    const memoizedValue = memoizedDate('value', value);
-    const baseDate = memoizedValue || new Date();
+    // Set displayed date to value if defined or to current date otherwise.
+    const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
+    const baseDate = parsedValue || new Date();
 
     const trigger = (
       <div className={styles['date-picker-trigger']}>
@@ -135,7 +136,7 @@ const DatePicker = React.forwardRef(
             ref={buttonRef}
             ariaLabel={
               openCalendarAriaLabel &&
-              openCalendarAriaLabel(value.length === 10 ? getDateLabel(normalizedLocale, memoizedValue!) : null)
+              openCalendarAriaLabel(value.length === 10 ? getDateLabel(normalizedLocale, parsedValue!) : null)
             }
             disabled={disabled || readOnly}
             formAction="none"
