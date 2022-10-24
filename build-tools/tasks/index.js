@@ -17,4 +17,5 @@ module.exports = {
   integ: require('./integ'),
   licenses: require('./licenses'),
   themeableSource: require('./themeable-source'),
+  generateVendorFiles: require('./generate-vendor-files'),
 };

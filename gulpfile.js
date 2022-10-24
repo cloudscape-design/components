@@ -22,12 +22,14 @@ const {
   integ,
   licenses,
   themeableSource,
+  generateVendorFiles,
 } = require('./build-tools/tasks');
 
 const quickBuild = series(
   clean,
   parallel(packageJSON, generateEnvironment, generateIcons, generateIndexFile, licenses),
-  parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils)
+  parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils),
+  generateVendorFiles
 );
 
 exports.clean = clean;
