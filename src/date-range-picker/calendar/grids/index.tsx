@@ -12,6 +12,7 @@ import styles from '../../styles.css.js';
 
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
 import { hasValue } from '../../../internal/utils/has-value';
+import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
@@ -86,8 +87,9 @@ export const Grids = ({
 
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
-  const baseDateTime = baseDate?.getTime();
-  const focusedDateTime = focusedDate?.getTime();
+  const dateCache = useDateCache();
+  baseDate = dateCache(baseDate);
+  focusedDate = focusedDate ? dateCache(focusedDate) : null;
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
@@ -100,9 +102,7 @@ export const Grids = ({
 
       onFocusedDateChange(newFocusedDate);
     }
-    // `baseDateTime` and `focusedDateTime` are used as more stable replacements for baseDate and focusedDate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusedDateTime, baseDateTime, isSingleGrid, isDateEnabled, onFocusedDateChange]);
+  }, [baseDate, focusedDate, isSingleGrid, isDateEnabled, onFocusedDateChange]);
 
   const onGridKeyDownHandler = (e: React.KeyboardEvent) => {
     let updatedFocusDate;
@@ -156,9 +156,7 @@ export const Grids = ({
         focusedDateRef.current.focus();
       }
     }
-    // `focusedDateTime` is used as a more stable replacement for focusedDate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusedDateTime, gridHasFocus]);
+  }, [focusedDate, gridHasFocus]);
 
   const onGridBlur = (event: React.FocusEvent) => {
     /*
