@@ -16,7 +16,7 @@ import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
 import useFocusVisible from '../internal/hooks/focus-visible';
-import { useDateRangePicker } from './use-date-range-picker';
+import { fillMissingTime, getDefaultMode } from './utils';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
@@ -63,19 +63,17 @@ export function DateRangePickerDropdown({
   ariaLabelledby,
   ariaDescribedby,
 }: DateRangePickerDropdownProps) {
-  const {
-    fillMissingTime,
-    rangeSelectionMode,
-    setRangeSelectionMode,
-    selectedAbsoluteRange,
-    setSelectedAbsoluteRange,
-    selectedRelativeRange,
-    setSelectedRelativeRange,
-  } = useDateRangePicker({
-    value,
-    relativeOptions,
-    rangeSelectorMode,
-  });
+  const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
+    getDefaultMode(value, relativeOptions, rangeSelectorMode)
+  );
+
+  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
+    value?.type === 'absolute' ? value : null
+  );
+
+  const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
+    value?.type === 'relative' ? value : null
+  );
 
   const focusVisible = useFocusVisible();
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
@@ -123,7 +121,6 @@ export function DateRangePickerDropdown({
     rangeSelectionMode,
     selectedRelativeRange,
     selectedAbsoluteRange,
-    fillMissingTime,
     setValidationResult,
   ]);
 
