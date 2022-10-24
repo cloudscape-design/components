@@ -5,6 +5,7 @@ import React, { Ref, useImperativeHandle, useRef } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import InternalInput from './internal';
 import { InputProps } from './interfaces';
+import { useFormFieldContext } from '../internal/context/form-field-context';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -32,16 +33,13 @@ const Input = React.forwardRef(
       placeholder,
       autoFocus,
       ariaLabel,
-      ariaLabelledby,
-      ariaDescribedby,
-      invalid,
-      controlId,
       ...rest
     }: InputProps,
     ref: Ref<InputProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Input');
     const baseProps = getBaseProps(rest);
+    const { ariaLabelledby, ariaDescribedby, controlId, invalid } = useFormFieldContext(rest);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,10 +64,14 @@ const Input = React.forwardRef(
           ...baseComponentProps,
           autoComplete,
           ariaLabel,
+          ariaDescribedby,
+          ariaLabelledby,
           ariaRequired,
           autoFocus,
+          controlId,
           disabled,
           disableBrowserAutocorrect,
+          invalid,
           name,
           onKeyDown,
           onKeyUp,
@@ -82,10 +84,6 @@ const Input = React.forwardRef(
           step,
           inputMode,
           value,
-          ariaDescribedby,
-          ariaLabelledby,
-          invalid,
-          controlId,
         }}
         className={clsx(styles.root, baseProps.className)}
       />
