@@ -5,7 +5,6 @@ import React from 'react';
 
 import { getBaseProps } from '../internal/base-component';
 import { TilesProps } from './interfaces';
-import RadioButton from '../radio-group/radio-button';
 import styles from './styles.css.js';
 
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -13,6 +12,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { Tile } from './tile';
 
 const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
 
@@ -63,41 +63,16 @@ export default function InternalTiles({
     >
       <div className={clsx(styles.columns, styles[`column-${nColumns}`])}>
         {items &&
-          items.map(item => {
-            const controlId = item.controlId || `${generatedName}-value-${item.value}`;
-            return (
-              <label
-                className={clsx(
-                  styles['tile-container'],
-                  { [styles['has-metadata']]: item.description || item.image },
-                  { [styles.selected]: item.value === value },
-                  { [styles.disabled]: !!item.disabled },
-                  styles[`breakpoint-${breakpoint}`]
-                )}
-                key={item.value}
-                data-value={item.value}
-                htmlFor={controlId}
-                id={`${controlId}-wrapper`}
-              >
-                <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
-                  <RadioButton
-                    checked={item.value === value}
-                    name={generatedName}
-                    withoutLabel={true}
-                    value={item.value}
-                    label={item.label}
-                    description={item.description}
-                    disabled={item.disabled}
-                    onChange={onChange}
-                    controlId={controlId}
-                  />
-                </div>
-                {item.image && (
-                  <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>
-                )}
-              </label>
-            );
-          })}
+          items.map(item => (
+            <Tile
+              key={item.value}
+              item={item}
+              selected={item.value === value}
+              name={generatedName}
+              breakpoint={breakpoint}
+              onChange={onChange}
+            />
+          ))}
       </div>
     </div>
   );
