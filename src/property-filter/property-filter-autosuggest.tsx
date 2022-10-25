@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { Ref, useRef } from 'react';
+import React, { Ref, useMemo, useRef } from 'react';
 
 import { useAutosuggestItems } from '../autosuggest/options-controller';
 import { AutosuggestItem, AutosuggestProps } from '../autosuggest/interfaces';
@@ -28,6 +28,7 @@ import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/au
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import { filterOptions } from './filter-options';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
@@ -48,7 +49,6 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onBlur,
       onLoadItems,
       options,
-      filteringType = 'auto',
       statusType = 'finished',
       placeholder,
       disabled,
@@ -69,11 +69,12 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const autosuggestInputRef = useRef<AutosuggestInputRef>(null);
     const mergedRef = useMergeRefs(autosuggestInputRef, ref);
 
+    const filteredOptions = useMemo(() => filterOptions(options || [], highlightText), [options, highlightText]);
     const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
-      options: options || [],
+      options: filteredOptions,
       filterValue: value,
       filterText: highlightText,
-      filteringType,
+      filteringType: 'manual',
       hideEnteredTextLabel: hideEnteredTextOption,
       onSelectItem: (option: AutosuggestItem) => {
         const value = option.value || '';
