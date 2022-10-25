@@ -149,7 +149,11 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     let content = null;
     if (customForm) {
-      content = <div ref={customFormRef}>{customForm}</div>;
+      content = (
+        <div ref={customFormRef} className={styles['custom-content-wrapper']}>
+          {customForm}
+        </div>
+      );
     } else if (autosuggestItemsState.items.length > 0) {
       content = (
         <AutosuggestOptionsList
