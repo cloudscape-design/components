@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import createWrapper, { ToggleWrapper } from '../../../lib/components/test-utils/dom';
 import Toggle, { ToggleProps } from '../../../lib/components/toggle';
 import FormField from '../../../lib/components/form-field';
@@ -38,10 +38,19 @@ test('synchronizes native and styled controls', () => {
   expect(findStyledElement(wrapper)).toHaveClass(styles['toggle-handle-checked']);
 });
 
-test('fires onChange event on label click', () => {
+test('fires a single onChange event on label click', () => {
   const onChange = jest.fn();
   const { wrapper } = renderToggle(<Toggle checked={false} onChange={onChange} />);
   wrapper.findLabel().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
+});
+
+test('fires a single onChange event on input click', () => {
+  const onChange = jest.fn();
+  const { wrapper } = renderToggle(<Toggle checked={false} onChange={onChange} />);
+  wrapper.findNativeInput().click();
+  expect(onChange).toHaveBeenCalledTimes(1);
   expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { checked: true } }));
 });
 
@@ -64,7 +73,7 @@ test('does not trigger change handler if disabled', () => {
   const onChange = jest.fn();
   const { wrapper } = renderToggle(<Toggle checked={false} disabled={true} onChange={onChange} />);
 
-  wrapper.findLabel().click();
+  act(() => wrapper.findLabel().click());
 
   expect(wrapper.findNativeInput().getElement()).not.toBeChecked();
   expect(onChange).not.toHaveBeenCalled();
