@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
-import { addDays, addWeeks, isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
+import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
 import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
-import { MoveFocusHandler } from '../../../calendar/utils/move-focus-handler';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
 import styles from '../../styles.css.js';
 
 import useFocusVisible from '../../../internal/hooks/focus-visible/index';
-import { getBaseDate } from '../get-base-date';
 import { hasValue } from '../../../internal/utils/has-value';
+import { useDateCache } from '../../../internal/hooks/use-date-cache';
+import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -38,11 +38,11 @@ export interface GridProps {
 
   onSelectDate: DateChangeHandler;
   onChangeMonth: MonthChangeHandler;
-  handleFocusMove: MoveFocusHandler;
 
   locale: string;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
+  headingIdPrefix: string;
 }
 
 export function selectFocusedDate(
@@ -76,35 +76,33 @@ export const Grids = ({
 
   onSelectDate,
   onChangeMonth,
-  handleFocusMove,
 
   locale,
   startOfWeek,
   todayAriaLabel,
+  headingIdPrefix,
 }: GridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
 
-  const focusedDateRef = useRef<HTMLDivElement>(null);
+  const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
-  const baseDateTime = baseDate?.getTime();
-  const focusedDateTime = focusedDate?.getTime();
+  const dateCache = useDateCache();
+  baseDate = dateCache(baseDate);
+  focusedDate = focusedDate ? dateCache(focusedDate) : null;
 
   useEffect(() => {
     if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
-      // The nearestBaseDate depends on the direction of the month change
-      const direction = isAfter(focusedDate, baseDate) ? 'backwards' : 'forwards';
+      const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
-      const newMonth = !isSingleGrid && direction === 'backwards' ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDate(newMonth, direction === 'backwards' ? -1 : 1, isDateEnabled);
+      const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
+      const nearestBaseDate = getBaseDate(newMonth, isDateEnabled);
 
       const newFocusedDate = selectFocusedDate(focusedDate, nearestBaseDate, isDateEnabled);
 
       onFocusedDateChange(newFocusedDate);
     }
-    // `baseDateTime` and `focusedDateTime` are used as more stable replacements for baseDate and focusedDate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusedDateTime, baseDateTime, isSingleGrid, isDateEnabled, onFocusedDateChange]);
+  }, [baseDate, focusedDate, isSingleGrid, isDateEnabled, onFocusedDateChange]);
 
   const onGridKeyDownHandler = (e: React.KeyboardEvent) => {
     let updatedFocusDate;
@@ -114,6 +112,7 @@ export const Grids = ({
     }
 
     switch (e.keyCode) {
+      case KeyCode.space:
       case KeyCode.enter:
         e.preventDefault();
         if (focusedDate) {
@@ -122,19 +121,19 @@ export const Grids = ({
         return;
       case KeyCode.right:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, 1));
+        updatedFocusDate = moveNextDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.left:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addDays(date, -1));
+        updatedFocusDate = movePrevDay(focusedDate, isDateEnabled);
         break;
       case KeyCode.up:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, -1));
+        updatedFocusDate = movePrevWeek(focusedDate, isDateEnabled);
         break;
       case KeyCode.down:
         e.preventDefault();
-        updatedFocusDate = handleFocusMove(focusedDate, isDateEnabled, date => addWeeks(date, 1));
+        updatedFocusDate = moveNextWeek(focusedDate, isDateEnabled);
         break;
       default:
         return;
@@ -157,9 +156,7 @@ export const Grids = ({
         focusedDateRef.current.focus();
       }
     }
-    // `focusedDateTime` is used as a more stable replacement for focusedDate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusedDateTime, gridHasFocus]);
+  }, [focusedDate, gridHasFocus]);
 
   const onGridBlur = (event: React.FocusEvent) => {
     /*
@@ -213,6 +210,7 @@ export const Grids = ({
             locale={locale}
             startOfWeek={startOfWeek}
             todayAriaLabel={todayAriaLabel}
+            ariaLabelledby={`${headingIdPrefix}-prevmonth`}
           />
         )}
         <Grid
@@ -231,6 +229,7 @@ export const Grids = ({
           locale={locale}
           startOfWeek={startOfWeek}
           todayAriaLabel={todayAriaLabel}
+          ariaLabelledby={`${headingIdPrefix}-currentmonth`}
         />
       </InternalSpaceBetween>
     </div>

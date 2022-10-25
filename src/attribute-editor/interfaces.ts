@@ -39,6 +39,10 @@ export namespace AttributeEditorProps {
   export interface Ref {
     focusRemoveButton(itemIndex: number): void;
   }
+
+  export interface I18nStrings {
+    errorIconAriaLabel?: string;
+  }
 }
 
 export interface AttributeEditorProps<T> extends BaseComponentProps {
@@ -103,4 +107,9 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * The event `detail` contains the index of the corresponding item.
    */
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: AttributeEditorProps.I18nStrings;
 }

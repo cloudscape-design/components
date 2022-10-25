@@ -45,6 +45,12 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
+      "description": "Provides a text alternative for the icon.",
+      "name": "statusIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"info\\"",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
@@ -338,6 +344,14 @@ Object {
       "description": "Manually closes the navigation drawer if it is necessary for the current
 viewport size.",
       "name": "closeNavigationIfNecessary",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
       "parameters": Array [],
       "returnType": "void",
     },
@@ -1047,6 +1061,23 @@ A maximum of four fields are supported.
       "name": "disableAddButton",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AttributeEditorProps.I18nStrings",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -2951,6 +2982,24 @@ The event \`detail\` contains the current value of the field.",
   "name": "Calendar",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the calendar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the calendar.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the calendar.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -4787,6 +4836,31 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "A function that defines timezone offset from UTC in minutes for selected dates.
+Use it to define time relative to the desired timezone.
+The function is called for the start date and the end date and takes a UTC date
+corresponding the selected value as an argument.
+
+Has no effect when \`dateOnly\` is true.
+
+Default: the user's current time offset as provided by the browser.
+",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.GetTimeOffsetFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "number",
+        "type": "function",
+      },
+      "name": "getTimeOffset",
+      "optional": true,
+      "type": "DateRangePickerProps.GetTimeOffsetFunction",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "inlineType": Object {
         "name": "DateRangePickerProps.I18nStrings",
@@ -4864,6 +4938,11 @@ in a slight, visible lag when scrolling complex pages.",
           Object {
             "name": "endTimeLabel",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5075,7 +5154,8 @@ display and produce values.
 Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
-",
+
+This property is deprecated. Use getTimeOffset instead.",
       "name": "timeOffset",
       "optional": true,
       "type": "number",
@@ -5143,6 +5223,13 @@ manner if you provide a value for this property.",
       "name": "expanded",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the header element.
+Use to assign unique labels when there are multiple expandable sections with the same header text on one page.",
+      "name": "headerAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Adds the specified ID to the root element of the component.",
@@ -5251,6 +5338,12 @@ Object {
     Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error alert.",
+      "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -9191,6 +9284,11 @@ The return type of the function should be a promise that resolves to a list of v
             "type": "string",
           },
           Object {
+            "name": "inContextViewButtonAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "labelBreadcrumbs",
             "optional": false,
             "type": "string",
@@ -12733,6 +12831,7 @@ Defaults to \`false\`.
    - \`stepsCount\` (number) - The total number of steps in the wizard.
 - \`skipToButtonLabel\`: ((targetStep: WizardProps.Step, targetStepNumber: number) => string) - An optional function that accepts the target step object
    and the target step number (1-based indexing), and returns a string to be used as the *skip-to* button label. For example, \\"Skip to Step 2\\" or \\"Skip to end\\".
+- \`navigationAriaLabel\` (string) - The aria label for the navigation pane.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
@@ -12745,6 +12844,16 @@ Defaults to \`false\`.
           Object {
             "name": "cancelButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "navigationAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

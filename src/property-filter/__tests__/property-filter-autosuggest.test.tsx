@@ -9,7 +9,10 @@ import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces
 
 import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest';
 
-const options: AutosuggestProps.Options = [{ value: '123' }, { value: 'abc' }];
+const options: AutosuggestProps.Options = [
+  { value: '123', label: '123' },
+  { value: 'abc', label: 'abc' },
+];
 
 function renderAutosuggest(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -56,7 +59,6 @@ describe('Property filter autosuggest', () => {
           onOptionClick={handleSelectedSpy}
           value=""
           onChange={() => {}}
-          filteringType="auto"
           statusType="finished"
           disableBrowserAutocorrect={false}
         />
@@ -102,7 +104,6 @@ describe('Property filter autosuggest', () => {
         enteredTextLabel={() => ''}
         value="123"
         onChange={() => {}}
-        filteringType="auto"
         statusType="finished"
         disableBrowserAutocorrect={false}
       />
@@ -118,7 +119,6 @@ describe('Property filter autosuggest', () => {
         hideEnteredTextOption={true}
         value="123"
         onChange={() => {}}
-        filteringType="auto"
         statusType="finished"
         disableBrowserAutocorrect={false}
       />
@@ -160,5 +160,29 @@ describe('Property filter autosuggest', () => {
       wrapper.findNativeInput().keydown(KeyCode.enter);
       expect(handleSelectedSpy).not.toHaveBeenCalled();
     });
+  });
+
+  test('focuses first focusable custom form element when down arrow is pressed', () => {
+    const { wrapper } = renderAutosuggest(
+      <PropertyFilterAutosuggest
+        options={[]}
+        enteredTextLabel={() => ''}
+        value=""
+        onChange={() => {}}
+        customForm={
+          <div>
+            <button id="first-focusable">first focusable</button>
+            <button id="second-focusable">second focusable</button>
+          </div>
+        }
+      />
+    );
+    wrapper.focus();
+
+    wrapper.findNativeInput().keydown(KeyCode.up);
+    expect(wrapper.find('#first-focusable')!.getElement()).not.toHaveFocus();
+
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.find('#first-focusable')!.getElement()).toHaveFocus();
   });
 });

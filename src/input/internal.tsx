@@ -6,26 +6,22 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import {
-  fireNonCancelableEvent,
-  fireKeyboardEvent,
-  NonCancelableEventHandler,
-  getBlurEventRelatedTarget,
-} from '../internal/events';
+import { fireNonCancelableEvent, fireKeyboardEvent, NonCancelableEventHandler } from '../internal/events';
 import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 export interface InternalInputProps
   extends BaseComponentProps,
     BaseInputProps,
+    Omit<InputProps, 'type'>,
     InputAutoCorrect,
-    InputProps,
     FormFieldValidationControlProps,
     InternalBaseComponentProps {
+  type?: InputProps['type'] | 'visualSearch';
   __leftIcon?: IconProps['name'];
   __leftIconVariant?: IconProps['variant'];
   __onLeftIconClick?: () => void;
@@ -39,6 +35,8 @@ export interface InternalInputProps
 
   __onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   __onBlurWithDetail?: NonCancelableEventHandler<{ relatedTarget: Node | null }>;
+
+  __inheritFormFieldProps?: boolean;
 }
 
 const iconClassName = (position: string, hasHandler: boolean) =>
@@ -52,11 +50,8 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
-    ariaLabelledby,
-    ariaDescribedby,
     name,
     value,
-    controlId,
     placeholder,
     autoFocus,
     disabled,
@@ -68,7 +63,6 @@ function InternalInput(
     __leftIconVariant = 'subtle',
     __onLeftIconClick,
 
-    invalid,
     ariaRequired,
 
     __rightIcon,
@@ -84,6 +78,7 @@ function InternalInput(
     onFocus,
     __nativeAttributes,
     __internalRootRef,
+    __inheritFormFieldProps,
     ...rest
   }: InternalInputProps,
   ref: Ref<HTMLInputElement>
@@ -101,6 +96,9 @@ function InternalInput(
   __leftIcon = __leftIcon ?? searchProps.__leftIcon;
   __rightIcon = __rightIcon ?? searchProps.__rightIcon;
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
+
+  const formFieldContext = useFormFieldContext(rest);
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -134,12 +132,19 @@ function InternalInput(
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
       onBlur && fireNonCancelableEvent(onBlur);
-      __onBlurWithDetail &&
-        fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: getBlurEventRelatedTarget(e.nativeEvent) });
+      __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
   };
+
+  if (type === 'number') {
+    // Chrome and Safari have a weird built-in behavior of letting focused
+    // number inputs be controlled by scrolling on them. However, they don't
+    // lock the browser's scroll, so it's very easy to accidentally increment
+    // the input while scrolling down the page.
+    attributes.onWheel = event => event.currentTarget.blur();
+  }
 
   if (disableBrowserAutocorrect) {
     attributes.autoCorrect = 'off';
@@ -155,6 +160,11 @@ function InternalInput(
   }
 
   const mergedRef = useMergeRefs(ref, inputRef);
+
+  // type = "visualSearch" renders a type="text' input
+  if (attributes.type === 'visualSearch') {
+    attributes.type = 'text';
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>

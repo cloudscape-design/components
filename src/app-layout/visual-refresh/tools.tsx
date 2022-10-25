@@ -9,7 +9,6 @@ import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
@@ -41,6 +40,7 @@ export default function Tools({ children }: ToolsProps) {
     toolsWidth,
     isAnyPanelOpen,
     navigationHide,
+    toolsFocusControl,
   } = useContext(AppLayoutContext);
 
   const { position: splitPanelPosition, openButtonAriaLabel } = useContext(SplitPanelContext);
@@ -49,7 +49,7 @@ export default function Tools({ children }: ToolsProps) {
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
 
-  const focusRefs = useFocusControl(isToolsOpen);
+  const { refs: focusRefs } = toolsFocusControl;
 
   if (toolsHide && !hasSplitPanel) {
     return null;
@@ -69,6 +69,11 @@ export default function Tools({ children }: ToolsProps) {
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,
             // Overwrite the default tools width (depends on breakpoints) only when the `toolsWidth` property has been set.
             [customCssProps.toolsWidth]: hasDefaultToolsWidth ? '' : `${toolsWidth}px`,
+          }}
+          onBlur={e => {
+            if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+              toolsFocusControl.loseFocus();
+            }
           }}
         >
           {children}
@@ -98,6 +103,8 @@ export default function Tools({ children }: ToolsProps) {
                     formAction="none"
                     className={testutilStyles['tools-close']}
                     ref={focusRefs.close}
+                    ariaExpanded={true}
+                    __nativeAttributes={{ 'aria-haspopup': true }}
                   />
                 </div>
 

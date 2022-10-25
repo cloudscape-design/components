@@ -153,6 +153,7 @@
       "excludedFiles": ["src/**/__tests__/**", "src/**/__integ__/**", "src/**/__a11y__/**"],
       "rules": {
         "@cloudscape-design/no-implicit-svg-focusable": "error",
+        "@cloudscape-design/prefer-live-region": "warn",
         "no-restricted-imports": [
           "error",
           {

@@ -8,6 +8,7 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
+import '../../__a11y__/to-validate-a11y';
 
 jest.mock('../../../lib/components/internal/motion', () => ({
   isMotionDisabled: jest.fn().mockReturnValue(true),
@@ -147,4 +148,29 @@ describe('Content height calculation', () => {
     const { height, minHeight } = contentElement.style;
     expect({ height, minHeight }).toEqual({ height: 'calc(100vh - 0px)', minHeight: '' });
   });
+});
+
+test('a11y', async () => {
+  const { container } = renderComponent(
+    <AppLayout
+      navigationOpen={true}
+      toolsOpen={true}
+      splitPanelOpen={true}
+      navigation={<div></div>}
+      content={<div></div>}
+      notifications={<div></div>}
+      breadcrumbs={<div></div>}
+      splitPanel={<div></div>}
+      ariaLabels={{
+        // notifications?: string;
+        // navigation?: string;
+        navigationToggle: 'Open navigation',
+        navigationClose: 'Close navigation',
+        // tools?: string;
+        toolsToggle: 'Open tools',
+        toolsClose: 'Close tools',
+      }}
+    />
+  );
+  await expect(container).toValidateA11y();
 });

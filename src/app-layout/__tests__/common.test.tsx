@@ -120,7 +120,9 @@ describeEachAppLayout(() => {
       test('Renders aria-expanded only on toggle', () => {
         const { wrapper } = renderComponent(<AppLayout />);
         expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-expanded', 'false');
-        expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-expanded');
+        expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
+        expect(findClose(wrapper).getElement()).toHaveAttribute('aria-expanded', 'true');
+        expect(findClose(wrapper).getElement()).toHaveAttribute('aria-haspopup', 'true');
       });
 
       test('Does not add a label to the toggle and landmark when they are not defined', () => {
@@ -184,13 +186,13 @@ describeEachAppLayout(() => {
       });
 
       test('updates active element in controlled mode', () => {
-        const { wrapper, rerender } = renderComponent(<AppLayout {...{ [openProp]: true, [handler]: () => {} }} />);
-
-        rerender(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
-        expect(findToggle(wrapper).getElement()).toEqual(document.activeElement);
+        const { wrapper, rerender } = renderComponent(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
 
         rerender(<AppLayout {...{ [openProp]: true, [handler]: () => {} }} />);
         expect(findClose(wrapper).getElement()).toEqual(document.activeElement);
+
+        rerender(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
+        expect(findToggle(wrapper).getElement()).toEqual(document.activeElement);
       });
 
       test(`Should not render the drawer if ${hideProp} is set to true`, () => {

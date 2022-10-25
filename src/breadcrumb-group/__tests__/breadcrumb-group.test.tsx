@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
 
@@ -88,6 +88,14 @@ describe('BreadcrumbGroup Component', () => {
         'aria-label',
         'Custom Show path label'
       );
+    });
+
+    test('has proper aria-expanded state on ellipsis button', () => {
+      const button = wrapper.findDropdown()?.findNativeButton();
+
+      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'false');
+      act(() => button?.click());
+      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
 
     test('test-utils findBreadcrumbLink selector properly skip ellipsis item', () => {

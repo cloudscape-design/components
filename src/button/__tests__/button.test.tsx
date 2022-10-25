@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
@@ -100,7 +100,6 @@ describe('Button Component', () => {
   describe('ariaExpanded property', () => {
     test('adds aria-expanded property to button', () => {
       const wrapper = renderButton({ ariaExpanded: true });
-      console.log(wrapper.getElement());
       expect(wrapper.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
   });
@@ -292,9 +291,12 @@ describe('Button Component', () => {
 
   describe('Loading property', () => {
     test("should disable the button when in 'loading' status", () => {
-      const wrapper = renderButton({ loading: true });
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy, loading: true });
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      act(() => wrapper.click());
+      expect(onClickSpy).not.toHaveBeenCalled();
     });
 
     test('gives loading precendence over disabled', () => {
@@ -409,6 +411,13 @@ describe('Button Component', () => {
     test('does not call onClick on link buttons when button is disabled', () => {
       const onClickSpy = jest.fn();
       const wrapper = renderButton({ onClick: onClickSpy, disabled: true, href: 'https://amazon.com' });
+      wrapper.click();
+      expect(onClickSpy).not.toHaveBeenCalled();
+    });
+
+    test('does not call onClick on regular buttons when button is disabled', () => {
+      const onClickSpy = jest.fn();
+      const wrapper = renderButton({ onClick: onClickSpy, disabled: true });
       wrapper.click();
       expect(onClickSpy).not.toHaveBeenCalled();
     });

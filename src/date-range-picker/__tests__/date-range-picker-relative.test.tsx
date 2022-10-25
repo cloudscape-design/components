@@ -30,7 +30,9 @@ function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {
   const ref = React.createRef<HTMLInputElement>();
   const { container, getByTestId } = render(
     <div>
-      <button data-testid={outsideId}>click me</button>
+      <button type="button" data-testid={outsideId}>
+        click me
+      </button>
       <DateRangePicker {...props} ref={ref} />
     </div>
   );
@@ -53,12 +55,11 @@ describe('Date range picker', () => {
     beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
     afterEach(() => Mockdate.reset());
 
-    // TODO: resolve https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
-    test.skip('a11y checks with opened dropdown', async () => {
+    test('a11y', async () => {
       const { container, wrapper } = renderDateRangePicker({
         ...defaultProps,
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       await expect(container).toValidateA11y();
     });
@@ -70,7 +71,7 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('previous-5-minutes')!.click());
       act(() => wrapper.findDropdown()!.findApplyButton().click());
@@ -94,7 +95,7 @@ describe('Date range picker', () => {
         onChange: event => onChangeSpy(event.detail),
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
 
       act(() => wrapper.findDropdown()!.findCustomRelativeRangeDuration()!.setInputValue('14'));
@@ -115,12 +116,44 @@ describe('Date range picker', () => {
       );
     });
 
+    test('custom unit and duration has correct aria-attributes', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        onChange: () => undefined,
+      });
+
+      act(() => wrapper.findTrigger().click());
+      act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[4].findLabel().click());
+
+      const durationAriaLabelId = wrapper
+        .findDropdown()!
+        .findCustomRelativeRangeDuration()!
+        .findNativeInput()
+        .getElement()
+        .getAttribute('aria-labelledby')!
+        .split(' ')[0];
+      expect(wrapper.find(`#${durationAriaLabelId}`)!.getElement()).toHaveTextContent(
+        i18nStrings.customRelativeRangeDurationLabel
+      );
+
+      const unitAriaLabelId = wrapper
+        .findDropdown()!
+        .findCustomRelativeRangeUnit()!
+        .findTrigger()
+        .getElement()
+        .getAttribute('aria-labelledby')!
+        .split(' ')[0];
+      expect(wrapper.find(`#${unitAriaLabelId}`)!.getElement()).toHaveTextContent(
+        i18nStrings.customRelativeRangeUnitLabel
+      );
+    });
+
     test('remembers the selected option when switching modes', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       act(() => wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findButtons()[2].findLabel().click());
 
       changeMode(wrapper, 'absolute');
@@ -140,7 +173,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch().findModesAsSegments();
       expect(modeSelector.findSelectedSegment()!.getElement().textContent).toBe('Absolute range');
@@ -152,7 +185,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       changeMode(wrapper, 'relative');
 
       expect(!!wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBe(false);
@@ -164,7 +197,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
       });
 
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
       changeMode(wrapper, 'relative');
 
       expect(wrapper.findDropdown()!.getElement().textContent).toContain('Set a custom range in the past');
@@ -176,7 +209,7 @@ describe('Date range picker', () => {
         rangeSelectorMode: 'relative-only',
         relativeOptions: [],
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual([
@@ -197,7 +230,7 @@ describe('Date range picker', () => {
         relativeOptions: [],
         dateOnly: true,
       });
-      act(() => wrapper.findLabel().click());
+      act(() => wrapper.findTrigger().click());
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
