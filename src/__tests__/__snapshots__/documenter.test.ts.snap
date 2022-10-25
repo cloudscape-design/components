@@ -2503,7 +2503,9 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     Object {
-      "description": "Adds an aria-label to the external icon.",
+      "description": "Adds a accessible equivalent to the to the external icon.
+If there an ariaLabel it is combined with that value to become the aria-label of the external link.
+If there is no ariaLabel supplied it will become an aria-label for the icon.",
       "name": "externalIconAriaLabel",
       "optional": true,
       "type": "string",
