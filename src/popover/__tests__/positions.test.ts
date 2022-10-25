@@ -42,7 +42,7 @@ describe('calculatePosition', () => {
   (
     [
       [{ top: 0, left: 0, height: 1000, width: 1000 }, 'top-center'],
-      [{ top: 0, left: 0, height: 1000, width: 600 }, 'left-top'],
+      [{ top: 0, left: 0, height: 1000, width: 600 }, 'top-left'],
       [{ top: 450, left: 250, height: 1000, width: 350 }, 'bottom-left'],
     ] as const
   ).forEach(([container, expected], index) => {
