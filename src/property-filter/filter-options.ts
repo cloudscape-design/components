@@ -12,13 +12,12 @@ export function filterOptions(
     return options;
   }
 
-  searchText = searchText.toLowerCase();
   const filtered: (AutosuggestProps.Option | AutosuggestProps.OptionGroup)[] = [];
   for (const option of options) {
     if (isGroup(option)) {
       const childOptions = filterOptions(option.options, searchText);
       if (childOptions.length > 0) {
-        filtered.push({ ...option, options: filterOptions(option.options, searchText) });
+        filtered.push({ ...option, options: childOptions });
       }
     } else if (matchSingleOption(option, searchText)) {
       filtered.push(option);
@@ -32,5 +31,5 @@ function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is Autos
 }
 
 function matchSingleOption(option: OptionDefinition, searchText: string): boolean {
-  return (option.label ?? '').toLowerCase().indexOf(searchText) !== -1;
+  return (option.label ?? '').toLowerCase().indexOf(searchText.toLowerCase()) !== -1;
 }
