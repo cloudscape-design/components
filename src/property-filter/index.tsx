@@ -168,11 +168,7 @@ const PropertyFilter = React.forwardRef(
       }, 0);
       const { detail: option } = event;
       const value = option.value || '';
-      if ('tokenValue' in option) {
-        createToken((option as { tokenValue: string }).tokenValue);
-        return;
-      }
-      // create a token from the 'use' option
+
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;

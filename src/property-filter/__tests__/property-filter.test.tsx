@@ -371,6 +371,24 @@ describe('property filter parts', () => {
         expect(wrapper.findDropdown()?.findOpenDropdown()).toBeTruthy();
       });
     });
+
+    test('can use selectSuggestionByValue', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+      act(() => wrapper.focus());
+      act(() => wrapper.selectSuggestionByValue('string-other'));
+      expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "string-other"');
+
+      act(() => wrapper.selectSuggestionByValue('string-other != '));
+      expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "string-other != "');
+
+      act(() => wrapper.selectSuggestionByValue('string-other != value2'));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: { operation: 'and', tokens: [{ propertyKey: 'other-string', operator: '!=', value: 'value2' }] },
+        })
+      );
+    });
   });
 
   describe('count text', () => {
