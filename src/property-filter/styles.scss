@@ -79,6 +79,10 @@
   overflow-y: auto;
 }
 
+.custom-content-wrapper {
+  display: contents;
+}
+
 .custom-control {
   margin-right: awsui.$space-s;
 }
