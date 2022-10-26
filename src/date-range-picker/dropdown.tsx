@@ -134,7 +134,7 @@ export function DateRangePickerDropdown({
 
   return (
     <>
-      <FocusLock autoFocus={true}>
+      <FocusLock className={styles['focus-lock']} autoFocus={true}>
         <div
           {...focusVisible}
           ref={scrollableContainerRef}
