@@ -7,7 +7,6 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { DateRangePickerProps, Focusable } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import InternalSpaceBetween from '../../space-between/internal';
 import InternalFormField from '../../form-field/internal';
 import { InputProps } from '../../input/interfaces';
 import InternalDateInput from '../../date-input/internal';
@@ -20,14 +19,7 @@ import LiveRegion from '../../internal/components/live-region';
 import { normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
-
-export interface DateChangeHandler {
-  (detail: Date): void;
-}
-
-export interface MonthChangeHandler {
-  (newMonth: Date): void;
-}
+import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -35,37 +27,39 @@ interface HeaderChangeMonthHandler {
   (isPreviousButtonClick?: boolean): void;
 }
 
-export interface CalendarProps extends BaseComponentProps {
-  locale: string;
-  startOfWeek: number | undefined;
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
-  onSelectDateRange: (value: DateRangePickerProps.AbsoluteValue) => void;
-  initialStartDate: string | undefined;
-  initialEndDate: string | undefined;
-  i18nStrings: DateRangePickerProps.I18nStrings;
-  dateOnly: boolean;
-  timeInputFormat: TimeInputProps.Format;
-  isSingleGrid: boolean;
+export interface RangeCalendarValue {
+  startDate: string;
+  endDate: string;
 }
 
-export default forwardRef(Calendar);
+export interface CalendarProps extends BaseComponentProps {
+  value: null | RangeCalendarValue;
+  onChange: (value: RangeCalendarValue) => void;
+  locale: string;
+  startOfWeek: number | undefined;
+  isDateEnabled: (date: Date) => boolean;
+  i18nStrings: DateRangePickerProps.I18nStrings;
+  dateOnly?: boolean;
+  timeInputFormat?: TimeInputProps.Format;
+}
 
-function Calendar(
+export default forwardRef(RangeCalendar);
+
+function RangeCalendar(
   {
+    value,
+    onChange,
     locale,
     startOfWeek,
     isDateEnabled,
-    onSelectDateRange,
-    initialEndDate = '',
-    initialStartDate = '',
     i18nStrings,
-    dateOnly,
-    isSingleGrid,
-    timeInputFormat,
+    dateOnly = false,
+    timeInputFormat = 'hh:mm:ss',
   }: CalendarProps,
   ref: React.Ref<Focusable>
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
+  const isSingleGrid = useMobile();
 
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
 
@@ -78,6 +72,8 @@ function Calendar(
     },
   }));
 
+  const initialStartDate = value?.startDate ?? '';
+  const initialEndDate = value?.endDate ?? '';
   const [initialStartDateString = '', initialStartTimeString = ''] = initialStartDate.split('T');
   const [initialEndDateString = '', initialEndTimeString = ''] = initialEndDate.split('T');
 
@@ -125,21 +121,9 @@ function Calendar(
     const endDate = joinDateTime(endDateString, endTimeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
-      onSelectDateRange({
-        startDate,
-        endDate,
-        type: 'absolute',
-      });
+      onChange({ startDate, endDate });
     }
-  }, [
-    startDateString,
-    startTimeString,
-    endDateString,
-    endTimeString,
-    onSelectDateRange,
-    initialStartDate,
-    initialEndDate,
-  ]);
+  }, [startDateString, startTimeString, endDateString, endTimeString, onChange, initialStartDate, initialEndDate]);
 
   const onSelectDateHandler = (selectedDate: Date) => {
     // recommended to include the start/end time announced with the selection
@@ -278,7 +262,11 @@ function Calendar(
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
-      <InternalSpaceBetween size="s">
+      <div
+        className={clsx(styles['calendar-container'], {
+          [styles['one-grid']]: isSingleGrid,
+        })}
+      >
         <div
           ref={elementRef}
           className={clsx(styles.calendar, {
@@ -358,7 +346,7 @@ function Calendar(
             </div>
           </div>
         </InternalFormField>
-      </InternalSpaceBetween>
+      </div>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>
   );

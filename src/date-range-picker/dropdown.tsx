@@ -170,14 +170,12 @@ export function DateRangePickerDropdown({
                   {rangeSelectionMode === 'absolute' && (
                     <Calendar
                       ref={focusRefs['absolute-only']}
-                      isSingleGrid={isSingleGrid}
-                      initialEndDate={selectedAbsoluteRange?.endDate}
-                      initialStartDate={selectedAbsoluteRange?.startDate}
+                      value={selectedAbsoluteRange ? { ...selectedAbsoluteRange } : null}
+                      onChange={value => setSelectedAbsoluteRange({ type: 'absolute', ...value })}
                       locale={locale}
                       startOfWeek={startOfWeek}
                       isDateEnabled={isDateEnabled}
                       i18nStrings={i18nStrings}
-                      onSelectDateRange={setSelectedAbsoluteRange}
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                     />
