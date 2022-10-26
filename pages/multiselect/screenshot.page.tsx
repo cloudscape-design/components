@@ -54,7 +54,7 @@ export default function () {
           deselectAriaLabel={deselectAriaLabel}
           virtualScroll={virtualScroll}
           ariaLabel="multiselect demo"
-          data-test-id="multiselect-demo"
+          data-testid="multiselect-demo"
         />
       </ScreenshotArea>
     </>
