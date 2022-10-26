@@ -30,7 +30,7 @@ export interface PopoverBodyProps {
 export default function PopoverBody({
   dismissButton: showDismissButton,
   dismissAriaLabel,
-  focusLock = true,
+  focusLock = showDismissButton,
   header,
   children,
   onDismiss,
@@ -71,10 +71,10 @@ export default function PopoverBody({
       })}
       role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
-      aria-modal={showDismissButton && focusLock ? true : undefined}
+      aria-modal={focusLock ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <FocusLock disabled={!focusLock || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+      <FocusLock disabled={!focusLock} autoFocus={true} returnFocus={returnFocus}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
