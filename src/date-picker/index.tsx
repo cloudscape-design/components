@@ -169,7 +169,7 @@ const DatePicker = React.forwardRef(
             dropdownId={dropdownId}
           >
             {isDropDownOpen && (
-              <FocusLock autoFocus={true}>
+              <FocusLock className={styles['focus-lock']} autoFocus={true}>
                 <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar
                     value={value}
