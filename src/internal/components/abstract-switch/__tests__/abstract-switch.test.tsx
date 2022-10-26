@@ -9,6 +9,7 @@ function renderAbstractSwitch(props: AbstractSwitchProps) {
   const { container } = render(<AbstractSwitch {...props} />);
   return createWrapper(container);
 }
+const noop = () => {};
 
 describe('Abstract switch component, aria-labelledby', () => {
   test('should not have a labelId if a label is not provided', () => {
@@ -19,6 +20,7 @@ describe('Abstract switch component, aria-labelledby', () => {
       controlId: 'custom-id',
       description: 'Description goes here',
       nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+      onClick: noop,
     });
 
     const nativeControl = wrapper.find('.switch-element')!.getElement();
@@ -35,6 +37,7 @@ describe('Abstract switch component, aria-labelledby', () => {
       controlId: 'custom-id',
       description: 'Description goes here',
       nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+      onClick: noop,
     });
 
     const nativeControl = wrapper.find('.switch-element')!.getElement();
@@ -57,6 +60,7 @@ describe('Abstract switch component, aria-labelledby', () => {
       label: 'label',
       description: 'description',
       nativeControl: nativeControlProps => <input {...nativeControlProps} className="switch-element" type="radio" />,
+      onClick: noop,
     });
 
     const nativeControl = wrapper.find('.switch-element')!.getElement();

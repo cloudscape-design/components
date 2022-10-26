@@ -27,7 +27,7 @@ import { warnOnce } from '../internal/logging.js';
 import { usePrevious } from '../internal/hooks/use-previous/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
-import { formatValue } from './use-date-range-picker.js';
+import { formatValue } from './utils.js';
 
 export { DateRangePickerProps };
 

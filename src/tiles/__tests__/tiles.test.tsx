@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom';
 import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile';
 import Tiles, { TilesProps } from '../../../lib/components/tiles';
@@ -79,6 +79,16 @@ describe('items', () => {
     rerender(<Tiles value={null} items={defaultItems} onChange={onChange} />);
     expect(items[0].findNativeInput().getElement()).toBeEnabled();
     expect(items[1].findNativeInput().getElement()).toBeEnabled();
+  });
+
+  test('does not trigger change handler if disabled', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTiles(
+      <Tiles value={null} items={[defaultItems[0], { ...defaultItems[1], disabled: true }]} onChange={onChange} />
+    );
+
+    act(() => wrapper.findItems()[1].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test('displays the proper label', () => {
@@ -223,9 +233,8 @@ describe('value', () => {
 
   describe('tile controlId', () => {
     function check(tile: TileWrapper, controlId: string) {
-      expect(tile.getElement()).toHaveAttribute('for', controlId);
-      expect(tile.getElement()).toHaveAttribute('id', `${controlId}-wrapper`);
       expect(tile.findNativeInput().getElement()).toHaveAttribute('id', controlId);
+      expect(tile.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', `${controlId}-label`);
     }
 
     test('uses controlId for setting up label relations when set', () => {

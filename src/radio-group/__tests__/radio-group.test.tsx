@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
@@ -93,6 +93,16 @@ describe('items', () => {
 
     expect(items[0].findNativeInput().getElement()).toBeEnabled();
     expect(items[1].findNativeInput().getElement()).toBeEnabled();
+  });
+
+  test('does not trigger change handler if disabled', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[defaultItems[0], { ...defaultItems[1], disabled: true }]} onChange={onChange} />
+    );
+
+    act(() => wrapper.findButtons()[1].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test('displays the proper label', () => {
@@ -197,9 +207,8 @@ describe('value', () => {
 
   describe('radiobutton controlId', () => {
     function check(radioButton: RadioButtonWrapper, controlId: string) {
-      expect(radioButton.findLabel().getElement()).toHaveAttribute('for', controlId);
-      expect(radioButton.findLabel().getElement()).toHaveAttribute('id', `${controlId}-wrapper`);
       expect(radioButton.findNativeInput().getElement()).toHaveAttribute('id', controlId);
+      expect(radioButton.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', `${controlId}-label`);
     }
 
     test('uses controlId for setting up label relations when set', () => {

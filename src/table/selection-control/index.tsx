@@ -76,9 +76,9 @@ export default function SelectionControl({
   };
 
   const selector = isMultiSelection ? (
-    <InternalCheckbox {...sharedProps} controlId={controlId} withoutLabel={true} indeterminate={indeterminate} />
+    <InternalCheckbox {...sharedProps} controlId={controlId} indeterminate={indeterminate} />
   ) : (
-    <RadioButton {...sharedProps} controlId={controlId} withoutLabel={true} name={name} value={''} label={''} />
+    <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
   );
 
   return (
