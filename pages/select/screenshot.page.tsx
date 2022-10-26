@@ -51,6 +51,7 @@ export default function () {
           onChange={event => setSelected(event.detail.selectedOption)}
           virtualScroll={virtualScroll}
           ariaLabel="select demo"
+          data-test-id="select-demo"
         />
         <Select
           placeholder="Select an option"
@@ -60,6 +61,7 @@ export default function () {
           onChange={event => setSelected(event.detail.selectedOption)}
           virtualScroll={virtualScroll}
           ariaLabel="select demo no filtering"
+          data-test-id="select-demo-no-filtering"
         />
       </ScreenshotArea>
     </>
