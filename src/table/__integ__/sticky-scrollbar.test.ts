@@ -93,7 +93,7 @@ describe('Sticky scrollbar', () => {
         const wrapper = createWrapper();
         await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
         await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-        await page.click('label=Side');
+        await page.click(wrapper.findModal().findContent().findTiles().findItemByValue('side').toSelector());
         await page.click('button=Confirm');
         const { bottom } = await page.getBoundingBox(
           wrapper.find(`.${splitPanelStyles['content-side']}`).findTable().toSelector()
