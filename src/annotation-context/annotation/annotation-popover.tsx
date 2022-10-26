@@ -96,12 +96,13 @@ export function AnnotationPopover({
       position={direction}
       trackRef={trackRef}
       trackKey={taskLocalStepIndex}
-      variant="annotation"
+      bodyClassName={styles['popover-body']}
       arrow={arrow}
       zIndex={1000}
     >
       <PopoverBody
         dismissButton={true}
+        focusLock={false}
         dismissAriaLabel={i18nStrings.labelDismissAnnotation}
         header={
           <InternalBox color="text-body-secondary" fontSize="body-s" margin={{ top: 'xxxs' }} className={styles.header}>
@@ -110,7 +111,6 @@ export function AnnotationPopover({
         }
         onDismiss={onDismiss}
         className={styles.annotation}
-        variant="annotation"
         overflowVisible="content"
         dismissButtonRef={dismissButtonRefCallback}
       >
