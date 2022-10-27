@@ -30,7 +30,7 @@ export interface PopoverContainerProps {
   renderWithPortal?: boolean;
   size: PopoverProps.Size;
   fixedWidth: boolean;
-  bodyClassName?: string;
+  variant?: 'annotation';
 }
 
 const INITIAL_STYLES: CSSProperties = { position: 'absolute', top: -9999, left: -9999 };
@@ -45,7 +45,7 @@ export default function PopoverContainer({
   renderWithPortal,
   size,
   fixedWidth,
-  bodyClassName,
+  variant,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -202,8 +202,9 @@ export default function PopoverContainer({
 
       <div
         ref={bodyRef}
-        className={clsx(styles['container-body'], styles[`container-body-size-${size}`], bodyClassName, {
+        className={clsx(styles['container-body'], styles[`container-body-size-${size}`], {
           [styles['fixed-width']]: fixedWidth,
+          [styles[`container-body-variant-${variant}`]]: variant,
         })}
       >
         <div ref={contentRef}>{children}</div>
