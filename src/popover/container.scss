@@ -24,6 +24,11 @@
   border: awsui.$border-field-width solid awsui.$color-border-popover;
 }
 
+.container-body-variant-annotation {
+  background-color: awsui.$color-background-status-info;
+  border-color: awsui.$color-border-status-info;
+}
+
 .container-body-size-small {
   max-width: 210px;
   &.fixed-width {
