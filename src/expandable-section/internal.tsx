@@ -16,6 +16,7 @@ import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { ExpandableSectionContext } from './utils';
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
@@ -96,7 +97,9 @@ export default function InternalExpandableSection({
           expanded={!!expanded}
           {...triggerProps}
         >
-          {header}
+          <ExpandableSectionContext.Provider value={{ removeHeaderTag: variant === 'container' }}>
+            {header}
+          </ExpandableSectionContext.Provider>
         </ExpandableSectionHeader>
       }
       __internalRootRef={__internalRootRef}

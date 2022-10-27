@@ -128,5 +128,10 @@ describe('Expandable Section', () => {
       expect(header).toHaveAttribute('aria-label', 'ARIA Label');
       expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     });
+
+    test('has no heading tags for variant container', () => {
+      const wrapper = renderExpandableSection({ variant: 'container' });
+      expect(wrapper.findAll('h1, h2, h3, h4, h5, h6').length).toBe(0);
+    });
   });
 });

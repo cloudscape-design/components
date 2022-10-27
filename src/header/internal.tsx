@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React, { useContext } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { StickyHeaderContext } from '../container/use-sticky-header';
+import { ExpandableSectionContext } from '../expandable-section/utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { HeaderProps } from './interfaces';
@@ -26,7 +27,8 @@ export default function InternalHeader({
   __disableActionsWrapping,
   ...restProps
 }: InternalHeaderProps) {
-  const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
+  const { removeHeaderTag } = useContext(ExpandableSectionContext);
+  const HeadingTag = headingTagOverride ?? (removeHeaderTag ? 'div' : variant === 'awsui-h1-sticky' ? 'h1' : variant);
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
