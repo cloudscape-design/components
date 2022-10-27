@@ -328,6 +328,7 @@ export default function CodeEditor(props: CodeEditorProps) {
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}
+              themes={props.themes}
               preferences={props.preferences}
               defaultTheme={defaultTheme}
               i18nStrings={{

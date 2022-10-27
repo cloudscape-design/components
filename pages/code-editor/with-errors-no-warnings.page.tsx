@@ -5,11 +5,7 @@ import Button from '~components/button';
 import CodeEditor, { CodeEditorProps } from '~components/code-editor';
 import SpaceBetween from '~components/space-between';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './i18n-strings';
-
-import 'ace-builds/css/ace.css';
-import 'ace-builds/css/theme/dawn.css';
-import 'ace-builds/css/theme/tomorrow_night_bright.css';
+import { i18nStrings, themes } from './base-props';
 
 import { buildSample, awsTemplateSample } from './code-samples';
 
@@ -74,6 +70,7 @@ sdsdasd
             onPreferencesChange={e => this.onPreferencesChange(e.detail)}
             loading={this.state.loading}
             i18nStrings={i18nStrings}
+            themes={themes}
           />
         </ScreenshotArea>
 
