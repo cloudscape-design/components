@@ -11,6 +11,7 @@ interface CalendarHeaderProps {
   onChangeMonth: (prev?: boolean) => void;
   previousMonthLabel: string;
   nextMonthLabel: string;
+  headingId: string;
 }
 
 const CalendarHeader = ({
@@ -19,11 +20,14 @@ const CalendarHeader = ({
   onChangeMonth,
   previousMonthLabel,
   nextMonthLabel,
+  headingId,
 }: CalendarHeaderProps) => {
   return (
     <div className={styles['calendar-header']}>
       <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
-      <div className={styles['calendar-header-month']}>{renderMonthAndYear(locale, baseDate)}</div>
+      <h2 className={styles['calendar-header-month']} id={headingId}>
+        {renderMonthAndYear(locale, baseDate)}
+      </h2>
       <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
     </div>
   );
