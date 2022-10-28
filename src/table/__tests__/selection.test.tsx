@@ -84,6 +84,12 @@ describe('Selection controls` labelling', () => {
       'group label 1 item selected'
     );
   });
+
+  test('puts selectionGroupLabel on single selection column header', () => {
+    tableWrapper = renderTable({ selectionType: 'single', ariaLabels }).wrapper;
+    expect(tableWrapper.findColumnHeaders()[0].getElement().children[0]).toHaveAttribute('aria-label', 'group label');
+  });
+
   describe.each<TableProps['selectionType']>(['single', 'multi'])('', (selectionType: TableProps['selectionType']) => {
     test('leaves the controls without labels, when ariaLabels is omitted', () => {
       tableWrapper = renderTable({ selectionType }).wrapper;

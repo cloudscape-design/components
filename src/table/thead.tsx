@@ -12,7 +12,6 @@ import { Resizer } from './resizer';
 import { useColumnWidths } from './use-column-widths';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -86,7 +85,10 @@ const Thead = React.forwardRef(
           )}
           {selectionType === 'single' && (
             <th className={clsx(headerCellClass, selectionCellClass)} scope="col">
-              <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
+              <span aria-label={singleSelectionHeaderAriaLabel}>
+                {/*non-empty element to prevent table cell from collapsing in IE */}
+                &nbsp;
+              </span>
             </th>
           )}
           {columnDefinitions.map((column, colIndex) => {
