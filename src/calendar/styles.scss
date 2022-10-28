@@ -35,6 +35,7 @@
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
     color: calendar.$header-color;
+    margin: 0;
   }
 
   &-next-month-btn {
