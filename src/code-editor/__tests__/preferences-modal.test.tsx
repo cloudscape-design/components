@@ -63,6 +63,22 @@ test('should change syntax theme preference via modal', () => {
   expect(onPreferencesChange).toHaveBeenCalledWith({ theme: 'chrome', wrapLines: true });
 });
 
+test('renders all themes by default', () => {
+  const { wrapper } = renderCodeEditor();
+  wrapper.findSettingsButton()!.click();
+  const select = createWrapper().findModal()!.findContent().findSelect()!;
+  select.openDropdown();
+  expect(select.findDropdown().findOptions()).toHaveLength(38);
+});
+
+test('should allow limiting themes selection via property', () => {
+  const { wrapper } = renderCodeEditor({ themes: { light: ['chrome'], dark: ['ambiance'] } });
+  wrapper.findSettingsButton()!.click();
+  const select = createWrapper().findModal()!.findContent().findSelect()!;
+  select.openDropdown();
+  expect(select.findDropdown().findOptions()).toHaveLength(2);
+});
+
 test('should reset pending changes when modal dismisses', () => {
   const onPreferencesChange = jest.fn();
   const { wrapper } = renderCodeEditor({ onPreferencesChange: event => onPreferencesChange(event.detail) });

@@ -3830,6 +3830,29 @@ You can use any theme provided by Ace.
       "type": "Partial<CodeEditorProps.Preferences>",
     },
     Object {
+      "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
+least one dark theme. If not set explicitly, it will render all Ace themes available for selection.",
+      "inlineType": Object {
+        "name": "CodeEditorProps.AvailableThemes",
+        "properties": Array [
+          Object {
+            "name": "dark",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+          Object {
+            "name": "light",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "themes",
+      "optional": true,
+      "type": "CodeEditorProps.AvailableThemes",
+    },
+    Object {
       "description": "Specifies the content that's displayed in the code editor.",
       "name": "value",
       "optional": false,
