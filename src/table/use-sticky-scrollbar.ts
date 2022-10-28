@@ -90,7 +90,7 @@ export function useStickyScrollbar(
   // containing block, if present, is below the app layout and above the overflow
   // parent, which is a pretty safe assumption.
   const [hasContainingBlock, setHasContainingBlock] = useState(false);
-  // We don't take into account footer height when the scroll parent is child of document body.
+  // We don't take into account footer height when the overflow parent is child of document body.
   // Because in this case, we think the footer is outside the overflow parent.
   const [hasOverflowParent, setHasOverflowParent] = useState(false);
   const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
