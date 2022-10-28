@@ -165,9 +165,11 @@
   }
   &-variant-h2 {
     font-weight: awsui.$font-heading-l-weight;
+    line-height: awsui.$font-heading-l-line-height;
   }
   &-variant-h3 {
     font-weight: awsui.$font-heading-m-weight;
+    line-height: awsui.$font-heading-m-line-height;
   }
 }
 
