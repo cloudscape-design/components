@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, useEffect, useLayoutEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
@@ -19,7 +19,6 @@ import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
-import { AppLayoutContext as VisualRefreshAppLayoutContext } from '../app-layout/visual-refresh/context';
 import { getLimitedValue } from './utils/size-utils';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
@@ -339,17 +338,11 @@ export default function SplitPanel({
     }
   }, [lastInteraction]);
 
-  const visualRefreshContext = useContext(VisualRefreshAppLayoutContext);
-
-  const wrappedChildren = isRefresh ? (
-    <VisualRefreshAppLayoutContext.Provider value={{ ...visualRefreshContext, offsetBottom: 0 }}>
-      {children}
-    </VisualRefreshAppLayoutContext.Provider>
-  ) : (
+  const wrappedChildren = (
     <AppLayoutContext.Provider
       value={{
         stickyOffsetTop: topOffset,
-        stickyOffsetBottom: 0,
+        stickyOffsetBottom: bottomOffset,
       }}
     >
       {children}
