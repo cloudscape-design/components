@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper, TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from '../../__tests__/fixtures';
+import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 export const modalDefaultProps = {
   alert: undefined,
@@ -45,4 +46,14 @@ export function getTableBodyContent(wrapper: TableWrapper) {
 
 export function getTableColumnContent(wrapper: TableWrapper, colIndex: number) {
   return getElementsText(wrapper.findAll(`tbody tr > td:nth-child(${colIndex})`));
+}
+
+export function getHeaderVisibleText(wrapper: TableWrapper) {
+  return wrapper.findColumnHeaders().map(colHeader => {
+    const element = colHeader.getElement();
+    if (colHeader.getElement().children[0].classList.contains(screenreaderOnlyStyles.root)) {
+      return '';
+    }
+    return element.textContent!.trim();
+  });
 }
