@@ -6,7 +6,7 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
-const d3LicencesFile = path.join(dirName, 'd3-scale-third-party-licenses.txt');
+const d3LicencesFile = path.join(dirName, 'generated-d3-scale-third-party-licenses.txt');
 
 export default {
   input: './lib/components/internal/vendor/d3-scale.js',
@@ -19,17 +19,18 @@ export default {
       extensions: ['.js'],
     }),
     license({
-      thirdParty: {
-        // Extract d3-scale related 3rd party licences.
-        output: {
+      // First, the licence plugin attaches d3-scale related 3rd party licences to the bundle.
+      banner: {
+        content: {
           file: d3LicencesFile,
           encoding: 'utf-8',
         },
       },
 
-      banner: {
-        // Attach d3-scale related 3rd party licences to the bundle.
-        content: {
+      // After attaching, it generates the d3-scale related 3rd party licences.
+      // That's why we need to store the generated licence file.
+      thirdParty: {
+        output: {
           file: d3LicencesFile,
           encoding: 'utf-8',
         },
