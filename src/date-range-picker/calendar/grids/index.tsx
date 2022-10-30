@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
 import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
-import { DateChangeHandler, DayIndex, MonthChangeHandler } from '../index';
+import { DayIndex } from '../index';
 import { DateRangePickerProps } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
@@ -36,8 +36,8 @@ export interface GridProps {
   isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
   isSingleGrid: boolean;
 
-  onSelectDate: DateChangeHandler;
-  onChangeMonth: MonthChangeHandler;
+  onSelectDate: (date: Date) => void;
+  onChangeMonth: (date: Date) => void;
 
   locale: string;
   startOfWeek: DayIndex;
