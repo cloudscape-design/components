@@ -1,4 +1,4 @@
-### What is the src/internal/vendor folder about?
+### What is the vendor folder about?
 
 This folder references dependencies which we ship as bundled dependencies.
 Bundling the files is handled by rollup as part of the build process (run TS compile, run rollup which takes the compiled

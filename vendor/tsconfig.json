@@ -8,12 +8,10 @@
     "importHelpers": true,
     "strict": true,
     "declaration": true,
-    "jsx": "react",
-    "rootDir": "src",
-    "outDir": "lib/components",
-    "incremental": true,
-    "allowJs": true
+    "rootDir": "./src",
+    "outDir": "../src/internal/vendor",
+    "incremental": false
   },
-  "include": ["src", "types"],
-  "exclude": ["**/__tests__/**", "src/test-utils/**", "**/__integ__/**", "**/__a11y__/**"]
+  "include": ["./src"],
+  "exclude": ["**/__tests__/**"]
 }

@@ -28,8 +28,7 @@ const {
 const quickBuild = series(
   clean,
   parallel(packageJSON, generateEnvironment, generateIcons, generateIndexFile, licenses),
-  parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils),
-  bundleVendorFiles
+  parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils)
 );
 
 exports.clean = clean;
@@ -39,6 +38,7 @@ exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
+exports['bunlde-vendor-files'] = bundleVendorFiles;
 
 exports.watch = () => {
   watch(
@@ -54,5 +54,4 @@ exports.watch = () => {
   );
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
   watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
-  watch(['src/internal/vendor/**/*.ts', '!src/internal/vendor/**/__tests__/**'], series(typescript, bundleVendorFiles));
 };

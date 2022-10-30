@@ -9,9 +9,9 @@ const dirName = path.dirname(fileURLToPath(import.meta.url));
 const d3LicencesFile = path.join(dirName, 'generated-d3-scale-third-party-licenses.txt');
 
 export default {
-  input: './lib/components/internal/vendor/d3-scale.js',
+  input: './src/internal/vendor/d3-scale.js',
   output: {
-    dir: './lib/components/internal/vendor',
+    dir: './src/internal/vendor',
     format: 'es',
   },
   plugins: [

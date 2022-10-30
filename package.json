@@ -19,6 +19,7 @@
     "start": "gulp watch & NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
     "preinstall": "./scripts/prepare-package-lock.js",
+    "postinstall": "gulp bundle-vendor-files",
     "prepare": "husky install"
   },
   "engines": {

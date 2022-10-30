@@ -3,7 +3,7 @@ Version: 3.2.0
 License: ISC
 Private: false
 Description: Array manipulation, ordering, searching, summarizing, etc.
-Repository: git+https://github.com/d3/d3-array.git
+Repository: https://github.com/d3/d3-array.git
 Homepage: https://d3js.org/d3-array/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
@@ -31,7 +31,7 @@ Version: 2.0.3
 License: ISC
 Private: false
 Description: Map and Set with automatic key interning
-Repository: git+https://github.com/mbostock/internmap.git
+Repository: https://github.com/mbostock/internmap.git
 Homepage: https://github.com/mbostock/internmap/
 Author: Mike Bostock (https://bost.ocks.org/mike)
 License Copyright:
@@ -59,7 +59,7 @@ Version: 4.0.2
 License: ISC
 Private: false
 Description: Encodings that map abstract data to visual representation.
-Repository: git+https://github.com/d3/d3-scale.git
+Repository: https://github.com/d3/d3-scale.git
 Homepage: https://d3js.org/d3-scale/
 Author: Mike Bostock (https://bost.ocks.org/mike)
 License Copyright:
@@ -87,7 +87,7 @@ Version: 3.1.0
 License: ISC
 Private: false
 Description: Color spaces! RGB, HSL, Cubehelix, Lab and HCL (Lch).
-Repository: git+https://github.com/d3/d3-color.git
+Repository: https://github.com/d3/d3-color.git
 Homepage: https://d3js.org/d3-color/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
@@ -115,7 +115,7 @@ Version: 3.0.1
 License: ISC
 Private: false
 Description: Interpolate numbers, colors, strings, arrays, objects, whatever!
-Repository: git+https://github.com/d3/d3-interpolate.git
+Repository: https://github.com/d3/d3-interpolate.git
 Homepage: https://d3js.org/d3-interpolate/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
@@ -143,7 +143,7 @@ Version: 3.1.0
 License: ISC
 Private: false
 Description: Format numbers for human consumption.
-Repository: git+https://github.com/d3/d3-format.git
+Repository: https://github.com/d3/d3-format.git
 Homepage: https://d3js.org/d3-format/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
@@ -171,7 +171,7 @@ Version: 3.0.0
 License: ISC
 Private: false
 Description: A calculator for humanity’s peculiar conventions of time.
-Repository: git+https://github.com/d3/d3-time.git
+Repository: https://github.com/d3/d3-time.git
 Homepage: https://d3js.org/d3-time/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
@@ -199,7 +199,7 @@ Version: 4.1.0
 License: ISC
 Private: false
 Description: A JavaScript time formatter and parser inspired by strftime and strptime.
-Repository: git+https://github.com/d3/d3-time-format.git
+Repository: https://github.com/d3/d3-time-format.git
 Homepage: https://d3js.org/d3-time-format/
 Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
