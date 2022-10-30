@@ -20,9 +20,9 @@ const ARROW_OFFSET = 12;
 export const PRIORITY_MAPPING: Record<PopoverProps.Position, InternalPosition[]> = {
   top: [
     'top-center',
-    'bottom-center',
     'top-right',
     'top-left',
+    'bottom-center',
     'bottom-right',
     'bottom-left',
     'right-top',
@@ -32,9 +32,9 @@ export const PRIORITY_MAPPING: Record<PopoverProps.Position, InternalPosition[]>
   ],
   bottom: [
     'bottom-center',
-    'top-center',
     'bottom-right',
     'bottom-left',
+    'top-center',
     'top-right',
     'top-left',
     'right-top',
