@@ -4,14 +4,19 @@ import resolve from '@rollup/plugin-node-resolve';
 import license from 'rollup-plugin-license';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import commenting from 'commenting';
+import { readFileSync } from 'fs';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
-const d3LicencesFile = path.join(dirName, 'generated-d3-scale-third-party-licenses.txt');
+
+const vendorFileName = 'd3-scale.js';
+const vendorFile = path.join(dirName, '../../../lib/components/internal/vendor', vendorFileName);
+const d3LicencesFile = path.join(dirName, 'generated-third-party-licenses.txt');
 
 export default {
-  input: './lib/components/internal/vendor/d3-scale.js',
+  input: vendorFile,
   output: {
-    dir: './lib/components/internal/vendor',
+    file: vendorFile,
     format: 'es',
   },
   plugins: [
@@ -19,16 +24,6 @@ export default {
       extensions: ['.js'],
     }),
     license({
-      // First, the licence plugin attaches d3-scale related 3rd party licences to the bundle.
-      banner: {
-        content: {
-          file: d3LicencesFile,
-          encoding: 'utf-8',
-        },
-      },
-
-      // After attaching, it generates the d3-scale related 3rd party licences.
-      // That's why we need to store the generated licence file.
       thirdParty: {
         output: {
           file: d3LicencesFile,
@@ -36,5 +31,18 @@ export default {
         },
       },
     }),
+    attach3rdPartyLicenses(),
   ],
 };
+
+// Rollup plugin which prepends the generated 3rd party licences content to the bundled code before writing the file.
+function attach3rdPartyLicenses() {
+  return {
+    name: 'attach-3rd-party-licences',
+    generateBundle(options, bundle) {
+      const content = readFileSync(d3LicencesFile, 'utf8');
+      const comment = commenting(content, { extension: '.js' });
+      bundle[vendorFileName].code = `${comment}${bundle[vendorFileName].code}`;
+    },
+  };
+}
