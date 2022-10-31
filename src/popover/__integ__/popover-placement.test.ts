@@ -177,3 +177,25 @@ test(
     expect(mobileContainerWidth).toEqual(310);
   })
 );
+
+test(
+  'top-center falls back to top-side if cannot open top-center or bottom-center',
+  setupTest({ position: 'top', placement: 'bottom-right', viewport: VIEWPORT_TABLET, scrollTop: 500 }, async page => {
+    await page.click('#popover-trigger');
+    const trigger = await page.getBoundingBox(triggerSelector);
+    const container = await page.getBoundingBox(containerSelector);
+    const arrow = await page.getBoundingBox(arrowSelector);
+    topLeft(trigger, container, arrow);
+  })
+);
+
+test(
+  'bottom-center falls back to bottom-side if cannot open bottom-center or top-center',
+  setupTest({ position: 'bottom', placement: 'top-right', viewport: VIEWPORT_TABLET }, async page => {
+    await page.click('#popover-trigger');
+    const trigger = await page.getBoundingBox(triggerSelector);
+    const container = await page.getBoundingBox(containerSelector);
+    const arrow = await page.getBoundingBox(arrowSelector);
+    bottomLeft(trigger, container, arrow);
+  })
+);
