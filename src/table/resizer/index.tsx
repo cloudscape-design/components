@@ -73,31 +73,59 @@ export function Resizer({ onDragMove, onFinish }: ResizerProps) {
         resizeColumn(offset);
       }
     };
+
     const onMouseUp = (event: MouseEvent) => {
       resizeColumn(event.pageX);
       setIsDragging(false);
       onFinishStable();
       clearTimeout(autoGrowTimeout.current);
     };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      clearTimeout(autoGrowTimeout.current);
+      const width = headerCell.getBoundingClientRect().width;
+      if (event.key === 'ArrowLeft') {
+        updateColumnWidth(width - 5);
+      } else if (event.key === 'ArrowRight') {
+        updateColumnWidth(width + 5);
+      }
+    };
+
+    const onKeyUp = () => {
+      setIsDragging(false);
+      onFinishStable();
+      clearTimeout(autoGrowTimeout.current);
+    };
+
     updateTrackerPosition(headerCell.getBoundingClientRect().right);
     document.body.classList.add(styles['resize-active']);
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
     return () => {
       clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('keyup', onKeyUp);
     };
   }, [headerCell, isDragging, onDragStable, onFinishStable]);
   return (
     <span
       className={clsx(styles.resizer, isDragging && styles['resizer-active'])}
+      tabIndex={0}
       onMouseDown={event => {
         if (event.button !== 0) {
           return;
         }
         event.preventDefault();
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setIsDragging(true);
+        setHeaderCell(headerCell);
+      }}
+      onKeyDown={event => {
         const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
         setIsDragging(true);
         setHeaderCell(headerCell);
