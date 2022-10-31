@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ResizeObserver, ResizeObserverEntry } from '@juggle/resize-observer';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { useStableEventHandler } from '../use-stable-event-handler';
 import { ContainerQueryEntry } from './interfaces';
 
@@ -24,6 +24,12 @@ type ElementReference = (() => Element | null) | React.RefObject<Element>;
  */
 export function useResizeObserver(elementRef: ElementReference, onObserve: (entry: ContainerQueryEntry) => void) {
   const stableOnObserve = useStableEventHandler(onObserve);
+
+  // HACK: Get the element during the render stage so that effects can be updated when this
+  //   changes. Ideally, we'd want to react to DOM changes and not tie element updates to React
+  //   state, but this fix makes the current approach a little bit safer.
+  const previousElement =
+    typeof window === 'undefined' ? null : typeof elementRef === 'function' ? elementRef() : elementRef?.current;
 
   // This effect provides a synchronous update required to prevent flakiness when initial state and first observed state are different.
   // Can potentially conflict with React concurrent mode: https://17.reactjs.org/docs/concurrent-mode-intro.html.
@@ -56,7 +62,7 @@ export function useResizeObserver(elementRef: ElementReference, onObserve: (entr
         observer.disconnect();
       };
     }
-  }, [elementRef, stableOnObserve]);
+  }, [previousElement, elementRef, stableOnObserve]);
 }
 
 function convertResizeObserverEntry(entry: ResizeObserverEntry): ContainerQueryEntry {
