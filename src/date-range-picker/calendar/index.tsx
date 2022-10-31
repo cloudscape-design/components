@@ -4,7 +4,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { DateRangePickerProps, Focusable } from '../interfaces';
+import { Focusable, RangeCalendarI18nStrings } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import InternalFormField from '../../form-field/internal';
@@ -16,7 +16,7 @@ import clsx from 'clsx';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeStartOfWeek } from '../../calendar/utils/locales';
+import { normalizeLocale, normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
@@ -35,10 +35,10 @@ export interface RangeCalendarValue {
 export interface CalendarProps extends BaseComponentProps {
   value: null | RangeCalendarValue;
   onChange: (value: RangeCalendarValue) => void;
-  locale: string;
-  startOfWeek: number | undefined;
-  isDateEnabled: (date: Date) => boolean;
-  i18nStrings: DateRangePickerProps.I18nStrings;
+  locale?: string;
+  startOfWeek?: number;
+  isDateEnabled?: (date: Date) => boolean;
+  i18nStrings: RangeCalendarI18nStrings;
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
 }
@@ -49,9 +49,9 @@ function RangeCalendar(
   {
     value,
     onChange,
-    locale,
+    locale = '',
     startOfWeek,
-    isDateEnabled,
+    isDateEnabled = () => true,
     i18nStrings,
     dateOnly = false,
     timeInputFormat = 'hh:mm:ss',
@@ -61,7 +61,8 @@ function RangeCalendar(
   const elementRef = useRef<HTMLDivElement>(null);
   const isSingleGrid = useMobile();
 
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
+  const normalizedLocale = normalizeLocale('DateRangePicker', locale);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
 
   useImperativeHandle(ref, () => ({
     focus() {
@@ -132,11 +133,11 @@ function RangeCalendar(
       return (
         i18nStrings.startDateLabel +
         ', ' +
-        getDateLabel(locale, startDate) +
+        getDateLabel(normalizedLocale, startDate) +
         ', ' +
         i18nStrings.startTimeLabel +
         ', ' +
-        renderTimeLabel(locale, startDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
         '. '
       );
     };
@@ -145,22 +146,22 @@ function RangeCalendar(
       return (
         i18nStrings.endDateLabel +
         ', ' +
-        getDateLabel(locale, endDate) +
+        getDateLabel(normalizedLocale, endDate) +
         ', ' +
         i18nStrings.endTimeLabel +
         ', ' +
-        renderTimeLabel(locale, endDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
         '. '
       );
     };
 
     const announceRange = (startDate: Date, endDate: Date) => {
       if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
-        return `${getDateLabel(locale, startDate)} – ${getDateLabel(locale, endDate)}`;
+        return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
       }
       return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
-        getDateLabel(locale, startDate),
-        getDateLabel(locale, endDate)
+        getDateLabel(normalizedLocale, startDate),
+        getDateLabel(normalizedLocale, endDate)
       );
     };
 
@@ -275,7 +276,7 @@ function RangeCalendar(
         >
           <CalendarHeader
             baseDate={currentMonth}
-            locale={locale}
+            locale={normalizedLocale}
             onChangeMonth={onHeaderChangeMonthHandler}
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
@@ -285,7 +286,7 @@ function RangeCalendar(
 
           <Grids
             isSingleGrid={isSingleGrid}
-            locale={locale}
+            locale={normalizedLocale}
             baseDate={currentMonth}
             focusedDate={focusedDate}
             onFocusedDateChange={setFocusedDate}

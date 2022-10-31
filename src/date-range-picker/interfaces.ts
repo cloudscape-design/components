@@ -366,6 +366,19 @@ export namespace DateRangePickerProps {
   }
 }
 
+export type RangeCalendarI18nStrings = Pick<
+  DateRangePickerProps.I18nStrings,
+  | 'todayAriaLabel'
+  | 'nextMonthAriaLabel'
+  | 'previousMonthAriaLabel'
+  | 'startDateLabel'
+  | 'startTimeLabel'
+  | 'endDateLabel'
+  | 'endTimeLabel'
+  | 'dateTimeConstraintText'
+  | 'renderSelectedAbsoluteRangeAriaLive'
+>;
+
 export interface Focusable {
   focus(): void;
 }
