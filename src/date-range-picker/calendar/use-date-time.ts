@@ -4,7 +4,8 @@
 import { useMemo, useState } from 'react';
 import { formatDate, formatTime, parseDate } from '../../internal/utils/date-time';
 
-export function useDateTime(initialDateString: string, initialTimeString: string) {
+export function useDateTime(initialDateTimeString: string) {
+  const [initialDateString = '', initialTimeString = ''] = initialDateTimeString.split('T');
   const [dateString, setDateString] = useState(initialDateString);
   const [timeString, setTimeString] = useState(initialTimeString);
 

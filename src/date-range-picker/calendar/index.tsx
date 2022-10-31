@@ -47,12 +47,10 @@ export default function DateRangePickerCalendar({
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
 
   const initialStartDate = value?.startDate ?? '';
-  const initialEndDate = value?.endDate ?? '';
-  const [initialStartDateString = '', initialStartTimeString = ''] = initialStartDate.split('T');
-  const [initialEndDateString = '', initialEndTimeString = ''] = initialEndDate.split('T');
+  const rangeStart = useDateTime(initialStartDate);
 
-  const rangeStart = useDateTime(initialStartDateString, initialStartTimeString);
-  const rangeEnd = useDateTime(initialEndDateString, initialEndTimeString);
+  const initialEndDate = value?.endDate ?? '';
+  const rangeEnd = useDateTime(initialEndDate);
 
   const [announcement, setAnnouncement] = useState('');
 
