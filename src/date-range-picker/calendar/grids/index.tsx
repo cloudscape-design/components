@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { KeyCode } from '../../../internal/keycode';
 import { isSameMonth, isAfter, isBefore, addMonths, min, max } from 'date-fns';
 
-import { DayIndex } from '../index';
-import { DateRangePickerProps } from '../../interfaces';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { Grid } from './grid';
 import styles from '../../styles.css.js';

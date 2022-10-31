@@ -4,7 +4,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { Focusable, RangeCalendarI18nStrings } from '../interfaces';
+import { Focusable, RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import { TimeInputProps } from '../../time-input/interfaces';
@@ -18,18 +18,7 @@ import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
 
-export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-interface HeaderChangeMonthHandler {
-  (isPreviousButtonClick?: boolean): void;
-}
-
-export interface RangeCalendarValue {
-  startDate: string;
-  endDate: string;
-}
-
-export interface CalendarProps extends BaseComponentProps {
+export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: null | RangeCalendarValue;
   onChange: (value: RangeCalendarValue) => void;
   locale?: string;
@@ -40,9 +29,9 @@ export interface CalendarProps extends BaseComponentProps {
   timeInputFormat?: TimeInputProps.Format;
 }
 
-export default forwardRef(RangeCalendar);
+export default forwardRef(DateRangePickerCalendar);
 
-function RangeCalendar(
+function DateRangePickerCalendar(
   {
     value,
     onChange,
@@ -52,7 +41,7 @@ function RangeCalendar(
     i18nStrings,
     dateOnly = false,
     timeInputFormat = 'hh:mm:ss',
-  }: CalendarProps,
+  }: DateRangePickerCalendarProps,
   ref: React.Ref<Focusable>
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -234,7 +223,7 @@ function RangeCalendar(
     // All possible conditions are covered above
   };
 
-  const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
+  const onHeaderChangeMonthHandler = (isPrevious?: boolean) => {
     const newCurrentMonth = addMonths(currentMonth, isPrevious ? -1 : 1);
     setCurrentMonth(newCurrentMonth);
 

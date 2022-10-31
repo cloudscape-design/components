@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, Link, Checkbox, SpaceBetween } from '~components';
-import RangeCalendar, { RangeCalendarValue } from '~components/date-range-picker/calendar';
+import RangeCalendar from '~components/date-range-picker/calendar';
+import { RangeCalendarValue } from '~components/date-range-picker/interfaces';
 import { i18nStrings, i18nStringsDateOnly } from './common';
 
 export default function RangeCalendarScenario() {

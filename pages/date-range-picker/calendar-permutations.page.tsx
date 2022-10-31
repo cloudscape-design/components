@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import Box from '~components/box';
-import Calendar, { CalendarProps } from '~components/date-range-picker/calendar';
+import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 import Dropdown from '~components/internal/components/dropdown';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -21,7 +21,7 @@ const intervals = [
   ['2021-05-10', '2021-05-30'],
 ];
 
-const permutations = createPermutations<CalendarProps>(
+const permutations = createPermutations<DateRangePickerCalendarProps>(
   intervals.map(([startDate, endDate]) => ({
     value: [{ startDate, endDate }],
     locale: ['en-GB'],
