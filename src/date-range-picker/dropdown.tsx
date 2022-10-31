@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps, Focusable } from './interfaces';
+import { DateRangePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -124,12 +125,6 @@ export function DateRangePickerDropdown({
     setValidationResult,
   ]);
 
-  const focusRefs = {
-    default: useRef<Focusable>(null),
-    'absolute-only': useRef<Focusable>(null),
-    'relative-only': useRef<Focusable>(null),
-  };
-
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);
 
   return (
@@ -156,7 +151,6 @@ export function DateRangePickerDropdown({
                 <SpaceBetween direction="vertical" size="s">
                   {rangeSelectorMode === 'default' && (
                     <ModeSwitcher
-                      ref={focusRefs.default}
                       mode={rangeSelectionMode}
                       onChange={(mode: 'absolute' | 'relative') => {
                         setRangeSelectionMode(mode);
@@ -169,7 +163,6 @@ export function DateRangePickerDropdown({
 
                   {rangeSelectionMode === 'absolute' && (
                     <Calendar
-                      ref={focusRefs['absolute-only']}
                       value={selectedAbsoluteRange ? { ...selectedAbsoluteRange } : null}
                       onChange={value => setSelectedAbsoluteRange({ type: 'absolute', ...value })}
                       locale={locale}
@@ -183,7 +176,6 @@ export function DateRangePickerDropdown({
 
                   {rangeSelectionMode === 'relative' && (
                     <RelativeRangePicker
-                      ref={focusRefs['relative-only']}
                       isSingleGrid={isSingleGrid}
                       options={relativeOptions}
                       dateOnly={dateOnly}

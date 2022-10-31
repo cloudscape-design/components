@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { Focusable, RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
+import { RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import { TimeInputProps } from '../../time-input/interfaces';
@@ -17,7 +18,6 @@ import { joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
-import { getFirstFocusable } from '../../internal/components/focus-lock/utils.js';
 import { useDateTime } from './use-date-time.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
@@ -31,34 +31,20 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   timeInputFormat?: TimeInputProps.Format;
 }
 
-export default forwardRef(DateRangePickerCalendar);
-
-function DateRangePickerCalendar(
-  {
-    value,
-    onChange,
-    locale = '',
-    startOfWeek,
-    isDateEnabled = () => true,
-    i18nStrings,
-    dateOnly = false,
-    timeInputFormat = 'hh:mm:ss',
-  }: DateRangePickerCalendarProps,
-  ref: React.Ref<Focusable>
-) {
-  const elementRef = useRef<HTMLDivElement>(null);
+export default function DateRangePickerCalendar({
+  value,
+  onChange,
+  locale = '',
+  startOfWeek,
+  isDateEnabled = () => true,
+  i18nStrings,
+  dateOnly = false,
+  timeInputFormat = 'hh:mm:ss',
+}: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
 
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
-
-  useImperativeHandle(ref, () => ({
-    focus() {
-      if (elementRef.current) {
-        getFirstFocusable(elementRef.current).focus();
-      }
-    },
-  }));
 
   const initialStartDate = value?.startDate ?? '';
   const initialEndDate = value?.endDate ?? '';
@@ -244,7 +230,6 @@ function DateRangePickerCalendar(
         })}
       >
         <div
-          ref={elementRef}
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
