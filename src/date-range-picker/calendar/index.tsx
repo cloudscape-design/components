@@ -7,11 +7,7 @@ import { BaseComponentProps } from '../../internal/base-component';
 import { Focusable, RangeCalendarI18nStrings } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import InternalFormField from '../../form-field/internal';
-import { InputProps } from '../../input/interfaces';
-import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
-import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
@@ -20,6 +16,7 @@ import { normalizeLocale, normalizeStartOfWeek } from '../../calendar/utils/loca
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
+import RangeInputs from './range-inputs.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -115,9 +112,8 @@ function RangeCalendar(
     return selectFocusedDate(selectedStartDate, currentMonth, isDateEnabled);
   });
 
+  // This effect "synchronizes" the local state update back up to the parent component.
   useEffect(() => {
-    // This effect "synchronizes" the local state update back up to the overall DateRangePicker component
-
     const startDate = joinDateTime(startDateString, startTimeString);
     const endDate = joinDateTime(endDateString, endTimeString);
 
@@ -247,17 +243,17 @@ function RangeCalendar(
     setFocusedDate(newBaseDate);
   };
 
-  const onChangeStartDate: InputProps['onChange'] = e => {
-    setStartDateString(e.detail.value);
+  const onChangeStartDate = (value: string) => {
+    setStartDateString(value);
 
-    if (e.detail.value.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
+    if (value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
-  const onChangeEndDate: InputProps['onChange'] = e => {
-    setEndDateString(e.detail.value);
+  const onChangeEndDate = (value: string) => {
+    setEndDateString(value);
   };
 
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
@@ -300,53 +296,20 @@ function RangeCalendar(
             headingIdPrefix={headingIdPrefix}
           />
         </div>
-        <InternalFormField constraintText={i18nStrings.dateTimeConstraintText}>
-          <div className={styles['date-and-time-container']}>
-            <div className={styles['date-and-time-wrapper']}>
-              <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={startDateString}
-                  className={styles['start-date-input']}
-                  onChange={onChangeStartDate}
-                  placeholder="YYYY/MM/DD"
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.startTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={startTimeString}
-                    onChange={e => setStartTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['start-time-input']}
-                  />
-                </InternalFormField>
-              )}
-            </div>
 
-            <div className={styles['date-and-time-wrapper']}>
-              <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={endDateString}
-                  className={styles['end-date-input']}
-                  onChange={onChangeEndDate}
-                  placeholder="YYYY/MM/DD"
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.endTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={endTimeString}
-                    onChange={e => setEndTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['end-time-input']}
-                  />
-                </InternalFormField>
-              )}
-            </div>
-          </div>
-        </InternalFormField>
+        <RangeInputs
+          startDate={startDateString}
+          onChangeStartDate={onChangeStartDate}
+          startTime={startTimeString}
+          onChangeStartTime={setStartTimeString}
+          endDate={endDateString}
+          onChangeEndDate={onChangeEndDate}
+          endTime={endTimeString}
+          onChangeEndTime={setEndTimeString}
+          i18nStrings={i18nStrings}
+          dateOnly={dateOnly}
+          timeInputFormat={timeInputFormat}
+        />
       </div>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>

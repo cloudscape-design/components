@@ -366,6 +366,11 @@ export namespace DateRangePickerProps {
   }
 }
 
+export interface RangeCalendarValue {
+  startDate: string;
+  endDate: string;
+}
+
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,
   | 'todayAriaLabel'
