@@ -9,4 +9,4 @@ on:
 
 jobs:
   dry-run:
-    uses: cloudscape-design/.github/.github/workflows/dry-run.yml@main
+    uses: cloudscape-design/.github/.github/workflows/dry-run.yml@demos-dry-run
