@@ -14,8 +14,7 @@ import {
   isToday,
 } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DayIndex } from '../index';
-import { DateRangePickerProps } from '../../interfaces';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
