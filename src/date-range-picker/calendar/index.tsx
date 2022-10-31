@@ -4,64 +4,51 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } f
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { DateRangePickerProps, Focusable } from '../interfaces';
+import { Focusable, RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import InternalFormField from '../../form-field/internal';
-import { InputProps } from '../../input/interfaces';
-import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
-import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeStartOfWeek } from '../../calendar/utils/locales';
+import { normalizeLocale, normalizeStartOfWeek } from '../../calendar/utils/locales';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
+import RangeInputs from './range-inputs.js';
 
-export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-interface HeaderChangeMonthHandler {
-  (isPreviousButtonClick?: boolean): void;
-}
-
-export interface RangeCalendarValue {
-  startDate: string;
-  endDate: string;
-}
-
-export interface CalendarProps extends BaseComponentProps {
+export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: null | RangeCalendarValue;
   onChange: (value: RangeCalendarValue) => void;
-  locale: string;
-  startOfWeek: number | undefined;
-  isDateEnabled: (date: Date) => boolean;
-  i18nStrings: DateRangePickerProps.I18nStrings;
+  locale?: string;
+  startOfWeek?: number;
+  isDateEnabled?: (date: Date) => boolean;
+  i18nStrings: RangeCalendarI18nStrings;
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
 }
 
-export default forwardRef(RangeCalendar);
+export default forwardRef(DateRangePickerCalendar);
 
-function RangeCalendar(
+function DateRangePickerCalendar(
   {
     value,
     onChange,
-    locale,
+    locale = '',
     startOfWeek,
-    isDateEnabled,
+    isDateEnabled = () => true,
     i18nStrings,
     dateOnly = false,
     timeInputFormat = 'hh:mm:ss',
-  }: CalendarProps,
+  }: DateRangePickerCalendarProps,
   ref: React.Ref<Focusable>
 ) {
   const elementRef = useRef<HTMLDivElement>(null);
   const isSingleGrid = useMobile();
 
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
+  const normalizedLocale = normalizeLocale('DateRangePicker', locale);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
 
   useImperativeHandle(ref, () => ({
     focus() {
@@ -114,9 +101,8 @@ function RangeCalendar(
     return selectFocusedDate(selectedStartDate, currentMonth, isDateEnabled);
   });
 
+  // This effect "synchronizes" the local state update back up to the parent component.
   useEffect(() => {
-    // This effect "synchronizes" the local state update back up to the overall DateRangePicker component
-
     const startDate = joinDateTime(startDateString, startTimeString);
     const endDate = joinDateTime(endDateString, endTimeString);
 
@@ -132,11 +118,11 @@ function RangeCalendar(
       return (
         i18nStrings.startDateLabel +
         ', ' +
-        getDateLabel(locale, startDate) +
+        getDateLabel(normalizedLocale, startDate) +
         ', ' +
         i18nStrings.startTimeLabel +
         ', ' +
-        renderTimeLabel(locale, startDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
         '. '
       );
     };
@@ -145,22 +131,22 @@ function RangeCalendar(
       return (
         i18nStrings.endDateLabel +
         ', ' +
-        getDateLabel(locale, endDate) +
+        getDateLabel(normalizedLocale, endDate) +
         ', ' +
         i18nStrings.endTimeLabel +
         ', ' +
-        renderTimeLabel(locale, endDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
         '. '
       );
     };
 
     const announceRange = (startDate: Date, endDate: Date) => {
       if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
-        return `${getDateLabel(locale, startDate)} – ${getDateLabel(locale, endDate)}`;
+        return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
       }
       return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
-        getDateLabel(locale, startDate),
-        getDateLabel(locale, endDate)
+        getDateLabel(normalizedLocale, startDate),
+        getDateLabel(normalizedLocale, endDate)
       );
     };
 
@@ -237,7 +223,7 @@ function RangeCalendar(
     // All possible conditions are covered above
   };
 
-  const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
+  const onHeaderChangeMonthHandler = (isPrevious?: boolean) => {
     const newCurrentMonth = addMonths(currentMonth, isPrevious ? -1 : 1);
     setCurrentMonth(newCurrentMonth);
 
@@ -246,17 +232,17 @@ function RangeCalendar(
     setFocusedDate(newBaseDate);
   };
 
-  const onChangeStartDate: InputProps['onChange'] = e => {
-    setStartDateString(e.detail.value);
+  const onChangeStartDate = (value: string) => {
+    setStartDateString(value);
 
-    if (e.detail.value.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
+    if (value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
-  const onChangeEndDate: InputProps['onChange'] = e => {
-    setEndDateString(e.detail.value);
+  const onChangeEndDate = (value: string) => {
+    setEndDateString(value);
   };
 
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
@@ -275,7 +261,7 @@ function RangeCalendar(
         >
           <CalendarHeader
             baseDate={currentMonth}
-            locale={locale}
+            locale={normalizedLocale}
             onChangeMonth={onHeaderChangeMonthHandler}
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
@@ -285,7 +271,7 @@ function RangeCalendar(
 
           <Grids
             isSingleGrid={isSingleGrid}
-            locale={locale}
+            locale={normalizedLocale}
             baseDate={currentMonth}
             focusedDate={focusedDate}
             onFocusedDateChange={setFocusedDate}
@@ -299,53 +285,20 @@ function RangeCalendar(
             headingIdPrefix={headingIdPrefix}
           />
         </div>
-        <InternalFormField constraintText={i18nStrings.dateTimeConstraintText}>
-          <div className={styles['date-and-time-container']}>
-            <div className={styles['date-and-time-wrapper']}>
-              <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={startDateString}
-                  className={styles['start-date-input']}
-                  onChange={onChangeStartDate}
-                  placeholder="YYYY/MM/DD"
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.startTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={startTimeString}
-                    onChange={e => setStartTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['start-time-input']}
-                  />
-                </InternalFormField>
-              )}
-            </div>
 
-            <div className={styles['date-and-time-wrapper']}>
-              <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={endDateString}
-                  className={styles['end-date-input']}
-                  onChange={onChangeEndDate}
-                  placeholder="YYYY/MM/DD"
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.endTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={endTimeString}
-                    onChange={e => setEndTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['end-time-input']}
-                  />
-                </InternalFormField>
-              )}
-            </div>
-          </div>
-        </InternalFormField>
+        <RangeInputs
+          startDate={startDateString}
+          onChangeStartDate={onChangeStartDate}
+          startTime={startTimeString}
+          onChangeStartTime={setStartTimeString}
+          endDate={endDateString}
+          onChangeEndDate={onChangeEndDate}
+          endTime={endTimeString}
+          onChangeEndTime={setEndTimeString}
+          i18nStrings={i18nStrings}
+          dateOnly={dateOnly}
+          timeInputFormat={timeInputFormat}
+        />
       </div>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>

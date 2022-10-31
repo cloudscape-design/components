@@ -131,7 +131,7 @@ const DateRangePicker = React.forwardRef(
 
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
-    const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? '');
+    const normalizedLocale = normalizeLocale('DateRangePicker', locale);
 
     const closeDropdown = (focusTrigger = false) => {
       setIsDropDownOpen(false);
