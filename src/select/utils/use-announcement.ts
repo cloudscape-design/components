@@ -57,5 +57,5 @@ export function useAnnouncement<Option extends OptionHolder>({
   // Use default renderer with selected ARIA label if defined and relevant.
   const selectedAnnouncement = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
   const defaultDescription = defaultOptionDescription(option, group);
-  return [selectedAnnouncement, defaultDescription].join(' ');
+  return [selectedAnnouncement, defaultDescription].filter(Boolean).join(' ');
 }
