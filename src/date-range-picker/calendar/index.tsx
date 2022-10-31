@@ -17,6 +17,7 @@ import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
+import { getFirstFocusable } from '../../internal/components/focus-lock/utils.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: null | RangeCalendarValue;
@@ -53,8 +54,7 @@ function DateRangePickerCalendar(
   useImperativeHandle(ref, () => ({
     focus() {
       if (elementRef.current) {
-        const prevButton = elementRef.current.getElementsByClassName(styles['calendar-prev-month-btn'])[0];
-        (prevButton as undefined | HTMLButtonElement)?.focus();
+        getFirstFocusable(elementRef.current).focus();
       }
     },
   }));
@@ -223,8 +223,7 @@ function DateRangePickerCalendar(
     // All possible conditions are covered above
   };
 
-  const onHeaderChangeMonthHandler = (isPrevious?: boolean) => {
-    const newCurrentMonth = addMonths(currentMonth, isPrevious ? -1 : 1);
+  const onHeaderChangeMonthHandler = (newCurrentMonth: Date) => {
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
