@@ -65,16 +65,19 @@ export default function PopoverBody({
   );
 
   return (
-    <div
-      className={clsx(styles.body, className, {
-        [styles['body-overflow-visible']]: overflowVisible === 'both',
-      })}
-      role={header ? 'dialog' : undefined}
-      onKeyDown={onKeyDown}
-      aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
-      aria-labelledby={header ? labelledById : undefined}
-    >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+    <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+      <div
+        className={clsx(styles.body, className, {
+          [styles['body-overflow-visible']]: overflowVisible === 'both',
+        })}
+        role={header ? 'dialog' : undefined}
+        // this is here to prevent focus being snatched by a parent focusable element,
+        // for example when clicking non-focusable elements (text) inside the popover
+        tabIndex={-1}
+        onKeyDown={onKeyDown}
+        aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
+        aria-labelledby={header ? labelledById : undefined}
+      >
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
@@ -89,7 +92,7 @@ export default function PopoverBody({
             {children}
           </div>
         </div>
-      </FocusLock>
-    </div>
+      </div>
+    </FocusLock>
   );
 }

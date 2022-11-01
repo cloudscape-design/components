@@ -32,8 +32,11 @@ export default function () {
         header="Memory error"
         content={
           <>
-            This instance contains insufficient memory. Stop the instance, choose a different instance type with more
-            memory, and restart it.
+            <p>
+              This instance contains insufficient memory. Stop the instance, choose a different instance type with more
+              memory, and restart it.
+            </p>
+            <input />
           </>
         }
         dismissAriaLabel="Close"
@@ -59,6 +62,26 @@ export default function () {
       >
         sj-45ab8k
       </Popover>
+      <div tabIndex={0}>
+        <Popover
+          size="medium"
+          header="Memory error"
+          content={
+            <>
+              <p>
+                This instance contains insufficient memory. Stop the instance, choose a different instance type with
+                more memory, and restart it.
+              </p>
+              <input />
+            </>
+          }
+          dismissAriaLabel="Close"
+          id="focus-trap-within-focusable"
+          renderWithPortal={renderWithPortal}
+        >
+          Error
+        </Popover>
+      </div>
     </article>
   );
 }
