@@ -5,12 +5,13 @@ import TabTrap from '../tab-trap/index';
 import { getFirstFocusable, getLastFocusable } from './utils';
 
 export interface FocusLockProps {
+  className?: string;
   disabled?: boolean;
   autoFocus?: boolean;
   children: React.ReactNode;
 }
 
-export default function FocusLock({ disabled, autoFocus, children }: FocusLockProps) {
+export default function FocusLock({ className, disabled, autoFocus, children }: FocusLockProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const focusFirst = () => {
@@ -34,7 +35,9 @@ export default function FocusLock({ disabled, autoFocus, children }: FocusLockPr
   return (
     <>
       <TabTrap disabled={disabled} focusNextCallback={focusLast} />
-      <div ref={containerRef}>{children}</div>
+      <div className={className} ref={containerRef}>
+        {children}
+      </div>
       <TabTrap disabled={disabled} focusNextCallback={focusFirst} />
     </>
   );

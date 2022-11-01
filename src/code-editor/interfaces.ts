@@ -59,6 +59,12 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   preferences?: Partial<CodeEditorProps.Preferences>;
 
   /**
+   * List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
+   * least one dark theme. If not set explicitly, it will render all Ace themes available for selection.
+   */
+  themes?: CodeEditorProps.AvailableThemes;
+
+  /**
    * Called when any of the preferences change.
    * The event `detail` contains the value of all the preferences as submitted by the user.
    *
@@ -102,6 +108,11 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
 export namespace CodeEditorProps {
   export type Language = typeof AceModes[number]['value'];
   export type Theme = typeof LightThemes[number]['value'] | typeof DarkThemes[number]['value'];
+
+  export interface AvailableThemes {
+    light: ReadonlyArray<string>;
+    dark: ReadonlyArray<string>;
+  }
 
   export interface Preferences {
     wrapLines: boolean;

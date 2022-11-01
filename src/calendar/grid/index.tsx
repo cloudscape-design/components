@@ -41,6 +41,7 @@ export interface GridProps {
   startOfWeek: DayIndex;
   todayAriaLabel: string;
   selectedDate: Date | null;
+  ariaLabelledby: string;
 }
 
 export default function Grid({
@@ -55,6 +56,7 @@ export default function Grid({
   startOfWeek,
   todayAriaLabel,
   selectedDate,
+  ariaLabelledby,
 }: GridProps) {
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
 
@@ -117,7 +119,7 @@ export default function Grid({
   const focusVisible = useFocusVisible();
 
   return (
-    <table role="grid" className={styles['calendar-grid']}>
+    <table role="grid" className={styles['calendar-grid']} aria-labelledby={ariaLabelledby}>
       <thead>
         <tr>
           {weekdays.map(dayIndex => (

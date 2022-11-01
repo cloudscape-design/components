@@ -12,7 +12,13 @@
   @include styles.styles-reset;
 }
 
+.focus-lock {
+  display: contents;
+}
+
 .calendar {
+  overflow: auto;
+
   &:focus {
     outline: none;
   }

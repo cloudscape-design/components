@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { addMonths, isSameMonth } from 'date-fns';
+import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
+import { normalizeLocale, normalizeStartOfWeek } from '../internal/utils/locale';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
@@ -16,6 +16,7 @@ import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { getBaseDate } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -51,6 +52,8 @@ export default function Calendar({
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
+  const headingId = useUniqueId('calendar-heading');
+
   // Update displayed date if value changes.
   useEffect(() => {
     memoizedValue && setDisplayedDate(prev => (prev.getTime() !== memoizedValue.getTime() ? memoizedValue : prev));
@@ -73,8 +76,8 @@ export default function Calendar({
   const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
-    setDisplayedDate(addMonths(baseDate, isPreviousButtonClick ? -1 : 1));
+  const onHeaderChangeMonthHandler = (date: Date) => {
+    setDisplayedDate(date);
     setFocusedDate(null);
   };
 
@@ -118,6 +121,7 @@ export default function Calendar({
           onChangeMonth={onHeaderChangeMonthHandler}
           previousMonthLabel={previousMonthAriaLabel}
           nextMonthLabel={nextMonthAriaLabel}
+          headingId={headingId}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
@@ -132,6 +136,7 @@ export default function Calendar({
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
+            ariaLabelledby={headingId}
           />
         </div>
       </div>

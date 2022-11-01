@@ -5,7 +5,7 @@ import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
-import { normalizeLocale } from '../calendar/utils/locales';
+import { normalizeLocale } from '../internal/utils/locale';
 import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
@@ -169,7 +169,7 @@ const DatePicker = React.forwardRef(
             dropdownId={dropdownId}
           >
             {isDropDownOpen && (
-              <FocusLock autoFocus={true}>
+              <FocusLock className={styles['focus-lock']} autoFocus={true}>
                 <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar
                     value={value}

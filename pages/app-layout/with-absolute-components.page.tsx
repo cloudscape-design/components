@@ -73,6 +73,7 @@ export default function () {
               ariaLabel="Demo select"
               selectedOption={selectedOption}
               options={selectOptions}
+              data-testid="select-demo"
               onChange={event => setSelectedOption(event.detail.selectedOption)}
             />
             <div style={{ lineHeight: '100vh' }}>Extra empty space to activate the scroll</div>

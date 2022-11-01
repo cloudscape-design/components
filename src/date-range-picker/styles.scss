@@ -17,6 +17,10 @@ $calendar-header-color: awsui.$color-text-body-default;
   max-width: 32em;
 }
 
+.focus-lock {
+  display: contents;
+}
+
 .trigger-wrapper {
   min-width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
 }
@@ -25,13 +29,18 @@ $calendar-header-color: awsui.$color-text-body-default;
   display: flex;
 }
 
-.calendar {
-  display: block;
+.calendar-container {
   width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
 
   &.one-grid {
     width: $calendar-grid-width;
   }
+}
+
+.calendar {
+  display: block;
+  width: 100%;
+  margin-bottom: awsui.$space-scaled-s;
 
   &-header {
     display: flex;
