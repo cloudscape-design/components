@@ -11,4 +11,4 @@ src/index.ts
 src/test-utils/dom/index.ts
 src/test-utils/selectors
 src/internal/generated/custom-css-properties/index.*
-src/internal/vendor/generated-third-party-licenses.txt
+vendor/generated-third-party-licenses.txt

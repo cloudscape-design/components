@@ -3,6 +3,6 @@
 const execa = require('execa');
 const { task } = require('../utils/gulp-utils');
 
-module.exports = task('bundleVendorFiles', () => {
-  return execa('rollup', ['-c', 'src/internal/vendor/rollup.config.mjs'], { stdio: 'inherit' });
+module.exports = task('bundle-vendor-files', () => {
+  return execa('rollup', ['-c', 'vendor/rollup.config.mjs'], { stdio: 'inherit' });
 });

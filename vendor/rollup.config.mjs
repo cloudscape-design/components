@@ -6,11 +6,13 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import commenting from 'commenting';
 import { readFileSync } from 'fs';
+import del from 'del';
 
 const dirName = path.dirname(fileURLToPath(import.meta.url));
 
 const vendorFileName = 'd3-scale.js';
-const vendorFile = path.join(dirName, '../../../lib/components/internal/vendor', vendorFileName);
+const vendorFolder = path.join(dirName, '../lib/components/internal/vendor');
+const vendorFile = path.join(vendorFolder, vendorFileName);
 const d3LicencesFile = path.join(dirName, 'generated-third-party-licenses.txt');
 
 export default {
@@ -32,14 +34,28 @@ export default {
       },
     }),
     attach3rdPartyLicenses(),
+    removeVendorFolder(),
   ],
 };
+
+function removeVendorFolder() {
+  return {
+    name: 'remove-vendor-folder',
+    generateBundle: {
+      sequential: true,
+      order: 'pre',
+      async handler() {
+        await del([vendorFolder]);
+      },
+    },
+  };
+}
 
 // Rollup plugin which prepends the generated 3rd party licences content to the bundled code before writing the file.
 function attach3rdPartyLicenses() {
   return {
     name: 'attach-3rd-party-licences',
-    generateBundle(options, bundle) {
+    generateBundle(_options, bundle) {
       const content = readFileSync(d3LicencesFile, 'utf8');
       const comment = commenting(content, { extension: '.js' });
       bundle[vendorFileName].code = `${comment}${bundle[vendorFileName].code}`;
