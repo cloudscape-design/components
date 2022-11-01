@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
-import FocusLock from 'react-focus-lock';
 
 import { KeyCode } from '../internal/keycode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import FocusLock from '../internal/components/focus-lock';
 
 import styles from './styles.css.js';
 
@@ -19,7 +19,6 @@ export interface PopoverBodyProps {
   header: React.ReactNode | undefined;
   children: React.ReactNode;
   variant?: 'annotation';
-  returnFocus?: boolean;
   overflowVisible?: 'content' | 'both';
 
   dismissButtonRef?: React.Ref<ButtonProps.Ref>;
@@ -34,7 +33,6 @@ export default function PopoverBody({
   children,
   onDismiss,
   variant,
-  returnFocus = true,
   overflowVisible,
   dismissButtonRef,
   className,
@@ -65,19 +63,16 @@ export default function PopoverBody({
   );
 
   return (
-    <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
-      <div
-        className={clsx(styles.body, className, {
-          [styles['body-overflow-visible']]: overflowVisible === 'both',
-        })}
-        role={header ? 'dialog' : undefined}
-        // this is here to prevent focus being snatched by a parent focusable element,
-        // for example when clicking non-focusable elements (text) inside the popover
-        tabIndex={-1}
-        onKeyDown={onKeyDown}
-        aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
-        aria-labelledby={header ? labelledById : undefined}
-      >
+    <div
+      className={clsx(styles.body, className, {
+        [styles['body-overflow-visible']]: overflowVisible === 'both',
+      })}
+      role={header ? 'dialog' : undefined}
+      onKeyDown={onKeyDown}
+      aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
+      aria-labelledby={header ? labelledById : undefined}
+    >
+      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
@@ -92,7 +87,7 @@ export default function PopoverBody({
             {children}
           </div>
         </div>
-      </div>
-    </FocusLock>
+      </FocusLock>
+    </div>
   );
 }

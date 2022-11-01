@@ -22,7 +22,9 @@ export default function () {
       <ul>
         <li>Popover with dismiss button should trap focus when opened</li>
         <li>Popover with dismiss button should return focus to the trigger when closed</li>
-        <li>Popover with dismiss button should not prevent focus from moving to the clicked element</li>
+        <li id="text-before-focus-trap">
+          Popover with dismiss button should not prevent focus from moving to the clicked element
+        </li>
       </ul>
       <button type="button" id="focus-trap-target">
         Click to focus

@@ -61,6 +61,17 @@ describe.each([true, false])('With dismiss button (renderWithPortal=%s)', (rende
     })
   );
 
+  test(
+    'Should not restore focus when clicking elsewhere on the page',
+    setupTest(renderWithPortal, async page => {
+      await page.click(triggerSelector);
+      await page.waitForVisible(dismissButtonSelector);
+      await page.click('#text-before-focus-trap');
+      await page.keys(['Tab']);
+      await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
+    })
+  );
+
   describe.each([true, false])('Inside focusable? %s)', (insideFocusable: boolean) => {
     const popover = createWrapper().findPopover(insideFocusable ? '#focus-trap-within-focusable' : '#focus-trap');
     const dismissSelector = popover.findDismissButton({ renderWithPortal }).toSelector();
