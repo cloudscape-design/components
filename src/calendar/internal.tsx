@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { addMonths, isSameMonth } from 'date-fns';
+import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
@@ -76,8 +76,8 @@ export default function Calendar({
   const baseDate = getBaseDate(displayedDate, isDateEnabled);
   const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
-    setDisplayedDate(addMonths(baseDate, isPreviousButtonClick ? -1 : 1));
+  const onHeaderChangeMonthHandler = (date: Date) => {
+    setDisplayedDate(date);
     setFocusedDate(null);
   };
 
