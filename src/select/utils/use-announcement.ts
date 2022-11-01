@@ -55,7 +55,7 @@ export function useAnnouncement<Option extends OptionHolder>({
   }
 
   // Use default renderer with selected ARIA label if defined and relevant.
-  const selectedPrefix = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
+  const selectedAnnouncement = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
   const defaultDescription = defaultOptionDescription(option, group);
-  return [selectedPrefix, defaultDescription].filter(Boolean).join(' ');
+  return [selectedAnnouncement, defaultDescription].filter(Boolean).join(' ');
 }
