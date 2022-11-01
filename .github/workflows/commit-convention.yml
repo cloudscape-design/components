@@ -1,0 +1,18 @@
+name: Commit convention
+
+pull_request:
+  types: [closed]
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm i @commitlint/cli @commitlint/config-conventional
+      - run: echo "module.exports = {extends: ['@commitlint/config-conventional'],rules: {'type-enum': [2, 'always', ['fix', 'feat']],'scope-empty': [0],'header-max-length': [0],'subject-case': [2, 'always', 'sentence-case'],},};" > commitlint.config.js
+      - run: npx --no-install commitlint --edit
