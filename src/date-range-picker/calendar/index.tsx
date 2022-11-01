@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeLocale, normalizeStartOfWeek } from '../../calendar/utils/locales';
+import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
 import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
