@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import setOptions from './utils/intl-polyfill';
-import { mergeLocales, normalizeLocale } from '../../../../lib/components/calendar/utils/locales';
+import { normalizeLocale } from '../../../../../lib/components/internal/utils/locale';
 
 function withDocumentLang(lang: string, callback: () => void) {
   const htmlElement = document.querySelector('html');
@@ -9,20 +10,6 @@ function withDocumentLang(lang: string, callback: () => void) {
   callback();
   htmlElement!.removeAttribute('lang');
 }
-
-describe('mergeLocales', () => {
-  test('should return the first locale if it is fully specified', () => {
-    expect(mergeLocales('en-US', 'fr-CA')).toEqual('en-US');
-  });
-
-  test('should return the second locale if it extends the first', () => {
-    expect(mergeLocales('en', 'en-US')).toEqual('en-US');
-  });
-
-  test('should return the first locale if the second is different', () => {
-    expect(mergeLocales('en', 'fr-CA')).toEqual('en');
-  });
-});
 
 describe('normalizeLocale', () => {
   let consoleSpy: jest.SpyInstance;
