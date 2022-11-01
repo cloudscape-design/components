@@ -80,7 +80,6 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell(
       style={style}
       ref={ref}
       scope="col"
-      ref={ref}
     >
       <div
         className={clsx(styles['header-cell-content'], {
