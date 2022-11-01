@@ -125,19 +125,25 @@ describe('Dismiss button', () => {
 describe('Focus behavior', () => {
   it('moves focus to the dismiss button on open if dismiss button is present', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
-    wrapper.findTrigger().click();
+    act(() => {
+      wrapper.findTrigger().click();
+    });
     expect(document.activeElement).toBe(wrapper.findDismissButton()!.getElement());
   });
 
   it('does not move focus on open if dismiss button is not present', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
-    wrapper.findTrigger().click();
+    act(() => {
+      wrapper.findTrigger().click();
+    });
     expect(document.activeElement).not.toBe(wrapper.findBody()!.getElement());
   });
 
   it('moves focus to the dismiss button on open if dismiss button is present - with portal', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal: true });
-    wrapper.findTrigger().click();
+    act(() => {
+      wrapper.findTrigger().click();
+    });
     expect(document.activeElement).toBe(wrapper.findDismissButton({ renderWithPortal: true })!.getElement());
   });
 
@@ -148,7 +154,9 @@ describe('Focus behavior', () => {
       dismissButton: false,
       renderWithPortal: true,
     });
-    wrapper.findTrigger().click();
+    act(() => {
+      wrapper.findTrigger().click();
+    });
     expect(document.activeElement).not.toBe(wrapper.findBody({ renderWithPortal: true })!.getElement());
   });
 });
