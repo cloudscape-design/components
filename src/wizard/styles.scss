@@ -139,7 +139,7 @@
     }
 
     > li.disabled > a > .title {
-      color: #687078;
+      color: awsui.$color-text-status-inactive;
     }
 
     > li.enabled > a > .circle {
