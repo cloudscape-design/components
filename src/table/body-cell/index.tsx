@@ -11,6 +11,8 @@ interface TableBodyCellProps {
   wrapLines: boolean | undefined;
   isFirstRow: boolean;
   isLastRow: boolean;
+  isEvenRow: boolean;
+  hasZebraStripes: boolean | undefined;
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
@@ -33,6 +35,8 @@ export const TableBodyCell = React.forwardRef(function TableBodyCell(
     isNextSelected,
     isPrevSelected,
     isSticky,
+    isEvenRow,
+    hasZebraStripes,
   } = props;
 
   return (
@@ -45,6 +49,7 @@ export const TableBodyCell = React.forwardRef(function TableBodyCell(
         wrapLines && styles['body-cell-wrap'],
         isFirstRow && styles['body-cell-first-row'],
         isLastRow && styles['body-cell-last-row'],
+        !isEvenRow && hasZebraStripes && styles['body-cell-shaded'],
         isSelected && styles['body-cell-selected'],
         isNextSelected && styles['body-cell-next-selected'],
         isPrevSelected && styles['body-cell-prev-selected'],

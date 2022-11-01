@@ -62,6 +62,7 @@ const InternalTable = React.forwardRef(
       onRowClick,
       onRowContextMenu,
       wrapLines,
+      hasZebraStripes,
       resizableColumns,
       onColumnWidthsChange,
       variant,
@@ -295,6 +296,7 @@ const InternalTable = React.forwardRef(
                   items.map((item, rowIndex) => {
                     const firstVisible = rowIndex === 0;
                     const lastVisible = rowIndex === items.length - 1;
+                    const isEven = rowIndex % 2 === 0;
                     const isSelected = !!selectionType && isItemSelected(item);
                     const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                     const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
@@ -319,10 +321,12 @@ const InternalTable = React.forwardRef(
                             className={styles['selection-control']}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
+                            isEvenRow={isEven}
                             isSelected={isSelected}
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
                             wrapLines={false}
+                            hasZebraStripes={hasZebraStripes}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -352,19 +356,7 @@ const InternalTable = React.forwardRef(
                               : 'none',
                           };
 
-                          console.log(
-                            column.cell,
-                            'styles',
-                            styles,
-                            'right cell widths',
-                            rightCellWidths,
-                            'left cell widths',
-                            leftCellWidths,
-                            'is Sticky',
-                            column.isSticky
-                          );
-
-                          console.log(column.header);
+                          // console.log(column, column.isSticky);
 
                           return (
                             <TableBodyCellContent
@@ -389,6 +381,8 @@ const InternalTable = React.forwardRef(
                               wrapLines={wrapLines}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
+                              isEvenRow={isEven}
+                              hasZebraStripes={hasZebraStripes}
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}

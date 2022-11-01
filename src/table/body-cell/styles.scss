@@ -45,6 +45,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-bottom: $border-placeholder;
   }
 
+  &-shaded {
+    background: awsui.$color-background-cell-shaded;
+    // background: awsui.$color-border-divider-default;
+  }
+
   &-freeze {
     position: sticky;
     background: awsui.$color-background-container-content;
