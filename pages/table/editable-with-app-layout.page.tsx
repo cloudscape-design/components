@@ -13,20 +13,21 @@ import Button from '~components/button';
 import { initialItems, Metric } from './editable-data';
 import { ColorPicker, HelpContent } from './editable-utils';
 
-/*
+/*!
   TODO:
-  1. Focus behavior – focus cell after cancel/submit
+  1. Focus behavior
+    1. arrow navigation
+    1. focus cell after cancel/submit
   1. Hide cancel button when submission is in progress
-  1. Add pagination, filter features (keep enabled)
-  1. Editable icon in column header
-  1. Extend space for the error message
-  1. Focus - arrow navigation
-  1. Remove flash
+  1. Keep pagination and filter features when editing cell
+  1. Replace "editable" text with icon in column header
+  1. Extend space for the error message (visual bug)
+  1. Remove flash bar after submission
   1. Handle active sorting when submitting (render a snapshot and a button to resort)
   1. Visual changes
     1. Focus outline all around cell
     1. Add borders
-  1. Unsaved changes modal
+  1. Show modal when exiting with unsaved changes
 */
 
 export const ariaLabels: TableProps.AriaLabels<Metric> = {
@@ -51,7 +52,7 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
     header: 'Color (editable)',
     width: 140,
     editable: true,
-    cell: (item, { isEditing, currentValue, setValue }) => {
+    cell(item, { isEditing, currentValue, setValue }) {
       if (!isEditing) {
         return <div style={{ background: item.color, width: 16, height: 16 }}></div>;
       }
@@ -102,17 +103,17 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
   {
     header: 'Activated',
     width: 180,
-    cell: item => {
+    cell: (item: Metric) => {
       return item.enabled ? 'Yes' : 'No';
     },
   },
   {
     header: 'Statistic',
-    cell: item => item.statistic,
+    cell: (item: Metric) => item.statistic,
   },
   {
     header: 'Period',
-    cell: item => (
+    cell: (item: Metric) => (
       <Select
         selectedOption={{ value: item.period }}
         expandToViewport={true}
