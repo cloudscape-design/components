@@ -91,8 +91,7 @@ const InternalLink = React.forwardRef(
         styles[getFontSizeStyle(variant, fontSize)],
         styles[getColorStyle(variant, color)]
       ),
-      'aria-label':
-        ariaLabel && external && externalIconAriaLabel ? ariaLabel + ', ' + externalIconAriaLabel : ariaLabel,
+      'aria-label': ariaLabel,
     };
 
     const content = (
