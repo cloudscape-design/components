@@ -150,6 +150,7 @@ const InternalTable = React.forwardRef(
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
         }
       },
+      singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
     };
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence

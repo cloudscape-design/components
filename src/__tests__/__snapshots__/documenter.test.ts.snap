@@ -10716,32 +10716,17 @@ scroll parent scrolls to reveal the first row of the table.",
   "name": "Table",
   "properties": Array [
     Object {
-      "description": "Specifies label text for the selection components (checkboxes and radio buttons) as follows:
-* Individual items: \`itemSelectionLabel\` [\`(SelectionState, Item) => string\`]
-* Column header: \`allItemsSelectionLabel\` [\`(SelectionState) => string\`]
-* Group label: \`selectionGroupLabel\` [\`string\`]
+      "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
+* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
+* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
+* \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
+                                   It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
+* \`tableLabel\` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
-state of the component (for example, the \`selectedItems\` list). The label function for individual
-items also receives the corresponding  \`Item\` object. You can use the group label to
+state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
+items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
-
-In addition, you can use \`tableLabel\` to provide a label for the table. If you use a
-header for this table, you may reuse the string to provide a caption-like description.
-For example, tableLabel=Instances will be announced as 'Instances table'.
-
-Example:
-\`\`\`
-{
-  selectionGroupLabel: 'Items selection',
-  allItemsSelectionLabel: ({ selectedItems }) =>
-    \`\${selectedItems.length} \${selectedItems.length === 1 ? 'item' : 'items'} selected\`,
-  itemSelectionLabel: ({ selectedItems }, item) => {
-    isItemSelected = selectedItems.filter(i => i.id === item.id).length;
-    return \`\${item.name} is \${isItemSelected ? '' : 'not'} selected\`,
-  tableLabel: \\"Items\\"
- }
-}
-\`\`\`
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
