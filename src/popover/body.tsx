@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
@@ -38,6 +38,7 @@ export default function PopoverBody({
   className,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
+  const [rendered, setRendered] = useState(false);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -47,6 +48,10 @@ export default function PopoverBody({
     },
     [onDismiss]
   );
+
+  // used to ensure that we only autoFocus the dismiss button
+  // once the popover has been repositioned
+  useEffect(() => setRendered(true), []);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div className={styles.dismiss}>
@@ -72,7 +77,7 @@ export default function PopoverBody({
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true}>
+      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={rendered}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
