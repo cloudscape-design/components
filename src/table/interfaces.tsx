@@ -271,16 +271,28 @@ export namespace TableProps {
     setValue: React.Dispatch<ValueType>;
   }
 
+  export type CellRenderer<ItemType> = (item: ItemType) => React.ReactNode;
+  export type EditableCellRenderer<ItemType> = (item: ItemType, context: CellContext) => React.ReactNode;
+
+  type EditableColumnProps<ItemType> =
+    | {
+        editable?: false;
+        cell: CellRenderer<ItemType>;
+      }
+    | {
+        editable: true;
+        cell: EditableCellRenderer<ItemType>;
+      };
+
   export type ColumnDefinition<ItemType> = {
     id?: string;
     header: React.ReactNode;
-    cell(item: ItemType, context: CellContext): React.ReactNode;
-    editable?: boolean;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-  } & SortingColumn<ItemType>;
+  } & SortingColumn<ItemType> &
+    EditableColumnProps<ItemType>;
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
