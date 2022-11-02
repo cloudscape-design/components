@@ -57,8 +57,10 @@ function InternalPopover(
   const clickFrameId = useRef<number | null>(null);
 
   const [visible, setVisible] = useState(false);
-  const [wasVisible, setWasVisible] = useState(false);
-  const [dismissedViaDocumentClick, setDismissedViaDocumentClick] = useState(false);
+
+  const focusTrigger = useCallback(() => {
+    triggerRef.current?.focus();
+  }, []);
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
@@ -67,13 +69,18 @@ function InternalPopover(
 
   const onDismiss = useCallback(() => {
     setVisible(false);
-  }, []);
+    focusTrigger();
+  }, [focusTrigger]);
 
-  const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
-      setVisible(false);
-    }
-  }, []);
+  const onTriggerKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
+        setVisible(false);
+        focusTrigger();
+      }
+    },
+    [focusTrigger]
+  );
 
   useImperativeHandle(ref, () => ({
     dismissPopover: onDismiss,
@@ -89,7 +96,6 @@ function InternalPopover(
       // Dismiss popover unless there was a click inside within the last animation frame.
       if (clickFrameId.current === null) {
         setVisible(false);
-        setDismissedViaDocumentClick(true);
       }
     };
 
@@ -101,19 +107,6 @@ function InternalPopover(
       document.removeEventListener('mousedown', onDocumentClick, false);
     };
   }, []);
-
-  useEffect(() => {
-    if (
-      visible === false &&
-      wasVisible === true &&
-      document.activeElement === document.body &&
-      !dismissedViaDocumentClick
-    ) {
-      triggerRef.current?.focus();
-    }
-    setWasVisible(visible);
-    setDismissedViaDocumentClick(false);
-  }, [visible, wasVisible, dismissedViaDocumentClick]);
 
   const popoverClasses = usePortalModeClasses(triggerRef);
 
