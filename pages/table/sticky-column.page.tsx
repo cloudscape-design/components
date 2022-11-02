@@ -37,6 +37,7 @@ export default () => {
       <SpaceBetween size="xl">
         <Table
           stickyHeader={true}
+          resizableColumns={true}
           columnDefinitions={[
             {
               id: 'variable',
@@ -260,7 +261,7 @@ export default () => {
           header={<Header>Table with sticky left and right columns</Header>}
         />
         <Table
-          // resizableColumns
+          resizableColumns={true}
           columnDefinitions={[
             {
               id: 'variable',
