@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
@@ -21,8 +21,6 @@ export interface PopoverBodyProps {
   variant?: 'annotation';
   overflowVisible?: 'content' | 'both';
 
-  dismissButtonRef?: React.Ref<ButtonProps.Ref>;
-
   className?: string;
 }
 
@@ -34,11 +32,11 @@ export default function PopoverBody({
   onDismiss,
   variant,
   overflowVisible,
-  dismissButtonRef,
   className,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
-  const [rendered, setRendered] = useState(false);
+  const [dismissButtonFocused, setDismissButtonFocused] = useState(false);
+  const dismissButtonRef = useRef<ButtonProps.Ref>(null);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -49,9 +47,14 @@ export default function PopoverBody({
     [onDismiss]
   );
 
-  // used to ensure that we only autoFocus the dismiss button
-  // once the popover has been repositioned
-  useEffect(() => setRendered(true), []);
+  useEffect(() => {
+    if (showDismissButton && !dismissButtonFocused) {
+      setTimeout(() => {
+        dismissButtonRef.current?.focus();
+      }, 0);
+    }
+    setDismissButtonFocused(showDismissButton);
+  }, [showDismissButton, dismissButtonFocused]);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div className={styles.dismiss}>
@@ -77,7 +80,7 @@ export default function PopoverBody({
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={rendered}>
+      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}

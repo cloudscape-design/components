@@ -23,7 +23,7 @@ test(
     );
     const footerBox = await page.getBoundingBox('[data-testid="footer"]');
 
-    expect(overlap(hotspotOneBox, footerBox)).toBeFalsy();
+    expect(overlap(hotspotOneBox, { ...footerBox, bottom: Infinity })).toBeFalsy();
 
     await page.click(annotationWrapper.findPreviousButton().toSelector());
 
@@ -32,7 +32,7 @@ test(
     );
     const headerBox = await page.getBoundingBox('[data-testid="header"]');
 
-    expect(overlap(hotspotOneTwoBox, headerBox)).toBeFalsy();
+    expect(overlap(hotspotOneTwoBox, { ...headerBox, top: -Infinity })).toBeFalsy();
   })
 );
 

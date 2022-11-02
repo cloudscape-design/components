@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../../base-component';
@@ -10,7 +10,6 @@ import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
 import popoverStyles from '../../../popover/styles.css.js';
 import { nodeContains } from '../../utils/dom';
-import { ButtonProps } from '../../../button/interfaces';
 
 import styles from './styles.css.js';
 
@@ -78,12 +77,6 @@ export default function ChartPopover({
     };
   }, [container, onDismiss]);
 
-  const dismissButtonRefCallback = useCallback((element: ButtonProps.Ref) => {
-    if (element) {
-      element.focus();
-    }
-  }, []);
-
   return (
     <div
       {...baseProps}
@@ -106,7 +99,6 @@ export default function ChartPopover({
         <PopoverBody
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
-          dismissButtonRef={dismissButtonRefCallback}
           header={title}
           onDismiss={onDismiss}
         >
