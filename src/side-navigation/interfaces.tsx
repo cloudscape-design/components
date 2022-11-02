@@ -37,7 +37,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * Object that represents an anchor in the navigation.
    * Links are rendered as `<a>` tags.
    * - `type` - `'link'`.
-   * - `text` (string) - Specifies the link text.
+   * - `text` (string|object) - Specifies the link text.
    * - `href` (string) - Specifies the `href` of the link.
    * - `external` (boolean) - Determines whether to display an external link icon next to the link.
    *      If set to `true`, an external link icon appears next to the link.
@@ -54,7 +54,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * #### Section
    * Object that represents a section within the navigation.
    * - `type`: `'section'`.
-   * - `text` (string) - Specifies the text to display as a title of the section.
+   * - `text` (string|object) - Specifies the text to display as a title of the section.
    * - `defaultExpanded` (boolean) - Determines whether the section should be expanded by default. Default value is `true`.
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
@@ -63,7 +63,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    * #### LinkGroup
    * Object that represents a group of links.
    * - `type`: `'link-group'`.
-   * - `text` (string) - Specifies the text of the group link.
+   * - `text` (string|object) - Specifies the text of the group link.
    * - `href` (string) - Specifies the `href` of the group link.
    * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
    *     Although there is no technical limitation to the nesting level,
@@ -73,7 +73,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    *
    * Object that represents an expandable group of links.
    * - `type`: `'expandable-link-group'`.
-   * - `text` (string) - Specifies the text of the group link.
+   * - `text` (string|object) - Specifies the text of the group link.
    * - `href` (string) - Specifies the `href` of the group link.
    * - `defaultExpanded` (boolean) - Specifies whether the group should be expanded by default.
    *    If not explicitly set, the group is collapsed by default, unless one of the nested links is active.
@@ -117,7 +117,7 @@ export namespace SideNavigationProps {
     alt?: string;
   }
   export interface Header {
-    text?: string;
+    text?: string | React.ReactNode;
     href: string;
     logo?: Logo;
   }
@@ -128,7 +128,7 @@ export namespace SideNavigationProps {
 
   export interface Link {
     type: 'link';
-    text: string;
+    text: string | React.ReactNode;
     href: string;
     external?: boolean;
     externalIconAriaLabel?: string;
@@ -137,21 +137,21 @@ export namespace SideNavigationProps {
 
   export interface Section {
     type: 'section';
-    text: string;
+    text: string | React.ReactNode;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
   }
 
   export interface LinkGroup {
     type: 'link-group';
-    text: string;
+    text: string | React.ReactNode;
     href: string;
     items: ReadonlyArray<Item>;
   }
 
   export interface ExpandableLinkGroup {
     type: 'expandable-link-group';
-    text: string;
+    text: string | React.ReactNode;
     href: string;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
