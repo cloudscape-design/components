@@ -344,6 +344,7 @@ describe('Details popover', () => {
       await page.click(chartWrapper.findChart().toSelector());
       // Pinned popover
       await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
 
       // Clicking outside the chart area
       await page.click(filterWrapper.findDropdown().toSelector());
@@ -367,6 +368,7 @@ describe('Details popover', () => {
       // Press enter to reveal the dismiss button
       await page.keys(['Enter']);
       await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
 
       // Press dismiss to unpin
       await page.keys(['Enter']);
