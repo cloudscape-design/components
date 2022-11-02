@@ -19,7 +19,7 @@ on:
 
 jobs:
   release:
-    uses: abdhalees/cloudscape-workflows/.github/workflows/release-gh-notes.yml@dev-v3-alhalee
+    uses: cloudscape-design/.github/.github/workflows/release-gh-notes.yml@dev-v3-alhalee
     secrets: inherit
     with:
       npm_package: ${{ github.event.inputs.npm_package }}
