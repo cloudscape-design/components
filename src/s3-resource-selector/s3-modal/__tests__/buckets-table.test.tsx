@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table';
 import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent } from './utils';
+import { getColumnAriaLabels, getTableBodyContent, getHeaderVisibleText } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -60,11 +60,7 @@ test('renders correct sorting state', async () => {
 
 test('Renders correct buckets table content', async () => {
   const wrapper = await renderTable(<BucketsTable {...defaultProps} />);
-  expect(wrapper.findColumnHeaders().map(colHeader => colHeader.getElement().textContent!.trim())).toEqual([
-    '',
-    'Name',
-    'Creation date',
-  ]);
+  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Name', 'Creation date']);
   expect(getTableBodyContent(wrapper)).toEqual([
     ['', buckets[0].Name, buckets[0].CreationDate],
     ['', buckets[1].Name, buckets[1].CreationDate],
@@ -92,11 +88,7 @@ test('Renders region column when it is requested', async () => {
       visibleColumns={['Name', 'Region']}
     />
   );
-  expect(wrapper.findColumnHeaders().map(colHeader => colHeader.getElement().textContent!.trim())).toEqual([
-    '',
-    'Name',
-    'Region',
-  ]);
+  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Name', 'Region']);
   expect(getTableBodyContent(wrapper)).toEqual([
     ['', buckets[0].Name, buckets[0].Region],
     ['', buckets[1].Name, buckets[1].Region],
