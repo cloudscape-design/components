@@ -57,13 +57,6 @@ const permutations = createPermutations<PieChartProps>([
     legendTitle: ['Legend'],
   },
   {
-    data: [overlappingData],
-    variant: ['pie', 'donut'],
-    size: ['small'],
-    statusType: ['finished'],
-    highlightedSegment: [null, overlappingData[0]],
-  },
-  {
     data: [data1],
     variant: ['pie'],
     size: ['small'],
