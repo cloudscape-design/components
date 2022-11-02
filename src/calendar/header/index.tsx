@@ -3,12 +3,12 @@
 import React from 'react';
 import styles from '../styles.css.js';
 import { renderMonthAndYear } from '../utils/intl';
-import HeaderButton from './button';
+import { PrevMonthButton, NextMonthButton } from './header-button';
 
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangeMonth: (prev?: boolean) => void;
+  onChangeMonth: (date: Date) => void;
   previousMonthLabel: string;
   nextMonthLabel: string;
   headingId: string;
@@ -24,11 +24,11 @@ const CalendarHeader = ({
 }: CalendarHeaderProps) => {
   return (
     <div className={styles['calendar-header']}>
-      <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
+      <PrevMonthButton ariaLabel={previousMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
       <h2 className={styles['calendar-header-month']} id={headingId}>
         {renderMonthAndYear(locale, baseDate)}
       </h2>
-      <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
+      <NextMonthButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
     </div>
   );
 };

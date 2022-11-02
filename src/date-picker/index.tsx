@@ -5,7 +5,7 @@ import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
-import { normalizeLocale } from '../calendar/utils/locales';
+import { normalizeLocale } from '../internal/utils/locale';
 import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';

@@ -3,7 +3,7 @@
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DateRangePickerProps } from './interfaces';
-import { normalizeLocale } from '../calendar/utils/locales';
+import { normalizeLocale } from '../internal/utils/locale';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { KeyCode } from '../internal/keycode';
 import clsx from 'clsx';
@@ -131,7 +131,7 @@ const DateRangePicker = React.forwardRef(
 
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
 
-    const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? '');
+    const normalizedLocale = normalizeLocale('DateRangePicker', locale);
 
     const closeDropdown = (focusTrigger = false) => {
       setIsDropDownOpen(false);

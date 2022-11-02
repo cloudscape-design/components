@@ -14,8 +14,7 @@ import {
   isToday,
 } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DateChangeHandler, DayIndex } from '../index';
-import { DateRangePickerProps } from '../../interfaces';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
@@ -48,7 +47,7 @@ export interface GridProps {
   focusedDate: Date | null;
   focusedDateRef: React.RefObject<HTMLTableCellElement>;
 
-  onSelectDate: DateChangeHandler;
+  onSelectDate: (date: Date) => void;
   onGridKeyDownHandler: (e: React.KeyboardEvent) => void;
   onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 

@@ -4,7 +4,7 @@ import React from 'react';
 import AppLayout from '~components/app-layout';
 import SplitPanel from '~components/split-panel';
 import Header from '~components/header';
-import { Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
+import { Navigation, Tools, Breadcrumbs, Footer } from './utils/content-blocks';
 import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
 import Table from '~components/table';
@@ -46,6 +46,17 @@ const DEMO_CONTENT = (
       pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
       Pharetra pharetra massa massa ultricies mi.
     </p>
+    <Table<Instance>
+      resizableColumns={true}
+      header={
+        <Header headingTagOverride="h1" counter="10">
+          Table Example In Split panel
+        </Header>
+      }
+      columnDefinitions={columnsConfig}
+      items={generateItems(10)}
+    />
+    <div style={{ height: '20px' }}></div>
   </div>
 );
 
@@ -56,45 +67,48 @@ export default function () {
   });
 
   return (
-    <AppLayout
-      ariaLabels={labels}
-      breadcrumbs={<Breadcrumbs />}
-      navigation={<Navigation />}
-      tools={<Tools>{toolsContent.long}</Tools>}
-      disableContentPaddings={true}
-      splitPanel={
-        <SplitPanel
-          header="Split panel header"
-          i18nStrings={{
-            preferencesTitle: 'Preferences',
-            preferencesPositionLabel: 'Split panel position',
-            preferencesPositionDescription: 'Choose the default split panel position for the service.',
-            preferencesPositionSide: 'Side',
-            preferencesPositionBottom: 'Bottom',
-            preferencesConfirm: 'Confirm',
-            preferencesCancel: 'Cancel',
-            closeButtonAriaLabel: 'Close panel',
-            openButtonAriaLabel: 'Open panel',
-            resizeHandleAriaLabel: 'Slider',
-          }}
-        >
-          {DEMO_CONTENT}
-        </SplitPanel>
-      }
-      content={
-        <>
-          <Table<Instance>
-            resizableColumns={true}
-            header={
-              <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-                Sticky Scrollbar Example
-              </Header>
-            }
-            columnDefinitions={columnsConfig}
-            items={items}
-          />
-        </>
-      }
-    />
+    <>
+      <AppLayout
+        ariaLabels={labels}
+        breadcrumbs={<Breadcrumbs />}
+        navigation={<Navigation />}
+        tools={<Tools>{toolsContent.long}</Tools>}
+        disableContentPaddings={true}
+        splitPanel={
+          <SplitPanel
+            header="Split panel header"
+            i18nStrings={{
+              preferencesTitle: 'Preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Slider',
+            }}
+          >
+            {DEMO_CONTENT}
+          </SplitPanel>
+        }
+        content={
+          <>
+            <Table<Instance>
+              resizableColumns={true}
+              header={
+                <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
+                  Sticky Scrollbar Example
+                </Header>
+              }
+              columnDefinitions={columnsConfig}
+              items={items}
+            />
+          </>
+        }
+      />
+      <Footer legacyConsoleNav={false} />
+    </>
   );
 }

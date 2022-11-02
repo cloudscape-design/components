@@ -31,7 +31,13 @@ function renderChartLegend() {
 
   const focus = () =>
     act(() => {
-      wrapper.focus();
+      wrapper.find('[tabindex="0"]')?.focus();
+    });
+
+  const mouseover = (index: number) =>
+    act(() => {
+      wrapper.findAllByClassName(styles.marker)[index]!.fireEvent(new MouseEvent('mouseleave', { bubbles: true }));
+      wrapper.findAllByClassName(styles.marker)[index]!.fireEvent(new MouseEvent('mouseover', { bubbles: true }));
     });
 
   const pressLeft = () =>
@@ -46,23 +52,24 @@ function renderChartLegend() {
       wrapper.keydown(KeyCode.right);
     });
 
-  const findAllLabels = () => wrapper.findAll('li').map(getTextContent);
-
-  const findHighlightedLabels = () => wrapper.findAll(`li.${styles['marker--highlighted']}`).map(getTextContent);
-
-  const findDimmedLabels = () => wrapper.findAll(`li.${styles['marker--dimmed']}`).map(getTextContent);
-
-  const findFocusedLabels = () => wrapper.findAll(`li.${styles['marker--focused']}`).map(getTextContent);
+  const findAllLabels = () => wrapper.findAllByClassName(styles.marker).map(getTextContent);
+  const findHighlightedLabels = () => wrapper.findAllByClassName(styles['marker--highlighted']).map(getTextContent);
+  const findDimmedLabels = () => wrapper.findAllByClassName(styles['marker--dimmed']).map(getTextContent);
+  const findFocusedLabel = () =>
+    document.activeElement && document.activeElement !== document.body
+      ? document.activeElement.textContent?.trim()
+      : undefined;
 
   return {
     wrapper,
     focus,
+    mouseover,
     pressLeft,
     pressRight,
     findAllLabels,
     findHighlightedLabels,
     findDimmedLabels,
-    findFocusedLabels,
+    findFocusedLabel,
   };
 }
 
@@ -73,14 +80,18 @@ describe('Chart legend', () => {
     expect(legend.findAllLabels()).toEqual(series.map(s => s.label));
     expect(legend.findHighlightedLabels()).toEqual([series[1].label]);
     expect(legend.findDimmedLabels()).toEqual([series[0].label, series[2].label]);
-    expect(legend.findFocusedLabels()).toEqual([]);
+    expect(legend.findFocusedLabel()).toEqual(undefined);
+  });
+
+  test('should highlight on mouseover', () => {
+    const legend = renderChartLegend();
 
     legend.focus();
+    legend.mouseover(2);
 
-    expect(legend.findAllLabels()).toEqual(series.map(s => s.label));
-    expect(legend.findHighlightedLabels()).toEqual([series[1].label]);
-    expect(legend.findDimmedLabels()).toEqual([series[0].label, series[2].label]);
-    expect(legend.findFocusedLabels()).toEqual([series[1].label]);
+    expect(legend.findHighlightedLabels()).toEqual([series[2].label]);
+    expect(legend.findDimmedLabels()).toEqual([series[0].label, series[1].label]);
+    expect(legend.findFocusedLabel()).toEqual(series[1].label);
   });
 
   test('should highlight elements to the right', () => {
@@ -88,10 +99,10 @@ describe('Chart legend', () => {
 
     legend.focus();
     legend.pressRight();
-    expect(legend.findFocusedLabels()).toEqual([series[2].label]);
+    expect(legend.findFocusedLabel()).toEqual(series[2].label);
 
     legend.pressRight();
-    expect(legend.findFocusedLabels()).toEqual([series[0].label]);
+    expect(legend.findFocusedLabel()).toEqual(series[0].label);
   });
 
   test('should highlight elements to the left', () => {
@@ -99,9 +110,9 @@ describe('Chart legend', () => {
 
     legend.focus();
     legend.pressLeft();
-    expect(legend.findFocusedLabels()).toEqual([series[0].label]);
+    expect(legend.findFocusedLabel()).toEqual(series[0].label);
 
     legend.pressLeft();
-    expect(legend.findFocusedLabels()).toEqual([series[2].label]);
+    expect(legend.findFocusedLabel()).toEqual(series[2].label);
   });
 });

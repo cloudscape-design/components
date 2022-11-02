@@ -366,6 +366,26 @@ export namespace DateRangePickerProps {
   }
 }
 
+export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface RangeCalendarValue {
+  startDate: string;
+  endDate: string;
+}
+
+export type RangeCalendarI18nStrings = Pick<
+  DateRangePickerProps.I18nStrings,
+  | 'todayAriaLabel'
+  | 'nextMonthAriaLabel'
+  | 'previousMonthAriaLabel'
+  | 'startDateLabel'
+  | 'startTimeLabel'
+  | 'endDateLabel'
+  | 'endTimeLabel'
+  | 'dateTimeConstraintText'
+  | 'renderSelectedAbsoluteRangeAriaLive'
+>;
+
 export interface Focusable {
   focus(): void;
 }
