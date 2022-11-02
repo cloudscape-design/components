@@ -44,7 +44,7 @@ export default function WizardForm({
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const isMobile = useMobile();
-  const stepHeaderRef = useRef<HTMLDivElement>(null);
+  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffectOnUpdate(() => {
     if (stepHeaderRef && stepHeaderRef.current) {
@@ -61,11 +61,7 @@ export default function WizardForm({
 
   return (
     <>
-      <WizardFormHeader
-        isMobile={isMobile || showCollapsedSteps}
-        isVisualRefresh={isVisualRefresh}
-        __internalHeaderRef={stepHeaderRef}
-      >
+      <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
         <div
           className={clsx(
             styles['collapsed-steps'],
@@ -75,7 +71,13 @@ export default function WizardForm({
         >
           {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
-        <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
+        <InternalHeader
+          className={styles['form-header-component']}
+          variant="h1"
+          description={description}
+          info={info}
+          __internalRootRef={stepHeaderRef}
+        >
           {title}
           {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
         </InternalHeader>
