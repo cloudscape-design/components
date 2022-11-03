@@ -6,7 +6,13 @@ import createWrapper from '../../../../lib/components/test-utils/dom';
 import icons from '../../../../lib/components/icon/icons';
 import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import { i18nStrings, objects } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getElementsText, getTableBodyContent, getTableColumnContent } from './utils';
+import {
+  getColumnAriaLabels,
+  getElementsText,
+  getTableBodyContent,
+  getTableColumnContent,
+  getHeaderVisibleText,
+} from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -82,12 +88,7 @@ test('sorts objects by size', async () => {
 
 test('Renders correct table content', async () => {
   const wrapper = await renderTable(<ObjectsTable {...defaultProps} />);
-  expect(wrapper.findColumnHeaders().map(colHeader => colHeader.getElement().textContent!.trim())).toEqual([
-    '',
-    'Key',
-    'Last modified',
-    'Size',
-  ]);
+  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Key', 'Last modified', 'Size']);
   expect(getTableBodyContent(wrapper)).toEqual([
     ['', objects[0].Key, '-', '-'],
     ['', objects[1].Key, objects[1].LastModified, '13.34 TB'],
