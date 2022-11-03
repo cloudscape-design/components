@@ -16,7 +16,7 @@ import Portal from '../internal/components/portal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
+import { disableScrolling, enableScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
@@ -53,18 +53,18 @@ export default function InternalModal({
   // enable body scroll and restore focus if unmounting while visible
   useEffect(() => {
     return () => {
-      enableBodyScrolling();
+      enableScrolling(modalRoot);
     };
-  }, []);
+  }, [modalRoot]);
 
   // enable / disable body scroll
   useEffect(() => {
     if (visible) {
-      disableBodyScrolling();
+      disableScrolling(modalRoot);
     } else {
-      enableBodyScrolling();
+      enableScrolling(modalRoot);
     }
-  }, [visible]);
+  }, [visible, modalRoot]);
 
   // Because we hide the element with styles (and not actually detach it from DOM), we need to scroll to top
   useEffect(() => {

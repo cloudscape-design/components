@@ -5,42 +5,42 @@ import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
 
 let initialBodyPaddingRightStyle: string | undefined = undefined;
 
-export function disableBodyScrolling() {
-  setBodyScrollbarPadding();
-  document.body.classList.add(styles['modal-open']);
+export function disableScrolling(target: HTMLElement = document.body) {
+  setScrollbarPadding(target);
+  target.classList.add(styles['modal-open']);
 }
 
-export function enableBodyScrolling() {
-  document.body.classList.remove(styles['modal-open']);
-  restoreBodyScrollbarPadding();
+export function enableScrolling(target: HTMLElement = document.body) {
+  target.classList.remove(styles['modal-open']);
+  restoreScrollbarPadding(target);
 }
 
-function setBodyScrollbarPadding() {
-  if (bodyHasScrollbar()) {
-    initialBodyPaddingRightStyle = document.body.style.paddingRight;
+function setScrollbarPadding(target: HTMLElement = document.body) {
+  if (targetHasScrollbar(target)) {
+    initialBodyPaddingRightStyle = target.style.paddingRight;
     const initialBodyPaddingRight = computedBodyPaddingRightPixels();
     const scrollbarWidth = browserScrollbarSize().width;
     const newBodyPaddingRight = initialBodyPaddingRight + scrollbarWidth;
-    document.body.style.paddingRight = newBodyPaddingRight + 'px';
+    target.style.paddingRight = newBodyPaddingRight + 'px';
   }
 }
 
-function computedBodyPaddingRightPixels() {
-  return parseInt(window.getComputedStyle(document.body).paddingRight, 10);
+function computedBodyPaddingRightPixels(target: HTMLElement = document.body) {
+  return parseInt(window.getComputedStyle(target).paddingRight, 10);
 }
 
-function restoreBodyScrollbarPadding() {
+function restoreScrollbarPadding(target: HTMLElement = document.body) {
   if (initialBodyPaddingRightStyle) {
-    document.body.style.setProperty('padding-right', initialBodyPaddingRightStyle);
+    target.style.setProperty('padding-right', initialBodyPaddingRightStyle);
   } else {
-    document.body.style.removeProperty('padding-right');
+    target.style.removeProperty('padding-right');
   }
   initialBodyPaddingRightStyle = undefined;
 }
 
-function bodyHasScrollbar() {
+function targetHasScrollbar(target: HTMLElement = document.body) {
   // Unfortunately this difference doesn't appear to match the scrollbar width during testing,
   // otherwise we could remove browserScrollbarSize().  Bootstrap also doesn't use this difference
   // directly.
-  return document.body.clientWidth < window.innerWidth;
+  return target.clientWidth < window.innerWidth;
 }

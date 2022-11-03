@@ -6,3 +6,10 @@
 .awsui-util-f-r {
   float: right;
 }
+
+.root {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  overflow: scroll;
+}
