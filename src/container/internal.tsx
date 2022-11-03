@@ -50,7 +50,7 @@ export default function InternalContainer({
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
-  const { setHasStickyOverlap } = useContext(AppLayoutContext);
+  const { setHasStickyBackground } = useContext(AppLayoutContext);
   const isRefresh = useVisualRefresh();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
@@ -62,21 +62,20 @@ export default function InternalContainer({
 
   /**
    * The visual refresh AppLayout component needs to know if a child component
-   * has a high constrast sticky header. This is to make sure the overlap element
-   * determined by the dynamicOverlapHeight property stays in the same vertical
-   * position as the header content.
+   * has a high constrast sticky header. This is to make sure the background element
+   * stays in the same vertical position as the header content.
    */
   useLayoutEffect(
-    function handleHasStickyOverlap() {
+    function handleHasStickyBackground() {
       if (isRefresh && isSticky && variant === 'full-page') {
-        setHasStickyOverlap(true);
+        setHasStickyBackground(true);
       }
 
       return function cleanup() {
-        setHasStickyOverlap(false);
+        setHasStickyBackground(false);
       };
     },
-    [isRefresh, isSticky, setHasStickyOverlap, variant]
+    [isRefresh, isSticky, setHasStickyBackground, variant]
   );
 
   return (

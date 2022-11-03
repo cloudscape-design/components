@@ -21,8 +21,7 @@ div.background {
     behind the notifications above the content dark header.
     */
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.content-type-cards.has-notifications-content.sticky-notifications,
-      &.content-type-table.has-notifications-content.sticky-notifications {
+      &.has-sticky-background.has-notifications-content.sticky-notifications {
         position: sticky;
         top: var(#{custom-props.$offsetTop});
         z-index: 799;
@@ -42,7 +41,7 @@ div.background {
     the high contrast header background only in the content area.
     */
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.has-sticky-overlap {
+      &.has-sticky-background {
         position: sticky;
         top: var(#{custom-props.$offsetTopWithNotifications});
         z-index: 799;
