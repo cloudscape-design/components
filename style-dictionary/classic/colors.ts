@@ -77,7 +77,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderTabsShadow: { light: '{colorBorderDividerDefault}' },
   colorBorderTabsUnderline: '{colorTextInteractiveHover}',
   colorBorderTilesDisabled: { light: '{colorTransparent}', dark: '{colorGrey650}' },
-  colorBorderTutorial: '{colorBorderInputDefault}',
+  colorBorderTutorial: { light: '{colorGrey400}', dark: '{colorGrey500}' },
   colorForegroundControlDefault: { dark: '{colorWhite}' },
   colorForegroundControlDisabled: { dark: '{colorGrey550}' },
   colorStrokeCodeEditorResizeHandler: '{colorGrey550}',
