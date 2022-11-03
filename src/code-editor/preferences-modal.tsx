@@ -31,15 +31,33 @@ interface PreferencesModalProps {
 
   i18nStrings: PreferencesModali18nStrings;
 
+  themes: CodeEditorProps['themes'];
   defaultTheme: CodeEditorProps.Theme;
 
   onConfirm: (preferences: CodeEditorProps.Preferences) => void;
   onDismiss: () => void;
 }
 
+function filterThemes(allThemes: ReadonlyArray<SelectProps.Option>, available: ReadonlyArray<string> | undefined) {
+  if (!available) {
+    return allThemes;
+  }
+  return allThemes.filter(theme => available.indexOf(theme.value!) > -1);
+}
+
 export default (props: PreferencesModalProps) => {
   const [wrapLines, setWrapLines] = useState<boolean>(props.preferences?.wrapLines ?? true);
   const [theme, setTheme] = useState<CodeEditorProps.Theme>(props.preferences?.theme ?? props.defaultTheme);
+  const themeOptions = [
+    {
+      label: props.i18nStrings.lightThemes,
+      options: filterThemes(LightThemes, props.themes?.light),
+    },
+    {
+      label: props.i18nStrings.darkThemes,
+      options: filterThemes(DarkThemes, props.themes?.dark),
+    },
+  ];
   const [selectedThemeOption, setSelectedThemeOption] = useState<SelectProps.Option>(
     () => [...LightThemes, ...DarkThemes].filter(t => t.value === theme)[0]
   );
@@ -79,10 +97,7 @@ export default (props: PreferencesModalProps) => {
               <InternalSelect
                 selectedOption={selectedThemeOption}
                 onChange={onThemeSelected}
-                options={[
-                  { label: props.i18nStrings.lightThemes, options: LightThemes },
-                  { label: props.i18nStrings.darkThemes, options: DarkThemes },
-                ]}
+                options={themeOptions}
                 filteringType="auto"
               />
             </InternalFormField>
