@@ -47,6 +47,9 @@ export default function PopoverBody({
     [onDismiss]
   );
 
+  // Implement our own auto-focus rather than using FocusLock's,
+  // because we also want to focus the dismiss button when it
+  // is added dyamically (e.g. in chart popovers)
   useEffect(() => {
     if (showDismissButton && !dismissButtonFocused) {
       dismissButtonRef.current?.focus({ preventScroll: true });
