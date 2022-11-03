@@ -9,8 +9,8 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const autosuggest = createWrapper().findAutosuggest();
 
-// Necessary scrolling to reach the bottom. For Visual Refresh, use 500.
-const SCROLL_PAGE_HEIGHT = 480;
+// Necessary scrolling to reach the bottom.
+const SCROLL_PAGE_HEIGHT = 500;
 
 function setup(
   opts: { virtualScrolling?: boolean; expandToViewport?: boolean },
@@ -19,8 +19,7 @@ function setup(
   return useBrowser(async browser => {
     const page = new AsyncDropdownComponentPage(browser, autosuggest, opts.expandToViewport);
     await page.setWindowSize({ width: 800, height: 300 });
-    // TODO: Remove VR flag once AWSUI-18701 is fixed
-    await browser.url('/#/light/autosuggest/async?visualRefresh=false');
+    await browser.url('/#/light/autosuggest/async');
     await page.waitForVisible(autosuggest.findNativeInput().toSelector());
     if (opts.virtualScrolling) {
       await page.enableVirtualScrolling();
@@ -108,6 +107,21 @@ test(
   })
 );
 
+test(
+  'should make the recovery link a tab trap if expandToViewport=true',
+  setup({ expandToViewport: true }, async page => {
+    await page.respondWith(0, true);
+    await page.scrollDropdown(SCROLL_PAGE_HEIGHT);
+    await page.reject();
+    await page.keys(['Tab']);
+    await expect(
+      page.isFocused(autosuggest.findErrorRecoveryButton({ expandToViewport: true }).toSelector())
+    ).resolves.toBe(true);
+    await page.keys(['Tab']);
+    await expect(page.isFocused(autosuggest.findNativeInput().toSelector())).resolves.toBe(true);
+  })
+);
+
 describe.each([true, false])('Async autosuggest scrolling (with virtualScrolling=%s)', (virtualScrolling: boolean) => {
   test(
     'scroll position does not change, when a new batch of items arrives',
@@ -141,23 +155,6 @@ describe.each([true, false])('Async autosuggest scrolling (with virtualScrolling
       const { top: dropdownTop } = await page.getDropdownPosition();
       // a small give for borders
       expect(Math.abs(optionTop - dropdownTop)).toBeLessThan(2);
-    })
-  );
-});
-
-describe.each([true, false])('Async autosuggest scrolling (with expandToViewport=%s)', (expandToViewport: boolean) => {
-  test(
-    'should make the recovery link a tab trap when present',
-    setup({ expandToViewport }, async page => {
-      await page.respondWith(0, true);
-      await page.scrollDropdown(SCROLL_PAGE_HEIGHT);
-      await page.reject();
-      await page.keys(['Tab']);
-      await expect(
-        page.isFocused(autosuggest.findErrorRecoveryButton({ expandToViewport }).toSelector())
-      ).resolves.toBe(true);
-      await page.keys(['Tab']);
-      await expect(page.isFocused(autosuggest.findNativeInput().toSelector())).resolves.toBe(true);
     })
   );
 });
