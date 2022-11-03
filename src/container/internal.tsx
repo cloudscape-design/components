@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
-import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
+import React, { useContext, useLayoutEffect, useRef } from 'react';
+import { AppLayoutContext } from '../app-layout/visual-refresh/context';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
@@ -49,14 +50,34 @@ export default function InternalContainer({
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
+  const { setHasStickyOverlap } = useContext(AppLayoutContext);
   const isRefresh = useVisualRefresh();
+
   const hasDynamicHeight = isRefresh && variant === 'full-page';
   const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
-
   const headerIdProp = __headerId ? { id: __headerId } : {};
+
+  /**
+   * The visual refresh AppLayout component needs to know if a child component
+   * has a high constrast sticky header. This is to make sure the overlap element
+   * determined by the dynamicOverlapHeight property stays in the same vertical
+   * position as the header content.
+   */
+  useLayoutEffect(
+    function handleHasStickyOverlap() {
+      if (isRefresh && isSticky && variant === 'full-page') {
+        setHasStickyOverlap(true);
+      }
+
+      return function cleanup() {
+        setHasStickyOverlap(false);
+      };
+    },
+    [isRefresh, isSticky, setHasStickyOverlap, variant]
+  );
 
   return (
     <div
