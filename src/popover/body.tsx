@@ -49,9 +49,7 @@ export default function PopoverBody({
 
   useEffect(() => {
     if (showDismissButton && !dismissButtonFocused) {
-      setTimeout(() => {
-        dismissButtonRef.current?.focus();
-      }, 0);
+      dismissButtonRef.current?.focus({ preventScroll: true });
     }
     setDismissButtonFocused(showDismissButton);
   }, [showDismissButton, dismissButtonFocused]);

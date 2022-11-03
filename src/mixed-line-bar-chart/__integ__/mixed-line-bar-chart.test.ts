@@ -344,7 +344,6 @@ describe('Details popover', () => {
       await page.click(chartWrapper.findChart().toSelector());
       // Pinned popover
       await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(true);
-      await page.waitForAssertion(() => expect(page.isFocused(popoverDismissSelector())).resolves.toBe(true));
 
       // Clicking outside the chart area
       await page.click(filterWrapper.findDropdown().toSelector());

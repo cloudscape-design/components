@@ -123,19 +123,11 @@ describe('Dismiss button', () => {
 });
 
 describe('Focus behavior', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
   it('moves focus to the dismiss button on open if dismiss button is present', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
     act(() => {
       wrapper.findTrigger().click();
     });
-    jest.runAllTimers();
     expect(document.activeElement).toBe(wrapper.findDismissButton()!.getElement());
   });
 
@@ -144,7 +136,6 @@ describe('Focus behavior', () => {
     act(() => {
       wrapper.findTrigger().click();
     });
-    jest.runAllTimers();
     expect(document.activeElement).not.toBe(wrapper.findBody()!.getElement());
   });
 
@@ -153,7 +144,6 @@ describe('Focus behavior', () => {
     act(() => {
       wrapper.findTrigger().click();
     });
-    jest.runAllTimers();
     expect(document.activeElement).toBe(wrapper.findDismissButton({ renderWithPortal: true })!.getElement());
   });
 
@@ -167,7 +157,6 @@ describe('Focus behavior', () => {
     act(() => {
       wrapper.findTrigger().click();
     });
-    jest.runAllTimers();
     expect(document.activeElement).not.toBe(wrapper.findBody({ renderWithPortal: true })!.getElement());
   });
 });
