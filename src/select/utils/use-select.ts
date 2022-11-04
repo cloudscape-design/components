@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject } from 'react';
+import { DropdownProps } from '../../internal/components/dropdown/interfaces';
 import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/components/option/interfaces';
 import { isInteractive, isGroupInteractive, isGroup } from '../../internal/components/option/utils/filter-options';
-import { useEffect, useRef, MutableRefObject } from 'react';
+import { useEffect, useRef } from 'react';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
@@ -14,9 +15,12 @@ import { OptionsListProps } from '../../internal/components/options-list';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { BaseKeyDetail } from '../../internal/events';
-import { CancelableEventHandler, fireCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index';
-import { containsOrEqual } from '../../internal/utils/dom';
+import {
+  BaseKeyDetail,
+  NonCancelableEventHandler,
+  CancelableEventHandler,
+  fireNonCancelableEvent,
+} from '../../internal/events';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
@@ -27,8 +31,8 @@ interface UseSelectProps {
   options: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
-  onBlur?: CancelableEventHandler;
-  onFocus?: CancelableEventHandler;
+  onBlur?: NonCancelableEventHandler;
+  onFocus?: NonCancelableEventHandler;
   externalRef: React.Ref<any>;
   fireLoadItems: (filteringText: string) => void;
   setFilteringValue: (filteringText: string) => void;
@@ -41,10 +45,9 @@ export interface SelectTriggerProps {
   onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
   ariaLabelledby?: string;
   onFocus: NonCancelableEventHandler;
-  onBlur: CancelableEventHandler<{ relatedTarget: Node | null }>;
 }
 
-export interface RecoveryLinkProp {
+export interface RecoveryLinkProps {
   ref: RefObject<HTMLAnchorElement>;
   onBlur: CancelableEventHandler<{ relatedTarget: Node | null }>;
 }
@@ -69,7 +72,6 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
-  const linkRef = useRef<HTMLAnchorElement>(null);
   const hasFilter = filteringType !== 'none';
   const activeRef = hasFilter ? filterRef : menuRef;
   const isSelectingUsingSpace = useRef<boolean>(false);
@@ -100,32 +102,13 @@ export function useSelect({
     },
   });
 
-  const focused: MutableRefObject<boolean> = useRef<boolean>(false);
   const handleFocus = () => {
-    if (!focused.current) {
-      fireCancelableEvent(onFocus, {});
-      focused.current = true;
-    }
+    fireNonCancelableEvent(onFocus, {});
   };
-  const handleBlur = ({ detail }: { detail: { relatedTarget: Node | null } }) => {
-    const { relatedTarget } = detail;
 
-    const nextFocusedIsTrigger = relatedTarget ? containsOrEqual(triggerRef.current, relatedTarget) : false;
-    const nextFocusedInsideDropdown = relatedTarget
-      ? containsOrEqual(menuRef.current, relatedTarget) ||
-        containsOrEqual(filterRef.current, relatedTarget) ||
-        containsOrEqual(linkRef.current, relatedTarget)
-      : false;
-    const nextFocusedInsideComponent = nextFocusedIsTrigger || nextFocusedInsideDropdown;
-    const focusingOut = focused.current && !nextFocusedInsideComponent;
-
-    if (nextFocusedIsTrigger || focusingOut) {
-      closeDropdown();
-    }
-    if (focusingOut) {
-      fireCancelableEvent(onBlur, {});
-      focused.current = false;
-    }
+  const handleBlur = () => {
+    fireNonCancelableEvent(onBlur, {});
+    closeDropdown();
   };
 
   const hasSelectedOption = __selectedOptions.length > 0;
@@ -160,11 +143,15 @@ export function useSelect({
 
   const triggerKeyDownHandler = useTriggerKeyboard({ openDropdown, goHome: goHomeWithKeyboard });
 
+  const getDropdownProps: () => Pick<DropdownProps, 'onFocus' | 'onBlur'> = () => ({
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+  });
+
   const getTriggerProps = (disabled = false) => {
     const triggerProps: SelectTriggerProps = {
       ref: triggerRef,
-      onFocus: handleFocus,
-      onBlur: handleBlur,
+      onFocus: () => closeDropdown(),
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {
@@ -190,8 +177,6 @@ export function useSelect({
     return {
       ref: filterRef,
       onKeyDown: activeKeyDownHandler,
-      __onBlurWithDetail: handleBlur,
-      onFocus: handleFocus,
       onChange: event => {
         setFilteringValue(event.detail.value);
         resetHighlightWithKeyboard();
@@ -207,20 +192,11 @@ export function useSelect({
     };
   };
 
-  const getRecoveryProps = () => {
-    return {
-      ref: linkRef,
-      onBlur: handleBlur,
-    };
-  };
-
   const getMenuProps = () => {
     const menuProps: MenuProps = {
       id: menuId,
       ref: menuRef,
       open: isOpen,
-      onFocus: handleFocus,
-      onBlur: handleBlur,
       onMouseUp: itemIndex => {
         if (itemIndex > -1) {
           selectOption(options[itemIndex]);
@@ -234,8 +210,6 @@ export function useSelect({
     };
     if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;
-      menuProps.onBlur = handleBlur;
-      menuProps.onFocus = handleFocus;
       menuProps.nativeAttributes = {
         'aria-activedescendant': highlightedOptionId,
       };
@@ -305,9 +279,9 @@ export function useSelect({
     highlightedIndex,
     highlightType,
     getTriggerProps,
+    getDropdownProps,
     getMenuProps,
     getFilterProps,
-    getRecoveryProps,
     getOptionProps,
     highlightOption: highlightOptionWithKeyboard,
     selectOption,

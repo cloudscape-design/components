@@ -3,10 +3,10 @@
 import React, { useRef } from 'react';
 import { LinkProps } from '../../../link/interfaces';
 import InternalLink from '../../../link/internal';
-import { RecoveryLinkProp } from '../../../select/utils/use-select';
+import { RecoveryLinkProps } from '../../../select/utils/use-select';
 
 import InternalStatusIndicator from '../../../status-indicator/internal';
-import { NonCancelableEventHandler, fireNonCancelableEvent, fireCancelableEvent } from '../../events';
+import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../events';
 import { usePrevious } from '../../hooks/use-previous';
 
 import { DropdownStatusProps } from './interfaces';
@@ -25,7 +25,7 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler;
-  recoveryProps?: RecoveryLinkProp;
+  recoveryProps?: RecoveryLinkProps;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -67,7 +67,6 @@ export const useDropdownStatus: UseDropdownStatus = ({
   isNoMatch,
   noMatch,
   onRecoveryClick,
-  recoveryProps,
 }) => {
   const linkRef = useRef<LinkProps.Ref | null>(null);
   const focusRecoveryLink = () => linkRef.current?.focus();
@@ -78,16 +77,12 @@ export const useDropdownStatus: UseDropdownStatus = ({
     statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
   } else if (statusType === 'error') {
     statusResult.content = (
-      <span
-        ref={recoveryProps ? recoveryProps.ref : null}
-        onBlur={event => fireCancelableEvent(recoveryProps?.onBlur, { relatedTarget: event.relatedTarget }, event)}
-      >
+      <span>
         <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
           {errorText}
         </InternalStatusIndicator>{' '}
         {recoveryText && (
           <InternalLink
-            {...recoveryProps}
             ref={linkRef}
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"

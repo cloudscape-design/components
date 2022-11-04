@@ -134,6 +134,18 @@ describe('focus handling', () => {
       await expect(page.getSelectedText()).resolves.toEqual('selectme');
     })();
   });
+
+  test('should move focus back to the trigger if expandToViewport=true', () => {
+    const wrapper = createWrapper().findMultiselect('#expand_to_viewport');
+    const setupTest = createSetupTest(wrapper);
+
+    return setupTest(async page => {
+      await page.clickSelect();
+      await page.keys(['Tab']);
+      await page.waitForVisible(wrapper.findDropdown({ expandToViewport: true }).toSelector(), false);
+      await expect(page.isFocused(wrapper.findTrigger().toSelector())).resolves.toBe(true);
+    })();
+  });
 });
 
 describe(`Multiselect with filtering`, () => {

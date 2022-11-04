@@ -117,6 +117,7 @@ export default function MultiselectPage() {
   const [selectedOptions3, setSelectedOptions3] = React.useState<MultiselectProps.Options>([]);
   const [selectedOptions4, setSelectedOptions4] = React.useState<MultiselectProps.Options>(_selectedOptions1);
   const [selectedOptions5, setSelectedOptions5] = React.useState<MultiselectProps.Options>(_selectedOptions2);
+  const [selectedOptions6, setSelectedOptions6] = React.useState<MultiselectProps.Options>(_selectedOptions1);
 
   return (
     <article>
@@ -204,6 +205,25 @@ export default function MultiselectPage() {
             i18nStrings={i18nStrings}
             onChange={event => {
               setSelectedOptions5(event.detail.selectedOptions);
+            }}
+          />
+        </Box>
+
+        <Box padding="s">
+          <Box variant="h1">Test: Expand to viewport</Box>
+          <Multiselect
+            id="expand_to_viewport"
+            statusType="pending"
+            filteringType="none"
+            options={selectedOptions6}
+            placeholder={'Choose option'}
+            tokenLimit={3}
+            selectedOptions={selectedOptions1}
+            deselectAriaLabel={deselectAriaLabel}
+            i18nStrings={i18nStrings}
+            expandToViewport={true}
+            onChange={event => {
+              setSelectedOptions6(event.detail.selectedOptions);
             }}
           />
         </Box>

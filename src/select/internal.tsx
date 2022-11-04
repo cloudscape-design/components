@@ -97,8 +97,8 @@ const InternalSelect = React.forwardRef(
       highlightedOption,
       highlightedIndex,
       getTriggerProps,
+      getDropdownProps,
       getFilterProps,
-      getRecoveryProps,
       getMenuProps,
       getOptionProps,
       highlightOption,
@@ -173,7 +173,6 @@ const InternalSelect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
-      recoveryProps: getRecoveryProps(),
     });
 
     const announcement = useAnnouncement({
@@ -205,6 +204,7 @@ const InternalSelect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
+          {...getDropdownProps()}
           open={isOpen}
           stretchTriggerHeight={__inFilteringToken}
           trigger={trigger}

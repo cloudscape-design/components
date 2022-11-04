@@ -41,6 +41,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     options,
     filteringType = 'auto',
     statusType = 'finished',
+    recoveryText,
     placeholder,
     name,
     disabled,
@@ -149,7 +150,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
-  const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
+  const dropdownStatus = useDropdownStatus({ ...props, isEmpty, recoveryText, onRecoveryClick: handleRecoveryClick });
 
   return (
     <AutosuggestInput
@@ -198,6 +199,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
         ) : null
       }
+      loopFocus={statusType === 'error' && !!recoveryText}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}
       onPressArrowDown={handlePressArrowDown}
