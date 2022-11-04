@@ -49,11 +49,11 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWid
     };
 
     const updateColumnWidth = (newWidth: number) => {
+      const { right, width } = headerCell.getBoundingClientRect();
+      updateTrackerPosition(right + newWidth - width);
       setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
-      // we read the element size again because the previous callback changes it
-      updateTrackerPosition(headerCell.getBoundingClientRect().right);
     };
 
     const resizeColumn = (offset: number) => {
@@ -144,7 +144,7 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWid
       }}
       role="separator"
       aria-orientation="vertical"
-      aria-aria-labelledby={ariaLabelledby}
+      aria-labelledby={ariaLabelledby}
       aria-valuenow={headerCellWidth}
       aria-valuemin={minWidth}
       aria-valuemax={maxWidth}
