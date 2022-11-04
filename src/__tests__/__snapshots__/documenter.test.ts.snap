@@ -10791,7 +10791,8 @@ add a meaningful description to the whole selection.
 * \`sortingComparator\` ((T, T) => number) - Enables custom column sorting. The value is used in [collection hooks](/get-started/dev-guides/collection-hooks/)
   to reorder the items. This property accepts a custom comparator that is used to compare two items.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
-  If present, the \`sortingField\` property is ignored.",
+  If present, the \`sortingField\` property is ignored.
+* \`resizerAriaLabel\` (string) - Adds an aria-label to the column resizer.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
