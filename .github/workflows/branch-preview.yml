@@ -1,0 +1,24 @@
+# This workflow releases the current package to a dedicated private CodeArtifact repository.
+# One repository may publish more than one package. For more details refer to the release-package Action.
+name: Branch Preview
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+    - run: npm install
+    - run: npm run build:dev-pages
+    - run: aws s3 sync ./lib/static-default/* s3://${{ secrets.AWS_PREVIEW_BUCKET_NAME }}/components/${{ github.event.number }}
