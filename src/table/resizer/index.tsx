@@ -8,20 +8,20 @@ import { findUpUntil } from '../../internal/utils/dom';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 import { KeyCode } from '../../internal/keycode';
+import { DEFAULT_WIDTH } from '../use-column-widths';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
   onFinish: () => void;
   ariaLabelledby?: string;
   minWidth?: number;
-  maxWidth?: number;
 }
 
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWidth }: ResizerProps) {
+export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAULT_WIDTH }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
@@ -50,7 +50,8 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWid
 
     const updateColumnWidth = (newWidth: number) => {
       const { right, width } = headerCell.getBoundingClientRect();
-      updateTrackerPosition(right + newWidth - width);
+      const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
+      updateTrackerPosition(right + updatedWidth - width);
       setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
@@ -120,7 +121,7 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWid
       document.removeEventListener('mouseup', onMouseUp);
       headerCell.removeEventListener('keydown', onKeyDown);
     };
-  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus]);
+  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth]);
   return (
     <span
       className={clsx(styles.resizer, isDragging && styles['resizer-active'], resizerHasFocus && styles['has-focus'])}
@@ -147,7 +148,6 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWid
       aria-labelledby={ariaLabelledby}
       aria-valuenow={headerCellWidth}
       aria-valuemin={minWidth}
-      aria-valuemax={maxWidth}
       tabIndex={0}
     />
   );
