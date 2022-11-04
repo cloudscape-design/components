@@ -15,8 +15,12 @@ import { OptionsListProps } from '../../internal/components/options-list';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import { BaseKeyDetail, NonCancelableEventHandler } from '../../internal/events';
-import { CancelableEventHandler, fireNonCancelableEvent } from '../../internal/events/index';
+import {
+  BaseKeyDetail,
+  NonCancelableEventHandler,
+  CancelableEventHandler,
+  fireNonCancelableEvent,
+} from '../../internal/events';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
