@@ -132,7 +132,7 @@ export function TableHeaderCell({
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
             maxWidth={typeof column.maxWidth === 'string' ? parseInt(column.maxWidth) : column.maxWidth}
           />
-          <ScreenreaderOnly id="resizerAriaLabelId">{resizerAriaLabel}</ScreenreaderOnly>
+          <ScreenreaderOnly id={resizerAriaLabelId}>{resizerAriaLabel}</ScreenreaderOnly>
         </>
       )}
     </th>
