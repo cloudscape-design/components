@@ -7,24 +7,31 @@ import { getOverflowParents } from '../../internal/utils/scrollable-containers';
 import { findUpUntil } from '../../internal/utils/dom';
 import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
+import { KeyCode } from '../../internal/keycode';
 
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
   onFinish: () => void;
+  ariaLabel?: string;
+  minWidth?: number;
+  maxWidth?: number;
 }
 
 const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Resizer({ onDragMove, onFinish }: ResizerProps) {
+export function Resizer({ onDragMove, onFinish, ariaLabel, minWidth, maxWidth }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
   const onFinishStable = useStableEventHandler(onFinish);
   const onDragStable = useStableEventHandler(onDragMove);
+  const [resizerHasFocus, setResizerHasFocus] = useState(false);
+  const [headerCellWidth, setHeaderCellWidth] = useState(0);
+
   useEffect(() => {
-    if (!isDragging || !headerCell) {
+    if ((!isDragging && !resizerHasFocus) || !headerCell) {
       return;
     }
     const rootElement = findUpUntil(headerCell, element => element.className.indexOf(tableStyles.root) > -1)!;
@@ -42,6 +49,7 @@ export function Resizer({ onDragMove, onFinish }: ResizerProps) {
     };
 
     const updateColumnWidth = (newWidth: number) => {
+      setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
       // we read the element size again because the previous callback changes it
@@ -79,20 +87,43 @@ export function Resizer({ onDragMove, onFinish }: ResizerProps) {
       onFinishStable();
       clearTimeout(autoGrowTimeout.current);
     };
+    const onKeyDown = (event: KeyboardEvent) => {
+      // prevent screenreader cursor move
+      if (event.keyCode === KeyCode.left || event.keyCode === KeyCode.right) {
+        event.preventDefault();
+      }
+      // update width
+      if (event.keyCode === KeyCode.left) {
+        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+      }
+      if (event.keyCode === KeyCode.right) {
+        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+      }
+    };
+
     updateTrackerPosition(headerCell.getBoundingClientRect().right);
     document.body.classList.add(styles['resize-active']);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.body.classList.remove(styles['resize-active-with-focus']);
+    if (isDragging) {
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    }
+    if (resizerHasFocus) {
+      document.body.classList.add(styles['resize-active-with-focus']);
+      headerCell.addEventListener('keydown', onKeyDown);
+    }
+
     return () => {
       clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
+      headerCell.removeEventListener('keydown', onKeyDown);
     };
-  }, [headerCell, isDragging, onDragStable, onFinishStable]);
+  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus]);
   return (
     <span
-      className={clsx(styles.resizer, isDragging && styles['resizer-active'])}
+      className={clsx(styles.resizer, isDragging && styles['resizer-active'], resizerHasFocus && styles['has-focus'])}
       onMouseDown={event => {
         if (event.button !== 0) {
           return;
@@ -102,6 +133,22 @@ export function Resizer({ onDragMove, onFinish }: ResizerProps) {
         setIsDragging(true);
         setHeaderCell(headerCell);
       }}
+      onFocus={event => {
+        const headerCell = findUpUntil(event.currentTarget, element => element.tagName.toLowerCase() === 'th')!;
+        setHeaderCellWidth(headerCell.getBoundingClientRect().width);
+        setResizerHasFocus(true);
+        setHeaderCell(headerCell);
+      }}
+      onBlur={() => {
+        setResizerHasFocus(false);
+      }}
+      role="button"
+      aria-orientation="vertical"
+      aria-label={ariaLabel}
+      aria-valuenow={headerCellWidth}
+      aria-valuemin={minWidth}
+      aria-valuemax={maxWidth}
+      tabIndex={0}
     />
   );
 }

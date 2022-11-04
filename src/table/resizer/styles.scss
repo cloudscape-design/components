@@ -7,7 +7,7 @@
 @use '../../internal/styles/tokens' as awsui;
 
 //stylelint-disable-next-line selector-combinator-disallowed-list,selector-max-universal
-.resize-active * {
+.resize-active:not(.resize-active-with-focus) * {
   cursor: col-resize;
   user-select: none;
 }
@@ -44,6 +44,11 @@ $active-separator-width: 2px;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
       }
     }
+  }
+  &.has-focus {
+    outline: none;
+    border-color: awsui.$color-border-item-focused;
+    box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
   }
 }
 

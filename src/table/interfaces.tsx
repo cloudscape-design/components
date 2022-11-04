@@ -86,6 +86,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
+   * * `resizerAriaLabel` (string) - Adds an aria-label to the column resizer.
    *
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
@@ -241,6 +242,7 @@ export namespace TableProps {
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
+    resizerAriaLabel?: string;
   } & SortingColumn<T>;
 
   export type SelectionType = 'single' | 'multi';

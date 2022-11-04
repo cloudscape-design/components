@@ -122,6 +122,9 @@ const Thead = React.forwardRef(
                     <Resizer
                       onDragMove={newWidth => updateColumn(colIndex, newWidth)}
                       onFinish={() => onResizeFinish(columnWidths)}
+                      ariaLabel={column.resizerAriaLabel}
+                      minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
+                      maxWidth={typeof column.maxWidth === 'string' ? parseInt(column.maxWidth) : column.maxWidth}
                     />
                   )
                 }

@@ -28,6 +28,7 @@ const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
     header: 'Name',
     cell: item => <Link href={`#${item.id}`}>{item.text}</Link>,
     width: 200,
+    resizerAriaLabel: 'Resize name column',
   },
   {
     id: 'region',
@@ -36,23 +37,27 @@ const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
     minWidth: 130,
     width: 130,
     sortingField: 'region',
+    resizerAriaLabel: 'Resize region ',
   },
   {
     id: 'description',
     header: 'Description',
     minWidth: 100,
     cell: item => item.description,
+    resizerAriaLabel: 'Resize description column',
   },
   {
     id: 'state',
     header: 'State',
     maxWidth: 150,
     cell: item => item.state,
+    resizerAriaLabel: 'Resize state column',
   },
   {
     id: 'extra',
     header: 'Extra column',
     cell: () => '-',
+    resizerAriaLabel: 'Resize extra column',
   },
 ];
 
