@@ -142,7 +142,7 @@ export function Resizer({ onDragMove, onFinish, ariaLabel, minWidth, maxWidth }:
       onBlur={() => {
         setResizerHasFocus(false);
       }}
-      role="button"
+      role="separator"
       aria-orientation="vertical"
       aria-label={ariaLabel}
       aria-valuenow={headerCellWidth}
