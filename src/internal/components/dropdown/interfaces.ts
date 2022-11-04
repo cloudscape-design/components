@@ -119,7 +119,7 @@ export interface DropdownProps extends ExpandToViewport {
   scrollable?: boolean;
 
   /**
-   * Whether the dropdown will have a focus trap including trigger, header, content and footer.
+   * Whether the dropdown will have a focus loop including trigger, header, content and footer.
    */
   loopFocus?: boolean;
 

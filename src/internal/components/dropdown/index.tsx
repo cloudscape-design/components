@@ -221,22 +221,18 @@ const Dropdown = ({
     }
   };
 
+  const isOutsideDropdown = (element: Element) =>
+    (!wrapperRef.current || !wrapperRef.current.contains(element)) &&
+    (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(element));
+
   const focusHandler = (event: React.FocusEvent) => {
-    const previouslyFocusedElement = event.relatedTarget;
-    if (
-      (!wrapperRef.current || !wrapperRef.current.contains(previouslyFocusedElement)) &&
-      (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(previouslyFocusedElement))
-    ) {
+    if (event.relatedTarget && isOutsideDropdown(event.relatedTarget)) {
       fireNonCancelableEvent(onFocus, event);
     }
   };
 
   const blurHandler = (event: React.FocusEvent) => {
-    const nextFocusedElement = event.relatedTarget;
-    if (
-      (!wrapperRef.current || !wrapperRef.current.contains(nextFocusedElement)) &&
-      (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(nextFocusedElement))
-    ) {
+    if (event.relatedTarget && isOutsideDropdown(event.relatedTarget)) {
       fireNonCancelableEvent(onBlur, event);
     }
   };
