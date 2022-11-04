@@ -22,6 +22,7 @@ export default function AppBar() {
     handleNavigationClick,
     handleToolsClick,
     hasNotificationsContent,
+    hasStickyBackground,
     isMobile,
     navigationHide,
     isNavigationOpen,
@@ -75,6 +76,7 @@ export default function AppBar() {
             [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
             [styles['has-header']]: contentHeader,
             [styles['has-notifications-content']]: hasNotificationsContent,
+            [styles['has-sticky-background']]: hasStickyBackground,
           })}
         >
           {breadcrumbs}
