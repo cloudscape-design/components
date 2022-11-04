@@ -168,9 +168,6 @@ export default function App() {
           sortingDescending={sorting?.isDescending}
           onSortingChange={event => setSorting(event.detail)}
           onColumnWidthsChange={handleWidthChange}
-          ariaLabels={{
-            resizerAriaLabel: 'Resize',
-          }}
         />
       </ScreenshotArea>
     </SpaceBetween>

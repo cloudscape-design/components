@@ -91,7 +91,7 @@ class TablePage extends BasePageObject {
 
   async assertColumnWidth(columnIndex: number, expected: number) {
     await this.browser.waitUntil(async () => (await this.getColumnWidth(columnIndex)) === expected, {
-      timeout: 500,
+      timeout: 1000,
       timeoutMsg: `Column at index "${columnIndex}" should have width "${expected}"`,
     });
   }
@@ -253,7 +253,9 @@ test(
   setupTest(async page => {
     await page.click('#reset-state');
     const oldWidth = await page.getColumnWidth(1);
-    await page.keys(['Tab', 'ArrowRight']);
+    await page.keys(['Tab']);
+    await expect(page.isFocused(tableWrapper.findColumnResizer(1).toSelector())).resolves.toBe(true);
+    await page.keys(['ArrowRight']);
     await page.assertColumnWidth(1, oldWidth + 10);
   })
 );

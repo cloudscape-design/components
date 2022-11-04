@@ -9,7 +9,6 @@ import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface TableHeaderCellProps {
@@ -29,7 +28,6 @@ interface TableHeaderCellProps {
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
-  resizerAriaLabel?: string;
 }
 
 export function TableHeaderCell({
@@ -49,7 +47,6 @@ export function TableHeaderCell({
   updateColumn,
   resizableColumns,
   onResizeFinish,
-  resizerAriaLabel,
 }: TableHeaderCellProps) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -72,7 +69,6 @@ export function TableHeaderCell({
     }
   };
 
-  const resizerAriaLabelId = useUniqueId('table-column-resizer-');
   const headerId = useUniqueId('table-header-');
 
   return (
@@ -128,10 +124,9 @@ export function TableHeaderCell({
           <Resizer
             onDragMove={newWidth => updateColumn(colIndex, newWidth)}
             onFinish={onResizeFinish}
-            ariaLabelledby={[resizerAriaLabelId, headerId].filter(label => !!label).join(' ')}
+            ariaLabelledby={headerId}
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           />
-          <ScreenreaderOnly id={resizerAriaLabelId}>{resizerAriaLabel}</ScreenreaderOnly>
         </>
       )}
     </th>

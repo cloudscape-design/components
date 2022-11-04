@@ -292,12 +292,3 @@ test('should not trigger if the previous and the current widths are the same', (
 
   expect(onChange).toHaveBeenCalledTimes(0);
 });
-
-test('should aria-labelledby resizerAriaLabel and table header', () => {
-  const { wrapper } = renderTable(<Table {...defaultProps} ariaLabels={{ resizerAriaLabel: 'Resize' }} />);
-  const labelledby = wrapper.findColumnResizer(2)?.getElement().getAttribute('aria-labelledby');
-  const [resizerLabelId, headerLabelId] = labelledby!.split(' ');
-  console.log(resizerLabelId, headerLabelId, wrapper.getElement().outerHTML);
-  expect(wrapper.find(`#${resizerLabelId}`)?.getElement()).toHaveTextContent('Resize');
-  expect(wrapper.find(`#${headerLabelId}`)?.getElement()).toHaveTextContent('Description');
-});

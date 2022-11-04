@@ -34,7 +34,6 @@ export interface TheadProps {
   hidden?: boolean;
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
-  resizerAriaLabel?: string;
 }
 
 const Thead = React.forwardRef(
@@ -56,7 +55,6 @@ const Thead = React.forwardRef(
       onSortingChange,
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
-      resizerAriaLabel,
       showFocusRing = null,
       sticky = false,
       hidden = false,
@@ -121,7 +119,6 @@ const Thead = React.forwardRef(
                 colIndex={colIndex}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
-                resizerAriaLabel={resizerAriaLabel}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 onFocus={() => onCellFocus?.(colIndex)}

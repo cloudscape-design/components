@@ -10723,7 +10723,6 @@ scroll parent scrolls to reveal the first row of the table.",
                                    It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
 * \`tableLabel\` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
-* \`resizerAriaLabel\` (string) - Adds an aria-label to the column resizer.
 You can use the first argument of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
@@ -10741,11 +10740,6 @@ add a meaningful description to the whole selection.
             "name": "itemSelectionLabel",
             "optional": true,
             "type": "(data: TableProps.SelectionState<T>, row: T) => string",
-          },
-          Object {
-            "name": "resizerAriaLabel",
-            "optional": true,
-            "type": "string",
           },
           Object {
             "name": "selectionGroupLabel",
