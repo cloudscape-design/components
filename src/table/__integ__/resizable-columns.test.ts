@@ -88,6 +88,13 @@ class TablePage extends BasePageObject {
       },
     ]);
   }
+
+  async assertColumnWidth(columnIndex: number, expected: number) {
+    await this.browser.waitUntil(async () => (await this.getColumnWidth(columnIndex)) === expected, {
+      timeout: 500,
+      timeoutMsg: `Column at index "${columnIndex}" should have width "${expected}"`,
+    });
+  }
 }
 
 const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
@@ -247,7 +254,6 @@ test(
     await page.click('#reset-state');
     const oldWidth = await page.getColumnWidth(1);
     await page.keys(['Tab', 'ArrowRight']);
-    const newWidth = await page.getColumnWidth(1);
-    expect(oldWidth + 10).toEqual(newWidth);
+    await page.assertColumnWidth(1, oldWidth + 10);
   })
 );
