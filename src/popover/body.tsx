@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
@@ -35,7 +35,7 @@ export default function PopoverBody({
   className,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
-  const [dismissButtonFocused, setDismissButtonFocused] = useState(false);
+  const dismissButtonFocused = useRef(false);
   const dismissButtonRef = useRef<ButtonProps.Ref>(null);
 
   const onKeyDown = useCallback(
@@ -51,11 +51,11 @@ export default function PopoverBody({
   // because we also want to focus the dismiss button when it
   // is added dyamically (e.g. in chart popovers)
   useEffect(() => {
-    if (showDismissButton && !dismissButtonFocused) {
+    if (showDismissButton && !dismissButtonFocused.current) {
       dismissButtonRef.current?.focus({ preventScroll: true });
     }
-    setDismissButtonFocused(showDismissButton);
-  }, [showDismissButton, dismissButtonFocused]);
+    dismissButtonFocused.current = showDismissButton;
+  }, [showDismissButton]);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div className={styles.dismiss}>
