@@ -226,13 +226,13 @@ const Dropdown = ({
     (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(element));
 
   const focusHandler = (event: React.FocusEvent) => {
-    if (event.relatedTarget && isOutsideDropdown(event.relatedTarget)) {
+    if (!event.relatedTarget || isOutsideDropdown(event.relatedTarget)) {
       fireNonCancelableEvent(onFocus, event);
     }
   };
 
   const blurHandler = (event: React.FocusEvent) => {
-    if (event.relatedTarget && isOutsideDropdown(event.relatedTarget)) {
+    if (!event.relatedTarget || isOutsideDropdown(event.relatedTarget)) {
       fireNonCancelableEvent(onBlur, event);
     }
   };
