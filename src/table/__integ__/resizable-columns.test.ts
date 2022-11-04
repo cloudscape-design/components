@@ -254,7 +254,7 @@ test(
     await page.click('#reset-state');
     const oldWidth = await page.getColumnWidth(1);
     await page.keys(['Tab']);
-    await expect(page.isFocused(tableWrapper.findColumnResizer(1).toSelector())).resolves.toBe(true);
+    // wait for the resizer to attach handler
     await page.keys(['ArrowRight']);
     await page.assertColumnWidth(1, oldWidth + 10);
   })
