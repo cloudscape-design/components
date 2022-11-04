@@ -246,7 +246,7 @@ test(
   setupTest(async page => {
     await page.click('#reset-state');
     const oldWidth = await page.getColumnWidth(1);
-    page.keys(['Tab', 'ArrowRight']);
+    await page.keys(['Tab', 'ArrowRight']);
     const newWidth = await page.getColumnWidth(1);
     expect(oldWidth + 10).toEqual(newWidth);
   })
