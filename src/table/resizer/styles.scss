@@ -46,9 +46,11 @@ $active-separator-width: 2px;
     }
   }
   &.has-focus {
-    outline: none;
-    border-color: awsui.$color-border-item-focused;
-    box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+    position: absolute;
+    &::before {
+      box-shadow: inset 0 0 0 2px awsui.$color-border-item-focused;
+    }
   }
 }
 
