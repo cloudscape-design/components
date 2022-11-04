@@ -86,7 +86,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
-   * * `resizerAriaLabel` (string) - Adds an aria-label to the column resizer.
    *
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
@@ -138,6 +137,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                                    It is prefixed to `itemSelectionLabel` and `allItemsSelectionLabel` when they are set.
    * * `tableLabel` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
+   * * `resizerAriaLabel` (string) - Adds an aria-label to the column resizer.
    *
    * You can use the first argument of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The `itemSelectionLabel` for individual
@@ -242,7 +242,6 @@ export namespace TableProps {
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-    resizerAriaLabel?: string;
   } & SortingColumn<T>;
 
   export type SelectionType = 'single' | 'multi';
@@ -259,6 +258,7 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    resizerAriaLabel?: string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;

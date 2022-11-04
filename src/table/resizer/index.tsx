@@ -12,7 +12,7 @@ import { KeyCode } from '../../internal/keycode';
 interface ResizerProps {
   onDragMove: (newWidth: number) => void;
   onFinish: () => void;
-  ariaLabel?: string;
+  ariaLabelledby?: string;
   minWidth?: number;
   maxWidth?: number;
 }
@@ -21,7 +21,7 @@ const AUTO_GROW_START_TIME = 10;
 const AUTO_GROW_INTERVAL = 10;
 const AUTO_GROW_INCREMENT = 5;
 
-export function Resizer({ onDragMove, onFinish, ariaLabel, minWidth, maxWidth }: ResizerProps) {
+export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth, maxWidth }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
   const autoGrowTimeout = useRef<ReturnType<typeof setTimeout> | undefined>();
@@ -144,7 +144,7 @@ export function Resizer({ onDragMove, onFinish, ariaLabel, minWidth, maxWidth }:
       }}
       role="separator"
       aria-orientation="vertical"
-      aria-label={ariaLabel}
+      aria-aria-labelledby={ariaLabelledby}
       aria-valuenow={headerCellWidth}
       aria-valuemin={minWidth}
       aria-valuemax={maxWidth}
