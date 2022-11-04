@@ -121,11 +121,15 @@ const Dropdown = ({
   interior = false,
   minWidth,
   scrollable = true,
-  trapFocus = false,
+  loopFocus = expandToViewport,
+  onFocus,
+  onBlur,
   contentKey,
 }: DropdownProps) => {
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
   // This container is only needed to apply max-height to. We can't move max-height to it's parent
   // because of an IE11 issue with flexbox. https://github.com/philipwalton/flexbugs/issues/216
   const verticalContainerRef = useRef<HTMLDivElement>(null);
@@ -214,6 +218,22 @@ const Dropdown = ({
       setPosition('bottom-left');
     } else {
       setPosition('bottom-right');
+    }
+  };
+
+  const isOutsideDropdown = (element: Element) =>
+    (!wrapperRef.current || !wrapperRef.current.contains(element)) &&
+    (!dropdownContainerRef.current || !dropdownContainerRef.current.contains(element));
+
+  const focusHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdown(event.relatedTarget)) {
+      fireNonCancelableEvent(onFocus, event);
+    }
+  };
+
+  const blurHandler = (event: React.FocusEvent) => {
+    if (!event.relatedTarget || isOutsideDropdown(event.relatedTarget)) {
+      fireNonCancelableEvent(onBlur, event);
     }
   };
 
@@ -331,6 +351,9 @@ const Dropdown = ({
         interior && styles.interior,
         stretchTriggerHeight && styles['stretch-trigger-height']
       )}
+      ref={wrapperRef}
+      onFocus={focusHandler}
+      onBlur={blurHandler}
     >
       <div className={clsx(stretchTriggerHeight && styles['stretch-trigger-height'])} ref={triggerRef}>
         {trigger}
@@ -338,16 +361,16 @@ const Dropdown = ({
 
       <TabTrap
         focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
-        disabled={!open || !trapFocus}
+        disabled={!open || !loopFocus}
       />
 
       <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
-            <div onBlur={event => trapFocus && event.stopPropagation()}>
+            <div ref={dropdownContainerRef}>
               <TabTrap
                 focusNextCallback={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
-                disabled={!open || !trapFocus}
+                disabled={!open || !loopFocus}
               />
 
               <TransitionContent
@@ -371,7 +394,7 @@ const Dropdown = ({
 
               <TabTrap
                 focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
-                disabled={!open || !trapFocus}
+                disabled={!open || !loopFocus}
               />
             </div>
           )}
