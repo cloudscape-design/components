@@ -22,7 +22,9 @@ export default function () {
       <ul>
         <li>Popover with dismiss button should trap focus when opened</li>
         <li>Popover with dismiss button should return focus to the trigger when closed</li>
-        <li>Popover with dismiss button should not prevent focus from moving to the clicked element</li>
+        <li id="text-before-focus-trap">
+          Popover with dismiss button should not prevent focus from moving to the clicked element
+        </li>
       </ul>
       <button type="button" id="focus-trap-target">
         Click to focus
@@ -32,8 +34,11 @@ export default function () {
         header="Memory error"
         content={
           <>
-            This instance contains insufficient memory. Stop the instance, choose a different instance type with more
-            memory, and restart it.
+            <p>
+              This instance contains insufficient memory. Stop the instance, choose a different instance type with more
+              memory, and restart it.
+            </p>
+            <input />
           </>
         }
         dismissAriaLabel="Close"
@@ -59,6 +64,26 @@ export default function () {
       >
         sj-45ab8k
       </Popover>
+      <div tabIndex={0}>
+        <Popover
+          size="medium"
+          header="Memory error"
+          content={
+            <>
+              <p>
+                This instance contains insufficient memory. Stop the instance, choose a different instance type with
+                more memory, and restart it.
+              </p>
+              <input />
+            </>
+          }
+          dismissAriaLabel="Close"
+          id="focus-trap-within-focusable"
+          renderWithPortal={renderWithPortal}
+        >
+          Error
+        </Popover>
+      </div>
     </article>
   );
 }

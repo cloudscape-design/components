@@ -77,8 +77,9 @@ export default class AreaChartPageObject extends BasePageObject {
   }
 
   async isPopoverPinned() {
-    const count = await this.getElementsCount(this.chart.findDetailPopover().findDismissButton().toSelector());
-    return count === 1;
+    const detailsDismissSelector = this.chart.findDetailPopover().findDismissButton().toSelector();
+    const count = await this.getElementsCount(detailsDismissSelector);
+    return count === 1 && this.isFocused(detailsDismissSelector);
   }
 
   async getPopoverTitle() {

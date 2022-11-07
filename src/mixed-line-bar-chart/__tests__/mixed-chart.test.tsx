@@ -928,8 +928,6 @@ describe('Details popover', () => {
 
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
 
-    expect(wrapper.findDetailPopover()!.findDismissButton()!.getElement()).toHaveFocus();
-
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
     jest.runAllTimers();
 
@@ -944,8 +942,6 @@ describe('Details popover', () => {
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
 
     wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
-
-    expect(wrapper.findDetailPopover()!.findDismissButton()!.getElement()).toHaveFocus();
 
     wrapper.findDetailPopover()!.findDismissButton()!.keydown(KeyCode.escape);
     jest.runAllTimers();

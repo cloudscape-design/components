@@ -27,6 +27,7 @@ const createSetupTest = (wrapper: PieChartWrapper) => (testFn: (page: PieChartPa
 const pieWrapper = createWrapper().findPieChart('#pie-chart');
 const highlightedSegmentSelector = pieWrapper.findHighlightedSegment().toSelector();
 const detailsPopoverSelector = pieWrapper.findDetailPopover().toSelector();
+const detailsDismissSelector = pieWrapper.findDetailPopover().findDismissButton().toSelector();
 const filterWrapper = pieWrapper.findDefaultFilter();
 const legendWrapper = pieWrapper.findLegend();
 
@@ -232,9 +233,11 @@ describe('Detail popover', () => {
       await page.click(pieWrapper.findSegments().get(2).toSelector());
       await page.waitForVisible(detailsPopoverSelector);
       await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Chocolate');
+      await expect(page.isDisplayed(detailsDismissSelector)).resolves.toBe(true);
+      await page.waitForAssertion(() => expect(page.isFocused(detailsDismissSelector)).resolves.toBe(true));
 
       // Unpin by clicking the dismiss button
-      await page.click(pieWrapper.findDetailPopover().findDismissButton().toSelector());
+      await page.click(detailsDismissSelector);
       await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
     })
   );
