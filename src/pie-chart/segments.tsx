@@ -19,7 +19,7 @@ interface SegmentsProps<T> {
   popoverTrackRef: React.RefObject<SVGCircleElement>;
   segmentAriaRoleDescription?: string;
 
-  onClick: (datum: InternalChartDatum<T>) => void;
+  onMouseDown: (datum: InternalChartDatum<T>) => void;
   onMouseOver: (datum: InternalChartDatum<T>) => void;
   onMouseOut: () => void;
 }
@@ -32,7 +32,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   focusedSegmentRef,
   popoverTrackRef,
   segmentAriaRoleDescription,
-  onClick,
+  onMouseDown,
   onMouseOver,
   onMouseOut,
 }: SegmentsProps<T>) {
@@ -79,7 +79,10 @@ export default function Segments<T extends PieChartProps.Datum>({
         return (
           <g
             key={datum.data.index}
-            onClick={() => onClick(datum.data)}
+            onMouseDown={e => {
+              onMouseDown(datum.data);
+              e.preventDefault();
+            }}
             onMouseOver={() => onMouseOver(datum.data)}
             className={clsx(styles.segment, {
               [styles['segment--highlighted']]: isHighlighted,

@@ -58,6 +58,10 @@ function InternalPopover(
 
   const [visible, setVisible] = useState(false);
 
+  const focusTrigger = useCallback(() => {
+    triggerRef.current?.focus();
+  }, []);
+
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
     setVisible(true);
@@ -65,7 +69,8 @@ function InternalPopover(
 
   const onDismiss = useCallback(() => {
     setVisible(false);
-  }, []);
+    focusTrigger();
+  }, [focusTrigger]);
 
   const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {

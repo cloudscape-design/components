@@ -99,7 +99,6 @@ export default function ChartPopover({
         <PopoverBody
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
-          returnFocus={false}
           header={title}
           onDismiss={onDismiss}
         >

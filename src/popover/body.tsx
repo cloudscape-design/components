@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import FocusLock from 'react-focus-lock';
 
 import { KeyCode } from '../internal/keycode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
+import FocusLock from '../internal/components/focus-lock';
 
 import styles from './styles.css.js';
 
@@ -19,10 +19,7 @@ export interface PopoverBodyProps {
   header: React.ReactNode | undefined;
   children: React.ReactNode;
   variant?: 'annotation';
-  returnFocus?: boolean;
   overflowVisible?: 'content' | 'both';
-
-  dismissButtonRef?: React.Ref<ButtonProps.Ref>;
 
   className?: string;
 }
@@ -34,12 +31,12 @@ export default function PopoverBody({
   children,
   onDismiss,
   variant,
-  returnFocus = true,
   overflowVisible,
-  dismissButtonRef,
   className,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
+  const dismissButtonFocused = useRef(false);
+  const dismissButtonRef = useRef<ButtonProps.Ref>(null);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -49,6 +46,16 @@ export default function PopoverBody({
     },
     [onDismiss]
   );
+
+  // Implement our own auto-focus rather than using FocusLock's,
+  // because we also want to focus the dismiss button when it
+  // is added dyamically (e.g. in chart popovers)
+  useEffect(() => {
+    if (showDismissButton && !dismissButtonFocused.current) {
+      dismissButtonRef.current?.focus({ preventScroll: true });
+    }
+    dismissButtonFocused.current = showDismissButton;
+  }, [showDismissButton]);
 
   const dismissButton = (showDismissButton ?? null) && (
     <div className={styles.dismiss}>
@@ -74,7 +81,7 @@ export default function PopoverBody({
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
       aria-labelledby={header ? labelledById : undefined}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={true} returnFocus={returnFocus}>
+      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
