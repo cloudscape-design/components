@@ -8,7 +8,6 @@ import { focusMarkers } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
-import { Resizer } from './resizer';
 import { useColumnWidths } from './use-column-widths';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
@@ -117,14 +116,10 @@ const Thead = React.forwardRef(
                 sortingDescending={sortingDescending}
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
-                resizer={
-                  resizableColumns && (
-                    <Resizer
-                      onDragMove={newWidth => updateColumn(colIndex, newWidth)}
-                      onFinish={() => onResizeFinish(columnWidths)}
-                    />
-                  )
-                }
+                colIndex={colIndex}
+                updateColumn={updateColumn}
+                onResizeFinish={() => onResizeFinish(columnWidths)}
+                resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 onFocus={() => onCellFocus?.(colIndex)}
                 onBlur={onCellBlur}
