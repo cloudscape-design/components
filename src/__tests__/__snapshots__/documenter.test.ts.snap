@@ -7851,6 +7851,8 @@ Object {
   "properties": Array [
     Object {
       "description": "Adds aria-labels to the pagination buttons:
+* \`paginationLabel\` (string) - Label for the entire pagination group. It allows users to distinguish context
+* in cases of multiple pagination components in a page.
 * \`previousPageLabel\` (string) - Previous page button.
 * \`pageLabel\` (number => string) - Individual page button, this function is called for every page number that's rendered.
 * \`nextPageLabel\` (string) - Next page button
@@ -7858,6 +7860,7 @@ Example:
 \`\`\`
 {
   nextPageLabel: 'Next page',
+  paginationLabel: 'Table pagination'
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
@@ -7875,6 +7878,11 @@ Example:
             "name": "pageLabel",
             "optional": true,
             "type": "(pageNumber: number) => string",
+          },
+          Object {
+            "name": "paginationLabel",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "previousPageLabel",
