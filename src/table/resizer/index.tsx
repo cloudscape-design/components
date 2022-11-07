@@ -146,7 +146,8 @@ export function Resizer({ onDragMove, onFinish, ariaLabelledby, minWidth = DEFAU
       role="separator"
       aria-orientation="vertical"
       aria-labelledby={ariaLabelledby}
-      aria-valuenow={headerCellWidth}
+      // use aria-valuetext instead of aria-valuenow because the VO announces "collapsed" when no aria-valuemax set
+      aria-valuetext={headerCellWidth.toString()}
       aria-valuemin={minWidth}
       tabIndex={0}
     />
