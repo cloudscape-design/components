@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { findClosest, circleIndex, throttle } from './utils';
+import { findClosest, circleIndex } from './utils';
 
 import { nodeContains } from '../../internal/utils/dom';
 import { KeyCode } from '../../internal/keycode';
@@ -14,6 +14,7 @@ import InteractionsStore from './interactions-store';
 import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
+import { throttle } from '../../internal/utils/throttle';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;

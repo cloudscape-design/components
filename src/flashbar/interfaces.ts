@@ -13,6 +13,7 @@ export namespace FlashbarProps {
     statusIconAriaLabel?: string;
     loading?: boolean;
     type?: FlashbarProps.Type;
+    ariaRole?: FlashbarProps.AriaRole;
     action?: React.ReactNode;
     id?: string;
     buttonText?: ButtonProps['children'];
@@ -21,6 +22,7 @@ export namespace FlashbarProps {
   }
 
   export type Type = 'success' | 'warning' | 'info' | 'error';
+  export type AriaRole = 'alert' | 'status';
 }
 
 export interface FlashbarProps extends BaseComponentProps {
@@ -37,6 +39,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * When a user clicks on this button the `onDismiss` handler is called.
    * * `dismissLabel` (string) - Specifies an `aria-label` for to the dismiss icon button for improved accessibility.
    * * `statusIconAriaLabel` (string) - Specifies an `aria-label` for to the status icon for improved accessibility.
+   * * `ariaRole` (boolean) - For flash messages added after page load, specifies how this message is communicated to assistive
+   * technology. Use "status" for status updates or informational content. Use "alert" for important messages that need the
+   * user's attention.
    * * `action` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
    * our UX guidelines only allow you to add a button.
    * * `buttonText` (string) - Specifies that an action button should be displayed, with the specified text.
@@ -50,4 +55,17 @@ export interface FlashbarProps extends BaseComponentProps {
    * @visualrefresh `id` property
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+}
+
+export interface StackedFlashbarProps {
+  stackItems: true;
+  ariaLabels?: StackedFlashbarProps.AriaLabels;
+  items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+}
+
+export namespace StackedFlashbarProps {
+  export interface AriaLabels {
+    stackCollapseLabel?: string;
+    stackExpandLabel?: string;
+  }
 }

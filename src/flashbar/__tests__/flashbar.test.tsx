@@ -111,24 +111,43 @@ describe('Flashbar component', () => {
   test('correct type of message', () => {
     {
       const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'success' }]} />);
-      expect(wrapper.findItems()[0].getElement()).toHaveClass(styles['flash-type-success']);
+      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+        styles['flash-type-success']
+      );
     }
     {
       const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'warning' }]} />);
-      expect(wrapper.findItems()[0].getElement()).toHaveClass(styles['flash-type-warning']);
+      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+        styles['flash-type-warning']
+      );
     }
     {
       const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'info' }]} />);
-      expect(wrapper.findItems()[0].getElement()).toHaveClass(styles['flash-type-info']);
+      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
     }
     {
       const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'error' }]} />);
-      expect(wrapper.findItems()[0].getElement()).toHaveClass(styles['flash-type-error']);
+      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+        styles['flash-type-error']
+      );
     }
     {
       const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'error', loading: true }]} />);
-      expect(wrapper.findItems()[0].getElement()).toHaveClass(styles['flash-type-info']);
+      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
     }
+  });
+
+  test('correct aria-role', () => {
+    const wrapper = render(
+      <Flashbar
+        items={[
+          { content: 'Alert', ariaRole: 'alert' },
+          { content: 'Status', ariaRole: 'status' },
+        ]}
+      />
+    );
+    expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'alert');
+    expect(wrapper.findItems()[1].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'status');
   });
 
   test('correct header', () => {
