@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/.github/.github/workflows/release.yml@main
+    uses: cloudscape-design/.github/.github/workflows/release.yml@dev-v3-alhalee
     secrets: inherit
     with:
       publish-packages: lib/components,lib/design-tokens,lib/style-dictionary,lib/components-themeable,lib/dev-pages,lib/components-definitions
