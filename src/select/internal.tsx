@@ -28,6 +28,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -123,6 +124,8 @@ const InternalSelect = React.forwardRef(
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,
     });
 
+    const selectAriaLabelId = useUniqueId('select-arialabel-');
+
     useEffect(() => {
       scrollToIndex.current?.(highlightedIndex);
     }, [highlightedIndex]);
@@ -143,7 +146,6 @@ const InternalSelect = React.forwardRef(
         ref={triggerRef}
         placeholder={placeholder}
         disabled={disabled}
-        ariaLabel={ariaLabel}
         triggerVariant={triggerVariant}
         triggerProps={getTriggerProps(disabled)}
         selectedOption={selectedOption}
@@ -151,13 +153,14 @@ const InternalSelect = React.forwardRef(
         inFilteringToken={__inFilteringToken}
         {...formFieldContext}
         controlId={controlId}
+        ariaLabelledby={[formFieldContext.ariaLabelledby, selectAriaLabelId].filter(label => !!label).join(' ')}
       />
     );
 
     const menuProps = {
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
-      ariaLabelledby: controlId,
+      ariaLabelledby: [selectAriaLabelId, controlId].filter(label => !!label).join(' '),
     };
 
     const isEmpty = !options || options.length === 0;
@@ -225,6 +228,7 @@ const InternalSelect = React.forwardRef(
             highlightType={highlightType}
           />
         </Dropdown>
+        <ScreenreaderOnly id={selectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
       </div>
     );
   }

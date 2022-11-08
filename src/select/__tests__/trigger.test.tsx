@@ -14,7 +14,6 @@ function renderComponent(props: TriggerProps) {
 const defaultProps: any = {
   ariaLabelledby: 'aria-labelled-by',
   ariaDescribedby: 'aria described by',
-  ariaLabel: 'aria label',
   selectedOption: null,
   invalid: false,
   disabled: false,
@@ -56,19 +55,9 @@ describe('Trigger component', () => {
       expect(buttonTriggerEl).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test('should have aria-labelledby attribute consisting of passed aria-labelby aria-label and the internal one pointing at the currently selected option', () => {
-      expect(buttonTriggerEl.getAttribute('aria-labelledby')).toMatch(
-        /aria-labelled-by select-arialabel-.* option-labelled-by/
-      );
+    test('should have aria-labelledby attribute consisting of passed aria-labelby and the internal one pointing at the currently selected option', () => {
+      expect(buttonTriggerEl).toHaveAttribute('aria-labelledby', 'aria-labelled-by option-labelled-by');
       expect(buttonTriggerEl.querySelector('#option-labelled-by')).toBeTruthy();
-    });
-
-    test('should use aria-label value in element referenced by aria-labelledby', () => {
-      const ariaLabelId = buttonTriggerEl
-        .getAttribute('aria-labelledby')
-        ?.match(/select-arialabel-.* /)?.[0]
-        .trim();
-      expect(buttonTriggerEl.querySelector(`#${ariaLabelId}`)).toHaveTextContent('aria label');
     });
 
     test('should have aria-haspopup attribute', () => {

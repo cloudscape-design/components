@@ -43,7 +43,6 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     const { container, wrapper } = renderSelect();
     wrapper.openDropdown();
     expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue('1')).toBeTruthy();
-
     await expect(container).toValidateA11y();
   });
 
@@ -58,5 +57,16 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       'aria-selected',
       'false'
     );
+  });
+
+  test('Trigger should have refer to the element using aria-label value', () => {
+    const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
+    const ariaLabelId = wrapper
+      .findTrigger()
+      .getElement()
+      .getAttribute('aria-labelledby')
+      ?.match(/select-arialabel-.* /)?.[0]
+      .trim();
+    expect(wrapper.getElement().querySelector(`#${ariaLabelId}`)).toHaveTextContent('select');
   });
 });
