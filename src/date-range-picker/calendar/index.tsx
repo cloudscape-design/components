@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { Focusable, RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
+import { RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
 import { TimeInputProps } from '../../time-input/interfaces';
@@ -13,10 +14,11 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
-import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { joinDateTime, parseDate } from '../../internal/utils/date-time';
 import { getBaseDate } from '../../calendar/utils/navigation';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import RangeInputs from './range-inputs.js';
+import { useDateTime } from './use-date-time.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: null | RangeCalendarValue;
@@ -29,87 +31,72 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   timeInputFormat?: TimeInputProps.Format;
 }
 
-export default forwardRef(DateRangePickerCalendar);
-
-function DateRangePickerCalendar(
-  {
-    value,
-    onChange,
-    locale = '',
-    startOfWeek,
-    isDateEnabled = () => true,
-    i18nStrings,
-    dateOnly = false,
-    timeInputFormat = 'hh:mm:ss',
-  }: DateRangePickerCalendarProps,
-  ref: React.Ref<Focusable>
-) {
-  const elementRef = useRef<HTMLDivElement>(null);
+export default function DateRangePickerCalendar({
+  value,
+  onChange,
+  locale = '',
+  startOfWeek,
+  isDateEnabled = () => true,
+  i18nStrings,
+  dateOnly = false,
+  timeInputFormat = 'hh:mm:ss',
+}: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
 
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
 
-  useImperativeHandle(ref, () => ({
-    focus() {
-      if (elementRef.current) {
-        const prevButton = elementRef.current.getElementsByClassName(styles['calendar-prev-month-btn'])[0];
-        (prevButton as undefined | HTMLButtonElement)?.focus();
-      }
-    },
-  }));
-
   const initialStartDate = value?.startDate ?? '';
+  const rangeStart = useDateTime(initialStartDate);
+
   const initialEndDate = value?.endDate ?? '';
-  const [initialStartDateString = '', initialStartTimeString = ''] = initialStartDate.split('T');
-  const [initialEndDateString = '', initialEndTimeString = ''] = initialEndDate.split('T');
-
-  const [startDateString, setStartDateString] = useState(initialStartDateString);
-  const [startTimeString, setStartTimeString] = useState(initialStartTimeString);
-
-  const [endDateString, setEndDateString] = useState(initialEndDateString);
-  const [endTimeString, setEndTimeString] = useState(initialEndTimeString);
-
-  const selectedStartDate = parseDate(startDateString, true);
-  const selectedEndDate = parseDate(endDateString, true);
+  const rangeEnd = useDateTime(initialEndDate);
 
   const [announcement, setAnnouncement] = useState('');
 
   const [currentMonth, setCurrentMonth] = useState(() => {
-    if (startDateString) {
-      const startDate = parseDate(startDateString);
+    if (rangeStart.dateString) {
+      const startDate = parseDate(rangeStart.dateString);
       if (isSingleGrid) {
         return startOfMonth(startDate);
       }
       return startOfMonth(addMonths(startDate, 1));
     }
-    if (endDateString) {
-      return startOfMonth(parseDate(endDateString));
+    if (rangeEnd.dateString) {
+      return startOfMonth(parseDate(rangeEnd.dateString));
     }
     return startOfMonth(Date.now());
   });
 
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
-    if (selectedStartDate) {
-      if (isSameMonth(selectedStartDate, currentMonth)) {
-        return selectedStartDate;
+    if (rangeStart.date) {
+      if (isSameMonth(rangeStart.date, currentMonth)) {
+        return rangeStart.date;
       }
-      if (!isSingleGrid && isSameMonth(selectedStartDate, addMonths(currentMonth, -1))) {
-        return selectedStartDate;
+      if (!isSingleGrid && isSameMonth(rangeStart.date, addMonths(currentMonth, -1))) {
+        return rangeStart.date;
       }
     }
-    return selectFocusedDate(selectedStartDate, currentMonth, isDateEnabled);
+    return selectFocusedDate(rangeStart.date, currentMonth, isDateEnabled);
   });
 
   // This effect "synchronizes" the local state update back up to the parent component.
   useEffect(() => {
-    const startDate = joinDateTime(startDateString, startTimeString);
-    const endDate = joinDateTime(endDateString, endTimeString);
+    const startDate = joinDateTime(rangeStart.dateString, rangeStart.timeString);
+    const endDate = joinDateTime(rangeEnd.dateString, rangeEnd.timeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
       onChange({ startDate, endDate });
     }
-  }, [startDateString, startTimeString, endDateString, endTimeString, onChange, initialStartDate, initialEndDate]);
+  }, [
+    rangeStart.dateString,
+    rangeStart.timeString,
+    rangeEnd.dateString,
+    rangeEnd.timeString,
+    initialStartDate,
+    initialEndDate,
+    onChange,
+  ]);
 
   const onSelectDateHandler = (selectedDate: Date) => {
     // recommended to include the start/end time announced with the selection
@@ -151,29 +138,25 @@ function DateRangePickerCalendar(
     };
 
     // If both fields are empty, we set the start date
-    if (!startDateString && !endDateString) {
+    if (!rangeStart.dateString && !rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      setStartDateString(formatDate(startDate));
-      setStartTimeString(formatTime(startDate));
+      rangeStart.setDate(startDate);
       setAnnouncement(announceStart(startDate));
       return;
     }
 
     // If both fields are set, we start new
-    if (startDateString && endDateString) {
+    if (rangeStart.dateString && rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      setStartDateString(formatDate(startDate));
-      setStartTimeString(formatTime(startDate));
-
-      setEndDateString('');
-      setEndTimeString('');
+      rangeStart.setDate(startDate);
+      rangeEnd.setDate(null);
       setAnnouncement(announceStart(startDate));
       return;
     }
 
     // If only the END date is empty, we fill it (and swap dates if needed)
-    if (startDateString && !endDateString) {
-      const parsedStartDate = parseDate(startDateString);
+    if (rangeStart.dateString && !rangeEnd.dateString) {
+      const parsedStartDate = parseDate(rangeStart.dateString);
 
       if (isBefore(selectedDate, parsedStartDate)) {
         // The user has selected the range backwards, so we swap start and end
@@ -181,24 +164,20 @@ function DateRangePickerCalendar(
         const startDate = startOfDay(selectedDate);
         const endDate = endOfDay(parsedStartDate);
 
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
-
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeStart.setDate(startDate);
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceStart(startDate) + announceRange(startDate, endDate));
       } else {
         const endDate = endOfDay(selectedDate);
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceEnd(endDate) + announceRange(parsedStartDate, endDate));
       }
       return;
     }
 
     // If only the START date is empty, we fill it (and swap dates if needed)
-    if (!startDateString && endDateString) {
-      const existingEndDate = parseDate(endDateString);
+    if (!rangeStart.dateString && rangeEnd.dateString) {
+      const existingEndDate = parseDate(rangeEnd.dateString);
 
       if (isAfter(selectedDate, existingEndDate)) {
         // The user has selected the range backwards, so we swap start and end
@@ -206,16 +185,12 @@ function DateRangePickerCalendar(
         const startDate = startOfDay(existingEndDate);
         const endDate = endOfDay(selectedDate);
 
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
-
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeStart.setDate(startDate);
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceEnd(endDate) + announceRange(startDate, endDate));
       } else {
         const startDate = startOfDay(selectedDate);
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
+        rangeStart.setDate(startDate);
         setAnnouncement(announceStart(startDate) + announceRange(startDate, existingEndDate));
       }
       return;
@@ -223,8 +198,7 @@ function DateRangePickerCalendar(
     // All possible conditions are covered above
   };
 
-  const onHeaderChangeMonthHandler = (isPrevious?: boolean) => {
-    const newCurrentMonth = addMonths(currentMonth, isPrevious ? -1 : 1);
+  const onHeaderChangeMonthHandler = (newCurrentMonth: Date) => {
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
@@ -233,7 +207,7 @@ function DateRangePickerCalendar(
   };
 
   const onChangeStartDate = (value: string) => {
-    setStartDateString(value);
+    rangeStart.setDateString(value);
 
     if (value.length >= 8) {
       const newCurrentMonth = startOfMonth(parseDate(value));
@@ -242,7 +216,7 @@ function DateRangePickerCalendar(
   };
 
   const onChangeEndDate = (value: string) => {
-    setEndDateString(value);
+    rangeEnd.setDateString(value);
   };
 
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
@@ -254,7 +228,6 @@ function DateRangePickerCalendar(
         })}
       >
         <div
-          ref={elementRef}
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
@@ -280,21 +253,21 @@ function DateRangePickerCalendar(
             onChangeMonth={setCurrentMonth}
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={i18nStrings.todayAriaLabel}
-            selectedStartDate={selectedStartDate}
-            selectedEndDate={selectedEndDate}
+            selectedStartDate={rangeStart.date}
+            selectedEndDate={rangeEnd.date}
             headingIdPrefix={headingIdPrefix}
           />
         </div>
 
         <RangeInputs
-          startDate={startDateString}
+          startDate={rangeStart.dateString}
           onChangeStartDate={onChangeStartDate}
-          startTime={startTimeString}
-          onChangeStartTime={setStartTimeString}
-          endDate={endDateString}
+          startTime={rangeStart.timeString}
+          onChangeStartTime={rangeStart.setTimeString}
+          endDate={rangeEnd.dateString}
           onChangeEndDate={onChangeEndDate}
-          endTime={endTimeString}
-          onChangeEndTime={setEndTimeString}
+          endTime={rangeEnd.timeString}
+          onChangeEndTime={rangeEnd.setTimeString}
           i18nStrings={i18nStrings}
           dateOnly={dateOnly}
           timeInputFormat={timeInputFormat}

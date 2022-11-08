@@ -4,13 +4,13 @@ import { add } from 'date-fns';
 import React from 'react';
 import styles from '../../styles.css.js';
 import { renderMonthAndYear } from '../../../calendar/utils/intl';
-import HeaderButton from './button';
+import { PrevMonthButton, NextMonthButton } from './header-button';
 import LiveRegion from '../../../internal/components/live-region';
 
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangeMonth: (prev?: boolean) => void;
+  onChangeMonth: (date: Date) => void;
   previousMonthLabel: string;
   nextMonthLabel: string;
   isSingleGrid: boolean;
@@ -32,7 +32,7 @@ export default function CalendarHeader({
   return (
     <>
       <div className={styles['calendar-header']}>
-        <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
+        <PrevMonthButton ariaLabel={previousMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
         <h2 className={styles['calendar-header-months-wrapper']}>
           {!isSingleGrid && (
             <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-prevmonth`}>
@@ -43,7 +43,7 @@ export default function CalendarHeader({
             {currentMonthLabel}
           </span>
         </h2>
-        <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
+        <NextMonthButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
       </div>
       <LiveRegion>{isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}</LiveRegion>
     </>
