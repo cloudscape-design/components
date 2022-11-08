@@ -10,6 +10,7 @@ export { AlertProps };
 
 export default function Alert({ type = 'info', visible = true, ...props }: AlertProps) {
   const baseComponentProps = useBaseComponent('Alert');
+  console.log('dummy');
   return <InternalAlert type={type} visible={visible} {...props} {...baseComponentProps} />;
 }
 
