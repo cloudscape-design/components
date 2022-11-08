@@ -57,7 +57,6 @@ describe('Trigger component', () => {
 
     test('should have aria-labelledby attribute consisting of passed aria-labelby and the internal one pointing at the currently selected option', () => {
       expect(buttonTriggerEl).toHaveAttribute('aria-labelledby', 'aria-labelled-by option-labelled-by');
-      expect(buttonTriggerEl.querySelector('#option-labelled-by')).toBeTruthy();
     });
 
     test('should have aria-haspopup attribute', () => {
