@@ -75,7 +75,10 @@ const Thead = React.forwardRef(
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef}>
           {selectionType === 'multi' && (
-            <th className={clsx(headerCellClass, selectionCellClass)} scope="col">
+            <th
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              scope="col"
+            >
               <SelectionControl
                 onFocusDown={event => onFocusMove!(event.target as HTMLElement, -1, +1)}
                 {...selectAllProps}
@@ -84,7 +87,10 @@ const Thead = React.forwardRef(
             </th>
           )}
           {selectionType === 'single' && (
-            <th className={clsx(headerCellClass, selectionCellClass)} scope="col">
+            <th
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              scope="col"
+            >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
             </th>
           )}
@@ -116,6 +122,7 @@ const Thead = React.forwardRef(
                 sortingDescending={sortingDescending}
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
+                hidden={hidden}
                 colIndex={colIndex}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}

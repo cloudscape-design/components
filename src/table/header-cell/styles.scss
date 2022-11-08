@@ -19,11 +19,11 @@
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
-  &-stuck {
+  &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
   }
-  &-variant-full-page {
-    border-bottom: awsui.$space-scaled-xxs solid transparent;
+  &-variant-full-page.header-cell-hidden {
+    border-bottom-color: transparent;
   }
   &:first-child {
     padding-left: awsui.$space-xs;

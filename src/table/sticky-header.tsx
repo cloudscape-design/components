@@ -22,12 +22,22 @@ interface StickyHeaderProps {
   secondaryWrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
+  tableHasHeader?: boolean;
 }
 
 export default forwardRef(StickyHeader);
 
 function StickyHeader(
-  { variant, theadProps, wrapperRef, theadRef, secondaryWrapperRef, onScroll, tableRef }: StickyHeaderProps,
+  {
+    variant,
+    theadProps,
+    wrapperRef,
+    theadRef,
+    secondaryWrapperRef,
+    onScroll,
+    tableRef,
+    tableHasHeader,
+  }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
   const secondaryTheadRef = useRef<HTMLTableRowElement>(null);
@@ -49,6 +59,7 @@ function StickyHeader(
     <div
       className={clsx(styles['header-secondary'], styles[`variant-${variant}`], {
         [styles.stuck]: isStuck,
+        [styles['table-has-header']]: tableHasHeader,
       })}
       aria-hidden={true}
       // Prevents receiving focus in Firefox. Focus on the overflowing table is sufficient

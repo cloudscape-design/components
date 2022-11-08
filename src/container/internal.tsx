@@ -19,6 +19,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
   __headerId?: string;
+  __darkHeader?: boolean;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -43,6 +44,7 @@ export default function InternalContainer({
   __hiddenContent = false,
   __headerRef,
   __headerId,
+  __darkHeader = false,
   ...restProps
 }: InternalContainerProps) {
   const baseProps = getBaseProps(restProps);
@@ -51,7 +53,7 @@ export default function InternalContainer({
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
   const isRefresh = useVisualRefresh();
   const hasDynamicHeight = isRefresh && variant === 'full-page';
-  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
@@ -79,7 +81,7 @@ export default function InternalContainer({
             {...stickyStyles}
             ref={headerMergedRef}
           >
-            {hasDynamicHeight ? (
+            {__darkHeader ? (
               <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
             ) : (
               header

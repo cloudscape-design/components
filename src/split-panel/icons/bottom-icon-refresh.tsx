@@ -3,13 +3,16 @@
 import React from 'react';
 import { getClassName, SVGTableRowProps } from './side-position-refresh';
 
-const TableRow = ({ offset }: SVGTableRowProps) => {
+const TableRow = ({ offset, isHeader }: SVGTableRowProps) => {
   const offsetTop = 0.4482;
   const offsetBottom = 3.4482;
   return (
-    <g transform={`translate(0, ${offset})`} className={getClassName('disabled')}>
+    <g transform={`translate(0, ${offset})`} className={getClassName(isHeader ? 'column-header' : 'disabled')}>
       <path d={`M31 ${offsetTop}H34V${offsetBottom}H31V${offsetTop}Z`} />
-      <path d={`M39 ${offsetTop}H63V${offsetBottom}H39V${offsetTop}Z`} className={getClassName('secondary')} />
+      <path
+        d={`M39 ${offsetTop}H63V${offsetBottom}H39V${offsetTop}Z`}
+        className={!isHeader ? getClassName('secondary') : undefined}
+      />
       <path d={`M135 ${offsetTop}H155V${offsetBottom}H135V${offsetTop}Z`} />
       <path d={`M158 ${offsetTop}H202V${offsetBottom}H158V${offsetTop}Z`} />
       <path d="M26 8H204.388" className={getClassName('separator')} strokeLinecap="square" />
@@ -46,7 +49,7 @@ const bottomPositionIcon = (
       <rect x="2" y="2" width="226" height="6" className={getClassName('layout-top')} />
     </g>
     <g className="awsui-context-content-header">
-      <path d="M0 8H230V33H0V8Z" className={getClassName('layout-main')} />
+      <path d="M0 8H230V23H0V8Z" className={getClassName('layout-main')} />
       <g className={getClassName('default')}>
         <path
           d="M9 15.5C9 16.8807 7.88071 18 6.5 18C5.11929 18 4 16.8807 4 15.5C4 14.1193 5.11929 13 6.5 13C7.88071 13 9 14.1193 9 15.5Z"
@@ -60,12 +63,9 @@ const bottomPositionIcon = (
           className={getClassName('primary')}
         />
         <circle cx="223.5" cy="15.5" r="2.5" className={getClassName('disabled')} />
-        <path d="M31 25.4482H34V28.4482H31V25.4482Z" />
-        <path d="M39 25.4482H63V28.4482H39V25.4482Z" />
-        <path d="M135 25.4482H155V28.4482H135V25.4482Z" />
-        <path d="M158 25.4482H202V28.4482H158V25.4482Z" />
       </g>
     </g>
+    <TableRow offset={27} isHeader={true} />
     <TableRow offset={39} />
     <TableRow offset={51} />
     <TableRow offset={63} />
