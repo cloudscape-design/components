@@ -17,6 +17,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   disabled: boolean | undefined;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
+  ariaLabel?: string;
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant;
   inFilteringToken?: boolean;
@@ -36,6 +37,7 @@ const Trigger = React.forwardRef(
       isOpen,
       placeholder,
       disabled,
+      ariaLabel,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -44,11 +46,7 @@ const Trigger = React.forwardRef(
     let triggerContent = null;
     if (!selectedOption) {
       triggerContent = (
-        <span
-          aria-disabled="true"
-          className={clsx(styles.placeholder, styles.trigger)}
-          id={triggerProps.ariaLabelledby}
-        >
+        <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)}>
           {placeholder}
         </span>
       );
@@ -75,6 +73,7 @@ const Trigger = React.forwardRef(
         disabled={disabled}
         invalid={invalid}
         inFilteringToken={inFilteringToken}
+        ariaLabel={ariaLabel}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={[ariaLabelledby, triggerProps.ariaLabelledby].filter(label => !!label).join(' ')}
       >

@@ -195,7 +195,8 @@ const InternalMultiselect = React.forwardRef(
         placeholder={placeholder}
         disabled={disabled}
         ariaLabel={ariaLabel}
-        triggerProps={getTriggerProps(disabled)}
+        // ariaLabelledby does not assign to any element, but overrides ariaLabel
+        triggerProps={{ ...getTriggerProps(disabled), ariaLabelledby: undefined }}
         selectedOption={null}
         isOpen={isOpen}
         {...formFieldContext}
