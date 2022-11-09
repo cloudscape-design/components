@@ -21,6 +21,7 @@ interface TableHeaderCellProps {
   sortingDisabled: boolean | undefined;
   wrapLines: boolean | undefined;
   showFocusRing: boolean;
+  hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
@@ -40,6 +41,7 @@ export function TableHeaderCell({
   sortingDisabled,
   wrapLines,
   showFocusRing,
+  hidden,
   onClick,
   colIndex,
   onFocus,
@@ -80,6 +82,7 @@ export function TableHeaderCell({
         [styles['header-cell-disabled']]: sortingDisabled,
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
+        [styles['header-cell-hidden']]: hidden,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}

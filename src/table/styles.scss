@@ -141,6 +141,14 @@
   }
 }
 
+/*
+The dynamic height dark header needs a background that will cover
+the default white background of the container component.
+*/
+.dark-header {
+  background-color: awsui.$color-background-layout-main;
+}
+
 .header-secondary {
   overflow: auto;
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -159,6 +167,9 @@
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
+  &.table-has-header {
+    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
+  }
 }
 
 .header-controls {
@@ -173,9 +184,6 @@
     padding-left: awsui.$space-table-header-horizontal;
     padding-right: awsui.$space-table-header-horizontal;
     padding-top: awsui.$space-table-embedded-header-top;
-  }
-  & + .header-secondary {
-    border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
   }
 }
 
