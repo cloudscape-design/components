@@ -1,145 +1,101 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import { DateRangePickerProps, Focusable } from '../interfaces';
+import { RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids, selectFocusedDate } from './grids';
-import moveFocusHandler from '../../calendar/utils/move-focus-handler';
-import InternalSpaceBetween from '../../space-between/internal';
-import InternalFormField from '../../form-field/internal';
-import { InputProps } from '../../input/interfaces';
-import InternalDateInput from '../../date-input/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
-import InternalTimeInput from '../../time-input/internal';
 import clsx from 'clsx';
-import { getBaseDate } from './get-base-date.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import LiveRegion from '../../internal/components/live-region';
-import { normalizeStartOfWeek } from '../../calendar/utils/locales';
-import { formatDate, formatTime, joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
+import { joinDateTime, parseDate } from '../../internal/utils/date-time';
+import { getBaseDate } from '../../calendar/utils/navigation';
+import { useMobile } from '../../internal/hooks/use-mobile/index.js';
+import RangeInputs from './range-inputs.js';
+import { useDateTime } from './use-date-time.js';
 
-export interface DateChangeHandler {
-  (detail: Date): void;
+export interface DateRangePickerCalendarProps extends BaseComponentProps {
+  value: null | RangeCalendarValue;
+  onChange: (value: RangeCalendarValue) => void;
+  locale?: string;
+  startOfWeek?: number;
+  isDateEnabled?: (date: Date) => boolean;
+  i18nStrings: RangeCalendarI18nStrings;
+  dateOnly?: boolean;
+  timeInputFormat?: TimeInputProps.Format;
 }
 
-export interface MonthChangeHandler {
-  (newMonth: Date): void;
-}
+export default function DateRangePickerCalendar({
+  value,
+  onChange,
+  locale = '',
+  startOfWeek,
+  isDateEnabled = () => true,
+  i18nStrings,
+  dateOnly = false,
+  timeInputFormat = 'hh:mm:ss',
+}: DateRangePickerCalendarProps) {
+  const isSingleGrid = useMobile();
 
-export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  const normalizedLocale = normalizeLocale('DateRangePicker', locale);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
 
-interface HeaderChangeMonthHandler {
-  (isPreviousButtonClick?: boolean): void;
-}
+  const initialStartDate = value?.startDate ?? '';
+  const rangeStart = useDateTime(initialStartDate);
 
-export interface CalendarProps extends BaseComponentProps {
-  locale: string;
-  startOfWeek: number | undefined;
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
-  onSelectDateRange: (value: DateRangePickerProps.AbsoluteValue) => void;
-  initialStartDate: string | undefined;
-  initialEndDate: string | undefined;
-  i18nStrings: DateRangePickerProps.I18nStrings;
-  dateOnly: boolean;
-  timeInputFormat: TimeInputProps.Format;
-  isSingleGrid: boolean;
-}
-
-export default forwardRef(Calendar);
-
-function Calendar(
-  {
-    locale,
-    startOfWeek,
-    isDateEnabled,
-    onSelectDateRange,
-    initialEndDate = '',
-    initialStartDate = '',
-    i18nStrings,
-    dateOnly,
-    isSingleGrid,
-    timeInputFormat,
-  }: CalendarProps,
-  ref: React.Ref<Focusable>
-) {
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
-
-  useImperativeHandle(ref, () => ({
-    focus() {
-      if (elementRef.current) {
-        const prevButton = elementRef.current.getElementsByClassName(styles['calendar-prev-month-btn'])[0];
-        (prevButton as undefined | HTMLButtonElement)?.focus();
-      }
-    },
-  }));
-
-  const [initialStartDateString = '', initialStartTimeString = ''] = initialStartDate.split('T');
-  const [initialEndDateString = '', initialEndTimeString = ''] = initialEndDate.split('T');
-
-  const [startDateString, setStartDateString] = useState(initialStartDateString);
-  const [startTimeString, setStartTimeString] = useState(initialStartTimeString);
-
-  const [endDateString, setEndDateString] = useState(initialEndDateString);
-  const [endTimeString, setEndTimeString] = useState(initialEndTimeString);
-
-  const selectedStartDate = parseDate(startDateString, true);
-  const selectedEndDate = parseDate(endDateString, true);
+  const initialEndDate = value?.endDate ?? '';
+  const rangeEnd = useDateTime(initialEndDate);
 
   const [announcement, setAnnouncement] = useState('');
 
   const [currentMonth, setCurrentMonth] = useState(() => {
-    if (startDateString) {
-      const startDate = parseDate(startDateString);
+    if (rangeStart.dateString) {
+      const startDate = parseDate(rangeStart.dateString);
       if (isSingleGrid) {
         return startOfMonth(startDate);
       }
       return startOfMonth(addMonths(startDate, 1));
     }
-    if (endDateString) {
-      return startOfMonth(parseDate(endDateString));
+    if (rangeEnd.dateString) {
+      return startOfMonth(parseDate(rangeEnd.dateString));
     }
     return startOfMonth(Date.now());
   });
 
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
-    if (selectedStartDate) {
-      if (isSameMonth(selectedStartDate, currentMonth)) {
-        return selectedStartDate;
+    if (rangeStart.date) {
+      if (isSameMonth(rangeStart.date, currentMonth)) {
+        return rangeStart.date;
       }
-      if (!isSingleGrid && isSameMonth(selectedStartDate, addMonths(currentMonth, -1))) {
-        return selectedStartDate;
+      if (!isSingleGrid && isSameMonth(rangeStart.date, addMonths(currentMonth, -1))) {
+        return rangeStart.date;
       }
     }
-    return selectFocusedDate(selectedStartDate, currentMonth, isDateEnabled);
+    return selectFocusedDate(rangeStart.date, currentMonth, isDateEnabled);
   });
 
+  // This effect "synchronizes" the local state update back up to the parent component.
   useEffect(() => {
-    // This effect "synchronizes" the local state update back up to the overall DateRangePicker component
-
-    const startDate = joinDateTime(startDateString, startTimeString);
-    const endDate = joinDateTime(endDateString, endTimeString);
+    const startDate = joinDateTime(rangeStart.dateString, rangeStart.timeString);
+    const endDate = joinDateTime(rangeEnd.dateString, rangeEnd.timeString);
 
     if (startDate !== initialStartDate || endDate !== initialEndDate) {
-      onSelectDateRange({
-        startDate,
-        endDate,
-        type: 'absolute',
-      });
+      onChange({ startDate, endDate });
     }
   }, [
-    startDateString,
-    startTimeString,
-    endDateString,
-    endTimeString,
-    onSelectDateRange,
+    rangeStart.dateString,
+    rangeStart.timeString,
+    rangeEnd.dateString,
+    rangeEnd.timeString,
     initialStartDate,
     initialEndDate,
+    onChange,
   ]);
 
   const onSelectDateHandler = (selectedDate: Date) => {
@@ -149,11 +105,11 @@ function Calendar(
       return (
         i18nStrings.startDateLabel +
         ', ' +
-        getDateLabel(locale, startDate) +
+        getDateLabel(normalizedLocale, startDate) +
         ', ' +
         i18nStrings.startTimeLabel +
         ', ' +
-        renderTimeLabel(locale, startDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
         '. '
       );
     };
@@ -162,49 +118,45 @@ function Calendar(
       return (
         i18nStrings.endDateLabel +
         ', ' +
-        getDateLabel(locale, endDate) +
+        getDateLabel(normalizedLocale, endDate) +
         ', ' +
         i18nStrings.endTimeLabel +
         ', ' +
-        renderTimeLabel(locale, endDate, timeInputFormat) +
+        renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
         '. '
       );
     };
 
     const announceRange = (startDate: Date, endDate: Date) => {
       if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
-        return `${getDateLabel(locale, startDate)} – ${getDateLabel(locale, endDate)}`;
+        return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
       }
       return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
-        getDateLabel(locale, startDate),
-        getDateLabel(locale, endDate)
+        getDateLabel(normalizedLocale, startDate),
+        getDateLabel(normalizedLocale, endDate)
       );
     };
 
     // If both fields are empty, we set the start date
-    if (!startDateString && !endDateString) {
+    if (!rangeStart.dateString && !rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      setStartDateString(formatDate(startDate));
-      setStartTimeString(formatTime(startDate));
+      rangeStart.setDate(startDate);
       setAnnouncement(announceStart(startDate));
       return;
     }
 
     // If both fields are set, we start new
-    if (startDateString && endDateString) {
+    if (rangeStart.dateString && rangeEnd.dateString) {
       const startDate = startOfDay(selectedDate);
-      setStartDateString(formatDate(startDate));
-      setStartTimeString(formatTime(startDate));
-
-      setEndDateString('');
-      setEndTimeString('');
+      rangeStart.setDate(startDate);
+      rangeEnd.setDate(null);
       setAnnouncement(announceStart(startDate));
       return;
     }
 
     // If only the END date is empty, we fill it (and swap dates if needed)
-    if (startDateString && !endDateString) {
-      const parsedStartDate = parseDate(startDateString);
+    if (rangeStart.dateString && !rangeEnd.dateString) {
+      const parsedStartDate = parseDate(rangeStart.dateString);
 
       if (isBefore(selectedDate, parsedStartDate)) {
         // The user has selected the range backwards, so we swap start and end
@@ -212,24 +164,20 @@ function Calendar(
         const startDate = startOfDay(selectedDate);
         const endDate = endOfDay(parsedStartDate);
 
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
-
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeStart.setDate(startDate);
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceStart(startDate) + announceRange(startDate, endDate));
       } else {
         const endDate = endOfDay(selectedDate);
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceEnd(endDate) + announceRange(parsedStartDate, endDate));
       }
       return;
     }
 
     // If only the START date is empty, we fill it (and swap dates if needed)
-    if (!startDateString && endDateString) {
-      const existingEndDate = parseDate(endDateString);
+    if (!rangeStart.dateString && rangeEnd.dateString) {
+      const existingEndDate = parseDate(rangeEnd.dateString);
 
       if (isAfter(selectedDate, existingEndDate)) {
         // The user has selected the range backwards, so we swap start and end
@@ -237,16 +185,12 @@ function Calendar(
         const startDate = startOfDay(existingEndDate);
         const endDate = endOfDay(selectedDate);
 
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
-
-        setEndDateString(formatDate(endDate));
-        setEndTimeString(formatTime(endDate));
+        rangeStart.setDate(startDate);
+        rangeEnd.setDate(endDate);
         setAnnouncement(announceEnd(endDate) + announceRange(startDate, endDate));
       } else {
         const startDate = startOfDay(selectedDate);
-        setStartDateString(formatDate(startDate));
-        setStartTimeString(formatTime(startDate));
+        rangeStart.setDate(startDate);
         setAnnouncement(announceStart(startDate) + announceRange(startDate, existingEndDate));
       }
       return;
@@ -254,54 +198,53 @@ function Calendar(
     // All possible conditions are covered above
   };
 
-  const onHeaderChangeMonthHandler: HeaderChangeMonthHandler = isPrevious => {
-    const newCurrentMonth = addMonths(currentMonth, isPrevious ? -1 : 1);
+  const onHeaderChangeMonthHandler = (newCurrentMonth: Date) => {
     setCurrentMonth(newCurrentMonth);
 
     const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDate(newBaseDateMonth, 1, isDateEnabled);
+    const newBaseDate = getBaseDate(newBaseDateMonth, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
-  const onChangeStartDate: InputProps['onChange'] = e => {
-    setStartDateString(e.detail.value);
+  const onChangeStartDate = (value: string) => {
+    rangeStart.setDateString(value);
 
-    if (e.detail.value.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(e.detail.value));
+    if (value.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(value));
       setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
     }
   };
 
-  const onChangeEndDate: InputProps['onChange'] = e => {
-    setEndDateString(e.detail.value);
+  const onChangeEndDate = (value: string) => {
+    rangeEnd.setDateString(value);
   };
 
-  let constrainttextId = useUniqueId('awsui-area-date-range-picker');
-  constrainttextId = i18nStrings.dateTimeConstraintText ? constrainttextId : '';
-
+  const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
-      <InternalSpaceBetween size="m">
-        {/* The application role is necessary for screen-readers to allow arrow navigation by default. */}
+      <div
+        className={clsx(styles['calendar-container'], {
+          [styles['one-grid']]: isSingleGrid,
+        })}
+      >
         <div
-          ref={elementRef}
-          role="application"
           className={clsx(styles.calendar, {
             [styles['one-grid']]: isSingleGrid,
           })}
         >
           <CalendarHeader
             baseDate={currentMonth}
-            locale={locale}
+            locale={normalizedLocale}
             onChangeMonth={onHeaderChangeMonthHandler}
             previousMonthLabel={i18nStrings.previousMonthAriaLabel}
             nextMonthLabel={i18nStrings.nextMonthAriaLabel}
             isSingleGrid={isSingleGrid}
+            headingIdPrefix={headingIdPrefix}
           />
 
           <Grids
             isSingleGrid={isSingleGrid}
-            locale={locale}
+            locale={normalizedLocale}
             baseDate={currentMonth}
             focusedDate={focusedDate}
             onFocusedDateChange={setFocusedDate}
@@ -310,71 +253,27 @@ function Calendar(
             onChangeMonth={setCurrentMonth}
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={i18nStrings.todayAriaLabel}
-            selectedStartDate={selectedStartDate}
-            selectedEndDate={selectedEndDate}
-            handleFocusMove={moveFocusHandler}
+            selectedStartDate={rangeStart.date}
+            selectedEndDate={rangeEnd.date}
+            headingIdPrefix={headingIdPrefix}
           />
         </div>
-        <InternalSpaceBetween direction="vertical" size="xxs">
-          <InternalSpaceBetween size="xs" direction={isSingleGrid ? 'vertical' : 'horizontal'}>
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
-              <InternalFormField label={i18nStrings.startDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={startDateString}
-                  className={styles['start-date-input']}
-                  onChange={onChangeStartDate}
-                  placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.startTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={startTimeString}
-                    onChange={e => setStartTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['start-time-input']}
-                    ariaDescribedby={constrainttextId}
-                  />
-                </InternalFormField>
-              )}
-            </div>
 
-            <div className={clsx(styles['date-and-time-wrapper'], { [styles['date-only']]: dateOnly })}>
-              <InternalFormField label={i18nStrings.endDateLabel} stretch={true}>
-                <InternalDateInput
-                  value={endDateString}
-                  className={styles['end-date-input']}
-                  onChange={onChangeEndDate}
-                  placeholder="YYYY/MM/DD"
-                  ariaDescribedby={constrainttextId}
-                />
-              </InternalFormField>
-              {!dateOnly && (
-                <InternalFormField label={i18nStrings.endTimeLabel} stretch={true}>
-                  <InternalTimeInput
-                    value={endTimeString}
-                    onChange={e => setEndTimeString(e.detail.value)}
-                    format={timeInputFormat}
-                    placeholder={timeInputFormat}
-                    className={styles['end-time-input']}
-                    ariaDescribedby={constrainttextId}
-                  />
-                </InternalFormField>
-              )}
-            </div>
-          </InternalSpaceBetween>
-          {i18nStrings.dateTimeConstraintText && (
-            <div className={styles['date-and-time-constrainttext']} id={constrainttextId}>
-              {i18nStrings.dateTimeConstraintText}
-            </div>
-          )}
-        </InternalSpaceBetween>
-      </InternalSpaceBetween>
-      <LiveRegion>
-        <span className={styles['calendar-aria-live']}>{announcement}</span>
-      </LiveRegion>
+        <RangeInputs
+          startDate={rangeStart.dateString}
+          onChangeStartDate={onChangeStartDate}
+          startTime={rangeStart.timeString}
+          onChangeStartTime={rangeStart.setTimeString}
+          endDate={rangeEnd.dateString}
+          onChangeEndDate={onChangeEndDate}
+          endTime={rangeEnd.timeString}
+          onChangeEndTime={rangeEnd.setTimeString}
+          i18nStrings={i18nStrings}
+          dateOnly={dateOnly}
+          timeInputFormat={timeInputFormat}
+        />
+      </div>
+      <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>
   );
 }

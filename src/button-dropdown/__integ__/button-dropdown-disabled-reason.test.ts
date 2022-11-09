@@ -35,11 +35,11 @@ class ButtonDropdownDisabledReasonPage extends BasePageObject {
 const setupTest = (testFn: (page: ButtonDropdownDisabledReasonPage) => Promise<void>, isMobile?: boolean) => {
   return useBrowser(async browser => {
     const page = new ButtonDropdownDisabledReasonPage(browser);
-    await browser.url('#/light/button-dropdown/disabled-reason?visualRefresh=false');
     if (isMobile) {
       await page.setMobileWindow();
     }
 
+    await browser.url('#/light/button-dropdown/disabled-reason?visualRefresh=false');
     await page.waitForVisible(page.findButtonDropdown().toSelector());
     await page.openDropdown();
     await testFn(page);
@@ -96,7 +96,6 @@ describe('Button Dropdown - Disabled Reason', () => {
   it(
     'opens and closes on keyboard focus',
     setupTest(async page => {
-      await page.keys('ArrowDown');
       await page.waitForVisible(page.findDisabledReason().toSelector());
       expect(await page.getDisabledReason()).toContain('Instance must be running.');
       await page.keys('ArrowDown');

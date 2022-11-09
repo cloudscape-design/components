@@ -58,7 +58,7 @@ export default function ChartPopover({
   ...restProps
 }: ChartPopoverProps) {
   const baseProps = getBaseProps(restProps);
-  const popoverRef = useRef<HTMLSpanElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const onDocumentClick = (event: MouseEvent) => {
@@ -78,7 +78,7 @@ export default function ChartPopover({
   }, [container, onDismiss]);
 
   return (
-    <span
+    <div
       {...baseProps}
       className={clsx(popoverStyles.root, styles.root, baseProps.className, { [styles.dismissable]: dismissButton })}
       ref={popoverRef}
@@ -99,13 +99,12 @@ export default function ChartPopover({
         <PopoverBody
           dismissButton={dismissButton}
           dismissAriaLabel={dismissAriaLabel}
-          returnFocus={false}
           header={title}
           onDismiss={onDismiss}
         >
           {children}
         </PopoverBody>
       </PopoverContainer>
-    </span>
+    </div>
   );
 }

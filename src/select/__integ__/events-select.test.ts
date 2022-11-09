@@ -128,6 +128,12 @@ describe.each<[boolean, boolean]>([
         await page.keys(['ArrowDown']);
         await page.clearEventList();
 
+        // With expandToViewport, focus is returned back to the trigger.
+        if (expandToViewport) {
+          await page.keys(['Tab']);
+          await page.assertEventsFired([]);
+        }
+
         await page.keys(['Tab']);
         await page.assertEventsFired(['onBlur']);
       },

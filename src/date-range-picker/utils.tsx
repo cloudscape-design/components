@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useState } from 'react';
 import { DateRangePickerProps } from './interfaces';
 import { setTimeOffset } from './time-offset';
+
 /**
  * This function fills in a start and end time if they are missing.
  */
-function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
+export function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
   if (!value) {
     return value;
   }
@@ -21,7 +21,7 @@ function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset?: number; dateOnly: boolean }
+  { timeOffset, dateOnly }: { timeOffset: { startDate?: number; endDate?: number }; dateOnly: boolean }
 ): null | DateRangePickerProps.Value {
   if (!value || value.type === 'relative') {
     return value;
@@ -36,7 +36,7 @@ export function formatValue(
   return setTimeOffset(value, timeOffset);
 }
 
-function getDefaultMode(
+export function getDefaultMode(
   value: null | DateRangePickerProps.Value,
   relativeOptions: readonly DateRangePickerProps.RelativeOption[],
   rangeSelectorMode: DateRangePickerProps.RangeSelectorMode
@@ -51,34 +51,4 @@ function getDefaultMode(
     return 'absolute';
   }
   return relativeOptions.length > 0 ? 'relative' : 'absolute';
-}
-
-export function useDateRangePicker({ value, relativeOptions, rangeSelectorMode }: UseDateRangePickerProps) {
-  const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
-    getDefaultMode(value, relativeOptions, rangeSelectorMode)
-  );
-
-  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
-    value?.type === 'absolute' ? value : null
-  );
-
-  const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
-    value?.type === 'relative' ? value : null
-  );
-
-  return {
-    fillMissingTime,
-    rangeSelectionMode,
-    setRangeSelectionMode,
-    selectedAbsoluteRange,
-    setSelectedAbsoluteRange,
-    selectedRelativeRange,
-    setSelectedRelativeRange,
-  };
-}
-
-export interface UseDateRangePickerProps {
-  value: null | DateRangePickerProps.Value;
-  relativeOptions: ReadonlyArray<DateRangePickerProps.RelativeOption>;
-  rangeSelectorMode: DateRangePickerProps.RangeSelectorMode;
 }

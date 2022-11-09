@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps, Focusable } from './interfaces';
+import { DateRangePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -16,7 +17,7 @@ import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
 import useFocusVisible from '../internal/hooks/focus-visible';
-import { useDateRangePicker } from './use-date-range-picker';
+import { fillMissingTime, getDefaultMode } from './utils';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
@@ -63,19 +64,17 @@ export function DateRangePickerDropdown({
   ariaLabelledby,
   ariaDescribedby,
 }: DateRangePickerDropdownProps) {
-  const {
-    fillMissingTime,
-    rangeSelectionMode,
-    setRangeSelectionMode,
-    selectedAbsoluteRange,
-    setSelectedAbsoluteRange,
-    selectedRelativeRange,
-    setSelectedRelativeRange,
-  } = useDateRangePicker({
-    value,
-    relativeOptions,
-    rangeSelectorMode,
-  });
+  const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
+    getDefaultMode(value, relativeOptions, rangeSelectorMode)
+  );
+
+  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
+    value?.type === 'absolute' ? value : null
+  );
+
+  const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
+    value?.type === 'relative' ? value : null
+  );
 
   const focusVisible = useFocusVisible();
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
@@ -123,21 +122,14 @@ export function DateRangePickerDropdown({
     rangeSelectionMode,
     selectedRelativeRange,
     selectedAbsoluteRange,
-    fillMissingTime,
     setValidationResult,
   ]);
-
-  const focusRefs = {
-    default: useRef<Focusable>(null),
-    'absolute-only': useRef<Focusable>(null),
-    'relative-only': useRef<Focusable>(null),
-  };
 
   useEffect(() => scrollableContainerRef.current?.focus(), [scrollableContainerRef]);
 
   return (
     <>
-      <FocusLock autoFocus={true}>
+      <FocusLock className={styles['focus-lock']} autoFocus={true}>
         <div
           {...focusVisible}
           ref={scrollableContainerRef}
@@ -159,7 +151,6 @@ export function DateRangePickerDropdown({
                 <SpaceBetween direction="vertical" size="s">
                   {rangeSelectorMode === 'default' && (
                     <ModeSwitcher
-                      ref={focusRefs.default}
                       mode={rangeSelectionMode}
                       onChange={(mode: 'absolute' | 'relative') => {
                         setRangeSelectionMode(mode);
@@ -172,15 +163,12 @@ export function DateRangePickerDropdown({
 
                   {rangeSelectionMode === 'absolute' && (
                     <Calendar
-                      ref={focusRefs['absolute-only']}
-                      isSingleGrid={isSingleGrid}
-                      initialEndDate={selectedAbsoluteRange?.endDate}
-                      initialStartDate={selectedAbsoluteRange?.startDate}
+                      value={selectedAbsoluteRange ? { ...selectedAbsoluteRange } : null}
+                      onChange={value => setSelectedAbsoluteRange({ type: 'absolute', ...value })}
                       locale={locale}
                       startOfWeek={startOfWeek}
                       isDateEnabled={isDateEnabled}
                       i18nStrings={i18nStrings}
-                      onSelectDateRange={setSelectedAbsoluteRange}
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                     />
@@ -188,7 +176,6 @@ export function DateRangePickerDropdown({
 
                   {rangeSelectionMode === 'relative' && (
                     <RelativeRangePicker
-                      ref={focusRefs['relative-only']}
                       isSingleGrid={isSingleGrid}
                       options={relativeOptions}
                       dateOnly={dateOnly}

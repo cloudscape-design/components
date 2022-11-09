@@ -1,10 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
 
-type ScreenreaderOnlyProps = Exclude<React.HTMLAttributes<HTMLDivElement>, 'className'>;
+export interface ScreenreaderOnlyProps {
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+}
 
 /**
  * Makes content now shown on a screen but still announced by screen-reader users.
@@ -21,5 +26,5 @@ type ScreenreaderOnlyProps = Exclude<React.HTMLAttributes<HTMLDivElement>, 'clas
  * ```
  */
 export default function ScreenreaderOnly(props: ScreenreaderOnlyProps) {
-  return <div {...props} className={styles.root} />;
+  return <span {...props} className={clsx(styles.root, props.className)} />;
 }

@@ -34,6 +34,21 @@ export interface CalendarProps extends BaseComponentProps {
   startOfWeek?: number;
 
   /**
+   * Adds an `aria-label` to the calendar.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds `aria-labelledby` to the calendar.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Adds `aria-describedby` to the calendar.
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Used as part of the `aria-label` for today's date in the calendar.
    */
   todayAriaLabel: string;

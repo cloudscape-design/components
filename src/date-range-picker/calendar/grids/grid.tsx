@@ -14,13 +14,27 @@ import {
   isToday,
 } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
-import { DateChangeHandler, DayIndex } from '../index';
-import { DateRangePickerProps } from '../../interfaces';
-import rotateDayIndexes from '../../../calendar/utils/rotate-day-indexes';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import clsx from 'clsx';
 import { formatDate } from '../../../internal/utils/date-time';
 import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
+import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
+
+/**
+ * Calendar grid supports two mechanisms of keyboard navigation:
+ * - Native screen-reader table navigation (semantic table markup);
+ * - Keyboard arrow-keys navigation (a custom key-down handler).
+ *
+ * The implementation largely follows the w3 example (https://www.w3.org/WAI/ARIA/apg/example-index/dialog-modal/datepicker-dialog) and shares the following issues:
+ * - (table navigation) Chrome+VO - weekday is announced twice when navigating to the calendar's header;
+ * - (table navigation) Safari+VO - "dimmed" state is announced twice;
+ * - (table navigation) Firefox/Chrome+NVDA - cannot use table navigation if any cell has a focus;
+ * - (keyboard navigation) Firefox+NVDA - every day is announced as "not selected";
+ * - (keyboard navigation) Safari/Chrome+VO - weekdays are not announced;
+ * - (keyboard navigation) Safari/Chrome+VO - days are not announced as interactive (clickable or selectable);
+ * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
+ */
 
 export interface GridProps {
   baseDate: Date;
@@ -33,7 +47,7 @@ export interface GridProps {
   focusedDate: Date | null;
   focusedDateRef: React.RefObject<HTMLTableCellElement>;
 
-  onSelectDate: DateChangeHandler;
+  onSelectDate: (date: Date) => void;
   onGridKeyDownHandler: (e: React.KeyboardEvent) => void;
   onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 
@@ -42,6 +56,7 @@ export interface GridProps {
   locale: string;
   startOfWeek: DayIndex;
   todayAriaLabel: string;
+  ariaLabelledby: string;
 
   className?: string;
 }
@@ -65,6 +80,7 @@ export function Grid({
   locale,
   startOfWeek,
   todayAriaLabel,
+  ariaLabelledby,
 
   className,
 }: GridProps) {
@@ -75,16 +91,18 @@ export function Grid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseDateTime, startOfWeek]
   );
+  const weekdays = weeks[0].map(date => date.getDay());
 
   const focusVisible = useFocusVisible();
 
   return (
-    <table role="none" className={clsx(styles.grid, className)}>
+    <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
       <thead>
         <tr>
-          {rotateDayIndexes(startOfWeek).map(dayIndex => (
+          {weekdays.map(dayIndex => (
             <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
-              {renderDayName(locale, dayIndex, 'short')}
+              <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
+              <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
             </th>
           ))}
         </tr>
@@ -153,7 +171,7 @@ export function Grid({
                 }
 
                 // Screen-reader announcement for the focused day.
-                let dayAnnouncement = getDateLabel(locale, date);
+                let dayAnnouncement = getDateLabel(locale, date, 'short');
                 if (isToday(date)) {
                   dayAnnouncement += '. ' + todayAriaLabel;
                 }
@@ -179,16 +197,18 @@ export function Grid({
                         dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
                       [styles.today]: isToday(date),
                     })}
-                    aria-label={dayAnnouncement}
-                    aria-pressed={isSelected || dateIsInRange}
+                    aria-selected={isEnabled ? isSelected || dateIsInRange : undefined}
                     aria-current={isToday(date) ? 'date' : undefined}
                     data-date={formatDate(date)}
-                    role="button"
+                    aria-disabled={!isEnabled}
                     tabIndex={tabIndex}
                     {...handlers}
                     {...focusVisible}
                   >
-                    <span className={styles['day-inner']}>{date.getDate()}</span>
+                    <span className={styles['day-inner']} aria-hidden="true">
+                      {date.getDate()}
+                    </span>
+                    <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
                   </td>
                 );
               })}

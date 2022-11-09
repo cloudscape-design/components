@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render as renderJsx } from '@testing-library/react';
-import { getFocusables } from '../../../../../lib/components/internal/components/focus-lock/utils';
 import AutosuggestInputWrapper from '../../../../../lib/components/test-utils/dom/internal/autosuggest-input';
 import AutosuggestInput, {
   AutosuggestInputRef,
@@ -151,58 +150,6 @@ describe('keyboard interactions', () => {
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.right);
     expect(onKeyDown).toBeCalledTimes(5);
-  });
-});
-
-describe('dropdown focus trap', () => {
-  test('does not trap drodpown focus when content and footer are not interactive', () => {
-    const { wrapper } = render(
-      <AutosuggestInput
-        value="1"
-        onChange={() => undefined}
-        dropdownContent={<div>content</div>}
-        dropdownFooter={<div>footer</div>}
-      />
-    );
-    wrapper.findInput().findNativeInput().keydown(KeyCode.down);
-    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
-    expect(getFocusables(wrapper.getElement()).length).toBe(1);
-  });
-
-  test('traps drodpown focus when content is interactive', () => {
-    const { wrapper } = render(
-      <AutosuggestInput
-        value="1"
-        onChange={() => undefined}
-        dropdownContent={
-          <div>
-            <button>content click</button>
-          </div>
-        }
-        dropdownFooter={<div>footer</div>}
-      />
-    );
-    wrapper.findInput().findNativeInput().keydown(KeyCode.down);
-    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
-    expect(getFocusables(wrapper.getElement()).length).toBeGreaterThan(2);
-  });
-
-  test('traps drodpown focus when footer is interactive', () => {
-    const { wrapper } = render(
-      <AutosuggestInput
-        value="1"
-        onChange={() => undefined}
-        dropdownContent={<div>content</div>}
-        dropdownFooter={
-          <div>
-            <button>footer click</button>
-          </div>
-        }
-      />
-    );
-    wrapper.findInput().findNativeInput().keydown(KeyCode.down);
-    expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
-    expect(getFocusables(wrapper.getElement()).length).toBeGreaterThan(2);
   });
 });
 

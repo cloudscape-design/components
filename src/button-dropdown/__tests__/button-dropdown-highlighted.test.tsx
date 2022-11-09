@@ -30,13 +30,13 @@ const items: ButtonDropdownProps.Items = [
     test('should reset last highlighted item, when dropdown has been closed and opened again', () => {
       wrapper.openDropdown();
       act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
-      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
+      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item2');
 
       wrapper.openDropdown();
       expect(wrapper.findOpenDropdown()).toBe(null);
 
       wrapper.openDropdown();
-      expect(wrapper.findHighlightedItem()).toBe(null);
+      expect(wrapper.findHighlightedItem()!.getElement()).toHaveTextContent('item1');
     });
 
     test('should be set to the first item when opened', () => {
@@ -62,7 +62,6 @@ describe('ButtonDropdown - highlight disabled items', () => {
   });
 
   it('highlights disabled item on keyboard navigation', () => {
-    act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
     act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
     expect(wrapper.findHighlightedItem()!.getElement()).toContainHTML('i2');
   });

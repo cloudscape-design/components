@@ -47,10 +47,6 @@ export default class ButtonDropdownPage extends BasePageObject {
     return this.getElementsCount(this.findButtonDropdown().findItems().toSelector());
   }
 
-  public getItemText(itemId: string) {
-    return this.getText(this.getItem(itemId));
-  }
-
   public getHighlightedElementText() {
     const element = this.findButtonDropdown().findHighlightedItem();
     return this.getText(element.toSelector());

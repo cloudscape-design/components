@@ -40,6 +40,7 @@ export default class App extends React.Component {
     showFinishedText: boolean;
     fakeResponses: boolean;
     virtualScroll: boolean;
+    expandToViewport: boolean;
   } = {
     selectedOption: null,
     status: 'pending',
@@ -49,6 +50,7 @@ export default class App extends React.Component {
     showFinishedText: true,
     fakeResponses: false,
     virtualScroll: false,
+    expandToViewport: false,
   };
   pageNumber = 0;
 
@@ -155,6 +157,15 @@ export default class App extends React.Component {
             />
             Enable virtualization
           </label>
+          <label>
+            <input
+              id="expand-to-viewport"
+              type="checkbox"
+              checked={this.state.expandToViewport}
+              onChange={e => this.setState({ expandToViewport: !!e.target.checked })}
+            />
+            Expand to viewport
+          </label>
         </section>
         <Select
           selectedOption={this.state.selectedOption}
@@ -170,6 +181,7 @@ export default class App extends React.Component {
           onLoadItems={this.handleLoadItems}
           ariaLabel="async autosuggest"
           virtualScroll={this.state.virtualScroll}
+          expandToViewport={this.state.expandToViewport}
         />
         <input id="to-blur" aria-label="input to blur to" />
       </div>

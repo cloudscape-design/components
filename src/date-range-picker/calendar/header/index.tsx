@@ -4,16 +4,17 @@ import { add } from 'date-fns';
 import React from 'react';
 import styles from '../../styles.css.js';
 import { renderMonthAndYear } from '../../../calendar/utils/intl';
-import HeaderButton from './button';
+import { PrevMonthButton, NextMonthButton } from './header-button';
 import LiveRegion from '../../../internal/components/live-region';
 
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangeMonth: (prev?: boolean) => void;
+  onChangeMonth: (date: Date) => void;
   previousMonthLabel: string;
   nextMonthLabel: string;
   isSingleGrid: boolean;
+  headingIdPrefix: string;
 }
 
 export default function CalendarHeader({
@@ -23,6 +24,7 @@ export default function CalendarHeader({
   previousMonthLabel,
   nextMonthLabel,
   isSingleGrid,
+  headingIdPrefix,
 }: CalendarHeaderProps) {
   const prevMonthLabel = renderMonthAndYear(locale, add(baseDate, { months: -1 }));
   const currentMonthLabel = renderMonthAndYear(locale, baseDate);
@@ -30,12 +32,18 @@ export default function CalendarHeader({
   return (
     <>
       <div className={styles['calendar-header']}>
-        <HeaderButton ariaLabel={previousMonthLabel} isPrevious={true} onChangeMonth={onChangeMonth} />
-        <div className={styles['calendar-header-months-wrapper']}>
-          {!isSingleGrid && <div className={styles['calendar-header-month']}>{prevMonthLabel}</div>}
-          <div className={styles['calendar-header-month']}>{currentMonthLabel}</div>
-        </div>
-        <HeaderButton ariaLabel={nextMonthLabel} isPrevious={false} onChangeMonth={onChangeMonth} />
+        <PrevMonthButton ariaLabel={previousMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
+        <h2 className={styles['calendar-header-months-wrapper']}>
+          {!isSingleGrid && (
+            <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-prevmonth`}>
+              {prevMonthLabel}
+            </span>
+          )}
+          <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-currentmonth`}>
+            {currentMonthLabel}
+          </span>
+        </h2>
+        <NextMonthButton ariaLabel={nextMonthLabel} baseDate={baseDate} onChangeMonth={onChangeMonth} />
       </div>
       <LiveRegion>{isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}</LiveRegion>
     </>

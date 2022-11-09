@@ -17,6 +17,10 @@ $calendar-header-color: awsui.$color-text-body-default;
   max-width: 32em;
 }
 
+.focus-lock {
+  display: contents;
+}
+
 .trigger-wrapper {
   min-width: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
 }
@@ -25,13 +29,18 @@ $calendar-header-color: awsui.$color-text-body-default;
   display: flex;
 }
 
-.calendar {
-  display: block;
+.calendar-container {
   width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
 
   &.one-grid {
     width: $calendar-grid-width;
   }
+}
+
+.calendar {
+  display: block;
+  width: 100%;
+  margin-bottom: awsui.$space-scaled-s;
 
   &-header {
     display: flex;
@@ -46,6 +55,8 @@ $calendar-header-color: awsui.$color-text-body-default;
     left: 0;
     top: 0;
     bottom: 0;
+
+    margin: 0;
 
     display: flex;
     justify-content: space-around;
@@ -79,17 +90,16 @@ $calendar-header-color: awsui.$color-text-body-default;
   /* used in test-utils */
 }
 
+.date-and-time-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($calendar-grid-width, 1fr));
+  gap: awsui.$space-xs;
+}
 .date-and-time-wrapper {
   width: $calendar-grid-width;
-}
-.date-and-time-wrapper:not(.date-only) {
   display: grid;
-  column-gap: awsui.$space-xs;
-  grid-template-columns: 1fr 1fr;
-}
-
-.date-and-time-constrainttext {
-  @include styles.form-control-description;
+  gap: awsui.$space-xs;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }
 
 .footer {

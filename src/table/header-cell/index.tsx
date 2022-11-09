@@ -8,6 +8,8 @@ import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
 import styles from './styles.css.js';
+import { Resizer } from '../resizer';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 interface TableHeaderCellProps {
   className?: string;
@@ -18,11 +20,14 @@ interface TableHeaderCellProps {
   sortingDescending: boolean | undefined;
   sortingDisabled: boolean | undefined;
   wrapLines: boolean | undefined;
-  resizer: React.ReactNode;
   showFocusRing: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
+  onResizeFinish: () => void;
+  colIndex: number;
+  updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  resizableColumns?: boolean;
 }
 
 export function TableHeaderCell({
@@ -34,11 +39,14 @@ export function TableHeaderCell({
   sortingDescending,
   sortingDisabled,
   wrapLines,
-  resizer,
   showFocusRing,
   onClick,
+  colIndex,
   onFocus,
   onBlur,
+  updateColumn,
+  resizableColumns,
+  onResizeFinish,
 }: TableHeaderCellProps) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -61,9 +69,12 @@ export function TableHeaderCell({
     }
   };
 
+  const headerId = useUniqueId('table-header-');
+
   return (
     <th
       className={clsx(className, {
+        [styles['header-cell-resizable']]: !!resizableColumns,
         [styles['header-cell-sortable']]: sortingStatus,
         [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
         [styles['header-cell-disabled']]: sortingDisabled,
@@ -99,7 +110,7 @@ export function TableHeaderCell({
               onBlur,
             })}
       >
-        <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])}>
+        <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
         </div>
         {sortingStatus && (
@@ -108,7 +119,16 @@ export function TableHeaderCell({
           </span>
         )}
       </div>
-      {resizer}
+      {resizableColumns && (
+        <>
+          <Resizer
+            onDragMove={newWidth => updateColumn(colIndex, newWidth)}
+            onFinish={onResizeFinish}
+            ariaLabelledby={headerId}
+            minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
+          />
+        </>
+      )}
     </th>
   );
 }

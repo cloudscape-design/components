@@ -139,7 +139,7 @@
     }
 
     > li.disabled > a > .title {
-      color: awsui.$color-text-interactive-disabled;
+      color: awsui.$color-text-status-inactive;
     }
 
     > li.enabled > a > .circle {
@@ -269,7 +269,7 @@
   color: awsui.$color-text-body-default;
 }
 .navigation-link-disabled {
-  color: awsui.$color-text-control-disabled;
+  color: awsui.$color-text-status-inactive;
 }
 
 .cancel-button,

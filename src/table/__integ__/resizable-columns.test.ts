@@ -23,11 +23,11 @@ class TablePage extends BasePageObject {
   }
 
   async toggleStickyHeader() {
-    await this.click('#sticky-header-toggle label');
+    await this.click(wrapper.findCheckbox('#sticky-header-toggle').findLabel().toSelector());
   }
 
   async toggleResizableColumns() {
-    await this.click('#resizable-columns-toggle label');
+    await this.click(wrapper.findCheckbox('#resizable-columns-toggle').findLabel().toSelector());
   }
 
   async getHeaderTopOffset() {
@@ -87,6 +87,13 @@ class TablePage extends BasePageObject {
         ],
       },
     ]);
+  }
+
+  async assertColumnWidth(columnIndex: number, expected: number) {
+    await this.browser.waitUntil(async () => (await this.getColumnWidth(columnIndex)) === expected, {
+      timeout: 1000,
+      timeoutMsg: `Column at index "${columnIndex}" should have width "${expected}"`,
+    });
   }
 }
 
@@ -238,5 +245,17 @@ test(
     await page.click('#reset-state');
     const newWidth = await page.getColumnWidth(2);
     expect(oldWidth).toEqual(newWidth);
+  })
+);
+
+test(
+  'should resize column to grow by keyboard',
+  setupTest(async page => {
+    await page.click('#reset-state');
+    const oldWidth = await page.getColumnWidth(1);
+    await page.keys(['Tab']);
+    // wait for the resizer to attach handler
+    await page.keys(['ArrowRight']);
+    await page.assertColumnWidth(1, oldWidth + 10);
   })
 );

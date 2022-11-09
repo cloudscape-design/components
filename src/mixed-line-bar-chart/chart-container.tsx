@@ -284,12 +284,13 @@ export default function ChartContainer<T extends ChartDataTypes>({
     }
   }, [highlightedX, showPopover]);
 
-  const onSVGMouseDown = () => {
+  const onSVGMouseDown = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPopoverOpen) {
       if (isPopoverPinned) {
         dismissPopover();
       } else {
         pinPopover();
+        e.preventDefault();
       }
     } else {
       showPopover();

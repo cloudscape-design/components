@@ -1,10 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalBox from '../../box/internal';
-import { ButtonProps } from '../../button/interfaces';
 import { InternalButton } from '../../button/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import PopoverContainer from '../../popover/container';
@@ -78,16 +77,9 @@ export function AnnotationPopover({
   onPreviousButtonClick,
   i18nStrings,
 }: AnnotationPopoverProps) {
-  const dismissButtonRefCallback = useCallback(
-    (element: ButtonProps.Ref) => {
-      if (element) {
-        element.focus({ preventScroll: true });
-        // Falls back to alignTop on IE11
-        scrollElementIntoView(trackRef.current ?? undefined);
-      }
-    },
-    [trackRef]
-  );
+  useEffect(() => {
+    scrollElementIntoView(trackRef.current ?? undefined);
+  }, [trackRef]);
 
   return (
     <PopoverContainer
@@ -112,7 +104,6 @@ export function AnnotationPopover({
         className={styles.annotation}
         variant="annotation"
         overflowVisible="content"
-        dismissButtonRef={dismissButtonRefCallback}
       >
         <InternalSpaceBetween size="s">
           <div className={styles.description}>

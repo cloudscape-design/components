@@ -33,7 +33,7 @@ describe.each([true, false])('With dismiss button (renderWithPortal=%s)', (rende
       await page.keys(['Tab', 'Space']);
       await page.waitForVisible(dismissButtonSelector);
       await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
-      await page.keys(['Tab']);
+      await page.keys(['Tab', 'Tab']);
       await expect(page.isFocused(dismissButtonSelector)).resolves.toBe(true);
     })
   );
@@ -60,6 +60,36 @@ describe.each([true, false])('With dismiss button (renderWithPortal=%s)', (rende
       await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
     })
   );
+
+  test(
+    'Should not restore focus when clicking elsewhere on the page',
+    setupTest(renderWithPortal, async page => {
+      await page.click(triggerSelector);
+      await page.waitForVisible(dismissButtonSelector);
+      await page.click('#text-before-focus-trap');
+      await page.keys(['Tab']);
+      await expect(page.isFocused('#focus-trap-target')).resolves.toBe(true);
+    })
+  );
+
+  describe.each([true, false])('Inside focusable? %s)', (insideFocusable: boolean) => {
+    const popover = createWrapper().findPopover(insideFocusable ? '#focus-trap-within-focusable' : '#focus-trap');
+    const dismissSelector = popover.findDismissButton({ renderWithPortal }).toSelector();
+    const contentSelector = popover.findContent({ renderWithPortal }).toSelector();
+    const inputSelector = `${contentSelector} input`;
+
+    test(
+      'Should allow focus to be moved away from a focusable child',
+      setupTest(renderWithPortal, async page => {
+        await page.click(popover.findTrigger().toSelector());
+        await page.waitForVisible(dismissSelector);
+        await page.click(`${contentSelector} input`);
+        await expect(page.isFocused(inputSelector)).resolves.toBe(true);
+        await page.click(`${contentSelector} p`);
+        await expect(page.isFocused(inputSelector)).resolves.toBe(false);
+      })
+    );
+  });
 });
 
 describe.each([true, false])('Without dismiss button (renderWithPortal=%s)', (renderWithPortal: boolean) => {

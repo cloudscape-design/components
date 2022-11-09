@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, memo, useState } from 'react';
+import React, { useRef, memo } from 'react';
 
-import LiveRegion from '../live-region';
+import useFocusVisible from '../../hooks/focus-visible';
 import InternalBox from '../../../box/internal';
 import { KeyCode } from '../../keycode';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
@@ -35,19 +35,22 @@ function ChartLegend<T>({
   ariaLabel,
   plotContainerRef,
 }: ChartLegendProps<T>) {
-  const [isFocused, setIsFocused] = useState(false);
+  const focusVisible = useFocusVisible();
   const containerRef = useRef<HTMLDivElement>(null);
+  const segmentsRef = useRef<Record<number, HTMLElement>>([]);
+
+  const highlightedSeriesIndex = findSeriesIndex(series, highlightedSeries);
 
   const highlightLeft = () => {
-    const currentIndex = findSeriesIndex(series, highlightedSeries) || 0;
+    const currentIndex = highlightedSeriesIndex ?? 0;
     const nextIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : series.length - 1;
-    onHighlightChange(series[nextIndex].datum);
+    segmentsRef.current[nextIndex]?.focus();
   };
 
   const highlightRight = () => {
-    const currentIndex = findSeriesIndex(series, highlightedSeries) || 0;
+    const currentIndex = highlightedSeriesIndex ?? 0;
     const nextIndex = currentIndex + 1 < series.length ? currentIndex + 1 : 0;
-    onHighlightChange(series[nextIndex].datum);
+    segmentsRef.current[nextIndex]?.focus();
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -68,20 +71,18 @@ function ChartLegend<T>({
     }
   };
 
-  const handleFocus = () => {
-    setIsFocused(true);
-    onHighlightChange(highlightedSeries || series[0].datum);
+  const handleSelection = (index: number) => {
+    if (series[index].datum !== highlightedSeries) {
+      onHighlightChange(series[index].datum);
+    }
   };
 
   const handleBlur = (event: React.FocusEvent<Element>) => {
-    setIsFocused(false);
-
     // We need to check if the next element to be focused inside the plot container or not
     // so we don't clear the selected legend in case we are still focusing elements ( legend elements )
     // inside the plot container
     if (
       event.relatedTarget === null ||
-      !(event.relatedTarget instanceof Element) ||
       (containerRef.current &&
         !containerRef.current.contains(event.relatedTarget) &&
         !plotContainerRef?.current?.contains(event.relatedTarget))
@@ -100,18 +101,14 @@ function ChartLegend<T>({
     onHighlightChange(null);
   };
 
-  const highlightedSeriesLabel = findSeriesLabel(series, highlightedSeries);
-
   return (
     <>
       <div
-        tabIndex={0}
-        className={styles.root}
         ref={containerRef}
-        role="application"
+        role="toolbar"
         aria-label={legendTitle || ariaLabel}
+        className={styles.root}
         onKeyDown={handleKeyPress}
-        onFocus={handleFocus}
         onBlur={handleBlur}
       >
         {legendTitle && (
@@ -120,31 +117,41 @@ function ChartLegend<T>({
           </InternalBox>
         )}
 
-        <ul className={styles.list}>
+        <div className={styles.list}>
           {series.map((s, index) => {
             const someHighlighted = highlightedSeries !== null;
             const isHighlighted = highlightedSeries === s.datum;
             const isDimmed = someHighlighted && !isHighlighted;
             return (
-              <li
+              <div
+                {...focusVisible}
+                role="button"
                 key={index}
-                onMouseOver={handleMouseOver.bind(null, s.datum)}
-                onMouseLeave={handleMouseLeave}
                 className={clsx(styles.marker, {
                   [styles['marker--dimmed']]: isDimmed,
                   [styles['marker--highlighted']]: isHighlighted,
-                  [styles['marker--focused']]: isHighlighted && isFocused,
                 })}
-                aria-disabled={isDimmed ? true : undefined}
+                ref={elem => {
+                  if (elem) {
+                    segmentsRef.current[index] = elem;
+                  } else {
+                    delete segmentsRef.current[index];
+                  }
+                }}
+                tabIndex={
+                  index === highlightedSeriesIndex || (highlightedSeriesIndex === undefined && index === 0) ? 0 : -1
+                }
+                onFocus={() => handleSelection(index)}
+                onClick={() => handleSelection(index)}
+                onMouseOver={() => handleMouseOver(s.datum)}
+                onMouseLeave={handleMouseLeave}
               >
                 <SeriesMarker color={s.color} type={s.type} /> {s.label}
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
-
-      <LiveRegion>{isFocused ? highlightedSeriesLabel : null}</LiveRegion>
     </>
   );
 }
@@ -156,13 +163,4 @@ function findSeriesIndex<T>(series: ReadonlyArray<ChartLegendItem<T>>, targetSer
     }
   }
   return undefined;
-}
-
-function findSeriesLabel<T>(series: ReadonlyArray<ChartLegendItem<T>>, targetSeries: null | T): null | string {
-  for (const s of series) {
-    if (s.datum === targetSeries) {
-      return s.label;
-    }
-  }
-  return null;
 }

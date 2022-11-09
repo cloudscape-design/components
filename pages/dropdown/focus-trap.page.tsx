@@ -9,7 +9,7 @@ import { Box, SpaceBetween, Button } from '~components';
 type PageContext = React.Context<
   AppContextType<{
     expandToViewport: boolean;
-    trapFocus: boolean;
+    loopFocus: boolean;
     disableHeader: boolean;
     disableContent: boolean;
     disableFooter: boolean;
@@ -20,7 +20,7 @@ export default function DropdownScenario() {
   const {
     urlParams: {
       expandToViewport = true,
-      trapFocus = true,
+      loopFocus = true,
       disableHeader = false,
       disableContent = false,
       disableFooter = false,
@@ -48,10 +48,10 @@ export default function DropdownScenario() {
           <label>
             <input
               type="checkbox"
-              checked={trapFocus}
-              onChange={event => setUrlParams({ trapFocus: event.target.checked })}
+              checked={loopFocus}
+              onChange={event => setUrlParams({ loopFocus: event.target.checked })}
             />
-            trapFocus
+            loopFocus
           </label>
 
           <label>
@@ -103,7 +103,7 @@ export default function DropdownScenario() {
                 </div>
               }
               expandToViewport={expandToViewport}
-              trapFocus={trapFocus}
+              loopFocus={loopFocus}
             >
               <div style={{ padding: 8 }}>
                 <Button disabled={disableContent}>content-1</Button>

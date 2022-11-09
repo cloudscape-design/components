@@ -31,6 +31,7 @@ export interface DesktopDrawerProps {
   hasDividerWithSplitPanel?: boolean;
   onToggle: (isOpen: boolean) => void;
   onClick?: (event: React.MouseEvent) => void;
+  onLoseFocus?: (event: React.FocusEvent) => void;
   extendRight?: number;
 }
 
@@ -68,6 +69,7 @@ export function Drawer({
   hasDividerWithSplitPanel,
   onToggle,
   onClick,
+  onLoseFocus,
   extendRight = 0,
 }: DesktopDrawerProps) {
   const { TagName, iconName, getLabels } = togglesConfig[type];
@@ -109,6 +111,15 @@ export function Drawer({
         marginRight: isOpen ? -1 * extendRight : 0,
         paddingRight: isOpen ? extendRight : 0,
       }}
+      onBlur={
+        onLoseFocus
+          ? e => {
+              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                onLoseFocus(e);
+              }
+            }
+          : undefined
+      }
       onClick={event => {
         if (onClick) {
           onClick(event);

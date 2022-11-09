@@ -7,13 +7,7 @@ import Dropdown from '../dropdown';
 
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import {
-  BaseKeyDetail,
-  fireCancelableEvent,
-  fireNonCancelableEvent,
-  getBlurEventRelatedTarget,
-  NonCancelableEventHandler,
-} from '../../events';
+import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import InternalInput from '../../../input/internal';
 import {
   BaseChangeDetail,
@@ -22,7 +16,6 @@ import {
   InputKeyEvents,
   InputProps,
 } from '../../../input/interfaces';
-import { getFocusables } from '../focus-lock/utils';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
@@ -45,6 +38,7 @@ export interface AutosuggestInputProps
   dropdownContent?: React.ReactNode;
   dropdownFooter?: React.ReactNode;
   dropdownWidth?: number;
+  loopFocus?: boolean;
   onCloseDropdown?: NonCancelableEventHandler<null>;
   onDelayedInput?: NonCancelableEventHandler<BaseChangeDetail>;
   onPressArrowDown?: () => void;
@@ -88,6 +82,7 @@ const AutosuggestInput = React.forwardRef(
       dropdownContent = null,
       dropdownFooter = null,
       dropdownWidth,
+      loopFocus,
       onCloseDropdown,
       onDelayedInput,
       onPressArrowDown,
@@ -130,15 +125,7 @@ const AutosuggestInput = React.forwardRef(
       close: closeDropdown,
     }));
 
-    const handleBlur: React.FocusEventHandler = event => {
-      const relatedTarget = getBlurEventRelatedTarget(event.nativeEvent);
-      if (
-        event.currentTarget.contains(relatedTarget) ||
-        dropdownContentRef.current?.contains(relatedTarget) ||
-        dropdownFooterRef.current?.contains(relatedTarget)
-      ) {
-        return;
-      }
+    const handleBlur = () => {
       if (!preventCloseOnBlurRef.current) {
         closeDropdown();
         fireNonCancelableEvent(onBlur, null);
@@ -232,17 +219,6 @@ const AutosuggestInput = React.forwardRef(
       'aria-activedescendant': ariaActivedescendant,
     };
 
-    const [trapDropdownFocus, setTrapDropdownFocus] = useState(false);
-
-    // Run this effect on every render to determine if necessary to trap focus around input and dropdown.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
-      setTrapDropdownFocus(
-        (dropdownFooterRef.current ? getFocusables(dropdownFooterRef.current).length > 0 : false) ||
-          (dropdownContentRef.current ? getFocusables(dropdownContentRef.current).length > 0 : false)
-      );
-    });
-
     // Closes dropdown when outside click is detected.
     // Similar to the internal dropdown implementation but includes the target as well.
     useEffect(() => {
@@ -270,23 +246,19 @@ const AutosuggestInput = React.forwardRef(
     }, [open]);
 
     return (
-      <div
-        {...baseProps}
-        className={clsx(baseProps.className, styles.root)}
-        ref={__internalRootRef}
-        onBlur={handleBlur}
-      >
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}
           contentKey={dropdownContentKey}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           trigger={
             <InternalInput
               type="visualSearch"
               value={value}
               onChange={event => handleChange(event.detail.value)}
               __onDelayedInput={event => handleDelayedInput(event.detail.value)}
-              onFocus={handleFocus}
               onKeyDown={handleKeyDown}
               onKeyUp={onKeyUp}
               disabled={disabled}
@@ -309,7 +281,7 @@ const AutosuggestInput = React.forwardRef(
             )
           }
           expandToViewport={expandToViewport}
-          trapFocus={trapDropdownFocus}
+          loopFocus={loopFocus}
         >
           {open && dropdownContent ? (
             <div ref={dropdownContentRef} className={styles['dropdown-content']}>

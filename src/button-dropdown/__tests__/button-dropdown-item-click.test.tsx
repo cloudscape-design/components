@@ -52,7 +52,6 @@ const items: ButtonDropdownProps.Items = [
     });
 
     test('fires the event when enter key is pressed', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
       act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
 
       expect(onClickSpy).toHaveBeenCalledTimes(1);
@@ -60,7 +59,6 @@ const items: ButtonDropdownProps.Items = [
     });
 
     test('fires the event when space key is pressed', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.down));
       act(() => wrapper.findOpenDropdown()!.keyup(KeyCode.space));
 
       expect(onClickSpy).toHaveBeenCalledTimes(1);
@@ -83,12 +81,6 @@ const items: ButtonDropdownProps.Items = [
       expect(onClickSpy).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { id: 'i3', href: 'https://amazon.com', external: true, target: '_blank' } })
       );
-    });
-
-    test('does not fire the event on keypress when there is no highlighted item', () => {
-      act(() => wrapper.findOpenDropdown()!.keydown(KeyCode.enter));
-
-      expect(onClickSpy).not.toHaveBeenCalled();
     });
 
     test('does not fire the event when clicking on a disabled item', () => {

@@ -8,10 +8,10 @@ import { focusMarkers } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
-import { Resizer } from './resizer';
 import { useColumnWidths } from './use-column-widths';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 export interface TheadProps {
   containerWidth: number | null;
@@ -33,6 +33,7 @@ export interface TheadProps {
   sticky?: boolean;
   hidden?: boolean;
   stuck?: boolean;
+  singleSelectionHeaderAriaLabel?: string;
 }
 
 const Thead = React.forwardRef(
@@ -53,6 +54,7 @@ const Thead = React.forwardRef(
       onCellBlur,
       onSortingChange,
       onResizeFinish,
+      singleSelectionHeaderAriaLabel,
       showFocusRing = null,
       sticky = false,
       hidden = false,
@@ -83,10 +85,7 @@ const Thead = React.forwardRef(
           )}
           {selectionType === 'single' && (
             <th className={clsx(headerCellClass, selectionCellClass)} scope="col">
-              <span aria-hidden={true}>
-                {/*non-empty element to prevent table cell from collapsing in IE */}
-                &nbsp;
-              </span>
+              <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
             </th>
           )}
           {columnDefinitions.map((column, colIndex) => {
@@ -117,14 +116,10 @@ const Thead = React.forwardRef(
                 sortingDescending={sortingDescending}
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
-                resizer={
-                  resizableColumns && (
-                    <Resizer
-                      onDragMove={newWidth => updateColumn(colIndex, newWidth)}
-                      onFinish={() => onResizeFinish(columnWidths)}
-                    />
-                  )
-                }
+                colIndex={colIndex}
+                updateColumn={updateColumn}
+                onResizeFinish={() => onResizeFinish(columnWidths)}
+                resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 onFocus={() => onCellFocus?.(colIndex)}
                 onBlur={onCellBlur}

@@ -120,8 +120,9 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     };
 
     // A callback for svg click to pin/unpin the popover.
-    const onSVGMouseDown = () => {
+    const onSVGMouseDown = (event: React.MouseEvent<SVGSVGElement>) => {
       interactions.togglePopoverPin();
+      event.preventDefault();
     };
 
     // A helper function to highlight the next or previous point within selected series.

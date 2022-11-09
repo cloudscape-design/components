@@ -136,8 +136,8 @@ const InternalMultiselect = React.forwardRef(
       highlightedOption,
       highlightedIndex,
       getTriggerProps,
+      getDropdownProps,
       getFilterProps,
-      getRecoveryProps,
       getMenuProps,
       getOptionProps,
       highlightOption,
@@ -177,7 +177,6 @@ const InternalMultiselect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
-      recoveryProps: getRecoveryProps(),
     });
 
     const filter = (
@@ -271,6 +270,7 @@ const InternalMultiselect = React.forwardRef(
         onKeyPress={handleNativeSearch}
       >
         <Dropdown
+          {...getDropdownProps()}
           open={isOpen}
           trigger={trigger}
           header={filter}
