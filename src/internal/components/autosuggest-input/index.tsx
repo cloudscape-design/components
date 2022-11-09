@@ -212,9 +212,8 @@ const AutosuggestInput = React.forwardRef(
       role: 'combobox',
       'aria-autocomplete': 'list',
       'aria-expanded': expanded,
-      'aria-controls': ariaControls,
       // 'aria-owns' needed for safari+vo to announce activedescendant content
-      'aria-owns': ariaControls,
+      'aria-owns': open ? ariaControls : undefined,
       'aria-label': ariaLabel,
       'aria-activedescendant': ariaActivedescendant,
     };
