@@ -8,9 +8,10 @@ import InternalTiles from './internal';
 
 export { TilesProps };
 
-export default function Tiles(props: TilesProps) {
+const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref>) => {
   const baseComponentProps = useBaseComponent('Tiles');
-  return <InternalTiles {...props} {...baseComponentProps} />;
-}
+  return <InternalTiles ref={ref} {...props} {...baseComponentProps} />;
+});
 
 applyDisplayName(Tiles, 'Tiles');
+export default Tiles;

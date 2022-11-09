@@ -61,6 +61,22 @@ test('does not render attributes for assistive technology when not set', functio
   expect(rootElement).not.toHaveAttribute('aria-label');
 });
 
+describe('ref', () => {
+  test('when unselected, focuses the first tile when .focus() is called', () => {
+    let tilesRef: TilesProps.Ref | null = null;
+    const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} ref={ref => (tilesRef = ref)} />);
+    tilesRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
+  test('when selected, focuses the checked tile', () => {
+    let tilesRef: TilesProps.Ref | null = null;
+    const { wrapper } = renderTiles(<Tiles value="val2" items={defaultItems} ref={ref => (tilesRef = ref)} />);
+    tilesRef!.focus();
+    expect(wrapper.findInputByValue('val2')!.getElement()).toHaveFocus();
+  });
+});
+
 describe('items', () => {
   test('renders items', () => {
     const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} />);
