@@ -204,6 +204,7 @@ describe('a11y props', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
     const input = wrapper.findNativeInput().getElement();
     wrapper.findNativeInput().focus();
+    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
     expect(input).toHaveAttribute('aria-owns', expect.stringContaining('random-'));
   });
 
