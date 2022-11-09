@@ -3,13 +3,20 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseKeyDetail } from '../internal/events';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { BaseInputProps, InputAutoCorrect, InputAutoComplete, InputKeyEvents } from '../input/interfaces';
+import {
+  BaseInputProps,
+  InputAutoCorrect,
+  InputAutoComplete,
+  InputKeyEvents,
+  InputSpellcheck,
+} from '../input/interfaces';
 
 export interface TextareaProps
   extends BaseInputProps,
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,
+    InputSpellcheck,
     BaseComponentProps,
     FormFieldValidationControlProps {
   /**
@@ -23,6 +30,8 @@ export interface TextareaProps
    * that checks for spelling/grammar errors.
    * If you don't set it, the behavior follows the default behavior
    * of the user's browser.
+   *
+   * @deprecated Use the `spellcheck` property instead.
    */
   disableBrowserSpellcheck?: boolean;
 }

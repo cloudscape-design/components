@@ -155,7 +155,7 @@ describe('Textarea', () => {
     });
   });
 
-  describe.skip('disableBrowserSpellcheck', () => {
+  describe('disableBrowserSpellcheck', () => {
     test('does not modify spellcheck default', () => {
       const { textarea } = renderTextarea();
       expect(textarea).not.toHaveAttribute('spellcheck');
@@ -168,6 +168,23 @@ describe('Textarea', () => {
 
     test('can disable spellcheck when set', () => {
       const { textarea } = renderTextarea({ disableBrowserSpellcheck: true });
+      expect(textarea).toHaveAttribute('spellcheck', 'false');
+    });
+  });
+
+  describe('spellcheck', () => {
+    test('keeps default behavior if not set', () => {
+      const { textarea } = renderTextarea();
+      expect(textarea).not.toHaveAttribute('spellcheck');
+    });
+
+    test('can explicitly activate spellchecking', () => {
+      const { textarea } = renderTextarea({ spellcheck: true });
+      expect(textarea).toHaveAttribute('spellcheck', 'true');
+    });
+
+    test('can explicitly deactivate spellchecking', () => {
+      const { textarea } = renderTextarea({ spellcheck: false });
       expect(textarea).toHaveAttribute('spellcheck', 'false');
     });
   });

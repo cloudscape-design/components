@@ -151,6 +151,23 @@ describe('Input', () => {
     });
   });
 
+  describe('spellcheck', () => {
+    test('keeps default behavior if not set', () => {
+      const { input } = renderInput();
+      expect(input).not.toHaveAttribute('spellcheck');
+    });
+
+    test('can explicitly activate spellchecking', () => {
+      const { input } = renderInput({ spellcheck: true });
+      expect(input).toHaveAttribute('spellcheck', 'true');
+    });
+
+    test('can explicitly deactivate spellchecking', () => {
+      const { input } = renderInput({ spellcheck: false });
+      expect(input).toHaveAttribute('spellcheck', 'false');
+    });
+  });
+
   describe('disabled state', () => {
     test('is not set by default', () => {
       const { input } = renderInput();

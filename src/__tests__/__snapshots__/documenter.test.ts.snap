@@ -6291,6 +6291,19 @@ Don't use read-only inputs outside a form.
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
+This value controls the native browser capability to check for spelling/grammar errors.
+If not set, the browser default behavior is to perform spellchecking.
+For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+Make sure it’s deactivated for fields with sensitive information to prevent
+inadvertently sending data (such as user passwords) to third parties.
+",
+      "name": "spellcheck",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "The step attribute is a number that specifies the granularity that the value
 must adhere to or the keyword \\"any\\". It is valid for the numeric input types,
 including the date, month, week, time, datetime-local, number and range types.",
@@ -11877,6 +11890,19 @@ Don't use read-only inputs outside a form.
       "name": "rows",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
+This value controls the native browser capability to check for spelling/grammar errors.
+If not set, the browser default behavior is to perform spellchecking.
+For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+Make sure it’s deactivated for fields with sensitive information to prevent
+inadvertently sending data (such as user passwords) to third parties.
+",
+      "name": "spellcheck",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Specifies the text entered into the form element.",

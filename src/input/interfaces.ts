@@ -97,6 +97,21 @@ export interface InputAutoComplete {
    */
   autoComplete?: boolean | string;
 }
+
+export interface InputSpellcheck {
+  /**
+   * Specifies the value of the `spellcheck` attribute on the native control.
+   * This value controls the native browser capability to check for spelling/grammar errors.
+   * If not set, the browser default behavior is to perform spellchecking.
+   * For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+   *
+   * Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+   * Make sure it’s deactivated for fields with sensitive information to prevent
+   * inadvertently sending data (such as user passwords) to third parties.
+   */
+  spellcheck?: boolean;
+}
+
 export interface InputKeyEvents {
   /**
    * Called when the underlying native textarea emits a `keydown` event.
@@ -119,6 +134,7 @@ export interface InputProps
     InputKeyEvents,
     InputAutoCorrect,
     InputAutoComplete,
+    InputSpellcheck,
     FormFieldValidationControlProps {
   /**
    * Specifies the type of control to render.
