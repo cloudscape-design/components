@@ -8,6 +8,10 @@ import labels from './utils/labels';
 import Table from '~components/table';
 import { splitPaneli18nStrings } from './utils/strings';
 import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
+
+const items = generateItems(5);
 
 export default function () {
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -36,8 +40,8 @@ export default function () {
                 Sticky Full-Page Header
               </Header>
             }
-            columnDefinitions={[]}
-            items={[]}
+            columnDefinitions={columnsConfig}
+            items={items}
           />
         }
       />
