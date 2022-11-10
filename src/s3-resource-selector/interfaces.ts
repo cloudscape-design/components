@@ -13,6 +13,29 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
   alert?: React.ReactNode;
 
   /**
+   * Adds `aria-labelledby` to the component. If you're using this component within a form field,
+   * don't set this property because the form field component automatically sets it.
+   *
+   * Use this property if the component isn't surrounded by a form field, or you want to override the value
+   * automatically set by the form field (for example, if you have two components within a single form field).
+   *
+   * To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Adds `aria-describedby` to the component. If you're using this component within a form field,
+   * don't set this property because the form field component automatically sets it.
+   *
+   * Use this property if the component isn't surrounded by a form field, or you want to override the value
+   * automatically set by the form field (for example, if you have two components within a single form field).
+   *
+   * To use it correctly, define an ID for each element that you want to use as a description
+   * and set the property to a string of each ID separated by spaces (for example, `"id1 id2 id3"`).
+   */
+  ariaDescribedby?: string;
+
+  /**
    * Adds `aria-labelledby` to the S3 URI input. If you're using this component within a form field,
    * you do not need to set this property, as the form field component will set it automatically.
    *
@@ -224,6 +247,8 @@ export namespace S3ResourceSelectorProps {
     labelRefresh: string;
     labelModalDismiss: string;
     labelBreadcrumbs: string;
+
+    ariaLabel?: string;
   }
 
   export interface ChangeDetail {
