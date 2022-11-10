@@ -15,19 +15,17 @@ import { ColorPicker, HelpContent } from './editable-utils';
 
 /*!
   TODO:
-  1. Focus behavior
-    1. arrow navigation
-    1. focus cell after cancel/submit
-  1. Hide cancel button when submission is in progress
+  1. Focus behavior- arrow navigation
   1. Keep pagination and filter features when editing cell
-  1. Replace "editable" text with icon in column header
-  1. Extend space for the error message (visual bug)
+  1. Extend space for the error message (visual bug) (issue)
   1. Remove flash bar after submission
   1. Handle active sorting when submitting (render a snapshot and a button to resort)
-  1. Visual changes
-    1. Focus outline all around cell
-    1. Add borders
   1. Show modal when exiting with unsaved changes
+  ~~  1. Hide cancel button when submission is in progress ~~
+  ~~  1. focus cell after cancel/submit ~~
+  ~~  1. Visual changes~~
+  ~~  1. Focus outline all around cell~~
+  ~~  1. Replace "editable" text with icon in column header~~
 */
 
 export const ariaLabels: TableProps.AriaLabels<Metric> = {
@@ -49,7 +47,7 @@ const DNS_NAME = /^(([a-z\d]|[a-z\d][a-z\d-]*[a-z\d])\.)*([a-z\d]|[a-z\d][a-z\d-
 const columns: Array<TableProps.ColumnDefinition<Metric>> = [
   {
     id: 'color',
-    header: 'Color (editable)',
+    header: 'Color',
     width: 140,
     editable: true,
     cell(item, { isEditing, currentValue, setValue }) {
@@ -61,7 +59,7 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
   },
   {
     id: 'label',
-    header: 'Label (editable)',
+    header: 'Label',
     width: 200,
     editable: true,
     sortingField: 'label',
@@ -82,7 +80,7 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
   },
   {
     id: 'expression',
-    header: 'Expression (editable)',
+    header: 'Expression',
     editable: true,
     cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
       if (!isEditing) {
