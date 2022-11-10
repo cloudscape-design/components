@@ -114,6 +114,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
+    border: awsui.$border-item-width solid transparent;
     &:not(.body-cell-edit-active) {
       & > .body-cell-editor {
         opacity: 0;
@@ -127,8 +128,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         );
       }
       &:hover {
-        //TODO border
         background-color: awsui.$color-background-dropdown-item-hover;
+        border-color: awsui.$color-border-control-default;
       }
       &:hover,
       &[data-awsui-focus-visible='true']:focus-within {

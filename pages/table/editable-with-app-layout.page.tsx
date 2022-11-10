@@ -16,10 +16,8 @@ import { ColorPicker, HelpContent } from './editable-utils';
 /*!
   TODO:
   1. Focus behavior- arrow navigation
-  1. Keep pagination and filter features when editing cell
   1. Extend space for the error message (visual bug) (issue)
   1. Remove flash bar after submission
-  1. Handle active sorting when submitting (render a snapshot and a button to resort)
   1. Show modal when exiting with unsaved changes
   ~~  1. Hide cancel button when submission is in progress ~~
   ~~  1. focus cell after cancel/submit ~~
