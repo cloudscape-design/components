@@ -173,9 +173,7 @@ test('Should have role as group', () => {
 });
 
 test('Should have aria-label when it is set', () => {
-  const wrapper = renderComponent(
-    <S3ResourceSelector {...defaultProps} i18nStrings={{ ...defaultProps.i18nStrings, ariaLabel: 'aria label' }} />
-  );
+  const wrapper = renderComponent(<S3ResourceSelector {...defaultProps} ariaLabel={'aria label'} />);
   expect(wrapper.getElement()).toHaveAttribute('aria-label', 'aria label');
 });
 

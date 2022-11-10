@@ -36,6 +36,11 @@ export interface S3ResourceSelectorProps extends BaseComponentProps {
   ariaDescribedby?: string;
 
   /**
+   * Adds `aria-label` to the component.
+   */
+  ariaLabel?: string;
+
+  /**
    * Adds `aria-labelledby` to the S3 URI input. If you're using this component within a form field,
    * you do not need to set this property, as the form field component will set it automatically.
    *
@@ -247,8 +252,6 @@ export namespace S3ResourceSelectorProps {
     labelRefresh: string;
     labelModalDismiss: string;
     labelBreadcrumbs: string;
-
-    ariaLabel?: string;
   }
 
   export interface ChangeDetail {

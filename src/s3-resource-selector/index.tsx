@@ -37,6 +37,7 @@ const S3ResourceSelector = React.forwardRef(
       versionsVisibleColumns = ['ID', 'LastModified', 'Size'],
       versionsIsItemDisabled,
       onChange,
+      ariaLabel,
       ...rest
     }: S3ResourceSelectorProps,
     ref: React.Ref<S3ResourceSelectorProps.Ref>
@@ -87,7 +88,7 @@ const S3ResourceSelector = React.forwardRef(
         role="group"
         aria-labelledby={ariaLabelledby}
         aria-describedby={ariaDescribedby}
-        aria-label={i18nStrings?.ariaLabel}
+        aria-label={ariaLabel}
       >
         <S3InContext
           ref={inContextRef}
