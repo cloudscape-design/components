@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { fireNonCancelableEvent } from '../internal/events';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 interface TileProps {
   item: TilesProps.TilesDefinition;
@@ -18,43 +19,47 @@ interface TileProps {
   onChange: TilesProps['onChange'];
 }
 
-export function Tile({ item, selected, name, breakpoint, onChange }: TileProps) {
-  const radioButtonRef = useRef<HTMLInputElement>(null);
-  const controlId = item.controlId || `${name}-value-${item.value}`;
+export const Tile = React.forwardRef(
+  ({ item, selected, name, breakpoint, onChange }: TileProps, forwardedRef: React.Ref<HTMLInputElement>) => {
+    const internalRef = useRef<HTMLInputElement>(null);
+    const controlId = item.controlId || `${name}-value-${item.value}`;
 
-  return (
-    <div
-      className={clsx(
-        styles['tile-container'],
-        { [styles['has-metadata']]: item.description || item.image },
-        { [styles.selected]: selected },
-        { [styles.disabled]: !!item.disabled },
-        styles[`breakpoint-${breakpoint}`]
-      )}
-      data-value={item.value}
-      onClick={() => {
-        if (item.disabled) {
-          return;
-        }
-        radioButtonRef.current?.focus();
-        if (!selected) {
-          fireNonCancelableEvent(onChange, { value: item.value });
-        }
-      }}
-    >
-      <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
-        <RadioButton
-          checked={selected}
-          ref={radioButtonRef}
-          name={name}
-          value={item.value}
-          label={item.label}
-          description={item.description}
-          disabled={item.disabled}
-          controlId={controlId}
-        />
+    const mergedRef = useMergeRefs(internalRef, forwardedRef);
+
+    return (
+      <div
+        className={clsx(
+          styles['tile-container'],
+          { [styles['has-metadata']]: item.description || item.image },
+          { [styles.selected]: selected },
+          { [styles.disabled]: !!item.disabled },
+          styles[`breakpoint-${breakpoint}`]
+        )}
+        data-value={item.value}
+        onClick={() => {
+          if (item.disabled) {
+            return;
+          }
+          internalRef.current?.focus();
+          if (!selected) {
+            fireNonCancelableEvent(onChange, { value: item.value });
+          }
+        }}
+      >
+        <div className={clsx(styles.control, { [styles['no-image']]: !item.image })}>
+          <RadioButton
+            checked={selected}
+            ref={mergedRef}
+            name={name}
+            value={item.value}
+            label={item.label}
+            description={item.description}
+            disabled={item.disabled}
+            controlId={controlId}
+          />
+        </div>
+        {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}
       </div>
-      {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}
-    </div>
-  );
-}
+    );
+  }
+);

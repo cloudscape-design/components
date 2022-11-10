@@ -9020,7 +9020,14 @@ Object {
       "name": "onChange",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "RadioGroup",
   "properties": Array [
     Object {
@@ -11860,7 +11867,14 @@ Object {
       "name": "onChange",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Tiles",
   "properties": Array [
     Object {

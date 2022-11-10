@@ -132,6 +132,26 @@ describe('items', () => {
   });
 });
 
+describe('ref', () => {
+  test('when unselected, focuses the first radio button when .focus() is called', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={defaultItems} ref={ref => (radioGroupRef = ref)} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
+  test('when selected, focuses the checked radio button', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value="val2" items={defaultItems} ref={ref => (radioGroupRef = ref)} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val2')!.getElement()).toHaveFocus();
+  });
+});
+
 describe('value', () => {
   test('selects the right button when value changes', () => {
     const { wrapper, rerender } = renderRadioGroup(<RadioGroup value={null} items={defaultItems} />);
