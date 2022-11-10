@@ -285,3 +285,31 @@ describe('keyboard interactions', () => {
     expect(onChange).toBeCalledTimes(1);
   });
 });
+
+describe('Ref', () => {
+  test('can be used to focus the component', () => {
+    const ref = React.createRef<AutosuggestProps.Ref>();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" ref={ref} />);
+    const input = wrapper.findNativeInput().getElement();
+    expect(document.activeElement).not.toBe(input);
+    ref.current!.focus();
+    expect(document.activeElement).toBe(input);
+  });
+
+  test('can be used to select all text', () => {
+    const ref = React.createRef<AutosuggestProps.Ref>();
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="te" ref={ref} />);
+    const input = wrapper.findNativeInput().getElement();
+
+    // Make sure no text is selected
+    input.selectionStart = input.selectionEnd = 0;
+    input.blur();
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(0);
+
+    // Select all text
+    ref.current!.select();
+    expect(input.selectionStart).toBe(0);
+    expect(input.selectionEnd).toBe(2);
+  });
+});

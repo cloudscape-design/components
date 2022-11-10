@@ -127,6 +127,18 @@ export namespace AutosuggestProps {
   export interface ContainingOptionAndGroupString {
     (option: Option, group?: OptionGroup): string;
   }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+
+    /**
+     * Selects all text in the input control.
+     */
+    select(): void;
+  }
 }
 
 // TODO: use DropdownOption type same as in select and multiselect

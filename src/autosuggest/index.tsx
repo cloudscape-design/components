@@ -5,7 +5,6 @@ import { AutosuggestProps } from './interfaces';
 import InternalAutosuggest from './internal';
 import { getExternalProps } from '../internal/utils/external-props';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { InputProps } from '../input/interfaces';
 import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { AutosuggestProps };
@@ -13,7 +12,7 @@ export { AutosuggestProps };
 const Autosuggest = React.forwardRef(
   (
     { filteringType = 'auto', statusType = 'finished', disableBrowserAutocorrect = false, ...props }: AutosuggestProps,
-    ref: React.Ref<InputProps.Ref>
+    ref: React.Ref<AutosuggestProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Autosuggest');
     const externalProps = getExternalProps(props);
