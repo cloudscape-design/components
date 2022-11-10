@@ -55,8 +55,10 @@ describe('Trigger component', () => {
       expect(buttonTriggerEl).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test('should have aria-labelledby attribute consisting of passed aria-labelby and the internal one pointing at the currently selected option', () => {
-      expect(buttonTriggerEl).toHaveAttribute('aria-labelledby', 'aria-labelled-by option-labelled-by');
+    test('should have aria-labelledby attribute consisting of passed aria-labelby and the one pointing to trigger content', () => {
+      const labelledby = buttonTriggerEl.getAttribute('aria-labelledby');
+      const contentId = labelledby!.split('aria-labelled-by ')[1];
+      expect(buttonTriggerEl.querySelector(`#${contentId}`)).toBeTruthy();
     });
 
     test('should have aria-haspopup attribute', () => {

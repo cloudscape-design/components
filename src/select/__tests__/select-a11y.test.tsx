@@ -59,14 +59,15 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     );
   });
 
-  test('Trigger should have refer to the element using aria-label value', () => {
+  test('Trigger should have refer to the element using aria-label value and selected option', () => {
     const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
-    const ariaLabelId = wrapper
+    const label = wrapper
       .findTrigger()
       .getElement()
-      .getAttribute('aria-labelledby')
-      ?.match(/select-arialabel-.* /)?.[0]
-      .trim();
-    expect(wrapper.getElement().querySelector(`#${ariaLabelId}`)).toHaveTextContent('select');
+      .getAttribute('aria-labelledby')!
+      .split(' ')
+      .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
+      .join(' ');
+    expect(label).toBe('select First');
   });
 });

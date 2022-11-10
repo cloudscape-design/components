@@ -409,3 +409,17 @@ test('Option should have aria-checked', () => {
   );
   expect(wrapper.findDropdown()!.find('[data-mouse-target="2"]')!.getElement()).toHaveAttribute('aria-checked', 'true');
 });
+
+test('Trigger should have refer to the element using aria-label value and selected option', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect selectedOptions={[]} options={groupOptions} ariaLabel="multi select" placeholder="select options" />
+  );
+  const label = wrapper
+    .findTrigger()
+    .getElement()
+    .getAttribute('aria-labelledby')!
+    .split(' ')
+    .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
+    .join(' ');
+  expect(label).toBe('multi select select options');
+});

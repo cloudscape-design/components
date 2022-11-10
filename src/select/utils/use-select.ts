@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 import { useHighlightedOption } from '../../internal/components/options-list/utils/use-highlight-option';
 import { useOpenState } from '../../internal/components/options-list/utils/use-open-state';
 import { useMenuKeyboard, useTriggerKeyboard } from '../../internal/components/options-list/utils/use-keyboard';
-import { useIds, getOptionId } from '../../internal/components/options-list/utils/use-ids';
+import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
 import { connectOptionsByValue } from './connect-options';
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { OptionsListProps } from '../../internal/components/options-list';
@@ -21,6 +21,7 @@ import {
   CancelableEventHandler,
   fireNonCancelableEvent,
 } from '../../internal/events';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
 export type GetOptionProps = (option: DropdownOption, index: number) => ItemProps;
@@ -43,7 +44,6 @@ export interface SelectTriggerProps {
   ref: RefObject<HTMLButtonElement>;
   onMouseDown?: (event: CustomEvent) => void;
   onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
-  ariaLabelledby?: string;
   onFocus: NonCancelableEventHandler;
 }
 
@@ -112,7 +112,7 @@ export function useSelect({
   };
 
   const hasSelectedOption = __selectedOptions.length > 0;
-  const { selectedOptionId, menuId } = useIds({ hasSelectedOption });
+  const menuId = useUniqueId('option-list');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const selectOption = (option?: DropdownOption) => {
@@ -162,9 +162,6 @@ export function useSelect({
         toggleDropdown();
       };
       triggerProps.onKeyDown = triggerKeyDownHandler;
-    }
-    if (hasSelectedOption) {
-      triggerProps.ariaLabelledby = selectedOptionId;
     }
     return triggerProps;
   };

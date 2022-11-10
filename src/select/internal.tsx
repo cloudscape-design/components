@@ -29,6 +29,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { joinStrings } from '../internal/utils/strings/join-strings.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -153,14 +154,14 @@ const InternalSelect = React.forwardRef(
         inFilteringToken={__inFilteringToken}
         {...formFieldContext}
         controlId={controlId}
-        ariaLabelledby={[formFieldContext.ariaLabelledby, selectAriaLabelId].filter(label => !!label).join(' ')}
+        ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
       />
     );
 
     const menuProps = {
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
-      ariaLabelledby: [selectAriaLabelId, controlId].filter(label => !!label).join(' '),
+      ariaLabelledby: joinStrings(selectAriaLabelId, controlId),
     };
 
     const isEmpty = !options || options.length === 0;
