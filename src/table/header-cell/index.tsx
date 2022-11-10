@@ -29,6 +29,7 @@ interface TableHeaderCellProps {
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
+  __isEditable?: boolean;
 }
 
 export function TableHeaderCell({
@@ -49,6 +50,7 @@ export function TableHeaderCell({
   updateColumn,
   resizableColumns,
   onResizeFinish,
+  __isEditable,
 }: TableHeaderCellProps) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -115,6 +117,11 @@ export function TableHeaderCell({
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
+          {__isEditable ? (
+            <span className={styles['edit-icon']}>
+              <InternalIcon name="edit" />
+            </span>
+          ) : null}
         </div>
         {sortingStatus && (
           <span className={styles['sorting-icon']}>

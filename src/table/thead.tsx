@@ -143,6 +143,7 @@ const Thead = React.forwardRef(
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 onFocus={() => onCellFocus?.(colIndex)}
                 onBlur={onCellBlur}
+                __isEditable={column.editable}
               />
             );
           })}

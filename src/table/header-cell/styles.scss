@@ -53,8 +53,10 @@
   color: awsui.$color-text-column-sorting-icon;
 }
 
-.header-cell-disabled.header-cell-sorted > .header-cell-content > .sorting-icon {
-  color: awsui.$color-text-interactive-disabled;
+.edit-icon {
+  margin-left: awsui.$space-xxs;
+  margin-top: awsui.$space-scaled-xxs;
+  color: awsui.$color-text-column-sorting-icon; // TODO: add new color token
 }
 
 .header-cell-content {
@@ -76,6 +78,13 @@
   &.header-cell-fake-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
+
+  .header-cell-disabled.header-cell-sorted > & {
+    & > .sorting-icon,
+    & > .edit-icon {
+      color: awsui.$color-text-interactive-disabled;
+    }
+  }
 }
 
 .header-cell-sortable:not(.header-cell-disabled) {
@@ -85,7 +94,8 @@
   & > .header-cell-content:hover,
   &.header-cell-sorted > .header-cell-content {
     color: awsui.$color-text-interactive-active;
-    > .sorting-icon {
+    & > .sorting-icon,
+    & > .edit-icon {
       color: awsui.$color-text-interactive-active;
     }
   }
