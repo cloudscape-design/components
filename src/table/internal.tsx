@@ -29,6 +29,7 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import useMouseDownTarget from './use-mouse-down-target';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -162,6 +163,9 @@ const InternalTable = React.forwardRef(
 
     const getMouseDownTarget = useMouseDownTarget();
 
+    const hasDynamicHeight = computedVariant === 'full-page';
+    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -176,8 +180,13 @@ const InternalTable = React.forwardRef(
           header={
             <>
               {hasHeader && (
-                <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
-                  <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                <div
+                  ref={overlapElement}
+                  className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
+                >
+                  <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
+                    <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                  </div>
                 </div>
               )}
               {stickyHeader && (
@@ -190,6 +199,7 @@ const InternalTable = React.forwardRef(
                   secondaryWrapperRef={secondaryWrapperRef}
                   tableRef={tableRefObject}
                   onScroll={handleScroll}
+                  tableHasHeader={hasHeader}
                 />
               )}
             </>

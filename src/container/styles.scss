@@ -99,7 +99,21 @@
   }
 
   &-variant-full-page.header-stuck {
-    box-shadow: awsui.$shadow-sticky;
+    box-shadow: none;
+
+    &::after {
+      content: '';
+
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 0;
+
+      box-shadow: awsui.$shadow-sticky;
+      // This polygon only shows the part of the shadow that is lower than the element itself.
+      clip-path: polygon(-999% 100%, 999% 100%, 999% 999%, -999% 999%);
+    }
   }
 }
 

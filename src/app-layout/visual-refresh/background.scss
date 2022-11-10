@@ -21,8 +21,7 @@ div.background {
     behind the notifications above the content dark header.
     */
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.content-type-cards.has-notifications-content.sticky-notifications,
-      &.content-type-table.has-notifications-content.sticky-notifications {
+      &.has-sticky-background.has-notifications-content.sticky-notifications {
         position: sticky;
         top: var(#{custom-props.$offsetTop});
         z-index: 799;
@@ -36,15 +35,13 @@ div.background {
     grid-row: 4;
 
     /*
-    The cards and table content types have sticky header content that 
-    will retain position on viewport scroll. They are setting the 
-    dynamicOverlapHeight property in the AppLayout context with a container query 
-    that observes the content height. The background needs to be sticky in 
-    desktop viewports without overlapping notification content if it exists.
+    The cards and table content types can have sticky header content that 
+    will retain position on viewport scroll. The overlap background needs to 
+    be sticky in desktop viewports to prevent light background gutters with 
+    the high contrast header background only in the content area.
     */
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.content-type-cards,
-      &.content-type-table {
+      &.has-sticky-background {
         position: sticky;
         top: var(#{custom-props.$offsetTopWithNotifications});
         z-index: 799;

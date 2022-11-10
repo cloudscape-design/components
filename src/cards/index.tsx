@@ -128,6 +128,7 @@ const Cards = React.forwardRef(function <T = any>(
         __stickyOffset={stickyHeaderVerticalOffset}
         __headerRef={headerRef}
         __headerId={cardsHeaderId}
+        __darkHeader={computedVariant === 'full-page'}
       >
         <div className={clsx(hasToolsHeader && styles['has-header'])}>
           {status ?? (
