@@ -31,7 +31,8 @@ export interface TextareaProps
    * If you don't set it, the behavior follows the default behavior
    * of the user's browser.
    *
-   * @deprecated Use the `spellcheck` property instead.
+   * This property is deprecated. Use the `spellcheck` property instead.
+   * @deprecated
    */
   disableBrowserSpellcheck?: boolean;
 }

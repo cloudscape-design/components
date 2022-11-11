@@ -11833,7 +11833,8 @@ of the user's browser.",
 If you set this to \`true\`, it disables native browser capability
 that checks for spelling/grammar errors.
 If you don't set it, the behavior follows the default behavior
-of the user's browser.",
+of the user's browser.
+This property is deprecated. Use the \`spellcheck\` property instead.",
       "name": "disableBrowserSpellcheck",
       "optional": true,
       "type": "boolean",
