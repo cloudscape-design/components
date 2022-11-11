@@ -194,9 +194,18 @@ describe('a11y props', () => {
     const input = wrapper.findNativeInput().getElement();
     expect(input).toHaveAttribute('aria-autocomplete', 'list');
     expect(input).toHaveAttribute('aria-expanded', 'false');
-    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
+    expect(input).not.toHaveAttribute('aria-controls');
+    expect(input).not.toHaveAttribute('aria-owns');
     expect(input).not.toHaveAttribute('aria-label');
     expect(input).not.toHaveAttribute('aria-activedescendant');
+  });
+
+  test('has correct aria property when suggestion dialog is open', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
+    const input = wrapper.findNativeInput().getElement();
+    wrapper.findNativeInput().focus();
+    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
+    expect(input).toHaveAttribute('aria-owns', expect.stringContaining('random-'));
   });
 
   test('adds correct aria properties to input when expanded', () => {
