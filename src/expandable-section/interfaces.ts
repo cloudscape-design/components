@@ -9,6 +9,8 @@ export namespace ExpandableSectionProps {
   export interface ChangeDetail {
     expanded: boolean;
   }
+  export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+  export type HeadingVariant = 'h1' | 'h2' | 'h3';
 }
 
 export interface ExpandableSectionProps extends BaseComponentProps {
@@ -47,9 +49,40 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   /**
    * Heading displayed above the content text.
    *
-   * When using the container variant, use the Header component. Otherwise, use plain text.
+   * When using the container variant, use additional header props instead. Otherwise, use plain text.
    */
   header?: React.ReactNode;
+
+  /**
+   * The heading text. Use with container variant. Plain text is recommended.
+   */
+  headerText?: string;
+
+  /**
+   * Supplementary text below the heading. Use with container variant.
+   */
+  headerDescription?: string;
+
+  /**
+   * Specifies secondary text that's displayed to the right of the heading title. Use with container variant.
+   * Behaves similar to the Header component counter.
+   */
+  headerCounter?: string;
+
+  /**
+   * Specifies the variant of the header:
+   * * `h1` - Use this for page level headers.
+   * * `h2` - Use this for container level headers.
+   * * `h3` - Use this for section level headers.
+   * * Use with container variant.
+   */
+  headingTagVariant?: ExpandableSectionProps.HeadingVariant;
+
+  /**
+   * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
+   * provided by the headingTagVariant. Use with container variant.
+   */
+  headingTagOverride?: ExpandableSectionProps.HeadingTag;
 
   /**
    * Adds `aria-label` to the header element.

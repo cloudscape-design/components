@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import ExpandableSection from '~components/expandable-section';
-import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -50,7 +49,9 @@ export default function SimpleContainers() {
         <h2>Container</h2>
         <SpaceBetween size="xs">
           <ExpandableSection
-            header={<Header variant="h2">Header component</Header>}
+            headerText={'Header component'}
+            headerCounter={'5'}
+            headerDescription={'Testing'}
             variant="container"
             defaultExpanded={true}
           >

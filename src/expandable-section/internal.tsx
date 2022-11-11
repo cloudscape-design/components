@@ -16,7 +16,6 @@ import styles from './styles.css.js';
 import { ExpandableSectionContainer } from './expandable-section-container';
 import { ExpandableSectionHeader } from './expandable-section-header';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { ExpandableSectionContext } from './utils';
 
 type InternalExpandableSectionProps = ExpandableSectionProps & InternalBaseComponentProps;
 
@@ -27,6 +26,11 @@ export default function InternalExpandableSection({
   variant = 'default',
   children,
   header,
+  headerText,
+  headerCounter,
+  headerDescription,
+  headingTagVariant = 'h2',
+  headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
   __internalRootRef,
@@ -95,11 +99,14 @@ export default function InternalExpandableSection({
           className={clsx(styles.header, styles[`header-${variant}`])}
           variant={variant}
           expanded={!!expanded}
+          headerText={headerText}
+          headerDescription={headerDescription}
+          headerCounter={headerCounter}
+          headingTagVariant={headingTagVariant}
+          headingTagOverride={headingTagOverride}
           {...triggerProps}
         >
-          <ExpandableSectionContext.Provider value={{ removeHeaderTag: variant === 'container' }}>
-            {header}
-          </ExpandableSectionContext.Provider>
+          {header}
         </ExpandableSectionHeader>
       }
       __internalRootRef={__internalRootRef}

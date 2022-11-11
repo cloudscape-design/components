@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import React, { useContext } from 'react';
 import { getBaseProps } from '../internal/base-component';
 import { StickyHeaderContext } from '../container/use-sticky-header';
-import { ExpandableSectionContext } from '../expandable-section/utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { HeaderProps } from './interfaces';
@@ -13,6 +12,7 @@ import { SomeRequired } from '../internal/types';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
+  __childrenNode?: boolean;
 }
 
 export default function InternalHeader({
@@ -25,10 +25,11 @@ export default function InternalHeader({
   info,
   __internalRootRef = null,
   __disableActionsWrapping,
+  __childrenNode,
   ...restProps
 }: InternalHeaderProps) {
-  const { removeHeaderTag } = useContext(ExpandableSectionContext);
-  const HeadingTag = headingTagOverride ?? (removeHeaderTag ? 'div' : variant === 'awsui-h1-sticky' ? 'h1' : variant);
+  const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
+  const ChildrenWrapper = __childrenNode ? 'div' : 'span';
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
@@ -63,7 +64,7 @@ export default function InternalHeader({
           )}
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
-            <span className={styles['heading-text']}>{children}</span>
+            <ChildrenWrapper className={styles['heading-text']}>{children}</ChildrenWrapper>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
           {info && <span className={styles.info}>{info}</span>}
