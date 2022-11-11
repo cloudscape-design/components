@@ -9,13 +9,8 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../../cont
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import InternalInput from '../../../input/internal';
-import {
-  BaseChangeDetail,
-  BaseInputProps,
-  InputAutoCorrect,
-  InputKeyEvents,
-  InputProps,
-} from '../../../input/interfaces';
+import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputKeyEvents } from '../../../input/interfaces';
+import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
@@ -50,7 +45,7 @@ export interface AutosuggestInputFocusOptions {
   preventDropdown?: boolean;
 }
 
-export interface AutosuggestInputRef extends InputProps.Ref {
+export interface AutosuggestInputRef extends AutosuggestProps.Ref {
   focus(options?: AutosuggestInputFocusOptions): void;
   open(): void;
   close(): void;

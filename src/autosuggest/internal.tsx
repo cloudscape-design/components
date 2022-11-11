@@ -16,7 +16,7 @@ import {
   fireNonCancelableEvent,
   NonCancelableCustomEvent,
 } from '../internal/events';
-import { BaseChangeDetail, InputProps } from '../input/interfaces';
+import { BaseChangeDetail } from '../input/interfaces';
 import styles from './styles.css.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -30,7 +30,7 @@ import clsx from 'clsx';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
-const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<InputProps.Ref>) => {
+const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {
     value,
     onChange,

@@ -1314,7 +1314,20 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
       "name": "onSelect",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Selects all text in the input control.",
+      "name": "select",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Autosuggest",
   "properties": Array [
     Object {
