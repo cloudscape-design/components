@@ -57,6 +57,7 @@ function InternalInput(
     disabled,
     readOnly,
     disableBrowserAutocorrect,
+    spellcheck,
     __noBorderRadius,
 
     __leftIcon,
@@ -125,6 +126,7 @@ function InternalInput(
     type,
     step,
     inputMode,
+    spellCheck: spellcheck,
     onKeyDown: onKeyDown && (event => fireKeyboardEvent(onKeyDown, event)),
     onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
     // We set a default value on the component in order to force it into the controlled mode.
@@ -173,7 +175,7 @@ function InternalInput(
           <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
         </span>
       )}
-      <input ref={mergedRef} {...attributes} spellCheck={false} />
+      <input ref={mergedRef} {...attributes} />
       {__rightIcon && (
         <span
           onClick={__onRightIconClick}

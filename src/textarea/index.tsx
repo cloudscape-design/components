@@ -23,6 +23,7 @@ const Textarea = React.forwardRef(
       readOnly,
       disableBrowserAutocorrect,
       disableBrowserSpellcheck,
+      spellcheck,
       onKeyDown,
       onKeyUp,
       onChange,
@@ -59,6 +60,7 @@ const Textarea = React.forwardRef(
         [styles['textarea-invalid']]: invalid,
       }),
       autoComplete: convertAutoComplete(autoComplete),
+      spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
       rows: rows || 3,
@@ -82,7 +84,7 @@ const Textarea = React.forwardRef(
 
     return (
       <span {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
-        <textarea ref={textareaRef} id={controlId} {...attributes} spellCheck={false} />
+        <textarea ref={textareaRef} id={controlId} {...attributes} />
       </span>
     );
   }
