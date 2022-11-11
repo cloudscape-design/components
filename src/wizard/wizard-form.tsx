@@ -48,8 +48,8 @@ export default function WizardForm({
 
   useEffectOnUpdate(() => {
     if (stepHeaderRef && stepHeaderRef.current) {
-      const headers = stepHeaderRef.current.querySelectorAll('h1');
-      headers[0]?.focus();
+      const header = stepHeaderRef.current.querySelector('[tabindex = "-1"]') as HTMLElement;
+      header?.focus();
     }
   }, [activeStepIndex]);
 
@@ -77,6 +77,7 @@ export default function WizardForm({
           description={description}
           info={info}
           __internalRootRef={stepHeaderRef}
+          __headingTabIndex={-1}
         >
           {title}
           {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
@@ -103,9 +104,7 @@ export default function WizardForm({
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
-        <div role="region" aria-label={title}>
-          {content}
-        </div>
+        {content}
       </InternalForm>
     </>
   );

@@ -5,6 +5,7 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/hooks/focus-visible' as focus-visible;
 
 .root {
   @include styles.styles-reset();
@@ -45,7 +46,7 @@
 }
 
 .main {
-  @include styles.text-flex-wrapping;
+  @include styles.text-wrapping;
   :not(.root-no-actions) > & {
     margin-right: awsui.$space-xs;
   }
@@ -170,6 +171,10 @@
   &-variant-h3 {
     font-weight: awsui.$font-heading-m-weight;
     line-height: awsui.$font-heading-m-line-height;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
   }
 }
 
