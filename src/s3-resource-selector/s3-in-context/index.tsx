@@ -85,12 +85,7 @@ export const S3InContext = React.forwardRef(
     return (
       <div className={styles.root}>
         <div className={styles.layout}>
-          <InternalFormField
-            className={styles['layout-uri']}
-            label={i18nStrings?.inContextUriLabel}
-            stretch={true}
-            __inheritParentFormField={false}
-          >
+          <InternalFormField className={styles['layout-uri']} label={i18nStrings?.inContextUriLabel} stretch={true}>
             <SearchInput
               ref={inputRef}
               value={uri}

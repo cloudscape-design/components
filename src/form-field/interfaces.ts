@@ -86,8 +86,4 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Visually hide the label.
    */
   __hideLabel?: boolean;
-  /**
-   * Inherit control props from parent formfield.
-   */
-  __inheritParentFormField?: boolean;
 }

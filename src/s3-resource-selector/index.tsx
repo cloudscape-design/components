@@ -97,7 +97,7 @@ const S3ResourceSelector = React.forwardRef(
           resource={resource}
           viewHref={viewHref}
           invalid={invalid}
-          inputAriaDescribedby={inputAriaDescribedby ?? ariaDescribedby}
+          inputAriaDescribedby={inputAriaDescribedby}
           fetchVersions={fetchVersions}
           onBrowse={() => setModalOpen(true)}
           onChange={(resource, errorText) => fireNonCancelableEvent(onChange, { resource, errorText })}

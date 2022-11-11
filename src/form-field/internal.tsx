@@ -48,7 +48,6 @@ export default function InternalFormField({
   errorText,
   __hideLabel,
   __internalRootRef = null,
-  __inheritParentFormField = true,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -64,10 +63,11 @@ export default function InternalFormField({
 
   const gridDefinition = getGridDefinition(stretch, !!secondaryControl, isRefresh);
 
-  const parentAttributes = useFormFieldContext({});
-  const parentAriaLabelledby = __inheritParentFormField ? parentAttributes.ariaLabelledby : undefined;
-  const parentAriaDescribedby = __inheritParentFormField ? parentAttributes.ariaDescribedby : undefined;
-  const parentInvalid = __inheritParentFormField ? parentAttributes.invalid : undefined;
+  const {
+    ariaLabelledby: parentAriaLabelledby,
+    ariaDescribedby: parentAriaDescribedby,
+    invalid: parentInvalid,
+  } = useFormFieldContext({});
 
   const contextValuesWithoutControlId = {
     ariaLabelledby: joinStrings(parentAriaLabelledby, slotIds.label) || undefined,
