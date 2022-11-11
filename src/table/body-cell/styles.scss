@@ -114,7 +114,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
-    border: awsui.$border-item-width solid transparent;
+    border-left: awsui.$border-item-width solid transparent;
+    border-right: awsui.$border-item-width solid transparent;
     &:not(.body-cell-edit-active) {
       & > .body-cell-editor {
         opacity: 0;
