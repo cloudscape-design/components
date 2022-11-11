@@ -32,6 +32,8 @@ import TokenGroup, { TokenGroupProps } from '../token-group/index.js';
 
 import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { joinStrings } from '../internal/utils/strings';
 
 type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps;
 
@@ -129,6 +131,8 @@ const InternalMultiselect = React.forwardRef(
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
 
+    const multiSelectAriaLabelId = useUniqueId('multiselect-arialabel-');
+
     const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
     const {
       isOpen,
@@ -194,19 +198,19 @@ const InternalMultiselect = React.forwardRef(
       <Trigger
         placeholder={placeholder}
         disabled={disabled}
-        ariaLabel={ariaLabel}
         triggerProps={getTriggerProps(disabled)}
         selectedOption={null}
         isOpen={isOpen}
         {...formFieldContext}
         controlId={controlId}
+        ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, multiSelectAriaLabelId)}
       />
     );
 
     const menuProps: MenuProps = {
       ...getMenuProps(),
       onLoadMore: handleLoadMore,
-      ariaLabelledby: controlId,
+      ariaLabelledby: joinStrings(multiSelectAriaLabelId, controlId),
     };
 
     const announcement = useAnnouncement({
@@ -300,6 +304,7 @@ const InternalMultiselect = React.forwardRef(
             i18nStrings={tokenGroupI18nStrings}
           />
         )}
+        <ScreenreaderOnly id={multiSelectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
       </div>
     );
   }

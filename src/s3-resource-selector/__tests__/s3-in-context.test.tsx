@@ -37,7 +37,11 @@ test('renders element labels', () => {
   expect(screen.getByRole('searchbox', { name: i18nStrings.inContextUriLabel })).toBeTruthy();
   // testing-library does not see the combobox role
   // https://github.com/testing-library/dom-testing-library/issues/927
-  expect(screen.getByRole('button', { name: i18nStrings.inContextVersionSelectLabel })).toBeTruthy();
+  expect(
+    screen.getByRole('button', {
+      name: i18nStrings.inContextVersionSelectLabel + ' ' + i18nStrings.inContextSelectPlaceholder,
+    })
+  ).toBeTruthy();
   expect(wrapper.findUriInput().findNativeInput().getElement()).toHaveAttribute(
     'placeholder',
     i18nStrings.inContextInputPlaceholder

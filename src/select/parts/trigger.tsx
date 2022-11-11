@@ -9,14 +9,13 @@ import styles from './styles.css.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import Option from '../../internal/components/option';
-import { generateUniqueId, useUniqueId } from '../../internal/hooks/use-unique-id';
+import { generateUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { joinStrings } from '../../internal/utils/strings';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
   disabled: boolean | undefined;
-  ariaLabel: string | undefined;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
   isOpen?: boolean;
@@ -38,37 +37,30 @@ const Trigger = React.forwardRef(
       isOpen,
       placeholder,
       disabled,
-      ariaLabel,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
     const id = useMemo(() => controlId ?? generateUniqueId(), [controlId]);
+    const triggerContentId = generateUniqueId('trigger-content-');
 
     let triggerContent = null;
     if (!selectedOption) {
       triggerContent = (
-        <span
-          aria-disabled="true"
-          className={clsx(styles.placeholder, styles.trigger)}
-          id={triggerProps.ariaLabelledby}
-        >
+        <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
           {placeholder}
         </span>
       );
     } else if (triggerVariant === 'option') {
-      triggerContent = (
-        <Option id={triggerProps.ariaLabelledby} option={{ ...selectedOption, disabled }} triggerVariant={true} />
-      );
+      triggerContent = <Option id={triggerContentId} option={{ ...selectedOption, disabled }} triggerVariant={true} />;
     } else {
       triggerContent = (
-        <span id={triggerProps.ariaLabelledby} className={styles.trigger}>
+        <span id={triggerContentId} className={styles.trigger}>
           {selectedOption.label || selectedOption.value}
         </span>
       );
     }
 
     const mergedRef = useMergeRefs(triggerProps.ref, ref);
-    const calendarDescriptionId = useUniqueId('select-arialabel-');
 
     return (
       <ButtonTrigger
@@ -80,12 +72,9 @@ const Trigger = React.forwardRef(
         invalid={invalid}
         inFilteringToken={inFilteringToken}
         ariaDescribedby={ariaDescribedby}
-        ariaLabelledby={[ariaLabelledby, calendarDescriptionId, triggerProps.ariaLabelledby]
-          .filter(label => !!label)
-          .join(' ')}
+        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
       >
         {triggerContent}
-        <ScreenreaderOnly id={calendarDescriptionId}>{ariaLabel}</ScreenreaderOnly>
       </ButtonTrigger>
     );
   }
