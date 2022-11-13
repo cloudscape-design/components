@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import Header from '../header/internal';
 import { ExpandableSectionProps } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import InternalHeader from '../header/internal';
 
 interface ExpandableSectionHeaderProps {
   id: string;
@@ -78,36 +78,30 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (variant === 'container') {
+  if (variant === 'container' && headerText) {
     return (
-      <div
-        id={id}
-        className={clsx(className, triggerClassName, styles.focusable, expanded && styles.expanded)}
-        onClick={onClick}
-        aria-label={ariaLabel}
-      >
-        <Header
+      <div id={id} className={clsx(className, triggerClassName, expanded && styles.expanded)} onClick={onClick}>
+        <InternalHeader
           variant={headingTagVariant}
           description={headerDescription}
           counter={headerCounter}
           headingTagOverride={headingTagOverride}
-          __childrenNode={true}
         >
-          <div
+          <span
+            className={styles.focusable}
             role="button"
-            className={clsx(className, triggerClassName, styles.focusable, expanded && styles.expanded)}
             tabIndex={0}
             onKeyUp={onKeyUp}
             onKeyDown={onKeyDown}
-            onClick={onClick}
             aria-label={ariaLabel}
+            aria-labelledby={ariaLabel ? undefined : id}
             {...focusVisible}
             {...ariaAttributes}
           >
             <span className={styles['icon-container']}>{icon}</span>
             <span>{headerText}</span>
-          </div>
-        </Header>
+          </span>
+        </InternalHeader>
       </div>
     );
   }

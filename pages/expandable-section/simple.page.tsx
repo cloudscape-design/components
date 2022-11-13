@@ -50,8 +50,7 @@ export default function SimpleContainers() {
         <SpaceBetween size="xs">
           <ExpandableSection
             headerText={'Header component'}
-            headerCounter={'5'}
-            headerDescription={'Testing'}
+            headerCounter={'(5)'}
             variant="container"
             defaultExpanded={true}
           >

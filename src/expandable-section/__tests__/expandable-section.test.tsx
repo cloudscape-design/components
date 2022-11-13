@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { ExpandableSectionWrapper } from '../../../lib/components/test-utils/dom';
 import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
+import '../../__a11y__/to-validate-a11y';
 
 function renderExpandableSection(props: ExpandableSectionProps = {}): ExpandableSectionWrapper {
   const { container } = render(<ExpandableSection {...props} />);
@@ -128,10 +129,76 @@ describe('Expandable Section', () => {
       expect(header).toHaveAttribute('aria-label', 'ARIA Label');
       expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     });
+  });
+});
+describe('Variant container with headerText', () => {
+  test('validate a11y for container with headerText', async () => {
+    const { container } = render(
+      <ExpandableSection
+        variant="container"
+        headerText="Header component"
+        headerCounter="5"
+        headerDescription="Testing"
+      />
+    );
+    await expect(container).toValidateA11y();
+  });
 
-    test('has no heading tags for variant container', () => {
-      const wrapper = renderExpandableSection({ variant: 'container' });
-      expect(wrapper.findAll('h1, h2, h3, h4, h5, h6').length).toBe(0);
+  test('header button have aria-controls assiciated to expanded content', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
     });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    const expandedContent = wrapper.findContent().getElement();
+    const contentId = expandedContent?.getAttribute('id');
+    expect(headerButton).toHaveAttribute('aria-controls', contentId);
+  });
+  test('aria-expanded=false when collapsed', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).toHaveAttribute('aria-expanded', 'false');
+  });
+  test('aria-expanded=true when expanded', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+      defaultExpanded: true,
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).toHaveAttribute('aria-expanded', 'true');
+  });
+  test('set headerAriaLabel assigns an aria-label to the header, and no aria-labelledby will be set', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+      headerAriaLabel: 'ARIA Label',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    const content = wrapper.findContent().getElement();
+    expect(headerButton).toHaveAttribute('aria-label', 'ARIA Label');
+    expect(content).toHaveAttribute('aria-label', 'ARIA Label');
+    expect(headerButton).not.toHaveAttribute('aria-labelledby');
+  });
+  test('set aria-labelledby from header when no headerAriaLabel is set', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    const headerId = wrapper.findHeader().getElement().getAttribute('id');
+    expect(headerButton).toHaveAttribute('aria-labelledby', headerId);
+  });
+  test('button should put under h1', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+      headingTagVariant: 'h1',
+    });
+    expect(wrapper.findHeader().find('[role="button"]')!.findAll('h1')!.length).toBe(0);
+    expect(wrapper!.find('h1')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
   });
 });

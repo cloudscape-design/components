@@ -12,7 +12,6 @@ import { SomeRequired } from '../internal/types';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
-  __childrenNode?: boolean;
 }
 
 export default function InternalHeader({
@@ -25,11 +24,9 @@ export default function InternalHeader({
   info,
   __internalRootRef = null,
   __disableActionsWrapping,
-  __childrenNode,
   ...restProps
 }: InternalHeaderProps) {
   const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
-  const ChildrenWrapper = __childrenNode ? 'div' : 'span';
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
   const isRefresh = useVisualRefresh();
@@ -64,7 +61,7 @@ export default function InternalHeader({
           )}
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
-            <ChildrenWrapper className={styles['heading-text']}>{children}</ChildrenWrapper>
+            <span className={styles['heading-text']}>{children}</span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
           {info && <span className={styles.info}>{info}</span>}
