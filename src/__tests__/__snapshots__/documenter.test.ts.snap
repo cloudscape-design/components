@@ -5274,7 +5274,7 @@ Behaves similar to the Header component counter.",
     },
     Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-provided by the headingTagVariant. Use with container variant.",
+h2. Use with container variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -5287,25 +5287,6 @@ provided by the headingTagVariant. Use with container variant.",
         ],
       },
       "name": "headingTagOverride",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Specifies the variant of the header:
-* \`h1\` - Use this for page level headers.
-* \`h2\` - Use this for container level headers.
-* \`h3\` - Use this for section level headers.
-* Use with container variant.",
-      "inlineType": Object {
-        "name": "ExpandableSectionProps.HeadingVariant",
-        "type": "union",
-        "values": Array [
-          "h1",
-          "h2",
-          "h3",
-        ],
-      },
-      "name": "headingTagVariant",
       "optional": true,
       "type": "string",
     },

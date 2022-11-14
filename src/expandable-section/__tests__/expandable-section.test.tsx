@@ -194,13 +194,12 @@ describe('Variant container with headerText', () => {
     const screenreaderElement = wrapper.findHeader().find(`#${headerButton}`)!.getElement();
     expect(screenreaderElement.textContent).toBe('Header component (5) Expand to see more content');
   });
-  test('button should put under h1', () => {
+  test('button should be under heading', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
       headerText: 'Header component',
-      headingTagVariant: 'h1',
     });
-    expect(wrapper.findHeader().find('[role="button"]')!.findAll('h1')!.length).toBe(0);
-    expect(wrapper!.find('h1')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
+    expect(wrapper.findHeader().find('[role="button"]')!.findAll('h2')!.length).toBe(0);
+    expect(wrapper!.find('h2')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
   });
 });

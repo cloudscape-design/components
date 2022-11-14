@@ -18,7 +18,6 @@ interface ExpandableSectionHeaderProps {
   headerText?: ReactNode;
   headerDescription?: ReactNode;
   headerCounter?: string;
-  headingTagVariant: ExpandableSectionProps.HeadingVariant;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
   expanded: boolean;
   ariaControls: string;
@@ -38,7 +37,6 @@ export const ExpandableSectionHeader = ({
   headerDescription,
   headerCounter,
   headingTagOverride,
-  headingTagVariant,
   expanded,
   ariaControls,
   ariaLabel,
@@ -90,7 +88,7 @@ export const ExpandableSectionHeader = ({
         {...focusVisible}
       >
         <InternalHeader
-          variant={headingTagVariant}
+          variant={'h2'}
           description={headerDescription}
           counter={headerCounter}
           headingTagOverride={headingTagOverride}

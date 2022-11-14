@@ -10,7 +10,6 @@ export namespace ExpandableSectionProps {
     expanded: boolean;
   }
   export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
-  export type HeadingVariant = 'h1' | 'h2' | 'h3';
 }
 
 export interface ExpandableSectionProps extends BaseComponentProps {
@@ -69,17 +68,8 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerCounter?: string;
 
   /**
-   * Specifies the variant of the header:
-   * * `h1` - Use this for page level headers.
-   * * `h2` - Use this for container level headers.
-   * * `h3` - Use this for section level headers.
-   * * Use with container variant.
-   */
-  headingTagVariant?: ExpandableSectionProps.HeadingVariant;
-
-  /**
    * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-   * provided by the headingTagVariant. Use with container variant.
+   * h2. Use with container variant.
    */
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
 
