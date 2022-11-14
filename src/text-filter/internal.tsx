@@ -18,6 +18,7 @@ const InternalTextFilter = React.forwardRef(
       filteringText,
       filteringAriaLabel,
       filteringPlaceholder,
+      filteringClearAriaLabel,
       disabled,
       countText,
       onChange,
@@ -43,6 +44,7 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
+          clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />

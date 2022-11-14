@@ -186,6 +186,7 @@ function ValueInput({
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={mathedOption?.label ?? value ?? ''}
+      clearAriaLabel={i18nStrings.clearAriaLabel}
       onChange={e => onChangeValue(e.detail.value)}
       disabled={!operator}
       options={valueOptions}
