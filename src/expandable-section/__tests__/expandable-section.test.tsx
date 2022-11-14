@@ -183,14 +183,16 @@ describe('Variant container with headerText', () => {
     expect(content).toHaveAttribute('aria-label', 'ARIA Label');
     expect(headerButton).not.toHaveAttribute('aria-labelledby');
   });
-  test('set aria-labelledby from header when no headerAriaLabel is set', () => {
+  test('set aria-labelledby when no headerAriaLabel is set', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
       headerText: 'Header component',
+      headerCounter: '(5)',
+      headerDescription: 'Expand to see more content',
     });
-    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
-    const headerId = wrapper.findHeader().getElement().getAttribute('id');
-    expect(headerButton).toHaveAttribute('aria-labelledby', headerId);
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement()!.getAttribute('aria-labelledby');
+    const screenreaderElement = wrapper.findHeader().find(`#${headerButton}`)!.getElement();
+    expect(screenreaderElement.textContent).toBe('Header component (5) Expand to see more content');
   });
   test('button should put under h1', () => {
     const wrapper = renderExpandableSection({

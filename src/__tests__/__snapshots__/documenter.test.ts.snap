@@ -5267,18 +5267,6 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     Object {
-      "description": "Supplementary text below the heading. Use with container variant.",
-      "name": "headerDescription",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "The heading text. Use with container variant. Plain text is recommended.",
-      "name": "headerText",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
 provided by the headingTagVariant. Use with container variant.",
       "inlineType": Object {
@@ -5356,6 +5344,16 @@ When using the container variant, use additional header props instead. Otherwise
 ",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Supplementary text below the heading. Use with container variant.",
+      "isDefault": false,
+      "name": "headerDescription",
+    },
+    Object {
+      "description": "The heading text. Use with container variant. Plain text is recommended.",
+      "isDefault": false,
+      "name": "headerText",
     },
   ],
   "releaseStatus": "stable",

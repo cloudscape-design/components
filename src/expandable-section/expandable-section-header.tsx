@@ -1,20 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
-import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import React, { KeyboardEventHandler, MouseEventHandler, ReactNode, useState } from 'react';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { generateUniqueId } from '../internal/hooks/use-unique-id';
 
 interface ExpandableSectionHeaderProps {
   id: string;
   className?: string;
   variant: ExpandableSectionProps.Variant;
   children?: ReactNode;
-  headerText?: string;
-  headerDescription?: string;
+  headerText?: ReactNode;
+  headerDescription?: ReactNode;
   headerCounter?: string;
   headingTagVariant: ExpandableSectionProps.HeadingVariant;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
@@ -46,6 +48,8 @@ export const ExpandableSectionHeader = ({
   onClick,
 }: ExpandableSectionHeaderProps) => {
   const focusVisible = useFocusVisible();
+  const [focused, setFocus] = useState(false);
+  const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
 
   const icon = (
     <InternalIcon
@@ -80,7 +84,12 @@ export const ExpandableSectionHeader = ({
 
   if (variant === 'container' && headerText) {
     return (
-      <div id={id} className={clsx(className, triggerClassName, expanded && styles.expanded)} onClick={onClick}>
+      <div
+        id={id}
+        className={clsx(className, triggerClassName, focused && styles['header-focused'], expanded && styles.expanded)}
+        onClick={onClick}
+        {...focusVisible}
+      >
         <InternalHeader
           variant={headingTagVariant}
           description={headerDescription}
@@ -88,20 +97,25 @@ export const ExpandableSectionHeader = ({
           headingTagOverride={headingTagOverride}
         >
           <span
-            className={styles.focusable}
+            className={styles['header-container-button']}
             role="button"
             tabIndex={0}
             onKeyUp={onKeyUp}
             onKeyDown={onKeyDown}
+            onFocus={() => setFocus(true)}
+            onBlur={() => setFocus(false)}
             aria-label={ariaLabel}
-            aria-labelledby={ariaLabel ? undefined : id}
-            {...focusVisible}
+            // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
+            aria-labelledby={ariaLabel ? undefined : screenreaderContentId}
             {...ariaAttributes}
           >
             <span className={styles['icon-container']}>{icon}</span>
             <span>{headerText}</span>
           </span>
         </InternalHeader>
+        <ScreenreaderOnly id={screenreaderContentId}>
+          {headerText} {headerCounter} {headerDescription}
+        </ScreenreaderOnly>
       </div>
     );
   }
