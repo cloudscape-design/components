@@ -99,15 +99,14 @@ export default function InternalExpandableSection({
           className={clsx(styles.header, styles[`header-${variant}`])}
           variant={variant}
           expanded={!!expanded}
+          header={header}
           headerText={headerText}
           headerDescription={headerDescription}
           headerCounter={headerCounter}
           headingTagVariant={headingTagVariant}
           headingTagOverride={headingTagOverride}
           {...triggerProps}
-        >
-          {header}
-        </ExpandableSectionHeader>
+        />
       }
       __internalRootRef={__internalRootRef}
     >

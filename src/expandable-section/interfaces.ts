@@ -47,21 +47,20 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * Heading displayed above the content text.
-   *
-   * When using the container variant, use additional header props instead. Otherwise, use plain text.
+   * **Deprecated**, use headerText instead.
+   * @deprecated
    */
   header?: React.ReactNode;
 
   /**
-   * The heading text. Use with container variant. Plain text is recommended.
+   * Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.
    */
   headerText?: React.ReactNode;
 
   /**
    * Supplementary text below the heading. Use with container variant.
    */
-  headerDescription?: React.ReactNode;
+  headerDescription?: string;
 
   /**
    * Specifies secondary text that's displayed to the right of the heading title. Use with container variant.

@@ -41,7 +41,7 @@ export default function () {
         <ExpandableSection
           onChange={({ detail }) => setExpanded(detail.expanded)}
           variant="container"
-          header={<Header variant={'h2'}>Expandable Section</Header>}
+          headerText="Expandable Section"
           expanded={expanded}
         >
           <SpaceBetween direction="vertical" size="m">

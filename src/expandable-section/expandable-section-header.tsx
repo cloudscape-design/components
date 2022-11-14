@@ -14,7 +14,7 @@ interface ExpandableSectionHeaderProps {
   id: string;
   className?: string;
   variant: ExpandableSectionProps.Variant;
-  children?: ReactNode;
+  header?: ReactNode;
   headerText?: ReactNode;
   headerDescription?: ReactNode;
   headerCounter?: string;
@@ -33,7 +33,7 @@ export const ExpandableSectionHeader = ({
   id,
   className,
   variant,
-  children,
+  header,
   headerText,
   headerDescription,
   headerCounter,
@@ -76,7 +76,7 @@ export const ExpandableSectionHeader = ({
         >
           {icon}
         </button>
-        {children}
+        {headerText ?? header}
       </div>
     );
   }
@@ -131,7 +131,7 @@ export const ExpandableSectionHeader = ({
       {...ariaAttributes}
     >
       <div className={styles['icon-container']}>{icon}</div>
-      {children}
+      {headerText ?? header}
     </div>
   );
 };

@@ -14,7 +14,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
   {
     expanded: [true, false],
     variant: ['default'],
-    header: [
+    headerText: [
       'Default Example Header',
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       <div>
@@ -29,7 +29,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
   {
     expanded: [true],
     variant: ['footer'],
-    header: [
+    headerText: [
       'Footer Example Header',
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
@@ -95,7 +95,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
   {
     expanded: [true, false],
     variant: ['navigation'],
-    header: [
+    headerText: [
       'Navigation Example Header',
       'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       <div>
@@ -108,7 +108,7 @@ const permutations = createPermutations<ExpandableSectionProps>([
     expanded: [true],
     headerAriaLabel: ['Header with ARIA label (ARIA)'],
     variant: ['default', 'footer', 'navigation'],
-    header: ['Header with ARIA label'],
+    headerText: ['Header with ARIA label'],
     children: ['Sample content'],
   },
 ]);

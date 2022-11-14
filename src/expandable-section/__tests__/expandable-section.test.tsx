@@ -32,7 +32,7 @@ describe('Expandable Section', () => {
   describe('slots', () => {
     test('populates header slot correctly', () => {
       const wrapper = renderExpandableSection({
-        header: 'Test Header',
+        headerText: 'Test Header',
       });
       const header = wrapper.findHeader().getElement();
       expect(header).toHaveTextContent('Test Header');
@@ -144,7 +144,7 @@ describe('Variant container with headerText', () => {
     await expect(container).toValidateA11y();
   });
 
-  test('header button have aria-controls assiciated to expanded content', () => {
+  test('header button have aria-controls associated to expanded content', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
       headerText: 'Header component',

@@ -58,7 +58,7 @@ export default function SimpleContainers() {
           <Container
             header={<Header variant="h2">With expandable footer</Header>}
             footer={
-              <ExpandableSection header="Additional settings" variant="footer">
+              <ExpandableSection headerText="Additional settings" variant="footer">
                 Place additional form fields here.
               </ExpandableSection>
             }
