@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
-import React, { KeyboardEventHandler, MouseEventHandler, ReactNode, useState } from 'react';
+import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
@@ -48,7 +48,6 @@ export const ExpandableSectionHeader = ({
   onClick,
 }: ExpandableSectionHeaderProps) => {
   const focusVisible = useFocusVisible();
-  const [focused, setFocus] = useState(false);
   const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
 
   const icon = (
@@ -86,7 +85,7 @@ export const ExpandableSectionHeader = ({
     return (
       <div
         id={id}
-        className={clsx(className, triggerClassName, focused && styles['header-focused'], expanded && styles.expanded)}
+        className={clsx(className, triggerClassName, expanded && styles.expanded)}
         onClick={onClick}
         {...focusVisible}
       >
@@ -102,8 +101,6 @@ export const ExpandableSectionHeader = ({
             tabIndex={0}
             onKeyUp={onKeyUp}
             onKeyDown={onKeyDown}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
             aria-label={ariaLabel}
             // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
             aria-labelledby={ariaLabel ? undefined : screenreaderContentId}

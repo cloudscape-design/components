@@ -90,7 +90,8 @@
 
   &-container {
     width: 100%;
-    &.header-focused[data-awsui-focus-visible='true'] {
+
+    &[data-awsui-focus-visible='true']:focus-within {
       outline: none;
       text-decoration: none;
 
