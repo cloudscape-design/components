@@ -16,9 +16,11 @@ of the Tools component flex container and should consume 100% of the
 parent height.
 */
 section.split-panel-bottom {
+  align-self: end;
   bottom: var(#{custom-props.$footerHeight});
   display: none;
   grid-column: 1 / 6;
+  grid-row: 5;
   height: auto;
   position: sticky;
   z-index: 851;

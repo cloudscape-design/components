@@ -5,11 +5,20 @@
 
 @use '../../internal/styles/' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .container {
   grid-column: 3;
   grid-row: 4 / span 2;
   padding-bottom: awsui.$space-layout-content-bottom;
+
+  &.has-split-panel:not(.is-split-panel-open).split-panel-position-bottom {
+    padding-bottom: var(#{custom-props.$splitPanelReportedHeaderSize});
+  }
+
+  &.has-split-panel.is-split-panel-open.split-panel-position-bottom {
+    padding-bottom: var(#{custom-props.$splitPanelReportedSize});
+  }
 
   /*
   If disableContentPaddings is enabled then the Main content has a different 
