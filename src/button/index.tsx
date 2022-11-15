@@ -6,6 +6,7 @@ import { ButtonProps } from './interfaces';
 import { InternalButton } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import LiveRegion from '../internal/components/live-region';
 
 export { ButtonProps };
 
@@ -20,6 +21,7 @@ const Button = React.forwardRef(
       iconAlt,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       wrapText = true,
       href,
@@ -37,30 +39,33 @@ const Button = React.forwardRef(
     const baseComponentProps = useBaseComponent('Button');
     const baseProps = getBaseProps(props);
     return (
-      <InternalButton
-        {...baseProps}
-        {...baseComponentProps}
-        ref={ref}
-        iconName={iconName}
-        iconAlign={iconAlign}
-        iconUrl={iconUrl}
-        iconSvg={iconSvg}
-        iconAlt={iconAlt}
-        variant={variant}
-        loading={loading}
-        disabled={disabled}
-        wrapText={wrapText}
-        href={href}
-        target={target}
-        download={download}
-        formAction={formAction}
-        ariaLabel={ariaLabel}
-        onClick={onClick}
-        onFollow={onFollow}
-        ariaExpanded={ariaExpanded}
-      >
-        {children}
-      </InternalButton>
+      <>
+        <InternalButton
+          {...baseProps}
+          {...baseComponentProps}
+          ref={ref}
+          iconName={iconName}
+          iconAlign={iconAlign}
+          iconUrl={iconUrl}
+          iconSvg={iconSvg}
+          iconAlt={iconAlt}
+          variant={variant}
+          loading={loading}
+          disabled={disabled}
+          wrapText={wrapText}
+          href={href}
+          target={target}
+          download={download}
+          formAction={formAction}
+          ariaLabel={ariaLabel}
+          onClick={onClick}
+          onFollow={onFollow}
+          ariaExpanded={ariaExpanded}
+        >
+          {children}
+        </InternalButton>
+        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+      </>
     );
   }
 );

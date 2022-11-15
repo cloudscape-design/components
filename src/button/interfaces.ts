@@ -16,6 +16,10 @@ export interface ButtonProps extends BaseComponentProps {
    */
   loading?: boolean;
   /**
+   * Specifies the text that's displayed when the button is in a loading state.
+   */
+  loadingText?: string;
+  /**
    * Displays an icon next to the text. You can use the `iconAlign` property to position the icon.
    */
   iconName?: IconProps.Name;

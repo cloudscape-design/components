@@ -13,7 +13,7 @@ import { Instance, generateItems } from '../table/generate-data';
 import { EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const cardDefinition: CardsProps.CardDefinition<Instance> = {
+export const cardDefinition: CardsProps.CardDefinition<Instance> = {
   header: item => <Link fontSize="heading-m">{item.id}</Link>,
   sections: [
     {

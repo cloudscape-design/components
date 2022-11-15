@@ -48,6 +48,10 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    * It prevents clicks.
    */
   loading?: boolean;
+  /**
+   * Specifies the text that's displayed when the button dropdown is in a loading state.
+   */
+  loadingText?: string;
   /** Determines the general styling of the button dropdown.
    * * `primary` for primary buttons
    * * `normal` for secondary buttons
