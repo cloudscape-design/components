@@ -50,3 +50,7 @@
     display: block;
   }
 }
+.virtual-item {
+  @include styles.awsui-util-hide;
+  visibility: hidden;
+}
