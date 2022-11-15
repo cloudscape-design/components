@@ -170,8 +170,6 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
 }: ExpandableSectionHeaderProps) => {
-  //const focusVisible = useFocusVisible();
-
   const icon = (
     <InternalIcon
       size={variant === 'container' ? 'medium' : 'normal'}
