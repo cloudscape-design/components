@@ -119,7 +119,18 @@ test(
     await expect(page.getPanelPosition()).resolves.toEqual('side');
   })
 );
+test(
+  'switches to bottom position when screen resizes to mobile',
+  setupTest(async page => {
+    await page.openPanel();
+    await page.switchPosition('side');
+    await expect(page.getPanelPosition()).resolves.toEqual('side');
 
+    await page.setWindowSize(viewports.mobile);
+    await expect(page.getPanelPosition()).resolves.toEqual('bottom');
+    await expect(page.getContentMarginBottom()).resolves.toEqual('160px');
+  })
+);
 test(
   'switches to bottom position when screen is too narrow and restores back on resize',
   setupTest(async page => {

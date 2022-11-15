@@ -162,11 +162,15 @@ const OldAppLayout = React.forwardRef(
       footerSelector,
       disableBodyScroll
     );
+    const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
+
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
     const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
-      [splitPanel]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [splitPanel, isSplitpanelForcedPosition]
     );
+
     const splitPanelHeaderRefObject = useRef(null);
     const splitPanelHeaderRef = useMergeRefs(splitPanelHeaderMeasureRef, splitPanelHeaderRefObject);
     const anyPanelOpen = navigationVisible || toolsVisible;
@@ -188,7 +192,7 @@ const OldAppLayout = React.forwardRef(
     const [splitPanelHeight, splitPanelRef] = useContainerQuery(
       rect => (splitPanel ? rect.height : 0),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [splitPanel, splitPanelPosition]
+      [splitPanel, splitPanelPosition, isSplitpanelForcedPosition]
     );
 
     const closedDrawerWidth = 40;
@@ -273,8 +277,7 @@ const OldAppLayout = React.forwardRef(
       }
     });
 
-    const [isForcedPosition, setIsForcedPosition] = useState(false);
-    const finalSplitPanePosition = isForcedPosition ? 'bottom' : splitPanelPosition;
+    const finalSplitPanePosition = isSplitpanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = Boolean(splitPanel) && finalSplitPanePosition === 'side';
     const splitPanelOpenOnTheSide = splitPaneAvailableOnTheSide && splitPanelOpen;
@@ -293,7 +296,7 @@ const OldAppLayout = React.forwardRef(
 
     useEffect(() => {
       const contentWidth = contentWidthWithSplitPanel - splitPanelSize;
-      setIsForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
+      setIsSplitpanelForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
       // This is a workaround to avoid a forced position due to splitPanelSize, which is
       // user controlled variable.
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -329,7 +332,7 @@ const OldAppLayout = React.forwardRef(
       isOpen: splitPanelOpen,
       isMobile,
       isRefresh: false,
-      isForcedPosition,
+      isForcedPosition: isSplitpanelForcedPosition,
       lastInteraction: splitPanelLastInteraction,
       splitPanelRef,
       splitPanelHeaderRef,
