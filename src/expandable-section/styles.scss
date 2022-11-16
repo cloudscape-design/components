@@ -99,6 +99,7 @@
     &[data-awsui-focus-visible='true']:focus-within {
       outline: none;
       text-decoration: none;
+      padding: container.$header-focus-visible-padding;
 
       @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
     }
