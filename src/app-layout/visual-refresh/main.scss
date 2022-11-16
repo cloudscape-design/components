@@ -12,6 +12,12 @@
   grid-row: 4 / span 2;
   padding-bottom: awsui.$space-layout-content-bottom;
 
+  /*
+  If the split panel is in the bottom position additional padding will need to be 
+  added to the content area. This is to ensure that the user is able to scroll
+  far enough to see all of the content that would otherwise be obscured by the 
+  sticky position of the split panel.
+  */
   &.has-split-panel:not(.is-split-panel-open).split-panel-position-bottom {
     padding-bottom: calc(var(#{custom-props.$splitPanelReportedHeaderSize}) + #{awsui.$space-layout-content-bottom});
   }

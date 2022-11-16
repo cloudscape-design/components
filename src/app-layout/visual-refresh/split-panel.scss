@@ -8,20 +8,27 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
-When the Split Panel is in the bottom position it will be an additional
-row entry in the grid definition within the Layout component. The state of 
-the Navigation and Tools components will adjust the start and end column
-within. In the bottom position, the Split Panel is simply a direct child 
-of the Tools component flex container and should consume 100% of the 
-parent height.
+When the Split Panel is in the bottom position it was share the same row 
+as the content area. This row is defined as 1 fractional unit which will 
+consume the remaining vertical space in the grid after the notifications 
+and breadcrumbs.
 */
 section.split-panel-bottom {
+  /*
+  The align self property will position the split panel at the bottom of the grid row.
+  This could be off the viewport if the content area has enough content to be scrollable.
+  */
   align-self: end;
   bottom: var(#{custom-props.$footerHeight});
   display: none;
   grid-column: 1 / 6;
   grid-row: 5;
   height: auto;
+  /* 
+  The position sticky will work in conjunction with the align self: end; property.
+  If the grid row scrolls beyond the viewport, the sticky bottom position 
+  will lift it up above the footer so it is always visible.
+  */
   position: sticky;
   z-index: 851;
 
