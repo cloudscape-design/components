@@ -263,7 +263,7 @@ const InternalTable = React.forwardRef(
                       >
                         {loading ? (
                           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-                            <LiveRegion>{loadingText}</LiveRegion>
+                            <LiveRegion visible={true}>{loadingText}</LiveRegion>
                           </InternalStatusIndicator>
                         ) : (
                           <div className={styles.empty}>{empty}</div>

@@ -85,7 +85,7 @@ export default function TutorialList({
         */}
           {loading ? (
             <InternalStatusIndicator type="loading">
-              <LiveRegion>{i18nStrings.loadingText}</LiveRegion>
+              <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
             </InternalStatusIndicator>
           ) : (
             <>

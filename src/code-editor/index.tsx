@@ -261,7 +261,7 @@ export default function CodeEditor(props: CodeEditorProps) {
     >
       {props.loading && (
         <LoadingScreen>
-          <LiveRegion>{i18nStrings.loadingState}</LiveRegion>
+          <LiveRegion visible={true}>{i18nStrings.loadingState}</LiveRegion>
         </LoadingScreen>
       )}
 

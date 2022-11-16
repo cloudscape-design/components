@@ -140,7 +140,7 @@ export const S3InContext = React.forwardRef(
           {loading && (
             <InternalBox margin={{ top: 's' }}>
               <InternalStatusIndicator type="loading">
-                <LiveRegion>{i18nStrings?.inContextLoadingText}</LiveRegion>
+                <LiveRegion visible={true}>{i18nStrings?.inContextLoadingText}</LiveRegion>
               </InternalStatusIndicator>
             </InternalBox>
           )}
