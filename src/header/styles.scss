@@ -45,7 +45,7 @@
 }
 
 .main {
-  @include styles.text-wrapping;
+  @include styles.text-flex-wrapping;
   :not(.root-no-actions) > & {
     margin-right: awsui.$space-xs;
   }
