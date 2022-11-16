@@ -220,7 +220,7 @@ export const ExpandableSectionHeader = ({
   if (variant === 'container' && header && isDevelopment) {
     warnOnce(
       'ExpandableSection',
-      'Do not use <Header> in header, use headerText instead. For a11y, provide the button within the heading.'
+      'Use `headerText` instead of `header` to provide the button within the heading for a11y.'
     );
   }
 
