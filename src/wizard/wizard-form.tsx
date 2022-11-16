@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
@@ -10,6 +10,7 @@ import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import useFocusVisible from '../internal/hooks/focus-visible';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -24,7 +25,6 @@ interface WizardFormProps {
   onPreviousClick: () => void;
   onPrimaryClick: () => void;
   onSkipToClick: (stepIndex: number) => void;
-  __headerRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 export default function WizardForm({
@@ -40,12 +40,18 @@ export default function WizardForm({
   onPreviousClick,
   onPrimaryClick,
   onSkipToClick,
-  __headerRef,
 }: WizardFormProps) {
   const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const isMobile = useMobile();
+  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffectOnUpdate(() => {
+    if (stepHeaderRef && stepHeaderRef.current) {
+      stepHeaderRef.current?.focus();
+    }
+  }, [activeStepIndex]);
 
   const focusVisible = useFocusVisible();
 
@@ -68,7 +74,7 @@ export default function WizardForm({
           {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
-          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={__headerRef} {...focusVisible}>
+          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef} {...focusVisible}>
             {title}
             {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
           </span>
