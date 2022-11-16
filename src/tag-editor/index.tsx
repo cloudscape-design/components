@@ -238,7 +238,7 @@ const TagEditor = React.forwardRef(
       return (
         <div className={styles.root} ref={baseComponentProps.__internalRootRef}>
           <InternalStatusIndicator className={styles.loading} type="loading">
-            <LiveRegion>{i18nStrings.loading}</LiveRegion>
+            <LiveRegion visible={true}>{i18nStrings.loading}</LiveRegion>
           </InternalStatusIndicator>
         </div>
       );

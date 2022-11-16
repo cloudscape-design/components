@@ -22,7 +22,7 @@ export default function HelpPanel({ header, footer, children, loading, loadingTe
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
       <InternalStatusIndicator type="loading">
-        <LiveRegion>{loadingText}</LiveRegion>
+        <LiveRegion visible={true}>{loadingText}</LiveRegion>
       </InternalStatusIndicator>
     </div>
   ) : (

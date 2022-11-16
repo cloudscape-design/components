@@ -11,6 +11,7 @@ import styles from './styles.css.js';
 export interface LiveRegionProps extends ScreenreaderOnlyProps {
   assertive?: boolean;
   delay?: number;
+  visible?: boolean;
   children: React.ReactNode;
 }
 
@@ -49,7 +50,7 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
 */
 export default memo(LiveRegion);
 
-function LiveRegion({ assertive = false, delay = 10, children, ...restProps }: LiveRegionProps) {
+function LiveRegion({ assertive = false, delay = 10, visible = false, children, ...restProps }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement>(null);
   const targetRef = useRef<HTMLSpanElement>(null);
 
@@ -93,13 +94,17 @@ function LiveRegion({ assertive = false, delay = 10, children, ...restProps }: L
   });
 
   return (
-    <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
-      <span aria-hidden="true">
-        <span ref={sourceRef}>{children}</span>
-      </span>
+    <>
+      {visible && children}
 
-      <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
-    </ScreenreaderOnly>
+      <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
+        <span aria-hidden="true">
+          <span ref={sourceRef}>{children}</span>
+        </span>
+
+        <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
+      </ScreenreaderOnly>
+    </>
   );
 }
 

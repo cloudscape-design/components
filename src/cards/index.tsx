@@ -100,7 +100,7 @@ const Cards = React.forwardRef(function <T = any>(
     status = (
       <div className={styles.loading}>
         <InternalStatusIndicator type="loading">
-          <LiveRegion>{loadingText}</LiveRegion>
+          <LiveRegion visible={true}>{loadingText}</LiveRegion>
         </InternalStatusIndicator>
       </div>
     );
