@@ -95,12 +95,14 @@ function LiveRegion({ assertive = false, delay = 10, visible = false, children, 
 
   return (
     <>
-      {visible && children}
+      {visible && <span ref={sourceRef}>{children}</span>}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
-        <span aria-hidden="true">
-          <span ref={sourceRef}>{children}</span>
-        </span>
+        {!visible && (
+          <span ref={sourceRef} aria-hidden="true">
+            {children}
+          </span>
+        )}
 
         <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
       </ScreenreaderOnly>
