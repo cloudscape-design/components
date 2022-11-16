@@ -13,11 +13,11 @@
   padding-bottom: awsui.$space-layout-content-bottom;
 
   &.has-split-panel:not(.is-split-panel-open).split-panel-position-bottom {
-    padding-bottom: var(#{custom-props.$splitPanelReportedHeaderSize});
+    padding-bottom: calc(var(#{custom-props.$splitPanelReportedHeaderSize}) + #{awsui.$space-layout-content-bottom});
   }
 
   &.has-split-panel.is-split-panel-open.split-panel-position-bottom {
-    padding-bottom: var(#{custom-props.$splitPanelReportedSize});
+    padding-bottom: calc(var(#{custom-props.$splitPanelReportedSize}) + #{awsui.$space-layout-content-bottom});
   }
 
   /*

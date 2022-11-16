@@ -25,13 +25,10 @@ export default function Main() {
     isAnyPanelOpen,
     mainElement,
     splitPanel,
+    splitPanelReportedSize,
   } = useContext(AppLayoutContext);
 
-  const {
-    getHeader: getSplitPanelHeader,
-    position: splitPanelPosition,
-    size: splitPanelSize,
-  } = useContext(SplitPanelContext);
+  const { getHeader: getSplitPanelHeader, position: splitPanelPosition } = useContext(SplitPanelContext);
 
   const splitPanelReportedHeaderSize = useObservedElement(getSplitPanelHeader);
   const isUnfocusable = isMobile && isAnyPanelOpen;
@@ -59,7 +56,7 @@ export default function Main() {
       ref={mainElement}
       style={{
         [customCssProps.splitPanelReportedHeaderSize]: `${splitPanelReportedHeaderSize}px`,
-        [customCssProps.splitPanelReportedSize]: `${splitPanelSize}px`,
+        [customCssProps.splitPanelReportedSize]: `${splitPanelReportedSize}px`,
       }}
     >
       {content}
