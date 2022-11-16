@@ -51,9 +51,15 @@ export default function Wizard({
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
+  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
+  const delegateFocusToHeader = () => {
+    stepHeaderRef.current?.focus();
+  };
+
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     setActiveStepIndex(requestedStepIndex);
     fireNonCancelableEvent(onNavigate, { requestedStepIndex, reason });
+    delegateFocusToHeader();
   };
   const onStepClick = (stepIndex: number) => navigationEvent(stepIndex, 'step');
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
@@ -114,6 +120,7 @@ export default function Wizard({
             onPreviousClick={onPreviousClick}
             onSkipToClick={onSkipToClick}
             onPrimaryClick={onPrimaryClick}
+            __headerRef={stepHeaderRef}
           />
         </div>
       </div>

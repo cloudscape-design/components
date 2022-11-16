@@ -172,10 +172,6 @@
     font-weight: awsui.$font-heading-m-weight;
     line-height: awsui.$font-heading-m-line-height;
   }
-
-  @include focus-visible.when-visible {
-    @include styles.link-focus;
-  }
 }
 
 .heading-text {

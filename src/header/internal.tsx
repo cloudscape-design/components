@@ -9,11 +9,9 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { HeaderProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
-import useFocusVisible from '../internal/hooks/focus-visible';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
-  __headingTabIndex?: number;
 }
 
 export default function InternalHeader({
@@ -26,10 +24,8 @@ export default function InternalHeader({
   info,
   __internalRootRef = null,
   __disableActionsWrapping,
-  __headingTabIndex,
   ...restProps
 }: InternalHeaderProps) {
-  const focusVisible = useFocusVisible();
   const HeadingTag = headingTagOverride ?? (variant === 'awsui-h1-sticky' ? 'h1' : variant);
   const { isStuck } = useContext(StickyHeaderContext);
   const baseProps = getBaseProps(restProps);
@@ -64,11 +60,7 @@ export default function InternalHeader({
             isRefresh && styles[`title-variant-${variantOverride}-refresh`]
           )}
         >
-          <HeadingTag
-            className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}
-            tabIndex={__headingTabIndex}
-            {...focusVisible}
-          >
+          <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
             <span className={styles['heading-text']}>{children}</span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>

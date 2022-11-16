@@ -257,7 +257,15 @@
   }
 }
 
-.form-header-component,
+.form-header-component {
+  &-wrapper {
+    outline: none;
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+}
+
 .navigation-link,
 .navigation-link-item,
 .navigation-link-label {

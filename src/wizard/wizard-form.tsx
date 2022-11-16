@@ -1,15 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import InternalForm from '../form/internal';
-import FocusableHeader from '../header/focusable-header';
+import InternalHeader from '../header/internal';
 import { useMobile } from '../internal/hooks/use-mobile';
 import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import useFocusVisible from '../internal/hooks/focus-visible';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -24,6 +24,7 @@ interface WizardFormProps {
   onPreviousClick: () => void;
   onPrimaryClick: () => void;
   onSkipToClick: (stepIndex: number) => void;
+  __headerRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 export default function WizardForm({
@@ -39,18 +40,14 @@ export default function WizardForm({
   onPreviousClick,
   onPrimaryClick,
   onSkipToClick,
+  __headerRef,
 }: WizardFormProps) {
   const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const isMobile = useMobile();
-  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
 
-  useEffectOnUpdate(() => {
-    if (stepHeaderRef && stepHeaderRef.current) {
-      stepHeaderRef.current?.focus();
-    }
-  }, [activeStepIndex]);
+  const focusVisible = useFocusVisible();
 
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =
@@ -70,16 +67,12 @@ export default function WizardForm({
         >
           {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
-        <FocusableHeader
-          className={styles['form-header-component']}
-          tagVariant={'h1'}
-          description={description}
-          info={info}
-          __internalRootRef={stepHeaderRef}
-        >
-          {title}
-          {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-        </FocusableHeader>
+        <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
+          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={__headerRef} {...focusVisible}>
+            {title}
+            {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+          </span>
+        </InternalHeader>
       </WizardFormHeader>
       <InternalForm
         className={clsx(styles['form-component'])}
