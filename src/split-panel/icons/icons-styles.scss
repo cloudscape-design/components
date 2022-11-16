@@ -54,6 +54,9 @@
   &--disabled {
     fill: awsui.$color-background-control-disabled;
   }
+  &--column-header {
+    fill: awsui.$color-text-input-disabled;
+  }
   &--window {
     stroke: awsui.$color-background-home-header;
     fill: awsui.$color-background-container-content;
@@ -65,7 +68,7 @@
     fill: awsui.$color-text-body-default;
   }
   &--separator {
-    stroke: awsui.$color-border-button-primary-disabled;
+    stroke: awsui.$color-border-divider-default;
   }
   &--input-default {
     fill: awsui.$color-border-input-default;

@@ -5,11 +5,6 @@ import { ChartScale, NumericChartScale } from '../../internal/components/cartesi
 import { ChartDataTypes, XDomain, YDomain, YScaleType } from '../../internal/components/cartesian-chart/interfaces';
 import { ChartModel } from './index';
 
-interface ThrottledFunction<F extends (...args: any) => any> {
-  (...args: Parameters<F>): void;
-  cancel(): void;
-}
-
 // A sufficiently small value.
 // The Number.EPSILON is not available in the target ECMA version.
 // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/EPSILON
@@ -183,59 +178,6 @@ export function circleIndex(index: number, [from, to]: [number, number]): number
     return from;
   }
   return index;
-}
-
-// Delays function execution
-export function throttle<F extends (...args: any) => any>(func: F, delay: number): ThrottledFunction<F> {
-  let pending: null | { this: any; args: any } = null;
-  let lastInvokeTime: null | number = null;
-  let timerId: null | number = null;
-
-  // Runs on every animation frame until timer stopped.
-  function pendingFunc() {
-    if (pending && lastInvokeTime !== null) {
-      const time = Date.now();
-      const shouldInvoke = time - lastInvokeTime >= delay;
-
-      if (shouldInvoke) {
-        func.apply(pending.this, pending.args);
-        lastInvokeTime = time;
-        pending = null;
-      } else {
-        startTimer();
-      }
-    }
-  }
-
-  function startTimer() {
-    if (timerId) {
-      cancelAnimationFrame(timerId);
-    }
-    timerId = requestAnimationFrame(pendingFunc);
-  }
-
-  // Decorated client function with delay mechanism.
-  function throttled(this: any, ...args: any) {
-    if (lastInvokeTime === null) {
-      func.apply(this, args);
-      lastInvokeTime = Date.now();
-    } else {
-      pending = { this: this, args };
-      startTimer();
-    }
-  }
-
-  // Prevents delayed function from execution when no longer needed.
-  throttled.cancel = () => {
-    if (timerId) {
-      cancelAnimationFrame(timerId);
-    }
-    pending = null;
-    lastInvokeTime = null;
-    timerId = null;
-  };
-
-  return throttled;
 }
 
 // Compares all x-values between series to ensure they are consistent.

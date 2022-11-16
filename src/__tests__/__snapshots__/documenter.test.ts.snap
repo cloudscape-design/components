@@ -45,6 +45,12 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "string",
     },
     Object {
+      "description": "Provides a text alternative for the icon.",
+      "name": "statusIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "\\"info\\"",
       "description": "Specifies the type of message you want to display.",
       "inlineType": Object {
@@ -338,6 +344,14 @@ Object {
       "description": "Manually closes the navigation drawer if it is necessary for the current
 viewport size.",
       "name": "closeNavigationIfNecessary",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
       "parameters": Array [],
       "returnType": "void",
     },
@@ -1049,6 +1063,23 @@ A maximum of four fields are supported.
       "type": "boolean",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "AttributeEditorProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AttributeEditorProps.I18nStrings",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -1283,7 +1314,20 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
       "name": "onSelect",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Selects all text in the input control.",
+      "name": "select",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Autosuggest",
   "properties": Array [
     Object {
@@ -2642,6 +2686,12 @@ It prevents users from clicking the button.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text that screen reader announces when the button is in a loading state.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -2886,6 +2936,12 @@ It prevents clicks.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text that screen reader announces when the button dropdown is in a loading state.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
@@ -2913,6 +2969,128 @@ It prevents clicks.",
       "name": "children",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for calendar matches the snapshot: calendar 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called whenever a user changes the input value (by typing, pasting, or selecting a value).
+The event \`detail\` contains the current value of the field.",
+      "detailInlineType": Object {
+        "name": "CalendarProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "CalendarProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [],
+  "name": "Calendar",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the calendar.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the calendar.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the calendar.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Defines whether a particular date is enabled in the calendar or not.
+If you disable a date in the calendar, users can still enter this date using a keyboard.
+We recommend that you also validate these constraints on the client-side and server-side
+as you would for other form elements.",
+      "inlineType": Object {
+        "name": "CalendarProps.IsDateEnabledFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "boolean",
+        "type": "function",
+      },
+      "name": "isDateEnabled",
+      "optional": true,
+      "type": "CalendarProps.IsDateEnabledFunction",
+    },
+    Object {
+      "defaultValue": "\\"\\"",
+      "description": "Specifies the locale to use to render month names and determine the starting day of the week.
+If you don't provide this, the locale is determined by the page and browser locales.
+Supported values and formats are listed in the
+[JavaScript Intl API specification](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).",
+      "name": "locale",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies an \`aria-label\` for the 'next month' button.",
+      "name": "nextMonthAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies an \`aria-label\` for the 'previous month' button.",
+      "name": "previousMonthAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "Determines the starting day of the week. The values 0-6 map to Sunday-Saturday.
+By default the starting day of the week is defined by the locale, but you can use this property to override it.",
+      "name": "startOfWeek",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
+      "name": "todayAriaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    Object {
+      "description": "The current input value, in YYYY-MM-DD format.",
+      "name": "value",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;
@@ -3677,6 +3855,29 @@ You can use any theme provided by Ace.
       "type": "Partial<CodeEditorProps.Preferences>",
     },
     Object {
+      "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
+least one dark theme. If not set explicitly, it will render all Ace themes available for selection.",
+      "inlineType": Object {
+        "name": "CodeEditorProps.AvailableThemes",
+        "properties": Array [
+          Object {
+            "name": "dark",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+          Object {
+            "name": "light",
+            "optional": false,
+            "type": "ReadonlyArray<string>",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "themes",
+      "optional": true,
+      "type": "CodeEditorProps.AvailableThemes",
+    },
+    Object {
       "description": "Specifies the content that's displayed in the code editor.",
       "name": "value",
       "optional": false,
@@ -4138,6 +4339,167 @@ If true, the overlap will be removed.",
 }
 `;
 
+exports[`Documenter definition for date-input matches the snapshot: date-input 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when input focus is removed from the UI control.",
+      "detailType": "null",
+      "name": "onBlur",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called whenever a user changes the input value (by typing or pasting).
+The event \`detail\` contains the current value of the field.",
+      "detailInlineType": Object {
+        "name": "InputProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InputProps.ChangeDetail",
+      "name": "onChange",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called when input focus is moved to the UI control.",
+      "detailType": "null",
+      "name": "onFocus",
+    },
+  ],
+  "functions": Array [],
+  "name": "DateInput",
+  "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the native control.
+Use this if you don't have a visible label for this control.
+",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Indicates whether the control should be focused as
+soon as the page loads, which enables the user to
+start typing without having to manually focus the control. Don't
+use this option on pages where the control may be
+scrolled out of the viewport.",
+      "name": "autoFocus",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is disabled, which prevents the
+user from modifying the value and prevents the value from
+being included in a form submission. A disabled control can't
+receive focus.",
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the name of the control used in HTML forms.",
+      "name": "name",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the placeholder text rendered when the value is an empty string.",
+      "name": "placeholder",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies if the control is read only, which prevents the
+user from modifying the value but includes it in a form
+submission. A read-only control can receive focus.
+Don't use read-only inputs outside a form.
+",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the text entered into the form element.",
+      "name": "value",
+      "optional": false,
+      "type": "string",
+    },
+  ],
+  "regions": Array [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for date-picker matches the snapshot: date-picker 1`] = `
 Object {
   "events": Array [
@@ -4514,6 +4876,31 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "boolean",
     },
     Object {
+      "description": "A function that defines timezone offset from UTC in minutes for selected dates.
+Use it to define time relative to the desired timezone.
+The function is called for the start date and the end date and takes a UTC date
+corresponding the selected value as an argument.
+
+Has no effect when \`dateOnly\` is true.
+
+Default: the user's current time offset as provided by the browser.
+",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.GetTimeOffsetFunction",
+        "parameters": Array [
+          Object {
+            "name": "date",
+            "type": "Date",
+          },
+        ],
+        "returnType": "number",
+        "type": "function",
+      },
+      "name": "getTimeOffset",
+      "optional": true,
+      "type": "DateRangePickerProps.GetTimeOffsetFunction",
+    },
+    Object {
       "description": "An object containing all the necessary localized strings required by the component.",
       "inlineType": Object {
         "name": "DateRangePickerProps.I18nStrings",
@@ -4591,6 +4978,11 @@ in a slight, visible lag when scrolling complex pages.",
           Object {
             "name": "endTimeLabel",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -4802,7 +5194,8 @@ display and produce values.
 Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
-",
+
+This property is deprecated. Use getTimeOffset instead.",
       "name": "timeOffset",
       "optional": true,
       "type": "number",
@@ -4872,6 +5265,44 @@ manner if you provide a value for this property.",
       "type": "boolean",
     },
     Object {
+      "description": "Adds \`aria-label\` to the header element.
+Use to assign unique labels when there are multiple expandable sections with the same header text on one page.",
+      "name": "headerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with container variant.
+Behaves similar to the Header component counter.",
+      "name": "headerCounter",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Supplementary text below the heading. Use with container variant.",
+      "name": "headerDescription",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
+h2. Use with container variant.",
+      "inlineType": Object {
+        "name": "ExpandableSectionProps.HeadingTag",
+        "type": "union",
+        "values": Array [
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+        ],
+      },
+      "name": "headingTagOverride",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -4907,11 +5338,14 @@ manner if you provide a value for this property.",
       "name": "children",
     },
     Object {
-      "description": "Heading displayed above the content text.
-When using the container variant, use the Header component. Otherwise, use plain text.
-",
+      "description": "**Deprecated**, use headerText instead.",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.",
+      "isDefault": false,
+      "name": "headerText",
     },
   ],
   "releaseStatus": "stable",
@@ -4948,6 +5382,9 @@ A flash message object contains the following properties:
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
 * \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
+* \`ariaRole\` (boolean) - For flash messages added after page load, specifies how this message is communicated to assistive
+technology. Use \\"status\\" for status updates or informational content. Use \\"alert\\" for important messages that need the
+user's attention.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
@@ -4978,6 +5415,12 @@ Object {
     Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error alert.",
+      "name": "errorIconAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -5897,6 +6340,19 @@ Don't use read-only inputs outside a form.
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
+This value controls the native browser capability to check for spelling/grammar errors.
+If not set, the browser default behavior is to perform spellchecking.
+For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+Make sure it’s deactivated for fields with sensitive information to prevent
+inadvertently sending data (such as user passwords) to third parties.
+",
+      "name": "spellcheck",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "The step attribute is a number that specifies the granularity that the value
 must adhere to or the keyword \\"any\\". It is valid for the numeric input types,
 including the date, month, week, time, datetime-local, number and range types.",
@@ -6403,6 +6859,7 @@ This property is overridden if the variant is \`info\`.",
           "heading-l",
           "heading-xl",
           "display-l",
+          "inherit",
         ],
       },
       "name": "fontSize",
@@ -7469,6 +7926,8 @@ Object {
   "properties": Array [
     Object {
       "description": "Adds aria-labels to the pagination buttons:
+* \`paginationLabel\` (string) - Label for the entire pagination group. It allows users to distinguish context
+* in cases of multiple pagination components in a page.
 * \`previousPageLabel\` (string) - Previous page button.
 * \`pageLabel\` (number => string) - Individual page button, this function is called for every page number that's rendered.
 * \`nextPageLabel\` (string) - Next page button
@@ -7476,6 +7935,7 @@ Example:
 \`\`\`
 {
   nextPageLabel: 'Next page',
+  paginationLabel: 'Table pagination'
   previousPageLabel: 'Previous page',
   pageLabel: pageNumber => \`Page \${pageNumber}\`
 }
@@ -7493,6 +7953,11 @@ Example:
             "name": "pageLabel",
             "optional": true,
             "type": "(pageNumber: number) => string",
+          },
+          Object {
+            "name": "paginationLabel",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "previousPageLabel",
@@ -8630,7 +9095,14 @@ Object {
       "name": "onChange",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "RadioGroup",
   "properties": Array [
     Object {
@@ -8678,11 +9150,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies the ID of the native form element. You can use it to relate
-a label element's \`for\` attribute to this control.
-It defaults to an automatically generated ID that
-is provided by its parent form field component.
-",
+      "description": "Deprecated, has no effect.",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -8762,6 +9230,37 @@ path of the selected resource and \`errorText\` that may contain a validation er
   ],
   "name": "S3ResourceSelector",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-label\` to the component.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Optionally overrides whether a bucket should be disabled for selection in the Buckets view or not.
 It has higher priority than \`selectableItemsTypes\`. Example: if \`selectableItemsTypes\` has \`['buckets']\` value and
@@ -8918,6 +9417,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "inContextViewButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "inContextViewButtonAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10333,32 +10837,17 @@ scroll parent scrolls to reveal the first row of the table.",
   "name": "Table",
   "properties": Array [
     Object {
-      "description": "Specifies label text for the selection components (checkboxes and radio buttons) as follows:
-* Individual items: \`itemSelectionLabel\` [\`(SelectionState, Item) => string\`]
-* Column header: \`allItemsSelectionLabel\` [\`(SelectionState) => string\`]
-* Group label: \`selectionGroupLabel\` [\`string\`]
+      "description": "Specifies alternative text for the selection components (checkboxes and radio buttons) as follows:
+* \`itemSelectionLabel\` ((SelectionState, Item) => string) - Specifies the alternative text for an item.
+* \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
+* \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
+                                   It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
+* \`tableLabel\` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+                          to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
-state of the component (for example, the \`selectedItems\` list). The label function for individual
-items also receives the corresponding  \`Item\` object. You can use the group label to
+state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
+items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
-
-In addition, you can use \`tableLabel\` to provide a label for the table. If you use a
-header for this table, you may reuse the string to provide a caption-like description.
-For example, tableLabel=Instances will be announced as 'Instances table'.
-
-Example:
-\`\`\`
-{
-  selectionGroupLabel: 'Items selection',
-  allItemsSelectionLabel: ({ selectedItems }) =>
-    \`\${selectedItems.length} \${selectedItems.length === 1 ? 'item' : 'items'} selected\`,
-  itemSelectionLabel: ({ selectedItems }, item) => {
-    isItemSelected = selectedItems.filter(i => i.id === item.id).length;
-    return \`\${item.name} is \${isItemSelected ? '' : 'not'} selected\`,
-  tableLabel: \\"Items\\"
- }
-}
-\`\`\`
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
@@ -11393,7 +11882,8 @@ of the user's browser.",
 If you set this to \`true\`, it disables native browser capability
 that checks for spelling/grammar errors.
 If you don't set it, the behavior follows the default behavior
-of the user's browser.",
+of the user's browser.
+This property is deprecated. Use the \`spellcheck\` property instead.",
       "name": "disableBrowserSpellcheck",
       "optional": true,
       "type": "boolean",
@@ -11452,6 +11942,19 @@ Don't use read-only inputs outside a form.
       "type": "number",
     },
     Object {
+      "description": "Specifies the value of the \`spellcheck\` attribute on the native control.
+This value controls the native browser capability to check for spelling/grammar errors.
+If not set, the browser default behavior is to perform spellchecking.
+For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+Make sure it’s deactivated for fields with sensitive information to prevent
+inadvertently sending data (such as user passwords) to third parties.
+",
+      "name": "spellcheck",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies the text entered into the form element.",
       "name": "value",
       "optional": false,
@@ -11484,7 +11987,14 @@ Object {
       "name": "onChange",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the UI control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "Tiles",
   "properties": Array [
     Object {
@@ -12463,6 +12973,7 @@ Defaults to \`false\`.
    - \`stepsCount\` (number) - The total number of steps in the wizard.
 - \`skipToButtonLabel\`: ((targetStep: WizardProps.Step, targetStepNumber: number) => string) - An optional function that accepts the target step object
    and the target step number (1-based indexing), and returns a string to be used as the *skip-to* button label. For example, \\"Skip to Step 2\\" or \\"Skip to end\\".
+- \`navigationAriaLabel\` (string) - The aria label for the navigation pane.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
@@ -12475,6 +12986,16 @@ Defaults to \`false\`.
           Object {
             "name": "cancelButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "navigationAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {

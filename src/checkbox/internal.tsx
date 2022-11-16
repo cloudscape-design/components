@@ -74,13 +74,14 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             onChange={() => {}}
           />
         )}
-        onClick={() =>
+        onClick={() => {
+          checkboxRef.current?.focus();
           fireNonCancelableEvent(
             onChange,
             // for deterministic transitions "indeterminate" -> "checked" -> "unchecked"
             indeterminate ? { checked: true, indeterminate: false } : { checked: !checked, indeterminate: false }
-          )
-        }
+          );
+        }}
         styledControl={<CheckboxIcon checked={checked} indeterminate={indeterminate} disabled={disabled} />}
         __internalRootRef={__internalRootRef}
       />

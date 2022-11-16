@@ -11,11 +11,11 @@ import { FormFieldValidationControlProps } from '../../internal/context/form-fie
 import Option from '../../internal/components/option';
 import { generateUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
+import { joinStrings } from '../../internal/utils/strings';
 
 export interface TriggerProps extends FormFieldValidationControlProps {
   placeholder: string | undefined;
   disabled: boolean | undefined;
-  ariaLabel: string | undefined;
   triggerProps: SelectTriggerProps;
   selectedOption: OptionDefinition | null;
   isOpen?: boolean;
@@ -37,30 +37,24 @@ const Trigger = React.forwardRef(
       isOpen,
       placeholder,
       disabled,
-      ariaLabel,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
     const id = useMemo(() => controlId ?? generateUniqueId(), [controlId]);
+    const triggerContentId = generateUniqueId('trigger-content-');
 
     let triggerContent = null;
     if (!selectedOption) {
       triggerContent = (
-        <span
-          aria-disabled="true"
-          className={clsx(styles.placeholder, styles.trigger)}
-          id={triggerProps.ariaLabelledby}
-        >
+        <span aria-disabled="true" className={clsx(styles.placeholder, styles.trigger)} id={triggerContentId}>
           {placeholder}
         </span>
       );
     } else if (triggerVariant === 'option') {
-      triggerContent = (
-        <Option id={triggerProps.ariaLabelledby} option={{ ...selectedOption, disabled }} triggerVariant={true} />
-      );
+      triggerContent = <Option id={triggerContentId} option={{ ...selectedOption, disabled }} triggerVariant={true} />;
     } else {
       triggerContent = (
-        <span id={triggerProps.ariaLabelledby} className={styles.trigger}>
+        <span id={triggerContentId} className={styles.trigger}>
           {selectedOption.label || selectedOption.value}
         </span>
       );
@@ -77,9 +71,8 @@ const Trigger = React.forwardRef(
         disabled={disabled}
         invalid={invalid}
         inFilteringToken={inFilteringToken}
-        ariaLabel={ariaLabel}
         ariaDescribedby={ariaDescribedby}
-        ariaLabelledby={[ariaLabelledby, triggerProps.ariaLabelledby].filter(label => !!label).join(' ')}
+        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
       >
         {triggerContent}
       </ButtonTrigger>

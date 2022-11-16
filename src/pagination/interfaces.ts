@@ -30,6 +30,8 @@ export interface PaginationProps {
 
   /**
    * Adds aria-labels to the pagination buttons:
+   * * `paginationLabel` (string) - Label for the entire pagination group. It allows users to distinguish context
+   * * in cases of multiple pagination components in a page.
    * * `previousPageLabel` (string) - Previous page button.
    * * `pageLabel` (number => string) - Individual page button, this function is called for every page number that's rendered.
    * * `nextPageLabel` (string) - Next page button
@@ -38,6 +40,7 @@ export interface PaginationProps {
    * ```
    * {
    *   nextPageLabel: 'Next page',
+   *   paginationLabel: 'Table pagination'
    *   previousPageLabel: 'Previous page',
    *   pageLabel: pageNumber => `Page ${pageNumber}`
    * }
@@ -69,6 +72,7 @@ export interface PaginationProps {
 export namespace PaginationProps {
   export interface Labels {
     nextPageLabel?: string;
+    paginationLabel?: string;
     previousPageLabel?: string;
     pageLabel?: (pageNumber: number) => string;
   }

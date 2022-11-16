@@ -31,6 +31,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   clearButtonLabel: 'Clear and dismiss',
   cancelButtonLabel: 'Cancel',
   applyButtonLabel: 'Apply',
+  errorIconAriaLabel: 'Error',
   renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Range selected from ${startDate} to ${endDate}`,
 };
 

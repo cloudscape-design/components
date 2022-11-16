@@ -19,6 +19,8 @@ import { useSupportsStickyHeader } from '../container/use-sticky-header';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import LiveRegion from '../internal/components/live-region';
 
 export { CardsProps };
 
@@ -52,6 +54,10 @@ const Cards = React.forwardRef(function <T = any>(
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
   const computedVariant = isRefresh ? variant : 'container';
+
+  const instanceUniqueId = useUniqueId('cards');
+  const cardsId = baseProps?.id || instanceUniqueId;
+  const cardsHeaderId = header ? `${cardsId}-header` : undefined;
 
   const [columns, measureRef] = useContainerQuery<number>(
     ({ width }) => getCardsPerRow(width, cardsPerRow),
@@ -93,7 +99,9 @@ const Cards = React.forwardRef(function <T = any>(
   if (loading) {
     status = (
       <div className={styles.loading}>
-        <InternalStatusIndicator type="loading">{loadingText}</InternalStatusIndicator>
+        <InternalStatusIndicator type="loading">
+          <LiveRegion visible={true}>{loadingText}</LiveRegion>
+        </InternalStatusIndicator>
       </div>
     );
   } else if (empty && !items.length) {
@@ -122,6 +130,8 @@ const Cards = React.forwardRef(function <T = any>(
         __stickyHeader={stickyHeader}
         __stickyOffset={stickyHeaderVerticalOffset}
         __headerRef={headerRef}
+        __headerId={cardsHeaderId}
+        __darkHeader={computedVariant === 'full-page'}
       >
         <div className={clsx(hasToolsHeader && styles['has-header'])}>
           {status ?? (
@@ -136,6 +146,8 @@ const Cards = React.forwardRef(function <T = any>(
               visibleSections={visibleSections}
               updateShiftToggle={updateShiftToggle}
               onFocus={onCardFocus}
+              ariaDescribedby={cardsHeaderId}
+              ariaLabelledby={cardsHeaderId}
             />
           )}
         </div>
@@ -157,14 +169,19 @@ const CardsList = <T,>({
   visibleSections,
   updateShiftToggle,
   onFocus,
+  ariaLabelledby,
+  ariaDescribedby,
 }: Pick<CardsProps<T>, 'items' | 'cardDefinition' | 'trackBy' | 'selectionType' | 'visibleSections'> & {
   columns: number | null;
   isItemSelected: (item: T) => boolean;
   getItemSelectionProps: (item: T) => SelectionControlProps;
   updateShiftToggle: (state: boolean) => void;
   onFocus: FocusEventHandler<HTMLElement>;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
 }) => {
   const selectable = !!selectionType;
+
   const { moveFocusDown, moveFocusUp } = useFocusMove(selectionType, items.length);
 
   let visibleSectionsDefinition = cardDefinition.sections || [];
@@ -174,8 +191,22 @@ const CardsList = <T,>({
       )
     : visibleSectionsDefinition;
 
+  let listRole: 'group' | undefined = undefined;
+  let listItemRole: 'presentation' | undefined = undefined;
+
+  if (selectable) {
+    listRole = 'group';
+    listItemRole = 'presentation';
+  }
+
   return (
-    <ol className={clsx(styles.list, styles[`list-grid-${columns || 1}`])} {...(focusMarkers && focusMarkers.root)}>
+    <ol
+      className={clsx(styles.list, styles[`list-grid-${columns || 1}`])}
+      role={listRole}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
+      {...(focusMarkers && focusMarkers.root)}
+    >
       {items.map((item, index) => (
         <li
           className={clsx(styles.card, {
@@ -185,6 +216,7 @@ const CardsList = <T,>({
           key={getItemKey(trackBy, item, index)}
           onFocus={onFocus}
           {...(focusMarkers && focusMarkers.item)}
+          role={listItemRole}
         >
           <div className={styles['card-inner']}>
             <div className={styles['card-header']}>

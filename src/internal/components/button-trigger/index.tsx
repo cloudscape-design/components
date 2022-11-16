@@ -5,13 +5,7 @@ import clsx from 'clsx';
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import InternalIcon from '../../../icon/internal';
 import styles from './styles.css.js';
-import {
-  fireKeyboardEvent,
-  fireCancelableEvent,
-  CancelableEventHandler,
-  BaseKeyDetail,
-  getBlurEventRelatedTarget,
-} from '../../events';
+import { fireKeyboardEvent, fireCancelableEvent, CancelableEventHandler, BaseKeyDetail } from '../../events';
 import useFocusVisible from '../../hooks/focus-visible';
 
 export interface ButtonTriggerProps extends BaseComponentProps {
@@ -85,9 +79,7 @@ const ButtonTrigger = (
     onMouseDown: onMouseDown && (event => fireCancelableEvent(onMouseDown, {}, event)),
     onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
     onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
-    onBlur:
-      onBlur &&
-      (event => fireCancelableEvent(onBlur, { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) }, event)),
+    onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
   };
 
   if (invalid) {

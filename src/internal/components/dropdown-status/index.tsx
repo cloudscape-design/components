@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { LinkProps } from '../../../link/interfaces';
 import InternalLink from '../../../link/internal';
+import { RecoveryLinkProps } from '../../../select/utils/use-select';
 
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../events';
@@ -24,6 +25,7 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler;
+  recoveryProps?: RecoveryLinkProps;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -45,6 +47,7 @@ type UseDropdownStatus = ({
   isNoMatch,
   noMatch,
   onRecoveryClick,
+  recoveryProps,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
 interface DropdownStatusResult {
@@ -68,14 +71,13 @@ export const useDropdownStatus: UseDropdownStatus = ({
   const linkRef = useRef<LinkProps.Ref | null>(null);
   const focusRecoveryLink = () => linkRef.current?.focus();
   const previousStatusType = usePrevious(statusType);
-
   const statusResult: DropdownStatusResult = { isSticky: true, content: null, focusRecoveryLink };
 
   if (statusType === 'loading') {
     statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
   } else if (statusType === 'error') {
     statusResult.content = (
-      <>
+      <span>
         <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
           {errorText}
         </InternalStatusIndicator>{' '}
@@ -89,7 +91,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
             {recoveryText}
           </InternalLink>
         )}
-      </>
+      </span>
     );
   } else if (isEmpty && empty) {
     statusResult.content = empty;

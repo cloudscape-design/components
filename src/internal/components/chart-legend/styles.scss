@@ -33,11 +33,17 @@
   align-items: flex-start;
   margin-right: awsui.$space-m;
   padding: 0;
+  border: 0;
+  background-color: transparent;
   cursor: pointer;
   opacity: 1;
 
   &:focus {
     outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(2px);
   }
 
   &:last-child {
@@ -50,9 +56,5 @@
 
   &.marker--highlighted {
     /* used in test utils */
-  }
-
-  &.marker--focused {
-    @include styles.focus-highlight(2px);
   }
 }

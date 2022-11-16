@@ -10,7 +10,6 @@ import {
   CancelableEventHandler,
   BaseKeyDetail,
   fireKeyboardEvent,
-  getBlurEventRelatedTarget,
 } from '../../events';
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
@@ -106,7 +105,7 @@ const OptionsList = (
       onKeyDown={event => onKeyDown && fireKeyboardEvent(onKeyDown, event)}
       onMouseMove={event => onMouseMove?.(getItemIndex(menuRef, event))}
       onMouseUp={event => onMouseUp?.(getItemIndex(menuRef, event))}
-      onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: getBlurEventRelatedTarget(event.nativeEvent) })}
+      onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: event.relatedTarget })}
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={-1}
       aria-labelledby={ariaLabelledby}

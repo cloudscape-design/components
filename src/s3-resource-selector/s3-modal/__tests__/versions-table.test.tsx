@@ -5,7 +5,7 @@ import { act, render } from '@testing-library/react';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import { VersionsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/versions-table';
 import { i18nStrings, versions } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getTableBodyContent } from './utils';
+import { getColumnAriaLabels, getTableBodyContent, getHeaderVisibleText } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -53,12 +53,7 @@ test('renders correct sorting state', async () => {
 
 test('Renders correct table content', async () => {
   const wrapper = await renderTable(<VersionsTable {...defaultProps} />);
-  expect(wrapper.findColumnHeaders().map(colHeader => colHeader.getElement().textContent!.trim())).toEqual([
-    '',
-    'Version ID',
-    'Last modified',
-    'Size',
-  ]);
+  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Version ID', 'Last modified', 'Size']);
   expect(getTableBodyContent(wrapper)).toEqual([
     ['', versions[0].VersionId, versions[0].LastModified, '22.75 TB'],
     ['', versions[1].VersionId, versions[1].LastModified, '56.01 TB'],

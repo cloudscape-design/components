@@ -10,12 +10,13 @@ import {
   OptionsFilteringType,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { BaseInputProps, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputProps } from '../input/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
   extends BaseComponentProps,
     BaseInputProps,
+    InputAutoCorrect,
     BaseDropdownHostProps,
     InputKeyEvents,
     FormFieldValidationControlProps,
@@ -125,6 +126,18 @@ export namespace AutosuggestProps {
 
   export interface ContainingOptionAndGroupString {
     (option: Option, group?: OptionGroup): string;
+  }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+
+    /**
+     * Selects all text in the input control.
+     */
+    select(): void;
   }
 }
 

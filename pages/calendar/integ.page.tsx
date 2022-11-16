@@ -14,11 +14,12 @@ export default function DatePickerEditorScenario() {
       <br />
       <Calendar
         value={value}
-        locale={'en-EN'}
+        locale="en-GB"
         previousMonthAriaLabel={'Previous month'}
         nextMonthAriaLabel={'Next month'}
         todayAriaLabel="Today"
         onChange={event => setValue(event.detail.value)}
+        isDateEnabled={date => date.getDate() !== 15}
       />
       <br />
       <br />

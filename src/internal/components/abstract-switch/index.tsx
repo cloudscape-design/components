@@ -51,8 +51,6 @@ export default function AbstractSwitch({
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
-  const wrapperAttributes: Record<string, string | undefined> = {};
-
   const ariaLabelledByIds = [];
   if (label) {
     ariaLabelledByIds.push(labelId);
@@ -72,7 +70,6 @@ export default function AbstractSwitch({
   return (
     <div {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
       <div
-        {...wrapperAttributes}
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
         onClick={disabled ? undefined : onClick}

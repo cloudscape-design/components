@@ -44,6 +44,12 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
    * Called when the user selects a different radio button. The event `detail` contains the current `value`.
    */
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
+
+  /**
+   * Deprecated, has no effect.
+   * @deprecated
+   */
+  controlId?: string;
 }
 
 export namespace RadioGroupProps {
@@ -57,5 +63,12 @@ export namespace RadioGroupProps {
 
   export interface ChangeDetail {
     value: string;
+  }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
   }
 }

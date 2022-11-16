@@ -5,7 +5,7 @@ import styles from '../../../flashbar/styles.selectors.js';
 import ButtonWrapper from '../button';
 
 export default class FlashWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = styles['flash-list-item'];
 
   /**
    * Returns the dismiss button.

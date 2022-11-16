@@ -9,14 +9,16 @@
 @use '../internal/styles/typography/index' as typographyConstants;
 @use './motion';
 
-$calendar-header-color: awsui.$color-text-body-default;
-$calendar-grid-day-name-color: awsui.$color-text-calendar-month;
-
 $calendar-grid-width: awsui.$size-calendar-grid-width;
+$calendar-header-color: awsui.$color-text-body-default;
 
 .root {
   @include styles.styles-reset;
   max-width: 32em;
+}
+
+.focus-lock {
+  display: contents;
 }
 
 .trigger-wrapper {
@@ -27,13 +29,18 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
   display: flex;
 }
 
-.calendar {
-  display: block;
+.calendar-container {
   width: calc(2 * #{$calendar-grid-width} + #{awsui.$space-xs});
 
   &.one-grid {
     width: $calendar-grid-width;
   }
+}
+
+.calendar {
+  display: block;
+  width: 100%;
+  margin-bottom: awsui.$space-scaled-s;
 
   &-header {
     display: flex;
@@ -48,6 +55,8 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
     left: 0;
     top: 0;
     bottom: 0;
+
+    margin: 0;
 
     display: flex;
     justify-content: space-around;
@@ -74,26 +83,6 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
   &-prev-month-btn {
     /* used for identifying element */
   }
-
-  &-day-names {
-    display: flex;
-    justify-content: stretch;
-  }
-
-  &-day-name {
-    flex: 1 1 0%;
-    width: 0;
-    word-break: break-word;
-    text-align: center;
-    padding: awsui.$space-s 0 awsui.$space-xxs;
-    color: $calendar-grid-day-name-color;
-    @include styles.font-body-s;
-  }
-
-  &-week {
-    display: flex;
-    justify-content: stretch;
-  }
 }
 
 .first-grid,
@@ -101,21 +90,16 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
   /* used in test-utils */
 }
 
-.grid {
-  width: $calendar-grid-width;
+.date-and-time-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($calendar-grid-width, 1fr));
+  gap: awsui.$space-xs;
 }
-
 .date-and-time-wrapper {
   width: $calendar-grid-width;
-}
-.date-and-time-wrapper:not(.date-only) {
   display: grid;
-  column-gap: awsui.$space-xs;
-  grid-template-columns: 1fr 1fr;
-}
-
-.date-and-time-constrainttext {
-  @include styles.form-control-description;
+  gap: awsui.$space-xs;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 }
 
 .footer {
@@ -154,6 +138,10 @@ $calendar-grid-width: awsui.$size-calendar-grid-width;
 
 .label-text {
   @include styles.form-placeholder;
+}
+
+.label-token-nowrap {
+  white-space: nowrap;
 }
 
 .mode-switch {

@@ -441,9 +441,18 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
-  colorChartsLineGrid: { description: 'Color of the grid lines in a chart.' },
-  colorChartsLineTick: { description: 'Color of the tick marks in a chart.' },
-  colorChartsLineAxis: { description: 'Color of the axis lines in a chart.' },
+  colorChartsLineGrid: {
+    description: 'Color of the grid lines in a chart.',
+    public: true,
+  },
+  colorChartsLineTick: {
+    description: 'Color of the tick marks in a chart.',
+    public: true,
+  },
+  colorChartsLineAxis: {
+    description: 'Color of the axis lines in a chart.',
+    public: true,
+  },
   colorChartsPaletteCategorical1: {
     description: 'Color #1 on the categorical data visualization palette.',
     public: true,

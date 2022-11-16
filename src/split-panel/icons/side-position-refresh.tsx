@@ -6,17 +6,21 @@ import styles from '../styles.css.js';
 export interface SVGTableRowProps {
   offset: number;
   separator?: boolean;
+  isHeader?: boolean;
 }
 
 export const getClassName = (suffix: string) => styles[`preference-icon-refresh--${suffix}`];
 
-const TableRow = ({ offset, separator = true }: SVGTableRowProps) => {
+const TableRow = ({ offset, separator = true, isHeader }: SVGTableRowProps) => {
   const offsetTop = 0.4482;
   const offsetBottom = 3.4482;
   return (
-    <g transform={`translate(0, ${offset})`} className={getClassName('disabled')}>
+    <g transform={`translate(0, ${offset})`} className={getClassName(isHeader ? 'column-header' : 'disabled')}>
       <path d={`M19 ${offsetTop}2H22V${offsetBottom}H19V${offsetTop}Z`} />
-      <path d={`M27 ${offsetTop}H51V${offsetBottom}H27V${offsetTop}Z`} className={getClassName('secondary')} />
+      <path
+        d={`M27 ${offsetTop}H51V${offsetBottom}H27V${offsetTop}Z`}
+        className={!isHeader ? getClassName('secondary') : undefined}
+      />
       <path d={`M90 ${offsetTop}H110V${offsetBottom}H90V${offsetTop}Z`} />
       <path d={`M113 ${offsetTop}H157V${offsetBottom}H113V${offsetTop}Z`} />
       {separator && <path d="M14 8H159.387" className={getClassName('separator')} strokeLinecap="square" />}
@@ -51,7 +55,7 @@ const bottomPositionIcon = (
       <rect x="2" y="2" width="212" height="6" className={getClassName('layout-top')} />
     </g>
     <g className="awsui-context-content-header">
-      <path d="M2 8H214V33H2V8Z" className={getClassName('layout-main')} />
+      <path d="M2 8H214V23H2V8Z" className={getClassName('layout-main')} />
       <g className={getClassName('default')}>
         <path
           d="M9 15.5C9 16.8807 7.88071 18 6.5 18C5.11929 18 4 16.8807 4 15.5C4 14.1193 5.11929 13 6.5 13C7.88071 13 9 14.1193 9 15.5Z"
@@ -64,12 +68,9 @@ const bottomPositionIcon = (
           d="M139 15.5C139 13.567 140.567 12 142.5 12H155.86C157.793 12 159.36 13.567 159.36 15.5C159.36 17.433 157.793 19 155.86 19H142.5C140.567 19 139 17.433 139 15.5Z"
           className={getClassName('primary')}
         />
-        <path d="M113 25.4482H157V28.4482H113V25.4482Z" />
-        <path d="M90 25.4482H110V28.4482H90V25.4482Z" />
-        <path d="M27 25.4482H51V28.4482H27V25.4482Z" />
-        <path d="M19 25.4482H22V28.4482H19V25.4482Z" />
       </g>
     </g>
+    <TableRow offset={27} isHeader={true} />
     <TableRow offset={39} />
     <TableRow offset={51} />
     <TableRow offset={63} />

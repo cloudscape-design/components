@@ -4,7 +4,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 import { RefObject, useEffect, useState } from 'react';
 import styles from './styles.css.js';
 
-import { getOverflowParentDimensions } from '../internal/utils/scrollable-containers';
+import { getOverflowParentDimensions, getOverflowParents } from '../internal/utils/scrollable-containers';
 import { browserScrollbarSize } from '../internal/utils/browser-scrollbar-size';
 import { supportsStickyPosition, getContainingBlock } from '../internal/utils/dom';
 
@@ -90,7 +90,10 @@ export function useStickyScrollbar(
   // containing block, if present, is below the app layout and above the overflow
   // parent, which is a pretty safe assumption.
   const [hasContainingBlock, setHasContainingBlock] = useState(false);
-  const consideredFooterHeight = hasContainingBlock ? 0 : footerHeight;
+  // We don't take into account footer height when the overflow parent is child of document body.
+  // Because in this case, we think the footer is outside the overflow parent.
+  const [hasOverflowParent, setHasOverflowParent] = useState(false);
+  const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
 
   useEffect(() => {
     if (supportsStickyPosition()) {
@@ -116,6 +119,7 @@ export function useStickyScrollbar(
   useEffect(() => {
     if (wrapperEl && supportsStickyPosition()) {
       setHasContainingBlock(!!getContainingBlock(wrapperEl));
+      setHasOverflowParent(!!getOverflowParents(wrapperEl)[0]);
     }
   }, [wrapperEl]);
 

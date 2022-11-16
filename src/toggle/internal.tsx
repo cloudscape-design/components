@@ -66,7 +66,10 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
             onChange={() => {}}
           />
         )}
-        onClick={() => fireNonCancelableEvent(onChange, { checked: !checked })}
+        onClick={() => {
+          checkboxRef.current?.focus();
+          fireNonCancelableEvent(onChange, { checked: !checked });
+        }}
         styledControl={
           /*Using span, not div for HTML validity*/
           <span

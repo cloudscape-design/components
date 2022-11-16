@@ -23,6 +23,10 @@ const formFieldControlComponents = [
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findRadioGroup()?.getElement(),
   },
   {
+    componentName: 'date-input',
+    findNativeElement: (wrapper: ElementWrapper) => wrapper.findDateInput()?.findNativeInput()?.getElement(),
+  },
+  {
     componentName: 'time-input',
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findTimeInput()?.findNativeInput()?.getElement(),
   },
@@ -137,7 +141,9 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
           controlId: formFieldControlId,
           label: 'something',
         });
-        expect(findNativeElement(controlWrapper)).toHaveAttribute('aria-labelledby', `${formFieldControlId}-label`);
+        expect(findNativeElement(controlWrapper)?.getAttribute('aria-labelledby')).toMatch(
+          `${formFieldControlId}-label`
+        );
       });
 
       test('overwrites ariaLabelledby from FormField when ariaLabelledby is set on itself', () => {
@@ -148,8 +154,10 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
           { ariaLabelledby: controlAriaLabelledby }
         );
 
-        expect(findNativeElement(controlWrapper)).not.toHaveAttribute('aria-labelledby', `${formFieldControlId}-label`);
-        expect(findNativeElement(controlWrapper)).toHaveAttribute('aria-labelledby', controlAriaLabelledby);
+        expect(findNativeElement(controlWrapper)?.getAttribute('aria-labelledby')).not.toMatch(
+          `${formFieldControlId}-label`
+        );
+        expect(findNativeElement(controlWrapper)?.getAttribute('aria-labelledby')).toMatch(controlAriaLabelledby);
       });
 
       test('does not overwrite the value when it is set to undefined', () => {
@@ -159,7 +167,9 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
           { ariaLabelledby: undefined }
         );
 
-        expect(findNativeElement(controlWrapper)).toHaveAttribute('aria-labelledby', `${formFieldControlId}-label`);
+        expect(findNativeElement(controlWrapper)?.getAttribute('aria-labelledby')).toMatch(
+          `${formFieldControlId}-label`
+        );
       });
 
       test('applies ariaLabelledby from FormField when other fields are set on itself', () => {
@@ -169,7 +179,9 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
         );
 
         const formFieldLabelId = formFieldWrapper.findLabel()?.getElement().id;
-        expect(findNativeElement(controlWrapper)).toHaveAttribute('aria-labelledby', formFieldLabelId);
+        expect(findNativeElement(controlWrapper)?.getAttribute('aria-labelledby')).toMatch(
+          formFieldLabelId!.toString()
+        );
       });
     });
 

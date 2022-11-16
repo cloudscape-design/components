@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import RadioGroup, { RadioGroupProps } from '../../../lib/components/radio-group';
 import RadioButtonWrapper from '../../../lib/components/test-utils/dom/radio-group/radio-button';
@@ -95,6 +95,16 @@ describe('items', () => {
     expect(items[1].findNativeInput().getElement()).toBeEnabled();
   });
 
+  test('does not trigger change handler if disabled', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[defaultItems[0], { ...defaultItems[1], disabled: true }]} onChange={onChange} />
+    );
+
+    act(() => wrapper.findButtons()[1].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   test('displays the proper label', () => {
     const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
 
@@ -119,6 +129,26 @@ describe('items', () => {
   test('does not display description when it is not defined', () => {
     const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
     expect(wrapper.findButtons()[0].findDescription()).toBeNull();
+  });
+});
+
+describe('ref', () => {
+  test('when unselected, focuses the first radio button when .focus() is called', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={defaultItems} ref={ref => (radioGroupRef = ref)} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
+  test('when selected, focuses the checked radio button', () => {
+    let radioGroupRef: RadioGroupProps.Ref | null = null;
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value="val2" items={defaultItems} ref={ref => (radioGroupRef = ref)} />
+    );
+    radioGroupRef!.focus();
+    expect(wrapper.findInputByValue('val2')!.getElement()).toHaveFocus();
   });
 });
 

@@ -20,6 +20,7 @@ export default function Notifications() {
 
   return (
     <div
+      role="region"
       aria-label={ariaLabels?.notifications ?? undefined}
       className={clsx(
         styles.notifications,
@@ -30,7 +31,6 @@ export default function Notifications() {
         testutilStyles.notifications,
         'awsui-context-content-header'
       )}
-      role="region"
       ref={notificationsElement}
     >
       {notifications}

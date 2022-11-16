@@ -86,7 +86,7 @@ describe('useSelect', () => {
 
     test('should return getTriggerProps that configures the trigger', () => {
       const triggerProps = getTriggerProps();
-      expect(Object.keys(triggerProps)).toEqual(['ref', 'onFocus', 'onBlur', 'onMouseDown', 'onKeyDown']);
+      expect(Object.keys(triggerProps)).toEqual(['ref', 'onFocus', 'onMouseDown', 'onKeyDown']);
       expect(triggerProps.ref).toEqual({ current: null });
     });
 

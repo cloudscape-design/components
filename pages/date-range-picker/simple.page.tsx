@@ -44,7 +44,7 @@ export default function DatePickerScenario() {
         <FormField label="Date Range Picker field">
           <DateRangePicker
             value={value}
-            locale={'en-EN'}
+            locale="en-GB"
             i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
             placeholder={'Filter by a date and time range'}
             onChange={e => setValue(e.detail.value)}
@@ -53,6 +53,8 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
+            isDateEnabled={date => date.getDate() !== 15}
+            getTimeOffset={date => -1 * date.getTimezoneOffset()}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>

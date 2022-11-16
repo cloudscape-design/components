@@ -47,15 +47,6 @@ export interface BaseInputProps {
   autoFocus?: boolean;
 
   /**
-   * Specifies whether to disable browser autocorrect and related features.
-   * If you set this to `true`, it disables any native browser capabilities
-   * that automatically correct user input, such as `autocorrect` and
-   * `autocapitalize`. If you don't set it, the behavior follows the default behavior
-   * of the user's browser.
-   */
-  disableBrowserAutocorrect?: boolean;
-
-  /**
    * Adds an `aria-label` to the native control.
    *
    * Use this if you don't have a visible label for this control.
@@ -83,6 +74,18 @@ export interface BaseInputProps {
    */
   onChange?: NonCancelableEventHandler<InputProps.ChangeDetail>;
 }
+
+export interface InputAutoCorrect {
+  /**
+   * Specifies whether to disable browser autocorrect and related features.
+   * If you set this to `true`, it disables any native browser capabilities
+   * that automatically correct user input, such as `autocorrect` and
+   * `autocapitalize`. If you don't set it, the behavior follows the default behavior
+   * of the user's browser.
+   */
+  disableBrowserAutocorrect?: boolean;
+}
+
 export interface InputAutoComplete {
   /**
    * Specifies whether to enable a browser's autocomplete functionality for this input.
@@ -94,6 +97,21 @@ export interface InputAutoComplete {
    */
   autoComplete?: boolean | string;
 }
+
+export interface InputSpellcheck {
+  /**
+   * Specifies the value of the `spellcheck` attribute on the native control.
+   * This value controls the native browser capability to check for spelling/grammar errors.
+   * If not set, the browser default behavior is to perform spellchecking.
+   * For more details, check the [spellcheck MDN article](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/spellcheck).
+   *
+   * Enhanced spellchecking features of your browser and/or operating system may send input values to external parties.
+   * Make sure it’s deactivated for fields with sensitive information to prevent
+   * inadvertently sending data (such as user passwords) to third parties.
+   */
+  spellcheck?: boolean;
+}
+
 export interface InputKeyEvents {
   /**
    * Called when the underlying native textarea emits a `keydown` event.
@@ -114,7 +132,9 @@ export interface InputProps
   extends BaseComponentProps,
     BaseInputProps,
     InputKeyEvents,
+    InputAutoCorrect,
     InputAutoComplete,
+    InputSpellcheck,
     FormFieldValidationControlProps {
   /**
    * Specifies the type of control to render.

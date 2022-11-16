@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface CalendarProps {
+export interface CalendarProps extends BaseComponentProps {
   /**
    * The current input value, in YYYY-MM-DD format.
    */
@@ -31,6 +32,21 @@ export interface CalendarProps {
    * By default the starting day of the week is defined by the locale, but you can use this property to override it.
    */
   startOfWeek?: number;
+
+  /**
+   * Adds an `aria-label` to the calendar.
+   */
+  ariaLabel?: string;
+
+  /**
+   * Adds `aria-labelledby` to the calendar.
+   */
+  ariaLabelledby?: string;
+
+  /**
+   * Adds `aria-describedby` to the calendar.
+   */
+  ariaDescribedby?: string;
 
   /**
    * Used as part of the `aria-label` for today's date in the calendar.

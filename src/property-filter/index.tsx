@@ -14,11 +14,18 @@ import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
 import { TokenButton } from './token';
-import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
+import {
+  getQueryActions,
+  parseText,
+  getAutosuggestOptions,
+  getAllowedOperators,
+  getExtendedOperator,
+} from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
+import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export { PropertyFilterProps };
@@ -161,11 +168,7 @@ const PropertyFilter = React.forwardRef(
       }, 0);
       const { detail: option } = event;
       const value = option.value || '';
-      if ('tokenValue' in option) {
-        createToken((option as { tokenValue: string }).tokenValue);
-        return;
-      }
-      // create a token from the 'use' option
+
       if (!('keepOpenOnSelect' in option)) {
         createToken(value);
         return;
@@ -173,23 +176,33 @@ const PropertyFilter = React.forwardRef(
 
       // stop dropdown from closing
       event.preventDefault();
+
       const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
-      fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
 
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
+          loadMoreDetail.filteringProperty = parsedText.property;
+          loadMoreDetail.filteringOperator = operators[0];
+          loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
         }
       }
+
+      fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
     const [tokensExpanded, setTokensExpanded] = useState(false);
     const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);
     const hasHiddenOptions = tokenLimit !== undefined && tokens.length > tokenLimit;
     const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
     const controlId = useMemo(() => generateUniqueId(), []);
+
+    const operatorForm =
+      parsedText.step === 'property' &&
+      getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
+
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -209,6 +222,28 @@ const PropertyFilter = React.forwardRef(
             {...asyncAutosuggestProps}
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
+            customForm={
+              operatorForm && (
+                <PropertyEditor
+                  property={parsedText.property}
+                  operator={parsedText.operator}
+                  filter={parsedText.value}
+                  operatorForm={operatorForm}
+                  i18nStrings={i18nStrings}
+                  onCancel={() => {
+                    setFilteringText('');
+                    inputRef.current?.close();
+                    inputRef.current?.focus({ preventDropdown: true });
+                  }}
+                  onSubmit={token => {
+                    addToken(token);
+                    setFilteringText('');
+                    inputRef.current?.focus({ preventDropdown: true });
+                    inputRef.current?.close();
+                  }}
+                />
+              )
+            }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span

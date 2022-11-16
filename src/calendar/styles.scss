@@ -9,20 +9,7 @@
 @use '../internal/styles/typography/index' as typographyConstants;
 @use './motion';
 
-$calendar-header-color: awsui.$color-text-dropdown-item-default;
-$calendar-grid-border-color: awsui.$color-border-calendar-grid;
-$calendar-grid-day-color: awsui.$color-text-dropdown-item-default;
-$calendar-grid-day-name-color: awsui.$color-text-calendar-month;
-$calendar-grid-disabled-day-color: awsui.$color-text-dropdown-item-disabled;
-$calendar-grid-nonmonth-day-color: awsui.$color-text-dropdown-item-secondary;
-$calendar-grid-hover-background-color: awsui.$color-background-dropdown-item-hover;
-$calendar-grid-hover-border-color: awsui.$color-border-dropdown-item-hover;
-$calendar-grid-today-background-color: awsui.$color-background-calendar-today;
-$calendar-grid-selected-text-color: awsui.$color-background-control-default;
-$calendar-grid-selected-background-color: awsui.$color-background-control-checked;
-$calendar-grid-selected-border-color: awsui.$color-background-control-checked;
-$calendar-grid-selected-focused-box-shadow: 0 0 0 2px awsui.$color-border-calendar-grid-selected-focus-ring;
-$calendar-grid-border: 1px solid $calendar-grid-border-color;
+@use './calendar' as calendar;
 
 .root {
   /* used in test-utils */
@@ -31,7 +18,7 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
 .calendar {
   display: block;
   // IE11 does not calculate the height correctly when in nested flex containers (@see https://github.com/philipwalton/flexbugs#flexbug-3)
-  width: 234px;
+  width: awsui.$size-calendar-grid-width;
   overflow: auto;
 
   &-inner {
@@ -47,7 +34,8 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
   &-header-month {
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
-    color: $calendar-header-color;
+    color: calendar.$header-color;
+    margin: 0;
   }
 
   &-next-month-btn {
@@ -58,66 +46,49 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     /* used for identifying element */
   }
 
-  &-day-names {
-    display: flex;
-    justify-content: stretch;
+  &-grid {
+    width: 100%;
+    border-spacing: 0;
   }
 
-  &-day-name {
-    flex: 1 1 0%;
-    width: 0;
+  &-grid-cell {
+    width: calc(100% / 7);
     word-break: break-word;
     text-align: center;
+    font-weight: unset;
+  }
+
+  &-day-header {
     padding: awsui.$space-s 0 awsui.$space-xxs;
-    color: $calendar-grid-day-name-color;
+    color: calendar.$grid-day-name-color;
     @include styles.font-body-s;
   }
 
-  &-dates {
-    border: $calendar-grid-border;
-  }
-  &-week {
-    display: flex;
-    justify-content: stretch;
-  }
-
   &-day {
-    flex: 1 1 0%;
-    width: 0;
-    word-break: break-word;
-    text-align: center;
-    border-bottom: $calendar-grid-border;
-    border-right: $calendar-grid-border;
+    border-bottom: calendar.$grid-border;
+    border-right: calendar.$grid-border;
     padding: awsui.$space-xxs 0;
-    color: $calendar-grid-disabled-day-color;
+    color: calendar.$grid-disabled-day-color;
     position: relative;
 
-    &:last-child {
-      border-right: none;
-    }
-
-    &-in-last-week {
-      border-bottom: none;
-    }
-
-    &-focusable {
-      /* used for identifying element */
+    &:first-child {
+      border-left: calendar.$grid-border;
     }
 
     &-enabled {
       cursor: pointer;
-      color: $calendar-grid-nonmonth-day-color;
+      color: calendar.$grid-nonmonth-day-color;
       &::after {
         border-radius: awsui.$border-radius-item;
       }
       &.calendar-day-current-month {
-        color: $calendar-grid-day-color;
+        color: calendar.$grid-day-color;
         &:hover {
           color: awsui.$color-text-calendar-day-hover;
-          background-color: $calendar-grid-hover-background-color;
+          background-color: calendar.$grid-hover-background-color;
           &:not(.calendar-day-selected) {
             &::after {
-              border: awsui.$border-item-width solid $calendar-grid-hover-border-color;
+              border: awsui.$border-item-width solid calendar.$grid-hover-border-color;
             }
           }
         }
@@ -125,8 +96,9 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
     }
 
     &-today {
-      background-color: $calendar-grid-today-background-color;
+      background-color: calendar.$grid-today-background-color;
       border-radius: awsui.$border-radius-item;
+      font-weight: styles.$font-weight-bold;
     }
 
     &::after {
@@ -161,12 +133,13 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
       border-color: transparent;
       position: relative;
       z-index: 2;
+      font-weight: styles.$font-weight-bold;
       &:focus {
         @include focus-visible.when-visible {
           @include styles.focus-highlight(
             awsui.$space-calendar-grid-focus-outline-gutter,
             awsui.$border-radius-calendar-day-focus-ring,
-            $calendar-grid-selected-focused-box-shadow
+            calendar.$grid-selected-focused-box-shadow
           );
           &::before {
             z-index: 2;
@@ -174,14 +147,22 @@ $calendar-grid-border: 1px solid $calendar-grid-border-color;
         }
       }
       &::after {
-        background-color: $calendar-grid-selected-background-color;
-        border: awsui.$border-item-width solid $calendar-grid-selected-border-color;
+        background-color: calendar.$grid-selected-background-color;
+        border: awsui.$border-item-width solid calendar.$grid-selected-border-color;
         border-radius: awsui.$border-radius-item;
       }
       > .day-inner {
         z-index: 2;
-        color: $calendar-grid-selected-text-color;
+        color: calendar.$grid-selected-text-color;
         position: relative;
+      }
+    }
+  }
+
+  &-week {
+    &:first-child {
+      > .calendar-day {
+        border-top: calendar.$grid-border;
       }
     }
   }

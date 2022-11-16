@@ -21,6 +21,7 @@ import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
+import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -31,12 +32,13 @@ interface AppLayoutContextProps extends AppLayoutProps {
   handleToolsClick: (value: boolean) => void;
   hasDefaultToolsWidth: boolean;
   hasNotificationsContent: boolean;
+  hasStickyBackground: boolean;
   isAnyPanelOpen: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
   isSplitPanelOpen?: boolean;
-  isToolsOpen?: boolean;
+  isToolsOpen: boolean;
   layoutElement: React.Ref<HTMLElement>;
   layoutWidth: number;
   mainElement: React.Ref<HTMLDivElement>;
@@ -45,6 +47,7 @@ interface AppLayoutContextProps extends AppLayoutProps {
   notificationsHeight: number;
   offsetBottom: number;
   setDynamicOverlapHeight: (value: number) => void;
+  setHasStickyBackground: (value: boolean) => void;
   setIsNavigationOpen: (value: boolean) => void;
   setIsToolsOpen: (value: boolean) => void;
   setOffsetBottom: (value: number) => void;
@@ -55,6 +58,7 @@ interface AppLayoutContextProps extends AppLayoutProps {
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
+  toolsFocusControl: FocusControlState;
 }
 
 // TODO simplify default params + typings
@@ -76,6 +80,7 @@ const defaults: AppLayoutContextProps = {
   handleToolsClick: (value: boolean) => value,
   hasDefaultToolsWidth: true,
   hasNotificationsContent: false,
+  hasStickyBackground: false,
   isAnyPanelOpen: false,
   isMobile: false,
   isNavigationOpen: false,
@@ -101,6 +106,7 @@ const defaults: AppLayoutContextProps = {
   onSplitPanelToggle: () => {},
   onSplitPanelPreferencesChange: () => {},
   setDynamicOverlapHeight: (value: number) => void value,
+  setHasStickyBackground: (value: boolean) => value,
   setIsNavigationOpen: (value: boolean) => value,
   setIsToolsOpen: (value: boolean) => value,
   setOffsetBottom: (value: number) => void value,
@@ -114,6 +120,7 @@ const defaults: AppLayoutContextProps = {
   splitPanelSize: 0,
   stickyNotifications: false,
   tools: null,
+  toolsFocusControl: {} as FocusControlState,
 };
 
 /**
@@ -156,8 +163,11 @@ export const AppLayoutProvider = React.forwardRef(
     /**
      * The overlap height has a default set in CSS but can also be dynamically overridden
      * for content types (such as Table and Wizard) that have variable size content in the overlap.
+     * If a child component utilizes a sticky header the hasStickyBackground property will determine
+     * if the background remains in the same vertical position.
      */
     const [dynamicOverlapHeight, setDynamicOverlapHeight] = useState(0);
+    const [hasStickyBackground, setHasStickyBackground] = useState(false);
 
     /**
      * Set the default values for minimum and maximum content width.
@@ -228,6 +238,8 @@ export const AppLayoutProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
 
+    const toolsFocusControl = useFocusControl(isToolsOpen, true);
+
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean) {
         setIsToolsOpen(isOpen);
@@ -278,9 +290,10 @@ export const AppLayoutProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
+          focusToolsClose: toolsFocusControl.setFocus,
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick]
+      [isMobile, handleNavigationClick, handleToolsClick, toolsFocusControl.setFocus]
     );
 
     /**
@@ -516,6 +529,7 @@ export const AppLayoutProvider = React.forwardRef(
           handleSplitPanelResize,
           handleToolsClick,
           hasNotificationsContent,
+          hasStickyBackground,
           isAnyPanelOpen,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
@@ -533,6 +547,7 @@ export const AppLayoutProvider = React.forwardRef(
           notificationsHeight,
           offsetBottom,
           setDynamicOverlapHeight,
+          setHasStickyBackground,
           setOffsetBottom,
           setSplitPanelReportedSize,
           splitPanelMaxWidth,
@@ -544,6 +559,7 @@ export const AppLayoutProvider = React.forwardRef(
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,
+          toolsFocusControl,
         }}
       >
         {children}

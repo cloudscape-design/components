@@ -22,6 +22,7 @@ const {
   integ,
   licenses,
   themeableSource,
+  bundleVendorFiles,
 } = require('./build-tools/tasks');
 
 const quickBuild = series(
@@ -32,7 +33,7 @@ const quickBuild = series(
 
 exports.clean = clean;
 exports['quick-build'] = quickBuild;
-exports.build = series(quickBuild, parallel(buildPages, themeableSource, docs));
+exports.build = series(quickBuild, bundleVendorFiles, parallel(buildPages, themeableSource, docs));
 exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
@@ -40,7 +41,14 @@ exports['test:a11y'] = a11y;
 
 exports.watch = () => {
   watch(
-    ['src/**/*.{ts,tsx}', '!src/test-utils/**/*.ts', '!**/__tests__/**', '!**/__integ__/**', '!**/__a11y__/**'],
+    [
+      'src/**/*.{ts,tsx}',
+      '!src/test-utils/**/*.ts',
+      '!**/__tests__/**',
+      '!**/__integ__/**',
+      '!**/__a11y__/**',
+      '!src/internal/vendor/**/*.ts',
+    ],
     typescript
   );
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);

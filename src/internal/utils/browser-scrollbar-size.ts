@@ -22,7 +22,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-/* meaningless comment to force typescript to keep the comment above ¯\_(ツ)_/¯ */
 /* eslint-disable header/header */
 import { calculateOnce } from './calculate-once';
 

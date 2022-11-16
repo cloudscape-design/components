@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import { ScaleContinuousNumeric, ScaleTime } from 'd3-scale';
+import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';

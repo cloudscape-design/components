@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import createWrapper, { ElementWrapper, TilesWrapper } from '../../../lib/components/test-utils/dom';
 import TileWrapper from '../../../lib/components/test-utils/dom/tiles/tile';
 import Tiles, { TilesProps } from '../../../lib/components/tiles';
@@ -61,6 +61,22 @@ test('does not render attributes for assistive technology when not set', functio
   expect(rootElement).not.toHaveAttribute('aria-label');
 });
 
+describe('ref', () => {
+  test('when unselected, focuses the first tile when .focus() is called', () => {
+    let tilesRef: TilesProps.Ref | null = null;
+    const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} ref={ref => (tilesRef = ref)} />);
+    tilesRef!.focus();
+    expect(wrapper.findInputByValue('val1')!.getElement()).toHaveFocus();
+  });
+
+  test('when selected, focuses the checked tile', () => {
+    let tilesRef: TilesProps.Ref | null = null;
+    const { wrapper } = renderTiles(<Tiles value="val2" items={defaultItems} ref={ref => (tilesRef = ref)} />);
+    tilesRef!.focus();
+    expect(wrapper.findInputByValue('val2')!.getElement()).toHaveFocus();
+  });
+});
+
 describe('items', () => {
   test('renders items', () => {
     const { wrapper } = renderTiles(<Tiles value={null} items={defaultItems} />);
@@ -79,6 +95,16 @@ describe('items', () => {
     rerender(<Tiles value={null} items={defaultItems} onChange={onChange} />);
     expect(items[0].findNativeInput().getElement()).toBeEnabled();
     expect(items[1].findNativeInput().getElement()).toBeEnabled();
+  });
+
+  test('does not trigger change handler if disabled', () => {
+    const onChange = jest.fn();
+    const { wrapper } = renderTiles(
+      <Tiles value={null} items={[defaultItems[0], { ...defaultItems[1], disabled: true }]} onChange={onChange} />
+    );
+
+    act(() => wrapper.findItems()[1].findLabel().click());
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   test('displays the proper label', () => {

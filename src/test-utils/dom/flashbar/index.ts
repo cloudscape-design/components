@@ -11,6 +11,6 @@ export default class FlashbarWrapper extends ComponentWrapper {
    * Returns the individual flashes of this flashbar.
    */
   findItems(): Array<FlashWrapper> {
-    return this.findAllByClassName(styles.flash).map(item => new FlashWrapper(item.getElement()));
+    return this.findAllByClassName(styles['flash-list-item']).map(item => new FlashWrapper(item.getElement()));
   }
 }

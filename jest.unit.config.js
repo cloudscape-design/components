@@ -20,6 +20,7 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
     'styles.selectors.js$',
     'icons.js$',
     'environment.js$',
+    'internal/vendor$',
     '<rootDir>/pages',
   ],
   globals: {

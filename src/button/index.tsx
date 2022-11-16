@@ -20,6 +20,7 @@ const Button = React.forwardRef(
       iconAlt,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       wrapText = true,
       href,
@@ -48,6 +49,7 @@ const Button = React.forwardRef(
         iconAlt={iconAlt}
         variant={variant}
         loading={loading}
+        loadingText={loadingText}
         disabled={disabled}
         wrapText={wrapText}
         href={href}

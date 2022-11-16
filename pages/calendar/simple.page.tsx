@@ -19,7 +19,8 @@ export default function CalendarPage() {
         <Calendar
           value="2021-8-20"
           onChange={() => {}}
-          locale="en-EN"
+          locale="en-GB"
+          ariaLabel="Certificate expiration date, calendar"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
           nextMonthAriaLabel="Next month"
@@ -29,7 +30,8 @@ export default function CalendarPage() {
         <Calendar
           value=""
           onChange={() => {}}
-          locale="en-EN"
+          locale="en-GB"
+          ariaLabel="Scheduled launch date, calendar"
           startOfWeek={1}
           isDateEnabled={date => date.getDay() !== 6 && date.getDay() !== 0}
           nextMonthAriaLabel="Next month"

@@ -2,19 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { addDays, addMonths, getDaysInMonth, isSameMonth, startOfMonth } from 'date-fns';
+import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import moveFocusHandler from './utils/move-focus-handler';
-import { memoizedDate } from './utils/memoized-date.js';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update.js';
-import { normalizeLocale, normalizeStartOfWeek } from './utils/locales.js';
-import { formatDate } from '../internal/utils/date-time';
+import { normalizeLocale, normalizeStartOfWeek } from '../internal/utils/locale';
+import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
 import clsx from 'clsx';
 import { CalendarProps } from './interfaces.js';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { getBaseDate } from './utils/navigation';
+import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -23,23 +25,34 @@ export default function Calendar({
   locale = '',
   startOfWeek,
   isDateEnabled = () => true,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
   todayAriaLabel,
   nextMonthAriaLabel,
   previousMonthAriaLabel,
   onChange,
-}: CalendarProps) {
+  __internalRootRef,
+  ...rest
+}: CalendarProps & InternalBaseComponentProps) {
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
+  const baseProps = getBaseProps(rest);
   const normalizedLocale = normalizeLocale('Calendar', locale);
-  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, locale);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
 
+  const valueDateCache = useDateCache();
+  const focusedDateCache = useDateCache();
+
   // Set displayed date to value if defined or to current date otherwise.
-  const memoizedValue = memoizedDate('value', value);
+  const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
+  const memoizedValue = parsedValue ? valueDateCache(parsedValue) : null;
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
+
+  const headingId = useUniqueId('calendar-heading');
 
   // Update displayed date if value changes.
   useEffect(() => {
@@ -60,24 +73,11 @@ export default function Calendar({
     return null;
   };
 
-  // Get the first enabled date of the month. If no day is enabled in the given month, return the first day of the month.
-  // This is needed because `baseDate` is used as the first focusable date, for example when navigating to the calendar area.
-  const getBaseDate = (date: Date) => {
-    const startDate = startOfMonth(date);
-    for (let i = 0; i < getDaysInMonth(date); i++) {
-      const currentDate = addDays(startDate, i);
-      if (isDateEnabled(currentDate)) {
-        return currentDate;
-      }
-    }
-    return startDate;
-  };
+  const baseDate = getBaseDate(displayedDate, isDateEnabled);
+  const focusableDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
 
-  const baseDate: Date = getBaseDate(displayedDate);
-  const focusedOrSelectedDate = focusedDate || selectFocusedDate(memoizedValue, baseDate);
-
-  const onHeaderChangeMonthHandler = (isPreviousButtonClick?: boolean) => {
-    setDisplayedDate(addMonths(baseDate, isPreviousButtonClick ? -1 : 1));
+  const onHeaderChangeMonthHandler = (date: Date) => {
+    setDisplayedDate(date);
     setFocusedDate(null);
   };
 
@@ -88,8 +88,7 @@ export default function Calendar({
 
   const onGridFocusDateHandler = (date: null | Date) => {
     if (date) {
-      const value = memoizedDate('focused', formatDate(date));
-      setFocusedDate(value);
+      setFocusedDate(date ? focusedDateCache(date) : null);
     }
   };
 
@@ -97,14 +96,6 @@ export default function Calendar({
     fireNonCancelableEvent(onChange, { value: formatDate(date) });
     setFocusedDate(null);
   };
-
-  // The focused date changes as a feedback to keyboard navigation in the grid.
-  // Once changed, the corresponding day button needs to receive the actual focus.
-  useEffectOnUpdate(() => {
-    if (focusedDate) {
-      (elementRef.current?.querySelector(`.${styles['calendar-day-focusable']}`) as HTMLDivElement)?.focus();
-    }
-  }, [focusedDate]);
 
   const onGridBlur = (event: React.FocusEvent) => {
     const newFocusTargetIsInGrid = event.relatedTarget && gridWrapperRef.current?.contains(event.relatedTarget as Node);
@@ -114,8 +105,15 @@ export default function Calendar({
   };
 
   return (
-    // The application role is necessary for screen-readers to allow arrow navigation by default.
-    <div role="application" className={clsx(styles.root, styles.calendar)} ref={elementRef}>
+    <div
+      ref={__internalRootRef}
+      {...baseProps}
+      role="group"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
+      className={clsx(styles.root, styles.calendar, baseProps.className)}
+    >
       <div className={styles['calendar-inner']}>
         <CalendarHeader
           baseDate={baseDate}
@@ -123,20 +121,22 @@ export default function Calendar({
           onChangeMonth={onHeaderChangeMonthHandler}
           previousMonthLabel={previousMonthAriaLabel}
           nextMonthLabel={nextMonthAriaLabel}
+          headingId={headingId}
         />
         <div onBlur={onGridBlur} ref={gridWrapperRef}>
           <Grid
             locale={normalizedLocale}
             baseDate={baseDate}
             isDateEnabled={isDateEnabled}
-            focusedDate={focusedOrSelectedDate}
+            focusedDate={focusedDate}
+            focusableDate={focusableDate}
             onSelectDate={onGridSelectDateHandler}
             onFocusDate={onGridFocusDateHandler}
             onChangeMonth={onGridChangeMonthHandler}
             startOfWeek={normalizedStartOfWeek}
             todayAriaLabel={todayAriaLabel}
             selectedDate={memoizedValue}
-            handleFocusMove={moveFocusHandler}
+            ariaLabelledby={headingId}
           />
         </div>
       </div>
