@@ -21,6 +21,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant;
   inFilteringToken?: boolean;
+  ariaLabel?: string;
 }
 
 const Trigger = React.forwardRef(
@@ -37,6 +38,7 @@ const Trigger = React.forwardRef(
       isOpen,
       placeholder,
       disabled,
+      ariaLabel,
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
@@ -73,6 +75,7 @@ const Trigger = React.forwardRef(
         inFilteringToken={inFilteringToken}
         ariaDescribedby={ariaDescribedby}
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
+        ariaLabel={ariaLabel}
       >
         {triggerContent}
       </ButtonTrigger>

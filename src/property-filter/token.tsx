@@ -70,6 +70,7 @@ export const TokenButton = ({
       andText={i18nStrings.operationAndText}
       orText={i18nStrings.operationOrText}
       dismissAriaLabel={i18nStrings.removeTokenButtonAriaLabel(token)}
+      operatorAriaLabel={i18nStrings.operatorAriaLabel}
       onChange={setOperation}
       onDismiss={removeToken}
       disabled={disabled}

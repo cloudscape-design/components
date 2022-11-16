@@ -453,6 +453,12 @@ describe('property filter parts', () => {
           expect.objectContaining({ detail: expect.objectContaining({ operation: 'and' }) })
         );
       });
+
+      test('can be used to check aria-label attirbute on the filter token operator', () => {
+        const secondToken = wrapper.findTokens()![1];
+        const operator = secondToken.findTokenOperation()?.findDropdown();
+        expect(operator?.findAll('button')[0].getElement()).toHaveAttribute('aria-label', 'Boolean Operator');
+      });
     });
     describe('dismiss button', () => {
       test('causes onChange to fire, removing the token', () => {
