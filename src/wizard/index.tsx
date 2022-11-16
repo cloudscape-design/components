@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -17,19 +17,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export { WizardProps };
-
-const scrollToTop = (ref: React.RefObject<HTMLDivElement>) => {
-  const overflowRegex = /(auto|scroll)/;
-  let parent = ref?.current?.parentElement;
-  while (parent && !overflowRegex.test(getComputedStyle(parent).overflow)) {
-    parent = parent.parentElement;
-  }
-  if (parent) {
-    parent.scrollTop = 0;
-  } else {
-    window.scrollTo(window.pageXOffset, 0);
-  }
-};
 
 export default function Wizard({
   steps,
@@ -60,11 +47,6 @@ export default function Wizard({
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
   farthestStepIndex.current = Math.max(farthestStepIndex.current, actualActiveStepIndex);
-
-  const internalRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    scrollToTop(internalRef);
-  }, [actualActiveStepIndex]);
 
   const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
@@ -101,7 +83,6 @@ export default function Wizard({
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
       <div
         className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
-        ref={internalRef}
       >
         <WizardNavigation
           activeStepIndex={actualActiveStepIndex}
