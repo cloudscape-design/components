@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { Header } from '~components';
 import Container from '~components/container';
 import ExpandableSection, { ExpandableSectionProps } from '~components/expandable-section';
 import Table from '~components/table';
@@ -79,7 +80,8 @@ const permutations = createPermutations<ExpandableSectionProps>([
   {
     expanded: [true],
     variant: ['container'],
-    headerText: ['Container example header'],
+    // keep on variant='container' with header for screenshot test to check no style breaks
+    header: [<Header variant="h2">Container example header</Header>],
     children: [
       <div style={{ overflow: 'hidden' }}>
         <Table

@@ -90,6 +90,11 @@
 
   &-container {
     width: 100%;
+    // The icon-container style is kept for variant='container' and header
+    > .icon-container {
+      margin-top: awsui.$space-expandable-section-icon-offset-top;
+      margin-right: awsui.$space-xs;
+    }
 
     &[data-awsui-focus-visible='true']:focus-within {
       outline: none;
