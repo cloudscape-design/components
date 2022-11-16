@@ -23,6 +23,7 @@ import { findIndex, useMemoizedArray } from './utils';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import LiveRegion from '../internal/components/live-region';
 
 export { TagEditorProps };
 
@@ -237,7 +238,7 @@ const TagEditor = React.forwardRef(
       return (
         <div className={styles.root} ref={baseComponentProps.__internalRootRef}>
           <InternalStatusIndicator className={styles.loading} type="loading">
-            {i18nStrings.loading}
+            <LiveRegion>{i18nStrings.loading}</LiveRegion>
           </InternalStatusIndicator>
         </div>
       );

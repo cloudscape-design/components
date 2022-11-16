@@ -20,6 +20,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import LiveRegion from '../internal/components/live-region';
 
 export { CardsProps };
 
@@ -98,7 +99,9 @@ const Cards = React.forwardRef(function <T = any>(
   if (loading) {
     status = (
       <div className={styles.loading}>
-        <InternalStatusIndicator type="loading">{loadingText}</InternalStatusIndicator>
+        <InternalStatusIndicator type="loading">
+          <LiveRegion>{loadingText}</LiveRegion>
+        </InternalStatusIndicator>
       </div>
     );
   } else if (empty && !items.length) {

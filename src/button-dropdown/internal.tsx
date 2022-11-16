@@ -23,6 +23,7 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       expandableGroups = false,
       children,
@@ -107,6 +108,7 @@ const InternalButtonDropdown = React.forwardRef(
         {...iconProps}
         variant={triggerVariant}
         loading={loading}
+        loadingText={loadingText}
         disabled={disabled}
         onClick={(event: Event) => {
           event.preventDefault();

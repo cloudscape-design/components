@@ -37,6 +37,7 @@ import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useControllable } from '../internal/hooks/use-controllable';
+import LiveRegion from '../internal/components/live-region';
 export { CodeEditorProps };
 
 export default function CodeEditor(props: CodeEditorProps) {
@@ -258,7 +259,11 @@ export default function CodeEditor(props: CodeEditorProps) {
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
-      {props.loading && <LoadingScreen>{i18nStrings.loadingState}</LoadingScreen>}
+      {props.loading && (
+        <LoadingScreen>
+          <LiveRegion>{i18nStrings.loadingState}</LiveRegion>
+        </LoadingScreen>
+      )}
 
       {!ace && !props.loading && (
         <ErrorScreen recoveryText={i18nStrings.errorStateRecovery} onRecoveryClick={props.onRecoveryClick}>

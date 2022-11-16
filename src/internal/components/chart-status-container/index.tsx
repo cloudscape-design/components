@@ -42,7 +42,7 @@ export function getChartStatus<T, U>({
   return { isEmpty, isNoMatch, showChart };
 }
 
-const ChartStatusContainer = ({
+export default function ChartStatusContainer({
   statusType,
   errorText,
   loadingText,
@@ -53,7 +53,7 @@ const ChartStatusContainer = ({
   isNoMatch,
   isEmpty,
   showChart,
-}: ChartStatusContainerProps) => {
+}: ChartStatusContainerProps) {
   const statusContainer = useMemo(() => {
     const handleRecoveryClick = (event: CustomEvent) => {
       event.preventDefault();
@@ -90,6 +90,4 @@ const ChartStatusContainer = ({
       {!showChart && statusContainer}
     </div>
   );
-};
-
-export default ChartStatusContainer;
+}

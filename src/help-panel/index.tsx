@@ -8,6 +8,7 @@ import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { HelpPanelProps } from './interfaces';
+import LiveRegion from '../internal/components/live-region';
 
 export { HelpPanelProps };
 
@@ -20,7 +21,9 @@ export default function HelpPanel({ header, footer, children, loading, loadingTe
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
-      <InternalStatusIndicator type="loading">{loadingText}</InternalStatusIndicator>
+      <InternalStatusIndicator type="loading">
+        <LiveRegion>{loadingText}</LiveRegion>
+      </InternalStatusIndicator>
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>

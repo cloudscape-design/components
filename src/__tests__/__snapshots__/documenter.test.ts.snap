@@ -2686,6 +2686,12 @@ It prevents users from clicking the button.",
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text that screen reader announces when the button is in a loading state.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -2928,6 +2934,12 @@ It prevents clicks.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the text that screen reader announces when the button dropdown is in a loading state.",
+      "name": "loadingText",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "defaultValue": "'normal'",
