@@ -5272,6 +5272,37 @@ Use to assign unique labels when there are multiple expandable sections with the
       "type": "string",
     },
     Object {
+      "description": "Specifies secondary text that's displayed to the right of the heading title. Use with container variant.
+Behaves similar to the Header component counter.",
+      "name": "headerCounter",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Supplementary text below the heading. Use with container variant.",
+      "name": "headerDescription",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
+h2. Use with container variant.",
+      "inlineType": Object {
+        "name": "ExpandableSectionProps.HeadingTag",
+        "type": "union",
+        "values": Array [
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+        ],
+      },
+      "name": "headingTagOverride",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -5307,11 +5338,14 @@ Use to assign unique labels when there are multiple expandable sections with the
       "name": "children",
     },
     Object {
-      "description": "Heading displayed above the content text.
-When using the container variant, use the Header component. Otherwise, use plain text.
-",
+      "description": "**Deprecated**, use headerText instead.",
       "isDefault": false,
       "name": "header",
+    },
+    Object {
+      "description": "Heading displayed above the content text. When using the container variant, use it with additional header props. Otherwise, use plain text.",
+      "isDefault": false,
+      "name": "headerText",
     },
   ],
   "releaseStatus": "stable",
