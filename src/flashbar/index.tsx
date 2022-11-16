@@ -154,7 +154,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     }
 
     return (
-      // This is a proxy for <ul>, so we're not applying a class to another Cloudscape component.
+      // This is a proxy for <ul>, so we're not applying a class to another actual component.
       // eslint-disable-next-line react/forbid-component-props
       <TransitionGroup component="ul" className={styles['flash-list']}>
         {items &&
