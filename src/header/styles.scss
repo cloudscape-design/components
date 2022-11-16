@@ -5,7 +5,6 @@
 
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
-@use '../internal/hooks/focus-visible' as focus-visible;
 
 .root {
   @include styles.styles-reset();
