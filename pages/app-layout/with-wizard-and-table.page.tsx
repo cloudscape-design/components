@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { AppLayout, Box, Button, ColumnLayout, Container, Header, SpaceBetween, Table, Wizard } from '~components';
-import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
+import { generateItems, Instance } from '../table/generate-data';
+import labels from './utils/labels';
+
 import ScreenshotArea from '../utils/screenshot-area';
 
 const items = generateItems(20);
@@ -14,6 +16,7 @@ export default function () {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ariaLabels={labels}
         navigationHide={false}
         content={
           <Wizard
