@@ -358,8 +358,10 @@ export default function SplitPanel({
   const panelHeaderId = useUniqueId('panel-header');
 
   const paneHeader = (
-    <div className={styles.header} style={appLayoutMaxWidth} id={panelHeaderId}>
-      <h2 className={styles['header-text']}>{header}</h2>
+    <div className={styles.header} style={appLayoutMaxWidth}>
+      <h2 className={styles['header-text']} id={panelHeaderId}>
+        {header}
+      </h2>
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
