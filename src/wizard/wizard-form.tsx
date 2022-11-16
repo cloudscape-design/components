@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 import InternalForm from '../form/internal';
-import InternalHeader from '../header/internal';
+import FocusableHeader from '../header/focusable-header';
 import { useMobile } from '../internal/hooks/use-mobile';
 import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
@@ -48,8 +48,7 @@ export default function WizardForm({
 
   useEffectOnUpdate(() => {
     if (stepHeaderRef && stepHeaderRef.current) {
-      const header = stepHeaderRef.current.querySelector('[tabindex = "-1"]') as HTMLElement;
-      header?.focus();
+      stepHeaderRef.current?.focus();
     }
   }, [activeStepIndex]);
 
@@ -71,17 +70,16 @@ export default function WizardForm({
         >
           {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
-        <InternalHeader
+        <FocusableHeader
           className={styles['form-header-component']}
-          variant="h1"
+          tagVariant={'h1'}
           description={description}
           info={info}
           __internalRootRef={stepHeaderRef}
-          __headingTabIndex={-1}
         >
           {title}
           {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-        </InternalHeader>
+        </FocusableHeader>
       </WizardFormHeader>
       <InternalForm
         className={clsx(styles['form-component'])}

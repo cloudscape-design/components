@@ -20,7 +20,6 @@ const steps: WizardProps.Step[] = [
   },
   {
     title: 'Step 2',
-    info: <Link variant="info">Info</Link>,
     content: (
       <div className={styles['step-content']}>
         <div id="content-text">Content 2</div>
@@ -29,6 +28,7 @@ const steps: WizardProps.Step[] = [
   },
   {
     title: 'Step 3',
+    info: <Link variant="info">Info</Link>,
     content: (
       <div className={styles['step-content']}>
         {Array.from(Array(15).keys()).map(key => (
