@@ -11,6 +11,7 @@ import { ButtonProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import LiveRegion from '../internal/components/live-region';
 
 type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -33,6 +34,7 @@ export const InternalButton = React.forwardRef(
       iconAlt,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       wrapText = true,
       href,
@@ -115,24 +117,30 @@ export const InternalButton = React.forwardRef(
       return (
         // https://github.com/yannickcr/eslint-plugin-react/issues/2962
         // eslint-disable-next-line react/jsx-no-target-blank
-        <a
-          {...buttonProps}
-          href={href}
-          target={target}
-          // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-          tabIndex={isDisabled ? -1 : undefined}
-          aria-disabled={isDisabled ? true : undefined}
-          download={download}
-        >
-          {buttonContent}
-        </a>
+        <>
+          <a
+            {...buttonProps}
+            href={href}
+            target={target}
+            // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
+            rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+            tabIndex={isDisabled ? -1 : undefined}
+            aria-disabled={isDisabled ? true : undefined}
+            download={download}
+          >
+            {buttonContent}
+          </a>
+          {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        </>
       );
     }
     return (
-      <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
-        {buttonContent}
-      </button>
+      <>
+        <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
+          {buttonContent}
+        </button>
+        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+      </>
     );
   }
 );

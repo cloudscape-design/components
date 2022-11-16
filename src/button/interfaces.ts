@@ -16,7 +16,7 @@ export interface ButtonProps extends BaseComponentProps {
    */
   loading?: boolean;
   /**
-   * Specifies the text that's displayed when the button is in a loading state.
+   * Specifies the text that screen reader announces when the button is in a loading state.
    */
   loadingText?: string;
   /**

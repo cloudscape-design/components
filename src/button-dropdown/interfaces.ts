@@ -49,7 +49,7 @@ export interface ButtonDropdownProps extends BaseComponentProps {
    */
   loading?: boolean;
   /**
-   * Specifies the text that's displayed when the button dropdown is in a loading state.
+   * Specifies the text that screen reader announces when the button dropdown is in a loading state.
    */
   loadingText?: string;
   /** Determines the general styling of the button dropdown.
