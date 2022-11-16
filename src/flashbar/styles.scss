@@ -11,6 +11,7 @@
 .flashbar {
   position: relative;
 }
+
 .flashbar,
 .flash {
   @include styles.styles-reset;
@@ -28,10 +29,6 @@
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
-  &:not(:last-child) {
-    margin-bottom: awsui.$space-xxxs;
-  }
 }
 
 .flash-refresh {
@@ -51,9 +48,33 @@
   }
 }
 
+.flash-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li:not(:last-child) {
+    margin-bottom: awsui.$space-xxxs;
+  }
+}
+
 .flash-body {
   display: flex;
   flex-grow: 1;
+  min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}
+
+.flash-focus-container {
+  display: flex;
+  flex: 1;
   min-width: 0;
 }
 
@@ -95,15 +116,15 @@
   white-space: nowrap;
   margin-left: awsui.$space-flashbar-action-left;
 }
-/* stylelint-disable selector-max-type */
-.flashbar.breakpoint-default > .flash > .flash-body {
+
+.flashbar.breakpoint-default > .flash-list > .flash-list-item > .flash > .flash-body {
   display: block;
   & > .action-button-wrapper {
-    margin-left: awsui.$space-xxs;
+    margin-left: awsui.$space-l;
+    padding-left: awsui.$space-xxs;
     margin-bottom: awsui.$space-xxs;
   }
 }
-/* stylelint-enable selector-max-type */
 
 .action-button {
   /* Only used as a selector for test-utils */
@@ -176,11 +197,19 @@ the grid layout will be:
     align-self: end;
   }
 
-  &.visual-refresh > .item:not(:last-of-type) > :first-child {
+  &.visual-refresh > .item:not(:last-of-type) > .flash {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
-  &:not(.visual-refresh) > .item:not(:last-of-type) > :first-child {
+  &:not(.visual-refresh) > .item:not(:last-of-type) > .flash {
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  &.visual-refresh > .item:not(:last-of-type) > .flash-items > li:first-child > .flash {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  &:not(.visual-refresh) > .item:not(:last-of-type) > .flash-items > li:first-child > .flash {
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
   }
 }
@@ -243,6 +272,8 @@ the grid layout will be:
   }
 
   > .icon {
+    display: inline-block;
+
     @include styles.with-motion {
       transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
     }

@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import range from 'lodash/range';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartModel } from '../model';
 import {
@@ -9,7 +8,6 @@ import {
   computePlotPoints,
   findClosest,
   circleIndex,
-  throttle,
   isSeriesValid,
 } from '../model/utils';
 
@@ -255,59 +253,6 @@ describe('AreaChart circleIndex', () => {
   it('returns opposite boundary if not in range', () => {
     expect(circleIndex(0, [1, 5])).toBe(5);
     expect(circleIndex(6, [1, 5])).toBe(1);
-  });
-});
-
-describe('AreaChart throttle', () => {
-  let dateNowSpy: any;
-  let requestAnimationFrameSpy: any;
-  let requestAnimationFrameCallback: any = () => undefined;
-  let funcMock: any;
-
-  beforeEach(() => {
-    let index = 0;
-    const times = range(0, 100);
-    dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => times[index++]);
-    requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
-      requestAnimationFrameCallback = callback;
-      return index;
-    });
-    funcMock = jest.fn();
-  });
-
-  afterAll(() => {
-    dateNowSpy.mockRestore();
-    requestAnimationFrameSpy.mockRestore();
-  });
-
-  it('should run the client function immediately for the first invocation', () => {
-    const throttled = throttle(funcMock, 50);
-
-    throttled('arg1', 'arg2');
-
-    expect(funcMock).toBeCalledTimes(1);
-    expect(funcMock).toBeCalledWith('arg1', 'arg2');
-    expect(dateNowSpy).toBeCalledTimes(1);
-    expect(requestAnimationFrameSpy).toBeCalledTimes(0);
-  });
-
-  it('should run the client function three times only', () => {
-    const throttled = throttle(funcMock, 25);
-
-    // Execution 1
-    throttled(`arg-${0}`);
-
-    // Mock Date.now has an increment of 1ms.
-    // Hence expected the function to execute every 25 iteration.
-    for (let i = 1; i <= 50; i++) {
-      throttled(`arg-${i}`);
-      requestAnimationFrameCallback();
-    }
-
-    expect(funcMock).toBeCalledTimes(3);
-    expect(funcMock).toBeCalledWith('arg-0');
-    expect(funcMock).toBeCalledWith('arg-25');
-    expect(funcMock).toBeCalledWith('arg-50');
   });
 });
 
