@@ -15,7 +15,7 @@
 .wizard.refresh {
   column-gap: awsui.$space-xl;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   row-gap: awsui.$space-scaled-xl;
 
