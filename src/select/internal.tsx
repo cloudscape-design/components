@@ -155,7 +155,6 @@ const InternalSelect = React.forwardRef(
         {...formFieldContext}
         controlId={controlId}
         ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, selectAriaLabelId)}
-        ariaLabel={ariaLabel}
       />
     );
 
