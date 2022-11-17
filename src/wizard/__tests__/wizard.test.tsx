@@ -402,23 +402,6 @@ describe('Form', () => {
   });
 });
 
-describe('Focus delegation', () => {
-  test('when previous button is not focused and unmounted no focus delegation occurs', () => {
-    const [wrapper] = renderDefaultWizard();
-    wrapper.findPrimaryButton()!.click();
-    wrapper.findPreviousButton()!.click();
-    expect(wrapper.findPrimaryButton()!.getElement()).not.toBe(document.activeElement);
-  });
-
-  test('when previous button is focused and unmounted the focus is delegated to the next button', () => {
-    const [wrapper] = renderDefaultWizard();
-    wrapper.findPrimaryButton()!.click();
-    wrapper.findPreviousButton()!.focus();
-    wrapper.findPreviousButton()!.click();
-    expect(wrapper.findPrimaryButton()!.getElement()).toBe(document.activeElement);
-  });
-});
-
 test('sets last step as active when activeStepIndex is out of bound, and raises warning', () => {
   consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
   expect(consoleWarnSpy).not.toHaveBeenCalled();

@@ -63,6 +63,35 @@ describe('Wizard keyboard navigation', () => {
         await expect(page.getText('#content-text')).resolves.toBe('Content 1');
       })
     );
+
+    test(
+      'should focus on header after navigation to the next step',
+      setupTest(async page => {
+        await page.resetFocus();
+        await page.keys(['Tab', 'Tab', 'Space']);
+        await expect(page.getFocusedElementText()).resolves.toBe('Step 2');
+      })
+    );
+
+    test(
+      'should focus on header after navigation to the previous step',
+      setupTest(async page => {
+        await page.clickPrimaryButton();
+        await page.keys(['Shift', 'Tab', 'Space']);
+        await expect(page.getFocusedElementText()).resolves.toBe('Step 1');
+      })
+    );
+
+    test(
+      'header should receive focus only programmatically',
+      setupTest(async page => {
+        await page.resetFocus();
+        await page.keys(['Tab', 'Tab', 'Space']);
+        await expect(page.getFocusedElementText()).resolves.toBe('Step 2');
+        await page.keys(['Tab', 'Shift', 'Tab']);
+        await expect(page.getFocusedElementText()).resolves.not.toBe('Step 2');
+      })
+    );
   });
 });
 
