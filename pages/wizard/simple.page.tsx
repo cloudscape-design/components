@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Wizard, { WizardProps } from '~components/wizard';
 import Toggle from '~components/toggle';
 import Button from '~components/button';
+import Link from '~components/link';
 import styles from './styles.scss';
 
 import { i18nStrings } from './common';
@@ -27,9 +28,14 @@ const steps: WizardProps.Step[] = [
   },
   {
     title: 'Step 3',
+    info: <Link variant="info">Info</Link>,
     content: (
       <div className={styles['step-content']}>
-        <div id="content-text">Content 3</div>
+        {Array.from(Array(15).keys()).map(key => (
+          <div key={key} className={styles['content-item']}>
+            Item {key}
+          </div>
+        ))}
       </div>
     ),
   },
