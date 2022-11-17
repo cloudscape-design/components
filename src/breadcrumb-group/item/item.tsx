@@ -91,6 +91,11 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
           <span className={styles.text} ref={mergedRef}>
             {item.text}
           </span>
+          {(isLast || isFirst) && isCompressed && (
+            <span className={styles['virtual-item']} ref={virtualTextRef}>
+              {item.text}
+            </span>
+          )}
         </a>
         {!isLast ? (
           <span className={styles.icon}>
@@ -98,11 +103,6 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
           </span>
         ) : null}
       </div>
-      {(isLast || isFirst) && isCompressed && (
-        <span className={clsx(styles.text, styles['virtual-item'])} ref={virtualTextRef}>
-          {item.text}
-        </span>
-      )}
       {openPopover && <Portal>{popoverContent}</Portal>}
     </>
   );
