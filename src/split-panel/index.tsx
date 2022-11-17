@@ -355,7 +355,7 @@ export default function SplitPanel({
     </AppLayoutContext.Provider>
   );
 
-  const panelHeaderId = useUniqueId('panel-header');
+  const panelHeaderId = useUniqueId('split-panel-header');
 
   const paneHeader = (
     <div className={styles.header} style={appLayoutMaxWidth}>
