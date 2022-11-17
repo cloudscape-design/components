@@ -1,15 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, Dispatch, useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import AppLayout from '~components/app-layout';
-import FormField from '~components/form-field/internal';
-import Flashbar, { FlashbarProps } from '~components/flashbar';
 import Header from '~components/header';
 import Input from '~components/input';
 import Select from '~components/select';
 import Table, { TableProps } from '~components/table';
 import BreadcrumbGroup from '~components/breadcrumb-group';
-import Button from '~components/button';
 import { initialItems, Metric } from './editable-data';
 import { ColorPicker, HelpContent } from './editable-utils';
 
@@ -37,17 +34,17 @@ export const ariaLabels: TableProps.AriaLabels<Metric> = {
   submitEditLabel: column => `Submit edit ${column.header}`,
 };
 
-type Notifications = ReadonlyArray<FlashbarProps.MessageDefinition>;
-const NotificationsContext = createContext<[Notifications, Dispatch<Notifications>]>([[], () => {}]);
-
 const DNS_NAME = /^(([a-z\d]|[a-z\d][a-z\d-]*[a-z\d])\.)*([a-z\d]|[a-z\d][a-z\d-]*[a-z\d])$/i;
 
-const columns: Array<TableProps.ColumnDefinition<Metric>> = [
+const columns: Array<TableProps.ColumnDefinition<Metric, string>> = [
   {
     id: 'color',
     header: 'Color',
     width: 140,
-    editable: true,
+    editConfig: {
+      ariaLabel: 'Choose a color',
+      errorIconAriaLabel: 'Error',
+    },
     cell(item, { isEditing, currentValue, setValue }) {
       if (!isEditing) {
         return <div style={{ background: item.color, width: 16, height: 16 }}></div>;
@@ -59,40 +56,51 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
     id: 'label',
     header: 'Label',
     width: 200,
-    editable: true,
     sortingField: 'label',
+    editConfig: {
+      ariaLabel: 'Enter a label',
+      errorIconAriaLabel: 'Error',
+      validation(item, value) {
+        const currentValue = value ?? item.label;
+        if (!currentValue.match(DNS_NAME)) {
+          return 'The value should only include DNS-safe characters';
+        }
+        if (errorsMeta.get(item)) {
+          return errorsMeta.get(item);
+        }
+      },
+    },
     cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
       if (!isEditing) {
         return item.label;
       }
-      const value = currentValue ?? item.label;
-      const errorText = !value.match(DNS_NAME)
-        ? 'The value should only include DNS-safe characters'
-        : errorsMeta.get(item);
       return (
-        <FormField __hideLabel={true} stretch={true} errorText={errorText}>
-          <Input autoFocus={true} value={value} onChange={event => setValue(event.detail.value)} />
-        </FormField>
+        <Input autoFocus={true} value={currentValue ?? item.label} onChange={event => setValue(event.detail.value)} />
       );
     },
   },
   {
     id: 'expression',
     header: 'Expression',
-    editable: true,
+    editConfig: {
+      ariaLabel: 'Enter an expression',
+      errorIconAriaLabel: 'Error',
+      validation(item) {
+        if (errorsMeta.get(item)) {
+          return errorsMeta.get(item);
+        }
+      },
+    },
     cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
       if (!isEditing) {
         return item.expression;
       }
-      const errorText = errorsMeta.get(item);
       return (
-        <FormField __hideLabel={true} stretch={true} errorText={errorText}>
-          <Input
-            autoFocus={true}
-            value={currentValue ?? item.expression}
-            onChange={event => setValue(event.detail.value)}
-          />
-        </FormField>
+        <Input
+          autoFocus={true}
+          value={currentValue ?? item.expression}
+          onChange={event => setValue(event.detail.value)}
+        />
       );
     },
   },
@@ -105,7 +113,9 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
   },
   {
     header: 'Statistic',
-    cell: (item: Metric) => item.statistic,
+    cell(item) {
+      return item.statistic;
+    },
   },
   {
     header: 'Period',
@@ -124,7 +134,6 @@ const columns: Array<TableProps.ColumnDefinition<Metric>> = [
 let errorsMeta = new WeakMap<Metric, string>();
 
 function Demo() {
-  const [, setNotifications] = useContext(NotificationsContext);
   const [items, setItems] = useState(initialItems);
   const tableRef = useRef<TableProps.Ref>(null);
 
@@ -136,38 +145,9 @@ function Demo() {
       throw new Error('Inline error');
     }
     const newItem = { ...currentItem, [column.id as keyof Metric]: newValue };
-    if (newValue === 'alert') {
-      throw new Error('Validation error');
-    }
     setItems(items => items.map(item => (item === currentItem ? newItem : item)));
   };
 
-  function wrapWithErrorHandler<T extends (...args: any[]) => void | Promise<any>>(callback: T): T {
-    return ((...args) => {
-      setNotifications([]);
-      return callback(...args)?.catch(error => {
-        if (error.message === 'Validation error') {
-          setNotifications([
-            {
-              type: 'error',
-              content: 'Resolve your cell edit before continuing',
-              action: (
-                <Button
-                  onClick={() => {
-                    tableRef.current?.cancelEdit?.();
-                    setNotifications([]);
-                  }}
-                >
-                  Discard change and continue
-                </Button>
-              ),
-            },
-          ]);
-        }
-        throw error;
-      });
-    }) as T;
-  }
   return (
     <Table
       variant="full-page"
@@ -178,9 +158,8 @@ function Demo() {
           Metrics
         </Header>
       }
-      submitEdit={wrapWithErrorHandler(handleSubmit)}
+      submitEdit={handleSubmit}
       onEditCancel={() => {
-        setNotifications([]);
         errorsMeta = new WeakMap();
       }}
       columnDefinitions={columns}
@@ -192,7 +171,6 @@ function Demo() {
 }
 
 export default function () {
-  const flashbarState = useState<Notifications>([]);
   return (
     <AppLayout
       contentType="table"
@@ -205,14 +183,8 @@ export default function () {
           ]}
         />
       }
-      stickyNotifications={true}
-      notifications={<Flashbar items={flashbarState[0]} />}
       tools={<HelpContent />}
-      content={
-        <NotificationsContext.Provider value={flashbarState}>
-          <Demo />
-        </NotificationsContext.Provider>
-      }
+      content={<Demo />}
     />
   );
 }
