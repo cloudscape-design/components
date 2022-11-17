@@ -18,6 +18,7 @@ import InternalIcon from '../../../icon/internal';
 import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
+import LiveRegion from '../../../internal/components/live-region/index.js';
 
 export interface TutorialListProps {
   loading?: boolean;
@@ -83,7 +84,9 @@ export default function TutorialList({
           </FormField>
         */}
           {loading ? (
-            <InternalStatusIndicator type="loading">{i18nStrings.loadingText}</InternalStatusIndicator>
+            <InternalStatusIndicator type="loading">
+              <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
+            </InternalStatusIndicator>
           ) : (
             <>
               <ul className={styles['tutorial-list']} role="list">

@@ -30,6 +30,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import useMouseDownTarget from './use-mouse-down-target';
 import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
+import LiveRegion from '../internal/components/live-region';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -262,7 +263,7 @@ const InternalTable = React.forwardRef(
                       >
                         {loading ? (
                           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-                            {loadingText}
+                            <LiveRegion visible={true}>{loadingText}</LiveRegion>
                           </InternalStatusIndicator>
                         ) : (
                           <div className={styles.empty}>{empty}</div>

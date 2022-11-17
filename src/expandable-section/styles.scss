@@ -90,9 +90,28 @@
 
   &-container {
     width: 100%;
+    // The icon-container style is kept for variant='container' and header
     > .icon-container {
       margin-top: awsui.$space-expandable-section-icon-offset-top;
       margin-right: awsui.$space-xs;
+    }
+
+    &[data-awsui-focus-visible='true']:focus-within {
+      outline: none;
+      text-decoration: none;
+      padding: container.$header-focus-visible-padding;
+
+      @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
+    }
+    &-button {
+      &:focus {
+        outline: none;
+        text-decoration: none;
+      }
+      > .icon-container {
+        margin-top: awsui.$space-expandable-section-icon-offset-top;
+        margin-right: awsui.$space-xs;
+      }
     }
   }
 

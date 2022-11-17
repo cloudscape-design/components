@@ -14,6 +14,7 @@ import { S3ResourceSelectorProps } from '../interfaces';
 import { validate, getErrorText } from './validation';
 import styles from './styles.css.js';
 import { SearchInput } from './search-input';
+import LiveRegion from '../../internal/components/live-region';
 
 interface S3InContextProps {
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
@@ -138,7 +139,9 @@ export const S3InContext = React.forwardRef(
         <div role="alert" aria-live="assertive" aria-atomic="true">
           {loading && (
             <InternalBox margin={{ top: 's' }}>
-              <InternalStatusIndicator type="loading">{i18nStrings?.inContextLoadingText}</InternalStatusIndicator>
+              <InternalStatusIndicator type="loading">
+                <LiveRegion visible={true}>{i18nStrings?.inContextLoadingText}</LiveRegion>
+              </InternalStatusIndicator>
             </InternalBox>
           )}
         </div>

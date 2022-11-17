@@ -11,6 +11,10 @@ on:
         required: true
         description: 'npm package of the release repo'
         type: string
+
+permissions:
+  contents: write
+
 jobs:
   release:
     uses: cloudscape-design/.github/.github/workflows/release-gh-notes.yml@main

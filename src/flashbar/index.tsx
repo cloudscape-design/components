@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { Flash, focusFlashById } from './flash';
+import { FlashbarProps, StackedFlashbarProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import InternalIcon from '../icon/internal';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
@@ -17,17 +17,44 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+
 import styles from './styles.css.js';
 
 export { FlashbarProps };
 
 export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const { __internalRootRef } = useBaseComponent('Flashbar');
-  const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const baseProps = getBaseProps(restProps);
-  const mergedRef = useMergeRefs(ref, __internalRootRef);
+
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
+  const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
+
   const isFocusVisible = useFocusVisible();
   const isVisualRefresh = useVisualRefresh();
+
+  const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
+  const [nextFocusId, setNextFocusId] = useState<string | null>(null);
+
+  // Track new or removed item IDs in state to only trigger focus changes for newly added items.
+  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
+  if (items) {
+    const newItems = items.filter(({ id }) => id && !previousItems.some(item => item.id === id));
+    const removedItems = previousItems.filter(({ id }) => id && !items.some(item => item.id === id));
+    if (newItems.length > 0 || removedItems.length > 0) {
+      setPreviousItems(items);
+      const newFocusItems = newItems.filter(({ ariaRole }) => ariaRole === 'alert');
+      if (newFocusItems.length > 0) {
+        setNextFocusId(newFocusItems[0].id!);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (nextFocusId) {
+      focusFlashById(ref.current, nextFocusId);
+    }
+  }, [nextFocusId]);
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
@@ -35,14 +62,14 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * flash messages does not contain an `id`.
    */
   const motionDisabled =
-    useReducedMotion(ref as any) || !isVisualRefresh || (items && !items.every(item => 'id' in item));
+    useReducedMotion(breakpointRef as any) || !isVisualRefresh || (items && !items.every(item => 'id' in item));
 
   /**
    * The `stackItems` property is a hidden boolean that allows for teams
    * to beta test the flashbar stacking feature.
    */
-  const stackItems = (restProps as any).stackItems;
-  const ariaLabels = (restProps as any).ariaLabels;
+  const stackItems = isStackedFlashbar(restProps);
+  const ariaLabels = stackItems ? restProps.ariaLabels : {};
   const isFlashbarStacked = stackItems && items?.length > 3;
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
@@ -82,7 +109,11 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           <div className={clsx(styles.collapsed, isVisualRefresh && styles['visual-refresh'])}>
             {stackedItems.map((item, index) => (
               <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
-                {index === 0 && renderItem(item, item.id ?? index)}
+                {index === 0 && (
+                  <ul className={styles['flash-list']}>
+                    <li className={styles['flash-list-item']}>{renderItem(item, item.id ?? index)}</li>
+                  </ul>
+                )}
                 {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
               </div>
             ))}
@@ -90,7 +121,13 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         {isFlashbarStackExpanded && (
-          <div className={styles.expanded}>{items.map((item, index) => renderItem(item, item.id ?? index))}</div>
+          <ul className={clsx(styles['flash-list'], styles.expanded)}>
+            {items.map((item, index) => (
+              <li key={item.id ?? index} className={styles['flash-list-item']}>
+                {renderItem(item, item.id ?? index)}
+              </li>
+            ))}
+          </ul>
         )}
 
         <button
@@ -99,11 +136,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
           {...isFocusVisible}
         >
-          <InternalIcon
-            className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}
-            size="small"
-            name="angle-down"
-          />
+          <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
+            <InternalIcon size="small" name="angle-down" />
+          </span>
         </button>
       </div>
     );
@@ -119,7 +154,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     }
 
     return (
-      <TransitionGroup component={null}>
+      // This is a proxy for <ul>, so we're not applying a class to another actual component.
+      // eslint-disable-next-line react/forbid-component-props
+      <TransitionGroup component="ul" className={styles['flash-list']}>
         {items &&
           items.map((item, index) => (
             <Transition
@@ -127,9 +164,11 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
               key={item.id ?? index}
               in={true}
             >
-              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) =>
-                renderItem(item, item.id ?? index, transitionRootElement, state)
-              }
+              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                <li className={styles['flash-list-item']}>
+                  {renderItem(item, item.id ?? index, transitionRootElement, state)}
+                </li>
+              )}
             </Transition>
           ))}
       </TransitionGroup>
@@ -145,7 +184,15 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       return;
     }
 
-    return <>{items.map((item, index) => renderItem(item, item.id ?? index))}</>;
+    return (
+      <ul className={styles['flash-list']}>
+        {items.map((item, index) => (
+          <li key={item.id ?? index} className={styles['flash-list-item']}>
+            {renderItem(item, item.id ?? index)}
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   /**
@@ -181,6 +228,10 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       {renderFlatItemsWithoutTransitions()}
     </div>
   );
+}
+
+function isStackedFlashbar(props: any): props is StackedFlashbarProps {
+  return 'stackItems' in props && !!props.stackItems;
 }
 
 applyDisplayName(Flashbar, 'Flashbar');
