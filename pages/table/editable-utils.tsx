@@ -56,7 +56,6 @@ export function HelpContent() {
       </ul>
       <h3>Server side validation</h3>
       <ul>
-        <li>Submit the codeword &quot;alert&quot; to show the floating notification</li>
         <li>Submit the codeword &quot;inline&quot; to show validation message inline</li>
       </ul>
     </HelpPanel>

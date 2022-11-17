@@ -110,12 +110,29 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: absolute;
     top: calc(#{$cell-vertical-padding} + #{awsui.$space-scaled-xxs});
     right: awsui.$space-xs;
+    &-form {
+      margin: 0 calc(-1 * #{awsui.$space-xs});
+    }
+
+    &-row {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: awsui.$space-xxs;
+      & > :not(:last-child) {
+        flex-grow: 1;
+      }
+    }
+    &-controls {
+      flex-shrink: 0;
+    }
   }
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
-    border-left: awsui.$border-item-width solid transparent;
-    border-right: awsui.$border-item-width solid transparent;
+    border-left: awsui.$border-divider-list-width solid transparent;
+    border-right: awsui.$border-divider-list-width solid transparent;
     &:not(.body-cell-edit-active) {
       & > .body-cell-editor {
         opacity: 0;
@@ -140,9 +157,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         }
       }
     }
-  }
-  &.body-cell-edit-active {
-    padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-xxxl} + #{awsui.$space-xs});
   }
 }
 

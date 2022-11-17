@@ -86,7 +86,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
-   *
+   * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -272,19 +272,45 @@ export namespace TableProps {
   }
 
   export type CellRenderer<ItemType> = (item: ItemType) => React.ReactNode;
-  export type EditableCellRenderer<ItemType> = (item: ItemType, context: CellContext) => React.ReactNode;
+  export type EditableCellRenderer<ItemType, ValueType> = (
+    item: ItemType,
+    context: CellContext<ValueType>
+  ) => React.ReactNode;
 
-  type EditableColumnProps<ItemType> =
+  export interface EditConfig<ItemType, ValueType> {
+    /**
+     * Specifies a label for the edit control. Visually hidden but read by screen readers.
+     */
+    ariaLabel?: string;
+    /**
+     * Specifies an ariaLabel for error icon that is displayed when the validation fails.
+     */
+    errorIconAriaLabel?: string;
+    /**
+     * Constraint text that is displayed below the edit control.
+     */
+    constraintText?: string;
+    /**
+     * A function that allows you to validate the value of the edit control.
+     * Return a string to display an error message.
+     * Return `undefined` (or no return) to indicate that the value is valid.
+     * @param item - The item that is being edited.
+     * @param value - The current value of the edit control.
+     */
+    validation?: (item: ItemType, value: ValueType) => string | undefined;
+  }
+
+  type ColumnEditConfig<ItemType, ValueType> =
     | {
-        editable?: false;
+        editConfig?: undefined;
         cell: CellRenderer<ItemType>;
       }
     | {
-        editable: true;
-        cell: EditableCellRenderer<ItemType>;
+        editConfig: EditConfig<ItemType, ValueType>;
+        cell: EditableCellRenderer<ItemType, ValueType>;
       };
 
-  export type ColumnDefinition<ItemType> = {
+  export type ColumnDefinition<ItemType, ValueType = string> = {
     id?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
@@ -292,7 +318,7 @@ export namespace TableProps {
     minWidth?: number | string;
     maxWidth?: number | string;
   } & SortingColumn<ItemType> &
-    EditableColumnProps<ItemType>;
+    ColumnEditConfig<ItemType, ValueType>;
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
@@ -356,7 +382,7 @@ export namespace TableProps {
     /**
      * Dismiss an inline edit if currently active.
      */
-    cancelEdit?: () => void;
+    cancelEdit?(): void;
   }
 
   export type SubmitEditFunction<T> = (item: T, column: TableProps.ColumnDefinition<T>, newValue: any) => Promise<void>;
