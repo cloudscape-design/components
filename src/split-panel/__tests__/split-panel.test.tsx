@@ -288,7 +288,9 @@ describe('Split panel', () => {
     test('split panel is labelled by panel header', () => {
       const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });
       const sidePanelElem = wrapper.findByClassName(styles['drawer-content-side'])?.getElement();
-      expect(sidePanelElem?.getAttribute('aria-labelledby')).toMatch('split-panel-header');
+      const labelId = sidePanelElem?.getAttribute('aria-labelledby');
+
+      expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
     });
   });
 });
