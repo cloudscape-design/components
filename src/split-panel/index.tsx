@@ -328,7 +328,7 @@ export default function SplitPanel({
   useEffectOnUpdate(() => {
     switch (lastInteraction?.type) {
       case 'open':
-        return closeRef.current?.focus();
+        return handleRef.current?.focus();
       case 'close':
         return toggleRef.current?.focus();
       case 'position':
