@@ -24,6 +24,16 @@ const DEMO_CONTENT = (
       magnis dis parturient montes nascetur ridiculus mus mauris. Nisi porta lorem mollis aliquam ut porttitor leo a.
       Facilisi morbi tempus iaculis urna. Odio tempor orci dapibus ultrices in iaculis nunc.
     </p>
+    <Table<Instance>
+      header={
+        <Header headingTagOverride="h1" counter="10">
+          Table Example In Split panel
+        </Header>
+      }
+      columnDefinitions={columnsConfig}
+      items={generateItems(10)}
+      variant="embedded"
+    />
     <p>
       Ut diam quam nulla porttitor massa id neque. Duis at tellus at urna condimentum mattis pellentesque id nibh. Metus
       vulputate eu scelerisque felis imperdiet proin fermentum.
@@ -54,6 +64,7 @@ export default function () {
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
   const [itemCount, setItemCount] = useState<number>(30);
   const [items, setItems] = useState(generateItems(itemCount));
+  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
 
   function openHelp(article: keyof typeof toolsContent) {
     setToolsOpen(true);
@@ -106,6 +117,10 @@ export default function () {
             items={items}
           />
         }
+        splitPanelOpen={splitPanelOpen}
+        onSplitPanelToggle={({ detail }) => {
+          setSplitPanelOpen(detail.open);
+        }}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -122,7 +137,7 @@ export default function () {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            {DEMO_CONTENT}
+            {splitPanelOpen && DEMO_CONTENT}
           </SplitPanel>
         }
       />
