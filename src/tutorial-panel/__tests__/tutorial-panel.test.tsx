@@ -244,4 +244,17 @@ describe('URL sanitization', () => {
       );
     });
   });
+  describe('a11y', () => {
+    test('task list expandable section should have aria-label joining task title and total step label', () => {
+      const tutorials = getTutorials();
+      const context = getContext({ currentTutorial: tutorials[0] });
+      const { container } = renderTutorialPanelWithContext({ tutorials }, context);
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      const taskList = wrapper.findTaskList();
+
+      expect(taskList[0].findStepsTitle().getElement().getAttribute('aria-label')).toBe(
+        'TASK_1_FIRST_TASK_TEST TOTAL_STEPS_1'
+      );
+    });
+  });
 });
