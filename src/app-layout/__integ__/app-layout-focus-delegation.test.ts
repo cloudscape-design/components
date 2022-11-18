@@ -26,13 +26,13 @@ function setupTest(
 [false, true].forEach(visualRefresh =>
   describe(`visualRefresh=${visualRefresh}`, () => {
     test(
-      'split panel focus toggles between open and close buttons',
+      'split panel focus moves to slider on open and open button on close',
       setupTest(
         async page => {
           await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
           await page.keys('Enter');
-          await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
-          await page.keys('Enter');
+          await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
+          await page.keys(['Tab', 'Tab']);
           await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
           await page.keys('Enter');
           await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
@@ -79,8 +79,7 @@ function setupTest(
         async page => {
           await page.setWindowSize({ width: 1000, height: 800 });
           await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-          await page.keys('Tab');
-          await page.keys('Enter');
+          await page.keys(['Tab', 'Tab', 'Tab', 'Enter']);
           await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
         },
         { pageName: 'with-split-panel', visualRefresh, splitPanelPosition: 'side' }
