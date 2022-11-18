@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { TableItem } from './table.data';
+import { states, TableItem } from './table.data';
 import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 
 export const columnDefinitions = [
@@ -19,7 +19,7 @@ export const columnDefinitions = [
     header: 'State',
     type: 'text',
     propertyLabel: 'State',
-    cell: (item: TableItem) => item.state,
+    cell: (item: TableItem) => (item.state !== undefined ? states[item.state] : 'Unknown'),
   },
   {
     id: 'stopped',
@@ -27,7 +27,7 @@ export const columnDefinitions = [
     header: 'Stopped',
     type: 'boolean',
     propertyLabel: 'Stopped',
-    cell: (item: TableItem) => item.state === 'Stopped',
+    cell: (item: TableItem) => item.state === 0,
   },
   {
     id: 'instancetype',

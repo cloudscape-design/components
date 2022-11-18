@@ -12,7 +12,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import labels from '../app-layout/utils/labels';
-import { allItems, TableItem } from './table.data';
+import { allItems, states, TableItem } from './table.data';
 import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
@@ -40,6 +40,14 @@ export default function () {
     },
     sorting: {},
   });
+
+  const filteringOptions = propertyFilterProps.filteringOptions.map(option => {
+    if (option.propertyKey === 'state') {
+      option.label = states[parseInt(option.value)];
+    }
+    return option;
+  });
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -77,6 +85,7 @@ export default function () {
             filter={
               <PropertyFilter
                 {...propertyFilterProps}
+                filteringOptions={filteringOptions}
                 virtualScroll={true}
                 countText={`${items.length} matches`}
                 i18nStrings={i18nStrings}

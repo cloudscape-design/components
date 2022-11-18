@@ -20,16 +20,32 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 
 export const getQueryActions = (
   query: Query,
+  filteringOptions: readonly FilteringOption[],
   onChange: NonCancelableEventHandler<Query>,
   inputRef: React.RefObject<AutosuggestInputRef>
 ) => {
+  function matchTokenValue(token: Token): Token {
+    if (token.propertyKey && typeof token.value === 'string') {
+      for (const option of filteringOptions) {
+        if (
+          option.propertyKey === token.propertyKey &&
+          option.label &&
+          option.label.toLowerCase() === token.value.toLowerCase()
+        ) {
+          return { ...token, value: option.value };
+        }
+      }
+    }
+    return token;
+  }
+
   const { tokens, operation } = query;
   const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
     fireNonCancelableEvent(onChange, { tokens, operation });
   const setToken = (index: number, newToken: Token) => {
     const newTokens = [...tokens];
     if (newTokens && index < newTokens.length) {
-      newTokens[index] = newToken;
+      newTokens[index] = matchTokenValue(newToken);
     }
     fireOnChange(newTokens, operation);
   };
@@ -44,7 +60,7 @@ export const getQueryActions = (
   };
   const addToken = (newToken: Token) => {
     const newTokens = [...tokens];
-    newTokens.push(newToken);
+    newTokens.push(matchTokenValue(newToken));
     fireOnChange(newTokens, operation);
   };
   const setOperation = (newOperation: JoinOperation) => {
@@ -172,8 +188,8 @@ export const getAllValueSuggestions = (
     }
     const propertyGroup = property.group ? customGroups[property.group] : defaultGroup;
     propertyGroup.options.push({
-      value: property.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
-      label: filteringOption.value,
+      value: property.propertyLabel + ' ' + (operator || '=') + ' ' + (filteringOption.label ?? filteringOption.value),
+      label: filteringOption.label ?? filteringOption.value,
       __labelPrefix: property.propertyLabel + ' ' + (operator || '='),
     });
   });
@@ -288,9 +304,9 @@ export const getAutosuggestOptions = (
         filterText: parsedText.value,
         options: [
           {
-            options: options.map(({ value }) => ({
-              value: propertyLabel + ' ' + parsedText.operator + ' ' + value,
-              label: value,
+            options: options.map(({ value, label }) => ({
+              value: propertyLabel + ' ' + parsedText.operator + ' ' + (label ?? value),
+              label: label ?? value,
               __labelPrefix: propertyLabel + ' ' + parsedText.operator,
             })),
             label: groupValuesLabel,

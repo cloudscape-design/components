@@ -168,7 +168,9 @@ function ValueInput({
   i18nStrings,
 }: ValueInputProps) {
   const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
-  const valueOptions = property ? getPropertyOptions(property, filteringOptions).map(({ value }) => ({ value })) : [];
+  const valueOptions = property
+    ? getPropertyOptions(property, filteringOptions).map(({ value, label }) => ({ value, label }))
+    : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
   const asyncValueAutosuggesProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
@@ -176,12 +178,15 @@ function ValueInput({
 
   const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
 
+  const [matchedOption] = valueOptions.filter(option => option.value === value);
+  const valueLabel = matchedOption?.label;
+
   return OperatorForm ? (
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
-      value={value ?? ''}
+      value={valueLabel ?? value ?? ''}
       onChange={e => onChangeValue(e.detail.value)}
       disabled={!operator}
       options={valueOptions}
