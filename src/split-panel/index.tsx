@@ -23,6 +23,7 @@ import { getLimitedValue } from './utils/size-utils';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export { SplitPanelProps };
 
@@ -43,6 +44,7 @@ interface TransitionContentProps {
   onSliderPointerDown: () => void;
   focusVisible: { 'data-awsui-focus-visible': true } | { 'data-awsui-focus-visible'?: undefined };
   paneHeader: JSX.Element;
+  panelHeaderId: string;
   wrappedChildren: JSX.Element;
 }
 
@@ -68,6 +70,7 @@ const TransitionContentSide = ({
   focusVisible,
   toggleRef,
   paneHeader,
+  panelHeaderId,
   wrappedChildren,
 }: TransitionContentSideProps) => {
   return (
@@ -82,7 +85,7 @@ const TransitionContentSide = ({
       }}
       ref={splitPanelRef}
     >
-      <aside
+      <div
         className={clsx(styles['drawer-content-side'], {
           [styles.refresh]: isRefresh,
         })}
@@ -91,6 +94,8 @@ const TransitionContentSide = ({
           bottom: bottomOffset,
         }}
         onClick={() => !isOpen && onToggle()}
+        aria-labelledby={panelHeaderId}
+        role="region"
       >
         {isOpen ? (
           <div className={styles['slider-wrapper-side']}>
@@ -126,7 +131,7 @@ const TransitionContentSide = ({
           <hr className={styles['header-divider']} />
           <div className={clsx(styles['pane-content-wrapper-side'])}>{wrappedChildren}</div>
         </div>
-      </aside>
+      </div>
     </div>
   );
 };
@@ -168,6 +173,7 @@ const TransitionContentBottom = ({
   centeredMaxWidthClasses,
   splitPanelHeaderRef,
   appLayoutMaxWidth,
+  panelHeaderId,
 }: TransitionContentBottomProps) => {
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
   return (
@@ -208,7 +214,7 @@ const TransitionContentBottom = ({
           </div>
         </div>
       )}
-      <div className={styles['drawer-content-bottom']}>
+      <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
         <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={splitPanelHeaderRef}>
           {paneHeader}
         </div>
@@ -349,9 +355,13 @@ export default function SplitPanel({
     </AppLayoutContext.Provider>
   );
 
+  const panelHeaderId = useUniqueId('split-panel-header');
+
   const paneHeader = (
     <div className={styles.header} style={appLayoutMaxWidth}>
-      <h2 className={styles['header-text']}>{header}</h2>
+      <h2 className={styles['header-text']} id={panelHeaderId}>
+        {header}
+      </h2>
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
@@ -460,6 +470,7 @@ export default function SplitPanel({
               toggleRef={toggleRef}
               paneHeader={paneHeader}
               wrappedChildren={wrappedChildren}
+              panelHeaderId={panelHeaderId}
             ></TransitionContentSide>
           )}
 
@@ -489,6 +500,7 @@ export default function SplitPanel({
               centeredMaxWidthClasses={centeredMaxWidthClasses}
               splitPanelHeaderRef={splitPanelHeaderRef}
               appLayoutMaxWidth={appLayoutMaxWidth}
+              panelHeaderId={panelHeaderId}
             ></TransitionContentBottom>
           )}
           {isPreferencesOpen && (
