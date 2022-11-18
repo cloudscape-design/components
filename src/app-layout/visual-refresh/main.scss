@@ -13,24 +13,20 @@
   padding-bottom: awsui.$space-layout-content-bottom;
 
   /*
-  If the split panel is in the bottom position additional padding will need to be 
+  If the split panel is in the bottom position additional padding will need to be
   added to the content area. This is to ensure that the user is able to scroll
-  far enough to see all of the content that would otherwise be obscured by the 
+  far enough to see all of the content that would otherwise be obscured by the
   sticky position of the split panel.
   */
-  &.has-split-panel:not(.is-split-panel-open).split-panel-position-bottom {
-    padding-bottom: calc(var(#{custom-props.$splitPanelReportedHeaderSize}) + #{awsui.$space-layout-content-bottom});
-  }
-
-  &.has-split-panel.is-split-panel-open.split-panel-position-bottom {
-    padding-bottom: calc(var(#{custom-props.$splitPanelReportedSize}) + #{awsui.$space-layout-content-bottom});
+  &.has-split-panel.split-panel-position-bottom {
+    padding-bottom: calc(var(#{custom-props.$splitPanelHeight}) + #{awsui.$space-layout-content-bottom});
   }
 
   /*
-  If disableContentPaddings is enabled then the Main content has a different 
-  behavior inside the Layout grid. By default it will render across the entire 
-  grid column span. If the Navigation is open on the left, we increment the 
-  start column by one. If the Tools or Split Panel (in side position) is open 
+  If disableContentPaddings is enabled then the Main content has a different
+  behavior inside the Layout grid. By default it will render across the entire
+  grid column span. If the Navigation is open on the left, we increment the
+  start column by one. If the Tools or Split Panel (in side position) is open
   on the right, we decrement the column end by one.
   */
   &.disable-content-paddings {
@@ -50,14 +46,14 @@
   }
 
   /*
-  If disableContentPaddings is not enabled (the majority of use cases) then 
-  the following code block will compute the padding behavior for the Main 
+  If disableContentPaddings is not enabled (the majority of use cases) then
+  the following code block will compute the padding behavior for the Main
   under various circumstances.
   */
   &:not(.disable-content-paddings) {
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
       /*
-      Notifications is the previous adjacent sibling to the Main in 
+      Notifications is the previous adjacent sibling to the Main in
       desktop viewports if there are no Breadcrumbs or Header. Use additional
       to padding on the Main.
       */
@@ -67,7 +63,7 @@
       }
 
       /*
-      Main is the only rendered center content if there are no Notifications, 
+      Main is the only rendered center content if there are no Notifications,
       Breadcrumbs, or Header. Use minimal top padding.
       */
       &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height),
@@ -76,7 +72,7 @@
       }
 
       /*
-      If the Header exists then it is necessarily the previous adjacent 
+      If the Header exists then it is necessarily the previous adjacent
       sibling to the Main which requires no top padding.
       */
       &.has-header,
@@ -87,8 +83,8 @@
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       /*
-      If the Notifications exist but the Header does not then the 
-      Notifications is the previous adjacent sibling to the Main 
+      If the Notifications exist but the Header does not then the
+      Notifications is the previous adjacent sibling to the Main
       requiring additional top padding. This is because the Breadcrumbs
       are now rendered first and positioned sticky.
       */
@@ -106,7 +102,7 @@
       }
 
       /*
-      If the Header exists then it is necessarily the previous adjacent 
+      If the Header exists then it is necessarily the previous adjacent
       sibling to the Main which requires no top padding.
       */
       &.has-header,

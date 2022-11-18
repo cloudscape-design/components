@@ -7,7 +7,6 @@ import customCssProps from '../../internal/generated/custom-css-properties';
 import { SplitPanelContext } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useObservedElement } from '../utils/use-observed-element';
 
 export default function Main() {
   const {
@@ -25,13 +24,14 @@ export default function Main() {
     isAnyPanelOpen,
     mainElement,
     splitPanel,
-    splitPanelReportedSize,
+    offsetBottom,
+    footerHeight,
   } = useContext(AppLayoutContext);
 
-  const { getHeader: getSplitPanelHeader, position: splitPanelPosition } = useContext(SplitPanelContext);
+  const { position: splitPanelPosition } = useContext(SplitPanelContext);
 
-  const splitPanelReportedHeaderSize = useObservedElement(getSplitPanelHeader);
   const isUnfocusable = isMobile && isAnyPanelOpen;
+  const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div
@@ -55,8 +55,7 @@ export default function Main() {
       )}
       ref={mainElement}
       style={{
-        [customCssProps.splitPanelReportedHeaderSize]: `${splitPanelReportedHeaderSize}px`,
-        [customCssProps.splitPanelReportedSize]: `${splitPanelReportedSize}px`,
+        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
       }}
     >
       {content}
