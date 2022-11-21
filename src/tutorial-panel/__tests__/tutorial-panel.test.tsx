@@ -177,6 +177,15 @@ describe('tutorial detail view', () => {
     wrapper.findFeedbackLink()!.getElement().click();
     expect(onFeedbackClick).toHaveBeenCalledTimes(1);
   });
+
+  test('completed screen should have role status', () => {
+    const tutorials = getTutorials();
+    const context = getContext({ currentTutorial: tutorials[1] });
+    const { container } = renderTutorialPanelWithContext({ tutorials }, context);
+    const completedScreen = createWrapper(container).findTutorialPanel()!.find('[role="status"]')!.getElement();
+    expect(completedScreen).toHaveTextContent('COMPLETION_SCREEN_TITLE');
+    expect(completedScreen).toHaveTextContent('COMPLETED_SCREEN_DESCRIPTION_TEST');
+  });
 });
 
 describe('URL sanitization', () => {
