@@ -101,7 +101,6 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
           onFollow={onFollow}
           isCompressed={isMobile}
           isLast={index === items.length - 1}
-          isFirst={index === 0}
         />
       </li>
     );

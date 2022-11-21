@@ -36,6 +36,7 @@
       font-weight: styles.$font-weight-bold;
       text-decoration: none;
       cursor: default;
+      pointer-events: none;
     }
   }
 }
@@ -48,8 +49,4 @@
     white-space: nowrap;
     display: block;
   }
-}
-.virtual-item {
-  @include styles.awsui-util-hide;
-  visibility: hidden;
 }
