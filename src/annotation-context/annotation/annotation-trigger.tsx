@@ -5,6 +5,7 @@ import styles from './styles.css.js';
 import { AnnotationIcon } from './annotation-icon';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { AnnotationContextProps } from '../interfaces';
+import { joinStrings } from '../../internal/utils/strings/join-strings.js';
 
 export interface AnnotationTriggerProps {
   open: boolean;
@@ -12,10 +13,12 @@ export interface AnnotationTriggerProps {
   onClick: () => void;
 
   i18nStrings: AnnotationContextProps['i18nStrings'];
+  taskLocalStepIndex: number;
+  totalLocalSteps: number;
 }
 
 export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(function AnnotationTrigger(
-  { open, onClick: onClickHandler, i18nStrings }: AnnotationTriggerProps,
+  { open, onClick: onClickHandler, i18nStrings, taskLocalStepIndex, totalLocalSteps }: AnnotationTriggerProps,
   ref
 ) {
   const focusVisible = useFocusVisible();
@@ -33,7 +36,10 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
       ref={ref}
       className={styles.hotspot}
       aria-haspopup="dialog"
-      aria-label={i18nStrings.labelHotspot(open)}
+      aria-label={joinStrings(
+        i18nStrings.labelHotspot(open),
+        i18nStrings.stepCounterText(taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)
+      )}
       onClick={onClick}
       {...focusVisible}
     >
