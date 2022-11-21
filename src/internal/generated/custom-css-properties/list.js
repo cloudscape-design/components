@@ -24,6 +24,7 @@ const customCssPropertiesList = [
   'navigationWidth',
   'splitPanelReportedHeaderSize',
   'splitPanelReportedSize',
+  'splitPanelHeight',
   'splitPanelMinWidth',
   'splitPanelMaxWidth',
   'toolsMaxWidth',
