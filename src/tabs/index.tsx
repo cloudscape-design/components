@@ -57,7 +57,6 @@ export default function Tabs({
     const selectedTab = tabs.filter(tab => tab.id === activeTabId)[0];
     const renderContent = (tab: TabsProps.Tab) => {
       const isTabSelected = tab === selectedTab;
-      const isContentShown = isTabSelected && !selectedTab.disabled && selectedTab.content;
 
       const classes = clsx({
         [styles['tabs-content']]: true,
@@ -74,6 +73,7 @@ export default function Tabs({
         'aria-labelledby': getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       };
 
+      const isContentShown = isTabSelected && !selectedTab.disabled;
       return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
     };
 

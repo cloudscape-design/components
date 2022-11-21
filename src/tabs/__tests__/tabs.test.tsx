@@ -657,12 +657,13 @@ describe('Tabs', () => {
     test('keeps the ids of the tab links unchanged across re-renders', () => {
       const firstTabId = defaultTabs[0].id;
       const secondTabId = defaultTabs[1].id;
-      const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId={firstTabId} />).wrapper;
-      const getFirstTabLinkElementId = () => tabs.findTabLinkById(firstTabId)!.getElement()!.id;
+      const { wrapper, rerender } = renderTabs(
+        <Tabs tabs={defaultTabs} activeTabId={firstTabId} onChange={() => void 0} />
+      );
+      const getFirstTabLinkElementId = () => wrapper.findTabLinkById(firstTabId)!.getElement()!.id;
       const firstTabLinkElementId = getFirstTabLinkElementId();
       expect(firstTabLinkElementId).toBeTruthy();
-      const secondTabLink = tabs.findTabLinkById(secondTabId)!;
-      secondTabLink.click(); // Trigger re-render by changing state
+      rerender(<Tabs tabs={defaultTabs} activeTabId={secondTabId} onChange={() => void 0} />);
       expect(getFirstTabLinkElementId()).toEqual(firstTabLinkElementId);
     });
   });
@@ -674,17 +675,37 @@ describe('Tabs', () => {
     });
 
     test('has tabindex attribute even for empty tab content', () => {
-      const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId={'fourth'} />).wrapper;
+      const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId={'fourth'} onChange={() => void 0} />).wrapper;
       expect(tabs.findTabContent()!.getElement()).toHaveAttribute('tabindex', '0');
     });
 
     test('has aria-labelledby attribute set to the id of the corresponding tab', () => {
       const activeTabId = defaultTabs[0].id;
-      const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId={activeTabId} />).wrapper;
+      const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId={activeTabId} onChange={() => void 0} />).wrapper;
       const firstTabLink = tabs.findTabLinkById(activeTabId)!.getElement()!;
       const tabLinkElementId = firstTabLink.id;
       expect(tabLinkElementId).toBeTruthy();
       expect(tabs.findTabContent()!.getElement()).toHaveAttribute('aria-labelledby', tabLinkElementId);
+    });
+
+    test('changes aria-labelledby attribute accordingly when the active tab changes', () => {
+      const firstTabId = defaultTabs[0].id;
+      const secondTabId = defaultTabs[1].id;
+
+      const { wrapper, rerender } = renderTabs(
+        <Tabs tabs={defaultTabs} activeTabId={firstTabId} onChange={() => void 0} />
+      );
+
+      const verifyTabContentLabelledBy = (tabId: string) => {
+        const tabLink = wrapper.findTabLinkById(tabId)!.getElement()!;
+        const tabLinkElementId = tabLink.id;
+        expect(tabLinkElementId).toBeTruthy();
+        expect(wrapper.findTabContent()!.getElement()).toHaveAttribute('aria-labelledby', tabLinkElementId);
+      };
+
+      verifyTabContentLabelledBy(firstTabId);
+      rerender(<Tabs tabs={defaultTabs} activeTabId={secondTabId} onChange={() => void 0} />);
+      verifyTabContentLabelledBy(secondTabId);
     });
   });
 });
