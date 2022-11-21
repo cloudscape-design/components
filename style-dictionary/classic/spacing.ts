@@ -39,7 +39,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spacePanelSplitTop: '0px',
   spaceSegmentedControlFocusOutlineGutter: '0px',
   spaceTableHeaderFocusOutlineGutter: { compact: '0px' },
-  spaceTabsContentTop: '0px',
+  spaceTabsContentTop: '{spaceScaledM}',
   spaceTableHorizontal: '0px',
   spaceTableHeaderHorizontal: '{spaceContainerHorizontal}',
   spaceTableContentBottom: '0px',
