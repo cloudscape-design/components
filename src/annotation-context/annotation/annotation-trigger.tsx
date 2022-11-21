@@ -5,7 +5,6 @@ import styles from './styles.css.js';
 import { AnnotationIcon } from './annotation-icon';
 import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { AnnotationContextProps } from '../interfaces';
-import { joinStrings } from '../../internal/utils/strings/join-strings.js';
 
 export interface AnnotationTriggerProps {
   open: boolean;
@@ -36,10 +35,7 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
       ref={ref}
       className={styles.hotspot}
       aria-haspopup="dialog"
-      aria-label={joinStrings(
-        i18nStrings.labelHotspot(open),
-        i18nStrings.stepCounterText(taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)
-      )}
+      aria-label={i18nStrings.labelHotspot(open, taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
       onClick={onClick}
       {...focusVisible}
     >

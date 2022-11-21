@@ -238,7 +238,7 @@ test('trigger should have aria-label with steps information', () => {
   );
 
   const hotspot = wrapper.find('#second')!.findHotspot()!;
-  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('OPEN_HOTSPOT_TEST STEP_1_OF_2_TEST');
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('OPEN_HOTSPOT_TEST_FOR_STEP_1_OF_2_TEST');
   hotspot.findTrigger().click();
-  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('CLOSE_HOTSPOT_TEST STEP_1_OF_2_TEST');
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('CLOSE_HOTSPOT_TEST_FOR_STEP_1_OF_2_TEST');
 });
