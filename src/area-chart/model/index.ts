@@ -26,6 +26,7 @@ export interface ChartModel<T extends AreaChartProps.DataTypes> {
     onLegendHighlight: (series: null | AreaChartProps.Series<T>) => void;
     onPopoverDismiss: (outsideClick?: boolean) => void;
     onContainerBlur: () => void;
+    onDocumentKeyDown: (event: KeyboardEvent) => void;
   };
   interactions: ReadonlyAsyncStore<ChartModel.InteractionsState<T>>;
   refs: {
