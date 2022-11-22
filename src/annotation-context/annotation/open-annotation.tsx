@@ -61,7 +61,14 @@ export function OpenAnnotation({
 
   return (
     <>
-      <AnnotationTrigger open={true} onClick={onDismiss} i18nStrings={i18nStrings} ref={trackRef} />
+      <AnnotationTrigger
+        open={true}
+        onClick={onDismiss}
+        i18nStrings={i18nStrings}
+        ref={trackRef}
+        totalLocalSteps={totalLocalSteps}
+        taskLocalStepIndex={taskLocalStepIndex}
+      />
 
       <AnnotationPopover
         trackRef={trackRef}

@@ -207,7 +207,7 @@ the component.",
           Object {
             "name": "labelHotspot",
             "optional": false,
-            "type": "(openState: boolean) => string",
+            "type": "(openState: boolean, stepIndex: number, totalStepCount: number) => string",
           },
           Object {
             "name": "nextButtonText",

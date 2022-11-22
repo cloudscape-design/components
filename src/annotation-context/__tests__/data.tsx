@@ -9,7 +9,10 @@ export const i18nStrings: AnnotationContextProps.I18nStrings = {
   previousButtonText: 'PREVIOUS_BUTTON_TEST',
   finishButtonText: 'FINISH_BUTTON_TEST',
   labelDismissAnnotation: 'DISMISS_ANNOTATION_TEST',
-  labelHotspot: (openState: boolean) => (openState ? 'OPEN_HOTSPOT_TEST' : 'CLOSE_HOTSPOT_TEST'),
+  labelHotspot: (openState: boolean, stepIndex: number, totalStepCount: number) =>
+    openState
+      ? `CLOSE_HOTSPOT_TEST_FOR_STEP_${stepIndex + 1}_OF_${totalStepCount}_TEST`
+      : `OPEN_HOTSPOT_TEST_FOR_STEP_${stepIndex + 1}_OF_${totalStepCount}_TEST`,
   stepCounterText: (stepIndex: number, totalStepCount: number) => `STEP_${stepIndex + 1}_OF_${totalStepCount}_TEST`,
   taskTitle: (taskIndex: number, taskTitle: string) => `TASK_${taskIndex + 1}_${taskTitle}`,
 };
