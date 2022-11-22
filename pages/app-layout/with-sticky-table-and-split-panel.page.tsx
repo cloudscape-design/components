@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Link from '~components/link';
@@ -14,6 +14,9 @@ import { columnsConfig } from '../table/shared-configs';
 import Button from '~components/button';
 import SplitPanel from '~components/split-panel';
 import SpaceBetween from '~components/space-between';
+
+const maxItemCount = 30;
+const defaultItems = generateItems(maxItemCount);
 
 const DEMO_CONTENT = (
   <div>
@@ -31,7 +34,7 @@ const DEMO_CONTENT = (
         </Header>
       }
       columnDefinitions={columnsConfig}
-      items={generateItems(10)}
+      items={defaultItems.slice(0, 10)}
       variant="embedded"
     />
     <p>
@@ -62,18 +65,13 @@ const DEMO_CONTENT = (
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
-  const [itemCount, setItemCount] = useState<number>(30);
-  const [items, setItems] = useState(generateItems(itemCount));
+  const [itemSizeToDisplay, setItemSizeToDisplay] = useState(maxItemCount);
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
 
   function openHelp(article: keyof typeof toolsContent) {
     setToolsOpen(true);
     setSelectedTool(article);
   }
-
-  useEffect(() => {
-    setItems(generateItems(itemCount));
-  }, [itemCount]);
 
   return (
     <ScreenshotArea gutters={false}>
@@ -99,11 +97,11 @@ export default function () {
                 }
                 actions={
                   <SpaceBetween size="xs" direction="horizontal">
-                    <Button data-testid="set-item-count-to-1" onClick={() => setItemCount(1)}>
+                    <Button data-testid="set-item-count-to-1" onClick={() => setItemSizeToDisplay(1)}>
                       Set item count to 1
                     </Button>
-                    <Button data-testid="set-item-count-to-30" onClick={() => setItemCount(30)}>
-                      Set item count to 30
+                    <Button data-testid="set-item-count-to-30" onClick={() => setItemSizeToDisplay(maxItemCount)}>
+                      Set item count to {maxItemCount}
                     </Button>
                   </SpaceBetween>
                 }
@@ -114,7 +112,7 @@ export default function () {
             stickyHeader={true}
             variant="full-page"
             columnDefinitions={columnsConfig}
-            items={items}
+            items={defaultItems.slice(0, itemSizeToDisplay)}
           />
         }
         splitPanelOpen={splitPanelOpen}
