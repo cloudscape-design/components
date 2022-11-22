@@ -37,7 +37,11 @@ test('renders element labels', () => {
   expect(screen.getByRole('searchbox', { name: i18nStrings.inContextUriLabel })).toBeTruthy();
   // testing-library does not see the combobox role
   // https://github.com/testing-library/dom-testing-library/issues/927
-  expect(screen.getByRole('button', { name: i18nStrings.inContextVersionSelectLabel })).toBeTruthy();
+  expect(
+    screen.getByRole('button', {
+      name: i18nStrings.inContextVersionSelectLabel + ' ' + i18nStrings.inContextSelectPlaceholder,
+    })
+  ).toBeTruthy();
   expect(wrapper.findUriInput().findNativeInput().getElement()).toHaveAttribute(
     'placeholder',
     i18nStrings.inContextInputPlaceholder
@@ -132,6 +136,7 @@ test('has view button with href and target', () => {
   const viewButton = wrapper.findViewButton().getElement();
   expect(viewButton).toHaveAttribute('href', 'https://s3.console.aws.amazon.com/');
   expect(viewButton).toHaveAttribute('target', '_blank');
+  expect(viewButton).toHaveAttribute('aria-label', 'View (opens a new tab)');
 });
 
 describe('fetchVersions', () => {

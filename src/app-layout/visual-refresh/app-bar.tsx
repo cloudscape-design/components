@@ -22,6 +22,7 @@ export default function AppBar() {
     handleNavigationClick,
     handleToolsClick,
     hasNotificationsContent,
+    hasStickyBackground,
     isMobile,
     navigationHide,
     isNavigationOpen,
@@ -29,8 +30,8 @@ export default function AppBar() {
     toolsHide,
     isAnyPanelOpen,
   } = useContext(AppLayoutContext);
-  const focusRefsNav = useFocusControl(isNavigationOpen);
-  const focusRefsTools = useFocusControl(isToolsOpen);
+  const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
+  const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
   if (navigationHide && !breadcrumbs && toolsHide) {
     return null;
@@ -64,6 +65,7 @@ export default function AppBar() {
             className={testutilStyles['navigation-toggle']}
             ref={focusRefsNav.toggle}
             disabled={isAnyPanelOpen}
+            __nativeAttributes={{ 'aria-haspopup': true }}
           />
         </nav>
       )}
@@ -74,6 +76,7 @@ export default function AppBar() {
             [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
             [styles['has-header']]: contentHeader,
             [styles['has-notifications-content']]: hasNotificationsContent,
+            [styles['has-sticky-background']]: hasStickyBackground,
           })}
         >
           {breadcrumbs}
@@ -96,6 +99,7 @@ export default function AppBar() {
             onClick={() => handleToolsClick(true)}
             variant="icon"
             ref={focusRefsTools.toggle}
+            __nativeAttributes={{ 'aria-haspopup': true }}
           />
         </aside>
       )}

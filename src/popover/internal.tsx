@@ -53,10 +53,14 @@ function InternalPopover(
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
   const triggerRef = useRef<HTMLElement | null>(null);
-  const popoverRef = useRef<HTMLSpanElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
 
   const [visible, setVisible] = useState(false);
+
+  const focusTrigger = useCallback(() => {
+    triggerRef.current?.focus();
+  }, []);
 
   const onTriggerClick = useCallback(() => {
     fireNonCancelableEvent(__onOpen);
@@ -65,7 +69,8 @@ function InternalPopover(
 
   const onDismiss = useCallback(() => {
     setVisible(false);
-  }, []);
+    focusTrigger();
+  }, [focusTrigger]);
 
   const onTriggerKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (event.keyCode === KeyCode.tab || event.keyCode === KeyCode.escape) {
@@ -111,10 +116,10 @@ function InternalPopover(
   };
 
   const popoverContent = (
-    <span
+    <div
       aria-live={dismissButton ? undefined : 'polite'}
       aria-atomic={dismissButton ? undefined : true}
-      className={popoverClasses}
+      className={clsx(popoverClasses, styles['popover-content'])}
     >
       {visible && (
         <PopoverContainer
@@ -137,13 +142,13 @@ function InternalPopover(
           </PopoverBody>
         </PopoverContainer>
       )}
-    </span>
+    </div>
   );
 
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <span
+    <div
       {...baseProps}
       className={clsx(styles.root, baseProps.className)}
       ref={mergedRef}
@@ -162,6 +167,6 @@ function InternalPopover(
         <span {...triggerProps}>{children}</span>
       )}
       {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-    </span>
+    </div>
   );
 }

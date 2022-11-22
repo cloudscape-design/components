@@ -12,10 +12,12 @@ export interface AnnotationTriggerProps {
   onClick: () => void;
 
   i18nStrings: AnnotationContextProps['i18nStrings'];
+  taskLocalStepIndex: number;
+  totalLocalSteps: number;
 }
 
 export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(function AnnotationTrigger(
-  { open, onClick: onClickHandler, i18nStrings }: AnnotationTriggerProps,
+  { open, onClick: onClickHandler, i18nStrings, taskLocalStepIndex, totalLocalSteps }: AnnotationTriggerProps,
   ref
 ) {
   const focusVisible = useFocusVisible();
@@ -33,7 +35,7 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
       ref={ref}
       className={styles.hotspot}
       aria-haspopup="dialog"
-      aria-label={i18nStrings.labelHotspot(open)}
+      aria-label={i18nStrings.labelHotspot(open, taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
       onClick={onClick}
       {...focusVisible}
     >

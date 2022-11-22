@@ -169,7 +169,7 @@ export default <T extends PieChartProps.Datum>({
     onHighlightChange(null);
   }, [onHighlightChange, setTooltipOpen]);
 
-  const onClick = useCallback(
+  const onMouseDown = useCallback(
     (internalDatum: InternalChartDatum<T>) => {
       if (pinnedSegment === internalDatum.datum) {
         setPinnedSegment(null);
@@ -317,7 +317,7 @@ export default <T extends PieChartProps.Datum>({
               popoverTrackRef={popoverTrackRef}
               highlightedSegment={highlightedSegment}
               segmentAriaRoleDescription={i18nStrings?.segmentAriaRoleDescription}
-              onClick={onClick}
+              onMouseDown={onMouseDown}
               onMouseOver={onMouseOver}
               onMouseOut={onMouseOut}
             />

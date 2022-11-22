@@ -24,11 +24,14 @@ const customCssPropertiesList = [
   'navigationWidth',
   'splitPanelReportedHeaderSize',
   'splitPanelReportedSize',
+  'splitPanelHeight',
   'splitPanelMinWidth',
   'splitPanelMaxWidth',
   'toolsMaxWidth',
   'toolsWidth',
   'toolsAnimationStartingOpacity',
   'contentScrollMargin',
+  'flashbarStackDepth',
+  'flashbarStackIndex',
 ];
 module.exports = customCssPropertiesList;

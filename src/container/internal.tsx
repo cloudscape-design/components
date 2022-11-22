@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
-import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
+import React, { useContext, useEffect, useRef } from 'react';
+import { AppLayoutContext } from '../app-layout/visual-refresh/context';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
@@ -19,6 +20,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __hiddenContent?: boolean;
   __headerRef?: React.RefObject<HTMLDivElement>;
   __headerId?: string;
+  __darkHeader?: boolean;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -43,20 +45,43 @@ export default function InternalContainer({
   __hiddenContent = false,
   __headerRef,
   __headerId,
+  __darkHeader = false,
   ...restProps
 }: InternalContainerProps) {
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
+  const { setHasStickyBackground } = useContext(AppLayoutContext);
   const isRefresh = useVisualRefresh();
+
   const hasDynamicHeight = isRefresh && variant === 'full-page';
-  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+  const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight || !__darkHeader });
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, overlapElement, __headerRef);
-
   const headerIdProp = __headerId ? { id: __headerId } : {};
+
+  /**
+   * The visual refresh AppLayout component needs to know if a child component
+   * has a high constrast sticky header. This is to make sure the background element
+   * stays in the same vertical position as the header content.
+   */
+  useEffect(
+    function handleHasStickyBackground() {
+      const shouldUpdateStickyBackground = isRefresh && isSticky && variant === 'full-page';
+      if (shouldUpdateStickyBackground) {
+        setHasStickyBackground(true);
+      }
+
+      return function cleanup() {
+        if (shouldUpdateStickyBackground) {
+          setHasStickyBackground(false);
+        }
+      };
+    },
+    [isRefresh, isSticky, setHasStickyBackground, variant]
+  );
 
   return (
     <div
@@ -79,7 +104,7 @@ export default function InternalContainer({
             {...stickyStyles}
             ref={headerMergedRef}
           >
-            {hasDynamicHeight ? (
+            {__darkHeader ? (
               <div className={clsx(styles['dark-header'], 'awsui-context-content-header')}>{header}</div>
             ) : (
               header

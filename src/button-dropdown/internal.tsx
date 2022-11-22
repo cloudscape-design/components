@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -14,7 +14,6 @@ import { InternalButton } from '../button/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
-import { usePrevious } from '../internal/hooks/use-previous';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 
@@ -24,6 +23,7 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       expandableGroups = false,
       children,
@@ -63,6 +63,8 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       onItemClick,
       onItemFollow,
+      onReturnFocus: () => dropdownRef.current?.focus(),
+      expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
     });
@@ -74,25 +76,17 @@ const InternalButtonDropdown = React.forwardRef(
     const baseProps = getBaseProps(props);
 
     const dropdownRef = useRef<HTMLElement>(null);
+
     useForwardFocus(ref, dropdownRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
-        toggleDropdown();
-        if (dropdownRef.current) {
-          dropdownRef.current.focus();
-        }
+        // Prevent moving highlight on mobiles to avoid disabled state reason popup if defined.
+        toggleDropdown({ moveHighlightOnOpen: !isInRestrictedView });
       }
     };
 
     const canBeOpened = !loading && !disabled;
-    const wasOpen = usePrevious(isOpen);
-
-    useEffect(() => {
-      if (!isOpen && dropdownRef.current && wasOpen) {
-        dropdownRef.current.focus();
-      }
-    }, [isOpen, wasOpen]);
 
     const triggerVariant = variant === 'navigation' ? undefined : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
@@ -114,6 +108,7 @@ const InternalButtonDropdown = React.forwardRef(
         {...iconProps}
         variant={triggerVariant}
         loading={loading}
+        loadingText={loadingText}
         disabled={disabled}
         onClick={(event: Event) => {
           event.preventDefault();
@@ -148,9 +143,7 @@ const InternalButtonDropdown = React.forwardRef(
           stretchTriggerHeight={variant === 'navigation'}
           expandToViewport={expandToViewport}
           preferCenter={preferCenter}
-          onDropdownClose={() => {
-            toggleDropdown();
-          }}
+          onDropdownClose={() => toggleDropdown()}
           trigger={trigger}
           dropdownId={dropdownId}
         >

@@ -22,6 +22,7 @@ $label-horizontal-spacing: awsui.$space-l;
   padding: 0;
   display: flex;
   overflow-x: scroll;
+  overflow-y: hidden;
   position: relative;
   width: 100%;
   // do not use pointer-events none because it disables scroll by sliding
@@ -140,6 +141,7 @@ $label-horizontal-spacing: awsui.$space-l;
 .tabs-tab-disabled {
   &,
   &:hover {
+    pointer-events: none;
     cursor: default;
     color: awsui.$color-text-interactive-disabled;
     font-weight: awsui.$font-tabs-disabled-weight;

@@ -13,6 +13,7 @@ import { PaginationProps } from './interfaces';
 
 const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',
+  paginationLabel: '',
   previousPageLabel: '',
   pageLabel: pageNumber => `${pageNumber}`,
 };
@@ -53,7 +54,6 @@ function PageButton({
         )}
         type="button"
         aria-label={ariaLabel}
-        tabIndex={disabled ? -1 : 0}
         disabled={disabled}
         onClick={handleClick}
         aria-current={isCurrent}
@@ -112,6 +112,7 @@ export default function InternalPagination({
 
   return (
     <ul
+      aria-label={ariaLabels?.paginationLabel}
       {...baseProps}
       className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
       ref={__internalRootRef}

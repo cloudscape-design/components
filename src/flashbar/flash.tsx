@@ -9,6 +9,11 @@ import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
 import { warnOnce } from '../internal/logging';
 import { isDevelopment } from '../internal/is-development';
+import { throttle } from '../internal/utils/throttle';
+import useFocusVisible from '../internal/hooks/focus-visible';
+import LiveRegion from '../internal/components/live-region';
+
+const FOCUS_THROTTLE_DELAY = 2000;
 
 const ICON_TYPES = {
   success: 'status-positive',
@@ -46,7 +51,16 @@ function dismissButton(
   );
 }
 
-interface Flash extends FlashbarProps.MessageDefinition {
+export const focusFlashById = throttle(
+  (element: HTMLElement | null, itemId: string) => {
+    const selector = `[data-itemid="${CSS.escape(itemId)}"] .${styles['flash-focus-container']}`;
+    element?.querySelector<HTMLElement>(selector)?.focus();
+  },
+  FOCUS_THROTTLE_DELAY,
+  { trailing: false }
+);
+
+export interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
 }
@@ -54,6 +68,7 @@ interface Flash extends FlashbarProps.MessageDefinition {
 export const Flash = React.forwardRef(
   (
     {
+      id,
       header,
       content,
       dismissible,
@@ -66,10 +81,13 @@ export const Flash = React.forwardRef(
       onDismiss,
       className,
       transitionState,
+      ariaRole,
       type = 'info',
-    }: Flash,
+    }: FlashProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    const focusVisible = useFocusVisible();
+
     if (isDevelopment) {
       if (buttonText && !onButtonClick) {
         warnOnce(
@@ -94,36 +112,52 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
+    const announcement = [statusIconAriaLabel, header, content].filter(Boolean).join(' ');
+
     return (
+      // We're not using "polite" or "assertive" here, just turning default behavior off.
+      // eslint-disable-next-line @cloudscape-design/prefer-live-region
       <div
         ref={ref}
+        role={ariaRole}
+        aria-live={ariaRole ? 'off' : undefined}
+        data-itemid={id}
         className={clsx(
           styles.flash,
           styles[`flash-type-${effectiveType}`],
           className,
-          transitionState
-            ? {
-                [styles.enter]: transitionState === 'enter',
-                [styles.entering]: transitionState === 'entering',
-                [styles.entered]: transitionState === 'entered',
-                [styles.exit]: transitionState === 'exit',
-                [styles.exiting]: transitionState === 'exiting',
-                [styles.exited]: transitionState === 'exited',
-              }
-            : ''
+          transitionState && {
+            [styles.enter]: transitionState === 'enter',
+            [styles.entering]: transitionState === 'entering',
+            [styles.entered]: transitionState === 'entered',
+            [styles.exit]: transitionState === 'exit',
+            [styles.exiting]: transitionState === 'exiting',
+            [styles.exited]: transitionState === 'exited',
+          }
         )}
       >
-        <div className={clsx(styles['flash-icon'], styles['flash-text'])} role="img" aria-label={statusIconAriaLabel}>
-          {icon}
-        </div>
         <div className={styles['flash-body']}>
-          <div className={clsx(styles['flash-message'], styles['flash-text'])}>
-            <div className={styles['flash-header']}>{header}</div>
-            <div className={styles['flash-content']}>{content}</div>
+          <div
+            {...focusVisible}
+            className={styles['flash-focus-container']}
+            tabIndex={ariaRole === 'alert' ? -1 : undefined}
+          >
+            <div
+              className={clsx(styles['flash-icon'], styles['flash-text'])}
+              role="img"
+              aria-label={statusIconAriaLabel}
+            >
+              {icon}
+            </div>
+            <div className={clsx(styles['flash-message'], styles['flash-text'])}>
+              <div className={styles['flash-header']}>{header}</div>
+              <div className={styles['flash-content']}>{content}</div>
+            </div>
           </div>
           {button && <div className={styles['action-button-wrapper']}>{button}</div>}
         </div>
         {dismissible && dismissButton(dismissLabel, onDismiss)}
+        {ariaRole === 'status' && <LiveRegion>{announcement}</LiveRegion>}
       </div>
     );
   }

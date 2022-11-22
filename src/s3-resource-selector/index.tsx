@@ -13,6 +13,7 @@ import { S3Modal, S3ModalProps } from './s3-modal';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { useFormFieldContext } from '../contexts/form-field';
 
 export { S3ResourceSelectorProps };
 
@@ -36,6 +37,7 @@ const S3ResourceSelector = React.forwardRef(
       versionsVisibleColumns = ['ID', 'LastModified', 'Size'],
       versionsIsItemDisabled,
       onChange,
+      ariaLabel,
       ...rest
     }: S3ResourceSelectorProps,
     ref: React.Ref<S3ResourceSelectorProps.Ref>
@@ -46,6 +48,7 @@ const S3ResourceSelector = React.forwardRef(
     const inContextRef = useRef<S3InContextRef>(null);
     const modalWasSubmitted = useRef<boolean>(false);
     useForwardFocus(ref, inContextRef);
+    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
 
     useEffect(() => {
       // Focus uriInput only when modal was submitted.
@@ -78,7 +81,15 @@ const S3ResourceSelector = React.forwardRef(
       onDismiss: () => setModalOpen(false),
     };
     return (
-      <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        ref={__internalRootRef}
+        role="group"
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-label={ariaLabel}
+      >
         <S3InContext
           ref={inContextRef}
           selectableItemsTypes={selectableItemsTypes}

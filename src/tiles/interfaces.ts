@@ -64,4 +64,11 @@ export namespace TilesProps {
   export interface ChangeDetail {
     value: string;
   }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the UI control.
+     */
+    focus(): void;
+  }
 }

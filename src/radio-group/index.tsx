@@ -8,9 +8,10 @@ import InternalRadioGroup from './internal';
 
 export { RadioGroupProps };
 
-export default function RadioGroup(props: RadioGroupProps) {
+const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
   const baseComponentProps = useBaseComponent('RadioGroup');
-  return <InternalRadioGroup {...props} {...baseComponentProps} />;
-}
+  return <InternalRadioGroup ref={ref} {...props} {...baseComponentProps} />;
+});
 
 applyDisplayName(RadioGroup, 'RadioGroup');
+export default RadioGroup;

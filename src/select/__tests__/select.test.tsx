@@ -43,7 +43,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
   test('renders selected option', () => {
     const { wrapper } = renderSelect({ selectedOption: { label: 'First', value: '1' } });
-    expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
+    expect(wrapper.findTrigger().getElement().textContent).toBe('First');
   });
 
   test('allows deselecting an option programmatically', () => {

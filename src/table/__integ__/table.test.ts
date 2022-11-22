@@ -38,10 +38,10 @@ test(
     const header = createWrapper().findContainer().findHeader().toSelector();
     await browser.url('#/light/table/full-page-variant?visualRefresh=true');
     const page = new BasePageObject(browser);
-    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '117px', marginBottom: '0px' });
+    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '115px', marginBottom: '0px' });
     await page.windowScrollTo({ top: 100 });
     await page.waitForJsTimers();
-    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '107px', marginBottom: '10px' });
+    await expect(browser.execute(extractHeight, header)).resolves.toEqual({ height: '105px', marginBottom: '10px' });
   })
 );
 

@@ -230,11 +230,13 @@ describe('aria-labels', () => {
         pagesCount={10}
         ariaLabels={{
           nextPageLabel: 'Next page',
+          paginationLabel: 'Table pagination',
           previousPageLabel: 'Previous page',
           pageLabel: pageNumber => `Page ${pageNumber} of all pages`,
         }}
       />
     );
+    expect(wrapper.getElement()).toHaveAttribute('aria-label', 'Table pagination');
     expect(wrapper.findPreviousPageButton().getElement()).toHaveAttribute('aria-label', 'Previous page');
     expect(wrapper.findNextPageButton().getElement()).toHaveAttribute('aria-label', 'Next page');
     expect(wrapper.findPageNumberByIndex(1)!.getElement()).toHaveAttribute('aria-label', 'Page 1 of all pages');

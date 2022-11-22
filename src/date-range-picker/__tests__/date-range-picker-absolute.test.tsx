@@ -50,8 +50,7 @@ afterEach(() => {
 
 describe('Date range picker', () => {
   describe('absolute mode', () => {
-    // TODO: https://dequeuniversity.com/rules/axe/4.4/aria-required-children?application=axeAPI
-    test.skip('a11y checks with opened dropdown', async () => {
+    test('a11y', async () => {
       const { container } = render(
         <DateRangePicker
           {...defaultProps}
@@ -351,6 +350,36 @@ describe('Date range picker', () => {
             '2018-01-02T00:00:00+20:00 — 2018-01-05T10:00:00+20:00'
           );
         }
+      });
+
+      test('creates offset as a function from date', () => {
+        const onChangeSpy = jest.fn();
+        const getTimeOffset = jest.fn().mockImplementation((date: Date) => (date.getUTCMonth() === 5 ? 120 : 60));
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          timeOffset: 6.5 * 60, // to be ignored as getTimeOffset is preferred
+          getTimeOffset,
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        act(() => wrapper.findTrigger().click());
+
+        act(() => wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/01/01'));
+        act(() => wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/06/01'));
+
+        act(() => wrapper.findDropdown()!.findApplyButton().click());
+
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: {
+              type: 'absolute',
+              startDate: '2018-01-01T00:00:00+01:00',
+              endDate: '2018-06-01T23:59:59+02:00',
+            },
+          })
+        );
+
+        expect(getTimeOffset).toBeCalledTimes(2);
       });
     });
 

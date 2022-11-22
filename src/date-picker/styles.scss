@@ -12,17 +12,19 @@
   @include styles.styles-reset;
 }
 
+.focus-lock {
+  display: contents;
+}
+
 .calendar {
+  overflow: auto;
+
   &:focus {
     outline: none;
   }
   @include focus-visible.when-visible {
     @include styles.container-focus(awsui.$border-radius-dropdown);
   }
-}
-
-.screenreader-only {
-  @include styles.awsui-util-hide;
 }
 
 .date-picker-container {

@@ -13,6 +13,7 @@ export const i18nStrings: S3ResourceSelectorProps.I18nStrings = {
   inContextSelectPlaceholder: 'Choose a version',
   inContextBrowseButton: 'Browse S3',
   inContextViewButton: 'View',
+  inContextViewButtonAriaLabel: 'View (opens a new tab)',
   inContextLoadingText: 'Loading resource',
   inContextUriLabel: 'Resource URI',
   inContextVersionSelectLabel: 'Object version',

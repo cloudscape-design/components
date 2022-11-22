@@ -3,7 +3,13 @@
 import { OptionDefinition, OptionGroup } from './interfaces';
 
 function defaultOptionDescription(option: OptionDefinition, parentGroup: OptionGroup | undefined) {
-  return [parentGroup && parentGroup.label, option.label || option.value, option.description, option.labelTag]
+  return [
+    parentGroup && parentGroup.label,
+    option.__labelPrefix,
+    option.label || option.value,
+    option.description,
+    option.labelTag,
+  ]
     .concat(option.tags)
     .filter(el => !!el)
     .join(' ');

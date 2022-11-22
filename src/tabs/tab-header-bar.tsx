@@ -268,6 +268,7 @@ export function TabHeaderBar({
       'aria-selected': tab.id === activeTabId,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
       'data-testid': tab.id,
+      id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       children: <span className={styles['tabs-tab-label']}>{tab.label}</span>,
     };
 
@@ -312,4 +313,8 @@ export function TabHeaderBar({
       </li>
     );
   }
+}
+
+export function getTabElementId({ namespace, tabId }: { namespace: string; tabId: string }) {
+  return namespace + '-' + tabId;
 }

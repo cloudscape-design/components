@@ -51,7 +51,7 @@ const permutations = createPermutations<TilesProps>([
       ],
       [
         { value: 'seventh', description: 'Short Description', label: 'First Button', disabled: true },
-        { value: 'second', description: 'Short description', label: '' },
+        { value: 'second', description: 'Short description', label: 'Second Button' },
         { value: 'ninth', description: '', label: 'Label' },
         {
           value: 'first',

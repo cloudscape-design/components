@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/hooks/focus-visible' as focus-visible;
 
 @import './tab-header-bar';
 
@@ -18,22 +19,25 @@
   width: 100%;
 }
 
-.tabs-content-wrapper {
-  &.with-paddings {
-    padding: awsui.$space-scaled-m 0;
-  }
-}
-
-.tabs-container-content-wrapper {
-  &.with-paddings {
-    padding-top: awsui.$space-tabs-content-top;
-  }
-}
-
 .tabs-content {
   display: none;
 }
 
 .tabs-content-active {
   display: block;
+  @include focus-visible.when-visible {
+    @include styles.container-focus();
+  }
+}
+
+.tabs-content-wrapper {
+  &.with-paddings > .tabs-content {
+    padding: awsui.$space-scaled-m 0;
+  }
+}
+
+.tabs-container-content-wrapper {
+  &.with-paddings > .tabs-content {
+    padding: awsui.$space-tabs-content-top awsui.$space-container-horizontal awsui.$space-scaled-l;
+  }
 }

@@ -151,6 +151,23 @@ describe('Input', () => {
     });
   });
 
+  describe('spellcheck', () => {
+    test('keeps default behavior if not set', () => {
+      const { input } = renderInput();
+      expect(input).not.toHaveAttribute('spellcheck');
+    });
+
+    test('can explicitly activate spellchecking', () => {
+      const { input } = renderInput({ spellcheck: true });
+      expect(input).toHaveAttribute('spellcheck', 'true');
+    });
+
+    test('can explicitly deactivate spellchecking', () => {
+      const { input } = renderInput({ spellcheck: false });
+      expect(input).toHaveAttribute('spellcheck', 'false');
+    });
+  });
+
   describe('disabled state', () => {
     test('is not set by default', () => {
       const { input } = renderInput();
@@ -398,5 +415,14 @@ describe('Input', () => {
       fireEvent.keyUp(input, { keyCode: 65, key: 'A', shiftKey: true });
       expect(keyUpSpy).toHaveBeenCalledTimes(1);
     });
+  });
+
+  test('input is blurred when type=number and scrolled over', () => {
+    const blurSpy = jest.fn();
+    const { wrapper, input } = renderInput({ type: 'number', onBlur: blurSpy });
+    wrapper.focus();
+    expect(blurSpy).not.toHaveBeenCalled();
+    fireEvent.wheel(input);
+    expect(blurSpy).toHaveBeenCalledTimes(1);
   });
 });

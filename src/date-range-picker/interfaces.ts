@@ -89,8 +89,24 @@ export interface DateRangePickerBaseProps {
    * Has no effect when `dateOnly` is true.
    *
    * Default: the user's current time offset as provided by the browser.
+   *
+   * This property is deprecated. Use getTimeOffset instead.
+   * @deprecated
    */
   timeOffset?: number;
+
+  /**
+   * A function that defines timezone offset from UTC in minutes for selected dates.
+   * Use it to define time relative to the desired timezone.
+   *
+   * The function is called for the start date and the end date and takes a UTC date
+   * corresponding the selected value as an argument.
+   *
+   * Has no effect when `dateOnly` is true.
+   *
+   * Default: the user's current time offset as provided by the browser.
+   */
+  getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -196,6 +212,10 @@ export namespace DateRangePickerProps {
 
   export interface IsDateEnabledFunction {
     (date: Date): boolean;
+  }
+
+  export interface GetTimeOffsetFunction {
+    (date: Date): number;
   }
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
@@ -335,11 +355,36 @@ export namespace DateRangePickerProps {
     dateTimeConstraintText?: string;
 
     /**
+     * Provides a text alternative for the error icon in the error alert.
+     */
+    errorIconAriaLabel?: string;
+
+    /**
      * When the property is set, screen readers announce the selected range when the absolute range gets selected.
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
   }
 }
+
+export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface RangeCalendarValue {
+  startDate: string;
+  endDate: string;
+}
+
+export type RangeCalendarI18nStrings = Pick<
+  DateRangePickerProps.I18nStrings,
+  | 'todayAriaLabel'
+  | 'nextMonthAriaLabel'
+  | 'previousMonthAriaLabel'
+  | 'startDateLabel'
+  | 'startTimeLabel'
+  | 'endDateLabel'
+  | 'endTimeLabel'
+  | 'dateTimeConstraintText'
+  | 'renderSelectedAbsoluteRangeAriaLive'
+>;
 
 export interface Focusable {
   focus(): void;

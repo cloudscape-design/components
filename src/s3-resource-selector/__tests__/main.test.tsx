@@ -5,6 +5,7 @@ import { render, screen } from '@testing-library/react';
 import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector';
 import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
+import FormField from '../../../lib/components/form-field';
 
 jest.setTimeout(10_000);
 
@@ -164,4 +165,34 @@ describe('URL sanitization', () => {
       `[AwsUi] [S3ResourceSelector] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
     );
   });
+});
+
+test('Should have role as group', () => {
+  const wrapper = renderComponent(<S3ResourceSelector {...defaultProps} />);
+  expect(wrapper.getElement()).toHaveAttribute('role', 'group');
+});
+
+test('Should have aria-label when it is set', () => {
+  const wrapper = renderComponent(<S3ResourceSelector {...defaultProps} ariaLabel={'aria label'} />);
+  expect(wrapper.getElement()).toHaveAttribute('aria-label', 'aria label');
+});
+
+test('Should inherits aria-labelledby aria-describedby from the surrounding FormField', () => {
+  const wrapper = renderComponent(
+    <FormField controlId="test-control" description="test description" label="test label">
+      <S3ResourceSelector {...defaultProps} />
+    </FormField>
+  );
+  expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', 'test-control-label');
+  expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'test-control-description');
+});
+
+test('Should overwrites aria-labelledby aria-describedby from surrounding FormField when they are set on itself', () => {
+  const wrapper = renderComponent(
+    <FormField controlId="test-control" description="test description" label="test label">
+      <S3ResourceSelector {...defaultProps} ariaDescribedby={'description-id'} ariaLabelledby={'label-id'} />
+    </FormField>
+  );
+  expect(wrapper.getElement()).toHaveAttribute('aria-labelledby', 'label-id');
+  expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'description-id');
 });

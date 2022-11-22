@@ -28,6 +28,9 @@ import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import useMouseDownTarget from './use-mouse-down-target';
+import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
+import LiveRegion from '../internal/components/live-region';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -149,6 +152,7 @@ const InternalTable = React.forwardRef(
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
         }
       },
+      singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
     };
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
@@ -157,6 +161,11 @@ const InternalTable = React.forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
+
+    const getMouseDownTarget = useMouseDownTarget();
+
+    const hasDynamicHeight = computedVariant === 'full-page';
+    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     return (
       <ColumnWidthsProvider
@@ -172,8 +181,13 @@ const InternalTable = React.forwardRef(
           header={
             <>
               {hasHeader && (
-                <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
-                  <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                <div
+                  ref={overlapElement}
+                  className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
+                >
+                  <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
+                    <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
+                  </div>
                 </div>
               )}
               {stickyHeader && (
@@ -186,6 +200,7 @@ const InternalTable = React.forwardRef(
                   secondaryWrapperRef={secondaryWrapperRef}
                   tableRef={tableRefObject}
                   onScroll={handleScroll}
+                  tableHasHeader={hasHeader}
                 />
               )}
             </>
@@ -248,7 +263,7 @@ const InternalTable = React.forwardRef(
                       >
                         {loading ? (
                           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-                            {loadingText}
+                            <LiveRegion visible={true}>{loadingText}</LiveRegion>
                           </InternalStatusIndicator>
                         ) : (
                           <div className={styles.empty}>{empty}</div>
@@ -267,7 +282,14 @@ const InternalTable = React.forwardRef(
                       <tr
                         key={getItemKey(trackBy, item, rowIndex)}
                         className={clsx(styles.row, isSelected && styles['row-selected'])}
-                        onFocus={({ currentTarget }) => stickyHeaderRef.current?.scrollToRow(currentTarget)}
+                        onFocus={({ currentTarget }) => {
+                          // When an element inside table row receives focus we want to adjust the scroll.
+                          // However, that behaviour is unwanted when the focus is received as result of a click
+                          // as it causes the click to never reach the target element.
+                          if (!currentTarget.contains(getMouseDownTarget())) {
+                            stickyHeaderRef.current?.scrollToRow(currentTarget);
+                          }
+                        }}
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}

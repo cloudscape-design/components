@@ -38,7 +38,9 @@ export default function Hotspot({
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root, styles.wrapper)} ref={__internalRootRef}>
         <div className={styles.elementWrapper}>{children}</div>
-        <div className={clsx(styles.markerWrapper, styles[`placement-${side}`])}>{content}</div>
+        <div className={clsx(styles.markerWrapper, styles[`placement-${side}`])} onClick={e => e.stopPropagation()}>
+          {content}
+        </div>
       </div>
     );
   }
@@ -48,6 +50,7 @@ export default function Hotspot({
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles.inlineWrapper)}
       ref={__internalRootRef}
+      onClick={e => e.stopPropagation()}
     >
       {content}
     </span>

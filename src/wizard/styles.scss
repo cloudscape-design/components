@@ -15,7 +15,7 @@
 .wizard.refresh {
   column-gap: awsui.$space-xl;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   row-gap: awsui.$space-scaled-xl;
 
@@ -139,7 +139,7 @@
     }
 
     > li.disabled > a > .title {
-      color: awsui.$color-text-interactive-disabled;
+      color: awsui.$color-text-status-inactive;
     }
 
     > li.enabled > a > .circle {
@@ -257,6 +257,15 @@
   }
 }
 
+.form-header-component {
+  &-wrapper {
+    outline: none;
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+  }
+}
+
 .form-header-component,
 .navigation-link,
 .navigation-link-item,
@@ -269,7 +278,7 @@
   color: awsui.$color-text-body-default;
 }
 .navigation-link-disabled {
-  color: awsui.$color-text-control-disabled;
+  color: awsui.$color-text-status-inactive;
 }
 
 .cancel-button,

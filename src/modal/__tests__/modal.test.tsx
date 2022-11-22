@@ -141,7 +141,7 @@ describe('Modal component', () => {
       expect(document.activeElement).toBe(wrapper.findDismissButton().getElement());
     });
 
-    it('restores focus to previous element on unmount', () => {
+    it('restores focus to previous element on unmount', async () => {
       const textfield = document.createElement('input');
       textfield.type = 'text';
       document.body.appendChild(textfield);
@@ -153,6 +153,9 @@ describe('Modal component', () => {
       expect(document.activeElement).not.toBe(textfield);
 
       rerender(<></>);
+      // react-focus-lock returns focus asyncronousy as Promise.resolve().then(() => element.focus())
+      // so need to wait before checking the active element.
+      await new Promise(resolve => setTimeout(resolve, 0));
       expect(document.activeElement).toBe(textfield);
     });
   });

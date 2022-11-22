@@ -9,15 +9,16 @@ import {
   SplitPanelContextProps,
 } from '../../../lib/components/internal/context/split-panel-context';
 import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
+import styles from '../../../lib/components/split-panel/styles.css.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () => ({
   useKeyboardEvents: () => onKeyDown,
 }));
 
-const onSliderMouseDown = jest.fn();
-jest.mock('../../../lib/components/split-panel/utils/use-mouse-events', () => ({
-  useMouseEvents: () => onSliderMouseDown,
+const onSliderPointerDown = jest.fn();
+jest.mock('../../../lib/components/split-panel/utils/use-pointer-events', () => ({
+  usePointerEvents: () => onSliderPointerDown,
 }));
 
 const i18nStrings = {
@@ -159,11 +160,11 @@ describe('Split panel', () => {
         expect(onKeyDown).toHaveBeenCalledTimes(1);
       });
 
-      test('fires mouseDown', () => {
-        onSliderMouseDown.mockClear();
+      test('fires pointerDown', () => {
+        onSliderPointerDown.mockClear();
         const { wrapper } = renderSplitPanel({ contextProps: { position } });
-        fireEvent.mouseDown(wrapper.findSlider()!.getElement());
-        expect(onSliderMouseDown).toHaveBeenCalledTimes(1);
+        fireEvent.pointerDown(wrapper.findSlider()!.getElement());
+        expect(onSliderPointerDown).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -275,6 +276,21 @@ describe('Split panel', () => {
         .findInputByValue('side')!
         .getElement();
       expect(sidePositionTileElement?.disabled).toBeTruthy();
+    });
+  });
+  describe('has proper aria properties', () => {
+    test('split panel content has correct role', () => {
+      const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });
+      const sidePanelElem = wrapper.findByClassName(styles['drawer-content-side'])?.getElement();
+      expect(sidePanelElem).toHaveAttribute('role', 'region');
+    });
+
+    test('split panel is labelled by panel header', () => {
+      const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });
+      const sidePanelElem = wrapper.findByClassName(styles['drawer-content-side'])?.getElement();
+      const labelId = sidePanelElem?.getAttribute('aria-labelledby');
+
+      expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
     });
   });
 });

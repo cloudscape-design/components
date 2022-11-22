@@ -12,7 +12,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { SplitPanelProps, SizeControlProps } from './interfaces';
 import ResizeHandler from './icons/resize-handler';
 import PreferencesModal from './preferences-modal';
-import { useMouseEvents } from './utils/use-mouse-events';
+import { usePointerEvents } from './utils/use-pointer-events';
 import { useKeyboardEvents } from './utils/use-keyboard-events';
 
 import styles from './styles.css.js';
@@ -23,6 +23,7 @@ import { getLimitedValue } from './utils/size-utils';
 import { Transition, TransitionStatus } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export { SplitPanelProps };
 
@@ -32,6 +33,7 @@ interface TransitionContentProps {
   baseProps: BaseComponentProps;
   isOpen?: boolean;
   splitPanelRef?: React.Ref<any>;
+  handleRef: React.RefObject<HTMLDivElement>;
   bottomOffset: number;
   cappedSize: number;
   isRefresh: boolean;
@@ -39,9 +41,10 @@ interface TransitionContentProps {
   i18nStrings: SplitPanelProps.I18nStrings;
   relativeSize: number;
   onKeyDown: (event: React.KeyboardEvent<Element>) => void;
-  onSliderMouseDown: () => void;
+  onSliderPointerDown: () => void;
   focusVisible: { 'data-awsui-focus-visible': true } | { 'data-awsui-focus-visible'?: undefined };
   paneHeader: JSX.Element;
+  panelHeaderId: string;
   wrappedChildren: JSX.Element;
 }
 
@@ -54,6 +57,7 @@ const TransitionContentSide = ({
   baseProps,
   isOpen,
   splitPanelRef,
+  handleRef,
   topOffset,
   bottomOffset,
   cappedSize,
@@ -62,10 +66,11 @@ const TransitionContentSide = ({
   i18nStrings,
   relativeSize,
   onKeyDown,
-  onSliderMouseDown,
+  onSliderPointerDown,
   focusVisible,
   toggleRef,
   paneHeader,
+  panelHeaderId,
   wrappedChildren,
 }: TransitionContentSideProps) => {
   return (
@@ -80,7 +85,7 @@ const TransitionContentSide = ({
       }}
       ref={splitPanelRef}
     >
-      <aside
+      <div
         className={clsx(styles['drawer-content-side'], {
           [styles.refresh]: isRefresh,
         })}
@@ -89,6 +94,8 @@ const TransitionContentSide = ({
           bottom: bottomOffset,
         }}
         onClick={() => !isOpen && onToggle()}
+        aria-labelledby={panelHeaderId}
+        role="region"
       >
         {isOpen ? (
           <div className={styles['slider-wrapper-side']}>
@@ -101,7 +108,8 @@ const TransitionContentSide = ({
               aria-valuenow={relativeSize}
               className={clsx(styles.slider, styles['slider-side'])}
               onKeyDown={onKeyDown}
-              onMouseDown={onSliderMouseDown}
+              onPointerDown={onSliderPointerDown}
+              ref={handleRef}
               {...focusVisible}
             >
               <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-side'])} />
@@ -123,7 +131,7 @@ const TransitionContentSide = ({
           <hr className={styles['header-divider']} />
           <div className={clsx(styles['pane-content-wrapper-side'])}>{wrappedChildren}</div>
         </div>
-      </aside>
+      </div>
     </div>
   );
 };
@@ -144,6 +152,7 @@ const TransitionContentBottom = ({
   baseProps,
   isOpen,
   splitPanelRef,
+  handleRef,
   bottomOffset,
   cappedSize,
   isRefresh,
@@ -151,7 +160,7 @@ const TransitionContentBottom = ({
   i18nStrings,
   relativeSize,
   onKeyDown,
-  onSliderMouseDown,
+  onSliderPointerDown,
   focusVisible,
   paneHeader,
   wrappedChildren,
@@ -164,6 +173,7 @@ const TransitionContentBottom = ({
   centeredMaxWidthClasses,
   splitPanelHeaderRef,
   appLayoutMaxWidth,
+  panelHeaderId,
 }: TransitionContentBottomProps) => {
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
   return (
@@ -196,14 +206,15 @@ const TransitionContentBottom = ({
             aria-valuenow={relativeSize}
             className={clsx(styles.slider, styles['slider-bottom'])}
             onKeyDown={onKeyDown}
-            onMouseDown={onSliderMouseDown}
+            onPointerDown={onSliderPointerDown}
+            ref={handleRef}
             {...focusVisible}
           >
             <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-bottom'])} />
           </div>
         </div>
       )}
-      <div className={styles['drawer-content-bottom']}>
+      <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
         <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={splitPanelHeaderRef}>
           {paneHeader}
         </div>
@@ -303,14 +314,17 @@ export default function SplitPanel({
     }
   };
 
-  const splitPanelRefObject = useRef(null);
+  const splitPanelRefObject = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
+
   const sizeControlProps: SizeControlProps = {
     position,
     splitPanelRef: splitPanelRefObject,
+    handleRef,
     setSidePanelWidth,
     setBottomPanelHeight,
   };
-  const onSliderMouseDown = useMouseEvents(sizeControlProps);
+  const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
   const toggleRef = useRef<ButtonProps.Ref>(null);
@@ -320,7 +334,7 @@ export default function SplitPanel({
   useEffectOnUpdate(() => {
     switch (lastInteraction?.type) {
       case 'open':
-        return closeRef.current?.focus();
+        return handleRef.current?.focus();
       case 'close':
         return toggleRef.current?.focus();
       case 'position':
@@ -341,9 +355,13 @@ export default function SplitPanel({
     </AppLayoutContext.Provider>
   );
 
+  const panelHeaderId = useUniqueId('split-panel-header');
+
   const paneHeader = (
     <div className={styles.header} style={appLayoutMaxWidth}>
-      <h2 className={styles['header-text']}>{header}</h2>
+      <h2 className={styles['header-text']} id={panelHeaderId}>
+        {header}
+      </h2>
       <div className={styles['header-actions']}>
         {!hidePreferencesButton && isOpen && (
           <>
@@ -438,6 +456,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
+              handleRef={handleRef}
               topOffset={topOffset}
               bottomOffset={bottomOffset}
               cappedSize={cappedSize}
@@ -446,11 +465,12 @@ export default function SplitPanel({
               i18nStrings={i18nStrings}
               relativeSize={relativeSize}
               onKeyDown={onKeyDown}
-              onSliderMouseDown={onSliderMouseDown}
+              onSliderPointerDown={onSliderPointerDown}
               focusVisible={focusVisible}
               toggleRef={toggleRef}
               paneHeader={paneHeader}
               wrappedChildren={wrappedChildren}
+              panelHeaderId={panelHeaderId}
             ></TransitionContentSide>
           )}
 
@@ -459,6 +479,7 @@ export default function SplitPanel({
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
+              handleRef={handleRef}
               bottomOffset={bottomOffset}
               cappedSize={cappedSize}
               isRefresh={isRefresh}
@@ -466,7 +487,7 @@ export default function SplitPanel({
               i18nStrings={i18nStrings}
               relativeSize={relativeSize}
               onKeyDown={onKeyDown}
-              onSliderMouseDown={onSliderMouseDown}
+              onSliderPointerDown={onSliderPointerDown}
               focusVisible={focusVisible}
               paneHeader={paneHeader}
               wrappedChildren={wrappedChildren}
@@ -479,6 +500,7 @@ export default function SplitPanel({
               centeredMaxWidthClasses={centeredMaxWidthClasses}
               splitPanelHeaderRef={splitPanelHeaderRef}
               appLayoutMaxWidth={appLayoutMaxWidth}
+              panelHeaderId={panelHeaderId}
             ></TransitionContentBottom>
           )}
           {isPreferencesOpen && (

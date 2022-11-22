@@ -3,6 +3,7 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { SplitPanelContext } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -22,10 +23,15 @@ export default function Main() {
     isMobile,
     isAnyPanelOpen,
     mainElement,
+    splitPanel,
+    offsetBottom,
+    footerHeight,
   } = useContext(AppLayoutContext);
 
   const { position: splitPanelPosition } = useContext(SplitPanelContext);
+
   const isUnfocusable = isMobile && isAnyPanelOpen;
+  const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
     <div
@@ -39,6 +45,7 @@ export default function Main() {
           [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
           [styles['has-header']]: contentHeader,
           [styles['has-notifications-content']]: hasNotificationsContent,
+          [styles['has-split-panel']]: splitPanel,
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
           [styles['is-split-panel-open']]: isSplitPanelOpen,
@@ -47,6 +54,9 @@ export default function Main() {
         testutilStyles.content
       )}
       ref={mainElement}
+      style={{
+        [customCssProps.splitPanelHeight]: `${splitPanelHeight}px`,
+      }}
     >
       {content}
     </div>

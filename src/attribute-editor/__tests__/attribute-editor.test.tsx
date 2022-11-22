@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
+import Input from '../../../lib/components/input';
 
 interface Item {
   key: string;
@@ -41,6 +42,9 @@ const defaultProps: AttributeEditorProps<Item> = {
       };
     }),
   empty: 'empty region',
+  i18nStrings: {
+    errorIconAriaLabel: 'Error',
+  },
 };
 
 function renderAttributeEditor(
@@ -245,6 +249,10 @@ describe('Attribute Editor', () => {
       });
 
       test('should display the returned values as error messages', () => {
+        expect(wrapper.findRow(1)!.findFields()[0].find('[role="img"]')!.getElement()).toHaveAttribute(
+          'aria-label',
+          'Error'
+        );
         expectRowErrorTextContent(wrapper, 0, ['Error with key 0']);
         expectRowErrorTextContent(wrapper, 1, ['Error with key 1']);
       });
@@ -313,6 +321,37 @@ describe('Attribute Editor', () => {
       for (const row of [1, 2, 3]) {
         expect(wrapper.findRow(row)!.findRemoveButton()!.getElement()).not.toHaveFocus();
       }
+    });
+  });
+
+  describe('a11y', () => {
+    test('row has role group and aria-labelledby referring to first control label and content', () => {
+      const wrapper = renderAttributeEditor({
+        ...defaultProps,
+        definition: [
+          {
+            label: 'Key label',
+            info: 'Key info',
+            control: item => <Input value={item.key} />,
+          },
+          {
+            label: 'Value label',
+            info: 'Value info',
+            control: item => <Input value={item.value} />,
+          },
+        ],
+      });
+      const [labelId, inputId] = wrapper
+        .findRow(1)!
+        .find('[role="group"]')!
+        .getElement()
+        .getAttribute('aria-labelledby')!
+        .split(' ');
+      const label =
+        wrapper.getElement().querySelector(`#${labelId}`)!.textContent +
+        ' ' +
+        wrapper.getElement().querySelector(`#${inputId}`)!.getAttribute('value');
+      expect(label).toBe('Key label k1');
     });
   });
 });

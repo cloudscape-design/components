@@ -19,11 +19,11 @@
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
-  &-stuck {
+  &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
   }
-  &-variant-full-page {
-    border-bottom: awsui.$space-scaled-xxs solid transparent;
+  &-variant-full-page.header-cell-hidden {
+    border-bottom-color: transparent;
   }
   &:first-child {
     padding-left: awsui.$space-xs;
@@ -41,6 +41,10 @@
     height: 50%;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
+  }
+
+  &-resizable:not(:last-child):before {
+    border-left-color: awsui.$color-border-divider-interactive-default;
   }
 }
 

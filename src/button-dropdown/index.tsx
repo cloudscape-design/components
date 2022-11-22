@@ -15,6 +15,7 @@ const ButtonDropdown = React.forwardRef(
       items,
       variant = 'normal',
       loading = false,
+      loadingText,
       disabled = false,
       expandableGroups = false,
       expandToViewport = false,
@@ -36,6 +37,7 @@ const ButtonDropdown = React.forwardRef(
         items={items}
         variant={variant}
         loading={loading}
+        loadingText={loadingText}
         disabled={disabled}
         expandableGroups={expandableGroups}
         expandToViewport={expandToViewport}

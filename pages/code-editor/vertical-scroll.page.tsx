@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 import CodeEditor, { CodeEditorProps } from '~components/code-editor';
-import { i18nStrings } from './i18n-strings';
+import { i18nStrings } from './base-props';
 
 import 'ace-builds/css/ace.css';
 import 'ace-builds/css/theme/dawn.css';

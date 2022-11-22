@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { DateRangePickerProps, Focusable } from '../interfaces';
+import React, { useState } from 'react';
+import { DateRangePickerProps } from '../interfaces';
 import InternalBox from '../../box/internal';
 import InternalFormField from '../../form-field/internal';
 import InternalInput from '../../input/internal';
@@ -31,19 +31,14 @@ const units: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['second', 'minute',
 
 const CUSTOM_OPTION_SELECT_KEY = 'awsui-internal-custom-duration-key';
 
-export default forwardRef(RelativeRangePicker);
-
-function RelativeRangePicker(
-  {
-    dateOnly,
-    options: clientOptions = [],
-    initialSelection: initialRange,
-    onChange: onChangeRangeSize,
-    i18nStrings,
-    isSingleGrid,
-  }: RelativeRangePickerProps,
-  ref: React.Ref<Focusable>
-) {
+export default function RelativeRangePicker({
+  dateOnly,
+  options: clientOptions = [],
+  initialSelection: initialRange,
+  onChange: onChangeRangeSize,
+  i18nStrings,
+  isSingleGrid,
+}: RelativeRangePickerProps) {
   const radioOptions: RadioGroupProps.RadioButtonDefinition[] = clientOptions.map(option => ({
     value: option.key,
     label: i18nStrings.formatRelativeRange(option),
@@ -77,18 +72,8 @@ function RelativeRangePicker(
   const showRadioControl = clientOptions.length > 0;
   const showCustomControls = clientOptions.length === 0 || selectedRadio === CUSTOM_OPTION_SELECT_KEY;
 
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  useImperativeHandle(ref, () => ({
-    focus() {
-      if (elementRef.current) {
-        elementRef.current.querySelector('input')?.focus();
-      }
-    },
-  }));
-
   return (
-    <div ref={elementRef}>
+    <div>
       <InternalSpaceBetween size="xs" direction="vertical">
         {showRadioControl && (
           <InternalFormField label={i18nStrings.relativeRangeSelectionHeading}>
@@ -147,6 +132,7 @@ function RelativeRangePicker(
                         onChangeRangeSize({ amount, unit: customUnitOfTime, type: 'relative' });
                       }}
                       placeholder={i18nStrings.customRelativeRangeDurationPlaceholder}
+                      __inheritFormFieldProps={true}
                     />
                   </InternalFormField>
                 </div>

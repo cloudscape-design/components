@@ -3,7 +3,7 @@
 import React from 'react';
 import CodeEditor from '~components/code-editor';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './i18n-strings';
+import { i18nStrings } from './base-props';
 
 export default function () {
   return (

@@ -153,6 +153,7 @@
       "excludedFiles": ["src/**/__tests__/**", "src/**/__integ__/**", "src/**/__a11y__/**"],
       "rules": {
         "@cloudscape-design/no-implicit-svg-focusable": "error",
+        "@cloudscape-design/prefer-live-region": "warn",
         "no-restricted-imports": [
           "error",
           {
@@ -160,6 +161,10 @@
               {
                 "group": ["lodash", "lodash/*"],
                 "message": "lodash is a commonjs module, which breaks webpack esm optimizations."
+              },
+              {
+                "group": ["d3-scale", "!**/vendor/d3-scale"],
+                "message": "`d3-scale` gets shipped as a bundled dependency. Use `src/internal/vendor/d3-scale` as import source."
               }
             ]
           }

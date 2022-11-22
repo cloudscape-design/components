@@ -187,7 +187,7 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
       expanded={expanded}
       onChange={onExpandedChange}
       className={styles.section}
-      header={definition.text}
+      headerText={definition.text}
     >
       <ItemList
         variant="section"
@@ -280,7 +280,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref }:
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}
-      header={
+      headerText={
         <Link
           definition={{ type: 'link', href: definition.href, text: definition.text }}
           expanded={userExpanded ?? expanded}

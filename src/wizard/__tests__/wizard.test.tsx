@@ -13,6 +13,7 @@ const DEFAULT_I18N_SETS = [
     stepNumberLabel: stepNumber => `Step ${stepNumber}`,
     collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
     skipToButtonLabel: (step: WizardProps.Step, stepNumber) => `Skip to ${step.title}(${stepNumber})`,
+    navigationAriaLabel: 'Steps',
     cancelButton: 'Cancel',
     previousButton: 'Previous',
     nextButton: 'Next',
@@ -22,6 +23,7 @@ const DEFAULT_I18N_SETS = [
   {
     stepNumberLabel: stepNumber => `第 ${stepNumber} 步`,
     collapsedStepsLabel: (stepNumber, stepsCount) => `第 ${stepNumber} 步 / 共 ${stepsCount} 步`,
+    navigationAriaLabel: 'Steps',
     cancelButton: '取消',
     previousButton: '上一步',
     nextButton: '下一步',
@@ -78,6 +80,12 @@ describe('i18nStrings', () => {
         i18nStrings,
         steps: DEFAULT_STEPS,
       });
+
+      expect(wrapper.findByClassName(styles.navigation)!.getElement()).toHaveAttribute(
+        'aria-label',
+        i18nStrings.navigationAriaLabel
+      );
+
       wrapper.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
         const expectedTitle = i18nStrings.stepNumberLabel(index + 1);
         const expectedLabel = DEFAULT_STEPS[index].isOptional
@@ -391,23 +399,6 @@ describe('Form', () => {
   test('renders errorText', () => {
     const [wrapper] = renderDefaultWizard({ steps: [{ title: '', errorText: 'test error', content: null }] });
     expect(wrapper.findError()!.getElement()).toHaveTextContent('test error');
-  });
-});
-
-describe('Focus delegation', () => {
-  test('when previous button is not focused and unmounted no focus delegation occurs', () => {
-    const [wrapper] = renderDefaultWizard();
-    wrapper.findPrimaryButton()!.click();
-    wrapper.findPreviousButton()!.click();
-    expect(wrapper.findPrimaryButton()!.getElement()).not.toBe(document.activeElement);
-  });
-
-  test('when previous button is focused and unmounted the focus is delegated to the next button', () => {
-    const [wrapper] = renderDefaultWizard();
-    wrapper.findPrimaryButton()!.click();
-    wrapper.findPreviousButton()!.focus();
-    wrapper.findPreviousButton()!.click();
-    expect(wrapper.findPrimaryButton()!.getElement()).toBe(document.activeElement);
   });
 });
 
