@@ -157,12 +157,15 @@ export default function AnnotationContext({
       }
 
       if (!task || !step || !open || id !== currentId) {
+        const { task: currentTask, localIndex: currentStepIndex } = getStepInfo(annotations, globalStepIndex);
         return (
           <ClosedAnnotation
             globalStepIndex={globalStepIndex}
             i18nStrings={i18nStrings}
             onOpen={onOpen}
             focusOnRender={id === currentId}
+            totalLocalSteps={currentTask ? currentTask.steps.length : 0}
+            taskLocalStepIndex={currentStepIndex}
           />
         );
       }
@@ -206,6 +209,7 @@ export default function AnnotationContext({
       openPreviousStep,
       onDismiss,
       onOpen,
+      annotations,
     ]
   );
 

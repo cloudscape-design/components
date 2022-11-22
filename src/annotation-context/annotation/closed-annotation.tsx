@@ -12,9 +12,18 @@ export interface AnnotationProps {
   i18nStrings: AnnotationContextProps['i18nStrings'];
 
   focusOnRender: boolean;
+  totalLocalSteps: number;
+  taskLocalStepIndex: number;
 }
 
-export function ClosedAnnotation({ globalStepIndex, onOpen, i18nStrings, focusOnRender }: AnnotationProps) {
+export function ClosedAnnotation({
+  globalStepIndex,
+  onOpen,
+  i18nStrings,
+  focusOnRender,
+  totalLocalSteps,
+  taskLocalStepIndex,
+}: AnnotationProps) {
   const [hotspotRef, setHotspotRef] = useState<HTMLButtonElement | null>(null);
   const onClick = useCallback(() => {
     onOpen(globalStepIndex);
@@ -26,5 +35,14 @@ export function ClosedAnnotation({ globalStepIndex, onOpen, i18nStrings, focusOn
     }
   }, [focusOnRender, hotspotRef]);
 
-  return <AnnotationTrigger open={false} onClick={onClick} i18nStrings={i18nStrings} ref={setHotspotRef} />;
+  return (
+    <AnnotationTrigger
+      open={false}
+      onClick={onClick}
+      i18nStrings={i18nStrings}
+      ref={setHotspotRef}
+      totalLocalSteps={totalLocalSteps}
+      taskLocalStepIndex={taskLocalStepIndex}
+    />
+  );
 }
