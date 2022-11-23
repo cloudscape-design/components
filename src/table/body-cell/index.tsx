@@ -43,20 +43,24 @@ function TableCellEditable<ItemType>({
   const focusVisible = useFocusVisible();
 
   useEffectOnUpdate(() => {
-    if (!isEditActive) {
+    if (!isEditActive && editActivateRef?.current) {
       editActivateRef.current!.focus();
     }
   }, [isEditActive]);
 
   const handleEditEnd = () => {
     onEditEnd();
-    tableTdRef.current!.focus();
+  };
+
+  const tdNativeAttributes = {
+    ...(focusVisible as Record<string, string>),
+    'data-inline-editing-active': isEditActive.toString(),
   };
 
   return (
     <TableTdElement
       {...rest}
-      nativeAttributes={focusVisible as TableTdElementProps['nativeAttributes']}
+      nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(className, styles['body-cell-editable'], isEditActive && styles['body-cell-edit-active'])}
       onClick={!isEditActive ? onEditStart : undefined}
       ref={tableTdRef}

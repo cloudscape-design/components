@@ -31,6 +31,7 @@ import { SomeRequired } from '../internal/types';
 import useMouseDownTarget from './use-mouse-down-target';
 import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
+import useTableFocusNavigation from './use-table-focus-navigation';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -200,6 +201,8 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
+    useTableFocusNavigation(selectionType === undefined, tableRefObject, visibleColumnDefinitions, items?.length);
+
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -359,6 +362,7 @@ const InternalTable = React.forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditActive =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          const isEditable = !!column.editConfig && !currentEditLoading;
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
@@ -375,7 +379,7 @@ const InternalTable = React.forwardRef(
                               column={column}
                               item={item}
                               wrapLines={wrapLines}
-                              isEditable={!!column.editConfig && !currentEditLoading}
+                              isEditable={isEditable}
                               isEditActive={isEditActive}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}

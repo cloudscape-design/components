@@ -30,8 +30,8 @@ export function InlineEditor<ItemType>({
   const [currentEditValue, setCurrentEditValue] = useState<any>(undefined);
 
   function finishEdit() {
-    onEditEnd();
     setCurrentEditValue(undefined);
+    onEditEnd();
   }
 
   function onSubmitClick() {

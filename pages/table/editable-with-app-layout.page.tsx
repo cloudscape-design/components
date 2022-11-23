@@ -10,24 +10,7 @@ import BreadcrumbGroup from '~components/breadcrumb-group';
 import { initialItems, Metric } from './editable-data';
 import { ColorPicker, HelpContent } from './editable-utils';
 
-/*!
-  TODO:
-  1. Focus behavior- arrow navigation
-  1. Extend space for the error message (visual bug) (issue)
-  1. Remove flash bar after submission
-  1. Show modal when exiting with unsaved changes
-  ~~  1. Hide cancel button when submission is in progress ~~
-  ~~  1. focus cell after cancel/submit ~~
-  ~~  1. Visual changes~~
-  ~~  1. Focus outline all around cell~~
-  ~~  1. Replace "editable" text with icon in column header~~
-*/
-
 export const ariaLabels: TableProps.AriaLabels<Metric> = {
-  // selectionGroupLabel: 'group label',
-  // allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
-  // itemSelectionLabel: ({ selectedItems }, item) =>
-  //   `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
   tableLabel: 'Items',
   activateEditLabel: column => `Edit ${column.header}`,
   cancelEditLabel: column => `Cancel editing ${column.header}`,
