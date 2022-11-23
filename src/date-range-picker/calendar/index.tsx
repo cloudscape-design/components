@@ -4,8 +4,9 @@
 import React, { useState } from 'react';
 import { addMonths, endOfDay, isAfter, isBefore, isSameMonth, startOfDay, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
+import SpaceBetween from '../../space-between/internal';
 import { BaseComponentProps } from '../../internal/base-component';
-import { DateTimeStrings, PendingAbsoluteValue, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
 import CalendarHeader from './header';
 import { Grids } from './grids';
 import { TimeInputProps } from '../../time-input/interfaces';
@@ -21,14 +22,15 @@ import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay } from './utils';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
-  value: PendingAbsoluteValue;
-  setValue: React.Dispatch<React.SetStateAction<PendingAbsoluteValue>>;
+  value: DateRangePickerProps.PendingAbsoluteValue;
+  setValue: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>;
   locale?: string;
   startOfWeek?: number;
   isDateEnabled?: (date: Date) => boolean;
   i18nStrings: RangeCalendarI18nStrings;
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
+  customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
 }
 
 export default function DateRangePickerCalendar({
@@ -40,6 +42,7 @@ export default function DateRangePickerCalendar({
   i18nStrings,
   dateOnly = false,
   timeInputFormat = 'hh:mm:ss',
+  customAbsoluteRangeControl,
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
@@ -59,6 +62,13 @@ export default function DateRangePickerCalendar({
     }
     return findDateToFocus(parseDate(value.start.date), currentMonth, isDateEnabled);
   });
+
+  const updateCurrentMonth = (startDate: string) => {
+    if (startDate.length >= 8) {
+      const newCurrentMonth = startOfMonth(parseDate(startDate));
+      setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
+    }
+  };
 
   // recommended to include the start/end time announced with the selection
   // because the user is not aware of the fact that a start/end time is also set as soon as they select a date
@@ -144,7 +154,10 @@ export default function DateRangePickerCalendar({
       }
     }
 
-    const formatValue = (date: Date | null | undefined, previous: DateTimeStrings): DateTimeStrings => {
+    const formatValue = (
+      date: Date | null | undefined,
+      previous: DateRangePickerProps.DateTimeStrings
+    ): DateRangePickerProps.DateTimeStrings => {
       if (date === null) {
         // explicitly reset to empty
         return { date: '', time: '' };
@@ -171,12 +184,19 @@ export default function DateRangePickerCalendar({
   };
 
   const onChangeStartDate = (value: string) => {
-    setValue((oldValue: PendingAbsoluteValue) => ({ ...oldValue, start: { ...oldValue.start, date: value } }));
+    setValue((oldValue: DateRangePickerProps.PendingAbsoluteValue) => ({
+      ...oldValue,
+      start: { ...oldValue.start, date: value },
+    }));
+    updateCurrentMonth(value);
+  };
 
-    if (value.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(value));
-      setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
-    }
+  const interceptedSetValue: DateRangePickerCalendarProps['setValue'] = newValue => {
+    setValue(oldValue => {
+      const updated = typeof newValue === 'function' ? newValue(oldValue) : newValue;
+      updateCurrentMonth(updated.start.date);
+      return updated;
+    });
   };
 
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
@@ -187,53 +207,56 @@ export default function DateRangePickerCalendar({
           [styles['one-grid']]: isSingleGrid,
         })}
       >
-        <div
-          className={clsx(styles.calendar, {
-            [styles['one-grid']]: isSingleGrid,
-          })}
-        >
-          <CalendarHeader
-            baseDate={currentMonth}
-            locale={normalizedLocale}
-            onChangeMonth={onHeaderChangeMonthHandler}
-            previousMonthLabel={i18nStrings.previousMonthAriaLabel}
-            nextMonthLabel={i18nStrings.nextMonthAriaLabel}
-            isSingleGrid={isSingleGrid}
-            headingIdPrefix={headingIdPrefix}
-          />
+        <SpaceBetween size="s">
+          <div
+            className={clsx(styles.calendar, {
+              [styles['one-grid']]: isSingleGrid,
+            })}
+          >
+            <CalendarHeader
+              baseDate={currentMonth}
+              locale={normalizedLocale}
+              onChangeMonth={onHeaderChangeMonthHandler}
+              previousMonthLabel={i18nStrings.previousMonthAriaLabel}
+              nextMonthLabel={i18nStrings.nextMonthAriaLabel}
+              isSingleGrid={isSingleGrid}
+              headingIdPrefix={headingIdPrefix}
+            />
 
-          <Grids
-            isSingleGrid={isSingleGrid}
-            locale={normalizedLocale}
-            baseDate={currentMonth}
-            focusedDate={focusedDate}
-            onFocusedDateChange={setFocusedDate}
-            isDateEnabled={isDateEnabled}
-            onSelectDate={onSelectDateHandler}
-            onChangeMonth={setCurrentMonth}
-            startOfWeek={normalizedStartOfWeek}
-            todayAriaLabel={i18nStrings.todayAriaLabel}
-            selectedStartDate={parseDate(value.start.date, true)}
-            selectedEndDate={parseDate(value.end.date, true)}
-            headingIdPrefix={headingIdPrefix}
-          />
-        </div>
+            <Grids
+              isSingleGrid={isSingleGrid}
+              locale={normalizedLocale}
+              baseDate={currentMonth}
+              focusedDate={focusedDate}
+              onFocusedDateChange={setFocusedDate}
+              isDateEnabled={isDateEnabled}
+              onSelectDate={onSelectDateHandler}
+              onChangeMonth={setCurrentMonth}
+              startOfWeek={normalizedStartOfWeek}
+              todayAriaLabel={i18nStrings.todayAriaLabel}
+              selectedStartDate={parseDate(value.start.date, true)}
+              selectedEndDate={parseDate(value.end.date, true)}
+              headingIdPrefix={headingIdPrefix}
+            />
+          </div>
 
-        <RangeInputs
-          startDate={value.start.date}
-          onChangeStartDate={onChangeStartDate}
-          startTime={value.start.time}
-          onChangeStartTime={value =>
-            setValue(oldValue => ({ ...oldValue, start: { ...oldValue.start, time: value } }))
-          }
-          endDate={value.end.date}
-          onChangeEndDate={value => setValue(oldValue => ({ ...oldValue, end: { ...oldValue.end, date: value } }))}
-          endTime={value.end.time}
-          onChangeEndTime={value => setValue(oldValue => ({ ...oldValue, end: { ...oldValue.end, time: value } }))}
-          i18nStrings={i18nStrings}
-          dateOnly={dateOnly}
-          timeInputFormat={timeInputFormat}
-        />
+          <RangeInputs
+            startDate={value.start.date}
+            onChangeStartDate={onChangeStartDate}
+            startTime={value.start.time}
+            onChangeStartTime={value =>
+              setValue(oldValue => ({ ...oldValue, start: { ...oldValue.start, time: value } }))
+            }
+            endDate={value.end.date}
+            onChangeEndDate={value => setValue(oldValue => ({ ...oldValue, end: { ...oldValue.end, date: value } }))}
+            endTime={value.end.time}
+            onChangeEndTime={value => setValue(oldValue => ({ ...oldValue, end: { ...oldValue.end, time: value } }))}
+            i18nStrings={i18nStrings}
+            dateOnly={dateOnly}
+            timeInputFormat={timeInputFormat}
+          />
+          {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
+        </SpaceBetween>
       </div>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
     </>

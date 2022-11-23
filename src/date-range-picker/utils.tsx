@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps, PendingAbsoluteValue } from './interfaces';
+import { DateRangePickerProps } from './interfaces';
 import { setTimeOffset } from './time-offset';
 import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
 
@@ -38,7 +38,9 @@ export function getDefaultMode(
   return relativeOptions.length > 0 ? 'relative' : 'absolute';
 }
 
-export function splitAbsoluteValue(value: null | DateRangePickerProps.AbsoluteValue): PendingAbsoluteValue {
+export function splitAbsoluteValue(
+  value: null | DateRangePickerProps.AbsoluteValue
+): DateRangePickerProps.PendingAbsoluteValue {
   if (!value) {
     return {
       start: { date: '', time: '' },
@@ -48,7 +50,9 @@ export function splitAbsoluteValue(value: null | DateRangePickerProps.AbsoluteVa
   return { start: splitDateTime(value.startDate), end: splitDateTime(value.endDate) };
 }
 
-export function joinAbsoluteValue(value: PendingAbsoluteValue): DateRangePickerProps.AbsoluteValue {
+export function joinAbsoluteValue(
+  value: DateRangePickerProps.PendingAbsoluteValue
+): DateRangePickerProps.AbsoluteValue {
   return {
     type: 'absolute',
     startDate: joinDateTime(value.start.date, value.start.time || '00:00:00'),

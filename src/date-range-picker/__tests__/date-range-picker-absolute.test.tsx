@@ -469,5 +469,72 @@ describe('Date range picker', () => {
         );
       });
     });
+
+    describe('custom control', () => {
+      const customControl: DateRangePickerProps.AbsoluteRangeControl = (value, setValue) => (
+        <>
+          <div data-testid="display">{JSON.stringify(value)}</div>
+          <button
+            data-testid="set-date"
+            onClick={() =>
+              setValue({
+                start: { date: '2022-01-02', time: '00:00:00' },
+                end: { date: '2022-02-06', time: '12:34:56' },
+              })
+            }
+          ></button>
+          <button
+            data-testid="clear-date"
+            onClick={() => setValue({ start: { date: '', time: '' }, end: { date: '', time: '' } })}
+          ></button>
+        </>
+      );
+      test('renders current value from calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-11-24","time":"12:55:00"},"end":{"date":"2022-11-28","time":"11:14:00"}}'
+        );
+      });
+
+      test('can update value in calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        getByTestId('set-date').click();
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-01-02","time":"00:00:00"},"end":{"date":"2022-02-06","time":"12:34:56"}}'
+        );
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('2');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2022/01/02');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('6');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2022/02/06');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('12:34:56');
+      });
+
+      test('can clear value in calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        getByTestId('clear-date').click();
+        expect(getByTestId('display')).toHaveTextContent('{"start":{"date":"","time":""},"end":{"date":"","time":""}}');
+        expect(wrapper.findDropdown()!.findSelectedStartDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+      });
+    });
   });
 });
