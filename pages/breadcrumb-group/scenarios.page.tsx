@@ -24,13 +24,7 @@ const testCases = [
 export default function ButtonDropdownPage() {
   return (
     <article>
-      <ScreenshotArea
-        disableAnimations={true}
-        style={{
-          // extra space to include popover in the screenshot area
-          paddingBottom: 200,
-        }}
-      >
+      <ScreenshotArea disableAnimations={true}>
         <h1>BreadcrumbGroup variations</h1>
         {testCases.map((testcase, index) => (
           <BreadcrumbGroup
@@ -41,9 +35,6 @@ export default function ButtonDropdownPage() {
           />
         ))}
       </ScreenshotArea>
-      <button type="button" id="focus-target">
-        focus
-      </button>
     </article>
   );
 }
