@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
-import { addMonths, endOfDay, isBefore, startOfDay, startOfMonth, isAfter, isSameMonth } from 'date-fns';
+import { addMonths, endOfDay, isAfter, isBefore, isSameMonth, startOfDay, startOfMonth } from 'date-fns';
 import styles from '../styles.css.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { RangeCalendarI18nStrings, RangeCalendarValue } from '../interfaces';
@@ -98,104 +98,96 @@ export default function DateRangePickerCalendar({
     onChange,
   ]);
 
+  // recommended to include the start/end time announced with the selection
+  // because the user is not aware of the fact that a start/end time is also set as soon as they select a date
+  const announceStart = (startDate: Date) => {
+    return (
+      i18nStrings.startDateLabel +
+      ', ' +
+      getDateLabel(normalizedLocale, startDate) +
+      ', ' +
+      i18nStrings.startTimeLabel +
+      ', ' +
+      renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
+      '. '
+    );
+  };
+
+  const announceEnd = (endDate: Date) => {
+    return (
+      i18nStrings.endDateLabel +
+      ', ' +
+      getDateLabel(normalizedLocale, endDate) +
+      ', ' +
+      i18nStrings.endTimeLabel +
+      ', ' +
+      renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
+      '. '
+    );
+  };
+
+  const announceRange = (startDate: Date, endDate: Date) => {
+    if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
+      return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
+    }
+    return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
+      getDateLabel(normalizedLocale, startDate),
+      getDateLabel(normalizedLocale, endDate)
+    );
+  };
+
   const onSelectDateHandler = (selectedDate: Date) => {
-    // recommended to include the start/end time announced with the selection
-    // because the user is not aware of the fact that a start/end time is also set as soon as they select a date
-    const announceStart = (startDate: Date) => {
-      return (
-        i18nStrings.startDateLabel +
-        ', ' +
-        getDateLabel(normalizedLocale, startDate) +
-        ', ' +
-        i18nStrings.startTimeLabel +
-        ', ' +
-        renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
-        '. '
-      );
-    };
-
-    const announceEnd = (endDate: Date) => {
-      return (
-        i18nStrings.endDateLabel +
-        ', ' +
-        getDateLabel(normalizedLocale, endDate) +
-        ', ' +
-        i18nStrings.endTimeLabel +
-        ', ' +
-        renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
-        '. '
-      );
-    };
-
-    const announceRange = (startDate: Date, endDate: Date) => {
-      if (!i18nStrings.renderSelectedAbsoluteRangeAriaLive) {
-        return `${getDateLabel(normalizedLocale, startDate)} – ${getDateLabel(normalizedLocale, endDate)}`;
-      }
-      return i18nStrings.renderSelectedAbsoluteRangeAriaLive(
-        getDateLabel(normalizedLocale, startDate),
-        getDateLabel(normalizedLocale, endDate)
-      );
-    };
+    let newStart: Date | undefined = undefined;
+    let newEnd: Date | null | undefined = undefined;
+    let announcement = '';
 
     // If both fields are empty, we set the start date
     if (!rangeStart.dateString && !rangeEnd.dateString) {
-      const startDate = startOfDay(selectedDate);
-      rangeStart.setDate(startDate);
-      setAnnouncement(announceStart(startDate));
-      return;
+      newStart = startOfDay(selectedDate);
+      announcement = announceStart(newStart);
     }
-
     // If both fields are set, we start new
-    if (rangeStart.dateString && rangeEnd.dateString) {
-      const startDate = startOfDay(selectedDate);
-      rangeStart.setDate(startDate);
-      rangeEnd.setDate(null);
-      setAnnouncement(announceStart(startDate));
-      return;
+    else if (rangeStart.dateString && rangeEnd.dateString) {
+      newStart = startOfDay(selectedDate);
+      newEnd = null;
+      announcement = announceStart(newStart);
     }
-
     // If only the END date is empty, we fill it (and swap dates if needed)
-    if (rangeStart.dateString && !rangeEnd.dateString) {
+    else if (rangeStart.dateString && !rangeEnd.dateString) {
       const parsedStartDate = parseDate(rangeStart.dateString);
 
       if (isBefore(selectedDate, parsedStartDate)) {
         // The user has selected the range backwards, so we swap start and end
-
-        const startDate = startOfDay(selectedDate);
-        const endDate = endOfDay(parsedStartDate);
-
-        rangeStart.setDate(startDate);
-        rangeEnd.setDate(endDate);
-        setAnnouncement(announceStart(startDate) + announceRange(startDate, endDate));
+        newStart = startOfDay(selectedDate);
+        newEnd = endOfDay(parsedStartDate);
+        announcement = announceStart(newStart) + announceRange(newStart, newEnd);
       } else {
-        const endDate = endOfDay(selectedDate);
-        rangeEnd.setDate(endDate);
-        setAnnouncement(announceEnd(endDate) + announceRange(parsedStartDate, endDate));
+        newEnd = endOfDay(selectedDate);
+        announcement = announceEnd(newEnd) + announceRange(parsedStartDate, newEnd);
       }
-      return;
     }
-
     // If only the START date is empty, we fill it (and swap dates if needed)
-    if (!rangeStart.dateString && rangeEnd.dateString) {
+    else if (!rangeStart.dateString && rangeEnd.dateString) {
       const existingEndDate = parseDate(rangeEnd.dateString);
 
       if (isAfter(selectedDate, existingEndDate)) {
         // The user has selected the range backwards, so we swap start and end
-
-        const startDate = startOfDay(existingEndDate);
-        const endDate = endOfDay(selectedDate);
-
-        rangeStart.setDate(startDate);
-        rangeEnd.setDate(endDate);
-        setAnnouncement(announceEnd(endDate) + announceRange(startDate, endDate));
+        newStart = startOfDay(existingEndDate);
+        newEnd = endOfDay(selectedDate);
+        announcement = announceEnd(newEnd) + announceRange(newStart, newEnd);
       } else {
-        const startDate = startOfDay(selectedDate);
-        rangeStart.setDate(startDate);
-        setAnnouncement(announceStart(startDate) + announceRange(startDate, existingEndDate));
+        newStart = startOfDay(selectedDate);
+        announcement = announceStart(newStart) + announceRange(newStart, existingEndDate);
       }
-      return;
     }
-    // All possible conditions are covered above
+
+    if (newStart !== undefined) {
+      rangeStart.setDate(newStart);
+    }
+    if (newEnd !== undefined) {
+      rangeEnd.setDate(newEnd);
+    }
+    setAnnouncement(announcement);
   };
 
   const onHeaderChangeMonthHandler = (newCurrentMonth: Date) => {

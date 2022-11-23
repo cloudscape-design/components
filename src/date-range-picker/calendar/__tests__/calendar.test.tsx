@@ -77,6 +77,10 @@ describe('Date range picker calendar', () => {
     return wrapper.findDropdown()!.findByClassName(gridDayStyles.today)!;
   };
 
+  const findLiveAnnouncement = (wrapper: DateRangePickerWrapper) => {
+    return wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement();
+  };
+
   beforeEach(() => {
     // Set default locale of the browser to en-US for more consistent tests
     const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
@@ -450,40 +454,51 @@ describe('Date range picker calendar', () => {
     test('add aria-live when date is selected', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
+        rangeSelectorMode: 'absolute-only',
         value: null,
       });
-      changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement()).toHaveTextContent('');
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent('');
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
       });
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement()).toHaveTextContent(
-        new RegExp(i18nStrings.startDateLabel)
-      );
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
       });
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])?.getElement()).toHaveTextContent(
-        new RegExp(i18nStrings.endDateLabel)
-      );
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])?.getElement()).toHaveTextContent(
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings!.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 3, 2).click();
       });
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement()).toHaveTextContent(
-        new RegExp(i18nStrings.startDateLabel)
-      );
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
       act(() => {
         wrapper.findDropdown()!.findDateAt('left', 3, 1).click();
       });
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement()).toHaveTextContent(
-        new RegExp(i18nStrings.startDateLabel)
-      );
-      expect(wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])?.getElement()).toHaveTextContent(
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.startDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
         new RegExp(i18nStrings.renderSelectedAbsoluteRangeAriaLive!('', ''))
       );
+    });
+
+    test('renders default range announcement when i18n string is not provided', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        i18nStrings: { ...defaultProps.i18nStrings, renderSelectedAbsoluteRangeAriaLive: undefined },
+        rangeSelectorMode: 'absolute-only',
+        value: null,
+      });
+      // select start
+      act(() => {
+        wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
+      });
+      // select end
+      act(() => {
+        wrapper.findDropdown()!.findDateAt('left', 2, 2).click();
+      });
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel));
+      expect(findLiveAnnouncement(wrapper)).toHaveTextContent('Sunday, September 6, 2020 – Monday, September 7, 2020');
     });
 
     test('should set aria-disabled="true" and unset aria-selected to disabled date', () => {
