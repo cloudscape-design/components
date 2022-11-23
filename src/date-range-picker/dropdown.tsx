@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps } from './interfaces';
+import { DateRangePickerProps, PendingAbsoluteValue } from './interfaces';
 import Calendar from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
 import useFocusVisible from '../internal/hooks/focus-visible';
-import { fillMissingTime, getDefaultMode } from './utils';
+import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
@@ -68,8 +68,8 @@ export function DateRangePickerDropdown({
     getDefaultMode(value, relativeOptions, rangeSelectorMode)
   );
 
-  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.AbsoluteValue | null>(
-    value?.type === 'absolute' ? value : null
+  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<PendingAbsoluteValue>(() =>
+    splitAbsoluteValue(value?.type === 'absolute' ? value : null)
   );
 
   const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(
@@ -97,7 +97,8 @@ export function DateRangePickerDropdown({
   };
 
   const onApply = () => {
-    const newValue = rangeSelectionMode === 'relative' ? selectedRelativeRange : fillMissingTime(selectedAbsoluteRange);
+    const newValue =
+      rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
     const newValidationResult = applyValue(newValue);
     if (newValidationResult.valid === false) {
       setApplyClicked(true);
@@ -111,7 +112,7 @@ export function DateRangePickerDropdown({
   useEffect(() => {
     if (applyClicked) {
       const visibleRange =
-        rangeSelectionMode === 'relative' ? selectedRelativeRange : fillMissingTime(selectedAbsoluteRange);
+        rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
 
       const newValidationResult = isValidRange(visibleRange);
       setValidationResult(newValidationResult || VALID_RANGE);
@@ -163,8 +164,8 @@ export function DateRangePickerDropdown({
 
                   {rangeSelectionMode === 'absolute' && (
                     <Calendar
-                      value={selectedAbsoluteRange ? { ...selectedAbsoluteRange } : null}
-                      onChange={value => setSelectedAbsoluteRange({ type: 'absolute', ...value })}
+                      value={selectedAbsoluteRange}
+                      setValue={setSelectedAbsoluteRange}
                       locale={locale}
                       startOfWeek={startOfWeek}
                       isDateEnabled={isDateEnabled}
