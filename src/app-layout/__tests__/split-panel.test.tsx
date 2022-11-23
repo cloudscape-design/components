@@ -110,8 +110,8 @@ for (const theme of ['refresh', 'classic']) {
       })
     );
 
-    (['bottom', 'side'] as const).forEach(position =>
-      test(`Moves focus between open and close buttons in ${position} position`, () => {
+    (['bottom', 'side'] as const).forEach(position => {
+      test(`Moves focus to slider when opened in ${position} position`, () => {
         const { wrapper } = renderComponent(
           <AppLayout
             splitPanel={defaultSplitPanel}
@@ -120,13 +120,22 @@ for (const theme of ['refresh', 'classic']) {
           />
         );
         act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
-        expect(wrapper.findSplitPanel()!.findCloseButton()!.getElement()).toHaveFocus();
+        expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
+      });
+
+      test(`Moves focus to open button when closed in ${position} position`, () => {
+        const { wrapper } = renderComponent(
+          <AppLayout
+            splitPanel={defaultSplitPanel}
+            splitPanelPreferences={{ position }}
+            onSplitPanelPreferencesChange={noop}
+          />
+        );
+        act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
         act(() => wrapper.findSplitPanel()!.findCloseButton()!.click());
         expect(wrapper.findSplitPanel()!.findOpenButton()!.getElement()).toHaveFocus();
-        act(() => wrapper.findSplitPanel()!.findOpenButton()!.click());
-        expect(wrapper.findSplitPanel()!.findCloseButton()!.getElement()).toHaveFocus();
-      })
-    );
+      });
+    });
   });
 }
 

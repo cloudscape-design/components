@@ -239,7 +239,7 @@ test(
     'has the same tab behavior when paginated (pagination links not tabbable)',
     setupTest(async page => {
       await page.click('#before');
-      await page.keys(['Tab', 'Tab']);
+      await page.keys(['Tab', 'Tab', 'Tab']);
       await expect(page.isFocused('#after')).resolves.toBe(true);
     }, smallViewport)
   );
@@ -285,4 +285,13 @@ test(
 
     expect(urlAfter).toEqual(urlBefore);
   }, true)
+);
+
+test(
+  'allows to focus on tab content area',
+  setupTest(async page => {
+    await page.focusTabHeader();
+    await page.keys(['Tab']);
+    await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
+  })
 );

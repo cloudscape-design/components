@@ -11,6 +11,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
+import { generateUniqueId } from '../internal/hooks/use-unique-id';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
@@ -55,44 +56,53 @@ export const Row = React.memo(
       fireNonCancelableEvent(onRemoveButtonClick, { itemIndex: index });
     }, [onRemoveButtonClick, index]);
 
+    const firstControlId = generateUniqueId('first-control-id-');
+
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>
-        <InternalGrid
-          __breakpoint={breakpoint}
-          gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}
-        >
-          <InternalColumnLayout className={styles['row-control']} columns={definition.length} __breakpoint={breakpoint}>
-            {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
-              <InternalFormField
-                key={defIndex}
-                className={styles.field}
-                label={label}
-                info={info}
-                constraintText={render(item, index, constraintText)}
-                errorText={render(item, index, errorText)}
-                stretch={true}
-                i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
-                __hideLabel={isWideViewport && index > 0}
-              >
-                {render(item, index, control)}
-              </InternalFormField>
-            ))}
-          </InternalColumnLayout>
-          {removable && (
-            <ButtonContainer index={index} isNarrowViewport={isNarrowViewport}>
-              <InternalButton
-                className={styles['remove-button']}
-                formAction="none"
-                ref={ref => {
-                  removeButtonRefs[index] = ref ?? undefined;
-                }}
-                onClick={handleRemoveClick}
-              >
-                {removeButtonText}
-              </InternalButton>
-            </ButtonContainer>
-          )}
-        </InternalGrid>
+        <div role="group" aria-labelledby={`${firstControlId}-label ${firstControlId}`}>
+          <InternalGrid
+            __breakpoint={breakpoint}
+            gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}
+          >
+            <InternalColumnLayout
+              className={styles['row-control']}
+              columns={definition.length}
+              __breakpoint={breakpoint}
+            >
+              {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
+                <InternalFormField
+                  key={defIndex}
+                  className={styles.field}
+                  label={label}
+                  info={info}
+                  constraintText={render(item, index, constraintText)}
+                  errorText={render(item, index, errorText)}
+                  stretch={true}
+                  i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
+                  __hideLabel={isWideViewport && index > 0}
+                  controlId={defIndex === 0 ? firstControlId : undefined}
+                >
+                  {render(item, index, control)}
+                </InternalFormField>
+              ))}
+            </InternalColumnLayout>
+            {removable && (
+              <ButtonContainer index={index} isNarrowViewport={isNarrowViewport}>
+                <InternalButton
+                  className={styles['remove-button']}
+                  formAction="none"
+                  ref={ref => {
+                    removeButtonRefs[index] = ref ?? undefined;
+                  }}
+                  onClick={handleRemoveClick}
+                >
+                  {removeButtonText}
+                </InternalButton>
+              </ButtonContainer>
+            )}
+          </InternalGrid>
+        </div>
         {isNarrowViewport && <Divider />}
       </InternalBox>
     );

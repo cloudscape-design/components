@@ -98,7 +98,6 @@ test(
   'slider is accessible by keyboard in bottom position',
   setupTest(async page => {
     await page.openPanel();
-    await page.keys(['Shift', 'Tab', 'Shift', 'Shift', 'Tab', 'Shift']);
     await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
 
     const { height } = await page.getSplitPanelSize();
