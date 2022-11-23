@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import InternalAutosuggest from '../autosuggest/internal';
@@ -65,12 +65,10 @@ export const TagControl = React.forwardRef(
       cancel: () => {},
       isCancelled: () => false,
     });
+
     const latestFilteringQuery = useRef<FilteringParams>({ key: undefined, value: undefined });
     const isSameQuery = (key: string | undefined, value: string) =>
       latestFilteringQuery.current.key === key && latestFilteringQuery.current.value === value;
-
-    // Cancel any active promises on unmount.
-    useEffect(() => () => requestCancelFnRef.current.cancel(), []);
 
     const onLoadItems = (filteringText: string) => {
       if (!onRequest || isSameQuery(filteringKey, filteringText) || requestCancelFnRef.current.isCancelled()) {
@@ -78,15 +76,15 @@ export const TagControl = React.forwardRef(
       }
       requestCancelFnRef.current.cancel();
 
-      if (filteringText === '' && initialOptionsRef?.current && initialOptionsRef.current.length > 0) {
+      if (latestFilteringQuery.current.key !== filteringKey) {
+        // Reset suggestions for values if the key is different.
+        setOptions([]);
+      } else if (filteringText === '' && initialOptionsRef?.current && initialOptionsRef.current.length > 0) {
         // Load in the background, if the value is empty and we already have suggestions.
         setOptions(initialOptionsRef.current);
       }
-      if (latestFilteringQuery.current.key !== filteringKey) {
-        setOptions([]);
-      }
-      setStatusType('loading');
 
+      setStatusType('loading');
       latestFilteringQuery.current = { key: filteringKey, value: filteringText };
 
       const { promise, cancel, isCancelled } = makeCancellable(onRequest(filteringText));
