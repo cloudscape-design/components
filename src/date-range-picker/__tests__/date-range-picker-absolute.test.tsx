@@ -200,6 +200,44 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
+
+      test('missing start date can be filled (before end date)', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+
+        act(() => wrapper.findTrigger().click());
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        act(() => wrapper.findDropdown()!.findDateAt('left', 2, 3).click());
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('9');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/09');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('12');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/12');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('13:05:21');
+      });
+
+      test('missing start date can be filled (after end date, requires a flip)', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+
+        act(() => wrapper.findTrigger().click());
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        act(() => wrapper.findDropdown()!.findDateAt('left', 3, 4).click());
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('12');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/12');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('17');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
+      });
     });
 
     describe('time offset', () => {
