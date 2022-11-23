@@ -39,6 +39,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       if (tableRoot?.current) {
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
+            currentFocusCell.current = [rowIndex, columnIndex];
             cell.querySelector('button')?.focus();
           }
         });
@@ -52,7 +53,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       if (!currentFocusCell.current) {
         return;
       }
-      const [rowIndex, columnIndex] = currentFocusCell.current;
+      const [rowIndex, columnIndex] = currentFocusCell.current.slice();
       let newRowIndex = rowIndex;
       let newColumnIndex = columnIndex;
 
@@ -75,7 +76,6 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         currentFocusCell.current &&
         tableRoot?.current
       ) {
-        currentFocusCell.current = [newRowIndex, newColumnIndex];
         focusCell(newRowIndex, newColumnIndex);
       }
     },
