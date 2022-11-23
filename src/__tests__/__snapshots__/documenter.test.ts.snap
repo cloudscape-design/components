@@ -10944,6 +10944,14 @@ add a meaningful description to the whole selection.
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
     },
     Object {
+      "description": "Index of the first item in the table, necessary for screen readers to be aware
+of which range of items is currently displayed in the table,
+if there is no pagination in the table leave this property undefined.",
+      "name": "firstIndex",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -10973,6 +10981,14 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<T>",
+    },
+    Object {
+      "description": "Returns a text that is only read by screen readers,
+fired when the firstIndex or totalItemsCount change, and only when firstIndex is available
+use this function to announce page changes for screen reader users.",
+      "name": "liveAnnouncement",
+      "optional": true,
+      "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     Object {
       "description": "Renders the table in a loading state. We recommend that you also set a \`loadingText\`.",
@@ -11059,6 +11075,14 @@ to prevent the user from sorting before items are fully loaded.",
       "description": "Specifies a vertical offset (in pixels) for the sticky header. For example, use this if you
 need to position the sticky header below other fixed position elements on the page.",
       "name": "stickyHeaderVerticalOffset",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Total count of items in the table, necessary for screen readers to be aware
+of how many items there are in a table, if the total items in the table is unknown
+leave this property undefined.",
+      "name": "totalItemsCount",
       "optional": true,
       "type": "number",
     },

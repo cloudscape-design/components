@@ -228,6 +228,25 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * @visualrefresh `embedded`, `stacked`, and `full-page` variants
    */
   variant?: TableProps.Variant;
+
+  /**
+   * Total count of items in the table, necessary for screen readers to be aware
+   * of how many items there are in a table, if the total items in the table is unknown
+   * leave this property undefined.
+   */
+  totalItemsCount?: number;
+  /**
+   * Index of the first item in the table, necessary for screen readers to be aware
+   * of which range of items is currently displayed in the table,
+   * if there is no pagination in the table leave this property undefined.
+   */
+  firstIndex?: number;
+  /**
+   * Returns a text that is only read by screen readers,
+   * fired when the firstIndex or totalItemsCount change, and only when firstIndex is available
+   * use this function to announce page changes for screen reader users.
+   */
+  liveAnnouncement?: (data: TableProps.LiveAnnouncement) => string;
 }
 
 export namespace TableProps {
@@ -284,6 +303,12 @@ export namespace TableProps {
 
   export interface ColumnWidthsChangeDetail {
     widths: ReadonlyArray<number>;
+  }
+
+  export interface LiveAnnouncement {
+    totalItemsCount?: number;
+    firstIndex: number;
+    lastIndex: number;
   }
 
   export interface Ref {
