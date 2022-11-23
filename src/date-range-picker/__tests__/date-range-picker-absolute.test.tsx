@@ -220,7 +220,7 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('13:05:21');
       });
 
-      test('missing start date can be filled (after end date, requires a flip)', () => {
+      test('missing start date can be filled (after end date, requires a swap)', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
