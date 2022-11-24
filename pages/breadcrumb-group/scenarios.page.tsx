@@ -23,8 +23,8 @@ const testCases = [
 
 export default function ButtonDropdownPage() {
   return (
-    <article>
-      <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea disableAnimations={true}>
+      <article>
         <h1>BreadcrumbGroup variations</h1>
         {testCases.map((testcase, index) => (
           <BreadcrumbGroup
@@ -34,7 +34,7 @@ export default function ButtonDropdownPage() {
             items={testcase.map((text, i) => ({ text, href: `#item-${index}-${i}` }))}
           />
         ))}
-      </ScreenshotArea>
-    </article>
+      </article>
+    </ScreenshotArea>
   );
 }
