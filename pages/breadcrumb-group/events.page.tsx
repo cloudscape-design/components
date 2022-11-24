@@ -32,16 +32,6 @@ export default function ButtonDropdownPage() {
         <h1>BreadcrumbGroup variations</h1>
         <SpaceBetween size="xxl">
           <div>
-            <button type="button" id="focus-target-short-text">
-              focus short text
-            </button>
-            <BreadcrumbGroup
-              ariaLabel="Navigation short text"
-              expandAriaLabel="Show path for short text"
-              items={shortItems.map(text => ({ text, href: `#` }))}
-            />
-          </div>
-          <div>
             <button type="button" id="focus-target-long-text">
               focus long text
             </button>
@@ -54,6 +44,16 @@ export default function ButtonDropdownPage() {
             />
             <div id="onFollowMessage">{onFollowMessage}</div>
             <div id="onClickMessage">{onClickMessage}</div>
+          </div>
+          <div>
+            <button type="button" id="focus-target-short-text">
+              focus short text
+            </button>
+            <BreadcrumbGroup
+              ariaLabel="Navigation short text"
+              expandAriaLabel="Show path for short text"
+              items={shortItems.map(text => ({ text, href: `#` }))}
+            />
           </div>
         </SpaceBetween>
       </article>
