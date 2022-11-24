@@ -66,6 +66,20 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
     }
   }, [textWidth, virtualTextRef]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenPopover(false);
+      }
+    };
+    if (openPopover) {
+      document.addEventListener('keydown', onKeyDown);
+    }
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openPopover]);
+
   return (
     <>
       <a
@@ -79,11 +93,15 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         <span className={styles.text} ref={mergedRef}>
           {item.text}
         </span>
-        <span className={styles['virtual-item']} ref={virtualTextRef}>
-          {item.text}
-        </span>
       </a>
-      {openPopover && <Portal>{popoverContent}</Portal>}
+      <span className={styles['virtual-item']} ref={virtualTextRef}>
+        {item.text}
+      </span>
+      {openPopover && (
+        <Portal>
+          <div className={styles['item-popover']}>{popoverContent}</div>
+        </Portal>
+      )}
     </>
   );
 };
