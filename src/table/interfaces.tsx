@@ -230,21 +230,18 @@ export interface TableProps<T = any> extends BaseComponentProps {
   variant?: TableProps.Variant;
 
   /**
-   * Total count of items in the table, necessary for screen readers to be aware
-   * of how many items there are in a table, if the total items in the table is unknown
-   * leave this property undefined.
-   */
+   * Use this property to inform screen readers how many items there are in a table.
+   * It specifies the total count of all items in a table.
+   * If there is an unknown total of items in a table, leave this property undefined.   */
   totalItemsCount?: number;
   /**
-   * Index of the first item in the table, necessary for screen readers to be aware
-   * of which range of items is currently displayed in the table,
-   * if there is no pagination in the table leave this property undefined.
-   */
+   *  Use this property to inform screen readers which range of items is currently displayed in the table.
+   *  It specifies the index (1-based) of the first item in the table.
+   *  If the table has no pagination, leave this property undefined.   */
   firstIndex?: number;
   /**
-   * Returns a text that is only read by screen readers,
-   * fired when the firstIndex or totalItemsCount change, and only when firstIndex is available
-   * use this function to announce page changes for screen reader users.
+   * Use this function to announce page changes for screen reader users.
+   * When firstIndex is available, it returns a text when the firstIndex or totalItemsCount change.
    */
   liveAnnouncement?: (data: TableProps.LiveAnnouncement) => string;
 }
