@@ -41,8 +41,8 @@ export function ColorPicker({
 
   return (
     <>
-      <div style={{ backgroundColor: externalValue }} ref={dropperRef} />
-      <input type="color" value={value} onChange={onChange} />
+      <div style={{ backgroundColor: externalValue, display: 'none' }} ref={dropperRef} />
+      <input type="color" value={value} onChange={onChange} style={{ flexGrow: 0 }} />
     </>
   );
 }
