@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
+import LiveRegion from '../internal/components/live-region/index';
 import { TabButton } from './tab-button';
 import { InternalButton } from '../button/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
@@ -111,6 +112,10 @@ function InternalStatusBar({
             isRefresh={isRefresh}
           />
         </div>
+        <LiveRegion assertive={true}>
+          <span>{errorText} </span>
+          <span>{warningText}</span>
+        </LiveRegion>
       </div>
 
       <div className={styles['status-bar__right']}>
