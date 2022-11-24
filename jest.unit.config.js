@@ -9,7 +9,7 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
   verbose: true,
   testEnvironment: 'jsdom',
   reporters: ['default', 'github-actions'],
-  collectCoverage: true,
+  collectCoverage: process.env.CI === 'true',
   coveragePathIgnorePatterns: [
     '__tests__',
     '__integ__',
