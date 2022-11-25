@@ -34,7 +34,8 @@ export function InlineEditor<ItemType>({
     onEditEnd();
   }
 
-  function onSubmitClick() {
+  function onSubmitClick(evt: React.FormEvent) {
+    evt.preventDefault();
     if (currentEditValue === undefined) {
       finishEdit();
       return;
