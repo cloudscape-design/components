@@ -8993,6 +8993,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "tokenOperatorAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "valueText",
             "optional": false,
             "type": "string",
