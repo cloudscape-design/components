@@ -23,7 +23,8 @@ const intervals = [
 
 const permutations = createPermutations<DateRangePickerCalendarProps>(
   intervals.map(([startDate, endDate]) => ({
-    value: [{ startDate, endDate }],
+    value: [{ start: { date: startDate, time: '' }, end: { date: endDate, time: '' } }],
+    setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
     isDateEnabled: [() => true],

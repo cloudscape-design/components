@@ -368,9 +368,14 @@ export namespace DateRangePickerProps {
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-export interface RangeCalendarValue {
-  startDate: string;
-  endDate: string;
+export interface DateTimeStrings {
+  date: string;
+  time: string;
+}
+
+export interface PendingAbsoluteValue {
+  start: DateTimeStrings;
+  end: DateTimeStrings;
 }
 
 export type RangeCalendarI18nStrings = Pick<
