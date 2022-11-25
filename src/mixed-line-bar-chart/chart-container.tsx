@@ -263,6 +263,22 @@ export default function ChartContainer<T extends ChartDataTypes>({
     return null;
   }, [highlightedPoint, verticalMarkerLeft, highlightedGroupIndex, scaledSeries, barGroups]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        dismissPopover();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [dismissPopover]);
+
+  useLayoutEffect(() => {
+    if (highlightedX !== null || highlightedPoint !== null) {
+      showPopover();
+    }
+  }, [highlightedX, highlightedPoint, showPopover]);
+
   const onPopoverDismiss = (outsideClick?: boolean) => {
     dismissPopover();
 
@@ -277,12 +293,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
       }, 0);
     }
   };
-
-  useLayoutEffect(() => {
-    if (highlightedX !== null) {
-      showPopover();
-    }
-  }, [highlightedX, showPopover]);
 
   const onSVGMouseDown = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     if (isPopoverOpen) {
