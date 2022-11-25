@@ -4,3 +4,8 @@
 export function joinDateTime(dateString: string, timeString: string) {
   return `${dateString}T${timeString}`;
 }
+
+export function splitDateTime(dateStr: string) {
+  const [date = '', time = ''] = dateStr.split('T');
+  return { date, time };
+}

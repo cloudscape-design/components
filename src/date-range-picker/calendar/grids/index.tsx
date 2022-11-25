@@ -13,6 +13,7 @@ import useFocusVisible from '../../../internal/hooks/focus-visible/index';
 import { hasValue } from '../../../internal/utils/has-value';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { moveNextDay, movePrevDay, moveNextWeek, movePrevWeek, getBaseDate } from '../../../calendar/utils/navigation';
+import { findDateToFocus } from '../utils';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   if (isSingleGrid) {
@@ -42,24 +43,6 @@ export interface GridProps {
   startOfWeek: DayIndex;
   todayAriaLabel: string;
   headingIdPrefix: string;
-}
-
-export function selectFocusedDate(
-  selected: Date | null,
-  baseDate: Date,
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction
-) {
-  if (selected && isDateEnabled(selected) && isSameMonth(selected, baseDate)) {
-    return selected;
-  }
-  const today = new Date();
-  if (isDateEnabled(today) && isSameMonth(today, baseDate)) {
-    return today;
-  }
-  if (isDateEnabled(baseDate)) {
-    return baseDate;
-  }
-  return null;
 }
 
 export const Grids = ({
@@ -97,7 +80,7 @@ export const Grids = ({
       const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
       const nearestBaseDate = getBaseDate(newMonth, isDateEnabled);
 
-      const newFocusedDate = selectFocusedDate(focusedDate, nearestBaseDate, isDateEnabled);
+      const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateEnabled);
 
       onFocusedDateChange(newFocusedDate);
     }
