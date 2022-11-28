@@ -22,6 +22,7 @@ export interface PopoverBodyProps {
   overflowVisible?: 'content' | 'both';
 
   className?: string;
+  ariaLabelledby?: string;
 }
 
 export default function PopoverBody({
@@ -33,6 +34,7 @@ export default function PopoverBody({
   variant,
   overflowVisible,
   className,
+  ariaLabelledby,
 }: PopoverBodyProps) {
   const labelledById = useUniqueId('awsui-popover-');
   const dismissButtonFocused = useRef(false);
@@ -79,7 +81,7 @@ export default function PopoverBody({
       role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
       aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
-      aria-labelledby={header ? labelledById : undefined}
+      aria-labelledby={ariaLabelledby ?? (header ? labelledById : undefined)}
     >
       <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
         {header && (
