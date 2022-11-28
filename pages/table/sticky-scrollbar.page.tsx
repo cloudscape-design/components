@@ -4,6 +4,8 @@ import React from 'react';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 import Header from '~components/header';
 import Table from '~components/table';
+import Box from '~components/box';
+import Link from '~components/link';
 import { Instance, generateItems } from './generate-data';
 import { columnsConfig } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -26,6 +28,11 @@ export default function App() {
         }
         columnDefinitions={columnsConfig}
         items={items}
+        footer={
+          <Box textAlign="center">
+            <Link href="#">View all</Link>
+          </Box>
+        }
       />
     </ScreenshotArea>
   );

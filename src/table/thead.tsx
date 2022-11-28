@@ -9,6 +9,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -62,13 +63,22 @@ const Thead = React.forwardRef(
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
+    const isVisualRefresh = useVisualRefresh();
+
     const headerCellClass = clsx(
       headerCellStyles['header-cell'],
       headerCellStyles[`header-cell-variant-${variant}`],
+      isVisualRefresh && headerCellStyles['is-visual-refresh'],
       sticky && headerCellStyles['header-cell-sticky'],
       stuck && headerCellStyles['header-cell-stuck']
     );
-    const selectionCellClass = clsx(styles['selection-control'], styles['selection-control-header']);
+
+    const selectionCellClass = clsx(
+      styles['selection-control'],
+      styles['selection-control-header'],
+      isVisualRefresh && styles['is-visual-refresh']
+    );
+
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
     return (

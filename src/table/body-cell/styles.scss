@@ -31,7 +31,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &:first-child {
     border-left: $border-placeholder;
-    padding-left: $cell-edge-horizontal-padding;
   }
   &:last-child {
     border-right: $border-placeholder;
@@ -94,5 +93,18 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
+  }
+}
+
+// theme specific styles adjustments
+.body-cell:not(.is-visual-refresh) {
+  &:first-child {
+    padding-left: awsui.$space-xs;
+  }
+}
+
+.body-cell.is-visual-refresh {
+  &:first-child {
+    padding-left: 0;
   }
 }

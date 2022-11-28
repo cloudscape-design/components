@@ -126,8 +126,8 @@ const InternalTable = React.forwardRef(
       }
     }
 
-    const isRefresh = useVisualRefresh();
-    const computedVariant = isRefresh
+    const isVisualRefresh = useVisualRefresh();
+    const computedVariant = isVisualRefresh
       ? variant
       : ['embedded', 'full-page'].indexOf(variant) > -1
       ? 'container'
@@ -308,7 +308,10 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableBodyCell
-                            className={styles['selection-control']}
+                            className={clsx(
+                              styles['selection-control'],
+                              isVisualRefresh && styles['is-visual-refresh']
+                            )}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}

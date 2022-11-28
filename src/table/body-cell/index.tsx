@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React from 'react';
 import { TableProps } from '../interfaces';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 interface TableBodyCellProps {
   className?: string;
@@ -32,6 +33,8 @@ export function TableBodyCell({
   isEvenRow,
   stripedRows,
 }: TableBodyCellProps) {
+  const isVisualRefresh = useVisualRefresh();
+
   return (
     <td
       style={style}
@@ -44,7 +47,8 @@ export function TableBodyCell({
         isSelected && styles['body-cell-selected'],
         isNextSelected && styles['body-cell-next-selected'],
         isPrevSelected && styles['body-cell-prev-selected'],
-        !isEvenRow && stripedRows && styles['body-cell-shaded']
+        !isEvenRow && stripedRows && styles['body-cell-shaded'],
+        isVisualRefresh && styles['is-visual-refresh']
       )}
     >
       {children}

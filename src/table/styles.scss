@@ -116,9 +116,6 @@
 .selection-control {
   position: relative;
   box-sizing: border-box;
-  width: 5.4 * styles.$base-size;
-  max-width: 5.4 * styles.$base-size;
-  min-width: 5.4 * styles.$base-size;
   &.selection-control-header {
     padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
     border-left: awsui.$border-item-width solid transparent;
@@ -212,4 +209,17 @@ the default white background of the container component.
 .row,
 .row-selected {
   /* used in test-utils */
+}
+
+// theme specific styles adjustments
+.selection-control:not(.is-visual-refresh) {
+  max-width: 5.4 * styles.$base-size;
+  min-width: 5.4 * styles.$base-size;
+  width: 5.4 * styles.$base-size;
+}
+
+.selection-control.is-visual-refresh {
+  max-width: 4.1 * styles.$base-size;
+  min-width: 4.1 * styles.$base-size;
+  width: 4.1 * styles.$base-size;
 }

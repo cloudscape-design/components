@@ -25,9 +25,7 @@
   &-variant-full-page.header-cell-hidden {
     border-bottom-color: transparent;
   }
-  &:first-child {
-    padding-left: awsui.$space-xs;
-  }
+
   &:last-child,
   &.header-cell-sortable {
     padding-right: awsui.$space-xs;
@@ -104,4 +102,22 @@
 .header-cell-ascending,
 .header-cell-descending {
   /* used in test-utils */
+}
+
+// theme specific styles adjustments
+.header-cell:not(.is-visual-refresh) {
+  &:first-child {
+    padding-left: awsui.$space-xs;
+  }
+}
+
+.header-cell.is-visual-refresh {
+  &:first-child,
+  &:first-child > .header-cell-content {
+    padding-left: 0;
+  }
+
+  &:last-child.header-cell-sortable {
+    padding-right: awsui.$space-xxxs;
+  }
 }
