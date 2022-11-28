@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import { render, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { TableProps } from '../interfaces';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -74,21 +73,21 @@ describe('InlineEditor', () => {
 
   it('should show error', () => {
     thereBeErrors = true;
-    const user = userEvent.setup();
+    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
     const input = wrapper.find('input')!.getElement();
-    user.click(input);
-    user.keyboard('test');
+    fireEvent.click(input);
+    fireEvent(input, changeEvent);
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeInTheDocument();
   });
 
   it('should submit edit', () => {
     thereBeErrors = false;
-    const user = userEvent.setup();
+    const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
     const input = wrapper.find('input')!.getElement();
-    user.click(input);
-    user.keyboard('t'); // any key will do, but we need to trigger the onChange
+    fireEvent.click(input);
+    fireEvent(input, changeEvent);
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
     waitFor(() => expect(handleSubmitEdit).toHaveBeenCalled());
