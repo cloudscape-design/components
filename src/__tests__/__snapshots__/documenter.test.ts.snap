@@ -3922,6 +3922,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "number",
           },
           Object {
+            "name": "stripedRows",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
             "name": "visibleContent",
             "optional": true,
             "type": "ReadonlyArray<string>",
@@ -4050,6 +4055,11 @@ It contains the following:
             "type": "number",
           },
           Object {
+            "name": "stripedRows",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
             "name": "visibleContent",
             "optional": true,
             "type": "ReadonlyArray<string>",
@@ -4065,6 +4075,36 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "description": "Configures the built-in \\"striped rows\\" preference.
+If you set it, the component displays this preference in the modal.
+
+It contains the following:
+- \`label\` (string) - Specifies the label for the option checkbox.
+- \`description\` (string) - Specifies the text displayed below the checkbox label.
+
+You must set the current value in the \`preferences.stripedRows\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.StripedRowsPreference",
+        "properties": Array [
+          Object {
+            "name": "description",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "label",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stripedRowsPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.StripedRowsPreference",
     },
     Object {
       "description": "Specifies the title of the preferences modal dialog. It is also used as an \`aria-label\` for the trigger button.",
@@ -11035,6 +11075,12 @@ need to position the sticky header below other fixed position elements on the pa
       "name": "stickyHeaderVerticalOffset",
       "optional": true,
       "type": "number",
+    },
+    Object {
+      "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
+      "name": "stripedRows",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Specifies a property that uniquely identifies an individual item.
