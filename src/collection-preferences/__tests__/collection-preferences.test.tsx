@@ -6,6 +6,7 @@ import {
   visibleContentPreference,
   pageSizePreference,
   wrapLinesPreference,
+  stripedRowsPreference,
 } from './shared';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
@@ -122,6 +123,7 @@ describe('Collection preferences - Preferences display', () => {
     expect(wrapper.findModal()!.findPageSizePreference()).toBeNull();
     expect(wrapper.findModal()!.findVisibleContentPreference()).toBeNull();
     expect(wrapper.findModal()!.findWrapLinesPreference()).toBeNull();
+    expect(wrapper.findModal()!.findStripedRowsPreference()).toBeNull();
     expect(wrapper.findModal()!.findCustomPreference()).toBeNull();
   });
   test('displays predefined preferences', () => {
@@ -129,11 +131,13 @@ describe('Collection preferences - Preferences display', () => {
       pageSizePreference,
       visibleContentPreference,
       wrapLinesPreference,
+      stripedRowsPreference,
     });
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findPageSizePreference()).not.toBeNull();
     expect(wrapper.findModal()!.findVisibleContentPreference()).not.toBeNull();
     expect(wrapper.findModal()!.findWrapLinesPreference()).not.toBeNull();
+    expect(wrapper.findModal()!.findStripedRowsPreference()).not.toBeNull();
   });
   test('displays custom preference when no predefined preference is specified', () => {
     const wrapper = renderCollectionPreferences({ customPreference: () => 'CustomPref' });
@@ -146,6 +150,7 @@ describe('Collection preferences - Preferences display', () => {
       pageSizePreference,
       visibleContentPreference,
       wrapLinesPreference,
+      stripedRowsPreference,
     });
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findCustomPreference()!.getElement()).toHaveTextContent('CustomPref');

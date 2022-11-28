@@ -44,6 +44,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     // skip border for the last row, because container already has a border
     border-bottom: $border-placeholder;
   }
+  &-shaded {
+    background: awsui.$color-background-cell-shaded;
+  }
   &-selected {
     background-color: awsui.$color-background-item-selected;
     border-top: $selected-border;
@@ -58,6 +61,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
     }
   }
+
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
     padding-top: $cell-vertical-padding-w-border;

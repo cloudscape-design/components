@@ -221,6 +221,7 @@ export type ColorsTokenName =
   | 'colorBackgroundButtonPrimaryDisabled'
   | 'colorBackgroundButtonPrimaryHover'
   | 'colorBackgroundCalendarToday'
+  | 'colorBackgroundCellShaded'
   | 'colorBackgroundCodeEditorGutterActiveLineDefault'
   | 'colorBackgroundCodeEditorGutterActiveLineError'
   | 'colorBackgroundCodeEditorGutterDefault'

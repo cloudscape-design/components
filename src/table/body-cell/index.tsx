@@ -11,6 +11,8 @@ interface TableBodyCellProps {
   wrapLines: boolean | undefined;
   isFirstRow: boolean;
   isLastRow: boolean;
+  isEvenRow?: boolean;
+  stripedRows: boolean | undefined;
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
@@ -27,6 +29,8 @@ export function TableBodyCell({
   isSelected,
   isNextSelected,
   isPrevSelected,
+  isEvenRow,
+  stripedRows,
 }: TableBodyCellProps) {
   return (
     <td
@@ -39,7 +43,8 @@ export function TableBodyCell({
         isLastRow && styles['body-cell-last-row'],
         isSelected && styles['body-cell-selected'],
         isNextSelected && styles['body-cell-next-selected'],
-        isPrevSelected && styles['body-cell-prev-selected']
+        isPrevSelected && styles['body-cell-prev-selected'],
+        !isEvenRow && stripedRows && styles['body-cell-shaded']
       )}
     >
       {children}
@@ -48,7 +53,7 @@ export function TableBodyCell({
 }
 
 interface TableBodyCellContentProps<ItemType> extends TableBodyCellProps {
-  column: TableProps.ColumnDefinition<ItemType>;
+  column: TableProps.ColumnDefinition<any>;
   item: ItemType;
 }
 

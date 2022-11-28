@@ -125,6 +125,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   wrapLines?: boolean;
 
   /**
+   * Specifies if table rows alternate being shaded and unshaded. If set to `true`, every other row will be shaded.
+   */
+  stripedRows?: boolean;
+
+  /**
    * Specifies if columns can be resized. If set to `true`, users can resize the columns in the table.
    */
   resizableColumns?: boolean;

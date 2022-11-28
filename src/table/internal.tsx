@@ -64,6 +64,7 @@ const InternalTable = React.forwardRef(
       onRowClick,
       onRowContextMenu,
       wrapLines,
+      stripedRows,
       resizableColumns,
       onColumnWidthsChange,
       variant,
@@ -275,6 +276,7 @@ const InternalTable = React.forwardRef(
                   items.map((item, rowIndex) => {
                     const firstVisible = rowIndex === 0;
                     const lastVisible = rowIndex === items.length - 1;
+                    const isEven = rowIndex % 2 === 0;
                     const isSelected = !!selectionType && isItemSelected(item);
                     const isPrevSelected = !!selectionType && !firstVisible && isItemSelected(items[rowIndex - 1]);
                     const isNextSelected = !!selectionType && !lastVisible && isItemSelected(items[rowIndex + 1]);
@@ -303,6 +305,8 @@ const InternalTable = React.forwardRef(
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
                             wrapLines={false}
+                            isEvenRow={isEven}
+                            stripedRows={stripedRows}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -332,6 +336,8 @@ const InternalTable = React.forwardRef(
                             isSelected={isSelected}
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
+                            stripedRows={stripedRows}
+                            isEvenRow={isEven}
                           />
                         ))}
                       </tr>
