@@ -69,7 +69,7 @@ export function InlineEditor<ItemType>({
   const clickAwayRef = useClickAway(onCancel);
 
   // asserting non-undefined editConfig here because this component is unreachable otherwise
-  const { ariaLabel = undefined, validation = noop } = column.editConfig!;
+  const { ariaLabel = undefined, validation = noop, errorIconAriaLabel } = column.editConfig!;
 
   return (
     <form
@@ -78,7 +78,13 @@ export function InlineEditor<ItemType>({
       onKeyDown={handleEscape}
       className={styles['body-cell-editor-form']}
     >
-      <FormField __hideLabel={true} stretch={true} label={ariaLabel} errorText={validation(item, currentEditValue)}>
+      <FormField
+        __hideLabel={true}
+        stretch={true}
+        label={ariaLabel}
+        errorText={validation(item, currentEditValue)}
+        i18nStrings={{ errorIconAriaLabel }}
+      >
         <div className={styles['body-cell-editor-row']}>
           {column.cell(item, {
             isEditing: true,
