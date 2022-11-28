@@ -53,7 +53,7 @@ export function TableBodyCell({
 }
 
 interface TableBodyCellContentProps<ItemType> extends TableBodyCellProps {
-  column: TableProps.ColumnDefinition<any>;
+  column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
 }
 
