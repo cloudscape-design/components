@@ -177,6 +177,15 @@ describe('tutorial detail view', () => {
     wrapper.findFeedbackLink()!.getElement().click();
     expect(onFeedbackClick).toHaveBeenCalledTimes(1);
   });
+
+  test('completed screen should have role status', () => {
+    const tutorials = getTutorials();
+    const context = getContext({ currentTutorial: tutorials[1] });
+    const { container } = renderTutorialPanelWithContext({ tutorials }, context);
+    const completedScreen = createWrapper(container).findTutorialPanel()!.find('[role="status"]')!.getElement();
+    expect(completedScreen).toHaveTextContent('COMPLETION_SCREEN_TITLE');
+    expect(completedScreen).toHaveTextContent('COMPLETED_SCREEN_DESCRIPTION_TEST');
+  });
 });
 
 describe('URL sanitization', () => {
@@ -241,6 +250,19 @@ describe('URL sanitization', () => {
       expect(console.warn).toHaveBeenCalledTimes(1);
       expect(console.warn).toHaveBeenCalledWith(
         `[AwsUi] [TutorialPanel] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from Download!')".`
+      );
+    });
+  });
+  describe('a11y', () => {
+    test('task list expandable section should have aria-label joining task title and total step label', () => {
+      const tutorials = getTutorials();
+      const context = getContext({ currentTutorial: tutorials[0] });
+      const { container } = renderTutorialPanelWithContext({ tutorials }, context);
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      const taskList = wrapper.findTaskList();
+
+      expect(taskList[0].findStepsTitle().getElement().getAttribute('aria-label')).toBe(
+        'TASK_1_FIRST_TASK_TEST TOTAL_STEPS_1'
       );
     });
   });

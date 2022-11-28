@@ -56,18 +56,23 @@ export default function TutorialDetailView({
             {tutorial.title}
           </InternalBox>
         </div>
-        {tutorial.completed ? (
-          <CongratulationScreen onFeedbackClick={onFeedbackClick} i18nStrings={i18nStrings}>
-            {tutorial.completedScreenDescription}
-          </CongratulationScreen>
-        ) : (
-          <TaskList
-            tasks={tutorial.tasks}
-            onExitTutorial={onExitTutorial}
-            currentGlobalStepIndex={currentStepIndex}
-            i18nStrings={i18nStrings}
-          />
-        )}
+        <div>
+          <div role="status">
+            {tutorial.completed && (
+              <CongratulationScreen onFeedbackClick={onFeedbackClick} i18nStrings={i18nStrings}>
+                {tutorial.completedScreenDescription}
+              </CongratulationScreen>
+            )}
+          </div>
+          {!tutorial.completed && (
+            <TaskList
+              tasks={tutorial.tasks}
+              onExitTutorial={onExitTutorial}
+              currentGlobalStepIndex={currentStepIndex}
+              i18nStrings={i18nStrings}
+            />
+          )}
+        </div>
       </InternalSpaceBetween>
     </>
   );

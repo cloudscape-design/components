@@ -9,6 +9,7 @@ import {
   SplitPanelContextProps,
 } from '../../../lib/components/internal/context/split-panel-context';
 import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
+import styles from '../../../lib/components/split-panel/styles.css.js';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () => ({
@@ -275,6 +276,21 @@ describe('Split panel', () => {
         .findInputByValue('side')!
         .getElement();
       expect(sidePositionTileElement?.disabled).toBeTruthy();
+    });
+  });
+  describe('has proper aria properties', () => {
+    test('split panel content has correct role', () => {
+      const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });
+      const sidePanelElem = wrapper.findByClassName(styles['drawer-content-side'])?.getElement();
+      expect(sidePanelElem).toHaveAttribute('role', 'region');
+    });
+
+    test('split panel is labelled by panel header', () => {
+      const { wrapper } = renderSplitPanel({ contextProps: { position: 'side' } });
+      const sidePanelElem = wrapper.findByClassName(styles['drawer-content-side'])?.getElement();
+      const labelId = sidePanelElem?.getAttribute('aria-labelledby');
+
+      expect(sidePanelElem?.querySelector(`#${labelId}`)!.textContent).toBe('Split panel header');
     });
   });
 });

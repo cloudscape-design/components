@@ -7,6 +7,7 @@ import InternalBox from '../../../box/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import InternalSpaceBetween from '../../../space-between/internal';
 import InternalExpandableSection from '../../../expandable-section/internal';
+import { joinStrings } from '../../../internal/utils/strings/join-strings.js';
 
 function getStatusIndicatorType(taskIndex: number, currentTaskIndex: number) {
   if (taskIndex < currentTaskIndex) {
@@ -64,6 +65,10 @@ export function Task({ task, taskIndex, currentTaskIndex, expanded, onToggleExpa
             }
             expanded={expanded}
             onChange={onExpandChange}
+            headerAriaLabel={joinStrings(
+              i18nStrings.taskTitle(taskIndex, task.title),
+              i18nStrings.labelTotalSteps(task.steps.length)
+            )}
           >
             <ol className={styles['step-list']}>
               {task.steps.map((step, stepIndex) => (

@@ -225,3 +225,38 @@ test('does not run into an endless loop in (un)registerHotspot when toggling Hot
   */
   done();
 }, 1000);
+
+test('trigger should have aria-label with steps information', () => {
+  const { wrapper } = renderAnnotationContext(
+    <>
+      <Hotspot hotspotId="first-hotspot" />
+      <div id="second">
+        <Hotspot hotspotId="second-hotspot" />
+      </div>
+      <Hotspot hotspotId="third-hotspot" />
+    </>
+  );
+
+  const hotspot = wrapper.find('#second')!.findHotspot()!;
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('OPEN_HOTSPOT_TEST_FOR_STEP_1_OF_2_TEST');
+  hotspot.findTrigger().click();
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('CLOSE_HOTSPOT_TEST_FOR_STEP_1_OF_2_TEST');
+});
+
+test('annotation should have be labeled by header and step counter', () => {
+  const { wrapper } = renderAnnotationContext(
+    <>
+      <Hotspot hotspotId="first-hotspot" />
+      <Hotspot hotspotId="second-hotspot" />
+      <Hotspot hotspotId="third-hotspot" />
+    </>
+  );
+
+  const annotation = wrapper.findAnnotation()!;
+  const labelIds = annotation.getElement().getAttribute('aria-labelledby');
+  const label = labelIds!
+    .split(' ')
+    .map(label => annotation.find(`#${label}`)!.getElement().textContent)
+    .join(' ');
+  expect(label).toBe('TASK_1_FIRST_TASK_TEST STEP_1_OF_1_TEST');
+});

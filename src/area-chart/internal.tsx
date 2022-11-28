@@ -114,6 +114,12 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
 
+  useEffect(() => {
+    const onKeyDown = model.handlers.onDocumentKeyDown;
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [model.handlers.onDocumentKeyDown]);
+
   const onBlur = (event: React.FocusEvent) => {
     if (event.relatedTarget && !nodeContains(containerRef.current, event.relatedTarget)) {
       model.handlers.onContainerBlur();
