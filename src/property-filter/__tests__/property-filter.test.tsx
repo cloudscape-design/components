@@ -457,7 +457,7 @@ describe('property filter parts', () => {
       test('can be used to check aria-label attirbute on the filter token operator', () => {
         const secondToken = wrapper.findTokens()![1];
         const operator = secondToken.findTokenOperation()?.findDropdown();
-        expect(operator?.findAll('button')[0].getElement()).toHaveAttribute('aria-label', 'Boolean Operator');
+        expect(operator?.findAll('span')[0].getElement()?.innerText === 'Boolean Operator');
       });
     });
     describe('dismiss button', () => {
