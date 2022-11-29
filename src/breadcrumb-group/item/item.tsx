@@ -13,8 +13,6 @@ import PopoverContainer from '../../popover/container';
 import PopoverBody from '../../popover/body';
 import Portal from '../../internal/components/portal';
 import popoverStyles from '../../popover/styles.css.js';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> =
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -27,46 +25,47 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const focusVisible = useFocusVisible();
   const [showPopover, setShowPopover] = useState(false);
-  const trackRef = useRef<HTMLElement>(null);
-  const [textWidth, textRef] = useContainerQuery(rect => rect.width, []);
-  const mergedRef = useMergeRefs(trackRef, textRef);
+  const textRef = useRef<HTMLElement>(null);
   const virtualTextRef = useRef<HTMLElement>(null);
 
-  const openPopover = () => {
-    if (!textWidth || !virtualTextRef || !virtualTextRef.current) {
-      return null;
+  const isTruncated = (textRef: React.RefObject<HTMLElement>, virtualTextRef: React.RefObject<HTMLElement>) => {
+    if (!textRef || !virtualTextRef || !textRef.current || !virtualTextRef.current) {
+      return false;
     }
     const virtualTextWidth = virtualTextRef.current.getBoundingClientRect().width;
-    if (Math.round(virtualTextWidth) <= Math.round(textWidth)) {
-      return null;
+    const textWidth = textRef.current.getBoundingClientRect().width;
+    if (virtualTextWidth > textWidth) {
+      return true;
     }
-    return (
-      <Portal>
-        <div className={styles['item-popover']}>
-          <Transition in={true}>
-            {() => (
-              <PopoverContainer
-                trackRef={trackRef}
-                size="small"
-                fixedWidth={false}
-                position="bottom"
-                arrow={position => (
-                  <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
-                    <div className={popoverStyles['arrow-outer']} />
-                    <div className={popoverStyles['arrow-inner']} />
-                  </div>
-                )}
-              >
-                <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
-                  {item.text}
-                </PopoverBody>
-              </PopoverContainer>
-            )}
-          </Transition>
-        </div>
-      </Portal>
-    );
+    return false;
   };
+
+  const popoverContent = (
+    <Portal>
+      <div className={styles['item-popover']}>
+        <Transition in={true}>
+          {() => (
+            <PopoverContainer
+              trackRef={textRef}
+              size="small"
+              fixedWidth={false}
+              position="bottom"
+              arrow={position => (
+                <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
+                  <div className={popoverStyles['arrow-outer']} />
+                  <div className={popoverStyles['arrow-inner']} />
+                </div>
+              )}
+            >
+              <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
+                {item.text}
+              </PopoverBody>
+            </PopoverContainer>
+          )}
+        </Transition>
+      </div>
+    </Portal>
+  );
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -87,19 +86,23 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
       <a
         {...focusVisible}
         {...anchorAttributes}
-        onFocus={() => setShowPopover(true)}
+        onFocus={() => {
+          isTruncated(textRef, virtualTextRef) && setShowPopover(true);
+        }}
         onBlur={() => setShowPopover(false)}
-        onMouseEnter={() => setShowPopover(true)}
+        onMouseEnter={() => {
+          isTruncated(textRef, virtualTextRef) && setShowPopover(true);
+        }}
         onMouseLeave={() => setShowPopover(false)}
       >
-        <span className={styles.text} ref={mergedRef}>
+        <span className={styles.text} ref={textRef}>
           {item.text}
         </span>
         <span className={styles['virtual-item']} ref={virtualTextRef}>
           {item.text}
         </span>
       </a>
-      {showPopover && openPopover()}
+      {showPopover && popoverContent}
     </>
   );
 };
