@@ -23,11 +23,12 @@ export interface UtilityProps {
 export default function Utility({ hideText, definition, offsetRight }: UtilityProps) {
   const hasIcon = !!definition.iconName || !!definition.iconUrl || !!definition.iconAlt || !!definition.iconSvg;
   const shouldHideText = hideText && !definition.disableTextCollapse && hasIcon;
-  const ariaLabel = definition.ariaLabel
-    ? definition.ariaLabel
-    : joinStrings(definition.text, definition.externalIconAriaLabel);
+  let ariaLabel = definition.ariaLabel ?? definition.text;
 
   if (definition.type === 'button') {
+    ariaLabel = definition.ariaLabel
+      ? definition.ariaLabel
+      : joinStrings(definition.text, definition.externalIconAriaLabel);
     checkSafeUrl('TopNavigation', definition.href);
     if (definition.variant === 'primary-button') {
       return (
