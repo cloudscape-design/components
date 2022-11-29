@@ -26,69 +26,71 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   ...anchorAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const focusVisible = useFocusVisible();
-  const [textTruncated, setTextTruncated] = useState(false);
-  const [openPopover, setOpenPopover] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
   const trackRef = useRef<HTMLElement>(null);
   const [textWidth, textRef] = useContainerQuery(rect => rect.width, []);
   const mergedRef = useMergeRefs(trackRef, textRef);
   const virtualTextRef = useRef<HTMLElement>(null);
 
-  const popoverContent = (
-    <Transition in={openPopover}>
-      {() => (
-        <PopoverContainer
-          trackRef={trackRef}
-          size="small"
-          fixedWidth={false}
-          position="bottom"
-          arrow={position => (
-            <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
-              <div className={popoverStyles['arrow-outer']} />
-              <div className={popoverStyles['arrow-inner']} />
-            </div>
-          )}
-        >
-          <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
-            {item.text}
-          </PopoverBody>
-        </PopoverContainer>
-      )}
-    </Transition>
-  );
-
-  useEffect(() => {
-    if (textWidth && virtualTextRef && virtualTextRef.current) {
-      if (Math.round(virtualTextRef.current.clientWidth) > Math.round(textWidth)) {
-        setTextTruncated(true);
-      }
-    } else {
-      setTextTruncated(false);
+  const openPopover = () => {
+    if (!textWidth || !virtualTextRef || !virtualTextRef.current) {
+      return null;
     }
-  }, [textWidth, virtualTextRef]);
+    const virtualTextWidth = virtualTextRef.current.getBoundingClientRect().width;
+    if (Math.round(virtualTextWidth) <= Math.round(textWidth)) {
+      return null;
+    }
+    return (
+      <Portal>
+        <div className={styles['item-popover']}>
+          <Transition in={true}>
+            {() => (
+              <PopoverContainer
+                trackRef={trackRef}
+                size="small"
+                fixedWidth={false}
+                position="bottom"
+                arrow={position => (
+                  <div className={clsx(popoverStyles.arrow, popoverStyles[`arrow-position-${position}`])}>
+                    <div className={popoverStyles['arrow-outer']} />
+                    <div className={popoverStyles['arrow-inner']} />
+                  </div>
+                )}
+              >
+                <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={() => {}} header={undefined}>
+                  {item.text}
+                </PopoverBody>
+              </PopoverContainer>
+            )}
+          </Transition>
+        </div>
+      </Portal>
+    );
+  };
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setOpenPopover(false);
+        setShowPopover(false);
       }
     };
-    if (openPopover) {
+    if (showPopover) {
       document.addEventListener('keydown', onKeyDown);
     }
     return () => {
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [openPopover]);
+  }, [showPopover]);
 
   return (
     <>
       <a
         {...focusVisible}
         {...anchorAttributes}
-        onFocus={() => textTruncated && setOpenPopover(true)}
-        onBlur={() => textTruncated && setOpenPopover(false)}
-        onMouseEnter={() => textTruncated && setOpenPopover(true)}
-        onMouseLeave={() => textTruncated && setOpenPopover(false)}
+        onFocus={() => setShowPopover(true)}
+        onBlur={() => setShowPopover(false)}
+        onMouseEnter={() => setShowPopover(true)}
+        onMouseLeave={() => setShowPopover(false)}
       >
         <span className={styles.text} ref={mergedRef}>
           {item.text}
@@ -97,11 +99,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
           {item.text}
         </span>
       </a>
-      {openPopover && (
-        <Portal>
-          <div className={styles['item-popover']}>{popoverContent}</div>
-        </Portal>
-      )}
+      {showPopover && openPopover()}
     </>
   );
 };
@@ -110,8 +108,8 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   item,
   onClick,
   onFollow,
+  isDisplayed,
   isLast = false,
-  isFirst = false,
   isCompressed = false,
 }: BreadcrumbItemProps<T>) {
   const focusVisible = useFocusVisible();
@@ -135,7 +133,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   return (
     <>
       <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
-        {(isLast || isFirst) && isCompressed ? (
+        {isDisplayed && isCompressed ? (
           <BreadcrumbItemWithPopover item={item} {...anchorAttributes} />
         ) : (
           <a {...focusVisible} {...anchorAttributes}>
