@@ -3,6 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import styles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
 
 const breadcrumbGroupWrapper = createWrapper().findBreadcrumbGroup();
 const dropdownWrapper = breadcrumbGroupWrapper.findDropdown();
@@ -71,6 +72,39 @@ describe('BreadcrumbGroup', () => {
       await page.clickItem(1);
       await expect(page.getText('#onFollowMessage')).resolves.toEqual('OnFollow: Second item was selected');
       await expect(page.getText('#onClickMessage')).resolves.toEqual('OnClick: Second item was selected');
+    })
+  );
+
+  test(
+    'Item popover should not show on large screen',
+    setupTest(async page => {
+      await page.setWindowSize({ width: 1200, height: 800 });
+      await page.click('#focus-target-long-text');
+      await page.keys('Tab');
+      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
+        false
+      );
+    })
+  );
+
+  test(
+    'Item popover should show on small screen when text get truncated, and should close pressing Escape',
+    setupTest(async page => {
+      await page.setMobileViewport();
+      await page.click('#focus-target-long-text');
+      await page.keys('Tab');
+      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
+        true
+      );
+      await page.keys('Escape');
+      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
+        false
+      );
+      await page.click('#focus-target-short-text');
+      await page.keys('Tab');
+      await expect(page.isExisting(createWrapper().find(`.${styles['item-popover']}`).toSelector())).resolves.toBe(
+        false
+      );
     })
   );
 });
