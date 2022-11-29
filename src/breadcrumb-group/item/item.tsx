@@ -93,10 +93,10 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         <span className={styles.text} ref={mergedRef}>
           {item.text}
         </span>
+        <span className={styles['virtual-item']} ref={virtualTextRef}>
+          {item.text}
+        </span>
       </a>
-      <span className={styles['virtual-item']} ref={virtualTextRef}>
-        {item.text}
-      </span>
       {openPopover && (
         <Portal>
           <div className={styles['item-popover']}>{popoverContent}</div>
