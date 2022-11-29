@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { addMonths, isSameMonth, startOfMonth } from 'date-fns';
-import { DateRangePickerProps, PendingAbsoluteValue } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces';
 import { parseDate } from '../../internal/utils/date-time';
 
 export function findDateToFocus(
@@ -22,7 +22,7 @@ export function findDateToFocus(
   return null;
 }
 
-export function findMonthToDisplay(value: PendingAbsoluteValue, isSingleGrid: boolean) {
+export function findMonthToDisplay(value: DateRangePickerProps.PendingAbsoluteValue, isSingleGrid: boolean) {
   if (value.start.date) {
     const startDate = parseDate(value.start.date);
     if (isSingleGrid) {
