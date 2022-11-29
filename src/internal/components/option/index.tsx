@@ -59,7 +59,7 @@ const Option = ({
 
   return (
     <span
-      title={option.label || option.value}
+      title={option.label ?? option.value}
       data-value={option.value}
       className={className}
       aria-disabled={disabled}
@@ -69,7 +69,7 @@ const Option = ({
       <span className={clsx(styles.content)}>
         <span className={clsx(styles['label-content'])}>
           <Label
-            label={option.label || option.value}
+            label={option.label ?? option.value}
             prefix={option.__labelPrefix}
             highlightText={highlightText}
             triggerVariant={triggerVariant}
