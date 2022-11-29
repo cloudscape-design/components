@@ -12,6 +12,7 @@ import { TopNavigationProps } from '../interfaces';
 
 import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url';
+import { joinStrings } from '../../internal/utils/strings';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -22,7 +23,9 @@ export interface UtilityProps {
 export default function Utility({ hideText, definition, offsetRight }: UtilityProps) {
   const hasIcon = !!definition.iconName || !!definition.iconUrl || !!definition.iconAlt || !!definition.iconSvg;
   const shouldHideText = hideText && !definition.disableTextCollapse && hasIcon;
-  const ariaLabel = definition.ariaLabel ?? definition.text;
+  const ariaLabel = definition.ariaLabel
+    ? definition.ariaLabel
+    : joinStrings(definition.text, definition.externalIconAriaLabel);
 
   if (definition.type === 'button') {
     checkSafeUrl('TopNavigation', definition.href);
@@ -67,7 +70,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           <InternalLink
             variant="top-navigation"
             href={definition.href}
-            target={definition.external ? '_blank' : undefined}
+            external={true}
             onFollow={definition.onClick}
             ariaLabel={ariaLabel}
           >
