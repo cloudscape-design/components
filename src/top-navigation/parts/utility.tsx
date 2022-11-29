@@ -87,18 +87,6 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             {!shouldHideText && definition.text && (
               <span className={hasIcon ? styles['utility-link-icon'] : undefined}>{definition.text}</span>
             )}
-            {/* HACK: The link component uses size="inherit", and Firefox scales up SVGs massively on the first render */}
-            {definition.external && (
-              <>
-                {' '}
-                <span
-                  role={definition.externalIconAriaLabel ? 'img' : undefined}
-                  aria-label={definition.externalIconAriaLabel}
-                >
-                  <InternalIcon name="external" size="normal" />
-                </span>
-              </>
-            )}
           </InternalLink>
         </span>
       );
