@@ -257,7 +257,6 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
             setHighlightedPoint={setHighlightedPoint}
             highlightedGroupIndex={highlightedGroupIndex}
             setHighlightedGroupIndex={setHighlightedGroupIndex}
-            legendSeries={legendSeries}
             detailPopoverSize={detailPopoverSize}
             xTitle={xTitle}
             yTitle={yTitle}

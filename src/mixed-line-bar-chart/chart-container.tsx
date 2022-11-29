@@ -17,7 +17,13 @@ import HighlightedPoint from '../internal/components/cartesian-chart/highlighted
 import VerticalMarker from '../internal/components/cartesian-chart/vertical-marker';
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
 import ChartPopover from './chart-popover';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps, ScaleType } from './interfaces';
+import {
+  ChartDataTypes,
+  InternalChartSeries,
+  MixedLineBarChartProps,
+  ScaleType,
+  VerticalMarkerLeft,
+} from './interfaces';
 import { computeDomainX, computeDomainY } from './domain';
 import { isXThreshold } from './utils';
 import makeScaledSeries, { ScaledPoint } from './make-scaled-series';
@@ -68,7 +74,6 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   setHighlightedPoint: (point: ScaledPoint<T> | null) => void;
   highlightedGroupIndex: number | null;
   setHighlightedGroupIndex: (groupIndex: number | null) => void;
-  legendSeries: null | MixedLineBarChartProps.ChartSeries<T>;
 
   ariaLabel: MixedLineBarChartProps<T>['ariaLabel'];
   ariaLabelledby: MixedLineBarChartProps<T>['ariaLabelledby'];
@@ -88,7 +93,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
   setHighlightedPoint,
   highlightedGroupIndex,
   setHighlightedGroupIndex,
-  legendSeries,
   detailPopoverSize = 'medium',
   stackedBars = false,
   horizontalBars = false,
@@ -111,6 +115,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const [leftLabelsWidth, setLeftLabelsWidth] = useState(0);
   const [bottomLabelsHeight, setBottomLabelsHeight] = useState(0);
+  const [verticalMarkerLeft, setVerticalMarkerLeft] = useState<VerticalMarkerLeft<T> | null>(null);
   const [containerWidth, containerMeasureRef] = useContainerWidth(500);
   const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
   const containerRefObject = useRef(null);
@@ -223,16 +228,16 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightedPoint,
     highlightedGroupIndex,
     highlightedSeries,
-    legendSeries,
     isHandlersDisabled,
     pinPopover,
     highlightSeries,
     highlightGroup,
     highlightPoint,
     clearHighlightedSeries,
+    setVerticalMarkerLeft,
   });
 
-  const { onSVGMouseMove, onSVGMouseOut, verticalMarkerLeft } = useMouseHover<T>({
+  const { onSVGMouseMove, onSVGMouseOut } = useMouseHover<T>({
     scaledSeries,
     barGroups,
     plotRef,
@@ -242,6 +247,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     clearHighlightedSeries,
     isGroupNavigation,
     isHandlersDisabled,
+    setVerticalMarkerLeft,
   });
 
   // There are multiple ways to indicate what X is selected.
@@ -251,9 +257,12 @@ export default function ChartContainer<T extends ChartDataTypes>({
       return barGroups[highlightedGroupIndex].x;
     }
     if (verticalMarkerLeft !== null) {
-      for (const series of scaledSeries) {
-        if (series.x === verticalMarkerLeft) {
-          return series.datum?.x ?? null;
+      if (verticalMarkerLeft.datumX !== null && verticalMarkerLeft.datumX !== undefined) {
+        return verticalMarkerLeft.datumX;
+      }
+      for (const point of scaledSeries) {
+        if (point.x === verticalMarkerLeft.scaledX) {
+          return point.datum?.x ?? null;
         }
       }
     }
@@ -325,6 +334,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       !nodeContains(containerRefObject.current, blurTarget)
     ) {
       setHighlightedPoint(null);
+      setVerticalMarkerLeft(null);
       if (!plotContainerRef?.current?.contains(blurTarget)) {
         clearHighlightedSeries();
       }
@@ -341,7 +351,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   let verticalLineX: number | null = null;
   if (verticalMarkerLeft !== null) {
-    verticalLineX = verticalMarkerLeft;
+    verticalLineX = verticalMarkerLeft.scaledX;
   } else if (isGroupNavigation && highlightedGroupIndex !== null) {
     const x = xScale.d3Scale(barGroups[highlightedGroupIndex].x as any) ?? null;
     if (x !== null) {
@@ -412,6 +422,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const activeLiveRegion =
     activeAriaLabel && !highlightedPoint && highlightedGroupIndex === null ? activeAriaLabel : '';
 
+  const isLineXKeyboardFocused = isPlotFocused && verticalMarkerLeft?.trigger === 'keyboard';
+
   return (
     <div className={styles['chart-container']} ref={containerRef}>
       <AxisLabel axis={y} position="left" title={xy.title[y]} />
@@ -435,9 +447,15 @@ export default function ChartContainer<T extends ChartDataTypes>({
             ariaDescription={ariaDescription}
             ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
             ariaLiveRegion={activeLiveRegion}
-            activeElementRef={isGroupNavigation ? highlightedGroupRef : highlightedPointRef}
-            activeElementKey={isPlotFocused && (highlightedGroupIndex?.toString() || point?.key)}
-            activeElementFocusOffset={isGroupNavigation ? 0 : 3}
+            activeElementRef={
+              isGroupNavigation ? highlightedGroupRef : isLineXKeyboardFocused ? verticalMarkerRef : highlightedPointRef
+            }
+            activeElementKey={
+              isPlotFocused &&
+              (highlightedGroupIndex?.toString() ??
+                (isLineXKeyboardFocused ? `point-index-${handlers.pointGroupIndex}` : point?.key))
+            }
+            activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
             onMouseMove={onSVGMouseMove}
             onMouseOut={onSVGMouseOut}
             onMouseDown={onSVGMouseDown}
@@ -486,6 +504,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
               showLine={!isGroupNavigation}
               points={verticalMarkers}
               ref={verticalMarkerRef}
+              ariaLabel={isLineXKeyboardFocused ? `${xTitle}: ${highlightedX}` : undefined}
             />
 
             {highlightedPoint && (

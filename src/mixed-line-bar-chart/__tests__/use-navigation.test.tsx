@@ -20,6 +20,7 @@ import {
   thresholdSeries,
   xThresholdSeries1,
 } from './common';
+import { VerticalMarkerLeft } from '../interfaces';
 
 const xScale = new ChartScale('linear', [0, 3], [0, 3]);
 const yScale = new NumericChartScale('linear', [0, 15], [0, 15], null);
@@ -27,7 +28,6 @@ const categoricalScale = new ChartScale('categorical', ['Potatoes', 'Chocolate',
 
 const commonProps: Omit<UseNavigationProps<ChartDataTypes>, 'xScale' | 'yScale' | 'barGroups' | 'scaledSeries'> = {
   highlightedSeries: null,
-  legendSeries: null,
   isHandlersDisabled: false,
   series: [],
   visibleSeries: [],
@@ -38,6 +38,7 @@ const commonProps: Omit<UseNavigationProps<ChartDataTypes>, 'xScale' | 'yScale' 
   highlightPoint: jest.fn(),
   highlightGroup: jest.fn(),
   clearHighlightedSeries: jest.fn(),
+  setVerticalMarkerLeft: jest.fn(),
 };
 
 const buildNavigationProps = (
@@ -62,6 +63,7 @@ class UseNavigationWrapper extends ElementWrapper {
     highlightedSeries: 'highlighted-series',
     highlightedPoint: 'highlighted-point',
     highlightedGroupIndex: 'highlighted-group-index',
+    verticalMarker: 'vertical-marker',
   };
 
   findKeyboardArea() {
@@ -79,12 +81,17 @@ class UseNavigationWrapper extends ElementWrapper {
   findHighlightedGroupIndex() {
     return this.findByClassName(UseNavigationWrapper.selectors.highlightedGroupIndex);
   }
+
+  findVerticalMarker() {
+    return this.findByClassName(UseNavigationWrapper.selectors.verticalMarker);
+  }
 }
 
 function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
   const [highlightedSeries, setHighlightedSeries] = useState(props.highlightedSeries);
   const [highlightedPoint, setHighlightedPoint] = useState(props.highlightedPoint);
   const [highlightedGroupIndex, setHighlightedGroup] = useState(props.highlightedGroupIndex);
+  const [verticalMarkerLeft, setVerticalMarkerLeft] = useState<VerticalMarkerLeft<any> | null>(null);
 
   const { onFocus, onKeyDown } = useNavigation({
     ...props,
@@ -95,6 +102,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
       setHighlightedPoint(null);
       setHighlightedGroup(group);
     },
+    setVerticalMarkerLeft,
     highlightedSeries,
     highlightedPoint,
     highlightedGroupIndex,
@@ -107,6 +115,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
       <span className={UseNavigationWrapper.selectors.highlightedPoint}>
         {highlightedPoint?.x},{highlightedPoint?.y}
       </span>
+      <span className={UseNavigationWrapper.selectors.verticalMarker}>{verticalMarkerLeft?.scaledX}</span>
     </div>
   );
 }
@@ -124,72 +133,139 @@ function renderNavigationHook(
 }
 
 describe('Line charts', () => {
-  const series: any[] = [
-    {
-      index: 0,
-      color: 'blue',
-      series: lineSeries1,
-    },
-    {
-      index: 1,
-      color: 'green',
-      series: lineSeries2,
-    },
-    {
-      index: 2,
-      color: 'grey',
-      series: thresholdSeries,
-    },
-    {
-      index: 3,
-      color: 'red',
-      series: xThresholdSeries1,
-    },
-  ];
+  describe('with one single series', () => {
+    const series: any[] = [
+      {
+        index: 0,
+        color: 'blue',
+        series: lineSeries1,
+      },
+    ];
 
-  const lineProps = { xScale, yScale, series };
+    const lineProps = { xScale, yScale, series };
 
-  test('highlights first line series when focused', () => {
-    const { wrapper } = renderNavigationHook(lineProps);
-    act(() => wrapper.focus());
+    test('highlights first point when focused', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
 
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent('Line Series 1');
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,10');
+    });
+
+    test('can navigate horizontally', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
+
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,10');
+
+      act(() => wrapper.keydown(KeyCode.right));
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,8');
+
+      // Loop back
+      act(() => wrapper.keydown(KeyCode.left));
+      act(() => wrapper.keydown(KeyCode.left));
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('3,10');
+    });
   });
 
-  test('can navigate vertically through series', () => {
-    const { wrapper } = renderNavigationHook(lineProps);
-    act(() => wrapper.focus());
+  describe('with multiple series', () => {
+    const series: any[] = [
+      {
+        index: 0,
+        color: 'blue',
+        series: lineSeries1,
+      },
+      {
+        index: 1,
+        color: 'green',
+        series: lineSeries2,
+      },
+      {
+        index: 2,
+        color: 'grey',
+        series: thresholdSeries,
+      },
+      {
+        index: 3,
+        color: 'red',
+        series: xThresholdSeries1,
+      },
+    ];
 
-    act(() => wrapper.keydown(KeyCode.down));
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries2.title);
+    const lineProps = { xScale, yScale, series };
 
-    act(() => wrapper.keydown(KeyCode.down));
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(thresholdSeries.title);
+    test('highlights all points from all series at the first X coordinate when focused', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
 
-    act(() => wrapper.keydown(KeyCode.down));
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(xThresholdSeries1.title);
+      expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+    });
 
-    // Loop around to the first series
-    act(() => wrapper.keydown(KeyCode.down));
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
+    test('can navigate vertically through series', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
 
-    act(() => wrapper.keydown(KeyCode.up));
-    expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(thresholdSeries.title);
-  });
+      expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
 
-  test('can navigate horizontally', () => {
-    const { wrapper } = renderNavigationHook(lineProps);
-    act(() => wrapper.focus());
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
 
-    expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,10');
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries2.title);
 
-    act(() => wrapper.keydown(KeyCode.right));
-    expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,8');
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(thresholdSeries.title);
 
-    // Loop back
-    act(() => wrapper.keydown(KeyCode.left));
-    act(() => wrapper.keydown(KeyCode.left));
-    expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('3,10');
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(xThresholdSeries1.title);
+
+      // Loop around to show all series again
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
+
+      act(() => wrapper.keydown(KeyCode.up));
+      expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+    });
+
+    test('can navigate horizontally within all series', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
+
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+
+      act(() => wrapper.keydown(KeyCode.right));
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('1');
+
+      act(() => wrapper.keydown(KeyCode.left));
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+
+      // Loop back
+      act(() => wrapper.keydown(KeyCode.left));
+      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('3');
+    });
+
+    test('can navigate horizontally within one series', () => {
+      const { wrapper } = renderNavigationHook(lineProps);
+      act(() => wrapper.focus());
+
+      act(() => wrapper.keydown(KeyCode.down));
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('0,10');
+
+      act(() => wrapper.keydown(KeyCode.right));
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('1,8');
+
+      // Loop back
+      act(() => wrapper.keydown(KeyCode.left));
+      act(() => wrapper.keydown(KeyCode.left));
+      expect(wrapper.findHighlightedPoint()?.getElement()).toHaveTextContent('3,10');
+    });
   });
 });
 

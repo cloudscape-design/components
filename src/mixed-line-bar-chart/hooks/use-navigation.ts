@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { ChartContainerProps } from '../chart-container';
-import { ChartDataTypes, MixedLineBarChartProps } from '../interfaces';
+import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerLeft } from '../interfaces';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
 import { ScaledPoint } from '../make-scaled-series';
@@ -20,7 +20,6 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
 
   highlightedPoint: ScaledPoint<T> | null;
   highlightedGroupIndex: number | null;
-  legendSeries: null | MixedLineBarChartProps.ChartSeries<T>;
   isHandlersDisabled: boolean;
 
   pinPopover(pinned?: boolean): void;
@@ -28,6 +27,7 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   highlightGroup(groupIndex: number): void;
   highlightPoint(point: ScaledPoint<T> | null): void;
   clearHighlightedSeries(): void;
+  setVerticalMarkerLeft: (marker: VerticalMarkerLeft<T> | null) => void;
 };
 
 export function useNavigation<T extends ChartDataTypes>({
@@ -40,22 +40,24 @@ export function useNavigation<T extends ChartDataTypes>({
   highlightedPoint,
   highlightedGroupIndex,
   highlightedSeries,
-  legendSeries,
   isHandlersDisabled,
   pinPopover,
   highlightSeries,
   highlightGroup,
   highlightPoint,
+  setVerticalMarkerLeft,
 }: UseNavigationProps<T>) {
   const [targetX, setTargetX] = useState<T | null>(null);
+  const [xIndex, setXIndex] = useState(0);
 
   // There are two different types of navigation:
   // 1) Group navigation for any chart that contains a bar series
   // 2) Line navigation for any chart that only contains lines and thresholds
-  const isGroupNavigation = visibleSeries.some(({ series }) => series.type === 'bar');
+  const isGroupNavigation = useMemo(() => visibleSeries.some(({ series }) => series.type === 'bar'), [visibleSeries]);
 
   // Make a list of series that can be navigated between. Bar series are treated as one.
   const { navigableSeries } = useMemo(() => findNavigableSeries(visibleSeries), [visibleSeries]);
+  const containsMultipleSeries = navigableSeries.length > 1;
 
   const onBarGroupFocus = () => {
     const groupIndex = highlightedGroupIndex ?? 0;
@@ -64,15 +66,10 @@ export function useNavigation<T extends ChartDataTypes>({
   };
 
   const onLineGroupFocus = () => {
-    if (!highlightedSeries || !highlightedPoint) {
-      const targetSeries = highlightedSeries ?? legendSeries ?? series[0]?.series ?? null;
-      highlightSeries(targetSeries);
-      for (const scaledS of scaledSeries) {
-        if (scaledS.series === targetSeries) {
-          highlightPoint(scaledS);
-          return;
-        }
-      }
+    if (containsMultipleSeries) {
+      moveToLineGroupIndex(0);
+    } else {
+      moveBetweenSeries(0);
     }
   };
 
@@ -83,6 +80,17 @@ export function useNavigation<T extends ChartDataTypes>({
       onLineGroupFocus();
     }
   };
+
+  const allUniqueX = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < scaledSeries.length; i += 1) {
+      const point = scaledSeries[i];
+      if (point !== undefined && (!result.length || result[result.length - 1].scaledX !== point.x)) {
+        result.push({ scaledX: point.x, datum: point.datum });
+      }
+    }
+    return result;
+  }, [scaledSeries]);
 
   const moveBetweenSeries = useCallback(
     (direction: number) => {
@@ -100,16 +108,22 @@ export function useNavigation<T extends ChartDataTypes>({
       }
 
       // Move forwards or backwards to the new series
+      // If index === -1, show the grouped data instead of a single series
+      const firstPossibleIndex = containsMultipleSeries ? -1 : 0;
       let nextSeriesIndex = 0;
-      if (previousSeriesIndex !== -1) {
+      if (previousSeriesIndex !== null) {
         nextSeriesIndex = previousSeriesIndex + direction;
         if (nextSeriesIndex > MAX_SERIES_INDEX) {
-          nextSeriesIndex = 0;
-        } else if (nextSeriesIndex < 0) {
+          nextSeriesIndex = firstPossibleIndex;
+        } else if (nextSeriesIndex < firstPossibleIndex) {
           nextSeriesIndex = MAX_SERIES_INDEX;
         }
       }
-
+      if (nextSeriesIndex === -1) {
+        highlightSeries(null);
+        highlightPoint(null);
+        return;
+      }
       const nextSeries = navigableSeries[nextSeriesIndex];
       const nextInternalSeries = series.filter(({ series }) => series === nextSeries)[0];
 
@@ -153,28 +167,38 @@ export function useNavigation<T extends ChartDataTypes>({
       xScale,
       navigableSeries,
       highlightedSeries,
-      scaledSeries,
-      series,
-      targetX,
+      containsMultipleSeries,
       highlightSeries,
       highlightPoint,
+      series,
+      targetX,
+      scaledSeries,
       yScale,
     ]
+  );
+
+  const getNextPoint = useCallback(
+    (targetScaledSeries: ReadonlyArray<ScaledPoint<T>>, point: ScaledPoint<T> | null, direction = 1) => {
+      if (point === null) {
+        return targetScaledSeries[0];
+      }
+      const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(point.x);
+      const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
+      return targetScaledSeries[nextPointIndex];
+    },
+    []
   );
 
   const moveWithinSeries = useCallback(
     (direction: number) => {
       const series = highlightedSeries || visibleSeries[0].series;
-      const previousPoint = highlightedPoint || scaledSeries[0];
 
       if (series.type === 'line' || isYThreshold(series)) {
         const targetScaledSeries = scaledSeries.filter(it => it.series === series);
-        const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(previousPoint.x);
-        const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
-        const nextPoint = targetScaledSeries[nextPointIndex];
+        const nextPoint = getNextPoint(targetScaledSeries, highlightedPoint, direction);
 
         setTargetX(nextPoint.datum?.x || null);
-        highlightSeries(series);
+        setVerticalMarkerLeft({ scaledX: nextPoint.x, datumX: nextPoint.datum?.x, trigger: 'keyboard' });
         highlightPoint(nextPoint);
       } else if (series.type === 'bar') {
         const xDomain = xScale.domain as T[];
@@ -199,15 +223,40 @@ export function useNavigation<T extends ChartDataTypes>({
     [
       highlightedSeries,
       visibleSeries,
-      highlightedPoint,
       scaledSeries,
-      highlightSeries,
+      getNextPoint,
+      highlightedPoint,
+      setVerticalMarkerLeft,
       highlightPoint,
       xScale.domain,
       highlightedGroupIndex,
       barGroups,
       highlightGroup,
     ]
+  );
+
+  const moveToLineGroupIndex = useCallback(
+    (index: number) => {
+      highlightSeries(null);
+      highlightPoint(null);
+      const point = allUniqueX[index];
+      setXIndex(index);
+      setTargetX(point.datum?.x || null);
+      setVerticalMarkerLeft({ scaledX: point?.scaledX ?? null, datumX: point.datum?.x, trigger: 'keyboard' });
+    },
+    [allUniqueX, highlightPoint, highlightSeries, setVerticalMarkerLeft]
+  );
+
+  const moveWithinXAxis = useCallback(
+    (direction: number) => {
+      if (highlightedSeries || isGroupNavigation) {
+        moveWithinSeries(direction);
+      } else {
+        const nextPointGroupIndex = circleIndex(xIndex + direction, [0, allUniqueX.length - 1]);
+        moveToLineGroupIndex(nextPointGroupIndex);
+      }
+    },
+    [highlightedSeries, isGroupNavigation, moveWithinSeries, xIndex, allUniqueX.length, moveToLineGroupIndex]
   );
 
   const onKeyDown = useCallback(
@@ -233,15 +282,15 @@ export function useNavigation<T extends ChartDataTypes>({
       if (keyCode === KeyCode.down || keyCode === KeyCode.up) {
         moveBetweenSeries(keyCode === KeyCode.down ? 1 : -1);
       } else if (keyCode === KeyCode.left || keyCode === KeyCode.right) {
-        moveWithinSeries(keyCode === KeyCode.right ? 1 : -1);
+        moveWithinXAxis(keyCode === KeyCode.right ? 1 : -1);
       } else if (keyCode === KeyCode.enter || keyCode === KeyCode.space) {
         pinPopover();
       }
     },
-    [moveWithinSeries, moveBetweenSeries, isHandlersDisabled, pinPopover]
+    [isHandlersDisabled, moveBetweenSeries, moveWithinXAxis, pinPopover]
   );
 
-  return { isGroupNavigation, onFocus, onKeyDown };
+  return { isGroupNavigation, onFocus, onKeyDown, pointGroupIndex: xIndex };
 }
 
 // Returns given index if it is in range or the opposite range boundary otherwise.

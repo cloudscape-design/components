@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useState } from 'react';
 import { nodeContains } from '../../internal/utils/dom';
 
 import { ScaledBarGroup } from '../make-scaled-bar-groups';
@@ -8,7 +7,7 @@ import { ScaledPoint } from '../make-scaled-series';
 
 import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { MixedLineBarChartProps } from '../interfaces';
+import { MixedLineBarChartProps, VerticalMarkerLeft } from '../interfaces';
 import { isYThreshold } from '../utils';
 
 const MAX_HOVER_MARGIN = 6;
@@ -23,6 +22,7 @@ export interface UseMouseHoverProps<T> {
   clearHighlightedSeries: () => void;
   isGroupNavigation: boolean;
   isHandlersDisabled: boolean;
+  setVerticalMarkerLeft: (marker: VerticalMarkerLeft<T> | null) => void;
 }
 
 export function useMouseHover<T>({
@@ -35,9 +35,8 @@ export function useMouseHover<T>({
   clearHighlightedSeries,
   isGroupNavigation,
   isHandlersDisabled,
+  setVerticalMarkerLeft,
 }: UseMouseHoverProps<T>) {
-  const [verticalMarkerLeft, setVerticalMarkerLeft] = useState<number | null>(null);
-
   const onSeriesMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     const svgRect = (event.target as SVGElement).getBoundingClientRect();
     const offsetX = event.clientX - svgRect.left;
@@ -53,7 +52,7 @@ export function useMouseHover<T>({
       .reduce((prev, curr) => (Math.abs(curr - offsetY) < Math.abs(prev - offsetY) ? curr : prev), -Infinity);
 
     if (isFinite(closestX)) {
-      setVerticalMarkerLeft(closestX);
+      setVerticalMarkerLeft({ scaledX: closestX, trigger: 'mouse' });
       if (
         isFinite(closestY) &&
         Math.abs(offsetX - closestX) < MAX_HOVER_MARGIN &&
@@ -62,7 +61,6 @@ export function useMouseHover<T>({
         const [{ color, datum, series }] = scaledSeries.filter(
           s => (s.x === closestX || isYThreshold(s.series)) && s.y === closestY
         );
-        highlightSeries(series);
         highlightPoint({ x: closestX, y: closestY, color, datum, series });
       } else {
         highlightSeries(null);
@@ -117,5 +115,5 @@ export function useMouseHover<T>({
     }
   };
 
-  return { verticalMarkerLeft, onSVGMouseMove, onSVGMouseOut };
+  return { onSVGMouseMove, onSVGMouseOut };
 }

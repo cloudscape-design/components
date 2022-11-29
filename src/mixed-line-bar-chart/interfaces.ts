@@ -106,3 +106,11 @@ export namespace MixedLineBarChartProps {
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
 }
+
+export type Trigger = 'keyboard' | 'mouse';
+
+export interface VerticalMarkerLeft<T> {
+  scaledX: number;
+  datumX?: T;
+  trigger: Trigger;
+}

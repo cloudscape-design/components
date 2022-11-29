@@ -21,6 +21,8 @@ const commonProps = {
   clearHighlightedSeries: jest.fn(),
   isGroupNavigation: false,
   isHandlersDisabled: false,
+  setPlotFocused: jest.fn(),
+  setVerticalMarkerLeft: jest.fn(),
 };
 
 const renderMouseHoverHook = <T extends ChartDataTypes>(props?: Partial<UseMouseHoverProps<T>>) => {
@@ -38,18 +40,15 @@ describe('Mouse hover hook', () => {
 
   test('returns correct properties', () => {
     const { hook } = renderMouseHoverHook();
-    expect('verticalMarkerLeft' in hook.current).toBeTruthy();
     expect('onSVGMouseMove' in hook.current).toBeTruthy();
     expect('onSVGMouseOut' in hook.current).toBeTruthy();
   });
 
-  test('verticalMarkerLeft is initialized as null', () => {
-    const { hook } = renderMouseHoverHook();
-    expect(hook.current.verticalMarkerLeft).toBeNull();
-  });
-
   test('sets verticalMarkerLeft', () => {
-    const { hook } = renderMouseHoverHook();
+    const customProps = {
+      setVerticalMarkerLeft: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
     const event = {
       target: SVGElement,
       clientX: 110,
@@ -57,16 +56,19 @@ describe('Mouse hover hook', () => {
     } as any;
 
     act(() => hook.current.onSVGMouseMove(event));
-    expect(hook.current.verticalMarkerLeft).toBe(100);
+    expect(customProps.setVerticalMarkerLeft).toHaveBeenCalledWith({ scaledX: 100, trigger: 'mouse' });
   });
 
   test('clears verticalMarkerLeft', () => {
-    const { hook } = renderMouseHoverHook();
+    const customProps = {
+      setVerticalMarkerLeft: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
     const event = {
       relatedTarget: null,
     } as any;
     act(() => hook.current.onSVGMouseOut(event));
-    expect(hook.current.verticalMarkerLeft).toBeNull();
+    expect(customProps.setVerticalMarkerLeft).toHaveBeenCalledWith(null);
   });
 
   test('does not clear verticalMarkerLeft on mouseOut if moving within SVG', () => {
@@ -74,9 +76,11 @@ describe('Mouse hover hook', () => {
     const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     SvgElementDummy.appendChild(lineElement);
 
-    const { hook } = renderMouseHoverHook({
+    const customProps = {
+      setVerticalMarkerLeft: jest.fn(),
       plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
-    });
+    };
+    const { hook } = renderMouseHoverHook(customProps);
 
     // set marker first
     const mouseMoveEvent = {
@@ -87,14 +91,15 @@ describe('Mouse hover hook', () => {
 
     act(() => hook.current.onSVGMouseMove(mouseMoveEvent));
 
-    expect(hook.current.verticalMarkerLeft).toBe(100);
+    expect(customProps.setVerticalMarkerLeft).toHaveBeenCalledWith({ scaledX: 100, trigger: 'mouse' });
+    expect(customProps.setVerticalMarkerLeft).toHaveBeenCalledTimes(1);
 
     const mouseOutEvent = {
       relatedTarget: lineElement,
     } as any;
 
     act(() => hook.current.onSVGMouseOut(mouseOutEvent));
-    expect(hook.current.verticalMarkerLeft).not.toBeNull();
+    expect(customProps.setVerticalMarkerLeft).toHaveBeenCalledTimes(1);
   });
 
   test('highlights point when moving close', () => {
