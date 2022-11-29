@@ -31,6 +31,7 @@ export default function RangeCalendarScenario() {
           dateOnly={dateOnly}
           timeInputFormat="hh:mm"
           isDateEnabled={date => date.getDate() !== 15}
+          customAbsoluteRangeControl={undefined}
         />
 
         <Link id="focusable-after">Focusable element after the range calendar</Link>

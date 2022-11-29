@@ -21,19 +21,26 @@ const intervals = [
   ['2021-05-10', '2021-05-30'],
 ];
 
-const permutations = createPermutations<DateRangePickerCalendarProps>(
-  intervals.map(([startDate, endDate]) => ({
+const permutations = createPermutations<DateRangePickerCalendarProps>([
+  ...intervals.map(([startDate, endDate]) => ({
     value: [{ start: { date: startDate, time: '' }, end: { date: endDate, time: '' } }],
     setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
     isDateEnabled: [() => true],
     onChange: [() => {}],
-    timeInputFormat: ['hh:mm:ss'],
+    timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],
     dateOnly: [false, true],
-  }))
-);
+    customAbsoluteRangeControl: [undefined],
+  })),
+  {
+    value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
+    setValue: [() => {}],
+    i18nStrings: [i18nStrings],
+    customAbsoluteRangeControl: [() => 'Custom control'],
+  },
+]);
 
 export default function DateRangePickerCalendarPage() {
   let i = -1;

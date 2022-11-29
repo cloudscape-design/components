@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DateRangePickerProps, PendingAbsoluteValue } from './interfaces';
+import { DateRangePickerProps } from './interfaces';
 import Calendar from './calendar';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -43,6 +43,7 @@ export interface DateRangePickerDropdownProps
 
   ariaLabelledby?: string;
   ariaDescribedby?: string;
+  customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
 }
 
 export function DateRangePickerDropdown({
@@ -63,12 +64,13 @@ export function DateRangePickerDropdown({
   rangeSelectorMode,
   ariaLabelledby,
   ariaDescribedby,
+  customAbsoluteRangeControl,
 }: DateRangePickerDropdownProps) {
   const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
     getDefaultMode(value, relativeOptions, rangeSelectorMode)
   );
 
-  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<PendingAbsoluteValue>(() =>
+  const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.PendingAbsoluteValue>(() =>
     splitAbsoluteValue(value?.type === 'absolute' ? value : null)
   );
 
@@ -172,6 +174,7 @@ export function DateRangePickerDropdown({
                       i18nStrings={i18nStrings}
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
+                      customAbsoluteRangeControl={customAbsoluteRangeControl}
                     />
                   )}
 
