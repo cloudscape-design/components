@@ -147,9 +147,10 @@ describe('TopNavigation Component', () => {
     });
 
     test('renders an external icon with the provided label', () => {
-      expect(
-        topNavigation.findUtility(1)!.findButtonLinkType()!.find('[aria-label="opens in a new tab"]')
-      ).toBeTruthy();
+      expect(topNavigation.findUtility(1)!.findButtonLinkType()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'External link opens in a new tab'
+      );
     });
 
     test('calls onClick when clicked', () => {
