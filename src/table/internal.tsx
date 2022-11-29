@@ -133,6 +133,7 @@ const InternalTable = React.forwardRef(
       ? 'container'
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
+    const hasFooter = !!footer;
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -217,7 +218,6 @@ const InternalTable = React.forwardRef(
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <hr className={styles.divider} />
                 <div className={styles.footer}>{footer}</div>
               </div>
             )
@@ -229,7 +229,7 @@ const InternalTable = React.forwardRef(
           <div
             ref={wrapperRef}
             className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
-              [styles['has-footer']]: !!footer,
+              [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
             onScroll={handleScroll}
@@ -243,7 +243,11 @@ const InternalTable = React.forwardRef(
             )}
             <table
               ref={tableRef}
-              className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'])}
+              className={clsx(
+                styles.table,
+                resizableColumns && styles['table-layout-fixed'],
+                hasFooter && styles['has-footer']
+              )}
               // Browsers have weird mechanism to guess whether it's a data table or a layout table.
               // If we state explicitly, they get it always correctly even with low number of rows.
               role="table"

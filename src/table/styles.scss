@@ -52,6 +52,9 @@
   &-layout-fixed {
     table-layout: fixed;
   }
+  &.has-footer {
+    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  }
 }
 
 .wrapper {
@@ -64,8 +67,8 @@
   &.variant-stacked,
   &.variant-container {
     & > .table {
-      padding-left: awsui.$space-table-horizontal;
-      padding-right: awsui.$space-table-horizontal;
+      margin-left: awsui.$space-table-horizontal;
+      margin-right: awsui.$space-table-horizontal;
     }
   }
   &.variant-embedded {
@@ -184,13 +187,6 @@ the default white background of the container component.
     padding-right: awsui.$space-table-header-horizontal;
     padding-top: awsui.$space-table-embedded-header-top;
   }
-}
-
-.divider {
-  border: none;
-  margin: 0;
-  height: 0;
-  @include container.divider;
 }
 
 .footer-wrapper {
