@@ -4844,6 +4844,27 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
+      "description": "Specifies an additional control displayed in the dropdown, located below the range calendar.",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.AbsoluteRangeControl",
+        "parameters": Array [
+          Object {
+            "name": "selectedRange",
+            "type": "DateRangePickerProps.PendingAbsoluteValue",
+          },
+          Object {
+            "name": "setSelectedRange",
+            "type": "React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "customAbsoluteRangeControl",
+      "optional": true,
+      "type": "DateRangePickerProps.AbsoluteRangeControl",
+    },
+    Object {
       "defaultValue": "false",
       "description": "Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
 Do not use \`dateOnly\` flag conditionally. The component does not trigger the value update

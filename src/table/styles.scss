@@ -61,8 +61,6 @@
   padding-top: awsui.$space-table-content-top;
   padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
-  border-top-right-radius: awsui.$border-radius-container;
-  border-top-left-radius: awsui.$border-radius-container;
   &.variant-stacked,
   &.variant-container {
     & > .table {
@@ -78,6 +76,10 @@
   }
   &.has-footer {
     padding-bottom: 0px;
+  }
+  &:not(.has-header) {
+    border-top-right-radius: awsui.$border-radius-container;
+    border-top-left-radius: awsui.$border-radius-container;
   }
 
   @include focus-visible.when-visible {

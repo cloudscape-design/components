@@ -88,7 +88,11 @@ export const Row = React.memo(
               ))}
             </InternalColumnLayout>
             {removable && (
-              <ButtonContainer index={index} isNarrowViewport={isNarrowViewport}>
+              <ButtonContainer
+                index={index}
+                isNarrowViewport={isNarrowViewport}
+                hasLabel={definition.some(row => row.label)}
+              >
                 <InternalButton
                   className={styles['remove-button']}
                   formAction="none"
@@ -113,12 +117,14 @@ interface ButtonContainer {
   index: number;
   children: React.ReactNode;
   isNarrowViewport: boolean;
+  hasLabel: boolean;
 }
 
-const ButtonContainer = ({ index, children, isNarrowViewport }: ButtonContainer) => (
+const ButtonContainer = ({ index, children, isNarrowViewport, hasLabel }: ButtonContainer) => (
   <div
     className={clsx({
-      [styles['button-container']]: !isNarrowViewport && index === 0,
+      [styles['button-container-haslabel']]: !isNarrowViewport && index === 0 && hasLabel,
+      [styles['button-container-nolabel']]: !isNarrowViewport && index === 0 && !hasLabel,
       [styles['right-align']]: isNarrowViewport,
     })}
   >

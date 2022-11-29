@@ -55,6 +55,7 @@ export namespace BreadcrumbGroupProps {
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;
+  isDisplayed: boolean;
   isLast?: boolean;
   isCompressed?: boolean;
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;

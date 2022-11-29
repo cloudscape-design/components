@@ -37,12 +37,16 @@
   /* used in test-utils */
 }
 
-.button-container {
+.button-container-haslabel {
   // We only support vertical alignment of the remove button for labels with exactly one line.
   // The value is calculated as follows:
   // padding-top = awsui-form-field-controls: 4px +
   // line height (also applies to icon size) awsui-form-field-label: 22px
   padding-top: calc(#{awsui.$space-xxs} + #{awsui.$font-body-m-line-height});
+}
+
+.button-container-nolabel {
+  padding-top: #{awsui.$space-xxs};
 }
 
 .divider {
