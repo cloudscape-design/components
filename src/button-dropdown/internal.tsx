@@ -149,11 +149,7 @@ const InternalButtonDropdown = React.forwardRef(
         >
           {hasHeader && (
             <div className={styles.header} id={headerId}>
-              {title && (
-                <InternalBox fontSize="heading-s" fontWeight="bold">
-                  <span className={styles.title}>{title}</span>
-                </InternalBox>
-              )}
+              {title && <h3 className={styles.title}>{title}</h3>}
               {description && (
                 <InternalBox fontSize="body-s">
                   <span className={styles.description}>{description}</span>
