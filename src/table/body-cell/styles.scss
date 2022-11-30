@@ -40,7 +40,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-top: $border-placeholder;
   }
   &-last-row:not(.has-footer) {
-    // skip the border for the last row because container already has a border
+    // skip the border for the last row because the container already has a border
     border-bottom: $border-placeholder;
   }
   &-last-row.has-footer {
