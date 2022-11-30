@@ -10,9 +10,11 @@ export const tutorialPanelStrings: TutorialPanelProps.I18nStrings = {
   tutorialListDescription:
     'Use our walk-through tutorials to learn how to achieve your desired objectives within Amazon Transcribe.',
   tutorialListDownloadLinkText: 'Download PDF version',
+  labelTutorialListDownloadLink: 'Download PDF version of this tutorial',
   tutorialCompletedText: 'Tutorial completed',
   labelExitTutorial: 'dismiss tutorial',
   learnMoreLinkText: 'Learn more',
+  labelLearnMoreLink: 'Learn more about transcribe audio (opens new tab)',
   startTutorialButtonText: 'Start tutorial',
   restartTutorialButtonText: 'Restart tutorial',
   completionScreenTitle: 'Congratulations! You completed the tutorial',
