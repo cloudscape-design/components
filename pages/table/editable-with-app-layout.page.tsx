@@ -5,129 +5,174 @@ import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Input from '~components/input';
 import Select from '~components/select';
+import { Autosuggest, Link, TimeInput } from '~components';
 import Table, { TableProps } from '~components/table';
 import BreadcrumbGroup from '~components/breadcrumb-group';
-import { initialItems, Metric } from './editable-data';
-import { ColorPicker, HelpContent } from './editable-utils';
+import { initialItems, DistributionInfo, tlsVersions, originSuggestions } from './editable-data';
+import { HelpContent } from './editable-utils';
 
-export const ariaLabels: TableProps.AriaLabels<Metric> = {
-  tableLabel: 'Items',
+export const ariaLabels: TableProps.AriaLabels<DistributionInfo> = {
+  tableLabel: 'Distributions',
   activateEditLabel: column => `Edit ${column.header}`,
   cancelEditLabel: column => `Cancel editing ${column.header}`,
   submitEditLabel: column => `Submit edit ${column.header}`,
 };
 
-const DNS_NAME = /^(([a-z\d]|[a-z\d][a-z\d-]*[a-z\d])\.)*([a-z\d]|[a-z\d][a-z\d-]*[a-z\d])$/i;
+// Passes for any valid (fq) domain name including punycode
+// https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s15.html
+const DOMAIN_NAME = /^\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b$/i;
 
-const columns: Array<TableProps.ColumnDefinition<Metric, string>> = [
+const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
   {
-    id: 'color',
-    header: 'Color',
-    width: 140,
+    id: 'Id',
+    header: 'Distribution ID',
+    sortingField: 'Id',
+    width: 180,
+    cell: (item: DistributionInfo) => <Link href={`/#/distributions/${item.Id}`}>{item.Id}</Link>,
+  },
+  {
+    id: 'DomainName',
+    header: 'Domain name',
+    minWidth: 160,
     editConfig: {
-      ariaLabel: 'Choose a color',
-      errorIconAriaLabel: 'Error',
+      ariaLabel: 'Domain name',
+      errorIconAriaLabel: 'Domain Name Error',
+      validation(item, value) {
+        const currentValue = value ?? item.DomainName;
+        if (!DOMAIN_NAME.test(currentValue)) {
+          return 'Must be a valid domain name';
+        }
+        if (errorsMeta.get(item)) {
+          return errorsMeta.get(item);
+        }
+      },
     },
     cell(item, { isEditing, currentValue, setValue }) {
-      if (!isEditing) {
-        return <div style={{ background: item.color, width: 16, height: 16 }}></div>;
+      if (isEditing) {
+        return (
+          <Input
+            autoFocus={true}
+            value={currentValue ?? item.DomainName}
+            onChange={event => setValue(event.detail.value)}
+          />
+        );
       }
-      return <ColorPicker value={currentValue ?? item.color} onChange={event => setValue(event.currentTarget.value)} />;
+
+      return item.DomainName;
     },
   },
   {
-    id: 'label',
-    header: 'Label',
-    width: 200,
-    sortingField: 'label',
+    id: 'Status',
+    header: 'Status',
+    width: 100,
+    cell: (item: DistributionInfo) => item.Status,
+  },
+  {
+    id: 'Origin',
+    header: 'Origin',
     editConfig: {
-      ariaLabel: 'Enter a label',
-      errorIconAriaLabel: 'Error',
-      validation(item, value) {
-        const currentValue = value ?? item.label;
-        if (!currentValue.match(DNS_NAME)) {
-          return 'The value should only include DNS-safe characters';
-        }
-        if (errorsMeta.get(item)) {
-          return errorsMeta.get(item);
-        }
-      },
+      ariaLabel: 'Origin',
+      errorIconAriaLabel: 'Origin Error',
     },
-    cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
-      if (!isEditing) {
-        return item.label;
+    cell: (item, { isEditing, setValue, currentValue }) => {
+      if (isEditing) {
+        return (
+          <Autosuggest
+            autoFocus={true}
+            value={currentValue ?? item.Origin}
+            onChange={event => setValue(event.detail.value)}
+            options={originSuggestions}
+            enteredTextLabel={value => `Use "${value}"`}
+            ariaLabel="Origin Domain"
+            placeholder="Enter an origin domain name"
+          />
+        );
       }
-      return (
-        <Input autoFocus={true} value={currentValue ?? item.label} onChange={event => setValue(event.detail.value)} />
-      );
+      return item.Origin;
     },
   },
   {
-    id: 'expression',
-    header: 'Expression',
+    id: 'CertificateMinVersion',
+    header: 'Certificate Min. Version',
+    maxWidth: 280,
     editConfig: {
-      ariaLabel: 'Enter an expression',
-      errorIconAriaLabel: 'Error',
-      validation(item) {
-        if (errorsMeta.get(item)) {
-          return errorsMeta.get(item);
-        }
-      },
+      ariaLabel: 'Certificate Minimum Version',
+      errorIconAriaLabel: 'Certificate Minimum Version Error',
     },
-    cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
-      if (!isEditing) {
-        return item.expression;
+    cell(item, { isEditing, currentValue, setValue }) {
+      if (isEditing) {
+        const value = currentValue ?? item.CertificateMinVersion;
+
+        return (
+          <Select
+            selectedOption={tlsVersions.find(option => option.value === value) ?? null}
+            onChange={event => setValue(event.detail.selectedOption.value ?? item.CertificateMinVersion)}
+            options={tlsVersions}
+          />
+        );
       }
-      return (
-        <Input
-          autoFocus={true}
-          value={currentValue ?? item.expression}
-          onChange={event => setValue(event.detail.value)}
-        />
-      );
+
+      return item.CertificateMinVersion;
     },
   },
   {
-    header: 'Activated',
-    width: 180,
-    cell: (item: Metric) => {
-      return item.enabled ? 'Yes' : 'No';
+    id: 'LastModifiedTime',
+    header: 'Last Modified',
+    editConfig: {
+      ariaLabel: 'Last Modified',
     },
-  },
-  {
-    header: 'Statistic',
-    cell(item) {
-      return item.statistic;
+    cell: (item, { isEditing, currentValue, setValue }) => {
+      if (isEditing) {
+        const time = new Date(item.LastModifiedTime);
+        const value = `${time.getHours()}:${time.getMinutes()}`;
+        return (
+          <TimeInput
+            autoFocus={true}
+            format="hh:mm"
+            value={currentValue ?? value}
+            onChange={event => {
+              setValue(event.detail.value);
+            }}
+          />
+        );
+      }
+
+      return item.LastModifiedTime;
     },
-  },
-  {
-    header: 'Period',
-    cell: (item: Metric) => (
-      <Select
-        selectedOption={{ value: item.period }}
-        expandToViewport={true}
-        onChange={() => {}}
-        empty="Editable selects are not in the scope"
-        options={[]}
-      />
-    ),
   },
 ];
 
-let errorsMeta = new WeakMap<Metric, string>();
+let errorsMeta = new WeakMap<DistributionInfo, string>();
 
 function Demo() {
   const [items, setItems] = useState(initialItems);
   const tableRef = useRef<TableProps.Ref>(null);
 
-  const handleSubmit: TableProps.SubmitEditFunction<Metric> = async (currentItem, column, newValue: string) => {
+  const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (
+    currentItem,
+    column,
+    newValue: string
+  ) => {
+    let value = newValue;
     await new Promise(r => setTimeout(r, 1000));
     errorsMeta.delete(currentItem);
-    if (newValue === 'inline') {
+    if (value === 'inline') {
       errorsMeta.set(currentItem, 'Server does not accept this value, try another');
       throw new Error('Inline error');
     }
-    const newItem = { ...currentItem, [column.id as keyof Metric]: newValue };
+    if (
+      column.id === 'LastModifiedTime' &&
+      (new Date(value).toString() === 'Invalid Date' || !isNaN(+new Date(value)))
+    ) {
+      const time = new Date(currentItem.LastModifiedTime);
+      const [hours, minutes] = value.split(':').map(Number);
+      time.setHours(hours);
+      time.setMinutes(minutes);
+      value = time.toISOString();
+    }
+
+    const newItem = { ...currentItem, [column.id as keyof DistributionInfo]: value };
+
     setItems(items => items.map(item => (item === currentItem ? newItem : item)));
   };
 
@@ -137,7 +182,7 @@ function Demo() {
       ref={tableRef}
       header={
         <Header variant="awsui-h1-sticky" counter={`(${items.length})`}>
-          Metrics
+          Distributions
         </Header>
       }
       submitEdit={handleSubmit}

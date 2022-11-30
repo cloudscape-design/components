@@ -4,7 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-const DNS_CHAR_ERROR = 'The value should only include DNS-safe characters';
+const DOMAIN_ERROR = 'Must be a valid domain name';
 const tableWrapper = createWrapper().findTable();
 
 // $ = selector
@@ -18,13 +18,13 @@ const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
 const cellSaveButton$ = bodyCell.find(SAVE_BTN$).toSelector();
 
 // for arrow key navigation
-const mainCell = tableWrapper.findBodyCell(3, 2);
+const mainCell = tableWrapper.findBodyCell(4, 4);
 const mainCell$ = mainCell.toSelector();
 const mainCellSaveButton$ = mainCell.find(SAVE_BTN$).toSelector();
-const leftCell$ = tableWrapper.findBodyCell(3, 1).find(EDIT_BTN$).toSelector();
-const rightCell$ = tableWrapper.findBodyCell(3, 3).find(EDIT_BTN$).toSelector();
-const cellAbove$ = tableWrapper.findBodyCell(2, 2).find(EDIT_BTN$).toSelector();
-const cellBelow$ = tableWrapper.findBodyCell(4, 2).find(EDIT_BTN$).toSelector();
+const leftCell$ = tableWrapper.findBodyCell(4, 2).find(EDIT_BTN$).toSelector();
+const rightCell$ = tableWrapper.findBodyCell(4, 5).find(EDIT_BTN$).toSelector();
+const cellAbove$ = tableWrapper.findBodyCell(3, 4).find(EDIT_BTN$).toSelector();
+const cellBelow$ = tableWrapper.findBodyCell(5, 4).find(EDIT_BTN$).toSelector();
 
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
@@ -51,7 +51,7 @@ test(
   setupTest(async page => {
     await page.click(cellRoot$);
     await page.setValue(cellInputField$, 'xyz .com'); // space is not allowed
-    await expect(page.getText(bodyCellError)).resolves.toBe(DNS_CHAR_ERROR);
+    await expect(page.getText(bodyCellError)).resolves.toBe(DOMAIN_ERROR);
   })
 );
 
