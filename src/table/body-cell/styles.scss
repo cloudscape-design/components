@@ -107,9 +107,17 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding-top: $cell-vertical-padding;
   }
   &-editor {
+    top: 0;
+    right: 0;
+    bottom: 0;
     position: absolute;
-    top: $cell-vertical-padding;
-    right: awsui.$space-xs;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding-right: awsui.$space-xs;
+
     &-form {
       margin: 0 calc(-1 * #{awsui.$space-xs});
     }
