@@ -52,7 +52,7 @@ export function HelpContent() {
     <HelpPanel header="How to use the demo">
       <h3>Client-side validation</h3>
       <ul>
-        <li>&quot;Label&quot; column does not allow spaces</li>
+        <li>&quot;Domain name&quot; column does not allow spaces</li>
       </ul>
       <h3>Server side validation</h3>
       <ul>
