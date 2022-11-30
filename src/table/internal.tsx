@@ -312,7 +312,7 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableBodyCell
-                            className={clsx(styles['selection-control'])}
+                            className={styles['selection-control']}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
