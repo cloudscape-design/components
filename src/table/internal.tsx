@@ -387,9 +387,9 @@ const InternalTable = React.forwardRef(
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
-                              onEditEnd={() => {
+                              onEditEnd={dirty => {
                                 setCurrentEditCell(null);
-                                fireNonCancelableEvent(onEditCancel);
+                                fireNonCancelableEvent(onEditCancel, { dirty });
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}
                               stripedRows={stripedRows}

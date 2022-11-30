@@ -10889,6 +10889,18 @@ including the hidden via preferences columns. Use this event to persist the colu
       "cancelable": false,
       "description": "Called whenever user cancels an inline edit. Use it to reset any
 validation states.",
+      "detailInlineType": Object {
+        "name": "TableDirtyState",
+        "properties": Array [
+          Object {
+            "name": "dirty",
+            "optional": true,
+            "type": "false | true",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TableDirtyState",
       "name": "onEditCancel",
     },
     Object {

@@ -17,6 +17,13 @@ import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/e
 export interface TableForwardRefType {
   <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
+
+interface TableDirtyState {
+  /**
+   * There were unsaved changes in the table.
+   */
+  dirty?: boolean;
+}
 export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Heading element of the table container. Use the [header component](/components/header/).
@@ -259,7 +266,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Called whenever user cancels an inline edit. Use it to reset any
    * validation states.
    */
-  onEditCancel?: NonCancelableEventHandler;
+  onEditCancel?: NonCancelableEventHandler<TableDirtyState>;
 }
 
 export namespace TableProps {

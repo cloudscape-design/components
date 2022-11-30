@@ -15,7 +15,7 @@ interface InlineEditorProps<ItemType> {
   ariaLabels: TableProps['ariaLabels'];
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  onEditEnd: () => void;
+  onEditEnd: (dirty?: boolean) => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType>;
 }
 
@@ -29,9 +29,9 @@ export function InlineEditor<ItemType>({
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
   const [currentEditValue, setCurrentEditValue] = useState<any>(undefined);
 
-  function finishEdit() {
+  function finishEdit(dirty?: boolean) {
     setCurrentEditValue(undefined);
-    onEditEnd();
+    onEditEnd(dirty);
   }
 
   function onSubmitClick(evt: React.FormEvent) {
@@ -57,7 +57,7 @@ export function InlineEditor<ItemType>({
     if (currentEditLoading) {
       return;
     }
-    finishEdit();
+    finishEdit(currentEditValue !== undefined);
   }
 
   function handleEscape(event: React.KeyboardEvent): void {

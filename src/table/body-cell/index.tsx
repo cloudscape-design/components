@@ -22,7 +22,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   item: ItemType;
   isEditActive: boolean;
   onEditStart: () => void;
-  onEditEnd: () => void;
+  onEditEnd: (dirty?: boolean) => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType> | undefined;
   ariaLabels: TableProps['ariaLabels'];
 }
@@ -48,9 +48,7 @@ function TableCellEditable<ItemType>({
     }
   }, [isEditActive]);
 
-  const handleEditEnd = () => {
-    onEditEnd();
-  };
+  const handleEditEnd = onEditEnd;
 
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
