@@ -456,8 +456,15 @@ describe('property filter parts', () => {
 
       test('can be used to check aria-label attirbute on the filter token operator', () => {
         const secondToken = wrapper.findTokens()![1];
-        const operator = secondToken.findTokenOperation()?.findDropdown();
-        expect(operator?.findAll('span')[0].getElement()?.innerText === 'Boolean Operator');
+        const label = secondToken
+          .findTokenOperation()
+          ?.findTrigger()
+          .getElement()
+          .getAttribute('aria-labelledby')!
+          .split(' ')
+          .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
+          .join(' ');
+        expect(label).toBe('Boolean Operator or');
       });
     });
     describe('dismiss button', () => {
