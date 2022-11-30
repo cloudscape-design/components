@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import '../../__a11y__/to-validate-a11y';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import TagEditor, { TagEditorProps } from '../../../lib/components/tag-editor';
 import { i18nStrings } from './common';
 
@@ -29,6 +29,5 @@ test('field validation error', async () => {
   const { container } = render(
     <TagEditor {...defaultProps} tags={[...defaultProps.tags!, { key: 'aws:', value: '', existing: false }]} />
   );
-  screen.debug(container.querySelectorAll('.awsui_field_n4qlp_87hqf_145')[6]);
   await expect(container).toValidateA11y();
 });
