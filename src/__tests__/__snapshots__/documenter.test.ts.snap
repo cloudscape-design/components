@@ -12818,9 +12818,19 @@ Object {
             "type": "string",
           },
           Object {
+            "name": "labelLearnMoreLink",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "labelTotalSteps",
             "optional": false,
             "type": "(totalStepCount: number) => string",
+          },
+          Object {
+            "name": "labelTutorialListDownloadLink",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "labelsTaskStatus",
