@@ -68,9 +68,9 @@ const Thead = React.forwardRef(
     const headerCellClass = clsx(
       headerCellStyles['header-cell'],
       headerCellStyles[`header-cell-variant-${variant}`],
-      isVisualRefresh && headerCellStyles['is-visual-refresh'],
       sticky && headerCellStyles['header-cell-sticky'],
-      stuck && headerCellStyles['header-cell-stuck']
+      stuck && headerCellStyles['header-cell-stuck'],
+      isVisualRefresh && headerCellStyles['is-visual-refresh']
     );
 
     const selectionCellClass = clsx(
