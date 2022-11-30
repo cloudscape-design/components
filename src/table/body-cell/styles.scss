@@ -39,9 +39,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-first-row {
     border-top: $border-placeholder;
   }
-  &-last-row {
+  &-last-row:not(.has-footer) {
     // skip border for the last row, because container already has a border
     border-bottom: $border-placeholder;
+  }
+  &-last-row.has-footer {
+    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
   &-shaded {
     background: awsui.$color-background-cell-shaded;

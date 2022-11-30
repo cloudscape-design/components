@@ -52,9 +52,6 @@
   &-layout-fixed {
     table-layout: fixed;
   }
-  &.has-footer {
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  }
 }
 
 .wrapper {
@@ -67,8 +64,8 @@
   &.variant-stacked,
   &.variant-container {
     & > .table {
-      margin-left: awsui.$space-table-horizontal;
-      margin-right: awsui.$space-table-horizontal;
+      padding-left: awsui.$space-table-horizontal;
+      padding-right: awsui.$space-table-horizontal;
     }
   }
   &.variant-embedded {

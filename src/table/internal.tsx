@@ -324,6 +324,7 @@ const InternalTable = React.forwardRef(
                             wrapLines={false}
                             isEvenRow={isEven}
                             stripedRows={stripedRows}
+                            hasFooter={hasFooter}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -355,6 +356,7 @@ const InternalTable = React.forwardRef(
                             isPrevSelected={isPrevSelected}
                             stripedRows={stripedRows}
                             isEvenRow={isEven}
+                            hasFooter={hasFooter}
                           />
                         ))}
                       </tr>
