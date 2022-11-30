@@ -108,7 +108,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &-editor {
     position: absolute;
-    top: calc(#{$cell-vertical-padding} + #{awsui.$space-scaled-xxs});
+    top: $cell-vertical-padding;
     right: awsui.$space-xs;
     &-form {
       margin: 0 calc(-1 * #{awsui.$space-xs});
@@ -133,6 +133,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     cursor: pointer;
     border-left: awsui.$border-divider-list-width solid transparent;
     border-right: awsui.$border-divider-list-width solid transparent;
+
+    &.body-cell-edit-active {
+      overflow: visible;
+    }
+
     &:not(.body-cell-edit-active) {
       & > .body-cell-editor {
         opacity: 0;
