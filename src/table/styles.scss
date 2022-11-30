@@ -204,7 +204,11 @@ the default white background of the container component.
   /* used in test-utils */
 }
 
-// theme specific styles adjustments
+/*
+In Visual Refresh the table header and body cells need a 
+fixed width to align the selection control with the table
+filter search icon.
+*/
 .selection-control:not(.is-visual-refresh) {
   max-width: 5.4 * styles.$base-size;
   min-width: 5.4 * styles.$base-size;

@@ -103,7 +103,12 @@
   /* used in test-utils */
 }
 
-// theme specific styles adjustments
+/*
+In Visual Refresh the first cell in the header should align
+with the left edge of the table. If the last header cell 
+is sortable the sort icon should align with the settings icon
+in the pagination slot.
+*/
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
     padding-left: awsui.$space-xs;

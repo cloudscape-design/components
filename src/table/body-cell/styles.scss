@@ -40,10 +40,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-top: $border-placeholder;
   }
   &-last-row:not(.has-footer) {
-    // skip border for the last row, because container already has a border
+    // skip the border for the last row because container already has a border
     border-bottom: $border-placeholder;
   }
   &-last-row.has-footer {
+    // add a border to the last row as a separator between the table and the footer
     border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
   &-shaded {
@@ -99,7 +100,10 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
 }
 
-// theme specific styles adjustments
+/*
+In Visual Refresh the first cell of each row should align with 
+the left edge of the table.
+*/
 .body-cell:not(.is-visual-refresh) {
   &:first-child {
     padding-left: awsui.$space-xs;
