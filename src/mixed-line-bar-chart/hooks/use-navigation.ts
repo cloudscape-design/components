@@ -178,10 +178,7 @@ export function useNavigation<T extends ChartDataTypes>({
   );
 
   const getNextPoint = useCallback(
-    (targetScaledSeries: ReadonlyArray<ScaledPoint<T>>, point: ScaledPoint<T> | null, direction = 1) => {
-      if (point === null) {
-        return targetScaledSeries[0];
-      }
+    (targetScaledSeries: ReadonlyArray<ScaledPoint<T>>, point: ScaledPoint<T>, direction = 1) => {
       const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(point.x);
       const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
       return targetScaledSeries[nextPointIndex];
@@ -195,7 +192,8 @@ export function useNavigation<T extends ChartDataTypes>({
 
       if (series.type === 'line' || isYThreshold(series)) {
         const targetScaledSeries = scaledSeries.filter(it => it.series === series);
-        const nextPoint = getNextPoint(targetScaledSeries, highlightedPoint, direction);
+        const previousPoint = highlightedPoint || targetScaledSeries[0];
+        const nextPoint = getNextPoint(targetScaledSeries, previousPoint, direction);
 
         setTargetX(nextPoint.datum?.x || null);
         setVerticalMarkerLeft({ scaledX: nextPoint.x, datumX: nextPoint.datum?.x, trigger: 'keyboard' });

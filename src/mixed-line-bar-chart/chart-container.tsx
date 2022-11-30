@@ -422,7 +422,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const activeLiveRegion =
     activeAriaLabel && !highlightedPoint && highlightedGroupIndex === null ? activeAriaLabel : '';
 
-  const isLineXKeyboardFocused = isPlotFocused && verticalMarkerLeft?.trigger === 'keyboard';
+  const isLineXKeyboardFocused = isPlotFocused && !highlightedPoint && verticalMarkerLeft?.trigger === 'keyboard';
 
   return (
     <div className={styles['chart-container']} ref={containerRef}>
