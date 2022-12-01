@@ -192,6 +192,27 @@ describe('Popover', () => {
       await expect(page.getPopoverTitle()).resolves.toBe('5s');
     })
   );
+
+  test(
+    'popover can be closed when Escape is pressed after hover',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await expect(page.hasPopover()).resolves.toBe(false);
+      await page.hoverElement(page.chart.toSelector());
+      await expect(page.hasPopover()).resolves.toBe(true);
+      await page.keys(['Escape']);
+      await expect(page.hasPopover()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'popover can be closed when Escape is pressed after chart plot is focused',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.focusPlot();
+      await expect(page.hasPopover()).resolves.toBe(true);
+      await page.keys(['Escape']);
+      await expect(page.hasPopover()).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Keyboard navigation', () => {

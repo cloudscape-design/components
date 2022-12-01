@@ -2,22 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from './interfaces';
 import { setTimeOffset } from './time-offset';
-
-/**
- * This function fills in a start and end time if they are missing.
- */
-export function fillMissingTime(value: DateRangePickerProps.AbsoluteValue | null) {
-  if (!value) {
-    return value;
-  }
-  const [startDate, startTime] = value.startDate.split('T');
-  const [endDate, endTime] = value.endDate.split('T');
-  return {
-    ...value,
-    startDate: startTime ? value.startDate : `${startDate}T00:00:00`,
-    endDate: endTime ? value.endDate : `${endDate}T23:59:59`,
-  };
-}
+import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
@@ -51,4 +36,26 @@ export function getDefaultMode(
     return 'absolute';
   }
   return relativeOptions.length > 0 ? 'relative' : 'absolute';
+}
+
+export function splitAbsoluteValue(
+  value: null | DateRangePickerProps.AbsoluteValue
+): DateRangePickerProps.PendingAbsoluteValue {
+  if (!value) {
+    return {
+      start: { date: '', time: '' },
+      end: { date: '', time: '' },
+    };
+  }
+  return { start: splitDateTime(value.startDate), end: splitDateTime(value.endDate) };
+}
+
+export function joinAbsoluteValue(
+  value: DateRangePickerProps.PendingAbsoluteValue
+): DateRangePickerProps.AbsoluteValue {
+  return {
+    type: 'absolute',
+    startDate: joinDateTime(value.start.date, value.start.time || '00:00:00'),
+    endDate: joinDateTime(value.end.date, value.end.time || '23:59:59'),
+  };
 }

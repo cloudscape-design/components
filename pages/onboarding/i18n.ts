@@ -10,9 +10,11 @@ export const tutorialPanelStrings: TutorialPanelProps.I18nStrings = {
   tutorialListDescription:
     'Use our walk-through tutorials to learn how to achieve your desired objectives within Amazon Transcribe.',
   tutorialListDownloadLinkText: 'Download PDF version',
+  labelTutorialListDownloadLink: 'Download PDF version of this tutorial',
   tutorialCompletedText: 'Tutorial completed',
   labelExitTutorial: 'dismiss tutorial',
   learnMoreLinkText: 'Learn more',
+  labelLearnMoreLink: 'Learn more about transcribe audio (opens new tab)',
   startTutorialButtonText: 'Start tutorial',
   restartTutorialButtonText: 'Restart tutorial',
   completionScreenTitle: 'Congratulations! You completed the tutorial',
@@ -27,7 +29,10 @@ export const tutorialPanelStrings: TutorialPanelProps.I18nStrings = {
 export const annotationContextStrings: AnnotationContextProps.I18nStrings = {
   stepCounterText: (stepIndex, totalStepCount) => `Step ${stepIndex + 1}/${totalStepCount}`,
   taskTitle: (taskIndex, taskTitle) => `Task ${taskIndex + 1}: ${taskTitle}`,
-  labelHotspot: openState => (openState ? 'close annotation' : 'open annotation'),
+  labelHotspot: (openState, stepIndex, totalStepCount) =>
+    openState
+      ? `close annotation for step ${stepIndex + 1}/${totalStepCount}`
+      : `open annotation for step ${stepIndex + 1}/${totalStepCount}`,
   nextButtonText: 'Next',
   previousButtonText: 'Previous',
   finishButtonText: 'Finish',

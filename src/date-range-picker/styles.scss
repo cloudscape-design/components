@@ -38,10 +38,6 @@ $calendar-header-color: awsui.$color-text-body-default;
 }
 
 .calendar {
-  display: block;
-  width: 100%;
-  margin-bottom: awsui.$space-scaled-s;
-
   &-header {
     display: flex;
     justify-content: space-between;

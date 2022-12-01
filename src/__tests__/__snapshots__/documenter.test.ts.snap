@@ -207,7 +207,7 @@ the component.",
           Object {
             "name": "labelHotspot",
             "optional": false,
-            "type": "(openState: boolean) => string",
+            "type": "(openState: boolean, stepIndex: number, totalStepCount: number) => string",
           },
           Object {
             "name": "nextButtonText",
@@ -4842,6 +4842,27 @@ is provided by its parent form field component.
       "name": "controlId",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies an additional control displayed in the dropdown, located below the range calendar.",
+      "inlineType": Object {
+        "name": "DateRangePickerProps.AbsoluteRangeControl",
+        "parameters": Array [
+          Object {
+            "name": "selectedRange",
+            "type": "DateRangePickerProps.PendingAbsoluteValue",
+          },
+          Object {
+            "name": "setSelectedRange",
+            "type": "React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>",
+          },
+        ],
+        "returnType": "React.ReactNode",
+        "type": "function",
+      },
+      "name": "customAbsoluteRangeControl",
+      "optional": true,
+      "type": "DateRangePickerProps.AbsoluteRangeControl",
     },
     Object {
       "defaultValue": "false",
@@ -12751,9 +12772,19 @@ Object {
             "type": "string",
           },
           Object {
+            "name": "labelLearnMoreLink",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "labelTotalSteps",
             "optional": false,
             "type": "(totalStepCount: number) => string",
+          },
+          Object {
+            "name": "labelTutorialListDownloadLink",
+            "optional": true,
+            "type": "string",
           },
           Object {
             "name": "labelsTaskStatus",

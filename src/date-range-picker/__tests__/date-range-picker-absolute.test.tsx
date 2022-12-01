@@ -200,6 +200,44 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
+
+      test('missing start date can be filled (before end date)', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+
+        act(() => wrapper.findTrigger().click());
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        act(() => wrapper.findDropdown()!.findDateAt('left', 2, 3).click());
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('9');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/09');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('12');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/12');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('13:05:21');
+      });
+
+      test('missing start date can be filled (after end date, requires a swap)', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+
+        act(() => wrapper.findTrigger().click());
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        act(() => wrapper.findDropdown()!.findDateAt('left', 3, 4).click());
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('12');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/12');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('17');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03/17');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
+      });
     });
 
     describe('time offset', () => {
@@ -429,6 +467,73 @@ describe('Date range picker', () => {
         expect(onChangeSpy).toHaveBeenCalledWith(
           expect.objectContaining({ value: { type: 'absolute', startDate: '2018-05-10', endDate: '2018-05-12' } })
         );
+      });
+    });
+
+    describe('custom control', () => {
+      const customControl: DateRangePickerProps.AbsoluteRangeControl = (value, setValue) => (
+        <>
+          <div data-testid="display">{JSON.stringify(value)}</div>
+          <button
+            data-testid="set-date"
+            onClick={() =>
+              setValue({
+                start: { date: '2022-01-02', time: '00:00:00' },
+                end: { date: '2022-02-06', time: '12:34:56' },
+              })
+            }
+          ></button>
+          <button
+            data-testid="clear-date"
+            onClick={() => setValue({ start: { date: '', time: '' }, end: { date: '', time: '' } })}
+          ></button>
+        </>
+      );
+      test('renders current value from calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-11-24","time":"12:55:00"},"end":{"date":"2022-11-28","time":"11:14:00"}}'
+        );
+      });
+
+      test('can update value in calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        getByTestId('set-date').click();
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-01-02","time":"00:00:00"},"end":{"date":"2022-02-06","time":"12:34:56"}}'
+        );
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('2');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2022/01/02');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('6');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2022/02/06');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('12:34:56');
+      });
+
+      test('can clear value in calendar', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        act(() => wrapper.findTrigger().click());
+        getByTestId('clear-date').click();
+        expect(getByTestId('display')).toHaveTextContent('{"start":{"date":"","time":""},"end":{"date":"","time":""}}');
+        expect(wrapper.findDropdown()!.findSelectedStartDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('');
       });
     });
   });

@@ -11,6 +11,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
+import { generateUniqueId } from '../internal/hooks/use-unique-id';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
@@ -55,44 +56,57 @@ export const Row = React.memo(
       fireNonCancelableEvent(onRemoveButtonClick, { itemIndex: index });
     }, [onRemoveButtonClick, index]);
 
+    const firstControlId = generateUniqueId('first-control-id-');
+
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>
-        <InternalGrid
-          __breakpoint={breakpoint}
-          gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}
-        >
-          <InternalColumnLayout className={styles['row-control']} columns={definition.length} __breakpoint={breakpoint}>
-            {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
-              <InternalFormField
-                key={defIndex}
-                className={styles.field}
-                label={label}
-                info={info}
-                constraintText={render(item, index, constraintText)}
-                errorText={render(item, index, errorText)}
-                stretch={true}
-                i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
-                __hideLabel={isWideViewport && index > 0}
+        <div role="group" aria-labelledby={`${firstControlId}-label ${firstControlId}`}>
+          <InternalGrid
+            __breakpoint={breakpoint}
+            gridDefinition={removable ? REMOVABLE_GRID_DEFINITION : GRID_DEFINITION}
+          >
+            <InternalColumnLayout
+              className={styles['row-control']}
+              columns={definition.length}
+              __breakpoint={breakpoint}
+            >
+              {definition.map(({ info, label, constraintText, errorText, control }, defIndex) => (
+                <InternalFormField
+                  key={defIndex}
+                  className={styles.field}
+                  label={label}
+                  info={info}
+                  constraintText={render(item, index, constraintText)}
+                  errorText={render(item, index, errorText)}
+                  stretch={true}
+                  i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
+                  __hideLabel={isWideViewport && index > 0}
+                  controlId={defIndex === 0 ? firstControlId : undefined}
+                >
+                  {render(item, index, control)}
+                </InternalFormField>
+              ))}
+            </InternalColumnLayout>
+            {removable && (
+              <ButtonContainer
+                index={index}
+                isNarrowViewport={isNarrowViewport}
+                hasLabel={definition.some(row => row.label)}
               >
-                {render(item, index, control)}
-              </InternalFormField>
-            ))}
-          </InternalColumnLayout>
-          {removable && (
-            <ButtonContainer index={index} isNarrowViewport={isNarrowViewport}>
-              <InternalButton
-                className={styles['remove-button']}
-                formAction="none"
-                ref={ref => {
-                  removeButtonRefs[index] = ref ?? undefined;
-                }}
-                onClick={handleRemoveClick}
-              >
-                {removeButtonText}
-              </InternalButton>
-            </ButtonContainer>
-          )}
-        </InternalGrid>
+                <InternalButton
+                  className={styles['remove-button']}
+                  formAction="none"
+                  ref={ref => {
+                    removeButtonRefs[index] = ref ?? undefined;
+                  }}
+                  onClick={handleRemoveClick}
+                >
+                  {removeButtonText}
+                </InternalButton>
+              </ButtonContainer>
+            )}
+          </InternalGrid>
+        </div>
         {isNarrowViewport && <Divider />}
       </InternalBox>
     );
@@ -103,12 +117,14 @@ interface ButtonContainer {
   index: number;
   children: React.ReactNode;
   isNarrowViewport: boolean;
+  hasLabel: boolean;
 }
 
-const ButtonContainer = ({ index, children, isNarrowViewport }: ButtonContainer) => (
+const ButtonContainer = ({ index, children, isNarrowViewport, hasLabel }: ButtonContainer) => (
   <div
     className={clsx({
-      [styles['button-container']]: !isNarrowViewport && index === 0,
+      [styles['button-container-haslabel']]: !isNarrowViewport && index === 0 && hasLabel,
+      [styles['button-container-nolabel']]: !isNarrowViewport && index === 0 && !hasLabel,
       [styles['right-align']]: isNarrowViewport,
     })}
   >

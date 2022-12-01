@@ -72,7 +72,7 @@ export namespace AnnotationContextProps {
     finishButtonText: string;
 
     labelDismissAnnotation: string;
-    labelHotspot: (openState: boolean) => string;
+    labelHotspot: (openState: boolean, stepIndex: number, totalStepCount: number) => string;
 
     stepCounterText: (stepIndex: number, totalStepCount: number) => string;
     taskTitle: (taskIndex: number, taskTitle: string) => string;

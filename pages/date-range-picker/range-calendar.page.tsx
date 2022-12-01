@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { Box, Link, Checkbox, SpaceBetween } from '~components';
-import RangeCalendar from '~components/date-range-picker/calendar';
-import { RangeCalendarValue } from '~components/date-range-picker/interfaces';
+import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 import { i18nStrings, i18nStringsDateOnly } from './common';
 
 export default function RangeCalendarScenario() {
-  const [value, setValue] = useState<null | RangeCalendarValue>({ startDate: '2020-01-25', endDate: '2020-02-02' });
+  const [value, setValue] = useState<DateRangePickerCalendarProps['value']>({
+    start: { date: '2020-01-25', time: '' },
+    end: { date: '2020-02-02', time: '' },
+  });
   const [dateOnly, setDateOnly] = useState(false);
 
   return (
@@ -23,12 +25,13 @@ export default function RangeCalendarScenario() {
 
         <RangeCalendar
           value={value}
-          onChange={setValue}
+          setValue={setValue}
           locale="en-GB"
           i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
           dateOnly={dateOnly}
           timeInputFormat="hh:mm"
           isDateEnabled={date => date.getDate() !== 15}
+          customAbsoluteRangeControl={undefined}
         />
 
         <Link id="focusable-after">Focusable element after the range calendar</Link>

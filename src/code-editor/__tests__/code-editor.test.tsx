@@ -14,6 +14,7 @@ import {
 import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/code-editor/styles.css.js';
 import { warnOnce } from '../../../lib/components/internal/logging';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -267,6 +268,17 @@ describe('Code editor component', () => {
 
     expect(item.getElement().textContent).toEqual(expect.stringContaining('error text'));
     expect(item.getElement().textContent).toEqual(expect.stringContaining('Ln 1, Col 1'));
+  });
+
+  it('sends annotation text to LiveRegion Component for a11y announcement', () => {
+    editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'error', row: 0, column: 0, text: 'error text' }]);
+    const { wrapper } = renderCodeEditor();
+    act(() => emulateAceAnnotationEvent!());
+
+    const liveRegion = wrapper.findStatusBar()?.find(`.${liveRegionStyles.root}`)?.getElement().innerHTML;
+
+    expect(liveRegion).toContain(defaultProps.i18nStrings.errorsTab);
+    expect(liveRegion).toContain(defaultProps.i18nStrings.warningsTab);
   });
 
   it('moves cursor to annotation when clicked', () => {

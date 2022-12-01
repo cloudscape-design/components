@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { pie } from 'd3-shape';
 
@@ -164,10 +164,21 @@ export default <T extends PieChartProps.Datum>({
     },
     [highlightedSegment, setTooltipOpen, onHighlightChange]
   );
+
   const clearHighlightedSegment = useCallback(() => {
     setTooltipOpen(false);
     onHighlightChange(null);
   }, [onHighlightChange, setTooltipOpen]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        clearHighlightedSegment();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [clearHighlightedSegment]);
 
   const onMouseDown = useCallback(
     (internalDatum: InternalChartDatum<T>) => {

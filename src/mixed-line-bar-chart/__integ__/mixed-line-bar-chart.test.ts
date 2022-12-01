@@ -337,6 +337,35 @@ describe('Details popover', () => {
   );
 
   test(
+    'can be hidden after hover by pressing Escape',
+    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+      // Hover over first group
+      await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+
+      // Pressing escape should hide the popover
+      await page.keys(['Escape']);
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+      await expect(page.isDisplayed(popoverHeaderSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'can be hidden after keyboard navigation by pressing Escape',
+    setupTest('#/light/bar-chart/test', async page => {
+      // Navigate first group in the first chart
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'ArrowRight']);
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+
+      // Pressing Escape should close the popover
+      await page.keys(['Escape']);
+      await expect(page.isDisplayed(popoverHeaderSelector())).resolves.toBe(false);
+      await expect(page.isDisplayed(popoverDismissSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
     setupTest('#/light/line-chart/test', async page => {
       // Hovers to open popover

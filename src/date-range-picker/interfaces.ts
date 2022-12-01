@@ -5,6 +5,7 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import React from 'react';
 
 export interface DateRangePickerBaseProps {
   /**
@@ -152,6 +153,11 @@ export interface DateRangePickerProps
    * allows the user to clear the selected value.
    */
   showClearButton?: boolean;
+
+  /**
+   * Specifies an additional control displayed in the dropdown, located below the range calendar.
+   */
+  customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
 }
 
 export namespace DateRangePickerProps {
@@ -217,6 +223,21 @@ export namespace DateRangePickerProps {
   export interface GetTimeOffsetFunction {
     (date: Date): number;
   }
+
+  export interface DateTimeStrings {
+    date: string;
+    time: string;
+  }
+
+  export interface PendingAbsoluteValue {
+    start: DateTimeStrings;
+    end: DateTimeStrings;
+  }
+
+  export type AbsoluteRangeControl = (
+    selectedRange: PendingAbsoluteValue,
+    setSelectedRange: React.Dispatch<React.SetStateAction<PendingAbsoluteValue>>
+  ) => React.ReactNode;
 
   export type RangeSelectorMode = 'default' | 'absolute-only' | 'relative-only';
 
@@ -367,11 +388,6 @@ export namespace DateRangePickerProps {
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-export interface RangeCalendarValue {
-  startDate: string;
-  endDate: string;
-}
 
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,

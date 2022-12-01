@@ -295,18 +295,10 @@ const Dropdown = ({
         fireNonCancelableEvent(onDropdownClose);
       }
     };
-
-    /*
-     * This small delay allows the event that opened the dropdown to
-     * finish bubbling, so that it is not immediately captured here.
-     */
-    const timeout = setTimeout(() => {
-      window.addEventListener('click', clickListener);
-    }, 0);
+    window.addEventListener('click', clickListener, true);
 
     return () => {
-      clearTimeout(timeout);
-      window.removeEventListener('click', clickListener);
+      window.removeEventListener('click', clickListener, true);
     };
   }, [open, onDropdownClose]);
 

@@ -299,6 +299,27 @@ describe('Detail popover', () => {
       await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
     })
   );
+
+  test(
+    'can be dismissed after hovering on the segment by pressing Escape',
+    setupTest(async page => {
+      await page.hoverElement(pieWrapper.findSegments().get(1).toSelector());
+      await page.waitForVisible(detailsPopoverSelector);
+      await page.keys(['Escape']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'can be dismissed after navigating to the segment with keyboard by pressing Escape',
+    setupTest(async page => {
+      await page.click('#focus-target');
+      await page.keys(['Tab', 'Tab', 'Enter']);
+      await page.waitForVisible(detailsPopoverSelector);
+      await page.keys(['Escape']);
+      await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Focus outline', () => {

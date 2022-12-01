@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useContext, useLayoutEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { AppLayoutContext } from '../app-layout/visual-refresh/context';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
@@ -67,14 +67,17 @@ export default function InternalContainer({
    * has a high constrast sticky header. This is to make sure the background element
    * stays in the same vertical position as the header content.
    */
-  useLayoutEffect(
+  useEffect(
     function handleHasStickyBackground() {
-      if (isRefresh && isSticky && variant === 'full-page') {
+      const shouldUpdateStickyBackground = isRefresh && isSticky && variant === 'full-page';
+      if (shouldUpdateStickyBackground) {
         setHasStickyBackground(true);
       }
 
       return function cleanup() {
-        setHasStickyBackground(false);
+        if (shouldUpdateStickyBackground) {
+          setHasStickyBackground(false);
+        }
       };
     },
     [isRefresh, isSticky, setHasStickyBackground, variant]

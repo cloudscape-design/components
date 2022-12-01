@@ -10,13 +10,13 @@ export default class ErrorBoundary extends React.Component<any, { errorMessage: 
 
   static getDerivedStateFromError(error: Error) {
     // Update state so the next render will show the fallback UI.
-    return { errorMessage: error.message };
+    return { errorMessage: error.stack || error.message };
   }
 
   render() {
     if (this.state.errorMessage) {
       // You can render any custom fallback UI
-      return <span style={{ color: 'red' }}>{this.state.errorMessage}</span>;
+      return <span style={{ color: 'red', whiteSpace: 'pre' }}>{this.state.errorMessage}</span>;
     }
 
     return this.props.children;

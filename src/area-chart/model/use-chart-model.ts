@@ -241,6 +241,13 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       interactions.clearState();
     };
 
+    const onDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        interactions.clearHighlight();
+        interactions.clearHighlightedLegend();
+      }
+    };
+
     return {
       width,
       height,
@@ -260,6 +267,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         onLegendHighlight,
         onPopoverDismiss,
         onContainerBlur,
+        onDocumentKeyDown,
       },
       refs: {
         plot: plotRef,

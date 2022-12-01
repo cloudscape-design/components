@@ -71,6 +71,7 @@ export default function TutorialList({
             target="_blank"
             rel="noopener noreferrer"
             className={styles['download-link']}
+            aria-label={i18nStrings.labelTutorialListDownloadLink}
           >
             <InternalIcon name="download" />
             <InternalBox padding={{ left: 'xs' }} color="inherit" fontWeight="bold" display="inline">
@@ -198,6 +199,7 @@ function Tutorial({
                       href={tutorial.learnMoreUrl}
                       className={styles['learn-more-link']}
                       externalIconAriaLabel={i18nStrings.labelLearnMoreExternalIcon}
+                      ariaLabel={i18nStrings.labelLearnMoreLink}
                       external={true}
                     >
                       {i18nStrings.learnMoreLinkText}

@@ -13,6 +13,8 @@ import { AnnotationContextProps } from '../interfaces';
 import InternalAlert from '../../alert/internal';
 import { InternalPosition } from '../../popover/interfaces';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { joinStrings } from '../../internal/utils/strings/join-strings.js';
 
 export interface AnnotationPopoverProps {
   title: string;
@@ -81,6 +83,9 @@ export function AnnotationPopover({
     scrollElementIntoView(trackRef.current ?? undefined);
   }, [trackRef]);
 
+  const popoverHeaderId = useUniqueId('poppver-header-');
+  const stepCounterId = useUniqueId('step-counter-');
+
   return (
     <PopoverContainer
       size="medium"
@@ -96,7 +101,13 @@ export function AnnotationPopover({
         dismissButton={true}
         dismissAriaLabel={i18nStrings.labelDismissAnnotation}
         header={
-          <InternalBox color="text-body-secondary" fontSize="body-s" margin={{ top: 'xxxs' }} className={styles.header}>
+          <InternalBox
+            id={popoverHeaderId}
+            color="text-body-secondary"
+            fontSize="body-s"
+            margin={{ top: 'xxxs' }}
+            className={styles.header}
+          >
             {title}
           </InternalBox>
         }
@@ -104,6 +115,9 @@ export function AnnotationPopover({
         className={styles.annotation}
         variant="annotation"
         overflowVisible="content"
+        // create new dialog to have the native dialog behavior of the screen readers
+        key={taskLocalStepIndex}
+        ariaLabelledby={joinStrings(popoverHeaderId, stepCounterId)}
       >
         <InternalSpaceBetween size="s">
           <div className={styles.description}>
@@ -117,7 +131,12 @@ export function AnnotationPopover({
 
             <div className={styles.actionBar}>
               <div className={styles.stepCounter}>
-                <InternalBox className={styles['step-counter-content']} color="text-body-secondary" fontSize="body-s">
+                <InternalBox
+                  id={stepCounterId}
+                  className={styles['step-counter-content']}
+                  color="text-body-secondary"
+                  fontSize="body-s"
+                >
                   {i18nStrings.stepCounterText(taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
                 </InternalBox>
               </div>
