@@ -292,7 +292,7 @@ export default function () {
             }
           >
             <Alert type="warning" statusIconAriaLabel="Warning">
-              Are you sure you want to discard unsaved changes?
+              Are you sure you want to discard any unsaved changes?
             </Alert>
           </Modal>
         </>
