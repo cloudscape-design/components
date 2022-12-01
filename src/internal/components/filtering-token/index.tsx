@@ -19,6 +19,7 @@ export interface FilteringTokenProps {
   andText: string;
   orText: string;
   dismissAriaLabel?: string;
+  operatorAriaLabel?: string;
   disabled?: boolean;
 
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export default function FilteringToken({
   andText,
   orText,
   dismissAriaLabel,
+  operatorAriaLabel,
   disabled,
   children,
   onChange,
@@ -52,6 +54,7 @@ export default function FilteringToken({
           selectedOption={{ value: operation, label: operation === 'and' ? andText : orText }}
           onChange={e => onChange(e.detail.selectedOption.value as FilteringTokenProps.Operation)}
           disabled={disabled}
+          ariaLabel={operatorAriaLabel}
         />
       )}
       <div

@@ -453,6 +453,19 @@ describe('property filter parts', () => {
           expect.objectContaining({ detail: expect.objectContaining({ operation: 'and' }) })
         );
       });
+
+      test('can be used to check aria-label attirbute on the filter token operator', () => {
+        const secondToken = wrapper.findTokens()![1];
+        const label = secondToken
+          .findTokenOperation()
+          ?.findTrigger()
+          .getElement()
+          .getAttribute('aria-labelledby')!
+          .split(' ')
+          .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
+          .join(' ');
+        expect(label).toBe('Boolean Operator or');
+      });
     });
     describe('dismiss button', () => {
       test('causes onChange to fire, removing the token', () => {
