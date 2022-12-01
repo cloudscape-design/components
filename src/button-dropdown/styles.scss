@@ -43,10 +43,7 @@
   border-bottom: styles.$control-border-width solid awsui.$color-border-dropdown-group;
 }
 
-.title {
-  margin: 0;
-  color: awsui.$color-text-dropdown-header;
-}
+.title,
 .description {
   color: awsui.$color-text-dropdown-header;
 }
