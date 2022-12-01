@@ -42,6 +42,7 @@ const setClean = () => {
 };
 
 const withDirtyState = withSideEffect(setDirty);
+const withCleanState = withSideEffect(setClean);
 
 const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
   {
@@ -271,19 +272,19 @@ export default function () {
             visible={modalVisible}
             header="Discard changes"
             closeAriaLabel="Close modal"
+            onDismiss={withCleanState(() => setModalVisible(false))}
             footer={
               <Box float="right">
                 <SpaceBetween direction="horizontal" size="xs">
-                  <Button variant="link" onClick={() => setModalVisible(false)}>
+                  <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
                     Cancel
                   </Button>
                   <Button
                     variant="primary"
-                    onClick={() => {
+                    onClick={withCleanState(() => {
                       setModalVisible(false);
-                      setClean();
                       tableRef.current?.cancelEdit?.();
-                    }}
+                    })}
                   >
                     Discard
                   </Button>
