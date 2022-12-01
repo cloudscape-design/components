@@ -20,7 +20,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceCodeEditorStatusFocusOutlineGutter: '-7px',
   spaceContainerContentTop: '0px',
   spaceContainerHeaderVertical: '{spaceS}',
-  spaceContainerHorizontal: '{spaceXl}',
+  spaceContainerHorizontal: '{spaceL}',
   spaceContentHeaderPaddingBottom: { comfortable: '{spaceXl}', compact: '{spaceS}' },
   spaceDarkHeaderOverlapDistance: { comfortable: '36px', compact: '32px' },
   spaceExpandableSectionIconOffsetTop: '{spaceScaled2xXxs}',
