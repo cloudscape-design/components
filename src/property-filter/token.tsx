@@ -28,7 +28,6 @@ interface TokenProps {
   expandToViewport?: boolean;
   filteringOptions: readonly FilteringOption[];
   filteringProperties: readonly FilteringProperty[];
-  tokenValueToLabel: Map<string, string>;
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
@@ -49,7 +48,6 @@ export const TokenButton = ({
   setOperation,
   filteringOptions,
   filteringProperties,
-  tokenValueToLabel,
   asyncProps,
   onLoadItems,
   i18nStrings,
@@ -64,7 +62,7 @@ export const TokenButton = ({
     token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
   const propertyLabel = property && property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : tokenValueToLabel.get(token.value) ?? token.value;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   return (
     <FilteringToken
       showOperation={!first && !hideOperations}

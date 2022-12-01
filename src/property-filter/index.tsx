@@ -67,7 +67,6 @@ const PropertyFilter = React.forwardRef(
     const showResults = tokens?.length && !disabled;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
-      filteringOptions,
       onChange,
       inputRef
     );
@@ -204,21 +203,6 @@ const PropertyFilter = React.forwardRef(
       parsedText.step === 'property' &&
       getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
 
-    const tokenValueToLabel = useMemo(() => {
-      const dictionary = new Map<string, string>();
-      const propertyTokens = query.tokens.filter(token => typeof token.value === 'string' && token.propertyKey);
-
-      for (const option of filteringOptions) {
-        for (const token of propertyTokens) {
-          if (option.label && option.propertyKey === token.propertyKey && option.value === token.value) {
-            dictionary.set(token.value, option.label);
-          }
-        }
-      }
-
-      return dictionary;
-    }, [query, filteringOptions]);
-
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -284,7 +268,6 @@ const PropertyFilter = React.forwardRef(
                   setOperation={setOperation}
                   filteringOptions={filteringOptions}
                   filteringProperties={filteringProperties}
-                  tokenValueToLabel={tokenValueToLabel}
                   asyncProps={asyncProps}
                   onLoadItems={onLoadItems}
                   i18nStrings={i18nStrings}
