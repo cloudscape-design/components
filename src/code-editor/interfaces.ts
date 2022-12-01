@@ -112,7 +112,11 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   onEditorContentResize?: NonCancelableEventHandler<CodeEditorProps.ResizeDetail>;
 }
 
+// Prevents typescript from collapsing a string union type into a string type while still allowing any string.
+// This leads to more helpful editor suggestions for known values.
+// See: https://github.com/microsoft/TypeScript/issues/29729
 type LiteralUnion<LiteralType, BaseType extends string> = LiteralType | (BaseType & { _?: never });
+
 type BuiltInLanguage = typeof AceModes[number]['value'];
 
 export namespace CodeEditorProps {
