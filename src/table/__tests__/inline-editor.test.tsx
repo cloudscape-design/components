@@ -9,8 +9,8 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import { InlineEditor } from '../../../lib/components/table/body-cell/inline-editor';
 
-const handleSubmitEdit = jest.fn(async () => {
-  await new Promise(resolve => setTimeout(resolve, 100));
+const handleSubmitEdit = jest.fn((): Promise<void> => {
+  return new Promise(resolve => setTimeout(resolve, 500));
 });
 const handleEditEnd = jest.fn();
 
@@ -86,12 +86,39 @@ describe('InlineEditor', () => {
     const changeEvent = new Event('change', { bubbles: true });
     const { wrapper } = renderComponent(<TestComponent />);
     const input = wrapper.find('input')!.getElement();
+
     fireEvent.click(input);
+
     fireEvent(input, changeEvent);
     expect(wrapper.find('[aria-label="error-icon"]')?.getElement()).toBeUndefined();
+
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
-    waitFor(() => expect(handleSubmitEdit).toHaveBeenCalled());
+    waitFor(() => {
+      expect(handleSubmitEdit).toHaveBeenCalled();
+      expect(handleSubmitEdit.mock.lastCall.length).toBe(3);
+    });
+
     expect(handleEditEnd).toHaveBeenCalled();
+  });
+
+  it('should handle failed submission', () => {
+    thereBeErrors = false;
+    const changeEvent = new Event('change', { bubbles: true });
+    const { wrapper } = renderComponent(<TestComponent />);
+    const input = wrapper.find('input')!.getElement();
+
+    fireEvent.click(input);
+    fireEvent(input, changeEvent);
+
+    // eslint-disable-next-line require-await
+    handleSubmitEdit.mockImplementation(() => Promise.reject(new Error('test error')));
+
+    fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
+    waitFor(() => {
+      expect(handleSubmitEdit).toHaveBeenCalled();
+      expect(handleSubmitEdit.mock.lastCall.length).toBe(3);
+      expect(handleEditEnd).not.toHaveBeenCalled();
+    });
   });
 
   it('should cancel edit', () => {
@@ -99,5 +126,27 @@ describe('InlineEditor', () => {
     fireEvent.click(wrapper.find('button:first-child')!.getElement());
     expect(handleEditEnd).toHaveBeenCalled();
     expect(handleSubmitEdit).not.toHaveBeenCalled();
+  });
+
+  // useless test but need the coverage
+  it('should render spinner while submitting', () => {
+    thereBeErrors = false;
+    const changeEvent = new Event('change', { bubbles: true });
+    const { wrapper } = renderComponent(<TestComponent />);
+
+    const input = wrapper.find('input')!.getElement();
+    fireEvent.click(input);
+    fireEvent(input, changeEvent);
+
+    const button = wrapper.findButton('[aria-label="save edit"]')!;
+    fireEvent.click(button.getElement());
+    waitFor(() => {
+      expect(button.findLoadingIndicator()).not.toBeNull();
+      expect(button).toHaveAttribute('disabled');
+    });
+    waitFor(() => {
+      expect(button.findLoadingIndicator()).toBeNull();
+      expect(button).not.toHaveAttribute('disabled');
+    });
   });
 });

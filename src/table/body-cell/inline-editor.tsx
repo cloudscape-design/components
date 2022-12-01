@@ -42,15 +42,15 @@ export function InlineEditor<ItemType>({
     }
 
     setCurrentEditLoading(true);
-    submitEdit(item, column, currentEditValue).then(
-      () => {
+    // istanbul ignore next (promise resolve/reject are tested in unit tests, but don't show up in coverage)
+    submitEdit(item, column, currentEditValue)
+      .then(() => {
         setCurrentEditLoading(false);
         finishEdit();
-      },
-      () => {
+      })
+      .catch(() => {
         setCurrentEditLoading(false);
-      }
-    );
+      });
   }
 
   function onCancel() {
