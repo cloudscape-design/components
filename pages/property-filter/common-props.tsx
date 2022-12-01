@@ -4,6 +4,8 @@ import { PropertyFilterProps } from '~components/property-filter';
 import { states, TableItem } from './table.data';
 import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 
+const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) ?? 'Unknown';
+
 export const columnDefinitions = [
   {
     id: 'instanceid',
@@ -17,9 +19,10 @@ export const columnDefinitions = [
     id: 'state',
     sortingField: 'state',
     header: 'State',
-    type: 'text',
+    type: 'enum',
+    getLabel: getStateLabel,
     propertyLabel: 'State',
-    cell: (item: TableItem) => (item.state !== undefined ? states[item.state] : 'Unknown'),
+    cell: (item: TableItem) => getStateLabel(item.state),
   },
   {
     id: 'stopped',
@@ -159,6 +162,10 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
   let groupValuesLabel = `${def.propertyLabel} values`;
+
+  if (def.type === 'enum') {
+    operators = ['=', '!='].map(operator => ({ operator, format: def.getLabel }));
+  }
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];

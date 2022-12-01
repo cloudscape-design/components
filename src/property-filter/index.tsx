@@ -27,6 +27,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
+import { matchTokenValue } from './utils';
 
 export { PropertyFilterProps };
 
@@ -85,11 +86,14 @@ const PropertyFilter = React.forwardRef(
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
-          newToken = {
-            propertyKey: parsedText.property.key,
-            operator: parsedText.operator,
-            value: parsedText.value,
-          };
+          newToken = matchTokenValue(
+            {
+              propertyKey: parsedText.property.key,
+              operator: parsedText.operator,
+              value: parsedText.value,
+            },
+            filteringOptions
+          );
           break;
         }
         case 'free-text': {

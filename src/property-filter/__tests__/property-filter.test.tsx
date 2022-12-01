@@ -11,13 +11,24 @@ import createWrapper, {
   PopoverWrapper,
 } from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
-import { FilteringProperty } from '../../../lib/components/property-filter/interfaces';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { FilteringOption, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
+import {
+  FilteringProperty,
+  FilteringOption,
+  PropertyFilterProps,
+  Ref,
+} from '../../../lib/components/property-filter/interfaces';
 
-const filteringProperties = [
+const states: Record<string, string> = {
+  0: 'Stopped',
+  1: 'Stopping',
+  2: 'Running',
+};
+const getStateLabel = (value: string) => (value !== undefined ? states[value] : 'Unknown');
+
+const filteringProperties: readonly FilteringProperty[] = [
   {
     key: 'string',
     propertyLabel: 'string',
@@ -55,10 +66,10 @@ const filteringProperties = [
   {
     key: 'state',
     propertyLabel: 'state',
-    operators: ['='],
+    operators: [{ operator: '=', format: getStateLabel }],
     groupValuesLabel: 'State values',
   },
-] as const;
+];
 
 const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
@@ -69,10 +80,10 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'other-string', value: 'value2' },
   { propertyKey: 'missing-property', value: 'value' },
   { propertyKey: 'default-operator', value: 'value' },
-  { propertyKey: 'state', value: '0', label: 'Stopped' },
-  { propertyKey: 'state', value: '1', label: 'Stopping' },
-  { propertyKey: 'state', value: '2', label: 'Running' },
-] as const;
+  { propertyKey: 'state', value: '0', label: getStateLabel('0') },
+  { propertyKey: 'state', value: '1', label: getStateLabel('1') },
+  { propertyKey: 'state', value: '2', label: getStateLabel('2') },
+];
 
 const defaultProps: PropertyFilterProps = {
   filteringProperties,
