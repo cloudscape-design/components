@@ -137,7 +137,7 @@ test('should render table with accessible headers', () => {
   });
 });
 
-test('should render table with icons', () => {
+test('should render table header with icons to indicate editable columns', () => {
   const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
   const columnHeaders = wrapper.findColumnHeaders();
   columnHeaders.forEach(header => {

@@ -39,7 +39,6 @@ function TableCellEditable<ItemType>({
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const tableTdRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
 
   useEffectOnUpdate(() => {
@@ -47,8 +46,6 @@ function TableCellEditable<ItemType>({
       editActivateRef.current!.focus();
     }
   }, [isEditActive]);
-
-  const handleEditEnd = onEditEnd;
 
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
@@ -61,7 +58,6 @@ function TableCellEditable<ItemType>({
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(className, styles['body-cell-editable'], isEditActive && styles['body-cell-edit-active'])}
       onClick={!isEditActive ? onEditStart : undefined}
-      ref={tableTdRef}
     >
       {isEditActive ? (
         <InlineEditor
@@ -69,7 +65,7 @@ function TableCellEditable<ItemType>({
           column={column}
           item={item}
           submitEdit={submitEdit ?? submitHandlerFallback}
-          onEditEnd={handleEditEnd}
+          onEditEnd={onEditEnd}
         />
       ) : (
         <>

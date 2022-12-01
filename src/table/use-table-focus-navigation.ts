@@ -62,7 +62,6 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       }
 
       if (horizontal !== 0) {
-        newColumnIndex = columnIndex;
         while (newColumnIndex >= 0 && newColumnIndex < columnDefinitions.length) {
           newColumnIndex += horizontal;
           if (focusableColumns[newColumnIndex]) {

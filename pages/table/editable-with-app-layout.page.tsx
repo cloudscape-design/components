@@ -157,7 +157,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
         );
       }
 
-      return new Date(item.LastModifiedTime).toLocaleString();
+      return new Date(item.LastModifiedTime).toLocaleTimeString();
     },
   },
 ];
