@@ -63,7 +63,7 @@ class UseNavigationWrapper extends ElementWrapper {
     highlightedSeries: 'highlighted-series',
     highlightedPoint: 'highlighted-point',
     highlightedGroupIndex: 'highlighted-group-index',
-    verticalMarker: 'vertical-marker',
+    highlightedX: 'highlighted-x',
   };
 
   findKeyboardArea() {
@@ -82,8 +82,8 @@ class UseNavigationWrapper extends ElementWrapper {
     return this.findByClassName(UseNavigationWrapper.selectors.highlightedGroupIndex);
   }
 
-  findVerticalMarker() {
-    return this.findByClassName(UseNavigationWrapper.selectors.verticalMarker);
+  findHighlightedX() {
+    return this.findByClassName(UseNavigationWrapper.selectors.highlightedX);
   }
 }
 
@@ -91,18 +91,21 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
   const [highlightedSeries, setHighlightedSeries] = useState(props.highlightedSeries);
   const [highlightedPoint, setHighlightedPoint] = useState(props.highlightedPoint);
   const [highlightedGroupIndex, setHighlightedGroup] = useState(props.highlightedGroupIndex);
-  const [highlightedX, highlightX] = useState<VerticalMarkerX<any> | null>(null);
+  const [highlightedX, setHighlightedX] = useState<VerticalMarkerX<any> | null>(null);
 
   const { onFocus, onKeyDown } = useNavigation({
     ...props,
     highlightSeries: series => setHighlightedSeries(series),
-    highlightPoint: point => setHighlightedPoint(point),
+    highlightPoint: point => {
+      setHighlightedPoint(point);
+      setHighlightedSeries(point?.series);
+    },
     highlightGroup: group => {
       setHighlightedSeries(null);
       setHighlightedPoint(null);
       setHighlightedGroup(group);
     },
-    highlightX,
+    highlightX: setHighlightedX,
     highlightedSeries,
     highlightedPoint,
     highlightedGroupIndex,
@@ -115,7 +118,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
       <span className={UseNavigationWrapper.selectors.highlightedPoint}>
         {highlightedPoint?.x},{highlightedPoint?.y}
       </span>
-      <span className={UseNavigationWrapper.selectors.verticalMarker}>{highlightedX?.scaledX}</span>
+      <span className={UseNavigationWrapper.selectors.highlightedX}>{highlightedX?.scaledX}</span>
     </div>
   );
 }
@@ -199,7 +202,7 @@ describe('Line charts', () => {
       act(() => wrapper.focus());
 
       expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
     });
 
     test('can navigate vertically through series', () => {
@@ -207,7 +210,7 @@ describe('Line charts', () => {
       act(() => wrapper.focus());
 
       expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
       act(() => wrapper.keydown(KeyCode.down));
       expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
@@ -224,31 +227,31 @@ describe('Line charts', () => {
       // Loop around to show all series again
       act(() => wrapper.keydown(KeyCode.down));
       expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
       act(() => wrapper.keydown(KeyCode.down));
       expect(wrapper.findHighlightedSeries()?.getElement()).toHaveTextContent(lineSeries1.title);
 
       act(() => wrapper.keydown(KeyCode.up));
       expect(wrapper.findHighlightedSeries()?.getElement()).toBeEmptyDOMElement();
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
     });
 
     test('can navigate horizontally within all series', () => {
       const { wrapper } = renderNavigationHook(lineProps);
       act(() => wrapper.focus());
 
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
       act(() => wrapper.keydown(KeyCode.right));
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('1');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
 
       act(() => wrapper.keydown(KeyCode.left));
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('0');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
 
       // Loop back
       act(() => wrapper.keydown(KeyCode.left));
-      expect(wrapper.findVerticalMarker()?.getElement()).toHaveTextContent('3');
+      expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('3');
     });
 
     test('can navigate horizontally within one series', () => {

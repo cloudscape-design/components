@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { ChartContainerProps } from '../chart-container';
 import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerX } from '../interfaces';
@@ -65,7 +65,7 @@ export function useNavigation<T extends ChartDataTypes>({
     highlightGroup(groupIndex);
   };
 
-  const onLineGroupFocus = () => {
+  const onLineFocus = () => {
     if (containsMultipleSeries) {
       moveToLineGroupIndex(0);
     } else {
@@ -77,7 +77,7 @@ export function useNavigation<T extends ChartDataTypes>({
     if (isGroupNavigation) {
       onBarGroupFocus();
     } else {
-      onLineGroupFocus();
+      onLineFocus();
     }
   };
 
