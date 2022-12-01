@@ -7,7 +7,7 @@ import { ScaledPoint } from '../make-scaled-series';
 
 import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
-import { MixedLineBarChartProps, VerticalMarkerLeft } from '../interfaces';
+import { VerticalMarkerX } from '../interfaces';
 import { isYThreshold } from '../utils';
 
 const MAX_HOVER_MARGIN = 6;
@@ -16,43 +16,40 @@ export interface UseMouseHoverProps<T> {
   plotRef: React.RefObject<ChartPlotRef>;
   scaledSeries: ReadonlyArray<ScaledPoint<T>>;
   barGroups: ScaledBarGroup<T>[];
-  highlightSeries: (series: MixedLineBarChartProps.ChartSeries<T> | null) => void;
   highlightPoint: (point: ScaledPoint<T> | null) => void;
   highlightGroup: (groupIndex: number) => void;
   clearHighlightedSeries: () => void;
   isGroupNavigation: boolean;
   isHandlersDisabled: boolean;
-  setVerticalMarkerLeft: (marker: VerticalMarkerLeft<T> | null) => void;
+  highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
 }
 
 export function useMouseHover<T>({
   plotRef,
   scaledSeries,
   barGroups,
-  highlightSeries,
   highlightPoint,
   highlightGroup,
   clearHighlightedSeries,
   isGroupNavigation,
   isHandlersDisabled,
-  setVerticalMarkerLeft,
+  highlightX,
 }: UseMouseHoverProps<T>) {
   const onSeriesMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     const svgRect = (event.target as SVGElement).getBoundingClientRect();
     const offsetX = event.clientX - svgRect.left;
-    const offsetY = event.clientY - svgRect.top;
 
     const closestX = scaledSeries
       .map(v => v.x)
       .reduce((prev, curr) => (Math.abs(curr - offsetX) < Math.abs(prev - offsetX) ? curr : prev), -Infinity);
 
-    const closestY = scaledSeries
-      .filter(v => v.x === closestX || isYThreshold(v.series))
-      .map(v => v.y)
-      .reduce((prev, curr) => (Math.abs(curr - offsetY) < Math.abs(prev - offsetY) ? curr : prev), -Infinity);
-
     if (isFinite(closestX)) {
-      setVerticalMarkerLeft({ scaledX: closestX, trigger: 'mouse' });
+      const offsetY = event.clientY - svgRect.top;
+      const closestY = scaledSeries
+        .filter(v => v.x === closestX || isYThreshold(v.series))
+        .map(v => v.y)
+        .reduce((prev, curr) => (Math.abs(curr - offsetY) < Math.abs(prev - offsetY) ? curr : prev), -Infinity);
+
       if (
         isFinite(closestY) &&
         Math.abs(offsetX - closestX) < MAX_HOVER_MARGIN &&
@@ -63,8 +60,14 @@ export function useMouseHover<T>({
         );
         highlightPoint({ x: closestX, y: closestY, color, datum, series });
       } else {
-        highlightSeries(null);
-        highlightPoint(null);
+        let datumX = null;
+        for (const point of scaledSeries) {
+          if (point.x === closestX) {
+            datumX = point.datum?.x ?? null;
+            break;
+          }
+        }
+        highlightX({ scaledX: closestX, label: datumX });
       }
     }
   };
@@ -110,7 +113,7 @@ export function useMouseHover<T>({
         .split(' ')
         .indexOf(styles.series) > -1
     ) {
-      setVerticalMarkerLeft(null);
+      highlightX(null);
       clearHighlightedSeries();
     }
   };

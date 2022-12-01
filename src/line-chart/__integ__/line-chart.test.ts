@@ -50,7 +50,7 @@ describe('Keyboard navigation', () => {
     );
   });
 
-  describe('wth multiple series', () => {
+  describe('with multiple series', () => {
     test(
       'line series are navigable with keyboard',
       setupTest('#/light/line-chart/test', async page => {

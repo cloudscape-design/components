@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { KeyCode } from '../../internal/keycode';
 import { ChartContainerProps } from '../chart-container';
-import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerLeft } from '../interfaces';
+import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerX } from '../interfaces';
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
 import { ScaledPoint } from '../make-scaled-series';
@@ -26,8 +26,8 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   highlightSeries(series: MixedLineBarChartProps.ChartSeries<T> | null): void;
   highlightGroup(groupIndex: number): void;
   highlightPoint(point: ScaledPoint<T> | null): void;
+  highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
   clearHighlightedSeries(): void;
-  setVerticalMarkerLeft: (marker: VerticalMarkerLeft<T> | null) => void;
 };
 
 export function useNavigation<T extends ChartDataTypes>({
@@ -45,7 +45,7 @@ export function useNavigation<T extends ChartDataTypes>({
   highlightSeries,
   highlightGroup,
   highlightPoint,
-  setVerticalMarkerLeft,
+  highlightX,
 }: UseNavigationProps<T>) {
   const [targetX, setTargetX] = useState<T | null>(null);
   const [xIndex, setXIndex] = useState(0);
@@ -108,7 +108,7 @@ export function useNavigation<T extends ChartDataTypes>({
       }
 
       // Move forwards or backwards to the new series
-      // If index === -1, show the grouped data instead of a single series
+      // If index === -1, show all data points from all series at the given X instead of one single series
       const firstPossibleIndex = containsMultipleSeries ? -1 : 0;
       let nextSeriesIndex = 0;
       if (previousSeriesIndex !== null) {
@@ -139,11 +139,9 @@ export function useNavigation<T extends ChartDataTypes>({
           (prev, curr) => (Math.abs(curr.x - targetXPoint) < Math.abs(prev.x - targetXPoint) ? curr : prev),
           { x: -Infinity, y: -Infinity }
         );
-        highlightSeries(nextSeries);
         highlightPoint({ ...closestNextSeriesPoint, color: nextInternalSeries.color, series: nextSeries });
       } else if (isYThreshold(nextSeries)) {
         const scaledTargetIndex = scaledSeries.map(it => it.datum?.x || null).indexOf(targetX);
-        highlightSeries(nextSeries);
         highlightPoint({
           x: targetXPoint,
           y: yScale.d3Scale(nextSeries.y) ?? NaN,
@@ -152,7 +150,6 @@ export function useNavigation<T extends ChartDataTypes>({
           datum: scaledSeries[scaledTargetIndex]?.datum,
         });
       } else if (isXThreshold(nextSeries)) {
-        highlightSeries(nextSeries);
         highlightPoint({
           x: xScale.d3Scale(nextSeries.x as any) ?? NaN,
           y: yScale.d3Scale.range()[0],
@@ -196,7 +193,6 @@ export function useNavigation<T extends ChartDataTypes>({
         const nextPoint = getNextPoint(targetScaledSeries, previousPoint, direction);
 
         setTargetX(nextPoint.datum?.x || null);
-        setVerticalMarkerLeft({ scaledX: nextPoint.x, datumX: nextPoint.datum?.x, trigger: 'keyboard' });
         highlightPoint(nextPoint);
       } else if (series.type === 'bar') {
         const xDomain = xScale.domain as T[];
@@ -222,9 +218,8 @@ export function useNavigation<T extends ChartDataTypes>({
       highlightedSeries,
       visibleSeries,
       scaledSeries,
-      getNextPoint,
       highlightedPoint,
-      setVerticalMarkerLeft,
+      getNextPoint,
       highlightPoint,
       xScale.domain,
       highlightedGroupIndex,
@@ -235,14 +230,12 @@ export function useNavigation<T extends ChartDataTypes>({
 
   const moveToLineGroupIndex = useCallback(
     (index: number) => {
-      highlightSeries(null);
-      highlightPoint(null);
       const point = allUniqueX[index];
       setXIndex(index);
       setTargetX(point.datum?.x || null);
-      setVerticalMarkerLeft({ scaledX: point?.scaledX ?? null, datumX: point.datum?.x, trigger: 'keyboard' });
+      highlightX({ scaledX: point?.scaledX ?? null, label: point.datum?.x ?? null });
     },
-    [allUniqueX, highlightPoint, highlightSeries, setVerticalMarkerLeft]
+    [allUniqueX, highlightX]
   );
 
   const moveWithinXAxis = useCallback(

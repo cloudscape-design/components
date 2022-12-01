@@ -20,7 +20,7 @@ import {
   thresholdSeries,
   xThresholdSeries1,
 } from './common';
-import { VerticalMarkerLeft } from '../interfaces';
+import { VerticalMarkerX } from '../interfaces';
 
 const xScale = new ChartScale('linear', [0, 3], [0, 3]);
 const yScale = new NumericChartScale('linear', [0, 15], [0, 15], null);
@@ -38,7 +38,7 @@ const commonProps: Omit<UseNavigationProps<ChartDataTypes>, 'xScale' | 'yScale' 
   highlightPoint: jest.fn(),
   highlightGroup: jest.fn(),
   clearHighlightedSeries: jest.fn(),
-  setVerticalMarkerLeft: jest.fn(),
+  highlightX: jest.fn(),
 };
 
 const buildNavigationProps = (
@@ -91,7 +91,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
   const [highlightedSeries, setHighlightedSeries] = useState(props.highlightedSeries);
   const [highlightedPoint, setHighlightedPoint] = useState(props.highlightedPoint);
   const [highlightedGroupIndex, setHighlightedGroup] = useState(props.highlightedGroupIndex);
-  const [verticalMarkerLeft, setVerticalMarkerLeft] = useState<VerticalMarkerLeft<any> | null>(null);
+  const [highlightedX, highlightX] = useState<VerticalMarkerX<any> | null>(null);
 
   const { onFocus, onKeyDown } = useNavigation({
     ...props,
@@ -102,7 +102,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
       setHighlightedPoint(null);
       setHighlightedGroup(group);
     },
-    setVerticalMarkerLeft,
+    highlightX,
     highlightedSeries,
     highlightedPoint,
     highlightedGroupIndex,
@@ -115,7 +115,7 @@ function RenderedNavigationHook(props: UseNavigationProps<ChartDataTypes>) {
       <span className={UseNavigationWrapper.selectors.highlightedPoint}>
         {highlightedPoint?.x},{highlightedPoint?.y}
       </span>
-      <span className={UseNavigationWrapper.selectors.verticalMarker}>{verticalMarkerLeft?.scaledX}</span>
+      <span className={UseNavigationWrapper.selectors.verticalMarker}>{highlightedX?.scaledX}</span>
     </div>
   );
 }
