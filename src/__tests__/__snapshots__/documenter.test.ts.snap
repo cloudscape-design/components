@@ -10984,7 +10984,7 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
     },
     Object {
       "description": "Use this function to announce page changes for screen reader users.
-When firstIndex is available, it returns a text when the firstIndex or totalItemsCount change.",
+If firstIndex is available, it announces a text when the firstIndex or totalItemsCount change.",
       "name": "liveAnnouncement",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",

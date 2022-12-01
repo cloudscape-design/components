@@ -241,7 +241,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   firstIndex?: number;
   /**
    * Use this function to announce page changes for screen reader users.
-   * When firstIndex is available, it returns a text when the firstIndex or totalItemsCount change.
+   * If firstIndex is available, it announces a text when the firstIndex or totalItemsCount change.
    */
   liveAnnouncement?: (data: TableProps.LiveAnnouncement) => string;
 }
