@@ -10983,13 +10983,6 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "type": "ReadonlyArray<T>",
     },
     Object {
-      "description": "Use this function to announce page changes for screen reader users.
-If firstIndex is available, it announces a text when the firstIndex or totalItemsCount change.",
-      "name": "renderAriaLive",
-      "optional": true,
-      "type": "(data: TableProps.LiveAnnouncement) => string",
-    },
-    Object {
       "description": "Renders the table in a loading state. We recommend that you also set a \`loadingText\`.",
       "name": "loading",
       "optional": true,
@@ -11000,6 +10993,13 @@ If firstIndex is available, it announces a text when the firstIndex or totalItem
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use this function to announce page changes to screen reader users.
+Requires the properties firstIndex and totalItemsCount to be set correctly.",
+      "name": "renderAriaLive",
+      "optional": true,
+      "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",
