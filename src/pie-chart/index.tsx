@@ -116,14 +116,11 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   const onHighlightChange = useCallback(
     (segment: T | null) => {
-      if (pinnedSegment !== null) {
-        return;
-      }
       setLegendSegment(segment);
       setHighlightedSegment(segment);
       fireNonCancelableEvent(controlledOnHighlightChange, { highlightedSegment: segment });
     },
-    [pinnedSegment, controlledOnHighlightChange, setHighlightedSegment]
+    [controlledOnHighlightChange, setHighlightedSegment]
   );
 
   const onBlur = (event: React.FocusEvent) => {
