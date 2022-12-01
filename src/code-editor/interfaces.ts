@@ -20,8 +20,15 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
 
   /**
    * Specifies the programming language. You can use any of the programming languages supported by the `ace` object that you provide.
+   * Alternatively, this can be used to set a language that is not supported by the default `language` list. Make sure you've added the highlighting support for this language to the Ace instance.
+   * For more info on custom languages, see the [Code editor API](/components/code-editor?tabId=api) page.
    */
   language: CodeEditorProps.Language;
+
+  /**
+   * Specifies a custom label language. If set, it overrides the default language label.
+   */
+  languageLabel?: string;
 
   /**
    * An event handler called when the value changes.
@@ -105,8 +112,15 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   onEditorContentResize?: NonCancelableEventHandler<CodeEditorProps.ResizeDetail>;
 }
 
+// Prevents typescript from collapsing a string union type into a string type while still allowing any string.
+// This leads to more helpful editor suggestions for known values.
+// See: https://github.com/microsoft/TypeScript/issues/29729
+type LiteralUnion<LiteralType, BaseType extends string> = LiteralType | (BaseType & { _?: never });
+
+type BuiltInLanguage = typeof AceModes[number]['value'];
+
 export namespace CodeEditorProps {
-  export type Language = typeof AceModes[number]['value'];
+  export type Language = LiteralUnion<BuiltInLanguage, string>;
   export type Theme = typeof LightThemes[number]['value'] | typeof DarkThemes[number]['value'];
 
   export interface AvailableThemes {

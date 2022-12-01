@@ -3821,7 +3821,9 @@ The object should contain, among others:
       "type": "string",
     },
     Object {
-      "description": "Specifies the programming language. You can use any of the programming languages supported by the \`ace\` object that you provide.",
+      "description": "Specifies the programming language. You can use any of the programming languages supported by the \`ace\` object that you provide.
+Alternatively, this can be used to set a language that is not supported by the default \`language\` list. Make sure you've added the highlighting support for this language to the Ace instance.
+For more info on custom languages, see the [Code editor API](/components/code-editor?tabId=api) page.",
       "inlineType": Object {
         "name": "CodeEditorProps.Language",
         "properties": Array [],
@@ -3830,6 +3832,12 @@ The object should contain, among others:
       "name": "language",
       "optional": false,
       "type": "CodeEditorProps.Language",
+    },
+    Object {
+      "description": "Specifies a custom label language. If set, it overrides the default language label.",
+      "name": "languageLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Renders the code editor in a loading state.",
