@@ -15,7 +15,7 @@ import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
@@ -387,9 +387,11 @@ const InternalTable = React.forwardRef(
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
-                              onEditEnd={dirty => {
-                                setCurrentEditCell(null);
-                                fireNonCancelableEvent(onEditCancel, { dirty });
+                              onEditEnd={() => {
+                                const wasCancelled = fireCancelableEvent(onEditCancel, {});
+                                if (!wasCancelled) {
+                                  setCurrentEditCell(null);
+                                }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}
                               stripedRows={stripedRows}

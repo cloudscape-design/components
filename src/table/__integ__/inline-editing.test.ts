@@ -18,20 +18,20 @@ const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
 const cellSaveButton$ = bodyCell.find(SAVE_BTN$).toSelector();
 
 // for arrow key navigation
-const mainCell = tableWrapper.findBodyCell(4, 4);
+const mainCell = tableWrapper.findBodyCell(4, 5);
 const mainCell$ = mainCell.toSelector();
 const mainCellSaveButton$ = mainCell.find(SAVE_BTN$).toSelector();
-const leftCell$ = tableWrapper.findBodyCell(4, 2).find(EDIT_BTN$).toSelector();
-const rightCell$ = tableWrapper.findBodyCell(4, 5).find(EDIT_BTN$).toSelector();
-const cellAbove$ = tableWrapper.findBodyCell(3, 4).find(EDIT_BTN$).toSelector();
-const cellBelow$ = tableWrapper.findBodyCell(5, 4).find(EDIT_BTN$).toSelector();
+const leftCell$ = tableWrapper.findBodyCell(4, 4).find(EDIT_BTN$).toSelector();
+const rightCell$ = tableWrapper.findBodyCell(4, 6).find(EDIT_BTN$).toSelector();
+const cellAbove$ = tableWrapper.findBodyCell(3, 5).find(EDIT_BTN$).toSelector();
+const cellBelow$ = tableWrapper.findBodyCell(5, 5).find(EDIT_BTN$).toSelector();
 
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
 const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    await page.setWindowSize({ width: 900, height: 800 });
+    await page.setWindowSize({ width: 1200, height: 800 });
     await browser.url('#/light/table/editable-with-app-layout');
     await testFn(page);
   });

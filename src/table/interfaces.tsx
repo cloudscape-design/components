@@ -18,12 +18,6 @@ export interface TableForwardRefType {
   <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
 
-interface TableDirtyState {
-  /**
-   * There were unsaved changes in the table.
-   */
-  dirty?: boolean;
-}
 export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Heading element of the table container. Use the [header component](/components/header/).
@@ -264,9 +258,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
 
   /**
    * Called whenever user cancels an inline edit. Use it to reset any
-   * validation states.
+   * validation states or show warning for unsaved changes.
    */
-  onEditCancel?: NonCancelableEventHandler<TableDirtyState>;
+  onEditCancel?: CancelableEventHandler;
 }
 
 export namespace TableProps {

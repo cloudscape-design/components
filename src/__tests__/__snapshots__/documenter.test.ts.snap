@@ -10886,21 +10886,9 @@ including the hidden via preferences columns. Use this event to persist the colu
       "name": "onColumnWidthsChange",
     },
     Object {
-      "cancelable": false,
+      "cancelable": true,
       "description": "Called whenever user cancels an inline edit. Use it to reset any
-validation states.",
-      "detailInlineType": Object {
-        "name": "TableDirtyState",
-        "properties": Array [
-          Object {
-            "name": "dirty",
-            "optional": true,
-            "type": "false | true",
-          },
-        ],
-        "type": "object",
-      },
-      "detailType": "TableDirtyState",
+validation states or show warning for unsaved changes.",
       "name": "onEditCancel",
     },
     Object {
