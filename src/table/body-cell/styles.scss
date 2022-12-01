@@ -39,13 +39,16 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-first-row {
     border-top: $border-placeholder;
   }
-  &-last-row:not(.has-footer) {
-    // skip the border for the last row because the container already has a border
-    border-bottom: $border-placeholder;
-  }
-  &-last-row.has-footer {
-    // add a border to the last row as a separator between the table and the footer
-    border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  &-last-row:not(.body-cell-selected) {
+    &:not(.has-footer) {
+      // skip the border for the last row because the container already has a border
+      border-bottom: $border-placeholder;
+    }
+
+    &.has-footer {
+      // add a border to the last row as a separator between the table and the footer
+      border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    }
   }
   &-shaded {
     background: awsui.$color-background-cell-shaded;
