@@ -71,7 +71,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           <InternalLink
             variant="top-navigation"
             href={definition.href}
-            external={true}
+            external={definition.external}
             onFollow={definition.onClick}
             ariaLabel={ariaLabel}
           >
