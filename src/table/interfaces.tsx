@@ -240,10 +240,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *  If the table has no pagination, leave this property undefined.   */
   firstIndex?: number;
   /**
-   * Use this function to announce page changes for screen reader users.
-   * If firstIndex is available, it announces a text when the firstIndex or totalItemsCount change.
+   * Use this function to announce page changes to screen reader users.
+   * Requires the properties firstIndex and totalItemsCount to be set correctly.
    */
-  liveAnnouncement?: (data: TableProps.LiveAnnouncement) => string;
+  renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;
 }
 
 export namespace TableProps {

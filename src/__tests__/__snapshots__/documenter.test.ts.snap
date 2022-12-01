@@ -10985,7 +10985,7 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
     Object {
       "description": "Use this function to announce page changes for screen reader users.
 If firstIndex is available, it announces a text when the firstIndex or totalItemsCount change.",
-      "name": "liveAnnouncement",
+      "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
     },

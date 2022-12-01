@@ -70,7 +70,7 @@ const InternalTable = React.forwardRef(
       __internalRootRef,
       totalItemsCount,
       firstIndex,
-      liveAnnouncement,
+      renderAriaLive,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -235,9 +235,9 @@ const InternalTable = React.forwardRef(
             {...wrapperProps}
             {...focusVisibleProps}
           >
-            {liveAnnouncement && firstIndex && (
+            {renderAriaLive && firstIndex && (
               <LiveRegion>
-                <span>{liveAnnouncement({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })}</span>
+                <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })}</span>
               </LiveRegion>
             )}
             <table

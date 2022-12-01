@@ -91,7 +91,7 @@ describe('labels', () => {
   });
 
   describe('live region', () => {
-    test('Should render a live region with table total count and indices when liveAnnouncement and firstIndex are available', () => {
+    test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
       const firstIndex = 1;
       const totalItemsCount = defaultItems.length;
       const lastIndex = firstIndex + defaultItems.length;
@@ -99,7 +99,7 @@ describe('labels', () => {
       const wrapper = renderTableWrapper({
         firstIndex,
         totalItemsCount,
-        liveAnnouncement: ({ firstIndex, lastIndex, totalItemsCount }) =>
+        renderAriaLive: ({ firstIndex, lastIndex, totalItemsCount }) =>
           `Displaying items from ${firstIndex} to ${lastIndex} of ${totalItemsCount} items`,
       });
 
