@@ -28,6 +28,7 @@ export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   highlightPoint(point: ScaledPoint<T> | null): void;
   highlightX: (verticalMarker: VerticalMarkerX<T> | null) => void;
   clearHighlightedSeries(): void;
+  verticalMarkerX: VerticalMarkerX<T> | null;
 };
 
 export function useNavigation<T extends ChartDataTypes>({
@@ -46,6 +47,7 @@ export function useNavigation<T extends ChartDataTypes>({
   highlightGroup,
   highlightPoint,
   highlightX,
+  verticalMarkerX,
 }: UseNavigationProps<T>) {
   const [targetX, setTargetX] = useState<T | null>(null);
   const [xIndex, setXIndex] = useState(0);
@@ -66,10 +68,12 @@ export function useNavigation<T extends ChartDataTypes>({
   };
 
   const onLineFocus = () => {
-    if (containsMultipleSeries) {
-      moveToLineGroupIndex(0);
-    } else {
-      moveBetweenSeries(0);
+    if (verticalMarkerX === null) {
+      if (containsMultipleSeries) {
+        moveToLineGroupIndex(0);
+      } else {
+        moveBetweenSeries(0);
+      }
     }
   };
 
@@ -174,15 +178,6 @@ export function useNavigation<T extends ChartDataTypes>({
     ]
   );
 
-  const getNextPoint = useCallback(
-    (targetScaledSeries: ReadonlyArray<ScaledPoint<T>>, point: ScaledPoint<T>, direction = 1) => {
-      const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(point.x);
-      const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
-      return targetScaledSeries[nextPointIndex];
-    },
-    []
-  );
-
   const moveWithinSeries = useCallback(
     (direction: number) => {
       const series = highlightedSeries || visibleSeries[0].series;
@@ -190,9 +185,12 @@ export function useNavigation<T extends ChartDataTypes>({
       if (series.type === 'line' || isYThreshold(series)) {
         const targetScaledSeries = scaledSeries.filter(it => it.series === series);
         const previousPoint = highlightedPoint || targetScaledSeries[0];
-        const nextPoint = getNextPoint(targetScaledSeries, previousPoint, direction);
+        const indexOfPreviousPoint = targetScaledSeries.map(it => it.x).indexOf(previousPoint.x);
+        const nextPointIndex = circleIndex(indexOfPreviousPoint + direction, [0, targetScaledSeries.length - 1]);
+        const nextPoint = targetScaledSeries[nextPointIndex];
 
         setTargetX(nextPoint.datum?.x || null);
+        setXIndex(nextPointIndex);
         highlightPoint(nextPoint);
       } else if (series.type === 'bar') {
         const xDomain = xScale.domain as T[];
@@ -219,7 +217,6 @@ export function useNavigation<T extends ChartDataTypes>({
       visibleSeries,
       scaledSeries,
       highlightedPoint,
-      getNextPoint,
       highlightPoint,
       xScale.domain,
       highlightedGroupIndex,
@@ -281,7 +278,7 @@ export function useNavigation<T extends ChartDataTypes>({
     [isHandlersDisabled, moveBetweenSeries, moveWithinXAxis, pinPopover]
   );
 
-  return { isGroupNavigation, onFocus, onKeyDown, pointGroupIndex: xIndex };
+  return { isGroupNavigation, onFocus, onKeyDown, xIndex };
 }
 
 // Returns given index if it is in range or the opposite range boundary otherwise.

@@ -33,6 +33,7 @@ const commonProps: Omit<UseNavigationProps<ChartDataTypes>, 'xScale' | 'yScale' 
   visibleSeries: [],
   highlightedPoint: null,
   highlightedGroupIndex: null,
+  verticalMarkerX: null,
   pinPopover: jest.fn(),
   highlightSeries: jest.fn(),
   highlightPoint: jest.fn(),

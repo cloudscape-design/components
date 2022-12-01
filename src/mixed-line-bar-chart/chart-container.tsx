@@ -248,6 +248,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     highlightPoint,
     highlightX,
     clearHighlightedSeries,
+    verticalMarkerX,
   });
 
   const { onSVGMouseMove, onSVGMouseOut } = useMouseHover<T>({
@@ -296,7 +297,8 @@ export default function ChartContainer<T extends ChartDataTypes>({
     if (!outsideClick) {
       // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
       setTimeout(() => {
-        if (highlightedPoint || highlightedGroupIndex !== null) {
+        const isSomeInnerElementFocused = highlightedPoint || highlightedGroupIndex !== null || verticalMarkerX;
+        if (isSomeInnerElementFocused) {
           plotRef.current?.focusApplication();
         } else {
           plotRef.current?.focusPlot();
@@ -389,7 +391,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
     [scaledSeries, verticalLineX, horizontalBars]
   );
 
-  const popoverTrackRef = isGroupNavigation
+  const highlightedElementRef = isGroupNavigation
     ? highlightedGroupRef
     : highlightedPoint
     ? highlightedPointRef
@@ -449,13 +451,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
             ariaDescription={ariaDescription}
             ariaRoleDescription={i18nStrings?.chartAriaRoleDescription}
             ariaLiveRegion={activeLiveRegion}
-            activeElementRef={
-              isGroupNavigation ? highlightedGroupRef : isLineXKeyboardFocused ? verticalMarkerRef : highlightedPointRef
-            }
+            activeElementRef={highlightedElementRef}
             activeElementKey={
               isPlotFocused &&
               (highlightedGroupIndex?.toString() ??
-                (isLineXKeyboardFocused ? `point-index-${handlers.pointGroupIndex}` : point?.key))
+                (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key))
             }
             activeElementFocusOffset={isGroupNavigation ? 0 : isLineXKeyboardFocused ? { x: 8, y: 0 } : 3}
             onMouseMove={onSVGMouseMove}
@@ -551,7 +551,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
         <ChartPopover
           containerRef={containerRefObject}
-          trackRef={popoverTrackRef}
+          trackRef={highlightedElementRef}
           isOpen={isPopoverOpen}
           isPinned={isPopoverPinned}
           highlightDetails={highlightDetails}
