@@ -1094,41 +1094,19 @@ describe('property filter parts', () => {
   });
 
   describe('labelled values', () => {
-    test('default', () => {
-      const onChange = jest.fn();
+    test('tokens are labelled', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         query: { tokens: [{ propertyKey: 'state', value: '0', operator: '=' }], operation: 'or' },
-        onChange,
       });
 
-      // Ensure tokens are labelled.
       expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('state = Stopped');
+    });
 
-      // Ensure value suggestions are labelled.
-      act(() => wrapper.setInputValue('state='));
-      expect(
-        wrapper
-          .findDropdown()
-          .findOptions()
-          .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['state = Stopped', 'state = Stopping', 'state = Running']);
+    test('token editor values are labelled', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        query: { tokens: [{ propertyKey: 'state', value: '0', operator: '=' }], operation: 'or' },
+      });
 
-      // Ensure query is created with token's actual value.
-      act(() => wrapper.setInputValue('state=Stopping'));
-      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
-      expect(onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            tokens: [
-              { propertyKey: 'state', value: '0', operator: '=' },
-              { propertyKey: 'state', value: '1', operator: '=' },
-            ],
-            operation: 'or',
-          },
-        })
-      );
-
-      // Ensure token editor values are labelled.
       const [contentWrapper] = openTokenEditor(wrapper);
       const valueSelectWrapper = findValueSelector(contentWrapper);
       act(() => valueSelectWrapper.focus());
@@ -1138,6 +1116,108 @@ describe('property filter parts', () => {
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['Stopped', 'Stopping', 'Running']);
+    });
+
+    test('property value suggestions are labelled', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      act(() => wrapper.setInputValue('state='));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping', 'state = Running']);
+    });
+
+    test('matches property values', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      // By label
+      act(() => wrapper.setInputValue('state=Stopp'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping']);
+
+      // By value
+      act(() => wrapper.setInputValue('state=2'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Running']);
+    });
+
+    test('matches all values', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      // By label
+      act(() => wrapper.setInputValue('Stopp'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping']);
+
+      // By value
+      act(() => wrapper.setInputValue('0'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped']);
+    });
+
+    test('query is created with actual value when clicking on option', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+
+      // Selecting matched option from the list
+      act(() => wrapper.setInputValue('state=Stopp'));
+      act(() => wrapper.selectSuggestion(1));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '0', operator: '=' }],
+            operation: 'and',
+          },
+        })
+      );
+    });
+
+    test('query is created with actual value when pressing enter', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+
+      // Entering full label
+      act(() => wrapper.setInputValue('state=Stopping'));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '1', operator: '=' }],
+            operation: 'and',
+          },
+        })
+      );
+
+      // Entering full value
+      act(() => wrapper.setInputValue('state=2'));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '2', operator: '=' }],
+            operation: 'and',
+          },
+        })
+      );
     });
   });
 
