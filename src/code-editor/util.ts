@@ -31,5 +31,5 @@ export function getAceTheme(theme: CodeEditorProps.Theme) {
 }
 
 export function getLanguageLabel(language: CodeEditorProps.Language): string {
-  return AceModes.filter((mode: { value: string }) => mode.value === language)[0]?.label || '';
+  return AceModes.filter((mode: { value: string }) => mode.value === language)[0]?.label || language;
 }
