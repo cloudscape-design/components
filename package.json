@@ -7,6 +7,7 @@
   },
   "homepage": "https://cloudscape.design",
   "files": [],
+  "sideEffects": false,
   "scripts": {
     "quick-build": "gulp quick-build",
     "build": "NODE_ENV=production gulp build",
