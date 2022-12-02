@@ -83,7 +83,6 @@ function ApplicationController(
   return (
     <g ref={containerRef}>
       <g
-        focusable={false}
         tabIndex={-1}
         ref={applicationRef}
         onFocus={onApplicationFocus}

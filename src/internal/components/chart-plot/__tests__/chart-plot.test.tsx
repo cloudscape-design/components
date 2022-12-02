@@ -32,7 +32,6 @@ describe('initial state', () => {
 
     expect(plot.getAttribute('focusable')).toBe('true');
     expect(plot.tabIndex).toBe(0);
-    expect(application.getAttribute('focusable')).toBe('false');
     expect(application.tabIndex).toBe(-1);
   });
 
@@ -151,7 +150,6 @@ describe('focused plot', () => {
 
     expect(plot.getAttribute('focusable')).toBe('true');
     expect(plot.tabIndex).toBe(0);
-    expect(application.getAttribute('focusable')).toBe('false');
     expect(application.tabIndex).toBe(-1);
   });
 

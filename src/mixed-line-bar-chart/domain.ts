@@ -32,16 +32,16 @@ export function computeDomainX<T>(series: readonly InternalChartSeries<T>[], xSc
     // Compare x-threshold X with current min, max.
     if (isXThreshold(curr.series)) {
       const [min, max] = acc;
-      const newMin = min === undefined || curr.series.x < min ? curr.series.x : min;
-      const newMax = max === undefined || max < curr.series.x ? curr.series.x : max;
+      const newMin = min === undefined || min === null || curr.series.x < min ? curr.series.x : min;
+      const newMax = max === undefined || max === null || max < curr.series.x ? curr.series.x : max;
       return [newMin, newMax] as T[];
     }
 
     // Compare all series X values with current min, max.
     if (isDataSeries(curr.series)) {
       return curr.series.data.reduce(([min, max], { x }) => {
-        const newMin = min === undefined || x < min ? x : min;
-        const newMax = max === undefined || max < x ? x : max;
+        const newMin = min === undefined || min === null || x < min ? x : min;
+        const newMax = max === undefined || max === null || max < x ? x : max;
         return [newMin, newMax] as T[];
       }, acc);
     }

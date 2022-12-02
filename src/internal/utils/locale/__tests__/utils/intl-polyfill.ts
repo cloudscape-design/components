@@ -3,6 +3,9 @@
 
 // We use resolvedOptions to detect browser locale. This method allows us to override the value for testing.
 export default function setResolvedOptions(newValue: { locale: string }): void {
+  const dateTimeFormat = new Intl.DateTimeFormat(newValue.locale);
+  const resolvedOptions = dateTimeFormat.resolvedOptions();
+
   // eslint-disable-next-line no-undef
-  window.Intl.DateTimeFormat.prototype.resolvedOptions = () => newValue;
+  window.Intl.DateTimeFormat.prototype.resolvedOptions = () => ({ ...resolvedOptions, ...newValue });
 }
