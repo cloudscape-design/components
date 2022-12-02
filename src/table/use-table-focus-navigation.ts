@@ -90,18 +90,21 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       if (abort) {
         return;
       }
-      event.preventDefault();
       switch (event.key) {
         case 'ArrowUp':
+          event.preventDefault();
           shiftFocus(-1, 0);
           break;
         case 'ArrowDown':
+          event.preventDefault();
           shiftFocus(1, 0);
           break;
         case 'ArrowLeft':
+          event.preventDefault();
           shiftFocus(0, -1);
           break;
         case 'ArrowRight':
+          event.preventDefault();
           shiftFocus(0, 1);
           break;
         default:

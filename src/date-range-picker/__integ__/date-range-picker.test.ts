@@ -57,7 +57,7 @@ describe('Date Range Picker', () => {
       await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab']);
       await page.keys('Enter');
 
-      await expect(page.getTriggerText()).resolves.toBe('2018-01-17T00:00:00+00:00 — 2018-01-19T15:30:00+00:00');
+      await expect(page.getTriggerText()).resolves.toBe('2018-01-17T00:00:00+00:00 — 2018-01-19T14:30:00+00:00');
     })
   );
 
