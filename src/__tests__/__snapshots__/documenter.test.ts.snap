@@ -11032,7 +11032,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "activateEditLabel",
             "optional": true,
-            "type": "(column: TableProps.ColumnDefinition<T>) => string",
+            "type": "(column: TableProps.EditableColumn<T, V>) => string",
           },
           Object {
             "name": "allItemsSelectionLabel",
@@ -11042,7 +11042,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "cancelEditLabel",
             "optional": true,
-            "type": "(column: TableProps.ColumnDefinition<T>) => string",
+            "type": "(column: TableProps.EditableColumn<T, V>) => string",
           },
           Object {
             "name": "itemSelectionLabel",
@@ -11057,7 +11057,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "submitEditLabel",
             "optional": true,
-            "type": "(column: TableProps.ColumnDefinition<T>) => string",
+            "type": "(column: TableProps.EditableColumn<T, V>) => string",
           },
           Object {
             "name": "tableLabel",
@@ -11069,7 +11069,7 @@ add a meaningful description to the whole selection.
       },
       "name": "ariaLabels",
       "optional": true,
-      "type": "TableProps.AriaLabels<T>",
+      "type": "TableProps.AriaLabels<T, V>",
     },
     Object {
       "description": "Adds the specified classes to the root element of the component.",
@@ -11108,7 +11108,7 @@ add a meaningful description to the whole selection.
 * \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.",
       "name": "columnDefinitions",
       "optional": false,
-      "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
+      "type": "ReadonlyArray<TableProps.ColumnDefinition<T, V>>",
     },
     Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
@@ -11258,23 +11258,23 @@ Return a promise to keep loading state while the submit request is in progress."
         "parameters": Array [
           Object {
             "name": "item",
-            "type": "T",
+            "type": "ItemType",
           },
           Object {
             "name": "column",
-            "type": "TableProps.ColumnDefinition<T>",
+            "type": "TableProps.ColumnDefinition<ItemType, ValueType>",
           },
           Object {
             "name": "newValue",
-            "type": "any",
+            "type": "ValueType",
           },
         ],
-        "returnType": "Promise<void>",
+        "returnType": "Promise<void> | void",
         "type": "function",
       },
       "name": "submitEdit",
       "optional": true,
-      "type": "TableProps.SubmitEditFunction<T>",
+      "type": "TableProps.SubmitEditFunction<T, V>",
     },
     Object {
       "description": "Use this property to inform screen readers how many items there are in a table.

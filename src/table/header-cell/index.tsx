@@ -11,15 +11,15 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-interface TableHeaderCellProps {
+interface TableHeaderCellProps<ItemType, ValueType> {
   className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
-  column: TableProps.ColumnDefinition<any>;
-  activeSortingColumn: TableProps.SortingColumn<any> | undefined;
-  sortingDescending: boolean | undefined;
-  sortingDisabled: boolean | undefined;
-  wrapLines: boolean | undefined;
+  column: TableProps.ColumnDefinition<ItemType, ValueType>;
+  activeSortingColumn?: TableProps.SortingColumn<ItemType>;
+  sortingDescending?: boolean;
+  sortingDisabled?: boolean;
+  wrapLines?: boolean;
   showFocusRing: boolean;
   hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
@@ -32,7 +32,7 @@ interface TableHeaderCellProps {
   isEditable?: boolean;
 }
 
-export function TableHeaderCell({
+export function TableHeaderCell<ItemType, ValueType>({
   className,
   style,
   tabIndex,
@@ -51,7 +51,7 @@ export function TableHeaderCell({
   resizableColumns,
   onResizeFinish,
   isEditable,
-}: TableHeaderCellProps) {
+}: TableHeaderCellProps<ItemType, ValueType>) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -119,7 +119,7 @@ export function TableHeaderCell({
           {column.header}
           {isEditable ? (
             <span className={styles['edit-icon']}>
-              <InternalIcon name="edit" />
+              <InternalIcon name="edit" alt={column.editConfig?.editIconAltText} />
             </span>
           ) : null}
         </div>

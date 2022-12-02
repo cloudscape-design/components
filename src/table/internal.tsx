@@ -27,17 +27,16 @@ import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SomeRequired } from '../internal/types';
 import useMouseDownTarget from './use-mouse-down-target';
 import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
+type InternalTableProps<T, V> = SomeRequired<TableProps<T, V>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
 const InternalTable = React.forwardRef(
-  <T,>(
+  <T, V>(
     {
       header,
       footer,
@@ -76,7 +75,7 @@ const InternalTable = React.forwardRef(
       firstIndex,
       renderAriaLive,
       ...rest
-    }: InternalTableProps<T>,
+    }: InternalTableProps<T, V>,
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
@@ -186,15 +185,13 @@ const InternalTable = React.forwardRef(
       if (!submitEdit) {
         return undefined;
       }
-      return (...args: Parameters<TableProps.SubmitEditFunction<any>>) => {
+      return async (...args: Parameters<typeof submitEdit>) => {
         setCurrentEditLoading(true);
-        return submitEdit(...args).then(
-          () => setCurrentEditLoading(false),
-          error => {
-            setCurrentEditLoading(false);
-            throw error;
-          }
-        );
+        try {
+          await submitEdit(...args);
+        } finally {
+          setCurrentEditLoading(false);
+        }
       };
     };
 
@@ -360,7 +357,7 @@ const InternalTable = React.forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const isEditActive =
+                          const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
                           return (
@@ -380,7 +377,7 @@ const InternalTable = React.forwardRef(
                               item={item}
                               wrapLines={wrapLines}
                               isEditable={isEditable}
-                              isEditActive={isEditActive}
+                              isEditing={isEditing}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { MutableRefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
 import { TableProps } from './interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
@@ -26,7 +26,7 @@ function iterateTableCells<T extends HTMLElement>(
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any, any> }>(
   enable: boolean,
-  tableRoot: MutableRefObject<any> | null,
+  tableRoot: RefObject<HTMLTableElement> | null,
   columnDefinitions: Readonly<T[]>,
   numRows: number
 ) {
@@ -90,6 +90,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       if (abort) {
         return;
       }
+      event.preventDefault();
       switch (event.key) {
         case 'ArrowUp':
           shiftFocus(-1, 0);
@@ -126,7 +127,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
           eventListeners.set([rowIndex, cellIndex], listenerFns);
           cell.addEventListener('focusin', listenerFns.focusin, { passive: true });
         });
-        tableRoot.current.addEventListener('keydown', handleArrowKeyEvents, { passive: true });
+        tableRoot.current.addEventListener('keydown', handleArrowKeyEvents);
       } else {
         iterateTableCells(tableRoot.current, (cell, rowIndex, columnIndex) => {
           const listeners = eventListeners.get([rowIndex, columnIndex]);

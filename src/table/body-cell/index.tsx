@@ -12,54 +12,59 @@ import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 export { TableTdElement } from './td-element';
 
-const readonlyState = { isEditActive: false, currentValue: '', setValue: () => {} };
+const readonlyState = Object.freeze({
+  isEditing: false,
+  currentValue: undefined,
+  setValue: () => {},
+});
+
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
 };
 
-interface TableBodyCellProps<ItemType> extends TableTdElementProps {
-  column: TableProps.ColumnDefinition<ItemType>;
+interface TableBodyCellProps<ItemType, ValueType> extends TableTdElementProps {
+  column: TableProps.EditableColumn<ItemType, ValueType>;
   item: ItemType;
-  isEditActive: boolean;
+  isEditing: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
-  submitEdit: TableProps.SubmitEditFunction<ItemType> | undefined;
+  submitEdit?: TableProps.SubmitEditFunction<ItemType, ValueType>;
   ariaLabels: TableProps['ariaLabels'];
 }
 
-function TableCellEditable<ItemType>({
+function TableCellEditable<ItemType, ValueType>({
   className,
   item,
   column,
-  isEditActive,
+  isEditing,
   onEditStart,
   onEditEnd,
   submitEdit,
   ariaLabels,
   ...rest
-}: TableBodyCellProps<ItemType>) {
+}: TableBodyCellProps<ItemType, ValueType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
 
   useEffectOnUpdate(() => {
-    if (!isEditActive && editActivateRef?.current) {
+    if (!isEditing && editActivateRef?.current) {
       editActivateRef.current!.focus();
     }
-  }, [isEditActive]);
+  }, [isEditing]);
 
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
-    'data-inline-editing-active': isEditActive.toString(),
+    'data-inline-editing-active': isEditing.toString(),
   };
 
   return (
     <TableTdElement
       {...rest}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
-      className={clsx(className, styles['body-cell-editable'], isEditActive && styles['body-cell-edit-active'])}
-      onClick={!isEditActive ? onEditStart : undefined}
+      className={clsx(className, styles['body-cell-editable'], isEditing && styles['body-cell-edit-active'])}
+      onClick={!isEditing ? onEditStart : undefined}
     >
-      {isEditActive ? (
+      {isEditing ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}
@@ -86,11 +91,11 @@ function TableCellEditable<ItemType>({
   );
 }
 
-export function TableBodyCell<ItemType>({
+export function TableBodyCell<ItemType, ValueType>({
   isEditable,
   ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  if (isEditable || rest.isEditActive) {
+}: TableBodyCellProps<ItemType, ValueType> & { isEditable: boolean }) {
+  if (isEditable || rest.isEditing) {
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;

@@ -11,30 +11,30 @@ import styles from './styles.css.js';
 // A function that does nothing
 const noop = () => undefined;
 
-interface InlineEditorProps<ItemType> {
+interface InlineEditorProps<ItemType, ValueType> {
   ariaLabels: TableProps['ariaLabels'];
-  column: TableProps.ColumnDefinition<ItemType>;
+  column: TableProps.EditableColumn<ItemType, ValueType>;
   item: ItemType;
   onEditEnd: () => void;
-  submitEdit: TableProps.SubmitEditFunction<ItemType>;
+  submitEdit: TableProps.SubmitEditFunction<ItemType, ValueType>;
 }
 
-export function InlineEditor<ItemType>({
+export function InlineEditor<ItemType, ValueType>({
   ariaLabels,
   item,
   column,
   onEditEnd,
   submitEdit,
-}: InlineEditorProps<ItemType>) {
+}: InlineEditorProps<ItemType, ValueType>) {
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
-  const [currentEditValue, setCurrentEditValue] = useState<any>(undefined);
+  const [currentEditValue, setCurrentEditValue] = useState<Optional<ValueType>>(undefined);
 
   function finishEdit() {
     setCurrentEditValue(undefined);
     onEditEnd();
   }
 
-  function onSubmitClick(evt: React.FormEvent) {
+  async function onSubmitClick(evt: React.FormEvent) {
     evt.preventDefault();
     if (currentEditValue === undefined) {
       finishEdit();
@@ -42,15 +42,12 @@ export function InlineEditor<ItemType>({
     }
 
     setCurrentEditLoading(true);
-    // istanbul ignore next (promise resolve/reject are tested in unit tests, but don't show up in coverage)
-    submitEdit(item, column, currentEditValue)
-      .then(() => {
-        setCurrentEditLoading(false);
-        finishEdit();
-      })
-      .catch(() => {
-        setCurrentEditLoading(false);
-      });
+    try {
+      await submitEdit(item, column, currentEditValue);
+      finishEdit();
+    } finally {
+      setCurrentEditLoading(false);
+    }
   }
 
   function onCancel() {

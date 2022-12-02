@@ -172,10 +172,10 @@ const Demo = forwardRef(
   ) => {
     const [items, setItems] = useState(initialItems);
 
-    const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (
+    const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo, string> = async (
       currentItem,
       column,
-      newValue: string
+      newValue
     ) => {
       let value = newValue;
       await new Promise(r => setTimeout(r, 1000));

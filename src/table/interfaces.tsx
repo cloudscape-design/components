@@ -18,7 +18,7 @@ export interface TableForwardRefType {
   <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
 
-export interface TableProps<T = any> extends BaseComponentProps {
+export interface TableProps<T = any, V = any> extends BaseComponentProps {
   /**
    * Heading element of the table container. Use the [header component](/components/header/).
    */
@@ -89,7 +89,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   If present, the `sortingField` property is ignored.
    * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
    */
-  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T, V>>;
   /**
    * Specifies the selection type (`'single' | 'multi'`).
    */
@@ -149,7 +149,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
    */
-  ariaLabels?: TableProps.AriaLabels<T>;
+  ariaLabels?: TableProps.AriaLabels<T, V>;
 
   /**
    * Specifies the definition object of the currently sorted column. Make sure you pass an object that's
@@ -254,7 +254,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Specifies a function that will be called after user submits an inline edit.
    * Return a promise to keep loading state while the submit request is in progress.
    */
-  submitEdit?: TableProps.SubmitEditFunction<T>;
+  submitEdit?: TableProps.SubmitEditFunction<T, V>;
 
   /**
    * Called whenever user cancels an inline edit. Use it to reset any
@@ -266,19 +266,18 @@ export interface TableProps<T = any> extends BaseComponentProps {
 export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
-  export interface CellContext<ValueType = string> {
+  export type EditableColumn<T, V = any> = Extract<ColumnDefinition<T, V>, ColumnEditConfig<T, V>>;
+
+  export interface CellContext<V> {
     isEditing?: boolean;
-    currentValue: ValueType;
-    setValue: React.Dispatch<ValueType>;
+    currentValue: Optional<V>;
+    setValue: React.Dispatch<Optional<V>>;
   }
 
-  export type CellRenderer<ItemType> = (item: ItemType) => React.ReactNode;
-  export type EditableCellRenderer<ItemType, ValueType> = (
-    item: ItemType,
-    context: CellContext<ValueType>
-  ) => React.ReactNode;
+  export type CellRenderer<T> = (item: T) => React.ReactNode;
+  export type EditableCellRenderer<T, V = any> = (item: T, context: CellContext<V>) => React.ReactNode;
 
-  export interface EditConfig<ItemType, ValueType> {
+  export interface EditConfig<T, V = any> {
     /**
      * Specifies a label for the edit control. Visually hidden but read by screen readers.
      */
@@ -287,6 +286,10 @@ export namespace TableProps {
      * Specifies an ariaLabel for error icon that is displayed when the validation fails.
      */
     errorIconAriaLabel?: string;
+    /**
+     * alternate text for edit icon used in table header
+     */
+    editIconAltText?: string;
     /**
      * Constraint text that is displayed below the edit control.
      */
@@ -298,10 +301,10 @@ export namespace TableProps {
      * @param item - The item that is being edited.
      * @param value - The current value of the edit control.
      */
-    validation?: (item: ItemType, value: ValueType) => string | undefined;
+    validation?: (item: T, value: Optional<V>) => Optional<string>;
   }
 
-  type ColumnEditConfig<ItemType, ValueType> =
+  export type ColumnEditConfig<ItemType, ValueType> =
     | {
         editConfig?: undefined;
         cell: CellRenderer<ItemType>;
@@ -311,7 +314,7 @@ export namespace TableProps {
         cell: EditableCellRenderer<ItemType, ValueType>;
       };
 
-  export type ColumnDefinition<ItemType, ValueType = string> = {
+  export type ColumnDefinition<ItemType, ValueType = any> = {
     id?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
@@ -330,14 +333,14 @@ export namespace TableProps {
     selectedItems: T[];
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
-  export interface AriaLabels<T> {
+  export interface AriaLabels<T, V = any> {
     allItemsSelectionLabel?: (data: TableProps.SelectionState<T>) => string;
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
-    activateEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
-    cancelEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
-    submitEditLabel?: (column: TableProps.ColumnDefinition<T>) => string;
+    activateEditLabel?: (column: EditableColumn<T, V>) => string;
+    cancelEditLabel?: (column: EditableColumn<T, V>) => string;
+    submitEditLabel?: (column: EditableColumn<T, V>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -386,5 +389,9 @@ export namespace TableProps {
     cancelEdit?(): void;
   }
 
-  export type SubmitEditFunction<T> = (item: T, column: TableProps.ColumnDefinition<T>, newValue: any) => Promise<void>;
+  export type SubmitEditFunction<ItemType, ValueType = any> = (
+    item: ItemType,
+    column: ColumnDefinition<ItemType, ValueType>,
+    newValue: ValueType
+  ) => Promise<void> | void;
 }
