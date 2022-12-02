@@ -3,9 +3,11 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
+import { AppLayoutProps } from '../interfaces';
 
 export interface ContentWrapperProps {
   className?: string;
+  contentType: AppLayoutProps.ContentType;
   children?: React.ReactNode;
   isMobile: boolean;
   navigationPadding: boolean;
@@ -18,6 +20,7 @@ const ContentWrapper = React.forwardRef(
   (
     {
       className,
+      contentType,
       children,
       toolsPadding,
       disablePaddings,
@@ -40,6 +43,7 @@ const ContentWrapper = React.forwardRef(
         className={clsx(
           className,
           styles['content-wrapper'],
+          styles[`content-type-${contentType}`],
           !navigationPadding && styles['content-wrapper-no-navigation-padding'],
           !toolsPadding && styles['content-wrapper-no-tools-padding'],
           isMobile && styles['content-wrapper-mobile']

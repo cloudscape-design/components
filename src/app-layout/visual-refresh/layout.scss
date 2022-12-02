@@ -3,8 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles/' as styles;
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../constants' as constants;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
@@ -15,7 +16,7 @@
   navigationHide and/or toolsHide properties have been set then the first
   and last column width will default to the minimum content gap properties to
   create the necessary visual space around the main content.
-  
+
   The minimum content width property is set to zero and applied under all
   circumstances regardless of whether the minContentWidth property is
   explicitly set in script.
@@ -49,14 +50,10 @@
 
   // Add unified max-width for AppLayout content based on breakpoints.
   &:not(.has-max-content-width) {
-    @include styles.media-breakpoint-up(styles.$breakpoint-large) {
-      #{custom-props.$defaultMaxContentWidth}: 1280px;
-    }
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-large) {
-      #{custom-props.$defaultMaxContentWidth}: 1440px;
-    }
-    @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
-      #{custom-props.$defaultMaxContentWidth}: 1620px;
+    @each $breakpoint, $width in constants.$adaptive-content-widths {
+      @include styles.media-breakpoint-up($breakpoint) {
+        #{custom-props.$defaultMaxContentWidth}: $width;
+      }
     }
   }
 
@@ -70,11 +67,11 @@
   }
 
   /*
-  Warning! This is a hack! We are implementing a short term fix to prevent the 
-  tools drawer from potentially getting pushed off screen. Currently there is no 
-  protection against a navigationWidth, minContentWidth, and toolsWidth that are 
-  in excess ove the available space in the viewport. To accomodate this we remove 
-  the minContentWidth and set it to zero in small viewports and below until the 
+  Warning! This is a hack! We are implementing a short term fix to prevent the
+  tools drawer from potentially getting pushed off screen. Currently there is no
+  protection against a navigationWidth, minContentWidth, and toolsWidth that are
+  in excess ove the available space in the viewport. To accomodate this we remove
+  the minContentWidth and set it to zero in small viewports and below until the
   isMobile breakpoint sets the drawers to overlay at 100vw.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-small) {
@@ -157,14 +154,14 @@
   }
 
   /*
-  In desktop viewports the content gap property for the left and right 
-  columns should override the default of zero if the navigationHide 
+  In desktop viewports the content gap property for the left and right
+  columns should override the default of zero if the navigationHide
   or toolsHide property is set. This ensures adequate horizontal space
-  for the center column from the edges of the viewport when there is 
+  for the center column from the edges of the viewport when there is
   not left or right content.
 
-  Warning! If these design tokens change it will adversely impact the 
-  calculation used to determine the Split Panel maximum width in the 
+  Warning! If these design tokens change it will adversely impact the
+  calculation used to determine the Split Panel maximum width in the
   handleSplitPanelMaxWidth function in the context.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -180,8 +177,8 @@
   /*
   In mobile viewports the Navigation and Tools drawers are hidden
   and triggered by the AppBar which then take up the entire viewport.
-  The center column needs permanent space from the horizontal viewport 
-  edges regardless of whether or not there is a Navigation or Tools. 
+  The center column needs permanent space from the horizontal viewport
+  edges regardless of whether or not there is a Navigation or Tools.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$contentGapLeft}: #{awsui.$space-l};
@@ -191,7 +188,7 @@
 
 /*
 This CSS class is applied to the document body to prevent overflow scrolling
-when the navigation or tools drawers are open in responsive viewports. 
+when the navigation or tools drawers are open in responsive viewports.
 */
 .block-body-scroll {
   overflow: hidden;

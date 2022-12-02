@@ -455,6 +455,7 @@ Individual properties will always take precedence over the default coming from t
           "table",
           "cards",
           "wizard",
+          "dashboard",
         ],
       },
       "name": "contentType",

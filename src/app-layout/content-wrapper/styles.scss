@@ -5,6 +5,7 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../constants' as constants;
 
 .content-wrapper {
   padding-left: awsui.$space-scaled-2x-xxxl;
@@ -12,5 +13,15 @@
   &-mobile {
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
+  }
+}
+
+.content-type-dashboard {
+  margin-left: auto;
+  margin-right: auto;
+  @each $breakpoint, $width in constants.$adaptive-content-widths {
+    @include styles.media-breakpoint-up($breakpoint) {
+      max-width: $width;
+    }
   }
 }
