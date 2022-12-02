@@ -11141,7 +11141,7 @@ need to position the sticky header below other fixed position elements on the pa
       "type": "number",
     },
     Object {
-     "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
+      "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
       "name": "stripedRows",
       "optional": true,
       "type": "boolean",
