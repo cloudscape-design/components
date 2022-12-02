@@ -9,7 +9,7 @@ export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
     startDate: '2018-01-09T12:34:56Z',
-    endDate: '2018-01-19T15:30:00',
+    endDate: '2018-01-19T15:30:00Z',
   });
 
   return (

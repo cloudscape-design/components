@@ -58,6 +58,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
     minWidth: 160,
     editConfig: {
       ariaLabel: 'Domain name',
+      editIconAriaLabel: 'editable',
       errorIconAriaLabel: 'Domain Name Error',
       validation(item, value) {
         const currentValue = value ?? item.DomainName;
@@ -95,6 +96,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
     minWidth: 200,
     editConfig: {
       ariaLabel: 'Origin',
+      editIconAriaLabel: 'editable',
     },
     cell: (item, { isEditing, setValue, currentValue }) => {
       if (isEditing) {
@@ -119,6 +121,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
     width: 170,
     editConfig: {
       ariaLabel: 'Certificate Minimum Version',
+      editIconAriaLabel: 'editable',
     },
     cell(item, { isEditing, currentValue, setValue }) {
       if (isEditing) {
@@ -143,6 +146,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
     header: 'Last Modified',
     editConfig: {
       ariaLabel: 'Last Modified',
+      editIconAriaLabel: 'editable',
     },
     cell: (item, { isEditing, currentValue, setValue }) => {
       if (isEditing) {
