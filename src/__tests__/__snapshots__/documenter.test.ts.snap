@@ -3821,7 +3821,9 @@ The object should contain, among others:
       "type": "string",
     },
     Object {
-      "description": "Specifies the programming language. You can use any of the programming languages supported by the \`ace\` object that you provide.",
+      "description": "Specifies the programming language. You can use any of the programming languages supported by the \`ace\` object that you provide.
+Alternatively, this can be used to set a language that is not supported by the default \`language\` list. Make sure you've added the highlighting support for this language to the Ace instance.
+For more info on custom languages, see the [Code editor API](/components/code-editor?tabId=api) page.",
       "inlineType": Object {
         "name": "CodeEditorProps.Language",
         "properties": Array [],
@@ -3830,6 +3832,12 @@ The object should contain, among others:
       "name": "language",
       "optional": false,
       "type": "CodeEditorProps.Language",
+    },
+    Object {
+      "description": "Specifies a custom label language. If set, it overrides the default language label.",
+      "name": "languageLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Renders the code editor in a loading state.",
@@ -8859,6 +8867,21 @@ in a slight, visible lag when scrolling complex pages.",
       "description": "An array of possible values of the individual \`filteringProperties\`. Each element has the following properties:
 * \`propertyKey\` [string]: The key of the corresponding filtering property in the \`filteringProperties\` array.
 * \`value\` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
+* \`label\` [string]: Optional suggestion label to be matched instead of the value.
+
+Filtering options that require labels can only use \`=\` and \`!=\` operators. The token value must be labelled separately, for example:
+\`\`\`
+const filteringProperty = {
+  key: 'state',
+  propertyLabel: 'State',
+  operators: ['=', '!='].map(operator => ({ operator, format: getStateLabel }))
+}
+const filteringOptions = [
+  { propertyKey: 'state', value: 'STOPPED', label: getStateLabel('STOPPED') },
+  { propertyKey: 'state', value: 'STOPPING', label: getStateLabel('STOPPING') },
+  { propertyKey: 'state', value: 'RUNNING', label: getStateLabel('RUNNING') },
+]
+\`\`\`
 ",
       "name": "filteringOptions",
       "optional": true,
@@ -9050,6 +9073,11 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "tokenLimitShowMore",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "tokenOperatorAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -10979,6 +11007,14 @@ add a meaningful description to the whole selection.
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
     },
     Object {
+      "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
+ It specifies the index (1-based) of the first item in the table.
+ If the table has no pagination, leave this property undefined.",
+      "name": "firstIndex",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
@@ -11020,6 +11056,13 @@ by the \`cell\` property of each column definition in the \`columnDefinitions\` 
       "name": "loadingText",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Use this function to announce page changes to screen reader users.
+Requires the properties firstIndex and totalItemsCount to be set correctly.",
+      "name": "renderAriaLive",
+      "optional": true,
+      "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     Object {
       "description": "Specifies if columns can be resized. If set to \`true\`, users can resize the columns in the table.",
@@ -11098,10 +11141,18 @@ need to position the sticky header below other fixed position elements on the pa
       "type": "number",
     },
     Object {
-      "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
+     "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
       "name": "stripedRows",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Use this property to inform screen readers how many items there are in a table.
+It specifies the total count of all items in a table.
+If there is an unknown total of items in a table, leave this property undefined.",
+      "name": "totalItemsCount",
+      "optional": true,
+      "type": "number",
     },
     Object {
       "description": "Specifies a property that uniquely identifies an individual item.

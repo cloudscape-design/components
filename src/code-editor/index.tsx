@@ -28,7 +28,6 @@ import PreferencesModal from './preferences-modal';
 import LoadingScreen from './loading-screen';
 import ErrorScreen from './error-screen';
 
-import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -38,12 +37,24 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useControllable } from '../internal/hooks/use-controllable';
 import LiveRegion from '../internal/components/live-region';
+
+import styles from './styles.css.js';
+
 export { CodeEditorProps };
 
 export default function CodeEditor(props: CodeEditorProps) {
   const { __internalRootRef } = useBaseComponent('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
-  const { ace, value, language, i18nStrings, editorContentHeight, onEditorContentResize, ...rest } = props;
+  const {
+    ace,
+    value,
+    language,
+    i18nStrings,
+    editorContentHeight,
+    onEditorContentResize,
+    languageLabel: customLanguageLabel,
+    ...rest
+  } = props;
   const [editorHeight = 480, setEditorHeight] = useControllable(editorContentHeight, onEditorContentResize, 480, {
     componentName: 'code-editor',
     changeHandler: 'onEditorContentResize',
@@ -70,7 +81,7 @@ export default function CodeEditor(props: CodeEditorProps) {
       );
     },
     [ace]
-  ); // loads as soon as ace lib is available
+  );
 
   useEffect(() => {
     if (!editor) {
@@ -90,7 +101,6 @@ export default function CodeEditor(props: CodeEditorProps) {
   const [paneStatus, setPaneStatus] = useState<PaneStatus>('hidden');
   const [annotations, setAnnotations] = useState<Ace.Annotation[]>([]);
   const [highlightedAnnotation, setHighlightedAnnotation] = useState<Ace.Annotation>();
-  const [languageLabel, setLanguageLabel] = useState<string>('');
   const [cursorPosition, setCursorPosition] = useState<Ace.Point>({ row: 0, column: 0 });
   const [isTabFocused, setTabFocused] = useState<boolean>(false);
 
@@ -117,7 +127,7 @@ export default function CodeEditor(props: CodeEditorProps) {
 
     return () => {
       editor?.destroy();
-    }; // TODO profile/monitor this
+    };
   }, [ace, editor, __internalRootRef]);
 
   useEffect(() => {
@@ -134,12 +144,7 @@ export default function CodeEditor(props: CodeEditorProps) {
   }, [editor, value]);
 
   useEffect(() => {
-    if (!editor) {
-      return;
-    }
-    editor.session.setMode(`ace/mode/${language}`);
-
-    setLanguageLabel(getLanguageLabel(language));
+    editor?.session.setMode(`ace/mode/${language}`);
   }, [editor, language]);
 
   useEffect(() => {
@@ -148,15 +153,13 @@ export default function CodeEditor(props: CodeEditorProps) {
     }
 
     const theme: CodeEditorProps.Theme = props.preferences?.theme ?? defaultTheme;
-
     editor.setTheme(getAceTheme(theme));
 
     editor.session.setUseWrapMode(props.preferences?.wrapLines ?? true);
   }, [editor, defaultTheme, props.preferences]);
 
-  // listeners
+  // Change listeners
   useChangeEffect(editor, props.onChange, props.onDelayedChange);
-  // TODO implement other listeners
 
   // Hide error panel when there are no errors to show.
   useEffect(() => {
@@ -168,6 +171,8 @@ export default function CodeEditor(props: CodeEditorProps) {
       fireNonCancelableEvent(props.onValidate, { annotations });
     }
   }, [annotations, props.onValidate]);
+
+  const languageLabel = customLanguageLabel ?? getLanguageLabel(language);
 
   const errorCount = annotations.filter(a => a.type === 'error').length;
   const warningCount = annotations.filter(a => a.type === 'warning').length;

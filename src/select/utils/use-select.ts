@@ -15,12 +15,7 @@ import { OptionsListProps } from '../../internal/components/options-list';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { usePrevious } from '../../internal/hooks/use-previous';
-import {
-  BaseKeyDetail,
-  NonCancelableEventHandler,
-  CancelableEventHandler,
-  fireNonCancelableEvent,
-} from '../../internal/events';
+import { BaseKeyDetail, NonCancelableEventHandler, fireNonCancelableEvent } from '../../internal/events';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 export type MenuProps = Omit<OptionsListProps, 'children'> & { ref: React.RefObject<HTMLUListElement> };
@@ -45,11 +40,6 @@ export interface SelectTriggerProps {
   onMouseDown?: (event: CustomEvent) => void;
   onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
   onFocus: NonCancelableEventHandler;
-}
-
-export interface RecoveryLinkProps {
-  ref: RefObject<HTMLAnchorElement>;
-  onBlur: CancelableEventHandler<{ relatedTarget: Node | null }>;
 }
 
 export function useSelect({

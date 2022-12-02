@@ -11,13 +11,24 @@ import createWrapper, {
   PopoverWrapper,
 } from '../../../lib/components/test-utils/dom';
 import PropertyFilter from '../../../lib/components/property-filter';
-import { FilteringProperty } from '../../../lib/components/property-filter/interfaces';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
-import { FilteringOption, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
+import {
+  FilteringProperty,
+  FilteringOption,
+  PropertyFilterProps,
+  Ref,
+} from '../../../lib/components/property-filter/interfaces';
 
-const filteringProperties = [
+const states: Record<string, string> = {
+  0: 'Stopped',
+  1: 'Stopping',
+  2: 'Running',
+};
+const getStateLabel = (value: string) => (value !== undefined ? states[value] : 'Unknown');
+
+const filteringProperties: readonly FilteringProperty[] = [
   {
     key: 'string',
     propertyLabel: 'string',
@@ -52,15 +63,13 @@ const filteringProperties = [
     operators: ['!:', ':', '=', '!='],
     groupValuesLabel: 'Edge case values',
   },
-] as const;
-
-function openEditor(wrapper: PropertyFilterWrapper, index = 0) {
-  const tokenWrapper = createWrapper(wrapper.findTokens()![index].getElement());
-  const popoverWrapper = tokenWrapper.findPopover()!;
-  act(() => popoverWrapper.findTrigger().click());
-  const contentWrapper = popoverWrapper.findContent()!;
-  return [contentWrapper, popoverWrapper] as const;
-}
+  {
+    key: 'state',
+    propertyLabel: 'state',
+    operators: [{ operator: '=', format: getStateLabel }],
+    groupValuesLabel: 'State values',
+  },
+];
 
 const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
@@ -71,7 +80,10 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'other-string', value: 'value2' },
   { propertyKey: 'missing-property', value: 'value' },
   { propertyKey: 'default-operator', value: 'value' },
-] as const;
+  { propertyKey: 'state', value: '0', label: getStateLabel('0') },
+  { propertyKey: 'state', value: '1', label: getStateLabel('1') },
+  { propertyKey: 'state', value: '2', label: getStateLabel('2') },
+];
 
 const defaultProps: PropertyFilterProps = {
   filteringProperties,
@@ -177,7 +189,7 @@ describe('property filter parts', () => {
             .findDropdown()
             .findOptions()
             .map(optionWrapper => optionWrapper.getElement().textContent)
-        ).toEqual(['string', 'string-other', 'default', 'string!=', 'range']);
+        ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
         // property and value suggestions
         act(() => wrapper.setInputValue('a'));
         expect(
@@ -187,6 +199,7 @@ describe('property filter parts', () => {
             .map(optionWrapper => optionWrapper.getElement().textContent)
         ).toEqual([
           'default',
+          'state',
           'range',
           'string = value1',
           'string-other = value1',
@@ -453,6 +466,19 @@ describe('property filter parts', () => {
           expect.objectContaining({ detail: expect.objectContaining({ operation: 'and' }) })
         );
       });
+
+      test('can be used to check aria-label attirbute on the filter token operator', () => {
+        const secondToken = wrapper.findTokens()![1];
+        const label = secondToken
+          .findTokenOperation()
+          ?.findTrigger()
+          .getElement()
+          .getAttribute('aria-labelledby')!
+          .split(' ')
+          .map(labelId => wrapper.getElement().querySelector(`#${labelId}`)!.textContent)
+          .join(' ');
+        expect(label).toBe('Boolean Operator or');
+      });
     });
     describe('dismiss button', () => {
       test('causes onChange to fire, removing the token', () => {
@@ -518,7 +544,7 @@ describe('property filter parts', () => {
             .findDropdown()
             .findOptions()!
             .map(optionWrapper => optionWrapper.getElement().textContent)
-        ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'range']);
+        ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'state', 'range']);
 
         const operatorSelectWrapper = findOperatorSelector(contentWrapper);
         act(() => operatorSelectWrapper.openDropdown());
@@ -554,7 +580,7 @@ describe('property filter parts', () => {
             .findDropdown()
             .findOptions()!
             .map(optionWrapper => optionWrapper.getElement().textContent)
-        ).toEqual(['string', 'string-other', 'default', 'string!=', 'range']);
+        ).toEqual(['string', 'string-other', 'default', 'string!=', 'state', 'range']);
       });
       test('preserves fields, when one is edited', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -804,8 +830,8 @@ describe('property filter parts', () => {
         },
       });
       expect(wrapper.findTokens()).toHaveLength(2);
-      expect(openEditor(wrapper, 0)[0].find('[data-testid="change+"]')).not.toBe(null);
-      expect(openEditor(wrapper, 1)[0].find('[data-testid="change-"]')).not.toBe(null);
+      expect(openTokenEditor(wrapper, 0)[0].find('[data-testid="change+"]')).not.toBe(null);
+      expect(openTokenEditor(wrapper, 1)[0].find('[data-testid="change-"]')).not.toBe(null);
     });
 
     test('extended operator form takes value/onChange state', () => {
@@ -1075,6 +1101,134 @@ describe('property filter parts', () => {
             filteringProperty: expect.objectContaining({ key: 'default-operator' }),
             filteringOperator: '=',
           }),
+        })
+      );
+    });
+  });
+
+  describe('labelled values', () => {
+    test('tokens are labelled', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        query: { tokens: [{ propertyKey: 'state', value: '0', operator: '=' }], operation: 'or' },
+      });
+
+      expect(wrapper.findTokens()[0].getElement()).toHaveTextContent('state = Stopped');
+    });
+
+    test('token editor values are labelled', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        query: { tokens: [{ propertyKey: 'state', value: '0', operator: '=' }], operation: 'or' },
+      });
+
+      const [contentWrapper] = openTokenEditor(wrapper);
+      const valueSelectWrapper = findValueSelector(contentWrapper);
+      act(() => valueSelectWrapper.focus());
+      expect(
+        valueSelectWrapper
+          .findDropdown()
+          .findOptions()!
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['Stopped', 'Stopping', 'Running']);
+    });
+
+    test('property value suggestions are labelled', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      act(() => wrapper.setInputValue('state='));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping', 'state = Running']);
+    });
+
+    test('matches property values', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      // By label
+      act(() => wrapper.setInputValue('state=Stopp'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping']);
+
+      // By value
+      act(() => wrapper.setInputValue('state=2'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Running']);
+    });
+
+    test('matches all values', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent();
+
+      // By label
+      act(() => wrapper.setInputValue('Stopp'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped', 'state = Stopping']);
+
+      // By value
+      act(() => wrapper.setInputValue('0'));
+      expect(
+        wrapper
+          .findDropdown()
+          .findOptions()
+          .map(optionWrapper => optionWrapper.getElement().textContent)
+      ).toEqual(['state = Stopped']);
+    });
+
+    test('query is created with actual value when clicking on option', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+
+      // Selecting matched option from the list
+      act(() => wrapper.setInputValue('state=Stopp'));
+      act(() => wrapper.selectSuggestion(1));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '0', operator: '=' }],
+            operation: 'and',
+          },
+        })
+      );
+    });
+
+    test('query is created with actual value when pressing enter', () => {
+      const onChange = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+
+      // Entering full label
+      act(() => wrapper.setInputValue('state=Stopping'));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '1', operator: '=' }],
+            operation: 'and',
+          },
+        })
+      );
+
+      // Entering full value
+      act(() => wrapper.setInputValue('state=2'));
+      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            tokens: [{ propertyKey: 'state', value: '2', operator: '=' }],
+            operation: 'and',
+          },
         })
       );
     });

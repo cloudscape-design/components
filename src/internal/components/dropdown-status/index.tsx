@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { LinkProps } from '../../../link/interfaces';
+import React from 'react';
 import InternalLink from '../../../link/internal';
-import { RecoveryLinkProps } from '../../../select/utils/use-select';
 
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import { NonCancelableEventHandler, fireNonCancelableEvent } from '../../events';
@@ -25,7 +23,6 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * to recover from the error.
    */
   onRecoveryClick?: NonCancelableEventHandler;
-  recoveryProps?: RecoveryLinkProps;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
@@ -47,13 +44,11 @@ type UseDropdownStatus = ({
   isNoMatch,
   noMatch,
   onRecoveryClick,
-  recoveryProps,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
 interface DropdownStatusResult {
   isSticky: boolean;
   content: React.ReactNode | null;
-  focusRecoveryLink: () => void;
 }
 
 export const useDropdownStatus: UseDropdownStatus = ({
@@ -68,10 +63,8 @@ export const useDropdownStatus: UseDropdownStatus = ({
   noMatch,
   onRecoveryClick,
 }) => {
-  const linkRef = useRef<LinkProps.Ref | null>(null);
-  const focusRecoveryLink = () => linkRef.current?.focus();
   const previousStatusType = usePrevious(statusType);
-  const statusResult: DropdownStatusResult = { isSticky: true, content: null, focusRecoveryLink };
+  const statusResult: DropdownStatusResult = { isSticky: true, content: null };
 
   if (statusType === 'loading') {
     statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
@@ -83,7 +76,6 @@ export const useDropdownStatus: UseDropdownStatus = ({
         </InternalStatusIndicator>{' '}
         {recoveryText && (
           <InternalLink
-            ref={linkRef}
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"
             className={styles.recovery}

@@ -69,6 +69,9 @@ const InternalTable = React.forwardRef(
       onColumnWidthsChange,
       variant,
       __internalRootRef,
+      totalItemsCount,
+      firstIndex,
+      renderAriaLive,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -233,6 +236,11 @@ const InternalTable = React.forwardRef(
             {...wrapperProps}
             {...focusVisibleProps}
           >
+            {renderAriaLive && firstIndex && (
+              <LiveRegion>
+                <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })}</span>
+              </LiveRegion>
+            )}
             <table
               ref={tableRef}
               className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'])}
@@ -240,6 +248,7 @@ const InternalTable = React.forwardRef(
               // If we state explicitly, they get it always correctly even with low number of rows.
               role="table"
               aria-label={ariaLabels?.tableLabel}
+              aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
             >
               <Thead
                 ref={theadRef}
@@ -295,6 +304,7 @@ const InternalTable = React.forwardRef(
                         {...focusMarkers.item}
                         onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
+                        aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
                         {selectionType !== undefined && (
                           <TableBodyCell

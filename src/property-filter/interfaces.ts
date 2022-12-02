@@ -77,6 +77,21 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    *
    * * `propertyKey` [string]: The key of the corresponding filtering property in the `filteringProperties` array.
    * * `value` [string]: The value that will be used as a suggestion when creating or modifying a filtering token.
+   * * `label` [string]: Optional suggestion label to be matched instead of the value.
+   *
+   * Filtering options that require labels can only use `=` and `!=` operators. The token value must be labelled separately, for example:
+   * ```
+   * const filteringProperty = {
+   *   key: 'state',
+   *   propertyLabel: 'State',
+   *   operators: ['=', '!='].map(operator => ({ operator, format: getStateLabel }))
+   * }
+   * const filteringOptions = [
+   *   { propertyKey: 'state', value: 'STOPPED', label: getStateLabel('STOPPED') },
+   *   { propertyKey: 'state', value: 'STOPPING', label: getStateLabel('STOPPING') },
+   *   { propertyKey: 'state', value: 'RUNNING', label: getStateLabel('RUNNING') },
+   * ]
+   * ```
    */
   filteringOptions?: ReadonlyArray<PropertyFilterProps.FilteringOption>;
   /**
@@ -215,6 +230,7 @@ export namespace PropertyFilterProps {
     tokenLimitShowMore?: string;
     tokenLimitShowFewer?: string;
     clearFiltersText: string;
+    tokenOperatorAriaLabel?: string;
     removeTokenButtonAriaLabel: (token: PropertyFilterProps.Token) => string;
     enteredTextLabel: AutosuggestProps.EnteredTextLabel;
   }

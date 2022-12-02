@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { TableItem } from './table.data';
+import { states, TableItem } from './table.data';
 import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
+
+const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) ?? 'Unknown';
 
 export const columnDefinitions = [
   {
@@ -17,9 +19,10 @@ export const columnDefinitions = [
     id: 'state',
     sortingField: 'state',
     header: 'State',
-    type: 'text',
+    type: 'enum',
+    getLabel: getStateLabel,
     propertyLabel: 'State',
-    cell: (item: TableItem) => item.state,
+    cell: (item: TableItem) => getStateLabel(item.state),
   },
   {
     id: 'stopped',
@@ -27,7 +30,7 @@ export const columnDefinitions = [
     header: 'Stopped',
     type: 'boolean',
     propertyLabel: 'Stopped',
-    cell: (item: TableItem) => item.state === 'Stopped',
+    cell: (item: TableItem) => item.state === 0,
   },
   {
     id: 'instancetype',
@@ -151,6 +154,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenLimitShowMore: 'Show more',
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
+  tokenOperatorAriaLabel: 'Boolean Operator',
   removeTokenButtonAriaLabel: () => 'Remove token',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 };
@@ -159,6 +163,10 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
   let groupValuesLabel = `${def.propertyLabel} values`;
+
+  if (def.type === 'enum') {
+    operators = ['=', '!='].map(operator => ({ operator, format: def.getLabel }));
+  }
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];
