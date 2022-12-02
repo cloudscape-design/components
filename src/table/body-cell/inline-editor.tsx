@@ -7,13 +7,14 @@ import SpaceBetween from '../../space-between/internal';
 import { useClickAway } from './click-away';
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
+import { Optional } from '../../internal/types';
 
 // A function that does nothing
 const noop = () => undefined;
 
 interface InlineEditorProps<ItemType, ValueType> {
   ariaLabels: TableProps['ariaLabels'];
-  column: TableProps.EditableColumn<ItemType, ValueType>;
+  column: TableProps.EditableColumnDefinition<ItemType, ValueType>;
   item: ItemType;
   onEditEnd: () => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType, ValueType>;

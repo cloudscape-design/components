@@ -118,8 +118,8 @@ export function TableHeaderCell<ItemType, ValueType>({
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
           {isEditable ? (
-            <span className={styles['edit-icon']}>
-              <InternalIcon name="edit" alt={column.editConfig?.editIconAltText} />
+            <span className={styles['edit-icon']} role="img" aria-label={column.editConfig?.editIconAriaLabel}>
+              <InternalIcon name="edit" />
             </span>
           ) : null}
         </div>

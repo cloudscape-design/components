@@ -23,7 +23,7 @@ const submitHandlerFallback = () => {
 };
 
 interface TableBodyCellProps<ItemType, ValueType> extends TableTdElementProps {
-  column: TableProps.EditableColumn<ItemType, ValueType>;
+  column: TableProps.EditableColumnDefinition<ItemType, ValueType>;
   item: ItemType;
   isEditing: boolean;
   onEditStart: () => void;

@@ -3,6 +3,7 @@
 import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
+import { Optional } from '../internal/types';
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -266,7 +267,7 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
 export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
-  export type EditableColumn<T, V = any> = Extract<ColumnDefinition<T, V>, ColumnEditConfig<T, V>>;
+  export type EditableColumnDefinition<T, V = any> = Extract<ColumnDefinition<T, V>, ColumnEditConfig<T, V>>;
 
   export interface CellContext<V> {
     isEditing?: boolean;
@@ -289,7 +290,7 @@ export namespace TableProps {
     /**
      * alternate text for edit icon used in table header
      */
-    editIconAltText?: string;
+    editIconAriaLabel?: string;
     /**
      * Constraint text that is displayed below the edit control.
      */
@@ -338,9 +339,9 @@ export namespace TableProps {
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
-    activateEditLabel?: (column: EditableColumn<T, V>) => string;
-    cancelEditLabel?: (column: EditableColumn<T, V>) => string;
-    submitEditLabel?: (column: EditableColumn<T, V>) => string;
+    activateEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
+    cancelEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
+    submitEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;

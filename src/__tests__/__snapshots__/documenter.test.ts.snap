@@ -11032,7 +11032,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "activateEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumn<T, V>) => string",
+            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
           },
           Object {
             "name": "allItemsSelectionLabel",
@@ -11042,7 +11042,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "cancelEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumn<T, V>) => string",
+            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
           },
           Object {
             "name": "itemSelectionLabel",
@@ -11057,7 +11057,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "submitEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumn<T, V>) => string",
+            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
           },
           Object {
             "name": "tableLabel",

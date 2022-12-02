@@ -31,6 +31,7 @@ import useMouseDownTarget from './use-mouse-down-target';
 import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
+import { SomeRequired } from '../internal/types';
 
 type InternalTableProps<T, V> = SomeRequired<TableProps<T, V>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
