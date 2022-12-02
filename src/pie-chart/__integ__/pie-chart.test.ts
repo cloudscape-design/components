@@ -322,6 +322,19 @@ describe('Detail popover', () => {
   );
 });
 
+test(
+  'highlights the clicked segment when there is a pinned segment',
+  setupTest(async page => {
+    // Show and pin the popover by clicking
+    await page.click(pieWrapper.findSegments().get(2).toSelector());
+    await page.waitForVisible(detailsPopoverSelector);
+    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Chocolate');
+
+    await page.click(pieWrapper.findSegments().get(1).toSelector());
+    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Potatoes');
+    await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toBe('Potatoes');
+  })
+);
 describe('Focus outline', () => {
   const focusOutlineSelector = `.${chartPlotStyles['focus-outline']}`;
 
