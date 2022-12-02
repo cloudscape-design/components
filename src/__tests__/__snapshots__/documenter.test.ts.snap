@@ -11141,18 +11141,18 @@ need to position the sticky header below other fixed position elements on the pa
       "type": "number",
     },
     Object {
+      "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
+      "name": "stripedRows",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Use this property to inform screen readers how many items there are in a table.
 It specifies the total count of all items in a table.
 If there is an unknown total of items in a table, leave this property undefined.",
       "name": "totalItemsCount",
       "optional": true,
       "type": "number",
-    },
-    Object {
-      "description": "Specifies if table rows alternate being shaded and unshaded. If set to \`true\`, every other row will be shaded.",
-      "name": "stripedRows",
-      "optional": true,
-      "type": "boolean",
     },
     Object {
       "description": "Specifies a property that uniquely identifies an individual item.
