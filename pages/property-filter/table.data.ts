@@ -4,7 +4,7 @@
 export interface TableItem {
   order?: number;
   instanceid?: string;
-  state?: string;
+  state?: number;
   instancetype?: string;
   averagelatency?: number;
   availablestorage?: number;
@@ -18,10 +18,16 @@ export interface TableItem {
   lasteventat?: Date;
 }
 
+export const states: Record<number, string> = {
+  0: 'Stopped',
+  1: 'Stopping',
+  2: 'Pending',
+};
+
 export const allItems: TableItem[] = [
   {
     instanceid: 'i-2dc5ce28a0328391',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.small',
     averagelatency: 771,
     availablestorage: 8.9,
@@ -35,7 +41,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d0312e022392efa0',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.small',
     averagelatency: 216,
     availablestorage: 7.99,
@@ -49,7 +55,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-070eef935c1301e6',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.nano',
     averagelatency: 352,
     availablestorage: 8.2,
@@ -63,7 +69,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-0eeaae622e074e21',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.medium',
     averagelatency: 895,
     availablestorage: 4.23,
@@ -77,7 +83,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-799860926d39b2a3',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.medium',
     averagelatency: 600,
     availablestorage: 1.71,
@@ -91,7 +97,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-f64935677691848b',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.medium',
     averagelatency: 461,
     availablestorage: 2.71,
@@ -105,7 +111,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d5b5e73917af69a8',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 153,
     availablestorage: 9.56,
@@ -119,7 +125,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-2a5bdc6c48fa8e5c',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 107,
     availablestorage: 3.54,
@@ -133,7 +139,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-393c4d4a25ca3dba',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.micro',
     averagelatency: 53,
     availablestorage: 3.27,
@@ -147,7 +153,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-c28fbdbb073ec4de',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.medium',
     averagelatency: 724,
     availablestorage: 5.2,
@@ -161,7 +167,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-e876fb65dc771c53',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 981,
     availablestorage: 6.86,
@@ -175,7 +181,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d92d0e29fa3a0eda',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.small',
     averagelatency: 303,
     availablestorage: 6.07,
@@ -189,7 +195,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-7911f4562405cb04',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.small',
     averagelatency: 718,
     availablestorage: 2.9,
@@ -203,7 +209,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d3e9e4c068d4df6a',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 44,
     availablestorage: 6.1,
@@ -217,7 +223,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-9966b9f79fc2afac',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.nano',
     averagelatency: 652,
     availablestorage: 0.31,
@@ -231,7 +237,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-f202265d52b3d9b6',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.micro',
     averagelatency: 743,
     availablestorage: 3.69,
@@ -245,7 +251,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-a6b569bc16be3756',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.micro',
     averagelatency: 304,
     availablestorage: 6.93,
@@ -259,7 +265,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-f8e3d9fffd82bd62',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.large',
     averagelatency: 339,
     availablestorage: 0.68,
@@ -273,7 +279,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d1f8d3023c360cb4',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.large',
     averagelatency: 945,
     availablestorage: 7.26,
@@ -287,7 +293,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-64ed85f898d0a950',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 402,
     availablestorage: 4.17,
@@ -301,7 +307,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-6afd6b0ebae03bd6',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.small',
     averagelatency: 845,
     availablestorage: 9.73,
@@ -315,7 +321,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-068993f1f76b09e1',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 184,
     availablestorage: 5.2,
@@ -329,7 +335,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-1cd4a64fc26a8fe9',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't3.nano',
     averagelatency: 995,
     availablestorage: 0.24,
@@ -343,7 +349,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-835d004c46769aed',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.small',
     averagelatency: 800,
     availablestorage: 4.03,
@@ -357,7 +363,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-5441bf2e91565e24',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.medium',
     averagelatency: 283,
     availablestorage: 7.38,
@@ -371,7 +377,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-a57d0a6a6d20d73b',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.small',
     averagelatency: 705,
     availablestorage: 6.78,
@@ -385,7 +391,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-0b6646fde4598f8d',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 375,
     availablestorage: 3.41,
@@ -399,7 +405,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-5313687f75346895',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 219,
     availablestorage: 1.97,
@@ -413,7 +419,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-7173f776b4b30c05',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 17,
     availablestorage: 8.63,
@@ -427,7 +433,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-fcfc136cb96b30c4',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 835,
     availablestorage: 7.17,
@@ -441,7 +447,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-8c6a328351a438ff',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 73,
     availablestorage: 6.02,
@@ -455,7 +461,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-cd323ed6664c7dc5',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 875,
     availablestorage: 7.42,
@@ -469,7 +475,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-a7251b1805f9df3d',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 342,
     availablestorage: 9.64,
@@ -483,7 +489,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-9f11e46b6c54a2a1',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.nano',
     averagelatency: 792,
     availablestorage: 6.99,
@@ -497,7 +503,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-6f733cc0de79c2cc',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 782,
     availablestorage: 7.1,
@@ -511,7 +517,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-b994cfe3823d78b4',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.small',
     averagelatency: 242,
     availablestorage: 2.71,
@@ -525,7 +531,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-82b8f4ef5d25d17c',
-    state: 'Pending',
+    state: 2,
     instancetype: 't2.large',
     averagelatency: 497,
     availablestorage: 2.03,
@@ -539,7 +545,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-1d9468c0fdc6d337',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 219,
     availablestorage: 2.34,
@@ -553,7 +559,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-1d56f94cf858be59',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.micro',
     averagelatency: 45,
     availablestorage: 0.57,
@@ -567,7 +573,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-59129472a88790c4',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.nano',
     averagelatency: 154,
     availablestorage: 3.45,
@@ -581,7 +587,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-b761d2801b356d89',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.medium',
     averagelatency: 885,
     availablestorage: 4.06,
@@ -595,7 +601,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-9b50eea20c1d2813',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 458,
     availablestorage: 3.06,
@@ -609,7 +615,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-a19a9633e1c5ba8f',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.nano',
     averagelatency: 30,
     availablestorage: 4.64,
@@ -623,7 +629,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-85c31338cf96a6b9',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.medium',
     averagelatency: 420,
     availablestorage: 4.66,
@@ -637,7 +643,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-2a63773bd3bbc950',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.micro',
     averagelatency: 685,
     availablestorage: 9.49,
@@ -651,7 +657,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-c71adc85f62dc441',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.medium',
     averagelatency: 639,
     availablestorage: 9.37,
@@ -665,7 +671,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-7d78145659f6edf8',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.micro',
     averagelatency: 141,
     availablestorage: 3.37,
@@ -679,7 +685,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d64836cefed723f9',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.micro',
     averagelatency: 259,
     availablestorage: 2.31,
@@ -693,7 +699,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-0854aa3ca406d6de',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 672,
     availablestorage: 2.09,
@@ -707,7 +713,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-d50d96196e1da02f',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.medium',
     averagelatency: 636,
     availablestorage: 7.76,
@@ -721,7 +727,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-bf46a8fa4f894969',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.medium',
     averagelatency: 236,
     availablestorage: 9.14,
@@ -735,7 +741,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-a3358a2493af65da',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.micro',
     averagelatency: 478,
     availablestorage: 8.13,
@@ -749,7 +755,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-1ca6c551cd98b0bc',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.small',
     averagelatency: 29,
     availablestorage: 3.5,
@@ -763,7 +769,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-78363f3b35fe1638',
-    state: 'Stopping',
+    state: 1,
     instancetype: 't2.nano',
     averagelatency: 74,
     availablestorage: 6.37,
@@ -777,7 +783,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-36cb4d638866ef4b',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 819,
     availablestorage: 3.16,
@@ -791,7 +797,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-dde47b18e8183070',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 305,
     availablestorage: 8.34,
@@ -805,7 +811,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-86f3902256c13e75',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.large',
     averagelatency: 521,
     availablestorage: 5.05,
@@ -819,7 +825,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-64329dd06110114b',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't2.nano',
     averagelatency: 478,
     availablestorage: 7.33,
@@ -833,7 +839,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-36b91360e881739d',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.micro',
     averagelatency: 733,
     availablestorage: 3.26,
@@ -847,7 +853,7 @@ export const allItems: TableItem[] = [
   },
   {
     instanceid: 'i-3b44795b1fea36ac',
-    state: 'Stopped',
+    state: 0,
     instancetype: 't3.large',
     averagelatency: 636,
     availablestorage: 3.57,
@@ -862,7 +868,7 @@ export const allItems: TableItem[] = [
 ].map((item, indx) => ({
   order: indx,
   ...item,
-  stopped: item.state === 'Stopped',
+  stopped: item.state === 0,
   releasedate: new Date(new Date(item.launchdate).getTime() - getRandomTimeHours(10, 2000)),
   launchdate: new Date(item.launchdate),
   lasteventat: new Date(item.lasteventat),
