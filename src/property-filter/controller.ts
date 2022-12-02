@@ -103,16 +103,12 @@ export const parseText = (
   if (operator) {
     const operatorLastIndex = textWithoutProperty.indexOf(operator) + operator.length;
     const textWithoutPropertyAndOperator = textWithoutProperty.slice(operatorLastIndex);
-    return {
-      step: 'property',
-      property,
-      operator,
-      // We need to remove the first leading space in case the user presses space
-      // after the operator, for example: Owner: admin, will result in value of ` admin`
-      // and we need to remove the first space, if the user added any more spaces only the
-      // first one will be removed.
-      value: trimFirstSpace(textWithoutPropertyAndOperator),
-    };
+    // We need to remove the first leading space in case the user presses space
+    // after the operator, for example: Owner: admin, will result in value of ` admin`
+    // and we need to remove the first space, if the user added any more spaces only the
+    // first one will be removed.
+    const value = trimFirstSpace(textWithoutPropertyAndOperator);
+    return { step: 'property', property, operator, value };
   }
 
   const operatorPrefix = matchOperatorPrefix(allowedOps, trimStart(textWithoutProperty));
@@ -173,7 +169,7 @@ export const getAllValueSuggestions = (
     const propertyGroup = property.group ? customGroups[property.group] : defaultGroup;
     propertyGroup.options.push({
       value: property.propertyLabel + ' ' + (operator || '=') + ' ' + filteringOption.value,
-      label: filteringOption.value,
+      label: filteringOption.label ?? filteringOption.value,
       __labelPrefix: property.propertyLabel + ' ' + (operator || '='),
     });
   });
@@ -288,9 +284,9 @@ export const getAutosuggestOptions = (
         filterText: parsedText.value,
         options: [
           {
-            options: options.map(({ value }) => ({
+            options: options.map(({ label, value }) => ({
               value: propertyLabel + ' ' + parsedText.operator + ' ' + value,
-              label: value,
+              label: label ?? value,
               __labelPrefix: propertyLabel + ' ' + parsedText.operator,
             })),
             label: groupValuesLabel,
