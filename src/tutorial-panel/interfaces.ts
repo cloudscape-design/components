@@ -217,5 +217,8 @@ export namespace TutorialPanelProps {
       'in-progress': string;
       success: string;
     };
+
+    labelTutorialListDownloadLink?: string;
+    labelLearnMoreLink?: string;
   }
 }

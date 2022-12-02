@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
+import React, { useState } from 'react';
+import { act, screen, render, fireEvent } from '@testing-library/react';
 import Dropdown from '../../../../../lib/components/internal/components/dropdown';
 import { calculatePosition } from '../../../../../lib/components/internal/components/dropdown/dropdown-fit-handler';
 import DropdownWrapper from '../../../../../lib/components/test-utils/dom/internal/dropdown';
@@ -60,6 +60,32 @@ describe('Dropdown Component', () => {
 
       act(() => outsideElement.click());
       expect(handleCloseDropdown).toBeCalled();
+    });
+
+    test('does not fire close event when a self-destructible element inside dropdown was clicked', async () => {
+      function SelfDestructible() {
+        const [visible, setVisible] = useState(true);
+        return visible ? (
+          <button data-testid="dismiss" onClick={() => setVisible(false)}>
+            Dismiss
+          </button>
+        ) : (
+          <span data-testid="after-dismiss">Gone!</span>
+        );
+      }
+      const handleCloseDropdown = jest.fn();
+      const [wrapper] = renderDropdown(
+        <Dropdown trigger={<button />} onDropdownClose={handleCloseDropdown} open={true}>
+          <SelfDestructible />
+        </Dropdown>
+      );
+      await runPendingEvents();
+
+      // NB: this should NOT be wrapped into act or React re-render will happen too late to reproduce the issue
+      wrapper.find('[data-testid="dismiss"]')!.click();
+
+      expect(handleCloseDropdown).not.toBeCalled();
+      expect(screen.getByTestId('after-dismiss')).toBeTruthy();
     });
   });
   describe('dropdown recalculate position on scroll', () => {

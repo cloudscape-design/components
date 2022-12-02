@@ -265,5 +265,16 @@ describe('URL sanitization', () => {
         'TASK_1_FIRST_TASK_TEST TOTAL_STEPS_1'
       );
     });
+    test('links have correct aria-label', () => {
+      const tutorials = getTutorials();
+      const context = getContext();
+      const { container } = renderTutorialPanelWithContext({ tutorials }, context);
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      expect(wrapper.findDownloadLink()!.getElement()).toHaveAttribute('aria-label', 'DOWNLOAD_THIS_TUTORIAL_LINK');
+      expect(wrapper.findTutorials()[0].findLearnMoreLink()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'LEARN_MORE_ABOUT_TUTORIA'
+      );
+    });
   });
 });
