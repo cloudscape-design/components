@@ -15,6 +15,7 @@ import {
   ModalContentLayout,
   PageSizePreference,
   WrapLinesPreference,
+  StripedRowsPreference,
   CustomPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
@@ -29,7 +30,12 @@ export { CollectionPreferencesProps };
 interface ModalContentProps
   extends Pick<
     CollectionPreferencesProps,
-    'preferences' | 'visibleContentPreference' | 'pageSizePreference' | 'wrapLinesPreference' | 'customPreference'
+    | 'preferences'
+    | 'visibleContentPreference'
+    | 'pageSizePreference'
+    | 'wrapLinesPreference'
+    | 'stripedRowsPreference'
+    | 'customPreference'
   > {
   onChange: (preferences: CollectionPreferencesProps.Preferences) => void;
 }
@@ -38,11 +44,18 @@ const ModalContent = ({
   preferences = {},
   pageSizePreference,
   wrapLinesPreference,
+  stripedRowsPreference,
   customPreference,
   visibleContentPreference,
   onChange,
 }: ModalContentProps) => {
-  if (!visibleContentPreference && !pageSizePreference && !wrapLinesPreference && customPreference) {
+  if (
+    !visibleContentPreference &&
+    !pageSizePreference &&
+    !wrapLinesPreference &&
+    !stripedRowsPreference &&
+    customPreference
+  ) {
     return (
       <CustomPreference
         value={preferences.custom}
@@ -51,6 +64,7 @@ const ModalContent = ({
       />
     );
   }
+
   return (
     <ModalContentLayout
       left={
@@ -67,6 +81,13 @@ const ModalContent = ({
               value={preferences.wrapLines}
               {...wrapLinesPreference}
               onChange={wrapLines => onChange({ wrapLines })}
+            />
+          )}
+          {stripedRowsPreference && (
+            <StripedRowsPreference
+              value={preferences.stripedRows}
+              {...stripedRowsPreference}
+              onChange={stripedRows => onChange({ stripedRows })}
             />
           )}
           {customPreference && (
@@ -101,6 +122,7 @@ export default function CollectionPreferences({
   visibleContentPreference,
   pageSizePreference,
   wrapLinesPreference,
+  stripedRowsPreference,
   preferences,
   customPreference,
   ...rest
@@ -182,6 +204,7 @@ export default function CollectionPreferences({
             visibleContentPreference={visibleContentPreference}
             pageSizePreference={pageSizePreference}
             wrapLinesPreference={wrapLinesPreference}
+            stripedRowsPreference={stripedRowsPreference}
             customPreference={customPreference}
             onChange={changedPreferences =>
               setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences))
