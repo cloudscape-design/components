@@ -271,7 +271,7 @@ export namespace TableProps {
   export interface CellContext<V> {
     isEditing?: boolean;
     currentValue: Optional<V>;
-    setValue: React.Dispatch<Optional<V>>;
+    setValue: (value: V | undefined) => void;
   }
 
   export type CellRenderer<T> = (item: T) => React.ReactNode;
