@@ -238,6 +238,10 @@ describe('Keyboard navigation', () => {
     setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
 
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowUp']);
+
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
 
       await page.keys(['ArrowUp']);
@@ -246,7 +250,41 @@ describe('Keyboard navigation', () => {
 
       await page.keys(['ArrowDown', 'ArrowDown']);
 
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowDown']);
+
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p90');
+    })
+  );
+
+  test(
+    'maintains X coordinate after switching between focusing a single series and all series',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.focusPlot();
+
+      await expect(page.getPopoverTitle()).resolves.toBe('1s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowRight']);
+      await expect(page.getPopoverTitle()).resolves.toBe('2s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowDown']);
+      await expect(page.getPopoverTitle()).resolves.toBe('2s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p90');
+
+      await page.keys(['ArrowRight']);
+      await expect(page.getPopoverTitle()).resolves.toBe('3s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p90');
+
+      await page.keys(['ArrowUp']);
+      await expect(page.getPopoverTitle()).resolves.toBe('3s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowRight']);
+      await expect(page.getPopoverTitle()).resolves.toBe('4s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
     })
   );
 });
@@ -259,13 +297,32 @@ describe('Focus delegation', () => {
 
       await page.keys(['ArrowUp', 'ArrowRight', 'ArrowRight', 'Enter']);
 
-      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p60');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
       await expect(page.getPopoverTitle()).resolves.toBe('3s');
       await expect(page.isPopoverPinned()).resolves.toBe(true);
 
       await page.dismissPopover();
 
-      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p60');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
+      await expect(page.getPopoverTitle()).resolves.toBe('3s');
+      await expect(page.isPopoverPinned()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'when unpinning the popover the previously highlighted data point group is focused',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.focusPlot();
+
+      await page.keys(['ArrowRight', 'ArrowRight', 'Enter']);
+
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+      await expect(page.getPopoverTitle()).resolves.toBe('3s');
+      await expect(page.isPopoverPinned()).resolves.toBe(true);
+
+      await page.dismissPopover();
+
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
       await expect(page.getPopoverTitle()).resolves.toBe('3s');
       await expect(page.isPopoverPinned()).resolves.toBe(false);
     })
@@ -302,7 +359,7 @@ describe('Focus delegation', () => {
       await page.focusPlot();
 
       await expect(page.getPopoverTitle()).resolves.toBe('1s');
-      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
     })
   );
 
@@ -342,9 +399,26 @@ describe('Controlled', () => {
   );
 
   test(
+    'can use highlight X same as in uncontrolled chart',
+    setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
+      await page.focusPlot();
+
+      await expect(page.getPopoverTitle()).resolves.toBe('1s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
+
+      await page.keys(['ArrowRight', 'ArrowUp']);
+
+      await expect(page.getPopoverTitle()).resolves.toBe('2s');
+      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
+    })
+  );
+
+  test(
     'can use highlight series same as in uncontrolled chart',
     setupTest('#/light/area-chart/test', 'Controlled linear latency chart', async page => {
       await page.focusPlot();
+
+      await page.keys(['ArrowUp']);
 
       await expect(page.getPopoverTitle()).resolves.toBe('1s');
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p50');
