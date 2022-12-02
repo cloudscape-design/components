@@ -2,7 +2,7 @@
 
 exports[`d3-scale-third-party-licenses.txt content stays unchanged without any d3-scale version changes 1`] = `
 "Name: d3-array
-Version: 3.2.0
+Version: 3.2.1
 License: ISC
 Private: false
 Description: Array manipulation, ordering, searching, summarizing, etc.
@@ -170,7 +170,7 @@ THIS SOFTWARE.
 ---
 
 Name: d3-time
-Version: 3.0.0
+Version: 3.1.0
 License: ISC
 Private: false
 Description: A calculator for humanity’s peculiar conventions of time.
@@ -180,7 +180,7 @@ Author: Mike Bostock (http://bost.ocks.org/mike)
 License Copyright:
 ===
 
-Copyright 2010-2021 Mike Bostock
+Copyright 2010-2022 Mike Bostock
 
 Permission to use, copy, modify, and/or distribute this software for any purpose
 with or without fee is hereby granted, provided that the above copyright notice

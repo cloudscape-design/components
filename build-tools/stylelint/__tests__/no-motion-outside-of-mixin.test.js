@@ -64,29 +64,29 @@ describe('No motion outside of mixin', () => {
         }
       `);
       expect(result.errored).toBe(true);
+      expect(result.results[0].warnings.length).toBe(1);
       expect(result.results[0].warnings).toEqual([
-        {
-          column: 15,
-          line: 5,
+        expect.objectContaining({
           rule: '@cloudscape-design/no-motion-outside-of-mixin',
           severity: 'error',
           text: `Property "${property}" should be directly under 'with-motion' helper (@cloudscape-design/no-motion-outside-of-mixin)`,
-        },
+        }),
       ]);
+      expect(result.errored).toBe(true);
     });
 
     test('should not allow motion outside of the mixin', async () => {
       const result = await runPlugin(`.block { ${property}: my-animation; }`);
       expect(result.errored).toBe(true);
+      expect(result.results[0].warnings.length).toBe(1);
       expect(result.results[0].warnings).toEqual([
-        {
-          column: 10,
-          line: 1,
+        expect.objectContaining({
           rule: '@cloudscape-design/no-motion-outside-of-mixin',
           severity: 'error',
           text: `Property "${property}" should be directly under 'with-motion' helper (@cloudscape-design/no-motion-outside-of-mixin)`,
-        },
+        }),
       ]);
+      expect(result.errored).toBe(true);
     });
 
     test('should not allow motion if mixin in the scope but not a parent', async () => {
@@ -97,14 +97,13 @@ describe('No motion outside of mixin', () => {
           ${property}: my-animation;
         }
       `);
+      expect(result.results[0].warnings.length).toBe(1);
       expect(result.results[0].warnings).toEqual([
-        {
-          column: 11,
-          line: 5,
+        expect.objectContaining({
           rule: '@cloudscape-design/no-motion-outside-of-mixin',
           severity: 'error',
           text: `Property "${property}" should be directly under 'with-motion' helper (@cloudscape-design/no-motion-outside-of-mixin)`,
-        },
+        }),
       ]);
       expect(result.errored).toBe(true);
     });

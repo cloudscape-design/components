@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es2015.collection", "dom"],
+    "lib": ["es5", "es2015.collection", "es2015.Iterable", "dom"],
     "types": [],
     "module": "esnext",
     "moduleResolution": "node",
