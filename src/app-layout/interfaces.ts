@@ -193,7 +193,7 @@ export interface AppLayoutProps extends BaseComponentProps {
 }
 
 export namespace AppLayoutProps {
-  export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard';
+  export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard' | 'dashboard';
 
   export interface Ref {
     /**

@@ -13,3 +13,9 @@ $toggle-padding-vertical: awsui.$space-xxs;
 $toggle-padding: $toggle-padding-vertical $toggle-padding-horizontal;
 
 $sidebar-size-closed: 4 * styles.$base-size;
+
+$adaptive-content-widths: (
+  styles.$breakpoint-large: 1280px,
+  styles.$breakpoint-x-large: 1440px,
+  styles.$breakpoint-xx-large: 1620px,
+);
