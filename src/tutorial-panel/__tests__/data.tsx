@@ -10,9 +10,11 @@ export const i18nStrings: TutorialPanelProps.I18nStrings = {
   tutorialListTitle: 'TUTORIAL_LIST_TITLE',
   tutorialListDescription: <span>TUTORIAL_LIST_DESCRIPTION</span>,
   tutorialListDownloadLinkText: 'DOWNLOAD_LINK_TEXT',
+  labelTutorialListDownloadLink: 'DOWNLOAD_THIS_TUTORIAL_LINK',
 
   tutorialCompletedText: 'TUTORIAL_COMPLETED',
   learnMoreLinkText: 'LEARN_MORE_LINK_TEXT',
+  labelLearnMoreLink: 'LEARN_MORE_ABOUT_TUTORIA',
 
   startTutorialButtonText: 'START_TUTORIAL',
   restartTutorialButtonText: 'RESTART_TUTORIAL',
