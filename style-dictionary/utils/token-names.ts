@@ -20,6 +20,7 @@ export type ColorPaletteTokenName =
   | 'colorGreen700'
   | 'colorGreen900'
   | 'colorGrey100'
+  | 'colorGrey125'
   | 'colorGrey150'
   | 'colorGrey200'
   | 'colorGrey300'
