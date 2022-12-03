@@ -58,7 +58,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     isForcedPosition: isSplitPanelForcedPosition,
     isMobile,
     isOpen: isSplitPanelOpen,
-    isRefresh: true,
     leftOffset: 0,
     onPreferencesChange: handleSplitPanelPreferencesChange,
     onResize: handleSplitPanelResize,

@@ -53,7 +53,6 @@ const defaultContextProps: SplitPanelContextProps = {
   getHeader: () => null,
   isOpen: true,
   isMobile: false,
-  isRefresh: false,
   isForcedPosition: false,
   onResize: jest.fn(),
   onToggle: jest.fn(),
