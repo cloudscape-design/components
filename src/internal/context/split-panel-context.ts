@@ -23,7 +23,6 @@ export interface SplitPanelContextProps {
   isCopy?: boolean;
   isOpen?: boolean;
   isMobile: boolean;
-  isRefresh: boolean;
   isForcedPosition: boolean;
   // The lastInteraction property indicates last meaningful state transition used to trigger split-panel effects.
   // We can't observe properties in a regular way because split-panel is being mounted in several places at once.
@@ -51,7 +50,6 @@ export const SplitPanelContext = createContext<SplitPanelContextProps>({
   isCopy: false,
   isOpen: true,
   isMobile: false,
-  isRefresh: false,
   isForcedPosition: false,
   lastInteraction: undefined,
   splitPanelRef: undefined,

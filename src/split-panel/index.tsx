@@ -4,7 +4,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
-import { getBaseProps, BaseComponentProps } from '../internal/base-component';
+import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -20,213 +20,18 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { getLimitedValue } from './utils/size-utils';
-import { Transition, TransitionStatus } from '../internal/components/transition';
+import { Transition } from '../internal/components/transition';
 import { ButtonProps } from '../button/interfaces';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { SplitPanelContentSide } from './side';
+import { SplitPanelContentBottom } from './bottom';
 
 export { SplitPanelProps };
 
 const MIN_HEIGHT = 160;
 const MIN_WIDTH = 280;
-interface TransitionContentProps {
-  baseProps: BaseComponentProps;
-  isOpen?: boolean;
-  splitPanelRef?: React.Ref<any>;
-  handleRef: React.RefObject<HTMLDivElement>;
-  bottomOffset: number;
-  cappedSize: number;
-  isRefresh: boolean;
-  onToggle: () => void;
-  i18nStrings: SplitPanelProps.I18nStrings;
-  relativeSize: number;
-  onKeyDown: (event: React.KeyboardEvent<Element>) => void;
-  onSliderPointerDown: () => void;
-  focusVisible: { 'data-awsui-focus-visible': true } | { 'data-awsui-focus-visible'?: undefined };
-  paneHeader: JSX.Element;
-  panelHeaderId: string;
-  wrappedChildren: JSX.Element;
-}
-
-interface TransitionContentSideProps extends TransitionContentProps {
-  topOffset: number;
-  toggleRef: React.RefObject<ButtonProps.Ref>;
-}
-
-const TransitionContentSide = ({
-  baseProps,
-  isOpen,
-  splitPanelRef,
-  handleRef,
-  topOffset,
-  bottomOffset,
-  cappedSize,
-  isRefresh,
-  onToggle,
-  i18nStrings,
-  relativeSize,
-  onKeyDown,
-  onSliderPointerDown,
-  focusVisible,
-  toggleRef,
-  paneHeader,
-  panelHeaderId,
-  wrappedChildren,
-}: TransitionContentSideProps) => {
-  return (
-    <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles.root, styles['position-side'], {
-        [styles['drawer-closed']]: !isOpen,
-      })}
-      style={{
-        width: isOpen ? cappedSize : undefined,
-        maxWidth: isRefresh ? '100%' : undefined,
-      }}
-      ref={splitPanelRef}
-    >
-      <div
-        className={clsx(styles['drawer-content-side'], {
-          [styles.refresh]: isRefresh,
-        })}
-        style={{
-          top: topOffset,
-          bottom: bottomOffset,
-        }}
-        onClick={() => !isOpen && onToggle()}
-        aria-labelledby={panelHeaderId}
-        role="region"
-      >
-        {isOpen ? (
-          <div className={styles['slider-wrapper-side']}>
-            <div
-              role="slider"
-              tabIndex={0}
-              aria-label={i18nStrings.resizeHandleAriaLabel}
-              aria-valuemax={100}
-              aria-valuemin={0}
-              aria-valuenow={relativeSize}
-              className={clsx(styles.slider, styles['slider-side'])}
-              onKeyDown={onKeyDown}
-              onPointerDown={onSliderPointerDown}
-              ref={handleRef}
-              {...focusVisible}
-            >
-              <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-side'])} />
-            </div>
-          </div>
-        ) : (
-          <InternalButton
-            className={clsx(styles['open-button'], styles['open-button-side'])}
-            iconName="angle-left"
-            variant="icon"
-            formAction="none"
-            ariaLabel={i18nStrings.openButtonAriaLabel}
-            ariaExpanded={isOpen}
-            ref={isRefresh ? null : toggleRef}
-          />
-        )}
-        <div className={styles['content-side']} aria-hidden={!isOpen}>
-          <div className={clsx(styles['pane-header-wrapper-side'])}>{paneHeader}</div>
-          <hr className={styles['header-divider']} />
-          <div className={clsx(styles['pane-content-wrapper-side'])}>{wrappedChildren}</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface TransitionContentBottomProps extends TransitionContentProps {
-  isMobile: boolean;
-  disableContentPaddings?: boolean;
-  state: TransitionStatus;
-  leftOffset: number;
-  rightOffset: number;
-  transitioningElementRef: React.Ref<any>;
-  centeredMaxWidthClasses: string;
-  splitPanelHeaderRef?: React.Ref<any>;
-  appLayoutMaxWidth: React.CSSProperties | undefined;
-}
-
-const TransitionContentBottom = ({
-  baseProps,
-  isOpen,
-  splitPanelRef,
-  handleRef,
-  bottomOffset,
-  cappedSize,
-  isRefresh,
-  onToggle,
-  i18nStrings,
-  relativeSize,
-  onKeyDown,
-  onSliderPointerDown,
-  focusVisible,
-  paneHeader,
-  wrappedChildren,
-  isMobile,
-  disableContentPaddings,
-  state,
-  leftOffset,
-  rightOffset,
-  transitioningElementRef,
-  centeredMaxWidthClasses,
-  splitPanelHeaderRef,
-  appLayoutMaxWidth,
-  panelHeaderId,
-}: TransitionContentBottomProps) => {
-  const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
-  return (
-    <div
-      {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles.drawer, styles['position-bottom'], {
-        [styles['drawer-closed']]: !isOpen,
-        [styles['drawer-mobile']]: isMobile,
-        [styles['drawer-disable-content-paddings']]: disableContentPaddings,
-        [styles.animating]: isRefresh && (state === 'entering' || state === 'exiting'),
-        [styles.refresh]: isRefresh,
-      })}
-      onClick={() => !isOpen && onToggle()}
-      style={{
-        bottom: bottomOffset,
-        left: leftOffset,
-        right: rightOffset,
-        height: isOpen ? cappedSize : undefined,
-      }}
-      ref={transitionContentBottomRef}
-    >
-      {isOpen && (
-        <div className={styles['slider-wrapper-bottom']}>
-          <div
-            role="slider"
-            tabIndex={0}
-            aria-label={i18nStrings.resizeHandleAriaLabel}
-            aria-valuemax={100}
-            aria-valuemin={0}
-            aria-valuenow={relativeSize}
-            className={clsx(styles.slider, styles['slider-bottom'])}
-            onKeyDown={onKeyDown}
-            onPointerDown={onSliderPointerDown}
-            ref={handleRef}
-            {...focusVisible}
-          >
-            <ResizeHandler className={clsx(styles['slider-icon'], styles['slider-icon-bottom'])} />
-          </div>
-        </div>
-      )}
-      <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={splitPanelHeaderRef}>
-          {paneHeader}
-        </div>
-        <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
-          <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
-            {wrappedChildren}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function SplitPanel({
   header,
@@ -235,6 +40,7 @@ export default function SplitPanel({
   i18nStrings,
   ...restProps
 }: SplitPanelProps) {
+  const isRefresh = useVisualRefresh();
   const { __internalRootRef } = useBaseComponent('SplitPanel');
   const {
     size,
@@ -243,18 +49,12 @@ export default function SplitPanel({
     position,
     topOffset,
     bottomOffset,
-    leftOffset,
     rightOffset,
-    disableContentPaddings,
     contentWidthStyles,
-    contentWrapperPaddings,
     isCopy,
     isOpen,
-    isMobile,
-    isRefresh,
     isForcedPosition,
     splitPanelRef,
-    splitPanelHeaderRef,
     lastInteraction,
     onPreferencesChange,
     onResize,
@@ -357,7 +157,7 @@ export default function SplitPanel({
 
   const panelHeaderId = useUniqueId('split-panel-header');
 
-  const paneHeader = (
+  const wrappedHeader = (
     <div className={styles.header} style={appLayoutMaxWidth}>
       <h2 className={styles['header-text']} id={panelHeaderId}>
         {header}
@@ -404,6 +204,24 @@ export default function SplitPanel({
     </div>
   );
 
+  const resizeHandle = (
+    <div
+      ref={handleRef}
+      role="slider"
+      tabIndex={0}
+      aria-label={i18nStrings.resizeHandleAriaLabel}
+      aria-valuemax={100}
+      aria-valuemin={0}
+      aria-valuenow={relativeSize}
+      className={clsx(styles.slider, styles[`slider-${position}`])}
+      onKeyDown={onKeyDown}
+      onPointerDown={onSliderPointerDown}
+      {...focusVisible}
+    >
+      <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
+    </div>
+  );
+
   /*
     This effect forces the browser to recalculate the layout
     whenever the split panel might have moved.
@@ -441,67 +259,43 @@ export default function SplitPanel({
     return <></>;
   }
 
-  const centeredMaxWidthClasses = clsx({
-    [styles['pane-bottom-center-align']]: isRefresh,
-    [styles['pane-bottom-content-nav-padding']]: contentWrapperPaddings?.closedNav,
-    [styles['pane-bottom-content-tools-padding']]: contentWrapperPaddings?.closedTools,
-  });
-
   return (
     <Transition in={isOpen ?? false}>
       {(state, transitioningElementRef) => (
         <>
           {position === 'side' && (
-            <TransitionContentSide
+            <SplitPanelContentSide
+              resizeHandle={resizeHandle}
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              handleRef={handleRef}
-              topOffset={topOffset}
-              bottomOffset={bottomOffset}
               cappedSize={cappedSize}
-              isRefresh={isRefresh}
               onToggle={onToggle}
               i18nStrings={i18nStrings}
-              relativeSize={relativeSize}
-              onKeyDown={onKeyDown}
-              onSliderPointerDown={onSliderPointerDown}
-              focusVisible={focusVisible}
               toggleRef={toggleRef}
-              paneHeader={paneHeader}
-              wrappedChildren={wrappedChildren}
+              header={wrappedHeader}
               panelHeaderId={panelHeaderId}
-            ></TransitionContentSide>
+            >
+              {wrappedChildren}
+            </SplitPanelContentSide>
           )}
 
           {position === 'bottom' && (
-            <TransitionContentBottom
+            <SplitPanelContentBottom
+              resizeHandle={resizeHandle}
               baseProps={baseProps}
               isOpen={isOpen}
               splitPanelRef={mergedRef}
-              handleRef={handleRef}
-              bottomOffset={bottomOffset}
               cappedSize={cappedSize}
-              isRefresh={isRefresh}
               onToggle={onToggle}
-              i18nStrings={i18nStrings}
-              relativeSize={relativeSize}
-              onKeyDown={onKeyDown}
-              onSliderPointerDown={onSliderPointerDown}
-              focusVisible={focusVisible}
-              paneHeader={paneHeader}
-              wrappedChildren={wrappedChildren}
-              isMobile={isMobile}
-              disableContentPaddings={disableContentPaddings}
-              state={state}
-              leftOffset={leftOffset}
-              rightOffset={rightOffset}
-              transitioningElementRef={transitioningElementRef}
-              centeredMaxWidthClasses={centeredMaxWidthClasses}
-              splitPanelHeaderRef={splitPanelHeaderRef}
-              appLayoutMaxWidth={appLayoutMaxWidth}
+              header={wrappedHeader}
               panelHeaderId={panelHeaderId}
-            ></TransitionContentBottom>
+              state={state}
+              transitioningElementRef={transitioningElementRef}
+              appLayoutMaxWidth={appLayoutMaxWidth}
+            >
+              {wrappedChildren}
+            </SplitPanelContentBottom>
           )}
           {isPreferencesOpen && (
             <PreferencesModal

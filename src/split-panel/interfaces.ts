@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 
 export interface SplitPanelProps extends BaseComponentProps {
@@ -49,4 +50,16 @@ export interface SizeControlProps {
   handleRef?: React.RefObject<HTMLDivElement>;
   setSidePanelWidth: (width: number) => void;
   setBottomPanelHeight: (height: number) => void;
+}
+
+export interface SplitPanelContentProps {
+  baseProps: BaseComponentProps;
+  isOpen?: boolean;
+  splitPanelRef?: React.Ref<any>;
+  cappedSize: number;
+  panelHeaderId: string;
+  resizeHandle: React.ReactNode;
+  header: React.ReactNode;
+  children: React.ReactNode;
+  onToggle: () => void;
 }
