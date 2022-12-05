@@ -37,6 +37,7 @@ export default function SplitPanel({
   header,
   children,
   hidePreferencesButton = false,
+  closeBehavior = 'collapse',
   i18nStrings,
   ...restProps
 }: SplitPanelProps) {
@@ -180,7 +181,9 @@ export default function SplitPanel({
         {isOpen ? (
           <InternalButton
             className={styles['close-button']}
-            iconName={isRefresh && position === 'side' ? 'angle-right' : isRefresh ? 'angle-down' : 'close'}
+            iconName={
+              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
+            }
             variant="icon"
             onClick={onToggle}
             formAction="none"
