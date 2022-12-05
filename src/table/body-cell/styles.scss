@@ -109,7 +109,7 @@ the left edge of the table.
 */
 .body-cell:not(.is-visual-refresh) {
   &:first-child {
-    padding-left: awsui.$space-xs;
+    padding-left: $cell-edge-horizontal-padding;
   }
 }
 
