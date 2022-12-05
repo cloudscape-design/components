@@ -331,7 +331,6 @@ const OldAppLayout = React.forwardRef(
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
       isMobile,
-      isRefresh: false,
       isForcedPosition: isSplitpanelForcedPosition,
       lastInteraction: splitPanelLastInteraction,
       splitPanelRef,

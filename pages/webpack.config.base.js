@@ -7,9 +7,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
-const autoprefixer = require('autoprefixer');
-const postCSSCustomProperties = require('postcss-custom-properties');
-
 const isProd = process.env.NODE_ENV === 'production';
 const isLocal = !process.env.CI;
 
@@ -73,14 +70,6 @@ module.exports = ({
             {
               loader: 'css-loader',
               options: { modules: true, esModule: true },
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                postcssOptions: {
-                  plugins: [autoprefixer(), postCSSCustomProperties()],
-                },
-              },
             },
             'sass-loader',
           ],
