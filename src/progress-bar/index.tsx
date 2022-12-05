@@ -12,6 +12,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { Progress, ResultState, SmallText } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import DynamicAriaLive from '../internal/components/dynamic-aria-live';
 
 export { ProgressBarProps };
 
@@ -53,9 +54,12 @@ export default function ProgressBar({
           {label}
         </div>
         {description && <SmallText color={isInFlash ? 'inherit' : undefined}>{description}</SmallText>}
-        <div aria-live="polite" aria-atomic="true">
+        <div>
           {isInProgressState ? (
-            <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
+            <>
+              <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
+              <DynamicAriaLive>{`${label ?? ''}: ${value}%`}</DynamicAriaLive>
+            </>
           ) : (
             <ResultState
               resultText={resultText}

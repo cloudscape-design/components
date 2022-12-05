@@ -11,7 +11,7 @@ class LiveRegionPageObject extends BasePageObject {
   }
 }
 
-function setupTest(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
+function setupTestLiveRegion(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
   return useBrowser(async browser => {
     await browser.url('#/light/live-region');
     const pageObject = new LiveRegionPageObject(browser);
@@ -20,11 +20,33 @@ function setupTest(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) 
   });
 }
 
-describe('Live region', () => {
+function setupTestDynamicAria(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
+  return useBrowser(async browser => {
+    await browser.url('#/light/dynamic-aria-live');
+    const pageObject = new LiveRegionPageObject(browser);
+    await pageObject.waitForVisible('h1');
+    return testFn(pageObject);
+  });
+}
+
+describe('Live region components', () => {
   test(
-    `doesn't render child contents as HTML`,
-    setupTest(async page => {
+    `Live region doesn't render child contents as HTML`,
+    setupTestLiveRegion(async page => {
       await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt; Testing');
+    })
+  );
+
+  test(
+    `Dynamic aria-live announce changes not more often then given interval`,
+    setupTestDynamicAria(async page => {
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('Initial text');
+      await page.click('#activation-button');
+
+      await page.waitForJsTimers(3000);
+      await expect(page.getInnerHTML('[aria-live]')).resolves.not.toBe('Skipped text');
+      await page.waitForJsTimers(3000);
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('Delayed text');
     })
   );
 });
