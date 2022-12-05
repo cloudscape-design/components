@@ -10,7 +10,13 @@ import { useSelector } from '../model/async-store';
 
 export default memo(AreaVerticalMarker) as typeof AreaVerticalMarker;
 
-function AreaVerticalMarker<T extends AreaChartProps.DataTypes>({ model }: { model: ChartModel<T> }) {
+function AreaVerticalMarker<T extends AreaChartProps.DataTypes>({
+  model,
+  ariaLabel,
+}: {
+  model: ChartModel<T>;
+  ariaLabel?: string;
+}) {
   const highlightedX = useSelector(model.interactions, state => state.highlightedX);
 
   const verticalMarker = (highlightedX || []).map(point => ({
@@ -20,5 +26,12 @@ function AreaVerticalMarker<T extends AreaChartProps.DataTypes>({ model }: { mod
     color: model.getInternalSeries(model.series[point.index.s]).color,
   }));
 
-  return <VerticalMarker height={model.height} points={verticalMarker} ref={model.refs.verticalMarker} />;
+  return (
+    <VerticalMarker
+      height={model.height}
+      points={verticalMarker}
+      ref={model.refs.verticalMarker}
+      ariaLabel={ariaLabel}
+    />
+  );
 }

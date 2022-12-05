@@ -16,12 +16,13 @@ export interface VerticalMarkerProps {
   showPoints?: boolean;
   showLine?: boolean;
   points: null | readonly SeriesPoint[];
+  ariaLabel?: string;
 }
 
 export default memo(forwardRef(VerticalMarker));
 
 function VerticalMarker(
-  { height, showPoints = true, showLine = true, points }: VerticalMarkerProps,
+  { height, showPoints = true, showLine = true, points, ariaLabel }: VerticalMarkerProps,
   ref: React.Ref<SVGLineElement>
 ) {
   const [firstPoint] = points || [];
@@ -31,6 +32,7 @@ function VerticalMarker(
       <line
         ref={ref}
         aria-hidden="true"
+        aria-label={ariaLabel}
         className={styles['vertical-marker']}
         style={{ visibility: showLine && firstPoint ? 'visible' : 'hidden' }}
         x1={firstPoint?.x}
