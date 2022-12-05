@@ -113,9 +113,18 @@
   /* used in test-utils */
 }
 
+/*
+The min/max/width token values in in Visual Refresh should align 
+the table header and body cells selection control with the table
+filter search icon.
+*/
 .selection-control {
-  position: relative;
   box-sizing: border-box;
+  max-width: awsui.$size-table-selection-horizontal;
+  min-width: awsui.$size-table-selection-horizontal;
+  position: relative;
+  width: awsui.$size-table-selection-horizontal;
+
   &.selection-control-header {
     padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
     border-left: awsui.$border-item-width solid transparent;
@@ -202,21 +211,4 @@ the default white background of the container component.
 .row,
 .row-selected {
   /* used in test-utils */
-}
-
-/*
-In Visual Refresh the table header and body cells need a 
-fixed width to align the selection control with the table
-filter search icon.
-*/
-.selection-control:not(.is-visual-refresh) {
-  max-width: 5.4 * styles.$base-size;
-  min-width: 5.4 * styles.$base-size;
-  width: 5.4 * styles.$base-size;
-}
-
-.selection-control.is-visual-refresh {
-  max-width: 4.1 * styles.$base-size;
-  min-width: 4.1 * styles.$base-size;
-  width: 4.1 * styles.$base-size;
 }
