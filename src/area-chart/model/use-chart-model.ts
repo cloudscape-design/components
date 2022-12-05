@@ -19,7 +19,7 @@ import { throttle } from '../../internal/utils/throttle';
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
 
-interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
+export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   externalSeries: readonly AreaChartProps.Series<T>[];
   visibleSeries: readonly AreaChartProps.Series<T>[];
   setVisibleSeries: (series: readonly AreaChartProps.Series<T>[]) => void;
