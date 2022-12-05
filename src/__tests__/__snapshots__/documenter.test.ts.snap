@@ -10682,6 +10682,21 @@ Object {
       "type": "string",
     },
     Object {
+      "defaultValue": "\\"collapse\\"",
+      "description": "Determines whether the split panel collapses or hides completely when closing.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "collapse",
+          "hide",
+        ],
+      },
+      "name": "closeBehavior",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Header of the split panel.",
       "name": "header",
       "optional": false,
