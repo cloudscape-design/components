@@ -12,6 +12,7 @@ import { TopNavigationProps } from '../interfaces';
 
 import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url';
+import { joinStrings } from '../../internal/utils/strings';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -22,9 +23,12 @@ export interface UtilityProps {
 export default function Utility({ hideText, definition, offsetRight }: UtilityProps) {
   const hasIcon = !!definition.iconName || !!definition.iconUrl || !!definition.iconAlt || !!definition.iconSvg;
   const shouldHideText = hideText && !definition.disableTextCollapse && hasIcon;
-  const ariaLabel = definition.ariaLabel ?? definition.text;
+  let ariaLabel = definition.ariaLabel ?? definition.text;
 
   if (definition.type === 'button') {
+    ariaLabel = definition.ariaLabel
+      ? definition.ariaLabel
+      : joinStrings(definition.text, definition.externalIconAriaLabel);
     checkSafeUrl('TopNavigation', definition.href);
     if (definition.variant === 'primary-button') {
       return (
@@ -67,7 +71,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           <InternalLink
             variant="top-navigation"
             href={definition.href}
-            target={definition.external ? '_blank' : undefined}
+            external={definition.external}
             onFollow={definition.onClick}
             ariaLabel={ariaLabel}
           >
@@ -82,18 +86,6 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             )}
             {!shouldHideText && definition.text && (
               <span className={hasIcon ? styles['utility-link-icon'] : undefined}>{definition.text}</span>
-            )}
-            {/* HACK: The link component uses size="inherit", and Firefox scales up SVGs massively on the first render */}
-            {definition.external && (
-              <>
-                {' '}
-                <span
-                  role={definition.externalIconAriaLabel ? 'img' : undefined}
-                  aria-label={definition.externalIconAriaLabel}
-                >
-                  <InternalIcon name="external" size="normal" />
-                </span>
-              </>
             )}
           </InternalLink>
         </span>
