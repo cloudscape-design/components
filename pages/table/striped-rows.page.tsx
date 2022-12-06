@@ -7,7 +7,7 @@ import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
 import Pagination from '~components/pagination';
-import Table from '~components/table';
+import Table, { TableProps } from '~components/table';
 import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
 import {
@@ -20,6 +20,12 @@ import {
 } from './shared-configs';
 
 const allItems = generateItems();
+const ariaLabels: TableProps<Instance>['ariaLabels'] = {
+  selectionGroupLabel: 'group label',
+  allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
+  itemSelectionLabel: ({ selectedItems }, item) =>
+    `${item.id} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
+};
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
@@ -63,6 +69,7 @@ export default function App() {
             Instances
           </Header>
         }
+        ariaLabels={ariaLabels}
         selectionType="multi"
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
         selectedItems={selectedItems}
