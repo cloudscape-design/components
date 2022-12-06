@@ -12,7 +12,7 @@ interface TableBodyCellProps {
   isFirstRow: boolean;
   isLastRow: boolean;
   isEvenRow?: boolean;
-  stripedRows: boolean | undefined;
+  stripedRows?: boolean;
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
