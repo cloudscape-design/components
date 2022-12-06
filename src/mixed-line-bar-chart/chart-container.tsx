@@ -506,7 +506,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
               showLine={!isGroupNavigation}
               points={verticalMarkers}
               ref={verticalMarkerRef}
-              ariaLabel={isLineXKeyboardFocused ? `${xTitle}: ${highlightedX}` : undefined}
             />
 
             {highlightedPoint && (
