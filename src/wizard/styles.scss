@@ -20,6 +20,7 @@
   row-gap: awsui.$space-scaled-xl;
 
   &.small-container {
+    grid-template-columns: minmax(0, 1fr) 0;
     row-gap: awsui.$space-scaled-l;
   }
 }
