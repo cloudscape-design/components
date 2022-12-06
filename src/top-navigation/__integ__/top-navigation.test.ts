@@ -26,7 +26,7 @@ describe('Top navigation', () => {
       'renders utilities with text',
       setupTest(pageWidth, async page => {
         await expect(page.getText(wrapper.findUtility(1).toSelector())).resolves.toBe('New thing');
-        await expect(page.getText(wrapper.findUtility(2).toSelector())).resolves.toBe('Docs');
+        await expect(page.getText(wrapper.findUtility(2).toSelector())).resolves.toBe('Docs ');
         await expect(page.getText(wrapper.findUtility(4).toSelector())).resolves.toBe('John Doe');
       })
     );
@@ -51,7 +51,7 @@ describe('Top navigation', () => {
         await expect(page.getText(wrapper.findUtility(1).toSelector())).resolves.toBe('New thing');
 
         // Docs shouldn't be collapsed because it doesn't have an icon.
-        await expect(page.getText(wrapper.findUtility(2).toSelector())).resolves.toBe('Docs');
+        await expect(page.getText(wrapper.findUtility(2).toSelector())).resolves.toBe('Docs ');
       })
     );
   });

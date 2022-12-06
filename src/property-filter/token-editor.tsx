@@ -30,6 +30,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
+import { matchTokenValue } from './utils';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
@@ -168,11 +169,14 @@ function ValueInput({
   i18nStrings,
 }: ValueInputProps) {
   const property = propertyKey !== undefined ? getPropertyByKey(filteringProperties, propertyKey) : undefined;
-  const valueOptions = property ? getPropertyOptions(property, filteringOptions).map(({ value }) => ({ value })) : [];
+  const valueOptions = property
+    ? getPropertyOptions(property, filteringOptions).map(({ label, value }) => ({ label, value }))
+    : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
   const asyncValueAutosuggesProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
+  const [mathedOption] = valueOptions.filter(option => option.value === value);
 
   const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
 
@@ -181,7 +185,7 @@ function ValueInput({
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
-      value={value ?? ''}
+      value={mathedOption?.label ?? value ?? ''}
       onChange={e => onChangeValue(e.detail.value)}
       disabled={!operator}
       options={valueOptions}
@@ -310,7 +314,7 @@ export function TokenEditor({
             <InternalButton
               className={styles['token-editor-submit']}
               onClick={() => {
-                setToken(temporaryToken);
+                setToken(matchTokenValue(temporaryToken, filteringOptions));
                 closePopover();
               }}
             >

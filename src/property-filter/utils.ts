@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty } from './interfaces';
+import { ComparisonOperator, FilteringOption, FilteringProperty, Token } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
@@ -57,6 +57,20 @@ export function matchOperatorPrefix(
     }
   }
   return null;
+}
+
+export function matchTokenValue(token: Token, filteringOptions: readonly FilteringOption[]): Token {
+  const value = token.value.toLowerCase();
+
+  const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
+  for (const option of propertyOptions) {
+    const optionText = (option.label ?? option.value ?? '').toLowerCase();
+    if (optionText === value) {
+      return { ...token, value: option.value };
+    }
+  }
+
+  return token;
 }
 
 export function trimStart(source: string): string {

@@ -73,7 +73,7 @@ const Thead = React.forwardRef(
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
-        <tr {...focusMarkers.all} ref={outerRef}>
+        <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
             <th
               className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}

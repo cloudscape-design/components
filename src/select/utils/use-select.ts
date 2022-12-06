@@ -239,11 +239,12 @@ export function useSelect({
 
   const prevOpen = usePrevious<boolean>(isOpen);
   useEffect(() => {
-    // highlight the first selected option, when opening the Select component
-    if (isOpen && !prevOpen && hasSelectedOption) {
+    // highlight the first selected option, when opening the Select component without filter input
+    // keep the focus in the filter input when opening, so that screenreader can recognize the combobox
+    if (isOpen && !prevOpen && hasSelectedOption && !hasFilter) {
       setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]));
     }
-  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndexWithMouse, options, prevOpen]);
+  }, [isOpen, __selectedOptions, hasSelectedOption, setHighlightedIndexWithMouse, options, prevOpen, hasFilter]);
 
   useEffect(() => {
     if (isOpen) {

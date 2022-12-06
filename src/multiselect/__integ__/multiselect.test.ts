@@ -231,7 +231,11 @@ describe(`Multiselect with group selection`, () => {
     'group selection selects all enabled child options',
     setupTest(async page => {
       await page.clickSelect();
-      await page.keys(['ArrowUp']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
       await expect(page.getSelectedOptionLabels()).resolves.toEqual([
         'Second category',
@@ -246,7 +250,11 @@ describe(`Multiselect with group selection`, () => {
     'group selection deselects all enabled child options on double press',
     setupTest(async page => {
       await page.clickSelect();
-      await page.keys(['ArrowUp']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
       await page.keys(['Enter']);
 
@@ -258,7 +266,11 @@ describe(`Multiselect with group selection`, () => {
     'deselecting an element removes the parent from the selected options labels',
     setupTest(async page => {
       await page.clickSelect();
-      await page.keys(['ArrowUp']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
       await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
@@ -270,6 +282,12 @@ describe(`Multiselect with group selection`, () => {
     'selecting elements one by one selects the parent',
     setupTest(async page => {
       await page.clickSelect();
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
       await page.keys(['ArrowDown']);
       await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
@@ -300,8 +318,12 @@ describe(`Multiselect with group selection`, () => {
       await page.clickSelect();
       await page.keys(['ArrowDown']);
       await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
+      await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
       await page.keys(['4']);
+      await page.keys(['ArrowDown']);
       await page.keys(['ArrowDown']);
       await page.keys(['Enter']);
       await expect(page.getSelectedOptionLabels()).resolves.toEqual([]);
