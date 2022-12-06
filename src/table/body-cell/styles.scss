@@ -104,8 +104,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 }
 
 /*
-In Visual Refresh the first cell of each row should align with 
-the left edge of the table.
+In Visual Refresh the first cell of each row should align with the 
+left edge of the table.
 */
 .body-cell:not(.is-visual-refresh) {
   &:first-child {
