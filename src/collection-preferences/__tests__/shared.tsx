@@ -47,3 +47,8 @@ export const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference
   label: 'Wrap lines label',
   description: 'Wrap lines description',
 };
+
+export const stripedRowsPreference: CollectionPreferencesProps.StripedRowsPreference = {
+  label: 'Striped rows label',
+  description: 'Striped rows description',
+};

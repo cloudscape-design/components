@@ -23,6 +23,10 @@ class PreferencesModalWrapper extends ModalWrapper {
     return this.findComponent(`.${styles['wrap-lines']}`, CheckboxWrapper);
   }
 
+  findStripedRowsPreference(): CheckboxWrapper | null {
+    return this.findComponent(`.${styles['striped-rows']}`, CheckboxWrapper);
+  }
+
   findPageSizePreference(): PageSizePreferenceWrapper | null {
     return this.findComponent(`.${PageSizePreferenceWrapper.rootSelector}`, PageSizePreferenceWrapper);
   }

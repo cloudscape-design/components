@@ -12,11 +12,13 @@ import styles from './styles.css.js';
 export const copyPreferences = ({
   pageSize,
   wrapLines,
+  stripedRows,
   visibleContent,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
   wrapLines,
+  stripedRows,
   visibleContent,
   custom,
 });
@@ -27,6 +29,7 @@ export const mergePreferences = (
 ): CollectionPreferencesProps.Preferences => ({
   pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
   wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
+  stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
   visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
   custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
 });
@@ -89,6 +92,22 @@ export const WrapLinesPreference = ({ label, description, value, onChange }: Wra
     description={description}
     onChange={({ detail }) => onChange(detail.checked)}
     className={styles['wrap-lines']}
+  >
+    {label}
+  </InternalCheckbox>
+);
+
+interface StripedRowsPreferenceProps extends CollectionPreferencesProps.StripedRowsPreference {
+  onChange: (value: boolean) => void;
+  value?: boolean;
+}
+
+export const StripedRowsPreference = ({ label, description, value, onChange }: StripedRowsPreferenceProps) => (
+  <InternalCheckbox
+    checked={!!value}
+    description={description}
+    onChange={({ detail }) => onChange(detail.checked)}
+    className={styles['striped-rows']}
   >
     {label}
   </InternalCheckbox>

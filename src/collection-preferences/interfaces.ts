@@ -47,6 +47,18 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   wrapLinesPreference?: CollectionPreferencesProps.WrapLinesPreference;
   /**
+   * Configures the built-in "striped rows" preference.
+   *
+   * If you set it, the component displays this preference in the modal.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the label for the option checkbox.
+   * - `description` (string) - Specifies the text displayed below the checkbox label.
+   *
+   * You must set the current value in the `preferences.stripedRows` property.
+   */
+  stripedRowsPreference?: CollectionPreferencesProps.StripedRowsPreference;
+  /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
    * If you set it, the component displays this preference in the modal.
@@ -122,6 +134,7 @@ export namespace CollectionPreferencesProps {
   export interface Preferences<CustomPreferenceType = any> {
     pageSize?: number;
     wrapLines?: boolean;
+    stripedRows?: boolean;
     visibleContent?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
@@ -153,6 +166,11 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface WrapLinesPreference {
+    label: string;
+    description: string;
+  }
+
+  export interface StripedRowsPreference {
     label: string;
     description: string;
   }
