@@ -68,6 +68,7 @@ function BottomLabels({
   const from = 0 - offsetLeft - xOffset;
   const until = width + offsetRight - xOffset;
   const balanceLabels = axis === 'x' && scale.scaleType !== 'log';
+  // for categorical type, show ellipsis for clipped text instead of hiding labels
   const visibleTicks = isCategorical ? formattedTicks : getVisibleTicks(formattedTicks, from, until, balanceLabels);
   let maxHeight = TICK_LENGTH + TICK_MARGIN;
   for (const { lines } of formattedTicks) {
@@ -89,11 +90,17 @@ function BottomLabels({
       aria-hidden={true}
     >
       {visibleTicks.map(({ position, lines, space }, index) => {
+        // calculate the max space the last label can have
         let maxWidth = width + offsetRight - position;
+        // calculate the max space other labels can have
         if (visibleTicks[index + 1]) {
           maxWidth = visibleTicks[index + 1].position - position - 10;
         }
-        const x = maxWidth > space ? space / 2 : maxWidth / 2;
+        // at least show some content, not hide everything
+        if (maxWidth < 10) {
+          maxWidth = 10;
+        }
+        const textAnchor = maxWidth > space ? space / 2 : maxWidth / 2;
         return (
           isFinite(position) && (
             <g
@@ -107,9 +114,9 @@ function BottomLabels({
               aria-label={lines.join('\n')}
             >
               <line className={styles.ticks__line} x1={0} x2={0} y1={0} y2={TICK_LENGTH} aria-hidden="true" />
-              {scale.isCategorical() ? (
+              {isCategorical ? (
                 <foreignObject
-                  x={-x}
+                  x={-textAnchor}
                   y={TICK_LENGTH + TICK_MARGIN}
                   width={maxWidth}
                   height={TICK_LINE_HEIGHT * lines.length}
