@@ -32,6 +32,8 @@ export default function App() {
     pageSize: 20,
     visibleContent: ['id', 'type', 'dnsName', 'state'],
     wrapLines: false,
+
+    // set to true for default striped rows.
     stripedRows: true,
   });
   const [selectedItems, setSelectedItems] = React.useState<any>([]);
