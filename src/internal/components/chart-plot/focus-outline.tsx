@@ -4,11 +4,12 @@ import React, { useEffect, useRef } from 'react';
 
 import styles from './styles.css.js';
 import useFocusVisible from '../../hooks/focus-visible/index';
+import { Offset } from './interfaces';
 
 export interface FocusOutlineProps {
   elementKey?: null | string | number | boolean;
   elementRef?: React.RefObject<SVGSVGElement | SVGGElement>;
-  offset?: number;
+  offset?: Offset;
 }
 
 export default function FocusOutline({ elementKey, elementRef, offset = 0 }: FocusOutlineProps) {
@@ -34,12 +35,14 @@ export default function FocusOutline({ elementKey, elementRef, offset = 0 }: Foc
 function showOutline(
   el: SVGRectElement,
   position: { x: number; y: number; width: number; height: number },
-  offset: number
+  offset: Offset
 ) {
-  el.setAttribute('x', (position.x - offset).toString());
-  el.setAttribute('y', (position.y - offset).toString());
-  el.setAttribute('width', (position.width + 2 * offset).toString());
-  el.setAttribute('height', (position.height + 2 * offset).toString());
+  const offsetX = typeof offset === 'number' ? offset : offset.x;
+  const offsetY = typeof offset === 'number' ? offset : offset.y;
+  el.setAttribute('x', (position.x - offsetX).toString());
+  el.setAttribute('y', (position.y - offsetY).toString());
+  el.setAttribute('width', (position.width + 2 * offsetX).toString());
+  el.setAttribute('height', (position.height + 2 * offsetY).toString());
   el.style.visibility = 'visible';
 }
 

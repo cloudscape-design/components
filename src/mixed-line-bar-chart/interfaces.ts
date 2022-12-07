@@ -106,3 +106,8 @@ export namespace MixedLineBarChartProps {
 
   export type I18nStrings<T> = CartesianChartProps.I18nStrings<T>;
 }
+
+export interface VerticalMarkerX<T> {
+  scaledX: number;
+  label: T | null;
+}
