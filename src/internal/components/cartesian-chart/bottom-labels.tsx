@@ -51,6 +51,7 @@ function BottomLabels({
       return cacheRef.current[label];
     }
     if (virtualTextRef.current && virtualTextRef.current.getComputedTextLength) {
+      virtualTextRef.current.classList.add(styles.ticks__text);
       virtualTextRef.current.textContent = label;
       cacheRef.current[label] = virtualTextRef.current.getComputedTextLength();
       return cacheRef.current[label];
@@ -110,14 +111,14 @@ function BottomLabels({
                 <foreignObject
                   x={-x}
                   y={TICK_LENGTH + TICK_MARGIN}
-                  width={space}
+                  width={maxWidth}
                   height={TICK_LINE_HEIGHT * lines.length}
                 >
                   {lines.map((line, lineIndex) => (
                     <span
                       key={lineIndex}
                       className={styles.ticks__text__bottom}
-                      style={{ maxWidth: maxWidth + 'px', lineHeight: TICK_LINE_HEIGHT + 'px' }}
+                      style={{ maxWidth: maxWidth + 'px', height: TICK_LINE_HEIGHT + 'px' }}
                     >
                       {line}
                     </span>

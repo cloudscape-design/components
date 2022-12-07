@@ -42,6 +42,7 @@
 
 .ticks__text__bottom {
   font-size: awsui.$font-chart-detail-size;
+  line-height: awsui.$font-chart-detail-size;
   color: awsui.$color-text-body-secondary;
   text-overflow: ellipsis;
   overflow: hidden;
