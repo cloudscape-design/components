@@ -6,6 +6,7 @@ import { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom';
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import styles from '../../../lib/components/mixed-line-bar-chart/styles.css.js';
+import bottomLabelStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import cartesianStyles from '../../../lib/components/internal/components/cartesian-chart/styles.css.js';
 import { lineSeries3 } from './common';
 import createComputedTextLengthMock from './computed-text-length-mock';
@@ -632,8 +633,28 @@ describe('Axes', () => {
     afterEach(() => {
       computedTextLengthMock.restore();
     });
-    test('ticks can be partially hidden when there is not enough space', () => {
-      computedTextLengthMock.value = 100;
+    test('non-categorical ticks can be partially hidden when there is not enough space', () => {
+      computedTextLengthMock.value = 180;
+      const { wrapper } = renderMixedChart(
+        <MixedLineBarChart
+          series={[dateSeries]}
+          height={250}
+          xDomain={[new Date(dateSeries.data[0].x), new Date(dateSeries.data[3].x)]}
+          yDomain={[0, 20]}
+          xScaleType="time"
+          i18nStrings={{
+            xTickFormatter: (value: Date) => `${value.getDay()}-${value.getFullYear()}`,
+          }}
+        />
+      );
+
+      expect(wrapper.findXTicks()).toHaveLength(2);
+      expect(wrapper.findXTicks()[0].getElement()).toHaveTextContent('5-2020');
+      expect(wrapper.findXTicks()[1].getElement()).toHaveTextContent('0-2020');
+    });
+
+    test('categorical ticks actual width is smaller than text length when there is not enough space', () => {
+      computedTextLengthMock.value = 150;
       const { wrapper } = renderMixedChart(
         <MixedLineBarChart
           series={[barSeries]}
@@ -644,10 +665,10 @@ describe('Axes', () => {
         />
       );
 
-      expect(wrapper.findXTicks()).toHaveLength(3);
-      expect(wrapper.findXTicks()[0].getElement()).toHaveTextContent('Group 1');
-      expect(wrapper.findXTicks()[1].getElement()).toHaveTextContent('Group 3');
-      expect(wrapper.findXTicks()[2].getElement()).toHaveTextContent('Group 5');
+      expect(wrapper.findXTicks()).toHaveLength(5);
+      const ticksMaxWidth = wrapper.findXTicks()[0].find(`.${bottomLabelStyles.ticks__text__bottom}`)!.getElement()
+        .style.maxWidth;
+      expect(Number.parseFloat(ticksMaxWidth)).toBeLessThan(100);
     });
   });
 

@@ -41,8 +41,9 @@ function BottomLabels({
   offsetRight = 0,
 }: BottomLabelsProps) {
   const virtualTextRef = useRef<SVGTextElement>(null);
+  const isCategorical = scale.isCategorical();
 
-  const xOffset = scale.isCategorical() && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
+  const xOffset = isCategorical && axis === 'x' ? Math.max(0, scale.d3Scale.bandwidth() - 1) / 2 : 0;
 
   const cacheRef = useRef<{ [label: string]: number }>({});
   const getLabelSpace = (label: string) => {
@@ -66,8 +67,7 @@ function BottomLabels({
   const from = 0 - offsetLeft - xOffset;
   const until = width + offsetRight - xOffset;
   const balanceLabels = axis === 'x' && scale.scaleType !== 'log';
-  const visibleTicks = getVisibleTicks(formattedTicks, from, until, balanceLabels);
-
+  const visibleTicks = isCategorical ? formattedTicks : getVisibleTicks(formattedTicks, from, until, balanceLabels);
   let maxHeight = TICK_LENGTH + TICK_MARGIN;
   for (const { lines } of formattedTicks) {
     maxHeight = Math.max(maxHeight, TICK_LENGTH + TICK_MARGIN + lines.length * TICK_LINE_HEIGHT);
@@ -87,8 +87,13 @@ function BottomLabels({
       aria-roledescription={ariaRoleDescription}
       aria-hidden={true}
     >
-      {visibleTicks.map(
-        ({ position, lines }, index) =>
+      {visibleTicks.map(({ position, lines, space }, index) => {
+        let maxWidth = width + offsetRight - position;
+        if (visibleTicks[index + 1]) {
+          maxWidth = visibleTicks[index + 1].position - position - 10;
+        }
+        const x = maxWidth > space ? space / 2 : maxWidth / 2;
+        return (
           isFinite(position) && (
             <g
               key={index}
@@ -101,19 +106,39 @@ function BottomLabels({
               aria-label={lines.join('\n')}
             >
               <line className={styles.ticks__line} x1={0} x2={0} y1={0} y2={TICK_LENGTH} aria-hidden="true" />
-              {lines.map((line, lineIndex) => (
-                <text
-                  className={styles.ticks__text}
-                  key={lineIndex}
-                  x={0}
-                  y={TICK_LENGTH + TICK_MARGIN + lineIndex * TICK_LINE_HEIGHT}
+              {scale.isCategorical() ? (
+                <foreignObject
+                  x={-x}
+                  y={TICK_LENGTH + TICK_MARGIN}
+                  width={space}
+                  height={TICK_LINE_HEIGHT * lines.length}
                 >
-                  {line}
-                </text>
-              ))}
+                  {lines.map((line, lineIndex) => (
+                    <span
+                      key={lineIndex}
+                      className={styles.ticks__text__bottom}
+                      style={{ maxWidth: maxWidth + 'px', lineHeight: TICK_LINE_HEIGHT + 'px' }}
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </foreignObject>
+              ) : (
+                lines.map((line, lineIndex) => (
+                  <text
+                    className={styles.ticks__text}
+                    key={lineIndex}
+                    x={0}
+                    y={TICK_LENGTH + TICK_MARGIN + lineIndex * TICK_LINE_HEIGHT}
+                  >
+                    {line}
+                  </text>
+                ))
+              )}
             </g>
           )
-      )}
+        );
+      })}
 
       <text ref={virtualTextRef} x={0} y={0} style={{ visibility: 'hidden' }} aria-hidden="true"></text>
     </g>

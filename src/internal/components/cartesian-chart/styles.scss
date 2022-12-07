@@ -40,6 +40,15 @@
   fill: awsui.$color-text-body-secondary;
 }
 
+.ticks__text__bottom {
+  font-size: awsui.$font-chart-detail-size;
+  color: awsui.$color-text-body-secondary;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+}
+
 .ticks--y,
 .ticks--x {
   /* used in test-utils */
