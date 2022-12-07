@@ -85,6 +85,8 @@ export function useNavigation<T extends ChartDataTypes>({
     }
   };
 
+  // Returns all the unique X coordinates in scaledSeries.
+  // Assumes scaledSeries is sorted by `x`.
   const allUniqueX = useMemo(() => {
     const result = [];
     for (let i = 0; i < scaledSeries.length; i += 1) {
