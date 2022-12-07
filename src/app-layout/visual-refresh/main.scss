@@ -57,8 +57,12 @@
       desktop viewports if there are no Breadcrumbs or Header. Use additional
       to padding on the Main.
       */
-      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height),
-      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height) {
+      &.content-type-default.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(
+          .has-dynamic-overlap-height
+        ),
+      &.content-type-form.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(
+          .has-dynamic-overlap-height
+        ) {
         padding-top: awsui.$space-scaled-m;
       }
 
@@ -66,8 +70,12 @@
       Main is the only rendered center content if there are no Notifications,
       Breadcrumbs, or Header. Use minimal top padding.
       */
-      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height),
-      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.has-dynamic-overlap-height) {
+      &.content-type-default:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(
+          .has-dynamic-overlap-height
+        ),
+      &.content-type-form:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(
+          .has-dynamic-overlap-height
+        ) {
         padding-top: awsui.$space-scaled-xs;
       }
 
@@ -121,7 +129,7 @@
 }
 
 // Prevent content that is visually hidden behind drawers and content area in mobile view from receiving focus
-/* stylelint-disable-next-line selector-combinator-disallowed-list, selector-max-universal */
+/* stylelint-disable-next-line selector-max-universal, selector-combinator-disallowed-list */
 .unfocusable * {
   visibility: hidden !important;
 }

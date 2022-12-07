@@ -82,7 +82,6 @@ function BottomLabels({
     <g
       transform={`translate(0,${height})`}
       className={styles['labels-bottom']}
-      focusable={false}
       aria-label={title}
       role="list"
       aria-roledescription={ariaRoleDescription}
