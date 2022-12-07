@@ -266,7 +266,7 @@ const InternalTable = React.forwardRef(
                   <tr>
                     <td
                       colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
-                      className={styles['cell-merged']}
+                      className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                     >
                       <div
                         className={styles['cell-merged-content']}
