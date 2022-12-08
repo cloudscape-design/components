@@ -1,0 +1,6 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <path class="stroke-linejoin-round" d="M11 5H1V12H11V5Z"/>
+  <path class="stroke-linejoin-round" d="M11 8.22857L15 8.22857V1.22858H5V5"/>
+  <path class="stroke-linejoin-round" d="M1 15H11"/>
+  <path class="stroke-linejoin-round" d="M6 15V12"/>
+</svg>
