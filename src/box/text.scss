@@ -45,6 +45,7 @@
     }
     &.value-large-variant {
       @include styles.font-display-l;
+      @include styles.font-smoothing;
       font-weight: awsui.$font-box-value-large-weight;
       color: inherit;
     }

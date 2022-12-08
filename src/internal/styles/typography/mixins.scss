@@ -74,6 +74,11 @@
   letter-spacing: awsui.$font-display-l-letter-spacing;
 }
 
+@mixin font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @mixin font-inherit {
   font-size: inherit;
   line-height: inherit;

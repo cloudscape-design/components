@@ -464,6 +464,7 @@ export type TypographyTokenName =
   | 'fontTabsLineHeight'
   | 'fontTabsSize'
   | 'fontWayfindingLinkActiveWeight'
+  | 'fontWeightBold'
   | 'fontWeightHeavy';
 export type BordersTokenName =
   | 'borderActiveWidth'

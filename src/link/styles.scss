@@ -33,6 +33,10 @@ $font-sizes: (
     }
   }
 
+  &.variant-value-large {
+    @include styles.font-smoothing;
+  }
+
   &.button {
     @include styles.link-style(map.get(constants.$link-styles, 'button'));
   }
