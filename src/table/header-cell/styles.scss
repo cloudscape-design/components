@@ -118,7 +118,7 @@ in the pagination slot.
 .header-cell.is-visual-refresh {
   &:first-child,
   &:first-child > .header-cell-content {
-    padding-left: 0;
+    padding-left: awsui.$space-xxxs;
   }
 
   &:last-child.header-cell-sortable {
