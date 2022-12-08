@@ -1,18 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import { useCurrentMode, useDensityMode, useVisualRefresh } from '../index';
+import { useCurrentMode, useDensityMode, useVisualRefresh, clearVisualRefreshState } from '../index';
 import { render, screen } from '@testing-library/react';
 import { mutate } from './utils';
-
-const originalFn = window.CSS.supports;
-beforeEach(() => {
-  window.CSS.supports = jest.fn().mockReturnValue(true);
-});
-
-afterEach(() => {
-  window.CSS.supports = originalFn;
-});
 
 jest.mock('../../../environment', () => ({ ALWAYS_VISUAL_REFRESH: false }), { virtual: true });
 
@@ -83,9 +74,30 @@ describe('useVisualRefresh', () => {
     return <div data-testid="current-mode">{isRefresh.toString()}</div>;
   }
 
-  test('should return false when CSS-variables are not supported', () => {
-    (window.CSS.supports as jest.Mock).mockReturnValue(false);
+  beforeEach(() => clearVisualRefreshState());
+  afterEach(() => document.body.classList.remove('awsui-visual-refresh'));
+  afterEach(() => jest.restoreAllMocks());
+
+  test('should return false when class name is not present', () => {
     render(<App />);
+    expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+  });
+
+  test('should return true when class name is present', () => {
+    document.body.classList.add('awsui-visual-refresh');
+    render(<App />);
+    expect(screen.getByTestId('current-mode')).toHaveTextContent('true');
+  });
+
+  test('should print a warning when late visual refresh class name was detected', () => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const { rerender } = render(<App />);
+    expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
+    expect(console.warn).not.toHaveBeenCalled();
+
+    document.body.classList.add('awsui-visual-refresh');
+    rerender(<App />);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/Dynamic visual refresh change detected/));
     expect(screen.getByTestId('current-mode')).toHaveTextContent('false');
   });
 });
