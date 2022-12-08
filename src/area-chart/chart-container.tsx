@@ -80,7 +80,6 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   const mergedRef = useMergeRefs(containerWidthRef, model.refs.container);
 
   const isPointHighlighted = model.interactions.get().highlightedPoint !== null;
-  const { highlightedX } = model.interactions.get();
 
   return (
     <div className={styles['chart-container']} ref={mergedRef}>
@@ -142,10 +141,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
 
             <EmphasizedBaseline width={model.width} height={model.height} scale={model.computed.yScale} />
 
-            <AreaVerticalMarker
-              model={model}
-              ariaLabel={highlightedX?.length ? `${xTitle}: ${highlightDetails?.formattedX}` : undefined}
-            />
+            <AreaVerticalMarker model={model} />
 
             <AreaHighlightedPoint ref={highlightedPointRef} model={model} ariaLabel={highlightDetails?.activeLabel} />
           </ChartPlot>
