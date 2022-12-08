@@ -23,6 +23,7 @@ interface StickyHeaderProps {
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   tableHasHeader?: boolean;
+  items?: TableProps['items'];
 }
 
 export default forwardRef(StickyHeader);
@@ -37,6 +38,7 @@ function StickyHeader(
     onScroll,
     tableRef,
     tableHasHeader,
+    items,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -50,7 +52,8 @@ function StickyHeader(
     theadRef,
     secondaryTheadRef,
     secondaryTableRef,
-    wrapperRef
+    wrapperRef,
+    items
   );
 
   useImperativeHandle(ref, () => ({ scrollToTop, scrollToRow, setFocusedColumn }));

@@ -205,6 +205,7 @@ const InternalTable = React.forwardRef(
                   tableRef={tableRefObject}
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
+                  items={items}
                 />
               )}
             </>

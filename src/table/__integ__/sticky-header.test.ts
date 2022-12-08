@@ -52,6 +52,20 @@ describe('Sticky header', () => {
       expect(copyWidths).toEqual(originalWidths);
     })
   );
+
+  test(
+    `syncs column sizes from the hidden column headers when items change`,
+    useBrowser(async browser => {
+      const page = new StickyHeaderPage(browser);
+      await page.setWindowSize(desktopSize);
+      await browser.url('#/light/table/hooks?visualRefresh=false');
+      await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
+      const originalWidths = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
+      const copyWidths = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
+      expect(copyWidths).toEqual(originalWidths);
+    })
+  );
+
   test(
     `scrolls the scroll parent, to reveal focused row`,
     setupTest(async page => {

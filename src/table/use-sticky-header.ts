@@ -4,6 +4,7 @@ import { useLayoutEffect, RefObject, useCallback } from 'react';
 import { useResizeObserver } from '../internal/hooks/container-queries/use-resize-observer';
 import stickyScrolling, { calculateScrollingOffset, scrollUpBy } from './sticky-scrolling';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { TableProps } from '@cloudscape-design/components';
 
 function syncSizes(from: HTMLElement, to: HTMLElement) {
   const fromCells = Array.prototype.slice.apply(from.children);
@@ -23,7 +24,8 @@ export const useStickyHeader = (
   theadRef: RefObject<HTMLElement>,
   secondaryTheadRef: RefObject<HTMLElement>,
   secondaryTableRef: RefObject<HTMLElement>,
-  tableWrapperRef: RefObject<HTMLElement>
+  tableWrapperRef: RefObject<HTMLElement>,
+  items?: TableProps['items']
 ) => {
   const isMobile = useMobile();
   // Sync the sizes of the column header copies in the sticky header with the originals
@@ -47,9 +49,7 @@ export const useStickyHeader = (
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {
     syncColumnHeaderWidths();
-    // Content is not going to be layed out until the next frame in angular,
-    // so we need to sync the column headers again.
-    setTimeout(() => syncColumnHeaderWidths(), 0);
+
     const secondaryTable = secondaryTableRef.current;
     const primaryTable = tableWrapperRef.current;
     return () => {
@@ -60,7 +60,7 @@ export const useStickyHeader = (
         primaryTable.style.marginTop = '';
       }
     };
-  });
+  }, [secondaryTableRef, tableWrapperRef, syncColumnHeaderWidths, items]);
   useResizeObserver(theadRef, syncColumnHeaderWidths);
   const scrollToTop = () => {
     if (!isMobile && theadRef.current && secondaryTheadRef.current && tableWrapperRef.current) {
