@@ -19,7 +19,7 @@ import { throttle } from '../../internal/utils/throttle';
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
 
-interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
+export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   externalSeries: readonly AreaChartProps.Series<T>[];
   visibleSeries: readonly AreaChartProps.Series<T>[];
   setVisibleSeries: (series: readonly AreaChartProps.Series<T>[]) => void;
@@ -68,6 +68,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
     // A store for chart interactions that don't require plot recomputation.
     const interactions = new InteractionsStore(series, computed.plot);
+
+    const containsMultipleSeries = interactions.series.length > 1;
 
     // A series decorator to provide extra props such as color and marker type.
     const getInternalSeries = createSeriesDecorator(allSeries);
@@ -126,6 +128,19 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       event.preventDefault();
     };
 
+    const moveWithinXAxis = (direction: -1 | 1) => {
+      if (interactions.get().highlightedPoint) {
+        return moveWithinSeries(direction);
+      } else if (containsMultipleSeries) {
+        const { highlightedX } = interactions.get();
+        if (highlightedX) {
+          const currentXIndex = highlightedX[0].index.x;
+          const nextXIndex = circleIndex(currentXIndex + direction, [0, interactions.plot.xy.length - 1]);
+          interactions.highlightX(interactions.plot.xy[nextXIndex]);
+        }
+      }
+    };
+
     // A helper function to highlight the next or previous point within selected series.
     const moveWithinSeries = (direction: -1 | 1) => {
       // Can only use motion when a particular point is highlighted.
@@ -142,20 +157,36 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       interactions.highlightPoint(interactions.plot.xs[xIndex][sIndex]);
     };
 
-    // A helper function to highlight the next or previous point withing selected column.
+    // A helper function to highlight the next or previous point within the selected column.
     const moveBetweenSeries = (direction: -1 | 1) => {
-      // Can only use motion when a particular point is highlighted.
       const point = interactions.get().highlightedPoint;
       if (!point) {
+        const { highlightedX } = interactions.get();
+        if (highlightedX) {
+          const xIndex = highlightedX[0].index.x;
+          const points = interactions.plot.xy[xIndex];
+          const yIndex = direction === 1 ? 0 : points.length - 1;
+          interactions.highlightPoint(points[yIndex]);
+        }
         return;
       }
 
       // Take the index of the currently highlighted column.
       const xIndex = point.index.x;
-      // Take the incremented(circularly) y-index of the currently highlighted point.
-      const yIndex = circleIndex(point.index.y + direction, [0, interactions.plot.xy[xIndex].length - 1]);
-      // Highlight the next point using x:y grouped data.
-      interactions.highlightPoint(interactions.plot.xy[xIndex][yIndex]);
+      const currentYIndex = point.index.y;
+
+      if (
+        containsMultipleSeries &&
+        ((currentYIndex === 0 && direction === -1) ||
+          (currentYIndex === interactions.plot.xy[xIndex].length - 1 && direction === 1))
+      ) {
+        interactions.highlightX(interactions.plot.xy[xIndex]);
+      } else {
+        // Take the incremented(circularly) y-index of the currently highlighted point.
+        const nextYIndex = circleIndex(currentYIndex + direction, [0, interactions.plot.xy[xIndex].length - 1]);
+        // Highlight the next point using x:y grouped data.
+        interactions.highlightPoint(interactions.plot.xy[xIndex][nextYIndex]);
+      }
     };
 
     // A callback for svg keydown to enable motions and popover pin with the keyboard.
@@ -186,7 +217,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
       // Move left/right.
       else if (keyCode === KeyCode.left || keyCode === KeyCode.right) {
-        moveWithinSeries(keyCode === KeyCode.right ? 1 : -1);
+        moveWithinXAxis(keyCode === KeyCode.right ? 1 : -1);
       }
       // Pin popover.
       else if (keyCode === KeyCode.enter || keyCode === KeyCode.space) {
@@ -194,12 +225,20 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
     };
 
+    const highlightFirstX = () => {
+      interactions.highlightX(interactions.plot.xy[0]);
+    };
+
     // A callback for svg focus to highlight series.
     const onSVGFocus = (_event: React.FocusEvent, trigger: 'mouse' | 'keyboard') => {
       // When focus is caused by a click event nothing is expected as clicks are handled separately.
-      // Otherwise, select the first series point.
       if (trigger === 'keyboard') {
-        interactions.highlightFirstPoint();
+        const { highlightedX, highlightedPoint, highlightedSeries, legendSeries } = interactions.get();
+        if (containsMultipleSeries && !highlightedX && !highlightedPoint && !highlightedSeries && !legendSeries) {
+          highlightFirstX();
+        } else if (!highlightedX) {
+          interactions.highlightFirstPoint();
+        }
       }
     };
 
@@ -227,7 +266,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       if (!outsideClick) {
         // The delay is needed to bypass focus events caused by click or keypress needed to unpin the popover.
         setTimeout(() => {
-          if (interactions.get().highlightedPoint) {
+          if (interactions.get().highlightedPoint || interactions.get().highlightedX) {
             plotRef.current!.focusApplication();
           } else {
             interactions.clearHighlight();

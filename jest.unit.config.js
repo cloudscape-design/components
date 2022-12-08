@@ -36,4 +36,5 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
   },
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'jest', 'setup.js')],
   testRegex: '(/__tests__/.*(\\.|/)test)\\.[jt]sx?$',
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'd.ts'],
 });

@@ -79,6 +79,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
 
   const mergedRef = useMergeRefs(containerWidthRef, model.refs.container);
 
+  const isPointHighlighted = model.interactions.get().highlightedPoint !== null;
+
   return (
     <div className={styles['chart-container']} ref={mergedRef}>
       <AxisLabel axis="y" position="left" title={yTitle} />
@@ -102,7 +104,8 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
             ariaDescription={ariaDescription}
             ariaRoleDescription={chartAriaRoleDescription}
             activeElementKey={!highlightDetails?.isPopoverPinned && highlightDetails?.activeLabel}
-            activeElementRef={highlightedPointRef}
+            activeElementRef={isPointHighlighted ? highlightedPointRef : model.refs.verticalMarker}
+            activeElementFocusOffset={isPointHighlighted ? 3 : { x: 8, y: 0 }}
             isClickable={!highlightDetails?.isPopoverPinned}
             onMouseMove={model.handlers.onSVGMouseMove}
             onMouseOut={model.handlers.onSVGMouseOut}

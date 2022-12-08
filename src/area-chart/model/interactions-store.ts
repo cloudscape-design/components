@@ -42,6 +42,7 @@ export default class InteractionsStore<T extends AreaChartProps.DataTypes> exten
       highlightedX: points,
       highlightedPoint: null,
       highlightedSeries: null,
+      legendSeries: null,
     }));
   }
 

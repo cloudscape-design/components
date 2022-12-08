@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import styles from './styles.css.js';
 import useFocusVisible from '../../hooks/focus-visible/index';
-import { Offset } from './interfaces';
+import { Offset } from '../interfaces';
 
 export interface FocusOutlineProps {
   elementKey?: null | string | number | boolean;
