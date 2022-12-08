@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import useTableFocusNavigation from '../use-table-focus-navigation';
+import { renderHook } from '../../__tests__/render-hook';
 
 const focusFn = jest.fn();
 const rootRemoveEventListener = jest.fn();
@@ -156,5 +157,82 @@ describe('useTableFocusNavigation', () => {
     fireEvent.click(getByTestId('0,0'));
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowRight' });
     expect(focusFn).not.toHaveBeenCalledWith('0,1');
+  });
+
+  describe('eventListeners', () => {
+    const addEventListener = jest.fn();
+    const removeEventListener = jest.fn();
+    const addEventListenerRoot = jest.fn();
+    let table = document.createElement('table');
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      table = document.createElement('table');
+      for (let i = 0; i < 3; i++) {
+        const row = table.insertRow();
+        for (let j = 0; j < 3; j++) {
+          const cell = row.insertCell();
+          const button = document.createElement('button');
+          cell.appendChild(button);
+          Object.defineProperty(cell, 'addEventListener', { value: addEventListener });
+          Object.defineProperty(cell, 'removeEventListener', { value: removeEventListener });
+        }
+      }
+      jest.spyOn(table, 'addEventListener').mockImplementation(addEventListenerRoot);
+    });
+    it('should attach event listener for focus navigation when focus navigation is enabled', () => {
+      renderHook(() =>
+        useTableFocusNavigation(
+          true,
+          { current: table },
+          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+          3
+        )
+      );
+
+      expect(addEventListenerRoot).toHaveBeenCalled();
+      expect(addEventListener).toHaveBeenCalledWith('focusin', expect.any(Function), { passive: true });
+    });
+
+    it('should detach event listener for focus navigation when focus navigation is disabled', () => {
+      const { rerender } = renderHook(
+        ({ enabled }) =>
+          useTableFocusNavigation(
+            enabled,
+            { current: table },
+            [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+            3
+          ),
+        { initialProps: { enabled: true } }
+      );
+      expect(removeEventListener).not.toHaveBeenCalled();
+      rerender({ enabled: false });
+      waitFor(() => expect(removeEventListener).toHaveBeenCalled());
+    });
+
+    it('should not attach event listener for focus navigation when focus navigation is disabled', () => {
+      renderHook(() =>
+        useTableFocusNavigation(
+          false,
+          { current: table },
+          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+          3
+        )
+      );
+      expect(addEventListenerRoot).not.toHaveBeenCalled();
+      expect(addEventListener).not.toHaveBeenCalled();
+    });
+    it('satisfies istanbul coverage', () => {
+      renderHook(() =>
+        useTableFocusNavigation(
+          true,
+          { current: null },
+          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+          3
+        )
+      );
+      expect(removeEventListener).not.toHaveBeenCalled();
+      expect(addEventListenerRoot).not.toHaveBeenCalled();
+    });
   });
 });

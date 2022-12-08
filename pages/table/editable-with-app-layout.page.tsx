@@ -29,9 +29,8 @@ const withSideEffect =
   <T extends (...args: any[]) => void>(sideEffect: () => void) =>
   (fn: T) =>
   (...args: Parameters<T>) => {
-    const result = fn(...args);
     sideEffect();
-    return result;
+    return fn(...args);
   };
 
 const setDirty = () => {
@@ -106,7 +105,8 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
             value={currentValue ?? item.Origin}
             onChange={withDirtyState(event => setValue(event.detail.value))}
             options={originSuggestions}
-            enteredTextLabel={value => `Use "${value}"`}
+            enteredTextLabel={value => `Use Custom Origin "${value}"`}
+            expandToViewport={true}
             ariaLabel="Origin Domain"
             placeholder="Enter an origin domain name"
           />
@@ -130,9 +130,10 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
         return (
           <Select
             selectedOption={tlsVersions.find(option => option.value === value) ?? null}
-            onChange={withDirtyState(event =>
-              setValue(event.detail.selectedOption.value ?? item.CertificateMinVersion)
-            )}
+            onChange={withDirtyState(event => {
+              event.preventDefault();
+              setValue(event.detail.selectedOption.value ?? item.CertificateMinVersion);
+            })}
             options={tlsVersions}
           />
         );
@@ -149,20 +150,23 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
       editIconAriaLabel: 'editable',
     },
     cell: (item, { isEditing, currentValue, setValue }) => {
+      const time = new Date(item.LastModifiedTime);
+      const value = [time.getHours(), time.getMinutes()].map(part => part.toString().padStart(2, '0')).join(':');
       if (isEditing) {
-        const time = new Date(item.LastModifiedTime);
-        const value = `${time.getHours()}:${time.getMinutes()}`;
         return (
           <TimeInput
             autoFocus={true}
             format="hh:mm"
             value={currentValue ?? value}
-            onChange={withDirtyState(event => setValue(event.detail.value))}
+            onChange={withDirtyState(event => {
+              event.preventDefault();
+              setValue(event.detail.value);
+            })}
           />
         );
       }
 
-      return new Date(item.LastModifiedTime).toLocaleTimeString();
+      return value;
     },
   },
 ];

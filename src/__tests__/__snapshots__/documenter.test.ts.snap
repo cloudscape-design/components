@@ -10887,8 +10887,8 @@ including the hidden via preferences columns. Use this event to persist the colu
     },
     Object {
       "cancelable": true,
-      "description": "Called whenever user cancels an inline edit. Use it to reset any
-validation states or show warning for unsaved changes.",
+      "description": "Called whenever user cancels an inline edit. Use this function to reset any
+validation states, or show warning for unsaved changes.",
       "name": "onEditCancel",
     },
     Object {
@@ -11019,12 +11019,18 @@ scroll parent scrolls to reveal the first row of the table.",
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
                                    It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
-* \`tableLabel\` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
+* \`activateEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the edit button in editable cells.
+* \`cancelEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the cancel button in editable cells.
+* \`submitEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the submit button in editable cells.
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",

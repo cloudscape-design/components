@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
@@ -10,6 +10,8 @@ import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
+import { useStableScrollPosition } from './use-stable-scroll-position';
+
 export { TableTdElement } from './td-element';
 
 const readonlyState = Object.freeze({
@@ -44,41 +46,60 @@ function TableCellEditable<ItemType, ValueType>({
   ...rest
 }: TableBodyCellProps<ItemType, ValueType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
+  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
 
-  useEffectOnUpdate(() => {
-    if (!isEditing && editActivateRef?.current) {
-      editActivateRef.current!.focus();
+  const handleEditStart = () => {
+    storeScrollPosition();
+    if (!isEditing) {
+      onEditStart();
     }
-  }, [isEditing]);
+  };
+
+  const scheduleRestoreScrollPosition = useCallback(
+    () => setTimeout(restoreScrollPosition, 0),
+    [restoreScrollPosition]
+  );
 
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
+    onFocus: scheduleRestoreScrollPosition,
     'data-inline-editing-active': isEditing.toString(),
   };
+
+  useEffectOnUpdate(() => {
+    if (!isEditing && editActivateRef.current) {
+      editActivateRef.current.focus({ preventScroll: true });
+    }
+    const timer = scheduleRestoreScrollPosition();
+    return () => clearTimeout(timer);
+  }, [isEditing, scheduleRestoreScrollPosition]);
 
   return (
     <TableTdElement
       {...rest}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       className={clsx(className, styles['body-cell-editable'], isEditing && styles['body-cell-edit-active'])}
-      onClick={!isEditing ? onEditStart : undefined}
+      onClick={handleEditStart}
+      ref={cellRef}
     >
       {isEditing ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}
           item={item}
-          submitEdit={submitEdit ?? submitHandlerFallback}
           onEditEnd={onEditEnd}
+          submitEdit={submitEdit ?? submitHandlerFallback}
+          __onRender={scheduleRestoreScrollPosition}
         />
       ) : (
         <>
           {column.cell(item, readonlyState)}
           <span className={styles['body-cell-editor']}>
             <Button
-              ref={editActivateRef}
               __hideFocusOutline={true}
+              __internalRootRef={editActivateRef}
               ariaLabel={ariaLabels?.activateEditLabel?.(column)}
               formAction="none"
               iconName="edit"

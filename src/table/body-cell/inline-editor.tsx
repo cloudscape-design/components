@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../button/internal';
 import FormField from '../../form-field/internal';
 import SpaceBetween from '../../space-between/internal';
@@ -18,6 +18,7 @@ interface InlineEditorProps<ItemType, ValueType> {
   item: ItemType;
   onEditEnd: () => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType, ValueType>;
+  __onRender?: () => void;
 }
 
 export function InlineEditor<ItemType, ValueType>({
@@ -26,12 +27,21 @@ export function InlineEditor<ItemType, ValueType>({
   column,
   onEditEnd,
   submitEdit,
+  __onRender,
 }: InlineEditorProps<ItemType, ValueType>) {
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
-  const [currentEditValue, setCurrentEditValue] = useState<Optional<ValueType>>(undefined);
+  const [currentEditValue, setCurrentEditValue] = useState<Optional<ValueType>>();
 
-  function finishEdit() {
-    setCurrentEditValue(undefined);
+  const cellContext = {
+    isEditing: true,
+    currentValue: currentEditValue,
+    setValue: setCurrentEditValue,
+  };
+
+  function finishEdit(cancel = false) {
+    if (!cancel) {
+      setCurrentEditValue(undefined);
+    }
     onEditEnd();
   }
 
@@ -45,8 +55,9 @@ export function InlineEditor<ItemType, ValueType>({
     setCurrentEditLoading(true);
     try {
       await submitEdit(item, column, currentEditValue);
+      setCurrentEditLoading(false);
       finishEdit();
-    } finally {
+    } catch (e) {
       setCurrentEditLoading(false);
     }
   }
@@ -55,7 +66,7 @@ export function InlineEditor<ItemType, ValueType>({
     if (currentEditLoading) {
       return;
     }
-    finishEdit();
+    finishEdit(true);
   }
 
   function handleEscape(event: React.KeyboardEvent): void {
@@ -65,6 +76,10 @@ export function InlineEditor<ItemType, ValueType>({
   }
 
   const clickAwayRef = useClickAway(onCancel);
+
+  useEffect(() => {
+    __onRender?.();
+  });
 
   // asserting non-undefined editConfig here because this component is unreachable otherwise
   const { ariaLabel = undefined, validation = noop, errorIconAriaLabel } = column.editConfig!;
@@ -84,11 +99,7 @@ export function InlineEditor<ItemType, ValueType>({
         i18nStrings={{ errorIconAriaLabel }}
       >
         <div className={styles['body-cell-editor-row']}>
-          {column.cell(item, {
-            isEditing: true,
-            currentValue: currentEditValue,
-            setValue: setCurrentEditValue,
-          })}
+          {column.cell(item, cellContext)}
           <span className={styles['body-cell-editor-controls']}>
             <SpaceBetween direction="horizontal" size="xxs">
               {!currentEditLoading ? (

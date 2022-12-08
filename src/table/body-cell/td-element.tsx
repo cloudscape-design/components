@@ -13,7 +13,7 @@ export interface TableTdElementProps {
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
-  nativeAttributes?: Record<string, string>;
+  nativeAttributes?: Omit<React.HTMLAttributes<HTMLTableCellElement>, 'style' | 'className' | 'onClick'>;
   onClick?: () => void;
   children?: React.ReactNode;
   isEvenRow?: boolean;

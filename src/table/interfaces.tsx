@@ -142,13 +142,19 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
    * * `selectionGroupLabel` (string) - Specifies the alternative text for the whole selection and single-selection column header.
    *                                    It is prefixed to `itemSelectionLabel` and `allItemsSelectionLabel` when they are set.
-   * * `tableLabel` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
-   *
    * You can use the first argument of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The `itemSelectionLabel` for individual
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
+   *
+   * * `activateEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the edit button in editable cells.
+   * * `cancelEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the cancel button in editable cells.
+   * * `submitEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the submit button in editable cells.
    */
   ariaLabels?: TableProps.AriaLabels<T, V>;
 
@@ -258,8 +264,8 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
   submitEdit?: TableProps.SubmitEditFunction<T, V>;
 
   /**
-   * Called whenever user cancels an inline edit. Use it to reset any
-   * validation states or show warning for unsaved changes.
+   * Called whenever user cancels an inline edit. Use this function to reset any
+   * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
 }
@@ -280,15 +286,17 @@ export namespace TableProps {
 
   export interface EditConfig<T, V = any> {
     /**
-     * Specifies a label for the edit control. Visually hidden but read by screen readers.
+     * Specifies a label for the edit control. Visually hidden but read
+     * by screen readers.
      */
     ariaLabel?: string;
     /**
-     * Specifies an ariaLabel for error icon that is displayed when the validation fails.
+     * Specifies an ariaLabel for the error icon that is displayed when
+     * the validation fails.
      */
     errorIconAriaLabel?: string;
     /**
-     * alternate text for edit icon used in table header
+     * Specifies an alternate text for the edit icon used in column header.
      */
     editIconAriaLabel?: string;
     /**
@@ -296,9 +304,9 @@ export namespace TableProps {
      */
     constraintText?: string;
     /**
-     * A function that allows you to validate the value of the edit control.
-     * Return a string to display an error message.
-     * Return `undefined` (or no return) to indicate that the value is valid.
+     * A function that allows you to validate the value of the edit control. Return
+     * a string from the function to display an error message. Return
+     * `undefined` (or no return) from the function to indicate that the value is valid.
      * @param item - The item that is being edited.
      * @param value - The current value of the edit control.
      */
