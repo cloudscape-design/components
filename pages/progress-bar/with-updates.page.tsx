@@ -10,8 +10,8 @@ import Box from '~components/box';
 export default function ProgressBarWithUpdates() {
   const [progressStep1, setProgressStep1] = useState(0);
   const [progressStep10, setProgressStep10] = useState(0);
-  const timeoutRef1 = useRef<NodeJS.Timeout | number>();
-  const timeoutRef10 = useRef<NodeJS.Timeout | number>();
+  const timeoutRef1 = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef10 = useRef<ReturnType<typeof setTimeout>>();
 
   const activateTimerStep1 = () => {
     resetTimeoutStep1();
