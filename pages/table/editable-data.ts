@@ -1,5 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+export interface TagOption {
+  label: string;
+  value: string;
+}
+
 export interface DistributionInfo {
   Id: string;
   ARN: string;
@@ -8,6 +14,7 @@ export interface DistributionInfo {
   DomainName: string;
   Origin: string;
   CertificateMinVersion: string;
+  Tags: TagOption[];
 }
 
 export const originSuggestions = [
@@ -24,6 +31,29 @@ export const tlsVersions = [
   { label: 'TLS 1.3', value: 'TLS 1.3' },
 ];
 
+export const tagOptions = [
+  {
+    label: 'Option 1',
+    value: '1',
+  },
+  {
+    label: 'Option 2',
+    value: '2',
+  },
+  {
+    label: 'Option 3',
+    value: '3',
+  },
+  {
+    label: 'Option 4',
+    value: '4',
+  },
+  {
+    label: 'Option 5',
+    value: '5',
+  },
+];
+
 export const initialItems: DistributionInfo[] = [
   {
     Id: 'EKXAM4L45YPC8',
@@ -33,6 +63,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd2nwo6agzqjpi5.cloudfront.net',
     Origin: 'aws-ui.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E2SH67AF9QONDI',
@@ -42,6 +73,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd3tjwveh3exj5p.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [tagOptions[0]],
   },
   {
     Id: 'E1DSU9EZHK1EFT',
@@ -51,6 +83,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd2l92xs4awobp2.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [tagOptions[1]],
   },
   {
     Id: 'E3FD25X9M22KQW',
@@ -60,6 +93,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'df2e9lsq5eg3f.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E2XULKFU2T6A3N',
@@ -69,6 +103,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd37ojh3f70e9ly.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1KO77AQWA7TOF',
@@ -78,6 +113,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'dikexib0qpmpu.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1AD6J6WB9DBQL',
@@ -87,6 +123,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd20bq7uc02g87g.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1QS6YZC9T0JTD',
@@ -96,6 +133,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd1nr2qeg20fxwo.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E3T55WLRRILQSF',
@@ -105,6 +143,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd2dtcwy61csefe.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E30T1S83X14FVG',
@@ -114,6 +153,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd3f1vm4iawzl4h.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E2ZXFXK3PEWUEX',
@@ -123,6 +163,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd3z8wfq2yxdb6.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'EUJXHSTJWEP1I',
@@ -132,6 +173,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd12l1zncg92pjt.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'EP9HH29HEFFJN',
@@ -141,6 +183,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd102648o8sh00f.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1VSYI8LJ837IZ',
@@ -150,6 +193,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd2gxuxbgmog6e6.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E2W4EMV0NYKJ3A',
@@ -159,6 +203,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd1m0brbl2pnxzt.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'EO7WQXJVTM1ZK',
@@ -168,6 +213,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'dlmh1440dha1a.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1NHT41698KCSA',
@@ -177,6 +223,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'ds6krf2a9jh8h.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'EAR97EDHDJM3Q',
@@ -186,6 +233,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd20kr5jeroe2r9.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E1H3C2KSX7G7GH',
@@ -195,6 +243,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd2w44xc1hxiel9.cloudfront.net',
     Origin: 'aws-ui-performance-testing.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'E3T0B2OABO7PQN',
@@ -204,6 +253,7 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd27banjocfuo3h.cloudfront.net',
     Origin: 'aws-ui-browserstack.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
   {
     Id: 'ECXBLT0NPVL3',
@@ -213,5 +263,6 @@ export const initialItems: DistributionInfo[] = [
     DomainName: 'd3ocvvlf9b34fa.cloudfront.net',
     Origin: 'polaris.corp.amazon.com.s3.amazonaws.com',
     CertificateMinVersion: 'TLS 1.0',
+    Tags: [],
   },
 ];

@@ -60,7 +60,7 @@ const TestComponent = ({ isEditing = false }) => {
 describe('TableBodyCell', () => {
   it('should render', () => {
     const { container } = render(<TestComponent />);
-    expect(container).toMatchSnapshot();
+    expect(container.querySelector('td')).toBeInTheDocument();
   });
 
   it('should call onEditStart', () => {

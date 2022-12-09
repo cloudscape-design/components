@@ -4,13 +4,17 @@ import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from 're
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Input from '~components/input';
-import Select from '~components/select';
 import Alert from '~components/alert';
-import Table, { TableProps } from '~components/table';
 import BreadcrumbGroup from '~components/breadcrumb-group';
-import { Autosuggest, Link, TimeInput, Box, Button, Modal, SpaceBetween } from '~components';
+import Table, { TableProps } from '~components/table';
+import Select, { SelectProps } from '~components/select';
+import TimeInput, { TimeInputProps } from '~components/time-input';
+import { Token } from '~components/token-group/internal';
+import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
+import Multiselect, { MultiselectProps } from '~components/multiselect';
+import { Link, Box, Button, Modal, SpaceBetween } from '~components';
+import { initialItems, DistributionInfo, tlsVersions, originSuggestions, tagOptions } from './editable-data';
 import { HelpContent } from './editable-utils';
-import { initialItems, DistributionInfo, tlsVersions, originSuggestions } from './editable-data';
 
 let __editStateDirty = false;
 
@@ -26,8 +30,8 @@ export const ariaLabels: TableProps.AriaLabels<DistributionInfo> = {
 };
 
 const withSideEffect =
-  <T extends (...args: any[]) => void>(sideEffect: () => void) =>
-  (fn: T) =>
+  (sideEffect: () => void) =>
+  <T extends (...args: any[]) => void>(fn: T) =>
   (...args: Parameters<T>) => {
     sideEffect();
     return fn(...args);
@@ -43,7 +47,7 @@ const setClean = () => {
 const withDirtyState = withSideEffect(setDirty);
 const withCleanState = withSideEffect(setClean);
 
-const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
+const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
   {
     id: 'Id',
     header: 'Distribution ID',
@@ -54,12 +58,12 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
   {
     id: 'DomainName',
     header: 'Domain name',
-    minWidth: 160,
+    minWidth: 180,
     editConfig: {
       ariaLabel: 'Domain name',
       editIconAriaLabel: 'editable',
       errorIconAriaLabel: 'Domain Name Error',
-      validation(item, value) {
+      validation(item, value: string) {
         const currentValue = value ?? item.DomainName;
         if (!DOMAIN_NAME.test(currentValue)) {
           return 'Must be a valid domain name';
@@ -69,7 +73,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
         }
       },
     },
-    cell(item, { isEditing, currentValue, setValue }) {
+    cell(item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) {
       if (isEditing) {
         return (
           <Input
@@ -86,7 +90,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
   {
     id: 'Status',
     header: 'Status',
-    width: 120,
+    minWidth: 176,
     cell: (item: DistributionInfo) => item.Status,
   },
   {
@@ -97,13 +101,13 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
       ariaLabel: 'Origin',
       editIconAriaLabel: 'editable',
     },
-    cell: (item, { isEditing, setValue, currentValue }) => {
+    cell: (item, { isEditing, setValue, currentValue }: TableProps.CellContext<string>) => {
       if (isEditing) {
         return (
           <Autosuggest
             autoFocus={true}
             value={currentValue ?? item.Origin}
-            onChange={withDirtyState(event => setValue(event.detail.value))}
+            onChange={withDirtyState<NonNullable<AutosuggestProps['onChange']>>(event => setValue(event.detail.value))}
             options={originSuggestions}
             enteredTextLabel={value => `Use Custom Origin "${value}"`}
             expandToViewport={true}
@@ -118,20 +122,19 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
   {
     id: 'CertificateMinVersion',
     header: 'TLS Version',
-    width: 170,
+    minWidth: 176,
     editConfig: {
       ariaLabel: 'Certificate Minimum Version',
       editIconAriaLabel: 'editable',
     },
-    cell(item, { isEditing, currentValue, setValue }) {
+    cell(item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) {
       if (isEditing) {
         const value = currentValue ?? item.CertificateMinVersion;
 
         return (
           <Select
             selectedOption={tlsVersions.find(option => option.value === value) ?? null}
-            onChange={withDirtyState(event => {
-              event.preventDefault();
+            onChange={withDirtyState<NonNullable<SelectProps['onChange']>>(event => {
               setValue(event.detail.selectedOption.value ?? item.CertificateMinVersion);
             })}
             options={tlsVersions}
@@ -149,7 +152,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
       ariaLabel: 'Last Modified',
       editIconAriaLabel: 'editable',
     },
-    cell: (item, { isEditing, currentValue, setValue }) => {
+    cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
       const time = new Date(item.LastModifiedTime);
       const value = [time.getHours(), time.getMinutes()].map(part => part.toString().padStart(2, '0')).join(':');
       if (isEditing) {
@@ -158,8 +161,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
             autoFocus={true}
             format="hh:mm"
             value={currentValue ?? value}
-            onChange={withDirtyState(event => {
-              event.preventDefault();
+            onChange={withDirtyState<NonNullable<TimeInputProps['onChange']>>(event => {
               setValue(event.detail.value);
             })}
           />
@@ -167,6 +169,39 @@ const columns: TableProps.ColumnDefinition<DistributionInfo, string>[] = [
       }
 
       return value;
+    },
+  },
+  {
+    id: 'Tags',
+    header: 'Tags',
+    minWidth: 200,
+    editConfig: {
+      ariaLabel: 'Tags',
+      editIconAriaLabel: 'editable',
+    },
+    cell(item, { isEditing, setValue, currentValue }: TableProps.CellContext<MultiselectProps.Options>) {
+      const value = currentValue ?? (item.Tags as MultiselectProps.Options);
+      if (isEditing) {
+        return (
+          <Multiselect
+            selectedOptions={value}
+            onChange={withDirtyState<NonNullable<MultiselectProps['onChange']>>(event => {
+              setValue(event.detail.selectedOptions);
+            })}
+            options={tagOptions}
+            placeholder="Choose options"
+            selectedAriaLabel="Selected"
+            deselectAriaLabel={e => `Remove ${e.label}`}
+          />
+        );
+      }
+      return (
+        <SpaceBetween direction="horizontal" size="xs">
+          {value.map(option => (
+            <Token key={option.label} onDismiss={() => {}} dismissLabel={`Dismiss ${option.label}`} {...option} />
+          ))}
+        </SpaceBetween>
+      );
     },
   },
 ];
