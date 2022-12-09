@@ -125,7 +125,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     &-row {
       display: flex;
       flex-flow: row nowrap;
-      align-items: center;
+      align-items: baseline;
       justify-content: space-between;
       column-gap: awsui.$space-xxs;
       & > :not(:last-child) {
