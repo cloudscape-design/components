@@ -11,20 +11,26 @@ class LiveRegionPageObject extends BasePageObject {
   }
 }
 
-function setupTest(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
+function setupTestDynamicAria(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) {
   return useBrowser(async browser => {
-    await browser.url('#/light/live-region');
+    await browser.url('#/light/dynamic-aria-live');
     const pageObject = new LiveRegionPageObject(browser);
     await pageObject.waitForVisible('h1');
     return testFn(pageObject);
   });
 }
 
-describe('Live region', () => {
+describe('Dynamic aria-live component', () => {
   test(
-    `Live region doesn't render child contents as HTML`,
-    setupTest(async page => {
-      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt; Testing');
+    `Dynamic aria-live announce changes not more often then given interval`,
+    setupTestDynamicAria(async page => {
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('Initial text');
+      await page.click('#activation-button');
+
+      await page.waitForJsTimers(3000);
+      await expect(page.getInnerHTML('[aria-live]')).resolves.not.toBe('Skipped text');
+      await page.waitForJsTimers(3000);
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('Delayed text');
     })
   );
 });
