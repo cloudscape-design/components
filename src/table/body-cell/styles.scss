@@ -171,6 +171,21 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       }
     }
   }
+  &.visual-refresh:not(.body-cell-edit-active):hover {
+    &:first-child {
+      border-top-left-radius: awsui.$border-radius-control-default-focus-ring;
+      border-bottom-left-radius: awsui.$border-radius-control-default-focus-ring;
+    }
+    &:last-child {
+      border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
+      border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
+    }
+    &.body-cell-first-row {
+      border-top-width: calc(#{awsui.$border-divider-list-width});
+      top: calc(#{awsui.$border-divider-list-width} / 2);
+      position: relative;
+    }
+  }
 }
 
 /*

@@ -11,6 +11,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import { useStableScrollPosition } from './use-stable-scroll-position';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export { TableTdElement } from './td-element';
 
@@ -49,6 +50,7 @@ function TableCellEditable<ItemType, ValueType>({
   const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
   const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
+  const isVisualRefresh = useVisualRefresh();
 
   const handleEditStart = () => {
     storeScrollPosition();
@@ -80,7 +82,12 @@ function TableCellEditable<ItemType, ValueType>({
     <TableTdElement
       {...rest}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
-      className={clsx(className, styles['body-cell-editable'], isEditing && styles['body-cell-edit-active'])}
+      className={clsx(
+        className,
+        styles['body-cell-editable'],
+        isEditing && styles['body-cell-edit-active'],
+        isVisualRefresh && styles['visual-refresh']
+      )}
       onClick={handleEditStart}
       ref={cellRef}
     >
