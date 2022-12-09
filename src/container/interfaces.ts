@@ -25,6 +25,15 @@ export interface ContainerProps extends BaseComponentProps {
   disableContentPaddings?: boolean;
 
   /**
+   * Enabling this property will make the container to fit into available height. If content is too short, the container
+   * will stretch, if too long, the container will shrink and show vertical scrollbar.
+   *
+   * Use this property to align heights of multiple containers displayed in a single row. It is recommended to stretch
+   * all containers to the height of the longest one, to avoid extra vertical scroll areas.
+   */
+  fitHeight?: boolean;
+
+  /**
    * Footer of the container.
    */
   footer?: React.ReactNode;
