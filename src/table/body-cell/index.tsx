@@ -18,7 +18,7 @@ interface TableBodyCellProps {
   isNextSelected: boolean;
   isPrevSelected: boolean;
   children?: React.ReactNode;
-  hasFooter: boolean | undefined;
+  hasFooter?: boolean;
 }
 
 export function TableBodyCell({
