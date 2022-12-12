@@ -59,7 +59,7 @@ export interface AutosuggestProps
    * them from server.
    *
    * By default the component will filter the provided `options` based on the value of the filtering input field.
-   * Only options that have a `value` or `label` that contains the input value as a substring
+   * Only options that have a `value`, `label`, `description` or `labelTag` that contains the input value as a substring
    * are displayed in the list of options.
    *
    * If you set this property to `manual`, this default filtering mechanism is disabled and all provided `options` are
