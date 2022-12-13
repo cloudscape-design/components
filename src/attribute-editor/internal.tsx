@@ -42,9 +42,12 @@ const InternalAttributeEditor = React.forwardRef(
   ) => {
     const [breakpoint, breakpointRef] = useContainerBreakpoints(['default', 'xxs', 'xs']);
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
+    const wasNonEmpty = useRef<boolean>(false);
 
     const baseProps = getBaseProps(props);
     const isEmpty = items && items.length === 0;
+
+    wasNonEmpty.current = wasNonEmpty.current || !isEmpty;
 
     useImperativeHandle(ref, () => ({
       focusRemoveButton(rowIndex: number) {
@@ -57,7 +60,7 @@ const InternalAttributeEditor = React.forwardRef(
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         <InternalBox margin={{ bottom: 'l' }}>
-          {isEmpty && <div className={styles.empty}>{empty}</div>}
+          {isEmpty && <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>}
           {items.map((item, index) => (
             <Row
               key={index}

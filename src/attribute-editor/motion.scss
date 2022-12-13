@@ -6,7 +6,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as tokens;
 
-.empty {
+.empty-appear {
   @include styles.with-motion {
     @include styles.animation-fade-in;
     animation: awsui-motion-fade-in tokens.$motion-duration-transition-show-paced
