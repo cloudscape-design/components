@@ -303,6 +303,9 @@ describe('Details popover', () => {
       await expect(page.getText(popoverContentSelector())).resolves.toContain('Calories\n77');
       await expect(page.getText(popoverContentSelector())).resolves.toContain('Threshold\n420');
 
+      // remove hover over the first element to avoid hovering over a popover
+      await page.hoverElement('body');
+
       // Hover over second group
       await page.hoverElement(chartWrapper.findBarGroups().get(2).toSelector());
       await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Chocolate');
@@ -369,7 +372,7 @@ describe('Details popover', () => {
     'can be pinned by clicking on chart background and dismissed by clicking outside chart area in line chart',
     setupTest('#/light/line-chart/test', async page => {
       // Hovers to open popover
-      await page.hoverElement(chartWrapper.findSeries().toSelector());
+      await page.hoverElement(chartWrapper.findChart().toSelector());
       // Clicks background to pin
       await page.click(chartWrapper.findChart().toSelector());
       // Pinned popover
@@ -406,6 +409,18 @@ describe('Details popover', () => {
       await page.waitForAssertion(() =>
         expect(page.isFocused(chartWrapper.findApplication().toSelector())).resolves.toBe(true)
       );
+    })
+  );
+
+  test(
+    'Allow mouse to enter popover when a group is hovering over a point',
+    setupTest('#/light/mixed-line-bar-chart/test', async page => {
+      // Hover over first group
+      await page.hoverElement(chartWrapper.findBarGroups().get(1).toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
+
+      await page.hoverElement(chartWrapper.findDetailPopover().findHeader().toSelector());
+      await expect(page.getText(popoverHeaderSelector())).resolves.toContain('Potatoes');
     })
   );
 });
