@@ -11,7 +11,6 @@ import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { useAnalytics } from '../internal/hooks/use-analytics';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -62,9 +61,6 @@ export default function WizardForm({
       ? i18nStrings.skipToButtonLabel(steps[skipToTargetIndex], skipToTargetIndex + 1)
       : undefined;
 
-  const analyticsEnabled = useAnalytics();
-  const analyticsProps = analyticsEnabled ? { ['data-analytics']: title, ['data-analytics-type']: 'eventContext' } : {};
-
   return (
     <>
       <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
@@ -105,7 +101,7 @@ export default function WizardForm({
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
-        <div {...analyticsProps}>{content}</div>
+        {content}
       </InternalForm>
     </>
   );
