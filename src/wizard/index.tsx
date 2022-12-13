@@ -16,8 +16,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-import { useAnalytics } from '../internal/hooks/use-analytics';
-
 export { WizardProps };
 
 export default function Wizard({
@@ -33,7 +31,6 @@ export default function Wizard({
   ...rest
 }: WizardProps) {
   const { __internalRootRef } = useBaseComponent('Wizard');
-
   const baseProps = getBaseProps(rest);
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
@@ -82,11 +79,8 @@ export default function Wizard({
     );
   }
 
-  const analyticsEnabled = useAnalytics();
-  const analyticsProps = analyticsEnabled ? { ['data-analytics-type']: 'funnel' } : {};
-
   return (
-    <div {...analyticsProps} {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
+    <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
       <div
         className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
       >
