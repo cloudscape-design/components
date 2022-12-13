@@ -119,7 +119,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     padding-right: awsui.$space-xs;
 
     &-form {
-      margin: 0 calc(-1 * #{awsui.$space-xs});
+      margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
     }
 
     &-row {
@@ -139,11 +139,10 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
-    border-left: awsui.$border-divider-list-width solid transparent;
-    border-right: awsui.$border-divider-list-width solid transparent;
 
     &.body-cell-edit-active {
       overflow: visible;
+      // margin: calc(-1 * #{awsui.$space-xs}) calc(-1 * #{awsui.$space-xs});
     }
 
     &:not(.body-cell-edit-active) {
@@ -159,8 +158,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         );
       }
       &:hover {
+        position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
-        border-color: awsui.$color-border-control-default;
+        border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+        left: calc(-1 * #{awsui.$border-divider-list-width});
+        right: calc(-1 * #{awsui.$border-divider-list-width});
       }
       &:hover,
       &[data-awsui-focus-visible='true']:focus-within {
@@ -182,8 +184,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
     &.body-cell-first-row {
       border-top-width: calc(#{awsui.$border-divider-list-width});
-      top: calc(#{awsui.$border-divider-list-width} / 2);
-      position: relative;
+      bottom: calc(#{awsui.$border-divider-list-width} / -2);
+    }
+    &.body-cell-last-row {
+      border-bottom-width: calc(#{awsui.$border-divider-list-width});
+      bottom: calc(#{awsui.$border-divider-list-width} / 2);
     }
   }
 }

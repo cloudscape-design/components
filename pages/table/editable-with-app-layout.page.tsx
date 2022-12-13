@@ -9,7 +9,6 @@ import BreadcrumbGroup from '~components/breadcrumb-group';
 import Table, { TableProps } from '~components/table';
 import Select, { SelectProps } from '~components/select';
 import TimeInput, { TimeInputProps } from '~components/time-input';
-import { Token } from '~components/token-group/internal';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import { Link, Box, Button, Modal, SpaceBetween } from '~components';
@@ -195,13 +194,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
           />
         );
       }
-      return (
-        <SpaceBetween direction="horizontal" size="xs">
-          {value.map(option => (
-            <Token key={option.label} onDismiss={() => {}} dismissLabel={`Dismiss ${option.label}`} {...option} />
-          ))}
-        </SpaceBetween>
-      );
+      return value.map(tag => tag.label).join(', ');
     },
   },
 ];

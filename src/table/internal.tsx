@@ -199,7 +199,7 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    useTableFocusNavigation(selectionType === undefined, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     return (
       <ColumnWidthsProvider

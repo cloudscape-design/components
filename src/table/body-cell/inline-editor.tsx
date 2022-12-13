@@ -92,11 +92,12 @@ export function InlineEditor<ItemType, ValueType>({
       className={styles['body-cell-editor-form']}
     >
       <FormField
-        __hideLabel={true}
         stretch={true}
         label={ariaLabel}
-        errorText={validation(item, currentEditValue)}
+        __hideLabel={true}
+        __disableGutters={true}
         i18nStrings={{ errorIconAriaLabel }}
+        errorText={validation(item, currentEditValue)}
       >
         <div className={styles['body-cell-editor-row']}>
           {column.cell(item, cellContext)}

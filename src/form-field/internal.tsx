@@ -46,6 +46,7 @@ export default function InternalFormField({
   errorText,
   __hideLabel,
   __internalRootRef = null,
+  __disableGutters = false,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -91,7 +92,7 @@ export default function InternalFormField({
       )}
 
       <div className={clsx(styles.controls, __hideLabel && styles['label-hidden'])}>
-        <InternalGrid gridDefinition={gridDefinition}>
+        <InternalGrid gridDefinition={gridDefinition} disableGutters={__disableGutters}>
           <FormFieldContext.Provider
             value={{
               controlId: generatedControlId,

@@ -86,4 +86,6 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Visually hide the label.
    */
   __hideLabel?: boolean;
+
+  __disableGutters?: boolean;
 }
