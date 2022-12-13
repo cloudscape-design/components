@@ -12,24 +12,17 @@ const focusFn = jest.fn();
 const rootRemoveEventListener = jest.fn();
 
 function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender, getByTestId, queryByTestId } = render(jsx);
+  const { container, rerender, getByTestId, queryByTestId, unmount } = render(jsx);
   const wrapper = createWrapper(container).find('table')!;
-  return { wrapper, rerender, getByTestId, queryByTestId };
+  return { wrapper, rerender, getByTestId, queryByTestId, unmount };
 }
 
 const TestComponent = () => {
   const tableRef = React.useRef<HTMLTableElement>(null);
 
-  const [enableFocusNavigation, setEnableFocusNavigation] = React.useState(true);
-
   const editConfig = { __mock: true };
 
-  useTableFocusNavigation(
-    enableFocusNavigation,
-    tableRef,
-    [{ editConfig }, { editConfig: undefined }, { editConfig }] as any,
-    3
-  );
+  useTableFocusNavigation('none', tableRef, [{ editConfig }, { editConfig: undefined }, { editConfig }] as any, 3);
 
   const focusHandler = (evt: React.FocusEvent) => {
     focusFn(evt.target.innerHTML);
@@ -46,7 +39,6 @@ const TestComponent = () => {
   const handleKeyup = (evt: React.KeyboardEvent) => {
     if (evt.key === 'BIGUP') {
       jest.spyOn(tableRef.current!, 'removeEventListener').mockImplementation(rootRemoveEventListener as any);
-      setEnableFocusNavigation(false);
     }
   };
 
@@ -145,10 +137,11 @@ describe('useTableFocusNavigation', () => {
   });
 
   it('should remove event listener when focus navigation is disabled', () => {
-    const { getByTestId } = renderComponent(<TestComponent />);
+    const { getByTestId, unmount } = renderComponent(<TestComponent />);
     fireEvent.click(getByTestId('0,0'));
     fireEvent.keyUp(getByTestId('0,0'), { key: 'BIGUP' });
-    expect(rootRemoveEventListener).toHaveBeenCalled();
+    unmount();
+    waitFor(() => expect(rootRemoveEventListener).toHaveBeenCalled());
   });
 
   it('should not navigate focus when focus navigation is disabled', () => {
@@ -174,58 +167,46 @@ describe('useTableFocusNavigation', () => {
           const cell = row.insertCell();
           const button = document.createElement('button');
           cell.appendChild(button);
-          Object.defineProperty(cell, 'addEventListener', { value: addEventListener });
-          Object.defineProperty(cell, 'removeEventListener', { value: removeEventListener });
+          jest.spyOn(cell, 'addEventListener').mockImplementation(addEventListener);
+          jest.spyOn(cell, 'removeEventListener').mockImplementation(removeEventListener);
         }
       }
       jest.spyOn(table, 'addEventListener').mockImplementation(addEventListenerRoot);
     });
-    it('should attach event listener for focus navigation when focus navigation is enabled', () => {
+    it('should attach event listener for focus navigation', () => {
       renderHook(() =>
         useTableFocusNavigation(
-          true,
+          'none',
           { current: table },
           [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
           3
         )
       );
 
-      expect(addEventListenerRoot).toHaveBeenCalled();
-      expect(addEventListener).toHaveBeenCalledWith('focusin', expect.any(Function), { passive: true });
+      waitFor(() => {
+        expect(addEventListener).toHaveBeenCalledWith('focusin', expect.any(Function), { passive: true });
+        expect(addEventListenerRoot).toHaveBeenCalled();
+      });
     });
 
-    it('should detach event listener for focus navigation when focus navigation is disabled', () => {
-      const { rerender } = renderHook(
-        ({ enabled }) =>
-          useTableFocusNavigation(
-            enabled,
-            { current: table },
-            [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
-            3
-          ),
-        { initialProps: { enabled: true } }
+    it('should detach event listener for focus navigation', () => {
+      const { unmount } = renderHook(() =>
+        useTableFocusNavigation(
+          'none',
+          { current: table },
+          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+          3
+        )
       );
       expect(removeEventListener).not.toHaveBeenCalled();
-      rerender({ enabled: false });
+      unmount();
       waitFor(() => expect(removeEventListener).toHaveBeenCalled());
     });
 
-    it('should not attach event listener for focus navigation when focus navigation is disabled', () => {
-      renderHook(() =>
-        useTableFocusNavigation(
-          false,
-          { current: table },
-          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
-          3
-        )
-      );
-      expect(addEventListenerRoot).not.toHaveBeenCalled();
-      expect(addEventListener).not.toHaveBeenCalled();
-    });
     it('satisfies istanbul coverage', () => {
       renderHook(() =>
         useTableFocusNavigation(
-          true,
+          'multi',
           { current: null },
           [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
           3
