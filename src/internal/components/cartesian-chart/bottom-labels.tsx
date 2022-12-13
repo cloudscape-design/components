@@ -121,15 +121,17 @@ function BottomLabels({
                   width={maxWidth}
                   height={TICK_LINE_HEIGHT * lines.length}
                 >
-                  {lines.map((line, lineIndex) => (
-                    <span
-                      key={lineIndex}
-                      className={styles.ticks__text__bottom}
-                      style={{ maxWidth: maxWidth + 'px', height: TICK_LINE_HEIGHT + 'px' }}
-                    >
-                      {line}
-                    </span>
-                  ))}
+                  <div className={styles.ticks__text__group}>
+                    {lines.map((line, lineIndex) => (
+                      <span
+                        key={lineIndex}
+                        className={styles.ticks__text__bottom}
+                        style={{ maxWidth: maxWidth + 'px', height: TICK_LINE_HEIGHT + 'px' }}
+                      >
+                        {line}
+                      </span>
+                    ))}
+                  </div>
                 </foreignObject>
               ) : (
                 lines.map((line, lineIndex) => (

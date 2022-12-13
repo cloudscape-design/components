@@ -20,7 +20,7 @@ import {
   multipleNegativeBarsDataWithThreshold,
 } from '../mixed-line-bar-chart/common';
 
-const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));
+const timeLatencyData = latencyData.slice(0, 6).map(({ time, p90 }) => ({ x: time, y: p90 }));
 
 /* eslint-disable react/jsx-key */
 const stringPermutations = createPermutations<BarChartProps<string>>([

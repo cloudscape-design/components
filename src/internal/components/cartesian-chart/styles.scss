@@ -40,6 +40,11 @@
   fill: awsui.$color-text-body-secondary;
 }
 
+.ticks__text__group {
+  width: max-content;
+  text-align: center;
+}
+
 .ticks__text__bottom {
   font-size: awsui.$font-chart-detail-size;
   line-height: awsui.$font-chart-detail-size;
