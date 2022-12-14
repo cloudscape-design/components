@@ -124,7 +124,7 @@ function BottomLabels({
                     {lines.map((line, lineIndex) => (
                       <span
                         key={lineIndex}
-                        className={styles.ticks__text__bottom}
+                        className={styles.ticks__text__categorical}
                         style={{ maxWidth: maxWidth + 'px', height: TICK_LINE_HEIGHT + 'px' }}
                       >
                         {line}
