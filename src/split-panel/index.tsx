@@ -51,7 +51,6 @@ export default function SplitPanel({
     bottomOffset,
     rightOffset,
     contentWidthStyles,
-    isCopy,
     isOpen,
     isForcedPosition,
     splitPanelRef,
@@ -255,7 +254,7 @@ export default function SplitPanel({
    * is still needed for the early return to prevent execution
    * of the following code.
    */
-  if (isRefresh && (!isOpen || isCopy) && position === 'side') {
+  if (isRefresh && !isOpen && position === 'side') {
     return <></>;
   }
 

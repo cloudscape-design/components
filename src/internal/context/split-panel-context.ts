@@ -20,7 +20,6 @@ export interface SplitPanelContextProps {
     closedNav: boolean;
     closedTools: boolean;
   };
-  isCopy?: boolean;
   isOpen?: boolean;
   isMobile: boolean;
   isForcedPosition: boolean;
@@ -47,7 +46,6 @@ export const SplitPanelContext = createContext<SplitPanelContextProps>({
   getMaxWidth: () => 0,
   getMaxHeight: () => 0,
   getHeader: () => null,
-  isCopy: false,
   isOpen: true,
   isMobile: false,
   isForcedPosition: false,

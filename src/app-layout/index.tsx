@@ -10,7 +10,6 @@ import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
-import { SplitPanelWrapper } from './split-panel-wrapper';
 import { useFocusControl } from './utils/use-focus-control';
 import useWindowWidth from './utils/use-window-width';
 import useContentHeight from './utils/use-content-height';
@@ -21,7 +20,11 @@ import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { SplitPanelContextProps, SplitPanelLastInteraction } from '../internal/context/split-panel-context';
+import {
+  SplitPanelContext,
+  SplitPanelContextProps,
+  SplitPanelLastInteraction,
+} from '../internal/context/split-panel-context';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,
@@ -340,6 +343,9 @@ const OldAppLayout = React.forwardRef(
       onPreferencesChange: onSplitPanelPreferencesSet,
       reportSize: setSplitPanelReportedSize,
     };
+    const splitPanelWrapped = splitPanel && (
+      <SplitPanelContext.Provider value={splitPanelContext}>{splitPanel}</SplitPanelContext.Provider>
+    );
 
     const contentWrapperProps: ContentWrapperProps = {
       navigationPadding: navigationHide || !!navigationOpen,
@@ -551,13 +557,11 @@ const OldAppLayout = React.forwardRef(
                   </div>
                 </ContentWrapper>
               </div>
-              {finalSplitPanePosition === 'bottom' && (
-                <SplitPanelWrapper context={splitPanelContext}>{splitPanel}</SplitPanelWrapper>
-              )}
+              {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
             </main>
 
             <ToolsAndSplitPanel
-              splitPanel={finalSplitPanePosition === 'side' ? splitPanel : undefined}
+              splitPanel={finalSplitPanePosition === 'side' ? splitPanelWrapped : undefined}
               ariaLabels={ariaLabels}
               closedDrawerWidth={closedDrawerWidth}
               contentHeightStyle={contentHeightStyle}
@@ -570,7 +574,6 @@ const OldAppLayout = React.forwardRef(
               isMotionEnabled={isMotionEnabled}
               onToolsToggle={onToolsToggle}
               panelHeightStyle={panelHeightStyle}
-              splitPanelContext={splitPanelContext}
               splitPanelOpen={splitPanelOpenOnTheSide}
               splitPanelReportedSize={splitPanelReportedSize}
               toggleRefs={toolsRefs}

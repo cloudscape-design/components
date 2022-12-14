@@ -4,11 +4,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { DesktopDrawerProps, Drawer } from './drawer';
 import { AppLayoutProps } from './interfaces';
-import { SplitPanelWrapper } from './split-panel-wrapper';
 import useContentHeight from './utils/use-content-height';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
-import { SplitPanelContextProps } from '../internal/context/split-panel-context';
 
 interface ToolsAndSplitPanelProps {
   toolsHide: boolean;
@@ -28,8 +26,7 @@ interface ToolsAndSplitPanelProps {
   contentHeightStyle: ReturnType<typeof useContentHeight>['contentHeightStyle'];
 
   tools: React.ReactNode;
-  splitPanel?: React.ReactNode;
-  splitPanelContext: SplitPanelContextProps;
+  splitPanel: React.ReactNode;
 
   ariaLabels: AppLayoutProps['ariaLabels'];
 
@@ -54,7 +51,6 @@ export function ToolsAndSplitPanel({
   onToolsToggle,
   panelHeightStyle,
   splitPanel,
-  splitPanelContext,
   toggleRefs,
   onLoseToolsFocus,
   tools,
@@ -81,7 +77,7 @@ export function ToolsAndSplitPanel({
             ...(isMobile ? { top: headerHeight, bottom: footerHeight } : panelHeightStyle),
           }}
         >
-          {splitPanel && <SplitPanelWrapper context={splitPanelContext}>{splitPanel}</SplitPanelWrapper>}
+          {splitPanel}
           {!toolsHide && (
             <Drawer
               type="tools"
