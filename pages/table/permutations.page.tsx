@@ -253,6 +253,11 @@ const permutations = createPermutations<TableProps>([
     items: [createSimpleItems(3)],
     variant: ['embedded', 'stacked', 'full-page'],
   },
+  {
+    columnDefinitions: [SIMPLE_COLUMNS],
+    stripedRows: [true],
+    items: [createSimpleItems(3)],
+  },
 ]);
 /* eslint-enable react/jsx-key */
 
