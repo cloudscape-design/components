@@ -99,6 +99,8 @@ function ChartPopover(
       {...baseProps}
       className={clsx(popoverStyles.root, styles.root, baseProps.className, { [styles.dismissable]: dismissButton })}
       ref={popoverRef}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <PopoverContainer
         size={size}
@@ -113,12 +115,13 @@ function ChartPopover(
           </div>
         )}
       >
-        <div className={styles['hover-area']} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div className={styles['hover-area']}>
           <PopoverBody
             dismissButton={dismissButton}
             dismissAriaLabel={dismissAriaLabel}
             header={title}
             onDismiss={onDismiss}
+            className={styles['popover-body']}
           >
             {children}
           </PopoverBody>
