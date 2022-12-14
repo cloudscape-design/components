@@ -182,16 +182,18 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
       const value = currentValue ?? (item.Tags as MultiselectProps.Options);
       if (isEditing) {
         return (
-          <Multiselect
-            selectedOptions={value}
-            onChange={withDirtyState<NonNullable<MultiselectProps['onChange']>>(event => {
-              setValue(event.detail.selectedOptions);
-            })}
-            options={tagOptions}
-            placeholder="Choose options"
-            selectedAriaLabel="Selected"
-            deselectAriaLabel={e => `Remove ${e.label}`}
-          />
+          <Box padding={{ vertical: 'xxs' }}>
+            <Multiselect
+              selectedOptions={value}
+              onChange={withDirtyState<NonNullable<MultiselectProps['onChange']>>(event => {
+                setValue(event.detail.selectedOptions);
+              })}
+              options={tagOptions}
+              placeholder="Choose options"
+              selectedAriaLabel="Selected"
+              deselectAriaLabel={e => `Remove ${e.label}`}
+            />
+          </Box>
         );
       }
       return value.map(tag => tag.label).join(', ');

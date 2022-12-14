@@ -142,7 +142,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
     &.body-cell-edit-active {
       overflow: visible;
-      // margin: calc(-1 * #{awsui.$space-xs}) calc(-1 * #{awsui.$space-xs});
     }
 
     &:not(.body-cell-edit-active) {
@@ -183,12 +182,10 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
     }
     &.body-cell-first-row {
-      border-top-width: calc(#{awsui.$border-divider-list-width});
-      bottom: calc(#{awsui.$border-divider-list-width} / -2);
+      padding-top: calc(#{$cell-vertical-padding} + calc(#{awsui.$border-divider-list-width} / 2));
     }
     &.body-cell-last-row {
-      border-bottom-width: calc(#{awsui.$border-divider-list-width});
-      bottom: calc(#{awsui.$border-divider-list-width} / 2);
+      padding-bottom: calc(#{$cell-vertical-padding} + calc(#{awsui.$border-divider-list-width} * 2));
     }
   }
 }

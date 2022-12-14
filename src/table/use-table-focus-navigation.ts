@@ -40,6 +40,9 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     return cols;
   }, [columnDefinitions, selectionType]);
 
+  const maxColumnIndex = useMemo(() => focusableColumns.length - 1, [focusableColumns]);
+  const minColumnIndex = useMemo(() => (selectionType === 'none' ? 1 : 0), [selectionType]);
+
   const focusCell = useCallback(
     (rowIndex: number, columnIndex: number) => {
       if (tableRoot?.current) {
@@ -69,7 +72,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       }
 
       if (horizontal !== 0) {
-        while (newColumnIndex >= 0 && newColumnIndex < columnDefinitions.length) {
+        while (newColumnIndex <= maxColumnIndex && newColumnIndex >= minColumnIndex) {
           newColumnIndex += horizontal;
           if (focusableColumns[newColumnIndex]) {
             break;
@@ -85,7 +88,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         focusCell(newRowIndex, newColumnIndex);
       }
     },
-    [columnDefinitions.length, focusCell, focusableColumns, numRows, tableRoot]
+    [focusCell, focusableColumns, maxColumnIndex, minColumnIndex, numRows, tableRoot]
   );
 
   const handleArrowKeyEvents = useCallback(
