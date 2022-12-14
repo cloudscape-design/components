@@ -5,22 +5,20 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 const DOMAIN_ERROR = 'Must be a valid domain name';
-const tableWrapper = createWrapper().findTable();
+const tableWrapper = createWrapper().findTable()!;
 
 // $ = selector
 const EDIT_BTN$ = 'button:first-child:last-child';
-const SAVE_BTN$ = 'button[aria-label*="Submit edit"]';
 
-const bodyCell = tableWrapper.findBodyCell(2, 2);
+const bodyCell = tableWrapper.findBodyCell(2, 2)!;
 const cellRoot$ = bodyCell.toSelector();
-const cellInputField$ = bodyCell.find('input').toSelector();
+const cellInputField$ = tableWrapper.findEditingCellInputSlot().find('input').toSelector();
 const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
-const cellSaveButton$ = bodyCell.find(SAVE_BTN$).toSelector();
+const cellSaveButton = tableWrapper.findEditingCellSaveButton();
 
 // for arrow key navigation
 const mainCell = tableWrapper.findBodyCell(4, 5);
 const mainCell$ = mainCell.toSelector();
-const mainCellSaveButton$ = mainCell.find(SAVE_BTN$).toSelector();
 const leftCell$ = tableWrapper.findBodyCell(4, 4).find(EDIT_BTN$).toSelector();
 const rightCell$ = tableWrapper.findBodyCell(4, 6).find(EDIT_BTN$).toSelector();
 const cellAbove$ = tableWrapper.findBodyCell(3, 5).find(EDIT_BTN$).toSelector();
@@ -59,7 +57,7 @@ test(
   'cell is focused after edit is submitted',
   setupTest(async page => {
     await page.click(cellRoot$);
-    await page.click(cellSaveButton$);
+    await page.click(cellSaveButton.toSelector());
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
   })
 );
@@ -68,7 +66,7 @@ test(
   'cell focus is moved when arrow keys are pressed',
   setupTest(async page => {
     await page.click(mainCell$);
-    await page.click(mainCellSaveButton$);
+    await page.click(cellSaveButton.toSelector());
     await page.keys(['ArrowRight']);
     await expect(page.isFocused(rightCell$)).resolves.toBe(true);
     await page.keys(['ArrowLeft', 'ArrowLeft']);
