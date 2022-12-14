@@ -6,6 +6,11 @@
 @use '../tokens' as awsui;
 @use './constants' as constants;
 
+@mixin font-smoothing {
+  -webkit-font-smoothing: awsui.$font-smoothing-webkit;
+  -moz-osx-font-smoothing: awsui.$font-smoothing-moz-osx;
+}
+
 @mixin default-text-style {
   @include font-body-m;
   color: awsui.$color-text-body-default;
@@ -29,6 +34,7 @@
   line-height: awsui.$font-heading-xs-line-height;
   @if $weight {
     font-weight: awsui.$font-heading-xs-weight;
+    @include font-smoothing;
   }
 }
 
@@ -38,6 +44,7 @@
   letter-spacing: awsui.$font-heading-s-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-s-weight;
+    @include font-smoothing;
   }
 }
 
@@ -47,6 +54,7 @@
   letter-spacing: awsui.$font-heading-m-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-m-weight;
+    @include font-smoothing;
   }
 }
 
@@ -56,6 +64,7 @@
   letter-spacing: awsui.$font-heading-l-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-l-weight;
+    @include font-smoothing;
   }
 }
 
@@ -65,6 +74,7 @@
   letter-spacing: awsui.$font-heading-xl-letter-spacing;
   @if $weight {
     font-weight: awsui.$font-heading-xl-weight;
+    @include font-smoothing;
   }
 }
 
@@ -89,6 +99,7 @@
   font-size: awsui.$font-panel-header-size;
   line-height: awsui.$font-panel-header-line-height;
   font-weight: awsui.$font-heading-l-weight;
+  @include font-smoothing;
 }
 
 @mixin font-code-inline {

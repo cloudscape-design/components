@@ -106,18 +106,21 @@
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
 
+  &-variant-h1 {
+    font-size: awsui.$font-heading-xl-size;
+  }
   &-variant-h2,
   &-variant-h3 {
     padding: awsui.$space-scaled-xxs 0;
   }
   &-variant-h2 {
-    @include styles.font-heading-l;
+    font-size: awsui.$font-heading-l-size;
     &-refresh {
       padding-top: awsui.$space-scaled-2x-xxs;
     }
   }
   &-variant-h3 {
-    @include styles.font-heading-m;
+    font-size: awsui.$font-heading-m-size;
   }
 }
 
@@ -161,20 +164,27 @@
   @include styles.info-link-spacing();
 
   &-variant-h1 {
-    @include styles.font-heading-xl;
+    @include styles.font(heading-xl);
   }
   &-variant-h2 {
-    font-weight: awsui.$font-heading-l-weight;
-    line-height: awsui.$font-heading-l-line-height;
+    @include styles.font(heading-l);
   }
   &-variant-h3 {
-    font-weight: awsui.$font-heading-m-weight;
-    line-height: awsui.$font-heading-m-line-height;
+    @include styles.font(heading-m);
   }
 }
 
 .heading-text {
   /* used in test-utils */
+  &-variant-h1 {
+    @include styles.font-heading-xl;
+  }
+  &-variant-h2 {
+    @include styles.font-heading-l;
+  }
+  &-variant-h3 {
+    @include styles.font-heading-m;
+  }
 }
 
 .counter {
