@@ -89,7 +89,7 @@ function BottomLabels({
       aria-roledescription={ariaRoleDescription}
       aria-hidden={true}
     >
-      {visibleTicks.map(({ position, lines, space }, index) => {
+      {visibleTicks.map(({ position, lines }, index) => {
         // calculate the max space the last label can have
         let maxWidth = width + offsetRight - position;
         // calculate the max space other labels can have
@@ -100,7 +100,6 @@ function BottomLabels({
         if (maxWidth < 10) {
           maxWidth = 10;
         }
-        const textAnchor = maxWidth > space ? space / 2 : maxWidth / 2;
         return (
           isFinite(position) && (
             <g
@@ -116,12 +115,12 @@ function BottomLabels({
               <line className={styles.ticks__line} x1={0} x2={0} y1={0} y2={TICK_LENGTH} aria-hidden="true" />
               {isCategorical ? (
                 <foreignObject
-                  x={-textAnchor}
+                  x={-maxWidth / 2}
                   y={TICK_LENGTH + TICK_MARGIN}
                   width={maxWidth}
                   height={TICK_LINE_HEIGHT * lines.length}
                 >
-                  <div className={styles.ticks__text__group}>
+                  <div style={{ width: maxWidth + 'px' }} className={styles.ticks__text__group}>
                     {lines.map((line, lineIndex) => (
                       <span
                         key={lineIndex}
