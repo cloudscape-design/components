@@ -47,35 +47,53 @@ const TestComponent = () => {
       <tbody>
         <tr>
           <td {...tdProps}>
-            <button data-testid="0,0">0,0</button>
+            <button data-testid="0,0" type="button">
+              0,0
+            </button>
           </td>
           <td {...tdProps}>
-            <button data-testid="0,1">0,1</button>
+            <button data-testid="0,1" type="button">
+              0,1
+            </button>
           </td>
           <td {...tdProps}>
-            <button data-testid="0,2">0,2</button>
-          </td>
-        </tr>
-        <tr>
-          <td {...tdProps}>
-            <button data-testid="1,0">1,0</button>
-          </td>
-          <td {...tdProps}>
-            <button data-testid="1,1">1,1</button>
-          </td>
-          <td {...tdProps}>
-            <button data-testid="1,2">1,2</button>
+            <button data-testid="0,2" type="button">
+              0,2
+            </button>
           </td>
         </tr>
         <tr>
           <td {...tdProps}>
-            <button data-testid="2,0">2,0</button>
+            <button data-testid="1,0" type="button">
+              1,0
+            </button>
           </td>
           <td {...tdProps}>
-            <button data-testid="2,1">2,1</button>
+            <button data-testid="1,1" type="button">
+              1,1
+            </button>
           </td>
           <td {...tdProps}>
-            <button data-testid="2,2">2,2</button>
+            <button data-testid="1,2" type="button">
+              1,2
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td {...tdProps}>
+            <button data-testid="2,0" type="button">
+              2,0
+            </button>
+          </td>
+          <td {...tdProps}>
+            <button data-testid="2,1" type="button">
+              2,1
+            </button>
+          </td>
+          <td {...tdProps}>
+            <button data-testid="2,2" type="button">
+              2,2
+            </button>
           </td>
         </tr>
       </tbody>
@@ -91,39 +109,37 @@ describe('useTableFocusNavigation', () => {
   it('should skip over non-editable cells', () => {
     const { getByTestId } = renderComponent(<TestComponent />);
     fireEvent.click(getByTestId('0,0'));
-    expect(focusFn).toHaveBeenCalledWith('0,0');
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowRight' });
-    expect(focusFn).not.toHaveBeenCalledWith('0,1');
-    expect(focusFn).toHaveBeenCalledWith('0,2');
+
+    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2']]));
   });
 
   it('should skip over non-editable cells when navigating backwards', () => {
     const { getByTestId } = renderComponent(<TestComponent />);
     fireEvent.click(getByTestId('0,2'));
-    expect(focusFn).toHaveBeenCalledWith('0,2');
     fireEvent.keyDown(getByTestId('0,2'), { key: 'ArrowLeft' });
-    expect(focusFn).not.toHaveBeenCalledWith('0,1');
-    expect(focusFn).toHaveBeenCalledWith('0,0');
+
+    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,2'], ['0,0']]));
   });
 
   it('should navigate focus vertically', () => {
     const { getByTestId } = renderComponent(<TestComponent />);
     fireEvent.click(getByTestId('0,0'));
-    expect(focusFn).toHaveBeenCalledWith('0,0');
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowDown' });
-    expect(focusFn).toHaveBeenCalledWith('1,0');
     fireEvent.keyDown(getByTestId('1,0'), { key: 'ArrowUp' });
-    expect(focusFn).toHaveBeenCalledWith('0,0');
+
+    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['1,0'], ['0,0']]));
   });
 
   it('should navigate focus horizontally', () => {
     const { getByTestId } = renderComponent(<TestComponent />);
     fireEvent.click(getByTestId('0,0'));
-    expect(focusFn).toHaveBeenCalledWith('0,0');
+
     fireEvent.keyDown(getByTestId('0,0'), { key: 'ArrowRight' });
-    expect(focusFn).toHaveBeenCalledWith('0,2');
+
     fireEvent.keyDown(getByTestId('0,2'), { key: 'ArrowLeft' });
-    expect(focusFn).toHaveBeenCalledWith('0,0');
+
+    waitFor(() => expect(focusFn.mock.calls).toEqual([['0,0'], ['0,2'], ['0,0']]));
   });
 
   it('should not navigate focus while editing a cell', () => {
