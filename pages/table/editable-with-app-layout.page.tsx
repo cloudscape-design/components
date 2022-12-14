@@ -132,6 +132,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
 
         return (
           <Select
+            autoFocus={true}
             selectedOption={tlsVersions.find(option => option.value === value) ?? null}
             onChange={withDirtyState<NonNullable<SelectProps['onChange']>>(event => {
               setValue(event.detail.selectedOption.value ?? item.CertificateMinVersion);
