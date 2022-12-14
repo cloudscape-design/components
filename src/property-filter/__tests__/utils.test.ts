@@ -42,6 +42,14 @@ describe('matchFilteringProperty', () => {
     const property = matchFilteringProperty(filteringProperties, ' Averange latency');
     expect(property).toBe(null);
   });
+  test('should prefer an exact match to non-exact', () => {
+    const properties: FilteringProperty[] = [
+      { key: 'Test', propertyLabel: 'Test', groupValuesLabel: '' },
+      { key: 'test', propertyLabel: 'test', groupValuesLabel: '' },
+    ];
+    const property = matchFilteringProperty(properties, 'test');
+    expect(property).toBe(properties[1]);
+  });
 });
 
 describe('matchOperator', () => {
