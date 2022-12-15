@@ -441,20 +441,6 @@ describe('Details popover', () => {
     expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
 
     act(() => {
-      fireEvent.keyDown(document, { key: 'Escape' });
-    });
-
-    expect(wrapper.findDetailPopover()).toBeNull();
-  });
-
-  test('pressing escape closes the popover', () => {
-    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
-    wrapper.findApplication()!.focus();
-
-    const detailPopover = wrapper.findDetailPopover();
-    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
-
-    act(() => {
       fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
     });
 
