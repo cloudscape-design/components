@@ -98,7 +98,7 @@ function TableCellEditable<ItemType, ValueType>({
           item={item}
           onEditEnd={onEditEnd}
           submitEdit={submitEdit ?? submitHandlerFallback}
-          __onRender={scheduleRestoreScrollPosition}
+          __onRender={restoreScrollPosition}
         />
       ) : (
         <>

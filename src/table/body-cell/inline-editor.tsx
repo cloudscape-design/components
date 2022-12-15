@@ -78,8 +78,11 @@ export function InlineEditor<ItemType, ValueType>({
   const clickAwayRef = useClickAway(onCancel);
 
   useEffect(() => {
-    __onRender?.();
-  });
+    if (__onRender) {
+      const timer = setTimeout(__onRender, 1);
+      return () => clearTimeout(timer);
+    }
+  }, [__onRender]);
 
   // asserting non-undefined editConfig here because this component is unreachable otherwise
   const { ariaLabel = undefined, validation = noop, errorIconAriaLabel } = column.editConfig!;
@@ -96,6 +99,7 @@ export function InlineEditor<ItemType, ValueType>({
         label={ariaLabel}
         __hideLabel={true}
         __disableGutters={true}
+        __useReactAutofocus={true}
         i18nStrings={{ errorIconAriaLabel }}
         errorText={validation(item, currentEditValue)}
       >

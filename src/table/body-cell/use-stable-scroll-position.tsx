@@ -25,6 +25,10 @@ export interface UseStableScrollPositionResult {
   restoreScrollPosition: () => void;
 }
 
+const shouldScroll = ([cx, cy]: [number, number], [px, py]: [number, number]) => {
+  return cx - px > 5 || cy - py > 5;
+};
+
 /**
  * This hook stores the scroll position of the nearest scrollable parent of the
  * `activeElementRef` when `storeScrollPosition` is called, and restores it when
@@ -38,12 +42,18 @@ export function useStableScrollPosition<T extends HTMLElement>(
 
   const storeScrollPosition = useCallback(() => {
     const scrollableParent = getScrollableParent(activeElementRef.current ?? document.body);
-    scrollRef.current = [scrollableParent.scrollLeft, scrollableParent.scrollTop];
+    if (scrollableParent) {
+      scrollRef.current = [scrollableParent.scrollLeft, scrollableParent.scrollTop];
+    }
   }, [activeElementRef]);
 
   const restoreScrollPosition = useCallback(() => {
     const scrollableParent = getScrollableParent(activeElementRef.current ?? document.body);
-    if (scrollRef.current) {
+    if (
+      scrollRef.current &&
+      scrollRef.current.toString() !== '0,0' &&
+      shouldScroll(scrollRef.current, [scrollableParent.scrollLeft, scrollableParent.scrollTop])
+    ) {
       [scrollableParent.scrollLeft, scrollableParent.scrollTop] = scrollRef.current;
     }
   }, [activeElementRef]);
