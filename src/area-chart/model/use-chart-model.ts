@@ -15,10 +15,10 @@ import { useStableEventHandler } from '../../internal/hooks/use-stable-event-han
 import { ChartModel } from './index';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { throttle } from '../../internal/utils/throttle';
-import { POPOVER_DEADZONE } from '../../internal/components/chart-popover';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
+const POPOVER_DEADZONE = 12;
 
 export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   externalSeries: readonly AreaChartProps.Series<T>[];
