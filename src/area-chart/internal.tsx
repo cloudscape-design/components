@@ -65,6 +65,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
 }: InternalAreaChartProps<T>) {
   const baseProps = getBaseProps(props);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
   if (isDevelopment) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -102,6 +103,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     yScaleType,
     height,
     width,
+    popoverRef,
   });
 
   const { isEmpty, isNoMatch, showChart } = getChartStatus({

@@ -115,6 +115,7 @@ describe('useChartModel', () => {
         yScaleType: 'linear',
         externalSeries: series,
         visibleSeries: series,
+        popoverRef: { current: null },
       });
       act(() => wrapper.focus());
 
@@ -149,6 +150,7 @@ describe('useChartModel', () => {
           yScaleType: 'linear',
           externalSeries: series,
           visibleSeries: series,
+          popoverRef: { current: null },
         });
         act(() => wrapper.focus());
 
@@ -171,6 +173,7 @@ describe('useChartModel', () => {
           yScaleType: 'linear',
           externalSeries: series,
           visibleSeries: series,
+          popoverRef: { current: null },
         });
         act(() => wrapper.focus());
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
