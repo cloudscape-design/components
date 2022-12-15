@@ -447,6 +447,54 @@ describe('Details popover', () => {
     expect(wrapper.findDetailPopover()).toBeNull();
   });
 
+  test('pressing escape closes the popover', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    act(() => {
+      fireEvent.keyDown(document, { key: 'Escape' });
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
+  });
+
+  test('allow mouse to be over details popover ', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+  });
+
+  test('close popover when mouse leaves it ', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseLeave(wrapper!.findDetailPopover()!.getElement(), {
+        relatedTarget: wrapper.findApplication()?.getElement(),
+      });
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
+  });
+
   test('shows value and percentage by default', () => {
     const { wrapper } = renderPieChart(
       <PieChart data={defaultData} i18nStrings={{ detailsValue: 'Value', detailsPercentage: 'Percentage' }} />
