@@ -12,13 +12,10 @@ export function matchFilteringProperty(
   let matchedProperty: null | FilteringProperty = null;
 
   for (const property of filteringProperties) {
-    if (property.propertyLabel === filteringText) {
-      matchedProperty = property;
-      break;
-    }
     if (
-      property.propertyLabel.length > maxLength &&
-      startsWith(filteringText.toLowerCase(), property.propertyLabel.toLowerCase())
+      (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
+      (property.propertyLabel.length > maxLength &&
+        startsWith(filteringText.toLowerCase(), property.propertyLabel.toLowerCase()))
     ) {
       maxLength = property.propertyLabel.length;
       matchedProperty = property;
