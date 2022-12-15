@@ -341,9 +341,9 @@ test(
     await page.waitForVisible(detailsPopoverSelector);
     await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Chocolate');
 
-    await page.click(pieWrapper.findSegments().get(1).toSelector());
-    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Potatoes');
-    await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toBe('Potatoes');
+    await page.click(pieWrapper.findSegments().get(3).toSelector());
+    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Apples');
+    await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toBe('Apples');
   })
 );
 describe('Focus outline', () => {
