@@ -15,6 +15,9 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+
+import { useWizardAnalytics } from './internal/analytics';
 
 export { WizardProps };
 
@@ -35,6 +38,7 @@ export default function Wizard({
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
+  const { trackStartStep, trackNavigate, trackSubmit } = useWizardAnalytics();
 
   const smallContainer = breakpoint === 'default';
 
@@ -52,6 +56,7 @@ export default function Wizard({
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
+    trackNavigate(actualActiveStepIndex, requestedStepIndex, reason);
     setActiveStepIndex(requestedStepIndex);
     fireNonCancelableEvent(onNavigate, { requestedStepIndex, reason });
   };
@@ -59,9 +64,14 @@ export default function Wizard({
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
   const onCancelClick = () => fireNonCancelableEvent(onCancel);
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
-  const onPrimaryClick = isLastStep
-    ? () => fireNonCancelableEvent(onSubmit)
-    : () => navigationEvent(actualActiveStepIndex + 1, 'next');
+  const onPrimaryClick = () => {
+    if (isLastStep) {
+      trackSubmit(actualActiveStepIndex);
+      fireNonCancelableEvent(onSubmit);
+    } else {
+      navigationEvent(actualActiveStepIndex + 1, 'next');
+    }
+  };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {
     warnOnce(
@@ -78,6 +88,10 @@ export default function Wizard({
       `You have set \`allowSkipTo\` but you have not provided \`i18nStrings.skipToButtonLabel\`. The skip-to button will not be rendered.`
     );
   }
+
+  useEffectOnUpdate(() => {
+    trackStartStep(actualActiveStepIndex);
+  }, [actualActiveStepIndex, trackStartStep]);
 
   return (
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
