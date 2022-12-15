@@ -463,6 +463,12 @@ describe('Details popover', () => {
     });
 
     expect(wrapper.findDetailPopover()).toBeNull();
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
   });
 
   test('allow mouse to be over details popover ', () => {
