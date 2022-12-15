@@ -47,6 +47,7 @@ export default function InternalFormField({
   __hideLabel,
   __internalRootRef = null,
   __disableGutters = false,
+  __useReactAutofocus = false,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -72,6 +73,7 @@ export default function InternalFormField({
     ariaLabelledby: joinStrings(parentAriaLabelledby, slotIds.label) || undefined,
     ariaDescribedby: joinStrings(parentAriaDescribedby, ariaDescribedBy) || undefined,
     invalid: !!errorText || !!parentInvalid,
+    __useReactAutofocus,
   };
 
   return (

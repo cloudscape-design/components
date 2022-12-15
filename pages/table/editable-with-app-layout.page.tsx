@@ -185,6 +185,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
         return (
           <Box padding={{ vertical: 'xxs' }}>
             <Multiselect
+              autoFocus={true}
               selectedOptions={value}
               onChange={withDirtyState<NonNullable<MultiselectProps['onChange']>>(event => {
                 setValue(event.detail.selectedOptions);
@@ -249,6 +250,7 @@ const Demo = forwardRef(
             Distributions
           </Header>
         }
+        stickyHeader={true}
         submitEdit={handleSubmit}
         onEditCancel={evt => {
           if (__editStateDirty) {
