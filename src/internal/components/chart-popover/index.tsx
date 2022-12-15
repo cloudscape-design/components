@@ -14,6 +14,8 @@ import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
 
+export const POPOVER_DEADZONE = 12;
+
 export interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
   title?: React.ReactNode;

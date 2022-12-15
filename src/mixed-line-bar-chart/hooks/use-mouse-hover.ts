@@ -9,9 +9,9 @@ import styles from '../styles.css.js';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { VerticalMarkerX } from '../interfaces';
 import { isYThreshold } from '../utils';
+import { POPOVER_DEADZONE } from '../../internal/components/chart-popover';
 
 const MAX_HOVER_MARGIN = 6;
-const POPOVER_DEADZONE = 12;
 
 export interface UseMouseHoverProps<T> {
   plotRef: React.RefObject<ChartPlotRef>;

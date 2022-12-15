@@ -14,7 +14,7 @@ import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {
   static selectors = {
-    highlightedPoint: 'fhighlighted-point',
+    highlightedPoint: 'highlighted-point',
     highlightedSeries: 'highlighted-series',
     highlightedX: 'highlighted-x',
     plot: 'plot',
