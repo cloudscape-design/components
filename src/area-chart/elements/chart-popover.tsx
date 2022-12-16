@@ -31,6 +31,8 @@ export default function AreaChartPopover<T extends AreaChartProps.DataTypes>({
     trackKey: highlightDetails.highlightIndex,
     dismissButton: highlightDetails.isPopoverPinned,
     onDismiss: model.handlers.onPopoverDismiss,
+    onMouseLeave: model.handlers.onPopoverLeave,
+    ref: model.refs.popoverRef,
   };
 
   return (

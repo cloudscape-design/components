@@ -114,6 +114,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const plotWidth = containerWidth ? containerWidth - leftLabelsWidth - LEFT_LABELS_MARGIN : 500;
   const containerRefObject = useRef(null);
   const containerRef = useMergeRefs(containerMeasureRef, containerRefObject);
+  const popoverRef = useRef<HTMLElement | null>(null);
 
   const isRefresh = useVisualRefresh();
 
@@ -251,10 +252,11 @@ export default function ChartContainer<T extends ChartDataTypes>({
     verticalMarkerX,
   });
 
-  const { onSVGMouseMove, onSVGMouseOut } = useMouseHover<T>({
+  const { onSVGMouseMove, onSVGMouseOut, onPopoverLeave } = useMouseHover<T>({
     scaledSeries,
     barGroups,
     plotRef,
+    popoverRef,
     highlightPoint,
     highlightGroup,
     clearHighlightedSeries,
@@ -549,6 +551,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
         </div>
 
         <ChartPopover
+          ref={popoverRef}
           containerRef={containerRefObject}
           trackRef={highlightedElementRef}
           isOpen={isPopoverOpen}
@@ -557,6 +560,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
           onDismiss={onPopoverDismiss}
           size={detailPopoverSize}
           dismissAriaLabel={i18nStrings.detailPopoverDismissAriaLabel}
+          onMouseLeave={onPopoverLeave}
         />
       </div>
     </div>

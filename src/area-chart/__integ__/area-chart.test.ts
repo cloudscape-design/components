@@ -128,6 +128,20 @@ describe('Popover', () => {
   );
 
   test(
+    'popover is shown when mouse is over popover',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.setWindowSize({ width: 2000, height: 800 });
+      await expect(page.hasPopover()).resolves.toBe(false);
+
+      await page.focusPlot();
+      await expect(page.getPopoverTitle()).resolves.toBe('1s');
+
+      await page.hoverElement(page.chart.findDetailPopover().findHeader().toSelector());
+      await expect(page.getPopoverTitle()).resolves.toBe('1s');
+    })
+  );
+
+  test(
     'popover can be pinned/unpinned by clicking on the plot',
     setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
       await page.focusPlot();
@@ -219,6 +233,7 @@ describe('Keyboard navigation', () => {
   test(
     'can navigate between data points within series',
     setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.setWindowSize({ width: 2000, height: 800 });
       await page.focusPlot();
 
       await expect(page.getPopoverTitle()).resolves.toBe('1s');
@@ -331,6 +346,7 @@ describe('Focus delegation', () => {
   test(
     'preserves series highlight when focused away from plot',
     setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.setWindowSize({ width: 2000, height: 800 });
       await page.focusPlot();
 
       await page.keys(['ArrowDown', 'ArrowRight']);

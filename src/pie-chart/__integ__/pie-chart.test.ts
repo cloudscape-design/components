@@ -320,6 +320,17 @@ describe('Detail popover', () => {
       await expect(page.isDisplayed(detailsPopoverSelector)).resolves.toBe(false);
     })
   );
+
+  test(
+    'allow mouse to enter popover on hover',
+    setupTest(async page => {
+      await page.hoverElement(pieWrapper.findSegments().get(3).toSelector());
+      await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Apples');
+
+      await page.hoverElement(pieWrapper.findDetailPopover().findHeader().toSelector());
+      await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Apples');
+    })
+  );
 });
 
 test(
@@ -330,9 +341,9 @@ test(
     await page.waitForVisible(detailsPopoverSelector);
     await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Chocolate');
 
-    await page.click(pieWrapper.findSegments().get(1).toSelector());
-    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Potatoes');
-    await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toBe('Potatoes');
+    await page.click(pieWrapper.findSegments().get(3).toSelector());
+    await expect(page.getText(detailsPopoverSelector)).resolves.toContain('Apples');
+    await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toBe('Apples');
   })
 );
 describe('Focus outline', () => {

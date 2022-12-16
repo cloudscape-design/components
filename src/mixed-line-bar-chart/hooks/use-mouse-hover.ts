@@ -11,9 +11,11 @@ import { VerticalMarkerX } from '../interfaces';
 import { isYThreshold } from '../utils';
 
 const MAX_HOVER_MARGIN = 6;
+const POPOVER_DEADZONE = 12;
 
 export interface UseMouseHoverProps<T> {
   plotRef: React.RefObject<ChartPlotRef>;
+  popoverRef: React.RefObject<HTMLElement>;
   scaledSeries: ReadonlyArray<ScaledPoint<T>>;
   barGroups: ScaledBarGroup<T>[];
   highlightPoint: (point: ScaledPoint<T> | null) => void;
@@ -26,6 +28,7 @@ export interface UseMouseHoverProps<T> {
 
 export function useMouseHover<T>({
   plotRef,
+  popoverRef,
   scaledSeries,
   barGroups,
   highlightPoint,
@@ -35,6 +38,21 @@ export function useMouseHover<T>({
   isHandlersDisabled,
   highlightX,
 }: UseMouseHoverProps<T>) {
+  const isMouseOverPopover = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
+    if (popoverRef.current?.firstChild) {
+      const popoverPosition = (popoverRef.current.firstChild as HTMLElement).getBoundingClientRect();
+      if (
+        event.clientX > popoverPosition.x - POPOVER_DEADZONE &&
+        event.clientX < popoverPosition.x + popoverPosition.width + POPOVER_DEADZONE &&
+        event.clientY > popoverPosition.y - POPOVER_DEADZONE &&
+        event.clientY < popoverPosition.y + popoverPosition.height + POPOVER_DEADZONE
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const onSeriesMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     const svgRect = (event.target as SVGElement).getBoundingClientRect();
     const offsetX = event.clientX - svgRect.left;
@@ -93,7 +111,7 @@ export function useMouseHover<T>({
   };
 
   const onSVGMouseMove = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    if (event.target === plotRef.current!.svg && !isHandlersDisabled) {
+    if (event.target === plotRef.current!.svg && !isHandlersDisabled && !isMouseOverPopover(event)) {
       if (isGroupNavigation) {
         onGroupMouseMove(event);
       } else if (scaledSeries.length > 0) {
@@ -103,20 +121,24 @@ export function useMouseHover<T>({
   };
 
   const onSVGMouseOut = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
-    if (isHandlersDisabled) {
+    if (isHandlersDisabled || isMouseOverPopover(event)) {
       return;
     }
     if (
       !nodeContains(plotRef.current!.svg, event.relatedTarget as Element) ||
-      // `classList` is not supported on IE11 for SVG elements
-      ((event.relatedTarget && (event.relatedTarget as Element).getAttribute('class')) || '')
-        .split(' ')
-        .indexOf(styles.series) > -1
+      (event.relatedTarget && (event.relatedTarget as Element).classList.contains(styles.series))
     ) {
       highlightX(null);
       clearHighlightedSeries();
     }
   };
 
-  return { onSVGMouseMove, onSVGMouseOut };
+  const onPopoverLeave = (event: React.MouseEvent) => {
+    if (!plotRef.current!.svg.contains(event.relatedTarget as Node)) {
+      highlightX(null);
+      clearHighlightedSeries();
+    }
+  };
+
+  return { onSVGMouseMove, onSVGMouseOut, onPopoverLeave };
 }
