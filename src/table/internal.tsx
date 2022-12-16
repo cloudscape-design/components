@@ -245,11 +245,7 @@ const InternalTable = React.forwardRef(
             )}
             <table
               ref={tableRef}
-              className={clsx(
-                styles.table,
-                resizableColumns && styles['table-layout-fixed'],
-                hasFooter && styles['has-footer']
-              )}
+              className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'])}
               // Browsers have weird mechanism to guess whether it's a data table or a layout table.
               // If we state explicitly, they get it always correctly even with low number of rows.
               role="table"
