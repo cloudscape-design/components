@@ -123,7 +123,7 @@ settings icon in the pagination slot.
   /*
   Striped rows requires additional left padding because the 
   shaded background makes the child content appear too close 
-  the the table edge.
+  to the table edge.
   */
   &:first-child.has-striped-rows {
     padding-left: awsui.$space-xxs;
