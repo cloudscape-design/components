@@ -9,7 +9,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontBodySLineHeight: '16px',
   fontBodySSize: '12px',
   fontButtonLetterSpacing: '0.005em',
-  fontButtonWeight: '700',
+  fontButtonWeight: '{fontWeightHeavy}',
   fontChartDetailSize: '{fontBodySSize}',
   fontDisplayLLetterSpacing: '-0.03em',
   fontDisplayLLineHeight: '54px',

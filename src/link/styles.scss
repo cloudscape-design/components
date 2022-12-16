@@ -29,11 +29,15 @@ $font-sizes: (
 
   @each $variant in map.keys(constants.$link-variants) {
     &.variant-#{$variant} {
+      @if $variant == 'info' {
+        @include styles.font-smoothing;
+      }
       @include styles.link-style(map.get(constants.$link-variants, $variant));
     }
   }
 
   &.button {
+    @include styles.font-smoothing;
     @include styles.link-style(map.get(constants.$link-styles, 'button'));
   }
 

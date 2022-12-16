@@ -6,6 +6,7 @@
 @use '../tokens' as awsui;
 @use './constants' as constants;
 
+// To reduce bluriness of heavy font weight on MacOS
 @mixin font-smoothing {
   -webkit-font-smoothing: awsui.$font-smoothing-webkit;
   -moz-osx-font-smoothing: awsui.$font-smoothing-moz-osx;
@@ -88,6 +89,11 @@
   font-size: inherit;
   line-height: inherit;
   letter-spacing: inherit;
+}
+
+@mixin font-button {
+  font-weight: awsui.$font-button-weight;
+  @include font-smoothing;
 }
 
 @mixin font-label {
