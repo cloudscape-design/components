@@ -105,9 +105,9 @@
 
 /*
 In Visual Refresh the first cell in the header should align
-with the left edge of the table. If the last header cell 
-is sortable the sort icon should align with the settings icon
-in the pagination slot.
+with the left edge of the table as closely as possible. If the 
+last header cell is sortable the sort icon should align with the 
+settings icon in the pagination slot.
 */
 .header-cell:not(.is-visual-refresh) {
   &:first-child {
@@ -120,6 +120,11 @@ in the pagination slot.
     padding-left: awsui.$space-xxxs;
   }
 
+  /*
+  Striped rows requires additional left padding because the 
+  shaded background makes the child content appear too close 
+  the the table edge.
+  */
   &:first-child.has-striped-rows {
     padding-left: awsui.$space-xxs;
   }

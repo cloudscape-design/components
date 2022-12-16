@@ -29,9 +29,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &:first-child {
-    border-left: $border-placeholder;
-  }
   &:last-child {
     border-right: $border-placeholder;
     padding-right: $cell-edge-horizontal-padding;
@@ -108,23 +105,35 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
 /*
 In Visual Refresh the first cell of each row should align with the 
-left edge of the table.
+left edge of the table as closely as possible.
 */
 .body-cell:not(.is-visual-refresh) {
   &:first-child {
+    border-left: $border-placeholder;
     padding-left: $cell-edge-horizontal-padding;
   }
 }
 
 .body-cell.is-visual-refresh {
-  &:first-child:not(.has-selection) {
-    border-left: 0;
+  /*
+  Apply a placeholder border only when the row is selectable
+  to prevent a layout shift upon selection. Rows that are not 
+  selectable will reserve the horiztonal space that the placeholder
+  border would consume.
+  */
+  &:first-child.has-selection {
+    border-left: $border-placeholder;
   }
 
   &:first-child:not(.has-striped-rows) {
     padding-left: awsui.$space-xxxs;
   }
 
+  /*
+  Striped rows requires additional left padding because the 
+  shaded background makes the child content appear too close 
+  the the table edge.
+  */
   &:first-child.has-striped-rows {
     padding-left: awsui.$space-xxs;
   }
