@@ -117,7 +117,15 @@ left edge of the table.
 }
 
 .body-cell.is-visual-refresh {
-  &:first-child {
+  &:first-child:not(.has-selection) {
+    border-left: 0;
+  }
+
+  &:first-child:not(.has-striped-rows) {
+    padding-left: awsui.$space-xxxs;
+  }
+
+  &:first-child.has-striped-rows {
     padding-left: awsui.$space-xxs;
   }
 }

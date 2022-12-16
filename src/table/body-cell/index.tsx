@@ -18,6 +18,7 @@ interface TableBodyCellProps {
   isNextSelected: boolean;
   isPrevSelected: boolean;
   children?: React.ReactNode;
+  hasSelection?: boolean;
   hasFooter?: boolean;
 }
 
@@ -33,6 +34,7 @@ export function TableBodyCell({
   isPrevSelected,
   isEvenRow,
   stripedRows,
+  hasSelection,
   hasFooter,
 }: TableBodyCellProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -50,7 +52,9 @@ export function TableBodyCell({
         isNextSelected && styles['body-cell-next-selected'],
         isPrevSelected && styles['body-cell-prev-selected'],
         !isEvenRow && stripedRows && styles['body-cell-shaded'],
+        stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
+        hasSelection && styles['has-selection'],
         hasFooter && styles['has-footer']
       )}
     >

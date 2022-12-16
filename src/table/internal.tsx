@@ -133,6 +133,7 @@ const InternalTable = React.forwardRef(
       ? 'container'
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
+    const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
     const theadProps: TheadProps = {
@@ -158,6 +159,7 @@ const InternalTable = React.forwardRef(
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
+      stripedRows,
     };
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
@@ -177,7 +179,7 @@ const InternalTable = React.forwardRef(
         tableRef={tableRefObject}
         visibleColumnDefinitions={visibleColumnDefinitions}
         resizableColumns={resizableColumns}
-        hasSelection={!!selectionType}
+        hasSelection={hasSelection}
       >
         <InternalContainer
           {...baseProps}
@@ -324,6 +326,7 @@ const InternalTable = React.forwardRef(
                             wrapLines={false}
                             isEvenRow={isEven}
                             stripedRows={stripedRows}
+                            hasSelection={hasSelection}
                             hasFooter={hasFooter}
                           >
                             <SelectionControl
@@ -356,6 +359,7 @@ const InternalTable = React.forwardRef(
                             isPrevSelected={isPrevSelected}
                             stripedRows={stripedRows}
                             isEvenRow={isEven}
+                            hasSelection={hasSelection}
                             hasFooter={hasFooter}
                           />
                         ))}

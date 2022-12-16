@@ -35,6 +35,7 @@ export interface TheadProps {
   hidden?: boolean;
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
+  stripedRows?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -56,6 +57,7 @@ const Thead = React.forwardRef(
       onSortingChange,
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
+      stripedRows,
       showFocusRing = null,
       sticky = false,
       hidden = false,
@@ -70,6 +72,7 @@ const Thead = React.forwardRef(
       headerCellStyles[`header-cell-variant-${variant}`],
       sticky && headerCellStyles['header-cell-sticky'],
       stuck && headerCellStyles['header-cell-stuck'],
+      stripedRows && headerCellStyles['has-striped-rows'],
       isVisualRefresh && headerCellStyles['is-visual-refresh']
     );
 
