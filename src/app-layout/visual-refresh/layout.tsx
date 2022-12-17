@@ -43,13 +43,10 @@ export default function Layout({ children }: LayoutProps) {
     splitPanel,
     stickyNotifications,
     toolsHide,
+    splitPanelReportedHeaderHeight,
   } = useContext(AppLayoutContext);
 
-  const {
-    getHeader: getSplitPanelHeader,
-    position: splitPanelPosition,
-    size: splitPanelSize,
-  } = useContext(SplitPanelContext);
+  const { position: splitPanelPosition, size: splitPanelSize } = useContext(SplitPanelContext);
 
   const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
@@ -76,8 +73,7 @@ export default function Layout({ children }: LayoutProps) {
         if (isSplitPanelOpen) {
           offsetBottom += splitPanelSize;
         } else {
-          const splitPanelHeader = getSplitPanelHeader();
-          offsetBottom += splitPanelHeader ? splitPanelHeader.clientHeight : 0;
+          offsetBottom += splitPanelReportedHeaderHeight;
         }
       }
 
@@ -85,12 +81,12 @@ export default function Layout({ children }: LayoutProps) {
     },
     [
       footerHeight,
-      getSplitPanelHeader,
       isSplitPanelOpen,
       setOffsetBottom,
       splitPanelPosition,
       splitPanel,
       splitPanelSize,
+      splitPanelReportedHeaderHeight,
     ]
   );
 

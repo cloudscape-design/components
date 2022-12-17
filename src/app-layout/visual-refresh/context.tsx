@@ -52,12 +52,14 @@ interface AppLayoutContextProps extends AppLayoutProps {
   setIsToolsOpen: (value: boolean) => void;
   setOffsetBottom: (value: number) => void;
   setSplitPanelReportedSize: (value: number) => void;
+  setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
   footerHeight: number;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
+  splitPanelReportedHeaderHeight: number;
   toolsFocusControl: FocusControlState;
 }
 
@@ -111,12 +113,14 @@ const defaults: AppLayoutContextProps = {
   setIsToolsOpen: (value: boolean) => value,
   setOffsetBottom: (value: number) => void value,
   setSplitPanelReportedSize: (value: number) => void value,
+  setSplitPanelReportedHeaderHeight: (value: number) => void value,
   splitPanelMaxWidth: 280,
   splitPanelMinWidth: 280,
   splitPanelOpen: false,
   splitPanelPosition: 'bottom',
   splitPanelPreferences: { position: 'bottom' },
   splitPanelReportedSize: 0,
+  splitPanelReportedHeaderHeight: 0,
   splitPanelSize: 0,
   stickyNotifications: false,
   tools: null,
@@ -393,6 +397,7 @@ export const AppLayoutProvider = React.forwardRef(
      * onSplitPanelResize event.
      */
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -550,11 +555,13 @@ export const AppLayoutProvider = React.forwardRef(
           setHasStickyBackground,
           setOffsetBottom,
           setSplitPanelReportedSize,
+          setSplitPanelReportedHeaderHeight,
           splitPanelMaxWidth,
           splitPanelMinWidth,
           splitPanelPosition,
           splitPanelPreferences,
           splitPanelReportedSize,
+          splitPanelReportedHeaderHeight,
           splitPanelSize,
           toolsHide,
           toolsOpen: isToolsOpen,
