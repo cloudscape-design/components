@@ -50,7 +50,6 @@ interface AppLayoutContextProps extends AppLayoutProps {
   setHasStickyBackground: (value: boolean) => void;
   setIsNavigationOpen: (value: boolean) => void;
   setIsToolsOpen: (value: boolean) => void;
-  setOffsetBottom: (value: number) => void;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
@@ -111,7 +110,6 @@ const defaults: AppLayoutContextProps = {
   setHasStickyBackground: (value: boolean) => value,
   setIsNavigationOpen: (value: boolean) => value,
   setIsToolsOpen: (value: boolean) => value,
-  setOffsetBottom: (value: number) => void value,
   setSplitPanelReportedSize: (value: number) => void value,
   setSplitPanelReportedHeaderHeight: (value: number) => void value,
   splitPanelMaxWidth: 280,
@@ -149,6 +147,7 @@ export const AppLayoutProvider = React.forwardRef(
       headerSelector = '#b #h',
       footerSelector = '#b #h',
       children,
+      splitPanel,
       ...props
     }: AppLayoutProviderProps,
     forwardRef: React.Ref<AppLayoutProps.Ref>
@@ -511,12 +510,18 @@ export const AppLayoutProvider = React.forwardRef(
     );
 
     /**
-     * The offsetBottom value is used to determine the distance from the bottom of the
-     * viewport a sticky element should be placed. A non-zero value means that there
-     * is either a footer outside of the AppLayout, a SplitPanel in the bottom position
-     * within the AppLayout, or both.
+     * Determine the offsetBottom value based on the presence of a footer element and
+     * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
+     * position. Use the size property if it is open and the header height if it is closed.
      */
-    const [offsetBottom, setOffsetBottom] = useState(0);
+    let offsetBottom = footerHeight;
+    if (splitPanel && splitPanelPosition === 'bottom') {
+      if (isSplitPanelOpen) {
+        offsetBottom += splitPanelReportedSize;
+      } else {
+        offsetBottom += splitPanelReportedHeaderHeight;
+      }
+    }
 
     return (
       <AppLayoutContext.Provider
@@ -553,9 +558,9 @@ export const AppLayoutProvider = React.forwardRef(
           offsetBottom,
           setDynamicOverlapHeight,
           setHasStickyBackground,
-          setOffsetBottom,
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
+          splitPanel,
           splitPanelMaxWidth,
           splitPanelMinWidth,
           splitPanelPosition,

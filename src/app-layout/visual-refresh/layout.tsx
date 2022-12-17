@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useLayoutEffect } from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
-import { SplitPanelContext } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { AppLayoutProps } from '../interfaces';
@@ -39,14 +38,11 @@ export default function Layout({ children }: LayoutProps) {
     minContentWidth,
     navigationHide,
     notificationsHeight,
-    setOffsetBottom,
     splitPanel,
+    splitPanelPosition,
     stickyNotifications,
     toolsHide,
-    splitPanelReportedHeaderHeight,
   } = useContext(AppLayoutContext);
-
-  const { position: splitPanelPosition, size: splitPanelSize } = useContext(SplitPanelContext);
 
   const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
@@ -58,36 +54,6 @@ export default function Layout({ children }: LayoutProps) {
     isToolsOpen,
     splitPanel,
     toolsHide
-  );
-
-  /**
-   * Determine the offsetBottom value based on the presence of a footer element and
-   * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
-   * position. Use the size property if it is open and the header height if it is closed.
-   */
-  useLayoutEffect(
-    function handleOffsetBottom() {
-      let offsetBottom = footerHeight;
-
-      if (splitPanel && splitPanelPosition === 'bottom') {
-        if (isSplitPanelOpen) {
-          offsetBottom += splitPanelSize;
-        } else {
-          offsetBottom += splitPanelReportedHeaderHeight;
-        }
-      }
-
-      setOffsetBottom(offsetBottom);
-    },
-    [
-      footerHeight,
-      isSplitPanelOpen,
-      setOffsetBottom,
-      splitPanelPosition,
-      splitPanel,
-      splitPanelSize,
-      splitPanelReportedHeaderHeight,
-    ]
   );
 
   return (
