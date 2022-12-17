@@ -15,13 +15,14 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useContainerQuery, useResizeObserver } from '../../internal/hooks/container-queries';
+import { useContainerQuery } from '../../internal/hooks/container-queries';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
 import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
+import { useObservedElement } from '../utils/use-observed-element';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -303,13 +304,8 @@ export const AppLayoutProvider = React.forwardRef(
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
-    const [headerHeight, setHeaderHeight] = useState(0);
-    const getHeader = useCallback(() => document.querySelector(headerSelector), [headerSelector]);
-    useResizeObserver(getHeader, entry => setHeaderHeight(entry.borderBoxHeight));
-
-    const [footerHeight, setFooterHeight] = useState(0);
-    const getFooter = useCallback(() => document.querySelector(footerSelector), [footerSelector]);
-    useResizeObserver(getFooter, entry => setFooterHeight(entry.borderBoxHeight));
+    const headerHeight = useObservedElement(headerSelector);
+    const footerHeight = useObservedElement(footerSelector);
 
     /**
      * Set the default values for the minimum and maximum Split Panel width when it is

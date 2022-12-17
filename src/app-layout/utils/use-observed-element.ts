@@ -3,18 +3,10 @@
 import { useResizeObserver } from '../../internal/hooks/container-queries';
 import { useCallback, useState } from 'react';
 
-export function useObservedElement(
-  selectorOrRef: string | React.MutableRefObject<HTMLElement> | (() => HTMLElement | null) | undefined
-) {
+export function useObservedElement(selector: string) {
   const getElement = useCallback(() => {
-    if (typeof selectorOrRef === 'string') {
-      return document.querySelector(selectorOrRef);
-    } else if (typeof selectorOrRef === 'function') {
-      return selectorOrRef() ?? null;
-    } else {
-      return selectorOrRef?.current ?? null;
-    }
-  }, [selectorOrRef]);
+    return document.querySelector(selector);
+  }, [selector]);
 
   const [height, setHeight] = useState(0);
 
