@@ -53,7 +53,7 @@ describe('Sticky header', () => {
     })
   );
 
-  test(
+  test.only(
     `syncs column sizes from the hidden column headers when items change`,
     useBrowser(async browser => {
       const page = new StickyHeaderPage(browser);
@@ -62,6 +62,8 @@ describe('Sticky header', () => {
       await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
       const originalWidths = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
       const copyWidths = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
+      console.log(originalWidths);
+      console.log(copyWidths);
       expect(copyWidths).toEqual(originalWidths);
     })
   );
