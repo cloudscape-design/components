@@ -47,6 +47,19 @@ export const useStickyHeader = (
   }, [theadRef, secondaryTheadRef, secondaryTableRef, tableWrapperRef, tableRef]);
   useLayoutEffect(() => {
     syncColumnHeaderWidths();
+    // Content is not going to be layed out until the next frame in angular,
+    // so we need to sync the column headers again.
+    setTimeout(() => syncColumnHeaderWidths(), 0);
+    const secondaryTable = secondaryTableRef.current;
+    const primaryTable = tableWrapperRef.current;
+    return () => {
+      if (secondaryTable) {
+        secondaryTable.style.width = '';
+      }
+      if (primaryTable) {
+        primaryTable.style.marginTop = '';
+      }
+    };
   });
   useResizeObserver(theadRef, syncColumnHeaderWidths);
   const scrollToTop = () => {
