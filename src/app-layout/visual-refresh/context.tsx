@@ -15,13 +15,14 @@ import { fireNonCancelableEvent } from '../../internal/events';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
-import { useContainerQuery, useResizeObserver } from '../../internal/hooks/container-queries';
+import { useContainerQuery } from '../../internal/hooks/container-queries';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
 import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
+import { useObservedElement } from '../utils/use-observed-element';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -50,14 +51,15 @@ interface AppLayoutContextProps extends AppLayoutProps {
   setHasStickyBackground: (value: boolean) => void;
   setIsNavigationOpen: (value: boolean) => void;
   setIsToolsOpen: (value: boolean) => void;
-  setOffsetBottom: (value: number) => void;
   setSplitPanelReportedSize: (value: number) => void;
+  setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
   footerHeight: number;
   splitPanelMaxWidth: number;
   splitPanelMinWidth: number;
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
+  splitPanelReportedHeaderHeight: number;
   toolsFocusControl: FocusControlState;
 }
 
@@ -109,14 +111,15 @@ const defaults: AppLayoutContextProps = {
   setHasStickyBackground: (value: boolean) => value,
   setIsNavigationOpen: (value: boolean) => value,
   setIsToolsOpen: (value: boolean) => value,
-  setOffsetBottom: (value: number) => void value,
   setSplitPanelReportedSize: (value: number) => void value,
+  setSplitPanelReportedHeaderHeight: (value: number) => void value,
   splitPanelMaxWidth: 280,
   splitPanelMinWidth: 280,
   splitPanelOpen: false,
   splitPanelPosition: 'bottom',
   splitPanelPreferences: { position: 'bottom' },
   splitPanelReportedSize: 0,
+  splitPanelReportedHeaderHeight: 0,
   splitPanelSize: 0,
   stickyNotifications: false,
   tools: null,
@@ -145,6 +148,7 @@ export const AppLayoutProvider = React.forwardRef(
       headerSelector = '#b #h',
       footerSelector = '#b #h',
       children,
+      splitPanel,
       ...props
     }: AppLayoutProviderProps,
     forwardRef: React.Ref<AppLayoutProps.Ref>
@@ -300,13 +304,8 @@ export const AppLayoutProvider = React.forwardRef(
      * Query the DOM for the header and footer elements based on the selectors provided
      * by the properties and pass the heights to the custom property definitions.
      */
-    const [headerHeight, setHeaderHeight] = useState(0);
-    const getHeader = useCallback(() => document.querySelector(headerSelector), [headerSelector]);
-    useResizeObserver(getHeader, entry => setHeaderHeight(entry.borderBoxHeight));
-
-    const [footerHeight, setFooterHeight] = useState(0);
-    const getFooter = useCallback(() => document.querySelector(footerSelector), [footerSelector]);
-    useResizeObserver(getFooter, entry => setFooterHeight(entry.borderBoxHeight));
+    const headerHeight = useObservedElement(headerSelector);
+    const footerHeight = useObservedElement(footerSelector);
 
     /**
      * Set the default values for the minimum and maximum Split Panel width when it is
@@ -393,6 +392,7 @@ export const AppLayoutProvider = React.forwardRef(
      * onSplitPanelResize event.
      */
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -506,12 +506,18 @@ export const AppLayoutProvider = React.forwardRef(
     );
 
     /**
-     * The offsetBottom value is used to determine the distance from the bottom of the
-     * viewport a sticky element should be placed. A non-zero value means that there
-     * is either a footer outside of the AppLayout, a SplitPanel in the bottom position
-     * within the AppLayout, or both.
+     * Determine the offsetBottom value based on the presence of a footer element and
+     * the SplitPanel component. Ignore the SplitPanel if it is not in the bottom
+     * position. Use the size property if it is open and the header height if it is closed.
      */
-    const [offsetBottom, setOffsetBottom] = useState(0);
+    let offsetBottom = footerHeight;
+    if (splitPanel && splitPanelPosition === 'bottom') {
+      if (isSplitPanelOpen) {
+        offsetBottom += splitPanelReportedSize;
+      } else {
+        offsetBottom += splitPanelReportedHeaderHeight;
+      }
+    }
 
     return (
       <AppLayoutContext.Provider
@@ -548,13 +554,15 @@ export const AppLayoutProvider = React.forwardRef(
           offsetBottom,
           setDynamicOverlapHeight,
           setHasStickyBackground,
-          setOffsetBottom,
           setSplitPanelReportedSize,
+          setSplitPanelReportedHeaderHeight,
+          splitPanel,
           splitPanelMaxWidth,
           splitPanelMinWidth,
           splitPanelPosition,
           splitPanelPreferences,
           splitPanelReportedSize,
+          splitPanelReportedHeaderHeight,
           splitPanelSize,
           toolsHide,
           toolsOpen: isToolsOpen,

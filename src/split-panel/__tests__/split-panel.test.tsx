@@ -50,7 +50,6 @@ const defaultContextProps: SplitPanelContextProps = {
   size: 0,
   getMaxWidth: () => 500,
   getMaxHeight: () => 500,
-  getHeader: () => null,
   isOpen: true,
   isMobile: false,
   isForcedPosition: false,
@@ -58,6 +57,7 @@ const defaultContextProps: SplitPanelContextProps = {
   onToggle: jest.fn(),
   onPreferencesChange: jest.fn(),
   reportSize: jest.fn(),
+  reportHeaderHeight: jest.fn(),
 };
 
 function renderSplitPanel({

@@ -44,7 +44,6 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export { AppLayoutProps };
 
@@ -168,14 +167,6 @@ const OldAppLayout = React.forwardRef(
     const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
-    const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
-      rect => (splitPanel ? rect.height : 0),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [splitPanel, isSplitpanelForcedPosition]
-    );
-
-    const splitPanelHeaderRefObject = useRef(null);
-    const splitPanelHeaderRef = useMergeRefs(splitPanelHeaderMeasureRef, splitPanelHeaderRefObject);
     const anyPanelOpen = navigationVisible || toolsVisible;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
     const stickyNotificationsHeight = stickyNotifications ? notificationsHeight : null;
@@ -191,12 +182,6 @@ const OldAppLayout = React.forwardRef(
       }
     );
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
-
-    const [splitPanelHeight, splitPanelRef] = useContainerQuery(
-      rect => (splitPanel ? rect.height : 0),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [splitPanel, splitPanelPosition, isSplitpanelForcedPosition]
-    );
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
@@ -318,6 +303,7 @@ const OldAppLayout = React.forwardRef(
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const splitPanelContext: SplitPanelContextProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
@@ -329,19 +315,17 @@ const OldAppLayout = React.forwardRef(
       size: splitPanelSize,
       getMaxWidth: getSplitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
-      getHeader: () => splitPanelHeaderRefObject.current,
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
       isMobile,
       isForcedPosition: isSplitpanelForcedPosition,
       lastInteraction: splitPanelLastInteraction,
-      splitPanelRef,
-      splitPanelHeaderRef,
       onResize: onSplitPanelSizeSet,
       onToggle,
       onPreferencesChange: onSplitPanelPreferencesSet,
       reportSize: setSplitPanelReportedSize,
+      reportHeaderHeight: setSplitPanelReportedHeaderHeight,
     };
     const splitPanelWrapped = splitPanel && (
       <SplitPanelContext.Provider value={splitPanelContext}>{splitPanel}</SplitPanelContext.Provider>
@@ -381,8 +365,8 @@ const OldAppLayout = React.forwardRef(
       (!splitPanel || finalSplitPanePosition !== 'bottom'
         ? undefined
         : splitPanelOpen
-        ? splitPanelHeight
-        : splitPanelHeaderHeight) ?? undefined;
+        ? splitPanelReportedSize
+        : splitPanelReportedHeaderHeight) ?? undefined;
 
     const contentWidthStyles = !isMobile
       ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
