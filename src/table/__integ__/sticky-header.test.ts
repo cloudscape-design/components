@@ -59,6 +59,10 @@ describe('Sticky header', () => {
       const page = new StickyHeaderPage(browser);
       await page.setWindowSize(desktopSize);
       await browser.url('#/light/table/hooks');
+      const originalWidths1 = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
+      const copyWidths1 = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
+      console.log(originalWidths1);
+      console.log(copyWidths1);
       await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
       const originalWidths = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
       const copyWidths = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
