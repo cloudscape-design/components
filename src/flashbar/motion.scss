@@ -5,7 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as tokens;
-.flash-refresh {
+.flash-with-motion {
   $flashbar-translate-y-content: -8px;
   $flashbar-translate-y: -20px;
 
@@ -15,7 +15,6 @@
   $flash-button-wrapper-transition-delay: calc(tokens.$motion-duration-refresh-only-slow * 2 - 100ms);
 
   &.enter {
-    position: absolute;
     @include styles.with-motion {
       opacity: 0;
       transform: translateY($flashbar-translate-y);
@@ -90,6 +89,17 @@
       transition-property: transform, opacity;
       transition-duration: tokens.$motion-duration-refresh-only-fast;
       transition-timing-function: tokens.$motion-easing-refresh-only-c;
+    }
+  }
+}
+
+.stack {
+  > .transitioning > .item,
+  > .transitioning > .flash-list-item,
+  > .transitioning.toggle {
+    @include styles.with-motion {
+      transition-timing-function: tokens.$motion-easing-refresh-only-a;
+      transition-duration: tokens.$motion-duration-refresh-only-fast;
     }
   }
 }

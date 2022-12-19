@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
@@ -19,12 +19,16 @@ import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
+import { getStackedItems } from './utils';
+import { animate, getDOMRects } from './animate';
 
 export { FlashbarProps };
 
-export default function Flashbar({ items, ...restProps }: FlashbarProps) {
+const maxUnstackedItems = 1;
+
+export default function Flashbar(props: FlashbarProps) {
   const { __internalRootRef } = useBaseComponent('Flashbar');
-  const baseProps = getBaseProps(restProps);
+  const baseProps = getBaseProps(props);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
@@ -33,8 +37,36 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const isFocusVisible = useFocusVisible();
   const isVisualRefresh = useVisualRefresh();
 
+  /**
+   * The `stackItems` property is a hidden boolean that allows for teams
+   * to beta test the flashbar stacking feature.
+   */
+  const stackItems = isStackedFlashbar(props);
+
+  // When using the stacking feature, the items are shown in reverse order (last item on top)
+  const items = stackItems ? props.items.slice().reverse() : props.items;
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
+
+  const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
+  const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
+  const [initialAnimationState, setInitialAnimationState] = useState<Record<number, DOMRect> | null>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [toggleButtonRect, setToggleButtonRect] = useState<DOMRect>();
+  const [transitioning, setTransitioning] = useState(false);
+  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+
+  const isReducedMotion = useReducedMotion(breakpointRef as any);
+
+  const prepareAnimation = useCallback(() => {
+    if (isReducedMotion) {
+      return;
+    }
+    const oldElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
+    const rects = getDOMRects(oldElements);
+    setInitialAnimationState(rects);
+    setToggleButtonRect(toggleButtonRef.current?.getBoundingClientRect());
+  }, [isFlashbarStackExpanded, isReducedMotion]);
 
   // Track new or removed item IDs in state to only trigger focus changes for newly added items.
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
@@ -47,6 +79,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       if (newFocusItems.length > 0) {
         setNextFocusId(newFocusItems[0].id!);
       }
+      prepareAnimation();
     }
   }
 
@@ -56,39 +89,48 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     }
   }, [nextFocusId]);
 
+  useEffect(() => {
+    if (items.length <= maxUnstackedItems) {
+      setIsFlashbarStackExpanded(false);
+    }
+  }, [items.length]);
+
   /**
    * All the flash items should have ids so we can identify which DOM element is being
    * removed from the DOM to animate it. Motion will be disabled if any of the provided
    * flash messages does not contain an `id`.
    */
-  const motionDisabled =
-    useReducedMotion(breakpointRef as any) || !isVisualRefresh || (items && !items.every(item => 'id' in item));
+  const motionDisabled = isReducedMotion || !isVisualRefresh || (items && !items.every(item => 'id' in item));
 
-  /**
-   * The `stackItems` property is a hidden boolean that allows for teams
-   * to beta test the flashbar stacking feature.
-   */
-  const stackItems = isStackedFlashbar(restProps);
-  const ariaLabels = stackItems ? restProps.ariaLabels : {};
-  const isFlashbarStacked = stackItems && items?.length > 3;
-  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+  const isFlashbarStackable = stackItems && items?.length > maxUnstackedItems;
 
-  /**
-   * Compute the appropriate aria label for the stacked notifications toggle button
-   * based on the expanded/collapsed state of the stack and the presence of
-   * corresponding aria label properties.
-   */
-  function getStackButtonAriaLabel() {
-    let stackButtonAriaLabel;
+  const animateFlash = !isReducedMotion && (isVisualRefresh || isFlashbarStackable);
 
-    if (isFlashbarStackExpanded) {
-      stackButtonAriaLabel = ariaLabels?.stackCollapseLabel ?? 'Collapse stacked notifications';
-    } else {
-      stackButtonAriaLabel = ariaLabels?.stackExpandLabel ?? 'Expand stacked notifications';
-    }
-
-    return stackButtonAriaLabel;
+  function toggleCollapseExpand() {
+    prepareAnimation();
+    setIsFlashbarStackExpanded(!isFlashbarStackExpanded);
   }
+
+  useLayoutEffect(() => {
+    // At this point, the DOM is updated but has not been painted yet. So it's a good moment to trigger animations
+    // that will make calculations based on old and new DOM state.
+    // The old state is kept in `oldStateDOMRects` (notification items) and `toggleButtonRect` (toggle button),
+    // and the new state can be retrieved from the current DOM elements.
+    if (initialAnimationState) {
+      const elements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
+      animate({ elements, oldState: initialAnimationState, onTransitionEnd: () => setTransitioning(false) });
+      if (toggleButtonRect && toggleButtonRef) {
+        animate({
+          elements: {
+            toggleButton: toggleButtonRef.current,
+          },
+          oldState: { toggleButton: toggleButtonRect },
+        });
+      }
+      setTransitioning(true);
+      setInitialAnimationState(null);
+    }
+  }, [isFlashbarStackExpanded, initialAnimationState, toggleButtonRect]);
 
   /**
    * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
@@ -96,34 +138,78 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * two, three, or more items exist in the stack.
    */
   function renderStackedItems() {
-    if (!isFlashbarStacked) {
+    if (!isFlashbarStackable) {
       return;
     }
 
     const stackDepth = Math.min(3, items.length);
-    const stackedItems = items.slice(0, stackDepth);
+    const stackedItems = getStackedItems(items, stackDepth);
+
+    const { i18nStrings } = props as StackedFlashbarProps;
+    const toggleButtonText = i18nStrings?.toggleButtonText(items.length);
+
+    const toggleButtonAriaLabel = isFlashbarStackExpanded
+      ? i18nStrings?.collapseButtonAriaLabel
+      : i18nStrings?.expandButtonAriaLabel(items.length);
 
     return (
-      <div className={styles.stack} style={{ [customCssProps.flashbarStackDepth]: stackDepth }}>
+      <>
         {!isFlashbarStackExpanded && (
-          <div className={clsx(styles.collapsed, isVisualRefresh && styles['visual-refresh'])}>
+          <TransitionGroup
+            component="ul"
+            className={clsx(
+              styles['flash-list'],
+              styles.collapsed,
+              transitioning && styles.transitioning,
+              isVisualRefresh && styles['visual-refresh']
+            )}
+            style={{
+              [customCssProps.flashbarStackDepth]: stackDepth,
+            }}
+          >
             {stackedItems.map((item, index) => (
-              <div className={styles.item} style={{ [customCssProps.flashbarStackIndex]: index }} key={index}>
+              <>
                 {index === 0 && (
-                  <ul className={styles['flash-list']}>
-                    <li className={styles['flash-list-item']}>{renderItem(item, item.id ?? index)}</li>
-                  </ul>
+                  <Transition key={item.id ?? index} in={true}>
+                    {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                      <li
+                        className={clsx(styles['flash-list-item'], styles.item)}
+                        ref={element => (collapsedItemRefs.current[item.id ?? item.originalIndex] = element)}
+                        style={{ [customCssProps.flashbarStackIndex]: 0 }}
+                        key={item.id ?? item.originalIndex}
+                      >
+                        {renderItem(item, item.id ?? item.originalIndex, transitionRootElement, state)}
+                      </li>
+                    )}
+                  </Transition>
                 )}
-                {index > 0 && <div className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`])} />}
-              </div>
+                {index > 0 && (
+                  <li
+                    className={clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)}
+                    ref={element => (collapsedItemRefs.current[item.id ?? item.originalIndex] = element)}
+                    style={{ [customCssProps.flashbarStackIndex]: index }}
+                    key={item.id ?? item.originalIndex}
+                  />
+                )}
+              </>
             ))}
-          </div>
+          </TransitionGroup>
         )}
 
         {isFlashbarStackExpanded && (
-          <ul className={clsx(styles['flash-list'], styles.expanded)}>
+          <ul
+            className={clsx(styles['flash-list'], styles.expanded, transitioning && styles.transitioning)}
+            style={{
+              [customCssProps.flashbarStackDepth]: stackDepth,
+            }}
+          >
             {items.map((item, index) => (
-              <li key={item.id ?? index} className={styles['flash-list-item']}>
+              <li
+                key={item.id ?? index}
+                className={styles['flash-list-item']}
+                ref={element => (expandedItemRefs.current[item.id ?? index] = element)}
+                style={{ [customCssProps.flashbarStackIndex]: index }}
+              >
                 {renderItem(item, item.id ?? index)}
               </li>
             ))}
@@ -131,16 +217,23 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         )}
 
         <button
-          aria-label={getStackButtonAriaLabel()}
-          className={clsx(styles.toggle, isVisualRefresh && styles['visual-refresh'])}
-          onClick={() => setIsFlashbarStackExpanded(!isFlashbarStackExpanded)}
+          aria-label={toggleButtonAriaLabel}
+          className={clsx(
+            styles.toggle,
+            isVisualRefresh && styles['visual-refresh'],
+            isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+            transitioning && styles.transitioning
+          )}
+          onClick={toggleCollapseExpand}
+          ref={toggleButtonRef}
           {...isFocusVisible}
         >
+          {toggleButtonText && <span>{toggleButtonText}</span>}
           <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
-            <InternalIcon size="small" name="angle-down" />
+            <InternalIcon size="normal" name="angle-down" />
           </span>
         </button>
-      </div>
+      </>
     );
   }
 
@@ -149,7 +242,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * from the flashbar will render with visual transitions.
    */
   function renderFlatItemsWithTransitions() {
-    if (isFlashbarStacked || motionDisabled || !items) {
+    if (isFlashbarStackable || motionDisabled || !items) {
       return;
     }
 
@@ -180,7 +273,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
    * from the flashbar will render without visual transitions.
    */
   function renderFlatItemsWithoutTransitions() {
-    if (isFlashbarStacked || !motionDisabled || !items) {
+    if (isFlashbarStackable || !motionDisabled || !items) {
       return;
     }
 
@@ -208,7 +301,11 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(getVisualContextClassname('flashbar'), isVisualRefresh ? styles['flash-refresh'] : '')}
+        className={clsx(
+          getVisualContextClassname('flashbar'),
+          animateFlash && styles['flash-with-motion'],
+          isVisualRefresh && styles['flash-refresh']
+        )}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}
@@ -220,7 +317,12 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.flashbar, styles[`breakpoint-${breakpoint}`])}
+      className={clsx(
+        baseProps.className,
+        styles.flashbar,
+        styles[`breakpoint-${breakpoint}`],
+        isFlashbarStackable && styles.stack
+      )}
       ref={mergedRef}
     >
       {renderStackedItems()}

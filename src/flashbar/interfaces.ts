@@ -59,13 +59,14 @@ export interface FlashbarProps extends BaseComponentProps {
 
 export interface StackedFlashbarProps {
   stackItems: true;
-  ariaLabels?: StackedFlashbarProps.AriaLabels;
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+  i18nStrings?: StackedFlashbarProps.I18nStrings;
 }
 
 export namespace StackedFlashbarProps {
-  export interface AriaLabels {
-    stackCollapseLabel?: string;
-    stackExpandLabel?: string;
+  export interface I18nStrings {
+    collapseButtonAriaLabel: string;
+    expandButtonAriaLabel: (itemCount: number) => string;
+    toggleButtonText: (itemCount: number) => string;
   }
 }
