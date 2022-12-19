@@ -8,6 +8,31 @@ Cloudscape was built for and is used by [Amazon Web Services (AWS)](https://aws.
 
 Components APIs and guidelines can be found in the [Components section of the Cloudscape website](https://cloudscape.design/components/).
 
+## Getting started
+For an in-depth guide on getting started with Cloudscape development, check out the [Cloudscape website](https://cloudscape.design/get-started/integration/using-cloudscape-components/).
+
+### Installation
+All Cloudscape packages are available on npm.
+
+```sh
+npm install @cloudscape-design/components @cloudscape-design/global-styles
+```
+
+### Using Cloudscape components
+Here is a basic example that renders a primary button:
+
+```jsx
+import Button from '@cloudscape-design/components/button';
+import '@cloudscape-design/global-styles/index.css';
+
+function App {
+  return <Button variant="primary">Click me</Button>;
+}
+```
+
+You can also play around with a small example on CodeSandbox:
+
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/cloudscape-design-system-react-javascript-ljs1t7)
 
 ## Getting help
 
