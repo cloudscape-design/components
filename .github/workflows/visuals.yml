@@ -17,13 +17,13 @@ jobs:
     name: Generate reference images
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.base_ref }}
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16
       - run: npm install
       - name: Install BackstopJS
         run: npm --prefix backstop install ./backstop
@@ -47,7 +47,7 @@ jobs:
     needs:
       - buildReference
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download reference artifacts
         uses: actions/download-artifact@v2
         with:
