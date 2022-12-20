@@ -9,6 +9,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -34,6 +35,7 @@ export interface TheadProps {
   hidden?: boolean;
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
+  stripedRows?: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -55,6 +57,7 @@ const Thead = React.forwardRef(
       onSortingChange,
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
+      stripedRows,
       showFocusRing = null,
       sticky = false,
       hidden = false,
@@ -62,13 +65,23 @@ const Thead = React.forwardRef(
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
+    const isVisualRefresh = useVisualRefresh();
+
     const headerCellClass = clsx(
       headerCellStyles['header-cell'],
       headerCellStyles[`header-cell-variant-${variant}`],
       sticky && headerCellStyles['header-cell-sticky'],
-      stuck && headerCellStyles['header-cell-stuck']
+      stuck && headerCellStyles['header-cell-stuck'],
+      stripedRows && headerCellStyles['has-striped-rows'],
+      isVisualRefresh && headerCellStyles['is-visual-refresh']
     );
-    const selectionCellClass = clsx(styles['selection-control'], styles['selection-control-header']);
+
+    const selectionCellClass = clsx(
+      styles['selection-control'],
+      styles['selection-control-header'],
+      isVisualRefresh && styles['is-visual-refresh']
+    );
+
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
     return (

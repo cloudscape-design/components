@@ -31,7 +31,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &:first-child {
     border-left: $border-placeholder;
-    padding-left: $cell-edge-horizontal-padding;
   }
   &:last-child {
     border-right: $border-placeholder;
@@ -40,9 +39,19 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-first-row {
     border-top: $border-placeholder;
   }
-  &-last-row {
-    // skip border for the last row, because container already has a border
-    border-bottom: $border-placeholder;
+  &-last-row:not(.body-cell-selected) {
+    &:not(.has-footer) {
+      // skip the border for the last row because the container already has a border
+      border-bottom: $border-placeholder;
+    }
+
+    &.has-footer {
+      /*
+      Add a bottom border to the body cells of the last row as a separator between the 
+      table and the footer
+      */
+      border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    }
   }
   &-shaded {
     background: awsui.$color-background-cell-shaded;
@@ -94,5 +103,39 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   // because rows reuse adjacent selected borders (visual refresh)
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
+  }
+}
+
+/*
+In Visual Refresh the first cell of each row should align with the 
+left edge of the table as closely as possible.
+*/
+.body-cell:not(.is-visual-refresh) {
+  &:first-child {
+    padding-left: $cell-edge-horizontal-padding;
+  }
+}
+
+.body-cell.is-visual-refresh {
+  /*
+  Remove the placeholder border if the row is not selectable. 
+  Rows that are not selectable will reserve the horizontal space 
+  that the placeholder border would consume.
+  */
+  &:first-child:not(.has-selection) {
+    border-left: none;
+  }
+
+  &:first-child:not(.has-striped-rows) {
+    padding-left: awsui.$space-xxxs;
+  }
+
+  /*
+  Striped rows requires additional left padding because the 
+  shaded background makes the child content appear too close 
+  to the table edge.
+  */
+  &:first-child.has-striped-rows {
+    padding-left: awsui.$space-xxs;
   }
 }

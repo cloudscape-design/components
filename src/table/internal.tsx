@@ -126,13 +126,15 @@ const InternalTable = React.forwardRef(
       }
     }
 
-    const isRefresh = useVisualRefresh();
-    const computedVariant = isRefresh
+    const isVisualRefresh = useVisualRefresh();
+    const computedVariant = isVisualRefresh
       ? variant
       : ['embedded', 'full-page'].indexOf(variant) > -1
       ? 'container'
       : variant;
     const hasHeader = !!(header || filter || pagination || preferences);
+    const hasSelection = !!selectionType;
+    const hasFooter = !!footer;
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -157,6 +159,7 @@ const InternalTable = React.forwardRef(
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
+      stripedRows,
     };
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
@@ -176,7 +179,7 @@ const InternalTable = React.forwardRef(
         tableRef={tableRefObject}
         visibleColumnDefinitions={visibleColumnDefinitions}
         resizableColumns={resizableColumns}
-        hasSelection={!!selectionType}
+        hasSelection={hasSelection}
       >
         <InternalContainer
           {...baseProps}
@@ -217,7 +220,6 @@ const InternalTable = React.forwardRef(
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                <hr className={styles.divider} />
                 <div className={styles.footer}>{footer}</div>
               </div>
             )
@@ -229,7 +231,7 @@ const InternalTable = React.forwardRef(
           <div
             ref={wrapperRef}
             className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
-              [styles['has-footer']]: !!footer,
+              [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
             onScroll={handleScroll}
@@ -262,7 +264,7 @@ const InternalTable = React.forwardRef(
                   <tr>
                     <td
                       colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
-                      className={styles['cell-merged']}
+                      className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                     >
                       <div
                         className={styles['cell-merged-content']}
@@ -308,7 +310,10 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableBodyCell
-                            className={styles['selection-control']}
+                            className={clsx(
+                              styles['selection-control'],
+                              isVisualRefresh && styles['is-visual-refresh']
+                            )}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
@@ -317,6 +322,8 @@ const InternalTable = React.forwardRef(
                             wrapLines={false}
                             isEvenRow={isEven}
                             stripedRows={stripedRows}
+                            hasSelection={hasSelection}
+                            hasFooter={hasFooter}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -348,6 +355,8 @@ const InternalTable = React.forwardRef(
                             isPrevSelected={isPrevSelected}
                             stripedRows={stripedRows}
                             isEvenRow={isEven}
+                            hasSelection={hasSelection}
+                            hasFooter={hasFooter}
                           />
                         ))}
                       </tr>
