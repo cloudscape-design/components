@@ -118,7 +118,12 @@ export default function Flashbar(props: FlashbarProps) {
     // and the new state can be retrieved from the current DOM elements.
     if (initialAnimationState) {
       const elements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-      animate({ elements, oldState: initialAnimationState, onTransitionEnd: () => setTransitioning(false) });
+      animate({
+        elements,
+        oldState: initialAnimationState,
+        newElementInitialState: ({ top }) => ({ scale: 0.9, y: -0.2 * top }),
+        onTransitionsEnd: () => setTransitioning(false),
+      });
       if (toggleButtonRect && toggleButtonRef) {
         animate({
           elements: {

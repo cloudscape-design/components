@@ -14,38 +14,49 @@ export function getDOMRects(elements: Record<string | number, HTMLElement | null
 
 /*
   Animate DOM elements based on the FLIP technique
+  - https://aerotwist.com/blog/flip-your-animations/
+  - https://css-tricks.com/animating-layouts-with-the-flip-technique/
  */
 export function animate({
   oldState,
   elements,
-  onTransitionEnd,
+  onTransitionsEnd,
+  newElementInitialState,
 }: {
   elements: Record<string | number, HTMLElement | null>;
   oldState: Record<string | number, DOMRect>;
-  onTransitionEnd?: () => void;
+  onTransitionsEnd?: () => void;
+  newElementInitialState?: (newRect: DOMRect) => { scale?: number; y?: number };
 }) {
   // First, apply the transform that will make the elements "look like" in the start position
   for (const id in elements) {
     const element = elements[id];
     if (element) {
-      const { bottom, top, width } = element.getBoundingClientRect();
+      const newRect = element.getBoundingClientRect();
       const oldRect = oldState[id];
-      // If the element didn't exist previously, then we apply a light zoom-in and top-to-bottom animation
-      const invert = oldRect
-        ? { scale: oldRect.width / width, y: oldRect.bottom - bottom }
-        : { scale: 0.6, y: -0.2 * top };
-      // Make sure that the element adopts this change without animating
+      const noOpTransform = { scale: 1, y: 0 };
+      // Calculate initial position.
+      // If the element didn't exist previously, use the newElementInitialState function if provided.
+      // If not, default to no transitions (scale: 1, y: 0)
+      const calculatedInvertTransform = oldRect
+        ? { scale: oldRect.width / newRect.width, y: oldRect.bottom - newRect.bottom }
+        : newElementInitialState
+        ? newElementInitialState(newRect)
+        : {};
+      const invertTransform = { ...noOpTransform, ...calculatedInvertTransform };
+      // Apply this initial change, without animating
       element.style.transitionProperty = 'none';
-      element.style.transform = `scale(${invert.scale}) translateY(${invert.y}px)`;
+      element.style.transform = `scale(${invertTransform.scale}) translateY(${invertTransform.y}px)`;
       if (!oldRect) {
         // If the element didn't exist, then fade it in
-        // (besides the other subtle zoom-in and top-to-bottom animations mentioned above)
+        // (besides any other possibly defined transitions based on `newElementInitialState`)
         element.style.opacity = '0';
       }
     }
   }
 
   requestAnimationFrame(() => {
+    const ongoingAnimations = new Set();
     for (const id in elements) {
       const element = elements[id];
       if (element) {
@@ -58,15 +69,26 @@ export function animate({
           element.style.transform = '';
           element.style.opacity = '';
         }
-        const cleanUpAnimations = (event: TransitionEvent) => {
+        const onTransitionStart = (event: TransitionEvent) => {
+          if (event.target === element) {
+            ongoingAnimations.add(id);
+            element.removeEventListener('transitionstart', onTransitionStart);
+          }
+        };
+        const onTransitionEnd = (event: TransitionEvent) => {
           if (event.target === element) {
             element.style.transitionProperty = '';
-            if (onTransitionEnd) {
-              onTransitionEnd();
+            element.removeEventListener('transitionstart', onTransitionEnd);
+            if (onTransitionsEnd) {
+              ongoingAnimations.delete(id);
+              if (ongoingAnimations.size === 0) {
+                onTransitionsEnd();
+              }
             }
           }
         };
-        element.addEventListener('transitionend', cleanUpAnimations);
+        element.addEventListener('transitionstart', onTransitionStart);
+        element.addEventListener('transitionend', onTransitionEnd);
       }
     }
   });
