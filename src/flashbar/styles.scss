@@ -23,6 +23,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: awsui.$space-scaled-xs awsui.$space-flashbar-horizontal;
+  @include styles.container-shadow;
   border-top: none;
   border-radius: awsui.$border-radius-flashbar;
   color: awsui.$color-text-notification-default;
@@ -53,7 +54,6 @@
   margin: 0;
 
   &:not(.collapsed) {
-    @include styles.container-shadow;
     > li:not(:last-child) {
       margin-bottom: awsui.$space-xxxs;
     }
@@ -159,8 +159,7 @@
   grid-column: 1 / 4;
 }
 
-.stack > .collapsed > .item,
-.stack > .expanding > .flash-list-item {
+@mixin stacked-flash-z-index {
   // The first item should have the highest z index than the second item, and so forth...
   z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
 }
@@ -197,6 +196,8 @@ the grid layout will be:
     );
     grid-row-start: 1;
     grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
+
+    @include stacked-flash-z-index;
   }
 
   > .item:not(:first-of-type) {
@@ -227,8 +228,9 @@ the grid layout will be:
   }
 }
 
-.stack > .expanded > .flash-list-item {
+.stack > .expanded.transitioning > .flash-list-item {
   position: relative;
+  @include stacked-flash-z-index;
 }
 
 @mixin toggle-button-layout($margin-top-when-collapsed, $border-width) {
