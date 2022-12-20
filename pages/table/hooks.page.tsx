@@ -91,6 +91,7 @@ export default function App() {
             }}
           />
         }
+        stickyHeader={true}
       />
     </ScreenshotArea>
   );
