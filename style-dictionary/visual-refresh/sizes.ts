@@ -11,6 +11,7 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeIconLarge: '48px',
   sizeIconMedium: '20px',
   sizeIconNormal: '16px',
+  sizeTableSelectionHorizontal: '40px',
   sizeVerticalInput: { comfortable: '34px', compact: '30px' },
   sizeVerticalPanelIconOffset: { comfortable: '15px', compact: '13px' },
 };

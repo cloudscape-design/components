@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React from 'react';
 import { TableProps } from '../interfaces';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 interface TableBodyCellProps {
   className?: string;
@@ -17,6 +18,8 @@ interface TableBodyCellProps {
   isNextSelected: boolean;
   isPrevSelected: boolean;
   children?: React.ReactNode;
+  hasSelection?: boolean;
+  hasFooter?: boolean;
 }
 
 export function TableBodyCell({
@@ -31,7 +34,11 @@ export function TableBodyCell({
   isPrevSelected,
   isEvenRow,
   stripedRows,
+  hasSelection,
+  hasFooter,
 }: TableBodyCellProps) {
+  const isVisualRefresh = useVisualRefresh();
+
   return (
     <td
       style={style}
@@ -44,7 +51,11 @@ export function TableBodyCell({
         isSelected && styles['body-cell-selected'],
         isNextSelected && styles['body-cell-next-selected'],
         isPrevSelected && styles['body-cell-prev-selected'],
-        !isEvenRow && stripedRows && styles['body-cell-shaded']
+        !isEvenRow && stripedRows && styles['body-cell-shaded'],
+        stripedRows && styles['has-striped-rows'],
+        isVisualRefresh && styles['is-visual-refresh'],
+        hasSelection && styles['has-selection'],
+        hasFooter && styles['has-footer']
       )}
     >
       {children}

@@ -550,6 +550,7 @@ export type SizesTokenName =
   | 'sizeIconLarge'
   | 'sizeIconMedium'
   | 'sizeIconNormal'
+  | 'sizeTableSelectionHorizontal'
   | 'sizeVerticalInput'
   | 'sizeVerticalPanelIconOffset';
 export type SpacingTokenName =

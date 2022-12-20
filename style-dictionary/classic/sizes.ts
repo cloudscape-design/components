@@ -9,6 +9,7 @@ const tokens: StyleDictionary.SizesDictionary = {
   sizeCalendarGridWidth: '234px',
   sizeControl: '14px',
   sizeIconMedium: '16px',
+  sizeTableSelectionHorizontal: '54px',
   sizeVerticalInput: { comfortable: '32px', compact: '28px' },
 };
 
