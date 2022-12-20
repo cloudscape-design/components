@@ -54,6 +54,17 @@ export default function FlashbarPermutations() {
   const [stackItems, setStackItems] = useState(false);
   const [items, setItems] = useState(() => [...range(5).map(() => generateItem('info', dismiss, false, true))]);
 
+  const privateProps = stackItems
+    ? {
+        stackItems: true,
+        i18nStrings: {
+          collapseButtonAriaLabel: 'Show less notifications',
+          expandButtonAriaLabel: (itemCount: number) => `Show all ${itemCount} notifications`,
+          toggleButtonText: (itemCount: number) => `Notifications (${itemCount})`,
+        },
+      }
+    : {};
+
   return (
     <>
       <h1>Flashbar dismissal test</h1>
@@ -78,7 +89,7 @@ export default function FlashbarPermutations() {
           </Button>
           <Button onClick={() => removeLastAndAdd('error')}>Add And Remove</Button>
         </SpaceBetween>
-        <Flashbar items={items} {...({ stackItems } as any)} />
+        <Flashbar items={items} {...(privateProps as any)} />
       </SpaceBetween>
     </>
   );
