@@ -20,7 +20,7 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 
 import styles from './styles.css.js';
 import { getStackedItems } from './utils';
-import { animate, getDOMRects } from './animate';
+import { animate, getDOMRects } from '../internal/animate';
 
 export { FlashbarProps };
 
