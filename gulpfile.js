@@ -1,9 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-// our package builds only on NodeJS 12 and above
-require('please-upgrade-node')(require('./package.json'));
-
 const { series, parallel, watch } = require('gulp');
 const {
   clean,
