@@ -21,7 +21,7 @@ import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import {
-  SplitPanelContext,
+  SplitPanelContextProvider,
   SplitPanelContextProps,
   SplitPanelLastInteraction,
 } from '../internal/context/split-panel-context';
@@ -328,7 +328,7 @@ const OldAppLayout = React.forwardRef(
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
     };
     const splitPanelWrapped = splitPanel && (
-      <SplitPanelContext.Provider value={splitPanelContext}>{splitPanel}</SplitPanelContext.Provider>
+      <SplitPanelContextProvider value={splitPanelContext}>{splitPanel}</SplitPanelContextProvider>
     );
 
     const contentWrapperProps: ContentWrapperProps = {

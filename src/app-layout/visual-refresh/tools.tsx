@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
 import { AppLayoutContext } from './context';
-import { SplitPanelContext } from '../../internal/context/split-panel-context';
+import { useSplitPanelContext } from '../../internal/context/split-panel-context';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -41,9 +41,10 @@ export default function Tools({ children }: ToolsProps) {
     isAnyPanelOpen,
     navigationHide,
     toolsFocusControl,
+    splitPanelPosition,
   } = useContext(AppLayoutContext);
 
-  const { position: splitPanelPosition, openButtonAriaLabel } = useContext(SplitPanelContext);
+  const { openButtonAriaLabel } = useSplitPanelContext();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanel, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);

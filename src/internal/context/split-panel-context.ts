@@ -34,26 +34,14 @@ export interface SplitPanelContextProps {
   setOpenButtonAriaLabel?: (value: string) => void;
 }
 
-export const SplitPanelContext = createContext<SplitPanelContextProps>({
-  topOffset: 0,
-  bottomOffset: 0,
-  leftOffset: 0,
-  rightOffset: 0,
-  position: 'bottom',
-  size: 0,
-  getMaxWidth: () => 0,
-  getMaxHeight: () => 0,
-  isOpen: true,
-  isMobile: false,
-  isForcedPosition: false,
-  lastInteraction: undefined,
-  onResize: () => {},
-  onToggle: () => {},
-  onPreferencesChange: () => {},
-  reportSize: () => {},
-  reportHeaderHeight: () => {},
-});
+const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);
+
+export const SplitPanelContextProvider = SplitPanelContext.Provider;
 
 export function useSplitPanelContext() {
-  return useContext(SplitPanelContext);
+  const ctx = useContext(SplitPanelContext);
+  if (!ctx) {
+    throw new Error('Split panel can only be used inside app layout');
+  }
+  return ctx;
 }

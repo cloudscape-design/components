@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { SplitPanelContext } from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -26,9 +25,8 @@ export default function Main() {
     splitPanel,
     offsetBottom,
     footerHeight,
+    splitPanelPosition,
   } = useContext(AppLayoutContext);
-
-  const { position: splitPanelPosition } = useContext(SplitPanelContext);
 
   const isUnfocusable = isMobile && isAnyPanelOpen;
   const splitPanelHeight = offsetBottom - footerHeight;

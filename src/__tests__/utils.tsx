@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import path from 'path';
 import fs from 'fs';
+import React from 'react';
+import { SplitPanelContextProvider } from '../../lib/components/internal/context/split-panel-context';
+import { defaultSplitPanelContextProps } from './required-props-for-components';
 
 const componentsDir = path.resolve(__dirname, '../../lib/components');
 const definitionsDir = path.resolve(__dirname, '../../lib/components-definitions/components');
@@ -36,7 +39,29 @@ export function supportsDOMProperties(componentName: string) {
   return !componentsWithoutDOMPropertiesSupport.includes(componentName);
 }
 
+type WrapperComponent = React.ComponentType<{ children: React.ReactNode }>;
+
+const WrappedSplitPanel: WrapperComponent = ({ children }) => (
+  <SplitPanelContextProvider value={defaultSplitPanelContextProps}>{children}</SplitPanelContextProvider>
+);
+
+function wrap({ default: Component }: { default: React.ComponentType }, Wrapper: WrapperComponent) {
+  const Wrapped = (props: any) => {
+    return (
+      <Wrapper>
+        <Component {...props} />
+      </Wrapper>
+    );
+  };
+  Wrapped.displayName = Component.displayName;
+  return { default: Wrapped };
+}
+
 export function requireComponent(componentName: string): any {
+  if (componentName === 'split-panel') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return wrap(require(path.join(componentsDir, 'split-panel')), WrappedSplitPanel);
+  }
   return require(path.join(componentsDir, componentName));
 }
 

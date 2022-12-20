@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { i18nStrings } from '../code-editor/__tests__/common';
+export { defaultSplitPanelContextProps } from '../split-panel/__tests__/helpers';
 
 const defaultProps: Record<string, Record<string, any>> = {
   tabs: { tabs: [] },
