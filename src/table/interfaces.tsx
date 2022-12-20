@@ -73,7 +73,8 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    *   fills the remaining space of the table so the specified width is ignored.
    * * `minWidth` (string | number) - Specifies the minimum column width. Corresponds to the `min-width` css-property. When
    *   `resizableColumns` property is set to `true`, additional constraints apply: 1) string values are not allowed,
-   *   and 2) the column can't resize below than the specified width (defaults to "120px").
+   *   and 2) the column can't resize below than the specified width (defaults to "120px"). We recommend that you set a minimum width
+   *   of at least 176px for columns that are editable.
    * * `maxWidth` (string | number) - Specifies the maximum column width. Corresponds to the `max-width` css-property.
    *   Note that when the `resizableColumns` property is set to `true` this property is ignored.
    * * `ariaLabel` (LabelData => string) - An optional function that's called to provide an `aria-label` for the cell header.
