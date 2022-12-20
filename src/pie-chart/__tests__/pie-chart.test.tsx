@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { PieChartWrapper } from '../../../lib/components/test-utils/dom';
 import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
 import styles from '../../../lib/components/pie-chart/styles.css.js';
 import * as colors from '../../../lib/design-tokens';
+import { act } from 'react-dom/test-utils';
 
 const variants: Array<PieChartProps<PieChartProps.Datum>['variant']> = ['pie', 'donut'];
 const sizes: Array<PieChartProps<PieChartProps.Datum>['size']> = ['small', 'medium', 'large'];
@@ -430,6 +431,60 @@ describe('Details popover', () => {
     const detailPopover = wrapper.findDetailPopover();
     expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
     expect(detailPopover?.findContent()?.getElement()).toHaveTextContent('' + defaultData[0].value);
+  });
+
+  test('pressing escape closes the popover', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    act(() => {
+      fireEvent.keyDown(document, { key: 'Escape' });
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
+  });
+
+  test('allow mouse to be over details popover ', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseOver(wrapper!.findSegments()[0].getElement());
+    });
+
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+  });
+
+  test('close popover when mouse leaves it ', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findApplication()!.focus();
+
+    const detailPopover = wrapper.findDetailPopover();
+    expect(detailPopover?.findHeader()?.getElement()).toHaveTextContent(defaultData[0].title);
+
+    act(() => {
+      fireEvent.mouseLeave(wrapper!.findDetailPopover()!.getElement(), {
+        relatedTarget: wrapper.findApplication()?.getElement(),
+      });
+    });
+
+    expect(wrapper.findDetailPopover()).toBeNull();
   });
 
   test('shows value and percentage by default', () => {

@@ -5,8 +5,11 @@ import { render } from '@testing-library/react';
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
 import Input from '../../../lib/components/input';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import styles from '../../../lib/components/form-field/styles.css.js';
 
 const testInput = <Input value="follow me on tiktok" onChange={() => {}} />;
+
+const errorSelector = `:scope > .${styles.hints} .${styles.error}`;
 
 function renderFormField(props: FormFieldProps = {}) {
   const renderResult = render(<FormField {...props} />);
@@ -33,7 +36,7 @@ describe('controlId', () => {
 
     test('renders id for errorText based on controlId', () => {
       const wrapper = renderFormField({ controlId: formFieldControlId, errorText: 'Test error' });
-      expect(wrapper.findError()?.getElement().id).toBe(`${formFieldControlId}-error`);
+      expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
     });
 
     test('renders id for constraintText based on controlId', () => {
@@ -52,7 +55,7 @@ describe('controlId', () => {
 
       expect(wrapper.findLabel()?.getElement()).toHaveAttribute('for', formFieldControlId);
       expect(wrapper.findDescription()?.getElement().id).toBe(`${formFieldControlId}-description`);
-      expect(wrapper.findError()?.getElement().id).toBe(`${formFieldControlId}-error`);
+      expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
       expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
     });
 
@@ -109,7 +112,7 @@ describe('controlId', () => {
 
     test('generates own id and uses it for errorText', () => {
       const wrapper = renderFormField({ errorText: 'Test error' });
-      expect(wrapper.findError()?.getElement()).toHaveAttribute('id');
+      expect(wrapper.find(errorSelector)?.getElement()).toHaveAttribute('id');
     });
 
     test('generates own id and uses it for constraintText', () => {
@@ -129,7 +132,7 @@ describe('controlId', () => {
 
       expect(labelId).not.toBeUndefined();
       expect(wrapper.findDescription()?.getElement().id).toBe(labelId?.replace('label', 'description'));
-      expect(wrapper.findError()?.getElement().id).toBe(labelId?.replace('label', 'error'));
+      expect(wrapper.find(errorSelector)?.getElement().id).toBe(labelId?.replace('label', 'error'));
       expect(wrapper.findConstraint()?.getElement().id).toBe(labelId?.replace('label', 'constraint'));
     });
 

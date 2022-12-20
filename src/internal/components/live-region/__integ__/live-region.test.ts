@@ -22,7 +22,7 @@ function setupTest(testFn: (pageObject: LiveRegionPageObject) => Promise<void>) 
 
 describe('Live region', () => {
   test(
-    `doesn't render child contents as HTML`,
+    `Live region doesn't render child contents as HTML`,
     setupTest(async page => {
       await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt; Testing');
     })

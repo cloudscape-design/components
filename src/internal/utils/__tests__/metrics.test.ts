@@ -13,6 +13,7 @@ jest.mock(
 declare global {
   interface Window {
     AWSC?: any;
+    panorama?: any;
   }
 }
 
@@ -24,6 +25,11 @@ describe('Client Metrics support', () => {
       },
     };
     jest.spyOn(window.AWSC.Clog, 'log');
+  };
+
+  const definePanorama = () => {
+    window.panorama = () => {};
+    jest.spyOn(window, 'panorama');
   };
 
   const checkMetric = (metricName: string, detail: string[]) => {
@@ -320,6 +326,128 @@ describe('Client Metrics support', () => {
       defineClog();
       Metrics.logComponentLoaded();
       checkMetric(`awsui_components_d30`, ['main', 'components', 'default', 'loaded', 'DummyFrameWork', '3.0(HEAD)']);
+    });
+  });
+
+  describe.only('sendPanoramaMetric', () => {
+    test('does nothing when panorama is undefined', () => {
+      Metrics.sendPanoramaMetric('name', {}); // only proves no exception thrown
+    });
+
+    describe('when panorama is defined', () => {
+      let consoleSpy: jest.SpyInstance;
+      const metric = {
+        eventContext: 'context',
+        eventDetail: 'detail',
+        eventType: 'type',
+        eventValue: 'value',
+      };
+
+      beforeEach(() => {
+        definePanorama();
+        consoleSpy = jest.spyOn(console, 'error');
+      });
+
+      afterEach(() => {
+        expect(consoleSpy).not.toHaveBeenCalled();
+        jest.clearAllMocks();
+      });
+
+      test('delegates to window.panorama when defined', () => {
+        const mockDateNow = new Date('2022-12-16T00:00:00.00Z').valueOf();
+        jest.spyOn(global.Date, 'now').mockImplementationOnce(() => mockDateNow);
+
+        Metrics.sendPanoramaMetric('name', metric);
+        expect(window.panorama).toHaveBeenCalledWith('name', { ...metric, timestamp: mockDateNow });
+      });
+
+      describe('Metric name validation', () => {
+        const tryValidMetric = (metricName: string) => {
+          it(`calls panorama when valid metric name used (${metricName})`, () => {
+            Metrics.sendPanoramaMetric(metricName, metric);
+            expect(window.panorama).toHaveBeenCalledWith(metricName, expect.objectContaining(metric));
+          });
+        };
+
+        const tryInvalidMetric = (metricName: string) => {
+          it(`logs an error when invalid metric name used (${metricName})`, () => {
+            Metrics.sendPanoramaMetric(metricName, metric);
+            expect(consoleSpy).toHaveBeenCalledWith(`Invalid metric name: ${metricName}`);
+            consoleSpy.mockReset();
+          });
+        };
+
+        tryValidMetric('1'); // min length 1 char
+        tryValidMetric('123456789'); // digits are ok
+        tryValidMetric('lowerUPPER'); // lower and uppercase chars ok
+        tryValidMetric('dash-dash-dash'); // dashes ok
+        tryValidMetric('underscore_underscore'); // 32 chars: max length
+        tryValidMetric('123456789_123456789_123456789_12'); // 32 chars: max length
+
+        tryInvalidMetric(''); // too short, empty string not allowed
+        tryInvalidMetric('123456789_123456789_123456789_123'); // 33 chars: too long
+        tryInvalidMetric('colons:not:allowed'); // invalid characters
+        tryInvalidMetric('spaces not allowed'); // invalid characters
+      });
+
+      describe('Metric detail validation', () => {
+        test('accepts event detail up to 200 characters', () => {
+          const inputMetric = {
+            ...metric,
+            eventDetail: new Array(201).join('a'),
+          };
+
+          Metrics.sendPanoramaMetric('metricName', inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(inputMetric));
+        });
+
+        test('throws an error when detail is too long', () => {
+          const invalidMetric = {
+            ...metric,
+            eventDetail: new Array(202).join('a'),
+          };
+
+          Metrics.sendPanoramaMetric('metricName', invalidMetric);
+          expect(consoleSpy).toHaveBeenCalledWith(
+            `Detail for metric metricName is too long: ${invalidMetric.eventDetail}`
+          );
+          consoleSpy.mockReset();
+        });
+
+        test('accepts event detail as an object', () => {
+          const inputMetric = {
+            ...metric,
+            eventDetail: {
+              name: 'Hello',
+            },
+          };
+
+          const expectedMetric = {
+            ...metric,
+            eventDetail: JSON.stringify(inputMetric.eventDetail),
+          };
+
+          Metrics.sendPanoramaMetric('metricName', inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(expectedMetric));
+        });
+
+        test('accepts event value as an object', () => {
+          const inputMetric = {
+            ...metric,
+            eventValue: {
+              name: 'Hello',
+            },
+          };
+
+          const expectedMetric = {
+            ...metric,
+            eventValue: JSON.stringify(inputMetric.eventValue),
+          };
+
+          Metrics.sendPanoramaMetric('metricName', inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(expectedMetric));
+        });
+      });
     });
   });
 });

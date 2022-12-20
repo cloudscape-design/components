@@ -15,8 +15,9 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
-import { useAnalytics } from '../internal/hooks/use-analytics';
+import { useWizardAnalytics } from './internal/analytics';
 
 export { WizardProps };
 
@@ -33,11 +34,11 @@ export default function Wizard({
   ...rest
 }: WizardProps) {
   const { __internalRootRef } = useBaseComponent('Wizard');
-
   const baseProps = getBaseProps(rest);
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
+  const { trackStartStep, trackNavigate, trackSubmit } = useWizardAnalytics();
 
   const smallContainer = breakpoint === 'default';
 
@@ -55,6 +56,7 @@ export default function Wizard({
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
+    trackNavigate(actualActiveStepIndex, requestedStepIndex, reason);
     setActiveStepIndex(requestedStepIndex);
     fireNonCancelableEvent(onNavigate, { requestedStepIndex, reason });
   };
@@ -62,9 +64,14 @@ export default function Wizard({
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
   const onCancelClick = () => fireNonCancelableEvent(onCancel);
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
-  const onPrimaryClick = isLastStep
-    ? () => fireNonCancelableEvent(onSubmit)
-    : () => navigationEvent(actualActiveStepIndex + 1, 'next');
+  const onPrimaryClick = () => {
+    if (isLastStep) {
+      trackSubmit(actualActiveStepIndex);
+      fireNonCancelableEvent(onSubmit);
+    } else {
+      navigationEvent(actualActiveStepIndex + 1, 'next');
+    }
+  };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {
     warnOnce(
@@ -82,11 +89,12 @@ export default function Wizard({
     );
   }
 
-  const analyticsEnabled = useAnalytics();
-  const analyticsProps = analyticsEnabled ? { ['data-analytics-type']: 'funnel' } : {};
+  useEffectOnUpdate(() => {
+    trackStartStep(actualActiveStepIndex);
+  }, [actualActiveStepIndex, trackStartStep]);
 
   return (
-    <div {...analyticsProps} {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
+    <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>
       <div
         className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
       >

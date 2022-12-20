@@ -6,15 +6,6 @@ import { render, screen } from '@testing-library/react';
 
 jest.mock('../../../environment', () => ({ ALWAYS_VISUAL_REFRESH: true }), { virtual: true });
 
-const originalFn = window.CSS.supports;
-beforeEach(() => {
-  window.CSS.supports = jest.fn().mockReturnValue(true);
-});
-
-afterEach(() => {
-  window.CSS.supports = originalFn;
-});
-
 describe('useVisualRefresh with locked visual refresh mode', () => {
   function App() {
     const isRefresh = useVisualRefresh();

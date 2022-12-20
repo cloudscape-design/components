@@ -10,6 +10,7 @@ import PopoverContainer from '../../../popover/container';
 import PopoverBody from '../../../popover/body';
 import popoverStyles from '../../../popover/styles.css.js';
 import { nodeContains } from '../../utils/dom';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import styles from './styles.css.js';
 
@@ -36,35 +37,51 @@ export interface ChartPopoverProps extends PopoverProps {
   /** Event that is fired when the popover is dismissed */
   onDismiss: (outsideClick?: boolean) => void;
 
+  /** Fired when the pointer enters the hoverable area around the popover */
+  onMouseEnter?: (event: React.MouseEvent) => void;
+
+  /** Fired when the pointer leaves the hoverable area around the popover */
+  onMouseLeave?: (event: React.MouseEvent) => void;
+
   /** Popover content */
   children?: React.ReactNode;
 }
 
-export default function ChartPopover({
-  position = 'right',
-  size = 'medium',
-  fixedWidth = false,
-  dismissButton = false,
-  dismissAriaLabel,
+export default React.forwardRef(ChartPopover);
 
-  children,
+function ChartPopover(
+  {
+    position = 'right',
+    size = 'medium',
+    fixedWidth = false,
+    dismissButton = false,
+    dismissAriaLabel,
 
-  title,
-  trackRef,
-  trackKey,
-  onDismiss,
-  container,
+    children,
 
-  ...restProps
-}: ChartPopoverProps) {
+    title,
+    trackRef,
+    trackKey,
+    onDismiss,
+    container,
+
+    onMouseEnter,
+    onMouseLeave,
+
+    ...restProps
+  }: ChartPopoverProps,
+  ref: React.Ref<HTMLElement>
+) {
   const baseProps = getBaseProps(restProps);
-  const popoverRef = useRef<HTMLDivElement | null>(null);
+  const popoverObjectRef = useRef<HTMLDivElement | null>(null);
+
+  const popoverRef = useMergeRefs(popoverObjectRef, ref);
 
   useEffect(() => {
     const onDocumentClick = (event: MouseEvent) => {
       if (
         event.target &&
-        !nodeContains(popoverRef.current, event.target as Element) && // click not in popover
+        !nodeContains(popoverObjectRef.current, event.target as Element) && // click not in popover
         !nodeContains(container, event.target as Element) // click not in segment
       ) {
         onDismiss(true);
@@ -82,6 +99,8 @@ export default function ChartPopover({
       {...baseProps}
       className={clsx(popoverStyles.root, styles.root, baseProps.className, { [styles.dismissable]: dismissButton })}
       ref={popoverRef}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <PopoverContainer
         size={size}
@@ -96,14 +115,17 @@ export default function ChartPopover({
           </div>
         )}
       >
-        <PopoverBody
-          dismissButton={dismissButton}
-          dismissAriaLabel={dismissAriaLabel}
-          header={title}
-          onDismiss={onDismiss}
-        >
-          {children}
-        </PopoverBody>
+        <div className={styles['hover-area']}>
+          <PopoverBody
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            header={title}
+            onDismiss={onDismiss}
+            className={styles['popover-body']}
+          >
+            {children}
+          </PopoverBody>
+        </div>
       </PopoverContainer>
     </div>
   );

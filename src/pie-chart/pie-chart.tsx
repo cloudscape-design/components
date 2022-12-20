@@ -88,6 +88,7 @@ export default <T extends PieChartProps.Datum>({
   const containerRef = useRef<HTMLDivElement>(null);
   const focusedSegmentRef = useRef<SVGGElement>(null);
   const popoverTrackRef = useRef<SVGCircleElement>(null);
+  const popoverRef = useRef<HTMLElement | null>(null);
   const isRefresh = useVisualRefresh();
 
   const dimensions = isRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
@@ -140,6 +141,7 @@ export default <T extends PieChartProps.Datum>({
   const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
 
   const popoverDismissedRecently = useRef(false);
+  const escapePressed = useRef(false);
 
   const highlightSegment = useCallback(
     (internalDatum: InternalChartDatum<T>) => {
@@ -174,6 +176,7 @@ export default <T extends PieChartProps.Datum>({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         clearHighlightedSegment();
+        escapePressed.current = true;
       }
     };
     document.addEventListener('keydown', onKeyDown);
@@ -194,6 +197,10 @@ export default <T extends PieChartProps.Datum>({
   );
   const onMouseOver = useCallback(
     (internalDatum: InternalChartDatum<T>) => {
+      if (escapePressed.current) {
+        escapePressed.current = false;
+        return;
+      }
       if (pinnedSegment !== null) {
         return;
       }
@@ -201,13 +208,16 @@ export default <T extends PieChartProps.Datum>({
     },
     [pinnedSegment, highlightSegment]
   );
-  const onMouseOut = useCallback(() => {
-    if (pinnedSegment !== null) {
-      return;
-    }
+  const onMouseOut = useCallback(
+    (event: React.MouseEvent<SVGElement, MouseEvent>) => {
+      if (pinnedSegment !== null || popoverRef.current?.contains(event.relatedTarget as Node)) {
+        return;
+      }
 
-    clearHighlightedSegment();
-  }, [pinnedSegment, clearHighlightedSegment]);
+      clearHighlightedSegment();
+    },
+    [pinnedSegment, clearHighlightedSegment]
+  );
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left && event.keyCode !== KeyCode.enter) {
@@ -279,6 +289,13 @@ export default <T extends PieChartProps.Datum>({
     }
   };
 
+  const onPopoverLeave = (event: React.MouseEvent) => {
+    if (pinnedSegment !== null || focusedSegmentRef.current!.contains(event.relatedTarget as Node)) {
+      return;
+    }
+    clearHighlightedSegment();
+  };
+
   return (
     <div
       className={clsx(styles.content, styles[`content--${size}`], {
@@ -319,6 +336,7 @@ export default <T extends PieChartProps.Datum>({
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyDown={onKeyDown}
+            onMouseOut={onMouseOut}
           >
             <Segments
               pieData={pieData}
@@ -361,6 +379,7 @@ export default <T extends PieChartProps.Datum>({
           )}
           {isTooltipOpen && tooltipData && (
             <ChartPopover
+              ref={popoverRef}
               title={
                 tooltipData.series && (
                   <InternalBox className={styles['popover-header']} variant="strong">
@@ -376,6 +395,7 @@ export default <T extends PieChartProps.Datum>({
               onDismiss={onPopoverDismiss}
               container={plotRef.current?.svg || null}
               size={detailPopoverSize}
+              onMouseLeave={onPopoverLeave}
             >
               {tooltipContent}
             </ChartPopover>

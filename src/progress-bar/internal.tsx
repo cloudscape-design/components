@@ -85,14 +85,14 @@ export const ResultState = ({ isInFlash, resultText, resultButtonText, status, o
 
   if (isInFlash) {
     return (
-      <div className={styles[`result-container-${status}`]}>
+      <div className={styles[`result-container-${status}`]} aria-live="polite" aria-atomic="true">
         <span className={styles['result-text']}>{resultText}</span>
       </div>
     );
   }
 
   return (
-    <div className={styles[`result-container-${status}`]}>
+    <div className={styles[`result-container-${status}`]} aria-live="polite" aria-atomic="true">
       <span className={clsx(hasResultButton && styles['with-result-button'])}>
         <InternalStatusIndicator type={status === 'success' ? 'success' : 'error'}>
           <span className={styles['result-text']}>{resultText}</span>

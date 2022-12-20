@@ -1,0 +1,9 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <path class="stroke-linejoin-round" d="M13.76 1.33997L2.10999 12.98"/>
+  <path class="stroke-linejoin-round" d="M4.75 10.8C5.63 11.55 6.76 12 8 12C10.76 12 13 9.76 13 7V6"/>
+  <path class="stroke-linejoin-round" d="M8 15V12"/>
+  <path class="stroke-linejoin-round" d="M3 15H13"/>
+  <path class="filled" d="M8 1C6.9 1 6 1.9 6 3V4.09L8.88 1.21C8.61 1.08 8.32 1 8 1Z"/>
+  <path class="filled" d="M6.64001 8.45997C7.00001 8.78997 7.47001 8.99997 8.00001 8.99997C9.10001 8.99997 10 8.09997 10 6.99997V5.08997L6.64001 8.44997V8.45997Z"/>
+  <path class="stroke-linejoin-round" d="M3.37001 8.53001C3.0236 8.18361 3.00021 7.53722 3.00002 7.00001C2.99999 6.91689 3.00001 6.83639 3.00001 6.76001L3.00002 6"/>
+</svg>

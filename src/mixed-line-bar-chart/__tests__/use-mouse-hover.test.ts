@@ -13,6 +13,7 @@ const datum = { x: 0, y: 0 } as any;
 
 const commonProps = {
   plotRef: { current: { svg: SVGElement, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+  popoverRef: { current: null },
   scaledSeries: [{ color: 'blue', x: 100, y: 100, datum, series }],
   barGroups: [],
   highlightSeries: jest.fn(),
@@ -42,6 +43,7 @@ describe('Mouse hover hook', () => {
     const { hook } = renderMouseHoverHook();
     expect('onSVGMouseMove' in hook.current).toBeTruthy();
     expect('onSVGMouseOut' in hook.current).toBeTruthy();
+    expect('onPopoverLeave' in hook.current).toBeTruthy();
   });
 
   test('calls highlightX', () => {
@@ -100,6 +102,58 @@ describe('Mouse hover hook', () => {
 
     act(() => hook.current.onSVGMouseOut(mouseOutEvent));
     expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not clear highlighted X on mouseOut if moving within popover', () => {
+    const SvgElementDummy = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+    SvgElementDummy.appendChild(lineElement);
+    const popoverWrapper = document.createElement('div');
+    const popoverDiv = document.createElement('div');
+    popoverWrapper.appendChild(popoverDiv);
+
+    const customProps = {
+      highlightX: jest.fn(),
+      popoverRef: { current: popoverWrapper },
+      plotRef: { current: { svg: SvgElementDummy, focusApplication: jest.fn(), focusPlot: jest.fn() } },
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+
+    // set marker first
+    const mouseMoveEvent = {
+      target: SvgElementDummy,
+      clientX: 110,
+      clientY: 110,
+    } as any;
+
+    act(() => hook.current.onSVGMouseMove(mouseMoveEvent));
+
+    expect(customProps.highlightX).toHaveBeenCalledWith({ scaledX: 100, label: 0 });
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+
+    const mouseOutEvent = {
+      relatedTarget: popoverWrapper,
+      clientX: 10,
+      clientY: 10,
+    } as any;
+
+    act(() => hook.current.onSVGMouseOut(mouseOutEvent));
+    expect(customProps.highlightX).toHaveBeenCalledTimes(1);
+  });
+
+  test('clears highlightX when onPopoverLeave is called', () => {
+    const customProps = {
+      highlightX: jest.fn(),
+      clearHighlightedSeries: jest.fn(),
+    };
+    const { hook } = renderMouseHoverHook(customProps);
+    const event = {
+      relatedTarget: null,
+    } as any;
+    act(() => hook.current.onPopoverLeave(event));
+    expect(customProps.highlightX).toHaveBeenCalledWith(null);
+    expect(customProps.clearHighlightedSeries).toHaveBeenCalledTimes(1);
   });
 
   test('highlights point when moving close', () => {

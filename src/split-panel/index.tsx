@@ -51,10 +51,8 @@ export default function SplitPanel({
     bottomOffset,
     rightOffset,
     contentWidthStyles,
-    isCopy,
     isOpen,
     isForcedPosition,
-    splitPanelRef,
     lastInteraction,
     onPreferencesChange,
     onResize,
@@ -247,7 +245,7 @@ export default function SplitPanel({
     }
   }, [rightOffset, __internalRootRef]);
 
-  const mergedRef = useMergeRefs(splitPanelRef, splitPanelRefObject, __internalRootRef);
+  const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
 
   /**
    * The AppLayout factor moved the circular buttons out of the
@@ -255,7 +253,7 @@ export default function SplitPanel({
    * is still needed for the early return to prevent execution
    * of the following code.
    */
-  if (isRefresh && (!isOpen || isCopy) && position === 'side') {
+  if (isRefresh && !isOpen && position === 'side') {
     return <></>;
   }
 

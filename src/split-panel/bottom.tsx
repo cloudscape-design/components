@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { TransitionStatus } from '../internal/components/transition';
 import { SplitPanelContentProps } from './interfaces';
 import styles from './styles.css.js';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
@@ -37,9 +38,17 @@ export function SplitPanelContentBottom({
     disableContentPaddings,
     contentWrapperPaddings,
     isMobile,
-    splitPanelHeaderRef,
+    reportHeaderHeight,
   } = useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
+
+  const headerRef = useRef<HTMLDivElement>(null);
+  useResizeObserver(headerRef, entry => reportHeaderHeight(entry.borderBoxHeight));
+  useEffect(() => {
+    // report empty height when unmounting the panel
+    return () => reportHeaderHeight(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const centeredMaxWidthClasses = clsx({
     [styles['pane-bottom-center-align']]: isRefresh,
@@ -68,7 +77,7 @@ export function SplitPanelContentBottom({
     >
       {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={splitPanelHeaderRef}>
+        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
           {header}
         </div>
         <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>

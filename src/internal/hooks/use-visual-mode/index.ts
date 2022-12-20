@@ -5,6 +5,8 @@ import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 import { isMotionDisabled } from '../../motion';
 import { findUpUntil } from '../../utils/dom';
 import { useMutationObserver } from '../use-mutation-observer';
+import { isDevelopment } from '../../is-development';
+import { warnOnce } from '../../logging';
 
 export function useCurrentMode(elementRef: React.RefObject<HTMLElement>) {
   const [value, setValue] = useState<'light' | 'dark'>('light');
@@ -30,19 +32,32 @@ export function useDensityMode(elementRef: React.RefObject<HTMLElement>) {
   return value;
 }
 
+export const useVisualRefresh = ALWAYS_VISUAL_REFRESH ? () => true : useVisualRefreshDynamic;
+
 // We expect VR is to be set only once and before the application is rendered.
 let visualRefreshState: undefined | boolean = undefined;
 
-export function useVisualRefresh() {
-  if (visualRefreshState === undefined) {
-    const supportsCSSVariables = typeof window !== 'undefined' && window.CSS?.supports?.('color', 'var(--test-var)');
+// for testing
+export function clearVisualRefreshState() {
+  visualRefreshState = undefined;
+}
 
-    if (ALWAYS_VISUAL_REFRESH) {
-      visualRefreshState = true;
-    } else if (!supportsCSSVariables) {
-      visualRefreshState = false;
-    } else {
-      visualRefreshState = !!document.querySelector('.awsui-visual-refresh');
+function detectVisualRefresh() {
+  return typeof document !== 'undefined' && !!document.querySelector('.awsui-visual-refresh');
+}
+
+export function useVisualRefreshDynamic() {
+  if (visualRefreshState === undefined) {
+    visualRefreshState = detectVisualRefresh();
+  }
+  if (isDevelopment) {
+    const newVisualRefreshState = detectVisualRefresh();
+    if (newVisualRefreshState !== visualRefreshState) {
+      warnOnce(
+        'Visual Refresh',
+        'Dynamic visual refresh change detected. This is not supported. ' +
+          'Make sure `awsui-visual-refresh` is attached to the `<body>` element before initial React render'
+      );
     }
   }
   return visualRefreshState;

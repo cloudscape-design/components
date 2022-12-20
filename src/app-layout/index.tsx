@@ -10,7 +10,6 @@ import { applyDefaults } from './defaults';
 import { AppLayoutProps } from './interfaces';
 import { Notifications } from './notifications';
 import { MobileToolbar } from './mobile-toolbar';
-import { SplitPanelWrapper } from './split-panel-wrapper';
 import { useFocusControl } from './utils/use-focus-control';
 import useWindowWidth from './utils/use-window-width';
 import useContentHeight from './utils/use-content-height';
@@ -21,7 +20,11 @@ import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { SplitPanelContextProps, SplitPanelLastInteraction } from '../internal/context/split-panel-context';
+import {
+  SplitPanelContext,
+  SplitPanelContextProps,
+  SplitPanelLastInteraction,
+} from '../internal/context/split-panel-context';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,
@@ -41,7 +44,6 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 export { AppLayoutProps };
 
@@ -165,14 +167,6 @@ const OldAppLayout = React.forwardRef(
     const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
-    const [splitPanelHeaderHeight, splitPanelHeaderMeasureRef] = useContainerQuery(
-      rect => (splitPanel ? rect.height : 0),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [splitPanel, isSplitpanelForcedPosition]
-    );
-
-    const splitPanelHeaderRefObject = useRef(null);
-    const splitPanelHeaderRef = useMergeRefs(splitPanelHeaderMeasureRef, splitPanelHeaderRefObject);
     const anyPanelOpen = navigationVisible || toolsVisible;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
     const stickyNotificationsHeight = stickyNotifications ? notificationsHeight : null;
@@ -188,12 +182,6 @@ const OldAppLayout = React.forwardRef(
       }
     );
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
-
-    const [splitPanelHeight, splitPanelRef] = useContainerQuery(
-      rect => (splitPanel ? rect.height : 0),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [splitPanel, splitPanelPosition, isSplitpanelForcedPosition]
-    );
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
@@ -315,6 +303,7 @@ const OldAppLayout = React.forwardRef(
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const splitPanelContext: SplitPanelContextProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
@@ -326,20 +315,21 @@ const OldAppLayout = React.forwardRef(
       size: splitPanelSize,
       getMaxWidth: getSplitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
-      getHeader: () => splitPanelHeaderRefObject.current,
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
       isOpen: splitPanelOpen,
       isMobile,
       isForcedPosition: isSplitpanelForcedPosition,
       lastInteraction: splitPanelLastInteraction,
-      splitPanelRef,
-      splitPanelHeaderRef,
       onResize: onSplitPanelSizeSet,
       onToggle,
       onPreferencesChange: onSplitPanelPreferencesSet,
       reportSize: setSplitPanelReportedSize,
+      reportHeaderHeight: setSplitPanelReportedHeaderHeight,
     };
+    const splitPanelWrapped = splitPanel && (
+      <SplitPanelContext.Provider value={splitPanelContext}>{splitPanel}</SplitPanelContext.Provider>
+    );
 
     const contentWrapperProps: ContentWrapperProps = {
       navigationPadding: navigationHide || !!navigationOpen,
@@ -375,8 +365,8 @@ const OldAppLayout = React.forwardRef(
       (!splitPanel || finalSplitPanePosition !== 'bottom'
         ? undefined
         : splitPanelOpen
-        ? splitPanelHeight
-        : splitPanelHeaderHeight) ?? undefined;
+        ? splitPanelReportedSize
+        : splitPanelReportedHeaderHeight) ?? undefined;
 
     const contentWidthStyles = !isMobile
       ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
@@ -551,13 +541,11 @@ const OldAppLayout = React.forwardRef(
                   </div>
                 </ContentWrapper>
               </div>
-              {finalSplitPanePosition === 'bottom' && (
-                <SplitPanelWrapper context={splitPanelContext}>{splitPanel}</SplitPanelWrapper>
-              )}
+              {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
             </main>
 
             <ToolsAndSplitPanel
-              splitPanel={finalSplitPanePosition === 'side' ? splitPanel : undefined}
+              splitPanel={finalSplitPanePosition === 'side' ? splitPanelWrapped : undefined}
               ariaLabels={ariaLabels}
               closedDrawerWidth={closedDrawerWidth}
               contentHeightStyle={contentHeightStyle}
@@ -570,7 +558,6 @@ const OldAppLayout = React.forwardRef(
               isMotionEnabled={isMotionEnabled}
               onToolsToggle={onToolsToggle}
               panelHeightStyle={panelHeightStyle}
-              splitPanelContext={splitPanelContext}
               splitPanelOpen={splitPanelOpenOnTheSide}
               splitPanelReportedSize={splitPanelReportedSize}
               toggleRefs={toolsRefs}

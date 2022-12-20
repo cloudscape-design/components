@@ -20,24 +20,34 @@ export interface MixedChartPopoverProps<T extends ChartDataTypes> {
   onDismiss(): void;
   size: MixedLineBarChartProps<T>['detailPopoverSize'];
   dismissAriaLabel?: string;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-export default function MixedChartPopover<T extends ChartDataTypes>({
-  containerRef,
-  trackRef,
-  isOpen,
-  isPinned,
-  highlightDetails,
-  onDismiss,
-  size = 'medium',
-  dismissAriaLabel,
-}: MixedChartPopoverProps<T>) {
+export default React.forwardRef(MixedChartPopover);
+
+function MixedChartPopover<T extends ChartDataTypes>(
+  {
+    containerRef,
+    trackRef,
+    isOpen,
+    isPinned,
+    highlightDetails,
+    onDismiss,
+    size = 'medium',
+    dismissAriaLabel,
+    onMouseEnter,
+    onMouseLeave,
+  }: MixedChartPopoverProps<T>,
+  popoverRef: React.Ref<HTMLElement>
+) {
   return (
     <Transition in={isOpen}>
       {(state, ref) => (
         <div ref={ref} className={clsx(state === 'exiting' && styles.exiting)}>
           {(isOpen || state !== 'exited') && highlightDetails && (
             <ChartPopover
+              ref={popoverRef}
               title={highlightDetails.position}
               trackRef={trackRef}
               trackKey={highlightDetails.position}
@@ -46,6 +56,8 @@ export default function MixedChartPopover<T extends ChartDataTypes>({
               onDismiss={onDismiss}
               container={containerRef.current}
               size={size}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
             >
               <ChartSeriesDetails details={highlightDetails.details} />
             </ChartPopover>

@@ -8,6 +8,9 @@ import {
   useFormFieldContext,
   FormFieldValidationControlProps,
 } from '../../../lib/components/internal/context/form-field-context';
+import styles from '../../../lib/components/form-field/styles.css.js';
+
+const errorSelector = `:scope > .${styles.hints} .${styles.error}`;
 
 const TestControl = () => {
   const contextValues = useFormFieldContext({});
@@ -253,11 +256,11 @@ describe('nested form fields', () => {
       </FormField>
     );
 
-    const outerErrorId = outerFormFieldWrapper.findError()?.getElement().id;
+    const outerErrorId = outerFormFieldWrapper.find(errorSelector)?.getElement().id;
     const outerDescriptionId = outerFormFieldWrapper.findDescription()?.getElement().id;
     const outerConstraintId = outerFormFieldWrapper.findConstraint()?.getElement().id;
 
-    const innerErrorId = innerFormFieldWrapper.findError()?.getElement().id;
+    const innerErrorId = innerFormFieldWrapper.find(errorSelector)?.getElement().id;
     const innerDescriptionId = innerFormFieldWrapper.findDescription()?.getElement().id;
     const innerConstraintId = innerFormFieldWrapper.findConstraint()?.getElement().id;
 

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { AreaChartProps } from '../interfaces';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, RefObject, MouseEvent } from 'react';
 import { findClosest, circleIndex } from './utils';
 
 import { nodeContains } from '../../internal/utils/dom';
@@ -18,6 +18,7 @@ import { throttle } from '../../internal/utils/throttle';
 
 const MAX_HOVER_MARGIN = 6;
 const SVG_HOVER_THROTTLE = 25;
+const POPOVER_DEADZONE = 12;
 
 export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   externalSeries: readonly AreaChartProps.Series<T>[];
@@ -31,6 +32,7 @@ export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   yScaleType: YScaleType;
   height: number;
   width: number;
+  popoverRef: RefObject<HTMLElement>;
 }
 
 // Represents the core the chart logic, including the model of all allowed user interactions.
@@ -46,6 +48,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   yScaleType,
   height,
   width,
+  popoverRef,
 }: UseChartModelProps<T>): ChartModel<T> {
   // Chart elements refs used in handlers.
   const plotRef = useRef<ChartPlotRef>(null);
@@ -74,11 +77,31 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
     // A series decorator to provide extra props such as color and marker type.
     const getInternalSeries = createSeriesDecorator(allSeries);
 
+    const isMouseOverPopover = (clientX: number, clientY: number) => {
+      if (popoverRef.current?.firstChild) {
+        const popoverPosition = (popoverRef.current.firstChild as HTMLElement).getBoundingClientRect();
+        if (
+          clientX > popoverPosition.x - POPOVER_DEADZONE &&
+          clientX < popoverPosition.x + popoverPosition.width + POPOVER_DEADZONE &&
+          clientY > popoverPosition.y - POPOVER_DEADZONE &&
+          clientY < popoverPosition.y + popoverPosition.height + POPOVER_DEADZONE
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     // A Callback for svg mouseover to hover the plot points.
     // Throttling is necessary for a substantially smoother customer experience.
     const onSVGMouseMoveThrottled = throttle((clientX: number, clientY: number) => {
       // No hover logic when the popover is pinned or no data available.
-      if (interactions.get().isPopoverPinned || !plotRef.current || interactions.plot.xy.length === 0) {
+      if (
+        interactions.get().isPopoverPinned ||
+        !plotRef.current ||
+        interactions.plot.xy.length === 0 ||
+        isMouseOverPopover(clientX, clientY)
+      ) {
         return;
       }
 
@@ -101,17 +124,17 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
     }, SVG_HOVER_THROTTLE);
 
-    const onSVGMouseMove = ({ clientX, clientY }: React.MouseEvent<SVGElement, MouseEvent>) =>
+    const onSVGMouseMove = ({ clientX, clientY }: React.MouseEvent<SVGElement>) =>
       onSVGMouseMoveThrottled(clientX, clientY);
 
     // A callback for svg mouseout to clear all highlights.
-    const onSVGMouseOut = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
+    const onSVGMouseOut = (event: React.MouseEvent<SVGElement>) => {
       // Because the mouseover is throttled, in can occur slightly after the mouseout,
       // neglecting its effect; cancelling the throttled function prevents that.
       onSVGMouseMoveThrottled.cancel();
 
-      // No hover logic when the popover is pinned.
-      if (interactions.get().isPopoverPinned) {
+      // No hover logic when the popover is pinned or mouse is over popover
+      if (interactions.get().isPopoverPinned || isMouseOverPopover(event.clientX, event.clientY)) {
         return;
       }
 
@@ -287,6 +310,13 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
       }
     };
 
+    const onPopoverLeave = (event: MouseEvent) => {
+      if (plotRef.current!.svg.contains(event.relatedTarget as Node) || interactions.get().isPopoverPinned) {
+        return;
+      }
+      interactions.clearHighlight();
+      interactions.clearHighlightedLegend();
+    };
     return {
       width,
       height,
@@ -307,14 +337,16 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
         onPopoverDismiss,
         onContainerBlur,
         onDocumentKeyDown,
+        onPopoverLeave,
       },
       refs: {
         plot: plotRef,
         container: containerRef,
         verticalMarker: verticalMarkerRef,
+        popoverRef,
       },
     };
-  }, [allSeries, series, xDomain, yDomain, xScaleType, yScaleType, height, width, stableSetVisibleSeries]);
+  }, [allSeries, series, xDomain, yDomain, xScaleType, yScaleType, height, width, stableSetVisibleSeries, popoverRef]);
 
   // Notify client when series highlight change.
   useReaction(model.interactions, state => state.highlightedSeries, setHighlightedSeries);
