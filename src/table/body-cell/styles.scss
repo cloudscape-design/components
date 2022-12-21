@@ -149,8 +149,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
     &-form {
       margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
-      .body-cell:first-child > & {
-        margin-left: 0;
+      .is-visual-refresh.body-cell:first-child.has-striped-rows > & {
+        margin-left: calc(-1 * #{awsui.$space-xxs});
+      }
+
+      .is-visual-refresh.body-cell:first-child:not(.has-striped-rows) > & {
+        margin-left: calc(-1 * #{awsui.$space-xxxs});
       }
     }
 
