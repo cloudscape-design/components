@@ -220,7 +220,13 @@ export default <T extends PieChartProps.Datum>({
   );
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      if (event.keyCode !== KeyCode.right && event.keyCode !== KeyCode.left && event.keyCode !== KeyCode.enter) {
+      const keyCode = event.keyCode;
+      if (
+        keyCode !== KeyCode.right &&
+        keyCode !== KeyCode.left &&
+        keyCode !== KeyCode.enter &&
+        keyCode !== KeyCode.space
+      ) {
         return;
       }
 
@@ -228,18 +234,18 @@ export default <T extends PieChartProps.Datum>({
 
       let nextIndex = highlightedSegmentIndex || 0;
       const MAX = pieData.length - 1;
-      if (event.keyCode === KeyCode.right) {
+      if (keyCode === KeyCode.right) {
         nextIndex++;
         if (nextIndex > MAX) {
           nextIndex = 0;
         }
-      } else if (event.keyCode === KeyCode.left) {
+      } else if (keyCode === KeyCode.left) {
         nextIndex--;
         if (nextIndex < 0) {
           nextIndex = MAX;
         }
       }
-      if (event.keyCode === KeyCode.enter) {
+      if (keyCode === KeyCode.enter || keyCode === KeyCode.space) {
         setPinnedSegment(pieData[nextIndex].data.datum);
       }
       highlightSegment(pieData[nextIndex].data);
@@ -286,6 +292,8 @@ export default <T extends PieChartProps.Datum>({
         plotRef.current!.focusApplication();
         popoverDismissedRecently.current = false;
       }, 0);
+    } else {
+      onHighlightChange(null);
     }
   };
 

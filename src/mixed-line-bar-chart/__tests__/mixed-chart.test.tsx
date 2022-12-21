@@ -948,6 +948,18 @@ describe('Details popover', () => {
 
     expect(wrapper.findApplication()!.getElement()).toHaveFocus();
   });
+
+  test('no highlighted segment when pressing outside', () => {
+    const { wrapper } = renderMixedChart(<MixedLineBarChart {...barChartProps} />);
+
+    wrapper.findApplication()!.focus();
+    wrapper.findChart()!.fireEvent(new MouseEvent('mousedown', { bubbles: true }));
+
+    expect(wrapper.findByClassName(styles['series--dimmed'])).not.toBeNull();
+
+    wrapper.findDefaultFilter()?.openDropdown();
+    expect(wrapper.findByClassName(styles['series--dimmed'])).toBeNull();
+  });
 });
 
 test('highlighted series are controllable', () => {

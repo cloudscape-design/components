@@ -202,17 +202,21 @@ export default function ChartContainer<T extends ChartDataTypes>({
     [setHighlightedGroupIndex, setHighlightedPoint, highlightSeries]
   );
 
+  const clearAllHighlights = useCallback(() => {
+    setHighlightedPoint(null);
+    highlightSeries(null);
+    setHighlightedGroupIndex(null);
+  }, [highlightSeries, setHighlightedGroupIndex, setHighlightedPoint]);
+
   // Highlight all points at a given X in a line chart
   const highlightX = useCallback(
     (marker: VerticalMarkerX<T> | null) => {
       if (marker) {
-        setHighlightedPoint(null);
-        highlightSeries(null);
-        setHighlightedGroupIndex(null);
+        clearAllHighlights();
       }
       setVerticalMarkerX(marker);
     },
-    [highlightSeries, setHighlightedGroupIndex, setHighlightedPoint]
+    [clearAllHighlights]
   );
 
   // Highlight all points and bars at a given X index in a mixed line and bar chart
@@ -226,11 +230,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
   );
 
   const clearHighlightedSeries = useCallback(() => {
-    highlightSeries(null);
-    setHighlightedGroupIndex(null);
-    setHighlightedPoint(null);
+    clearAllHighlights();
     dismissPopover();
-  }, [dismissPopover, highlightSeries, setHighlightedGroupIndex, setHighlightedPoint]);
+  }, [dismissPopover, clearAllHighlights]);
 
   const { isGroupNavigation, ...handlers } = useNavigation({
     series,
@@ -306,6 +308,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
           plotRef.current?.focusPlot();
         }
       }, 0);
+    } else {
+      clearAllHighlights();
+      setVerticalMarkerX(null);
     }
   };
 

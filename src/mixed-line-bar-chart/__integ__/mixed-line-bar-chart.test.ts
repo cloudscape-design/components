@@ -4,6 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import createWrapper, { BarChartWrapper, MixedLineBarChartWrapper } from '../../../lib/components/test-utils/selectors';
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
+import mixedChartStyles from '../../../lib/components/mixed-line-bar-chart/styles.selectors.js';
 
 const chartWrapper = createWrapper().findMixedLineBarChart('#chart');
 const groupedBarWrapper = new BarChartWrapper('#chart-grouped');
@@ -21,6 +22,8 @@ const highlightedSeriesSelector = (wrapper: MixedLineBarChartWrapper = chartWrap
   wrapper.findHighlightedSeries().toSelector();
 const seriesSVGSelector = (wrapper: MixedLineBarChartWrapper = chartWrapper) =>
   wrapper.find(`.${chartPlotStyles.root}`).toSelector();
+const dimmedElementsSelector = (wrapper: MixedLineBarChartWrapper = chartWrapper) =>
+  wrapper.findAll(`.${mixedChartStyles['series--dimmed']}`).toSelector();
 const filterWrapper = chartWrapper.findDefaultFilter();
 const legendWrapper = chartWrapper.findLegend();
 
@@ -254,6 +257,19 @@ describe('Series', () => {
       await expect(page.getText(popoverContentSelector())).resolves.toContain('Happiness\n300');
       await expect(page.getText(popoverContentSelector())).resolves.toContain('Calories\n77');
       await expect(page.getText(popoverContentSelector())).resolves.toContain('Threshold\n420');
+    })
+  );
+
+  test(
+    'clicking outside of the chart removes all highlights for pinned element',
+    setupTest('#/light/bar-chart/test', async page => {
+      // Click on it to reveal the dismiss button
+      await page.hoverElement(chartWrapper.findBarGroups().get(3).toSelector());
+      await page.click(chartWrapper.toSelector());
+      await expect(page.isDisplayed(dimmedElementsSelector())).resolves.toBe(true);
+
+      await page.click('#focus-target');
+      await expect(page.isDisplayed(dimmedElementsSelector())).resolves.toBe(false);
     })
   );
 });
