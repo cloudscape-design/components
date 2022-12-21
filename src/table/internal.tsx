@@ -7,7 +7,7 @@ import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
-import { TableTdElement, TableBodyCell } from './body-cell';
+import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
@@ -32,6 +32,7 @@ import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynami
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
+import { TableTdElement } from './body-cell/td-element';
 
 type InternalTableProps<T, V> = SomeRequired<TableProps<T, V>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -337,7 +338,8 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
-                            className={styles['selection-control']}
+                            className={clsx(styles['selection-control'])}
+                            isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
@@ -394,6 +396,7 @@ const InternalTable = React.forwardRef(
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              isVisualRefresh={isVisualRefresh}
                             />
                           );
                         })}

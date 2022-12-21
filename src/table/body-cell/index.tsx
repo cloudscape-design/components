@@ -11,9 +11,6 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import { useStableScrollPosition } from './use-stable-scroll-position';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-
-export { TableTdElement } from './td-element';
 
 const readonlyState = Object.freeze({
   isEditing: false,
@@ -44,13 +41,13 @@ function TableCellEditable<ItemType, ValueType>({
   onEditEnd,
   submitEdit,
   ariaLabels,
+  isVisualRefresh,
   ...rest
 }: TableBodyCellProps<ItemType, ValueType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
   const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
-  const isVisualRefresh = useVisualRefresh();
 
   const handleEditStart = () => {
     storeScrollPosition();
@@ -86,7 +83,7 @@ function TableCellEditable<ItemType, ValueType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
-        isVisualRefresh && styles['visual-refresh']
+        isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={handleEditStart}
       ref={cellRef}
