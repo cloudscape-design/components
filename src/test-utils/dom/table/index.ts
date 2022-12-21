@@ -144,15 +144,15 @@ export default class TableWrapper extends ComponentWrapper {
     );
   }
 
-  findEditingCellControls(): ElementWrapper | null {
+  private _findEditingCellControls(): ElementWrapper | null {
     return this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-controls']) ?? null;
   }
 
   findEditingCellSaveButton(): ElementWrapper | null {
-    return this.findEditingCellControls()?.find('button:last-child') ?? null;
+    return this._findEditingCellControls()?.find('button:last-child') ?? null;
   }
 
   findEditingCellCancelButton(): ElementWrapper | null {
-    return this.findEditingCellControls()?.find('button:first-child') ?? null;
+    return this._findEditingCellControls()?.find('button:first-child') ?? null;
   }
 }
