@@ -95,6 +95,19 @@ describe('Segments', () => {
       await expect(page.isDisplayed(highlightedSegmentSelector)).resolves.toBe(false);
     })
   );
+
+  test(
+    'clicking outside of the chart removes all highlights for pinned element',
+    setupTest(async page => {
+      await page.click(pieWrapper.findSegments().get(2).toSelector());
+      await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toContain('Chocolate');
+      await page.waitForVisible(detailsPopoverSelector);
+      await expect(page.isDisplayed(detailsDismissSelector)).resolves.toBe(true);
+
+      await page.click('#focus-target');
+      await expect(page.isDisplayed(highlightedSegmentSelector)).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Filter', () => {

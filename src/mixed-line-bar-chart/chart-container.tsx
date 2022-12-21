@@ -310,6 +310,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       }, 0);
     } else {
       clearAllHighlights();
+      setVerticalMarkerX(null);
     }
   };
 
