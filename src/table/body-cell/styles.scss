@@ -41,7 +41,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
       padding-left: awsui.$space-xxxs;
-      &.body-cell-editable:hover {
+      &:not(.body-cell-edit-active).body-cell-editable:hover {
         padding-left: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
       }
     }
@@ -149,12 +149,15 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
     &-form {
       margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
+      .body-cell:first-child > & {
+        margin-left: 0;
+      }
     }
 
     &-row {
       display: flex;
       flex-flow: row nowrap;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       column-gap: awsui.$space-xxs;
       & > :not(:last-child) {
