@@ -411,6 +411,17 @@ describe('Segments', () => {
     const { wrapper } = renderPieChart(<PieChart data={dataWithZero} highlightedSegment={dataWithZero[2]} />);
     expect(wrapper.findHighlightedSegment()).toBeNull();
   });
+
+  test('no highlighted segment when pressing outside', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    act(() => {
+      fireEvent.mouseDown(wrapper!.findSegments()[0].getElement());
+    });
+    expect(wrapper.findHighlightedSegment()).not.toBeNull();
+
+    wrapper.findDefaultFilter()?.openDropdown();
+    expect(wrapper.findHighlightedSegment()).toBeNull();
+  });
 });
 
 describe('Details popover', () => {
@@ -521,6 +532,16 @@ describe('Details popover', () => {
     wrapper.findDetailPopover()?.findDismissButton()?.click();
 
     expect(wrapper.findDetailPopover()).toBeNull();
+  });
+
+  test('pressing spase on a focused segment opens the popover', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    wrapper.findSegments()[1].click();
+    wrapper.findDetailPopover()?.findDismissButton()?.click();
+
+    wrapper.findApplication()!.keydown(KeyCode.space);
+
+    expect(createWrapper(wrapper.getElement()).findPopover()?.findDismissButton()).not.toBeNull();
   });
 
   test('details popover can be customized', () => {
