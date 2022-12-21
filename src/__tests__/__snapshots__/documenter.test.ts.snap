@@ -4324,6 +4324,16 @@ Object {
       "type": "boolean",
     },
     Object {
+      "description": "Enabling this property will make the container to fit into available height. If content is too short, the container
+will stretch, if too long, the container will shrink and show vertical scrollbar.
+Use this property to align heights of multiple containers displayed in a single row. It is recommended to stretch
+all containers to the height of the longest one, to avoid extra vertical scroll areas.
+",
+      "name": "fitHeight",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,

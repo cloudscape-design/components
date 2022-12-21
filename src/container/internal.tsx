@@ -37,6 +37,7 @@ export default function InternalContainer({
   variant = 'default',
   disableHeaderPaddings = false,
   disableContentPaddings = false,
+  fitHeight,
   __stickyOffset,
   __stickyHeader = false,
   __internalRootRef = null,
@@ -86,7 +87,12 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.root, styles[`variant-${variant}`])}
+      className={clsx(
+        baseProps.className,
+        styles.root,
+        styles[`variant-${variant}`],
+        fitHeight && styles['root-fit-height']
+      )}
       ref={mergedRef}
     >
       {header && (
