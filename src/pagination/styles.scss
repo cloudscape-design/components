@@ -64,6 +64,7 @@
   }
   &.button-current {
     font-weight: awsui.$font-wayfinding-link-active-weight;
+    @include styles.font-smoothing;
     color: awsui.$color-text-interactive-active;
     &.button-disabled {
       color: awsui.$color-text-pagination-page-number-active-disabled;

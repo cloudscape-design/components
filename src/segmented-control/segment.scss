@@ -36,11 +36,11 @@ $selected-color: awsui.$color-text-segment-active;
 .segment {
   @include styles.font-body-m;
   @include styles.text-flex-wrapping;
+  @include styles.font-button;
+  letter-spacing: 0.25px;
   border: styles.$control-border-width solid $default-border-color;
   padding: styles.$control-padding-vertical awsui.$space-l;
   border-right-width: 0;
-  font-weight: awsui.$font-button-weight;
-  letter-spacing: 0.25px;
   background: $default-background;
   color: $default-color;
   overflow: visible;

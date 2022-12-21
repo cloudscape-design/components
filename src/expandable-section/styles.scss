@@ -63,6 +63,7 @@
   &-footer {
     color: awsui.$color-text-expandable-section-default;
     font-weight: awsui.$font-heading-s-weight;
+    @include styles.font-smoothing;
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$font-heading-s-letter-spacing;
 

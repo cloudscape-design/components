@@ -61,7 +61,9 @@ export default function InternalHeader({
           )}
         >
           <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
-            <span className={styles['heading-text']}>{children}</span>
+            <span className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}>
+              {children}
+            </span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
           {info && <span className={styles.info}>{info}</span>}

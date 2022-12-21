@@ -460,6 +460,8 @@ export type TypographyTokenName =
   | 'fontLinkPrimaryWeight'
   | 'fontPanelHeaderLineHeight'
   | 'fontPanelHeaderSize'
+  | 'fontSmoothingWebkit'
+  | 'fontSmoothingMozOsx'
   | 'fontTabsDisabledWeight'
   | 'fontTabsLineHeight'
   | 'fontTabsSize'

@@ -10,6 +10,7 @@
 .button {
   @include styles.styles-reset;
   @include styles.text-wrapping;
+  @include styles.font-button;
 
   display: flex;
   flex-wrap: nowrap;
@@ -24,7 +25,6 @@
 
   border: transparent;
   background: transparent;
-  font-weight: awsui.$font-button-weight;
   color: awsui.$color-text-interactive-default;
 
   &:hover {

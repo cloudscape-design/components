@@ -41,6 +41,8 @@ const tokens: StyleDictionary.TypographyDictionary = {
   fontLinkPrimaryWeight: '700',
   fontPanelHeaderLineHeight: '{fontHeadingLLineHeight}',
   fontPanelHeaderSize: '{fontHeadingLSize}',
+  fontSmoothingWebkit: 'auto',
+  fontSmoothingMozOsx: 'auto',
   fontTabsDisabledWeight: '400',
   fontTabsLineHeight: '{fontBodyMLineHeight}',
   fontTabsSize: '{fontBodyMSize}',

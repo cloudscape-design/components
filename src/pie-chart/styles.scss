@@ -131,7 +131,7 @@
 
 /* stylelint-disable-next-line selector-max-type */
 .label-text > text {
-  font-weight: awsui.$font-display-label-weight;
+  @include styles.font-label;
   fill: awsui.$color-text-heading-default;
   dominant-baseline: middle;
 }

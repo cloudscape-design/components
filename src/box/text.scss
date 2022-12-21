@@ -39,7 +39,7 @@
       @include base-styles.code-extra-defaults;
     }
     &.key-label-variant {
-      font-weight: awsui.$font-display-label-weight;
+      @include styles.font-label;
       color: awsui.$color-text-label;
       margin-bottom: awsui.$space-scaled-xxxs;
     }
@@ -47,6 +47,15 @@
       @include styles.font-display-l;
       font-weight: awsui.$font-box-value-large-weight;
       color: inherit;
+    }
+    &.h1-variant.font-weight-default,
+    &.h2-variant.font-weight-default,
+    &.h3-variant.font-weight-default,
+    &.h4-variant.font-weight-default,
+    &.h5-variant.font-weight-default,
+    &.value-large-variant.font-weight-default,
+    &.font-weight-heavy {
+      @include styles.font-smoothing;
     }
   }
 }

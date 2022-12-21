@@ -47,6 +47,8 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontLinkPrimaryWeight: '"inherit"',
   fontPanelHeaderLineHeight: '{fontHeadingMLineHeight}',
   fontPanelHeaderSize: '{fontHeadingMSize}',
+  fontSmoothingWebkit: 'antialiased',
+  fontSmoothingMozOsx: 'grayscale',
   fontTabsDisabledWeight: '{fontWayfindingLinkActiveWeight}',
   fontTabsLineHeight: '{fontHeadingSLineHeight}',
   fontTabsSize: '{fontHeadingSSize}',

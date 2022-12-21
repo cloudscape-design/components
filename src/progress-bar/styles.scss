@@ -40,7 +40,7 @@
     font-weight: styles.$font-weight-bold;
   }
   &-key-value {
-    font-weight: awsui.$font-display-label-weight;
+    @include styles.font-label;
     color: awsui.$color-text-label;
     margin-bottom: awsui.$space-scaled-xxxs;
   }
