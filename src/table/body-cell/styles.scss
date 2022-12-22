@@ -193,6 +193,18 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         & > .body-cell-editor {
           padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
         }
+        &.body-cell-last-row.body-cell-selected,
+        &.body-cell-next-selected {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+        }
+        &.body-cell-last-row:not(.body-cell-selected) {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+        }
+        &.body-cell-first-row:not(.body-cell-selected) {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+        }
       }
       &:hover,
       &[data-awsui-focus-visible='true']:focus-within {
@@ -224,14 +236,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
       border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
     }
-    &.body-cell-first-row {
-      padding-top: calc(#{$cell-vertical-padding} + calc(#{awsui.$border-divider-list-width}));
-      & > .body-cell-editor {
-        padding-top: awsui.$border-divider-list-width;
-      }
-    }
-    &.body-cell-last-row {
-      padding-bottom: calc(#{$cell-vertical-padding} + calc(#{awsui.$border-divider-list-width} * 2));
+    &.body-cell-first-row > .body-cell-editor {
+      padding-top: awsui.$border-divider-list-width;
     }
   }
 }
