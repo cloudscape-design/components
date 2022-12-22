@@ -278,7 +278,6 @@ the grid layout will be:
 
   &:hover {
     background: awsui.$color-background-layout-toggle-hover;
-    border-color: awsui.$color-background-layout-toggle-hover;
   }
 
   &:active {
@@ -311,6 +310,7 @@ the grid layout will be:
     }
 
     &:hover {
+      border-color: awsui.$color-background-layout-toggle-hover;
       text-decoration: none;
     }
   }
