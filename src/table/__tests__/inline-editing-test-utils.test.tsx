@@ -64,18 +64,6 @@ describe('Editable Table TestUtils', () => {
     expect(wrapper.findEditingCell()!.getElement()!).toBe(cellName0);
   });
 
-  test('should find input slot correctly', () => {
-    const { wrapper, getByTestId } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
-    const cellId0 = wrapper.findBodyCell(1, 1)!.getElement()!;
-    const cellName0 = wrapper.findBodyCell(1, 2)!.getElement()!;
-    fireEvent.click(cellId0);
-    let inputSlot = wrapper.findEditingCellInputSlot()!;
-    expect(inputSlot.getElement()).toBe(getByTestId('id-editing-1'));
-    fireEvent.click(cellName0);
-    inputSlot = wrapper.findEditingCellInputSlot()!;
-    expect(inputSlot.getElement()).toBe(getByTestId('name-editing-Apples'));
-  });
-
   test('should find the correct edit controls', () => {
     const { wrapper, getByTestId } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
     const cellId0 = wrapper.findBodyCell(1, 1)!.getElement()!;

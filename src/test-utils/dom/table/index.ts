@@ -138,12 +138,6 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findNativeTable().findByClassName(bodyCellStyles['body-cell-edit-active']);
   }
 
-  findEditingCellInputSlot(): ElementWrapper | null {
-    return (
-      this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-row'])?.find(':first-child') ?? null
-    );
-  }
-
   private _findEditingCellControls(): ElementWrapper | null {
     return this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-controls']) ?? null;
   }

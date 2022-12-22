@@ -12,7 +12,7 @@ const EDIT_BTN$ = 'button:first-child:last-child';
 
 const bodyCell = tableWrapper.findBodyCell(2, 2)!;
 const cellRoot$ = bodyCell.toSelector();
-const cellInputField$ = tableWrapper.findEditingCellInputSlot().find('input').toSelector();
+const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
 const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
 
