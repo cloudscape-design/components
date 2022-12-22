@@ -90,6 +90,13 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
    * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
+   * * * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+   * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+   * * * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
+   * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
+   * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+   *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
+   *
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T, V>>;
   /**
