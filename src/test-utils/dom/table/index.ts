@@ -149,7 +149,7 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findEditingCellSaveButton(): ElementWrapper | null {
-    return this._findEditingCellControls()?.find('button:last-child') ?? null;
+    return this._findEditingCellControls()?.find('button[type="submit"]') ?? null;
   }
 
   findEditingCellCancelButton(): ElementWrapper | null {
