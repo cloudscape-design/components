@@ -3,7 +3,9 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -36,6 +38,35 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-right: $border-placeholder;
     padding-right: $cell-edge-horizontal-padding;
   }
+  &.is-visual-refresh:first-child {
+    &:not(.has-striped-rows) {
+      padding-left: awsui.$space-xxxs;
+      &:not(.body-cell-edit-active).body-cell-editable:hover {
+        padding-left: calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width});
+      }
+    }
+
+    /*
+      Striped rows requires additional left padding because the
+      shaded background makes the child content appear too close
+      to the table edge.
+      */
+    &:first-child.has-striped-rows {
+      padding-left: awsui.$space-xxs;
+    }
+
+    /*
+      Remove the placeholder border if the row is not selectable.
+      Rows that are not selectable will reserve the horizontal space
+      that the placeholder border would consume.
+      */
+    &:not(.has-selection):not(.body-cell-editable) {
+      border-left: none;
+    }
+  }
+  &:first-child:not(.is-visual-refresh) {
+    padding-left: $cell-edge-horizontal-padding;
+  }
   &-first-row {
     border-top: $border-placeholder;
   }
@@ -47,7 +78,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
 
     &.has-footer {
       /*
-      Add a bottom border to the body cells of the last row as a separator between the 
+      Add a bottom border to the body cells of the last row as a separator between the
       table and the footer
       */
       border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
@@ -104,38 +135,109 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
-}
+  &-editor {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
 
-/*
-In Visual Refresh the first cell of each row should align with the 
-left edge of the table as closely as possible.
-*/
-.body-cell:not(.is-visual-refresh) {
-  &:first-child {
-    padding-left: $cell-edge-horizontal-padding;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding-right: awsui.$space-xs;
+
+    &-form {
+      margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
+      .is-visual-refresh.body-cell:first-child.has-striped-rows > & {
+        margin-left: calc(-1 * #{awsui.$space-xxs});
+      }
+
+      .is-visual-refresh.body-cell:first-child:not(.has-striped-rows) > & {
+        margin-left: calc(-1 * #{awsui.$space-xxxs});
+      }
+    }
+
+    &-row {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: space-between;
+      column-gap: awsui.$space-xxs;
+      & > :not(:last-child) {
+        flex-grow: 1;
+      }
+    }
+    &-controls {
+      flex-shrink: 0;
+    }
   }
-}
+  &.body-cell-editable {
+    position: relative;
+    cursor: pointer;
 
-.body-cell.is-visual-refresh {
-  /*
-  Remove the placeholder border if the row is not selectable. 
-  Rows that are not selectable will reserve the horizontal space 
-  that the placeholder border would consume.
-  */
-  &:first-child:not(.has-selection) {
-    border-left: none;
+    &.body-cell-edit-active {
+      overflow: visible;
+    }
+
+    &:not(.body-cell-edit-active) {
+      & > .body-cell-editor {
+        opacity: 0;
+      }
+      &:hover {
+        position: relative;
+        background-color: awsui.$color-background-dropdown-item-hover;
+        border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+        left: calc(-1 * #{awsui.$border-divider-list-width});
+        right: calc(-1 * #{awsui.$border-divider-list-width});
+        & > .body-cell-editor {
+          padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
+        }
+        &.body-cell-last-row.body-cell-selected,
+        &.body-cell-next-selected {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2));
+        }
+        &.body-cell-last-row:not(.body-cell-selected) {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+        }
+        &.body-cell-first-row:not(.body-cell-selected) {
+          padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+          padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
+        }
+      }
+      &:hover,
+      &[data-awsui-focus-visible='true']:focus-within {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-editor {
+          opacity: 1;
+        }
+      }
+      &:hover:first-child {
+        left: 0;
+        right: 0;
+      }
+      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
+        @include styles.focus-highlight(
+          (
+            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+          )
+        );
+      }
+    }
   }
-
-  &:first-child:not(.has-striped-rows) {
-    padding-left: awsui.$space-xxxs;
-  }
-
-  /*
-  Striped rows requires additional left padding because the 
-  shaded background makes the child content appear too close 
-  to the table edge.
-  */
-  &:first-child.has-striped-rows {
-    padding-left: awsui.$space-xxs;
+  &-editable.is-visual-refresh:not(.body-cell-edit-active):hover {
+    &:first-child {
+      border-top-left-radius: awsui.$border-radius-control-default-focus-ring;
+      border-bottom-left-radius: awsui.$border-radius-control-default-focus-ring;
+    }
+    &:last-child {
+      border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
+      border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
+    }
+    &.body-cell-first-row > .body-cell-editor {
+      padding-top: awsui.$border-divider-list-width;
+    }
   }
 }
