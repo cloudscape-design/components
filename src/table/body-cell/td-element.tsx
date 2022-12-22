@@ -18,6 +18,9 @@ export interface TableTdElementProps {
   children?: React.ReactNode;
   isEvenRow?: boolean;
   stripedRows?: boolean;
+  hasSelection?: boolean;
+  hasFooter?: boolean;
+  isVisualRefresh?: boolean;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -36,6 +39,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onClick,
       isEvenRow,
       stripedRows,
+      isVisualRefresh,
+      hasSelection,
+      hasFooter,
     },
     ref
   ) => {
@@ -51,7 +57,11 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isSelected && styles['body-cell-selected'],
           isNextSelected && styles['body-cell-next-selected'],
           isPrevSelected && styles['body-cell-prev-selected'],
-          !isEvenRow && stripedRows && styles['body-cell-shaded']
+          !isEvenRow && stripedRows && styles['body-cell-shaded'],
+          stripedRows && styles['has-striped-rows'],
+          isVisualRefresh && styles['is-visual-refresh'],
+          hasSelection && styles['has-selection'],
+          hasFooter && styles['has-footer']
         )}
         onClick={onClick}
         ref={ref}
