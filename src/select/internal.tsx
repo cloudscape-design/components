@@ -27,7 +27,7 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { OptionGroup } from '../internal/components/option/interfaces.js';
-import { SomeRequired } from '../internal/types.js';
+import { SomeRequired } from '../internal/types';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 
@@ -63,6 +63,7 @@ const InternalSelect = React.forwardRef(
       onChange,
       virtualScroll,
       expandToViewport,
+      autoFocus,
       __inFilteringToken,
       __internalRootRef = null,
       ...restProps
@@ -148,7 +149,7 @@ const InternalSelect = React.forwardRef(
         placeholder={placeholder}
         disabled={disabled}
         triggerVariant={triggerVariant}
-        triggerProps={getTriggerProps(disabled)}
+        triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}

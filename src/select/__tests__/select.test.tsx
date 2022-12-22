@@ -269,4 +269,9 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
       expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeFalsy();
     });
   });
+
+  test('should render with focus when autoFocus=true', () => {
+    const { wrapper } = renderSelect({ autoFocus: true });
+    expect(wrapper.findTrigger().getElement()).toHaveFocus();
+  });
 });

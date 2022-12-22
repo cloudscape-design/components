@@ -7663,6 +7663,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
+      "description": "Automatically focuses the trigger when component is mounted.",
+      "name": "autoFocus",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
@@ -10044,6 +10050,12 @@ To use it correctly, define an ID for the element you want to use as label and s
     Object {
       "description": "Adds \`aria-required\` to the native input element.",
       "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Automatically focuses the trigger when component is mounted.",
+      "name": "autoFocus",
       "optional": true,
       "type": "boolean",
     },
