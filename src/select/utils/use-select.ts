@@ -40,6 +40,7 @@ export interface SelectTriggerProps {
   onMouseDown?: (event: CustomEvent) => void;
   onKeyDown?: (event: CustomEvent<BaseKeyDetail>) => void;
   onFocus: NonCancelableEventHandler;
+  autoFocus?: boolean;
 }
 
 export function useSelect({
@@ -138,10 +139,11 @@ export function useSelect({
     onBlur: handleBlur,
   });
 
-  const getTriggerProps = (disabled = false) => {
+  const getTriggerProps = (disabled = false, autoFocus = false) => {
     const triggerProps: SelectTriggerProps = {
       ref: triggerRef,
       onFocus: () => closeDropdown(),
+      autoFocus,
     };
     if (!disabled) {
       triggerProps.onMouseDown = (event: CustomEvent) => {

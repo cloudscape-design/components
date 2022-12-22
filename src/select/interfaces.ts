@@ -146,6 +146,11 @@ export interface SelectProps extends BaseSelectProps {
    * The event `detail` contains the current `selectedOption`.
    */
   onChange?: NonCancelableEventHandler<SelectProps.ChangeDetail>;
+
+  /**
+   * Automatically focuses the trigger when component is mounted.
+   */
+  autoFocus?: boolean;
 }
 
 export namespace SelectProps {

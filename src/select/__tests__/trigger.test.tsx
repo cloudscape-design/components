@@ -145,4 +145,12 @@ describe('Trigger component', () => {
       expect(buttonTriggerEl).toHaveTextContent('Option 1Label tag');
     });
   });
+  describe('autoFocus', () => {
+    test('receives focus when autoFocus is true', () => {
+      const wrapper = renderComponent({ ...defaultProps, triggerProps: { autoFocus: true } });
+      const buttonTriggerEl = wrapper.getElement();
+
+      expect(buttonTriggerEl).toHaveFocus();
+    });
+  });
 });

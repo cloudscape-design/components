@@ -26,6 +26,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   onClick?: CancelableEventHandler;
   onFocus?: CancelableEventHandler;
   onBlur?: CancelableEventHandler<{ relatedTarget: Node | null }>;
+  autoFocus?: boolean;
 }
 
 const ButtonTrigger = (
@@ -47,6 +48,7 @@ const ButtonTrigger = (
     onClick,
     onFocus,
     onBlur,
+    autoFocus,
     ...restProps
   }: ButtonTriggerProps,
   ref: React.Ref<HTMLButtonElement>
@@ -80,6 +82,7 @@ const ButtonTrigger = (
     onClick: onClick && (event => fireCancelableEvent(onClick, {}, event)),
     onFocus: onFocus && (event => fireCancelableEvent(onFocus, {}, event)),
     onBlur: onBlur && (event => fireCancelableEvent(onBlur, { relatedTarget: event.relatedTarget }, event)),
+    autoFocus,
   };
 
   if (invalid) {

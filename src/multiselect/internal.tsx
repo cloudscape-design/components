@@ -70,6 +70,7 @@ const InternalMultiselect = React.forwardRef(
       hideTokens = false,
       expandToViewport,
       __internalRootRef = null,
+      autoFocus,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -198,7 +199,7 @@ const InternalMultiselect = React.forwardRef(
       <Trigger
         placeholder={placeholder}
         disabled={disabled}
-        triggerProps={getTriggerProps(disabled)}
+        triggerProps={getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         isOpen={isOpen}
         {...formFieldContext}

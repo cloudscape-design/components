@@ -423,3 +423,8 @@ test('Trigger should have refer to the element using aria-label value and placeh
     .join(' ');
   expect(label).toBe('multi select select options');
 });
+
+test('Trigger receives focus when autofocus is true', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={groupOptions} autoFocus={true} />);
+  expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
+});
