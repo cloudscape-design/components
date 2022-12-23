@@ -43,10 +43,10 @@ export function animate({
         : newElementInitialState
         ? newElementInitialState(newRect)
         : {};
-      const invertTransform = { ...noOpTransform, ...calculatedInvertTransform };
+      const inverseTransform = { ...noOpTransform, ...calculatedInvertTransform };
       // Apply this initial change, without animating
       element.style.transitionProperty = 'none';
-      element.style.transform = `scale(${invertTransform.scale}) translateY(${invertTransform.y}px)`;
+      element.style.transform = `scale(${inverseTransform.scale}) translateY(${inverseTransform.y}px)`;
       if (!oldRect) {
         // If the element didn't exist, then fade it in
         // (besides any other possibly defined transitions based on `newElementInitialState`)
