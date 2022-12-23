@@ -41,10 +41,6 @@ const defaultColumnsWithIds: TableProps.ColumnDefinition<Item>[] = [
   { id: 'id', header: 'id', cell: item => item.id },
   { id: 'name', header: 'name', cell: item => item.name },
 ];
-const editableColumns: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: (item: Item) => item.id, editConfig: {} },
-  { header: 'name', cell: (item: Item) => item.name, editConfig: {} },
-];
 
 const statefulColumns: TableProps.ColumnDefinition<Item>[] = [
   {
@@ -134,14 +130,6 @@ test('should render table with accessible headers', () => {
   const columnHeaders = wrapper.findColumnHeaders();
   columnHeaders.forEach(header => {
     expect(header.getElement()).toHaveAttribute('scope', 'col');
-  });
-});
-
-test('should render table header with icons to indicate editable columns', () => {
-  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
-  const columnHeaders = wrapper.findColumnHeaders();
-  columnHeaders.forEach(header => {
-    expect(header.getElement().querySelector('svg')).toBeInTheDocument();
   });
 });
 

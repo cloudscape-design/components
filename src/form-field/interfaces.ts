@@ -86,16 +86,4 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    * Visually hide the label.
    */
   __hideLabel?: boolean;
-
-  /**
-   * Disable the gutter applied by default.
-   */
-  __disableGutters?: boolean;
-
-  /**
-   * Use a React based implementation of the autofocus behavior. This is to prevent scroll jumps
-   * when the autofocus behavior is triggered. Built-in browser autofocus behavior seems to
-   * trigger a scroll jump even when the element is already in the viewport.
-   */
-  __useReactAutofocus?: boolean;
 }
