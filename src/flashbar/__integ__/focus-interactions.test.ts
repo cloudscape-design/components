@@ -1,45 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import selectors from '../../../lib/components/flashbar/styles.selectors.js';
+import { setupTest } from './pages/interactive-page';
 
 const initialCount = 5;
-const flashbar = createWrapper().findFlashbar();
-
-class FlashbarInteractivePage extends BasePageObject {
-  async addInfoFlash() {
-    await this.click('[data-id="add-info"]');
-  }
-
-  async addErrorFlash() {
-    await this.click('[data-id="add-error"]');
-  }
-
-  async addErrorFlashToTop() {
-    await this.click('[data-id="add-to-top"]');
-  }
-
-  async addSequentialErrorFlashes() {
-    await this.click('[data-id="add-multiple"]');
-  }
-
-  isFlashFocused(index: number) {
-    return this.isFocused(
-      flashbar.findItems().get(index).findByClassName(selectors['flash-focus-container']).toSelector()
-    );
-  }
-}
-
-const setupTest = (testFn: (page: FlashbarInteractivePage) => Promise<void>) => {
-  return useBrowser(async browser => {
-    const page = new FlashbarInteractivePage(browser);
-    await browser.url(`#/light/flashbar/interactive`);
-    await page.waitForVisible(flashbar.toSelector());
-    await testFn(page);
-  });
-};
 
 test(
   'adding flash with ariaRole="status" does not move focus',

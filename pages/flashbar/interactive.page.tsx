@@ -70,7 +70,7 @@ export default function FlashbarPermutations() {
       <h1>Flashbar dismissal test</h1>
       <SpaceBetween size="xs">
         <Toggle checked={stackItems} onChange={({ detail }) => setStackItems(detail.checked)}>
-          Stack items
+          <span data-id="stack-items">Stack items</span>
         </Toggle>
         <SpaceBetween direction="horizontal" size="xs">
           <Button data-id="add-info" onClick={() => add('info', true)}>
