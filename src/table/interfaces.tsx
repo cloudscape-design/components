@@ -164,7 +164,7 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    * * `submitEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
    */
-  ariaLabels?: TableProps.AriaLabels<T, V>;
+  ariaLabels?: TableProps.AriaLabels<T>;
 
   /**
    * Specifies the definition object of the currently sorted column. Make sure you pass an object that's
@@ -350,14 +350,16 @@ export namespace TableProps {
     selectedItems: T[];
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
-  export interface AriaLabels<T, V = any> {
+  export interface AriaLabels<T> {
     allItemsSelectionLabel?: (data: TableProps.SelectionState<T>) => string;
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
-    activateEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
-    cancelEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
-    submitEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
+    // do not use <T> to prevent overly strict validation on consumer end
+    // it works, practically, we are only interested in `id` and `header` properties only
+    activateEditLabel?: (column: ColumnDefinition<any>) => string;
+    cancelEditLabel?: (column: ColumnDefinition<any>) => string;
+    submitEditLabel?: (column: ColumnDefinition<any>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;

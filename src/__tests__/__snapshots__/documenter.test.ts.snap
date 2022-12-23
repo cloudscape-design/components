@@ -11038,7 +11038,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "activateEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
             "name": "allItemsSelectionLabel",
@@ -11048,7 +11048,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "cancelEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
             "name": "itemSelectionLabel",
@@ -11063,7 +11063,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "submitEditLabel",
             "optional": true,
-            "type": "(column: TableProps.EditableColumnDefinition<T, V>) => string",
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
             "name": "tableLabel",
@@ -11075,7 +11075,7 @@ add a meaningful description to the whole selection.
       },
       "name": "ariaLabels",
       "optional": true,
-      "type": "TableProps.AriaLabels<T, V>",
+      "type": "TableProps.AriaLabels<T>",
     },
     Object {
       "description": "Adds the specified classes to the root element of the component.",
