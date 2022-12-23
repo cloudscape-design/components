@@ -26,9 +26,9 @@ export { FlashbarProps };
 
 const maxUnstackedItems = 1;
 
-export default function Flashbar(props: FlashbarProps) {
+export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const { __internalRootRef } = useBaseComponent('Flashbar');
-  const baseProps = getBaseProps(props);
+  const baseProps = getBaseProps(restProps);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
@@ -41,10 +41,8 @@ export default function Flashbar(props: FlashbarProps) {
    * The `stackItems` property is a hidden boolean that allows for teams
    * to beta test the flashbar stacking feature.
    */
-  const stackItems = isStackedFlashbar(props);
+  const stackItems = isStackedFlashbar(restProps);
 
-  // When using the stacking feature, the items are shown in reverse order (last item on top)
-  const items = stackItems ? props.items.slice().reverse() : props.items;
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
@@ -180,13 +178,16 @@ export default function Flashbar(props: FlashbarProps) {
       return;
     }
 
+    // When using the stacking feature, the items are shown in reverse order (last item on top)
+    const reversedItems = items.slice().reverse();
+
     const stackDepth = Math.min(3, items.length);
 
     const itemsToShow = isFlashbarStackExpanded
-      ? items.map((item, index) => ({ ...item, expandedIndex: index }))
-      : getStackedItems(items, stackDepth).map((item, index) => ({ ...item, collapsedIndex: index }));
+      ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
+      : getStackedItems(reversedItems, stackDepth).map((item, index) => ({ ...item, collapsedIndex: index }));
 
-    const { i18nStrings } = props as StackedFlashbarProps;
+    const { i18nStrings } = restProps as StackedFlashbarProps;
     const toggleButtonText = i18nStrings?.toggleButtonText(items.length);
 
     const toggleButtonAriaLabel = isFlashbarStackExpanded
