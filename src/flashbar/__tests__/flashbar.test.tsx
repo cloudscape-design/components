@@ -262,4 +262,100 @@ describe('Flashbar component', () => {
 
     expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute('aria-label', iconLabel);
   });
+
+  describe('Stacked notifications', () => {
+    const toggleButtonSelector = 'button';
+
+    it('shows only the header and content of the last item in the array', () => {
+      const wrapper = render(
+        <Flashbar
+          {...{ stackItems: true }}
+          items={[
+            { type: 'error', header: 'Error', content: 'There was an error' },
+            { type: 'success', header: 'Success', content: 'Everything went fine' },
+          ]}
+        />
+      );
+      const items = wrapper.findItems();
+      expect(items.length).toBe(1);
+      expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
+      expect(items[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+    });
+
+    it('shows toggle button with desired text', () => {
+      const wrapper = render(
+        <Flashbar
+          {...{
+            stackItems: true,
+            i18nStrings: {
+              toggleButtonText: (itemCount: number) => `Custom text (${itemCount})`,
+              expandButtonAriaLabel: (itemCount: number) => `Collapsed aria label (${itemCount})`,
+              collapseButtonAriaLabel: 'Expanded aria label',
+            },
+          }}
+          items={[{ type: 'error' }, { type: 'success' }]}
+        />
+      );
+      const button = wrapper.find(toggleButtonSelector);
+      expect(button).toBeTruthy();
+      expect(button!.getElement()).toHaveTextContent('Custom text (2)');
+    });
+
+    it('does not show toggle button if there is only one item', () => {
+      const wrapper = render(<Flashbar {...{ stackItems: true }} items={[{ type: 'error' }]} />);
+      expect(wrapper.find(toggleButtonSelector)).toBeFalsy();
+    });
+
+    it('expands and collapses by clicking on toggle button', () => {
+      const wrapper = render(
+        <Flashbar
+          {...{ stackItems: true }}
+          items={[
+            { type: 'error', header: 'Error', content: 'There was an error' },
+            { type: 'success', header: 'Success', content: 'Everything went fine' },
+          ]}
+        />
+      );
+      const items = wrapper.findItems();
+      expect(items.length).toBe(1);
+      expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
+      expect(items[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+
+      wrapper.find(toggleButtonSelector)!.click();
+
+      const expandedItems = wrapper.findItems();
+      expect(expandedItems.length).toBe(2);
+      expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent('Success');
+      expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+      expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent('Error');
+      expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent('There was an error');
+
+      wrapper.find(toggleButtonSelector)!.click();
+
+      const collapsedItems = wrapper.findItems();
+      expect(collapsedItems.length).toBe(1);
+      expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent('Success');
+      expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+    });
+
+    it('applies desired aria labels to toggle button', () => {
+      const wrapper = render(
+        <Flashbar
+          {...{
+            stackItems: true,
+            i18nStrings: {
+              toggleButtonText: (itemCount: number) => `Custom text (${itemCount})`,
+              expandButtonAriaLabel: (itemCount: number) => `Collapsed aria label (${itemCount})`,
+              collapseButtonAriaLabel: 'Expanded aria label',
+            },
+          }}
+          items={[{ type: 'error' }, { type: 'success' }]}
+        />
+      );
+      const button = wrapper.find(toggleButtonSelector);
+      expect(button!.getElement()).toHaveAttribute('aria-label', 'Collapsed aria label (2)');
+      button!.click();
+      expect(button!.getElement()).toHaveAttribute('aria-label', 'Expanded aria label');
+    });
+  });
 });
