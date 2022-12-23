@@ -394,6 +394,7 @@ const InternalTable = React.forwardRef(
                                 }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}
+                              hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
                               isVisualRefresh={isVisualRefresh}
