@@ -2,127 +2,72 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useCallback, useRef } from 'react';
-import useFocusVisible from '../../internal/hooks/focus-visible';
-import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import React from 'react';
 import { TableProps } from '../interfaces';
-import { TableTdElement, TableTdElementProps } from './td-element';
-import { InlineEditor } from './inline-editor';
-import { useStableScrollPosition } from './use-stable-scroll-position';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
-const readonlyState = Object.freeze({
-  isEditing: false,
-  currentValue: undefined,
-  setValue: () => {},
-});
-
-const submitHandlerFallback = () => {
-  throw new Error('The function `handleSubmit` is required for editable columns');
-};
-
-interface TableBodyCellProps<ItemType, ValueType> extends TableTdElementProps {
-  column: TableProps.EditableColumnDefinition<ItemType, ValueType>;
-  item: ItemType;
-  isEditing: boolean;
-  onEditStart: () => void;
-  onEditEnd: () => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType, ValueType>;
-  ariaLabels: TableProps['ariaLabels'];
+interface TableBodyCellProps {
+  className?: string;
+  style?: React.CSSProperties;
+  wrapLines: boolean | undefined;
+  isFirstRow: boolean;
+  isLastRow: boolean;
+  isEvenRow?: boolean;
+  stripedRows?: boolean;
+  isSelected: boolean;
+  isNextSelected: boolean;
+  isPrevSelected: boolean;
+  children?: React.ReactNode;
+  hasSelection?: boolean;
+  hasFooter?: boolean;
 }
 
-function TableCellEditable<ItemType, ValueType>({
+export function TableBodyCell({
   className,
-  item,
-  column,
-  isEditing,
-  onEditStart,
-  onEditEnd,
-  submitEdit,
-  ariaLabels,
-  isVisualRefresh,
-  ...rest
-}: TableBodyCellProps<ItemType, ValueType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const cellRef = useRef<HTMLTableCellElement>(null);
-  const focusVisible = useFocusVisible();
-  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
-
-  const handleEditStart = () => {
-    storeScrollPosition();
-    if (!isEditing) {
-      onEditStart();
-    }
-  };
-
-  const scheduleRestoreScrollPosition = useCallback(
-    () => setTimeout(restoreScrollPosition, 0),
-    [restoreScrollPosition]
-  );
-
-  const tdNativeAttributes = {
-    ...(focusVisible as Record<string, string>),
-    onFocus: scheduleRestoreScrollPosition,
-    'data-inline-editing-active': isEditing.toString(),
-  };
-
-  useEffectOnUpdate(() => {
-    if (!isEditing && editActivateRef.current) {
-      editActivateRef.current.focus({ preventScroll: true });
-    }
-    const timer = scheduleRestoreScrollPosition();
-    return () => clearTimeout(timer);
-  }, [isEditing, scheduleRestoreScrollPosition]);
+  style,
+  children,
+  wrapLines,
+  isFirstRow,
+  isLastRow,
+  isSelected,
+  isNextSelected,
+  isPrevSelected,
+  isEvenRow,
+  stripedRows,
+  hasSelection,
+  hasFooter,
+}: TableBodyCellProps) {
+  const isVisualRefresh = useVisualRefresh();
 
   return (
-    <TableTdElement
-      {...rest}
-      nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
+    <td
+      style={style}
       className={clsx(
         className,
-        styles['body-cell-editable'],
-        isEditing && styles['body-cell-edit-active'],
-        isVisualRefresh && styles['is-visual-refresh']
+        styles['body-cell'],
+        wrapLines && styles['body-cell-wrap'],
+        isFirstRow && styles['body-cell-first-row'],
+        isLastRow && styles['body-cell-last-row'],
+        isSelected && styles['body-cell-selected'],
+        isNextSelected && styles['body-cell-next-selected'],
+        isPrevSelected && styles['body-cell-prev-selected'],
+        !isEvenRow && stripedRows && styles['body-cell-shaded'],
+        stripedRows && styles['has-striped-rows'],
+        isVisualRefresh && styles['is-visual-refresh'],
+        hasSelection && styles['has-selection'],
+        hasFooter && styles['has-footer']
       )}
-      onClick={handleEditStart}
-      ref={cellRef}
     >
-      {isEditing ? (
-        <InlineEditor
-          ariaLabels={ariaLabels}
-          column={column}
-          item={item}
-          onEditEnd={onEditEnd}
-          submitEdit={submitEdit ?? submitHandlerFallback}
-          __onRender={restoreScrollPosition}
-        />
-      ) : (
-        <>
-          {column.cell(item, readonlyState)}
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __hideFocusOutline={true}
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
-          </span>
-        </>
-      )}
-    </TableTdElement>
+      {children}
+    </td>
   );
 }
 
-export function TableBodyCell<ItemType, ValueType>({
-  isEditable,
-  ...rest
-}: TableBodyCellProps<ItemType, ValueType> & { isEditable: boolean }) {
-  if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} />;
-  }
-  const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item, readonlyState)}</TableTdElement>;
+interface TableBodyCellContentProps<ItemType> extends TableBodyCellProps {
+  column: TableProps.ColumnDefinition<ItemType>;
+  item: ItemType;
+}
+
+export function TableBodyCellContent<ItemType>({ item, column, ...rest }: TableBodyCellContentProps<ItemType>) {
+  return <TableBodyCell {...rest}>{column.cell(item)}</TableBodyCell>;
 }

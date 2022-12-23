@@ -11,15 +11,15 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-interface TableHeaderCellProps<ItemType, ValueType> {
+interface TableHeaderCellProps {
   className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
-  column: TableProps.ColumnDefinition<ItemType, ValueType>;
-  activeSortingColumn?: TableProps.SortingColumn<ItemType>;
-  sortingDescending?: boolean;
-  sortingDisabled?: boolean;
-  wrapLines?: boolean;
+  column: TableProps.ColumnDefinition<any>;
+  activeSortingColumn: TableProps.SortingColumn<any> | undefined;
+  sortingDescending: boolean | undefined;
+  sortingDisabled: boolean | undefined;
+  wrapLines: boolean | undefined;
   showFocusRing: boolean;
   hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
@@ -29,10 +29,9 @@ interface TableHeaderCellProps<ItemType, ValueType> {
   onFocus?: () => void;
   onBlur?: () => void;
   resizableColumns?: boolean;
-  isEditable?: boolean;
 }
 
-export function TableHeaderCell<ItemType, ValueType>({
+export function TableHeaderCell({
   className,
   style,
   tabIndex,
@@ -50,8 +49,7 @@ export function TableHeaderCell<ItemType, ValueType>({
   updateColumn,
   resizableColumns,
   onResizeFinish,
-  isEditable,
-}: TableHeaderCellProps<ItemType, ValueType>) {
+}: TableHeaderCellProps) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -117,11 +115,6 @@ export function TableHeaderCell<ItemType, ValueType>({
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
-          {isEditable ? (
-            <span className={styles['edit-icon']} role="img" aria-label={column.editConfig?.editIconAriaLabel}>
-              <InternalIcon name="edit" />
-            </span>
-          ) : null}
         </div>
         {sortingStatus && (
           <span className={styles['sorting-icon']}>
