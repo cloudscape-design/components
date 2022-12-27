@@ -21,6 +21,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
+import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 
 export { CardsProps };
 
@@ -65,6 +66,7 @@ const Cards = React.forwardRef(function <T = any>(
   );
   const refObject = useRef(null);
   const mergedRef = useMergeRefs(measureRef, refObject, __internalRootRef);
+  const getMouseDownTarget = useMouseDownTarget();
 
   const { isItemSelected, getItemSelectionProps, updateShiftToggle } = useSelection({
     items,
@@ -80,7 +82,10 @@ const Cards = React.forwardRef(function <T = any>(
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
   stickyHeader = useSupportsStickyHeader() && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
-    if (stickyHeader) {
+    // When an element inside card receives focus we want to adjust the scroll.
+    // However, that behavior is unwanted when the focus is received as result of a click
+    // as it causes the click to never reach the target element.
+    if (stickyHeader && !event.currentTarget.contains(getMouseDownTarget())) {
       scrollToItem(event.currentTarget);
     }
   };

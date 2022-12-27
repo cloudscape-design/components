@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useRef } from 'react';
-import { createSingletonHandler } from '../internal/hooks/use-singleton-handler';
+import { createSingletonHandler } from './use-singleton-handler';
 
 const useEventListenersSingleton = createSingletonHandler<Node | null>(setTarget => {
   function handleMouseDown(event: MouseEvent) {
