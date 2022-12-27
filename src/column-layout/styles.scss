@@ -10,7 +10,6 @@
 @use '../internal/styles' as styles;
 
 $grid-columns: 12;
-$grid-gutter-width: awsui.$space-grid-gutter;
 $column-layout-border: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 $column-breakpoint-spans: (
   '1': (
@@ -103,7 +102,8 @@ div.column-layout {
   word-wrap: break-word;
 
   > .grid {
-    margin: calc(#{$grid-gutter-width} / -2);
+    // horizontal margin needs to equal horizontal padding
+    margin: calc(#{awsui.$space-scaled-2x-m} / -2) calc(#{awsui.$space-scaled-l} / -2);
 
     &.grid-no-gutters {
       margin: 0;
@@ -111,18 +111,18 @@ div.column-layout {
 
     &.grid-variant-text-grid {
       @include make-vertical-borders('left');
-      margin: calc(-1 * (#{awsui.$space-text-grid-vertical})) calc(-1 * #{$grid-gutter-width});
-    }
-    /* stylelint-disable-next-line selector-max-universal */
-    &:not(.grid-no-gutters) > * {
-      padding: calc(#{$grid-gutter-width} / 2);
+      margin: calc((-1 * #{awsui.$space-scaled-s})) calc(-1 * #{awsui.$space-scaled-l}); // same values as lines 122-123
     }
 
-    /* stylelint-disable-next-line selector-max-universal */
-    &:not(.grid-no-gutters).grid-variant-text-grid > * {
-      padding: 0 $grid-gutter-width;
-      margin: awsui.$space-text-grid-vertical 0;
+    /* stylelint-disable selector-max-universal */
+    &:not(.grid-no-gutters) > * {
+      padding: calc(#{awsui.$space-scaled-2x-l} / 2) calc(#{awsui.$space-scaled-l} / 2); // horizontal needs to match horizontal in 105 and 113
     }
+    &:not(.grid-no-gutters).grid-variant-text-grid > * {
+      padding: 0 awsui.$space-scaled-l;
+      margin: awsui.$space-scaled-s 0; // $space-text-grid-vertical
+    }
+    /* stylelint-enable selector-max-universal */
 
     &.grid-vertical-borders {
       @include make-vertical-borders('right');
