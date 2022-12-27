@@ -31,7 +31,7 @@ function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is Autos
 }
 
 function matchSingleOption(option: OptionDefinition, searchText: string): boolean {
-  searchText = searchText.toLowerCase();
+  searchText = `${searchText}`.toLowerCase();
 
   const label = (option.label ?? '').toLowerCase();
   const labelPrefix = option.__labelPrefix ?? '';
