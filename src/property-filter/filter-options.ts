@@ -33,8 +33,12 @@ function isGroup(optionOrGroup: AutosuggestProps.Option): optionOrGroup is Autos
 function matchSingleOption(option: OptionDefinition, searchText: string): boolean {
   searchText = searchText.toLowerCase();
 
-  const label = (option.label ?? '').toLowerCase();
+  const label = toString(option.label).toLowerCase();
   const labelPrefix = option.__labelPrefix ?? '';
-  const value = (option.value ? option.value.slice(labelPrefix.length) : '').toLowerCase();
+  const value = toString(option.value).slice(labelPrefix.length).toLowerCase();
   return label.indexOf(searchText) !== -1 || value.indexOf(searchText) !== -1;
+}
+
+function toString(value: unknown): string {
+  return '' + value;
 }

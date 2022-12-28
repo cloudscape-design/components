@@ -1242,4 +1242,21 @@ describe('property filter parts', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findByClassName(styles.input)!.getElement()).not.toBe(null);
   });
+
+  test('throws no exception when non-string primitive types are used as values or labels', () => {
+    const { propertyFilterWrapper: wrapper } = renderComponent({
+      filteringProperties: [
+        {
+          key: 1,
+          propertyLabel: 1,
+          operators: ['!:', ':', '=', '!='],
+          groupValuesLabel: 1,
+        } as any,
+      ],
+      filteringOptions: [{ propertyKey: 1, value: 1 } as any, { propertyKey: 1, value: 11 } as any],
+      query: { tokens: [{ propertyKey: 1, value: 1, operator: '=' } as any], operation: 'and' },
+    });
+    act(() => wrapper.setInputValue('1=2'));
+    act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+  });
 });
