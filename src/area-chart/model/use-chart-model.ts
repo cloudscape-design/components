@@ -296,6 +296,9 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
             plotRef.current!.focusPlot();
           }
         }, 0);
+      } else {
+        interactions.clearHighlight();
+        interactions.clearHighlightedLegend();
       }
     };
 

@@ -227,6 +227,20 @@ describe('Popover', () => {
       await expect(page.hasPopover()).resolves.toBe(false);
     })
   );
+
+  test(
+    'clicking outside of the chart removes popover',
+    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
+      await page.focusPlot();
+      await page.click(page.chart.toSelector());
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      await expect(page.hasPopover()).resolves.toBe(true);
+
+      await page.openFilter();
+      await expect(page.hasPopover()).resolves.toBe(false);
+    })
+  );
 });
 
 describe('Keyboard navigation', () => {
@@ -340,24 +354,6 @@ describe('Focus delegation', () => {
       await expect(page.getHighlightedSeriesLabel()).resolves.toBe(null);
       await expect(page.getPopoverTitle()).resolves.toBe('3s');
       await expect(page.isPopoverPinned()).resolves.toBe(false);
-    })
-  );
-
-  test(
-    'preserves series highlight when focused away from plot',
-    setupTest('#/light/area-chart/test', 'Linear latency chart', async page => {
-      await page.setWindowSize({ width: 2000, height: 800 });
-      await page.focusPlot();
-
-      await page.keys(['ArrowDown', 'ArrowRight']);
-
-      await expect(page.getPopoverTitle()).resolves.toBe('2s');
-      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p90');
-
-      await page.focusPlot();
-
-      await expect(page.getPopoverTitle()).resolves.toBe('1s');
-      await expect(page.getHighlightedSeriesLabel()).resolves.toBe('p90');
     })
   );
 
