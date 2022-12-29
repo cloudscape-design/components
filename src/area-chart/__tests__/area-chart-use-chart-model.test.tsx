@@ -6,10 +6,12 @@ import useChartModel, { UseChartModelProps } from '../model/use-chart-model';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { ChartDataTypes } from '../../internal/components/cartesian-chart/interfaces';
 import { act, render, fireEvent } from '@testing-library/react';
-import { AreaChartProps } from '../interfaces';
+// import { AreaChartProps } from '../interfaces';
 import { KeyCode } from '../../internal/keycode';
 import { useReaction } from '../model/async-store';
 import { ChartModel } from '../model';
+import { AreaChartWrapper } from '../../../lib/components/test-utils/dom';
+import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {
@@ -104,6 +106,11 @@ function renderChartModelHook(props: UseChartModelProps<ChartDataTypes>) {
   const { rerender, container } = render(<RenderChartModelHook {...props} />);
   const wrapper = new UseChartModelWrapper(container.firstChild as HTMLElement);
   return { rerender, wrapper };
+}
+
+function renderAreaChart(jsx: React.ReactElement) {
+  const { container } = render(jsx);
+  return { container, wrapper: new AreaChartWrapper(container) };
 }
 
 describe('useChartModel', () => {
@@ -351,6 +358,17 @@ describe('useChartModel', () => {
         });
 
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('1');
+      });
+
+      test('clear highlighted X and close popover when click outside', () => {
+        const { wrapper } = renderAreaChart(<AreaChart series={series} statusType="finished" />);
+        wrapper.findApplication()!.focus();
+        wrapper.findChart()!.fireEvent(new MouseEvent('mousedown'));
+
+        expect(wrapper.findDetailPopover()).not.toBeNull();
+
+        wrapper.findDefaultFilter()?.openDropdown();
+        expect(wrapper.findDetailPopover()).toBeNull();
       });
     });
   });
