@@ -115,4 +115,14 @@ describe('Chart legend', () => {
     legend.pressLeft();
     expect(legend.findFocusedLabel()).toEqual(series[2].label);
   });
+
+  test('should set aria-pressed as true when the button is selected', () => {
+    const legend = renderChartLegend();
+
+    legend.focus();
+    legend.pressLeft();
+    expect(legend.wrapper.find('[role="button"]')!.getElement().getAttribute('aria-pressed')).toBe('true');
+    legend.pressLeft();
+    expect(legend.wrapper.find('[role="button"]')!.getElement().getAttribute('aria-pressed')).toBe('false');
+  });
 });

@@ -127,6 +127,7 @@ function ChartLegend<T>({
                 {...focusVisible}
                 role="button"
                 key={index}
+                aria-pressed={isHighlighted}
                 className={clsx(styles.marker, {
                   [styles['marker--dimmed']]: isDimmed,
                   [styles['marker--highlighted']]: isHighlighted,
