@@ -9,11 +9,12 @@
 
 .root {
   @include styles.styles-reset;
+  display: flex;
+  flex-flow: column nowrap;
   word-wrap: break-word;
 
   &-fit-height {
-    display: flex;
-    flex-direction: column;
+    flex-flow: column;
     overflow: hidden;
     height: 100%;
   }
@@ -40,6 +41,8 @@
 }
 
 .header {
+  flex: 0 0 auto;
+
   background-color: awsui.$color-background-container-header;
   border-top-left-radius: awsui.$border-radius-container;
   border-top-right-radius: awsui.$border-radius-container;
@@ -130,10 +133,13 @@ the default white background of the container component.
 }
 
 .content {
+  flex: 1 0 auto;
+
   .root-fit-height > & {
     flex: 1;
     overflow: auto;
   }
+
   &.with-paddings {
     padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
 
@@ -144,6 +150,8 @@ the default white background of the container component.
 }
 
 .footer {
+  flex: 0 0 auto;
+
   &.with-paddings {
     padding: shared.$footer-padding;
   }
