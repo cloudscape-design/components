@@ -34,11 +34,11 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 
-type InternalTableProps<T, V> = SomeRequired<TableProps<T, V>, 'items' | 'selectedItems' | 'variant'> &
+type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
 const InternalTable = React.forwardRef(
-  <T, V>(
+  <T,>(
     {
       header,
       footer,
@@ -77,7 +77,7 @@ const InternalTable = React.forwardRef(
       firstIndex,
       renderAriaLive,
       ...rest
-    }: InternalTableProps<T, V>,
+    }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);

@@ -12,25 +12,25 @@ import { Optional } from '../../internal/types';
 // A function that does nothing
 const noop = () => undefined;
 
-interface InlineEditorProps<ItemType, ValueType> {
+interface InlineEditorProps<ItemType> {
   ariaLabels: TableProps['ariaLabels'];
-  column: TableProps.EditableColumnDefinition<ItemType, ValueType>;
+  column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   onEditEnd: () => void;
-  submitEdit: TableProps.SubmitEditFunction<ItemType, ValueType>;
+  submitEdit: TableProps.SubmitEditFunction<ItemType>;
   __onRender?: () => void;
 }
 
-export function InlineEditor<ItemType, ValueType>({
+export function InlineEditor<ItemType>({
   ariaLabels,
   item,
   column,
   onEditEnd,
   submitEdit,
   __onRender,
-}: InlineEditorProps<ItemType, ValueType>) {
+}: InlineEditorProps<ItemType>) {
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
-  const [currentEditValue, setCurrentEditValue] = useState<Optional<ValueType>>();
+  const [currentEditValue, setCurrentEditValue] = useState<Optional<any>>();
 
   const cellContext = {
     isEditing: true,

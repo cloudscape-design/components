@@ -11121,7 +11121,7 @@ add a meaningful description to the whole selection.
            Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.",
       "name": "columnDefinitions",
       "optional": false,
-      "type": "ReadonlyArray<TableProps.ColumnDefinition<T, V>>",
+      "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
     },
     Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.
@@ -11275,7 +11275,7 @@ Return a promise to keep loading state while the submit request is in progress."
           },
           Object {
             "name": "column",
-            "type": "TableProps.ColumnDefinition<ItemType, ValueType>",
+            "type": "TableProps.ColumnDefinition<ItemType>",
           },
           Object {
             "name": "newValue",
@@ -11287,7 +11287,7 @@ Return a promise to keep loading state while the submit request is in progress."
       },
       "name": "submitEdit",
       "optional": true,
-      "type": "TableProps.SubmitEditFunction<T, V>",
+      "type": "TableProps.SubmitEditFunction<T>",
     },
     Object {
       "description": "Use this property to inform screen readers how many items there are in a table.

@@ -19,7 +19,7 @@ export interface TableForwardRefType {
   <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
 
-export interface TableProps<T = any, V = any> extends BaseComponentProps {
+export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Heading element of the table container. Use the [header component](/components/header/).
    */
@@ -98,7 +98,7 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
    *
    */
-  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T, V>>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
    * Specifies the selection type (`'single' | 'multi'`).
    */
@@ -269,7 +269,7 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
    * Specifies a function that will be called after user submits an inline edit.
    * Return a promise to keep loading state while the submit request is in progress.
    */
-  submitEdit?: TableProps.SubmitEditFunction<T, V>;
+  submitEdit?: TableProps.SubmitEditFunction<T>;
 
   /**
    * Called whenever user cancels an inline edit. Use this function to reset any
@@ -281,16 +281,11 @@ export interface TableProps<T = any, V = any> extends BaseComponentProps {
 export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
-  export type EditableColumnDefinition<T, V = any> = Extract<ColumnDefinition<T, V>, ColumnEditConfig<T, V>>;
-
   export interface CellContext<V> {
     isEditing?: boolean;
     currentValue: Optional<V>;
     setValue: (value: V | undefined) => void;
   }
-
-  export type CellRenderer<T> = (item: T) => React.ReactNode;
-  export type EditableCellRenderer<T, V = any> = (item: T, context: CellContext<V>) => React.ReactNode;
 
   export interface EditConfig<T, V = any> {
     /**
@@ -321,25 +316,16 @@ export namespace TableProps {
     validation?: (item: T, value: Optional<V>) => Optional<string>;
   }
 
-  export type ColumnEditConfig<ItemType, ValueType> =
-    | {
-        editConfig?: undefined;
-        cell: CellRenderer<ItemType>;
-      }
-    | {
-        editConfig: EditConfig<ItemType, ValueType>;
-        cell: EditableCellRenderer<ItemType, ValueType>;
-      };
-
-  export type ColumnDefinition<ItemType, ValueType = any> = {
+  export type ColumnDefinition<ItemType> = {
     id?: string;
     header: React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-  } & SortingColumn<ItemType> &
-    ColumnEditConfig<ItemType, ValueType>;
+    editConfig?: EditConfig<ItemType>;
+    cell(item: ItemType, context: CellContext<any>): React.ReactNode;
+  } & SortingColumn<ItemType>;
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
@@ -408,9 +394,9 @@ export namespace TableProps {
     cancelEdit?(): void;
   }
 
-  export type SubmitEditFunction<ItemType, ValueType = any> = (
+  export type SubmitEditFunction<ItemType, ValueType = unknown> = (
     item: ItemType,
-    column: ColumnDefinition<ItemType, ValueType>,
+    column: ColumnDefinition<ItemType>,
     newValue: ValueType
   ) => Promise<void> | void;
 }

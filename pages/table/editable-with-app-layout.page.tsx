@@ -212,11 +212,7 @@ const Demo = forwardRef(
   ) => {
     const [items, setItems] = useState(initialItems);
 
-    const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo, string> = async (
-      currentItem,
-      column,
-      newValue
-    ) => {
+    const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
       await new Promise(r => setTimeout(r, 1000));
       errorsMeta.delete(currentItem);
@@ -226,6 +222,7 @@ const Demo = forwardRef(
       }
       if (
         column.id === 'LastModifiedTime' &&
+        typeof value === 'string' &&
         (new Date(value).toString() === 'Invalid Date' || !isNaN(+new Date(value)))
       ) {
         const time = new Date(currentItem.LastModifiedTime);

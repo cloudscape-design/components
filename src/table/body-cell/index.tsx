@@ -22,17 +22,17 @@ const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
 };
 
-interface TableBodyCellProps<ItemType, ValueType> extends TableTdElementProps {
-  column: TableProps.EditableColumnDefinition<ItemType, ValueType>;
+interface TableBodyCellProps<ItemType> extends TableTdElementProps {
+  column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType, ValueType>;
+  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
 
-function TableCellEditable<ItemType, ValueType>({
+function TableCellEditable<ItemType>({
   className,
   item,
   column,
@@ -43,7 +43,7 @@ function TableCellEditable<ItemType, ValueType>({
   ariaLabels,
   isVisualRefresh,
   ...rest
-}: TableBodyCellProps<ItemType, ValueType>) {
+}: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
@@ -116,10 +116,10 @@ function TableCellEditable<ItemType, ValueType>({
   );
 }
 
-export function TableBodyCell<ItemType, ValueType>({
+export function TableBodyCell<ItemType>({
   isEditable,
   ...rest
-}: TableBodyCellProps<ItemType, ValueType> & { isEditable: boolean }) {
+}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
   if (isEditable || rest.isEditing) {
     return <TableCellEditable {...rest} />;
   }
