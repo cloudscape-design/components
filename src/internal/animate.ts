@@ -16,6 +16,12 @@ export function getDOMRects(elements: Record<string | number, HTMLElement | null
   Animate DOM elements based on the FLIP technique
   - https://aerotwist.com/blog/flip-your-animations/
   - https://css-tricks.com/animating-layouts-with-the-flip-technique/
+
+  This can be useful when the initial dimensions or position of the element is not known,
+  so the initial offset or scaling needs to be retrieved via JS.
+
+  Caveat: this currently does not support elements having CSS transforms in the end state.
+  These would be overriden in the animation instead of combined.
  */
 export function animate({
   oldState,
@@ -55,6 +61,7 @@ export function animate({
     }
   }
 
+  // Animate from the initial state to the end state
   requestAnimationFrame(() => {
     const ongoingAnimations = new Set();
     for (const id in elements) {
@@ -62,9 +69,12 @@ export function animate({
       if (element) {
         const oldRect = oldState[id];
         if (oldRect) {
+          // Animate from here on
           element.style.transitionProperty = `transform`;
+          // Unset inline CSS transforms so that the final state is applied
           element.style.transform = '';
         } else {
+          // If the element didn't exist previously, fade in as well
           element.style.transitionProperty = `transform, opacity`;
           element.style.transform = '';
           element.style.opacity = '';
@@ -77,6 +87,7 @@ export function animate({
         };
         const onTransitionEnd = (event: TransitionEvent) => {
           if (event.target === element) {
+            // Clean up remaining inline styles
             element.style.transitionProperty = '';
             element.removeEventListener('transitionstart', onTransitionEnd);
             if (onTransitionsEnd) {
