@@ -228,7 +228,7 @@ the grid layout will be:
   }
 }
 
-.stack > .expanded.transitioning > .flash-list-item {
+.stack > .expanded.animation-running > .flash-list-item {
   position: relative;
   @include stacked-flash-z-index;
 }

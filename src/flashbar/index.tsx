@@ -125,30 +125,6 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     if (initialAnimationState) {
       const elements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
 
-      // But first, hide elements that will not be present in the final state but they are still present now
-      // because they are managed by ReactTransition, which removes them at a later point after the first render.
-      let parent;
-      for (const id in elements) {
-        parent = elements[id]?.parentElement;
-        if (parent) {
-          break;
-        }
-      }
-      if (parent?.hasChildNodes()) {
-        const set = new Set<Node>();
-        for (const id in elements) {
-          const element = elements[id];
-          if (element !== null) {
-            set.add(element);
-          }
-        }
-        parent.childNodes.forEach(child => {
-          if (!set.has(child) && child instanceof HTMLElement) {
-            child.style.display = 'none';
-          }
-        });
-      }
-
       animate({
         elements,
         oldState: initialAnimationState,
@@ -219,7 +195,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           className={clsx(
             styles['flash-list'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-            transitioning && styles.transitioning,
+            transitioning && styles['animation-running'],
+            initialAnimationState && styles['animation-ready'],
             isVisualRefresh && styles['visual-refresh']
           )}
           style={
@@ -246,7 +223,11 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
                 <li
                   className={
                     showInnerContent(item)
-                      ? clsx(styles['flash-list-item'], !isFlashbarStackExpanded && styles.item)
+                      ? clsx(
+                          styles['flash-list-item'],
+                          !isFlashbarStackExpanded && styles.item,
+                          !collapsedItemRefs.current[getItemId(item)] && styles['expanded-only']
+                        )
                       : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                   }
                   ref={element => {
@@ -286,7 +267,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
               styles.toggle,
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-              transitioning && styles.transitioning
+              transitioning && styles['animation-running']
             )}
             onClick={toggleCollapseExpand}
             ref={toggleButtonRef}
