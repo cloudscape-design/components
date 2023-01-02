@@ -379,7 +379,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 }
 
 function isStackedFlashbar(props: any): props is StackedFlashbarProps {
-  return 'stackItems' in props && !!props.stackItems;
+  return 'stackItems' in props && props.stackItems;
 }
 
 applyDisplayName(Flashbar, 'Flashbar');
