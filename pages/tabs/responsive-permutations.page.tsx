@@ -73,7 +73,13 @@ export default function ResponsiveTabsPermutations() {
             </div>
             <PermutationsView
               permutations={permutations}
-              render={permutation => <Tabs {...permutation} variant="container" />}
+              render={permutation => (
+                <Tabs
+                  {...permutation}
+                  variant="container"
+                  i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+                />
+              )}
             />
           </SpaceBetween>
         </ScreenshotArea>
