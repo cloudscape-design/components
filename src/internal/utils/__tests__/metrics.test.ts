@@ -1,14 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { Metrics } from '../../metrics';
-jest.mock(
-  '../../environment',
-  () => ({
-    THEME: 'default',
-    PACKAGE_VERSION: '3.0 (HEAD)',
-  }),
-  { virtual: true }
-);
+
+jest.mock('../../environment', () => ({ PACKAGE_VERSION: '3.0 (HEAD)' }), { virtual: true });
 
 declare global {
   interface Window {

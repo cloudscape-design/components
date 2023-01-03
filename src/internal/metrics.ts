@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { THEME, PACKAGE_VERSION } from './environment';
+import { PACKAGE_VERSION } from './environment';
 
 export interface MetricsLogItem {
   source: string;
@@ -29,7 +29,7 @@ declare const AWSUI_METRIC_ORIGIN: string | undefined;
 const oneTimeMetrics: Record<string, boolean> = {};
 
 // In case we need to override the theme for VR
-let theme: string | undefined = undefined;
+let theme = '';
 function setTheme(newTheme: string) {
   theme = newTheme;
 }
@@ -68,7 +68,7 @@ const buildMetricDetail = ({ source, action, version }: MetricsLogItem): string 
 };
 
 const buildMetricName = ({ source, version }: MetricsLogItem): string => {
-  return ['awsui', source, `${formatVersionForMetricName(THEME, version)}`].join('_');
+  return ['awsui', source, `${formatVersionForMetricName(theme, version)}`].join('_');
 };
 
 const findPanorama = (currentWindow?: MetricsWindow): any | undefined => {
