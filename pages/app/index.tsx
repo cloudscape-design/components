@@ -56,15 +56,6 @@ function App() {
     }
   }, [isMacOS]);
 
-  useEffect(() => {
-    // NB: do not use classList.toggle, it does not work as expected in IE
-    if (visualRefresh) {
-      document.body.classList.add('awsui-visual-refresh');
-    } else {
-      document.body.classList.remove('awsui-visual-refresh');
-    }
-  }, [visualRefresh]);
-
   if (!mode) {
     return <Redirect to="/light/" />;
   }
@@ -79,6 +70,10 @@ function App() {
     </StrictModeWrapper>
   );
 }
+
+// The VR class needs to be set before any React rendering takes occurs.
+const vrDisabled = window.location.hash.includes('visualRefresh=false');
+document.getElementById('app')?.classList.toggle('awsui-visual-refresh', !vrDisabled);
 
 render(
   <HashRouter>
