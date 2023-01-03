@@ -29,10 +29,13 @@ declare const AWSUI_METRIC_ORIGIN: string | undefined;
 const oneTimeMetrics: Record<string, boolean> = {};
 
 // In case we need to override the theme for VR
-let theme = THEME;
+let theme: string | undefined = undefined;
 function setTheme(newTheme: string) {
   theme = newTheme;
 }
+
+// react is the only framework we're using
+const framework = 'react';
 
 const buildMetricHash = ({ source, action }: MetricsLogItem): string => {
   return [`src${source}`, `action${action}`].join('_');
@@ -104,14 +107,9 @@ const findAWSC = (currentWindow?: MetricsWindow): AWSC | undefined => {
   }
 };
 
-// react is the only framework we're logging
-const framework = 'react';
-
 export const Metrics = {
-  initMetrics(overrideTheme?: string) {
-    if (overrideTheme) {
-      setTheme(overrideTheme);
-    }
+  initMetrics(theme: string) {
+    setTheme(theme);
   },
 
   /**
@@ -119,6 +117,11 @@ export const Metrics = {
    * Does nothing if Console Platform client logging JS is not present in page.
    */
   sendMetric(metricName: string, value: number, detail?: string): void {
+    if (!theme) {
+      // Metrics need to be initialized first (initMetrics)
+      return;
+    }
+
     if (!metricName || !/^[a-zA-Z0-9_-]{1,32}$/.test(metricName)) {
       console.error(`Invalid metric name: ${metricName}`);
       return;

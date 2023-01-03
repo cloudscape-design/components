@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect } from 'react';
+import { THEME } from '../../environment';
 import { Metrics } from '../../metrics';
 import { useVisualRefresh } from '../use-visual-mode';
 
@@ -8,7 +9,7 @@ export function useTelemetry(componentName: string) {
   const isVisualRefresh = useVisualRefresh();
 
   useEffect(() => {
-    Metrics.initMetrics(isVisualRefresh ? 'vr' : undefined);
+    Metrics.initMetrics(isVisualRefresh ? 'vr' : THEME);
     if (typeof window !== 'undefined') {
       Metrics.sendMetricOnce('awsui-viewport-width', window.innerWidth || 0);
       Metrics.sendMetricOnce('awsui-viewport-height', window.innerHeight || 0);
