@@ -11393,6 +11393,28 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "boolean",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "inlineType": Object {
+        "name": "TabsProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "scrollLeftAriaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "scrollRightAriaLabel",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "TabsProps.I18nStrings",
+    },
+    Object {
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
       "optional": true,
