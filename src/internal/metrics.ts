@@ -28,6 +28,12 @@ declare const AWSUI_METRIC_ORIGIN: string | undefined;
 
 const oneTimeMetrics: Record<string, boolean> = {};
 
+// In case we need to override the theme for VR
+let theme = THEME;
+function setTheme(newTheme: string) {
+  theme = newTheme;
+}
+
 const buildMetricHash = ({ source, action }: MetricsLogItem): string => {
   return [`src${source}`, `action${action}`].join('_');
 };
@@ -50,7 +56,7 @@ const buildMetricDetail = ({ source, action, version }: MetricsLogItem): string 
   const detailObject = {
     o: metricOrigin,
     s: source,
-    t: THEME,
+    t: theme,
     a: action,
     f: framework,
     v: formatMajorVersionForMetricDetail(version),
@@ -98,15 +104,14 @@ const findAWSC = (currentWindow?: MetricsWindow): AWSC | undefined => {
   }
 };
 
-// react is the default framework we're logging, for angular we need to set it explicitly
-let framework = 'react';
-function setFramework(fwk: string) {
-  framework = fwk;
-}
+// react is the only framework we're logging
+const framework = 'react';
 
 export const Metrics = {
-  initMetrics(fwk: string) {
-    setFramework(fwk);
+  initMetrics(overrideTheme?: string) {
+    if (overrideTheme) {
+      setTheme(overrideTheme);
+    }
   },
 
   /**
