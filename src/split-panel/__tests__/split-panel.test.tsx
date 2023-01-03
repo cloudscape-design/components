@@ -5,11 +5,12 @@ import { render, fireEvent, act } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
 import {
-  SplitPanelContext,
+  SplitPanelContextProvider,
   SplitPanelContextProps,
 } from '../../../lib/components/internal/context/split-panel-context';
 import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/split-panel/styles.css.js';
+import { defaultSplitPanelContextProps } from './helpers';
 
 const onKeyDown = jest.fn();
 jest.mock('../../../lib/components/split-panel/utils/use-keyboard-events', () => ({
@@ -41,25 +42,6 @@ const defaultProps: SplitPanelProps = {
   i18nStrings,
 };
 
-const defaultContextProps: SplitPanelContextProps = {
-  topOffset: 0,
-  bottomOffset: 0,
-  leftOffset: 0,
-  rightOffset: 0,
-  position: 'bottom',
-  size: 0,
-  getMaxWidth: () => 500,
-  getMaxHeight: () => 500,
-  isOpen: true,
-  isMobile: false,
-  isForcedPosition: false,
-  onResize: jest.fn(),
-  onToggle: jest.fn(),
-  onPreferencesChange: jest.fn(),
-  reportSize: jest.fn(),
-  reportHeaderHeight: jest.fn(),
-};
-
 function renderSplitPanel({
   props,
   contextProps,
@@ -68,9 +50,9 @@ function renderSplitPanel({
   contextProps?: Partial<SplitPanelContextProps>;
 } = {}) {
   const { container } = render(
-    <SplitPanelContext.Provider value={{ ...defaultContextProps, ...contextProps }}>
+    <SplitPanelContextProvider value={{ ...defaultSplitPanelContextProps, ...contextProps }}>
       <SplitPanel {...defaultProps} {...props} />
-    </SplitPanelContext.Provider>
+    </SplitPanelContextProvider>
   );
   const wrapper = createWrapper(container).findSplitPanel()!;
   return { wrapper };
@@ -81,6 +63,10 @@ afterEach(() => {
 });
 
 describe('Split panel', () => {
+  test('throws error when split panel is used outside its context', () => {
+    expect(() => render(<SplitPanel {...defaultProps} />)).toThrow('Split panel can only be used inside app layout');
+  });
+
   test('renders panel in bottom position', () => {
     const { wrapper } = renderSplitPanel({ contextProps: { position: 'bottom' } });
     expect(wrapper.findOpenPanelBottom()).not.toBeNull();
@@ -125,19 +111,19 @@ describe('Split panel', () => {
       });
 
       test('hides panel', () => {
-        (defaultContextProps.onToggle as jest.Mock).mockClear();
+        (defaultSplitPanelContextProps.onToggle as jest.Mock).mockClear();
 
         const { wrapper } = renderSplitPanel({ contextProps: { position, isOpen: true } });
         wrapper.findCloseButton()!.getElement().click();
-        expect(defaultContextProps.onToggle).toHaveBeenCalledTimes(1);
+        expect(defaultSplitPanelContextProps.onToggle).toHaveBeenCalledTimes(1);
       });
 
       test('opens panel', () => {
-        (defaultContextProps.onToggle as jest.Mock).mockClear();
+        (defaultSplitPanelContextProps.onToggle as jest.Mock).mockClear();
 
         const { wrapper } = renderSplitPanel({ contextProps: { position, isOpen: false } });
         wrapper.findOpenButton()!.getElement().click();
-        expect(defaultContextProps.onToggle).toHaveBeenCalledTimes(1);
+        expect(defaultSplitPanelContextProps.onToggle).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -189,8 +175,8 @@ describe('Split panel', () => {
         await nextFrame();
 
         expect(getPanelSize(wrapper)).toEqual('300px');
-        expect(defaultContextProps.reportSize).toHaveBeenCalledTimes(1);
-        expect(defaultContextProps.reportSize).toHaveBeenLastCalledWith(300);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(1);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(300);
       });
 
       test('size cannot be less than minSize', async () => {
@@ -198,8 +184,8 @@ describe('Split panel', () => {
         await nextFrame();
 
         expect(getPanelSize(wrapper)).toEqual(`${minSize}px`);
-        expect(defaultContextProps.reportSize).toHaveBeenCalledTimes(1);
-        expect(defaultContextProps.reportSize).toHaveBeenLastCalledWith(minSize);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(1);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(minSize);
       });
 
       test('size cannot be more than maxSize', async () => {
@@ -207,8 +193,8 @@ describe('Split panel', () => {
         await nextFrame();
 
         expect(getPanelSize(wrapper)).toEqual('500px');
-        expect(defaultContextProps.reportSize).toHaveBeenCalledTimes(2);
-        expect(defaultContextProps.reportSize).toHaveBeenLastCalledWith(500);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(2);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenLastCalledWith(500);
       });
 
       test('when minSize > maxSize, prefer minSize', async () => {
@@ -218,8 +204,8 @@ describe('Split panel', () => {
         await nextFrame();
 
         expect(getPanelSize(wrapper)).toEqual(`${minSize}px`);
-        expect(defaultContextProps.reportSize).toHaveBeenCalledTimes(2);
-        expect(defaultContextProps.reportSize).toHaveBeenCalledWith(minSize);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledTimes(2);
+        expect(defaultSplitPanelContextProps.reportSize).toHaveBeenCalledWith(minSize);
       });
     });
   });
@@ -249,7 +235,7 @@ describe('Split panel', () => {
 
       modalWrapper.findFooter()!.findAll('button')[0].getElement().click();
 
-      expect(defaultContextProps.onPreferencesChange).not.toHaveBeenCalled();
+      expect(defaultSplitPanelContextProps.onPreferencesChange).not.toHaveBeenCalled();
       expect(createWrapper().findModal()).toBeNull();
     });
 
@@ -260,8 +246,10 @@ describe('Split panel', () => {
 
       modalWrapper.findFooter()!.findAll('button')[1].getElement().click();
 
-      expect(defaultContextProps.onPreferencesChange).toHaveBeenCalledTimes(1);
-      expect(defaultContextProps.onPreferencesChange).toHaveBeenCalledWith({ position: defaultContextProps.position });
+      expect(defaultSplitPanelContextProps.onPreferencesChange).toHaveBeenCalledTimes(1);
+      expect(defaultSplitPanelContextProps.onPreferencesChange).toHaveBeenCalledWith({
+        position: defaultSplitPanelContextProps.position,
+      });
       expect(createWrapper().findModal()).toBeNull();
     });
 

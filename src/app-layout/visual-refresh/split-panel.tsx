@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import clsx from 'clsx';
 import { AppLayoutContext } from './context';
 import {
-  SplitPanelContext,
+  SplitPanelContextProvider,
   SplitPanelContextProps,
   SplitPanelLastInteraction,
 } from '../../internal/context/split-panel-context';
@@ -69,14 +69,14 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     lastInteraction: splitPanelLastInteraction,
   };
 
-  return <SplitPanelContext.Provider value={{ ...context }}>{children}</SplitPanelContext.Provider>;
+  return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;
 }
 
 /**
  * This is the render function for the SplitPanel when it is in bottom position.
  * The Split Panel container will be another row entry in the grid definition in
  * the Layout component. The start and finish columns will be variable based
- * on the the presence and state of the Navigation and Tools components.
+ * on the presence and state of the Navigation and Tools components.
  */
 function SplitPanelBottom() {
   const {
