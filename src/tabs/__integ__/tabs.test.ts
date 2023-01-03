@@ -116,13 +116,27 @@ test(
 );
 
 test(
-  'adds aria-hidden to pagination buttons',
+  'does not add aria-hidden to pagination buttons',
   setupTest(async page => {
     await expect(
-      page.isExisting(wrapper.find(page.paginationButton('left')).find('[aria-hidden="true"]').toSelector())
+      page.isExisting(wrapper.find(page.paginationButton('left')).find('button[aria-hidden="true"]').toSelector())
+    ).resolves.toBe(false);
+    await expect(
+      page.isExisting(wrapper.find(page.paginationButton('right')).find('button[aria-hidden="true"]').toSelector())
+    ).resolves.toBe(false);
+  }, true)
+);
+
+test(
+  'adds aria-label to pagination buttons',
+  setupTest(async page => {
+    await expect(
+      page.isExisting(wrapper.find(page.paginationButton('left')).find('button[aria-label="Scroll left"]').toSelector())
     ).resolves.toBe(true);
     await expect(
-      page.isExisting(wrapper.find(page.paginationButton('right')).find('[aria-hidden="true"]').toSelector())
+      page.isExisting(
+        wrapper.find(page.paginationButton('right')).find('button[aria-label="Scroll right"]').toSelector()
+      )
     ).resolves.toBe(true);
   }, true)
 );
@@ -166,6 +180,20 @@ test(
     await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
     await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
   })
+);
+
+test(
+  'scrolls when using the left/right pagination buttons with the keyboard',
+  setupTest(async page => {
+    await page.setWindowSize({ width: 500, height: 1000 });
+    await page.focusTabHeader();
+    await page.keys(['Tab', 'Space']);
+    await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
+    await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
+    await page.keys(['Shift', 'Tab', 'Tab', 'Space']);
+    await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
+    await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
+  }, true)
 );
 
 test(
@@ -230,19 +258,12 @@ test(
     await page.click(page.paginationButton('right', true));
     await expect(page.getScrollLeft()).resolves.toBeGreaterThan(200);
     await page.focusTabHeader();
+    await page.keys(['Tab']); // Navigate past the scroll left button
     await expect(page.getScrollLeft()).resolves.toBe(0);
   }, true)
 );
 
 [false, true].forEach(smallViewport => {
-  test(
-    'has the same tab behavior when paginated (pagination links not tabbable)',
-    setupTest(async page => {
-      await page.click('#before');
-      await page.keys(['Tab', 'Tab', 'Tab']);
-      await expect(page.isFocused('#after')).resolves.toBe(true);
-    }, smallViewport)
-  );
   test(
     'has the same arrow left/right keys behavior when paginated',
     setupTest(async page => {

@@ -27,7 +27,12 @@ export default function TabsDemoPage() {
       <SpaceBetween size="xs">
         <div>
           <h2>Controlled component</h2>
-          <Tabs tabs={tabs} activeTabId={selectedTab} onChange={event => setSelectedTab(event.detail.activeTabId)} />
+          <Tabs
+            tabs={tabs}
+            activeTabId={selectedTab}
+            onChange={event => setSelectedTab(event.detail.activeTabId)}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
         </div>
         <div>
           <h2>Uncontrolled component</h2>

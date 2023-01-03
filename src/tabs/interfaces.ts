@@ -56,6 +56,11 @@ export interface TabsProps extends BaseComponentProps {
    * Determines whether the tab content has padding. If `true`, removes the default padding from the tab content area.
    */
   disableContentPaddings?: boolean;
+
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   */
+  i18nStrings?: TabsProps.I18nStrings;
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container';
@@ -96,5 +101,16 @@ export namespace TabsProps {
      * The `href` attribute of the clicked tab, if defined.
      */
     activeTabHref?: string;
+  }
+
+  export interface I18nStrings {
+    /**
+     * ARIA label for the scroll left button that appears when the tab header is wider than the container
+     */
+    scrollRightAriaLabel: string;
+    /**
+     * ARIA label for the scroll right button that appears when the tab header is wider than the container
+     */
+    scrollLeftAriaLabel: string;
   }
 }
