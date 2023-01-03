@@ -3,6 +3,7 @@
 import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
+import { Optional } from '../internal/types';
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -17,7 +18,8 @@ import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/e
 export interface TableForwardRefType {
   <T>(props: TableProps<T> & { ref?: React.Ref<TableProps.Ref> }): JSX.Element;
 }
-export interface TableProps<T = any> extends BaseComponentProps {
+
+export interface TableProps<T = any, V = any> extends BaseComponentProps {
   /**
    * Heading element of the table container. Use the [header component](/components/header/).
    */
@@ -71,7 +73,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   fills the remaining space of the table so the specified width is ignored.
    * * `minWidth` (string | number) - Specifies the minimum column width. Corresponds to the `min-width` css-property. When
    *   `resizableColumns` property is set to `true`, additional constraints apply: 1) string values are not allowed,
-   *   and 2) the column can't resize below than the specified width (defaults to "120px").
+   *   and 2) the column can't resize below than the specified width (defaults to "120px"). We recommend that you set a minimum width
+   *   of at least 176px for columns that are editable.
    * * `maxWidth` (string | number) - Specifies the maximum column width. Corresponds to the `max-width` css-property.
    *   Note that when the `resizableColumns` property is set to `true` this property is ignored.
    * * `ariaLabel` (LabelData => string) - An optional function that's called to provide an `aria-label` for the cell header.
@@ -86,9 +89,16 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
+   * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
+   * * * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+   * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+   * * * `editConfig.editIconAriaLabel` (string) - Specifies an alternate text for the edit icon used in column header.
+   * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
+   * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+   *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
    *
    */
-  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T, V>>;
   /**
    * Specifies the selection type (`'single' | 'multi'`).
    */
@@ -140,15 +150,21 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `allItemsSelectionLabel` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
    * * `selectionGroupLabel` (string) - Specifies the alternative text for the whole selection and single-selection column header.
    *                                    It is prefixed to `itemSelectionLabel` and `allItemsSelectionLabel` when they are set.
-   * * `tableLabel` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+   * * `tableLabel` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
    *                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
-   *
    * You can use the first argument of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The `itemSelectionLabel` for individual
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
+   *
+   * * `activateEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the edit button in editable cells.
+   * * `cancelEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the cancel button in editable cells.
+   * * `submitEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the submit button in editable cells.
    */
-  ariaLabels?: TableProps.AriaLabels<T>;
+  ariaLabels?: TableProps.AriaLabels<T, V>;
 
   /**
    * Specifies the definition object of the currently sorted column. Make sure you pass an object that's
@@ -249,20 +265,81 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Requires the properties firstIndex and totalItemsCount to be set correctly.
    */
   renderAriaLive?: (data: TableProps.LiveAnnouncement) => string;
+  /**
+   * Specifies a function that will be called after user submits an inline edit.
+   * Return a promise to keep loading state while the submit request is in progress.
+   */
+  submitEdit?: TableProps.SubmitEditFunction<T, V>;
+
+  /**
+   * Called whenever user cancels an inline edit. Use this function to reset any
+   * validation states, or show warning for unsaved changes.
+   */
+  onEditCancel?: CancelableEventHandler;
 }
 
 export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
-  export type ColumnDefinition<T> = {
+  export type EditableColumnDefinition<T, V = any> = Extract<ColumnDefinition<T, V>, ColumnEditConfig<T, V>>;
+
+  export interface CellContext<V> {
+    isEditing?: boolean;
+    currentValue: Optional<V>;
+    setValue: (value: V | undefined) => void;
+  }
+
+  export type CellRenderer<T> = (item: T) => React.ReactNode;
+  export type EditableCellRenderer<T, V = any> = (item: T, context: CellContext<V>) => React.ReactNode;
+
+  export interface EditConfig<T, V = any> {
+    /**
+     * Specifies a label for the edit control. Visually hidden but read
+     * by screen readers.
+     */
+    ariaLabel?: string;
+    /**
+     * Specifies an ariaLabel for the error icon that is displayed when
+     * the validation fails.
+     */
+    errorIconAriaLabel?: string;
+    /**
+     * Specifies an alternate text for the edit icon used in column header.
+     */
+    editIconAriaLabel?: string;
+    /**
+     * Constraint text that is displayed below the edit control.
+     */
+    constraintText?: string;
+    /**
+     * A function that allows you to validate the value of the edit control. Return
+     * a string from the function to display an error message. Return
+     * `undefined` (or no return) from the function to indicate that the value is valid.
+     * @param item - The item that is being edited.
+     * @param value - The current value of the edit control.
+     */
+    validation?: (item: T, value: Optional<V>) => Optional<string>;
+  }
+
+  export type ColumnEditConfig<ItemType, ValueType> =
+    | {
+        editConfig?: undefined;
+        cell: CellRenderer<ItemType>;
+      }
+    | {
+        editConfig: EditConfig<ItemType, ValueType>;
+        cell: EditableCellRenderer<ItemType, ValueType>;
+      };
+
+  export type ColumnDefinition<ItemType, ValueType = any> = {
     id?: string;
     header: React.ReactNode;
-    cell(item: T): React.ReactNode;
     ariaLabel?(data: LabelData): string;
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-  } & SortingColumn<T>;
+  } & SortingColumn<ItemType> &
+    ColumnEditConfig<ItemType, ValueType>;
 
   export type SelectionType = 'single' | 'multi';
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
@@ -273,11 +350,14 @@ export namespace TableProps {
     selectedItems: T[];
   }
   export type IsItemDisabled<T> = (item: T) => boolean;
-  export interface AriaLabels<T> {
+  export interface AriaLabels<T, V = any> {
     allItemsSelectionLabel?: (data: TableProps.SelectionState<T>) => string;
     itemSelectionLabel?: (data: TableProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel?: string;
     tableLabel?: string;
+    activateEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
+    cancelEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
+    submitEditLabel?: (column: EditableColumnDefinition<T, V>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
@@ -319,5 +399,16 @@ export namespace TableProps {
      * scroll parent scrolls to reveal the first row of the table.
      */
     scrollToTop(): void;
+
+    /**
+     * Dismiss an inline edit if currently active.
+     */
+    cancelEdit?(): void;
   }
+
+  export type SubmitEditFunction<ItemType, ValueType = any> = (
+    item: ItemType,
+    column: ColumnDefinition<ItemType, ValueType>,
+    newValue: ValueType
+  ) => Promise<void> | void;
 }
