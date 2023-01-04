@@ -26,11 +26,7 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
-  return (
-    <div className={styles.root} aria-live="polite">
-      {children}
-    </div>
-  );
+  return <div className={styles.root}>{children}</div>;
 }
 
 type UseDropdownStatus = ({
