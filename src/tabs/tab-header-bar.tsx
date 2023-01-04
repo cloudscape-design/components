@@ -127,20 +127,18 @@ export function TabHeaderBar({
   return (
     //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
-      {
-        /* istanbul ignore next: covered by integration tests */ horizontalOverflow && (
-          <span ref={leftOverflowButton} className={leftButtonClasses}>
-            <InternalButton
-              formAction="none"
-              variant="icon"
-              iconName="angle-left"
-              disabled={!leftOverflow}
-              onClick={() => onPaginationClick(headerBarRef, -1)}
-              ariaLabel={i18nStrings?.scrollLeftAriaLabel}
-            />
-          </span>
-        )
-      }
+      {horizontalOverflow && (
+        <span ref={leftOverflowButton} className={leftButtonClasses}>
+          <InternalButton
+            formAction="none"
+            variant="icon"
+            iconName="angle-left"
+            disabled={!leftOverflow}
+            onClick={() => onPaginationClick(headerBarRef, -1)}
+            ariaLabel={i18nStrings?.scrollLeftAriaLabel}
+          />
+        </span>
+      )}
       <ul
         role="tablist"
         className={styles['tabs-header-list']}
@@ -151,20 +149,18 @@ export function TabHeaderBar({
       >
         {tabs.map(renderTabHeader)}
       </ul>
-      {
-        /* istanbul ignore next: covered by integration tests */ horizontalOverflow && (
-          <span className={rightButtonClasses}>
-            <InternalButton
-              formAction="none"
-              variant="icon"
-              iconName="angle-right"
-              disabled={!rightOverflow}
-              onClick={() => onPaginationClick(headerBarRef, 1)}
-              ariaLabel={i18nStrings?.scrollRightAriaLabel}
-            />
-          </span>
-        )
-      }
+      {horizontalOverflow && (
+        <span className={rightButtonClasses}>
+          <InternalButton
+            formAction="none"
+            variant="icon"
+            iconName="angle-right"
+            disabled={!rightOverflow}
+            onClick={() => onPaginationClick(headerBarRef, 1)}
+            ariaLabel={i18nStrings?.scrollRightAriaLabel}
+          />
+        </span>
+      )}
     </div>
   );
 

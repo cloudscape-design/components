@@ -116,32 +116,6 @@ test(
 );
 
 test(
-  'does not add aria-hidden to pagination buttons',
-  setupTest(async page => {
-    await expect(
-      page.isExisting(wrapper.find(page.paginationButton('left')).find('button[aria-hidden="true"]').toSelector())
-    ).resolves.toBe(false);
-    await expect(
-      page.isExisting(wrapper.find(page.paginationButton('right')).find('button[aria-hidden="true"]').toSelector())
-    ).resolves.toBe(false);
-  }, true)
-);
-
-test(
-  'adds aria-label to pagination buttons',
-  setupTest(async page => {
-    await expect(
-      page.isExisting(wrapper.find(page.paginationButton('left')).find('button[aria-label="Scroll left"]').toSelector())
-    ).resolves.toBe(true);
-    await expect(
-      page.isExisting(
-        wrapper.find(page.paginationButton('right')).find('button[aria-label="Scroll right"]').toSelector()
-      )
-    ).resolves.toBe(true);
-  }, true)
-);
-
-test(
   'does not scroll when using arrows',
   setupTest(async page => {
     await page.focusTabHeader();
@@ -257,8 +231,8 @@ test(
   setupTest(async page => {
     await page.click(page.paginationButton('right', true));
     await expect(page.getScrollLeft()).resolves.toBeGreaterThan(200);
-    await page.focusTabHeader();
-    await page.keys(['Tab']); // Navigate past the scroll left button
+    await page.click('#before');
+    await page.keys(['Tab', 'Tab']); // Type Tab twice in order to navigate past the scroll left button
     await expect(page.getScrollLeft()).resolves.toBe(0);
   }, true)
 );
