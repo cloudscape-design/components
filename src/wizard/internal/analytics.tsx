@@ -47,7 +47,7 @@ export const useWizardAnalytics = () => {
     // Start a new timer of the current step
     timeStart();
 
-    Metrics.sendPanoramaMetric('trackStartStep', {
+    Metrics.sendPanoramaMetric({
       eventContext,
       eventDetail: createEventDetail(stepIndex),
       eventType: createEventType('step'),
@@ -59,7 +59,7 @@ export const useWizardAnalytics = () => {
     const eventContext = createEventContext(activeStepIndex);
     const time = timeEnd();
 
-    Metrics.sendPanoramaMetric('trackNavigate', {
+    Metrics.sendPanoramaMetric({
       eventContext,
       eventDetail: createEventDetail(requestedStepIndex),
       eventType: createEventType('navigate'),
@@ -72,7 +72,7 @@ export const useWizardAnalytics = () => {
     // End the timer of the wizard
     const time = timeEnd(prefix);
 
-    Metrics.sendPanoramaMetric('trackSubmit', {
+    Metrics.sendPanoramaMetric({
       eventContext,
       eventDetail: createEventDetail(stepIndex),
       eventType: createEventType('submit'),

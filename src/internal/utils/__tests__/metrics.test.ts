@@ -332,7 +332,7 @@ describe('Client Metrics support', () => {
 
   describe('sendPanoramaMetric', () => {
     test('does nothing when panorama is undefined', () => {
-      Metrics.sendPanoramaMetric('name', {}); // only proves no exception thrown
+      Metrics.sendPanoramaMetric({}); // only proves no exception thrown
     });
 
     describe('when panorama is defined', () => {
@@ -358,37 +358,8 @@ describe('Client Metrics support', () => {
         const mockDateNow = new Date('2022-12-16T00:00:00.00Z').valueOf();
         jest.spyOn(global.Date, 'now').mockImplementationOnce(() => mockDateNow);
 
-        Metrics.sendPanoramaMetric('name', metric);
-        expect(window.panorama).toHaveBeenCalledWith('name', { ...metric, timestamp: mockDateNow });
-      });
-
-      describe('Metric name validation', () => {
-        const tryValidMetric = (metricName: string) => {
-          it(`calls panorama when valid metric name used (${metricName})`, () => {
-            Metrics.sendPanoramaMetric(metricName, metric);
-            expect(window.panorama).toHaveBeenCalledWith(metricName, expect.objectContaining(metric));
-          });
-        };
-
-        const tryInvalidMetric = (metricName: string) => {
-          it(`logs an error when invalid metric name used (${metricName})`, () => {
-            Metrics.sendPanoramaMetric(metricName, metric);
-            expect(consoleSpy).toHaveBeenCalledWith(`Invalid metric name: ${metricName}`);
-            consoleSpy.mockReset();
-          });
-        };
-
-        tryValidMetric('1'); // min length 1 char
-        tryValidMetric('123456789'); // digits are ok
-        tryValidMetric('lowerUPPER'); // lower and uppercase chars ok
-        tryValidMetric('dash-dash-dash'); // dashes ok
-        tryValidMetric('underscore_underscore'); // 32 chars: max length
-        tryValidMetric('123456789_123456789_123456789_12'); // 32 chars: max length
-
-        tryInvalidMetric(''); // too short, empty string not allowed
-        tryInvalidMetric('123456789_123456789_123456789_123'); // 33 chars: too long
-        tryInvalidMetric('colons:not:allowed'); // invalid characters
-        tryInvalidMetric('spaces not allowed'); // invalid characters
+        Metrics.sendPanoramaMetric(metric);
+        expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', { ...metric, timestamp: mockDateNow });
       });
 
       describe('Metric detail validation', () => {
@@ -398,8 +369,8 @@ describe('Client Metrics support', () => {
             eventDetail: new Array(201).join('a'),
           };
 
-          Metrics.sendPanoramaMetric('metricName', inputMetric);
-          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(inputMetric));
+          Metrics.sendPanoramaMetric(inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(inputMetric));
         });
 
         test('throws an error when detail is too long', () => {
@@ -408,10 +379,8 @@ describe('Client Metrics support', () => {
             eventDetail: new Array(202).join('a'),
           };
 
-          Metrics.sendPanoramaMetric('metricName', invalidMetric);
-          expect(consoleSpy).toHaveBeenCalledWith(
-            `Detail for metric metricName is too long: ${invalidMetric.eventDetail}`
-          );
+          Metrics.sendPanoramaMetric(invalidMetric);
+          expect(consoleSpy).toHaveBeenCalledWith(`Detail for metric is too long: ${invalidMetric.eventDetail}`);
           consoleSpy.mockReset();
         });
 
@@ -428,8 +397,8 @@ describe('Client Metrics support', () => {
             eventDetail: JSON.stringify(inputMetric.eventDetail),
           };
 
-          Metrics.sendPanoramaMetric('metricName', inputMetric);
-          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(expectedMetric));
+          Metrics.sendPanoramaMetric(inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(expectedMetric));
         });
 
         test('accepts event value as an object', () => {
@@ -445,8 +414,8 @@ describe('Client Metrics support', () => {
             eventValue: JSON.stringify(inputMetric.eventValue),
           };
 
-          Metrics.sendPanoramaMetric('metricName', inputMetric);
-          expect(window.panorama).toHaveBeenCalledWith('metricName', expect.objectContaining(expectedMetric));
+          Metrics.sendPanoramaMetric(inputMetric);
+          expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(expectedMetric));
         });
       });
     });
