@@ -119,6 +119,7 @@ export const Metrics = {
   sendMetric(metricName: string, value: number, detail?: string): void {
     if (!theme) {
       // Metrics need to be initialized first (initMetrics)
+      console.error('Metrics need to be initalized first.');
       return;
     }
 

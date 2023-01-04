@@ -16,8 +16,11 @@ describe('Metrics.initMetrics', () => {
   });
 
   test('is required before sending metrics', () => {
+    const consoleSpy = jest.spyOn(console, 'error');
+
     Metrics.sendMetric('name', 0);
     expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(0);
+    expect(consoleSpy).toHaveBeenCalled();
 
     Metrics.initMetrics('default');
     Metrics.sendMetric('name', 0);

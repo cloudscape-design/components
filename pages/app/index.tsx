@@ -3,8 +3,8 @@
 import React, { Suspense, useContext, useEffect } from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
+import { createHashHistory } from 'history';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
-import { useEffectOnUpdate } from '~components/internal/hooks/use-effect-on-update';
 import './polyfills';
 
 // import font-size reset and Ember font
@@ -16,18 +16,14 @@ import PageView from './components/page-view';
 import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
-import AppContext, { AppContextProvider } from './app-context';
+import AppContext, { AppContextProvider, parseQuery } from './app-context';
 
 function App() {
   const {
     mode,
     pageId,
-    urlParams: { density, motionDisabled, visualRefresh },
+    urlParams: { density, motionDisabled },
   } = useContext(AppContext);
-
-  useEffectOnUpdate(() => {
-    window.location.reload();
-  }, [visualRefresh]);
 
   const isAppLayout =
     pageId !== undefined && (pageId.indexOf('app-layout') > -1 || pageId.indexOf('content-layout') > -1);
@@ -71,9 +67,11 @@ function App() {
   );
 }
 
-// The VR class needs to be set before any React rendering takes occurs.
-const vrDisabled = window.location.hash.includes('visualRefresh=false');
-document.getElementById('app')?.classList.toggle('awsui-visual-refresh', !vrDisabled);
+const history = createHashHistory();
+const { visualRefresh } = parseQuery(history.location.search);
+
+// The VR class needs to be set before any React rendering occurs.
+document.body.classList.toggle('awsui-visual-refresh', visualRefresh);
 
 render(
   <HashRouter>

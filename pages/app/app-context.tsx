@@ -37,7 +37,7 @@ const AppContext = createContext<AppContextType>(appContextDefaults);
 
 export default AppContext;
 
-function parseQuery(query: string) {
+export function parseQuery(query: string) {
   const queryParams = { ...appContextDefaults.urlParams, ...qs.parse(query.substring(1)) } as Record<string, any>;
 
   return mapValues(queryParams, value => {
