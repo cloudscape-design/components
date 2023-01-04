@@ -65,7 +65,11 @@ export default function TabsScenario() {
         />
         <div id="click-this-2" tabIndex={0} style={{ height: 10 }} />
 
-        <Tabs tabs={tabs} variant="container" />
+        <Tabs
+          tabs={tabs}
+          variant="container"
+          i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+        />
       </ScreenshotArea>
     </div>
   );

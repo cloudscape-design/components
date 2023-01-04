@@ -36,7 +36,10 @@ export default function TabsDemoPage() {
         </div>
         <div>
           <h2>Uncontrolled component</h2>
-          <Tabs tabs={tabs} />
+          <Tabs
+            tabs={tabs}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
         </div>
       </SpaceBetween>
     </>
