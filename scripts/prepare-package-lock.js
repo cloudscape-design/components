@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 const fs = require('fs');
 
 /**
@@ -10,11 +11,16 @@ const fs = require('fs');
 const filename = require.resolve('../package-lock.json');
 const packageLock = require(filename);
 
-Object.keys(packageLock.dependencies).forEach(dependencyName => {
-  const dependency = packageLock.dependencies[dependencyName];
-  if (dependencyName.startsWith('@cloudscape-design/') || dependencyName.startsWith('@awsui/')) {
-    delete packageLock.dependencies[dependencyName];
-  } else if (dependency.resolved && dependency.resolved.indexOf('codeartifact.us-west-2.amazonaws.com') !== -1) {
+if (packageLock.lockfileVersion !== 2) {
+  throw new Error('package-lock.json must have "lockfileVersion": 2');
+}
+
+Object.keys(packageLock.packages).forEach(dependencyName => {
+  const dependency = packageLock.packages[dependencyName];
+
+  if (dependencyName.includes('@cloudscape-design/')) {
+    delete packageLock.packages[dependencyName];
+  } else if (dependency.resolved && dependency.resolved.includes('codeartifact.us-west-2.amazonaws.com')) {
     throw Error('package-lock.json file contains a reference to CodeArtifact. Use regular npm to update the packages.');
   }
 });

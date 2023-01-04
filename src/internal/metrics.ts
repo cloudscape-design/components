@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { THEME, PACKAGE_VERSION } from './environment';
+import { PACKAGE_VERSION } from './environment';
 
 export interface MetricsLogItem {
   source: string;
@@ -28,6 +28,15 @@ declare const AWSUI_METRIC_ORIGIN: string | undefined;
 
 const oneTimeMetrics: Record<string, boolean> = {};
 
+// In case we need to override the theme for VR
+let theme = '';
+function setTheme(newTheme: string) {
+  theme = newTheme;
+}
+
+// react is the only framework we're using
+const framework = 'react';
+
 const buildMetricHash = ({ source, action }: MetricsLogItem): string => {
   return [`src${source}`, `action${action}`].join('_');
 };
@@ -50,7 +59,7 @@ const buildMetricDetail = ({ source, action, version }: MetricsLogItem): string 
   const detailObject = {
     o: metricOrigin,
     s: source,
-    t: THEME,
+    t: theme,
     a: action,
     f: framework,
     v: formatMajorVersionForMetricDetail(version),
@@ -59,7 +68,7 @@ const buildMetricDetail = ({ source, action, version }: MetricsLogItem): string 
 };
 
 const buildMetricName = ({ source, version }: MetricsLogItem): string => {
-  return ['awsui', source, `${formatVersionForMetricName(THEME, version)}`].join('_');
+  return ['awsui', source, `${formatVersionForMetricName(theme, version)}`].join('_');
 };
 
 const findPanorama = (currentWindow?: MetricsWindow): any | undefined => {
@@ -98,15 +107,9 @@ const findAWSC = (currentWindow?: MetricsWindow): AWSC | undefined => {
   }
 };
 
-// react is the default framework we're logging, for angular we need to set it explicitly
-let framework = 'react';
-function setFramework(fwk: string) {
-  framework = fwk;
-}
-
 export const Metrics = {
-  initMetrics(fwk: string) {
-    setFramework(fwk);
+  initMetrics(theme: string) {
+    setTheme(theme);
   },
 
   /**
@@ -114,6 +117,12 @@ export const Metrics = {
    * Does nothing if Console Platform client logging JS is not present in page.
    */
   sendMetric(metricName: string, value: number, detail?: string): void {
+    if (!theme) {
+      // Metrics need to be initialized first (initMetrics)
+      console.error('Metrics need to be initalized first.');
+      return;
+    }
+
     if (!metricName || !/^[a-zA-Z0-9_-]{1,32}$/.test(metricName)) {
       console.error(`Invalid metric name: ${metricName}`);
       return;

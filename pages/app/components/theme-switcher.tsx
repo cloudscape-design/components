@@ -19,7 +19,10 @@ export default function ThemeSwitcher() {
     vrSwitchProps.readOnly = true;
   } else {
     vrSwitchProps.checked = urlParams.visualRefresh;
-    vrSwitchProps.onChange = event => setUrlParams({ visualRefresh: event.target.checked });
+    vrSwitchProps.onChange = event => {
+      setUrlParams({ visualRefresh: event.target.checked });
+      window.location.reload();
+    };
   }
 
   return (
