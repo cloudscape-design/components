@@ -215,11 +215,13 @@ const InternalSelect = React.forwardRef(
           trigger={trigger}
           header={filter}
           onMouseDown={handleMouseDown}
-          footer={dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          footer={dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null}
           expandToViewport={expandToViewport}
         >
           <ListComponent
-            listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+            listBottom={
+              !dropdownStatus.isSticky ? <DropdownFooter content={isOpen ? dropdownStatus.content : null} /> : null
+            }
             menuProps={menuProps}
             getOptionProps={getOptionProps}
             filteredOptions={filteredOptions}
