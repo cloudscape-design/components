@@ -45,7 +45,7 @@ export function animate({
       // If the element didn't exist previously, use the newElementInitialState function if provided.
       // If not, default to no transitions (scale: 1, y: 0)
       const calculatedInvertTransform = oldRect
-        ? { scale: oldRect.width / newRect.width, y: oldRect.bottom - newRect.bottom }
+        ? { scale: oldRect.width / newRect.width, y: oldRect.top - newRect.top }
         : newElementInitialState
         ? newElementInitialState(newRect)
         : {};
