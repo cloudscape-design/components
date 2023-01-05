@@ -141,16 +141,12 @@ export const Metrics = {
    * Calls Console Platform's client v2 logging JS API with provided metric name and detail.
    * Does nothing if Console Platform client logging JS is not present in page.
    */
-  sendPanoramaMetric(metricName: string, metric: MetricsV2EventItem): void {
-    if (!metricName || !/^[a-zA-Z0-9_-]{1,32}$/.test(metricName)) {
-      console.error(`Invalid metric name: ${metricName}`);
-      return;
-    }
+  sendPanoramaMetric(metric: MetricsV2EventItem): void {
     if (typeof metric.eventDetail === 'object') {
       metric.eventDetail = JSON.stringify(metric.eventDetail);
     }
     if (metric.eventDetail && metric.eventDetail.length > 200) {
-      console.error(`Detail for metric ${metricName} is too long: ${metric.eventDetail}`);
+      console.error(`Detail for metric is too long: ${metric.eventDetail}`);
       return;
     }
     if (typeof metric.eventValue === 'object') {
@@ -158,7 +154,7 @@ export const Metrics = {
     }
     const panorama = findPanorama(window);
     if (typeof panorama === 'function') {
-      panorama(metricName, {
+      panorama('trackCustomEvent', {
         ...metric,
         timestamp: Date.now(),
       });
