@@ -19,7 +19,7 @@ import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { getStackedItems, StackableItem } from './utils';
+import { getFlashTypeCount, getStackedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 
 export { FlashbarProps };
@@ -149,6 +149,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     // When using the stacking feature, the items are shown in reverse order (last item on top)
     const reversedItems = items.slice().reverse();
 
+    const countByType = getFlashTypeCount(items);
+
     const stackDepth = Math.min(3, items.length);
 
     const itemsToShow = isFlashbarStackExpanded
@@ -267,7 +269,21 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             ref={toggleButtonRef}
             {...isFocusVisible}
           >
-            {toggleButtonText && <span>{toggleButtonText}</span>}
+            {toggleButtonText && <span className={styles.text}>{toggleButtonText}</span>}
+            <span className={styles['types-count']}>
+              <span className={styles['type-count']}>
+                <InternalIcon name="status-negative" />
+                <span className={styles['count-number']}>{countByType.error}</span>
+              </span>
+              <span className={styles['type-count']}>
+                <InternalIcon name="status-warning" />
+                <span className={styles['count-number']}>{countByType.warning}</span>
+              </span>
+              <span className={styles['type-count']}>
+                <InternalIcon name="status-positive" />
+                <span className={styles['count-number']}>{countByType.success}</span>
+              </span>
+            </span>
             <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
               <InternalIcon size="normal" name="angle-down" />
             </span>

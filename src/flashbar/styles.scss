@@ -238,7 +238,7 @@ the grid layout will be:
   $padding-vertical: styles.$control-padding-vertical;
   $margin-top-when-expanded: -12px;
 
-  padding: $padding-vertical awsui.$space-l;
+  padding: $padding-vertical awsui.$space-s;
 
   &:not(.expanded) {
     margin-top: #{$margin-top-when-collapsed};
@@ -266,7 +266,6 @@ the grid layout will be:
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   display: flex;
-  font-weight: awsui.$font-button-weight;
   grid-column: 2;
   grid-row: 2;
   gap: awsui.$space-xs;
@@ -275,6 +274,21 @@ the grid layout will be:
   margin-right: auto;
   text-decoration: none;
   z-index: 1;
+
+  > .text {
+    font-weight: awsui.$font-button-weight;
+  }
+
+  > .types-count {
+    margin-left: awsui.$space-xxs;
+    margin-right: awsui.$space-s;
+    > .type-count {
+      margin-right: awsui.$space-s;
+      > .count-number {
+        margin-left: awsui.$space-xxs;
+      }
+    }
+  }
 
   &:hover {
     background: awsui.$color-background-layout-toggle-hover;

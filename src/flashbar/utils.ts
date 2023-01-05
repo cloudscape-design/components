@@ -10,14 +10,17 @@ export interface StackableItem extends FlashbarProps.MessageDefinition {
   collapsedIndex?: number;
 }
 
-const typesToColors: Record<string, string> = {
-  info: 'blue',
-  warning: 'blue',
-  success: 'green',
+type FlashType = 'error' | 'info' | 'progress' | 'success' | 'warning';
+
+const typesToColors: Record<FlashType, string> = {
   error: 'red',
+  info: 'blue',
+  progress: 'blue',
+  success: 'green',
+  warning: 'blue',
 };
 
-function getColorFromType(type?: string): string {
+function getColorFromType(type?: FlashType): string {
   const defaultColor = 'blue';
   return type ? typesToColors[type] || defaultColor : defaultColor;
 }
@@ -78,4 +81,13 @@ export function getStackedItems(
     }
   }
   return selectedItems;
+}
+
+export function getFlashTypeCount(items: readonly FlashbarProps.MessageDefinition[]): Record<FlashType, number> {
+  const count = { error: 0, info: 0, progress: 0, success: 0, warning: 0 };
+  for (const item of items) {
+    const type = item.type || 'info';
+    count[type] += 1;
+  }
+  return count;
 }

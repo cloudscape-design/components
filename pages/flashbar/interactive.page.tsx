@@ -60,7 +60,7 @@ export default function FlashbarPermutations() {
         i18nStrings: {
           collapseButtonAriaLabel: 'Show less notifications',
           expandButtonAriaLabel: (itemCount: number) => `Show all ${itemCount} notifications`,
-          toggleButtonText: (itemCount: number) => `Notifications (${itemCount})`,
+          toggleButtonText: () => `Notifications`,
         },
       }
     : {};
