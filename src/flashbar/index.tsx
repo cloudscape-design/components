@@ -216,6 +216,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             >
               {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
                 <li
+                  aria-hidden={!showInnerContent(item)}
                   className={
                     showInnerContent(item)
                       ? clsx(
