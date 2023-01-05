@@ -21,6 +21,7 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 import styles from './styles.css.js';
 import { getFlashTypeCount, getStackedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 export { FlashbarProps };
 
@@ -57,6 +58,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
   const isReducedMotion = useReducedMotion(breakpointRef as any);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
+
+  const uniqueId = useUniqueId('flashbar');
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -160,10 +163,6 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     const { i18nStrings } = restProps as StackedFlashbarProps;
     const toggleButtonText = i18nStrings?.toggleButtonText(items.length);
 
-    const toggleButtonAriaLabel = isFlashbarStackExpanded
-      ? i18nStrings?.collapseButtonAriaLabel
-      : i18nStrings?.expandButtonAriaLabel(items.length);
-
     const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
       item.id ?? (item as StackableItem).expandedIndex ?? 0;
 
@@ -195,6 +194,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             initialAnimationState && styles['animation-ready'],
             isVisualRefresh && styles['visual-refresh']
           )}
+          id={uniqueId}
           style={
             !isFlashbarStackExpanded || transitioning
               ? {
@@ -258,7 +258,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
         {items.length > maxUnstackedItems && (
           <button
-            aria-label={toggleButtonAriaLabel}
+            aria-expanded={isFlashbarStackExpanded}
+            aria-controls={uniqueId}
             className={clsx(
               styles.toggle,
               isVisualRefresh && styles['visual-refresh'],
