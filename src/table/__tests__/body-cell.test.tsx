@@ -9,14 +9,14 @@ const testItem = {
   test: 'test',
 };
 
-const column: TableProps.ColumnDefinition<typeof testItem, string> = {
+const column: TableProps.ColumnDefinition<typeof testItem> = {
   id: 'test',
   header: 'Test',
   editConfig: {
     ariaLabel: 'test input',
     editIconAriaLabel: 'error',
   },
-  cell: (item, { isEditing, setValue, currentValue }) => {
+  cell: (item, { isEditing, setValue, currentValue }: TableProps.CellContext<any>) => {
     if (isEditing) {
       return <input type="text" value={currentValue ?? item.test} onChange={e => setValue(e.target.value)} />;
     }
@@ -32,7 +32,7 @@ const TestComponent = ({ isEditing = false }) => {
     <table>
       <tbody>
         <tr>
-          <TableBodyCell<typeof testItem, string>
+          <TableBodyCell<typeof testItem>
             column={column}
             item={testItem}
             isEditing={isEditing}

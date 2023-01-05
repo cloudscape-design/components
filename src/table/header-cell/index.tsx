@@ -11,11 +11,11 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-interface TableHeaderCellProps<ItemType, ValueType> {
+interface TableHeaderCellProps<ItemType> {
   className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
-  column: TableProps.ColumnDefinition<ItemType, ValueType>;
+  column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
@@ -32,7 +32,7 @@ interface TableHeaderCellProps<ItemType, ValueType> {
   isEditable?: boolean;
 }
 
-export function TableHeaderCell<ItemType, ValueType>({
+export function TableHeaderCell<ItemType>({
   className,
   style,
   tabIndex,
@@ -51,7 +51,7 @@ export function TableHeaderCell<ItemType, ValueType>({
   resizableColumns,
   onResizeFinish,
   isEditable,
-}: TableHeaderCellProps<ItemType, ValueType>) {
+}: TableHeaderCellProps<ItemType>) {
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);

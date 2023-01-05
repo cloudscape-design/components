@@ -16,10 +16,10 @@ const defaultItems: Item[] = [
   { id: 3, name: 'Bananas' },
 ];
 
-const editableColumns: TableProps.ColumnDefinition<Item, string | number>[] = [
+const editableColumns: TableProps.ColumnDefinition<Item>[] = [
   {
     header: 'id',
-    cell: (item: Item, { isEditing }) => {
+    cell: (item, { isEditing }) => {
       if (isEditing) {
         return <input type="number" value={item.id} readOnly={true} data-testid={`id-editing-${item.id}`} />;
       }
@@ -33,7 +33,7 @@ const editableColumns: TableProps.ColumnDefinition<Item, string | number>[] = [
   },
   {
     header: 'name',
-    cell: (item: Item, { isEditing }) => {
+    cell: (item, { isEditing }) => {
       if (isEditing) {
         return <input type="number" value={item.name} readOnly={true} data-testid={`name-editing-${item.name}`} />;
       }
@@ -46,6 +46,10 @@ const editableColumns: TableProps.ColumnDefinition<Item, string | number>[] = [
     },
   },
 ];
+
+const defaultAriaLabels: TableProps.AriaLabels<{ id: number }> = {
+  tableLabel: 'Distributions',
+};
 
 function renderTable(jsx: React.ReactElement) {
   const { container, rerender, getByTestId, queryByTestId } = render(jsx);
@@ -71,5 +75,19 @@ describe('Editable Table TestUtils', () => {
     const buttons = getByTestId('id-editing-1').closest('form')!.querySelectorAll('button')!;
     expect(wrapper.findEditingCellCancelButton()!.getElement()!).toBe(buttons[0]);
     expect(wrapper.findEditingCellSaveButton()!.getElement()!).toBe(buttons[1]);
+  });
+
+  test('renders when items and labels types do not match', () => {
+    const ariaLabels: TableProps.AriaLabels<Item> = {
+      ...defaultAriaLabels,
+      submitEditLabel: column => `Submit edit for ${column.header}`,
+      cancelEditLabel: column => `Cancel edit for ${column.header}`,
+      activateEditLabel: column => `Activate edit for ${column.header}`,
+    };
+
+    const { wrapper } = renderTable(
+      <Table<Item> columnDefinitions={editableColumns} items={defaultItems} ariaLabels={ariaLabels} />
+    );
+    expect(wrapper.findBodyCell(2, 2)!.getElement()!).toBeInTheDocument();
   });
 });
