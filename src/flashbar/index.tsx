@@ -52,22 +52,24 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [toggleButtonRect, setToggleButtonRect] = useState<DOMRect>();
   const [transitioning, setTransitioning] = useState(false);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
   const isReducedMotion = useReducedMotion(breakpointRef as any);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
 
+  const getElementsToAnimate = useCallback(() => {
+    const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
+    return { ...flashElements, toggleButton: toggleButtonRef.current };
+  }, [isFlashbarStackExpanded]);
+
   const prepareAnimations = useCallback(() => {
     if (isReducedMotion) {
       return;
     }
-    const oldElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-    const rects = getDOMRects(oldElements);
+    const rects = getDOMRects(getElementsToAnimate());
     setInitialAnimationState(rects);
-    setToggleButtonRect(toggleButtonRef.current?.getBoundingClientRect());
-  }, [isFlashbarStackExpanded, isReducedMotion]);
+  }, [getElementsToAnimate, isReducedMotion]);
 
   // Track new or removed item IDs in state to only trigger focus changes for newly added items.
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
@@ -123,26 +125,16 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     // The old state is kept in `oldStateDOMRects` (notification items) and `toggleButtonRect` (toggle button),
     // and the new state can be retrieved from the current DOM elements.
     if (initialAnimationState) {
-      const elements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-
       animate({
-        elements,
+        elements: getElementsToAnimate(),
         oldState: initialAnimationState,
         newElementInitialState: ({ top }) => ({ scale: 0.9, y: -0.2 * top }),
         onTransitionsEnd: () => setTransitioning(false),
       });
-      if (toggleButtonRect && toggleButtonRef) {
-        animate({
-          elements: {
-            toggleButton: toggleButtonRef.current,
-          },
-          oldState: { toggleButton: toggleButtonRect },
-        });
-      }
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [isFlashbarStackExpanded, initialAnimationState, toggleButtonRect]);
+  }, [getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
 
   /**
    * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
@@ -188,6 +180,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
     const shouldUseStandardAnimation = (item: StackableItem, index: number) => index === 0 && hasEnteredOrLeft(item);
 
+    const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
+
     return (
       <>
         <TransitionGroup
@@ -226,15 +220,15 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
                       ? clsx(
                           styles['flash-list-item'],
                           !isFlashbarStackExpanded && styles.item,
-                          !collapsedItemRefs.current[getItemId(item)] && styles['expanded-only']
+                          !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
                         )
                       : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                   }
                   ref={element => {
                     if (isFlashbarStackExpanded) {
-                      expandedItemRefs.current[getItemId(item)] = element;
+                      expandedItemRefs.current[getAnimationElementId(item)] = element;
                     } else {
-                      collapsedItemRefs.current[getItemId(item)] = element;
+                      collapsedItemRefs.current[getAnimationElementId(item)] = element;
                     }
                   }}
                   style={
