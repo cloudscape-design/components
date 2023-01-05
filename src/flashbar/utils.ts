@@ -25,8 +25,19 @@ function getColorFromType(type?: FlashType): string {
   return type ? typesToColors[type] || defaultColor : defaultColor;
 }
 
+function getItemType(item: FlashbarProps.MessageDefinition) {
+  if (item.loading) {
+    return 'progress';
+  } else {
+    return item.type || 'info';
+  }
+}
+
 function getItemColor(item: FlashbarProps.MessageDefinition) {
-  return getColorFromType(item.type);
+  if (item.loading) {
+    return 'blue';
+  }
+  return getColorFromType(getItemType(item));
 }
 
 /*
@@ -86,7 +97,7 @@ export function getStackedItems(
 export function getFlashTypeCount(items: readonly FlashbarProps.MessageDefinition[]): Record<FlashType, number> {
   const count = { error: 0, info: 0, progress: 0, success: 0, warning: 0 };
   for (const item of items) {
-    const type = item.type || 'info';
+    const type = getItemType(item);
     count[type] += 1;
   }
   return count;

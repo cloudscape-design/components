@@ -283,6 +283,10 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
                 <InternalIcon name="status-positive" />
                 <span className={styles['count-number']}>{countByType.success}</span>
               </span>
+              <span className={styles['type-count']}>
+                <InternalIcon name="status-in-progress" />
+                <span className={styles['count-number']}>{countByType.progress}</span>
+              </span>
             </span>
             <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
               <InternalIcon size="normal" name="angle-down" />
