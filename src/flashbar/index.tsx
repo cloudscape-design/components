@@ -160,8 +160,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
       : getStackedItems(reversedItems, stackDepth).map((item, index) => ({ ...item, collapsedIndex: index }));
 
-    const { i18nStrings } = restProps as StackedFlashbarProps;
-    const toggleButtonText = i18nStrings?.toggleButtonText(items.length);
+    const toggleButtonText = (restProps as StackedFlashbarProps).i18nStrings?.toggleButtonText;
 
     const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
       item.id ?? (item as StackableItem).expandedIndex ?? 0;

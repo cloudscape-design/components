@@ -65,6 +65,6 @@ export interface StackedFlashbarProps {
 
 export namespace StackedFlashbarProps {
   export interface I18nStrings {
-    toggleButtonText: (itemCount: number) => string;
+    toggleButtonText: string;
   }
 }
