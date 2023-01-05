@@ -682,22 +682,38 @@ describe('Tabs', () => {
       expect(getFirstTabLinkElementId()).toEqual(firstTabLinkElementId);
     });
 
-    test('shows scroll buttons when it overflows its container', () => {
-      mockHorizontalOverflow = true;
-      const { wrapper } = renderTabs(
-        <Tabs
-          tabs={defaultTabs}
-          i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
-        />
-      );
-      const buttons = wrapper.findAll('button');
-      const scrollLeftButton = buttons[0];
-      const scrollRightButton = buttons[buttons.length - 1];
-      expect(scrollLeftButton.getElement()).toHaveAttribute('aria-label', 'Scroll left');
-      expect(scrollRightButton.getElement()).toHaveAttribute('aria-label', 'Scroll right');
-      expect(scrollLeftButton.getElement()).not.toHaveAttribute('aria-hidden');
-      expect(scrollRightButton.getElement()).not.toHaveAttribute('aria-hidden');
-      mockHorizontalOverflow = false;
+    describe('Scroll buttons', () => {
+      beforeEach(() => {
+        mockHorizontalOverflow = true;
+      });
+      afterEach(() => {
+        mockHorizontalOverflow = false;
+      });
+
+      const getScrollButtons = () => {
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        );
+        const buttons = wrapper.findAll('button');
+        const scrollLeftButton = buttons[0];
+        const scrollRightButton = buttons[buttons.length - 1];
+        return { scrollLeftButton, scrollRightButton };
+      };
+
+      it('have aria-label attribute', () => {
+        const { scrollLeftButton, scrollRightButton } = getScrollButtons();
+        expect(scrollLeftButton.getElement()).toHaveAttribute('aria-label', 'Scroll left');
+        expect(scrollRightButton.getElement()).toHaveAttribute('aria-label', 'Scroll right');
+      });
+
+      it('do not have aria-hidden attribute', () => {
+        const { scrollLeftButton, scrollRightButton } = getScrollButtons();
+        expect(scrollLeftButton.getElement()).not.toHaveAttribute('aria-hidden');
+        expect(scrollRightButton.getElement()).not.toHaveAttribute('aria-hidden');
+      });
     });
   });
 
