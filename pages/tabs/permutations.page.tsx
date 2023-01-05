@@ -58,7 +58,13 @@ export default function TabsPermutations() {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <Tabs {...permutation} activeTabId={permutation.activeTabId} />}
+          render={permutation => (
+            <Tabs
+              {...permutation}
+              activeTabId={permutation.activeTabId}
+              i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+            />
+          )}
         />
       </ScreenshotArea>
     </>

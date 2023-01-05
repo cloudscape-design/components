@@ -132,6 +132,7 @@ export default function OnboardingDemoPage() {
                 ),
               },
             ]}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
           />
         }
         content={

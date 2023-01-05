@@ -28,6 +28,7 @@ export default function TabsInHelpPanelDemoPage() {
               content: 'Tutorials',
             },
           ]}
+          i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
         />
       }
     />

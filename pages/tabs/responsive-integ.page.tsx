@@ -60,7 +60,12 @@ export default function TabsDemoPage() {
       <h1>Tabs</h1>
       <input type="text" id="before" aria-label="before" />
       <form action="/">
-        <Tabs tabs={tabs} activeTabId={selectedTab} onChange={event => setSelectedTab(event.detail.activeTabId)} />
+        <Tabs
+          tabs={tabs}
+          activeTabId={selectedTab}
+          onChange={event => setSelectedTab(event.detail.activeTabId)}
+          i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+        />
       </form>
       <input type="text" id="after" aria-label="after" />
       <button id="size-toggle" onClick={() => setSmall(!small)}>

@@ -8,6 +8,21 @@ import styles from '../../../lib/components/tabs/styles.css.js';
 import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
+let mockHorizontalOverflow = false;
+jest.mock('../../../lib/components/tabs/scroll-utils', () => {
+  const originalScrollUtilsModule = jest.requireActual('../../../lib/components/tabs/scroll-utils');
+  return {
+    __esModule: true,
+    ...originalScrollUtilsModule,
+    hasHorizontalOverflow: (...args: any) =>
+      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasHorizontalOverflow(...args),
+    hasLeftOverflow: (...args: any) =>
+      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasLeftOverflow(...args),
+    hasRightOverflow: (...args: any) =>
+      mockHorizontalOverflow ? true : originalScrollUtilsModule.hasRightOverflow(...args),
+  };
+});
+
 function renderTabs(element: React.ReactElement) {
   const renderResult = render(element);
   return { ...renderResult, wrapper: wrap(renderResult.container) };
@@ -665,6 +680,40 @@ describe('Tabs', () => {
       expect(firstTabLinkElementId).toBeTruthy();
       rerender(<Tabs tabs={defaultTabs} activeTabId={secondTabId} onChange={() => void 0} />);
       expect(getFirstTabLinkElementId()).toEqual(firstTabLinkElementId);
+    });
+
+    describe('Scroll buttons', () => {
+      beforeEach(() => {
+        mockHorizontalOverflow = true;
+      });
+      afterEach(() => {
+        mockHorizontalOverflow = false;
+      });
+
+      const getScrollButtons = () => {
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        );
+        const buttons = wrapper.findAll('button');
+        const scrollLeftButton = buttons[0];
+        const scrollRightButton = buttons[buttons.length - 1];
+        return { scrollLeftButton, scrollRightButton };
+      };
+
+      it('have aria-label attribute', () => {
+        const { scrollLeftButton, scrollRightButton } = getScrollButtons();
+        expect(scrollLeftButton.getElement()).toHaveAttribute('aria-label', 'Scroll left');
+        expect(scrollRightButton.getElement()).toHaveAttribute('aria-label', 'Scroll right');
+      });
+
+      it('do not have aria-hidden attribute', () => {
+        const { scrollLeftButton, scrollRightButton } = getScrollButtons();
+        expect(scrollLeftButton.getElement()).not.toHaveAttribute('aria-hidden');
+        expect(scrollRightButton.getElement()).not.toHaveAttribute('aria-hidden');
+      });
     });
   });
 
