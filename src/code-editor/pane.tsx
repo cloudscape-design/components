@@ -3,14 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import FocusLock from 'react-focus-lock';
-import { ResizableBox } from 'react-resizable';
 import { Ace } from 'ace-builds';
 
 import { KeyCode } from '../internal/keycode';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 
 import { InternalButton } from '../button/internal';
-import handler from './resize-handler';
+import { ResizableBox } from './resizable-box';
 
 import styles from './styles.css.js';
 
@@ -46,6 +45,7 @@ export const Pane = ({
   cursorPositionLabel,
   closeButtonAriaLabel,
 }: PaneProps) => {
+  const [paneHeight, setPaneHeight] = useState(MIN_HEIGHT);
   const listRef = useRef<HTMLTableSectionElement>(null);
   const [isFocusTrapActive, setFocusTrapActive] = useState(false);
 
@@ -95,14 +95,7 @@ export const Pane = ({
 
   return (
     <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel">
-      <ResizableBox
-        className={styles['resizable-box']}
-        width={Infinity}
-        height={MIN_HEIGHT}
-        minConstraints={[Infinity, MIN_HEIGHT]}
-        axis="y"
-        handle={handler}
-      >
+      <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
         <FocusLock
           disabled={!isFocusTrapActive}
           className={styles['focus-lock']}

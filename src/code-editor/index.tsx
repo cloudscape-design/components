@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Ace } from 'ace-builds';
 import clsx from 'clsx';
-import { ResizableBox } from 'react-resizable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 import { getBaseProps } from '../internal/base-component';
@@ -23,7 +22,7 @@ import {
 } from './util';
 import { fireNonCancelableEvent } from '../internal/events';
 import { setupEditor } from './setup-editor';
-import handler from './resize-handler';
+import { ResizableBox } from './resizable-box';
 import PreferencesModal from './preferences-modal';
 import LoadingScreen from './loading-screen';
 import ErrorScreen from './error-screen';
@@ -279,18 +278,12 @@ export default function CodeEditor(props: CodeEditorProps) {
       {ace && !props.loading && (
         <>
           <ResizableBox
-            className={styles['resizable-box']}
-            width={Infinity}
             height={Math.max(editorHeight, 20)}
-            minConstraints={[Infinity, 20]}
-            axis="y"
-            handle={handler}
-            onResize={(e, data) => {
-              setEditorHeight(data.size.height);
+            minHeight={20}
+            onResize={height => {
+              setEditorHeight(height);
               onResize();
-              fireNonCancelableEvent(onEditorContentResize, {
-                height: data.size.height,
-              });
+              fireNonCancelableEvent(onEditorContentResize, { height });
             }}
           >
             <div

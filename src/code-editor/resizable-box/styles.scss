@@ -1,0 +1,37 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles/tokens' as awsui;
+@use '../background-inline-svg.scss' as utils;
+
+.resizable-box {
+  position: relative;
+  width: 100%;
+}
+
+.resizable-box-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 10; // above editor, when editor is overflowing
+
+  width: awsui.$space-l;
+  height: awsui.$space-l;
+
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  background-position: bottom right;
+  background-size: awsui.$space-l;
+  @include utils.background-inline-svg(
+    $path: '../assets/resize-handler.svg',
+    $stroke: 'colorStrokeCodeEditorResizeHandler'
+  );
+
+  cursor: ns-resize;
+}
+
+.resize-active {
+  user-select: none;
+}
