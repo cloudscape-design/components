@@ -256,7 +256,6 @@ the grid layout will be:
 }
 
 .stack > .toggle {
-  @include styles.styles-reset;
   @include styles.text-wrapping;
 
   background: awsui.$color-background-layout-toggle-default;
@@ -274,6 +273,15 @@ the grid layout will be:
   margin-right: auto;
   text-decoration: none;
   z-index: 1;
+
+  > .text,
+  > .types-count,
+  > .toggle {
+    @include styles.styles-reset;
+    color: awsui.$color-text-layout-toggle;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
   > .text {
     font-weight: awsui.$font-button-weight;

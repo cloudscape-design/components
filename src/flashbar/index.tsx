@@ -279,7 +279,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             ref={toggleButtonRef}
             {...isFocusVisible}
           >
-            {toggleButtonText && <span className={styles.text}>{toggleButtonText}</span>}
+            {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
             <span className={styles['types-count']}>
               <span className={styles['type-count']}>
                 <InternalIcon name="status-negative" />
