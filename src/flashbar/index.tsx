@@ -120,7 +120,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
   function toggleCollapseExpand() {
     prepareAnimations();
-    setIsFlashbarStackExpanded(!isFlashbarStackExpanded);
+    setIsFlashbarStackExpanded(prev => !prev);
   }
 
   useLayoutEffect(() => {
