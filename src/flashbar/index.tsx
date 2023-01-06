@@ -158,7 +158,10 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
     const itemsToShow = isFlashbarStackExpanded
       ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
-      : getStackedItems(reversedItems, stackDepth).map((item, index) => ({ ...item, collapsedIndex: index }));
+      : getStackedItems(reversedItems, stackDepth).map((item: StackableItem, index: number) => ({
+          ...item,
+          collapsedIndex: index,
+        }));
 
     const toggleButtonText = (restProps as StackedFlashbarProps).i18nStrings?.toggleButtonText;
 
@@ -194,6 +197,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             isVisualRefresh && styles['visual-refresh']
           )}
           id={uniqueId}
+          ariaLabel={ariaLabel}
           style={
             !isFlashbarStackExpanded || transitioning
               ? {
@@ -202,7 +206,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
               : undefined
           }
         >
-          {itemsToShow.map((item, index) => (
+          {itemsToShow.map((item: StackableItem, index: number) => (
             <Transition
               key={getItemId(item)}
               in={!hasLeft(item)}
