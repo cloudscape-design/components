@@ -163,7 +163,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           collapsedIndex: index,
         }));
 
-    const toggleButtonText = (restProps as StackedFlashbarProps).i18nStrings?.toggleButtonText;
+    const { i18nStrings } = restProps;
+    const ariaLabel = i18nStrings?.ariaLabel;
+    const toggleButtonText = i18nStrings?.toggleButtonText;
 
     const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
       item.id ?? (item as StackableItem).expandedIndex ?? 0;
