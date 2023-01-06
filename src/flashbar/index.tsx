@@ -59,7 +59,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const isReducedMotion = useReducedMotion(breakpointRef as any);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
 
-  const uniqueId = useUniqueId('flashbar');
+  const flashbarElementId = useUniqueId('flashbar');
+  const toggleButtonElementId = useUniqueId('toggle-button');
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -198,8 +199,9 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             initialAnimationState && styles['animation-ready'],
             isVisualRefresh && styles['visual-refresh']
           )}
-          id={uniqueId}
-          ariaLabel={ariaLabel}
+          id={flashbarElementId}
+          aria-label={ariaLabel}
+          aria-describedby={toggleButtonElementId}
           style={
             !isFlashbarStackExpanded || transitioning
               ? {
@@ -265,7 +267,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
         {items.length > maxUnstackedItems && (
           <button
             aria-expanded={isFlashbarStackExpanded}
-            aria-controls={uniqueId}
+            aria-controls={flashbarElementId}
+            id={toggleButtonElementId}
             className={clsx(
               styles.toggle,
               isVisualRefresh && styles['visual-refresh'],
