@@ -3,6 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import styles from '../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 
 const wrapper = createWrapper();
 const codeEditorWrapper = wrapper.findCodeEditor();
@@ -38,10 +39,12 @@ class CodeEditorPageObject extends BasePageObject {
     await this.click(codeEditorWrapper.findEditor().find('.ace_error').toSelector());
   }
   async getEditorHeight() {
-    return (await this.browser.$('.react-resizable')).getSize('height');
+    const { height } = await this.getBoundingBox(`.${styles['resizable-box']}`);
+    return height;
   }
   async getEditorHeightById(elementId: string) {
-    return (await this.browser.$(`#${elementId} .react-resizable`)).getSize('height');
+    const { height } = await this.getBoundingBox(`#${elementId} .${styles['resizable-box']}`);
+    return height;
   }
   async isDisplayedInViewport(selector: string) {
     return (await this.browser.$(selector)).isDisplayedInViewport();
@@ -50,7 +53,10 @@ class CodeEditorPageObject extends BasePageObject {
     return (await this.browser.$(`#event-content`)).getText();
   }
   findHandle() {
-    return wrapper.findCodeEditor('#code-editor-controlled').find('.react-resizable > span').toSelector();
+    return wrapper
+      .findCodeEditor('#code-editor-controlled')
+      .findByClassName(styles['resizable-box-handle'])
+      .toSelector();
   }
   async dragResizer({ x: deltaX, y: deltaY }: { x: number; y: number }) {
     const handleSelector = await this.findHandle();
