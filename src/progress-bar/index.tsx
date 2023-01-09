@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import styles from './styles.css.js';
@@ -12,7 +12,10 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { Progress, ResultState, SmallText } from './internal';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import DynamicAriaLive from '../internal/components/dynamic-aria-live';
+import { throttle } from '../internal/utils/throttle';
+import LiveRegion from '../internal/components/live-region';
+
+const ASSERTION_FREQUENCY = 5000; // interval in ms between progress announcements
 
 export { ProgressBarProps };
 
@@ -36,6 +39,17 @@ export default function ProgressBar({
   const isInFlash = variant === 'flash';
   const isInProgressState = status === 'in-progress';
 
+  const [assertion, setAssertion] = useState('');
+  const throttledAssertion = useMemo(() => {
+    return throttle((value: ProgressBarProps['value']) => {
+      setAssertion(`${label ?? ''}: ${value}%`);
+    }, ASSERTION_FREQUENCY);
+  }, [label]);
+
+  useEffect(() => {
+    throttledAssertion(value);
+  }, [throttledAssertion, value]);
+
   if (isInFlash && resultButtonText) {
     warnOnce(
       'ProgressBar',
@@ -58,7 +72,7 @@ export default function ProgressBar({
           {isInProgressState ? (
             <>
               <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
-              <DynamicAriaLive>{`${label ?? ''}: ${value}%`}</DynamicAriaLive>
+              <LiveRegion delay={0}>{assertion}</LiveRegion>
             </>
           ) : (
             <ResultState

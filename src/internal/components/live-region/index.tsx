@@ -3,10 +3,10 @@
 
 /* eslint-disable @cloudscape-design/prefer-live-region */
 
+import clsx from 'clsx';
 import React, { memo, useEffect, useRef } from 'react';
-import { ScreenreaderOnlyProps } from '../screenreader-only';
-import { updateLiveRegion } from './utils';
-import AriaLiveTag from './aria-liva-tag';
+import ScreenreaderOnly, { ScreenreaderOnlyProps } from '../screenreader-only';
+import styles from './styles.css.js';
 
 export interface LiveRegionProps extends ScreenreaderOnlyProps {
   assertive?: boolean;
@@ -50,7 +50,7 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
  */
 export default memo(LiveRegion);
 
-function LiveRegion({ delay = 10, children, ...restProps }: LiveRegionProps) {
+function LiveRegion({ assertive = false, delay = 10, visible = false, children, ...restProps }: LiveRegionProps) {
   const sourceRef = useRef<HTMLSpanElement>(null);
   const targetRef = useRef<HTMLSpanElement>(null);
 
@@ -66,11 +66,24 @@ function LiveRegion({ delay = 10, children, ...restProps }: LiveRegionProps) {
     does not impact the performance. If it does, prefer using a string as children prop.
   */
   useEffect(() => {
+    function updateLiveRegion() {
+      if (targetRef.current && sourceRef.current) {
+        const sourceContent = extractInnerText(sourceRef.current);
+        const targetContent = extractInnerText(targetRef.current);
+        if (targetContent !== sourceContent) {
+          // The aria-atomic does not work properly in Voice Over, causing
+          // certain parts of the content to be ignored. To fix that,
+          // we assign the source text content as a single node.
+          targetRef.current.innerText = sourceContent;
+        }
+      }
+    }
+
     let timeoutId: null | number;
     if (delay) {
-      timeoutId = setTimeout(() => updateLiveRegion(targetRef, sourceRef), delay);
+      timeoutId = setTimeout(updateLiveRegion, delay);
     } else {
-      updateLiveRegion(targetRef, sourceRef);
+      updateLiveRegion();
     }
 
     return () => {
@@ -81,8 +94,25 @@ function LiveRegion({ delay = 10, children, ...restProps }: LiveRegionProps) {
   });
 
   return (
-    <AriaLiveTag targetRef={targetRef} sourceRef={sourceRef} {...restProps}>
-      {children}
-    </AriaLiveTag>
+    <>
+      {visible && <span ref={sourceRef}>{children}</span>}
+
+      <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
+        {!visible && (
+          <span ref={sourceRef} aria-hidden="true">
+            {children}
+          </span>
+        )}
+
+        <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
+      </ScreenreaderOnly>
+    </>
   );
+}
+
+// This only extracts text content from the node including all its children which is enough for now.
+// To make it more powerful, it is possible to create a more sophisticated extractor with respect to
+// ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.
+function extractInnerText(node: HTMLElement) {
+  return (node.innerText || '').replace(/\s+/g, ' ').trim();
 }
