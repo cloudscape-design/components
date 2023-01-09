@@ -148,6 +148,12 @@ describe('Attribute Editor', () => {
       const buttonElement = wrapper.findAddButton().getElement();
       expect(buttonElement).toHaveAttribute('disabled');
     });
+
+    test('has no aria-describedby if there is no additional info', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(buttonElement).not.toHaveAttribute('aria-describedby');
+    });
   });
 
   describe('remove button', () => {

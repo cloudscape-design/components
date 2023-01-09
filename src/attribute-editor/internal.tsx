@@ -59,6 +59,7 @@ const InternalAttributeEditor = React.forwardRef(
     const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
     const additionalInfoId = useUniqueId('attribute-editor-info');
+    const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
 
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
@@ -84,11 +85,11 @@ const InternalAttributeEditor = React.forwardRef(
           disabled={disableAddButton}
           onClick={onAddButtonClick}
           formAction="none"
-          __nativeAttributes={{ 'aria-describedby': additionalInfoId }}
+          __nativeAttributes={{ 'aria-describedby': infoAriaDescribedBy }}
         >
           {addButtonText}
         </InternalButton>
-        {additionalInfo && <AdditionalInfo id={additionalInfoId}>{additionalInfo}</AdditionalInfo>}
+        {additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
       </div>
     );
   }

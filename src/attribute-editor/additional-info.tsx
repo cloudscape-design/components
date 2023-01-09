@@ -6,7 +6,7 @@ import styles from './styles.css.js';
 
 interface AdditionalInfoProps {
   children: React.ReactNode;
-  id: string;
+  id?: string;
 }
 
 export const AdditionalInfo = ({ children, id }: AdditionalInfoProps) => (
