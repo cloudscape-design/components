@@ -18,6 +18,7 @@ import InternalBox from '../box/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalAttributeEditorProps<T> = SomeRequired<AttributeEditorProps<T>, 'items'> & InternalBaseComponentProps;
 
@@ -57,6 +58,8 @@ const InternalAttributeEditor = React.forwardRef(
 
     const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
+    const additionalInfoId = useUniqueId('attribute-editor-info');
+
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         <InternalBox margin={{ bottom: 'l' }}>
@@ -81,10 +84,11 @@ const InternalAttributeEditor = React.forwardRef(
           disabled={disableAddButton}
           onClick={onAddButtonClick}
           formAction="none"
+          __nativeAttributes={{ 'aria-describedby': additionalInfoId }}
         >
           {addButtonText}
         </InternalButton>
-        {additionalInfo && <AdditionalInfo>{additionalInfo}</AdditionalInfo>}
+        {additionalInfo && <AdditionalInfo id={additionalInfoId}>{additionalInfo}</AdditionalInfo>}
       </div>
     );
   }

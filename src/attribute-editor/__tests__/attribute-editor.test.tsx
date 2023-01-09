@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
@@ -207,6 +207,19 @@ describe('Attribute Editor', () => {
     test('renders correctly', () => {
       const wrapper = renderAttributeEditor({ additionalInfo: 'test' });
       expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('test');
+    });
+
+    test('is conneced to add button with aria-describedby', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      const info = wrapper.findAdditionalInfo()?.getElement();
+      expect(buttonElement).toHaveAttribute('aria-describedby', info?.id);
+    });
+
+    test('is part of an ARIA live region', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
+      const liveRegion = wrapper.find('[aria-live]')?.getElement();
+      waitFor(() => expect(liveRegion).toHaveTextContent('Test Info'));
     });
   });
 
