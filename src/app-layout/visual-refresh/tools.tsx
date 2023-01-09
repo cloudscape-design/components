@@ -4,7 +4,6 @@ import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
 import { AppLayoutContext } from './context';
-import { useSplitPanelContext } from '../../internal/context/split-panel-context';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -42,9 +41,8 @@ export default function Tools({ children }: ToolsProps) {
     navigationHide,
     toolsFocusControl,
     splitPanelPosition,
+    splitPanelToggle,
   } = useContext(AppLayoutContext);
-
-  const { openButtonAriaLabel } = useSplitPanelContext();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanel, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
@@ -140,9 +138,9 @@ export default function Tools({ children }: ToolsProps) {
                 />
               )}
 
-              {hasSplitPanel && (
+              {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
-                  ariaLabel={openButtonAriaLabel}
+                  ariaLabel={splitPanelToggle.ariaLabel}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}

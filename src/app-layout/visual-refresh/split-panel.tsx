@@ -30,11 +30,10 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     setSplitPanelReportedHeaderHeight,
     splitPanelPosition,
     splitPanelSize,
+    setSplitPanelToggle,
     headerHeight,
     footerHeight,
   } = useContext(AppLayoutContext);
-
-  const [openButtonAriaLabel, setOpenButtonAriaLabel] = useState<undefined | string>(undefined);
 
   const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
   useEffectOnUpdate(
@@ -64,8 +63,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     rightOffset: 0,
     size: splitPanelSize || 0,
     topOffset: 0,
-    openButtonAriaLabel,
-    setOpenButtonAriaLabel,
+    setSplitPanelToggle,
     lastInteraction: splitPanelLastInteraction,
   };
 

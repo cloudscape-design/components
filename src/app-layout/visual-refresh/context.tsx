@@ -23,6 +23,7 @@ import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
 import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 
 interface AppLayoutContextProps extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -60,6 +61,8 @@ interface AppLayoutContextProps extends AppLayoutProps {
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
   splitPanelReportedHeaderHeight: number;
+  splitPanelToggle: SplitPanelSideToggleProps;
+  setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   toolsFocusControl: FocusControlState;
 }
 
@@ -121,6 +124,8 @@ const defaults: AppLayoutContextProps = {
   splitPanelReportedSize: 0,
   splitPanelReportedHeaderHeight: 0,
   splitPanelSize: 0,
+  splitPanelToggle: { displayed: true, ariaLabel: undefined },
+  setSplitPanelToggle: () => {},
   stickyNotifications: false,
   tools: null,
   toolsFocusControl: {} as FocusControlState,
@@ -393,6 +398,7 @@ export const AppLayoutProvider = React.forwardRef(
      */
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
+    const [splitPanelToggle, setSplitPanelToggle] = useState<SplitPanelSideToggleProps>(defaults.splitPanelToggle);
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -564,6 +570,8 @@ export const AppLayoutProvider = React.forwardRef(
           splitPanelReportedSize,
           splitPanelReportedHeaderHeight,
           splitPanelSize,
+          splitPanelToggle,
+          setSplitPanelToggle,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,

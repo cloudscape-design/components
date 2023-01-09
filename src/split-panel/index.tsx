@@ -59,7 +59,7 @@ export default function SplitPanel({
     onResize,
     onToggle,
     reportSize,
-    setOpenButtonAriaLabel,
+    setSplitPanelToggle,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
@@ -71,8 +71,8 @@ export default function SplitPanel({
   const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
   useEffect(() => {
-    setOpenButtonAriaLabel?.(i18nStrings.openButtonAriaLabel);
-  }, [setOpenButtonAriaLabel, i18nStrings.openButtonAriaLabel]);
+    setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: i18nStrings.openButtonAriaLabel });
+  }, [setSplitPanelToggle, i18nStrings.openButtonAriaLabel, closeBehavior]);
 
   useEffect(() => {
     // effects are called inside out in the components tree
