@@ -12,6 +12,7 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
   assertive?: boolean;
   delay?: number;
   visible?: boolean;
+  tagName?: 'span' | 'div';
   children: React.ReactNode;
 }
 
@@ -50,9 +51,16 @@ export interface LiveRegionProps extends ScreenreaderOnlyProps {
  */
 export default memo(LiveRegion);
 
-function LiveRegion({ assertive = false, delay = 10, visible = false, children, ...restProps }: LiveRegionProps) {
-  const sourceRef = useRef<HTMLSpanElement>(null);
-  const targetRef = useRef<HTMLSpanElement>(null);
+function LiveRegion({
+  assertive = false,
+  delay = 10,
+  visible = false,
+  tagName: TagName = 'span',
+  children,
+  ...restProps
+}: LiveRegionProps) {
+  const sourceRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
+  const targetRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
 
   /*
     When React state changes, React often produces too many DOM updates, causing NVDA to
@@ -95,13 +103,13 @@ function LiveRegion({ assertive = false, delay = 10, visible = false, children, 
 
   return (
     <>
-      {visible && <span ref={sourceRef}>{children}</span>}
+      {visible && <TagName ref={sourceRef}>{children}</TagName>}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
         {!visible && (
-          <span ref={sourceRef} aria-hidden="true">
+          <TagName ref={sourceRef} aria-hidden="true">
             {children}
-          </span>
+          </TagName>
         )}
 
         <span ref={targetRef} aria-atomic="true" aria-live={assertive ? 'assertive' : 'polite'}></span>
