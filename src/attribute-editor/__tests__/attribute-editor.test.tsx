@@ -5,6 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import Input from '../../../lib/components/input';
 
 interface Item {
@@ -218,7 +219,7 @@ describe('Attribute Editor', () => {
 
     test('is part of an ARIA live region', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
-      const liveRegion = wrapper.find('[aria-live]')?.getElement();
+      const liveRegion = wrapper.find(`.${liveRegionStyles.root}`)?.getElement();
       waitFor(() => expect(liveRegion).toHaveTextContent('Test Info'));
     });
   });
