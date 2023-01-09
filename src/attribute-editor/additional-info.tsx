@@ -10,9 +10,9 @@ interface AdditionalInfoProps {
 }
 
 export const AdditionalInfo = ({ children, id }: AdditionalInfoProps) => (
-  <LiveRegion visible={true}>
-    <span id={id} className={styles['additional-info']}>
+  <LiveRegion visible={true} tagName="div">
+    <div id={id} className={styles['additional-info']}>
       {children}
-    </span>
+    </div>
   </LiveRegion>
 );
