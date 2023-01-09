@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
-import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap.js';
+import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import styles from './styles.css.js';
 
 interface WizardFormHeaderProps {

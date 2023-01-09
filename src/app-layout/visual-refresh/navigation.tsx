@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
@@ -31,7 +31,7 @@ export default function Navigation() {
     isToolsOpen,
     isAnyPanelOpen,
     toolsHide,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   const { refs: focusRefs } = useFocusControl(isNavigationOpen);
 

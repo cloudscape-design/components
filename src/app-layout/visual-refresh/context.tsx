@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, {
   createContext,
-  createRef,
   useCallback,
   useEffect,
   useLayoutEffect,
   useImperativeHandle,
   useRef,
   useState,
+  useContext,
 } from 'react';
 import { AppLayoutProps } from '../interfaces';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -23,8 +23,9 @@ import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
 import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
+import { AppLayoutContext } from '../../internal/context/app-layout-context';
 
-interface AppLayoutContextProps extends AppLayoutProps {
+interface AppLayoutInternals extends AppLayoutProps {
   dynamicOverlapHeight: number;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
@@ -49,8 +50,6 @@ interface AppLayoutContextProps extends AppLayoutProps {
   offsetBottom: number;
   setDynamicOverlapHeight: (value: number) => void;
   setHasStickyBackground: (value: boolean) => void;
-  setIsNavigationOpen: (value: boolean) => void;
-  setIsToolsOpen: (value: boolean) => void;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
   headerHeight: number;
@@ -63,81 +62,26 @@ interface AppLayoutContextProps extends AppLayoutProps {
   toolsFocusControl: FocusControlState;
 }
 
-// TODO simplify default params + typings
-const defaults: AppLayoutContextProps = {
-  breadcrumbs: null,
-  content: null,
-  contentHeader: null,
-  contentType: 'default',
-  disableBodyScroll: false,
-  disableContentHeaderOverlap: false,
-  disableContentPaddings: false,
-  dynamicOverlapHeight: 0,
-  headerHeight: 0,
-  footerHeight: 0,
-  handleNavigationClick: (value: boolean) => value,
-  handleSplitPanelClick: () => {},
-  handleSplitPanelPreferencesChange: () => {},
-  handleSplitPanelResize: () => {},
-  handleToolsClick: (value: boolean) => value,
-  hasDefaultToolsWidth: true,
-  hasNotificationsContent: false,
-  hasStickyBackground: false,
-  isAnyPanelOpen: false,
-  isMobile: false,
-  isNavigationOpen: false,
-  isSplitPanelForcedPosition: false,
-  isSplitPanelOpen: false,
-  isToolsOpen: false,
-  // TODO: these refs are currently only instantiated once globally
-  layoutElement: createRef<HTMLElement>(),
-  layoutWidth: 0,
-  mainElement: createRef<HTMLDivElement>(),
-  mainOffsetLeft: 0,
-  maxContentWidth: 0,
-  minContentWidth: 280,
-  navigation: null,
-  navigationHide: false,
-  navigationOpen: false,
-  notifications: null,
-  notificationsElement: createRef<HTMLDivElement>(),
-  notificationsHeight: 0,
-  offsetBottom: 0,
-  onNavigationChange: () => {},
-  onSplitPanelResize: () => {},
-  onSplitPanelToggle: () => {},
-  onSplitPanelPreferencesChange: () => {},
-  setDynamicOverlapHeight: (value: number) => void value,
-  setHasStickyBackground: (value: boolean) => value,
-  setIsNavigationOpen: (value: boolean) => value,
-  setIsToolsOpen: (value: boolean) => value,
-  setSplitPanelReportedSize: (value: number) => void value,
-  setSplitPanelReportedHeaderHeight: (value: number) => void value,
-  splitPanelMaxWidth: 280,
-  splitPanelMinWidth: 280,
-  splitPanelOpen: false,
-  splitPanelPosition: 'bottom',
-  splitPanelPreferences: { position: 'bottom' },
-  splitPanelReportedSize: 0,
-  splitPanelReportedHeaderHeight: 0,
-  splitPanelSize: 0,
-  stickyNotifications: false,
-  tools: null,
-  toolsFocusControl: {} as FocusControlState,
-};
-
 /**
  * The default values are destructured in the context instantiation to
  * prevent downstream Typescript errors. This could likely be replaced
  * by a context interface definition that extends the AppLayout interface.
  */
-export const AppLayoutContext = createContext({ ...defaults });
+const AppLayoutInternalsContext = createContext<AppLayoutInternals | null>(null);
 
-type AppLayoutProviderProps = AppLayoutProps & {
+interface AppLayoutProviderInternalsProps extends AppLayoutProps {
   children: React.ReactNode;
-};
+}
 
-export const AppLayoutProvider = React.forwardRef(
+export function useAppLayoutInternals() {
+  const ctx = useContext(AppLayoutInternalsContext);
+  if (!ctx) {
+    throw new Error('Invariant violation: this context is only available inside app layout');
+  }
+  return ctx;
+}
+
+export const AppLayoutInternalsProvider = React.forwardRef(
   (
     {
       toolsHide,
@@ -150,7 +94,7 @@ export const AppLayoutProvider = React.forwardRef(
       children,
       splitPanel,
       ...props
-    }: AppLayoutProviderProps,
+    }: AppLayoutProviderInternalsProps,
     forwardRef: React.Ref<AppLayoutProps.Ref>
   ) => {
     const isMobile = useMobile();
@@ -520,9 +464,8 @@ export const AppLayoutProvider = React.forwardRef(
     }
 
     return (
-      <AppLayoutContext.Provider
+      <AppLayoutInternalsContext.Provider
         value={{
-          ...defaults,
           ...props,
           contentType,
           dynamicOverlapHeight,
@@ -570,8 +513,18 @@ export const AppLayoutProvider = React.forwardRef(
           toolsFocusControl,
         }}
       >
-        {children}
-      </AppLayoutContext.Provider>
+        <AppLayoutContext.Provider
+          value={{
+            stickyOffsetBottom: offsetBottom,
+            stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
+            hasBreadcrumbs: !!props.breadcrumbs,
+            setHasStickyBackground,
+            setDynamicOverlapHeight,
+          }}
+        >
+          {children}
+        </AppLayoutContext.Provider>
+      </AppLayoutInternalsContext.Provider>
     );
   }
 );

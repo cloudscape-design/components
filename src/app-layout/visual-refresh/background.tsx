@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 /**
@@ -10,7 +10,7 @@ import styles from './styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Background() {
-  const { hasNotificationsContent, hasStickyBackground, stickyNotifications } = useContext(AppLayoutContext);
+  const { hasNotificationsContent, hasStickyBackground, stickyNotifications } = useAppLayoutInternals();
 
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>

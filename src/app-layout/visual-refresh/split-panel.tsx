@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import {
   SplitPanelContextProvider,
   SplitPanelContextProps,
@@ -32,7 +32,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     splitPanelSize,
     headerHeight,
     footerHeight,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   const [openButtonAriaLabel, setOpenButtonAriaLabel] = useState<undefined | string>(undefined);
 
@@ -88,7 +88,7 @@ function SplitPanelBottom() {
     splitPanelPosition,
     splitPanelReportedSize,
     splitPanelReportedHeaderHeight,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   if (!splitPanel) {
     return null;
@@ -133,7 +133,7 @@ function SplitPanelSide() {
     splitPanelMaxWidth,
     splitPanelMinWidth,
     splitPanelReportedSize,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   if (!splitPanel) {
     return null;
