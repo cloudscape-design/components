@@ -11,8 +11,8 @@ interface AdditionalInfoProps {
 
 export const AdditionalInfo = ({ children, id }: AdditionalInfoProps) => (
   <LiveRegion visible={true}>
-    <div id={id} className={styles['additional-info']}>
+    <span id={id} className={styles['additional-info']}>
       {children}
-    </div>
+    </span>
   </LiveRegion>
 );
