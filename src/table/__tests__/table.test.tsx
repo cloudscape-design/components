@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
@@ -145,6 +145,31 @@ test('should render table header with icons to indicate editable columns', () =>
   });
 });
 
+test('should cancel edit using ref imperative method', async () => {
+  const ref = React.createRef<any>();
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={editableColumns}
+      items={defaultItems}
+      submitEdit={async () => {
+        await new Promise((resolve, reject) => setTimeout(reject, 1000));
+      }}
+      ref={ref}
+    />
+  );
+
+  const bodyCell = wrapper.findBodyCell(2, 2)!;
+  const button = bodyCell.findButton(`[type="button"]`)!;
+
+  fireEvent.click(button.getElement());
+  act(() => {
+    ref.current.cancelEdit();
+  });
+  await waitFor(() => {
+    expect(wrapper.find(`[data-inline-editing-active="true"]`)?.getElement()).toBeUndefined();
+  });
+});
+
 test('should render table with react content', () => {
   const columns: TableProps.ColumnDefinition<Item>[] = [
     ...defaultColumns,
@@ -237,4 +262,74 @@ test('inner state can be tracked by column id', () => {
   rerender(<Table columnDefinitions={statefulColumnsWithId.slice(1)} items={defaultItems} />);
   expect(queryByTestId('display-1-1')).toBeNull();
   expect(queryByTestId('display-2-1')).toHaveTextContent('1');
+});
+
+test('should submit edits successfully', async () => {
+  const data = {
+    name: 'apple',
+  };
+
+  const mockSubmitFn = jest.fn();
+
+  const submitEditFn = async (item: typeof data, column: any, value: any) => {
+    mockSubmitFn(item, column, value);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    data.name = value;
+  };
+
+  const { wrapper } = renderTable(
+    <Table<{ name: string }>
+      columnDefinitions={[
+        {
+          id: 'name',
+          header: 'Name',
+          cell: (item, { isEditing, setValue, currentValue }) => (
+            <input
+              type="text"
+              id="test-input"
+              onChange={e => setValue(e.target.value)}
+              value={currentValue ?? item.name}
+              disabled={!isEditing}
+            />
+          ),
+          editConfig: {
+            ariaLabel: 'test-name',
+            constraintText: 'test-constraint',
+          },
+        },
+      ]}
+      items={[data]}
+      ariaLabels={{
+        activateEditLabel() {
+          return 'activate-edit';
+        },
+        cancelEditLabel() {
+          return 'cancel-edit';
+        },
+        submitEditLabel() {
+          return 'save-edit';
+        },
+      }}
+      submitEdit={submitEditFn}
+    />
+  );
+
+  const bodyCell = wrapper.find('td');
+  const button = bodyCell?.findButton(`[aria-label="activate-edit"]`);
+
+  // activate edit
+  fireEvent.click(button!.getElement()!);
+
+  expect(bodyCell?.getElement()?.querySelector('input')).not.toBeDisabled();
+  fireEvent.change(bodyCell!.getElement()!.querySelector('input')!, {
+    target: { value: 'banana' },
+  });
+
+  // submit edit
+  fireEvent.click(bodyCell!.findButton(`[aria-label="save-edit"]`)!.getElement()!);
+  expect(mockSubmitFn).toHaveBeenCalled();
+  expect(bodyCell!.findButton(`[aria-label="save-edit"]`)?.findLoadingIndicator()?.getElement()).toBeVisible();
+  await waitFor(() => {
+    expect(data.name).toBe('banana');
+  });
 });

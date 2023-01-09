@@ -15,6 +15,7 @@ import { useStableScrollPosition } from './use-stable-scroll-position';
 const readonlyState = Object.freeze({
   isEditing: false,
   currentValue: undefined,
+  /* istanbul ignore next */
   setValue: () => {},
 });
 
