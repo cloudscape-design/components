@@ -209,7 +209,7 @@ describe('Attribute Editor', () => {
       expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('test');
     });
 
-    test('is conneced to add button with aria-describedby', () => {
+    test('is connected to add button with aria-describedby', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
       const buttonElement = wrapper.findAddButton().getElement();
       const info = wrapper.findAdditionalInfo()?.getElement();
