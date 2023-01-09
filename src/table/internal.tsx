@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
 import Thead, { TheadProps } from './thead';
-import { TableBodyCell, TableBodyCellContent } from './body-cell';
+import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
@@ -15,7 +15,7 @@ import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
-import { fireNonCancelableEvent } from '../internal/events';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { isDevelopment } from '../internal/is-development';
 import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
@@ -27,10 +27,12 @@ import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SomeRequired } from '../internal/types';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../app-layout/visual-refresh/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
+import useTableFocusNavigation from './use-table-focus-navigation';
+import { SomeRequired } from '../internal/types';
+import { TableTdElement } from './body-cell/td-element';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -65,6 +67,8 @@ const InternalTable = React.forwardRef(
       onRowContextMenu,
       wrapLines,
       stripedRows,
+      submitEdit,
+      onEditCancel,
       resizableColumns,
       onColumnWidthsChange,
       variant,
@@ -91,8 +95,17 @@ const InternalTable = React.forwardRef(
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
+    const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
+    const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
-    useImperativeHandle(ref, () => ({ scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined) }));
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollToTop: stickyHeaderRef.current?.scrollToTop || (() => undefined),
+        cancelEdit: () => setCurrentEditCell(null),
+      }),
+      []
+    );
 
     const handleScroll = useScrollSync(
       [wrapperRefObject, scrollbarRef, secondaryWrapperRef],
@@ -170,9 +183,24 @@ const InternalTable = React.forwardRef(
     const focusVisibleProps = useFocusVisible();
 
     const getMouseDownTarget = useMouseDownTarget();
+    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
+      if (!submitEdit) {
+        return undefined;
+      }
+      return async (...args: Parameters<typeof submitEdit>) => {
+        setCurrentEditLoading(true);
+        try {
+          await submitEdit(...args);
+        } finally {
+          setCurrentEditLoading(false);
+        }
+      };
+    };
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     return (
       <ColumnWidthsProvider
@@ -309,11 +337,9 @@ const InternalTable = React.forwardRef(
                         aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
                         {selectionType !== undefined && (
-                          <TableBodyCell
-                            className={clsx(
-                              styles['selection-control'],
-                              isVisualRefresh && styles['is-visual-refresh']
-                            )}
+                          <TableTdElement
+                            className={clsx(styles['selection-control'])}
+                            isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
@@ -331,34 +357,50 @@ const InternalTable = React.forwardRef(
                               onShiftToggle={updateShiftToggle}
                               {...getItemSelectionProps(item)}
                             />
-                          </TableBodyCell>
+                          </TableTdElement>
                         )}
-                        {visibleColumnDefinitions.map((column, colIndex) => (
-                          <TableBodyCellContent
-                            key={getColumnKey(column, colIndex)}
-                            style={
-                              resizableColumns
-                                ? {}
-                                : {
-                                    width: column.width,
-                                    minWidth: column.minWidth,
-                                    maxWidth: column.maxWidth,
-                                  }
-                            }
-                            column={column}
-                            item={item}
-                            wrapLines={wrapLines}
-                            isFirstRow={firstVisible}
-                            isLastRow={lastVisible}
-                            isSelected={isSelected}
-                            isNextSelected={isNextSelected}
-                            isPrevSelected={isPrevSelected}
-                            stripedRows={stripedRows}
-                            isEvenRow={isEven}
-                            hasSelection={hasSelection}
-                            hasFooter={hasFooter}
-                          />
-                        ))}
+                        {visibleColumnDefinitions.map((column, colIndex) => {
+                          const isEditing =
+                            !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          const isEditable = !!column.editConfig && !currentEditLoading;
+                          return (
+                            <TableBodyCell
+                              key={getColumnKey(column, colIndex)}
+                              style={
+                                resizableColumns
+                                  ? {}
+                                  : {
+                                      width: column.width,
+                                      minWidth: column.minWidth,
+                                      maxWidth: column.maxWidth,
+                                    }
+                              }
+                              ariaLabels={ariaLabels}
+                              column={column}
+                              item={item}
+                              wrapLines={wrapLines}
+                              isEditable={isEditable}
+                              isEditing={isEditing}
+                              isFirstRow={firstVisible}
+                              isLastRow={lastVisible}
+                              isSelected={isSelected}
+                              isNextSelected={isNextSelected}
+                              isPrevSelected={isPrevSelected}
+                              onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
+                              onEditEnd={() => {
+                                const wasCancelled = fireCancelableEvent(onEditCancel, {});
+                                if (!wasCancelled) {
+                                  setCurrentEditCell(null);
+                                }
+                              }}
+                              submitEdit={wrapWithInlineLoadingState(submitEdit)}
+                              hasFooter={hasFooter}
+                              stripedRows={stripedRows}
+                              isEvenRow={isEven}
+                              isVisualRefresh={isVisualRefresh}
+                            />
+                          );
+                        })}
                       </tr>
                     );
                   })

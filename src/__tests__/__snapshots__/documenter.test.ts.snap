@@ -10886,6 +10886,12 @@ including the hidden via preferences columns. Use this event to persist the colu
       "name": "onColumnWidthsChange",
     },
     Object {
+      "cancelable": true,
+      "description": "Called whenever user cancels an inline edit. Use this function to reset any
+validation states, or show warning for unsaved changes.",
+      "name": "onEditCancel",
+    },
+    Object {
       "cancelable": false,
       "description": "Note: This feature is provided for backwards compatibility. Its use is not recommended,
 and it may be deprecated in the future.
@@ -10992,6 +10998,12 @@ The event detail contains the current sortingColumn and isDescending.",
   ],
   "functions": Array [
     Object {
+      "description": "Dismiss an inline edit if currently active.",
+      "name": "cancelEdit",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
       "description": "When the sticky header is enabled and you call this function, the table
 scroll parent scrolls to reveal the first row of the table.",
       "name": "scrollToTop",
@@ -11007,20 +11019,36 @@ scroll parent scrolls to reveal the first row of the table.",
 * \`allItemsSelectionLabel\` ((SelectionState) => string) - Specifies the alternative text for multi-selection column header.
 * \`selectionGroupLabel\` (string) - Specifies the alternative text for the whole selection and single-selection column header.
                                    It is prefixed to \`itemSelectionLabel\` and \`allItemsSelectionLabel\` when they are set.
-* \`tableLabel\` (string) - Provides a alternative text for the table. If you use a header for this table, you may reuse the string
+* \`tableLabel\` (string) - Provides an alternative text for the table. If you use a header for this table, you may reuse the string
                           to provide a caption-like description. For example, tableLabel=Instances will be announced as 'Instances table'.
 You can use the first argument of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
+* \`activateEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the edit button in editable cells.
+* \`cancelEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the cancel button in editable cells.
+* \`submitEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the submit button in editable cells.
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
         "properties": Array [
           Object {
+            "name": "activateEditLabel",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
             "name": "allItemsSelectionLabel",
             "optional": true,
             "type": "(data: TableProps.SelectionState<T>) => string",
+          },
+          Object {
+            "name": "cancelEditLabel",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
             "name": "itemSelectionLabel",
@@ -11031,6 +11059,11 @@ add a meaningful description to the whole selection.
             "name": "selectionGroupLabel",
             "optional": true,
             "type": "string",
+          },
+          Object {
+            "name": "submitEditLabel",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },
           Object {
             "name": "tableLabel",
@@ -11063,7 +11096,8 @@ add a meaningful description to the whole selection.
   fills the remaining space of the table so the specified width is ignored.
 * \`minWidth\` (string | number) - Specifies the minimum column width. Corresponds to the \`min-width\` css-property. When
   \`resizableColumns\` property is set to \`true\`, additional constraints apply: 1) string values are not allowed,
-  and 2) the column can't resize below than the specified width (defaults to \\"120px\\").
+  and 2) the column can't resize below than the specified width (defaults to \\"120px\\"). We recommend that you set a minimum width
+  of at least 176px for columns that are editable.
 * \`maxWidth\` (string | number) - Specifies the maximum column width. Corresponds to the \`max-width\` css-property.
   Note that when the \`resizableColumns\` property is set to \`true\` this property is ignored.
 * \`ariaLabel\` (LabelData => string) - An optional function that's called to provide an \`aria-label\` for the cell header.
@@ -11077,7 +11111,14 @@ add a meaningful description to the whole selection.
 * \`sortingComparator\` ((T, T) => number) - Enables custom column sorting. The value is used in [collection hooks](/get-started/dev-guides/collection-hooks/)
   to reorder the items. This property accepts a custom comparator that is used to compare two items.
   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
-  If present, the \`sortingField\` property is ignored.",
+  If present, the \`sortingField\` property is ignored.
+* \`editConfig\` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
+* * \`editConfig.ariaLabel\` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
+* * \`editConfig.errorIconAriaLabel\` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
+* * \`editConfig.editIconAriaLabel\` (string) - Specifies an alternate text for the edit icon used in column header.
+* * \`editConfig.constraintText\` (string) - Constraint text that is displayed below the edit control.
+* * \`editConfig.validation\` ((item, value) => string) - A function that allows you to validate the value of the edit control.
+           Return a string from the function to display an error message. Return \`undefined\` (or no return) from the function to indicate that the value is valid.",
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
@@ -11221,6 +11262,32 @@ need to position the sticky header below other fixed position elements on the pa
       "name": "stripedRows",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Specifies a function that will be called after user submits an inline edit.
+Return a promise to keep loading state while the submit request is in progress.",
+      "inlineType": Object {
+        "name": "TableProps.SubmitEditFunction",
+        "parameters": Array [
+          Object {
+            "name": "item",
+            "type": "ItemType",
+          },
+          Object {
+            "name": "column",
+            "type": "TableProps.ColumnDefinition<ItemType>",
+          },
+          Object {
+            "name": "newValue",
+            "type": "ValueType",
+          },
+        ],
+        "returnType": "Promise<void> | void",
+        "type": "function",
+      },
+      "name": "submitEdit",
+      "optional": true,
+      "type": "TableProps.SubmitEditFunction<T>",
     },
     Object {
       "description": "Use this property to inform screen readers how many items there are in a table.

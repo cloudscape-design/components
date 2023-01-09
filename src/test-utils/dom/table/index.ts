@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../table/styles.selectors.js';
 import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
+import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
 import selectionStyles from '../../../table/selection-control/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
@@ -131,5 +132,21 @@ export default class TableWrapper extends ComponentWrapper {
 
   findPagination(): PaginationWrapper | null {
     return this.findComponent(`.${styles['tools-pagination']}`, PaginationWrapper);
+  }
+
+  findEditingCell(): ElementWrapper | null {
+    return this.findNativeTable().findByClassName(bodyCellStyles['body-cell-edit-active']);
+  }
+
+  private _findEditingCellControls(): ElementWrapper | null {
+    return this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-controls']) ?? null;
+  }
+
+  findEditingCellSaveButton(): ElementWrapper | null {
+    return this._findEditingCellControls()?.find('button[type="submit"]') ?? null;
+  }
+
+  findEditingCellCancelButton(): ElementWrapper | null {
+    return this._findEditingCellControls()?.find('button:first-child') ?? null;
   }
 }
