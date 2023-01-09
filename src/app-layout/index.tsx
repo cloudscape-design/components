@@ -324,6 +324,7 @@ const OldAppLayout = React.forwardRef(
       onResize: onSplitPanelSizeSet,
       onToggle,
       onPreferencesChange: onSplitPanelPreferencesSet,
+      setSplitPanelToggle: () => {}, // split panel toggle is not used in this design
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
     };

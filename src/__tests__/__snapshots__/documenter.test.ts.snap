@@ -10803,7 +10803,7 @@ Object {
     },
     Object {
       "defaultValue": "\\"collapse\\"",
-      "description": "Determines whether the split panel collapses or hides completely when closing.",
+      "description": "Determines whether the split panel collapses or hides completely when closed.",
       "inlineType": Object {
         "name": "",
         "type": "union",

@@ -10,7 +10,7 @@ export interface SplitPanelProps extends BaseComponentProps {
   header: string;
   children: React.ReactNode;
   /**
-   * Determines whether the split panel collapses or hides completely when closing.
+   * Determines whether the split panel collapses or hides completely when closed.
    */
   closeBehavior?: 'collapse' | 'hide';
   /**
