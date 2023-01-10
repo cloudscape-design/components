@@ -225,7 +225,9 @@ describe('Attribute Editor', () => {
 
     test('has an ARIA live region', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
-      expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement()).toBeInTheDocument();
+      expect(
+        wrapper.find(`.${liveRegionStyles.root}[data-testid="info-live-region"]`)?.getElement()
+      ).toBeInTheDocument();
     });
   });
 
