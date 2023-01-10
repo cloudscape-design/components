@@ -12,7 +12,7 @@ import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints, useResizeObserver } from '../internal/hooks/container-queries';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -52,9 +52,12 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
   const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
+  const listElementRef = useRef<HTMLUListElement | null>(null);
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
+  const [listTop, setListTop] = useState<number>();
+  const bodyRef = useRef(document.body);
 
   const isReducedMotion = useReducedMotion(breakpointRef as any);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
@@ -123,12 +126,39 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     setIsFlashbarStackExpanded(prev => !prev);
   }
 
+  const applyBottomSpacing = useCallback(() => {
+    // Apply vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page.
+    const listElement = listElementRef?.current;
+    const parent = listElement?.parentElement;
+    if (listElement && parent && listTop !== undefined) {
+      const parent = listElement.parentElement;
+      const desiredSpace = 32;
+      const bottom = listTop + listElement.clientHeight;
+      if (bottom > window.innerHeight - desiredSpace) {
+        parent.style.paddingBottom = `${desiredSpace}px`;
+      } else {
+        parent.style.paddingBottom = '';
+      }
+    }
+  }, [listTop]);
+
+  useResizeObserver(bodyRef, applyBottomSpacing);
+
   useLayoutEffect(() => {
-    // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet. So it's a good moment to trigger animations
-    // that will make calculations based on old and new DOM state.
-    // The old state is kept in `oldStateDOMRects` (notification items) and `toggleButtonRect` (toggle button),
+    // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
+    // so it's a good moment to trigger animations that will make calculations based on old and new DOM state.
+    // The old state is kept in `initialAnimationState`
     // and the new state can be retrieved from the current DOM elements.
+
+    if (listTop === undefined) {
+      const listElement = listElementRef?.current;
+      if (listElement) {
+        setListTop(listElement.getBoundingClientRect().y);
+      }
+    }
+
     if (initialAnimationState) {
+      applyBottomSpacing();
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
@@ -138,7 +168,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
+  }, [applyBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
 
   /**
    * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
@@ -190,8 +220,8 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
     return (
       <>
-        <TransitionGroup
-          component="ul"
+        <ul
+          ref={listElementRef}
           className={clsx(
             styles['flash-list'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
@@ -210,59 +240,61 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
               : undefined
           }
         >
-          {itemsToShow.map((item: StackableItem, index: number) => (
-            <Transition
-              key={getItemId(item)}
-              in={!hasLeft(item)}
-              onStatusChange={status => {
-                if (status === 'entered') {
-                  setEnteringItems([]);
-                } else if (status === 'exited') {
-                  setExitingItems([]);
-                }
-              }}
-            >
-              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                <li
-                  aria-hidden={!showInnerContent(item)}
-                  className={
-                    showInnerContent(item)
-                      ? clsx(
-                          styles['flash-list-item'],
-                          !isFlashbarStackExpanded && styles.item,
-                          !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
-                        )
-                      : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+          <TransitionGroup component={null}>
+            {itemsToShow.map((item: StackableItem, index: number) => (
+              <Transition
+                key={getItemId(item)}
+                in={!hasLeft(item)}
+                onStatusChange={status => {
+                  if (status === 'entered') {
+                    setEnteringItems([]);
+                  } else if (status === 'exited') {
+                    setExitingItems([]);
                   }
-                  ref={element => {
-                    if (isFlashbarStackExpanded) {
-                      expandedItemRefs.current[getAnimationElementId(item)] = element;
-                    } else {
-                      collapsedItemRefs.current[getAnimationElementId(item)] = element;
+                }}
+              >
+                {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                  <li
+                    aria-hidden={!showInnerContent(item)}
+                    className={
+                      showInnerContent(item)
+                        ? clsx(
+                            styles['flash-list-item'],
+                            !isFlashbarStackExpanded && styles.item,
+                            !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
+                          )
+                        : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
                     }
-                  }}
-                  style={
-                    !isFlashbarStackExpanded || transitioning
-                      ? {
-                          [customCssProps.flashbarStackIndex]:
-                            (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                        }
-                      : undefined
-                  }
-                  key={getItemId(item)}
-                >
-                  {showInnerContent(item) &&
-                    renderItem(
-                      item,
-                      getItemId(item),
-                      shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined,
-                      shouldUseStandardAnimation(item, index) ? state : undefined
-                    )}
-                </li>
-              )}
-            </Transition>
-          ))}
-        </TransitionGroup>
+                    ref={element => {
+                      if (isFlashbarStackExpanded) {
+                        expandedItemRefs.current[getAnimationElementId(item)] = element;
+                      } else {
+                        collapsedItemRefs.current[getAnimationElementId(item)] = element;
+                      }
+                    }}
+                    style={
+                      !isFlashbarStackExpanded || transitioning
+                        ? {
+                            [customCssProps.flashbarStackIndex]:
+                              (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                          }
+                        : undefined
+                    }
+                    key={getItemId(item)}
+                  >
+                    {showInnerContent(item) &&
+                      renderItem(
+                        item,
+                        getItemId(item),
+                        shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined,
+                        shouldUseStandardAnimation(item, index) ? state : undefined
+                      )}
+                  </li>
+                )}
+              </Transition>
+            ))}
+          </TransitionGroup>
+        </ul>
 
         {items.length > maxUnstackedItems && (
           <button
