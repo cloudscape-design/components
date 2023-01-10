@@ -218,84 +218,87 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
 
     const getAnimationElementId = (item: StackableItem) => `flash-${getItemId(item)}`;
 
+    const renderList = () => (
+      <ul
+        ref={listElementRef}
+        className={clsx(
+          styles['flash-list'],
+          isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+          transitioning && styles['animation-running'],
+          initialAnimationState && styles['animation-ready'],
+          isVisualRefresh && styles['visual-refresh']
+        )}
+        id={flashbarElementId}
+        aria-label={ariaLabel}
+        aria-describedby={toggleButtonElementId}
+        style={
+          !isFlashbarStackExpanded || transitioning
+            ? {
+                [customCssProps.flashbarStackDepth]: stackDepth,
+              }
+            : undefined
+        }
+      >
+        <TransitionGroup component={null}>
+          {itemsToShow.map((item: StackableItem, index: number) => (
+            <Transition
+              key={getItemId(item)}
+              in={!hasLeft(item)}
+              onStatusChange={status => {
+                if (status === 'entered') {
+                  setEnteringItems([]);
+                } else if (status === 'exited') {
+                  setExitingItems([]);
+                }
+              }}
+            >
+              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+                <li
+                  aria-hidden={!showInnerContent(item)}
+                  className={
+                    showInnerContent(item)
+                      ? clsx(
+                          styles['flash-list-item'],
+                          !isFlashbarStackExpanded && styles.item,
+                          !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
+                        )
+                      : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
+                  }
+                  ref={element => {
+                    if (isFlashbarStackExpanded) {
+                      expandedItemRefs.current[getAnimationElementId(item)] = element;
+                    } else {
+                      collapsedItemRefs.current[getAnimationElementId(item)] = element;
+                    }
+                  }}
+                  style={
+                    !isFlashbarStackExpanded || transitioning
+                      ? {
+                          [customCssProps.flashbarStackIndex]:
+                            (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
+                        }
+                      : undefined
+                  }
+                  key={getItemId(item)}
+                >
+                  {showInnerContent(item) &&
+                    renderItem(
+                      item,
+                      getItemId(item),
+                      shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined,
+                      shouldUseStandardAnimation(item, index) ? state : undefined
+                    )}
+                </li>
+              )}
+            </Transition>
+          ))}
+        </TransitionGroup>
+      </ul>
+    );
+
     return (
       <>
-        <ul
-          ref={listElementRef}
-          className={clsx(
-            styles['flash-list'],
-            isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-            transitioning && styles['animation-running'],
-            initialAnimationState && styles['animation-ready'],
-            isVisualRefresh && styles['visual-refresh']
-          )}
-          id={flashbarElementId}
-          aria-label={ariaLabel}
-          aria-describedby={toggleButtonElementId}
-          style={
-            !isFlashbarStackExpanded || transitioning
-              ? {
-                  [customCssProps.flashbarStackDepth]: stackDepth,
-                }
-              : undefined
-          }
-        >
-          <TransitionGroup component={null}>
-            {itemsToShow.map((item: StackableItem, index: number) => (
-              <Transition
-                key={getItemId(item)}
-                in={!hasLeft(item)}
-                onStatusChange={status => {
-                  if (status === 'entered') {
-                    setEnteringItems([]);
-                  } else if (status === 'exited') {
-                    setExitingItems([]);
-                  }
-                }}
-              >
-                {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                  <li
-                    aria-hidden={!showInnerContent(item)}
-                    className={
-                      showInnerContent(item)
-                        ? clsx(
-                            styles['flash-list-item'],
-                            !isFlashbarStackExpanded && styles.item,
-                            !collapsedItemRefs.current[getAnimationElementId(item)] && styles['expanded-only']
-                          )
-                        : clsx(styles.flash, styles[`flash-type-${item.type ?? 'info'}`], styles.item)
-                    }
-                    ref={element => {
-                      if (isFlashbarStackExpanded) {
-                        expandedItemRefs.current[getAnimationElementId(item)] = element;
-                      } else {
-                        collapsedItemRefs.current[getAnimationElementId(item)] = element;
-                      }
-                    }}
-                    style={
-                      !isFlashbarStackExpanded || transitioning
-                        ? {
-                            [customCssProps.flashbarStackIndex]:
-                              (item as StackableItem).collapsedIndex ?? (item as StackableItem).expandedIndex ?? index,
-                          }
-                        : undefined
-                    }
-                    key={getItemId(item)}
-                  >
-                    {showInnerContent(item) &&
-                      renderItem(
-                        item,
-                        getItemId(item),
-                        shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined,
-                        shouldUseStandardAnimation(item, index) ? state : undefined
-                      )}
-                  </li>
-                )}
-              </Transition>
-            ))}
-          </TransitionGroup>
-        </ul>
-
+        {isFlashbarStackExpanded && renderList()}
         {items.length > maxUnstackedItems && (
           <button
             aria-expanded={isFlashbarStackExpanded}
@@ -335,6 +338,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
             </span>
           </button>
         )}
+        {!isFlashbarStackExpanded && renderList()}
       </>
     );
   }
