@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -29,7 +29,7 @@ export default function AppBar() {
     isToolsOpen,
     toolsHide,
     isAnyPanelOpen,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
   const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
   const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 

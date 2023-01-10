@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -26,7 +26,7 @@ export default function Main() {
     offsetBottom,
     footerHeight,
     splitPanelPosition,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   const isUnfocusable = isMobile && isAnyPanelOpen;
   const splitPanelHeight = offsetBottom - footerHeight;

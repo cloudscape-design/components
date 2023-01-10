@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
-import { AppLayoutContext } from './context';
+import { useAppLayoutInternals } from './context';
 import { useSplitPanelContext } from '../../internal/context/split-panel-context';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
@@ -42,7 +42,7 @@ export default function Tools({ children }: ToolsProps) {
     navigationHide,
     toolsFocusControl,
     splitPanelPosition,
-  } = useContext(AppLayoutContext);
+  } = useAppLayoutInternals();
 
   const { openButtonAriaLabel } = useSplitPanelContext();
 
