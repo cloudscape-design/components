@@ -303,28 +303,30 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             ref={toggleButtonRef}
             {...isFocusVisible}
           >
-            {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
-            <span className={styles['types-count']}>
-              <NotificationTypeCount
-                iconName="status-negative"
-                label={i18nStrings?.errorCountAriaLabel}
-                count={countByType.error}
-              />{' '}
-              <NotificationTypeCount
-                iconName="status-warning"
-                label={i18nStrings?.warningCountAriaLabel}
-                count={countByType.warning}
-              />{' '}
-              <NotificationTypeCount
-                iconName="status-positive"
-                label={i18nStrings?.successCountAriaLabel}
-                count={countByType.success}
-              />{' '}
-              <NotificationTypeCount
-                iconName="status-in-progress"
-                label={i18nStrings?.inProgressCountAriaLabel}
-                count={countByType.progress}
-              />
+            <span className={styles.status} role="status">
+              {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
+              <span className={styles['types-count']}>
+                <NotificationTypeCount
+                  iconName="status-negative"
+                  label={i18nStrings?.errorCountAriaLabel}
+                  count={countByType.error}
+                />{' '}
+                <NotificationTypeCount
+                  iconName="status-warning"
+                  label={i18nStrings?.warningCountAriaLabel}
+                  count={countByType.warning}
+                />{' '}
+                <NotificationTypeCount
+                  iconName="status-positive"
+                  label={i18nStrings?.successCountAriaLabel}
+                  count={countByType.success}
+                />{' '}
+                <NotificationTypeCount
+                  iconName="status-in-progress"
+                  label={i18nStrings?.inProgressCountAriaLabel}
+                  count={countByType.progress}
+                />
+              </span>
             </span>
             <button className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
               <InternalIcon size="normal" name="angle-down" />
