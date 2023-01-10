@@ -289,7 +289,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       <>
         {isFlashbarStackExpanded && renderList()}
         {items.length > maxUnstackedItems && (
-          <button
+          <span
             aria-expanded={isFlashbarStackExpanded}
             aria-controls={flashbarElementId}
             id={toggleButtonElementId}
@@ -326,10 +326,10 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
                 count={countByType.progress}
               />
             </span>
-            <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
+            <button className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
               <InternalIcon size="normal" name="angle-down" />
-            </span>
-          </button>
+            </button>
+          </span>
         )}
         {!isFlashbarStackExpanded && renderList()}
       </>

@@ -339,6 +339,9 @@ the grid layout will be:
 
   > .icon {
     display: inline-block;
+    background: none;
+    border: 0 none;
+    color: inherit;
 
     @include styles.with-motion {
       transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
