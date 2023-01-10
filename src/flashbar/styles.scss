@@ -287,12 +287,11 @@ the grid layout will be:
     > .text {
       font-weight: awsui.$font-button-weight;
       display: inline;
-      margin-right: awsui.$space-xs;
+      margin-right: awsui.$space-s;
     }
 
     > .types-count {
       margin-left: awsui.$space-xxs;
-      margin-right: awsui.$space-xs;
 
       > .type-count {
         margin-right: awsui.$space-s;
