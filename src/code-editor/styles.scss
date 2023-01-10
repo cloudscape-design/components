@@ -32,7 +32,7 @@
   }
 }
 
-.code-editor-refresh > .resizable-box > .editor {
+.editor-refresh {
   border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
 }
