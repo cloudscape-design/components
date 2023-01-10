@@ -20,6 +20,8 @@ import styles from './styles.css.js';
 import { getFlashTypeCount, getStackedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { IconProps } from '../icon/interfaces';
+import Name = IconProps.Name;
 
 export { FlashbarProps };
 
@@ -303,22 +305,26 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
           >
             {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
             <span className={styles['types-count']}>
-              <span className={styles['type-count']}>
-                <InternalIcon name="status-negative" />
-                <span className={styles['count-number']}>{countByType.error}</span>
-              </span>
-              <span className={styles['type-count']}>
-                <InternalIcon name="status-warning" />
-                <span className={styles['count-number']}>{countByType.warning}</span>
-              </span>
-              <span className={styles['type-count']}>
-                <InternalIcon name="status-positive" />
-                <span className={styles['count-number']}>{countByType.success}</span>
-              </span>
-              <span className={styles['type-count']}>
-                <InternalIcon name="status-in-progress" />
-                <span className={styles['count-number']}>{countByType.progress}</span>
-              </span>
+              <NotificationTypeCount
+                iconName="status-negative"
+                label={i18nStrings?.errorCountAriaLabel}
+                count={countByType.error}
+              />{' '}
+              <NotificationTypeCount
+                iconName="status-warning"
+                label={i18nStrings?.warningCountAriaLabel}
+                count={countByType.warning}
+              />{' '}
+              <NotificationTypeCount
+                iconName="status-positive"
+                label={i18nStrings?.successCountAriaLabel}
+                count={countByType.success}
+              />{' '}
+              <NotificationTypeCount
+                iconName="status-in-progress"
+                label={i18nStrings?.inProgressCountAriaLabel}
+                count={countByType.progress}
+              />
             </span>
             <span className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
               <InternalIcon size="normal" name="angle-down" />
@@ -366,3 +372,12 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     </div>
   );
 }
+
+const NotificationTypeCount = ({ iconName, label, count }: { iconName: Name; label?: string; count: number }) => (
+  <span className={styles['type-count']}>
+    <span aria-label={label} title={label}>
+      <InternalIcon name={iconName} />
+    </span>
+    <span className={styles['count-number']}>{count}</span>
+  </span>
+);
