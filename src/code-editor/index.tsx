@@ -288,7 +288,7 @@ export default function CodeEditor(props: CodeEditorProps) {
           >
             <div
               ref={editorRef}
-              className={clsx(styles.editor, styles.ace)}
+              className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
               role="group"
