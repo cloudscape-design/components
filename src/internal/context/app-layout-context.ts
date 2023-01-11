@@ -17,6 +17,5 @@ export const AppLayoutContext = createContext<AppLayoutContextProps>({
 });
 
 export function useAppLayoutContext() {
-  const context = useContext(AppLayoutContext);
-  return { ...context };
+  return useContext(AppLayoutContext);
 }
