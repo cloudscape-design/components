@@ -33,4 +33,12 @@ export interface FormProps extends BaseComponentProps {
    * Specifies left-aligned secondary actions for the form. Use a button dropdown if multiple actions are required.
    */
   secondaryActions?: React.ReactNode;
+
+  /**
+   * Determines whether the form displays a dark header and overlap with content.
+   * A full page form should display the dark header.
+   * If false, the header background color will not be shown.
+   * @visualrefresh
+   */
+  fullPage?: boolean;
 }

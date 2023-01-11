@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
+import InternalContentLayout from '../content-layout/internal';
 import styles from './styles.css.js';
 import { FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -19,13 +20,14 @@ export default function InternalForm({
   errorIconAriaLabel,
   actions,
   secondaryActions,
+  fullPage = true,
   __internalRootRef,
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
-  return (
-    <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
-      {header && <div className={styles.header}>{header}</div>}
+  const formHeader = header && <div className={clsx(styles.header, fullPage && styles['full-page'])}>{header}</div>;
+  const formContent = (
+    <>
       {children && <div className={styles.content}>{children}</div>}
       {errorText && (
         <InternalBox margin={{ top: 'l' }}>
@@ -46,6 +48,18 @@ export default function InternalForm({
         <LiveRegion assertive={true}>
           {errorIconAriaLabel}, {errorText}
         </LiveRegion>
+      )}
+    </>
+  );
+
+  return (
+    <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
+      {fullPage ? (
+        <InternalContentLayout header={formHeader}>{formContent}</InternalContentLayout>
+      ) : (
+        <>
+          {formHeader} {formContent}
+        </>
       )}
     </div>
   );
