@@ -313,14 +313,6 @@ the grid layout will be:
     background: awsui.$color-background-layout-toggle-active;
   }
 
-  &:focus {
-    outline: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
-
   &.visual-refresh {
     $border-width: 2px;
     @include toggle-button-layout(-27px, $border-width);
@@ -356,6 +348,14 @@ the grid layout will be:
     }
     &.expanded > .icon {
       transform: rotate(180deg);
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
     }
   }
 }

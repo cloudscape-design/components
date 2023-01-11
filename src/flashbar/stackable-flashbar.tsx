@@ -292,11 +292,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(
-          getVisualContextClassname('flashbar'),
-          animateFlash && styles['flash-with-motion'],
-          isVisualRefresh && styles['flash-refresh']
-        )}
+        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}
@@ -313,7 +309,8 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
         styles.flashbar,
         styles[`breakpoint-${breakpoint}`],
         styles.stack,
-        isFlashbarStackExpanded && styles.expanded
+        isFlashbarStackExpanded && styles.expanded,
+        getVisualContextClassname('flashbar')
       )}
       ref={mergedRef}
     >
@@ -332,7 +329,6 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             )}
             onClick={toggleCollapseExpand}
             ref={toggleButtonRef}
-            {...isFocusVisible}
           >
             <span className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
@@ -359,7 +355,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
                 />
               </span>
             </span>
-            <button className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}>
+            <button className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)} {...isFocusVisible}>
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>
           </span>
