@@ -32,53 +32,53 @@ const timeEnd = (key = 'current', clear = false) => {
   return (Date.now() - start) / 1000; // Convert to seconds
 };
 
-export const useWizardAnalytics = () => {
-  const trackStartStep = (stepIndex?: number) => {
-    const eventContext = createEventContext(stepIndex);
+export const trackStartStep = (stepIndex?: number) => {
+  const eventContext = createEventContext(stepIndex);
 
-    // Track the starting time of the wizard
-    if (stepIndex === undefined) {
-      timeStart(prefix);
-    }
+  // Track the starting time of the wizard
+  if (stepIndex === undefined) {
+    timeStart(prefix);
+  }
 
-    // End the timer of the previous step
-    const time = timeEnd();
+  // End the timer of the previous step
+  const time = timeEnd();
 
-    // Start a new timer of the current step
-    timeStart();
+  // Start a new timer of the current step
+  timeStart();
 
-    Metrics.sendPanoramaMetric({
-      eventContext,
-      eventDetail: createEventDetail(stepIndex),
-      eventType: createEventType('step'),
-      ...(time !== undefined && { eventValue: time.toString() }),
-    });
-  };
+  Metrics.sendPanoramaMetric({
+    eventContext,
+    eventDetail: createEventDetail(stepIndex),
+    eventType: createEventType('step'),
+    ...(time !== undefined && { eventValue: time.toString() }),
+  });
+};
 
-  const trackNavigate = (activeStepIndex: number, requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
-    const eventContext = createEventContext(activeStepIndex);
-    const time = timeEnd();
+export const trackNavigate = (
+  activeStepIndex: number,
+  requestedStepIndex: number,
+  reason: WizardProps.NavigationReason
+) => {
+  const eventContext = createEventContext(activeStepIndex);
+  const time = timeEnd();
 
-    Metrics.sendPanoramaMetric({
-      eventContext,
-      eventDetail: createEventDetail(requestedStepIndex),
-      eventType: createEventType('navigate'),
-      eventValue: { reason, ...(time !== undefined && { time }) },
-    });
-  };
+  Metrics.sendPanoramaMetric({
+    eventContext,
+    eventDetail: createEventDetail(requestedStepIndex),
+    eventType: createEventType('navigate'),
+    eventValue: { reason, ...(time !== undefined && { time }) },
+  });
+};
 
-  const trackSubmit = (stepIndex: number) => {
-    const eventContext = createEventContext(stepIndex);
-    // End the timer of the wizard
-    const time = timeEnd(prefix);
+export const trackSubmit = (stepIndex: number) => {
+  const eventContext = createEventContext(stepIndex);
+  // End the timer of the wizard
+  const time = timeEnd(prefix);
 
-    Metrics.sendPanoramaMetric({
-      eventContext,
-      eventDetail: createEventDetail(stepIndex),
-      eventType: createEventType('submit'),
-      ...(time !== undefined && { eventValue: time.toString() }),
-    });
-  };
-
-  return { trackStartStep, trackNavigate, trackSubmit };
+  Metrics.sendPanoramaMetric({
+    eventContext,
+    eventDetail: createEventDetail(stepIndex),
+    eventType: createEventType('submit'),
+    ...(time !== undefined && { eventValue: time.toString() }),
+  });
 };
