@@ -11088,8 +11088,13 @@ add a meaningful description to the whole selection.
 * \`id\` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
   and 2) to match entries in the \`visibleColumns\` property, if defined.
 * \`header\` (ReactNode) - Determines the display of the column header.
-* \`cell\` ((item) => ReactNode) - Determines the display of a cell's content. You receive the current table row
-  item as an argument.
+* \`cell\` ((item, cellContext) => ReactNode) - Determines the display of a cell's content. You receive the current table row
+  item as an argument. If inline editing is enabled for the column, the \`cell\` function is called with an additional
+ \`cellContext\` argument that provides the following properties:
+* * \`cellContext.isEditing\` (boolean) - Indicates whether the cell is currently being edited. Use this to conditionally render
+       the cell content. For example, you can render a text input field when the cell is being edited, and plain text otherwise.
+* * \`cellContext.currentValue\` (ValueType) - State to keep track of a value in input fields while editing.
+* * \`cellContext.setValue\` ((ValueType) => void) - Function to update \`currentValue\`. This should be called when the value in input field changes.
 * \`width\` (string | number) - Specifies the column width. Corresponds to the \`width\` css-property. If the width is not set,
   the browser automatically adjusts the column width based on the content. When \`resizableColumns\` property is
   set to \`true\`, additional constraints apply: 1) string values are not allowed, and 2) the last visible column always
