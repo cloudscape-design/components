@@ -21,6 +21,8 @@ import { getFlashTypeCount, getStackedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
+import { sendToggleMetric } from './internal/analytics';
+
 import Name = IconProps.Name;
 
 export { FlashbarProps };
@@ -115,6 +117,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   const animateFlash = !isReducedMotion;
 
   function toggleCollapseExpand() {
+    sendToggleMetric(items.length, !isFlashbarStackExpanded);
     prepareAnimations();
     setIsFlashbarStackExpanded(prev => !prev);
   }

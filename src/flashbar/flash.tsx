@@ -12,6 +12,7 @@ import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import LiveRegion from '../internal/components/live-region';
+import { ButtonProps } from '../button/interfaces';
 
 const FOCUS_THROTTLE_DELAY = 2000;
 
@@ -114,6 +115,21 @@ export const Flash = React.forwardRef(
 
     const announcement = [statusIconAriaLabel, header, content].filter(Boolean).join(' ');
 
+    const handleDismiss: ButtonProps['onClick'] = event => {
+      if (onDismiss) {
+        console.log('Simulated event', {
+          eventContext: 'cwa_flashbar',
+          eventType: 'dismiss',
+          eventValue: effectiveType,
+          eventDetail: {
+            content,
+          },
+        });
+
+        onDismiss(event);
+      }
+    };
+
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
       // eslint-disable-next-line @cloudscape-design/prefer-live-region
@@ -156,7 +172,7 @@ export const Flash = React.forwardRef(
           </div>
           {button && <div className={styles['action-button-wrapper']}>{button}</div>}
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss)}
+        {dismissible && dismissButton(dismissLabel, handleDismiss)}
         {ariaRole === 'status' && <LiveRegion>{announcement}</LiveRegion>}
       </div>
     );
