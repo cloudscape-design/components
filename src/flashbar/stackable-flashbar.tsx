@@ -359,8 +359,8 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
                 />
               </span>
             </span>
-            <button className={clsx(styles.icon, isFlashbarStackExpanded && styles.expanded)}>
-              <InternalIcon size="normal" name="angle-down" />
+            <button className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}>
+              <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>
           </span>
         )}

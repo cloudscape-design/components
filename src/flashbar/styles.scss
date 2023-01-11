@@ -6,6 +6,7 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/typography' as typography;
 @use './motion';
 
 .flashbar {
@@ -276,9 +277,10 @@ the grid layout will be:
 
   > .status > .text,
   > .status > .types-count,
-  > .icon {
-    @include styles.styles-reset;
+  > .button {
+    @include typography.default-text-style;
     color: awsui.$color-text-layout-toggle;
+    cursor: pointer;
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -342,16 +344,17 @@ the grid layout will be:
     }
   }
 
-  > .icon {
+  > .button {
     display: inline-block;
     background: none;
     border: 0 none;
 
-    @include styles.with-motion {
-      transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+    > .icon {
+      @include styles.with-motion {
+        transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
+      }
     }
-
-    &.expanded {
+    &.expanded > .icon {
       transform: rotate(180deg);
     }
   }
