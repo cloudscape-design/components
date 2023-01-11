@@ -10,7 +10,7 @@ import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useContainerBreakpoints, useResizeObserver } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -51,7 +51,6 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   const [transitioning, setTransitioning] = useState(false);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
   const [listTop, setListTop] = useState<number>();
-  const bodyRef = useRef(document.body);
 
   const isReducedMotion = useReducedMotion(breakpointRef as any);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
@@ -119,23 +118,25 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     setIsFlashbarStackExpanded(prev => !prev);
   }
 
-  const applyBottomSpacing = useCallback(() => {
-    // Apply vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page.
+  const adjustBottomSpacing = useCallback(() => {
+    // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
+    // otherwise avoid spacing with eventual sticky elements below.
     const listElement = listElementRef?.current;
-    const parent = listElement?.parentElement;
-    if (listElement && parent && listTop !== undefined) {
-      const parent = listElement.parentElement;
-      const desiredSpace = 32;
+    const flashbar = listElement?.parentElement;
+    if (listElement && flashbar && listTop !== undefined) {
       const bottom = listTop + listElement.clientHeight;
-      if (bottom > window.innerHeight - desiredSpace) {
-        parent.style.paddingBottom = `${desiredSpace}px`;
-      } else {
-        parent.style.paddingBottom = '';
+      const windowHeight = window.innerHeight;
+      flashbar.style.paddingBottom = '';
+      if (isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) <= windowHeight) {
+        flashbar.style.paddingBottom = '0';
       }
     }
-  }, [listTop]);
+  }, [isFlashbarStackExpanded, listTop]);
 
-  useResizeObserver(bodyRef, applyBottomSpacing);
+  useEffect(() => {
+    window.addEventListener('resize', adjustBottomSpacing);
+    return () => window.removeEventListener('resize', adjustBottomSpacing);
+  }, [adjustBottomSpacing]);
 
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
@@ -151,7 +152,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     }
 
     if (initialAnimationState) {
-      applyBottomSpacing();
+      adjustBottomSpacing();
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
@@ -161,7 +162,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [applyBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
+  }, [adjustBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
 
   /**
    * If the `isFlashbarStacked` is true (which is only possible if `stackItems` is true)
@@ -367,7 +368,13 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.flashbar, styles[`breakpoint-${breakpoint}`], styles.stack)}
+      className={clsx(
+        baseProps.className,
+        styles.flashbar,
+        styles[`breakpoint-${breakpoint}`],
+        styles.stack,
+        isFlashbarStackExpanded && styles.expanded
+      )}
       ref={mergedRef}
     >
       {renderStackedItems()}
