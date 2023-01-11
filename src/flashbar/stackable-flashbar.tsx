@@ -118,7 +118,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     setIsFlashbarStackExpanded(prev => !prev);
   }
 
-  const adjustBottomSpacing = useCallback(() => {
+  const updateBottomSpacing = useCallback(() => {
     // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
     // otherwise avoid spacing with eventual sticky elements below.
     const listElement = listElementRef?.current;
@@ -134,9 +134,9 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   }, [isFlashbarStackExpanded, listTop]);
 
   useEffect(() => {
-    window.addEventListener('resize', adjustBottomSpacing);
-    return () => window.removeEventListener('resize', adjustBottomSpacing);
-  }, [adjustBottomSpacing]);
+    window.addEventListener('resize', updateBottomSpacing);
+    return () => window.removeEventListener('resize', updateBottomSpacing);
+  }, [updateBottomSpacing]);
 
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
@@ -152,7 +152,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     }
 
     if (initialAnimationState) {
-      adjustBottomSpacing();
+      updateBottomSpacing();
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
@@ -162,7 +162,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [adjustBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
+  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
 
   // When using the stacking feature, the items are shown in reverse order (last item on top)
   const reversedItems = items.slice().reverse();
