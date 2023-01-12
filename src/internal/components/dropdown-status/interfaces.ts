@@ -25,6 +25,11 @@ export interface DropdownStatusProps {
    * Use the `onLoadItems` event to perform a recovery action (for example, retrying the request).
    **/
   recoveryText?: string;
+
+  /**
+   * Provides a text alternative for the error icon in the error message.
+   */
+  errorIconAriaLabel?: string;
   /**
    * Specifies the current status of loading more options.
    * * `pending` - Indicates that no request in progress, but more options may be loaded.

@@ -1433,6 +1433,12 @@ receive focus.",
       "type": "AutosuggestProps.EnteredTextLabel",
     },
     Object {
+      "description": "Provides a text alternative for the error icon in the error message.",
+      "name": "errorIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
       "name": "errorText",
       "optional": true,
@@ -7704,6 +7710,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     Object {
+      "description": "Provides a text alternative for the error icon in the error message.",
+      "name": "errorIconAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
       "name": "errorText",
       "optional": true,
@@ -10076,6 +10088,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "name": "disabled",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Provides a text alternative for the error icon in the error message.",
+      "name": "errorIconAriaLabel",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": "Specifies the text to display when a data fetching error occurs. Make sure that you provide \`recoveryText\`.",
