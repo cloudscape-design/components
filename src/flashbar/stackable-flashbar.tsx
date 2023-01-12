@@ -318,9 +318,6 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
         {isFlashbarStackExpanded && renderList()}
         {items.length > maxUnstackedItems && (
           <span
-            aria-expanded={isFlashbarStackExpanded}
-            aria-controls={flashbarElementId}
-            id={toggleButtonElementId}
             className={clsx(
               styles.toggle,
               isVisualRefresh && styles['visual-refresh'],
@@ -355,7 +352,13 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
                 />
               </span>
             </span>
-            <button className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)} {...isFocusVisible}>
+            <button
+              aria-controls={flashbarElementId}
+              aria-expanded={isFlashbarStackExpanded}
+              className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+              id={toggleButtonElementId}
+              {...isFocusVisible}
+            >
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>
           </span>
