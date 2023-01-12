@@ -264,13 +264,19 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
                 }
                 key={getItemId(item)}
               >
-                {showInnerContent(item) &&
-                  renderItem(
-                    item,
-                    getItemId(item),
-                    shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined,
-                    shouldUseStandardAnimation(item, index) ? state : undefined
-                  )}
+                {showInnerContent(item) && (
+                  <Flash
+                    // eslint-disable-next-line react/forbid-component-props
+                    className={clsx(
+                      animateFlash && styles['flash-with-motion'],
+                      isVisualRefresh && styles['flash-refresh']
+                    )}
+                    key={getItemId(item)}
+                    ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
+                    transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
+                    {...item}
+                  />
+                )}
               </li>
             )}
           </Transition>
@@ -278,28 +284,6 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       </TransitionGroup>
     </ul>
   );
-
-  /**
-   * This is a shared render function for a single flashbar item to be used
-   * by the stacking, motion, and non-motion item group render functions.
-   */
-  function renderItem(
-    item: FlashbarProps.MessageDefinition,
-    key: string | number,
-    transitionRootElement?: React.Ref<HTMLDivElement> | undefined,
-    transitionState?: string | undefined
-  ) {
-    return (
-      <Flash
-        // eslint-disable-next-line react/forbid-component-props
-        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
-        key={key}
-        ref={transitionRootElement}
-        transitionState={transitionState}
-        {...item}
-      />
-    );
-  }
 
   return (
     <div
