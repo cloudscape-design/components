@@ -339,6 +339,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             <button
               aria-controls={flashbarElementId}
               aria-expanded={isFlashbarStackExpanded}
+              aria-label={i18nStrings?.toggleButtonAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
               id={toggleButtonElementId}
               {...isFocusVisible}

@@ -66,6 +66,7 @@ export interface StackedFlashbarProps {
 export namespace StackedFlashbarProps {
   export interface I18nStrings {
     ariaLabel: string;
+    toggleButtonAriaLabel: string;
     toggleButtonText: string;
     errorCountAriaLabel: string;
     warningCountAriaLabel: string;
