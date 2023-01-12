@@ -534,6 +534,7 @@ const OldAppLayout = React.forwardRef(
                           (disableBodyScroll ? 0 : headerHeight) +
                           (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                         stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                        hasBreadcrumbs: !!breadcrumbs,
                       }}
                     >
                       {content}

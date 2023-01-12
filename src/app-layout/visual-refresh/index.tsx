@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React from 'react';
 import AppBar from './app-bar';
-import { AppLayoutContext, AppLayoutProvider } from './context';
+import { AppLayoutInternalsProvider } from './context';
 import { AppLayoutProps } from '../interfaces';
 import Background from './background';
 import Header from './header';
@@ -12,6 +12,7 @@ import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
 import Tools from './tools';
+import { useMobile } from '../../internal/hooks/use-mobile';
 
 /**
  * In mobile viewports the AppBar position changes to sticky and is placed
@@ -25,10 +26,10 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
   props: AppLayoutProps,
   ref: React.Ref<AppLayoutProps.Ref>
 ) {
-  const { isMobile } = useContext(AppLayoutContext);
+  const isMobile = useMobile();
 
   return (
-    <AppLayoutProvider {...props} ref={ref}>
+    <AppLayoutInternalsProvider {...props} ref={ref}>
       <SplitPanel>
         <Layout>
           <Background />
@@ -52,7 +53,7 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           </Tools>
         </Layout>
       </SplitPanel>
-    </AppLayoutProvider>
+    </AppLayoutInternalsProvider>
   );
 });
 

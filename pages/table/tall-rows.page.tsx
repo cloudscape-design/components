@@ -16,14 +16,14 @@ export default function () {
 
   const tallItemsConfig: TableProps.ColumnDefinition<Instance>[] = columnsConfig.map((config, index) => ({
     ...config,
-    cell: (item: any) =>
+    cell: (item, ...rest) =>
       index === 0 ? (
         <Link onFollow={() => setClicks(prev => prev + 1)}>{item.id}</Link>
       ) : (
         <ul>
-          {range(0, 20).map(index => (
-            <li key={index}>{config.cell(item)}</li>
-          ))}
+          {range(0, 20).map(index => {
+            return <li key={index}>{config.cell(item, ...rest)}</li>;
+          })}
         </ul>
       ),
   }));

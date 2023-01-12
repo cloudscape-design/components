@@ -7,7 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation' as foundation;
 @use '../internal/hooks/focus-visible' as focus-visible;
-@use './background-inline-svg.scss' as utils;
 @use './ace-editor';
 @use './pane';
 
@@ -17,33 +16,6 @@
   border: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   border-radius: awsui.$border-radius-code-editor;
   width: 100%;
-}
-
-.resizable-box {
-  position: relative;
-  width: 100%;
-}
-
-.resizable-box-handle {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  z-index: 10; // above editor, when editor is overflowing
-
-  width: awsui.$space-l;
-  height: awsui.$space-l;
-
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  box-sizing: border-box;
-  background-position: bottom right;
-  background-size: awsui.$space-l;
-  @include utils.background-inline-svg(
-    $path: './assets/resize-handler.svg',
-    $stroke: 'colorStrokeCodeEditorResizeHandler'
-  );
-
-  cursor: ns-resize;
 }
 
 .editor {
@@ -60,7 +32,7 @@
   }
 }
 
-.code-editor-refresh > .resizable-box > .editor {
+.editor-refresh {
   border-top-left-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
   border-top-right-radius: calc(awsui.$border-radius-code-editor - awsui.$border-item-width);
 }

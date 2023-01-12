@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import Input from '../../../lib/components/input';
 
 interface Item {
@@ -147,6 +148,12 @@ describe('Attribute Editor', () => {
       const buttonElement = wrapper.findAddButton().getElement();
       expect(buttonElement).toHaveAttribute('disabled');
     });
+
+    test('has no aria-describedby if there is no additional info', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(buttonElement).not.toHaveAttribute('aria-describedby');
+    });
   });
 
   describe('remove button', () => {
@@ -207,6 +214,20 @@ describe('Attribute Editor', () => {
     test('renders correctly', () => {
       const wrapper = renderAttributeEditor({ additionalInfo: 'test' });
       expect(wrapper.findAdditionalInfo()!.getElement()).toHaveTextContent('test');
+    });
+
+    test('is connected to add button with aria-describedby', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      const info = wrapper.findAdditionalInfo()?.getElement();
+      expect(buttonElement).toHaveAttribute('aria-describedby', info?.id);
+    });
+
+    test('has an ARIA live region', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, additionalInfo: 'Test Info' });
+      expect(
+        wrapper.find(`.${liveRegionStyles.root}[data-testid="info-live-region"]`)?.getElement()
+      ).toBeInTheDocument();
     });
   });
 

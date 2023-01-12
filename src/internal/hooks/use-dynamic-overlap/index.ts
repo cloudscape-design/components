@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useContext, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
-import { AppLayoutContext } from '../context';
-import { useContainerQuery } from '../../../internal/hooks/container-queries';
+import { useAppLayoutContext } from '../../context/app-layout-context';
+import { useContainerQuery } from '../container-queries';
 
 export interface UseDynamicOverlapProps {
   /**
@@ -20,18 +20,18 @@ export interface UseDynamicOverlapProps {
  */
 export function useDynamicOverlap(props?: UseDynamicOverlapProps) {
   const disabled = props?.disabled ?? false;
-  const { setDynamicOverlapHeight } = useContext(AppLayoutContext);
+  const { setDynamicOverlapHeight } = useAppLayoutContext();
   const [overlapContainerQuery, overlapElementRef] = useContainerQuery(rect => rect.height);
 
   useLayoutEffect(
     function handleDynamicOverlapHeight() {
       if (!disabled) {
-        setDynamicOverlapHeight(overlapContainerQuery ?? 0);
+        setDynamicOverlapHeight?.(overlapContainerQuery ?? 0);
       }
 
       return () => {
         if (!disabled) {
-          setDynamicOverlapHeight(0);
+          setDynamicOverlapHeight?.(0);
         }
       };
     },

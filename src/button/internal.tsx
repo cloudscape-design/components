@@ -18,6 +18,7 @@ type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
+  __hideFocusOutline?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -43,6 +44,7 @@ export const InternalButton = React.forwardRef(
       formAction = 'submit',
       ariaLabel,
       ariaExpanded,
+      __hideFocusOutline = false,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -85,7 +87,7 @@ export const InternalButton = React.forwardRef(
 
     const buttonProps = {
       ...props,
-      ...focusVisible,
+      ...(__hideFocusOutline ? undefined : focusVisible),
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),

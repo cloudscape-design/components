@@ -11,8 +11,9 @@ import {
   renderCodeEditor,
   annotationCallback as emulateAceAnnotationEvent,
 } from './util';
-import { ElementWrapper } from '../../../lib/components/test-utils/dom';
+import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/code-editor/styles.css.js';
+import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 
@@ -293,8 +294,8 @@ describe('Code editor component', () => {
   function findPaneItems(wrapper: ElementWrapper) {
     return wrapper.findAll(`.${styles.pane__item}`);
   }
-  function findBox(wrapper: ElementWrapper) {
-    return wrapper.findAll(`.react-resizable`);
+  function findBox(wrapper: CodeEditorWrapper) {
+    return wrapper.findByClassName(resizableStyles['resizable-box'])!;
   }
 
   it('displays annotation content', () => {
@@ -377,7 +378,7 @@ describe('Code editor component', () => {
 
     expect(wrapper.findPane()).not.toBeNull(); // Pane should open
 
-    const [item] = findPaneItems(wrapper as any);
+    const [item] = findPaneItems(wrapper.findPane()!);
     expect(item.getElement().classList).toContain(styles['pane__item--highlighted']);
 
     editorMock.on.mockRestore();
@@ -390,20 +391,28 @@ describe('Code editor component', () => {
 
   it('set defaults editor size to 480px', () => {
     const { wrapper } = renderCodeEditor();
-    const [item] = findBox(wrapper as any);
+    const item = findBox(wrapper);
     expect(item.getElement().style.height).toEqual('480px');
   });
 
   it('sets editor size to the specified editorHeight property', () => {
     const { wrapper } = renderCodeEditor({ editorContentHeight: 240 });
-    const [item] = findBox(wrapper as any);
+    const item = findBox(wrapper);
     expect(item.getElement().style.height).toEqual('240px');
   });
 
   it('sets editor size to 20px if a smaller value are specified', () => {
     const { wrapper } = renderCodeEditor({ editorContentHeight: 10 });
-    const [item] = findBox(wrapper as any);
+    const item = findBox(wrapper);
     expect(item.getElement().style.height).toEqual('20px');
+  });
+
+  it('updates size when resize handle is dragged', () => {
+    const { wrapper } = renderCodeEditor({ editorContentHeight: 10 });
+    editorMock.resize.mockClear();
+    fireEvent.mouseDown(wrapper.findByClassName(resizableStyles['resizable-box-handle'])!.getElement());
+    fireEvent.mouseMove(document.body, { clientY: 100 });
+    expect(editorMock.resize).toBeCalledTimes(1);
   });
 
   it('calls resize on initial render', () => {

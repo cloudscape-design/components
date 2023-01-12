@@ -5,14 +5,17 @@ import { useContext, createContext } from 'react';
 export interface AppLayoutContextProps {
   stickyOffsetBottom: number;
   stickyOffsetTop: number;
+  hasBreadcrumbs: boolean;
+  setHasStickyBackground?: (hasBackground: boolean) => void;
+  setDynamicOverlapHeight?: (height: number) => void;
 }
 
 export const AppLayoutContext = createContext<AppLayoutContextProps>({
   stickyOffsetTop: 0,
   stickyOffsetBottom: 0,
+  hasBreadcrumbs: false,
 });
 
 export function useAppLayoutContext() {
-  const context = useContext(AppLayoutContext);
-  return { ...context };
+  return useContext(AppLayoutContext);
 }

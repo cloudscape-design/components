@@ -260,17 +260,15 @@ const TagEditor = React.forwardRef(
         disableAddButton={remainingTags <= 0}
         empty={i18nStrings.emptyTags}
         additionalInfo={
-          <div aria-live="polite">
-            {remainingTags < 0 ? (
-              <FormFieldError errorIconAriaLabel={i18nStrings.errorIconAriaLabel}>
-                {i18nStrings.tagLimitExceeded(tagLimit) ?? ''}
-              </FormFieldError>
-            ) : remainingTags === 0 ? (
-              i18nStrings.tagLimitReached(tagLimit) ?? ''
-            ) : (
-              i18nStrings.tagLimit(remainingTags, tagLimit)
-            )}
-          </div>
+          remainingTags < 0 ? (
+            <FormFieldError errorIconAriaLabel={i18nStrings.errorIconAriaLabel}>
+              {i18nStrings.tagLimitExceeded(tagLimit) ?? ''}
+            </FormFieldError>
+          ) : remainingTags === 0 ? (
+            i18nStrings.tagLimitReached(tagLimit) ?? ''
+          ) : (
+            i18nStrings.tagLimit(remainingTags, tagLimit)
+          )
         }
         definition={definition}
         i18nStrings={i18nStrings}
