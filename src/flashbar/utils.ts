@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, FlashType } from './interfaces';
 
 // Since the position of a notification changes when the Flashbar is stacked,
 // it is useful on some situations (e.g, for animating) to know the original position of the item
@@ -9,8 +9,6 @@ export interface StackableItem extends FlashbarProps.MessageDefinition {
   expandedIndex: number;
   collapsedIndex?: number;
 }
-
-type FlashType = 'error' | 'info' | 'progress' | 'success' | 'warning';
 
 const typesToColors: Record<FlashType, string> = {
   error: 'red',

@@ -286,6 +286,8 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
     </ul>
   );
 
+  const excludedTypes = new Set(restProps.excludeTypes);
+
   return (
     <div
       {...baseProps}
@@ -315,26 +317,41 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             <span className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']}>
-                <NotificationTypeCount
-                  iconName="status-negative"
-                  label={i18nStrings?.errorCountAriaLabel}
-                  count={countByType.error}
-                />
-                <NotificationTypeCount
-                  iconName="status-warning"
-                  label={i18nStrings?.warningCountAriaLabel}
-                  count={countByType.warning}
-                />
-                <NotificationTypeCount
-                  iconName="status-positive"
-                  label={i18nStrings?.successCountAriaLabel}
-                  count={countByType.success}
-                />
-                <NotificationTypeCount
-                  iconName="status-in-progress"
-                  label={i18nStrings?.inProgressCountAriaLabel}
-                  count={countByType.progress}
-                />
+                {!excludedTypes.has('error') && (
+                  <NotificationTypeCount
+                    iconName="status-negative"
+                    label={i18nStrings?.errorCountAriaLabel}
+                    count={countByType.error}
+                  />
+                )}
+                {!excludedTypes.has('warning') && (
+                  <NotificationTypeCount
+                    iconName="status-warning"
+                    label={i18nStrings?.warningCountAriaLabel}
+                    count={countByType.warning}
+                  />
+                )}
+                {!excludedTypes.has('success') && (
+                  <NotificationTypeCount
+                    iconName="status-positive"
+                    label={i18nStrings?.successCountAriaLabel}
+                    count={countByType.success}
+                  />
+                )}
+                {!excludedTypes.has('info') && (
+                  <NotificationTypeCount
+                    iconName="status-info"
+                    label={i18nStrings?.infoCountAriaLabel}
+                    count={countByType.info}
+                  />
+                )}
+                {!excludedTypes.has('progress') && (
+                  <NotificationTypeCount
+                    iconName="status-in-progress"
+                    label={i18nStrings?.inProgressCountAriaLabel}
+                    count={countByType.progress}
+                  />
+                )}
               </span>
             </span>
             <button
