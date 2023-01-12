@@ -326,6 +326,13 @@ const OldAppLayout = React.forwardRef(
       onPreferencesChange: onSplitPanelPreferencesSet,
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
+      isStickyHeader: () => {
+        const height =
+          disableBodyScroll && legacyScrollRootRef.current
+            ? legacyScrollRootRef.current.clientHeight
+            : document.documentElement.clientHeight - headerHeight - footerHeight;
+        return height > CONSTRAINED_PAGE_HEIGHT;
+      },
     };
     const splitPanelWrapped = splitPanel && (
       <SplitPanelContextProvider value={splitPanelContext}>{splitPanel}</SplitPanelContextProvider>

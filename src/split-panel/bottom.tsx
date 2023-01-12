@@ -14,6 +14,7 @@ interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
   transitioningElementRef: React.Ref<any>;
   appLayoutMaxWidth: React.CSSProperties | undefined;
+  isStickyHeader: () => boolean;
 }
 
 export function SplitPanelContentBottom({
@@ -29,6 +30,7 @@ export function SplitPanelContentBottom({
   appLayoutMaxWidth,
   panelHeaderId,
   onToggle,
+  isStickyHeader,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
   const {
@@ -77,7 +79,14 @@ export function SplitPanelContentBottom({
     >
       {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
+        <div
+          className={clsx(
+            styles['pane-header-wrapper-bottom'],
+            { [styles['sticky-header']]: isStickyHeader() },
+            centeredMaxWidthClasses
+          )}
+          ref={headerRef}
+        >
           {header}
         </div>
         <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>

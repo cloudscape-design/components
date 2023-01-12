@@ -59,6 +59,7 @@ export default function SplitPanel({
     onToggle,
     reportSize,
     setOpenButtonAriaLabel,
+    isStickyHeader,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
@@ -292,6 +293,7 @@ export default function SplitPanel({
               state={state}
               transitioningElementRef={transitioningElementRef}
               appLayoutMaxWidth={appLayoutMaxWidth}
+              isStickyHeader={isStickyHeader}
             >
               {wrappedChildren}
             </SplitPanelContentBottom>

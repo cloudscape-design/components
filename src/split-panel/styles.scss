@@ -160,6 +160,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   display: flex;
   justify-content: center;
   z-index: 2;
+  background-color: awsui.$color-background-layout-panel-content;
 }
 
 .slider-wrapper-side {
@@ -198,14 +199,16 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .pane-header-wrapper-bottom {
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-  position: sticky;
-  top: 0;
   display: flex;
   align-items: center;
   flex-direction: column;
   z-index: 1; // should be above .content-bottom
   padding: 0 awsui.$space-scaled-2x-xxxl;
+  &.sticky-header {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    position: sticky;
+    top: 0;
+  }
   .drawer-mobile > .drawer-content-bottom > & {
     padding: 0 awsui.$space-l;
   }
