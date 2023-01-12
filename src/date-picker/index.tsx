@@ -126,6 +126,7 @@ const DatePicker = React.forwardRef(
             placeholder={placeholder}
             ref={internalInputRef}
             autoFocus={autoFocus}
+            onFocus={onDropdownCloseHandler}
           />
         </div>
         <div>
