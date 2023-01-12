@@ -255,7 +255,7 @@ export default function DateRangePickerCalendar({
             dateOnly={dateOnly}
             timeInputFormat={timeInputFormat}
           />
-          {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
+          {!!customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
         </SpaceBetween>
       </div>
       <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>

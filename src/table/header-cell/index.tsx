@@ -86,7 +86,7 @@ export function TableHeaderCell<ItemType>({
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
       })}
-      aria-sort={sortingStatus && getAriaSort(sortingStatus)}
+      aria-sort={sortingStatus ? getAriaSort(sortingStatus) : undefined}
       style={style}
       scope="col"
     >
@@ -123,13 +123,13 @@ export function TableHeaderCell<ItemType>({
             </span>
           ) : null}
         </div>
-        {sortingStatus && (
+        {!!sortingStatus && (
           <span className={styles['sorting-icon']}>
             <InternalIcon name={getSortingIconName(sortingStatus)} />
           </span>
         )}
       </div>
-      {resizableColumns && (
+      {!!resizableColumns && (
         <>
           <Resizer
             onDragMove={newWidth => updateColumn(colIndex, newWidth)}

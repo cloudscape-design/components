@@ -63,7 +63,7 @@ export default function ChartStatusContainer({
       return (
         <span>
           <InternalStatusIndicator type="error">{errorText}</InternalStatusIndicator>{' '}
-          {recoveryText && (
+          {!!recoveryText && (
             <InternalLink onFollow={handleRecoveryClick} variant="recovery">
               {recoveryText}
             </InternalLink>

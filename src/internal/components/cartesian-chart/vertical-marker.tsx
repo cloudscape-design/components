@@ -39,8 +39,8 @@ function VerticalMarker(
         y2={height}
       />
 
-      {showPoints &&
-        points &&
+      {!!showPoints &&
+        !!points &&
         points.map(point => (
           <circle
             key={point.key}

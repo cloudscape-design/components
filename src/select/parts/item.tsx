@@ -70,7 +70,7 @@ const Item = (
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
-        {hasCheckbox && !isParent && (
+        {!!hasCheckbox && !isParent && (
           <div className={styles.checkbox}>
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
@@ -80,7 +80,7 @@ const Item = (
         ) : (
           <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} />
         )}
-        {!hasCheckbox && !isParent && selected && (
+        {!hasCheckbox && !isParent && !!selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />
           </div>

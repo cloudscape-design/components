@@ -38,7 +38,7 @@ export default function () {
         content={
           <ContentLayout
             header={
-              renderHeader && (
+              !!renderHeader && (
                 <SpaceBetween size="m">
                   <Header
                     variant="h1"
@@ -48,7 +48,7 @@ export default function () {
                   >
                     Create distribution
                   </Header>
-                  {alertVisible && (
+                  {!!alertVisible && (
                     <Alert
                       statusIconAriaLabel="Info"
                       dismissible={true}

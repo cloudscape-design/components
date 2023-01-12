@@ -34,7 +34,7 @@ export default function ScreenshotArea({
       })}
       style={style}
     >
-      {documentHeight && documentHeight > MAX_PAGE_HEIGHT && (
+      {!!documentHeight && documentHeight > MAX_PAGE_HEIGHT && (
         <p style={{ color: colorTextStatusError }}>
           Warning: this page has height {documentHeight}px which is above the limit {MAX_PAGE_HEIGHT}. Taking a
           screenshot of this page may not include the full content.

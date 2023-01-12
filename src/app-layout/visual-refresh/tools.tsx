@@ -134,18 +134,18 @@ export default function Tools({ children }: ToolsProps) {
                   ariaLabel={ariaLabels?.toolsToggle}
                   iconName="status-info"
                   onClick={() => handleToolsClick(!isToolsOpen)}
-                  selected={hasSplitPanel && isToolsOpen}
+                  selected={!!hasSplitPanel && isToolsOpen}
                   className={testutilStyles['tools-toggle']}
                   ref={focusRefs.toggle}
                 />
               )}
 
-              {hasSplitPanel && (
+              {!!hasSplitPanel && (
                 <TriggerButton
                   ariaLabel={openButtonAriaLabel}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
-                  selected={hasSplitPanel && isSplitPanelOpen}
+                  selected={!!hasSplitPanel && isSplitPanelOpen}
                   className={splitPanelStyles['open-button']}
                   // TODO should this button also get focus handling? (i.e. when the split panel is toggled)
                 />

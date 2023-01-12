@@ -255,7 +255,7 @@ const DateRangePicker = React.forwardRef(
           expandToViewport={expandToViewport}
           dropdownId={dropdownId}
         >
-          {isDropDownOpen && (
+          {!!isDropDownOpen && (
             <DateRangePickerDropdown
               startOfWeek={startOfWeek}
               locale={normalizedLocale}

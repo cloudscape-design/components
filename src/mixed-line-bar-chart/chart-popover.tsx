@@ -45,7 +45,7 @@ function MixedChartPopover<T extends ChartDataTypes>(
     <Transition in={isOpen}>
       {(state, ref) => (
         <div ref={ref} className={clsx(state === 'exiting' && styles.exiting)}>
-          {(isOpen || state !== 'exited') && highlightDetails && (
+          {!!(isOpen || state !== 'exited') && !!highlightDetails && (
             <ChartPopover
               ref={popoverRef}
               title={highlightDetails.position}

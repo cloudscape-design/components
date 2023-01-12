@@ -49,7 +49,7 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
         ref={overlapElement}
       />
 
-      {header && (
+      {!!header && (
         <div
           className={clsx(
             styles.header,

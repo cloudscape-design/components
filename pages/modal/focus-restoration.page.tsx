@@ -22,7 +22,7 @@ function Destructible() {
       <Button id="destructible" onClick={() => setVisible(true)}>
         Show destructible modal
       </Button>
-      {visible && (
+      {!!visible && (
         <Modal visible={true} onDismiss={() => setVisible(false)} closeAriaLabel="Close modal">
           <ItemsForm items={items} setItems={setItems} />
         </Modal>

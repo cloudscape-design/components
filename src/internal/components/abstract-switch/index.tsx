@@ -88,12 +88,12 @@ export default function AbstractSwitch({
           <span className={clsx(styles.outline, outlineClassName)} />
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
-          {label && (
+          {!!label && (
             <span id={labelId} className={clsx(styles.label, { [styles['label-disabled']]: disabled })}>
               {label}
             </span>
           )}
-          {description && (
+          {!!description && (
             <span
               id={descriptionId}
               className={clsx(styles.description, {

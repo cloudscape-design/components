@@ -324,7 +324,7 @@ export default <T extends PieChartProps.Datum>({
         recoveryText={recoveryText}
         onRecoveryClick={onRecoveryClick}
       />
-      {showChart && (
+      {!!showChart && (
         <div className={styles['chart-container']} ref={containerRef}>
           <ChartPlot
             ref={plotRef}
@@ -358,7 +358,7 @@ export default <T extends PieChartProps.Datum>({
               onMouseOver={onMouseOver}
               onMouseOut={onMouseOut}
             />
-            {hasLabels && (
+            {!!hasLabels && (
               <Labels
                 pieData={pieData}
                 size={size}
@@ -371,25 +371,25 @@ export default <T extends PieChartProps.Datum>({
               />
             )}
           </ChartPlot>
-          {hasInnerContent && (
+          {!!hasInnerContent && (
             <div className={styles['inner-content']} id={innerMetricId}>
-              {innerMetricValue && (
+              {!!innerMetricValue && (
                 <InternalBox variant={size === 'small' ? 'h3' : 'h1'} tagOverride="div" color="inherit" padding="n">
                   {innerMetricValue}
                 </InternalBox>
               )}
-              {innerMetricDescription && size !== 'small' && (
+              {!!innerMetricDescription && size !== 'small' && (
                 <InternalBox variant="h3" color="text-body-secondary" tagOverride="div" padding="n">
                   {innerMetricDescription}
                 </InternalBox>
               )}
             </div>
           )}
-          {isTooltipOpen && tooltipData && (
+          {!!isTooltipOpen && !!tooltipData && (
             <ChartPopover
               ref={popoverRef}
               title={
-                tooltipData.series && (
+                !!tooltipData.series && (
                   <InternalBox className={styles['popover-header']} variant="strong">
                     <SeriesMarker color={tooltipData.series.color} type={tooltipData.series.markerType} />{' '}
                     {tooltipData.series.label}

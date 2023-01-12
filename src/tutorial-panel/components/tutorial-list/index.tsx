@@ -178,7 +178,7 @@ function Tutorial({
           <div className={clsx(styles['expandable-section'], expanded && styles.expanded)} id={controlId}>
             <InternalSpaceBetween size="l">
               <InternalSpaceBetween size="m">
-                {tutorial.prerequisitesNeeded && tutorial.prerequisitesAlert && (
+                {!!tutorial.prerequisitesNeeded && !!tutorial.prerequisitesAlert && (
                   <InternalAlert type="info" className={styles['prerequisites-alert']}>
                     {tutorial.prerequisitesAlert}
                   </InternalAlert>
@@ -194,7 +194,7 @@ function Tutorial({
                       {tutorial.description}
                     </div>
                   </InternalBox>
-                  {tutorial.learnMoreUrl && (
+                  {!!tutorial.learnMoreUrl && (
                     <InternalLink
                       href={tutorial.learnMoreUrl}
                       className={styles['learn-more-link']}

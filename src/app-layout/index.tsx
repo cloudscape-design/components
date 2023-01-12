@@ -414,7 +414,7 @@ const OldAppLayout = React.forwardRef(
         ref={rootRef}
       >
         <div className={styles['layout-wrapper']} style={contentHeightStyle}>
-          {isMobile && (!toolsHide || !navigationHide || breadcrumbs) && (
+          {!!isMobile && !!(!toolsHide || !navigationHide || breadcrumbs) && (
             <MobileToolbar
               anyPanelOpen={anyPanelOpen}
               toggleRefs={{ navigation: navigationRefs.toggle, tools: toolsRefs.toggle }}
@@ -462,7 +462,7 @@ const OldAppLayout = React.forwardRef(
                   transform: contentScaleX ? `scaleX(${contentScaleX})` : undefined,
                 }}
               >
-                {notifications && (
+                {!!notifications && (
                   <Notifications
                     testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
                     labels={ariaLabels}
@@ -477,16 +477,16 @@ const OldAppLayout = React.forwardRef(
                     {notifications}
                   </Notifications>
                 )}
-                {((!isMobile && breadcrumbs) || contentHeader) && (
+                {!!((!isMobile && breadcrumbs) || contentHeader) && (
                   <ContentWrapper {...contentWrapperProps} contentWidthStyles={contentWidthStyles}>
-                    {!isMobile && breadcrumbs && (
+                    {!isMobile && !!breadcrumbs && (
                       <div
                         className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}
                       >
                         {breadcrumbs}
                       </div>
                     )}
-                    {contentHeader && (
+                    {!!contentHeader && (
                       <div
                         className={clsx(
                           styles['content-header-wrapper'],

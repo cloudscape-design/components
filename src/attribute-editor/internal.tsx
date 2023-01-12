@@ -64,7 +64,9 @@ const InternalAttributeEditor = React.forwardRef(
     return (
       <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         <InternalBox margin={{ bottom: 'l' }}>
-          {isEmpty && <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>}
+          {!!isEmpty && (
+            <div className={clsx(styles.empty, wasNonEmpty.current && styles['empty-appear'])}>{empty}</div>
+          )}
           {items.map((item, index) => (
             <Row
               key={index}
@@ -89,7 +91,7 @@ const InternalAttributeEditor = React.forwardRef(
         >
           {addButtonText}
         </InternalButton>
-        {additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
+        {!!additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
       </div>
     );
   }

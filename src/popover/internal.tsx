@@ -121,7 +121,7 @@ function InternalPopover(
       aria-atomic={dismissButton ? undefined : true}
       className={clsx(popoverClasses, styles['popover-content'])}
     >
-      {visible && (
+      {!!visible && (
         <PopoverContainer
           size={size}
           fixedWidth={fixedWidth}

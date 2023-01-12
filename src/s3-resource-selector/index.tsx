@@ -102,12 +102,12 @@ const S3ResourceSelector = React.forwardRef(
           onBrowse={() => setModalOpen(true)}
           onChange={(resource, errorText) => fireNonCancelableEvent(onChange, { resource, errorText })}
         />
-        {!modalOpen && alert && (
+        {!modalOpen && !!alert && (
           <InternalBox className={styles.alert} margin={{ top: 's' }}>
             {alert}
           </InternalBox>
         )}
-        {modalOpen && <S3Modal {...modalProps} />}
+        {!!modalOpen && <S3Modal {...modalProps} />}
       </div>
     );
   }

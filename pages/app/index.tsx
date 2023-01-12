@@ -59,7 +59,7 @@ function App() {
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
         <ContentTag>
-          <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
+          <Header sticky={!!isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
           {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
         </ContentTag>
       </Suspense>

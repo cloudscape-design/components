@@ -154,9 +154,9 @@ export const Flash = React.forwardRef(
               <div className={styles['flash-content']}>{content}</div>
             </div>
           </div>
-          {button && <div className={styles['action-button-wrapper']}>{button}</div>}
+          {!!button && <div className={styles['action-button-wrapper']}>{button}</div>}
         </div>
-        {dismissible && dismissButton(dismissLabel, onDismiss)}
+        {!!dismissible && dismissButton(dismissLabel, onDismiss)}
         {ariaRole === 'status' && <LiveRegion>{announcement}</LiveRegion>}
       </div>
     );

@@ -53,7 +53,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           aria-current={definition.href === activeHref ? 'page' : undefined}
           onClick={onClick}
         >
-          {definition.logo && (
+          {!!definition.logo && (
             <img
               className={clsx(styles['header-logo'], {
                 [styles['header-logo--stretched']]: !definition.text,
@@ -96,7 +96,7 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
               fireFollow={fireFollow}
             />
           )}
-          {((i === 0 && item.type === 'divider') || (items[i + 1] && items[i + 1].type === 'divider')) && (
+          {!!((i === 0 && item.type === 'divider') || (items[i + 1] && items[i + 1].type === 'divider')) && (
             <Divider variant="default" />
           )}
         </li>
@@ -150,7 +150,7 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
         onClick={onClick}
       >
         {definition.text}
-        {definition.external && (
+        {!!definition.external && (
           <span
             aria-label={definition.externalIconAriaLabel}
             role={definition.externalIconAriaLabel ? 'img' : undefined}
@@ -159,7 +159,7 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
           </span>
         )}
       </a>
-      {definition.info && <span className={styles.info}>{definition.info}</span>}
+      {!!definition.info && <span className={styles.info}>{definition.info}</span>}
     </>
   );
 }

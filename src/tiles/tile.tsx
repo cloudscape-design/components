@@ -58,7 +58,7 @@ export const Tile = React.forwardRef(
             controlId={controlId}
           />
         </div>
-        {item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}
+        {!!item.image && <div className={clsx(styles.image, { [styles.disabled]: !!item.disabled })}>{item.image}</div>}
       </div>
     );
   }

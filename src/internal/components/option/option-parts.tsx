@@ -15,7 +15,7 @@ interface LabelProps {
 }
 export const Label = ({ label, prefix, highlightText, triggerVariant }: LabelProps) => (
   <span className={clsx(styles.label, triggerVariant && styles['trigger-variant'])}>
-    {prefix && (
+    {!!prefix && (
       <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
     )}
     <HighlightMatch str={label} highlightText={highlightText} />

@@ -75,7 +75,7 @@ export default function RelativeRangePicker({
   return (
     <div>
       <InternalSpaceBetween size="xs" direction="vertical">
-        {showRadioControl && (
+        {!!showRadioControl && (
           <InternalFormField label={i18nStrings.relativeRangeSelectionHeading}>
             <InternalRadioGroup
               className={styles['relative-range-radio-group']}
@@ -101,7 +101,7 @@ export default function RelativeRangePicker({
           </InternalFormField>
         )}
 
-        {showCustomControls && (
+        {!!showCustomControls && (
           <InternalSpaceBetween direction="vertical" size="xs">
             {!showRadioControl && (
               <InternalBox fontSize="body-m" color="text-body-secondary">

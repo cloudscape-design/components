@@ -103,7 +103,7 @@ function LiveRegion({
 
   return (
     <>
-      {visible && <TagName ref={sourceRef}>{children}</TagName>}
+      {!!visible && <TagName ref={sourceRef}>{children}</TagName>}
 
       <ScreenreaderOnly {...restProps} className={clsx(styles.root, restProps.className)}>
         {!visible && (

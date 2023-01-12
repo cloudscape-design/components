@@ -110,7 +110,7 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={styles.content}>{children}</span>}
+        {!!shouldHaveContent && <span className={styles.content}>{children}</span>}
         <RightIcon {...iconProps} />
       </>
     );
@@ -132,7 +132,7 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
           </a>
-          {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+          {!!loading && !!loadingText && <LiveRegion>{loadingText}</LiveRegion>}
         </>
       );
     }
@@ -141,7 +141,7 @@ export const InternalButton = React.forwardRef(
         <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
           {buttonContent}
         </button>
-        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        {!!loading && !!loadingText && <LiveRegion>{loadingText}</LiveRegion>}
       </>
     );
   }

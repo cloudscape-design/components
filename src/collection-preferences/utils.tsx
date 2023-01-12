@@ -47,7 +47,7 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
     return (
       <div ref={ref}>
         <div>{left}</div>
-        {right && <div className={styles['second-column-small']}>{right}</div>}
+        {!!right && <div className={styles['second-column-small']}>{right}</div>}
       </div>
     );
   }
@@ -57,7 +57,7 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
     <div ref={ref}>
       <InternalColumnLayout columns={columns} variant="text-grid">
         <div>{left}</div>
-        {right && <div>{right}</div>}
+        {!!right && <div>{right}</div>}
       </InternalColumnLayout>
     </div>
   );

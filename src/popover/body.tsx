@@ -84,7 +84,7 @@ export default function PopoverBody({
       aria-labelledby={ariaLabelledby ?? (header ? labelledById : undefined)}
     >
       <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
-        {header && (
+        {!!header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
             <div className={styles.header} id={labelledById}>

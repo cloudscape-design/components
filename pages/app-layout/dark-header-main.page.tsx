@@ -29,7 +29,7 @@ export default function () {
             >
               Create distribution
             </Header>
-            {alertVisible && (
+            {!!alertVisible && (
               <Alert
                 statusIconAriaLabel="Info"
                 dismissible={true}

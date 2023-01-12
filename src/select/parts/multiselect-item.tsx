@@ -74,9 +74,9 @@ const MultiSelectItem = (
       {...baseProps}
     >
       <div className={className}>
-        {hasCheckbox && (
+        {!!hasCheckbox && (
           <div className={styles.checkbox}>
-            <CheckboxIcon checked={selected} indeterminate={isParent && indeterminate} disabled={option.disabled} />
+            <CheckboxIcon checked={selected} indeterminate={!!isParent && indeterminate} disabled={option.disabled} />
           </div>
         )}
         <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} isGroupOption={isParent} />

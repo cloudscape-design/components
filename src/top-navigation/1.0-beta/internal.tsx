@@ -72,10 +72,10 @@ export default function InternalTopNavigation({
         })}
       >
         <div className={styles['padding-box']}>
-          {showIdentity && (
+          {!!showIdentity && (
             <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
               <a {...focusVisible} className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
-                {identity.logo && (
+                {!!identity.logo && (
                   <img
                     role="img"
                     src={identity.logo?.src}
@@ -85,13 +85,13 @@ export default function InternalTopNavigation({
                     })}
                   />
                 )}
-                {showTitle && <span className={styles.title}>{identity.title}</span>}
+                {!!showTitle && <span className={styles.title}>{identity.title}</span>}
               </a>
             </div>
           )}
 
           <div className={styles.inputs}>
-            {showSearchSlot && (
+            {!!showSearchSlot && (
               <div className={clsx(styles.search, !isVirtual && isSearchExpanded && styles['search-expanded'])}>
                 {search}
               </div>
@@ -99,7 +99,7 @@ export default function InternalTopNavigation({
           </div>
 
           <div className={styles.utilities}>
-            {showSearchUtility && (
+            {!!showSearchUtility && (
               <div
                 className={clsx(
                   styles['utility-wrapper'],
@@ -123,7 +123,7 @@ export default function InternalTopNavigation({
               </div>
             )}
 
-            {showUtilities &&
+            {!!showUtilities &&
               utilities
                 .filter(
                   (_utility, i) =>
@@ -154,7 +154,7 @@ export default function InternalTopNavigation({
                   );
                 })}
 
-            {isVirtual &&
+            {!!isVirtual &&
               utilities.map((utility, i) => {
                 const hideText = !responsiveState.hideUtilityText;
                 const last = !showMenuTrigger && i === utilities.length - 1;
@@ -175,7 +175,7 @@ export default function InternalTopNavigation({
                 );
               })}
 
-            {showMenuTrigger && (
+            {!!showMenuTrigger && (
               <div
                 className={clsx(
                   styles['utility-wrapper'],

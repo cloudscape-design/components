@@ -26,7 +26,7 @@ export default function Tooltip({ children, content, position = 'right' }: Toolt
   return (
     <span ref={ref} {...triggerProps}>
       {children}
-      {open && (
+      {!!open && (
         <Portal>
           <span className={portalClasses}>
             <PopoverContainer

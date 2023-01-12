@@ -60,8 +60,8 @@ export default function NestedBoxPermutations() {
           <div key={key}>
             <Box {...permutation}>
               variant: {permutation.variant}
-              {permutation.fontSize && `, fontSize: ${permutation.fontSize}`}
-              {permutation.fontWeight && `, fontWeight: ${permutation.fontWeight}`}
+              {!!permutation.fontSize && `, fontSize: ${permutation.fontSize}`}
+              {!!permutation.fontWeight && `, fontWeight: ${permutation.fontWeight}`}
             </Box>
           </div>
         ))}

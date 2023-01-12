@@ -201,7 +201,7 @@ function ChartPlot(
           />
 
           {/* Only show description when plot is focusable to avoid repetition in Safari and Firefox */}
-          {ariaDescription && plotFocusable && (
+          {!!ariaDescription && !!plotFocusable && (
             <desc aria-hidden="true" id={internalDescriptionId}>
               {ariaDescription}
             </desc>
@@ -211,7 +211,7 @@ function ChartPlot(
 
           <FocusOutline
             elementRef={activeElementRef}
-            elementKey={isApplicationFocused && activeElementKey}
+            elementKey={!!isApplicationFocused && activeElementKey}
             offset={activeElementFocusOffset}
           />
         </g>

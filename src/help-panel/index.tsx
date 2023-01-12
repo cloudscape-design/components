@@ -27,9 +27,9 @@ export default function HelpPanel({ header, footer, children, loading, loadingTe
     </div>
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
-      {header && <div className={clsx(styles.header)}>{header}</div>}
+      {!!header && <div className={clsx(styles.header)}>{header}</div>}
       <div className={clsx(styles.content)}>{children}</div>
-      {footer && <div className={styles.footer}>{footer}</div>}
+      {!!footer && <div className={styles.footer}>{footer}</div>}
     </div>
   );
 }

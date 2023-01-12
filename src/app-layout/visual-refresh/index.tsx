@@ -36,7 +36,7 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
 
           <Navigation />
 
-          {isMobile && <AppBar />}
+          {!!isMobile && <AppBar />}
 
           <Notifications />
 

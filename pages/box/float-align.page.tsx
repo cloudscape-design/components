@@ -25,8 +25,8 @@ export default function BoxPermutations() {
           permutations={permutations}
           render={permutation => (
             <Box {...permutation} className={styles['permutation-box']}>
-              {permutation.textAlign && `textAlign:${permutation.textAlign}`}
-              {permutation.float && `float:${permutation.float}`}
+              {!!permutation.textAlign && `textAlign:${permutation.textAlign}`}
+              {!!permutation.float && `float:${permutation.float}`}
             </Box>
           )}
         />

@@ -47,7 +47,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             {shouldHideText ? null : (
               <>
                 {definition.text}
-                {definition.external && (
+                {!!definition.external && (
                   <>
                     {' '}
                     <span
@@ -75,7 +75,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             onFollow={definition.onClick}
             ariaLabel={ariaLabel}
           >
-            {hasIcon && (
+            {!!hasIcon && (
               <InternalIcon
                 name={definition.iconName}
                 url={definition.iconUrl}
@@ -84,7 +84,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
                 badge={definition.badge}
               />
             )}
-            {!shouldHideText && definition.text && (
+            {!shouldHideText && !!definition.text && (
               <span className={hasIcon ? styles['utility-link-icon'] : undefined}>{definition.text}</span>
             )}
           </InternalLink>

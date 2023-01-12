@@ -67,7 +67,7 @@ export default function ProgressBar({
         <div className={clsx(styles['word-wrap'], styles[`label-${variant}`])} id={labelId}>
           {label}
         </div>
-        {description && <SmallText color={isInFlash ? 'inherit' : undefined}>{description}</SmallText>}
+        {!!description && <SmallText color={isInFlash ? 'inherit' : undefined}>{description}</SmallText>}
         <div>
           {isInProgressState ? (
             <>
@@ -87,7 +87,7 @@ export default function ProgressBar({
           )}
         </div>
       </div>
-      {additionalInfo && <SmallText color={isInFlash ? 'inherit' : undefined}>{additionalInfo}</SmallText>}
+      {!!additionalInfo && <SmallText color={isInFlash ? 'inherit' : undefined}>{additionalInfo}</SmallText>}
     </div>
   );
 }

@@ -19,12 +19,12 @@ export default function ToolsHeader({ header, filter, pagination, preferences }:
   return (
     <>
       {header}
-      {hasTools && (
+      {!!hasTools && (
         <div ref={ref} className={clsx(styles.tools, isSmall && styles['tools-small'])}>
-          {filter && <div className={styles['tools-filtering']}>{filter}</div>}
+          {!!filter && <div className={styles['tools-filtering']}>{filter}</div>}
           <div className={styles['tools-align-right']}>
-            {pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
-            {preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
+            {!!pagination && <div className={styles['tools-pagination']}>{pagination}</div>}
+            {!!preferences && <div className={styles['tools-preferences']}>{preferences}</div>}
           </div>
         </div>
       )}

@@ -33,7 +33,7 @@ export const Segment = React.forwardRef(
         aria-pressed={isActive ? 'true' : 'false'}
         aria-label={!text ? iconAlt : undefined}
       >
-        {(iconName || iconUrl || iconSvg) && (
+        {!!(iconName || iconUrl || iconSvg) && (
           <InternalIcon
             className={clsx(styles.icon, text ? styles['with-text'] : styles['with-no-text'])}
             name={iconName}

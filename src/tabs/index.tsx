@@ -75,7 +75,7 @@ export default function Tabs({
       };
 
       const isContentShown = isTabSelected && !selectedTab.disabled;
-      return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
+      return <div {...contentAttributes}>{!!isContentShown && selectedTab.content}</div>;
     };
 
     return (

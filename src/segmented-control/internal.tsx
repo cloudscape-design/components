@@ -51,8 +51,8 @@ export default function InternalSegmentedControl({
         onChange={onChange}
       />
       <div className={styles.select}>
-        {ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
-        {!ariaLabelledby && label && (
+        {!!ariaLabelledby && <InternalSelect {...selectProps} ariaLabelledby={ariaLabelledby} />}
+        {!ariaLabelledby && !!label && (
           <InternalFormField label={label} stretch={true}>
             <InternalSelect {...selectProps} />
           </InternalFormField>

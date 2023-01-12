@@ -26,9 +26,9 @@ interface ListItemProps {
 const ListItem = ({ children, startIcon, endIcon }: ListItemProps) => {
   return (
     <>
-      {startIcon && <span className={styles['overflow-menu-list-item-icon']}>{startIcon}</span>}
+      {!!startIcon && <span className={styles['overflow-menu-list-item-icon']}>{startIcon}</span>}
       <span className={styles['overflow-menu-list-item-text']}>{children}</span>
-      {endIcon && endIcon}
+      {!!endIcon && endIcon}
     </>
   );
 };
@@ -176,7 +176,7 @@ const ExpandableItem: React.FC<
           <span id={headerId}>{children}</span>
         </ListItem>
       </button>
-      {expanded && (
+      {!!expanded && (
         <ul
           className={clsx(styles['overflow-menu-list'], styles['overflow-menu-list-submenu'])}
           aria-labelledby={headerId}
@@ -234,7 +234,7 @@ function utilityComponentFactory(
           onFollow={handleClick}
         >
           {label}
-          {utility.external && (
+          {!!utility.external && (
             <>
               {' '}
               <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
@@ -290,7 +290,7 @@ function dropdownComponentFactory(
       onFollow={() => onItemClick(item as ButtonDropdownProps.Item)}
     >
       {label}
-      {item.external && (
+      {!!item.external && (
         <>
           {' '}
           <span aria-label={item.externalIconAriaLabel} role={item.externalIconAriaLabel ? 'img' : undefined}>

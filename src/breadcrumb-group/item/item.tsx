@@ -102,7 +102,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
           {item.text}
         </span>
       </a>
-      {showPopover && popoverContent}
+      {!!showPopover && popoverContent}
     </>
   );
 };

@@ -135,8 +135,9 @@ const DatePicker = React.forwardRef(
             onClick={onButtonClickHandler}
             ref={buttonRef}
             ariaLabel={
-              openCalendarAriaLabel &&
-              openCalendarAriaLabel(value.length === 10 ? getDateLabel(normalizedLocale, parsedValue!) : null)
+              openCalendarAriaLabel
+                ? openCalendarAriaLabel(value.length === 10 ? getDateLabel(normalizedLocale, parsedValue!) : null)
+                : undefined
             }
             disabled={disabled || readOnly}
             formAction="none"
@@ -168,7 +169,7 @@ const DatePicker = React.forwardRef(
             scrollable={false}
             dropdownId={dropdownId}
           >
-            {isDropDownOpen && (
+            {!!isDropDownOpen && (
               <FocusLock className={styles['focus-lock']} autoFocus={true}>
                 <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar

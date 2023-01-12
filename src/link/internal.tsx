@@ -97,7 +97,7 @@ const InternalLink = React.forwardRef(
     const content = (
       <>
         {children}
-        {external && (
+        {!!external && (
           <span className={styles['icon-wrapper']}>
             &nbsp;
             <span

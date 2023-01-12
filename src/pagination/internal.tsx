@@ -133,7 +133,7 @@ export default function InternalPagination({
         ariaLabel={pageNumberLabelFn(1)}
         onClick={handlePageClick}
       />
-      {leftDots && <li className={styles.dots}>...</li>}
+      {!!leftDots && <li className={styles.dots}>...</li>}
       {range(leftIndex, rightIndex).map(pageIndex => (
         <PageNumber
           key={pageIndex}
@@ -144,7 +144,7 @@ export default function InternalPagination({
           onClick={handlePageClick}
         />
       ))}
-      {rightDots && <li className={styles.dots}>...</li>}
+      {!!rightDots && <li className={styles.dots}>...</li>}
       {!openEnd && pagesCount > 1 && (
         <PageNumber
           isCurrent={currentPageIndex === pagesCount}

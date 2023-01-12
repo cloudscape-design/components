@@ -162,7 +162,7 @@ export default function SplitPanel({
         {header}
       </h2>
       <div className={styles['header-actions']}>
-        {!hidePreferencesButton && isOpen && (
+        {!hidePreferencesButton && !!isOpen && (
           <>
             <InternalButton
               className={styles['preferences-button']}
@@ -296,7 +296,7 @@ export default function SplitPanel({
               {wrappedChildren}
             </SplitPanelContentBottom>
           )}
-          {isPreferencesOpen && (
+          {!!isPreferencesOpen && (
             <PreferencesModal
               visible={true}
               preferences={{ position }}

@@ -111,7 +111,7 @@ function ChartLegend<T>({
         onKeyDown={handleKeyPress}
         onBlur={handleBlur}
       >
-        {legendTitle && (
+        {!!legendTitle && (
           <InternalBox fontWeight="bold" className={styles.title}>
             {legendTitle}
           </InternalBox>

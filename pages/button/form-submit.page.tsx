@@ -20,7 +20,7 @@ export default function ButtonIntegrationPage() {
         <Button formAction="submit" onClick={() => setClickedButton('Submit')}>
           Submit
         </Button>
-        <span id="clickMessage">{clickedButton && `${clickedButton} button is triggered`}</span>
+        <span id="clickMessage">{!!clickedButton && `${clickedButton} button is triggered`}</span>
       </form>
     </article>
   );

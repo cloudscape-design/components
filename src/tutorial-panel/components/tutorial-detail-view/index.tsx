@@ -58,7 +58,7 @@ export default function TutorialDetailView({
         </div>
         <div>
           <div role="status">
-            {tutorial.completed && (
+            {!!tutorial.completed && (
               <CongratulationScreen onFeedbackClick={onFeedbackClick} i18nStrings={i18nStrings}>
                 {tutorial.completedScreenDescription}
               </CongratulationScreen>

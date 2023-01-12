@@ -76,7 +76,7 @@ export default function WizardForm({
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
           <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef} {...focusVisible}>
             {title}
-            {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+            {!!isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
           </span>
         </InternalHeader>
       </WizardFormHeader>

@@ -132,7 +132,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
+      {!!showFilters && (
         <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
           <InternalSpaceBetween
             size="l"
@@ -171,7 +171,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
           recoveryText={recoveryText}
           onRecoveryClick={onRecoveryClick}
         />
-        {showChart && (
+        {!!showChart && (
           <ChartContainer
             model={model}
             autoWidth={setWidth}
@@ -186,7 +186,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
         )}
       </div>
 
-      {showLegend && (
+      {!!showLegend && (
         <InternalBox margin={{ top: 'm' }}>
           <AreaChartLegend
             plotContainerRef={containerRef}

@@ -42,7 +42,7 @@ export default function Utility({ hideText, definition, last, isNarrowViewport }
           {shouldHideText ? null : (
             <>
               {definition.text}
-              {definition.external && (
+              {!!definition.external && (
                 <>
                   {' '}
                   <span

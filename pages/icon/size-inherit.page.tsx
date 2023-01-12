@@ -73,7 +73,7 @@ export default function IconScenario() {
               />{' '}
               Show icon
             </label>
-            {visibility && (
+            {!!visibility && (
               <Box variant="h1">
                 <Icon name="settings" size="inherit" id="visibility-test-1" /> Box h1 (big)
               </Box>

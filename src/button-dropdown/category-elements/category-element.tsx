@@ -26,13 +26,13 @@ const CategoryElement = ({
       role="presentation"
       aria-disabled={disabled ? 'true' : undefined}
     >
-      {item.text && (
+      {!!item.text && (
         <p className={clsx(styles.header, { [styles.disabled]: disabled })} aria-hidden="true">
           {item.text}
         </p>
       )}
       <ul className={clsx(styles['items-list-container'])} role="group" aria-label={item.text}>
-        {item.items && (
+        {!!item.items && (
           <ItemsList
             items={item.items}
             onItemActivate={onItemActivate}

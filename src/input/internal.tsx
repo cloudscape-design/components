@@ -184,13 +184,13 @@ function InternalInput(
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
-      {__leftIcon && (
+      {!!__leftIcon && (
         <span onClick={__onLeftIconClick} className={iconClassName('left', !!__onLeftIconClick)}>
           <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
         </span>
       )}
       <input ref={mergedRef} {...attributes} />
-      {__rightIcon && (
+      {!!__rightIcon && (
         <span
           onClick={__onRightIconClick}
           onMouseDown={preventMouseDown}

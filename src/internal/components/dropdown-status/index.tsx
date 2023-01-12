@@ -70,7 +70,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
         <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
           {errorText}
         </InternalStatusIndicator>{' '}
-        {recoveryText && (
+        {!!recoveryText && (
           <InternalLink
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"

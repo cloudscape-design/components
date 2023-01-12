@@ -116,7 +116,7 @@ const InternalButtonDropdown = React.forwardRef(
         }}
         ariaLabel={ariaLabel}
         aria-haspopup={true}
-        ariaExpanded={canBeOpened && isOpen}
+        ariaExpanded={!!canBeOpened && isOpen}
         formAction="none"
       >
         {children}
@@ -138,7 +138,7 @@ const InternalButtonDropdown = React.forwardRef(
         ref={__internalRootRef}
       >
         <Dropdown
-          open={canBeOpened && isOpen}
+          open={!!canBeOpened && isOpen}
           stretchWidth={false}
           stretchTriggerHeight={variant === 'navigation'}
           expandToViewport={expandToViewport}
@@ -147,9 +147,9 @@ const InternalButtonDropdown = React.forwardRef(
           trigger={trigger}
           dropdownId={dropdownId}
         >
-          {hasHeader && (
+          {!!hasHeader && (
             <div className={styles.header} id={headerId}>
-              {title && (
+              {!!title && (
                 <div className={styles.title}>
                   <InternalBox
                     fontSize="heading-s"
@@ -162,7 +162,7 @@ const InternalButtonDropdown = React.forwardRef(
                   </InternalBox>
                 </div>
               )}
-              {description && (
+              {!!description && (
                 <InternalBox fontSize="body-s">
                   <span className={styles.description}>{description}</span>
                 </InternalBox>
@@ -170,7 +170,7 @@ const InternalButtonDropdown = React.forwardRef(
             </div>
           )}
           <OptionsList
-            open={canBeOpened && isOpen}
+            open={!!canBeOpened && isOpen}
             position="static"
             role="menu"
             decreaseTopMargin={true}

@@ -98,7 +98,7 @@ export const S3InContext = React.forwardRef(
               onBlur={handleUriBlur}
             />
           </InternalFormField>
-          {supportsVersions && (
+          {!!supportsVersions && (
             <InternalFormField
               className={styles['layout-version']}
               label={i18nStrings?.inContextVersionSelectLabel}
@@ -137,7 +137,7 @@ export const S3InContext = React.forwardRef(
         </div>
 
         <div role="alert" aria-live="assertive" aria-atomic="true">
-          {loading && (
+          {!!loading && (
             <InternalBox margin={{ top: 's' }}>
               <InternalStatusIndicator type="loading">
                 <LiveRegion visible={true}>{i18nStrings?.inContextLoadingText}</LiveRegion>

@@ -90,7 +90,7 @@ const MobileExpandableCategoryElement = ({
   } else {
     content = (
       <MobileExpandableGroup open={expanded} trigger={trigger}>
-        {item.items && expanded && (
+        {!!item.items && !!expanded && (
           <ul role="menu" aria-label={item.text} className={clsx(styles['items-list-container'])}>
             <ItemsList
               items={item.items}

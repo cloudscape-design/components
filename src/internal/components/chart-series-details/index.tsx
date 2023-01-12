@@ -37,7 +37,7 @@ function ChartSeriesDetails({ details, ...restProps }: ChartSeriesDetailsProps) 
             })}
           >
             <div className={styles.key}>
-              {markerType && color && <ChartSeriesMarker type={markerType} color={color} />}
+              {!!markerType && !!color && <ChartSeriesMarker type={markerType} color={color} />}
               <span>{key}</span>
             </div>
             <InternalBox textAlign="right">{value}</InternalBox>

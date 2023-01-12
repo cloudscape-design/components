@@ -210,7 +210,7 @@ const PropertyFilter = React.forwardRef(
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
-          {customControl && <div className={styles['custom-control']}>{customControl}</div>}
+          {!!customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
             ref={inputRef}
             virtualScroll={virtualScroll}
@@ -227,7 +227,7 @@ const PropertyFilter = React.forwardRef(
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
             customForm={
-              operatorForm && (
+              !!operatorForm && (
                 <PropertyEditor
                   property={parsedText.property}
                   operator={parsedText.operator}
@@ -248,7 +248,7 @@ const PropertyFilter = React.forwardRef(
                 />
               )
             }
-            hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            hideEnteredTextOption={!!disableFreeTextFiltering && parsedText.step !== 'property'}
           />
           <span
             aria-live="polite"
@@ -258,7 +258,7 @@ const PropertyFilter = React.forwardRef(
             {showResults ? countText : ''}
           </span>
         </div>
-        {tokens && tokens.length > 0 && (
+        {!!tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
               {slicedTokens.map((token, index) => (
@@ -283,7 +283,7 @@ const PropertyFilter = React.forwardRef(
                   expandToViewport={expandToViewport}
                 />
               ))}
-              {hasHiddenOptions && (
+              {!!hasHiddenOptions && (
                 <div className={styles['toggle-collapsed']}>
                   <SelectToggle
                     controlId={controlId}

@@ -221,7 +221,7 @@ const TagEditor = React.forwardRef(
                 tooManySuggestionText={i18nStrings.tooManyValuesSuggestion}
                 enteredTextLabel={i18nStrings.enteredValueLabel}
                 filteringKey={tag.key}
-                onRequest={valuesRequest && (value => valuesRequest(tag.key, value))}
+                onRequest={valuesRequest ? value => valuesRequest(tag.key, value) : undefined}
                 onChange={onValueChange}
                 ref={ref => {
                   valueInputRefs.current[row] = ref;

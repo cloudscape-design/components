@@ -46,7 +46,7 @@ const InternalTiles = React.forwardRef(
         ref={mergedRef}
       >
         <div className={clsx(styles.columns, styles[`column-${columnCount}`])}>
-          {items &&
+          {!!items &&
             items.map((item, index) => (
               <Tile
                 ref={index === tileRefIndex ? tileRef : undefined}

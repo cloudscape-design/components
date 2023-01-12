@@ -152,7 +152,7 @@ export default function InternalModal({
               <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
                 {children}
               </div>
-              {footer && <div className={styles.footer}>{footer}</div>}
+              {!!footer && <div className={styles.footer}>{footer}</div>}
             </div>
           </div>
         </FocusLock>

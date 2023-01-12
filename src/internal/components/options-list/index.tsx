@@ -110,7 +110,7 @@ const OptionsList = (
       tabIndex={-1}
       aria-labelledby={ariaLabelledby}
     >
-      {open && children}
+      {!!open && children}
     </ul>
   );
 };

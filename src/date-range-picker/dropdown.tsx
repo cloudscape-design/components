@@ -211,7 +211,7 @@ export function DateRangePickerDropdown({
                   [styles['has-clear-button']]: showClearButton,
                 })}
               >
-                {showClearButton && (
+                {!!showClearButton && (
                   <div className={styles['footer-button-wrapper']}>
                     <InternalButton
                       onClick={onClear}

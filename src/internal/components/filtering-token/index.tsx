@@ -43,7 +43,7 @@ export default function FilteringToken({
   const focusVisible = useFocusVisible();
   return (
     <div className={styles.root}>
-      {showOperation && (
+      {!!showOperation && (
         <InternalSelect
           __inFilteringToken={true}
           className={styles.select}

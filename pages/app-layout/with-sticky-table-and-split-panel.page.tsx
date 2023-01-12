@@ -135,7 +135,7 @@ export default function () {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            {splitPanelOpen && DEMO_CONTENT}
+            {!!splitPanelOpen && DEMO_CONTENT}
           </SplitPanel>
         }
       />

@@ -23,7 +23,7 @@ const TableRow = ({ offset, separator = true, isHeader }: SVGTableRowProps) => {
       />
       <path d={`M90 ${offsetTop}H110V${offsetBottom}H90V${offsetTop}Z`} />
       <path d={`M113 ${offsetTop}H157V${offsetBottom}H113V${offsetTop}Z`} />
-      {separator && <path d="M14 8H159.387" className={getClassName('separator')} strokeLinecap="square" />}
+      {!!separator && <path d="M14 8H159.387" className={getClassName('separator')} strokeLinecap="square" />}
     </g>
   );
 };

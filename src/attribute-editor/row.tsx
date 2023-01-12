@@ -80,14 +80,14 @@ export const Row = React.memo(
                   errorText={render(item, index, errorText)}
                   stretch={true}
                   i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
-                  __hideLabel={isWideViewport && index > 0}
+                  __hideLabel={!!isWideViewport && index > 0}
                   controlId={defIndex === 0 ? firstControlId : undefined}
                 >
                   {render(item, index, control)}
                 </InternalFormField>
               ))}
             </InternalColumnLayout>
-            {removable && (
+            {!!removable && (
               <ButtonContainer
                 index={index}
                 isNarrowViewport={isNarrowViewport}
@@ -107,7 +107,7 @@ export const Row = React.memo(
             )}
           </InternalGrid>
         </div>
-        {isNarrowViewport && <Divider />}
+        {!!isNarrowViewport && <Divider />}
       </InternalBox>
     );
   }

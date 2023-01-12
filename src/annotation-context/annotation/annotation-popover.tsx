@@ -124,7 +124,7 @@ export function AnnotationPopover({
             <InternalBox className={styles.content}>{content}</InternalBox>
           </div>
 
-          {alert && <InternalAlert type="warning">{alert}</InternalAlert>}
+          {!!alert && <InternalAlert type="warning">{alert}</InternalAlert>}
 
           <InternalSpaceBetween size="s">
             <div className={styles.divider} />
@@ -141,7 +141,7 @@ export function AnnotationPopover({
                 </InternalBox>
               </div>
               <InternalSpaceBetween size="xs" direction="horizontal">
-                {showPreviousButton && (
+                {!!showPreviousButton && (
                   <InternalButton
                     variant="link"
                     onClick={onPreviousButtonClick}

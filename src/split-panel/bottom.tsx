@@ -75,7 +75,7 @@ export function SplitPanelContentBottom({
       }}
       ref={transitionContentBottomRef}
     >
-      {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
+      {!!isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
         <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
           {header}

@@ -127,7 +127,7 @@ export function TabHeaderBar({
   return (
     //converted span to div as list should not be a child of span for HTML validation
     <div className={classes} ref={containerRef}>
-      {horizontalOverflow && (
+      {!!horizontalOverflow && (
         <span ref={leftOverflowButton} className={leftButtonClasses}>
           <InternalButton
             formAction="none"
@@ -149,7 +149,7 @@ export function TabHeaderBar({
       >
         {tabs.map(renderTabHeader)}
       </ul>
-      {horizontalOverflow && (
+      {!!horizontalOverflow && (
         <span className={rightButtonClasses}>
           <InternalButton
             formAction="none"

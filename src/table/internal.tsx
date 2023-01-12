@@ -215,7 +215,7 @@ const InternalTable = React.forwardRef(
           className={clsx(baseProps.className, styles.root)}
           header={
             <>
-              {hasHeader && (
+              {!!hasHeader && (
                 <div
                   ref={overlapElement}
                   className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
@@ -225,7 +225,7 @@ const InternalTable = React.forwardRef(
                   </div>
                 </div>
               )}
-              {stickyHeader && (
+              {!!stickyHeader && (
                 <StickyHeader
                   ref={stickyHeaderRef}
                   variant={computedVariant}
@@ -246,7 +246,7 @@ const InternalTable = React.forwardRef(
           __disableFooterPaddings={true}
           __disableFooterDivider={true}
           footer={
-            footer && (
+            !!footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
                 <div className={styles.footer}>{footer}</div>
               </div>
@@ -332,8 +332,8 @@ const InternalTable = React.forwardRef(
                           }
                         }}
                         {...focusMarkers.item}
-                        onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, item)}
-                        onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
+                        onClick={onRowClickHandler?.bind(null, rowIndex, item)}
+                        onContextMenu={onRowContextMenuHandler?.bind(null, rowIndex, item)}
                         aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
                         {selectionType !== undefined && (
@@ -407,7 +407,7 @@ const InternalTable = React.forwardRef(
                 )}
               </tbody>
             </table>
-            {resizableColumns && <ResizeTracker />}
+            {!!resizableColumns && <ResizeTracker />}
           </div>
           <StickyScrollbar
             ref={scrollbarRef}

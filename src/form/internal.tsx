@@ -25,24 +25,24 @@ export default function InternalForm({
   const baseProps = getBaseProps(props);
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
-      {header && <div className={styles.header}>{header}</div>}
-      {children && <div className={styles.content}>{children}</div>}
-      {errorText && (
+      {!!header && <div className={styles.header}>{header}</div>}
+      {!!children && <div className={styles.content}>{children}</div>}
+      {!!errorText && (
         <InternalBox margin={{ top: 'l' }}>
           <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
             <div className={styles.error}>{errorText}</div>
           </InternalAlert>
         </InternalBox>
       )}
-      {(actions || secondaryActions) && (
+      {!!(actions || secondaryActions) && (
         <div className={styles.footer}>
           <div className={styles['actions-section']}>
-            {actions && <div className={styles.actions}>{actions}</div>}
-            {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
+            {!!actions && <div className={styles.actions}>{actions}</div>}
+            {!!secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
           </div>
         </div>
       )}
-      {errorText && (
+      {!!errorText && (
         <LiveRegion assertive={true}>
           {errorIconAriaLabel}, {errorText}
         </LiveRegion>

@@ -47,9 +47,9 @@ export default function BoxPermutations() {
           <div className={styles[permutation.color as string]}>
             <Box {...permutation}>
               variant: {permutation.variant}
-              {permutation.color && `, color:${permutation.color}`}
-              {permutation.fontSize && `, fontSize:${permutation.fontSize}`}
-              {permutation.fontWeight && `, fontWeight:${permutation.fontWeight}`}
+              {!!permutation.color && `, color:${permutation.color}`}
+              {!!permutation.fontSize && `, fontSize:${permutation.fontSize}`}
+              {!!permutation.fontWeight && `, fontWeight:${permutation.fontWeight}`}
             </Box>
           </div>
         )}

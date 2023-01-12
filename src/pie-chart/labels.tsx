@@ -52,7 +52,7 @@ function LabelElement({
           {title}
         </ResponsiveText>
       )}
-      {!hideDescriptions && description && (
+      {!hideDescriptions && !!description && (
         <ResponsiveText
           x={x}
           y={y + (hideTitles ? 0 : 18)}

@@ -269,7 +269,7 @@ const AutosuggestInput = React.forwardRef(
           onMouseDown={handleDropdownMouseDown}
           open={open}
           footer={
-            dropdownFooterRef && (
+            !!dropdownFooterRef && (
               <div ref={dropdownFooterRef} className={styles['dropdown-footer']}>
                 {dropdownFooter}
               </div>

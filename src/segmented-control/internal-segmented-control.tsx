@@ -43,7 +43,7 @@ export default function InternalSegmentedControl({
       aria-labelledby={ariaLabelledby}
       role="toolbar"
     >
-      {options &&
+      {!!options &&
         options.map((option: SegmentedControlProps.Option, index) => {
           const isActive = selectedId === option.id;
           const enabledSegmentIndex = enabledSegments.indexOf(option);

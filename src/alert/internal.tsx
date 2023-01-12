@@ -79,12 +79,12 @@ export default function InternalAlert({
           </div>
           <div className={styles.body}>
             <div className={clsx(styles.message, styles.text)}>
-              {header && <div className={styles.header}>{header}</div>}
+              {!!header && <div className={styles.header}>{header}</div>}
               <div className={styles.content}>{children}</div>
             </div>
-            {hasAction && <div className={styles.action}>{actionButton}</div>}
+            {!!hasAction && <div className={styles.action}>{actionButton}</div>}
           </div>
-          {dismissible && (
+          {!!dismissible && (
             <div className={styles.dismiss}>
               <InternalButton
                 className={styles['dismiss-button']}

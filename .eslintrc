@@ -29,6 +29,7 @@
     "react/prop-types": "off",
     "react/forbid-component-props": ["warn", { "forbid": ["className", "id"] }],
     "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-no-leaked-render": ["error", { "validStrategies": ["coerce", "ternary"] }],
     "@cloudscape-design/ban-files": [
       "error",
       [

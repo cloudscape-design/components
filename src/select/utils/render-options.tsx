@@ -52,8 +52,8 @@ export const renderOptions = ({
       <ListItem
         key={globalIndex}
         {...props}
-        virtualPosition={virtualItem && virtualItem.start}
-        ref={virtualItem && virtualItem.measureRef}
+        virtualPosition={virtualItem?.start}
+        ref={virtualItem?.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}

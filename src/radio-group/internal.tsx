@@ -44,7 +44,7 @@ const InternalRadioGroup = React.forwardRef(
         className={clsx(baseProps.className, styles.root)}
         ref={__internalRootRef}
       >
-        {items &&
+        {!!items &&
           items.map((item, index) => (
             <RadioButton
               key={item.value}

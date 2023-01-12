@@ -299,7 +299,7 @@ const InternalMultiselect = React.forwardRef(
             highlightType={highlightType}
           />
         </Dropdown>
-        {showTokens && (
+        {!!showTokens && (
           <TokenGroup
             limit={tokenLimit}
             items={tokens}

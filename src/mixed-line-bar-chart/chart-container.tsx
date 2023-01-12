@@ -452,7 +452,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             width={plotWidth}
             height={plotHeight}
             offsetBottom={bottomLabelsHeight}
-            isClickable={isPopoverOpen && !isPopoverPinned}
+            isClickable={!!isPopoverOpen && !isPopoverPinned}
             ariaLabel={ariaLabel}
             ariaLabelledby={ariaLabelledby}
             ariaDescription={ariaDescription}
@@ -460,7 +460,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
             ariaLiveRegion={activeLiveRegion}
             activeElementRef={highlightedElementRef}
             activeElementKey={
-              isPlotFocused &&
+              !!isPlotFocused &&
               (highlightedGroupIndex?.toString() ??
                 (isLineXKeyboardFocused ? `point-index-${handlers.xIndex}` : point?.key))
             }
@@ -483,9 +483,9 @@ export default function ChartContainer<T extends ChartDataTypes>({
               height={plotHeight}
             />
 
-            {horizontalBars && <VerticalGridLines scale={yScale} ticks={yTicks} height={plotHeight} />}
+            {!!horizontalBars && <VerticalGridLines scale={yScale} ticks={yTicks} height={plotHeight} />}
 
-            {emphasizeBaselineAxis && linesOnly && (
+            {!!emphasizeBaselineAxis && !!linesOnly && (
               <EmphasizedBaseline axis={x} scale={yScale} width={plotWidth} height={plotHeight} />
             )}
 
@@ -502,7 +502,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
               yScale={yScale}
             />
 
-            {emphasizeBaselineAxis && !linesOnly && (
+            {!!emphasizeBaselineAxis && !linesOnly && (
               <EmphasizedBaseline axis={x} scale={yScale} width={plotWidth} height={plotHeight} />
             )}
 
@@ -515,7 +515,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
               ref={verticalMarkerRef}
             />
 
-            {highlightedPoint && (
+            {!!highlightedPoint && (
               <HighlightedPoint
                 ref={highlightedPointRef}
                 point={point}
@@ -526,7 +526,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
               />
             )}
 
-            {isGroupNavigation && xScale.isCategorical() && (
+            {!!isGroupNavigation && xScale.isCategorical() && (
               <BarGroups
                 ariaLabel={activeAriaLabel}
                 isRefresh={isRefresh}

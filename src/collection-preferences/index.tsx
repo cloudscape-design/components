@@ -69,28 +69,28 @@ const ModalContent = ({
     <ModalContentLayout
       left={
         <InternalSpaceBetween size="l">
-          {pageSizePreference && (
+          {!!pageSizePreference && (
             <PageSizePreference
               value={preferences.pageSize}
               {...pageSizePreference}
               onChange={pageSize => onChange({ pageSize })}
             />
           )}
-          {wrapLinesPreference && (
+          {!!wrapLinesPreference && (
             <WrapLinesPreference
               value={preferences.wrapLines}
               {...wrapLinesPreference}
               onChange={wrapLines => onChange({ wrapLines })}
             />
           )}
-          {stripedRowsPreference && (
+          {!!stripedRowsPreference && (
             <StripedRowsPreference
               value={preferences.stripedRows}
               {...stripedRowsPreference}
               onChange={stripedRows => onChange({ stripedRows })}
             />
           )}
-          {customPreference && (
+          {!!customPreference && (
             <CustomPreference
               value={preferences.custom}
               customPreference={customPreference}
@@ -100,7 +100,7 @@ const ModalContent = ({
         </InternalSpaceBetween>
       }
       right={
-        visibleContentPreference && (
+        !!visibleContentPreference && (
           <VisibleContentPreference
             value={preferences.visibleContent}
             {...visibleContentPreference}
@@ -168,7 +168,7 @@ export default function CollectionPreferences({
         iconName="settings"
         formAction="none"
       />
-      {!disabled && modalVisible && (
+      {!disabled && !!modalVisible && (
         <InternalModal
           className={styles['modal-root']}
           visible={true}

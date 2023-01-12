@@ -205,7 +205,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef} onBlur={onBlur}>
-      {showFilters && (
+      {!!showFilters && (
         <InternalBox className={cartesianStyles['filter-container']} margin={{ bottom: 'l' }}>
           <InternalChartFilters
             series={series}
@@ -237,7 +237,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
           recoveryText={recoveryText}
           onRecoveryClick={onRecoveryClick}
         />
-        {showChart && (
+        {!!showChart && (
           <ChartContainer
             height={height}
             xScaleType={xScaleType}
@@ -269,7 +269,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
         )}
       </div>
 
-      {showLegend && (
+      {!!showLegend && (
         <InternalBox margin={{ top: 'm' }}>
           <InternalChartLegend
             series={series}

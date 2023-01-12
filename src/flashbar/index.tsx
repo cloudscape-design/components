@@ -120,7 +120,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
           </div>
         )}
 
-        {isFlashbarStackExpanded && (
+        {!!isFlashbarStackExpanded && (
           <ul className={clsx(styles['flash-list'], styles.expanded)}>
             {items.map((item, index) => (
               <li key={item.id ?? index} className={styles['flash-list-item']}>
@@ -157,7 +157,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
       // This is a proxy for <ul>, so we're not applying a class to another actual component.
       // eslint-disable-next-line react/forbid-component-props
       <TransitionGroup component="ul" className={styles['flash-list']}>
-        {items &&
+        {!!items &&
           items.map((item, index) => (
             <Transition
               transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}

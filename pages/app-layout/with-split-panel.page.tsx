@@ -75,7 +75,7 @@ export default function () {
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
         splitPanel={
-          splitPanelEnabled && (
+          !!splitPanelEnabled && (
             <SplitPanel
               header="Split panel header"
               i18nStrings={{

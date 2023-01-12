@@ -263,7 +263,7 @@ export default function CodeEditor(props: CodeEditorProps) {
       className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
       ref={mergedRef}
     >
-      {props.loading && (
+      {!!props.loading && (
         <LoadingScreen>
           <LiveRegion visible={true}>{i18nStrings.loadingState}</LiveRegion>
         </LoadingScreen>
@@ -275,7 +275,7 @@ export default function CodeEditor(props: CodeEditorProps) {
         </ErrorScreen>
       )}
 
-      {ace && !props.loading && (
+      {!!ace && !props.loading && (
         <>
           <ResizableBox
             height={Math.max(editorHeight, 20)}
@@ -327,7 +327,7 @@ export default function CodeEditor(props: CodeEditorProps) {
               closeButtonAriaLabel={i18nStrings.paneCloseButtonAriaLabel}
             />
           </div>
-          {isPreferencesModalVisible && (
+          {!!isPreferencesModalVisible && (
             <PreferencesModal
               onConfirm={onPreferencesConfirm}
               onDismiss={onPreferencesDismiss}

@@ -66,9 +66,9 @@ export default function InternalHeader({
             </span>
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
-          {info && <span className={styles.info}>{info}</span>}
+          {!!info && <span className={styles.info}>{info}</span>}
         </div>
-        {description && (
+        {!!description && (
           <p
             className={clsx(
               styles.description,
@@ -80,7 +80,7 @@ export default function InternalHeader({
           </p>
         )}
       </div>
-      {actions && (
+      {!!actions && (
         <div
           className={clsx(
             styles.actions,

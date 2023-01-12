@@ -356,7 +356,7 @@ const Dropdown = ({
         disabled={!open || !loopFocus}
       />
 
-      <DropdownContainer renderWithPortal={expandToViewport && !interior} id={dropdownId} open={open}>
+      <DropdownContainer renderWithPortal={!!expandToViewport && !interior} id={dropdownId} open={open}>
         <Transition in={open ?? false} exit={false}>
           {(state, ref) => (
             <div ref={dropdownContainerRef}>

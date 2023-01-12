@@ -55,7 +55,7 @@ export default function WizardActions({
         <InternalButton className={styles['cancel-button']} variant="link" formAction="none" onClick={onCancelClick}>
           {cancelButtonText}
         </InternalButton>
-        {showSkipTo && skipToButtonText && (
+        {!!showSkipTo && !!skipToButtonText && (
           <Unmount onUnmount={onSkipUnmount}>
             <InternalButton
               className={styles['skip-to-button']}
@@ -67,7 +67,7 @@ export default function WizardActions({
             </InternalButton>
           </Unmount>
         )}
-        {showPrevious && (
+        {!!showPrevious && (
           <Unmount onUnmount={onPreviousUnmount}>
             <InternalButton
               className={styles['previous-button']}

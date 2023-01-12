@@ -17,7 +17,7 @@ const DropdownFooter: React.FC<DropdownFooter> = ({ content, hasItems = true }: 
     aria-live="polite"
     aria-atomic="true"
   >
-    {content && <DropdownStatus>{content}</DropdownStatus>}
+    {!!content && <DropdownStatus>{content}</DropdownStatus>}
   </div>
 );
 

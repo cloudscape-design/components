@@ -14,7 +14,7 @@ export default function TopNavigationOverflowMenuPage() {
     <article style={{ margin: 24 }}>
       <h1>Top Navigation Overflow menu</h1>
       <button onClick={() => setShowOverflowMenu(true)}>Show</button>
-      {showOverflowMenu && (
+      {!!showOverflowMenu && (
         <VisualContext contextName="top-navigation">
           <MobileViewPort>
             <OverflowMenu

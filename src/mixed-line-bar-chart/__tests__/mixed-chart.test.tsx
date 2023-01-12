@@ -190,7 +190,7 @@ describe('Series', () => {
               xScaleType="categorical"
               xDomain={xDomain}
               yDomain={yDomain}
-              horizontalBars={horizontalBars && !s.some(({ type }) => type !== 'bar')}
+              horizontalBars={!!horizontalBars && !s.some(({ type }) => type !== 'bar')}
             />
           ));
 
@@ -218,7 +218,7 @@ describe('Series', () => {
               xScaleType="categorical"
               xDomain={xDomain}
               yDomain={yDomain}
-              horizontalBars={horizontalBars && !s.some(({ type }) => type !== 'bar')}
+              horizontalBars={!!horizontalBars && !s.some(({ type }) => type !== 'bar')}
             />
           ));
 
@@ -246,7 +246,7 @@ describe('Series', () => {
               xScaleType="categorical"
               xDomain={xDomain}
               yDomain={yDomain}
-              horizontalBars={horizontalBars && !s.some(({ type }) => type !== 'bar')}
+              horizontalBars={!!horizontalBars && !s.some(({ type }) => type !== 'bar')}
             />
           ));
 

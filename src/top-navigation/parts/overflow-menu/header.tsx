@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div className={styles['overflow-menu-header']}>
-      {onBack && (
+      {!!onBack && (
         <InternalButton
           // Used for test-utils, which require the selectable element to have a classname.
           // eslint-disable-next-line react/forbid-component-props
@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({
       )}
       <h2 className={styles['overflow-menu-header-text']}>
         <div className={styles['overflow-menu-header-text--title']}>{children}</div>
-        {secondaryText && <div className={styles['overflow-menu-header-text--secondary']}>{secondaryText}</div>}
+        {!!secondaryText && <div className={styles['overflow-menu-header-text--secondary']}>{secondaryText}</div>}
       </h2>
       <InternalButton
         // eslint-disable-next-line react/forbid-component-props

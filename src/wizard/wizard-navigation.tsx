@@ -143,8 +143,8 @@ function NavigationStepVisualRefresh({
       <hr />
 
       <span className={clsx(styles.number, styles['navigation-link-label'])}>
-        {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+        {!!i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
+        {!!step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
       </span>
 
       <a
@@ -195,8 +195,8 @@ function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick,
         display="block"
         margin={{ bottom: 'xxs' }}
       >
-        {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
+        {!!i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
+        {!!step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
       </InternalBox>
       <div>
         {status === Statuses.Visited || status === Statuses.Next ? (

@@ -49,7 +49,7 @@ export const ButtonTrigger = React.forwardRef(
           onClick && onClick();
         }}
       >
-        {hasIcon && (
+        {!!hasIcon && (
           <InternalIcon
             className={styles.icon}
             name={iconName}
@@ -59,8 +59,8 @@ export const ButtonTrigger = React.forwardRef(
             badge={badge}
           />
         )}
-        {children && <span className={styles.text}>{children}</span>}
-        {children && (
+        {!!children && <span className={styles.text}>{children}</span>}
+        {!!children && (
           <InternalIcon
             name="caret-down-filled"
             className={expanded ? buttonDropdownStyles['rotate-up'] : buttonDropdownStyles['rotate-down']}

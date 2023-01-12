@@ -117,7 +117,7 @@ const Cards = React.forwardRef(function <T = any>(
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
       <InternalContainer
         header={
-          hasToolsHeader && (
+          !!hasToolsHeader && (
             <div
               className={clsx(
                 styles.header,
@@ -228,7 +228,7 @@ const CardsList = <T,>({
               <span className={styles['card-header-inner']}>
                 {cardDefinition.header ? cardDefinition.header(item) : ''}
               </span>
-              {selectable && (
+              {!!selectable && (
                 <div className={styles['selection-control']}>
                   <SelectionControl
                     onFocusDown={moveFocusDown}

@@ -57,10 +57,10 @@ export default function SideNavigation({
 
   return (
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={__internalRootRef}>
-      {header && (
+      {!!header && (
         <Header definition={header} activeHref={activeHref} fireChange={onChangeHandler} fireFollow={onFollowHandler} />
       )}
-      {items && (
+      {!!items && (
         <div className={styles['list-container']}>
           <ItemList
             variant="root"

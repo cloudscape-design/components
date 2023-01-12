@@ -50,7 +50,7 @@ export default function AppBar() {
         'awsui-context-content-header'
       )}
     >
-      {!navigationHide && isMobile && (
+      {!navigationHide && !!isMobile && (
         <nav
           className={clsx(styles['appbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
           aria-hidden={isNavigationOpen}
@@ -70,7 +70,7 @@ export default function AppBar() {
         </nav>
       )}
 
-      {breadcrumbs && (
+      {!!breadcrumbs && (
         <div
           className={clsx(styles.breadcrumbs, styles[`content-type-${contentType}`], testutilStyles.breadcrumbs, {
             [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
@@ -83,7 +83,7 @@ export default function AppBar() {
         </div>
       )}
 
-      {!toolsHide && isMobile && (
+      {!toolsHide && !!isMobile && (
         <aside
           className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}

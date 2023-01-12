@@ -195,7 +195,7 @@ test('does not run into an endless loop in (un)registerHotspot when toggling Hot
         <button id="toggle-button" onClick={() => setIsFirstHotspotVisible(!isFirstHotspotVisible)}>
           Toggle first-hotspot
         </button>
-        {isFirstHotspotVisible && (
+        {!!isFirstHotspotVisible && (
           <div id={'hotspot-1'}>
             <Hotspot hotspotId="first-hotspot" />
           </div>

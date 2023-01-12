@@ -98,7 +98,7 @@ export const ResultState = ({ isInFlash, resultText, resultButtonText, status, o
           <span className={styles['result-text']}>{resultText}</span>
         </InternalStatusIndicator>
       </span>
-      {hasResultButton && <ResultButton onClick={onClick}>{resultButtonText}</ResultButton>}
+      {!!hasResultButton && <ResultButton onClick={onClick}>{resultButtonText}</ResultButton>}
     </div>
   );
 };

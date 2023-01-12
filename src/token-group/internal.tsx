@@ -43,14 +43,14 @@ export default function InternalTokenGroup({
 
   return (
     <div {...baseProps} className={className} ref={__internalRootRef}>
-      {hasItems && (
+      {!!hasItems && (
         <SpaceBetween id={controlId} direction={alignment} size="xs">
           {slicedItems.map((item: TokenGroupProps.Item, itemIndex) => (
             <Token key={itemIndex} {...item} onDismiss={() => fireNonCancelableEvent(onDismiss, { itemIndex })} />
           ))}
         </SpaceBetween>
       )}
-      {hasHiddenItems && (
+      {!!hasHiddenItems && (
         <SelectToggle
           controlId={controlId}
           allHidden={limit === 0}

@@ -91,7 +91,7 @@ export default function SpaceBetweenPermutations() {
               header={
                 <>
                   Size {permutation.size.toUpperCase()}, {permutation.direction}
-                  {permutation.note && ', ' + permutation.note}
+                  {!!permutation.note && ', ' + permutation.note}
                 </>
               }
             >

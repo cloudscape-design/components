@@ -92,7 +92,7 @@ export default function InternalContainer({
       )}
       ref={mergedRef}
     >
-      {header && (
+      {!!header && (
         <StickyHeaderContext.Provider value={{ isStuck }}>
           <div
             className={clsx(styles.header, styles[`header-variant-${variant}`], {
@@ -122,7 +122,7 @@ export default function InternalContainer({
       >
         {children}
       </div>
-      {footer && (
+      {!!footer && (
         <div
           className={clsx(styles.footer, {
             [styles['with-divider']]: !__disableFooterDivider,

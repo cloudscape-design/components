@@ -94,7 +94,7 @@ export function MobileToolbar({
         />
       )}
       <div className={styles['mobile-bar-breadcrumbs']}>
-        {children && <div className={clsx(sharedStyles.breadcrumbs, testutilStyles.breadcrumbs)}>{children}</div>}
+        {!!children && <div className={clsx(sharedStyles.breadcrumbs, testutilStyles.breadcrumbs)}>{children}</div>}
       </div>
       {!toolsHide && (
         <MobileToggle
