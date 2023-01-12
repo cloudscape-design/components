@@ -266,7 +266,7 @@ const InternalTable = React.forwardRef(
             {...wrapperProps}
             {...focusVisibleProps}
           >
-            {renderAriaLive && firstIndex && (
+            {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
                 <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })}</span>
               </LiveRegion>
