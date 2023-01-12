@@ -57,6 +57,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
 
   const flashbarElementId = useUniqueId('flashbar');
   const toggleButtonElementId = useUniqueId('toggle-button');
+  const typeCountElementId = useUniqueId('type-count');
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -338,6 +339,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             </span>
             <button
               aria-controls={flashbarElementId}
+              aria-describedby={typeCountElementId}
               aria-expanded={isFlashbarStackExpanded}
               aria-label={i18nStrings?.toggleButtonAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
