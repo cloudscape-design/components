@@ -15,13 +15,11 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
   editConfig: {
     ariaLabel: 'test input',
     editIconAriaLabel: 'error',
-  },
-  cell: (item, { isEditing, setValue, currentValue }: TableProps.CellContext<any>) => {
-    if (isEditing) {
+    editingCell: (item, { setValue, currentValue }: TableProps.CellContext<any>) => {
       return <input type="text" value={currentValue ?? item.test} onChange={e => setValue(e.target.value)} />;
-    }
-    return item.test;
+    },
   },
+  cell: item => item.test,
 };
 
 const onEditEnd = jest.fn();
@@ -65,7 +63,7 @@ const TestComponent2 = ({ column }: any) => {
           <TableBodyCell<typeof testItem>
             column={column}
             item={testItem}
-            isEditing={false}
+            isEditing={true}
             onEditStart={onEditStart}
             onEditEnd={onEditEnd}
             ariaLabels={{
@@ -73,7 +71,7 @@ const TestComponent2 = ({ column }: any) => {
               cancelEditLabel: () => 'cancel edit',
               submitEditLabel: () => 'submit edit',
             }}
-            isEditable={false}
+            isEditable={true}
             isPrevSelected={false}
             isNextSelected={false}
             isFirstRow={true}
@@ -119,14 +117,17 @@ describe('TableBodyCell', () => {
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should render with fallback state', () => {
+  it('should render with default state at edit start', () => {
     const col: typeof column = {
       ...column,
-      cell: (_item, { isEditing, setValue, currentValue }) => {
-        expect(isEditing).toBe(false);
-        expect(setValue).toBeInstanceOf(Function);
-        expect(currentValue).toBeUndefined();
-        return _item.test;
+      editConfig: {
+        ...column.editConfig,
+        editingCell: (item, { setValue, currentValue }) => {
+          // testing default values
+          expect(setValue).toBeInstanceOf(Function);
+          expect(currentValue).toBeUndefined();
+          return <input type="text" value={currentValue ?? item.test} onChange={e => setValue(e.target.value)} />;
+        },
       },
     };
     render(<TestComponent2 column={col} />);

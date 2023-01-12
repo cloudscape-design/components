@@ -71,9 +71,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
           return errorsMeta.get(item);
         }
       },
-    },
-    cell(item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) {
-      if (isEditing) {
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<string>) {
         return (
           <Input
             autoFocus={true}
@@ -81,10 +79,9 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
             onChange={withDirtyState(event => setValue(event.detail.value))}
           />
         );
-      }
-
-      return item.DomainName;
+      },
     },
+    cell: item => item.DomainName,
   },
   {
     id: 'Status',
@@ -99,9 +96,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
     editConfig: {
       ariaLabel: 'Origin',
       editIconAriaLabel: 'editable',
-    },
-    cell: (item, { isEditing, setValue, currentValue }: TableProps.CellContext<string>) => {
-      if (isEditing) {
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<string>) {
         return (
           <Autosuggest
             autoFocus={true}
@@ -114,9 +109,9 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
             placeholder="Enter an origin domain name"
           />
         );
-      }
-      return item.Origin;
+      },
     },
+    cell: item => item.Origin,
   },
   {
     id: 'CertificateMinVersion',
@@ -125,9 +120,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
     editConfig: {
       ariaLabel: 'Certificate Minimum Version',
       editIconAriaLabel: 'editable',
-    },
-    cell(item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) {
-      if (isEditing) {
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<string>) {
         const value = currentValue ?? item.CertificateMinVersion;
 
         return (
@@ -140,10 +133,9 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
             options={tlsVersions}
           />
         );
-      }
-
-      return item.CertificateMinVersion;
+      },
     },
+    cell: item => item.CertificateMinVersion,
   },
   {
     id: 'LastModifiedTime',
@@ -151,11 +143,9 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
     editConfig: {
       ariaLabel: 'Last Modified',
       editIconAriaLabel: 'editable',
-    },
-    cell: (item, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) => {
-      const time = new Date(item.LastModifiedTime);
-      const value = [time.getHours(), time.getMinutes()].map(part => part.toString().padStart(2, '0')).join(':');
-      if (isEditing) {
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<string>) {
+        const time = new Date(item.LastModifiedTime);
+        const value = [time.getHours(), time.getMinutes()].map(part => part.toString().padStart(2, '0')).join(':');
         return (
           <TimeInput
             autoFocus={true}
@@ -166,8 +156,11 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
             })}
           />
         );
-      }
-
+      },
+    },
+    cell: item => {
+      const time = new Date(item.LastModifiedTime);
+      const value = [time.getHours(), time.getMinutes()].map(part => part.toString().padStart(2, '0')).join(':');
       return value;
     },
   },
@@ -178,10 +171,8 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
     editConfig: {
       ariaLabel: 'Tags',
       editIconAriaLabel: 'editable',
-    },
-    cell(item, { isEditing, setValue, currentValue }: TableProps.CellContext<MultiselectProps.Options>) {
-      const value = currentValue ?? (item.Tags as MultiselectProps.Options);
-      if (isEditing) {
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<MultiselectProps.Options>) {
+        const value = currentValue ?? (item.Tags as MultiselectProps.Options);
         return (
           <Box padding={{ vertical: 'xxs' }}>
             <Multiselect
@@ -197,8 +188,10 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
             />
           </Box>
         );
-      }
-      return value.map(tag => tag.label).join(', ');
+      },
+    },
+    cell(item) {
+      return item.Tags.map(tag => tag.label).join(', ');
     },
   },
 ];
