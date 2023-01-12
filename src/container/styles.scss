@@ -26,9 +26,9 @@
       background-color: awsui.$color-background-container-content;
     }
 
-    &-stacked:not(:last-child),
     &-stacked + &-stacked {
       border-radius: 0;
+      @include shared.divider;
     }
 
     &-stacked:not(:last-child)::after {
@@ -37,7 +37,6 @@
     }
 
     &-stacked + &-stacked::after {
-      @include shared.divider;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       box-shadow: awsui.$shadow-container-stacked;
