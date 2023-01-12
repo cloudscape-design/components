@@ -42,8 +42,8 @@ const defaultColumnsWithIds: TableProps.ColumnDefinition<Item>[] = [
   { id: 'name', header: 'name', cell: item => item.name },
 ];
 const editableColumns: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: (item: Item) => item.id, editConfig: {} },
-  { header: 'name', cell: (item: Item) => item.name, editConfig: {} },
+  { header: 'id', cell: (item: Item) => item.id, editConfig: { editingCell: item => item.id } },
+  { header: 'name', cell: (item: Item) => item.name, editConfig: { editingCell: item => item.name } },
 ];
 
 const statefulColumns: TableProps.ColumnDefinition<Item>[] = [
@@ -283,18 +283,19 @@ test('should submit edits successfully', async () => {
         {
           id: 'name',
           header: 'Name',
-          cell: (item, { isEditing, setValue, currentValue }) => (
-            <input
-              type="text"
-              id="test-input"
-              onChange={e => setValue(e.target.value)}
-              value={currentValue ?? item.name}
-              disabled={!isEditing}
-            />
-          ),
+          cell: item => <input type="text" id="test-input" value={item.name} readOnly={true} disabled={true} />,
           editConfig: {
             ariaLabel: 'test-name',
             constraintText: 'test-constraint',
+            editingCell: (item, { setValue, currentValue }) => (
+              <input
+                type="text"
+                id="test-input"
+                onChange={e => setValue(e.target.value)}
+                value={currentValue ?? item.name}
+                disabled={false}
+              />
+            ),
           },
         },
       ]}

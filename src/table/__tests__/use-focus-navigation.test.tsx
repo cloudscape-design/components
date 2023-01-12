@@ -17,6 +17,10 @@ function renderComponent(jsx: React.ReactElement) {
   return { wrapper, rerender, getByTestId, queryByTestId, unmount };
 }
 
+const editConfig = {
+  editingCell: () => <div />,
+};
+
 const TestComponent = () => {
   const tableRef = React.useRef<HTMLTableElement>(null);
 
@@ -194,7 +198,17 @@ describe('useTableFocusNavigation', () => {
         useTableFocusNavigation(
           'none',
           { current: table },
-          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
+          [
+            {
+              editConfig,
+            },
+            {
+              editConfig,
+            },
+            {
+              editConfig,
+            },
+          ],
           3
         )
       );
@@ -207,12 +221,7 @@ describe('useTableFocusNavigation', () => {
 
     it('should detach event listener for focus navigation', () => {
       const { unmount } = renderHook(() =>
-        useTableFocusNavigation(
-          'none',
-          { current: table },
-          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
-          3
-        )
+        useTableFocusNavigation('none', { current: table }, [{ editConfig }, { editConfig }, { editConfig }], 3)
       );
       expect(removeEventListener).not.toHaveBeenCalled();
       unmount();
@@ -221,12 +230,7 @@ describe('useTableFocusNavigation', () => {
 
     it('satisfies istanbul coverage', () => {
       renderHook(() =>
-        useTableFocusNavigation(
-          'multi',
-          { current: null },
-          [{ editConfig: {} }, { editConfig: {} }, { editConfig: {} }],
-          3
-        )
+        useTableFocusNavigation('multi', { current: null }, [{ editConfig }, { editConfig }, { editConfig }], 3)
       );
       expect(removeEventListener).not.toHaveBeenCalled();
       expect(addEventListenerRoot).not.toHaveBeenCalled();
