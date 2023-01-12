@@ -7,6 +7,7 @@ import Multiselect, { MultiselectProps } from '../../../lib/components/multisele
 import tokenGroupStyles from '../../../lib/components/token-group/styles.css.js';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -270,6 +271,22 @@ describe('Dropdown states', () => {
 
       await expect(container).toValidateA11y();
     });
+  });
+  test('should display error status icon with provided aria label', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        selectedOptions={[]}
+        options={defaultOptions}
+        statusType="error"
+        errorText="Test error text"
+        errorIconAriaLabel="Test error text"
+      />
+    );
+    wrapper.openDropdown();
+
+    const statusIcon = wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement();
+    expect(statusIcon).toHaveAttribute('aria-label', 'Test error text');
+    expect(statusIcon).toHaveAttribute('role', 'img');
   });
 });
 

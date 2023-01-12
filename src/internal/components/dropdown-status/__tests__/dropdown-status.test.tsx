@@ -6,7 +6,8 @@ import {
   DropdownStatusPropsExtended,
   useDropdownStatus,
 } from '../../../../../lib/components/internal/components/dropdown-status';
-
+import createWrapper from '../../../../../lib/components/test-utils/dom';
+import statusIconStyles from '../../../../../lib/components/status-indicator/styles.selectors.js';
 function StatusRender(props: DropdownStatusPropsExtended) {
   const { isSticky, content } = useDropdownStatus(props);
   return (
@@ -18,10 +19,12 @@ function StatusRender(props: DropdownStatusPropsExtended) {
 }
 
 function renderComponent(props: DropdownStatusPropsExtended) {
-  const { getByTestId } = render(<StatusRender {...props} />);
+  const { getByTestId, container } = render(<StatusRender {...props} />);
+  const wrapper = createWrapper(container!);
   return {
     getStickyState: () => getByTestId('sticky-state').textContent,
     getContent: () => getByTestId('content').textContent,
+    getIcon: () => wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement(),
   };
 }
 
@@ -95,5 +98,18 @@ describe('useDropdownStatus', () => {
 
     expect(getStickyState()).toBe('true');
     expect(getContent()).toBe('');
+  });
+
+  test('renders error icon with ariaLabel when provided', () => {
+    const { getContent, getIcon } = renderComponent({
+      statusType: 'error',
+      errorText: 'we got a problem',
+      recoveryText: 'do not worry',
+      errorIconAriaLabel: 'error-icon',
+    });
+
+    expect(getContent()).toBe('we got a problem do not worry');
+    expect(getIcon()).toHaveAttribute('aria-label', 'error-icon');
+    expect(getIcon()).toHaveAttribute('role', 'img');
   });
 });
