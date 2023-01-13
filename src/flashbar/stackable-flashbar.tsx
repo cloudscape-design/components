@@ -320,35 +320,35 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
             <span className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']}>
-                {!excludedTypes.has('error') && (
+                {!excludedTypes.has('error') && (!restProps.excludeEmptyCounts || !!countByType.error) && (
                   <NotificationTypeCount
                     iconName="status-negative"
                     label={i18nStrings?.errorCountAriaLabel}
                     count={countByType.error}
                   />
                 )}
-                {!excludedTypes.has('warning') && (
+                {!excludedTypes.has('warning') && (!restProps.excludeEmptyCounts || !!countByType.warning) && (
                   <NotificationTypeCount
                     iconName="status-warning"
                     label={i18nStrings?.warningCountAriaLabel}
                     count={countByType.warning}
                   />
                 )}
-                {!excludedTypes.has('success') && (
+                {!excludedTypes.has('success') && (!restProps.excludeEmptyCounts || !!countByType.success) && (
                   <NotificationTypeCount
                     iconName="status-positive"
                     label={i18nStrings?.successCountAriaLabel}
                     count={countByType.success}
                   />
                 )}
-                {!excludedTypes.has('info') && (
+                {!excludedTypes.has('info') && (!restProps.excludeEmptyCounts || !!countByType.info) && (
                   <NotificationTypeCount
                     iconName="status-info"
                     label={i18nStrings?.infoCountAriaLabel}
                     count={countByType.info}
                   />
                 )}
-                {!excludedTypes.has('progress') && (
+                {!excludedTypes.has('progress') && (!restProps.excludeEmptyCounts || !!countByType.progress) && (
                   <NotificationTypeCount
                     iconName="status-in-progress"
                     label={i18nStrings?.inProgressCountAriaLabel}

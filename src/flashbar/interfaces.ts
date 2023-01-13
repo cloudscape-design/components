@@ -64,6 +64,7 @@ export interface StackedFlashbarProps {
   stackItems: true;
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
   i18nStrings?: StackedFlashbarProps.I18nStrings;
+  excludeEmptyCounts?: boolean;
 }
 
 export namespace StackedFlashbarProps {
