@@ -1,38 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
-import { getBaseProps } from '../internal/base-component';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
+import { useFlashbar } from './common';
 
 export { FlashbarProps };
 
 export default function NonStackableFlashbar({ items, ...restProps }: FlashbarProps) {
-  const { __internalRootRef } = useBaseComponent('Flashbar');
-  const baseProps = getBaseProps(restProps);
-
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
-
-  const isVisualRefresh = useVisualRefresh();
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+    items,
+    ...restProps,
+  });
 
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
-
-  const isReducedMotion = useReducedMotion(breakpointRef as any);
-  const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
 
   // Track new or removed item IDs in state to only trigger focus changes for newly added items.
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
@@ -52,7 +41,7 @@ export default function NonStackableFlashbar({ items, ...restProps }: FlashbarPr
     if (nextFocusId) {
       focusFlashById(ref.current, nextFocusId);
     }
-  }, [nextFocusId]);
+  }, [nextFocusId, ref]);
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
