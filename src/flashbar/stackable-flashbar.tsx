@@ -49,7 +49,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
   const listElementRef = useRef<HTMLUListElement | null>(null);
-  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+  const toggleElementRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
   const [listTop, setListTop] = useState<number>();
@@ -58,12 +58,12 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
 
   const flashbarElementId = useUniqueId('flashbar');
-  const toggleButtonElementId = useUniqueId('toggle-button');
+  const statusElementId = useUniqueId('toggle');
   const typeCountElementId = useUniqueId('type-count');
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-    return { ...flashElements, toggleButton: toggleButtonRef.current };
+    return { ...flashElements, toggleButton: toggleElementRef.current };
   }, [isFlashbarStackExpanded]);
 
   const prepareAnimations = useCallback(() => {
@@ -217,7 +217,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       )}
       id={flashbarElementId}
       aria-label={ariaLabel}
-      aria-describedby={toggleButtonElementId}
+      aria-describedby={statusElementId}
       style={
         !isFlashbarStackExpanded || transitioning
           ? {
@@ -307,7 +307,7 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
       <>
         {isFlashbarStackExpanded && renderList()}
         {items.length > maxUnstackedItems && (
-          <span
+          <div
             className={clsx(
               styles.toggle,
               isVisualRefresh && styles['visual-refresh'],
@@ -315,9 +315,9 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
               transitioning && styles['animation-running']
             )}
             onClick={toggleCollapseExpand}
-            ref={toggleButtonRef}
+            ref={toggleElementRef}
           >
-            <span className={styles.status} role="status">
+            <span className={styles.status} role="status" id={statusElementId}>
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']}>
                 {!excludedTypes.has('error') && (!restProps.excludeEmptyCounts || !!countByType.error) && (
@@ -363,12 +363,11 @@ export default function StackableFlashbar({ items, ...restProps }: FlashbarProps
               aria-expanded={isFlashbarStackExpanded}
               aria-label={i18nStrings?.toggleButtonAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
-              id={toggleButtonElementId}
               {...isFocusVisible}
             >
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>
-          </span>
+          </div>
         )}
         {!isFlashbarStackExpanded && renderList()}
       </>
