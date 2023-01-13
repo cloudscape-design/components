@@ -155,7 +155,7 @@ const InternalButtonDropdown = React.forwardRef(
                     fontSize="heading-s"
                     fontWeight="bold"
                     color="inherit"
-                    tagOverride="h3"
+                    tagOverride="h2"
                     margin={{ vertical: 'n', horizontal: 'n' }}
                   >
                     {title}

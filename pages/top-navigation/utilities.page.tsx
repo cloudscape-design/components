@@ -131,6 +131,7 @@ export default function TopNavigationPage() {
           {
             type: 'menu-dropdown',
             ariaLabel: 'Notifications',
+            title: 'Notifications',
             iconName: 'notification',
             items: notificationActions,
             disableUtilityCollapse: true,
