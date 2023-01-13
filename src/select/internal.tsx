@@ -178,6 +178,7 @@ const InternalSelect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
+      errorIconAriaLabel: restProps.errorIconAriaLabel,
     });
 
     const announcement = useAnnouncement({

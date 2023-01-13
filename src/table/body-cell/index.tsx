@@ -12,13 +12,6 @@ import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import { useStableScrollPosition } from './use-stable-scroll-position';
 
-const readonlyState = Object.freeze({
-  isEditing: false,
-  currentValue: undefined,
-  /* istanbul ignore next */
-  setValue: () => {},
-});
-
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
 };
@@ -100,7 +93,7 @@ function TableCellEditable<ItemType>({
         />
       ) : (
         <>
-          {column.cell(item, readonlyState)}
+          {column.cell(item)}
           <span className={styles['body-cell-editor']}>
             <Button
               __hideFocusOutline={true}
@@ -125,5 +118,5 @@ export function TableBodyCell<ItemType>({
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item, readonlyState)}</TableTdElement>;
+  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
 }

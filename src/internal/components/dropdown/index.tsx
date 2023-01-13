@@ -291,7 +291,7 @@ const Dropdown = ({
       return;
     }
     const clickListener = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) {
+      if (!dropdownRef.current?.contains(e.target as Node) && !triggerRef.current?.contains(e.target as Node)) {
         fireNonCancelableEvent(onDropdownClose);
       }
     };

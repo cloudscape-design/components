@@ -7,6 +7,7 @@ import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosugge
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 let uniqueId = 1;
 
@@ -172,6 +173,21 @@ describe('Dropdown states', () => {
 
       await expect(container).toValidateA11y();
     });
+  });
+
+  test('should display error status icon with provided aria label', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest
+        {...defaultProps}
+        statusType="error"
+        errorText="Test error text"
+        errorIconAriaLabel="Test error text"
+      />
+    );
+    wrapper.focus();
+    const statusIcon = wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement();
+    expect(statusIcon).toHaveAttribute('aria-label', 'Test error text');
+    expect(statusIcon).toHaveAttribute('role', 'img');
   });
 
   it('when no options is matched the dropdown is shown but aria-expanded is false', () => {

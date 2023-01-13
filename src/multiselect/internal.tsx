@@ -182,6 +182,7 @@ const InternalMultiselect = React.forwardRef(
       isNoMatch,
       noMatch,
       onRecoveryClick: handleRecoveryClick,
+      errorIconAriaLabel: restProps.errorIconAriaLabel,
     });
 
     const filter = (

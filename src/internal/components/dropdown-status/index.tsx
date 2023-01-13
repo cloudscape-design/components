@@ -58,6 +58,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
   isNoMatch,
   noMatch,
   onRecoveryClick,
+  errorIconAriaLabel,
 }) => {
   const previousStatusType = usePrevious(statusType);
   const statusResult: DropdownStatusResult = { isSticky: true, content: null };
@@ -67,7 +68,11 @@ export const useDropdownStatus: UseDropdownStatus = ({
   } else if (statusType === 'error') {
     statusResult.content = (
       <span>
-        <InternalStatusIndicator type="error" __animate={previousStatusType !== 'error'}>
+        <InternalStatusIndicator
+          type="error"
+          __animate={previousStatusType !== 'error'}
+          iconAriaLabel={errorIconAriaLabel}
+        >
           {errorText}
         </InternalStatusIndicator>{' '}
         {recoveryText && (
