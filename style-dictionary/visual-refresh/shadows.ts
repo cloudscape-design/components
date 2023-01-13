@@ -7,12 +7,12 @@ import { expandColorDictionary } from '../utils';
 const tokens: StyleDictionary.ShadowsDictionary = {
   shadowContainer: {
     light: '0px 0px 1px 1px #e9ebed, 0px 1px 8px 2px rgba(0, 7, 22, 0.12)', // 1px grey-200 faux border
-    dark: '0px 1px 8px 2px rgba(0, 7, 22, 0.6)',
+    dark: '0px 0px 1px 1px #192534, 0px 1px 8px 2px rgba(0, 7, 22, 0.6)', // 1px grey-750 faux border
   },
   shadowContainerStacked: {
     light:
       '-1px 1px 1px 0px #e9ebed, 1px 1px 1px 0px #e9ebed, 0px 9px 8px -7px rgb(0 7 22 / 12%), 8px 0px 8px -7px rgb(0 7 22 / 12%), -8px 0px 8px -7px rgb(0 7 22 / 12%)',
-    dark: '0px 9px 8px -7px rgb(0 7 22 / 60%), 8px 0px 8px -7px rgb(0 7 22 / 60%), -8px 0px 8px -7px rgb(0 7 22 / 60%)',
+    dark: '-1px 1px 1px 0px #192534, 1px 1px 1px 0px #192534, 0px 9px 8px -7px rgb(0 7 22 / 60%), 8px 0px 8px -7px rgb(0 7 22 / 60%), -8px 0px 8px -7px rgb(0 7 22 / 60%)',
   },
   shadowDropdown: { light: '0px 4px 20px 1px rgba(0, 7, 22, 0.10)', dark: '0px 4px 20px 1px rgba(0, 7, 22, 1)' },
   shadowDropup: '{shadowDropdown}',
