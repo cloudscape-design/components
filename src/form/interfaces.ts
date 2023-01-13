@@ -36,9 +36,12 @@ export interface FormProps extends BaseComponentProps {
 
   /**
    * Determines whether the form displays a dark header and overlap with content.
-   * A full page form should display the dark header.
-   * If false, the header background color will not be shown.
+   * * A full-page form displays the dark header and overlap, similar to what the [ContentLayout](/components/content-layout/) component provides by default.
+   *   Use this variant if the form is the first and primary element on the page.
+   * * An embedded form is one which is not used in a typical [create](/patterns/resource-management/create/single-page-create/) or
+   *   [edit](/patterns/resource-management/edit/page-edit/) page, and is instead used in another context which doesn't occupy the full page.
+   *   This variant does not use a dark header.
    * @visualrefresh
    */
-  fullPage?: boolean;
+  variant?: 'full-page' | 'embedded';
 }

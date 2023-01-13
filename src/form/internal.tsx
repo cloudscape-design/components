@@ -20,12 +20,14 @@ export default function InternalForm({
   errorIconAriaLabel,
   actions,
   secondaryActions,
-  fullPage = true,
+  variant = 'full-page',
   __internalRootRef,
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
-  const formHeader = header && <div className={clsx(styles.header, fullPage && styles['full-page'])}>{header}</div>;
+  const formHeader = header && (
+    <div className={clsx(styles.header, variant === 'full-page' && styles['full-page'])}>{header}</div>
+  );
   const formContent = (
     <>
       {children && <div className={styles.content}>{children}</div>}
@@ -54,11 +56,12 @@ export default function InternalForm({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>
-      {fullPage ? (
+      {variant === 'full-page' ? (
         <InternalContentLayout header={formHeader}>{formContent}</InternalContentLayout>
       ) : (
         <>
-          {formHeader} {formContent}
+          <>{formHeader}</>
+          <>{formContent}</>
         </>
       )}
     </div>

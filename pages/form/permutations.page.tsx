@@ -62,7 +62,7 @@ const permutations = createPermutations<FormProps>([
         <Button variant="primary">Submit</Button>
       </SpaceBetween>,
     ],
-    fullPage: [false, true],
+    variant: ['full-page', 'embedded'],
   },
 ]);
 
@@ -93,7 +93,7 @@ const secondaryActionsPermutations = createPermutations<FormProps>([
         <Button>Save and close</Button>
       </SpaceBetween>,
     ],
-    fullPage: [false],
+    variant: ['embedded'],
   },
 ]);
 
