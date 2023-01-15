@@ -3,7 +3,7 @@
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { render } from './common';
-import { FlashbarWrapper } from '../../test-utils/dom';
+import { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
