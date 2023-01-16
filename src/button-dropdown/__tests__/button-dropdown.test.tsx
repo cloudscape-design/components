@@ -122,5 +122,14 @@ describe('ButtonDropdown component', () => {
         `[AwsUi] [ButtonDropdown] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello!')".`
       );
     });
+
+    test('should toggle dropdown on clicking the trigger', () => {
+      const wrapper = renderButtonDropdown({ items });
+      const triggerButton = wrapper.findNativeButton().getElement();
+      triggerButton.click();
+      expect(wrapper.findOpenDropdown()).toBeTruthy();
+      triggerButton.click();
+      expect(wrapper.findOpenDropdown()).not.toBeTruthy();
+    });
   });
 });

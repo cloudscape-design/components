@@ -96,7 +96,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * * `editConfig.constraintText` (string) - Constraint text that is displayed below the edit control.
    * * * `editConfig.validation` ((item, value) => string) - A function that allows you to validate the value of the edit control.
    *            Return a string from the function to display an error message. Return `undefined` (or no return) from the function to indicate that the value is valid.
-   *
+   * * * `editConfig.editingCell` ((item, cellContext) => ReactNode) - Determines the display of a cell's content when inline editing is active on a cell;
+   *        You receive the current table row `item` and a `cellContext` object as arguments.
+   *        The `cellContext` object contains the following properties:
+   *  *  * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
+   *  *  * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
   /**
@@ -282,7 +286,6 @@ export namespace TableProps {
   export type TrackBy<T> = string | ((item: T) => string);
 
   export interface CellContext<V> {
-    isEditing?: boolean;
     currentValue: Optional<V>;
     setValue: (value: V | undefined) => void;
   }
@@ -314,6 +317,11 @@ export namespace TableProps {
      * @param value - The current value of the edit control.
      */
     validation?: (item: T, value: Optional<V>) => Optional<string>;
+
+    /**
+     * Determines the display of a cell's content when inline edit is active.
+     */
+    editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;
   }
 
   export type ColumnDefinition<ItemType> = {
@@ -324,7 +332,7 @@ export namespace TableProps {
     minWidth?: number | string;
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
-    cell(item: ItemType, context: CellContext<any>): React.ReactNode;
+    cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
   export type SelectionType = 'single' | 'multi';

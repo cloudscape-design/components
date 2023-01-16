@@ -6,6 +6,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
 import '../../__a11y__/to-validate-a11y';
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const VALUE_WITH_SPECIAL_CHARS = 'Option 4, test"2';
 const defaultOptions: SelectProps.Options = [
@@ -251,6 +252,22 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
 
         await expect(container).toValidateA11y();
       });
+    });
+    test('should display error status icon with provided aria label', () => {
+      const { wrapper } = renderSelect({
+        statusType: 'error',
+        errorText: 'Test error text',
+        errorIconAriaLabel: 'Test error text',
+      });
+
+      wrapper.openDropdown();
+
+      const statusIcon = wrapper
+        .findStatusIndicator({ expandToViewport })!
+        .findByClassName(statusIconStyles.icon)!
+        .getElement();
+      expect(statusIcon).toHaveAttribute('aria-label', 'Test error text');
+      expect(statusIcon).toHaveAttribute('role', 'img');
     });
   });
 

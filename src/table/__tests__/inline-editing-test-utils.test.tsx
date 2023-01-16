@@ -19,30 +19,30 @@ const defaultItems: Item[] = [
 const editableColumns: TableProps.ColumnDefinition<Item>[] = [
   {
     header: 'id',
-    cell: (item, { isEditing }) => {
-      if (isEditing) {
-        return <input type="number" value={item.id} readOnly={true} data-testid={`id-editing-${item.id}`} />;
-      }
+    cell: item => {
       return item.id;
     },
     editConfig: {
       ariaLabel: 'Edit id',
       errorIconAriaLabel: 'Error',
       editIconAriaLabel: 'Edit',
+      editingCell: item => {
+        return <input type="number" value={item.id} readOnly={true} data-testid={`id-editing-${item.id}`} />;
+      },
     },
   },
   {
     header: 'name',
-    cell: (item, { isEditing }) => {
-      if (isEditing) {
-        return <input type="number" value={item.name} readOnly={true} data-testid={`name-editing-${item.name}`} />;
-      }
+    cell: item => {
       return item.name;
     },
     editConfig: {
       ariaLabel: 'Edit id',
       errorIconAriaLabel: 'Error',
       editIconAriaLabel: 'Edit',
+      editingCell: item => {
+        return <input type="number" value={item.name} readOnly={true} data-testid={`name-editing-${item.name}`} />;
+      },
     },
   },
 ];

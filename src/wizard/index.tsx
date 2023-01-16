@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -15,9 +15,8 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
-import { useWizardAnalytics } from './internal/analytics';
+import { trackStartStep, trackNavigate, trackSubmit } from './internal/analytics';
 
 export { WizardProps };
 
@@ -38,7 +37,6 @@ export default function Wizard({
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
-  const { trackStartStep, trackNavigate, trackSubmit } = useWizardAnalytics();
 
   const smallContainer = breakpoint === 'default';
 
@@ -89,9 +87,9 @@ export default function Wizard({
     );
   }
 
-  useEffectOnUpdate(() => {
+  useEffect(() => {
     trackStartStep(actualActiveStepIndex);
-  }, [actualActiveStepIndex, trackStartStep]);
+  }, [actualActiveStepIndex]);
 
   return (
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>

@@ -30,13 +30,11 @@ const TestComponent = () => {
       ariaLabel: 'test-input',
       errorIconAriaLabel: 'error-icon',
       validation: () => (thereBeErrors ? 'there be errors' : undefined),
-    },
-    cell: (item: any, { isEditing, currentValue, setValue }: TableProps.CellContext<string>) =>
-      isEditing ? (
+      editingCell: (item: any, { currentValue, setValue }: TableProps.CellContext<string>) => (
         <input value={currentValue ?? item.test} onChange={() => setValue('test')} />
-      ) : (
-        <span>{currentValue ?? item.test}</span>
       ),
+    },
+    cell: (item: any) => <span>{item.test}</span>,
   };
 
   return (
