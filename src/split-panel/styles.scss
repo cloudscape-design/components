@@ -152,7 +152,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
 }
 
 .slider-wrapper-bottom {
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -218,6 +218,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   :not(.drawer-closed) > .drawer-content-bottom > & {
     background-color: awsui.$color-background-layout-panel-content;
     border-bottom: awsui.$border-panel-header-width solid awsui.$color-border-divider-default;
+    margin-top: -$slider-width - 2px; // the height of the slider
   }
 }
 
