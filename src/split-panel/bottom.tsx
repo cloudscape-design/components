@@ -14,7 +14,6 @@ interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   state: TransitionStatus;
   transitioningElementRef: React.Ref<any>;
   appLayoutMaxWidth: React.CSSProperties | undefined;
-  isStickyHeader: () => boolean;
 }
 
 export function SplitPanelContentBottom({
@@ -30,7 +29,6 @@ export function SplitPanelContentBottom({
   appLayoutMaxWidth,
   panelHeaderId,
   onToggle,
-  isStickyHeader,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
   const {
@@ -41,6 +39,7 @@ export function SplitPanelContentBottom({
     contentWrapperPaddings,
     isMobile,
     reportHeaderHeight,
+    headerShouldStick,
   } = useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
 
@@ -82,7 +81,7 @@ export function SplitPanelContentBottom({
         <div
           className={clsx(
             styles['pane-header-wrapper-bottom'],
-            { [styles['sticky-header']]: isStickyHeader() },
+            { [styles['sticky-header']]: headerShouldStick() },
             centeredMaxWidthClasses
           )}
           ref={headerRef}

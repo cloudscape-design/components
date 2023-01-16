@@ -326,7 +326,7 @@ const OldAppLayout = React.forwardRef(
       onPreferencesChange: onSplitPanelPreferencesSet,
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
-      isStickyHeader: () => {
+      headerShouldStick: () => {
         return document.documentElement.clientHeight - headerHeight - footerHeight > CONSTRAINED_PAGE_HEIGHT;
       },
     };

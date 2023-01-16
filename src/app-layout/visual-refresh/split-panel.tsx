@@ -68,7 +68,8 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     openButtonAriaLabel,
     setOpenButtonAriaLabel,
     lastInteraction: splitPanelLastInteraction,
-    isStickyHeader: () => document.documentElement.clientHeight - headerHeight - footerHeight > CONSTRAINED_PAGE_HEIGHT,
+    headerShouldStick: () =>
+      document.documentElement.clientHeight - headerHeight - footerHeight > CONSTRAINED_PAGE_HEIGHT,
   };
 
   return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;
