@@ -31,8 +31,8 @@ describe('Dropdown footer', () => {
 
   test('adds correct aria attributes', () => {
     const { wrapper } = renderComponent(<DropdownFooter />);
-    const element = wrapper.find('div')!.getElement();
-    expect(element).toHaveAttribute('aria-live', 'polite');
-    expect(element).toHaveAttribute('aria-atomic', 'true');
+    const element = wrapper.find('span')!.getElement();
+    expect(element.firstElementChild).toHaveAttribute('aria-live', 'polite');
+    expect(element.firstElementChild).toHaveAttribute('aria-atomic', 'true');
   });
 });
