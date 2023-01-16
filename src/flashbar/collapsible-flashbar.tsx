@@ -25,7 +25,7 @@ export { FlashbarProps };
 
 const maxUnstackedItems = 1;
 
-export default function StackableFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
+export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
   const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,

@@ -14,7 +14,7 @@ import { useFlashbar } from './common';
 
 export { FlashbarProps };
 
-export default function NonStackableFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
   const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,

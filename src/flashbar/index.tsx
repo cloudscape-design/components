@@ -3,8 +3,8 @@
 import React, { useEffect } from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { FlashbarProps, StackedFlashbarProps } from './interfaces';
-import StackableFlashbar from './stackable-flashbar';
-import NonStackableFashbar from './non-stackable-flashbar';
+import CollapsibleFlashbar from './collapsible-flashbar';
+import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
 import { sendRenderMetric } from './internal/analytics';
 
@@ -18,9 +18,9 @@ export default function Flashbar(props: FlashbarProps | StackedFlashbarProps) {
   }, [props.items]);
 
   if (isStackedFlashbar(props)) {
-    return <StackableFlashbar {...props} />;
+    return <CollapsibleFlashbar {...props} />;
   } else {
-    return <NonStackableFashbar {...props} />;
+    return <NonCollapsibleFlashbar {...props} />;
   }
 }
 
