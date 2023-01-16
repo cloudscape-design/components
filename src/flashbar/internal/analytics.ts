@@ -25,3 +25,11 @@ export const sendToggleMetric = (itemsCount: number, expanded: boolean) => {
     eventValue: itemsCount.toString(),
   });
 };
+
+export const sendDismissMetric = (itemType: string) => {
+  Metrics.sendPanoramaMetric({
+    eventContext,
+    eventType: 'dismiss',
+    eventValue: itemType,
+  });
+};

@@ -14,6 +14,8 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import LiveRegion from '../internal/components/live-region';
 import { ButtonProps } from '../button/interfaces';
 
+import { sendDismissMetric } from './internal/analytics';
+
 const FOCUS_THROTTLE_DELAY = 2000;
 
 const ICON_TYPES = {
@@ -116,18 +118,8 @@ export const Flash = React.forwardRef(
     const announcement = [statusIconAriaLabel, header, content].filter(Boolean).join(' ');
 
     const handleDismiss: ButtonProps['onClick'] = event => {
-      if (onDismiss) {
-        console.log('Simulated event', {
-          eventContext: 'cwa_flashbar',
-          eventType: 'dismiss',
-          eventValue: effectiveType,
-          eventDetail: {
-            content,
-          },
-        });
-
-        onDismiss(event);
-      }
+      sendDismissMetric(effectiveType);
+      onDismiss && onDismiss(event);
     };
 
     return (

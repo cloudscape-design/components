@@ -8,6 +8,12 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { render } from './common';
 
+declare global {
+  interface Window {
+    panorama?: any;
+  }
+}
+
 const noop = () => void 0;
 const toggleButtonSelector = 'button';
 
@@ -328,6 +334,146 @@ describe('Analytics', () => {
     const { rerender } = reactRender(<Flashbar items={items} />);
     rerender(<Flashbar items={items} />);
     expect(window.panorama).toBeCalledTimes(1);
+  });
+
+  it('sends an expand metric when collapsed', () => {
+    const wrapper = render(
+      <Flashbar
+        {...{ stackItems: true }}
+        items={[
+          { type: 'error', header: 'Error', content: 'There was an error' },
+          { type: 'success', header: 'Success', content: 'Everything went fine' },
+        ]}
+      />
+    );
+    window.panorama?.mockClear(); // clear render event
+
+    wrapper.find(toggleButtonSelector)!.click();
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_flashbar',
+        eventType: 'expand',
+        eventValue: '2',
+        timestamp: expect.any(Number),
+      })
+    );
+  });
+
+  it('sends a collapse metric when collapsed', () => {
+    const wrapper = render(
+      <Flashbar
+        {...{ stackItems: true }}
+        items={[
+          { type: 'error', header: 'Error', content: 'There was an error' },
+          { type: 'success', header: 'Success', content: 'Everything went fine' },
+        ]}
+      />
+    );
+    wrapper.find(toggleButtonSelector)!.click(); // expand
+    window.panorama?.mockClear(); // clear previous events
+
+    wrapper.find(toggleButtonSelector)!.click(); // collapse
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_flashbar',
+        eventType: 'collapse',
+        eventValue: '2',
+        timestamp: expect.any(Number),
+      })
+    );
+  });
+});
+
+describe('Analytics', () => {
+  beforeEach(() => {
+    window.panorama = () => {};
+    jest.spyOn(window, 'panorama');
+  });
+  it('does not send a metric when an empty array is provided', () => {
+    render(<Flashbar items={[]} />);
+    expect(window.panorama).toBeCalledTimes(0);
+  });
+
+  it('sends a render metric when items are provided', () => {
+    render(
+      <Flashbar
+        items={[
+          { type: 'error', header: 'Error', content: 'There was an error' },
+          { type: 'success', header: 'Success', content: 'Everything went fine' },
+        ]}
+      />
+    );
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_flashbar',
+        eventType: 'render',
+        eventValue: '2',
+        eventDetail: expect.any(String),
+        timestamp: expect.any(Number),
+      })
+    );
+  });
+
+  it('sends a render metric when items are provided', () => {
+    render(
+      <Flashbar
+        {...{ stackItems: true }}
+        items={[
+          { type: 'error', header: 'Error', content: 'There was an error' },
+          { type: 'success', header: 'Success', content: 'Everything went fine' },
+        ]}
+      />
+    );
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_flashbar',
+        eventType: 'render',
+        eventValue: '2',
+        eventDetail: expect.any(String),
+        timestamp: expect.any(Number),
+      })
+    );
+  });
+
+  it('does not send duplicate render metrics on multiple renders', () => {
+    const items: FlashbarProps['items'] = [
+      { type: 'error', header: 'Error', content: 'There was an error' },
+      { type: 'success', header: 'Success', content: 'Everything went fine' },
+    ];
+
+    const { rerender } = reactRender(<Flashbar items={items} />);
+    rerender(<Flashbar items={items} />);
+    expect(window.panorama).toBeCalledTimes(1);
+  });
+
+  it('sends a dismiss metric when a flash item is dismissed', () => {
+    const wrapper = render(
+      <Flashbar items={[{ type: 'error', header: 'Error', content: 'There was an error', dismissible: true }]} />
+    );
+    window.panorama?.mockClear(); // clear render event
+    wrapper.findItems()[0].findDismissButton()!.click();
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_flashbar',
+        eventType: 'dismiss',
+        eventValue: 'error',
+        timestamp: expect.any(Number),
+      })
+    );
   });
 
   it('sends an expand metric when collapsed', () => {
