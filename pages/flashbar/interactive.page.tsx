@@ -58,9 +58,13 @@ export default function FlashbarPermutations() {
     ? {
         stackItems: true,
         i18nStrings: {
-          collapseButtonAriaLabel: 'Show less notifications',
-          expandButtonAriaLabel: (itemCount: number) => `Show all ${itemCount} notifications`,
-          toggleButtonText: () => `Notifications`,
+          ariaLabel: 'Notifications',
+          toggleButtonText: 'Notifications',
+          toggleButtonAriaLabel: 'View all notifications',
+          errorCountAriaLabel: 'Error',
+          successCountAriaLabel: 'Success',
+          infoCountAriaLabel: 'Information',
+          inProgressCountAriaLabel: 'In progress',
         },
       }
     : {};
