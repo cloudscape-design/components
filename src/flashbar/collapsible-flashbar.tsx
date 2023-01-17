@@ -47,8 +47,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const [listTop, setListTop] = useState<number>();
 
   const flashbarElementId = useUniqueId('flashbar');
-  const statusElementId = useUniqueId('toggle');
-  const typeCountElementId = useUniqueId('type-count');
+  const itemCountElementId = useUniqueId('item-count');
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
@@ -206,7 +205,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       )}
       id={flashbarElementId}
       aria-label={ariaLabel}
-      aria-describedby={statusElementId}
+      aria-describedby={itemCountElementId}
       style={
         !isFlashbarStackExpanded || transitioning
           ? {
@@ -306,9 +305,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span aria-live="polite" className={styles.status} id={statusElementId} role="status">
+            <span aria-live="polite" className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
-              <span className={styles['types-count']}>
+              <span className={styles['types-count']} id={itemCountElementId}>
                 {!excludedTypes.has('error') && (!restProps.excludeEmptyCounts || !!countByType.error) && (
                   <NotificationTypeCount
                     iconName="status-negative"
@@ -348,7 +347,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             </span>
             <button
               aria-controls={flashbarElementId}
-              aria-describedby={typeCountElementId}
+              aria-describedby={itemCountElementId}
               aria-expanded={isFlashbarStackExpanded}
               aria-label={i18nStrings?.toggleButtonAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
