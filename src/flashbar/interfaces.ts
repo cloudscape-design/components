@@ -60,7 +60,7 @@ export interface FlashbarProps extends BaseComponentProps {
 export type FlashType = FlashbarProps.Type | 'progress';
 
 export interface StackedFlashbarProps {
-  excludeTypes: [FlashType];
+  excludeTypes?: [FlashType];
   stackItems: true;
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
   i18nStrings?: StackedFlashbarProps.I18nStrings;

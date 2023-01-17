@@ -4,19 +4,17 @@ import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { render } from './common';
 import { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import { FlashbarProps, StackedFlashbarProps } from '../interfaces';
+
+const sampleItems: Record<string, FlashbarProps.MessageDefinition> = {
+  error: { type: 'error', header: 'Error', content: 'There was an error' },
+  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
+};
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
     it('shows only the header and content of the last item in the array when collapsed', () => {
-      const wrapper = render(
-        <Flashbar
-          {...{ stackItems: true }}
-          items={[
-            { type: 'error', header: 'Error', content: 'There was an error' },
-            { type: 'success', header: 'Success', content: 'Everything went fine' },
-          ]}
-        />
-      );
+      const wrapper = render(<Flashbar {...{ stackItems: true }} items={[sampleItems.error, sampleItems.success]} />);
       const items = wrapper.findItems();
       expect(items.length).toBe(1);
       expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
@@ -33,7 +31,7 @@ describe('Collapsible Flashbar', () => {
               toggleButtonAriaLabel: 'Collapsed ARIA label',
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const button = findToggleElement(wrapper);
@@ -52,10 +50,7 @@ describe('Collapsible Flashbar', () => {
           {...{
             stackItems: true,
           }}
-          items={[
-            { type: 'error', header: 'Error', content: 'There was an error' },
-            { type: 'success', header: 'Success', content: 'Everything went fine' },
-          ]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const items = wrapper.findItems();
@@ -92,7 +87,7 @@ describe('Collapsible Flashbar', () => {
               toggleButtonAriaLabel: 'Toggle button ARIA label',
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const list = wrapper.find('ul')!;
@@ -110,7 +105,7 @@ describe('Collapsible Flashbar', () => {
               ariaLabel: expectedAriaLabel,
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const list = wrapper.find('ul')!;
@@ -122,15 +117,7 @@ describe('Collapsible Flashbar', () => {
       const findAccessibleListItems = (wrapper: FlashbarWrapper) =>
         wrapper.findAll('li').filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
 
-      const wrapper = render(
-        <Flashbar
-          {...{ stackItems: true }}
-          items={[
-            { type: 'error', header: 'Error', content: 'There was an error' },
-            { type: 'success', header: 'Success', content: 'Everything went fine' },
-          ]}
-        />
-      );
+      const wrapper = render(<Flashbar {...{ stackItems: true }} items={[sampleItems.error, sampleItems.success]} />);
       const items = findAccessibleListItems(wrapper);
       expect(items.length).toBe(1);
     });
@@ -145,7 +132,7 @@ describe('Collapsible Flashbar', () => {
               toggleButtonAriaLabel: 'Toggle button ARIA label',
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const button = findToggleButtonElement(wrapper);
@@ -162,7 +149,7 @@ describe('Collapsible Flashbar', () => {
               toggleButtonAriaLabel: 'Toggle button ARIA label',
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const button = findToggleButtonElement(wrapper)!;
@@ -182,7 +169,7 @@ describe('Collapsible Flashbar', () => {
               toggleButtonAriaLabel: 'Toggle button ARIA label',
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const listId = wrapper.find('ul')!.getElement().id;
@@ -191,7 +178,7 @@ describe('Collapsible Flashbar', () => {
       expect(button).toHaveAttribute('aria-controls', listId);
     });
 
-    it('applies aria-describedby to the list referencing the notification count by type', () => {
+    it('applies aria-describedby attribute to the list, referencing the item counter', () => {
       const expectedAriaLabel = 'Custom text';
       const wrapper = render(
         <Flashbar
@@ -201,15 +188,21 @@ describe('Collapsible Flashbar', () => {
               ariaLabel: expectedAriaLabel,
             },
           }}
-          items={[{ type: 'error' }, { type: 'success' }]}
+          items={[sampleItems.error, sampleItems.success]}
         />
       );
       const list = wrapper.find('ul')!;
       expect(list).toBeTruthy();
-      const itemCountId = findItemCount(wrapper)!.getElement().id;
+      const itemCountId = findItemCounter(wrapper)!.getElement().id;
       expect(itemCountId).toBeTruthy();
       expect(list.getElement().getAttribute('aria-describedby')).toEqual(itemCountId);
     });
+  });
+
+  it('announces updates to the item counter with aria-live', () => {
+    const flashbar = renderFlashbar();
+    const counter = findItemCounter(flashbar)!.getElement();
+    expect(counter).toHaveAttribute('aria-live', 'polite');
   });
 });
 
@@ -226,6 +219,32 @@ function findToggleButtonElement(flashbar: FlashbarWrapper): HTMLElement | undef
   return findToggleElement(flashbar)?.querySelector('button') || undefined;
 }
 
-function findItemCount(flashbar: FlashbarWrapper) {
+function findItemCounter(flashbar: FlashbarWrapper) {
   return flashbar.find('[role="status"]');
+}
+
+const defaultStrings = {
+  ariaLabel: 'Notifications',
+  toggleButtonText: 'Notifications',
+  toggleButtonAriaLabel: 'View all notifications',
+  errorCountAriaLabel: 'Error',
+  warningCountAriaLabel: 'Warning',
+  successCountAriaLabel: 'Success',
+  infoCountAriaLabel: 'Information',
+  inProgressCountAriaLabel: 'In progress',
+};
+
+const defaultProps = {
+  stackItems: true,
+  i18nStrings: defaultStrings,
+};
+
+function renderFlashbar(
+  customProps: Omit<StackedFlashbarProps, 'stackItems'> = {
+    items: [sampleItems.error, sampleItems.success],
+  }
+) {
+  const { items, ...restProps } = customProps;
+  const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
+  return render(<Flashbar {...props} items={items} />);
 }

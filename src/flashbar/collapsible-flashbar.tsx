@@ -306,7 +306,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span className={styles.status} role="status" id={statusElementId}>
+            <span aria-live="polite" className={styles.status} id={statusElementId} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']}>
                 {!excludedTypes.has('error') && (!restProps.excludeEmptyCounts || !!countByType.error) && (
@@ -366,8 +366,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
 const NotificationTypeCount = ({ iconName, label, count }: { iconName: Name; label?: string; count: number }) => (
   <span className={styles['type-count']}>
-    <span aria-label={label} title={label}>
-      <InternalIcon name={iconName} />
+    <span aria-label={label} title={label} role="img">
+      <InternalIcon name={iconName} aria-hidden="true" />
     </span>
     <span className={styles['count-number']}>{count}</span>
   </span>
