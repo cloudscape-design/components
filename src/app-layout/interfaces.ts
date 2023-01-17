@@ -18,7 +18,7 @@ export interface AppLayoutProps extends BaseComponentProps {
 
   /**
    * Activates a backwards-compatibility mode for applications with non-fixed headers and footers.
-   * @deprecated This layout is being phased out and may miss some features
+   * @deprecated This layout is being phased out and may miss some features.
    */
   disableBodyScroll?: boolean;
 
