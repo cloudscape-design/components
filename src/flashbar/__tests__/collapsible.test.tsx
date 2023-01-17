@@ -23,9 +23,9 @@ describe('Collapsible Flashbar', () => {
           toggleButtonText: customToggleButtonText,
         },
       });
-      const button = findToggleElement(flashbar);
-      expect(button).toBeTruthy();
-      expect(button).toHaveTextContent(customToggleButtonText);
+      const toggleElement = findToggleElement(flashbar);
+      expect(toggleElement).toBeTruthy();
+      expect(toggleElement).toHaveTextContent(customToggleButtonText);
     });
 
     it('does not show toggle element if there is only one item', () => {
@@ -79,15 +79,20 @@ describe('Collapsible Flashbar', () => {
     });
 
     it('hides collapsed items from the accessibility tree', () => {
-      const findAccessibleListItems = (wrapper: FlashbarWrapper) =>
-        wrapper.findAll('li').filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
-
       const flashbar = renderFlashbar();
-      const items = findAccessibleListItems(flashbar);
-      expect(items.length).toBe(1);
+      const accessibleItems = flashbar
+        .findAll('li')
+        .filter(item => item.getElement().getAttribute('aria-hidden') !== 'true');
+      expect(accessibleItems.length).toBe(1);
     });
 
-    it('applies desired ARIA label to toggle button', () => {
+    it('does not render outer toggle element as HTML button element', () => {
+      const flashbar = renderFlashbar();
+      const toggle = findToggleElement(flashbar);
+      expect(toggle!.tagName).not.toEqual('BUTTON');
+    });
+
+    it('applies desired ARIA label to toggle element', () => {
       const flashbar = renderFlashbar({
         i18nStrings: {
           toggleButtonAriaLabel: 'Toggle button ARIA label',
@@ -137,7 +142,7 @@ describe('Collapsible Flashbar', () => {
       expect(counter).toHaveAttribute('aria-live', 'polite');
     });
 
-    it('renders the toggle element text as H2 element', () => {
+    it('renders the toggle element header as H2 element', () => {
       const customToggleButtonText = 'Custom text';
       const flashbar = renderFlashbar({
         i18nStrings: {
