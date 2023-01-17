@@ -32,6 +32,7 @@ export interface SplitPanelContextProps {
   reportHeaderHeight: (pixels: number) => void;
   openButtonAriaLabel?: string;
   setOpenButtonAriaLabel?: (value: string) => void;
+  headerShouldStick: () => boolean;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);
