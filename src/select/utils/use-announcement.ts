@@ -55,7 +55,16 @@ export function useAnnouncement<Option extends OptionHolder>({
   }
 
   // Use default renderer with selected ARIA label if defined and relevant.
+  /**
+   * The replace method on the end will remove all characters "=", "!=", "<", ">", "<=", ">=", ":"
+   * from the announcement, not just specific instances of them. This was added to avoid screen
+   * readers reading "equals equals" and similarly confusing combinations of operators
+   */
   const selectedAnnouncement = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
   const defaultDescription = defaultOptionDescription(option, group);
-  return [selectedAnnouncement, defaultDescription].filter(Boolean).join(' ');
+  return [selectedAnnouncement, defaultDescription]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/[=!<>:]/g, '')
+    .trim();
 }

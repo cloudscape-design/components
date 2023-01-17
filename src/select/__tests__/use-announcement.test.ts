@@ -38,6 +38,15 @@ const options = [
       },
     ],
   },
+  {
+    label: 'Group 3',
+    options: [
+      {
+        label: 'Child =',
+        value: 'should-not-be-announced-5',
+      },
+    ],
+  },
 ];
 
 const { flatOptions, parentMap } = flattenOptions(options);
@@ -91,6 +100,18 @@ describe('useAnnouncement', () => {
       },
     });
     expect(hook.result.current).toEqual('Selected Group 1 Child 1');
+  });
+
+  test('announcements with selected highlighted item should not include operator characters', () => {
+    const hook = renderHook(useAnnouncement, {
+      initialProps: {
+        getParent,
+        selectedAriaLabel: 'Selected',
+        highlightedOption: flatOptions[8],
+        announceSelected: true,
+      },
+    });
+    expect(hook.result.current).toEqual('Selected Group 3 Child');
   });
 
   test('should return custom announcement string when renderHighlightedAriaLive is provided', () => {
