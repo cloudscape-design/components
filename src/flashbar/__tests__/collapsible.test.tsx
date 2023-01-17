@@ -17,15 +17,15 @@ describe('Collapsible Flashbar', () => {
     });
 
     it('shows toggle element with desired text', () => {
+      const customToggleButtonText = 'Custom text';
       const flashbar = renderFlashbar({
         i18nStrings: {
-          toggleButtonText: 'Custom text',
-          toggleButtonAriaLabel: 'Collapsed ARIA label',
+          toggleButtonText: customToggleButtonText,
         },
       });
       const button = findToggleElement(flashbar);
       expect(button).toBeTruthy();
-      expect(button).toHaveTextContent('Custom text');
+      expect(button).toHaveTextContent(customToggleButtonText);
     });
 
     it('does not show toggle element if there is only one item', () => {
@@ -60,27 +60,22 @@ describe('Collapsible Flashbar', () => {
 
   describe('Accessibility', () => {
     it('renders items in an unordered list', () => {
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          toggleButtonText: 'Custom text',
-          toggleButtonAriaLabel: 'Toggle button ARIA label',
-        },
-      });
+      const flashbar = renderFlashbar();
       const list = flashbar.find('ul')!;
       expect(list).toBeTruthy();
       expect(list.findAll('li')).toHaveLength(2);
     });
 
     it('applies ARIA label to the unordered list', () => {
-      const expectedAriaLabel = 'Custom text';
+      const customAriaLabel = 'Custom text';
       const flashbar = renderFlashbar({
         i18nStrings: {
-          ariaLabel: expectedAriaLabel,
+          ariaLabel: customAriaLabel,
         },
       });
       const list = flashbar.find('ul')!;
       expect(list).toBeTruthy();
-      expect(list.getElement().getAttribute('aria-label')).toEqual(expectedAriaLabel);
+      expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
     });
 
     it('hides collapsed items from the accessibility tree', () => {
@@ -95,7 +90,6 @@ describe('Collapsible Flashbar', () => {
     it('applies desired ARIA label to toggle button', () => {
       const flashbar = renderFlashbar({
         i18nStrings: {
-          toggleButtonText: 'Custom text',
           toggleButtonAriaLabel: 'Toggle button ARIA label',
         },
       });
@@ -104,12 +98,7 @@ describe('Collapsible Flashbar', () => {
     });
 
     it('applies aria-expanded attribute to toggle button', () => {
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          toggleButtonText: 'Custom text',
-          toggleButtonAriaLabel: 'Toggle button ARIA label',
-        },
-      });
+      const flashbar = renderFlashbar();
       const button = findToggleButtonElement(flashbar)!;
       expect(button).toHaveAttribute('aria-expanded', 'false');
 
@@ -118,12 +107,7 @@ describe('Collapsible Flashbar', () => {
     });
 
     it('applies aria-controls attribute to toggle button referring to the unordered list', () => {
-      const flashbar = renderFlashbar({
-        i18nStrings: {
-          toggleButtonText: 'Custom text',
-          toggleButtonAriaLabel: 'Toggle button ARIA label',
-        },
-      });
+      const flashbar = renderFlashbar();
       const listId = flashbar.find('ul')!.getElement().id;
       expect(listId).toBeTruthy();
       const button = findToggleButtonElement(flashbar);
