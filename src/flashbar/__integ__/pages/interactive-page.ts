@@ -24,8 +24,13 @@ export class FlashbarInteractivePage extends BasePageObject {
     await this.click('[data-id="add-multiple"]');
   }
 
-  async toggleStacking() {
+  async toggleCollapsibleFeature() {
     await this.click('[data-id="stack-items"]');
+  }
+
+  async toggleCollapsedState() {
+    const selector = createWrapper().findFlashbar().findByClassName(selectors.toggle).toSelector();
+    await this.click(selector);
   }
 
   findFlashes() {
