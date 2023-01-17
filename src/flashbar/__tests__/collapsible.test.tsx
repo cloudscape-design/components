@@ -138,12 +138,12 @@ describe('Collapsible Flashbar', () => {
       expect(itemCountId).toBeTruthy();
       expect(list.getElement().getAttribute('aria-describedby')).toEqual(itemCountId);
     });
-  });
 
-  it('announces updates to the item counter with aria-live', () => {
-    const flashbar = renderFlashbar();
-    const counter = findItemCounter(flashbar)!.getElement();
-    expect(counter).toHaveAttribute('aria-live', 'polite');
+    it('announces updates to the item counter with aria-live', () => {
+      const flashbar = renderFlashbar();
+      const counter = findItemCounter(flashbar)!.getElement();
+      expect(counter).toHaveAttribute('aria-live', 'polite');
+    });
   });
 });
 
