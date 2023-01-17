@@ -147,6 +147,23 @@ describe('Collapsible Flashbar', () => {
       const h2 = findToggleElement(flashbar)!.querySelector('h2');
       expect(h2).toHaveTextContent(customToggleButtonText);
     });
+
+    it('applies ARIA labels and title attributes to the item counter', () => {
+      const customLabels = {
+        errorCountAriaLabel: 'Custom error ARIA label',
+        successCountAriaLabel: 'Custom success ARIA label',
+        infoCountAriaLabel: 'Custom info ARIA label',
+        inProgressCountAriaLabel: 'Custom progress ARIA label',
+        warningCountAriaLabel: 'Custom warning ARIA label',
+      };
+      const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
+      const innerCounter = findInnerCounterElement(flashbar);
+      for (const ariaLabel of Object.values(customLabels)) {
+        const labeledElement = innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`);
+        expect(labeledElement).toBeTruthy();
+        expect(labeledElement).toHaveAttribute('title', ariaLabel);
+      }
+    });
   });
 });
 
