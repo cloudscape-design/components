@@ -63,6 +63,7 @@ export default function FlashbarPermutations() {
           toggleButtonAriaLabel: 'View all notifications',
           errorCountAriaLabel: 'Error',
           successCountAriaLabel: 'Success',
+          warningCountAriaLabel: 'Warning',
           infoCountAriaLabel: 'Information',
           inProgressCountAriaLabel: 'In progress',
         },
