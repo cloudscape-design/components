@@ -91,7 +91,7 @@ export interface DateRangePickerBaseProps {
    *
    * Default: the user's current time offset as provided by the browser.
    *
-   * @deprecated Use getTimeOffset instead.
+   * @deprecated Use `getTimeOffset` instead.
    */
   timeOffset?: number;
 
