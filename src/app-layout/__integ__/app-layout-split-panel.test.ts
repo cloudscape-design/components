@@ -4,7 +4,6 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
-import styles from '../../../lib/components/split-panel/styles.selectors.js';
 import { viewports } from './constants';
 
 const wrapper = createWrapper().findAppLayout();
@@ -172,32 +171,6 @@ test(
     expect((await page.getSplitPanelSize()).height).toEqual(160);
     await page.dragResizerTo({ x: 0, y: 0 });
     expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(277);
-  })
-);
-
-test(
-  'should split panel header position NOT be fixed for constrained heights',
-  setupTest(async page => {
-    await page.openPanel();
-    const { top: topBeforeScroll } = await page.getBoundingBox(
-      wrapper.findByClassName(styles['pane-header-wrapper-bottom']).toSelector()
-    );
-    await page.elementScrollTo(wrapper.findByClassName(styles['drawer-content-bottom']).toSelector(), { top: 10 });
-    const { top: topAfterScroll } = await page.getBoundingBox(
-      wrapper.findByClassName(styles['pane-header-wrapper-bottom']).toSelector()
-    );
-    expect(topAfterScroll).toEqual(topBeforeScroll);
-
-    await page.setWindowSize({ width: 680, height: 360 });
-    await page.elementScrollTo(wrapper.findByClassName(styles['drawer-content-bottom']).toSelector(), { top: 0 });
-    const { top: topBeforeScrollOnSmallScreen } = await page.getBoundingBox(
-      wrapper.findByClassName(styles['pane-header-wrapper-bottom']).toSelector()
-    );
-    await page.elementScrollTo(wrapper.findByClassName(styles['drawer-content-bottom']).toSelector(), { top: 50 });
-    const { top: topAfterScrollOnSmallScreen } = await page.getBoundingBox(
-      wrapper.findByClassName(styles['pane-header-wrapper-bottom']).toSelector()
-    );
-    expect(topAfterScrollOnSmallScreen).toEqual(topBeforeScrollOnSmallScreen - 50);
   })
 );
 
