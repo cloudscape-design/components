@@ -52,7 +52,7 @@ describeEachAppLayout(() => {
     },
   ].forEach(({ openProp, hideProp, handler, findElement, findLandmarks, findToggle, findClose }) => {
     describe(`${openProp} prop`, () => {
-      test(`Should call handler on open`, () => {
+      test(`Should call handler once on open`, () => {
         const onToggle = jest.fn();
         const props = {
           [openProp]: false,
@@ -61,10 +61,11 @@ describeEachAppLayout(() => {
         const { wrapper } = renderComponent(<AppLayout {...props} />);
 
         findToggle(wrapper).click();
+        expect(onToggle).toHaveBeenCalledTimes(1);
         expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
       });
 
-      test(`Should call handler on close`, () => {
+      test(`Should call handler once on close`, () => {
         const onToggle = jest.fn();
         const props = {
           [openProp]: true,
@@ -73,6 +74,7 @@ describeEachAppLayout(() => {
         const { wrapper } = renderComponent(<AppLayout {...props} />);
 
         findClose(wrapper).click();
+        expect(onToggle).toHaveBeenCalledTimes(1);
         expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
       });
 

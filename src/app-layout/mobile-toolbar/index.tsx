@@ -26,7 +26,7 @@ const MobileToggle = React.forwardRef(
         className={clsx(styles['mobile-toggle'])}
         aria-hidden={disabled}
         aria-label={mainLabel}
-        onClick={onClick}
+        onClick={e => e.target === e.currentTarget && onClick()}
       >
         <AppLayoutButton
           ref={ref}
