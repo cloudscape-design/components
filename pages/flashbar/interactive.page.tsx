@@ -51,12 +51,12 @@ export default function FlashbarPermutations() {
     setItems(items => [...items.slice(0, items.length - 1), generateItem(type, dismiss, hasHeader)]);
   };
 
-  const [stackItems, setStackItems] = useState(false);
+  const [collapsible, setCollapsible] = useState(false);
   const [items, setItems] = useState(() => [...range(5).map(() => generateItem('info', dismiss, false, true))]);
 
-  const privateProps = stackItems
+  const privateProps = collapsible
     ? {
-        stackItems: true,
+        collapsible: true,
         i18nStrings: {
           ariaLabel: 'Notifications',
           toggleButtonText: 'Notifications',
@@ -74,7 +74,7 @@ export default function FlashbarPermutations() {
     <>
       <h1>Flashbar dismissal test</h1>
       <SpaceBetween size="xs">
-        <Toggle checked={stackItems} onChange={({ detail }) => setStackItems(detail.checked)}>
+        <Toggle checked={collapsible} onChange={({ detail }) => setCollapsible(detail.checked)}>
           <span data-id="stack-items">Stack items</span>
         </Toggle>
         <SpaceBetween direction="horizontal" size="xs">

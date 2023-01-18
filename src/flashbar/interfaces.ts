@@ -59,10 +59,9 @@ export interface FlashbarProps extends BaseComponentProps {
 
 export type FlashType = FlashbarProps.Type | 'progress';
 
-export interface StackedFlashbarProps {
+export interface StackedFlashbarProps extends FlashbarProps {
   excludeTypes?: [FlashType];
-  stackItems: true;
-  items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+  collapsible: boolean;
   i18nStrings?: StackedFlashbarProps.I18nStrings;
   excludeEmptyCounts?: boolean;
 }
@@ -72,10 +71,10 @@ export namespace StackedFlashbarProps {
     ariaLabel: string;
     toggleButtonAriaLabel: string;
     toggleButtonText: string;
-    errorCountAriaLabel: string;
-    warningCountAriaLabel: string;
-    successCountAriaLabel: string;
-    infoCountAriaLabel: string;
-    inProgressCountAriaLabel: string;
+    errorCountAriaLabel?: string;
+    warningCountAriaLabel?: string;
+    successCountAriaLabel?: string;
+    infoCountAriaLabel?: string;
+    inProgressCountAriaLabel?: string;
   }
 }

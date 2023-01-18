@@ -238,13 +238,13 @@ const defaultStrings = {
 const defaultItems = [sampleItems.error, sampleItems.success];
 
 const defaultProps = {
-  stackItems: true,
+  collapsible: true,
   i18nStrings: defaultStrings,
 };
 
 function renderFlashbar(
   customProps: Partial<
-    Omit<StackedFlashbarProps, 'i18nStrings' | 'stackItems'> & {
+    Omit<StackedFlashbarProps, 'i18nStrings' | 'collapsible'> & {
       i18nStrings?: Partial<StackedFlashbarProps.I18nStrings>;
     }
   > = {

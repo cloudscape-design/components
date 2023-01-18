@@ -304,7 +304,7 @@ describe('Analytics', () => {
   it('sends a render metric when items are provided', () => {
     render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
@@ -339,7 +339,7 @@ describe('Analytics', () => {
   it('sends an expand metric when collapsed', () => {
     const wrapper = render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
@@ -365,7 +365,7 @@ describe('Analytics', () => {
   it('sends a collapse metric when collapsed', () => {
     const wrapper = render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
@@ -425,7 +425,7 @@ describe('Analytics', () => {
   it('sends a render metric when items are provided', () => {
     render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
@@ -479,7 +479,7 @@ describe('Analytics', () => {
   it('sends an expand metric when collapsed', () => {
     const wrapper = render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
@@ -505,7 +505,7 @@ describe('Analytics', () => {
   it('sends a collapse metric when collapsed', () => {
     const wrapper = render(
       <Flashbar
-        {...{ stackItems: true }}
+        {...{ collapsible: true }}
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
           { type: 'success', header: 'Success', content: 'Everything went fine' },
