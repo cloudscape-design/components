@@ -19,5 +19,4 @@ export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   onPreferencesChange: jest.fn(),
   reportSize: jest.fn(),
   reportHeaderHeight: jest.fn(),
-  headerShouldStick: jest.fn(),
 };
