@@ -6,7 +6,7 @@ import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
-import { render } from './common';
+import { createFlashbarWrapper } from './common';
 
 declare global {
   interface Window {
@@ -24,24 +24,26 @@ afterEach(() => {
 
 describe('Flashbar component', () => {
   test('renders no flash when items are empty', () => {
-    const wrapper = render(<Flashbar items={[]} />);
+    const wrapper = createFlashbarWrapper(<Flashbar items={[]} />);
     expect(wrapper.findItems().length).toBe(0);
   });
 
   test('renders correct count of flash messages', () => {
-    const wrapper = render(<Flashbar items={[{ header: 'Item 1' }, { header: 'Item 2' }, { header: 'Item 3' }]} />);
+    const wrapper = createFlashbarWrapper(
+      <Flashbar items={[{ header: 'Item 1' }, { header: 'Item 2' }, { header: 'Item 3' }]} />
+    );
     expect(wrapper.findItems().length).toBe(3);
   });
 
   test('dismiss buttons', () => {
     {
-      const wrapper = render(
+      const wrapper = createFlashbarWrapper(
         <Flashbar items={[{ content: 'Non-dismissible flash', buttonText: 'Action button', onButtonClick: noop }]} />
       );
       expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
     }
     {
-      const wrapper = render(
+      const wrapper = createFlashbarWrapper(
         <Flashbar
           items={[
             { content: 'Non-dismissible flash', buttonText: 'Action button', onButtonClick: noop, dismissible: false },
@@ -51,7 +53,7 @@ describe('Flashbar component', () => {
       expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
     }
     {
-      const wrapper = render(
+      const wrapper = createFlashbarWrapper(
         <Flashbar
           items={[
             {
@@ -70,12 +72,14 @@ describe('Flashbar component', () => {
   });
 
   test('dismiss buttons have no default label', () => {
-    const wrapper = render(<Flashbar items={[{ content: 'Dismissible flash', dismissible: true, onDismiss: noop }]} />);
+    const wrapper = createFlashbarWrapper(
+      <Flashbar items={[{ content: 'Dismissible flash', dismissible: true, onDismiss: noop }]} />
+    );
     expect(wrapper.findItems()[0].findDismissButton()!.getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('dismiss buttons can have specified labels', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           {
@@ -114,35 +118,35 @@ describe('Flashbar component', () => {
 
   test('correct type of message', () => {
     {
-      const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'success' }]} />);
+      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'success' }]} />);
       expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
         styles['flash-type-success']
       );
     }
     {
-      const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'warning' }]} />);
+      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'warning' }]} />);
       expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
         styles['flash-type-warning']
       );
     }
     {
-      const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'info' }]} />);
+      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'info' }]} />);
       expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
     }
     {
-      const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'error' }]} />);
+      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'error' }]} />);
       expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
         styles['flash-type-error']
       );
     }
     {
-      const wrapper = render(<Flashbar items={[{ content: 'Flash', type: 'error', loading: true }]} />);
+      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'error', loading: true }]} />);
       expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
     }
   });
 
   test('correct aria-role', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           { content: 'Alert', ariaRole: 'alert' },
@@ -155,7 +159,7 @@ describe('Flashbar component', () => {
   });
 
   test('correct header', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
       />
@@ -164,7 +168,7 @@ describe('Flashbar component', () => {
   });
 
   test('correct content', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
       />
@@ -173,7 +177,7 @@ describe('Flashbar component', () => {
   });
 
   test('correct button text', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
       />
@@ -184,14 +188,14 @@ describe('Flashbar component', () => {
   });
 
   test('renders `action` content', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
     );
     expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Click me');
   });
 
   test('when both `buttonText` and `action` provided, prefers the latter', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           { header: 'The header', content: 'The content', buttonText: 'buttonText', action: <Button>Action</Button> },
@@ -205,7 +209,7 @@ describe('Flashbar component', () => {
   test('dismiss callback gets called', () => {
     const dismissSpy = jest.fn();
     const buttonClickSpy = jest.fn();
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           {
@@ -228,7 +232,7 @@ describe('Flashbar component', () => {
   test('action button callback gets called', () => {
     const dismissSpy = jest.fn();
     const buttonClickSpy = jest.fn();
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           {
@@ -251,7 +255,7 @@ describe('Flashbar component', () => {
 
   test('icon has an aria-label when statusIconAriaLabel is provided', () => {
     const iconLabel = 'Warning';
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         items={[
           {
@@ -274,12 +278,12 @@ describe('Analytics', () => {
     jest.spyOn(window, 'panorama');
   });
   it('does not send a metric when an empty array is provided', () => {
-    render(<Flashbar items={[]} />);
+    createFlashbarWrapper(<Flashbar items={[]} />);
     expect(window.panorama).toBeCalledTimes(0);
   });
 
   it('sends a render metric when items are provided', () => {
-    render(
+    createFlashbarWrapper(
       <Flashbar
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
@@ -302,7 +306,7 @@ describe('Analytics', () => {
   });
 
   it('sends a render metric when items are provided', () => {
-    render(
+    createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[
@@ -337,7 +341,7 @@ describe('Analytics', () => {
   });
 
   it('sends an expand metric when collapsed', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[
@@ -363,7 +367,7 @@ describe('Analytics', () => {
   });
 
   it('sends a collapse metric when collapsed', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[
@@ -395,12 +399,12 @@ describe('Analytics', () => {
     jest.spyOn(window, 'panorama');
   });
   it('does not send a metric when an empty array is provided', () => {
-    render(<Flashbar items={[]} />);
+    createFlashbarWrapper(<Flashbar items={[]} />);
     expect(window.panorama).toBeCalledTimes(0);
   });
 
   it('sends a render metric when items are provided', () => {
-    render(
+    createFlashbarWrapper(
       <Flashbar
         items={[
           { type: 'error', header: 'Error', content: 'There was an error' },
@@ -423,7 +427,7 @@ describe('Analytics', () => {
   });
 
   it('sends a render metric when items are provided', () => {
-    render(
+    createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[
@@ -458,7 +462,7 @@ describe('Analytics', () => {
   });
 
   it('sends a dismiss metric when a flash item is dismissed', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar items={[{ type: 'error', header: 'Error', content: 'There was an error', dismissible: true }]} />
     );
     window.panorama?.mockClear(); // clear render event
@@ -477,7 +481,7 @@ describe('Analytics', () => {
   });
 
   it('sends an expand metric when collapsed', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[
@@ -503,7 +507,7 @@ describe('Analytics', () => {
   });
 
   it('sends a collapse metric when collapsed', () => {
-    const wrapper = render(
+    const wrapper = createFlashbarWrapper(
       <Flashbar
         {...{ collapsible: true }}
         items={[

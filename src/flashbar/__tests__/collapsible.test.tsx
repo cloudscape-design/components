@@ -2,9 +2,33 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { render } from './common';
-import { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import { createFlashbarWrapper } from './common';
+import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps, StackedFlashbarProps } from '../interfaces';
+import { render } from '@testing-library/react';
+
+const sampleItems: Record<string, FlashbarProps.MessageDefinition> = {
+  error: { type: 'error', header: 'Error', content: 'There was an error', ariaRole: 'alert' },
+  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
+};
+
+const defaultStrings = {
+  ariaLabel: 'Notifications',
+  toggleButtonText: 'Notifications',
+  toggleButtonAriaLabel: 'View all notifications',
+  errorCountAriaLabel: 'Error',
+  warningCountAriaLabel: 'Warning',
+  successCountAriaLabel: 'Success',
+  infoCountAriaLabel: 'Information',
+  inProgressCountAriaLabel: 'In progress',
+};
+
+const defaultItems = [sampleItems.error, sampleItems.success];
+
+const defaultProps = {
+  collapsible: true,
+  i18nStrings: defaultStrings,
+};
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
@@ -55,6 +79,49 @@ describe('Collapsible Flashbar', () => {
       expect(collapsedItems.length).toBe(1);
       expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent('Success');
       expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+    });
+
+    it('collapses automatically when enough items are added', () => {
+      const item1 = { ...sampleItems.success, id: '0' };
+      const item2 = { ...sampleItems.error, id: '1' };
+
+      const { container, rerender } = render(
+        <Flashbar items={[item1]} {...{ collapsible: true, i18nStrings: defaultStrings }} />
+      );
+      const wrapper = createWrapper(container);
+      const flashbar = wrapper.findFlashbar()!;
+      expect(flashbar.findItems()).toHaveLength(1);
+      expect(findOuterToggleElement(flashbar)).toBeFalsy();
+
+      rerender(<Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+      const toggleElement = findOuterToggleElement(wrapper.findFlashbar()!);
+      expect(toggleElement).toBeTruthy();
+    });
+
+    it('collapses automatically again when enough items are added even if it had been expanded before', () => {
+      const item1 = { ...sampleItems.success, id: '0' };
+      const item2 = { ...sampleItems.error, id: '1' };
+
+      const { container, rerender } = render(
+        <Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />
+      );
+      const wrapper = createWrapper(container);
+      const flashbar = wrapper.findFlashbar()!;
+      expect(flashbar.findItems()).toHaveLength(1);
+      expect(findOuterToggleElement(flashbar)).toBeTruthy();
+      const toggleElement = findOuterToggleElement(wrapper.findFlashbar()!);
+      expect(toggleElement).toBeTruthy();
+      toggleElement!.click();
+      expect(flashbar.findItems()).toHaveLength(2);
+
+      rerender(<Flashbar items={[item1]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+      expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeFalsy();
+
+      rerender(<Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
+      expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeTruthy();
     });
   });
 
@@ -219,29 +286,6 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
   }
 }
 
-const sampleItems: Record<string, FlashbarProps.MessageDefinition> = {
-  error: { type: 'error', header: 'Error', content: 'There was an error' },
-  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
-};
-
-const defaultStrings = {
-  ariaLabel: 'Notifications',
-  toggleButtonText: 'Notifications',
-  toggleButtonAriaLabel: 'View all notifications',
-  errorCountAriaLabel: 'Error',
-  warningCountAriaLabel: 'Warning',
-  successCountAriaLabel: 'Success',
-  infoCountAriaLabel: 'Information',
-  inProgressCountAriaLabel: 'In progress',
-};
-
-const defaultItems = [sampleItems.error, sampleItems.success];
-
-const defaultProps = {
-  collapsible: true,
-  i18nStrings: defaultStrings,
-};
-
 function renderFlashbar(
   customProps: Partial<
     Omit<StackedFlashbarProps, 'i18nStrings' | 'collapsible'> & {
@@ -253,5 +297,5 @@ function renderFlashbar(
 ) {
   const { items, ...restProps } = customProps;
   const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
-  return render(<Flashbar {...props} items={items || defaultItems} />);
+  return createFlashbarWrapper(<Flashbar {...props} items={items || defaultItems} />);
 }
