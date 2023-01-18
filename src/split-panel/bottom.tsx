@@ -39,7 +39,6 @@ export function SplitPanelContentBottom({
     contentWrapperPaddings,
     isMobile,
     reportHeaderHeight,
-    headerShouldStick,
   } = useSplitPanelContext();
   const transitionContentBottomRef = useMergeRefs(splitPanelRef || null, transitioningElementRef);
 
@@ -76,16 +75,9 @@ export function SplitPanelContentBottom({
       }}
       ref={transitionContentBottomRef}
     >
+      {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
-        <div
-          className={clsx(
-            styles['pane-header-wrapper-bottom'],
-            { [styles['sticky-header']]: headerShouldStick() },
-            centeredMaxWidthClasses
-          )}
-          ref={headerRef}
-        >
+        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
           {header}
         </div>
         <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>

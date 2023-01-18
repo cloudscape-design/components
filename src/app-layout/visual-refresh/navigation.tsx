@@ -109,8 +109,6 @@ export default function Navigation() {
                   formAction="none"
                   className={testutilStyles['navigation-close']}
                   ref={focusRefs.close}
-                  ariaExpanded={true}
-                  __nativeAttributes={{ 'aria-haspopup': true }}
                 />
               </div>
               {navigation}

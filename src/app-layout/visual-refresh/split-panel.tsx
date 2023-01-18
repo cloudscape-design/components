@@ -13,7 +13,6 @@ import { AppLayoutProps } from '../interfaces';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { CONSTRAINED_PAGE_HEIGHT } from '../../split-panel/utils/size-utils';
 
 /**
  * If there is no Split Panel in the AppLayout context then the SplitPanel
@@ -68,8 +67,6 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     openButtonAriaLabel,
     setOpenButtonAriaLabel,
     lastInteraction: splitPanelLastInteraction,
-    headerShouldStick: () =>
-      document.documentElement.clientHeight - headerHeight - footerHeight > CONSTRAINED_PAGE_HEIGHT,
   };
 
   return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;

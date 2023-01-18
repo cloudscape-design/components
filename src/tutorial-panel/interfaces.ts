@@ -111,7 +111,7 @@ export namespace TutorialPanelProps {
      * tutorial object), the content of `prerequisitesAlert` will be shown in the
      * tutorial list underneath the tutorial title.
      *
-     * @deprecated Use alert component inside description property directly
+     * @deprecated Use alert component inside description property directly.
      */
     prerequisitesAlert?: React.ReactNode;
 
@@ -172,7 +172,7 @@ export namespace TutorialPanelProps {
     /**
      * If this field is present, a warning alert will be displayed inside
      * the step's popover, showing this field's content. Can be JSX or plain text.
-     * @deprecated Use alert component inside content property directly
+     * @deprecated Use alert component inside content property directly.
      */
     warningAlert?: React.ReactNode;
 

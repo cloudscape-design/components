@@ -18,7 +18,7 @@ export interface AppLayoutProps extends BaseComponentProps {
 
   /**
    * Activates a backwards-compatibility mode for applications with non-fixed headers and footers.
-   * @deprecated This layout is being phased out and may miss some features
+   * @deprecated This layout is being phased out and may miss some features.
    */
   disableBodyScroll?: boolean;
 
@@ -115,14 +115,14 @@ export interface AppLayoutProps extends BaseComponentProps {
 
   /**
    * Top area of the page content.
-   * **Deprecated**, replaced by the `header` slot of the [content layout](/components/content-layout/) component.
+   * @deprecated Replaced by the `header` slot of the [content layout](/components/content-layout/) component.
    * @visualrefresh
    */
   contentHeader?: React.ReactNode;
 
   /**
    * Disables overlap between `contentHeader` and `content` slots.
-   * **Deprecated**, replaced by the `disableOverlap` property of the [content layout](/components/content-layout/) component.
+   * @deprecated Replaced by the `disableOverlap` property of the [content layout](/components/content-layout/) component.
    * @visualrefresh
    */
   disableContentHeaderOverlap?: boolean;
