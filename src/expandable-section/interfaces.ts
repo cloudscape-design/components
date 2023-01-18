@@ -46,8 +46,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   children?: React.ReactNode;
 
   /**
-   * **Deprecated**, use headerText instead.
-   * @deprecated
+   * @deprecated Use `headerText` instead.
    */
   header?: React.ReactNode;
 

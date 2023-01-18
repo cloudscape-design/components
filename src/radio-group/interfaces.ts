@@ -46,8 +46,7 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;
 
   /**
-   * Deprecated, has no effect.
-   * @deprecated
+   * @deprecated Has no effect.
    */
   controlId?: string;
 }

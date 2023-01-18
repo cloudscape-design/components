@@ -21,7 +21,7 @@ export interface AlertProps extends BaseComponentProps {
 
   /**
    * Determines whether the alert is displayed.
-   * @deprecated Use conditional rendering in your code instead of this prop
+   * @deprecated Use conditional rendering in your code instead of this prop.
    */
   visible?: boolean;
   /**
@@ -44,7 +44,7 @@ export interface AlertProps extends BaseComponentProps {
   /**
    * Displays an action button next to the message area when set.
    * An `onButtonClick` event is fired when the user clicks it.
-   * **Deprecated**, replaced by `action`.
+   * @deprecated Replaced by `action`.
    */
   buttonText?: React.ReactNode;
   /**
@@ -59,7 +59,7 @@ export interface AlertProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler;
   /**
    * Fired when the user clicks the action button.
-   * **Deprecated**, replaced by `action`.
+   * @deprecated Replaced by `action`.
    */
   onButtonClick?: NonCancelableEventHandler;
 }

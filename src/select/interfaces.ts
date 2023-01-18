@@ -79,8 +79,7 @@ export interface BaseSelectProps
    */
   filteringAriaLabel?: string;
   /**
-   * Deprecated, has no effect.
-   * @deprecated
+   * @deprecated Has no effect.
    */
   name?: string;
   /**
