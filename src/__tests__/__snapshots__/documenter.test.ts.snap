@@ -5345,7 +5345,7 @@ Has no effect when \`dateOnly\` is true.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Use getTimeOffset instead.",
+      "deprecatedTag": "Use \`getTimeOffset\` instead.",
       "description": "The time offset from UTC in minutes that should be used to
 display and produce values.
 Has no effect when \`dateOnly\` is true.
@@ -5496,7 +5496,7 @@ h2. Use with container variant.",
       "name": "children",
     },
     Object {
-      "deprecatedTag": "Use headerText instead.",
+      "deprecatedTag": "Use \`headerText\` instead.",
       "description": "",
       "isDefault": false,
       "name": "header",
