@@ -21,7 +21,7 @@ export function getDOMRects(elements: Record<string | number, HTMLElement | null
   so the initial offset or scaling needs to be retrieved via JS.
 
   Caveat: this currently does not support elements having CSS transforms in the end state.
-  These would be overriden in the animation instead of combined.
+  These would be overridden in the animation instead of combined.
  */
 export function animate({
   oldState,
@@ -37,22 +37,26 @@ export function animate({
   // First, apply the transform that will make the elements "look like" in the start position
   for (const id in elements) {
     const element = elements[id];
+    const oldRect = oldState[id];
     if (element) {
       const newRect = element.getBoundingClientRect();
-      const oldRect = oldState[id];
-      const noOpTransform = { scale: 1, y: 0 };
+      const noOpTransform = { scale: 1, x: 0, y: 0 };
       // Calculate initial position.
       // If the element didn't exist previously, use the newElementInitialState function if provided.
       // If not, default to no transitions (scale: 1, y: 0)
-      const calculatedInvertTransform = oldRect
-        ? { scale: oldRect.width / newRect.width, y: oldRect.top - newRect.top }
+      const calculatedInverseTransform = oldRect
+        ? {
+            scale: oldRect.width / newRect.width,
+            x: (oldRect.left + oldRect.right) / 2 - (newRect.left + newRect.right) / 2,
+            y: (oldRect.top + oldRect.bottom) / 2 - (newRect.top + newRect.bottom) / 2,
+          }
         : newElementInitialState
         ? newElementInitialState(newRect)
         : {};
-      const inverseTransform = { ...noOpTransform, ...calculatedInvertTransform };
+      const inverseTransform = { ...noOpTransform, ...calculatedInverseTransform };
       // Apply this initial change, without animating
       element.style.transitionProperty = 'none';
-      element.style.transform = `scale(${inverseTransform.scale}) translateY(${inverseTransform.y}px)`;
+      element.style.transform = `scale(${inverseTransform.scale}) translate(${inverseTransform.x}px, ${inverseTransform.y}px)`;
       if (!oldRect) {
         // If the element didn't exist, then fade it in
         // (besides any other possibly defined transitions based on `newElementInitialState`)
