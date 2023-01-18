@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as tokens;
+
+.stack {
+  > .animation-running > .item,
+  > .animation-running > .flash-list-item,
+  > .animation-running.toggle {
+    @include styles.with-motion {
+      transition-timing-function: tokens.$motion-easing-refresh-only-a;
+      transition-duration: tokens.$motion-duration-refresh-only-fast;
+    }
+  }
+  > .collapsed.animation-ready > .expanded-only,
+  > .collapsed.animation-running > .expanded-only {
+    // When collapsing, hide the exiting items right away, otherwise our animation calculations will be off
+    // because of React Transition keeping the elements in the DOM for a bit longer.
+    display: none;
+  }
+}
