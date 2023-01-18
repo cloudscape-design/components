@@ -4,7 +4,7 @@ import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps, StackedFlashbarProps } from '../interfaces';
+import { FlashbarProps, FlashType, StackedFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
 import { warnOnce } from '../../../lib/components/internal/logging';
 
@@ -16,9 +16,12 @@ afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
 });
 
-const sampleItems: Record<string, FlashbarProps.MessageDefinition> = {
-  error: { type: 'error', header: 'Error', content: 'There was an error', ariaRole: 'alert' },
+const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
+  error: { type: 'error', header: 'Error', content: 'There was an error' },
   success: { type: 'success', header: 'Success', content: 'Everything went fine' },
+  warning: { type: 'warning', header: 'Warning' },
+  info: { type: 'info', header: 'Information' },
+  progress: { type: 'info', loading: true, header: 'Operation in progress' },
 };
 
 const defaultStrings = {
@@ -222,10 +225,33 @@ describe('Collapsible Flashbar', () => {
       expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
     });
 
-    it('announces updates to the item counter with aria-live', () => {
-      const flashbar = renderFlashbar();
-      const counter = findOuterCounter(flashbar)!.getElement();
-      expect(counter).toHaveAttribute('aria-live', 'polite');
+    it('announces updates to the item counter with a live region', () => {
+      const customLabels = {
+        errorCountAriaLabel: 'Custom error ARIA label',
+        successCountAriaLabel: 'Custom success ARIA label',
+        infoCountAriaLabel: 'Custom info ARIA label',
+        inProgressCountAriaLabel: 'Custom progress ARIA label',
+        warningCountAriaLabel: 'Custom warning ARIA label',
+      };
+      const flashbar = renderFlashbar({
+        i18nStrings: { ...customLabels },
+        items: [
+          sampleItems.success,
+          sampleItems.warning,
+          sampleItems.success,
+          sampleItems.warning,
+          sampleItems.error,
+          sampleItems.warning,
+        ],
+      });
+      const liveRegionElement = findOuterToggleElement(flashbar)!.querySelector('[aria-live="polite"]')!.parentElement;
+      expect(liveRegionElement).toHaveTextContent(`1 ${customLabels.errorCountAriaLabel}`);
+      expect(liveRegionElement).toHaveTextContent(`2 ${customLabels.successCountAriaLabel}`);
+      expect(liveRegionElement).toHaveTextContent(`3 ${customLabels.warningCountAriaLabel}`);
+      const visibleCounter = Array.from(findInnerCounterElement(flashbar)!.children).find(
+        node => node !== liveRegionElement
+      )!;
+      expect(visibleCounter).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('renders the toggle element header as H2 element', () => {
@@ -239,7 +265,7 @@ describe('Collapsible Flashbar', () => {
       expect(h2).toHaveTextContent(customToggleButtonText);
     });
 
-    it('applies ARIA labels and title attributes to the item counter', () => {
+    it('applies title attributes to the item counter', () => {
       const customLabels = {
         errorCountAriaLabel: 'Custom error ARIA label',
         successCountAriaLabel: 'Custom success ARIA label',
@@ -250,9 +276,8 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
       const innerCounter = findInnerCounterElement(flashbar);
       for (const ariaLabel of Object.values(customLabels)) {
-        const labeledElement = innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`);
+        const labeledElement = innerCounter!.querySelector(`[title="${ariaLabel}"]`);
         expect(labeledElement).toBeTruthy();
-        expect(labeledElement).toHaveAttribute('title', ariaLabel);
       }
     });
   });

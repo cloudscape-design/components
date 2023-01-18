@@ -19,6 +19,7 @@ import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { componentName, useFlashbar } from './common';
 import { warnOnce } from '../internal/logging';
+import LiveRegion from '../internal/components/live-region';
 
 export { FlashbarProps };
 
@@ -310,17 +311,27 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span aria-live="polite" className={styles.status} role="status">
+            <span className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']} id={itemCountElementId}>
-                {counterTypes.map(({ type, labelName, iconName }) => (
-                  <NotificationTypeCount
-                    key={type}
-                    iconName={iconName}
-                    label={i18nStrings ? i18nStrings[labelName] : undefined}
-                    count={countByType[type]}
-                  />
-                ))}
+                <LiveRegion>
+                  {counterTypes
+                    .map(
+                      ({ type, labelName }: { type: FlashType; labelName: LabelName }) =>
+                        `${countByType[type]} ${(i18nStrings && i18nStrings[labelName]) ?? ''}`
+                    )
+                    .join(', ')}
+                </LiveRegion>
+                <span aria-hidden="true" className={styles['types-count-visible']}>
+                  {counterTypes.map(({ type, labelName, iconName }) => (
+                    <NotificationTypeCount
+                      key={type}
+                      iconName={iconName}
+                      label={i18nStrings ? i18nStrings[labelName] : undefined}
+                      count={countByType[type]}
+                    />
+                  ))}
+                </span>
               </span>
             </span>
             <button
@@ -359,8 +370,8 @@ const NotificationTypeCount = ({
 }) => {
   return (
     <span className={styles['type-count']}>
-      <span aria-label={label} title={label} role="img">
-        <InternalIcon name={iconName} aria-hidden="true" />
+      <span title={label}>
+        <InternalIcon name={iconName} />
       </span>
       <span className={styles['count-number']}>{count}</span>
     </span>

@@ -155,11 +155,13 @@ the grid layout will be:
     > .types-count {
       margin-left: awsui.$space-xxs;
 
-      > .type-count {
-        margin-right: awsui.$space-s;
+      > .types-count-visible {
+        > .type-count {
+          margin-right: awsui.$space-s;
 
-        > .count-number {
-          margin-left: awsui.$space-xxs;
+          > .count-number {
+            margin-left: awsui.$space-xxs;
+          }
         }
       }
     }
