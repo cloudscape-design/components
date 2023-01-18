@@ -16,7 +16,7 @@ describe('animate', () => {
     window.requestAnimationFrame = originalFn;
   });
 
-  describe('applies transforms just before starting the animation', () => {
+  it('applies transforms just before starting the animation', () => {
     const element = document.createElement('div');
     animate({
       oldState: {
@@ -26,11 +26,25 @@ describe('animate', () => {
         a: element,
       },
     });
-    // We can't test the actual transform values because the testing environment
+    // We can't test the actual scale values because the testing environment
     // does not know the actual screen dimensions of the element.
     expect(element.style.transform).toContain('scale');
-    expect(element.style.transform).toContain('translate');
+    expect(element.style.transform).toContain('translate(1px, 1px)');
     expect(element.style.transitionProperty).toEqual('none');
+  });
+
+  it('uses newElementInitialState function to calculate the initial state for an element if it is not provided', () => {
+    const spy = jest.fn(() => ({ scale: 2, x: 3, y: 5 }));
+    const element = document.createElement('div');
+    animate({
+      oldState: {},
+      elements: {
+        a: element,
+      },
+      newElementInitialState: spy,
+    });
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(element.style.transform).toEqual('scale(2) translate(3px, 5px)');
   });
 
   it("removes transforms once it's finished", done => {
