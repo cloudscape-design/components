@@ -23,7 +23,9 @@ import { useFlashbar } from './common';
 
 export { FlashbarProps };
 
-const maxUnstackedItems = 1;
+// If the number of items is equal or less than this value,
+// the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
+const maxNonCollapsibleItems = 1;
 
 export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
   const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
@@ -91,7 +93,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   }, [nextFocusId, ref]);
 
   useEffect(() => {
-    if (items.length <= maxUnstackedItems) {
+    if (items.length <= maxNonCollapsibleItems) {
       setIsFlashbarStackExpanded(false);
     }
   }, [items.length]);
@@ -156,6 +158,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     }
   }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
 
+  const isCollapsible = items.length > maxNonCollapsibleItems;
+
   // When using the stacking feature, the items are shown in reverse order (last item on top)
   const reversedItems = items.slice().reverse();
 
@@ -205,7 +209,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       )}
       id={flashbarElementId}
       aria-label={ariaLabel}
-      aria-describedby={itemCountElementId}
+      aria-describedby={isCollapsible ? itemCountElementId : undefined}
       style={
         !isFlashbarStackExpanded || transitioning
           ? {
@@ -294,7 +298,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     >
       <>
         {isFlashbarStackExpanded && renderList()}
-        {items.length > maxUnstackedItems && (
+        {isCollapsible && (
           <div
             className={clsx(
               styles.toggle,
