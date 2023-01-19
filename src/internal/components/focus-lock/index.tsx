@@ -63,11 +63,11 @@ export default function FocusLock({ className, disabled, autoFocus, restoreFocus
 
   return (
     <>
-      <TabTrap disabled={disabled} onFocus={focusLast} />
+      <TabTrap disabled={disabled} focusNextCallback={focusLast} />
       <div className={className} ref={mergedRef}>
         {children}
       </div>
-      <TabTrap disabled={disabled} onFocus={focusFirst} />
+      <TabTrap disabled={disabled} focusNextCallback={focusFirst} />
     </>
   );
 }

@@ -352,7 +352,7 @@ const Dropdown = ({
       </div>
 
       <TabTrap
-        onFocus={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
+        focusNextCallback={() => dropdownRef.current && getFirstFocusable(dropdownRef.current)?.focus()}
         disabled={!open || !loopFocus}
       />
 
@@ -361,7 +361,7 @@ const Dropdown = ({
           {(state, ref) => (
             <div ref={dropdownContainerRef}>
               <TabTrap
-                onFocus={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
+                focusNextCallback={() => triggerRef.current && getLastFocusable(triggerRef.current)?.focus()}
                 disabled={!open || !loopFocus}
               />
 
@@ -385,7 +385,7 @@ const Dropdown = ({
               </TransitionContent>
 
               <TabTrap
-                onFocus={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
+                focusNextCallback={() => triggerRef.current && getFirstFocusable(triggerRef.current)?.focus()}
                 disabled={!open || !loopFocus}
               />
             </div>
