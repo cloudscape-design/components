@@ -62,10 +62,8 @@ export type FlashType = FlashbarProps.Type | 'progress';
 
 export interface StackedFlashbarProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
-  excludeTypes?: [FlashType];
   collapsible: boolean;
   i18nStrings?: StackedFlashbarProps.I18nStrings;
-  excludeEmptyCounts?: boolean;
 }
 
 export namespace StackedFlashbarProps {

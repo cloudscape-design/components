@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, FlashType, StackedFlashbarProps } from './interfaces';
@@ -133,8 +133,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const { i18nStrings } = restProps;
 
-  const excludedTypes = useMemo(() => new Set(restProps.excludeTypes), [restProps.excludeTypes]);
-
   const verifyStringPresence = useCallback(
     (parameterName: keyof StackedFlashbarProps.I18nStrings) => {
       if (i18nStrings && !i18nStrings[parameterName]) {
@@ -157,12 +155,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     verifyStringPresence('ariaLabel');
     verifyStringPresence('toggleButtonText');
     verifyStringPresence('toggleButtonAriaLabel');
-    for (const { labelName, type } of counterTypes) {
-      if (!excludedTypes.has(type)) {
-        verifyStringPresence(labelName);
-      }
+    for (const { labelName } of counterTypes) {
+      verifyStringPresence(labelName);
     }
-  }, [excludedTypes, i18nStrings, verifyStringPresence]);
+  }, [i18nStrings, verifyStringPresence]);
 
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
@@ -312,9 +308,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     </ul>
   );
 
-  const renderCountForType = (type: FlashType) =>
-    !excludedTypes.has(type) && (!restProps.excludeEmptyCounts || !!countByType[type]);
-
   return (
     <div
       {...baseProps}
@@ -344,17 +337,14 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             <span aria-live="polite" className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']} id={itemCountElementId}>
-                {counterTypes.map(
-                  ({ type, labelName, iconName }) =>
-                    renderCountForType(type) && (
-                      <NotificationTypeCount
-                        key={type}
-                        iconName={iconName}
-                        label={i18nStrings ? i18nStrings[labelName] : undefined}
-                        count={countByType[type]}
-                      />
-                    )
-                )}
+                {counterTypes.map(({ type, labelName, iconName }) => (
+                  <NotificationTypeCount
+                    key={type}
+                    iconName={iconName}
+                    label={i18nStrings ? i18nStrings[labelName] : undefined}
+                    count={countByType[type]}
+                  />
+                ))}
               </span>
             </span>
             <button
