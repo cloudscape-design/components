@@ -208,7 +208,7 @@ export default function Flashbar({ items, ...restProps }: FlashbarProps) {
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(getVisualContextClassname('flashbar'), isVisualRefresh ? styles['flash-refresh'] : '')}
+        className={clsx(getVisualContextClassname('flashbar'))}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}

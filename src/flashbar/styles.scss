@@ -23,28 +23,23 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: awsui.$space-scaled-xs awsui.$space-flashbar-horizontal;
-  @include styles.container-shadow;
-  border-top: none;
   border-radius: awsui.$border-radius-flashbar;
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
   word-wrap: break-word;
-}
 
-.flash-refresh {
-  box-shadow: none;
-  &::before {
+  &::after {
     content: '';
     position: absolute;
-    z-index: -1;
     top: 0px;
     left: 0px;
     bottom: 0px;
     right: 0px;
     background-color: transparent;
-    border-radius: awsui.$border-radius-flashbar;
     pointer-events: none;
+    border-radius: awsui.$border-radius-flashbar;
     box-shadow: awsui.$shadow-flash-sticky;
+    z-index: -1;
   }
 }
 
