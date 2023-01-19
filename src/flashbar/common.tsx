@@ -8,9 +8,11 @@ import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual
 import { getBaseProps } from '../internal/base-component';
 import { FlashbarProps } from './interfaces';
 
+export const componentName = 'Flashbar';
+
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({ items, ...restProps }: FlashbarProps) {
-  const { __internalRootRef } = useBaseComponent('Flashbar');
+  const { __internalRootRef } = useBaseComponent(componentName);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
   const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);

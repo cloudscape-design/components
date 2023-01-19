@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, StackedFlashbarProps } from './interfaces';
+import { FlashbarProps, FlashType, StackedFlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -17,9 +17,8 @@ import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
-
-import Name = IconProps.Name;
-import { useFlashbar } from './common';
+import { componentName, useFlashbar } from './common';
+import { warnOnce } from '../internal/logging';
 
 export { FlashbarProps };
 
@@ -132,6 +131,39 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     return () => window.removeEventListener('resize', updateBottomSpacing);
   }, [updateBottomSpacing]);
 
+  const { i18nStrings } = restProps;
+
+  const excludedTypes = useMemo(() => new Set(restProps.excludeTypes), [restProps.excludeTypes]);
+
+  const verifyStringPresence = useCallback(
+    (parameterName: keyof StackedFlashbarProps.I18nStrings) => {
+      if (i18nStrings && !i18nStrings[parameterName]) {
+        warnOnce(
+          componentName,
+          'Using the `collapsible` option requires passing a `' +
+            parameterName +
+            '` parameter inside the `i18nStrings` object.'
+        );
+      }
+    },
+    [i18nStrings]
+  );
+
+  useEffect(() => {
+    if (!i18nStrings) {
+      warnOnce(componentName, 'Using the `collapsible` option requires passing an `i18nStrings` object.');
+      return;
+    }
+    verifyStringPresence('ariaLabel');
+    verifyStringPresence('toggleButtonText');
+    verifyStringPresence('toggleButtonAriaLabel');
+    for (const { labelName, type } of counterTypes) {
+      if (!excludedTypes.has(type)) {
+        verifyStringPresence(labelName);
+      }
+    }
+  }, [excludedTypes, i18nStrings, verifyStringPresence]);
+
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
     // so it's a good moment to trigger animations that will make calculations based on old and new DOM state.
@@ -174,7 +206,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         collapsedIndex: index,
       }));
 
-  const { i18nStrings } = restProps;
   const ariaLabel = i18nStrings?.ariaLabel;
   const toggleButtonText = i18nStrings?.toggleButtonText;
 
@@ -281,7 +312,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     </ul>
   );
 
-  const excludedTypes = new Set(restProps.excludeTypes);
+  const renderCountForType = (type: FlashType) =>
+    !excludedTypes.has(type) && (!restProps.excludeEmptyCounts || !!countByType[type]);
 
   return (
     <div
@@ -312,40 +344,16 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             <span aria-live="polite" className={styles.status} role="status">
               {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
               <span className={styles['types-count']} id={itemCountElementId}>
-                {!excludedTypes.has('error') && (!restProps.excludeEmptyCounts || !!countByType.error) && (
-                  <NotificationTypeCount
-                    iconName="status-negative"
-                    label={i18nStrings?.errorCountAriaLabel}
-                    count={countByType.error}
-                  />
-                )}
-                {!excludedTypes.has('warning') && (!restProps.excludeEmptyCounts || !!countByType.warning) && (
-                  <NotificationTypeCount
-                    iconName="status-warning"
-                    label={i18nStrings?.warningCountAriaLabel}
-                    count={countByType.warning}
-                  />
-                )}
-                {!excludedTypes.has('success') && (!restProps.excludeEmptyCounts || !!countByType.success) && (
-                  <NotificationTypeCount
-                    iconName="status-positive"
-                    label={i18nStrings?.successCountAriaLabel}
-                    count={countByType.success}
-                  />
-                )}
-                {!excludedTypes.has('info') && (!restProps.excludeEmptyCounts || !!countByType.info) && (
-                  <NotificationTypeCount
-                    iconName="status-info"
-                    label={i18nStrings?.infoCountAriaLabel}
-                    count={countByType.info}
-                  />
-                )}
-                {!excludedTypes.has('progress') && (!restProps.excludeEmptyCounts || !!countByType.progress) && (
-                  <NotificationTypeCount
-                    iconName="status-in-progress"
-                    label={i18nStrings?.inProgressCountAriaLabel}
-                    count={countByType.progress}
-                  />
+                {counterTypes.map(
+                  ({ type, labelName, iconName }) =>
+                    renderCountForType(type) && (
+                      <NotificationTypeCount
+                        key={type}
+                        iconName={iconName}
+                        label={i18nStrings ? i18nStrings[labelName] : undefined}
+                        count={countByType[type]}
+                      />
+                    )
                 )}
               </span>
             </span>
@@ -367,11 +375,40 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   );
 }
 
-const NotificationTypeCount = ({ iconName, label, count }: { iconName: Name; label?: string; count: number }) => (
-  <span className={styles['type-count']}>
-    <span aria-label={label} title={label} role="img">
-      <InternalIcon name={iconName} aria-hidden="true" />
+type LabelName =
+  | 'errorCountAriaLabel'
+  | 'warningCountAriaLabel'
+  | 'successCountAriaLabel'
+  | 'infoCountAriaLabel'
+  | 'inProgressCountAriaLabel';
+
+const NotificationTypeCount = ({
+  iconName,
+  label,
+  count,
+}: {
+  iconName: IconProps.Name;
+  label?: string;
+  count: number;
+}) => {
+  return (
+    <span className={styles['type-count']}>
+      <span aria-label={label} title={label} role="img">
+        <InternalIcon name={iconName} aria-hidden="true" />
+      </span>
+      <span className={styles['count-number']}>{count}</span>
     </span>
-    <span className={styles['count-number']}>{count}</span>
-  </span>
-);
+  );
+};
+
+const counterTypes: {
+  type: FlashType;
+  labelName: LabelName;
+  iconName: IconProps.Name;
+}[] = [
+  { type: 'error', labelName: 'errorCountAriaLabel', iconName: 'status-negative' },
+  { type: 'warning', labelName: 'warningCountAriaLabel', iconName: 'status-warning' },
+  { type: 'success', labelName: 'successCountAriaLabel', iconName: 'status-positive' },
+  { type: 'info', labelName: 'infoCountAriaLabel', iconName: 'status-info' },
+  { type: 'progress', labelName: 'inProgressCountAriaLabel', iconName: 'status-in-progress' },
+];

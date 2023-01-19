@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { FlashbarProps, FlashType } from './interfaces';
 
-// Since the position of a notification changes when the Flashbar is stacked,
+// Since the position of a notification changes when the Flashbar is collapsed,
 // it is useful on some situations (e.g, for animating) to know the original position of the item
-// in the non-stacked state.
+// in the non-collapsed state.
 export interface StackableItem extends FlashbarProps.MessageDefinition {
   expandedIndex: number;
   collapsedIndex?: number;

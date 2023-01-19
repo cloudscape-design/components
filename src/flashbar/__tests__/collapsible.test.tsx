@@ -6,6 +6,15 @@ import { createFlashbarWrapper } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps, StackedFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
+import { warnOnce } from '../../../lib/components/internal/logging';
+
+jest.mock('../../../lib/components/internal/logging', () => ({
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 const sampleItems: Record<string, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error', ariaRole: 'alert' },
@@ -245,6 +254,40 @@ describe('Collapsible Flashbar', () => {
         expect(labeledElement).toBeTruthy();
         expect(labeledElement).toHaveAttribute('title', ariaLabel);
       }
+    });
+  });
+
+  describe('i18n', () => {
+    it('warns if i18nStrings object is not provided', () => {
+      render(<Flashbar items={defaultItems} {...{ collapsible: true }} />);
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Flashbar',
+        'Using the `collapsible` option requires passing an `i18nStrings` object.'
+      );
+    });
+
+    it('warns if some string is missing', () => {
+      const strings = {
+        ariaLabel: defaultStrings.ariaLabel,
+        toggleButtonAriaLabel: defaultStrings.toggleButtonAriaLabel,
+        toggleButtonText: defaultStrings.toggleButtonText,
+        successCountAriaLabel: defaultStrings.successCountAriaLabel,
+        errorCountAriaLabel: defaultStrings.errorCountAriaLabel,
+        warningCountAriaLabel: defaultStrings.warningCountAriaLabel,
+        inProgressCountAriaLabel: defaultStrings.inProgressCountAriaLabel,
+      };
+      render(<Flashbar items={defaultItems} {...{ collapsible: true }} i18nStrings={strings} />);
+      expect(warnOnce).toHaveBeenCalledTimes(1);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Flashbar',
+        'Using the `collapsible` option requires passing a `infoCountAriaLabel` parameter inside the `i18nStrings` object.'
+      );
+    });
+
+    it('does not warn if all ARIA labels and i18n strings are provided', () => {
+      render(<Flashbar items={defaultItems} {...{ collapsible: true }} i18nStrings={defaultStrings} />);
+      expect(warnOnce).not.toHaveBeenCalled();
     });
   });
 });
