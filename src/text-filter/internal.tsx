@@ -33,7 +33,7 @@ const InternalTextFilter = React.forwardRef(
     const showResults = filteringText && countText && !disabled;
 
     return (
-      <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
           ref={inputRef}
           className={styles.input}
@@ -53,7 +53,7 @@ const InternalTextFilter = React.forwardRef(
         >
           {showResults ? countText : ''}
         </span>
-      </span>
+      </div>
     );
   }
 );
