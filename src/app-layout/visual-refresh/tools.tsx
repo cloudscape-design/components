@@ -33,7 +33,7 @@ export default function Tools({ children }: ToolsProps) {
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
-    splitPanel,
+    splitPanelDisplayed,
     tools,
     toolsHide,
     toolsWidth,
@@ -44,7 +44,7 @@ export default function Tools({ children }: ToolsProps) {
     splitPanelToggle,
   } = useAppLayoutInternals();
 
-  const hasSplitPanel = getSplitPanelStatus(splitPanel, splitPanelPosition);
+  const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
 
@@ -175,8 +175,8 @@ export function getToolsDefaultState(isMobile: boolean, stateFromProps?: boolean
  * This simple function returns the presence of the split panel as a child of the
  * Tools component. It must exist and be in side position.
  */
-function getSplitPanelStatus(splitPanel: React.ReactNode, splitPanelPosition: string) {
-  return splitPanel && splitPanelPosition === 'side' ? true : false;
+function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: string) {
+  return splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 }
 
 /**

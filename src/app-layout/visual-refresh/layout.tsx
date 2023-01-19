@@ -38,9 +38,9 @@ export default function Layout({ children }: LayoutProps) {
     minContentWidth,
     navigationHide,
     notificationsHeight,
-    splitPanel,
     splitPanelPosition,
     stickyNotifications,
+    splitPanelDisplayed,
     toolsHide,
   } = useAppLayoutInternals();
 
@@ -52,7 +52,7 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     isSplitPanelOpen,
     isToolsOpen,
-    splitPanel,
+    splitPanelDisplayed,
     toolsHide
   );
 
@@ -68,7 +68,7 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
-          [styles['has-split-panel']]: splitPanel,
+          [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isOverlapDisabled,
         },
@@ -102,30 +102,30 @@ export default function Layout({ children }: LayoutProps) {
  */
 function getContentGapRight(
   splitPanelPosition: AppLayoutProps.SplitPanelPosition,
-  isSplitPanelOpen?: boolean,
-  isToolsOpen?: boolean,
-  splitPanel?: React.ReactNode,
+  isSplitPanelOpen: boolean | undefined,
+  isToolsOpen: boolean,
+  splitPanelDisplayed: boolean,
   toolsHide?: boolean
 ) {
   let hasContentGapRight = false;
 
   // Main is touching the edge of the Layout and needs a content gap
-  if (!splitPanel && toolsHide) {
+  if (!splitPanelDisplayed && toolsHide) {
     hasContentGapRight = true;
   }
 
   // Main is touching the Tools drawer and needs a content gap
-  if ((!splitPanel || !isSplitPanelOpen) && !toolsHide && isToolsOpen) {
+  if ((!splitPanelDisplayed || !isSplitPanelOpen) && !toolsHide && isToolsOpen) {
     hasContentGapRight = true;
   }
 
   // Main is touching the edge of the Layout and needs a content gap
-  if (splitPanel && splitPanelPosition === 'bottom' && (isToolsOpen || toolsHide)) {
+  if (splitPanelDisplayed && splitPanelPosition === 'bottom' && (isToolsOpen || toolsHide)) {
     hasContentGapRight = true;
   }
 
   // Main is touching the Split Panel drawer and needs a content gap
-  if (splitPanel && isSplitPanelOpen && splitPanelPosition === 'side') {
+  if (splitPanelDisplayed && isSplitPanelOpen && splitPanelPosition === 'side') {
     hasContentGapRight = true;
   }
 

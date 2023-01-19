@@ -251,6 +251,10 @@ export default function SplitPanel({
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
 
+  if (closeBehavior === 'hide' && !isOpen) {
+    return <></>;
+  }
+
   /**
    * The AppLayout factor moved the circular buttons out of the
    * SplitPanel and into the Tools component. This conditional

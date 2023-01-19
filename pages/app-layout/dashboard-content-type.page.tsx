@@ -30,16 +30,14 @@ export default function () {
         splitPanelPreferences={{ position: 'side' }}
         splitPanelOpen={splitPanelOpen}
         splitPanel={
-          splitPanelOpen && (
-            <SplitPanel
-              header="Add something"
-              closeBehavior="hide"
-              hidePreferencesButton={true}
-              i18nStrings={splitPaneli18nStrings}
-            >
-              Hello!
-            </SplitPanel>
-          )
+          <SplitPanel
+            header="Add something"
+            closeBehavior="hide"
+            hidePreferencesButton={true}
+            i18nStrings={splitPaneli18nStrings}
+          >
+            Hello!
+          </SplitPanel>
         }
         onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
       />

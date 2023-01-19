@@ -88,7 +88,6 @@ export function ToolsAndSplitPanel({
               toggleRefs={toggleRefs}
               onLoseFocus={onLoseToolsFocus}
               isHidden={isHidden}
-              externalizedToggle={Boolean(splitPanel)}
               contentClassName={clsx(styles.tools, testutilStyles.tools)}
               closeClassName={clsx(styles['tools-close'], testutilStyles['tools-close'])}
               toggleClassName={clsx(styles['tools-toggle'], testutilStyles['tools-toggle'])}

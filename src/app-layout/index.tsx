@@ -24,6 +24,7 @@ import {
   SplitPanelContextProvider,
   SplitPanelContextProps,
   SplitPanelLastInteraction,
+  SplitPanelSideToggleProps,
 } from '../internal/context/split-panel-context';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
@@ -181,12 +182,27 @@ const OldAppLayout = React.forwardRef(
         changeHandler: 'onSplitPanelPreferencesChange',
       }
     );
+    const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
+      controlledSplitPanelOpen,
+      onSplitPanelToggle,
+      false,
+      {
+        componentName: 'AppLayout',
+        controlledProp: 'splitPanelOpen',
+        changeHandler: 'onSplitPanelToggle',
+      }
+    );
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
+    const [splitPanelReportedToggle, setSplitPanelReportedToggle] = useState<SplitPanelSideToggleProps>({
+      displayed: false,
+      ariaLabel: undefined,
+    });
+    const splitPanelDisplayed = !!(splitPanel && (splitPanelReportedToggle.displayed || splitPanelOpen));
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
     const effectiveToolsWidth =
-      toolsHide && (!splitPanel || splitPanelPreferences?.position !== 'side')
+      toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side')
         ? 0
         : toolsOpen
         ? toolsWidth
@@ -201,17 +217,6 @@ const OldAppLayout = React.forwardRef(
         componentName: 'AppLayout',
         controlledProp: 'splitPanelSize',
         changeHandler: 'onSplitPanelResize',
-      }
-    );
-
-    const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
-      controlledSplitPanelOpen,
-      onSplitPanelToggle,
-      false,
-      {
-        componentName: 'AppLayout',
-        controlledProp: 'splitPanelOpen',
-        changeHandler: 'onSplitPanelToggle',
       }
     );
 
@@ -267,7 +272,7 @@ const OldAppLayout = React.forwardRef(
 
     const finalSplitPanePosition = isSplitpanelForcedPosition ? 'bottom' : splitPanelPosition;
 
-    const splitPaneAvailableOnTheSide = Boolean(splitPanel) && finalSplitPanePosition === 'side';
+    const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
     const splitPanelOpenOnTheSide = splitPaneAvailableOnTheSide && splitPanelOpen;
 
     const toggleButtonsBarWidth = 0;
@@ -324,7 +329,7 @@ const OldAppLayout = React.forwardRef(
       onResize: onSplitPanelSizeSet,
       onToggle,
       onPreferencesChange: onSplitPanelPreferencesSet,
-      setSplitPanelToggle: () => {}, // split panel toggle is not used in this design
+      setSplitPanelToggle: setSplitPanelReportedToggle,
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
     };
@@ -338,7 +343,7 @@ const OldAppLayout = React.forwardRef(
       toolsPadding:
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
-        (toolsHide && (!splitPanel || finalSplitPanePosition !== 'side')) ||
+        (toolsHide && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -364,7 +369,7 @@ const OldAppLayout = React.forwardRef(
     );
 
     const splitPanelBottomOffset =
-      (!splitPanel || finalSplitPanePosition !== 'bottom'
+      (!splitPanelDisplayed || finalSplitPanePosition !== 'bottom'
         ? undefined
         : splitPanelOpen
         ? splitPanelReportedSize
@@ -383,7 +388,7 @@ const OldAppLayout = React.forwardRef(
 
       const toolsPanelWidth = toolsHide ? 0 : toolsOpen ? toolsWidth : closedDrawerWidth;
       const splitPanelWidth =
-        !splitPanel || finalSplitPanePosition !== 'side'
+        !splitPanelDisplayed || finalSplitPanePosition !== 'side'
           ? 0
           : splitPanelOpen
           ? splitPanelReportedSize
