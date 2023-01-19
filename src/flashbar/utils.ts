@@ -23,7 +23,7 @@ function getColorFromType(type?: FlashType): string {
   return type ? typesToColors[type] || defaultColor : defaultColor;
 }
 
-function getItemType(item: FlashbarProps.MessageDefinition) {
+export function getItemType(item: FlashbarProps.MessageDefinition) {
   if (item.loading) {
     return 'progress';
   } else {
@@ -32,29 +32,24 @@ function getItemType(item: FlashbarProps.MessageDefinition) {
 }
 
 function getItemColor(item: FlashbarProps.MessageDefinition) {
-  if (item.loading) {
-    return 'blue';
-  }
   return getColorFromType(getItemType(item));
 }
 
 /*
  Returns a selection of notifications, preserving the order when possible but making sure that all different colors in
  the stack are represented in the returned array.
- The order corresponds to how they are represented when using the stackable feature (newest first, oldest last).
+ The order corresponds to how they are represented when using the collapsible feature (newest first, oldest last).
  */
-export function getStackedItems(
+export function getItemSelection(
   items: ReadonlyArray<FlashbarProps.MessageDefinition>,
   desiredLength: number
 ): ReadonlyArray<StackableItem> {
-  const selectedItems: StackableItem[] = [];
-
   // First `desiredLength` items in the original array,
   // together with `isColorRepeated` to tell if they can be subject to be replaced later on if necessary
   const itemsOnTop: { item: StackableItem; isColorRepeated: boolean }[] = [];
 
-  // Items that fall outside `desiredIndexLength` but need to be "promoted" because they are of a different color
-  // which otherwise wouldn't be represented
+  // Items that fall outside `desiredIndexLength` but need to be "promoted" if possible
+  // because they are of a different color which otherwise wouldn't be represented
   const itemsToPromote: StackableItem[] = [];
 
   const addedColors: Set<string> = new Set();
@@ -67,27 +62,33 @@ export function getStackedItems(
     const isColorRepeated = addedColors.has(color);
     if (i < finalLength) {
       itemsOnTop.push({ item: { ...item, expandedIndex: i }, isColorRepeated });
-    } else if (!isColorRepeated) {
-      itemsToPromote.push({ ...item, expandedIndex: i });
-    }
-    if (addedColors.size === allPossibleColors) {
-      // No need to keep looking for unrepresented colors, we can stop looping
-      break;
+    } else {
+      if (addedColors.size === allPossibleColors) {
+        // No need to keep looking for unrepresented colors, we can stop looping
+        break;
+      } else if (!isColorRepeated) {
+        itemsToPromote.push({ ...item, expandedIndex: i });
+      }
     }
     addedColors.add(color);
   }
-
   // Generate the new array with the selected items, by picking from both arrays.
+  // First, from the non-repeated items within the desired length...
   // We loop `itemsOnTop` starting from the end because we prefer to preserve the first ones rather than the old ones
+  const reversedInitialSelection = [];
+  let slotsReservedForPromotions = 0;
   for (let j = itemsOnTop.length - 1; j >= 0; j--) {
-    if (itemsOnTop[j].isColorRepeated && itemsToPromote.length) {
-      // Explicitly tell TypeScript that .pop() will return an element of the expected type and not undefined,
-      // even though we check the array length in the condition above, because of a TypeScript limitation:
-      // https://github.com/microsoft/TypeScript/issues/30406#issuecomment-473037675
-      selectedItems[j] = itemsToPromote.pop() as StackableItem;
+    const item = itemsOnTop[j];
+    if (item.isColorRepeated && slotsReservedForPromotions < itemsToPromote.length) {
+      slotsReservedForPromotions += 1;
     } else {
-      selectedItems[j] = itemsOnTop[j].item;
+      reversedInitialSelection.push(item.item);
     }
+  }
+  const selectedItems = reversedInitialSelection.reverse();
+  // ...and then complete the selection with as many promotable items as we can fit in the rest of the array
+  for (let k = 0; selectedItems.length < desiredLength; k++) {
+    selectedItems.push(itemsToPromote[k]);
   }
   return selectedItems;
 }

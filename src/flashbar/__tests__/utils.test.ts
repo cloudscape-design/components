@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getStackedItems } from '../utils';
-import { FlashbarProps } from '../interfaces';
+import { getItemSelection, getItemType } from '../utils';
+import { FlashbarProps, FlashType } from '../interfaces';
 
-describe('getStackedItems', () => {
-  const cases: { description: string; input: FlashbarProps.Type[]; expectedOutput: FlashbarProps.Type[] }[] = [
+describe('getItemSelection', () => {
+  const cases: { description: string; input: FlashType[]; expectedOutput: FlashType[] }[] = [
     {
       description: "All items of type 'success'",
       input: ['success', 'success', 'success'],
@@ -26,6 +26,11 @@ describe('getStackedItems', () => {
       expectedOutput: ['error', 'error', 'error'],
     },
     {
+      description: '1 item of each color',
+      input: ['success', 'warning', 'error'],
+      expectedOutput: ['success', 'warning', 'error'],
+    },
+    {
       description: '1 item of different type after the length limit',
       input: ['success', 'success', 'success', 'error'],
       expectedOutput: ['success', 'success', 'error'],
@@ -45,15 +50,40 @@ describe('getStackedItems', () => {
       input: ['success', 'error', 'error', 'error'],
       expectedOutput: ['success', 'error', 'error'],
     },
+    {
+      description: '2 items of different type but same color, and 2 items of different type and color',
+      input: ['info', 'progress', 'success', 'error'],
+      expectedOutput: ['info', 'success', 'error'],
+    },
+    {
+      description: '3 items of different color followed by more items',
+      input: ['success', 'info', 'error', 'info', 'warning', 'progress'],
+      expectedOutput: ['success', 'info', 'error'],
+    },
   ];
 
   for (const testCase of cases) {
     it(testCase.description, () => {
-      const items = testCase.input.map(type => ({
-        type,
-      }));
-      const result = getStackedItems(items, 3).map(({ type }) => type);
+      const items = testCase.input.map(type =>
+        type === 'progress'
+          ? {
+              type: 'info' as FlashbarProps.Type,
+              loading: true,
+            }
+          : { type }
+      );
+      const result = getItemSelection(items, 3).map(item => getItemType(item));
       expect(result).toEqual(testCase.expectedOutput);
     });
   }
+
+  it('returns the same list if there are more slots than distinct colors', () => {
+    const items: FlashbarProps.MessageDefinition[] = [
+      { type: 'success' },
+      { type: 'error' },
+      { type: 'info' },
+      { type: 'success' },
+    ];
+    expect(getItemSelection(items, 4).map(({ type }) => ({ type }))).toEqual(items);
+  });
 });
