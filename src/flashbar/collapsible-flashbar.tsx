@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { Flash, focusFlashById } from './flash';
+import { Flash } from './flash';
 import { FlashbarProps, FlashType, StackedFlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
@@ -27,17 +27,27 @@ export { FlashbarProps };
 const maxNonCollapsibleItems = 1;
 
 export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
-    items,
-    ...restProps,
-  });
-  const isFocusVisible = useFocusVisible();
-
-  const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
-  const [nextFocusId, setNextFocusId] = useState<string | null>(null);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
 
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+    items,
+    ...restProps,
+    onItemsAdded: newItems => {
+      setEnteringItems([...enteringItems, ...newItems]);
+    },
+    onItemsChanged: () => {
+      // If not all items have ID, we can still animate collapse/expand transitions
+      // because we can rely on each item's index in the original array,
+      // but we can't do that when elements are added or removed, since the index changes.
+      if (allItemsHaveId) {
+        prepareAnimations();
+      }
+    },
+    onItemsRemoved: removedItems => setExitingItems([...exitingItems, ...removedItems]),
+  });
+
+  const isFocusVisible = useFocusVisible();
   const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
@@ -63,45 +73,11 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate, isReducedMotion]);
 
-  // Track new or removed item IDs in state to only trigger focus changes for newly added items.
-  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
-  if (items) {
-    const newItems = items.filter(({ id }) => id && !previousItems.some(item => item.id === id));
-    const removedItems = previousItems.filter(({ id }) => id && !items.some(item => item.id === id));
-    if (newItems.length > 0 || removedItems.length > 0) {
-      setPreviousItems(items);
-      setEnteringItems([...enteringItems, ...newItems]);
-      setExitingItems([...exitingItems, ...removedItems]);
-      const newFocusItems = newItems.filter(({ ariaRole }) => ariaRole === 'alert');
-      if (newFocusItems.length > 0) {
-        setNextFocusId(newFocusItems[0].id!);
-      }
-      // If not all items have ID, we can still animate collapse/expand transitions
-      // because we can rely on each item's index in the original array,
-      // but we can't do that when elements are added or removed, since the index changes.
-      if (allItemsHaveId) {
-        prepareAnimations();
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (nextFocusId) {
-      focusFlashById(ref.current, nextFocusId);
-    }
-  }, [nextFocusId, ref]);
-
   useEffect(() => {
     if (items.length <= maxNonCollapsibleItems) {
       setIsFlashbarStackExpanded(false);
     }
   }, [items.length]);
-
-  /**
-   * All the flash items should have ids so we can identify which DOM element is being
-   * removed from the DOM to animate it. Motion will be disabled if any of the provided
-   * flash messages does not contain an `id`.
-   */
 
   const animateFlash = !isReducedMotion;
 

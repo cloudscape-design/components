@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { Flash, focusFlashById } from './flash';
+import React from 'react';
+import { Flash } from './flash';
 import { FlashbarProps } from './interfaces';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
@@ -15,33 +15,10 @@ import { useFlashbar } from './common';
 export { FlashbarProps };
 
 export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
     items,
     ...restProps,
   });
-
-  const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
-  const [nextFocusId, setNextFocusId] = useState<string | null>(null);
-
-  // Track new or removed item IDs in state to only trigger focus changes for newly added items.
-  // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
-  if (items) {
-    const newItems = items.filter(({ id }) => id && !previousItems.some(item => item.id === id));
-    const removedItems = previousItems.filter(({ id }) => id && !items.some(item => item.id === id));
-    if (newItems.length > 0 || removedItems.length > 0) {
-      setPreviousItems(items);
-      const newFocusItems = newItems.filter(({ ariaRole }) => ariaRole === 'alert');
-      if (newFocusItems.length > 0) {
-        setNextFocusId(newFocusItems[0].id!);
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (nextFocusId) {
-      focusFlashById(ref.current, nextFocusId);
-    }
-  }, [nextFocusId, ref]);
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
