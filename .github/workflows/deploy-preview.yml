@@ -1,0 +1,14 @@
+name: Deploy preview
+on:
+  pull_request:
+
+jobs:
+  deploy:
+    name: Deploy preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudscape-design/.github/.github/actions/deploy-preview@dev-artifacts-preview
+        with:
+          target_artifact: "test"
+          repository: ${{ github.event.repository.name }}
+          pr_id: ${{ github.event.number }}
