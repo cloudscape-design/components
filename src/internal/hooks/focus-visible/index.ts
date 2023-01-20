@@ -6,6 +6,9 @@ import { createSingletonState } from '../use-singleton-handler';
 const useFocusSingleton = createSingletonState<boolean>({
   initialState: false,
   factory: setIsKeyboard => {
+    if (typeof document === 'undefined') {
+      return;
+    }
     const handleMousedown = () => setIsKeyboard(false);
     const handleKeydown = (event: KeyboardEvent) => {
       // we do not want to highlight focused element

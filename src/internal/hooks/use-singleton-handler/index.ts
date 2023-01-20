@@ -7,7 +7,9 @@ type ValueCallback<T> = (value: T) => void;
 type CleanupCallback = () => void;
 export type UseSingleton<T> = (listener: ValueCallback<T>) => void;
 
-export function createSingletonHandler<T>(factory: (handler: ValueCallback<T>) => CleanupCallback): UseSingleton<T> {
+export function createSingletonHandler<T>(
+  factory: (handler: ValueCallback<T>) => CleanupCallback | undefined
+): UseSingleton<T> {
   const listeners: Array<ValueCallback<T>> = [];
   const callback: ValueCallback<T> = value => {
     unstable_batchedUpdates(() => {
@@ -28,7 +30,7 @@ export function createSingletonHandler<T>(factory: (handler: ValueCallback<T>) =
       return () => {
         listeners.splice(listeners.indexOf(listener), 1);
         if (listeners.length === 0) {
-          cleanup!();
+          cleanup?.();
           cleanup = undefined;
         }
       };
@@ -39,7 +41,7 @@ export function createSingletonHandler<T>(factory: (handler: ValueCallback<T>) =
 }
 
 interface SingletonStateOptions<T> {
-  factory: (handler: ValueCallback<T>) => CleanupCallback;
+  factory: (handler: ValueCallback<T>) => CleanupCallback | undefined;
   initialState: T | (() => T); // useState signature
 }
 

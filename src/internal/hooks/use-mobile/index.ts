@@ -26,6 +26,9 @@ function getIsMobile() {
 export const useMobile = createSingletonState<boolean>({
   initialState: () => getIsMobile(),
   factory: handler => {
+    if (typeof window === 'undefined') {
+      return;
+    }
     const listener = () => handler(getIsMobile());
     window.addEventListener('resize', listener);
     return () => {

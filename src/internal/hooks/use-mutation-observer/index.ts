@@ -5,6 +5,9 @@ import { useStableEventHandler } from '../use-stable-event-handler';
 import { createSingletonHandler } from '../use-singleton-handler';
 
 const useMutationSingleton = createSingletonHandler<void>(handler => {
+  if (typeof MutationObserver === 'undefined') {
+    return;
+  }
   const observer = new MutationObserver(() => handler());
   observer.observe(document.body, { attributes: true, subtree: true });
   return () => observer.disconnect();

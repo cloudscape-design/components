@@ -131,6 +131,9 @@ export const Metrics = {
       console.error(`Detail for metric ${metricName} is too long: ${detail}`);
       return;
     }
+    if (typeof window === 'undefined') {
+      return;
+    }
     const AWSC = findAWSC(window);
     if (typeof AWSC === 'object' && typeof AWSC.Clog === 'object' && typeof AWSC.Clog.log === 'function') {
       AWSC.Clog.log(metricName, value, detail);
@@ -151,6 +154,9 @@ export const Metrics = {
     }
     if (typeof metric.eventValue === 'object') {
       metric.eventValue = JSON.stringify(metric.eventValue);
+    }
+    if (typeof window === 'undefined') {
+      return;
     }
     const panorama = findPanorama(window);
     if (typeof panorama === 'function') {
