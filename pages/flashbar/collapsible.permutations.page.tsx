@@ -71,6 +71,7 @@ export default function CollapsibleFlashbarPermutations() {
               {...{
                 collapsible: true,
                 i18nStrings: {
+                  ariaLabel: 'Notifications',
                   toggleButtonAriaLabel: 'View all notifications',
                   toggleButtonText: 'Notifications',
                   errorCountAriaLabel: 'Error',

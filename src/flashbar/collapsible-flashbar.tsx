@@ -130,6 +130,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       warnOnce(componentName, 'Using the `collapsible` option requires passing an `i18nStrings` object.');
       return;
     }
+    verifyStringPresence('ariaLabel');
     verifyStringPresence('toggleButtonText');
     verifyStringPresence('toggleButtonAriaLabel');
     for (const { labelName } of counterTypes) {
@@ -179,6 +180,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         collapsedIndex: index,
       }));
 
+  const ariaLabel = i18nStrings?.ariaLabel;
   const toggleButtonText = i18nStrings?.toggleButtonText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
@@ -211,6 +213,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isVisualRefresh && styles['visual-refresh']
       )}
       id={flashbarElementId}
+      aria-label={ariaLabel}
       aria-describedby={isCollapsible ? itemCountElementId : undefined}
       style={
         !isFlashbarStackExpanded || transitioning

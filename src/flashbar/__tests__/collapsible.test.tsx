@@ -25,6 +25,7 @@ const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
 };
 
 const defaultStrings = {
+  ariaLabel: 'Notifications',
   toggleButtonText: 'Notifications',
   toggleButtonAriaLabel: 'View all notifications',
   errorCountAriaLabel: 'Error',
@@ -142,6 +143,18 @@ describe('Collapsible Flashbar', () => {
       const list = flashbar.find('ul')!;
       expect(list).toBeTruthy();
       expect(list.findAll('li')).toHaveLength(2);
+    });
+
+    it('applies ARIA label to the unordered list', () => {
+      const customAriaLabel = 'Custom text';
+      const flashbar = renderFlashbar({
+        i18nStrings: {
+          ariaLabel: customAriaLabel,
+        },
+      });
+      const list = findList(flashbar)!;
+      expect(list).toBeTruthy();
+      expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
     });
 
     it('hides collapsed items from the accessibility tree', () => {
@@ -281,6 +294,7 @@ describe('Collapsible Flashbar', () => {
 
     it('warns if some string is missing', () => {
       const strings = {
+        ariaLabel: defaultStrings.ariaLabel,
         toggleButtonAriaLabel: defaultStrings.toggleButtonAriaLabel,
         toggleButtonText: defaultStrings.toggleButtonText,
         successCountAriaLabel: defaultStrings.successCountAriaLabel,
