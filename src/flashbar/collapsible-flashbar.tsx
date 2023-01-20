@@ -30,22 +30,35 @@ const maxNonCollapsibleItems = 1;
 export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
+  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
 
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+  const getElementsToAnimate = useCallback(() => {
+    const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
+    return { ...flashElements, toggleButton: toggleElementRef.current };
+  }, [isFlashbarStackExpanded]);
+
+  const prepareAnimations = useCallback(() => {
+    const rects = getDOMRects(getElementsToAnimate());
+    setInitialAnimationState(rects);
+  }, [getElementsToAnimate]);
+
+  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
       setEnteringItems([...enteringItems, ...newItems]);
     },
-    onItemsChanged: () => {
+    onItemsChanged: options => {
       // If not all items have ID, we can still animate collapse/expand transitions
       // because we can rely on each item's index in the original array,
       // but we can't do that when elements are added or removed, since the index changes.
-      if (allItemsHaveId) {
+      if (options?.allItemsHaveId && !options?.isReducedMotion) {
         prepareAnimations();
       }
     },
-    onItemsRemoved: removedItems => setExitingItems([...exitingItems, ...removedItems]),
+    onItemsRemoved: removedItems => {
+      setExitingItems([...exitingItems, ...removedItems]);
+    },
   });
 
   const isFocusVisible = useFocusVisible();
@@ -55,24 +68,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const listElementRef = useRef<HTMLUListElement | null>(null);
   const toggleElementRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
-  const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
   const [listTop, setListTop] = useState<number>();
 
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
-
-  const getElementsToAnimate = useCallback(() => {
-    const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-    return { ...flashElements, toggleButton: toggleElementRef.current };
-  }, [isFlashbarStackExpanded]);
-
-  const prepareAnimations = useCallback(() => {
-    if (isReducedMotion) {
-      return;
-    }
-    const rects = getDOMRects(getElementsToAnimate());
-    setInitialAnimationState(rects);
-  }, [getElementsToAnimate, isReducedMotion]);
 
   useEffect(() => {
     if (items.length <= maxNonCollapsibleItems) {
@@ -84,7 +83,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   function toggleCollapseExpand() {
     sendToggleMetric(items.length, !isFlashbarStackExpanded);
-    prepareAnimations();
+    if (!isReducedMotion) {
+      prepareAnimations();
+    }
     setIsFlashbarStackExpanded(prev => !prev);
   }
 

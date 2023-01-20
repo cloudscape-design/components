@@ -21,7 +21,7 @@ export function useFlashbar({
 }: FlashbarProps & {
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
-  onItemsChanged?: () => void;
+  onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
   const { __internalRootRef } = useBaseComponent(componentName);
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
@@ -52,7 +52,7 @@ export function useFlashbar({
         setNextFocusId(newFocusItems[0].id!);
       }
       if (onItemsChanged) {
-        onItemsChanged();
+        onItemsChanged({ allItemsHaveId, isReducedMotion });
       }
     }
   }
