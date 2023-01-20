@@ -8,6 +8,20 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
 import { createFlashbarWrapper } from './common';
 
+let mockUseAnimations = false;
+let useAnimations = false;
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
+  const originalVisualModeModule = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
+  return {
+    __esModule: true,
+    ...originalVisualModeModule,
+    useVisualRefresh: (...args: any) =>
+      mockUseAnimations ? useAnimations : originalVisualModeModule.useVisualRefresh(...args),
+    useReducedMotion: (...args: any) =>
+      mockUseAnimations ? !useAnimations : originalVisualModeModule.useReducedMotion(...args),
+  };
+});
+
 declare global {
   interface Window {
     panorama?: any;
@@ -23,253 +37,305 @@ afterEach(() => {
 });
 
 describe('Flashbar component', () => {
-  test('renders no flash when items are empty', () => {
-    const wrapper = createFlashbarWrapper(<Flashbar items={[]} />);
-    expect(wrapper.findItems().length).toBe(0);
+  beforeAll(() => {
+    mockUseAnimations = true;
+  });
+  afterAll(() => {
+    mockUseAnimations = false;
   });
 
-  test('renders correct count of flash messages', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar items={[{ header: 'Item 1' }, { header: 'Item 2' }, { header: 'Item 3' }]} />
-    );
-    expect(wrapper.findItems().length).toBe(3);
-  });
+  for (const withAnimations of [false, true]) {
+    describe(withAnimations ? 'with animations' : 'without animations', () => {
+      beforeEach(() => {
+        useAnimations = withAnimations;
+      });
 
-  test('dismiss buttons', () => {
-    {
-      const wrapper = createFlashbarWrapper(
-        <Flashbar items={[{ content: 'Non-dismissible flash', buttonText: 'Action button', onButtonClick: noop }]} />
-      );
-      expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
-    }
-    {
-      const wrapper = createFlashbarWrapper(
-        <Flashbar
-          items={[
-            { content: 'Non-dismissible flash', buttonText: 'Action button', onButtonClick: noop, dismissible: false },
-          ]}
-        />
-      );
-      expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
-    }
-    {
-      const wrapper = createFlashbarWrapper(
-        <Flashbar
-          items={[
-            {
-              content: 'Dismissible flash',
-              buttonText: 'Action button',
-              onButtonClick: noop,
-              dismissible: true,
-              dismissLabel: 'Dismiss',
-              onDismiss: noop,
-            },
-          ]}
-        />
-      );
-      expect(wrapper.findItems()[0].findDismissButton()).not.toBeNull();
-    }
-  });
+      test('renders no flash when items are empty', () => {
+        const wrapper = createFlashbarWrapper(<Flashbar items={[]} />);
+        expect(wrapper.findItems().length).toBe(0);
+      });
 
-  test('dismiss buttons have no default label', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar items={[{ content: 'Dismissible flash', dismissible: true, onDismiss: noop }]} />
-    );
-    expect(wrapper.findItems()[0].findDismissButton()!.getElement()).not.toHaveAttribute('aria-label');
-  });
+      test('renders correct count of flash messages', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { header: 'Item 1', id: '0' },
+              { header: 'Item 2', id: '1' },
+              { header: 'Item 3', id: '2' },
+            ]}
+          />
+        );
+        expect(wrapper.findItems().length).toBe(3);
+      });
 
-  test('dismiss buttons can have specified labels', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          {
-            content: 'Dismissible flash',
-            dismissible: true,
-            onDismiss: noop,
-            dismissLabel: 'close 1',
-          },
-          {
-            content: 'Dismissible flash',
-            dismissible: true,
-            onDismiss: noop,
-            dismissLabel: 'close 2',
-          },
-        ]}
-      />
-    );
-    expect(wrapper.findItems()[0].findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close 1');
-    expect(wrapper.findItems()[1].findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close 2');
-  });
+      test('dismiss buttons', () => {
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              items={[{ content: 'Non-dismissible flash', buttonText: 'Action button', onButtonClick: noop, id: '0' }]}
+            />
+          );
+          expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
+        }
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              items={[
+                {
+                  content: 'Non-dismissible flash',
+                  buttonText: 'Action button',
+                  onButtonClick: noop,
+                  dismissible: false,
+                  id: '0',
+                },
+              ]}
+            />
+          );
+          expect(wrapper.findItems()[0].findDismissButton()).toBeNull();
+        }
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar
+              items={[
+                {
+                  content: 'Dismissible flash',
+                  buttonText: 'Action button',
+                  onButtonClick: noop,
+                  dismissible: true,
+                  dismissLabel: 'Dismiss',
+                  onDismiss: noop,
+                  id: '0',
+                },
+              ]}
+            />
+          );
+          expect(wrapper.findItems()[0].findDismissButton()).not.toBeNull();
+        }
+      });
 
-  test('loading state', () => {
-    {
-      const spinner = createWrapper(
-        reactRender(<Flashbar items={[{ content: 'Not loading flash' }]} />).container
-      ).findSpinner();
-      expect(spinner).toBeNull();
-    }
-    {
-      const spinner = createWrapper(
-        reactRender(<Flashbar items={[{ content: 'Loading flash', loading: true }]} />).container
-      ).findSpinner();
-      expect(spinner).not.toBeNull();
-    }
-  });
+      test('dismiss buttons have no default label', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar items={[{ content: 'Dismissible flash', dismissible: true, onDismiss: noop }]} />
+        );
+        expect(wrapper.findItems()[0].findDismissButton()!.getElement()).not.toHaveAttribute('aria-label');
+      });
 
-  test('correct type of message', () => {
-    {
-      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'success' }]} />);
-      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
-        styles['flash-type-success']
-      );
-    }
-    {
-      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'warning' }]} />);
-      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
-        styles['flash-type-warning']
-      );
-    }
-    {
-      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'info' }]} />);
-      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
-    }
-    {
-      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'error' }]} />);
-      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
-        styles['flash-type-error']
-      );
-    }
-    {
-      const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'error', loading: true }]} />);
-      expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(styles['flash-type-info']);
-    }
-  });
+      test('dismiss buttons can have specified labels', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                content: 'Dismissible flash',
+                dismissible: true,
+                onDismiss: noop,
+                dismissLabel: 'close 1',
+                id: '0',
+              },
+              {
+                content: 'Dismissible flash',
+                dismissible: true,
+                onDismiss: noop,
+                dismissLabel: 'close 2',
+                id: '1',
+              },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close 1');
+        expect(wrapper.findItems()[1].findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close 2');
+      });
 
-  test('correct aria-role', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          { content: 'Alert', ariaRole: 'alert' },
-          { content: 'Status', ariaRole: 'status' },
-        ]}
-      />
-    );
-    expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'alert');
-    expect(wrapper.findItems()[1].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'status');
-  });
+      test('loading state', () => {
+        {
+          const spinner = createWrapper(
+            reactRender(<Flashbar items={[{ content: 'Not loading flash', id: '0' }]} />).container
+          ).findSpinner();
+          expect(spinner).toBeNull();
+        }
+        {
+          const spinner = createWrapper(
+            reactRender(<Flashbar items={[{ content: 'Loading flash', loading: true, id: '0' }]} />).container
+          ).findSpinner();
+          expect(spinner).not.toBeNull();
+        }
+      });
 
-  test('correct header', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
-      />
-    );
-    expect(wrapper.findItems()[0].findHeader()!.getElement()).toHaveTextContent('The header');
-  });
+      test('correct type of message', () => {
+        {
+          const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'success', id: '0' }]} />);
+          expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+            styles['flash-type-success']
+          );
+        }
+        {
+          const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'warning', id: '0' }]} />);
+          expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+            styles['flash-type-warning']
+          );
+        }
+        {
+          const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'info', id: '0' }]} />);
+          expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+            styles['flash-type-info']
+          );
+        }
+        {
+          const wrapper = createFlashbarWrapper(<Flashbar items={[{ content: 'Flash', type: 'error', id: '0' }]} />);
+          expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+            styles['flash-type-error']
+          );
+        }
+        {
+          const wrapper = createFlashbarWrapper(
+            <Flashbar items={[{ content: 'Flash', type: 'error', loading: true, id: '0' }]} />
+          );
+          expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveClass(
+            styles['flash-type-info']
+          );
+        }
+      });
 
-  test('correct content', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
-      />
-    );
-    expect(wrapper.findItems()[0].findContent()!.getElement()).toHaveTextContent('The content');
-  });
+      test('correct aria-role', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { content: 'Alert', ariaRole: 'alert', id: '0' },
+              { content: 'Status', ariaRole: 'status', id: '1' },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'alert');
+        expect(wrapper.findItems()[1].findByClassName(styles.flash)!.getElement()).toHaveAttribute('role', 'status');
+      });
 
-  test('correct button text', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[{ header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop }]}
-      />
-    );
-    expect(wrapper.findItems()[0].findActionButton()!.findTextRegion()!.getElement()).toHaveTextContent(
-      'The button text'
-    );
-  });
+      test('correct header', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findHeader()!.getElement()).toHaveTextContent('The header');
+      });
 
-  test('renders `action` content', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
-    );
-    expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Click me');
-  });
+      test('correct content', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findContent()!.getElement()).toHaveTextContent('The content');
+      });
 
-  test('when both `buttonText` and `action` provided, prefers the latter', () => {
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          { header: 'The header', content: 'The content', buttonText: 'buttonText', action: <Button>Action</Button> },
-        ]}
-      />
-    );
-    expect(wrapper.findItems()[0].findActionButton()).toBeNull();
-    expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Action');
-  });
+      test('correct button text', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { header: 'The header', content: 'The content', buttonText: 'The button text', onButtonClick: noop },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findActionButton()!.findTextRegion()!.getElement()).toHaveTextContent(
+          'The button text'
+        );
+      });
 
-  test('dismiss callback gets called', () => {
-    const dismissSpy = jest.fn();
-    const buttonClickSpy = jest.fn();
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          {
-            header: 'The header',
-            content: 'The content',
-            dismissible: true,
-            dismissLabel: 'Dismiss',
-            buttonText: 'Action button',
-            onDismiss: dismissSpy,
-            onButtonClick: buttonClickSpy,
-          },
-        ]}
-      />
-    );
-    wrapper.findItems()[0].findDismissButton()!.click();
-    expect(dismissSpy).toHaveBeenCalled();
-    expect(buttonClickSpy).not.toHaveBeenCalled();
-  });
+      test('renders `action` content', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar items={[{ header: 'The header', content: 'The content', action: <Button>Click me</Button> }]} />
+        );
+        expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Click me');
+      });
 
-  test('action button callback gets called', () => {
-    const dismissSpy = jest.fn();
-    const buttonClickSpy = jest.fn();
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          {
-            header: 'The header',
-            content: 'The content',
-            dismissible: true,
-            dismissLabel: 'Dismiss',
-            buttonText: 'Action button',
-            onDismiss: dismissSpy,
-            onButtonClick: buttonClickSpy,
-          },
-        ]}
-      />
-    );
-    wrapper.findItems()[0].findActionButton()!.click();
+      test('when both `buttonText` and `action` provided, prefers the latter', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                header: 'The header',
+                content: 'The content',
+                buttonText: 'buttonText',
+                action: <Button>Action</Button>,
+              },
+            ]}
+          />
+        );
+        expect(wrapper.findItems()[0].findActionButton()).toBeNull();
+        expect(wrapper.findItems()[0].findAction()!.findButton()!.getElement()).toHaveTextContent('Action');
+      });
 
-    expect(buttonClickSpy).toHaveBeenCalled();
-    expect(dismissSpy).not.toHaveBeenCalled();
-  });
+      test('dismiss callback gets called', () => {
+        const dismissSpy = jest.fn();
+        const buttonClickSpy = jest.fn();
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                header: 'The header',
+                content: 'The content',
+                dismissible: true,
+                dismissLabel: 'Dismiss',
+                buttonText: 'Action button',
+                onDismiss: dismissSpy,
+                onButtonClick: buttonClickSpy,
+              },
+            ]}
+          />
+        );
+        wrapper.findItems()[0].findDismissButton()!.click();
+        expect(dismissSpy).toHaveBeenCalled();
+        expect(buttonClickSpy).not.toHaveBeenCalled();
+      });
 
-  test('icon has an aria-label when statusIconAriaLabel is provided', () => {
-    const iconLabel = 'Warning';
-    const wrapper = createFlashbarWrapper(
-      <Flashbar
-        items={[
-          {
-            header: 'The header',
-            content: 'The content',
-            statusIconAriaLabel: iconLabel,
-            action: <Button>Click me</Button>,
-          },
-        ]}
-      />
-    );
+      test('action button callback gets called', () => {
+        const dismissSpy = jest.fn();
+        const buttonClickSpy = jest.fn();
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                header: 'The header',
+                content: 'The content',
+                dismissible: true,
+                dismissLabel: 'Dismiss',
+                buttonText: 'Action button',
+                onDismiss: dismissSpy,
+                onButtonClick: buttonClickSpy,
+              },
+            ]}
+          />
+        );
+        wrapper.findItems()[0].findActionButton()!.click();
 
-    expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute('aria-label', iconLabel);
-  });
+        expect(buttonClickSpy).toHaveBeenCalled();
+        expect(dismissSpy).not.toHaveBeenCalled();
+      });
+
+      test('icon has an aria-label when statusIconAriaLabel is provided', () => {
+        const iconLabel = 'Warning';
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              {
+                header: 'The header',
+                content: 'The content',
+                statusIconAriaLabel: iconLabel,
+                action: <Button>Click me</Button>,
+              },
+            ]}
+          />
+        );
+
+        expect(wrapper.findItems()[0].find(`:scope [aria-label]`)?.getElement()).toHaveAttribute(
+          'aria-label',
+          iconLabel
+        );
+      });
+    });
+  }
 });
 
 describe('Analytics', () => {

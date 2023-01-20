@@ -42,20 +42,19 @@ export default function NonCollapsibleFlashbar({ items, ...restProps }: Flashbar
       // This is a proxy for <ul>, so we're not applying a class to another actual component.
       // eslint-disable-next-line react/forbid-component-props
       <TransitionGroup component="ul" className={styles['flash-list']}>
-        {items &&
-          items.map((item, index) => (
-            <Transition
-              transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
-              key={item.id ?? index}
-              in={true}
-            >
-              {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-                <li className={styles['flash-list-item']}>
-                  {renderItem(item, item.id ?? index, transitionRootElement, state)}
-                </li>
-              )}
-            </Transition>
-          ))}
+        {items.map((item, index) => (
+          <Transition
+            transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
+            key={item.id ?? index}
+            in={true}
+          >
+            {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
+              <li className={styles['flash-list-item']}>
+                {renderItem(item, item.id ?? index, transitionRootElement, state)}
+              </li>
+            )}
+          </Transition>
+        ))}
       </TransitionGroup>
     );
   }
