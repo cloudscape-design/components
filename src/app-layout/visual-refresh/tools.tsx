@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { InternalButton } from '../../button/internal';
 import { useAppLayoutInternals } from './context';
-import { useSplitPanelContext } from '../../internal/context/split-panel-context';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -34,7 +33,7 @@ export default function Tools({ children }: ToolsProps) {
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
-    splitPanel,
+    splitPanelDisplayed,
     tools,
     toolsHide,
     toolsWidth,
@@ -42,11 +41,10 @@ export default function Tools({ children }: ToolsProps) {
     navigationHide,
     toolsFocusControl,
     splitPanelPosition,
+    splitPanelToggle,
   } = useAppLayoutInternals();
 
-  const { openButtonAriaLabel } = useSplitPanelContext();
-
-  const hasSplitPanel = getSplitPanelStatus(splitPanel, splitPanelPosition);
+  const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
 
@@ -138,9 +136,9 @@ export default function Tools({ children }: ToolsProps) {
                 />
               )}
 
-              {hasSplitPanel && (
+              {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
-                  ariaLabel={openButtonAriaLabel}
+                  ariaLabel={splitPanelToggle.ariaLabel}
                   iconName="view-vertical"
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}
@@ -177,8 +175,8 @@ export function getToolsDefaultState(isMobile: boolean, stateFromProps?: boolean
  * This simple function returns the presence of the split panel as a child of the
  * Tools component. It must exist and be in side position.
  */
-function getSplitPanelStatus(splitPanel: React.ReactNode, splitPanelPosition: string) {
-  return splitPanel && splitPanelPosition === 'side' ? true : false;
+function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: string) {
+  return splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 }
 
 /**

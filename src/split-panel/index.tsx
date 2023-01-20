@@ -37,6 +37,7 @@ export default function SplitPanel({
   header,
   children,
   hidePreferencesButton = false,
+  closeBehavior = 'collapse',
   i18nStrings,
   ...restProps
 }: SplitPanelProps) {
@@ -58,7 +59,7 @@ export default function SplitPanel({
     onResize,
     onToggle,
     reportSize,
-    setOpenButtonAriaLabel,
+    setSplitPanelToggle,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
@@ -70,8 +71,8 @@ export default function SplitPanel({
   const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
   useEffect(() => {
-    setOpenButtonAriaLabel?.(i18nStrings.openButtonAriaLabel);
-  }, [setOpenButtonAriaLabel, i18nStrings.openButtonAriaLabel]);
+    setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: i18nStrings.openButtonAriaLabel });
+  }, [setSplitPanelToggle, i18nStrings.openButtonAriaLabel, closeBehavior]);
 
   useEffect(() => {
     // effects are called inside out in the components tree
@@ -180,7 +181,9 @@ export default function SplitPanel({
         {isOpen ? (
           <InternalButton
             className={styles['close-button']}
-            iconName={isRefresh && position === 'side' ? 'angle-right' : isRefresh ? 'angle-down' : 'close'}
+            iconName={
+              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
+            }
             variant="icon"
             onClick={onToggle}
             formAction="none"
@@ -247,6 +250,10 @@ export default function SplitPanel({
   }, [rightOffset, __internalRootRef]);
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
+
+  if (closeBehavior === 'hide' && !isOpen) {
+    return <></>;
+  }
 
   /**
    * The AppLayout factor moved the circular buttons out of the

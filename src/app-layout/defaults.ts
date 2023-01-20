@@ -12,6 +12,9 @@ const defaults: Record<AppLayoutProps.ContentType, AppLayoutState> = {
   default: {
     ...defaultContentTypeState,
   },
+  dashboard: {
+    ...defaultContentTypeState,
+  },
   cards: {
     navigationOpen: true,
     minContentWidth: 280,
