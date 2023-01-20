@@ -59,6 +59,28 @@ const ITEMS: SideNavigationProps.Item[] = [
     ],
   },
   {
+    type: 'section-header',
+    text: 'Section Header',
+    href: '#/link-group',
+    items: [
+      {
+        type: 'link',
+        text: 'Inside SH',
+        href: '#/page6',
+      },
+      {
+        type: 'link',
+        text: 'Page 7',
+        href: '#/page7',
+      },
+      {
+        type: 'link',
+        text: 'Page 8',
+        href: '#/page8',
+      },
+    ],
+  },
+  {
     type: 'expandable-link-group',
     text: 'Expandable link group',
     href: '#/exp-link-group',

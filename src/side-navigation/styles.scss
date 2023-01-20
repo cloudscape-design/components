@@ -13,9 +13,11 @@
 }
 
 .header {
+  @include styles.font-panel-header;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
+  margin: 0;
 }
 
 .header-link {
@@ -26,7 +28,7 @@
   display: flex;
 
   &--has-logo {
-    > .header-link-text {
+    >.header-link-text {
       font-weight: styles.$font-weight-normal;
     }
   }
@@ -75,20 +77,59 @@
   margin-left: calc(-1 * #{awsui.$space-l});
 }
 
+
 .section {
   margin-top: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
   margin-bottom: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
 
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
-  > div {
+  >div {
     padding: 0;
   }
 }
 
+.list-variant-section-header {
+  margin: 0;
+  padding: 0;
+}
+
+.list-variant-section-header .section,
+.list-variant-section-header .expandable-link-group {
+  margin-left: 0;
+}
+
+
+
 .section-header {
-  color: awsui.$color-text-body-secondary;
-  font-weight: styles.$font-weight-bold;
+  @include styles.font-heading-m;
+  margin: 0;
+
+  &-link {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      color: awsui.$color-text-accent;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+
+    @include focus-visible.when-visible {
+      @include styles.link-focus;
+    }
+
+    &-active {
+      color: awsui.$color-text-accent;
+    }
+  }
 }
 
 .link {

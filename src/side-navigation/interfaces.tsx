@@ -60,6 +60,19 @@ export interface SideNavigationProps extends BaseComponentProps {
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
    *
+   * #### Section Header
+   * A section header is used to group a set of links that are conceptually related to each other and can be displayed under a single section header to provide further organization.
+   * The section header can be a link to a overview page. You can nest expandable sections, link groups and expandable link groups within a section header depending on you IA needs.
+   * - `type`: `'section-header'`.
+   * - `text` (string) - Specifies the text to display as a title of the section.
+   * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
+   * - `external` (boolean) - Determines whether to display an external link icon next to the link.
+   *      If set to `true`, an external link icon appears next to the link.
+   *      The anchor also has the attributes `target="_blank"` and `rel="noopener"`.
+   *      Additionally, the `activeHref` property won't be modified when a user chooses the link.
+   * - `externalIconAriaLabel` (string) - Adds an aria-label to the external icon.
+   *
+   * 
    * #### LinkGroup
    * Object that represents a group of links.
    * - `type`: `'link-group'`.
@@ -142,6 +155,15 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
+  export interface SectionHeader {
+    type: 'section-header';
+    text: string;
+    href?: string;
+    external?: boolean;
+    externalIconAriaLabel?: string;
+    items: ReadonlyArray<Link | Section | LinkGroup | ExpandableLinkGroup>;
+  }
+
   export interface LinkGroup {
     type: 'link-group';
     text: string;
@@ -157,7 +179,7 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
-  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup;
+  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionHeader;
 
   export interface ChangeDetail {
     item: Section | ExpandableLinkGroup;

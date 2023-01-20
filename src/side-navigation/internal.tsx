@@ -20,6 +20,7 @@ interface BaseItemComponentProps {
     item:
       | SideNavigationProps.Link
       | SideNavigationProps.Header
+      | SideNavigationProps.SectionHeader
       | SideNavigationProps.LinkGroup
       | SideNavigationProps.ExpandableLinkGroup,
     event: React.SyntheticEvent | Event
@@ -45,7 +46,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
 
   return (
     <>
-      <div className={styles.header}>
+      <h2 className={styles.header}>
         <a
           {...focusVisible}
           href={definition.href}
@@ -63,7 +64,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           )}
           <span className={styles['header-link-text']}>{definition.text}</span>
         </a>
-      </div>
+      </h2>
       <Divider variant="header" />
     </>
   );
@@ -71,7 +72,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
 
 export interface ItemListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
-  variant: 'section' | 'link-group' | 'expandable-link-group' | 'root';
+  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
 export function ItemList({ variant, items, activeHref, fireChange, fireFollow }: ItemListProps) {
@@ -84,6 +85,9 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
           )}
           {item.type === 'section' && (
             <Section definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+          )}
+          {item.type === 'section-header' && (
+            <SectionHeader definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
           {item.type === 'link-group' && (
             <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
@@ -199,6 +203,58 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
         activeHref={activeHref}
       />
     </InternalExpandableSection>
+  );
+}
+
+interface HeaderSectionProps extends BaseItemComponentProps {
+  definition: SideNavigationProps.SectionHeader;
+}
+
+function SectionHeader({ definition, activeHref, fireFollow, fireChange }: HeaderSectionProps) {
+  checkSafeUrl('SideNavigation', definition.href);
+  const focusVisible = useFocusVisible();
+  //const isActive = definition.href === activeHref;
+  const isActive = true;
+  const onClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (isPlainLeftClick(event)) {
+        fireFollow(definition, event);
+      }
+    },
+    [fireFollow, definition]
+  );
+
+  return (
+    <>
+      <h3 className={clsx(styles["section-header"])}>
+        {definition.href ? <a
+          {...focusVisible}
+          href={definition.href}
+          className={clsx(styles['section-header-link'], { [styles['section-header-link-active']]: isActive })}
+          target={definition.external ? '_blank' : undefined}
+          rel={definition.external ? 'noopener noreferrer' : undefined}
+          aria-current={definition.href === activeHref ? 'page' : undefined}
+          onClick={onClick}
+        >
+          {definition.text}
+          {definition.external && (
+            <span
+              aria-label={definition.externalIconAriaLabel}
+              role={definition.externalIconAriaLabel ? 'img' : undefined}
+            >
+              <InternalIcon name="external" className={styles['external-icon']} />
+            </span>
+          )}
+        </a> : definition.text}
+      </h3>
+      <ItemList
+        variant="section-header"
+        items={definition.items}
+        fireFollow={fireFollow}
+        fireChange={fireChange}
+        activeHref={activeHref}
+      />
+    </>
   );
 }
 
