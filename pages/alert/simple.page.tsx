@@ -21,7 +21,7 @@ export default function AlertScenario() {
               statusIconAriaLabel="Warning"
               dismissAriaLabel="Close alert"
               dismissible={true}
-              buttonText="Button text"
+              buttonText="Hello!"
               type="warning"
               onDismiss={() => setVisible(false)}
             >
