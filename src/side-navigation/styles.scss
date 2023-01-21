@@ -95,6 +95,8 @@
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 .link-active {
