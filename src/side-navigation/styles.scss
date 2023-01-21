@@ -75,6 +75,10 @@
 .section,
 .expandable-link-group {
   margin-left: calc(-1 * #{awsui.$space-l});
+
+  &--no-ident {
+    margin-left: 0;
+  }
 }
 
 
@@ -93,13 +97,6 @@
   margin: 0;
   padding: 0;
 }
-
-.list-variant-section-header .section,
-.list-variant-section-header .expandable-link-group {
-  margin-left: 0;
-}
-
-
 
 .section-header {
   @include styles.font-heading-m;

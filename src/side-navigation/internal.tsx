@@ -20,7 +20,7 @@ interface BaseItemComponentProps {
     item:
       | SideNavigationProps.Link
       | SideNavigationProps.Header
-      | SideNavigationProps.SectionHeaderLink
+      | (SideNavigationProps.SectionHeader & { href: string })
       | SideNavigationProps.LinkGroup
       | SideNavigationProps.ExpandableLinkGroup,
     event: React.SyntheticEvent | Event
@@ -84,7 +84,13 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
             <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
           {item.type === 'section' && (
-            <Section definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+            <Section
+              definition={item}
+              activeHref={activeHref}
+              fireChange={fireChange}
+              fireFollow={fireFollow}
+              variant={variant}
+            />
           )}
           {item.type === 'section-header' && (
             <SectionHeader definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
@@ -98,6 +104,7 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
               activeHref={activeHref}
               fireChange={fireChange}
               fireFollow={fireFollow}
+              variant={variant}
             />
           )}
           {((i === 0 && item.type === 'divider') || (items[i + 1] && items[i + 1].type === 'divider')) && (
@@ -170,9 +177,10 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
 interface SectionProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Section;
+  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function Section({ definition, activeHref, fireFollow, fireChange }: SectionProps) {
+function Section({ definition, activeHref, fireFollow, fireChange, variant }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
 
   const onExpandedChange = useCallback(
@@ -192,7 +200,7 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
-      className={styles.section}
+      className={clsx(styles.section, variant === 'section-header' && styles['section--no-ident'])}
       headerText={definition.text}
     >
       <ItemList
@@ -218,7 +226,7 @@ function SectionHeader({ definition, activeHref, fireFollow, fireChange }: Secti
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isPlainLeftClick(event)) {
-        fireFollow(definition as SideNavigationProps.SectionHeaderLink, event);
+        fireFollow(definition as SideNavigationProps.SectionHeader & { href: string }, event);
       }
     },
     [fireFollow, definition]
@@ -290,9 +298,10 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
 
 interface ExpandableLinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.ExpandableLinkGroup;
+  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref }: ExpandableLinkGroupProps) {
+function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, variant }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
   const containsActiveLink = useMemo(() => {
@@ -338,7 +347,10 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref }:
 
   return (
     <InternalExpandableSection
-      className={styles['expandable-link-group']}
+      className={clsx(
+        styles['expandable-link-group'],
+        variant === 'section-header' && styles['expandable-link-group--no-ident']
+      )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}

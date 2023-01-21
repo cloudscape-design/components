@@ -163,10 +163,6 @@ export namespace SideNavigationProps {
     externalIconAriaLabel?: string;
     items: ReadonlyArray<Link | Section | LinkGroup | ExpandableLinkGroup>;
   }
-
-  export interface SectionHeaderLink extends SectionHeader {
-    href: string;
-  }
   export interface LinkGroup {
     type: 'link-group';
     text: string;
