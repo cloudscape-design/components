@@ -20,7 +20,7 @@ interface BaseItemComponentProps {
     item:
       | SideNavigationProps.Link
       | SideNavigationProps.Header
-      | SideNavigationProps.SectionHeader
+      | SideNavigationProps.SectionHeaderLink
       | SideNavigationProps.LinkGroup
       | SideNavigationProps.ExpandableLinkGroup,
     event: React.SyntheticEvent | Event
@@ -206,19 +206,19 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
   );
 }
 
-interface HeaderSectionProps extends BaseItemComponentProps {
+interface SectionHeaderProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionHeader;
 }
 
-function SectionHeader({ definition, activeHref, fireFollow, fireChange }: HeaderSectionProps) {
+function SectionHeader({ definition, activeHref, fireFollow, fireChange }: SectionHeaderProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const focusVisible = useFocusVisible();
-  //const isActive = definition.href === activeHref;
-  const isActive = true;
+  const isActive = definition.href === activeHref;
+
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isPlainLeftClick(event)) {
-        fireFollow(definition, event);
+        fireFollow(definition as SideNavigationProps.SectionHeaderLink, event);
       }
     },
     [fireFollow, definition]
@@ -226,26 +226,30 @@ function SectionHeader({ definition, activeHref, fireFollow, fireChange }: Heade
 
   return (
     <>
-      <h3 className={clsx(styles["section-header"])}>
-        {definition.href ? <a
-          {...focusVisible}
-          href={definition.href}
-          className={clsx(styles['section-header-link'], { [styles['section-header-link-active']]: isActive })}
-          target={definition.external ? '_blank' : undefined}
-          rel={definition.external ? 'noopener noreferrer' : undefined}
-          aria-current={definition.href === activeHref ? 'page' : undefined}
-          onClick={onClick}
-        >
-          {definition.text}
-          {definition.external && (
-            <span
-              aria-label={definition.externalIconAriaLabel}
-              role={definition.externalIconAriaLabel ? 'img' : undefined}
-            >
-              <InternalIcon name="external" className={styles['external-icon']} />
-            </span>
-          )}
-        </a> : definition.text}
+      <h3 className={clsx(styles['section-header'])}>
+        {definition.href ? (
+          <a
+            {...focusVisible}
+            href={definition.href}
+            className={clsx(styles['section-header-link'], { [styles['section-header-link-active']]: isActive })}
+            target={definition.external ? '_blank' : undefined}
+            rel={definition.external ? 'noopener noreferrer' : undefined}
+            aria-current={definition.href === activeHref ? 'page' : undefined}
+            onClick={onClick}
+          >
+            {definition.text}
+            {definition.external && (
+              <span
+                aria-label={definition.externalIconAriaLabel}
+                role={definition.externalIconAriaLabel ? 'img' : undefined}
+              >
+                <InternalIcon name="external" className={styles['external-icon']} />
+              </span>
+            )}
+          </a>
+        ) : (
+          definition.text
+        )}
       </h3>
       <ItemList
         variant="section-header"

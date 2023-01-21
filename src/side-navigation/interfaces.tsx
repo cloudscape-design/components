@@ -72,7 +72,7 @@ export interface SideNavigationProps extends BaseComponentProps {
    *      Additionally, the `activeHref` property won't be modified when a user chooses the link.
    * - `externalIconAriaLabel` (string) - Adds an aria-label to the external icon.
    *
-   * 
+   *
    * #### LinkGroup
    * Object that represents a group of links.
    * - `type`: `'link-group'`.
@@ -164,6 +164,9 @@ export namespace SideNavigationProps {
     items: ReadonlyArray<Link | Section | LinkGroup | ExpandableLinkGroup>;
   }
 
+  export interface SectionHeaderLink extends SectionHeader {
+    href: string;
+  }
   export interface LinkGroup {
     type: 'link-group';
     text: string;
@@ -190,7 +193,7 @@ export namespace SideNavigationProps {
   export interface FollowDetail extends BaseNavigationDetail {
     text?: string;
     href: string;
-    type?: 'link' | 'link-group' | 'expandable-link-group';
+    type?: 'link' | 'link-group' | 'expandable-link-group' | 'section-header';
     info?: React.ReactNode;
   }
 }

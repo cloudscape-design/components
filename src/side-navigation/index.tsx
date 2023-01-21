@@ -45,6 +45,7 @@ export default function SideNavigation({
     (
       item:
         | SideNavigationProps.Link
+        | SideNavigationProps.SectionHeaderLink
         | SideNavigationProps.Header
         | SideNavigationProps.LinkGroup
         | SideNavigationProps.ExpandableLinkGroup,
