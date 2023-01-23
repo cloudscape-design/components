@@ -63,5 +63,5 @@ export function useFlashbar({
     }
   }, [nextFocusId, ref]);
 
-  return { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef };
+  return { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref };
 }

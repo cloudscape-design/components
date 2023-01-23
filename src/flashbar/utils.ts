@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { FlashbarProps, FlashType } from './interfaces';
 
+export const FOCUS_THROTTLE_DELAY = 2000;
+
 // Since the position of a notification changes when the Flashbar is collapsed,
 // it is useful on some situations (e.g, for animating) to know the original position of the item
 // in the non-collapsed state.

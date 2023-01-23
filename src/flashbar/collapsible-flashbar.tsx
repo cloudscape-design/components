@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
-import { Flash } from './flash';
+import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, FlashType, StackedFlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
@@ -42,7 +42,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -85,6 +85,12 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     sendToggleMetric(items.length, !isFlashbarStackExpanded);
     if (!isReducedMotion) {
       prepareAnimations();
+    }
+    if (!isFlashbarStackExpanded && items?.length) {
+      const lastItem = items[items.length - 1];
+      if (lastItem.id !== undefined) {
+        focusFlashById(ref.current, lastItem.id);
+      }
     }
     setIsFlashbarStackExpanded(prev => !prev);
   }

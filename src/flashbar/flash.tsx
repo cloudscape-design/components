@@ -16,7 +16,7 @@ import { ButtonProps } from '../button/interfaces';
 
 import { sendDismissMetric } from './internal/analytics';
 
-const FOCUS_THROTTLE_DELAY = 2000;
+import { FOCUS_THROTTLE_DELAY } from './utils';
 
 const ICON_TYPES = {
   success: 'status-positive',

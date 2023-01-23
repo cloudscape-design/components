@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { setupTest } from './pages/interactive-page';
+import { FOCUS_THROTTLE_DELAY } from '../utils';
 
 describe('Collapsible Flashbar', () => {
   describe('Keyboard navigation', () => {
@@ -60,6 +61,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.toggleCollapsedState();
+          await wait(FOCUS_THROTTLE_DELAY);
           await page.addInfoFlash();
           return expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
@@ -70,6 +72,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.toggleCollapsedState();
+          await wait(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           return expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
@@ -80,6 +83,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.toggleCollapsedState();
+          await wait(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
           await page.addInfoFlash();
@@ -92,12 +96,36 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.toggleCollapsedState();
+          await wait(FOCUS_THROTTLE_DELAY);
           await page.addErrorFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
+          await wait(FOCUS_THROTTLE_DELAY);
           await page.addInfoFlash();
           await expect(page.isFlashFocused(2)).resolves.toBe(false);
         })
       );
     });
+
+    describe('on expand', () => {
+      test(
+        'focuses on the first flash',
+        setupTest(async page => {
+          await page.toggleCollapsibleFeature();
+          await page.addErrorFlash();
+          await wait(FOCUS_THROTTLE_DELAY);
+          await page.toggleCollapsedState();
+          await wait(FOCUS_THROTTLE_DELAY);
+          await expect(page.isFlashFocused(1)).resolves.toBe(true);
+        })
+      );
+    });
   });
 });
+
+function wait(amount: number) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(true);
+    }, amount);
+  });
+}
