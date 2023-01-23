@@ -135,8 +135,8 @@ the grid layout will be:
   text-decoration: none;
   z-index: 1;
 
-  > .status > .text,
-  > .status > .types-count,
+  > .status > .item-count-with-header > .header,
+  > .status > .item-count-with-header > .types-count,
   > .button {
     @include typography.default-text-style;
     color: awsui.$color-text-layout-toggle;
@@ -145,23 +145,21 @@ the grid layout will be:
     margin-bottom: 0;
   }
 
-  > .status {
-    > .text {
+  > .status > .item-count-with-header {
+    > .header {
       font-weight: awsui.$font-button-weight;
       display: inline;
       margin-right: awsui.$space-s;
     }
 
-    > .types-count {
+    > .item-count {
       margin-left: awsui.$space-xxs;
 
-      > .types-count-visible {
-        > .type-count {
-          margin-right: awsui.$space-s;
+      > .type-count {
+        margin-right: awsui.$space-s;
 
-          > .count-number {
-            margin-left: awsui.$space-xxs;
-          }
+        > .count-number {
+          margin-left: awsui.$space-xxs;
         }
       }
     }

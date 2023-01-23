@@ -318,18 +318,19 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span className={styles.status} role="status">
-              {toggleButtonText && <h2 className={styles.text}>{toggleButtonText}</h2>}
-              <span className={styles['types-count']} id={itemCountElementId}>
-                <LiveRegion>
-                  {counterTypes
-                    .map(
-                      ({ type, labelName }: { type: FlashType; labelName: LabelName }) =>
-                        `${countByType[type]} ${(i18nStrings && i18nStrings[labelName]) ?? ''}`
-                    )
-                    .join(', ')}
-                </LiveRegion>
-                <span aria-hidden="true" className={styles['types-count-visible']}>
+            <span className={styles.status} role="status" id={itemCountElementId}>
+              <LiveRegion>
+                {toggleButtonText && <h2>{toggleButtonText}</h2>}
+                {counterTypes
+                  .map(
+                    ({ type, labelName }: { type: FlashType; labelName: LabelName }) =>
+                      `${countByType[type]} ${(i18nStrings && i18nStrings[labelName]) ?? ''}`
+                  )
+                  .join(', ')}
+              </LiveRegion>
+              <span aria-hidden="true" className={styles['item-count-with-header']}>
+                {toggleButtonText && <h2 className={styles.header}>{toggleButtonText}</h2>}
+                <span className={styles['item-count']}>
                   {counterTypes.map(({ type, labelName, iconName }) => (
                     <NotificationTypeCount
                       key={type}
