@@ -54,6 +54,11 @@ export interface BaseInputProps {
   ariaLabel?: string;
 
   /**
+   * Adds an `aria-label` to the clear button inside the search input.
+   */
+  clearAriaLabel?: string;
+
+  /**
    * Specifies whether to add `aria-required` to the native control.
    */
   ariaRequired?: boolean;

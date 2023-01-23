@@ -15,6 +15,11 @@ export interface TextFilterProps extends BaseComponentProps {
   filteringPlaceholder?: string;
 
   /**
+   * Label for the filtering input clear button.
+   */
+  filteringClearAriaLabel?: string;
+
+  /**
    * Accepts a human-readable, localized string that indicates the number of results. For example, "1 match" or "165 matches."
    * If the total number of results is unknown, also include an indication that there may be more results than
    * the number listed. For example, "25+ matches."

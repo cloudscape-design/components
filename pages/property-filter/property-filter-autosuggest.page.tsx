@@ -29,6 +29,7 @@ export default function PropertyFilterAutosuggestPage() {
         onChange={event => setValue(event.detail.value)}
         enteredTextLabel={enteredTextLabel}
         ariaLabel={'internal autosuggest'}
+        clearAriaLabel="Clear"
         virtualScroll={true}
       />
     </div>

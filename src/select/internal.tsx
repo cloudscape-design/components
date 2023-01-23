@@ -42,6 +42,7 @@ const InternalSelect = React.forwardRef(
       filteringType = 'none',
       filteringPlaceholder,
       filteringAriaLabel,
+      filteringClearAriaLabel,
       ariaRequired,
       placeholder,
       disabled,
@@ -134,6 +135,7 @@ const InternalSelect = React.forwardRef(
 
     const filter = (
       <Filter
+        clearAriaLabel={filteringClearAriaLabel}
         filteringType={filteringType}
         placeholder={filteringPlaceholder}
         ariaLabel={filteringAriaLabel}

@@ -27,6 +27,7 @@ export interface AutosuggestInputProps
     InternalBaseComponentProps {
   ariaControls?: string;
   ariaActivedescendant?: string;
+  clearAriaLabel?: string;
   dropdownExpanded?: boolean;
   dropdownContentKey?: string;
   dropdownContentFocusable?: boolean;
@@ -71,6 +72,7 @@ const AutosuggestInput = React.forwardRef(
       expandToViewport,
       ariaControls,
       ariaActivedescendant,
+      clearAriaLabel,
       dropdownExpanded = true,
       dropdownContentKey,
       dropdownContentFocusable = false,
@@ -260,6 +262,7 @@ const AutosuggestInput = React.forwardRef(
               disableBrowserAutocorrect={disableBrowserAutocorrect}
               readOnly={readOnly}
               ariaRequired={ariaRequired}
+              clearAriaLabel={clearAriaLabel}
               ref={inputRef}
               autoComplete={false}
               __nativeAttributes={nativeAttributes}

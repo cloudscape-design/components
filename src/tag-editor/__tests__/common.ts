@@ -35,6 +35,7 @@ export const i18nStrings: TagEditorProps.I18nStrings = {
   invalidValueError:
     'Invalid value. Values can only contain alphanumeric characters, spaces and any of the following: _.:/=+@-',
   awsPrefixError: 'Cannot start with aws:',
+  clearAriaLabel: 'Clear',
   tagLimit: availableTags => `You can add ${availableTags} more tag(s).`,
   tagLimitReached: tagLimit => `You have reached the limit of ${tagLimit} tag(s).`,
   tagLimitExceeded: tagLimit => `You have exceeded the limit of ${tagLimit} tag(s).`,
