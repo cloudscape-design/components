@@ -183,7 +183,7 @@ function InternalInput(
   }, [__useReactAutofocus, autoFocusEnabled]);
 
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
+    <span {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
       {__leftIcon && (
         <span onClick={__onLeftIconClick} className={iconClassName('left', !!__onLeftIconClick)}>
           <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
@@ -199,7 +199,7 @@ function InternalInput(
           <InternalIcon name={__rightIcon} variant={disabled ? 'disabled' : __rightIconVariant} />
         </span>
       )}
-    </div>
+    </span>
   );
 }
 
