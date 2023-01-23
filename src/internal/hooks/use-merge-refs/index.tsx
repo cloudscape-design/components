@@ -9,12 +9,14 @@ import React, { useMemo } from 'react';
  *  const mergedRef = useMergeRefs(ref1, ref2, ref3)
  *  <div ref={refs}>...</div>
  */
-export function useMergeRefs(...refs: Array<React.RefCallback<any> | React.MutableRefObject<any> | null | undefined>) {
+export function useMergeRefs<T = any>(
+  ...refs: Array<React.RefCallback<T> | React.MutableRefObject<T> | null | undefined>
+): React.RefCallback<T> | null {
   return useMemo(() => {
     if (refs.every(ref => ref === null || ref === undefined)) {
       return null;
     }
-    return (value: any) => {
+    return (value: T | null) => {
       refs.forEach(ref => {
         if (typeof ref === 'function') {
           ref(value);

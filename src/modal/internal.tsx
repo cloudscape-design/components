@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
-import FocusLock from 'react-focus-lock';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 
@@ -20,7 +19,7 @@ import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
+import FocusLock from '../internal/components/focus-lock';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
@@ -39,7 +38,6 @@ export default function InternalModal({
 }: InternalModalProps) {
   const instanceUniqueId = useUniqueId();
   const headerId = `${rest.id || instanceUniqueId}-header`;
-  const focusLockRef = useRef<HTMLDivElement>(null);
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
 
@@ -73,11 +71,6 @@ export default function InternalModal({
     }
   }, [visible]);
 
-  // Imitate autoFocus=true when the modal opens but not when a focused element inside modal gets removed.
-  const onFocusActivation = () => {
-    focusLockRef.current && getFirstFocusable(focusLockRef.current)?.focus();
-  };
-
   const dismiss = (reason: string) => fireNonCancelableEvent(onDismiss, { reason });
 
   const onOverlayMouseDown = (event: React.MouseEvent) => {
@@ -110,14 +103,7 @@ export default function InternalModal({
         onClick={onOverlayClick}
         ref={mergedRef}
       >
-        <FocusLock
-          disabled={!visible}
-          autoFocus={false}
-          returnFocus={true}
-          className={styles['focus-lock']}
-          ref={focusLockRef}
-          onActivation={onFocusActivation}
-        >
+        <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
           <div
             className={clsx(
               styles.dialog,
