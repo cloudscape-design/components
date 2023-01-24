@@ -24,7 +24,7 @@ export default function Container({
       disableContentPaddings={disableContentPaddings}
       {...externalProps}
       {...baseComponentProps}
-      __hiddenContent={disableContentPaddings && !props.children}
+      __hiddenContent={!props.children}
     />
   );
 }
