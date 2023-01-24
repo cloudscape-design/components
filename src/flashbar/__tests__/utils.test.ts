@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getItemSelection, getItemType } from '../utils';
+import { getVisibleCollapsedItems, getItemType } from '../utils';
 import { FlashbarProps, FlashType } from '../interfaces';
 
-describe('getItemSelection', () => {
+describe('getVisibleCollapsedItems', () => {
   const cases: { description: string; input: FlashType[]; expectedOutput: FlashType[] }[] = [
     {
       description: "All items of type 'success'",
@@ -72,7 +72,7 @@ describe('getItemSelection', () => {
             }
           : { type }
       );
-      const result = getItemSelection(items, 3).map(item => getItemType(item));
+      const result = getVisibleCollapsedItems(items, 3).map(item => getItemType(item));
       expect(result).toEqual(testCase.expectedOutput);
     });
   }
@@ -84,6 +84,6 @@ describe('getItemSelection', () => {
       { type: 'info' },
       { type: 'success' },
     ];
-    expect(getItemSelection(items, 4).map(({ type }) => ({ type }))).toEqual(items);
+    expect(getVisibleCollapsedItems(items, 4).map(({ type }) => ({ type }))).toEqual(items);
   });
 });

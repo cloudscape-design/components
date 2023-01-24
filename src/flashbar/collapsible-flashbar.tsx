@@ -12,7 +12,7 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { getFlashTypeCount, getItemSelection, StackableItem } from './utils';
+import { getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
@@ -179,7 +179,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const itemsToShow = isFlashbarStackExpanded
     ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
-    : getItemSelection(reversedItems, stackDepth).map((item: StackableItem, index: number) => ({
+    : getVisibleCollapsedItems(reversedItems, stackDepth).map((item: StackableItem, index: number) => ({
         ...item,
         collapsedIndex: index,
       }));

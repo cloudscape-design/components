@@ -42,7 +42,7 @@ function getItemColor(item: FlashbarProps.MessageDefinition) {
  the stack are represented in the returned array.
  The order corresponds to how they are represented when using the collapsible feature (newest first, oldest last).
  */
-export function getItemSelection(
+export function getVisibleCollapsedItems(
   items: ReadonlyArray<FlashbarProps.MessageDefinition>,
   desiredLength: number
 ): ReadonlyArray<StackableItem> {
