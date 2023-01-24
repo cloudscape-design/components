@@ -102,6 +102,10 @@ export default function SimpleContainers() {
               Content area takes the available vertical space
             </Container>
           </div>
+          <Container
+            disableContentPaddings={true}
+            header={<Header variant="h2">Container Without Content</Header>}
+          ></Container>
         </SpaceBetween>
       </ScreenshotArea>
     </article>
