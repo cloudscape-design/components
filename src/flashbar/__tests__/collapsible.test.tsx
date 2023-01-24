@@ -203,7 +203,7 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const list = findList(flashbar)!;
       expect(list).toBeTruthy();
-      const itemCounterElementId = findInnerCounterElement(flashbar)!.id;
+      const itemCounterElementId = findOuterCounter(flashbar)!.getElement().id;
       expect(itemCounterElementId).toBeTruthy();
       expect(list.getElement()).toHaveAttribute('aria-describedby', itemCounterElementId);
     });
@@ -212,14 +212,14 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar({ items: [sampleItems.error] });
       const list = findList(flashbar)!;
       expect(list).toBeTruthy();
-      const itemCounterElement = findInnerCounterElement(flashbar);
-      expect(itemCounterElement).toBeUndefined();
+      const itemCounterElement = findOuterCounter(flashbar);
+      expect(itemCounterElement).toBeNull();
       expect(list.getElement()).not.toHaveAttribute('aria-describedby');
     });
 
     it('applies aria-describedby to the toggle button, referencing the item counter', () => {
       const flashbar = renderFlashbar();
-      const itemCounterElementId = findInnerCounterElement(flashbar)!.id;
+      const itemCounterElementId = findOuterCounter(flashbar)!.getElement().id;
       expect(itemCounterElementId).toBeTruthy();
       const toggleButton = findInnerToggleButton(flashbar);
       expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
@@ -248,10 +248,8 @@ describe('Collapsible Flashbar', () => {
       expect(liveRegionElement).toHaveTextContent(`1 ${customLabels.errorCountAriaLabel}`);
       expect(liveRegionElement).toHaveTextContent(`2 ${customLabels.successCountAriaLabel}`);
       expect(liveRegionElement).toHaveTextContent(`3 ${customLabels.warningCountAriaLabel}`);
-      const visibleCounter = Array.from(findInnerCounterElement(flashbar)!.children).find(
-        node => node !== liveRegionElement
-      )!;
-      expect(visibleCounter).toHaveAttribute('aria-hidden', 'true');
+      const ariaHiddenElement = liveRegionElement!.nextElementSibling;
+      expect(ariaHiddenElement).toHaveAttribute('aria-hidden', 'true');
     });
 
     it('renders the toggle element header as H2 element', () => {
@@ -274,9 +272,9 @@ describe('Collapsible Flashbar', () => {
         warningCountAriaLabel: 'Custom warning ARIA label',
       };
       const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
-      const innerCounter = findInnerCounterElement(flashbar);
+      const counter = findOuterCounter(flashbar);
       for (const ariaLabel of Object.values(customLabels)) {
-        const labeledElement = innerCounter!.querySelector(`[title="${ariaLabel}"]`);
+        const labeledElement = counter!.getElement().querySelector(`[title="${ariaLabel}"]`);
         expect(labeledElement).toBeTruthy();
       }
     });
@@ -336,22 +334,9 @@ function findInnerToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefin
   return findOuterToggleElement(flashbar)?.querySelector('button') || undefined;
 }
 
-// Item counter including the header
+// Item counter, including the header
 function findOuterCounter(flashbar: FlashbarWrapper) {
   return flashbar.find('[role="status"]');
-}
-
-// Inner counter including only the icons and the number of items for each type
-function findInnerCounterElement(flashbar: FlashbarWrapper) {
-  const outerCounter = findOuterCounter(flashbar);
-  if (outerCounter) {
-    const element = Array.from(outerCounter.getElement().children).find(
-      element => element instanceof HTMLElement && element.tagName !== 'H2'
-    );
-    if (element) {
-      return element as HTMLElement;
-    }
-  }
 }
 
 function renderFlashbar(
