@@ -15,10 +15,6 @@ export default class SideNavigationWrapper extends ComponentWrapper {
     return this.find(`.${styles.link}[href="${href}"]`);
   }
 
-  findSectionHeaderByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
-    return this.find(`.${styles["section-header"]}[href="${href}"]`);
-  }
-
   findActiveLink(): ElementWrapper<HTMLAnchorElement> | null {
     return this.findByClassName(styles['link-active']);
   }
@@ -34,7 +30,7 @@ export class SideNavigationItemWrapper extends ElementWrapper {
   }
 
   findSectionHeader(): ElementWrapper | null {
-    return this.findComponent(`.${styles["section-header"]}`, ElementWrapper);
+    return this.findComponent(`.${styles['section-header']}`, ElementWrapper);
   }
 
   findExpandableLinkGroup(): ExpandableSectionWrapper | null {
