@@ -32,6 +32,14 @@ function renderTagEditor(props: Partial<TagEditorProps> = {}): RenderResult {
   };
 }
 
+function StatefulTestComponent(props: Partial<TagEditorProps>) {
+  const [internalTags, setInternalTags] = React.useState(props.tags || []);
+  const onChange = (event: any) => {
+    setInternalTags(event.detail.tags);
+  };
+  return <TagEditor {...defaultProps} {...props} tags={internalTags} onChange={onChange} />;
+}
+
 describe('Tag Editor component', () => {
   test('should set a tag key', () => {
     const { wrapper, onChangeSpy } = renderTagEditor({
@@ -343,6 +351,25 @@ describe('Tag Editor component', () => {
           detail: { tags: [{ key: 'key', value: 'value', existing: true, markedForRemoval: true }], valid: true },
         })
       );
+    });
+  });
+
+  test('should render itemRemovedAriaLive when a tag is removed', () => {
+    const tags = [
+      { key: 'key', value: 'value', existing: false },
+      { key: 'key2', value: 'value', existing: false },
+      { key: 'key3', value: 'value', existing: false },
+    ];
+
+    const { container } = render(
+      <StatefulTestComponent tags={tags} i18nStrings={{ ...i18nStrings, itemRemovedAriaLive: 'removal-text-test' }} />
+    );
+    const wrapper = createWrapper(container).findTagEditor()!;
+
+    wrapper.findRow(1)!.findRemoveButton()!.click();
+
+    waitFor(() => {
+      expect(wrapper.find(`[data-testid="removal-announcement"]`)!.getElement()).toHaveTextContent('removal-text-test');
     });
   });
 
