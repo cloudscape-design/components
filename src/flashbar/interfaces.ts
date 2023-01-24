@@ -63,10 +63,10 @@ export type FlashType = FlashbarProps.Type | 'progress';
 export interface StackedFlashbarProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
   collapsible: boolean;
-  i18nStrings?: StackedFlashbarProps.I18nStrings;
+  i18nStrings?: CollapsibleFlashbarProps.I18nStrings;
 }
 
-export namespace StackedFlashbarProps {
+export namespace CollapsibleFlashbarProps {
   export interface I18nStrings {
     ariaLabel: string;
     toggleButtonAriaLabel: string;

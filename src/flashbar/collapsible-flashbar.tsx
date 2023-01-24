@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, FlashType, StackedFlashbarProps } from './interfaces';
+import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -27,7 +27,7 @@ export { FlashbarProps };
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
 const maxNonCollapsibleItems = 1;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & StackedFlashbarProps) {
+export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & CollapsibleFlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -116,7 +116,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const { i18nStrings } = restProps;
 
   const verifyStringPresence = useCallback(
-    (parameterName: keyof StackedFlashbarProps.I18nStrings) => {
+    (parameterName: keyof CollapsibleFlashbarProps.I18nStrings) => {
       if (i18nStrings && !i18nStrings[parameterName]) {
         warnOnce(
           componentName,

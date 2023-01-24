@@ -4,7 +4,7 @@ import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps, FlashType, StackedFlashbarProps } from '../interfaces';
+import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
 import { warnOnce } from '../../../lib/components/internal/logging';
 
@@ -356,8 +356,8 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
 
 function renderFlashbar(
   customProps: Partial<
-    Omit<StackedFlashbarProps, 'i18nStrings' | 'collapsible'> & {
-      i18nStrings?: Partial<StackedFlashbarProps.I18nStrings>;
+    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'collapsible'> & {
+      i18nStrings?: Partial<CollapsibleFlashbarProps.I18nStrings>;
     }
   > = {
     items: defaultItems,
