@@ -73,11 +73,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
 
-  useEffect(() => {
-    if (items.length <= maxNonCollapsibleItems) {
-      setIsFlashbarStackExpanded(false);
-    }
-  }, [items.length]);
+  if (items.length <= maxNonCollapsibleItems && isFlashbarStackExpanded) {
+    setIsFlashbarStackExpanded(false);
+  }
 
   const animateFlash = !isReducedMotion;
 
