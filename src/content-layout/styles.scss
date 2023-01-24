@@ -64,3 +64,20 @@ nodes will directly touch with no gap between them.
     grid-row: 2 / 4;
   }
 }
+
+// changes to use subgrid instead of useDynamicOverlap hook
+@supports (grid-template-columns: subgrid) {
+  .layout.is-visual-refresh {
+    grid-column: 1 / span 5;
+    grid-template-columns: subgrid;
+
+    > .background {
+      grid-column: 1 / span 5;
+    }
+
+    > .header,
+    > .content {
+      grid-column: 3;
+    }
+  }
+}

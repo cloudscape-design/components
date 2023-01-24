@@ -133,3 +133,12 @@
 .unfocusable * {
   visibility: hidden !important;
 }
+
+// changes to use subgrid instead of useDynamicOverlap hook
+@supports (grid-template-columns: subgrid) {
+  .container {
+    display: grid;
+    grid-column: 1 / 6;
+    grid-template-columns: subgrid;
+  }
+}

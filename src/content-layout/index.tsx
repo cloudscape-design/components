@@ -31,6 +31,9 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
    */
   const isOverlapDisabled = !children || !header || disableOverlap;
 
+  // changes to use subgrid instead of useDynamicOverlap hook
+  const supportsSubgrid = CSS.supports('grid-template-columns', 'subgrid');
+
   return (
     <div
       {...baseProps}
@@ -46,7 +49,7 @@ export default function ContentLayout({ children, disableOverlap, header, ...res
           { [styles['is-overlap-disabled']]: isOverlapDisabled },
           'awsui-context-content-header'
         )}
-        ref={overlapElement}
+        ref={!supportsSubgrid ? overlapElement : null}
       />
 
       {header && (
