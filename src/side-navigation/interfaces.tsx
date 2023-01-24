@@ -61,17 +61,11 @@ export interface SideNavigationProps extends BaseComponentProps {
    *     our UX recommendation is to use only one level.
    *
    * #### Section Header
-   * A section header is used to group a set of links that are conceptually related to each other and can be displayed under a single section header to provide further organization.
-   * The section header can be a link to a overview page. You can nest expandable sections, link groups and expandable link groups within a section header depending on you IA needs.
+   * A section header is used to group a set of links that are conceptually related to each other and can be displayed under a single heading to provide further organization.
+   * You can nest sections, links, link groups and expandable link groups within a section header depending on you IA needs.
    * - `type`: `'section-header'`.
    * - `text` (string) - Specifies the text to display as a title of the section.
-   * - `items` (array) - Specifies the content of the section. You can use any valid item from this list.
-   * - `external` (boolean) - Determines whether to display an external link icon next to the link.
-   *      If set to `true`, an external link icon appears next to the link.
-   *      The anchor also has the attributes `target="_blank"` and `rel="noopener"`.
-   *      Additionally, the `activeHref` property won't be modified when a user chooses the link.
-   * - `externalIconAriaLabel` (string) - Adds an aria-label to the external icon.
-   *
+   * - `items` (array) - Specifies the content of the section. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
    *
    * #### LinkGroup
    * Object that represents a group of links.
@@ -158,7 +152,7 @@ export namespace SideNavigationProps {
   export interface SectionHeader {
     type: 'section-header';
     text: string;
-    items: ReadonlyArray<Link | Section | LinkGroup | ExpandableLinkGroup>;
+    items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
   }
   export interface LinkGroup {
     type: 'link-group';
