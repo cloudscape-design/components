@@ -158,9 +158,6 @@ export namespace SideNavigationProps {
   export interface SectionHeader {
     type: 'section-header';
     text: string;
-    href?: string;
-    external?: boolean;
-    externalIconAriaLabel?: string;
     items: ReadonlyArray<Link | Section | LinkGroup | ExpandableLinkGroup>;
   }
   export interface LinkGroup {

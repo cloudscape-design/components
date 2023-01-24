@@ -101,32 +101,6 @@
 .section-header {
   @include styles.font-heading-m;
   margin: 0;
-
-  &-link {
-    text-decoration: none;
-    color: inherit;
-
-    &:hover {
-      color: awsui.$color-text-accent;
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    &:hover,
-    &:focus {
-      text-decoration: none;
-    }
-
-    @include focus-visible.when-visible {
-      @include styles.link-focus;
-    }
-
-    &-active {
-      color: awsui.$color-text-accent;
-    }
-  }
 }
 
 .link {

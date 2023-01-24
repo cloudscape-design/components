@@ -61,7 +61,6 @@ const ITEMS: SideNavigationProps.Item[] = [
   {
     type: 'section-header',
     text: 'Section Header',
-    href: '#/link-group',
     items: [
       {
         type: 'link',

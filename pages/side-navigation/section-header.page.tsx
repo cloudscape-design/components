@@ -16,8 +16,7 @@ const items: SideNavigationProps.Item[] = [
   },
   {
     type: 'section-header',
-    text: 'H3 section header',
-    href: "/",
+    text: 'Section header',
     items: [
       {
         type: 'link',
@@ -31,14 +30,14 @@ const items: SideNavigationProps.Item[] = [
       },
     ],
   },
-  { type: "divider" },
+  { type: 'divider' },
   {
     type: 'section-header',
     text: 'H3 section header',
     items: [
       {
         type: 'link',
-        text: 'Page',
+        text: 'Overview',
         href: '#/page1',
       },
       {
@@ -116,33 +115,43 @@ const items: SideNavigationProps.Item[] = [
             text: 'Page 10',
             href: '#/page10',
           },
-          {
-            type: 'expandable-link-group',
-            text: 'Expandable link group',
-            href: '#/exp-link-group-inner',
-            items: [
-              {
-                type: 'link',
-                text: 'Page 11',
-                href: '#/page11',
-              },
-              {
-                type: 'link',
-                text: 'Page 12',
-                href: '#/page12',
-              },
-            ],
-          },
         ],
       },
       {
         type: 'link',
         text: 'Page',
         href: '#/page1',
-      }
+      },
     ],
   },
-  { type: "divider" },
+  { type: 'divider' },
+  {
+    type: 'section-header',
+    text: 'H3 Section Header',
+    items: [
+      {
+        type: 'link',
+        text: 'Page',
+        href: '#/page1',
+      },
+      {
+        type: 'section',
+        text: 'Contributions',
+        items: [
+          {
+            type: 'link',
+            text: 'Design',
+            href: '#/design',
+          },
+          {
+            type: 'link',
+            text: 'Dev',
+            href: '#/dev',
+          },
+        ],
+      },
+    ],
+  },
   { type: 'link', text: 'Notifications', href: '#/notifications', info: <Badge color="red">23</Badge> },
   { type: 'link', text: 'Documentation', href: '#', external: true, externalIconAriaLabel: 'Opens in a new tab' },
 ];

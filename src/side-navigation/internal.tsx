@@ -20,7 +20,6 @@ interface BaseItemComponentProps {
     item:
       | SideNavigationProps.Link
       | SideNavigationProps.Header
-      | (SideNavigationProps.SectionHeader & { href: string })
       | SideNavigationProps.LinkGroup
       | SideNavigationProps.ExpandableLinkGroup,
     event: React.SyntheticEvent | Event
@@ -219,46 +218,9 @@ interface SectionHeaderProps extends BaseItemComponentProps {
 }
 
 function SectionHeader({ definition, activeHref, fireFollow, fireChange }: SectionHeaderProps) {
-  checkSafeUrl('SideNavigation', definition.href);
-  const focusVisible = useFocusVisible();
-  const isActive = definition.href === activeHref;
-
-  const onClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (isPlainLeftClick(event)) {
-        fireFollow(definition as SideNavigationProps.SectionHeader & { href: string }, event);
-      }
-    },
-    [fireFollow, definition]
-  );
-
   return (
     <>
-      <h3 className={clsx(styles['section-header'])}>
-        {definition.href ? (
-          <a
-            {...focusVisible}
-            href={definition.href}
-            className={clsx(styles['section-header-link'], { [styles['section-header-link-active']]: isActive })}
-            target={definition.external ? '_blank' : undefined}
-            rel={definition.external ? 'noopener noreferrer' : undefined}
-            aria-current={definition.href === activeHref ? 'page' : undefined}
-            onClick={onClick}
-          >
-            {definition.text}
-            {definition.external && (
-              <span
-                aria-label={definition.externalIconAriaLabel}
-                role={definition.externalIconAriaLabel ? 'img' : undefined}
-              >
-                <InternalIcon name="external" className={styles['external-icon']} />
-              </span>
-            )}
-          </a>
-        ) : (
-          definition.text
-        )}
-      </h3>
+      <h3 className={clsx(styles['section-header'])}>{definition.text}</h3>
       <ItemList
         variant="section-header"
         items={definition.items}
