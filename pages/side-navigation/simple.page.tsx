@@ -59,8 +59,8 @@ const ITEMS: SideNavigationProps.Item[] = [
     ],
   },
   {
-    type: 'section-header',
-    text: 'Section Header',
+    type: 'section-group',
+    text: 'Section Group',
     items: [
       {
         type: 'link',

@@ -60,9 +60,9 @@ export interface SideNavigationProps extends BaseComponentProps {
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
    *
-   * #### Section Header
-   * A section header is used to group a set of links that are conceptually related to each other and can be displayed under a single heading to provide further organization.
-   * You can nest sections, links, link groups and expandable link groups within a section header depending on you IA needs.
+   * #### Section Group
+   * A section group is used to agreggate a set of links that are conceptually related to each other and can be displayed under a single heading to provide further organization.
+   * You can nest sections, links, link groups and expandable link groups within a section group depending on you IA needs.
    * - `type`: `'section-header'`.
    * - `text` (string) - Specifies the text to display as a title of the section.
    * - `items` (array) - Specifies the content of the section. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
@@ -149,8 +149,8 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
-  export interface SectionHeader {
-    type: 'section-header';
+  export interface SectionGroup {
+    type: 'section-group';
     text: string;
     items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
   }
@@ -169,7 +169,7 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
-  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionHeader;
+  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionGroup;
 
   export interface ChangeDetail {
     item: Section | ExpandableLinkGroup;

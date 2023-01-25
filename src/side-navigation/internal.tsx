@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import InternalIcon from '../icon/internal';
-
+import InternalBox from '../box/internal';
 import { SideNavigationProps } from './interfaces';
 import styles from './styles.css.js';
 import { NonCancelableCustomEvent, isPlainLeftClick } from '../internal/events';
@@ -71,7 +71,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
 
 export interface ItemListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
-  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
 export function ItemList({ variant, items, activeHref, fireChange, fireFollow }: ItemListProps) {
@@ -91,8 +91,8 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
               variant={variant}
             />
           )}
-          {item.type === 'section-header' && (
-            <SectionHeader definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+          {item.type === 'section-group' && (
+            <SectionGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
           {item.type === 'link-group' && (
             <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
@@ -176,7 +176,7 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
 interface SectionProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Section;
-  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
 function Section({ definition, activeHref, fireFollow, fireChange, variant }: SectionProps) {
@@ -199,7 +199,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant }: Se
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
-      className={clsx(styles.section, variant === 'section-header' && styles['section--no-ident'])}
+      className={clsx(styles.section, variant === 'section-group' && styles['section--no-ident'])}
       headerText={definition.text}
     >
       <ItemList
@@ -213,16 +213,18 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant }: Se
   );
 }
 
-interface SectionHeaderProps extends BaseItemComponentProps {
-  definition: SideNavigationProps.SectionHeader;
+interface SectionGroupProps extends BaseItemComponentProps {
+  definition: SideNavigationProps.SectionGroup;
 }
 
-function SectionHeader({ definition, activeHref, fireFollow, fireChange }: SectionHeaderProps) {
+function SectionGroup({ definition, activeHref, fireFollow, fireChange }: SectionGroupProps) {
   return (
     <>
-      <h3 className={clsx(styles['section-header'])}>{definition.text}</h3>
+      <InternalBox tagOverride="h3" variant="h4">
+        {definition.text}
+      </InternalBox>
       <ItemList
-        variant="section-header"
+        variant="section-group"
         items={definition.items}
         fireFollow={fireFollow}
         fireChange={fireChange}
@@ -260,7 +262,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
 
 interface ExpandableLinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.ExpandableLinkGroup;
-  variant: 'section' | 'section-header' | 'link-group' | 'expandable-link-group' | 'root';
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
 function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, variant }: ExpandableLinkGroupProps) {
@@ -311,7 +313,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
     <InternalExpandableSection
       className={clsx(
         styles['expandable-link-group'],
-        variant === 'section-header' && styles['expandable-link-group--no-ident']
+        variant === 'section-group' && styles['expandable-link-group--no-ident']
       )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
