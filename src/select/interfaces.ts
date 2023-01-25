@@ -79,8 +79,11 @@ export interface BaseSelectProps
    */
   filteringAriaLabel?: string;
   /**
-   * Deprecated, has no effect.
-   * @deprecated
+   * Adds an `aria-label` to the clear button inside the search input.
+   */
+  filteringClearAriaLabel?: string;
+  /**
+   * @deprecated Has no effect.
    */
   name?: string;
   /**

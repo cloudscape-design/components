@@ -3,17 +3,15 @@
 import React from 'react';
 
 export interface TabTrapProps {
-  focusNextCallback: FocusNextElement;
+  focusNextCallback: (event: React.FocusEvent) => void;
   disabled?: boolean;
 }
 
-export interface FocusNextElement {
-  (): void;
-}
-
-// This component handles focus-forwarding when navigating through the calendar grid.
-// When the customer focuses that component the `next` callback function is called
-// with forwards the focus.
+/**
+ * This component handles focus-forwarding when using keyboard tab navigation.
+ * When the user focuses this component, the `focusNextCallback` function is called
+ * which can forward the focus to another element.
+ */
 export default function TabTrap({ focusNextCallback, disabled = false }: TabTrapProps) {
   return <div tabIndex={disabled ? -1 : 0} onFocus={focusNextCallback} />;
 }

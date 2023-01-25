@@ -175,6 +175,7 @@ const TagEditor = React.forwardRef(
               suggestionText={i18nStrings.keySuggestion}
               tooManySuggestionText={i18nStrings.tooManyKeysSuggestion}
               enteredTextLabel={i18nStrings.enteredKeyLabel}
+              clearAriaLabel={i18nStrings.clearAriaLabel}
               onRequest={keysRequest}
               onChange={onKeyChange}
               onBlur={onKeyBlur}
@@ -220,6 +221,7 @@ const TagEditor = React.forwardRef(
                 suggestionText={i18nStrings.valueSuggestion}
                 tooManySuggestionText={i18nStrings.tooManyValuesSuggestion}
                 enteredTextLabel={i18nStrings.enteredValueLabel}
+                clearAriaLabel={i18nStrings.clearAriaLabel}
                 filteringKey={tag.key}
                 onRequest={valuesRequest && (value => valuesRequest(tag.key, value))}
                 onChange={onValueChange}

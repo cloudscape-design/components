@@ -18,7 +18,6 @@ export interface DesktopDrawerProps {
     toggle: React.Ref<ButtonProps.Ref>;
     close: React.Ref<ButtonProps.Ref>;
   };
-  externalizedToggle?: boolean;
   width: number;
   topOffset?: number;
   bottomOffset?: number;

@@ -17,6 +17,8 @@
   color: awsui.$color-text-body-default;
   font-weight: constants.$font-weight-normal;
   font-family: constants.$font-family-base;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 @mixin font-body-s {

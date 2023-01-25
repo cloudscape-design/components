@@ -201,6 +201,7 @@ export namespace PropertyFilterProps {
      */
     filteringAriaLabel: string;
     dismissAriaLabel: string;
+    clearAriaLabel?: string;
 
     filteringPlaceholder?: string;
     groupValuesText: string;

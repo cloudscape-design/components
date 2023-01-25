@@ -4,6 +4,11 @@ import React, { useContext, createContext } from 'react';
 
 export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
 
+export interface SplitPanelSideToggleProps {
+  displayed: boolean;
+  ariaLabel: string | undefined;
+}
+
 export interface SplitPanelContextProps {
   topOffset: number;
   bottomOffset: number;
@@ -30,9 +35,7 @@ export interface SplitPanelContextProps {
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
   reportSize: (pixels: number) => void;
   reportHeaderHeight: (pixels: number) => void;
-  openButtonAriaLabel?: string;
-  setOpenButtonAriaLabel?: (value: string) => void;
-  headerShouldStick: () => boolean;
+  setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);

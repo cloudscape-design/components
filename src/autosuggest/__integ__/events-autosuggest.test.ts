@@ -64,7 +64,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
       await page.keys(['o']);
       await page.clearEventList();
 
-      await page.keys(['Tab']);
+      await page.keys(['Tab', 'Tab']);
       await page.assertEventsFired(['onBlur']);
     })
   );
@@ -76,7 +76,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
       await page.keys(['o', 'ArrowDown', 'ArrowDown', 'Enter']);
       await page.clearEventList();
 
-      await page.keys(['b', 'Tab']);
+      await page.keys(['b', 'Tab', 'Tab']);
       await page.assertEventsFired(['onChange', 'onBlur']);
     })
   );

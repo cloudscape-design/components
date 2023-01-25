@@ -150,6 +150,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   cancelActionText: 'Cancel',
   applyActionText: 'Apply',
   allPropertiesLabel: 'All properties',
+  clearAriaLabel: 'Clear',
 
   tokenLimitShowMore: 'Show more',
   tokenLimitShowFewer: 'Show fewer',

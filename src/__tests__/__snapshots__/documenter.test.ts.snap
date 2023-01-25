@@ -5,8 +5,7 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "description": "Fired when the user clicks the action button.
-**Deprecated**, replaced by \`action\`.",
+      "description": "Fired when the user clicks the action button.",
       "name": "onButtonClick",
     },
     Object {
@@ -71,7 +70,7 @@ An \`onDismiss\` event is fired when a user clicks the button.",
     },
     Object {
       "defaultValue": "true",
-      "deprecatedTag": "Use conditional rendering in your code instead of this prop",
+      "deprecatedTag": "Use conditional rendering in your code instead of this prop.",
       "description": "Determines whether the alert is displayed.",
       "name": "visible",
       "optional": true,
@@ -86,9 +85,9 @@ Although it is technically possible to insert any content, our UX guidelines onl
       "name": "action",
     },
     Object {
+      "deprecatedTag": "Replaced by \`action\`.",
       "description": "Displays an action button next to the message area when set.
-An \`onButtonClick\` event is fired when the user clicks it.
-**Deprecated**, replaced by \`action\`.",
+An \`onButtonClick\` event is fired when the user clicks it.",
       "isDefault": false,
       "name": "buttonText",
     },
@@ -456,6 +455,7 @@ Individual properties will always take precedence over the default coming from t
           "table",
           "cards",
           "wizard",
+          "dashboard",
         ],
       },
       "name": "contentType",
@@ -463,15 +463,15 @@ Individual properties will always take precedence over the default coming from t
       "type": "string",
     },
     Object {
-      "deprecatedTag": "This layout is being phased out and may miss some features",
+      "deprecatedTag": "This layout is being phased out and may miss some features.",
       "description": "Activates a backwards-compatibility mode for applications with non-fixed headers and footers.",
       "name": "disableBodyScroll",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.
-**Deprecated**, replaced by the \`disableOverlap\` property of the [content layout](/components/content-layout/) component.",
+      "deprecatedTag": "Replaced by the \`disableOverlap\` property of the [content layout](/components/content-layout/) component.",
+      "description": "Disables overlap between \`contentHeader\` and \`content\` slots.",
       "name": "disableContentHeaderOverlap",
       "optional": true,
       "type": "boolean",
@@ -607,8 +607,8 @@ Note that sticky notifications are not supported in Internet Explorer.
       "name": "content",
     },
     Object {
-      "description": "Top area of the page content.
-**Deprecated**, replaced by the \`header\` slot of the [content layout](/components/content-layout/) component.",
+      "deprecatedTag": "Replaced by the \`header\` slot of the [content layout](/components/content-layout/) component.",
+      "description": "Top area of the page content.",
       "isDefault": false,
       "name": "contentHeader",
       "visualRefreshTag": "",
@@ -1393,6 +1393,12 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -3617,8 +3623,7 @@ Object {
     Object {
       "cancelable": false,
       "description": "An event handler called when the value changes.
-The event \`detail\` contains the current value of the code editor content.
-**Deprecated**, replaced by \`onDelayedChange\`.",
+The event \`detail\` contains the current value of the code editor content.",
       "detailInlineType": Object {
         "name": "CodeEditorProps.ChangeDetail",
         "properties": Array [
@@ -4564,6 +4569,12 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -5347,14 +5358,13 @@ Has no effect when \`dateOnly\` is true.
       "type": "string",
     },
     Object {
-      "deprecatedTag": "",
+      "deprecatedTag": "Use \`getTimeOffset\` instead.",
       "description": "The time offset from UTC in minutes that should be used to
 display and produce values.
 Has no effect when \`dateOnly\` is true.
 
 Default: the user's current time offset as provided by the browser.
-
-This property is deprecated. Use getTimeOffset instead.",
+",
       "name": "timeOffset",
       "optional": true,
       "type": "number",
@@ -5499,8 +5509,8 @@ h2. Use with container variant.",
       "name": "children",
     },
     Object {
-      "deprecatedTag": "",
-      "description": "**Deprecated**, use headerText instead.",
+      "deprecatedTag": "Use \`headerText\` instead.",
+      "description": "",
       "isDefault": false,
       "name": "header",
     },
@@ -5535,6 +5545,7 @@ Object {
       "type": "string",
     },
     Object {
+      "deprecatedTag": "Replaced by \`action\`.",
       "description": "Specifies flash messages that appear in the same order that they are listed.
 The value is an array of flash message definition objects.
 A flash message object contains the following properties:
@@ -5553,12 +5564,12 @@ user's attention.
 our UX guidelines only allow you to add a button.
 * \`buttonText\` (string) - Specifies that an action button should be displayed, with the specified text.
 When a user clicks on this button the \`onButtonClick\` handler is called. If the \`action\` property is set, this property is ignored.
-**Deprecated**, replaced by \`action\`.
 * \`onButtonClick\` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
   using the \`action\` property. **Deprecated**, replaced by \`action\`.
 * \`id\` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
-  2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.",
+  2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
+",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
@@ -6453,6 +6464,12 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -7816,6 +7833,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the placeholder to display in the filtering input if filtering is enabled.",
       "name": "filteringPlaceholder",
       "optional": true,
@@ -7919,8 +7942,8 @@ single form field.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "",
-      "description": "Deprecated, has no effect.",
+      "deprecatedTag": "Has no effect.",
+      "description": "",
       "name": "name",
       "optional": true,
       "type": "string",
@@ -9125,6 +9148,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "clearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "clearFiltersText",
             "optional": false,
             "type": "string",
@@ -9409,8 +9437,8 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "deprecatedTag": "",
-      "description": "Deprecated, has no effect.",
+      "deprecatedTag": "Has no effect.",
+      "description": "",
       "name": "controlId",
       "optional": true,
       "type": "string",
@@ -9649,6 +9677,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "inContextBrowseButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "inContextInputClearAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10214,6 +10247,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the placeholder to display in the filtering input if filtering is enabled.",
       "name": "filteringPlaceholder",
       "optional": true,
@@ -10278,8 +10317,8 @@ single form field.",
       "type": "string",
     },
     Object {
-      "deprecatedTag": "",
-      "description": "Deprecated, has no effect.",
+      "deprecatedTag": "Has no effect.",
+      "description": "",
       "name": "name",
       "optional": true,
       "type": "string",
@@ -10806,6 +10845,21 @@ Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"collapse\\"",
+      "description": "Determines whether the split panel collapses or hides completely when closed.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "collapse",
+          "hide",
+        ],
+      },
+      "name": "closeBehavior",
       "optional": true,
       "type": "string",
     },
@@ -11736,6 +11790,11 @@ character validation. You should use this property only when absolutely necessar
             "type": "string",
           },
           Object {
+            "name": "clearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "duplicateKeyError",
             "optional": false,
             "type": "string",
@@ -12064,6 +12123,12 @@ in order to prevent the user from changing the filtering text.",
       "type": "string",
     },
     Object {
+      "description": "Label for the filtering input clear button.",
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Placeholder for the filtering input.",
       "name": "filteringPlaceholder",
       "optional": true,
@@ -12289,6 +12354,12 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -12309,13 +12380,12 @@ of the user's browser.",
       "type": "boolean",
     },
     Object {
-      "deprecatedTag": "",
+      "deprecatedTag": "Use the \`spellcheck\` property instead.",
       "description": "Specifies whether to disable browser spellcheck feature.
 If you set this to \`true\`, it disables native browser capability
 that checks for spelling/grammar errors.
 If you don't set it, the behavior follows the default behavior
-of the user's browser.
-This property is deprecated. Use the \`spellcheck\` property instead.",
+of the user's browser.",
       "name": "disableBrowserSpellcheck",
       "optional": true,
       "type": "boolean",
@@ -12633,6 +12703,12 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },

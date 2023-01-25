@@ -89,7 +89,7 @@ describe('Tag Editor', () => {
       setupTest(async page => {
         // Place focus on the remove button, and press enter
         await page.focusKey(1);
-        await page.keys(['Tab', 'Tab', 'Enter']);
+        await page.keys(['Tab', 'Tab', 'Tab', 'Enter']);
 
         // The focus should not switch back to the remove button.
         await expect(page.isUndoFocussed(1)).resolves.toBe(true);

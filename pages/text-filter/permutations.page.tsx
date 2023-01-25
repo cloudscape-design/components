@@ -12,6 +12,7 @@ const permutations = createPermutations<TextFilterProps>([
     countText: [undefined, 'N matches'],
     filteringText: ['', 'query'],
     filteringPlaceholder: [undefined, 'Filter instances...'],
+    filteringClearAriaLabel: ['Clear'],
   },
 ]);
 

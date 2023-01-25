@@ -24,6 +24,7 @@ import { applyDefaults } from '../defaults';
 import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 
 interface AppLayoutInternals extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -59,6 +60,9 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelPosition: AppLayoutProps.SplitPanelPosition;
   splitPanelReportedSize: number;
   splitPanelReportedHeaderHeight: number;
+  splitPanelToggle: SplitPanelSideToggleProps;
+  setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
+  splitPanelDisplayed: boolean;
   toolsFocusControl: FocusControlState;
 }
 
@@ -337,6 +341,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
+    const [splitPanelToggle, setSplitPanelToggle] = useState<SplitPanelSideToggleProps>({
+      displayed: false,
+      ariaLabel: undefined,
+    });
+    const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen);
 
     const [splitPanelSize, setSplitPanelSize] = useControllable(
       props.splitPanelSize,
@@ -455,7 +464,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * position. Use the size property if it is open and the header height if it is closed.
      */
     let offsetBottom = footerHeight;
-    if (splitPanel && splitPanelPosition === 'bottom') {
+    if (splitPanelDisplayed && splitPanelPosition === 'bottom') {
       if (isSplitPanelOpen) {
         offsetBottom += splitPanelReportedSize;
       } else {
@@ -500,6 +509,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
           splitPanel,
+          splitPanelDisplayed,
           splitPanelMaxWidth,
           splitPanelMinWidth,
           splitPanelPosition,
@@ -507,6 +517,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelReportedSize,
           splitPanelReportedHeaderHeight,
           splitPanelSize,
+          splitPanelToggle,
+          setSplitPanelToggle,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,

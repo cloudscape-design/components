@@ -57,7 +57,7 @@ export default function AppBar() {
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
-            ariaExpanded={isNavigationOpen}
+            ariaExpanded={isNavigationOpen ? undefined : false}
             iconName="menu"
             formAction="none"
             onClick={() => handleNavigationClick(true)}
@@ -65,7 +65,7 @@ export default function AppBar() {
             className={testutilStyles['navigation-toggle']}
             ref={focusRefsNav.toggle}
             disabled={isAnyPanelOpen}
-            __nativeAttributes={{ 'aria-haspopup': true }}
+            __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
         </nav>
       )}

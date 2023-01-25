@@ -4,6 +4,7 @@ import { S3ResourceSelectorProps } from '~components/s3-resource-selector';
 
 export const i18nStrings: S3ResourceSelectorProps.I18nStrings = {
   inContextInputPlaceholder: 's3://bucket/prefix/object',
+  inContextInputClearAriaLabel: 'Clear',
   inContextSelectPlaceholder: 'Choose a version',
   inContextBrowseButton: 'Browse S3',
   inContextViewButton: 'View',
