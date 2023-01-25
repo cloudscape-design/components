@@ -12,7 +12,6 @@ const permutations = createPermutations<TextFilterProps>([
     countText: [undefined, 'N matches'],
     filteringText: ['', 'query'],
     filteringPlaceholder: [undefined, 'Filter instances...'],
-    filteringClearAriaLabel: ['Clear'],
   },
 ]);
 
@@ -23,7 +22,9 @@ export default function () {
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
-          render={permutation => <TextFilter {...permutation} filteringAriaLabel="filtering example" />}
+          render={permutation => (
+            <TextFilter {...permutation} filteringClearAriaLabel="Clear" filteringAriaLabel="filtering example" />
+          )}
         />
       </ScreenshotArea>
     </>
