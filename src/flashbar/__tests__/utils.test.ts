@@ -62,20 +62,18 @@ describe('getVisibleCollapsedItems', () => {
     },
   ];
 
-  for (const testCase of cases) {
-    it(testCase.description, () => {
-      const items = testCase.input.map(type =>
-        type === 'progress'
-          ? {
-              type: 'info' as FlashbarProps.Type,
-              loading: true,
-            }
-          : { type }
-      );
-      const result = getVisibleCollapsedItems(items, 3).map(item => getItemType(item));
-      expect(result).toEqual(testCase.expectedOutput);
-    });
-  }
+  it.each(cases)('cases', ({ input, expectedOutput }) => {
+    const items = input.map(type =>
+      type === 'progress'
+        ? {
+            type: 'info' as FlashbarProps.Type,
+            loading: true,
+          }
+        : { type }
+    );
+    const result = getVisibleCollapsedItems(items, 3).map(item => getItemType(item));
+    expect(result).toEqual(expectedOutput);
+  });
 
   it('returns the same list if there are more slots than distinct colors', () => {
     const items: FlashbarProps.MessageDefinition[] = [

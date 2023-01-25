@@ -92,7 +92,8 @@ the grid layout will be:
   @include stacked-flash-z-index;
 }
 
-@mixin toggle-button-layout($margin-top-when-collapsed, $border-width) {
+@mixin toggle-button-layout($top-overlap-collapsed, $border-width) {
+  $margin-top-when-collapsed: -$top-overlap-collapsed;
   $line-height: awsui.$font-body-m-line-height;
   $padding-vertical: styles.$control-padding-vertical;
   $margin-top-when-expanded: -12px;
@@ -175,7 +176,9 @@ the grid layout will be:
 
   &.visual-refresh {
     $border-width: 2px;
-    @include toggle-button-layout(-27px, $border-width);
+    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
+    $top-overlap-collapsed: 27px;
+    @include toggle-button-layout($top-overlap-collapsed, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
@@ -183,7 +186,9 @@ the grid layout will be:
 
   &:not(.visual-refresh) {
     $border-width: 1px;
-    @include toggle-button-layout(-24px, $border-width);
+    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
+    $top-overlap-collapsed: 24px;
+    @include toggle-button-layout($top-overlap-collapsed, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;
     padding-right: awsui.$space-s;
