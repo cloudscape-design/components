@@ -164,16 +164,15 @@ describe('SideNavigation', () => {
     }
   });
 
-  it('does not assume any heading levels', () => {
-    const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
-    const headings = wrapper.findAll('h1, h2, h3, h4, h5, h6');
-    expect(headings.length).toBe(0);
-  });
-
   describe('Header', () => {
     it('has specified text', () => {
       const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
       expect(wrapper.findHeaderLink()!.getElement()).toHaveTextContent('Console');
+    });
+
+    it('renders the header in a <h2>', () => {
+      const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
+      expect(wrapper.find('h2')!.getElement()).toHaveTextContent('Console');
     });
 
     it('has specified href', () => {

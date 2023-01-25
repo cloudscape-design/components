@@ -45,7 +45,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
 
   return (
     <>
-      <div className={styles.header}>
+      <h2 className={styles.header}>
         <a
           {...focusVisible}
           href={definition.href}
@@ -63,7 +63,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           )}
           <span className={styles['header-link-text']}>{definition.text}</span>
         </a>
-      </div>
+      </h2>
       <Divider variant="header" />
     </>
   );
