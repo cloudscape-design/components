@@ -151,7 +151,7 @@ export namespace SideNavigationProps {
 
   export interface SectionGroup {
     type: 'section-group';
-    text: string;
+    title: string;
     items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
   }
   export interface LinkGroup {

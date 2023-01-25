@@ -103,6 +103,10 @@
   margin: 0;
 }
 
+.section-group-title {
+  /* used in test-utils */
+}
+
 .link {
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;

@@ -144,7 +144,7 @@ describe('SideNavigation', () => {
   });
 
   it('throws a warning if multiple links have the same href', () => {
-    const spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const spy = jest.spyOn(console, 'warn').mockImplementation(() => { });
     try {
       renderSideNavigation({
         items: [
@@ -164,10 +164,35 @@ describe('SideNavigation', () => {
     }
   });
 
-  it('does not assume any heading levels', () => {
-    const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
-    const headings = wrapper.findAll('h1, h2, h3, h4, h5, h6');
-    expect(headings.length).toBe(0);
+  it('the side navigation header heading levels is an h2', () => {
+    const wrapper = renderSideNavigation({
+      header: { text: 'Console', href: '#something' },
+      items: [
+        {
+          type: 'section-group',
+          title: 'H3 Section Header',
+          items: [],
+        },
+      ],
+    });
+    const header = wrapper.findAll('h2');
+    expect(header).toHaveLength(1);
+    expect(header[0].getElement()).toHaveTextContent('Console');
+  });
+
+  it('the section-group title heading levels is an h3', () => {
+    const wrapper = renderSideNavigation({
+      header: { text: 'Console', href: '#something' },
+      items: [
+        {
+          type: 'section-group',
+          title: 'H3 Section Header',
+          items: [],
+        },
+      ],
+    });
+    const sectionGroupTitle = wrapper.findItemByIndex(1)!.findSectionGroupTitle();
+    expect(sectionGroupTitle!.getElement()).toHaveTextContent('H3 Section Header');
   });
 
   describe('Header', () => {

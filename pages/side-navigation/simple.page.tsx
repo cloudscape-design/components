@@ -58,27 +58,36 @@ const ITEMS: SideNavigationProps.Item[] = [
       },
     ],
   },
+  { type: 'divider' },
   {
     type: 'section-group',
-    text: 'Section Group',
+    title: 'Section Group',
     items: [
       {
         type: 'link',
-        text: 'Inside SH',
+        text: 'Overview',
         href: '#/page6',
       },
       {
-        type: 'link',
-        text: 'Page 7',
-        href: '#/page7',
-      },
-      {
-        type: 'link',
-        text: 'Page 8',
-        href: '#/page8',
+        type: 'expandable-link-group',
+        text: 'Expandable link group',
+        href: '#/exp-link-group',
+        items: [
+          {
+            type: 'link',
+            text: 'Page 9',
+            href: '#/page9',
+          },
+          {
+            type: 'link',
+            text: 'Page 10',
+            href: '#/page10',
+          },
+        ],
       },
     ],
   },
+  { type: 'divider' },
   {
     type: 'expandable-link-group',
     text: 'Expandable link group',

@@ -219,8 +219,10 @@ interface SectionGroupProps extends BaseItemComponentProps {
 
 function SectionGroup({ definition, activeHref, fireFollow, fireChange }: SectionGroupProps) {
   return (
-    <>
-      <InternalBox variant="h3">{definition.text}</InternalBox>
+    <div className={styles['section-group']}>
+      <InternalBox className={styles['section-group-title']} variant="h3">
+        {definition.title}
+      </InternalBox>
       <ItemList
         variant="section-group"
         items={definition.items}
@@ -228,7 +230,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange }: Sectio
         fireChange={fireChange}
         activeHref={activeHref}
       />
-    </>
+    </div>
   );
 }
 

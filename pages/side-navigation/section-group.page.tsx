@@ -16,7 +16,7 @@ const items: SideNavigationProps.Item[] = [
   },
   {
     type: 'section-group',
-    text: 'Section header',
+    title: 'Section header',
     items: [
       {
         type: 'link',
@@ -33,7 +33,7 @@ const items: SideNavigationProps.Item[] = [
   { type: 'divider' },
   {
     type: 'section-group',
-    text: 'H3 section header',
+    title: 'H3 section header',
     items: [
       {
         type: 'link',
@@ -127,7 +127,7 @@ const items: SideNavigationProps.Item[] = [
   { type: 'divider' },
   {
     type: 'section-group',
-    text: 'H3 Section Header',
+    title: 'H3 Section Header',
     items: [
       {
         type: 'link',
