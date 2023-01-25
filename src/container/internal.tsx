@@ -101,7 +101,7 @@ export default function InternalContainer({
               [styles['header-dynamic-height']]: hasDynamicHeight,
               [styles['header-stuck']]: isStuck,
               [styles['with-paddings']]: !disableHeaderPaddings,
-              [styles['with-hidden-content']]: __hiddenContent,
+              [styles['with-hidden-content']]: !children || __hiddenContent,
             })}
             {...headerIdProp}
             {...stickyStyles}
