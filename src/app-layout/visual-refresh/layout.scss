@@ -8,6 +8,11 @@
 @use '../constants' as constants;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
+/* stylelint-disable-next-line */
+body {
+  #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
+}
+
 /*
   The first and last column definitions have two responsibilities.
   If Navigation and/or Tools exist then that will determine the width of
@@ -36,7 +41,6 @@
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: 0px;
   #{custom-props.$offsetTopWithNotifications}: 0px;
-  #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   display: grid;
   grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr;

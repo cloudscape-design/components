@@ -160,8 +160,6 @@ function getOverlapDisabled(
 
   if (disableContentHeaderOverlap) {
     isOverlapDisabled = true;
-  } else if (!contentHeader && dynamicOverlapHeight <= 0) {
-    isOverlapDisabled = true;
   }
 
   return isOverlapDisabled;
