@@ -78,7 +78,12 @@ const Item = (
         {isParent ? (
           wrappedOption.label || wrappedOption.value
         ) : (
-          <Option option={{ ...wrappedOption, disabled }} highlightText={filteringValue} />
+          <Option
+            option={{ ...wrappedOption, disabled }}
+            highlightedOption={highlighted}
+            selectedOption={selected}
+            highlightText={filteringValue}
+          />
         )}
         {!hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>

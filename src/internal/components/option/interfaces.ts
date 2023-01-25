@@ -40,5 +40,7 @@ export interface OptionProps extends BaseComponentProps {
   option?: InternalOptionDefinition;
   triggerVariant?: boolean;
   highlightText?: string;
+  highlightedOption?: boolean;
+  selectedOption?: boolean;
   isGroupOption?: boolean;
 }
