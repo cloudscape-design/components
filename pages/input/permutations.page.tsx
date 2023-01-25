@@ -16,7 +16,6 @@ const permutations = createPermutations<InputProps>([
       'Short value',
       'Long value, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
-    clearAriaLabel: ['Clear'],
   },
   {
     value: [''],
@@ -26,28 +25,24 @@ const permutations = createPermutations<InputProps>([
       'Short placeholder',
       'Long placeholder, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
-    clearAriaLabel: ['Clear'],
   },
   {
     disabled: [false, true],
     type: ['text', 'password', 'search', 'email', 'url'] as const,
     value: ['Non-empty value: Placeholder should be hidden'],
     placeholder: ['Short placeholder'],
-    clearAriaLabel: ['Clear'],
   },
   {
     disabled: [false, true],
     type: ['number'] as const,
     value: ['-1', '1'],
     placeholder: ['Short placeholder'],
-    clearAriaLabel: ['Clear'],
   },
   {
     readOnly: [true],
     type: ['text', 'password', 'search', 'number', 'email', 'url'] as const,
     value: ['100000000'],
     placeholder: ['Short placeholder'],
-    clearAriaLabel: ['Clear'],
   },
 ]);
 
@@ -61,6 +56,7 @@ export default function InputPermutations() {
           render={permutation => (
             <Input
               ariaLabel="Input field"
+              clearAriaLabel="Clear"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}
