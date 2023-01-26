@@ -61,11 +61,11 @@ export interface SideNavigationProps extends BaseComponentProps {
    *     our UX recommendation is to use only one level.
    *
    * #### Section Group
-   * A section group is used to agreggate a set of links that are conceptually related to each other and can be displayed under a single heading to provide further organization.
-   * You can nest sections, links, link groups and expandable link groups within a section group depending on you IA needs.
-   * - `type`: `'section-header'`.
-   * - `text` (string) - Specifies the text to display as a title of the section.
-   * - `items` (array) - Specifies the content of the section. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
+   * Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
+   * You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
+   * - `type`: `'section-group'`.
+   * - `title` (string) - Specifies the text to display as a title of the section group.
+   * - `items` (array) - Specifies the content of the section header group. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
    *
    * #### LinkGroup
    * Object that represents a group of links.
