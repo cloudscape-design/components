@@ -164,37 +164,6 @@ describe('SideNavigation', () => {
     }
   });
 
-  it('the side navigation header heading level is h2', () => {
-    const wrapper = renderSideNavigation({
-      header: { text: 'Console', href: '#something' },
-      items: [
-        {
-          type: 'section-group',
-          title: 'H3 Section Header',
-          items: [],
-        },
-      ],
-    });
-    const header = wrapper.findAll('h2');
-    expect(header).toHaveLength(1);
-    expect(header[0].getElement()).toHaveTextContent('Console');
-  });
-
-  it('the section-group title heading level is h3', () => {
-    const wrapper = renderSideNavigation({
-      header: { text: 'Console', href: '#something' },
-      items: [
-        {
-          type: 'section-group',
-          title: 'H3 Section Header',
-          items: [],
-        },
-      ],
-    });
-    const sectionGroupTitle = wrapper.findItemByIndex(1)!.findSectionGroupTitle();
-    expect(sectionGroupTitle!.getElement()).toHaveTextContent('H3 Section Header');
-  });
-
   describe('Header', () => {
     it('has specified text', () => {
       const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
@@ -217,6 +186,18 @@ describe('SideNavigation', () => {
         activeHref: ABSOLUTE_HREF,
       });
       expect(wrapper.findHeaderLink()!.getElement()).toHaveAttribute('aria-current', 'page');
+    });
+  });
+
+  describe('Section Group', () => {
+    it('has specified title', () => {
+      const wrapper = renderSideNavigation({ items: [{ type: 'section-group', title: 'Section Group', items: [] }] });
+      expect(wrapper.findItemByIndex(1)?.findSectionGroupTitle()!.getElement()).toHaveTextContent('Section Group');
+    });
+
+    it('renders the section group title in a <h3>', () => {
+      const wrapper = renderSideNavigation({ items: [{ type: 'section-group', title: 'Section Group', items: [] }] });
+      expect(wrapper.find('h3')!.getElement()).toHaveTextContent('Section Group');
     });
   });
 

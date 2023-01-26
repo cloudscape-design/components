@@ -14,10 +14,10 @@
 
 .header {
   @include styles.font-panel-header;
+  margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-  margin: 0;
 }
 
 .header-link {

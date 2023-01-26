@@ -34,11 +34,11 @@ export class SideNavigationItemWrapper extends ElementWrapper {
   }
 
   findSectionGroup(): ElementWrapper | null {
-    return this.findByClassName(`.${styles['section-group']}`);
+    return this.findByClassName(styles['section-group']);
   }
 
   findSectionGroupTitle(): ElementWrapper | null {
-    return this.findByClassName(`.${styles['section-group-title']}`);
+    return this.findByClassName(styles['section-group-title']);
   }
 
   findExpandableLinkGroup(): ExpandableSectionWrapper | null {
