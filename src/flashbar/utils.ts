@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { FlashbarProps, FlashType } from './interfaces';
+import { IconProps } from '../icon/interfaces';
 
 export const FOCUS_THROTTLE_DELAY = 2000;
 
@@ -103,3 +104,22 @@ export function getFlashTypeCount(items: readonly FlashbarProps.MessageDefinitio
   }
   return count;
 }
+
+export type LabelName =
+  | 'errorCountAriaLabel'
+  | 'warningCountAriaLabel'
+  | 'successCountAriaLabel'
+  | 'infoCountAriaLabel'
+  | 'inProgressCountAriaLabel';
+
+export const counterTypes: {
+  type: FlashType;
+  labelName: LabelName;
+  iconName: IconProps.Name;
+}[] = [
+  { type: 'error', labelName: 'errorCountAriaLabel', iconName: 'status-negative' },
+  { type: 'warning', labelName: 'warningCountAriaLabel', iconName: 'status-warning' },
+  { type: 'success', labelName: 'successCountAriaLabel', iconName: 'status-positive' },
+  { type: 'info', labelName: 'infoCountAriaLabel', iconName: 'status-info' },
+  { type: 'progress', labelName: 'inProgressCountAriaLabel', iconName: 'status-in-progress' },
+];

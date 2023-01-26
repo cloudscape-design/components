@@ -12,7 +12,7 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
+import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, LabelName, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
@@ -336,13 +336,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   );
 }
 
-type LabelName =
-  | 'errorCountAriaLabel'
-  | 'warningCountAriaLabel'
-  | 'successCountAriaLabel'
-  | 'infoCountAriaLabel'
-  | 'inProgressCountAriaLabel';
-
 const NotificationTypeCount = ({
   iconName,
   label,
@@ -361,15 +354,3 @@ const NotificationTypeCount = ({
     </span>
   );
 };
-
-const counterTypes: {
-  type: FlashType;
-  labelName: LabelName;
-  iconName: IconProps.Name;
-}[] = [
-  { type: 'error', labelName: 'errorCountAriaLabel', iconName: 'status-negative' },
-  { type: 'warning', labelName: 'warningCountAriaLabel', iconName: 'status-warning' },
-  { type: 'success', labelName: 'successCountAriaLabel', iconName: 'status-positive' },
-  { type: 'info', labelName: 'infoCountAriaLabel', iconName: 'status-info' },
-  { type: 'progress', labelName: 'inProgressCountAriaLabel', iconName: 'status-in-progress' },
-];
