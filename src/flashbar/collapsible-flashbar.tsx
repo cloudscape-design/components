@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from './interfaces';
@@ -20,12 +20,15 @@ import { sendToggleMetric } from './internal/analytics';
 import { componentName, useFlashbar } from './common';
 import { warnOnce } from '../internal/logging';
 import LiveRegion from '../internal/components/live-region';
+import { throttle } from '../internal/utils/throttle';
 
 export { FlashbarProps };
 
 // If the number of items is equal or less than this value,
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
 const maxNonCollapsibleItems = 1;
+
+const resizeListenerThrottleDelay = 100;
 
 export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & CollapsibleFlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
@@ -68,7 +71,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const listElementRef = useRef<HTMLUListElement | null>(null);
   const toggleElementRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
-  const [listTop, setListTop] = useState<number>();
 
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
@@ -93,24 +95,31 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setIsFlashbarStackExpanded(prev => !prev);
   }
 
-  const updateBottomSpacing = useCallback(() => {
-    // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
-    // otherwise avoid spacing with eventual sticky elements below.
-    const listElement = listElementRef?.current;
-    const flashbar = listElement?.parentElement;
-    if (listElement && flashbar && listTop !== undefined) {
-      const bottom = listTop + listElement.clientHeight;
-      const windowHeight = window.innerHeight;
-      flashbar.style.paddingBottom = '';
-      if (isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) <= windowHeight) {
-        flashbar.style.paddingBottom = '0';
-      }
-    }
-  }, [isFlashbarStackExpanded, listTop]);
+  const updateBottomSpacing = useMemo(
+    () =>
+      throttle(() => {
+        // Allow vertical space between Flashbar and page bottom only when the Flashbar is reaching the end of the page,
+        // otherwise avoid spacing with eventual sticky elements below.
+        const listElement = listElementRef?.current;
+        const flashbar = listElement?.parentElement;
+        if (listElement && flashbar) {
+          const bottom = listElement.getBoundingClientRect().bottom;
+          const windowHeight = window.innerHeight;
+          flashbar.style.paddingBottom = '';
+          if (isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) <= windowHeight) {
+            flashbar.style.paddingBottom = '0';
+          }
+        }
+      }, resizeListenerThrottleDelay),
+    [isFlashbarStackExpanded]
+  );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.addEventListener('resize', updateBottomSpacing);
-    return () => window.removeEventListener('resize', updateBottomSpacing);
+    return () => {
+      window.removeEventListener('resize', updateBottomSpacing);
+      updateBottomSpacing.cancel();
+    };
   }, [updateBottomSpacing]);
 
   const { i18nStrings } = restProps;
@@ -148,13 +157,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     // The old state is kept in `initialAnimationState`
     // and the new state can be retrieved from the current DOM elements.
 
-    if (listTop === undefined) {
-      const listElement = listElementRef?.current;
-      if (listElement) {
-        setListTop(listElement.getBoundingClientRect().y);
-      }
-    }
-
     if (initialAnimationState) {
       updateBottomSpacing();
       animate({
@@ -166,7 +168,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, listTop]);
+  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
 
   const isCollapsible = items.length > maxNonCollapsibleItems;
 
