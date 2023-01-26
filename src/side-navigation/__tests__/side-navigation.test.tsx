@@ -164,7 +164,7 @@ describe('SideNavigation', () => {
     }
   });
 
-  it('the side navigation header heading levels is an h2', () => {
+  it('the side navigation header heading level is h2', () => {
     const wrapper = renderSideNavigation({
       header: { text: 'Console', href: '#something' },
       items: [
@@ -180,7 +180,7 @@ describe('SideNavigation', () => {
     expect(header[0].getElement()).toHaveTextContent('Console');
   });
 
-  it('the section-group title heading levels is an h3', () => {
+  it('the section-group title heading level is h3', () => {
     const wrapper = renderSideNavigation({
       header: { text: 'Console', href: '#something' },
       items: [
@@ -199,6 +199,11 @@ describe('SideNavigation', () => {
     it('has specified text', () => {
       const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
       expect(wrapper.findHeaderLink()!.getElement()).toHaveTextContent('Console');
+    });
+
+    it('renders the header in a <h2>', () => {
+      const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
+      expect(wrapper.find('h2')!.getElement()).toHaveTextContent('Console');
     });
 
     it('has specified href', () => {

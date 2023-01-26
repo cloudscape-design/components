@@ -23,7 +23,6 @@ const permutations = createPermutations<AutosuggestProps>([
       undefined,
     ],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     ariaLabel: ['some label'],
@@ -37,7 +36,6 @@ const permutations = createPermutations<AutosuggestProps>([
       </>,
     ],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     ariaLabel: ['some label'],
@@ -46,7 +44,6 @@ const permutations = createPermutations<AutosuggestProps>([
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     ariaLabel: ['some label'],
@@ -54,7 +51,6 @@ const permutations = createPermutations<AutosuggestProps>([
     value: ['', 'Some option'],
     placeholder: ['Enter some data'],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     value: [''],
@@ -62,7 +58,6 @@ const permutations = createPermutations<AutosuggestProps>([
     statusType: ['loading'],
     loadingText: ['Loading more items', undefined],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     value: [''],
@@ -70,7 +65,6 @@ const permutations = createPermutations<AutosuggestProps>([
     statusType: ['error'],
     errorText: ['Error while loading', undefined],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     value: ['', 'op', 'Option 2', 'tag1', 'this is a label tag', 'thisisafilteringtag'],
@@ -125,19 +119,16 @@ const permutations = createPermutations<AutosuggestProps>([
       ],
     ],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
   },
   {
     value: [''],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
     options: [range(20).map(i => ({ value: `option${i}`, label: `Option ${i}` }))],
     virtualScroll: [true, false],
   },
   {
     value: ['some value'],
     enteredTextLabel: [enteredTextLabel],
-    clearAriaLabel: ['Clear'],
     options: [[]],
     virtualScroll: [true, false],
   },
@@ -154,6 +145,7 @@ export default function () {
             <div style={{ marginBottom: '100px' }}>
               <Autosuggest
                 ariaLabel="Input field"
+                clearAriaLabel="Clear"
                 onChange={() => {
                   /*empty handler to suppress react controlled property warning*/
                 }}

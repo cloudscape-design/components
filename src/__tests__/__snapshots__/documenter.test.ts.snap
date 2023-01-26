@@ -5545,7 +5545,6 @@ Object {
       "type": "string",
     },
     Object {
-      "deprecatedTag": "Replaced by \`action\`.",
       "description": "Specifies flash messages that appear in the same order that they are listed.
 The value is an array of flash message definition objects.
 A flash message object contains the following properties:

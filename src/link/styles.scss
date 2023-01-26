@@ -32,6 +32,10 @@ $font-sizes: (
       @if $variant == 'info' {
         @include styles.font-smoothing;
       }
+      @if $variant == 'secondary' {
+        -webkit-font-smoothing: inherit;
+        -moz-osx-font-smoothing: inherit;
+      }
       @include styles.link-style(map.get(constants.$link-variants, $variant));
     }
   }
