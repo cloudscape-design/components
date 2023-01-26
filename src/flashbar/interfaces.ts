@@ -45,7 +45,8 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `action` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
    * our UX guidelines only allow you to add a button.
    * * `buttonText` (string) - Specifies that an action button should be displayed, with the specified text.
-   * When a user clicks on this button the `onButtonClick` handler is called. If the `action` property is set, this property is ignored.
+   * When a user clicks on this button the `onButtonClick` handler is called.
+   * If the `action` property is set, this property is ignored. **Deprecated**, replaced by `action`.
    * * `onButtonClick` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
    *   using the `action` property. **Deprecated**, replaced by `action`.
    * * `id` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
