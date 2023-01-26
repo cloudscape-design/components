@@ -21,6 +21,7 @@ const InternalRadioGroup = React.forwardRef(
       items,
       ariaLabel,
       ariaRequired,
+      ariaControls,
       onChange,
       __internalRootRef = null,
       ...props
@@ -40,6 +41,7 @@ const InternalRadioGroup = React.forwardRef(
         aria-label={ariaLabel}
         aria-describedby={ariaDescribedby}
         aria-required={ariaRequired}
+        aria-controls={ariaControls}
         {...baseProps}
         className={clsx(baseProps.className, styles.root)}
         ref={__internalRootRef}

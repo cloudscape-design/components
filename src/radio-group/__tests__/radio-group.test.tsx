@@ -31,12 +31,14 @@ test('renders attributes for assistive technology when set', function () {
   const ariaLabelledby = 'something';
   const ariaDescribedby = 'something else';
   const ariaLabel = 'the last one';
+  const ariaControls = 'some-id-being-controlled';
 
   const { wrapper } = renderRadioGroup(
     <RadioGroup
       ariaLabelledby={ariaLabelledby}
       ariaDescribedby={ariaDescribedby}
       ariaLabel={ariaLabel}
+      ariaControls={ariaControls}
       value={null}
       items={defaultItems}
     />
@@ -45,6 +47,7 @@ test('renders attributes for assistive technology when set', function () {
   expect(rootElement).toHaveAttribute('aria-labelledby', ariaLabelledby);
   expect(rootElement).toHaveAttribute('aria-describedby', ariaDescribedby);
   expect(rootElement).toHaveAttribute('aria-label', ariaLabel);
+  expect(rootElement).toHaveAttribute('aria-controls', ariaControls);
 });
 
 test('does not render attributes for assistive technology when not set', function () {
@@ -53,6 +56,7 @@ test('does not render attributes for assistive technology when not set', functio
   expect(rootElement).not.toHaveAttribute('aria-labelledby');
   expect(rootElement).not.toHaveAttribute('aria-describedby');
   expect(rootElement).not.toHaveAttribute('aria-label');
+  expect(rootElement).not.toHaveAttribute('aria-controls');
 });
 
 describe('name', () => {
