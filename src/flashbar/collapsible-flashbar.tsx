@@ -71,7 +71,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const listElementRef = useRef<HTMLUListElement | null>(null);
   const toggleElementRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
-
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
 
@@ -105,9 +104,14 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         if (listElement && flashbar) {
           const bottom = listElement.getBoundingClientRect().bottom;
           const windowHeight = window.innerHeight;
-          flashbar.style.paddingBottom = '';
-          if (isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) <= windowHeight) {
-            flashbar.style.paddingBottom = '0';
+          // Apply the class first (before rendering)
+          // so that we can make calculations based on the applied padding-bottom;
+          // then we might decide to remove it or not.
+          flashbar.classList.add(styles['spaced-bottom']);
+          const applySpacing =
+            isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) >= windowHeight;
+          if (!applySpacing) {
+            flashbar.classList.remove(styles['spaced-bottom']);
           }
         }
       }, resizeListenerThrottleDelay),

@@ -227,6 +227,7 @@ the grid layout will be:
   }
 }
 
-.stack.expanded {
+// Leave some space below the Flashbar, but only when it reaches the end of the page.
+.stack.spaced-bottom {
   padding-bottom: awsui.$space-xxl;
 }
