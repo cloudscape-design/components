@@ -145,6 +145,7 @@ export default function () {
             <div style={{ marginBottom: '100px' }}>
               <Autosuggest
                 ariaLabel="Input field"
+                clearAriaLabel="Clear"
                 onChange={() => {
                   /*empty handler to suppress react controlled property warning*/
                 }}

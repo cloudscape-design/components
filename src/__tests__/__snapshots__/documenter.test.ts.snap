@@ -1397,6 +1397,12 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -4563,6 +4569,12 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -6456,6 +6468,12 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -7815,6 +7833,12 @@ in a slight, visible lag when scrolling complex pages.",
       "type": "string",
     },
     Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies the placeholder to display in the filtering input if filtering is enabled.",
       "name": "filteringPlaceholder",
       "optional": true,
@@ -9124,6 +9148,11 @@ operations are communicated to the user in another way.",
             "type": "string",
           },
           Object {
+            "name": "clearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "clearFiltersText",
             "optional": false,
             "type": "string",
@@ -9648,6 +9677,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "inContextBrowseButton",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "inContextInputClearAriaLabel",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -10209,6 +10243,12 @@ in a slight, visible lag when scrolling complex pages.",
     Object {
       "description": "Adds an \`aria-label\` on the built-in filtering input if filtering is enabled.",
       "name": "filteringAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "filteringClearAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -11743,6 +11783,11 @@ character validation. You should use this property only when absolutely necessar
             "type": "string",
           },
           Object {
+            "name": "clearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "duplicateKeyError",
             "optional": false,
             "type": "string",
@@ -12071,6 +12116,12 @@ in order to prevent the user from changing the filtering text.",
       "type": "string",
     },
     Object {
+      "description": "Label for the filtering input clear button.",
+      "name": "filteringClearAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Placeholder for the filtering input.",
       "name": "filteringPlaceholder",
       "optional": true,
@@ -12292,6 +12343,12 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -12639,6 +12696,12 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
+      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },

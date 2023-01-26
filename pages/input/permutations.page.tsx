@@ -56,6 +56,7 @@ export default function InputPermutations() {
           render={permutation => (
             <Input
               ariaLabel="Input field"
+              clearAriaLabel="Clear"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}

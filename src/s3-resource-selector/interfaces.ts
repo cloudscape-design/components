@@ -194,6 +194,7 @@ export namespace S3ResourceSelectorProps {
 
   export interface I18nStrings {
     inContextInputPlaceholder: string;
+    inContextInputClearAriaLabel?: string;
     inContextSelectPlaceholder: string;
     inContextBrowseButton: string;
     inContextViewButton: string;

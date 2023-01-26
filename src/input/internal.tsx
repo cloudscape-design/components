@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { MouseEventHandler, Ref, useEffect, useRef } from 'react';
+import React, { Ref, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import styles from './styles.css.js';
+import InternalButton from '../button/internal';
 import { fireNonCancelableEvent, fireKeyboardEvent, NonCancelableEventHandler } from '../internal/events';
 import { InputProps, BaseInputProps, InputAutoCorrect, BaseChangeDetail } from './interfaces';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
@@ -13,6 +13,7 @@ import { useSearchProps, convertAutoComplete } from './utils';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import styles from './styles.css.js';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -27,7 +28,6 @@ export interface InternalInputProps
   __onLeftIconClick?: () => void;
 
   __rightIcon?: IconProps['name'];
-  __rightIconVariant?: IconProps['variant'];
   __onRightIconClick?: () => void;
 
   __nativeAttributes?: Record<string, any>;
@@ -39,10 +39,6 @@ export interface InternalInputProps
   __inheritFormFieldProps?: boolean;
 }
 
-const iconClassName = (position: string, hasHandler: boolean) =>
-  clsx(styles['input-icon'], styles[`input-icon-${position}`], { [styles['input-icon-hoverable']]: hasHandler });
-const preventMouseDown: MouseEventHandler = e => e.preventDefault();
-
 function InternalInput(
   {
     type = 'text',
@@ -50,6 +46,7 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
+    clearAriaLabel,
     name,
     value,
     placeholder,
@@ -67,7 +64,6 @@ function InternalInput(
     ariaRequired,
 
     __rightIcon,
-    __rightIconVariant = 'normal',
     __onRightIconClick,
 
     onKeyDown,
@@ -185,18 +181,24 @@ function InternalInput(
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>
       {__leftIcon && (
-        <span onClick={__onLeftIconClick} className={iconClassName('left', !!__onLeftIconClick)}>
+        <span onClick={__onLeftIconClick} className={styles['input-icon-left']}>
           <InternalIcon name={__leftIcon} variant={disabled ? 'disabled' : __leftIconVariant} />
         </span>
       )}
       <input ref={mergedRef} {...attributes} />
       {__rightIcon && (
-        <span
-          onClick={__onRightIconClick}
-          onMouseDown={preventMouseDown}
-          className={iconClassName('right', !!__onRightIconClick)}
-        >
-          <InternalIcon name={__rightIcon} variant={disabled ? 'disabled' : __rightIconVariant} />
+        <span className={styles['input-icon-right']}>
+          <InternalButton
+            // Used for test utils
+            // eslint-disable-next-line react/forbid-component-props
+            className={styles['input-button-right']}
+            variant="inline-icon"
+            formAction="none"
+            iconName={__rightIcon}
+            onClick={__onRightIconClick}
+            ariaLabel={clearAriaLabel}
+            disabled={disabled}
+          />
         </span>
       )}
     </div>

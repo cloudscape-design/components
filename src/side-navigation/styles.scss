@@ -13,6 +13,7 @@
 }
 
 .header {
+  margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-right: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
@@ -95,6 +96,8 @@
   @include styles.font-body-m;
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 .link-active {

@@ -18,6 +18,7 @@ const InternalTextFilter = React.forwardRef(
       filteringText,
       filteringAriaLabel,
       filteringPlaceholder,
+      filteringClearAriaLabel,
       disabled,
       countText,
       onChange,
@@ -33,7 +34,7 @@ const InternalTextFilter = React.forwardRef(
     const showResults = filteringText && countText && !disabled;
 
     return (
-      <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
           ref={inputRef}
           className={styles.input}
@@ -43,6 +44,7 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
+          clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
@@ -53,7 +55,7 @@ const InternalTextFilter = React.forwardRef(
         >
           {showResults ? countText : ''}
         </span>
-      </span>
+      </div>
     );
   }
 );

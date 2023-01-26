@@ -29,6 +29,7 @@ export interface TagControlProps {
   tooManySuggestionText: string;
   limit: number;
   filteringKey?: string;
+  clearAriaLabel?: string;
   enteredTextLabel: (value: string) => string;
   onChange: (value: string, row: number) => void;
   onBlur?: (row: number) => void;
@@ -52,6 +53,7 @@ export const TagControl = React.forwardRef(
       limit,
       filteringKey,
       enteredTextLabel,
+      clearAriaLabel,
       onChange,
       onBlur,
       onRequest,
@@ -117,6 +119,7 @@ export const TagControl = React.forwardRef(
         errorText={errorText}
         loadingText={loadingText}
         enteredTextLabel={enteredTextLabel}
+        clearAriaLabel={clearAriaLabel}
         onChange={({ detail }) => onChange(detail.value, row)}
         onBlur={() => onBlur?.(row)}
         onFocus={() => {

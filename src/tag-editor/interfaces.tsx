@@ -120,6 +120,7 @@ export namespace TagEditorProps {
     invalidKeyError: string;
     invalidValueError: string;
     awsPrefixError: string;
+    clearAriaLabel?: string;
     tagLimit: (availableTags: number, tagLimit: number) => string;
     tagLimitReached: (tagLimit: number) => string;
     tagLimitExceeded: (tagLimit: number) => string;

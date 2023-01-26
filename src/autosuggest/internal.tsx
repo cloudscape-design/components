@@ -43,6 +43,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     statusType = 'finished',
     recoveryText,
     placeholder,
+    clearAriaLabel,
     name,
     disabled,
     disableBrowserAutocorrect = false,
@@ -172,6 +173,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       autoFocus={autoFocus}
       ariaLabel={ariaLabel}
       ariaRequired={ariaRequired}
+      clearAriaLabel={clearAriaLabel}
       disableBrowserAutocorrect={disableBrowserAutocorrect}
       expandToViewport={expandToViewport}
       ariaControls={listId}
