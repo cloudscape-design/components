@@ -52,7 +52,6 @@ export interface FlashbarProps extends BaseComponentProps {
    *   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
    *
-   * @deprecated Replaced by `action`.
    * @visualrefresh `id` property
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
