@@ -203,7 +203,7 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const list = findList(flashbar)!;
       expect(list).toBeTruthy();
-      const itemCounterElementId = findCounter(flashbar)!.getElement().id;
+      const itemCounterElementId = findCounterElement(flashbar)!.id;
       expect(itemCounterElementId).toBeTruthy();
       expect(list.getElement()).toHaveAttribute('aria-describedby', itemCounterElementId);
     });
@@ -212,14 +212,14 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar({ items: [sampleItems.error] });
       const list = findList(flashbar)!;
       expect(list).toBeTruthy();
-      const itemCounterElement = findCounter(flashbar);
-      expect(itemCounterElement).toBeNull();
+      const itemCounterElement = findCounterElement(flashbar);
+      expect(itemCounterElement).toBeUndefined();
       expect(list.getElement()).not.toHaveAttribute('aria-describedby');
     });
 
     it('applies aria-describedby to the toggle button, referencing the item counter', () => {
       const flashbar = renderFlashbar();
-      const itemCounterElementId = findCounter(flashbar)!.getElement().id;
+      const itemCounterElementId = findCounterElement(flashbar)!.id;
       expect(itemCounterElementId).toBeTruthy();
       const toggleButton = findInnerToggleButton(flashbar);
       expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
@@ -272,9 +272,9 @@ describe('Collapsible Flashbar', () => {
         warningCountAriaLabel: 'Custom warning ARIA label',
       };
       const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
-      const counter = findCounter(flashbar);
+      const counter = findCounterElement(flashbar);
       for (const ariaLabel of Object.values(customLabels)) {
-        const labeledElement = counter!.getElement().querySelector(`[title="${ariaLabel}"]`);
+        const labeledElement = counter!.querySelector(`[title="${ariaLabel}"]`);
         expect(labeledElement).toBeTruthy();
       }
     });
@@ -301,8 +301,11 @@ function findInnerToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefin
 }
 
 // Item counter, including the header
-function findCounter(flashbar: FlashbarWrapper) {
-  return flashbar.find('[role="status"]');
+function findCounterElement(flashbar: FlashbarWrapper) {
+  const toggleElement = findOuterToggleElement(flashbar);
+  if (toggleElement) {
+    return Array.from(toggleElement.children)[0];
+  }
 }
 
 function renderFlashbar(

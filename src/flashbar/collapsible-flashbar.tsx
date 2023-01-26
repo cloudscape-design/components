@@ -294,7 +294,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span className={styles.status} role="status" id={itemCountElementId}>
+            <span className={styles.status} id={itemCountElementId}>
               <LiveRegion>
                 {toggleButtonText && <h2>{toggleButtonText}</h2>}
                 {counterTypes
