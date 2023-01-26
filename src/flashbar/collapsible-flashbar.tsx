@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from './interfaces';
@@ -17,8 +17,7 @@ import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
-import { componentName, useFlashbar } from './common';
-import { warnOnce } from '../internal/logging';
+import { useFlashbar } from './common';
 import LiveRegion from '../internal/components/live-region';
 import { throttle } from '../internal/utils/throttle';
 
@@ -127,33 +126,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   }, [updateBottomSpacing]);
 
   const { i18nStrings } = restProps;
-
-  const verifyStringPresence = useCallback(
-    (parameterName: keyof CollapsibleFlashbarProps.I18nStrings) => {
-      if (i18nStrings && !i18nStrings[parameterName]) {
-        warnOnce(
-          componentName,
-          'Using the `collapsible` option requires passing a `' +
-            parameterName +
-            '` parameter inside the `i18nStrings` object.'
-        );
-      }
-    },
-    [i18nStrings]
-  );
-
-  useEffect(() => {
-    if (!i18nStrings) {
-      warnOnce(componentName, 'Using the `collapsible` option requires passing an `i18nStrings` object.');
-      return;
-    }
-    verifyStringPresence('ariaLabel');
-    verifyStringPresence('toggleButtonText');
-    verifyStringPresence('toggleButtonAriaLabel');
-    for (const { labelName } of counterTypes) {
-      verifyStringPresence(labelName);
-    }
-  }, [i18nStrings, verifyStringPresence]);
 
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
