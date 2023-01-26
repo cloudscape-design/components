@@ -328,7 +328,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                 {counterTypes
                   .map(
                     ({ type, labelName }: { type: FlashType; labelName: LabelName }) =>
-                      `${countByType[type]} ${(i18nStrings && i18nStrings[labelName]) ?? ''}`
+                      `${(i18nStrings && i18nStrings[labelName]) ?? ''}: ${countByType[type]}`
                   )
                   .join(', ')}
               </LiveRegion>
