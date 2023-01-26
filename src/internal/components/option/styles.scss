@@ -73,6 +73,14 @@
   @include styles.font-body-s;
   color: constants.$tags-description-color;
   flex-wrap: wrap;
+
+  &.highlighted {
+    color: constants.$tags-description-color-hover;
+  }
+
+  &.selected {
+    color: constants.$tags-description-color;
+  }
 }
 
 .tags {

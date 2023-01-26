@@ -61,7 +61,7 @@ const AutosuggestOption = (
 
     optionContent = (
       <div {...a11yProperties}>
-        <OptionComponent option={option} highlightText={highlightText} />
+        <OptionComponent option={option} highlightedOption={highlighted} highlightText={highlightText} />
       </div>
     );
   }

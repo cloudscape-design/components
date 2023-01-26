@@ -25,6 +25,8 @@ const Option = ({
   highlightText,
   triggerVariant = false,
   isGroupOption = false,
+  highlightedOption = false,
+  selectedOption = false,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -76,10 +78,24 @@ const Option = ({
           />
           <LabelTag labelTag={option.labelTag} highlightText={highlightText} triggerVariant={triggerVariant} />
         </span>
-        <Description description={option.description} highlightText={highlightText} triggerVariant={triggerVariant} />
-        <Tags tags={option.tags} highlightText={highlightText} triggerVariant={triggerVariant} />
+        <Description
+          description={option.description}
+          highlightedOption={highlightedOption}
+          selectedOption={selectedOption}
+          highlightText={highlightText}
+          triggerVariant={triggerVariant}
+        />
+        <Tags
+          tags={option.tags}
+          highlightedOption={highlightedOption}
+          selectedOption={selectedOption}
+          highlightText={highlightText}
+          triggerVariant={triggerVariant}
+        />
         <FilteringTags
           filteringTags={option.filteringTags}
+          highlightedOption={highlightedOption}
+          selectedOption={selectedOption}
           highlightText={highlightText}
           triggerVariant={triggerVariant}
         />
