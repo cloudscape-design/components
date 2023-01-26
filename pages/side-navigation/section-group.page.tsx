@@ -33,7 +33,7 @@ const items: SideNavigationProps.Item[] = [
   { type: 'divider' },
   {
     type: 'section-group',
-    title: 'H3 section header',
+    title: 'Section group title',
     items: [
       {
         type: 'link',

@@ -144,7 +144,7 @@ describe('SideNavigation', () => {
   });
 
   it('throws a warning if multiple links have the same href', () => {
-    const spy = jest.spyOn(console, 'warn').mockImplementation(() => { });
+    const spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     try {
       renderSideNavigation({
         items: [

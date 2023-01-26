@@ -48,6 +48,33 @@ const permutations = createPermutations<SideNavigationProps>([
           ],
         },
         {
+          type: 'section-group',
+          title: 'Section group title',
+          items: [
+            {
+              type: 'link',
+              text: 'Overview',
+              href: '#/page1',
+            },
+            {
+              type: 'section',
+              text: 'Contributions',
+              items: [
+                {
+                  type: 'link',
+                  text: 'Design',
+                  href: '#/design',
+                },
+                {
+                  type: 'link',
+                  text: 'Dev',
+                  href: '#/dev',
+                },
+              ],
+            },
+          ],
+        },
+        {
           type: 'expandable-link-group',
           text: 'Getting started',
           href: '#/getting_started/',
