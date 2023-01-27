@@ -84,14 +84,19 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     if (!isReducedMotion) {
       prepareAnimations();
     }
-    if (!isFlashbarStackExpanded && items?.length) {
+    setIsFlashbarStackExpanded(prev => !prev);
+  }
+
+  useLayoutEffect(() => {
+    if (isFlashbarStackExpanded && items?.length) {
       const lastItem = items[items.length - 1];
       if (lastItem.id !== undefined) {
         focusFlashById(ref.current, lastItem.id);
       }
     }
-    setIsFlashbarStackExpanded(prev => !prev);
-  }
+    // Run this after expanding, but not every time the items change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFlashbarStackExpanded]);
 
   const updateBottomSpacing = useMemo(
     () =>
@@ -254,6 +259,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                       animateFlash && styles['flash-with-motion'],
                       isVisualRefresh && styles['flash-refresh']
                     )}
+                    focusable={true}
                     key={getItemId(item)}
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}

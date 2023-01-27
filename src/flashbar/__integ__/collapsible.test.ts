@@ -15,7 +15,12 @@ describe('Collapsible Flashbar', () => {
 
         await expect(page.findFlashes()).resolves.toBe(1);
         await page.keys('Space');
+
         await expect(page.findFlashes()).resolves.toBe(5);
+        await expect(page.isFlashFocused(1)).resolves.toBe(true);
+
+        // Navigate past all flash buttons
+        await page.keys(new Array(11).fill('Tab'));
 
         await page.keys('Space');
         await expect(page.findFlashes()).resolves.toBe(1);
@@ -30,6 +35,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.addInfoFlash();
+          await wait(FOCUS_THROTTLE_DELAY);
           return expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
       );
@@ -39,6 +45,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.addErrorFlash();
+          await wait(FOCUS_THROTTLE_DELAY);
           return expect(page.isFlashFocused(1)).resolves.toBe(true);
         })
       );
@@ -48,6 +55,7 @@ describe('Collapsible Flashbar', () => {
         setupTest(async page => {
           await page.toggleCollapsibleFeature();
           await page.addErrorFlash();
+          await wait(FOCUS_THROTTLE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
           await page.addInfoFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(false);
@@ -87,6 +95,7 @@ describe('Collapsible Flashbar', () => {
           await page.addErrorFlash();
           await expect(page.isFlashFocused(1)).resolves.toBe(true);
           await page.addInfoFlash();
+          await wait(FOCUS_THROTTLE_DELAY);
           await expect(page.isFlashFocused(1)).resolves.toBe(false);
         })
       );

@@ -65,6 +65,7 @@ export const focusFlashById = throttle(
 
 export interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
+  focusable?: boolean;
   transitionState?: string;
 }
 
@@ -86,6 +87,7 @@ export const Flash = React.forwardRef(
       transitionState,
       ariaRole,
       type = 'info',
+      focusable,
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -148,7 +150,7 @@ export const Flash = React.forwardRef(
           <div
             {...focusVisible}
             className={styles['flash-focus-container']}
-            tabIndex={ariaRole === 'alert' ? -1 : undefined}
+            tabIndex={focusable || ariaRole === 'alert' ? -1 : undefined}
           >
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
