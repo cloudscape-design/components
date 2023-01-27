@@ -172,6 +172,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextDropdownItemFilterMatch: { light: '{colorBlue600}', dark: '{colorBlue400}' },
   colorTextDropdownItemHighlighted: { light: '{colorGrey900}', dark: '{colorGrey200}' },
   colorTextDropdownItemSecondary: '{colorTextFormSecondary}',
+  colorTextDropdownItemSecondaryHover: { light: '{colorGrey550}', dark: 'colorGrey300' },
   colorTextEmpty: { light: '{colorGrey550}', dark: '{colorGrey300}' },
   colorTextExpandableSectionDefault: '{colorTextInteractiveActive}',
   colorTextExpandableSectionHover: '{colorTextAccent}',

@@ -41,6 +41,12 @@ export interface RadioGroupProps extends BaseComponentProps, FormFieldControlPro
   ariaRequired?: boolean;
 
   /**
+   * Adds `aria-controls` attribute to the radio group.
+   * If the radio group controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.
+   */
+  ariaControls?: string;
+
+  /**
    * Called when the user selects a different radio button. The event `detail` contains the current `value`.
    */
   onChange?: NonCancelableEventHandler<RadioGroupProps.ChangeDetail>;

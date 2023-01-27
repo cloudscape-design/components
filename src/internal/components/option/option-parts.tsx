@@ -36,30 +36,47 @@ export const LabelTag = ({ labelTag, highlightText, triggerVariant }: LabelTagPr
 
 interface DescriptionProps {
   description?: string;
+  highlightedOption: boolean;
   highlightText?: string;
+  selectedOption: boolean;
   triggerVariant: boolean;
 }
-export const Description = ({ description, highlightText, triggerVariant }: DescriptionProps) =>
+export const Description = ({
+  description,
+  highlightedOption,
+  highlightText,
+  selectedOption,
+  triggerVariant,
+}: DescriptionProps) =>
   description ? (
-    // We do not reach AA compliance in Dark mode for highlighted state
-    // TODO: Remove aria-disabled={true} when we fix AWSUI-10333
-    <span className={clsx(styles.description, triggerVariant && styles['trigger-variant'])} aria-disabled={true}>
+    <span
+      className={clsx(styles.description, {
+        [styles['trigger-variant']]: triggerVariant,
+        [styles.highlighted]: highlightedOption,
+        [styles.selected]: selectedOption,
+      })}
+    >
       <HighlightMatch str={description} highlightText={highlightText} />
     </span>
   ) : null;
 
 interface TagsProps {
   tags?: ReadonlyArray<string>;
+  highlightedOption: boolean;
   highlightText?: string;
+  selectedOption: boolean;
   triggerVariant: boolean;
 }
-export const Tags = ({ tags, highlightText, triggerVariant }: TagsProps) =>
+export const Tags = ({ tags, highlightedOption, highlightText, selectedOption, triggerVariant }: TagsProps) =>
   tags ? (
-    <span className={clsx(styles.tags)}>
+    <span
+      className={clsx(styles.tags, {
+        [styles.highlighted]: highlightedOption,
+        [styles.selected]: selectedOption,
+      })}
+    >
       {tags.map((tag, idx) => (
-        // We do not reach AA compliance in Dark mode for highlighted state
-        // TODO: Remove aria-disabled={true} when we fix AWSUI-10333
-        <span key={idx} className={clsx(styles.tag, triggerVariant && styles['trigger-variant'])} aria-disabled={true}>
+        <span key={idx} className={clsx(styles.tag, triggerVariant && styles['trigger-variant'])}>
           <HighlightMatch str={tag} highlightText={highlightText} />
         </span>
       ))}
@@ -68,10 +85,18 @@ export const Tags = ({ tags, highlightText, triggerVariant }: TagsProps) =>
 
 interface FilteringTagProps {
   filteringTags?: ReadonlyArray<string>;
+  highlightedOption: boolean;
   highlightText?: string;
+  selectedOption: boolean;
   triggerVariant: boolean;
 }
-export const FilteringTags = ({ filteringTags, highlightText, triggerVariant }: FilteringTagProps) => {
+export const FilteringTags = ({
+  filteringTags,
+  highlightedOption,
+  highlightText,
+  selectedOption,
+  triggerVariant,
+}: FilteringTagProps) => {
   if (!highlightText || !filteringTags) {
     return null;
   }
@@ -79,13 +104,16 @@ export const FilteringTags = ({ filteringTags, highlightText, triggerVariant }: 
   const searchElement = highlightText.toLowerCase();
 
   return (
-    <span className={clsx(styles.tags)}>
+    <span
+      className={clsx(styles.tags, {
+        [styles.highlighted]: highlightedOption,
+        [styles.selected]: selectedOption,
+      })}
+    >
       {filteringTags.map((filteringTag, key) => {
         const match = filteringTag.toLowerCase().indexOf(searchElement) !== -1;
         if (match) {
           return (
-            // We do not reach AA compliance in Dark mode for highlighted state
-            // TODO: Remove aria-disabled={true} when we fix AWSUI-10333
             <span
               className={clsx(styles.tag, triggerVariant && styles['trigger-variant'])}
               key={key}
