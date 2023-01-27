@@ -64,7 +64,7 @@ section.appbar {
     should vertically align it with the Navigation and Tools circular buttons.
     */
     > .breadcrumbs:not(.has-notifications-content) {
-      padding-top: awsui.$space-scaled-m;
+      padding-top: awsui.$space-scaled-s;
     }
 
     /*

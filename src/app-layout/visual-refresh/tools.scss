@@ -33,8 +33,6 @@ viewport size and state of the Tools drawer.
   top: var(#{custom-props.$offsetTop});
   z-index: 830;
 
-  pointer-events: none;
-
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     #{custom-props.$toolsWidth}: 360px;
   }
@@ -59,8 +57,6 @@ viewport size and state of the Tools drawer.
   overscroll-behavior-y: contain;
   position: relative;
   word-wrap: break-word;
-
-  pointer-events: auto;
 
   // Animation for the Tools opacity and width when it is added to the DOM
   @keyframes openTools {
