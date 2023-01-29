@@ -16,6 +16,7 @@ import {
   PageSizePreference,
   WrapLinesPreference,
   StripedRowsPreference,
+  CompactModePreference,
   CustomPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
@@ -35,6 +36,7 @@ interface ModalContentProps
     | 'pageSizePreference'
     | 'wrapLinesPreference'
     | 'stripedRowsPreference'
+    | 'compactModePreference'
     | 'customPreference'
   > {
   onChange: (preferences: CollectionPreferencesProps.Preferences) => void;
@@ -45,6 +47,7 @@ const ModalContent = ({
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
+  compactModePreference,
   customPreference,
   visibleContentPreference,
   onChange,
@@ -54,6 +57,7 @@ const ModalContent = ({
     !pageSizePreference &&
     !wrapLinesPreference &&
     !stripedRowsPreference &&
+    !compactModePreference &&
     customPreference
   ) {
     return (
@@ -90,6 +94,13 @@ const ModalContent = ({
               onChange={stripedRows => onChange({ stripedRows })}
             />
           )}
+          {compactModePreference && (
+            <CompactModePreference
+              value={preferences.compactMode}
+              {...compactModePreference}
+              onChange={compactMode => onChange({ compactMode })}
+            />
+          )}
           {customPreference && (
             <CustomPreference
               value={preferences.custom}
@@ -123,6 +134,7 @@ export default function CollectionPreferences({
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
+  compactModePreference,
   preferences,
   customPreference,
   ...rest
@@ -205,6 +217,7 @@ export default function CollectionPreferences({
             pageSizePreference={pageSizePreference}
             wrapLinesPreference={wrapLinesPreference}
             stripedRowsPreference={stripedRowsPreference}
+            compactModePreference={compactModePreference}
             customPreference={customPreference}
             onChange={changedPreferences =>
               setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences))

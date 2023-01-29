@@ -35,6 +35,7 @@ export default function App() {
 
     // set to true for default striped rows.
     stripedRows: true,
+    compactMode: true,
   });
   const [selectedItems, setSelectedItems] = React.useState<any>([]);
 
@@ -76,6 +77,7 @@ export default function App() {
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
         selectedItems={selectedItems}
         stripedRows={preferences.stripedRows}
+        compactMode={preferences.compactMode}
         wrapLines={preferences.wrapLines}
         columnDefinitions={columnsConfig}
         items={items}
@@ -110,6 +112,10 @@ export default function App() {
             stripedRowsPreference={{
               label: 'Striped rows',
               description: 'Striped rows description',
+            }}
+            compactModePreference={{
+              label: 'Compact mode',
+              description: 'Display content in a more dense mode',
             }}
           />
         }

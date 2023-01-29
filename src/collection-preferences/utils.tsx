@@ -13,12 +13,14 @@ export const copyPreferences = ({
   pageSize,
   wrapLines,
   stripedRows,
+  compactMode,
   visibleContent,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
   wrapLines,
   stripedRows,
+  compactMode,
   visibleContent,
   custom,
 });
@@ -30,6 +32,7 @@ export const mergePreferences = (
   pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
   wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
   stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
+  compactMode: newPref.compactMode !== undefined ? newPref.compactMode : oldPref.compactMode,
   visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
   custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
 });
@@ -108,6 +111,22 @@ export const StripedRowsPreference = ({ label, description, value, onChange }: S
     description={description}
     onChange={({ detail }) => onChange(detail.checked)}
     className={styles['striped-rows']}
+  >
+    {label}
+  </InternalCheckbox>
+);
+
+interface CompactModePreferenceProps extends CollectionPreferencesProps.StripedRowsPreference {
+  onChange: (value: boolean) => void;
+  value?: boolean;
+}
+
+export const CompactModePreference = ({ label, description, value, onChange }: CompactModePreferenceProps) => (
+  <InternalCheckbox
+    checked={!!value}
+    description={description}
+    onChange={({ detail }) => onChange(detail.checked)}
+    className={styles['compact-mode']}
   >
     {label}
   </InternalCheckbox>
