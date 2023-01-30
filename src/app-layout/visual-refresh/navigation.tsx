@@ -44,7 +44,7 @@ function NavigationOpenButton() {
 
   return (
     <nav
-      aria-hidden={isMobile || isNavigationOpen ? true : false}
+      aria-hidden={isNavigationOpen ? true : false}
       aria-label={ariaLabels?.navigation ?? undefined}
       className={clsx(styles['navigation-trigger-container'], {
         [styles['has-notifications-content']]: hasNotificationsContent,
@@ -96,12 +96,13 @@ function NavigationDrawer() {
   return (
     <nav
       aria-hidden={!isNavigationOpen}
+      aria-label={ariaLabels?.navigation ?? undefined}
       className={clsx(
         styles['navigation-drawer'],
         {
-          [testutilStyles['drawer-closed']]: !isNavigationOpen,
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles.unfocusable]: isUnfocusable,
+          [testutilStyles['drawer-closed']]: !isNavigationOpen,
         },
         testutilStyles.navigation
       )}
