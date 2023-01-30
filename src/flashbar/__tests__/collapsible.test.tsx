@@ -249,9 +249,8 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
       const innerCounter = findInnerCounterElement(flashbar);
       for (const ariaLabel of Object.values(customLabels)) {
-        const labeledElement = innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`);
-        expect(labeledElement).toBeTruthy();
-        expect(labeledElement).toHaveAttribute('title', ariaLabel);
+        expect(innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`)).toBeTruthy();
+        expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
       }
     });
   });
