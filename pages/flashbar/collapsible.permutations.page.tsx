@@ -68,18 +68,16 @@ export default function CollapsibleFlashbarPermutations() {
           permutations={permutations}
           render={permutation => (
             <Flashbar
-              {...{
-                collapsible: true,
-                i18nStrings: {
-                  ariaLabel: 'Notifications',
-                  toggleButtonAriaLabel: 'View all notifications',
-                  toggleButtonText: 'Notifications',
-                  errorCountAriaLabel: 'Error',
-                  warningCountAriaLabel: 'Warning',
-                  successCountAriaLabel: 'Success',
-                  infoCountAriaLabel: 'Info',
-                  inProgressCountAriaLabel: 'In progress',
-                },
+              collapsible={true}
+              i18nStrings={{
+                ariaLabel: 'Notifications',
+                toggleButtonAriaLabel: 'View all notifications',
+                toggleButtonText: 'Notifications',
+                errorCountAriaLabel: 'Error',
+                warningCountAriaLabel: 'Warning',
+                successCountAriaLabel: 'Success',
+                infoCountAriaLabel: 'Info',
+                inProgressCountAriaLabel: 'In progress',
               }}
               items={permutation.items}
             />
