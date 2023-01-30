@@ -34,7 +34,7 @@ const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference = {
 
 const compactModePreference: CollectionPreferencesProps.CompactModePreference = {
   label: 'Compact mode',
-  description: 'Display content in a more dense mode',
+  description: 'Display content in more compact, denser mode',
 };
 
 const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {

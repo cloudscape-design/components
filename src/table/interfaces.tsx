@@ -144,7 +144,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   stripedRows?: boolean;
 
   /**
-   * Specifies the content density of the table.
+   * Toggles the content density of the table.
    */
   compactMode?: boolean;
 

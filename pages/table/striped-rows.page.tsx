@@ -115,7 +115,7 @@ export default function App() {
             }}
             compactModePreference={{
               label: 'Compact mode',
-              description: 'Display content in a more dense mode',
+              description: 'Display content in a more compact, denser mode',
             }}
           />
         }

@@ -116,7 +116,7 @@ export const StripedRowsPreference = ({ label, description, value, onChange }: S
   </InternalCheckbox>
 );
 
-interface CompactModePreferenceProps extends CollectionPreferencesProps.StripedRowsPreference {
+interface CompactModePreferenceProps extends CollectionPreferencesProps.CompactModePreference {
   onChange: (value: boolean) => void;
   value?: boolean;
 }
