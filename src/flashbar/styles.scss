@@ -66,20 +66,19 @@
   display: flex;
   flex-grow: 1;
   min-width: 0;
-
-  &:focus {
-    outline: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
 }
 
 .flash-focus-container {
   display: flex;
   flex: 1;
   min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
 }
 
 .flash-text {
