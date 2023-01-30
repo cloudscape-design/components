@@ -169,9 +169,9 @@ describe('SideNavigation', () => {
       const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
       expect(wrapper.findHeaderLink()!.getElement()).toHaveTextContent('Console');
     });
-
     it('renders the header in a <h2>', () => {
       const wrapper = renderSideNavigation({ header: { text: 'Console', href: '#something' } });
+      expect(wrapper.findHeader()!.getElement()!.tagName).toBe('H2');
       expect(wrapper.find('h2')!.getElement()).toHaveTextContent('Console');
     });
 
@@ -197,6 +197,7 @@ describe('SideNavigation', () => {
 
     it('renders the section group title in a <h3>', () => {
       const wrapper = renderSideNavigation({ items: [{ type: 'section-group', title: 'Section Group', items: [] }] });
+      expect(wrapper.findItemByIndex(1)?.findSectionGroup()!.getElement()!.children[0]!.tagName).toBe('H3');
       expect(wrapper.find('h3')!.getElement()).toHaveTextContent('Section Group');
     });
   });
