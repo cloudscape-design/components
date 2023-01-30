@@ -109,13 +109,13 @@ export default function InternalTopNavigation({
             </div>
           )}
 
-          <div className={styles.inputs}>
-            {showSearchSlot && (
+          {showSearchSlot && (
+            <div className={styles.inputs}>
               <div className={clsx(styles.search, !isVirtual && isSearchExpanded && styles['search-expanded'])}>
                 {search}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className={styles.utilities}>
             {showSearchUtility && (
