@@ -259,7 +259,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                       animateFlash && styles['flash-with-motion'],
                       isVisualRefresh && styles['flash-refresh']
                     )}
-                    focusable={true}
                     key={getItemId(item)}
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
