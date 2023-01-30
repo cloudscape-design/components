@@ -93,6 +93,7 @@ section.split-panel-bottom {
 section.split-panel-side {
   height: 100%;
   overflow-x: hidden;
+  pointer-events: none;
 
   // Animation for opacity and width when pening the Split Panel
   @keyframes openSplitPanelSide {
