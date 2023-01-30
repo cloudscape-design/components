@@ -23,7 +23,7 @@ export default function Navigation() {
 
   return (
     <>
-      <NavigationOpenButton />
+      <NavigationTrigger />
       <NavigationDrawer />
     </>
   );
@@ -32,7 +32,7 @@ export default function Navigation() {
 /**
  *
  */
-function NavigationOpenButton() {
+function NavigationTrigger() {
   const { ariaLabels, handleNavigationClick, hasNotificationsContent, isMobile, isNavigationOpen } =
     useAppLayoutInternals();
 
