@@ -340,8 +340,10 @@ const NotificationTypeCount = ({
 }) => {
   return (
     <span className={styles['type-count']}>
-      <span aria-label={label} title={label} role="img">
-        <InternalIcon name={iconName} aria-hidden="true" />
+      <span aria-label={label} role="img">
+        <span title={label} aria-hidden="true">
+          <InternalIcon name={iconName} />
+        </span>
       </span>
       <span className={styles['count-number']}>{count}</span>
     </span>
