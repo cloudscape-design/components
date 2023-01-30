@@ -94,7 +94,7 @@ export default function FlashbarPermutations() {
           </Button>
           <Button onClick={() => removeLastAndAdd('error')}>Add And Remove</Button>
         </SpaceBetween>
-        <Flashbar items={items} {...(privateProps as any)} />
+        <Flashbar items={items} {...privateProps} />
       </SpaceBetween>
     </>
   );
