@@ -68,8 +68,8 @@ export default function AbstractSwitch({
   }
 
   return (
-    <div {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
-      <div
+    <span {...rest} className={clsx(styles.wrapper, rest.className)} ref={__internalRootRef}>
+      <span
         className={styles['label-wrapper']}
         aria-disabled={disabled ? 'true' : undefined}
         onClick={disabled ? undefined : onClick}
@@ -105,7 +105,7 @@ export default function AbstractSwitch({
             </span>
           )}
         </span>
-      </div>
-    </div>
+      </span>
+    </span>
   );
 }
