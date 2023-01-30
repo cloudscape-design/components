@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
-import AppLayout from '~components/app-layout';
 import Badge from '~components/badge';
 
 const items: SideNavigationProps.Item[] = [
@@ -158,26 +157,16 @@ const items: SideNavigationProps.Item[] = [
 
 export default function SideNavigationPage() {
   return (
-    <AppLayout
-      toolsHide={true}
-      navigationOpen={true}
-      contentType="form"
-      ariaLabels={{ navigationClose: 'Close' }}
-      navigation={
-        <SideNavigation
-          activeHref="#/"
-          header={{
-            href: '#/',
-            text: 'Header title',
-          }}
-          items={items}
-        />
-      }
-      content={
-        <>
-          <h1>App Layout with Side navigation</h1>
-        </>
-      }
-    />
+    <>
+      <h1>Side navigation with section-groups</h1>
+      <SideNavigation
+        activeHref="#/"
+        header={{
+          href: '#/',
+          text: 'Header title',
+        }}
+        items={items}
+      />
+    </>
   );
 }
