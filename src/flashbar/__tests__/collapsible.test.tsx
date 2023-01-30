@@ -6,15 +6,6 @@ import { createFlashbarWrapper } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
-import { warnOnce } from '../../../lib/components/internal/logging';
-
-jest.mock('../../../lib/components/internal/logging', () => ({
-  warnOnce: jest.fn(),
-}));
-
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-});
 
 const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },
