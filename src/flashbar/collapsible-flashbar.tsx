@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from './interfaces';
+import { FlashbarProps, CollapsibleFlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -12,13 +12,12 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, LabelName, StackableItem } from './utils';
+import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
-import LiveRegion from '../internal/components/live-region';
 import { throttle } from '../internal/utils/throttle';
 
 export { FlashbarProps };
@@ -299,28 +298,17 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             onClick={toggleCollapseExpand}
             ref={toggleElementRef}
           >
-            <span className={styles.status} id={itemCountElementId}>
-              <LiveRegion>
-                {toggleButtonText && <h2>{toggleButtonText}</h2>}
-                {counterTypes
-                  .map(
-                    ({ type, labelName }: { type: FlashType; labelName: LabelName }) =>
-                      `${(i18nStrings && i18nStrings[labelName]) ?? ''}: ${countByType[type]}`
-                  )
-                  .join(', ')}
-              </LiveRegion>
-              <span aria-hidden="true" className={styles['item-count-with-header']}>
-                {toggleButtonText && <h2 className={styles.header}>{toggleButtonText}</h2>}
-                <span className={styles['item-count']}>
-                  {counterTypes.map(({ type, labelName, iconName }) => (
-                    <NotificationTypeCount
-                      key={type}
-                      iconName={iconName}
-                      label={i18nStrings ? i18nStrings[labelName] : undefined}
-                      count={countByType[type]}
-                    />
-                  ))}
-                </span>
+            <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+              {toggleButtonText && <h2 className={styles.header}>{toggleButtonText}</h2>}
+              <span className={styles['item-count']}>
+                {counterTypes.map(({ type, labelName, iconName }) => (
+                  <NotificationTypeCount
+                    key={type}
+                    iconName={iconName}
+                    label={i18nStrings ? i18nStrings[labelName] : undefined}
+                    count={countByType[type]}
+                  />
+                ))}
               </span>
             </span>
             <button
@@ -352,8 +340,8 @@ const NotificationTypeCount = ({
 }) => {
   return (
     <span className={styles['type-count']}>
-      <span title={label}>
-        <InternalIcon name={iconName} />
+      <span aria-label={label} title={label} role="img">
+        <InternalIcon name={iconName} aria-hidden="true" />
       </span>
       <span className={styles['count-number']}>{count}</span>
     </span>
