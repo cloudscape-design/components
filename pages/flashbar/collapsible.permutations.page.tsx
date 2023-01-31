@@ -68,7 +68,7 @@ export default function CollapsibleFlashbarPermutations() {
           permutations={permutations}
           render={permutation => (
             <Flashbar
-              collapsible={true}
+              stackItems={true}
               i18nStrings={{
                 ariaLabel: 'Notifications',
                 toggleButtonAriaLabel: 'View all notifications',

@@ -29,7 +29,7 @@ const defaultStrings = {
 const defaultItems = [sampleItems.error, sampleItems.success];
 
 const defaultProps = {
-  collapsible: true,
+  stackItems: true,
   i18nStrings: defaultStrings,
 };
 
@@ -89,14 +89,14 @@ describe('Collapsible Flashbar', () => {
       const item2 = { ...sampleItems.error, id: '1' };
 
       const { container, rerender } = render(
-        <Flashbar items={[item1]} {...{ collapsible: true, i18nStrings: defaultStrings }} />
+        <Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
       );
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
       expect(flashbar.findItems()).toHaveLength(1);
       expect(findOuterToggleElement(flashbar)).toBeFalsy();
 
-      rerender(<Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       const toggleElement = findOuterToggleElement(wrapper.findFlashbar()!);
       expect(toggleElement).toBeTruthy();
@@ -107,7 +107,7 @@ describe('Collapsible Flashbar', () => {
       const item2 = { ...sampleItems.error, id: '1' };
 
       const { container, rerender } = render(
-        <Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />
+        <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
       );
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
@@ -118,11 +118,11 @@ describe('Collapsible Flashbar', () => {
       toggleElement!.click();
       expect(flashbar.findItems()).toHaveLength(2);
 
-      rerender(<Flashbar items={[item1]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeFalsy();
 
-      rerender(<Flashbar items={[item1, item2]} {...{ collapsible: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeTruthy();
     });
@@ -298,7 +298,7 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
 
 function renderFlashbar(
   customProps: Partial<
-    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'collapsible'> & {
+    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'stackItems'> & {
       i18nStrings?: Partial<CollapsibleFlashbarProps.I18nStrings>;
     }
   > = {

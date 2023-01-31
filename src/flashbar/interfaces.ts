@@ -60,7 +60,7 @@ export type FlashType = FlashbarProps.Type | 'progress';
 
 export interface CollapsibleFlashbarProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
-  collapsible: boolean;
+  stackItems: boolean;
   i18nStrings?: CollapsibleFlashbarProps.I18nStrings;
 }
 

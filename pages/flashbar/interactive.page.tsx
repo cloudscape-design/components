@@ -56,7 +56,7 @@ export default function FlashbarPermutations() {
 
   const privateProps = collapsible
     ? {
-        collapsible: true,
+        stackItems: true,
         i18nStrings: {
           ariaLabel: 'Notifications',
           toggleButtonText: 'Notifications',

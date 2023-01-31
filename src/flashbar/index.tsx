@@ -25,7 +25,7 @@ export default function Flashbar(props: FlashbarProps | CollapsibleFlashbarProps
 }
 
 function isStackedFlashbar(props: any): props is CollapsibleFlashbarProps {
-  return 'collapsible' in props && props.collapsible;
+  return 'stackItems' in props && props.stackItems;
 }
 
 applyDisplayName(Flashbar, 'Flashbar');
