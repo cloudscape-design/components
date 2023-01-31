@@ -7,6 +7,10 @@ import styles from '../../../side-navigation/styles.selectors.js';
 export default class SideNavigationWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
+  findHeader(): ElementWrapper<HTMLAnchorElement> | null {
+    return this.findByClassName(styles.header);
+  }
+
   findHeaderLink(): ElementWrapper<HTMLAnchorElement> | null {
     return this.findByClassName(styles['header-link']);
   }
@@ -27,6 +31,14 @@ export default class SideNavigationWrapper extends ComponentWrapper {
 export class SideNavigationItemWrapper extends ElementWrapper {
   findSection(): ExpandableSectionWrapper | null {
     return this.findComponent(`.${styles.section}`, ExpandableSectionWrapper);
+  }
+
+  findSectionGroup(): ElementWrapper | null {
+    return this.findByClassName(styles['section-group']);
+  }
+
+  findSectionGroupTitle(): ElementWrapper | null {
+    return this.findByClassName(styles['section-group-title']);
   }
 
   findExpandableLinkGroup(): ExpandableSectionWrapper | null {

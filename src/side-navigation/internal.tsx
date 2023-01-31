@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import InternalIcon from '../icon/internal';
-
+import InternalBox from '../box/internal';
 import { SideNavigationProps } from './interfaces';
 import styles from './styles.css.js';
 import { NonCancelableCustomEvent, isPlainLeftClick } from '../internal/events';
@@ -71,7 +71,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
 
 export interface ItemListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
-  variant: 'section' | 'link-group' | 'expandable-link-group' | 'root';
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
 export function ItemList({ variant, items, activeHref, fireChange, fireFollow }: ItemListProps) {
@@ -83,7 +83,16 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
             <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
           {item.type === 'section' && (
-            <Section definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+            <Section
+              definition={item}
+              activeHref={activeHref}
+              fireChange={fireChange}
+              fireFollow={fireFollow}
+              variant={variant}
+            />
+          )}
+          {item.type === 'section-group' && (
+            <SectionGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
           {item.type === 'link-group' && (
             <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
@@ -94,6 +103,7 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
               activeHref={activeHref}
               fireChange={fireChange}
               fireFollow={fireFollow}
+              variant={variant}
             />
           )}
           {((i === 0 && item.type === 'divider') || (items[i + 1] && items[i + 1].type === 'divider')) && (
@@ -166,9 +176,10 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
 interface SectionProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Section;
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function Section({ definition, activeHref, fireFollow, fireChange }: SectionProps) {
+function Section({ definition, activeHref, fireFollow, fireChange, variant }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
 
   const onExpandedChange = useCallback(
@@ -188,7 +199,7 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
-      className={styles.section}
+      className={clsx(styles.section, variant === 'section-group' && styles['section--no-ident'])}
       headerText={definition.text}
     >
       <ItemList
@@ -199,6 +210,27 @@ function Section({ definition, activeHref, fireFollow, fireChange }: SectionProp
         activeHref={activeHref}
       />
     </InternalExpandableSection>
+  );
+}
+
+interface SectionGroupProps extends BaseItemComponentProps {
+  definition: SideNavigationProps.SectionGroup;
+}
+
+function SectionGroup({ definition, activeHref, fireFollow, fireChange }: SectionGroupProps) {
+  return (
+    <div className={styles['section-group']}>
+      <InternalBox className={styles['section-group-title']} variant="h3">
+        {definition.title}
+      </InternalBox>
+      <ItemList
+        variant="section-group"
+        items={definition.items}
+        fireFollow={fireFollow}
+        fireChange={fireChange}
+        activeHref={activeHref}
+      />
+    </div>
   );
 }
 
@@ -230,9 +262,10 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
 
 interface ExpandableLinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.ExpandableLinkGroup;
+  variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref }: ExpandableLinkGroupProps) {
+function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, variant }: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
   const containsActiveLink = useMemo(() => {
@@ -278,7 +311,10 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref }:
 
   return (
     <InternalExpandableSection
-      className={styles['expandable-link-group']}
+      className={clsx(
+        styles['expandable-link-group'],
+        variant === 'section-group' && styles['expandable-link-group--no-ident']
+      )}
       variant="navigation"
       expanded={userExpanded ?? expanded}
       onChange={onExpandedChange}

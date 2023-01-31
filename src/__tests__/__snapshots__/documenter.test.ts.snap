@@ -10574,7 +10574,7 @@ to the href of the clicked item so you'll have to do it yourself.
           Object {
             "name": "type",
             "optional": true,
-            "type": "\\"expandable-link-group\\" | \\"link\\" | \\"link-group\\"",
+            "type": "\\"expandable-link-group\\" | \\"link\\" | \\"link-group\\" | \\"section-header\\"",
           },
         ],
         "type": "object",
@@ -10677,6 +10677,13 @@ Object that represents a section within the navigation.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+
+#### Section Group
+Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
+You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
+- \`type\`: \`'section-group'\`.
+- \`title\` (string) - Specifies the text to display as a title of the section group.
+- \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
 
 #### LinkGroup
 Object that represents a group of links.

@@ -13,6 +13,7 @@
 }
 
 .header {
+  @include styles.font-panel-header;
   margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
@@ -74,6 +75,10 @@
 .section,
 .expandable-link-group {
   margin-left: calc(-1 * #{awsui.$space-l});
+
+  &--no-ident {
+    margin-left: 0;
+  }
 }
 
 .section {
@@ -87,9 +92,18 @@
   }
 }
 
-.section-header {
-  color: awsui.$color-text-body-secondary;
-  font-weight: styles.$font-weight-bold;
+.list-variant-section-group {
+  margin: 0;
+  padding: 0;
+}
+
+.section-group {
+  @include styles.font-heading-m;
+  margin: 0;
+}
+
+.section-group-title {
+  /* used in test-utils */
 }
 
 .link {
