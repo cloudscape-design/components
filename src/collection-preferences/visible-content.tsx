@@ -71,9 +71,9 @@ export default function VisibleContentPreference({
   const outerGroupLabelId = `${idPrefix}-outer`;
   return (
     <div className={styles['visible-content']}>
-      <div {...className('title')} id={outerGroupLabelId}>
+      <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
-      </div>
+      </h3>
       <InternalSpaceBetween {...className('groups')} size="xs">
         {options.map((optionGroup, optionGroupIndex) => {
           const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
