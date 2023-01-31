@@ -48,13 +48,38 @@ export default function Navigation({
   onSkipToClick,
   steps,
 }: NavigationProps) {
+  const noRequiredStepsBetween = (fromIndex: number, toIndex: number) => {
+    for (let i = fromIndex + 1; i < toIndex; i++) {
+      if (!steps[i].isOptional) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const getStatus = (stepIndex: number) => {
+    if (activeStepIndex === stepIndex) {
+      return Statuses.Active;
+    }
+    if (isLoadingNextStep) {
+      return Statuses.Unvisited;
+    }
+    if (farthestStepIndex >= stepIndex) {
+      return Statuses.Visited;
+    }
+    if (allowSkipTo && noRequiredStepsBetween(activeStepIndex, stepIndex)) {
+      return Statuses.Next;
+    }
+    return Statuses.Unvisited;
+  };
+
   return (
     <nav
       className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
     >
       <ul>
-        {steps.map((step, index: number) =>
+        {steps.map((step, index) =>
           isVisualRefresh ? (
             <NavigationStepVisualRefresh
               i18nStrings={i18nStrings}
@@ -80,33 +105,6 @@ export default function Navigation({
       </ul>
     </nav>
   );
-
-  function getStatus(index: number) {
-    if (activeStepIndex === index) {
-      return Statuses.Active;
-    }
-    if (isLoadingNextStep) {
-      return Statuses.Unvisited;
-    }
-    if (farthestStepIndex >= index) {
-      return Statuses.Visited;
-    }
-    if (allowSkipTo && canSkip(activeStepIndex + 1, index)) {
-      return Statuses.Next;
-    }
-    return Statuses.Unvisited;
-  }
-
-  function canSkip(fromIndex: number, toIndex: number) {
-    let index = fromIndex;
-    do {
-      if (!steps[index].isOptional) {
-        return false;
-      }
-      index++;
-    } while (index < toIndex);
-    return true;
-  }
 }
 
 function NavigationStepVisualRefresh({
