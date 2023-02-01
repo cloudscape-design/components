@@ -4,26 +4,29 @@ import React from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
+import testutilStyles from '../test-classes/styles.css.js';
 
 /**
  * The CSS class 'awsui-context-content-header' needs to be added to the root element so
  * that the design tokens used are overridden with the appropriate values.
  */
-export default function Header() {
-  const { contentHeader, isAnyPanelOpen, isMobile } = useAppLayoutInternals();
+export default function Breadcrumbs() {
+  const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
 
-  if (!contentHeader) {
+  if (isMobile || !breadcrumbs) {
     return null;
   }
 
   return (
-    <header className={clsx(
-      styles.content, {
-        [styles.unfocusable]: isMobile && isAnyPanelOpen,
+    <div className={clsx(
+      styles.breadcrumbs, 
+      testutilStyles.breadcrumbs, 
+      {
+        [styles['has-sticky-background']]: hasStickyBackground
       },
-      'awsui-context-content-header'
-    )}>
-      {contentHeader}
-    </header>
+      'awsui-context-content-header')}
+    >
+      {breadcrumbs}
+    </div>
   );
 }

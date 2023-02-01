@@ -11,9 +11,9 @@ div.background {
 
   > .notifications-appbar-header {
     background-color: awsui.$color-background-layout-main;
-    grid-column: 1 / span 5;
-    grid-row: 1 / span 3;
     color: awsui.$color-text-body-default;
+    grid-column: 1 / span 5;
+    grid-row: 1 / span 7;
 
     /*
     The cards and table content types have a sticky dark header that is 
@@ -28,13 +28,21 @@ div.background {
         z-index: 799;
       }
     }
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      grid-row: 1 / span 6;
+    }
   }
 
   > .overlap {
     background-color: awsui.$color-background-layout-main;
     grid-column: 1 / span 5;
+<<<<<<< HEAD
     grid-row: 4;
     color: awsui.$color-text-body-default;
+=======
+    grid-row: 8 / span 2;
+>>>>>>> bfb5bc9c (Refactor of paddings to gaps.)
 
     /*
     The cards and table content types can have sticky header content that 

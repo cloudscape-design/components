@@ -5,6 +5,7 @@ import AppBar from './app-bar';
 import { AppLayoutInternalsProvider } from './context';
 import { AppLayoutProps } from '../interfaces';
 import Background from './background';
+import Breadcrumbs from './breadcrumbs';
 import Header from './header';
 import Layout from './layout';
 import Main from './main';
@@ -34,23 +35,24 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
         <Layout>
           <Background />
 
-          <Navigation />
+          {/*<Navigation />*/}
 
-          {isMobile && <AppBar />}
+          <AppBar />
 
           <Notifications />
 
-          {!isMobile && <AppBar />}
+          <Breadcrumbs />
 
           <Header />
 
           <Main />
-
+          {/*
           <SplitPanel.Bottom />
 
           <Tools>
             <SplitPanel.Side />
           </Tools>
+  */}
         </Layout>
       </SplitPanel>
     </AppLayoutInternalsProvider>

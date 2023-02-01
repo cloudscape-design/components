@@ -9,22 +9,13 @@
 .navigation-trigger-container {
   display: grid;
   grid-column: 1;
-  grid-row: 1;
-  grid-template-columns: awsui.$space-layout-toggle-padding 1fr awsui.$space-layout-toggle-padding;
+  grid-row: 1 / span 5;
+  height: awsui.$space-layout-toggle-diameter;
+  margin: awsui.$space-scaled-s awsui.$space-layout-toggle-padding 0;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
-  padding-top: awsui.$space-scaled-s;
+  width: awsui.$space-layout-toggle-diameter;
   z-index: 850;
-
-  &.has-notifications-content {
-    align-self: start;
-    grid-row: 1;
-  }
-
-  &:not(.has-notifications-content) {
-    align-self: center;
-    grid-row: 2;
-  }
 
   &.is-navigation-open {
     @include styles.with-motion {

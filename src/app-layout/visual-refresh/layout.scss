@@ -39,7 +39,6 @@
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   display: grid;
-  grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr;
   grid-template-columns:
     min-content
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
@@ -48,6 +47,46 @@
     min-content;
   position: relative;
   color: awsui.$color-text-body-default;
+
+  // new stuff
+  --notificationsGap: #{awsui.$space-scaled-xs};
+  --breadcrumbsGap: #{awsui.$space-scaled-xs};
+  --headerGap: #{awsui.$space-scaled-xs};
+  --mainGap: #{awsui.$space-scaled-m};
+
+  &:not(.has-notifications-content) {
+    --notificationsGap: 0;
+    --breadcrumbsGap: #{awsui.$space-scaled-m};
+  }
+
+  &:not(.has-breadcrumbs) {
+    --breadcrumbsGap: 0;
+  }
+
+  &:not(.has-header) {
+    --headerGap: 0;
+  }
+
+  grid-template-areas: 
+  ". . appBar . ." 
+  ". . notificationsGap . ." 
+  ". . notifications . ." 
+  ". . breadcrumbsGap . ." 
+  ". . breadcrumbs . ." 
+  ". . headerGap . ." 
+  ". . header . .";
+
+  grid-template-rows: 
+    auto // appbar slot
+    var(--notificationsGap) 
+    auto // notifications slot
+    var(--breadcrumbsGap) 
+    auto // breadcrumbs slot
+    var(--headerGap) 
+    auto // contentHeader slot
+    var(--mainGap) 
+    var(#{custom-props.$overlapHeight}) // main slot
+    1fr; // main slot;
 
   // Add unified max-width for AppLayout content based on breakpoints.
   &:not(.has-max-content-width) {

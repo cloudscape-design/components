@@ -33,7 +33,7 @@ export default function Navigation() {
  *
  */
 function NavigationTrigger() {
-  const { ariaLabels, handleNavigationClick, hasNotificationsContent, isMobile, isNavigationOpen } =
+  const { ariaLabels, handleNavigationClick, isMobile, isNavigationOpen } =
     useAppLayoutInternals();
 
   const { refs: focusRefs } = useFocusControl(isNavigationOpen);
@@ -47,7 +47,6 @@ function NavigationTrigger() {
       aria-hidden={isNavigationOpen ? true : false}
       aria-label={ariaLabels?.navigation ?? undefined}
       className={clsx(styles['navigation-trigger-container'], {
-        [styles['has-notifications-content']]: hasNotificationsContent,
         [styles['is-navigation-open']]: isNavigationOpen,
       })}
     >
@@ -109,7 +108,6 @@ function NavigationDrawer() {
       onClick={event => {
         onNavigationClick && onNavigationClick(event);
       }}
-      // Overwrite the navigation width custom property if the `navigationWidth` property is set
       style={{
         ...(navigationWidth && { [customCssProps.navigationWidth]: `${navigationWidth}px` }),
       }}

@@ -16,12 +16,8 @@ export default function AppBar() {
   const {
     ariaLabels,
     breadcrumbs,
-    contentHeader,
-    contentType,
-    dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
-    hasNotificationsContent,
     hasStickyBackground,
     isMobile,
     navigationHide,
@@ -33,7 +29,7 @@ export default function AppBar() {
   const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
   const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
-  if (navigationHide && !breadcrumbs && toolsHide) {
+  if (!isMobile || (navigationHide && !breadcrumbs && toolsHide)) {
     return null;
   }
 
@@ -43,7 +39,6 @@ export default function AppBar() {
       className={clsx(
         styles.appbar,
         {
-          [styles['has-breadcrumbs']]: breadcrumbs,
           [styles.unfocusable]: isMobile && isAnyPanelOpen,
           [testutilStyles['mobile-bar']]: isMobile,
         },
@@ -72,10 +67,7 @@ export default function AppBar() {
 
       {breadcrumbs && (
         <div
-          className={clsx(styles.breadcrumbs, styles[`content-type-${contentType}`], testutilStyles.breadcrumbs, {
-            [styles['has-dynamic-overlap-height']]: dynamicOverlapHeight > 0,
-            [styles['has-header']]: contentHeader,
-            [styles['has-notifications-content']]: hasNotificationsContent,
+          className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, {
             [styles['has-sticky-background']]: hasStickyBackground,
           })}
         >

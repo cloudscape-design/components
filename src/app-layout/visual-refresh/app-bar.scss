@@ -11,8 +11,7 @@ section.appbar {
   align-items: center;
   box-sizing: border-box;
   display: grid;
-  grid-column: 3;
-  grid-row: 2;
+  grid-area: appBar;
   grid-template-columns: auto minmax(0, 1fr) auto;
 
   > .appbar-nav {
@@ -44,61 +43,6 @@ section.appbar {
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     /*
-    If Breadcrumbs do not exist then the AppBar should be suppressed
-    because in large viewports the triggers are rendered
-    in the Navigation and Tools components.
-    */
-    &:not(.has-breadcrumbs) {
-      display: none;
-    }
-
-    > .appbar-nav,
-    > .appbar-tools {
-      display: none;
-    }
-
-    /*
-    If there is no Notifications content then the AppBar should 
-    appear to be the first rendered content even though the 
-    Notifications DOM node will still exist. The top padding 
-    should vertically align it with the Navigation and Tools circular buttons.
-    */
-    > .breadcrumbs:not(.has-notifications-content) {
-      padding-top: awsui.$space-scaled-s;
-    }
-
-    /*
-    If there is Notifications content then the AppBar should have 
-    minimal top padding in addition to the bottom margin on the 
-    Notifications component.
-    */
-    > .breadcrumbs.has-notifications-content {
-      padding-top: awsui.$space-scaled-2x-s;
-    }
-
-    /*
-    If the Header does not exist then the AppBar is the last 
-    rendered content before the Main component. Additional 
-    bottom padding is added to create space between the 
-    Breadcrumbs and Main components that expands the height 
-    of the dark header.
-    */
-    > .breadcrumbs:not(.has-header):not(.has-dynamic-overlap-height),
-    > .breadcrumbs:not(.has-header).content-type-wizard {
-      padding-bottom: awsui.$space-m;
-    }
-
-    /*
-    Table and cards content types implement a custom dark header. 
-    Minimal bottom padding should be on the breadcrumbs to
-    reduce the the vertical distance from the main content.
-    */
-    > .breadcrumbs.content-type-cards,
-    > .breadcrumbs.content-type-table {
-      padding-bottom: awsui.$space-xxs;
-    }
-
-    /*
     If a child component tells the AppLayout to have a sticky 
     background (typically because of a stickyHeader with a 
     full-page variant) the z-index of the breadcrumbs needs to 
@@ -118,7 +62,6 @@ section.appbar {
     border-bottom: 1px solid awsui.$color-border-divider-default;
     box-shadow: awsui.$shadow-panel-toggle;
     grid-column: 1 / span 5;
-    grid-row: 1;
     height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
     padding: 0 awsui.$space-m;
     position: sticky;
@@ -129,14 +72,6 @@ section.appbar {
     > .appbar-nav,
     > .appbar-tools {
       display: block;
-    }
-
-    /*
-    Remove any existing top and bottom padding from the Breadcrumbs since
-    they are now sticky positioned in the viewport with the AppBar.
-    */
-    > .breadcrumbs {
-      padding: 0;
     }
   }
 }

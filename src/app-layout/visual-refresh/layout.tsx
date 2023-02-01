@@ -20,6 +20,7 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
+    breadcrumbs,
     contentHeader,
     contentType,
     disableBodyScroll,
@@ -65,9 +66,12 @@ export default function Layout({ children }: LayoutProps) {
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+          [styles['has-breadcrumbs']]: breadcrumbs,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
+          [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
+          [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
           [styles['is-overlap-disabled']]: isOverlapDisabled,

@@ -11,15 +11,14 @@ import testutilStyles from '../test-classes/styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Notifications() {
-  const {
-    ariaLabels,
-    hasNotificationsContent,
-    notifications,
-    notificationsElement,
-    stickyNotifications,
-    isMobile,
+  const { 
+    ariaLabels, 
     isAnyPanelOpen,
-  } = useAppLayoutInternals();
+    isMobile,
+    notifications, 
+    notificationsElement, 
+    stickyNotifications } =
+    useAppLayoutInternals();
 
   if (!notifications) {
     return null;
@@ -37,7 +36,6 @@ export default function Notifications() {
       className={clsx(
         styles.notifications,
         {
-          [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['sticky-notifications']]: stickyNotifications,
           [styles.unfocusable]: isMobile && isAnyPanelOpen,
         },
