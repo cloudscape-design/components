@@ -14,20 +14,27 @@
 }
 
 .tools {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: repeat(2, auto);
   flex-wrap: wrap;
   padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
 
   &-filtering {
-    flex: 1 1 0%;
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
     max-width: 100%;
-    margin-right: awsui.$space-l;
   }
 
   &-align-right {
+    grid-column: 2;
+    grid-row: 1;
     display: flex;
     margin-left: auto;
+
+    &-wrap {
+      grid-row: 3;
+    }
   }
 
   &-pagination + &-preferences {
