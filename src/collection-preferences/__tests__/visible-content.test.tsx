@@ -4,6 +4,7 @@ import { CollectionPreferencesProps } from '../../../lib/components/collection-p
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
 import { renderCollectionPreferences, visibleContentPreference } from './shared';
 import styles from '../../../lib/components/collection-preferences/styles.css.js';
+import expandableSectionStyles from '../../../lib/components/expandable-section/styles.css.js';
 
 function renderWithContentSelection(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {
   return renderCollectionPreferences({ visibleContentPreference, ...props });
@@ -38,7 +39,7 @@ describe('Content selection', () => {
     const groupLabels = wrapper
       .findModal()!
       .findVisibleContentPreference()!
-      .findAllByClassName(styles['visible-content-group-label']);
+      .findAllByClassName(expandableSectionStyles.root);
     expect(groupLabels).toHaveLength(2);
     expect(groupLabels[0].getElement()).toHaveTextContent('Group label one');
     expect(groupLabels[1].getElement()).toHaveTextContent('Group label two');
@@ -81,17 +82,14 @@ describe('Content selection', () => {
   test('sets aria attributes', () => {
     const wrapper = renderWithContentSelection({ preferences: { visibleContent: ['id'] }, onConfirm: () => {} });
     wrapper.findTriggerButton().click();
-    const titleId = wrapper.findModal()!.findVisibleContentPreference()!.findTitle().getElement().id;
     // group
-    const innerGroup = wrapper.findModal()!.findVisibleContentPreference()!.findOptionsGroups()[0]!.getElement();
-    expect(innerGroup).toHaveAttribute('role', 'group');
-    const innergroupLabelId = wrapper
+    const innerGroup = wrapper
       .findModal()!
       .findVisibleContentPreference()!
-      .findOptionsGroups()[0]!
-      .findByClassName(styles['visible-content-group-label'])!
-      .getElement().id;
-    expect(innerGroup).toHaveAttribute('aria-labelledby', `${titleId} ${innergroupLabelId}`);
+      .findOptionsGroups()[0]
+      .find('[role="group"]')!
+      .getElement();
+    expect(innerGroup).toHaveAttribute('role', 'group');
   });
   test('label is associated with toggle', () => {
     const wrapper = renderWithContentSelection({ preferences: { visibleContent: ['id'] }, onConfirm: () => {} });

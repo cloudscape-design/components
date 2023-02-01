@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import InternalSpaceBetween from '../space-between/internal';
+import InternalExpandableSection from '../expandable-section/internal';
 import InternalToggle from '../toggle/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
@@ -74,28 +74,24 @@ export default function VisibleContentPreference({
       <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
       </h3>
-      <InternalSpaceBetween {...className('groups')} size="xs">
+      <div {...className('groups')}>
         {options.map((optionGroup, optionGroupIndex) => {
-          const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
           return (
-            <div
+            <InternalExpandableSection
               key={optionGroupIndex}
+              defaultExpanded={optionGroupIndex === 0}
+              headerText={optionGroup.label}
               {...className('group')}
-              role="group"
-              aria-labelledby={`${outerGroupLabelId} ${groupLabelId}`}
             >
-              <div {...className('group-label')} id={groupLabelId}>
-                {optionGroup.label}
-              </div>
               <div>
                 {optionGroup.options.map((option, optionIndex) =>
                   selectionOption(option, optionGroupIndex, optionIndex)
                 )}
               </div>
-            </div>
+            </InternalExpandableSection>
           );
         })}
-      </InternalSpaceBetween>
+      </div>
     </div>
   );
 }
