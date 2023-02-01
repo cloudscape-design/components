@@ -219,6 +219,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusSuccess: { light: '{colorGreen600}', dark: '{colorGreen500}' },
   colorTextStatusWarning: { light: '{colorRed600}', dark: '{colorRed500}' },
   colorTextTopNavigationTitle: { light: '{colorGrey900}', dark: '{colorGrey100}' },
+  colorBoardPlaceholderActive: { light: '{colorGrey200}', dark: '{colorGrey550}' },
+  colorBoardPlaceholderHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

@@ -475,6 +475,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorTextStatusWarning: { description: 'The color of warning icons.', themeable: true, public: true },
+  colorBoardPlaceholderActive: {
+    description: 'The color of board placeholder in active state.',
+    themeable: false,
+    public: true,
+  },
+  colorBoardPlaceholderHover: {
+    description: 'The color of board placeholder in hovered state.',
+    themeable: false,
+    public: true,
+  },
 };
 
 export default metadata;

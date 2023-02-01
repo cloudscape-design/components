@@ -12,6 +12,10 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     dark: '0 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 1px 0 rgba(0, 0, 0, 0.3), -1px 1px 1px 0 rgba(0, 0, 0, 0.3)',
   },
   shadowContainerStacked: '{shadowContainer}',
+  shadowContainerActive: {
+    light: '0px 4px 8px rgba(0, 28, 36, 0.45)',
+    dark: '0px 4px 8px rgba(0, 28, 36, 0.45)',
+  },
   shadowDropdown: '{shadowContainer}',
   shadowDropup: {
     light:

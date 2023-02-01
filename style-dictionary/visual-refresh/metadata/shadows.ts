@@ -4,6 +4,7 @@ import { StyleDictionary } from '../../utils/interfaces';
 
 const metadata: StyleDictionary.MetadataIndex = {
   shadowContainer: { description: 'Shadow for containers and cards.' },
+  shadowContainerActive: { description: 'Shadow for containers and cards in active state.', public: true },
   shadowDropup: {
     description:
       'Shadow for dropdown elements that pop up above the trigger, for example a dropdown at the bottom of the screen.',
