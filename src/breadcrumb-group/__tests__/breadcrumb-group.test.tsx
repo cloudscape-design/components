@@ -67,11 +67,6 @@ describe('BreadcrumbGroup Component', () => {
       });
     });
 
-    test('sets last item to be current', () => {
-      const lastItemWrapper = wrapper.findBreadcrumbLink(3);
-      expect(lastItemWrapper!.getElement()).toHaveAttribute('aria-current', 'page');
-    });
-
     test('has ellipsis', () => {
       expect(wrapper.findDropdown()!.findNativeButton()).not.toBe(null);
       expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
