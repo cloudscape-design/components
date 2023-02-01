@@ -415,7 +415,9 @@ export type ColorsTokenName =
   | 'colorTextStatusInfo'
   | 'colorTextStatusSuccess'
   | 'colorTextStatusWarning'
-  | 'colorTextTopNavigationTitle';
+  | 'colorTextTopNavigationTitle'
+  | 'colorBoardPlaceholderActive'
+  | 'colorBoardPlaceholderHover';
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'
@@ -646,6 +648,7 @@ export type SpacingTokenName =
 export type ShadowsTokenName =
   | 'shadowContainer'
   | 'shadowContainerStacked'
+  | 'shadowContainerActive'
   | 'shadowDropdown'
   | 'shadowDropup'
   | 'shadowFlashCollapsed'
