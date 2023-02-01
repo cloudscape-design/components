@@ -3,17 +3,17 @@
 import React from 'react';
 import {
   ComparisonOperator,
-  FilteringOption,
-  FilteringProperty,
   GroupText,
   I18nStrings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
   JoinOperation,
   LoadItemsDetail,
   Token,
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getExtendedOperator, getPropertyByKey } from './controller';
+import { getOperatorValueFormatter, getPropertyByKey } from './utils';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -26,8 +26,8 @@ interface TokenProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  filteringProperties: readonly InternalFilteringProperty[];
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
@@ -59,9 +59,9 @@ export const TokenButton = ({
   expandToViewport,
 }: TokenProps) => {
   const valueFormatter =
-    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
+    token.propertyKey && getOperatorValueFormatter(filteringProperties, token.propertyKey, token.operator);
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
+  const propertyLabel = property && property.definition.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   return (
     <FilteringToken

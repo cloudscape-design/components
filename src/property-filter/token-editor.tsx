@@ -8,10 +8,10 @@ import InternalAutosuggest from '../autosuggest/internal';
 import InternalPopover, { InternalPopoverRef } from '../popover/internal';
 import {
   ComparisonOperator,
-  FilteringOption,
-  FilteringProperty,
   GroupText,
   I18nStrings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
   LoadItemsDetail,
   Token,
 } from './interfaces';
@@ -21,16 +21,14 @@ import {
   createPropertiesCompatibilityMap,
   getAllowedOperators,
   getPropertyOptions,
-  getPropertyByKey,
   operatorToDescription,
   getPropertySuggestions,
-  getExtendedOperator,
 } from './controller';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { matchTokenValue } from './utils';
+import { getOperatorForm, getPropertyByKey, matchTokenValue } from './utils';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
@@ -38,7 +36,7 @@ interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
   customGroupsText: readonly GroupText[];
   disableFreeTextFiltering?: boolean;
-  filteringProperties: readonly FilteringProperty[];
+  filteringProperties: readonly InternalFilteringProperty[];
   i18nStrings: I18nStrings;
   onChangePropertyKey: (propertyKey: undefined | string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
@@ -62,9 +60,9 @@ function PropertyInput({
     filteringProperties,
     customGroupsText,
     i18nStrings,
-    ({ propertyLabel, key }) => ({
+    ({ definition, key }) => ({
       value: key,
-      label: propertyLabel,
+      label: definition.propertyLabel,
       dontCloseOnSelect: true,
     })
   );
@@ -95,7 +93,7 @@ function PropertyInput({
         property
           ? {
               value: propertyKey ?? undefined,
-              label: property.propertyLabel,
+              label: property.definition.propertyLabel,
             }
           : allPropertiesOption
       }
@@ -106,7 +104,7 @@ function PropertyInput({
 }
 
 interface OperatorInputProps {
-  filteringProperties: readonly FilteringProperty[];
+  filteringProperties: readonly InternalFilteringProperty[];
   i18nStrings: I18nStrings;
   onChangeOperator: (operator: ComparisonOperator) => void;
   operator: undefined | ComparisonOperator;
@@ -147,8 +145,8 @@ function OperatorInput({
 
 interface ValueInputProps {
   asyncProps: DropdownStatusProps;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  filteringProperties: readonly InternalFilteringProperty[];
   i18nStrings: I18nStrings;
   onChangeValue: (value: string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
@@ -173,24 +171,24 @@ function ValueInput({
     ? getPropertyOptions(property, filteringOptions).map(({ label, value }) => ({ label, value }))
     : [];
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
-  const asyncValueAutosuggesProps = propertyKey
+  const asyncValueAutosuggestProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
-  const [mathedOption] = valueOptions.filter(option => option.value === value);
+  const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = propertyKey && operator && getExtendedOperator(filteringProperties, propertyKey, operator)?.form;
+  const OperatorForm = propertyKey && operator && getOperatorForm(filteringProperties, propertyKey, operator);
 
   return OperatorForm ? (
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
   ) : (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
-      value={mathedOption?.label ?? value ?? ''}
+      value={matchedOption?.label ?? value ?? ''}
       clearAriaLabel={i18nStrings.clearAriaLabel}
       onChange={e => onChangeValue(e.detail.value)}
       disabled={!operator}
       options={valueOptions}
-      {...asyncValueAutosuggesProps}
+      {...asyncValueAutosuggestProps}
       virtualScroll={true}
     />
   );
@@ -203,8 +201,8 @@ interface TokenEditorProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  filteringProperties: readonly InternalFilteringProperty[];
   i18nStrings: I18nStrings;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   setToken: (newToken: Token) => void;
@@ -234,7 +232,7 @@ export function TokenEditor({
 
   const propertyKey = temporaryToken.propertyKey;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
-    const filteringProperty = filteringProperties.reduce<FilteringProperty | undefined>(
+    const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
       (acc, property) => (property.key === newPropertyKey ? property : acc),
       undefined
     );

@@ -12,22 +12,28 @@ import SelectToggle from '../token-group/toggle';
 import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
-import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
-import { TokenButton } from './token';
 import {
-  getQueryActions,
-  parseText,
-  getAutosuggestOptions,
-  getAllowedOperators,
-  getExtendedOperator,
-} from './controller';
+  PropertyFilterProps,
+  ParsedText,
+  Ref,
+  ComparisonOperator,
+  Token,
+  PropertyDefinition,
+  PropertyOperatorDefinition,
+  InternalFilteringProperty,
+  InternalFilteringOption,
+} from './interfaces';
+import { TokenButton } from './token';
+import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { matchTokenValue } from './utils';
+import { getOperatorForm, matchTokenValue } from './utils';
+import { warnOnce } from '../internal/logging';
+import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 
 export { PropertyFilterProps };
 
@@ -43,6 +49,7 @@ const PropertyFilter = React.forwardRef(
       filteringProperties,
       filteringOptions = [],
       customGroupsText = [],
+      propertyDefinitions = {},
       disableFreeTextFiltering = false,
       onLoadItems,
       virtualScroll,
@@ -72,17 +79,58 @@ const PropertyFilter = React.forwardRef(
       inputRef
     );
     const [filteringText, setFilteringText] = useState<string>('');
-    const parsedText = parseText(filteringText, filteringProperties, disableFreeTextFiltering);
+
+    const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
+      const definition = propertyDefinitions[property.key] as undefined | PropertyDefinition;
+
+      if (!definition?.propertyLabel && !property.propertyLabel) {
+        warnOnce('PropertyFilter', `Property ${property.key} does not have a label.`);
+      }
+      if (!definition?.groupValuesLabel && !property.groupValuesLabel) {
+        warnOnce('PropertyFilter', `Property ${property.key} does not have a group values label.`);
+      }
+
+      return {
+        key: property.key,
+        operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
+        defaultOperator: property.defaultOperator,
+        definition: {
+          ...definition,
+          propertyLabel: definition?.propertyLabel ?? property.propertyLabel ?? '',
+          groupValuesLabel: definition?.groupValuesLabel ?? property.groupValuesLabel ?? '',
+          group: definition?.group ?? property.group,
+          operators: (property.operators ?? []).reduce((acc, operator) => {
+            if (typeof operator === 'object') {
+              acc[operator.operator] = { formatValue: operator.format, renderForm: operator.form };
+            }
+            return acc;
+          }, {} as { [key in PropertyFilterOperator]?: PropertyOperatorDefinition }),
+        },
+      };
+    });
+
+    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.key, p]));
+
+    const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
+      const formatter = propertyByKey.get(option.propertyKey)?.definition.formatValue;
+      return {
+        propertyKey: option.propertyKey,
+        value: option.value,
+        label: formatter ? formatter(option.value) : option.label ?? option.value ?? '',
+      };
+    });
+
+    const parsedText = parseText(filteringText, internalFilteringProperties, disableFreeTextFiltering);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
-      filteringOptions,
-      filteringProperties,
+      internalFilteringOptions,
+      internalFilteringProperties,
       customGroupsText,
       i18nStrings
     );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, filteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(currentText, internalFilteringProperties, disableFreeTextFiltering);
       let newToken: Token;
       switch (parsedText.step) {
         case 'property': {
@@ -92,7 +140,7 @@ const PropertyFilter = React.forwardRef(
               operator: parsedText.operator,
               value: parsedText.value,
             },
-            filteringOptions
+            internalFilteringOptions
           );
           break;
         }
@@ -125,7 +173,7 @@ const PropertyFilter = React.forwardRef(
     };
     const getLoadMoreDetail = (parsedText: ParsedText, filteringText: string) => {
       const loadMoreDetail: {
-        filteringProperty: FilteringProperty | undefined;
+        filteringProperty: InternalFilteringProperty | undefined;
         filteringText: string;
         filteringOperator: ComparisonOperator | undefined;
       } = {
@@ -181,17 +229,17 @@ const PropertyFilter = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, filteringProperties, disableFreeTextFiltering);
+      const parsedText = parseText(value, internalFilteringProperties, disableFreeTextFiltering);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
-        if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
+        if (value.trim() === parsedText.property.definition.propertyLabel && operators.length === 1) {
           loadMoreDetail.filteringProperty = parsedText.property;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
-          setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
+          setFilteringText(parsedText.property.definition.propertyLabel + ' ' + operators[0] + ' ');
         }
       }
 
@@ -205,7 +253,7 @@ const PropertyFilter = React.forwardRef(
 
     const operatorForm =
       parsedText.step === 'property' &&
-      getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
+      getOperatorForm(internalFilteringProperties, parsedText.property.key, parsedText.operator);
 
     return (
       <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -271,8 +319,8 @@ const PropertyFilter = React.forwardRef(
                   removeToken={() => removeToken(index)}
                   setToken={(newToken: Token) => setToken(index, newToken)}
                   setOperation={setOperation}
-                  filteringOptions={filteringOptions}
-                  filteringProperties={filteringProperties}
+                  filteringOptions={internalFilteringOptions}
+                  filteringProperties={internalFilteringProperties}
                   asyncProps={asyncProps}
                   onLoadItems={onLoadItems}
                   i18nStrings={i18nStrings}

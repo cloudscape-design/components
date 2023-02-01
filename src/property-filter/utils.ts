@@ -1,23 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringOption, FilteringProperty, Token } from './interfaces';
+import { ComparisonOperator, InternalFilteringOption, InternalFilteringProperty, Token } from './interfaces';
 
 // Finds the longest property the filtering text starts from.
 export function matchFilteringProperty(
-  filteringProperties: readonly FilteringProperty[],
+  filteringProperties: readonly InternalFilteringProperty[],
   filteringText: string
-): null | FilteringProperty {
+): null | InternalFilteringProperty {
   let maxLength = 0;
-  let matchedProperty: null | FilteringProperty = null;
+  let matchedProperty: null | InternalFilteringProperty = null;
 
   for (const property of filteringProperties) {
     if (
-      (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
-      (property.propertyLabel.length > maxLength &&
-        startsWith(filteringText.toLowerCase(), property.propertyLabel.toLowerCase()))
+      (property.definition.propertyLabel.length >= maxLength &&
+        startsWith(filteringText, property.definition.propertyLabel)) ||
+      (property.definition.propertyLabel.length > maxLength &&
+        startsWith(filteringText.toLowerCase(), property.definition.propertyLabel.toLowerCase()))
     ) {
-      maxLength = property.propertyLabel.length;
+      maxLength = property.definition.propertyLabel.length;
       matchedProperty = property;
     }
   }
@@ -61,21 +62,53 @@ export function matchOperatorPrefix(
   return null;
 }
 
-export function matchTokenValue(token: Token, filteringOptions: readonly FilteringOption[]): Token {
+export function matchTokenValue(token: Token, filteringOptions: readonly InternalFilteringOption[]): Token {
+  const value = token.value.toLowerCase();
   const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
   const bestMatch = { ...token };
   for (const option of propertyOptions) {
-    if ((option.label && option.label === token.value) || (!option.label && option.value === token.value)) {
+    const optionText = option.label ? option.label.toLowerCase() : '';
+    if (optionText === token.value || (!option.label && option.value === token.value)) {
       // exact match found: return it
       return { ...token, value: option.value };
     }
-    if (token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
+    if (value === (option.label ?? option.value ?? '').toLowerCase()) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }
   }
 
   return bestMatch;
+}
+
+export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
+  const propertyMap = filteringProperties.reduce<{ [K: string]: InternalFilteringProperty }>((acc, property) => {
+    acc[property.key] = property;
+    return acc;
+  }, {});
+  return propertyMap[key] as InternalFilteringProperty | undefined;
+}
+
+export function getOperatorForm(
+  filteringProperties: readonly InternalFilteringProperty[],
+  property: string,
+  operator: ComparisonOperator
+) {
+  const matchedProperty = getPropertyByKey(filteringProperties, property);
+  return (
+    matchedProperty?.definition.operators?.[operator]?.renderForm ?? matchedProperty?.definition.renderForm ?? null
+  );
+}
+
+export function getOperatorValueFormatter(
+  filteringProperties: readonly InternalFilteringProperty[],
+  property: string,
+  operator: ComparisonOperator
+) {
+  const matchedProperty = getPropertyByKey(filteringProperties, property);
+  return (
+    matchedProperty?.definition.operators?.[operator]?.formatValue ?? matchedProperty?.definition.formatValue ?? null
+  );
 }
 
 export function trimStart(source: string): string {
