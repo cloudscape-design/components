@@ -10,7 +10,7 @@ export { BreadcrumbGroupProps };
 
 export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
-  expandAriaLabel = 'Show path',
+  expandAriaLabel,
   ...props
 }: BreadcrumbGroupProps<T>) {
   const baseComponentProps = useBaseComponent('BreadcrumbGroup');

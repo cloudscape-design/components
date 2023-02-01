@@ -15,7 +15,6 @@ import { getBaseProps } from '../internal/base-component';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { SomeRequired } from '../internal/types';
 
 const DropdownTrigger = (
   clickHandler: () => void,
@@ -71,11 +70,8 @@ export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => 
   href: item.href,
 });
 
-type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> = SomeRequired<
-  BreadcrumbGroupProps<T>,
-  'expandAriaLabel'
-> &
-  InternalBaseComponentProps;
+type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item> =
+  BreadcrumbGroupProps<T> & InternalBaseComponentProps;
 
 export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],

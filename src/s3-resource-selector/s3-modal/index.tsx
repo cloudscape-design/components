@@ -142,7 +142,7 @@ export function S3Modal({
         <InternalSpaceBetween size={isVisualRefresh ? 'xxs' : 'xs'}>
           <InternalBreadcrumbGroup
             ariaLabel={i18nStrings?.labelBreadcrumbs}
-            expandAriaLabel="Show path"
+            expandAriaLabel={i18nStrings?.labelExpandBreadcrumbs}
             onFollow={event => {
               event.preventDefault();
               event.detail.item.meta.onClick();

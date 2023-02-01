@@ -77,11 +77,6 @@ describe('BreadcrumbGroup Component', () => {
       expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
     });
 
-    test('dropdown button has aria-label', () => {
-      const nativeButton = wrapper.findDropdown()?.findNativeButton();
-      expect(nativeButton?.getElement()).toHaveAttribute('aria-label', 'Show path');
-    });
-
     test('can set aria-label to dropdown buttons', () => {
       wrapper = renderBreadcrumbGroup({ items, expandAriaLabel: 'Custom Show path label' });
       expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute(

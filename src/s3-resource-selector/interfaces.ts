@@ -253,6 +253,7 @@ export namespace S3ResourceSelectorProps {
     labelRefresh: string;
     labelModalDismiss: string;
     labelBreadcrumbs: string;
+    labelExpandBreadcrumbs?: string;
   }
 
   export interface ChangeDetail {
