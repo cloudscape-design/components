@@ -2446,7 +2446,6 @@ without pressing modifier keys (that is, CTRL, ALT, SHIFT, META).",
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"Show path\\"",
       "description": "Provides an \`aria-label\` to the ellipsis button that screen readers can read (for accessibility).",
       "name": "expandAriaLabel",
       "optional": true,
@@ -9728,6 +9727,11 @@ The return type of the function should be a promise that resolves to a list of v
           Object {
             "name": "labelBreadcrumbs",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "labelExpandBreadcrumbs",
+            "optional": true,
             "type": "string",
           },
           Object {
