@@ -6,7 +6,9 @@
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
+@use '../internal/styles/typography' as typography;
 @use './motion';
+@use './collapsible';
 
 .flashbar {
   position: relative;
@@ -53,8 +55,10 @@
   padding: 0;
   margin: 0;
 
-  > li:not(:last-child) {
-    margin-bottom: awsui.$space-xxxs;
+  &:not(.collapsed) {
+    > li:not(:last-child) {
+      margin-bottom: awsui.$space-xxxs;
+    }
   }
 }
 
@@ -62,20 +66,19 @@
   display: flex;
   flex-grow: 1;
   min-width: 0;
-
-  &:focus {
-    outline: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
 }
 
 .flash-focus-container {
   display: flex;
   flex: 1;
   min-width: 0;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
 }
 
 .flash-text {
@@ -144,142 +147,4 @@
 
 .flash-type-info {
   background-color: awsui.$color-background-notification-blue;
-}
-
-// `stackItems` feature beta test
-
-.stack {
-  display: grid;
-  grid-template-columns: 1fr minmax(70px, auto) 1fr;
-}
-
-.stack > .expanded {
-  grid-column: 1 / 4;
-}
-
-/*
-The collapsed stack is a dynamic grid that creates the necessary number of 
-rows and columns based on the number of items passed to CSS via the 
-`flashbarStackDepth` custom property. Assuming there are three flashbar items, 
-the grid layout will be: 
-
-[item 1 start] [12px] [12px] [fractional unit] [12px] [12px] [item 1 end]
-[12px] [item 2 start] [12px] [fractional unit] [12px] [item 2 end] [12px]
-[12px] [12px] [item 3 start] [fractional unit] [item 3 end] [12px] [12px]
-*/
-.stack > .collapsed {
-  display: grid;
-  grid-column: 1 / 4;
-  grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), 12px)
-    1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), 12px);
-  row-gap: 8px;
-
-  > .item {
-    // Each item will have a unique custom property `flashbarStackIndex`
-    // Add +1 is because the array is indexed at zero but grid positions are indexed at 1.
-    grid-column-start: calc(var(#{custom-props.$flashbarStackIndex}) + 1);
-
-    // Add +1 to include the fractional unit in the column count
-    // Add +1 because the array indexed at zero but grid positions at indexed at 1.
-    grid-column-end: calc(
-      var(#{custom-props.$flashbarStackDepth}) * 2 + 1 - var(#{custom-props.$flashbarStackIndex}) + 1
-    );
-    grid-row-start: 1;
-    grid-row-end: calc(var(#{custom-props.$flashbarStackIndex}) + 2);
-
-    // The first item should have the highest z index than the second item, and so forth...
-    z-index: calc(var(#{custom-props.$flashbarStackDepth}) - var(#{custom-props.$flashbarStackIndex}));
-  }
-
-  > .item:not(:first-of-type) {
-    align-self: end;
-  }
-
-  &.visual-refresh > .item:not(:last-of-type) > .flash {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  &:not(.visual-refresh) > .item:not(:last-of-type) > .flash {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
-  }
-
-  &.visual-refresh > .item:not(:last-of-type) > .flash-items > li:first-child > .flash {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-
-  &:not(.visual-refresh) > .item:not(:last-of-type) > .flash-items > li:first-child > .flash {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.stack > .toggle {
-  grid-column: 2;
-  grid-row: 2;
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
-
-  &.visual-refresh {
-    background: awsui.$color-background-layout-toggle-default;
-    border: none;
-    border-radius: 0 0 10px 10px;
-    box-shadow: awsui.$shadow-panel-toggle;
-    color: awsui.$color-text-layout-toggle;
-    cursor: pointer;
-    padding: awsui.$space-scaled-xxs;
-    z-index: var(#{custom-props.$flashbarStackDepth});
-
-    &:focus {
-      outline: none;
-    }
-
-    &:hover {
-      background: awsui.$color-background-layout-toggle-hover;
-    }
-
-    &:active {
-      background: awsui.$color-background-layout-toggle-active;
-    }
-  }
-
-  &:not(.visual-refresh) {
-    background: awsui.$color-background-button-normal-default;
-    border: styles.$control-border-width solid awsui.$color-border-button-normal-default;
-    border-radius: awsui.$border-radius-button;
-    border-top: none;
-    cursor: pointer;
-    padding: styles.$control-padding-vertical awsui.$space-l;
-    text-decoration: none;
-
-    &:focus {
-      outline: none;
-      text-decoration: none;
-    }
-
-    &:hover {
-      background: awsui.$color-background-button-normal-hover;
-      border-color: awsui.$color-border-button-normal-hover;
-      text-decoration: none;
-    }
-
-    &:active {
-      background: awsui.$color-background-button-normal-active;
-      border-color: awsui.$color-border-button-normal-active;
-    }
-  }
-
-  > .icon {
-    display: inline-block;
-
-    @include styles.with-motion {
-      transition: transform awsui.$motion-duration-rotate-90 awsui.$motion-easing-rotate-90;
-    }
-
-    &.expanded {
-      transform: rotate(180deg);
-    }
-  }
 }

@@ -18,6 +18,7 @@ const tokens: StyleDictionary.ShadowsDictionary = {
       '0 -1px 1px 0 rgba(0, 28, 36, 0.3), 1px -1px 1px 0 rgba(0, 28, 36, 0.15), -1px -1px 1px 0 rgba(0, 28, 36, 0.15)',
     dark: '0 -1px 1px 0 rgba(0, 0, 0, 0.3), 1px -1px 1px 0 rgba(0, 0, 0, 0.3), -1px -1px 1px 0 rgba(0, 0, 0, 0.3)',
   },
+  shadowFlashCollapsed: '0px 2px 2px rgba(0, 0, 0, 0.15)',
   shadowFlashSticky: '{shadowPanel}',
   shadowModal: '{shadowContainer}',
   shadowPanel: '{shadowContainer}',

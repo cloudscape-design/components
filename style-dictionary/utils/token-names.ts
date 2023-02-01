@@ -648,6 +648,7 @@ export type ShadowsTokenName =
   | 'shadowContainerStacked'
   | 'shadowDropdown'
   | 'shadowDropup'
+  | 'shadowFlashCollapsed'
   | 'shadowFlashSticky'
   | 'shadowModal'
   | 'shadowPanel'

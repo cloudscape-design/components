@@ -16,6 +16,7 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   },
   shadowDropdown: { light: '0px 4px 20px 1px rgba(0, 7, 22, 0.10)', dark: '0px 4px 20px 1px rgba(0, 7, 22, 1)' },
   shadowDropup: '{shadowDropdown}',
+  shadowFlashCollapsed: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   shadowFlashSticky: {
     light: '0px 6px 36px rgba(0, 7, 22, 0.10)',
     dark: '0px 6px 36px rgba(0, 7, 22, 1)',
