@@ -108,7 +108,7 @@ describe('BreadcrumbGroup Item', () => {
     test('should not be a link', () => {
       expect(lastLink.getElement()).not.toHaveAttribute('href');
       expect(lastLink.getElement()).not.toHaveAttribute('aria-current');
-      expect(lastLink.getElement().tagName).toEqual('a');
+      expect(lastLink.getElement().tagName).toEqual('SPAN');
     });
 
     test('should not trigger click event', () => {
