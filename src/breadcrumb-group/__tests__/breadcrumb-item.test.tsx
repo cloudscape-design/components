@@ -105,13 +105,10 @@ describe('BreadcrumbGroup Item', () => {
       lastLink = links[links.length - 1];
     });
 
-    test('does not have an href', () => {
-      expect(lastLink.getElement()).not.toHaveAttribute('href', '#');
-    });
-
-    test('has correct aria attributes', () => {
-      expect(lastLink.getElement()).toHaveAttribute('aria-current', 'page');
-      expect(lastLink.getElement()).toHaveAttribute('aria-disabled', 'true');
+    test('should not be a link', () => {
+      expect(lastLink.getElement()).not.toHaveAttribute('href');
+      expect(lastLink.getElement()).not.toHaveAttribute('aria-current');
+      expect(lastLink.getElement().tagName).toEqual('a');
     });
 
     test('should not trigger click event', () => {

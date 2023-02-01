@@ -15,7 +15,7 @@ export default class BreadcrumbGroupWrapper extends ComponentWrapper {
    * @see findBreadcrumbLink
    */
   findBreadcrumbLinks(): Array<ElementWrapper> {
-    return this.findAll(`.${itemStyles.breadcrumb} a`);
+    return this.findAll(`.${itemStyles.breadcrumb}>*`);
   }
   /**
    * Returns a link for a given index.
@@ -29,7 +29,7 @@ export default class BreadcrumbGroupWrapper extends ComponentWrapper {
     if (index > 1) {
       index++;
     }
-    return this.find(`.${styles.item}:nth-child(${index}) a`);
+    return this.find(`.${styles.item}:nth-child(${index})>*`);
   }
 
   findDropdown(): ButtonDropdownWrapper | null {

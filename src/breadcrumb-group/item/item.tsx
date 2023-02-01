@@ -14,14 +14,17 @@ import PopoverBody from '../../popover/body';
 import Portal from '../../internal/components/portal';
 import popoverStyles from '../../popover/styles.css.js';
 
-type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> =
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    item: T;
-  };
+type BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> = React.HTMLAttributes<HTMLElement> & {
+  item: T;
+  isLast: boolean;
+  anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+};
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
-  ...anchorAttributes
+  isLast,
+  anchorAttributes,
+  ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const focusVisible = useFocusVisible();
   const [showPopover, setShowPopover] = useState(false);
@@ -83,9 +86,9 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
 
   return (
     <>
-      <a
-        {...focusVisible}
-        {...anchorAttributes}
+      <Item
+        isLast={isLast}
+        {...itemAttributes}
         onFocus={() => {
           isTruncated(textRef, virtualTextRef) && setShowPopover(true);
         }}
@@ -94,6 +97,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
           isTruncated(textRef, virtualTextRef) && setShowPopover(true);
         }}
         onMouseLeave={() => setShowPopover(false)}
+        anchorAttributes={{ ...focusVisible, ...anchorAttributes }}
       >
         <span className={styles.text} ref={textRef}>
           {item.text}
@@ -101,11 +105,24 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         <span className={styles['virtual-item']} ref={virtualTextRef}>
           {item.text}
         </span>
-      </a>
+      </Item>
       {showPopover && popoverContent}
     </>
   );
 };
+
+type ItemProps = React.HTMLAttributes<HTMLElement> & {
+  anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+  isLast: boolean;
+};
+const Item = ({ anchorAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
+  isLast ? (
+    <span {...itemAttributes}>{children}</span>
+  ) : (
+    <a {...itemAttributes} {...anchorAttributes}>
+      {children}
+    </a>
+  );
 
 export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   item,
@@ -124,24 +141,28 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     fireCancelableEvent(onClick, getEventDetail(item), event);
   };
 
-  const anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
-    href: isLast ? undefined : item.href || '#',
+  const itemAttributes: React.HTMLAttributes<HTMLElement> = {
     className: clsx(styles.anchor, { [styles.compressed]: isCompressed }),
-    'aria-current': isLast ? 'page' : undefined, // Active breadcrumb item is implemented according to WAI-ARIA 1.1
-    'aria-disabled': isLast && 'true',
+  };
+  const anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
+    href: item.href || '#',
     onClick: isLast ? preventDefault : onClickHandler,
-    tabIndex: isLast ? 0 : undefined, // tabIndex is added to the last crumb to keep it in the index without an href
   };
 
   return (
     <>
       <div className={clsx(styles.breadcrumb, isLast && styles.last)}>
         {isDisplayed && isCompressed ? (
-          <BreadcrumbItemWithPopover item={item} {...anchorAttributes} />
+          <BreadcrumbItemWithPopover
+            item={item}
+            isLast={isLast}
+            anchorAttributes={anchorAttributes}
+            {...itemAttributes}
+          />
         ) : (
-          <a {...focusVisible} {...anchorAttributes}>
+          <Item isLast={isLast} anchorAttributes={{ ...anchorAttributes, ...focusVisible }} {...itemAttributes}>
             <span className={styles.text}>{item.text}</span>
-          </a>
+          </Item>
         )}
         {!isLast ? (
           <span className={styles.icon}>
