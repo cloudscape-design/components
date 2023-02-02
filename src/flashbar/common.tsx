@@ -6,19 +6,20 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getBaseProps } from '../internal/base-component';
-import { FlashbarProps } from './interfaces';
+import { CollapsibleFlashbarProps, FlashbarProps } from './interfaces';
 import { focusFlashById } from './flash';
 
 export const componentName = 'Flashbar';
 
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({
+  i18nStrings,
   items,
   onItemsAdded,
   onItemsChanged,
   onItemsRemoved,
   ...restProps
-}: FlashbarProps & {
+}: CollapsibleFlashbarProps & {
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
@@ -63,5 +64,14 @@ export function useFlashbar({
     }
   }, [nextFocusId, ref]);
 
-  return { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref };
+  return {
+    allItemsHaveId,
+    ariaLabel: i18nStrings?.ariaLabel,
+    baseProps,
+    breakpoint,
+    isReducedMotion,
+    isVisualRefresh,
+    mergedRef,
+    ref,
+  };
 }

@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { CollapsibleFlashbarProps, FlashbarProps } from './interfaces';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -14,11 +14,13 @@ import { useFlashbar } from './common';
 
 export { FlashbarProps };
 
-export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
-    items,
-    ...restProps,
-  });
+export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps | CollapsibleFlashbarProps) {
+  const { allItemsHaveId, ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar(
+    {
+      items,
+      ...restProps,
+    }
+  );
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being
@@ -41,7 +43,7 @@ export default function NonCollapsibleFlashbar({ items, ...restProps }: Flashbar
     return (
       // This is a proxy for <ul>, so we're not applying a class to another actual component.
       // eslint-disable-next-line react/forbid-component-props
-      <TransitionGroup component="ul" className={styles['flash-list']}>
+      <TransitionGroup component="ul" className={styles['flash-list']} aria-label={ariaLabel}>
         {items.map((item, index) => (
           <Transition
             transitionChangeDelay={{ entering: TIMEOUT_FOR_ENTERING_ANIMATION }}
@@ -69,7 +71,7 @@ export default function NonCollapsibleFlashbar({ items, ...restProps }: Flashbar
     }
 
     return (
-      <ul className={styles['flash-list']}>
+      <ul className={styles['flash-list']} aria-label={ariaLabel}>
         {items.map((item, index) => (
           <li key={item.id ?? index} className={styles['flash-list-item']}>
             {renderItem(item, item.id ?? index)}
