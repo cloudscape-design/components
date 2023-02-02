@@ -659,4 +659,30 @@ describe('Metrics', () => {
       })
     );
   });
+
+  test('sends a submit metric using the submit button', () => {
+    const [wrapper] = renderDefaultWizard({
+      steps: [
+        { title: 'Step 1', content: 'content 1' },
+        { title: 'Step 2', content: 'content 2' },
+      ],
+    });
+
+    act(() => wrapper.findPrimaryButton().click()); // Move to step 2
+
+    window.panorama?.mockClear(); // clear previous events
+    act(() => wrapper.findPrimaryButton().click()); // Submit
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_wizard_step2',
+        eventDetail: 'step2',
+        eventType: 'csa_wizard_submit',
+        eventValue: expect.any(String),
+        timestamp: expect.any(Number),
+      })
+    );
+  });
 });
