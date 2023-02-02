@@ -32,12 +32,13 @@ const timeEnd = (key = 'current', clear = false) => {
   return (Date.now() - start) / 1000; // Convert to seconds
 };
 
-export const trackStartWizard = () => {
-  timeStart(prefix);
-};
-
 export const trackStartStep = (stepIndex?: number) => {
   const eventContext = createEventContext(stepIndex);
+
+  // Track the starting time of the wizard
+  if (stepIndex === undefined) {
+    timeStart(prefix);
+  }
 
   // End the timer of the previous step
   const time = timeEnd();

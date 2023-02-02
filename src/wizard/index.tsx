@@ -16,7 +16,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-import { trackStartStep, trackNavigate, trackSubmit, trackStartWizard } from './internal/analytics';
+import { trackStartStep, trackNavigate, trackSubmit } from './internal/analytics';
 
 export { WizardProps };
 
@@ -86,10 +86,6 @@ export default function Wizard({
       `You have set \`allowSkipTo\` but you have not provided \`i18nStrings.skipToButtonLabel\`. The skip-to button will not be rendered.`
     );
   }
-
-  useEffect(() => {
-    trackStartWizard();
-  }, []);
 
   useEffect(() => {
     trackStartStep(actualActiveStepIndex);
