@@ -9,10 +9,18 @@
 
 section.appbar {
   align-items: center;
+  background-color: awsui.$color-background-home-header;
+  border-bottom: 1px solid awsui.$color-border-divider-default;
+  box-shadow: awsui.$shadow-panel-toggle;
   box-sizing: border-box;
+  height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
   display: grid;
   grid-area: appBar;
   grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: 0 awsui.$space-m;
+  position: sticky;
+  top: var(#{custom-props.$offsetTop});
+  z-index: 1000;
 
   > .appbar-nav {
     grid-column: 1;
@@ -31,47 +39,5 @@ section.appbar {
   > .appbar-tools {
     grid-column: 3;
     margin-left: awsui.$space-m;
-  }
-
-  /*
-  In large viewports the buttons that trigger the Navigation and Tools 
-  drawers from the AppBar are suppressed and replaced by the buttons 
-  that render in the Navigation and Tools components. Additionally, 
-  the content wrapper around the breadcrumbs component has variable 
-  top and bottom padding based on whether or not the Notifications 
-  and Header components exist.
-  */
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    /*
-    If a child component tells the AppLayout to have a sticky 
-    background (typically because of a stickyHeader with a 
-    full-page variant) the z-index of the breadcrumbs needs to 
-    be lifted so it doesn't render behind the background element.
-    */
-    > .breadcrumbs.has-sticky-background {
-      z-index: 799;
-    }
-  }
-
-  /*
-  In mobile viewports the AppBar becomes sticky and is repositioned to
-  span the entire column definition of the Layout grid.
-  */
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    background-color: awsui.$color-background-home-header;
-    border-bottom: 1px solid awsui.$color-border-divider-default;
-    box-shadow: awsui.$shadow-panel-toggle;
-    grid-column: 1 / span 5;
-    height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
-    padding: 0 awsui.$space-m;
-    position: sticky;
-    top: var(#{custom-props.$offsetTop});
-    z-index: 1000;
-
-    // the Navigation and Tools buttons resume their grid column position
-    > .appbar-nav,
-    > .appbar-tools {
-      display: block;
-    }
   }
 }

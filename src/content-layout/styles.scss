@@ -49,12 +49,6 @@ nodes will directly touch with no gap between them.
     grid-row: 1;
     padding-bottom: awsui.$space-content-header-padding-bottom;
 
-    @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-      &.has-breadcrumbs {
-        padding-top: awsui.$space-xxs;
-      }
-    }
-
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       padding: awsui.$space-m 0 awsui.$space-content-header-padding-bottom;
     }

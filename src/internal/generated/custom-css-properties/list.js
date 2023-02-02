@@ -6,20 +6,25 @@
  */
 
 const customCssPropertiesList = [
-  'offsetTop',
-  'offsetTopWithNotifications',
+  // AppLayout Custom Properties
+  'breadcrumbsGap',
   'contentGapLeft',
   'contentGapRight',
   'contentHeight',
   'defaultMaxContentWidth',
   'defaultMinContentWidth',
   'footerHeight',
+  'headerGap',
   'headerHeight',
   'layoutWidth',
+  'mainGap',
   'mainOffsetLeft',
   'maxContentWidth',
   'minContentWidth',
+  'notificationsGap',
   'notificationsHeight',
+  'offsetTop',
+  'offsetTopWithNotifications',
   'overlapHeight',
   'navigationWidth',
   'splitPanelReportedHeaderSize',
@@ -30,7 +35,9 @@ const customCssPropertiesList = [
   'toolsMaxWidth',
   'toolsWidth',
   'toolsAnimationStartingOpacity',
+  // Annotation Context Custom Properties
   'contentScrollMargin',
+  // Flashbar Custom Properties
   'flashbarStackDepth',
   'flashbarStackIndex',
   'flashbarStickyBottomMargin',

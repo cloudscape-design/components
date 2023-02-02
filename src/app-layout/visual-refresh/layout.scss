@@ -9,84 +9,112 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
-  The first and last column definitions have two responsibilities.
-  If Navigation and/or Tools exist then that will determine the width of
-  the first and last columns, respectively, and the content in these drawers
-  will create horizontal space from the center column content. However, if the
-  navigationHide and/or toolsHide properties have been set then the first
-  and last column width will default to the minimum content gap properties to
-  create the necessary visual space around the main content.
+The first and last column definitions have two responsibilities.
+If Navigation and/or Tools exist then that will determine the width of
+the first and last columns, respectively, and the content in these drawers
+will create horizontal space from the center column content. However, if the
+navigationHide and/or toolsHide properties have been set then the first
+and last column width will default to the minimum content gap properties to
+create the necessary visual space around the main content.
 
-  The minimum content width property is set to zero and applied under all
-  circumstances regardless of whether the minContentWidth property is
-  explicitly set in script.
-  */
+The minimum content width property is set to zero and applied under all
+circumstances regardless of whether the minContentWidth property is
+explicitly set in script.
+*/
 .layout {
+  #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
   #{custom-props.$contentGapLeft}: 0px;
   #{custom-props.$contentGapRight}: 0px;
   #{custom-props.$contentHeight}: calc(100vh - var(#{custom-props.$headerHeight}) - var(#{custom-props.$footerHeight}));
   #{custom-props.$defaultMaxContentWidth}: 1280px;
   #{custom-props.$defaultMinContentWidth}: 0px;
   #{custom-props.$footerHeight}: 0px;
+  #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   #{custom-props.$headerHeight}: 0px;
   #{custom-props.$layoutWidth}: 0px;
+  #{custom-props.$mainGap}: 0;
   #{custom-props.$mainOffsetLeft}: 0px;
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
+  #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
   #{custom-props.$notificationsHeight}: 0px;
   #{custom-props.$offsetTop}: 0px;
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
   display: grid;
+  grid-template-areas:
+    '. . appBar . .'
+    '. . notificationsGap . .'
+    '. . notifications . .'
+    '. . breadcrumbsGap . .'
+    '. . breadcrumbs . .'
+    '. . headerGap . .'
+    '. . header . .';
   grid-template-columns:
     min-content
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
     minmax(var(#{custom-props.$defaultMinContentWidth}), var(#{custom-props.$defaultMaxContentWidth}))
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
     min-content;
+  grid-template-rows:
+    auto // appbar template area
+    var(#{custom-props.$notificationsGap})
+    auto // notifications template area
+    var(#{custom-props.$breadcrumbsGap})
+    auto // breadcrumbs template area
+    var(#{custom-props.$headerGap})
+    auto // contentHeader template area
+    var(#{custom-props.$mainGap})
+    var(#{custom-props.$overlapHeight}) // main template area with overlap
+    1fr; // main template area;
   position: relative;
   color: awsui.$color-text-body-default;
 
-  // new stuff
-  --notificationsGap: #{awsui.$space-scaled-xs};
-  --breadcrumbsGap: #{awsui.$space-scaled-xs};
-  --headerGap: #{awsui.$space-scaled-xs};
-  --mainGap: #{awsui.$space-scaled-m};
+  /*
+  Override the dark header overlap height property if isOverlapDisabled is true.
+  The is computed state from props that can be found in the AppLayout context.
+  */
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
 
+  // Remove the Notifications gap from the grid if it doesn't exist
   &:not(.has-notifications-content) {
-    --notificationsGap: 0;
-    --breadcrumbsGap: #{awsui.$space-scaled-m};
+    #{custom-props.$notificationsGap}: 0;
   }
 
+  // Remove the Breadcrumbs gap from the grid if they don't exist
   &:not(.has-breadcrumbs) {
-    --breadcrumbsGap: 0;
+    #{custom-props.$breadcrumbsGap}: 0;
   }
 
-  &:not(.has-header) {
-    --headerGap: 0;
+  // Remove the Header gap from the grid if it doesn't exist
+  &:not(.has-header),
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: 0;
   }
 
-  grid-template-areas: 
-  ". . appBar . ." 
-  ". . notificationsGap . ." 
-  ". . notifications . ." 
-  ". . breadcrumbsGap . ." 
-  ". . breadcrumbs . ." 
-  ". . headerGap . ." 
-  ". . header . .";
+  //
+  &.has-header,
+  &.is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+  }
 
-  grid-template-rows: 
-    auto // appbar slot
-    var(--notificationsGap) 
-    auto // notifications slot
-    var(--breadcrumbsGap) 
-    auto // breadcrumbs slot
-    var(--headerGap) 
-    auto // contentHeader slot
-    var(--mainGap) 
-    var(#{custom-props.$overlapHeight}) // main slot
-    1fr; // main slot;
+  //
+  &.is-overlap-disabled:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
+    #{custom-props.$mainGap}: 0;
+  }
+
+  /*
+  If there is no Notifications content then the Breadcrumbs should 
+  appear to be the first rendered content even though the 
+  Notifications DOM node will still exist. The breadcrumbs Gap 
+  should vertically align it with the Navigation and Tools circular buttons.
+  */
+  &:not(.has-notifications-content).has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
+  }
 
   // Add unified max-width for AppLayout content based on breakpoints.
   &:not(.has-max-content-width) {
@@ -127,14 +155,6 @@
 
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
-  }
-
-  /*
-  Override the dark header overlap height property if isOverlapDisabled is true.
-  The is computed state from props that can be found in the AppLayout context.
-  */
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
   }
 
   /*

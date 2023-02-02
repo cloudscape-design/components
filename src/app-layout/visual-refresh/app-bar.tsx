@@ -18,7 +18,6 @@ export default function AppBar() {
     breadcrumbs,
     handleNavigationClick,
     handleToolsClick,
-    hasStickyBackground,
     isMobile,
     navigationHide,
     isNavigationOpen,
@@ -26,6 +25,7 @@ export default function AppBar() {
     toolsHide,
     isAnyPanelOpen,
   } = useAppLayoutInternals();
+
   const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
   const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
@@ -35,20 +35,19 @@ export default function AppBar() {
 
   return (
     <section
-      aria-hidden={!isMobile && !breadcrumbs ? true : undefined}
       className={clsx(
         styles.appbar,
         {
-          [styles.unfocusable]: isMobile && isAnyPanelOpen,
-          [testutilStyles['mobile-bar']]: isMobile,
+          [styles.unfocusable]: isAnyPanelOpen,
         },
+        testutilStyles['mobile-bar'],
         'awsui-context-content-header'
       )}
     >
-      {!navigationHide && isMobile && (
+      {!navigationHide && (
         <nav
-          className={clsx(styles['appbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
           aria-hidden={isNavigationOpen}
+          className={clsx(styles['appbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
@@ -65,21 +64,13 @@ export default function AppBar() {
         </nav>
       )}
 
-      {breadcrumbs && (
-        <div
-          className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, {
-            [styles['has-sticky-background']]: hasStickyBackground,
-          })}
-        >
-          {breadcrumbs}
-        </div>
-      )}
+      {breadcrumbs && <div className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs)}>{breadcrumbs}</div>}
 
-      {!toolsHide && isMobile && (
+      {!toolsHide && (
         <aside
-          className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
+          className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
         >
           <InternalButton
             className={testutilStyles['tools-toggle']}
