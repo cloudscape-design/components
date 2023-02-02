@@ -13,7 +13,6 @@ import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
 import Tools from './tools';
-import { useMobile } from '../../internal/hooks/use-mobile';
 
 /**
  * In mobile viewports the AppBar position changes to sticky and is placed
@@ -27,17 +26,15 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
   props: AppLayoutProps,
   ref: React.Ref<AppLayoutProps.Ref>
 ) {
-  const isMobile = useMobile();
-
   return (
     <AppLayoutInternalsProvider {...props} ref={ref}>
       <SplitPanel>
         <Layout>
           <Background />
 
-          {/*<Navigation />*/}
-
           <AppBar />
+
+          <Navigation />
 
           <Notifications />
 
@@ -46,13 +43,12 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           <Header />
 
           <Main />
-          {/*
+
           <SplitPanel.Bottom />
 
           <Tools>
             <SplitPanel.Side />
           </Tools>
-  */}
         </Layout>
       </SplitPanel>
     </AppLayoutInternalsProvider>

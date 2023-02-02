@@ -200,13 +200,37 @@ explicitly set in script.
   */
   &.disable-body-scroll {
     #{custom-props.$offsetTop}: 0px;
-    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr auto;
+    // grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr auto;
+    grid-template-rows:
+      auto
+      var(#{custom-props.$notificationsGap})
+      auto
+      var(#{custom-props.$breadcrumbsGap})
+      auto
+      var(#{custom-props.$headerGap})
+      auto
+      var(#{custom-props.$mainGap})
+      var(#{custom-props.$overlapHeight})
+      1fr
+      auto;
     height: var(#{custom-props.$contentHeight});
     overflow-y: scroll;
   }
 
   &.disable-body-scroll.has-split-panel.split-panel-position-bottom {
-    grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) repeat(2, auto);
+    // grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) repeat(2, auto);
+    grid-template-rows:
+      auto
+      var(#{custom-props.$notificationsGap})
+      auto
+      var(#{custom-props.$breadcrumbsGap})
+      auto
+      var(#{custom-props.$headerGap})
+      auto
+      var(#{custom-props.$mainGap})
+      var(#{custom-props.$overlapHeight})
+      repeat(2, auto);
+    height: var(#{custom-props.$contentHeight});
   }
 
   &.disable-body-scroll:not(.has-sticky-notifications) {

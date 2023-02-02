@@ -9,11 +9,11 @@
 .navigation-trigger-container {
   display: grid;
   grid-column: 1;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 10;
   height: awsui.$space-layout-toggle-diameter;
   margin: awsui.$space-scaled-s awsui.$space-layout-toggle-padding 0;
   position: sticky;
-  top: var(#{custom-props.$offsetTop});
+  top: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-scaled-s});
   width: awsui.$space-layout-toggle-diameter;
   z-index: 850;
 
@@ -42,7 +42,7 @@
   box-shadow: awsui.$shadow-panel;
   display: grid;
   grid-column: 1;
-  grid-row: 1 / span 5;
+  grid-row: 1 / span 10;
   grid-template-columns: 1fr auto awsui.$space-m;
   grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
   height: var(#{custom-props.$contentHeight});
