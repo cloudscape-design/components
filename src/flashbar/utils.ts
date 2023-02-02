@@ -106,20 +106,20 @@ export function getFlashTypeCount(items: readonly FlashbarProps.MessageDefinitio
 }
 
 export type LabelName =
-  | 'errorCountAriaLabel'
-  | 'warningCountAriaLabel'
-  | 'successCountAriaLabel'
-  | 'infoCountAriaLabel'
-  | 'inProgressCountAriaLabel';
+  | 'errorIconAriaLabel'
+  | 'warningIconAriaLabel'
+  | 'successIconAriaLabel'
+  | 'infoIconAriaLabel'
+  | 'inProgressIconAriaLabel';
 
 export const counterTypes: {
   type: FlashType;
   labelName: LabelName;
   iconName: IconProps.Name;
 }[] = [
-  { type: 'error', labelName: 'errorCountAriaLabel', iconName: 'status-negative' },
-  { type: 'warning', labelName: 'warningCountAriaLabel', iconName: 'status-warning' },
-  { type: 'success', labelName: 'successCountAriaLabel', iconName: 'status-positive' },
-  { type: 'info', labelName: 'infoCountAriaLabel', iconName: 'status-info' },
-  { type: 'progress', labelName: 'inProgressCountAriaLabel', iconName: 'status-in-progress' },
+  { type: 'error', labelName: 'errorIconAriaLabel', iconName: 'status-negative' },
+  { type: 'warning', labelName: 'warningIconAriaLabel', iconName: 'status-warning' },
+  { type: 'success', labelName: 'successIconAriaLabel', iconName: 'status-positive' },
+  { type: 'info', labelName: 'infoIconAriaLabel', iconName: 'status-info' },
+  { type: 'progress', labelName: 'inProgressIconAriaLabel', iconName: 'status-in-progress' },
 ];

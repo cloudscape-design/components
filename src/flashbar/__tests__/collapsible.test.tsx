@@ -17,13 +17,13 @@ const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
 
 const defaultStrings = {
   ariaLabel: 'Notifications',
-  toggleButtonText: 'Notifications',
-  toggleButtonAriaLabel: 'View all notifications',
-  errorCountAriaLabel: 'Error',
-  warningCountAriaLabel: 'Warning',
-  successCountAriaLabel: 'Success',
-  infoCountAriaLabel: 'Information',
-  inProgressCountAriaLabel: 'In progress',
+  notificationBarText: 'Notifications',
+  notificationBarAriaLabel: 'View all notifications',
+  errorIconAriaLabel: 'Error',
+  warningIconAriaLabel: 'Warning',
+  successIconAriaLabel: 'Success',
+  infoIconAriaLabel: 'Information',
+  inProgressIconAriaLabel: 'In progress',
 };
 
 const defaultItems = [sampleItems.error, sampleItems.success];
@@ -47,17 +47,17 @@ describe('Collapsible Flashbar', () => {
       const customToggleButtonText = 'Custom text';
       const flashbar = renderFlashbar({
         i18nStrings: {
-          toggleButtonText: customToggleButtonText,
+          notificationBarText: customToggleButtonText,
         },
       });
-      const toggleElement = findOuterToggleElement(flashbar);
+      const toggleElement = findNotificationBar(flashbar);
       expect(toggleElement).toBeTruthy();
       expect(toggleElement).toHaveTextContent(customToggleButtonText);
     });
 
     it('does not show toggle element if there is only one item', () => {
       const flashbar = renderFlashbar({ items: [{ type: 'error' }] });
-      expect(findOuterToggleElement(flashbar)).toBeFalsy();
+      expect(findNotificationBar(flashbar)).toBeFalsy();
     });
 
     it('expands and collapses by clicking on toggle element', () => {
@@ -67,7 +67,7 @@ describe('Collapsible Flashbar', () => {
       expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
       expect(items[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
 
-      findOuterToggleElement(flashbar)!.click();
+      findNotificationBar(flashbar)!.click();
 
       const expandedItems = flashbar.findItems();
       expect(expandedItems.length).toBe(2);
@@ -76,7 +76,7 @@ describe('Collapsible Flashbar', () => {
       expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent('Error');
       expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent('There was an error');
 
-      findOuterToggleElement(flashbar)!.click();
+      findNotificationBar(flashbar)!.click();
 
       const collapsedItems = flashbar.findItems();
       expect(collapsedItems.length).toBe(1);
@@ -94,11 +94,11 @@ describe('Collapsible Flashbar', () => {
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
       expect(flashbar.findItems()).toHaveLength(1);
-      expect(findOuterToggleElement(flashbar)).toBeFalsy();
+      expect(findNotificationBar(flashbar)).toBeFalsy();
 
       rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      const toggleElement = findOuterToggleElement(wrapper.findFlashbar()!);
+      const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
       expect(toggleElement).toBeTruthy();
     });
 
@@ -112,19 +112,19 @@ describe('Collapsible Flashbar', () => {
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
       expect(flashbar.findItems()).toHaveLength(1);
-      expect(findOuterToggleElement(flashbar)).toBeTruthy();
-      const toggleElement = findOuterToggleElement(wrapper.findFlashbar()!);
+      expect(findNotificationBar(flashbar)).toBeTruthy();
+      const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
       expect(toggleElement).toBeTruthy();
       toggleElement!.click();
       expect(flashbar.findItems()).toHaveLength(2);
 
       rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeFalsy();
+      expect(findNotificationBar(wrapper.findFlashbar()!)).toBeFalsy();
 
       rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
-      expect(findOuterToggleElement(wrapper.findFlashbar()!)).toBeTruthy();
+      expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
     });
   });
 
@@ -158,7 +158,7 @@ describe('Collapsible Flashbar', () => {
 
     it('does not render outer toggle element as HTML button element', () => {
       const flashbar = renderFlashbar();
-      const toggle = findOuterToggleElement(flashbar);
+      const toggle = findNotificationBar(flashbar);
       expect(toggle!.tagName).not.toEqual('BUTTON');
     });
 
@@ -166,16 +166,16 @@ describe('Collapsible Flashbar', () => {
       const customToggleButtonAriaLabel = 'Custom toggle button ARIA label';
       const flashbar = renderFlashbar({
         i18nStrings: {
-          toggleButtonAriaLabel: customToggleButtonAriaLabel,
+          notificationBarAriaLabel: customToggleButtonAriaLabel,
         },
       });
-      const button = findInnerToggleButton(flashbar);
+      const button = findToggleButton(flashbar);
       expect(button).toHaveAttribute('aria-label', customToggleButtonAriaLabel);
     });
 
     it('applies aria-expanded attribute to toggle button', () => {
       const flashbar = renderFlashbar();
-      const button = findInnerToggleButton(flashbar)!;
+      const button = findToggleButton(flashbar)!;
       expect(button).toHaveAttribute('aria-expanded', 'false');
 
       button.click();
@@ -186,7 +186,7 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const listId = findList(flashbar)!.getElement().id;
       expect(listId).toBeTruthy();
-      const button = findInnerToggleButton(flashbar);
+      const button = findToggleButton(flashbar);
       expect(button).toHaveAttribute('aria-controls', listId);
     });
 
@@ -214,7 +214,7 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const itemCounterElementId = findOuterCounter(flashbar)!.id;
       expect(itemCounterElementId).toBeTruthy();
-      const toggleButton = findInnerToggleButton(flashbar);
+      const toggleButton = findToggleButton(flashbar);
       expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
     });
 
@@ -231,20 +231,20 @@ describe('Collapsible Flashbar', () => {
       const customToggleButtonText = 'Custom text';
       const flashbar = renderFlashbar({
         i18nStrings: {
-          toggleButtonText: customToggleButtonText,
+          notificationBarText: customToggleButtonText,
         },
       });
-      const h2 = findOuterToggleElement(flashbar)!.querySelector('h2');
+      const h2 = findNotificationBar(flashbar)!.querySelector('h2');
       expect(h2).toHaveTextContent(customToggleButtonText);
     });
 
     it('applies ARIA labels and title attributes to the item counter', () => {
       const customLabels = {
-        errorCountAriaLabel: 'Custom error ARIA label',
-        successCountAriaLabel: 'Custom success ARIA label',
-        infoCountAriaLabel: 'Custom info ARIA label',
-        inProgressCountAriaLabel: 'Custom progress ARIA label',
-        warningCountAriaLabel: 'Custom warning ARIA label',
+        errorIconAriaLabel: 'Custom error ARIA label',
+        successIconAriaLabel: 'Custom success ARIA label',
+        infoIconAriaLabel: 'Custom info ARIA label',
+        inProgressIconAriaLabel: 'Custom progress ARIA label',
+        warningIconAriaLabel: 'Custom warning ARIA label',
       };
       const flashbar = renderFlashbar({ i18nStrings: { ...customLabels } });
       const innerCounter = findInnerCounterElement(flashbar);
@@ -261,7 +261,7 @@ function findList(flashbar: FlashbarWrapper) {
 }
 
 // Entire interactive element including the counter and the actual <button/> element
-function findOuterToggleElement(flashbar: FlashbarWrapper): HTMLElement | undefined {
+function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
   const element = Array.from(flashbar.getElement().children).find(
     element => element instanceof HTMLElement && element.tagName !== 'UL'
   );
@@ -271,13 +271,13 @@ function findOuterToggleElement(flashbar: FlashbarWrapper): HTMLElement | undefi
 }
 
 // Actual <button/> element inside the toggle element
-function findInnerToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefined {
-  return findOuterToggleElement(flashbar)?.querySelector('button') || undefined;
+function findToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefined {
+  return findNotificationBar(flashbar)?.querySelector('button') || undefined;
 }
 
 // Item counter including the header
 function findOuterCounter(flashbar: FlashbarWrapper) {
-  const toggleElement = findOuterToggleElement(flashbar);
+  const toggleElement = findNotificationBar(flashbar);
   if (toggleElement) {
     return Array.from(toggleElement.children)[0];
   }

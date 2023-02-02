@@ -71,13 +71,13 @@ export default function CollapsibleFlashbarPermutations() {
               stackItems={true}
               i18nStrings={{
                 ariaLabel: 'Notifications',
-                toggleButtonAriaLabel: 'View all notifications',
-                toggleButtonText: 'Notifications',
-                errorCountAriaLabel: 'Error',
-                warningCountAriaLabel: 'Warning',
-                successCountAriaLabel: 'Success',
-                infoCountAriaLabel: 'Info',
-                inProgressCountAriaLabel: 'In progress',
+                notificationBarAriaLabel: 'View all notifications',
+                notificationBarText: 'Notifications',
+                errorIconAriaLabel: 'Error',
+                warningIconAriaLabel: 'Warning',
+                successIconAriaLabel: 'Success',
+                infoIconAriaLabel: 'Info',
+                inProgressIconAriaLabel: 'In progress',
               }}
               items={permutation.items}
             />
