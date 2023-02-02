@@ -16,6 +16,7 @@ section.appbar {
   height: calc(2 * #{awsui.$space-m} + #{awsui.$space-scaled-xs});
   display: grid;
   grid-area: appBar;
+  grid-column: 1 / span 5;
   grid-template-columns: auto minmax(0, 1fr) auto;
   padding: 0 awsui.$space-m;
   position: sticky;
@@ -27,11 +28,7 @@ section.appbar {
     margin-right: awsui.$space-m;
   }
 
-  /* 
-  Because the Breadcrumbs component cannot be styled directly it is 
-  wrapped in a generic element that will apply style adjustments as needed.
-  */
-  > .breadcrumbs {
+  > .appbar-breadcrumbs {
     grid-column: 2;
     background-color: awsui.$color-background-layout-main;
   }

@@ -8,8 +8,7 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 .container {
-  grid-column: 3;
-  grid-row: 9 / span 2;
+  grid-area: main;
   padding-bottom: awsui.$space-layout-content-bottom;
 
   /*

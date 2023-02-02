@@ -64,7 +64,9 @@ export default function AppBar() {
         </nav>
       )}
 
-      {breadcrumbs && <div className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs)}>{breadcrumbs}</div>}
+      {breadcrumbs && (
+        <div className={clsx(styles['appbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
+      )}
 
       {!toolsHide && (
         <aside

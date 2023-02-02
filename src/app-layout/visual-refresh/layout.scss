@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../internal/styles' as styles;
-@use '../../internal/styles/tokens' as awsui;
 @use '../constants' as constants;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
 
 /*
 The first and last column definitions have two responsibilities.
@@ -50,7 +50,10 @@ explicitly set in script.
     '. . breadcrumbsGap . .'
     '. . breadcrumbs . .'
     '. . headerGap . .'
-    '. . header . .';
+    '. . header . .'
+    '. . mainGap . .'
+    '. . main . .'
+    '. . main . .';
   grid-template-columns:
     min-content
     minmax(var(#{custom-props.$contentGapLeft}), 1fr)
@@ -67,7 +70,7 @@ explicitly set in script.
     auto // contentHeader template area
     var(#{custom-props.$mainGap})
     var(#{custom-props.$overlapHeight}) // main template area with overlap
-    1fr; // main template area;
+    1fr; // main template area
   position: relative;
   color: awsui.$color-text-body-default;
 
@@ -200,7 +203,6 @@ explicitly set in script.
   */
   &.disable-body-scroll {
     #{custom-props.$offsetTop}: 0px;
-    // grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) 1fr auto;
     grid-template-rows:
       auto
       var(#{custom-props.$notificationsGap})
@@ -218,7 +220,6 @@ explicitly set in script.
   }
 
   &.disable-body-scroll.has-split-panel.split-panel-position-bottom {
-    // grid-template-rows: repeat(3, auto) var(#{custom-props.$overlapHeight}) repeat(2, auto);
     grid-template-rows:
       auto
       var(#{custom-props.$notificationsGap})
