@@ -60,19 +60,19 @@ export type FlashType = FlashbarProps.Type | 'progress';
 
 export interface CollapsibleFlashbarProps {
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
-  stackItems: boolean;
+  stackItems?: boolean;
   i18nStrings?: CollapsibleFlashbarProps.I18nStrings;
 }
 
 export namespace CollapsibleFlashbarProps {
   export interface I18nStrings {
     ariaLabel: string;
-    toggleButtonAriaLabel: string;
-    toggleButtonText: string;
-    errorCountAriaLabel?: string;
-    warningCountAriaLabel?: string;
-    successCountAriaLabel?: string;
-    infoCountAriaLabel?: string;
-    inProgressCountAriaLabel?: string;
+    errorIconAriaLabel?: string;
+    infoIconAriaLabel?: string;
+    inProgressIconAriaLabel?: string;
+    notificationBarAriaLabel?: string;
+    notificationBarText?: string;
+    successIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
   }
 }

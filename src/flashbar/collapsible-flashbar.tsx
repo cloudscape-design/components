@@ -35,7 +35,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const getElementsToAnimate = useCallback(() => {
     const flashElements = isFlashbarStackExpanded ? expandedItemRefs.current : collapsedItemRefs.current;
-    return { ...flashElements, toggleButton: toggleElementRef.current };
+    return { ...flashElements, notificationBar: notificationBarRef.current };
   }, [isFlashbarStackExpanded]);
 
   const prepareAnimations = useCallback(() => {
@@ -67,7 +67,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
   const listElementRef = useRef<HTMLUListElement | null>(null);
-  const toggleElementRef = useRef<HTMLDivElement | null>(null);
+  const notificationBarRef = useRef<HTMLDivElement | null>(null);
   const [transitioning, setTransitioning] = useState(false);
   const flashbarElementId = useUniqueId('flashbar');
   const itemCountElementId = useUniqueId('item-count');
@@ -167,7 +167,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       }));
 
   const ariaLabel = i18nStrings?.ariaLabel;
-  const toggleButtonText = i18nStrings?.toggleButtonText;
+  const notificationBarText = i18nStrings?.notificationBarText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
@@ -296,10 +296,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               transitioning && styles['animation-running']
             )}
             onClick={toggleCollapseExpand}
-            ref={toggleElementRef}
+            ref={notificationBarRef}
           >
             <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
-              {toggleButtonText && <h2 className={styles.header}>{toggleButtonText}</h2>}
+              {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
               <span className={styles['item-count']}>
                 {counterTypes.map(({ type, labelName, iconName }) => (
                   <NotificationTypeCount
@@ -315,7 +315,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               aria-controls={flashbarElementId}
               aria-describedby={itemCountElementId}
               aria-expanded={isFlashbarStackExpanded}
-              aria-label={i18nStrings?.toggleButtonAriaLabel}
+              aria-label={i18nStrings?.notificationBarAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
               {...isFocusVisible}
             >

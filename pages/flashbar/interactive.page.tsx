@@ -59,13 +59,13 @@ export default function FlashbarPermutations() {
         stackItems: true,
         i18nStrings: {
           ariaLabel: 'Notifications',
-          toggleButtonText: 'Notifications',
-          toggleButtonAriaLabel: 'View all notifications',
-          errorCountAriaLabel: 'Error',
-          successCountAriaLabel: 'Success',
-          warningCountAriaLabel: 'Warning',
-          infoCountAriaLabel: 'Information',
-          inProgressCountAriaLabel: 'In progress',
+          notificationBarText: 'Notifications',
+          notificationBarAriaLabel: 'View all notifications',
+          errorIconAriaLabel: 'Error',
+          successIconAriaLabel: 'Success',
+          warningIconAriaLabel: 'Warning',
+          infoIconAriaLabel: 'Information',
+          inProgressIconAriaLabel: 'In progress',
         },
       }
     : {};
