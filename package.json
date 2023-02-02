@@ -8,6 +8,7 @@
   "homepage": "https://cloudscape.design",
   "files": [],
   "scripts": {
+    "postinstall": "node ./scripts/lint-package-lock.js",
     "quick-build": "gulp quick-build",
     "build": "NODE_ENV=production gulp build",
     "test": "gulp test",
