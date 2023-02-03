@@ -12,8 +12,8 @@ const containerWrapper = appLayoutWrapper.findContentRegion().findContainer();
 const containerHeaderSelector = containerWrapper.findHeader().toSelector();
 const flashBarSelector = createWrapper().findFlashbar().toSelector();
 
-const CLASSIC_STICKY_OFFSET_SPACE = 0; // Container border (0px) offset
-const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 4; // space-xxs (container border offset is 0px)
+const CLASSIC_STICKY_OFFSET_SPACE = 0; // No borders on flashbars or additional padding below
+const VISUAL_REFRESH_STICKY_OFFSET_SPACE = 4; // space-xxs - from $offsetTopWithNotifications additional padding
 
 class AppLayoutLegacyStickyPage extends BasePageObject {
   async areNotificationsVisible() {
