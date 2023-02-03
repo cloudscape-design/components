@@ -19,6 +19,7 @@ const customCssPropertiesList = [
   'layoutWidth',
   'mainGap',
   'mainOffsetLeft',
+  'mainTemplateRows',
   'maxContentWidth',
   'minContentWidth',
   'notificationsGap',

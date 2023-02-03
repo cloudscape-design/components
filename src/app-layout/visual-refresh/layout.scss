@@ -34,6 +34,7 @@ explicitly set in script.
   #{custom-props.$layoutWidth}: 0px;
   #{custom-props.$mainGap}: 0px;
   #{custom-props.$mainOffsetLeft}: 0px;
+  #{custom-props.$mainTemplateRows}: 1fr;
   #{custom-props.$maxContentWidth}: 0px;
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$notificationsGap}: 0px;
@@ -70,7 +71,7 @@ explicitly set in script.
     auto // contentHeader template area
     var(#{custom-props.$mainGap})
     var(#{custom-props.$overlapHeight}) // main template area with overlap
-    1fr; // main template area
+    var(#{custom-props.$mainTemplateRows}); // main template area
   min-height: var(#{custom-props.$contentHeight});
   position: relative;
   color: awsui.$color-text-body-default;
@@ -256,34 +257,13 @@ position: sticky will be the value of the notifications height in addition to th
 notifications top margin and some additional vertical space for aesthetics.
 */
 .layout.disable-body-scroll {
+  #{custom-props.$mainTemplateRows}: 1fr auto;
   #{custom-props.$offsetTop}: 0px;
-  grid-template-rows:
-    auto
-    var(#{custom-props.$notificationsGap})
-    auto
-    var(#{custom-props.$breadcrumbsGap})
-    auto
-    var(#{custom-props.$headerGap})
-    auto
-    var(#{custom-props.$mainGap})
-    var(#{custom-props.$overlapHeight})
-    1fr
-    auto;
   height: var(#{custom-props.$contentHeight});
   overflow-y: scroll;
 
   &.has-split-panel.split-panel-position-bottom {
-    grid-template-rows:
-      auto
-      var(#{custom-props.$notificationsGap})
-      auto
-      var(#{custom-props.$breadcrumbsGap})
-      auto
-      var(#{custom-props.$headerGap})
-      auto
-      var(#{custom-props.$mainGap})
-      var(#{custom-props.$overlapHeight})
-      repeat(2, auto);
+    #{custom-props.$mainTemplateRows}: repeat(2, auto);
   }
 
   &:not(.has-sticky-notifications) {
