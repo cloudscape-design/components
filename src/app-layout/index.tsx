@@ -35,11 +35,9 @@ import {
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { isMotionDisabled } from '../internal/motion';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { NavigationPanel } from './navigation-panel';
 import { ToolsAndSplitPanel } from './tools-and-split-panel';
-import { usePreviousFrameValue } from '../internal/hooks/use-previous-frame';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
@@ -116,7 +114,6 @@ const OldAppLayout = React.forwardRef(
     }
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
-    const isMotionEnabled = rootRef.current ? !isMotionDisabled(rootRef.current) : false;
 
     const defaults = applyDefaults(contentType, { maxContentWidth, minContentWidth }, false);
     const [navigationOpen = false, setNavigationOpen] = useControllable(
@@ -379,8 +376,6 @@ const OldAppLayout = React.forwardRef(
       ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
       : undefined;
 
-    const isToolsDrawerHidden = disableContentPaddings;
-
     const toolsDrawerWidth = (() => {
       if (isMobile) {
         return 0;
@@ -403,16 +398,6 @@ const OldAppLayout = React.forwardRef(
       }
 
       return effectiveNavigationWidth;
-    })();
-
-    const previousContentWidth = usePreviousFrameValue(
-      contentWidthWithSplitPanel - (splitPanelOpenOnTheSide ? splitPanelReportedSize : 0)
-    );
-
-    const contentScaleX = (() => {
-      if (isMobile || !isMotionEnabled || !disableContentPaddings || !previousContentWidth) {
-        return undefined;
-      }
     })();
 
     return (
@@ -442,9 +427,7 @@ const OldAppLayout = React.forwardRef(
                 ariaLabels={ariaLabels}
                 footerHeight={footerHeight}
                 headerHeight={headerHeight}
-                isHidden={disableContentPaddings}
                 isMobile={isMobile}
-                isMotionEnabled={isMotionEnabled}
                 navigation={navigation}
                 navigationDrawerWidth={navigationDrawerWidth}
                 navigationOpen={navigationOpen}
@@ -466,20 +449,15 @@ const OldAppLayout = React.forwardRef(
               <div
                 style={{
                   marginBottom: splitPanelBottomOffset,
-                  transform: contentScaleX ? `scaleX(${contentScaleX})` : undefined,
                 }}
               >
                 {notifications && (
                   <Notifications
-                    testUtilsClassName={clsx(styles.notifications, testutilStyles.notifications)}
+                    testUtilsClassName={testutilStyles.notifications}
                     labels={ariaLabels}
                     topOffset={disableBodyScroll ? 0 : headerHeight}
                     sticky={!isMobile && stickyNotifications}
                     ref={notificationsRef}
-                    isMobile={isMobile}
-                    navigationPadding={contentWrapperProps.navigationPadding}
-                    toolsPadding={contentWrapperProps.toolsPadding}
-                    contentWidthStyles={contentWidthStyles}
                   >
                     {notifications}
                   </Notifications>
@@ -555,19 +533,12 @@ const OldAppLayout = React.forwardRef(
             <ToolsAndSplitPanel
               splitPanel={finalSplitPanePosition === 'side' ? splitPanelWrapped : undefined}
               ariaLabels={ariaLabels}
-              closedDrawerWidth={closedDrawerWidth}
-              contentHeightStyle={contentHeightStyle}
-              disableContentPaddings={disableContentPaddings}
               drawerWidth={toolsDrawerWidth}
               footerHeight={footerHeight}
               headerHeight={headerHeight}
-              isHidden={isToolsDrawerHidden}
               isMobile={isMobile}
-              isMotionEnabled={isMotionEnabled}
               onToolsToggle={onToolsToggle}
               panelHeightStyle={panelHeightStyle}
-              splitPanelOpen={splitPanelOpenOnTheSide}
-              splitPanelReportedSize={splitPanelReportedSize}
               toggleRefs={toolsRefs}
               onLoseToolsFocus={loseToolsFocus}
               tools={tools}
