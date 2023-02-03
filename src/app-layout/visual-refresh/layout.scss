@@ -38,7 +38,7 @@ explicitly set in script.
   #{custom-props.$minContentWidth}: 280px;
   #{custom-props.$notificationsGap}: 0px;
   #{custom-props.$notificationsHeight}: 0px;
-  #{custom-props.$offsetTop}: 0px;
+  #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
@@ -71,6 +71,7 @@ explicitly set in script.
     var(#{custom-props.$mainGap})
     var(#{custom-props.$overlapHeight}) // main template area with overlap
     1fr; // main template area
+  min-height: var(#{custom-props.$contentHeight});
   position: relative;
   color: awsui.$color-text-body-default;
 
@@ -116,6 +117,24 @@ explicitly set in script.
   }
 
   /*
+  The offset top value for components with position: sticky (AppBar, Navigation,
+  Notifications, Tools) will be set to the header height value. The offset top value 
+  for AppLayout contentMain children with position: sticky will be the combined value 
+  of the header and notifications height in addition to the notifications top margin 
+  and some additional vertical space for aesthetics.
+  */
+  &:not(.has-sticky-notifications) {
+    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
+  }
+
+  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+  &.has-sticky-notifications {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+    );
+  }
+
+  /*
   Determine the grid gap that preceeds the breadcrumbs template area. If the notifications 
   exist the gap should put minimal space before the breadcrumbs. If notifications do not 
   exist the gap should align the breadcrumbs with the trigger buttons.
@@ -126,35 +145,6 @@ explicitly set in script.
 
   &:not(.has-notifications-content).has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
-  }
-
-  /*
-  If disableBodyScroll is false (this is the overwhelming majority
-  of use cases and the default scenario) then the scrollable element
-  will be the document body which is a parent of the AppLayout component.
-  The Layout should have a minimum but not fixed content height set to the
-  viewport height less the header and footer height set by the resize
-  observers in the component. The offset top value for components
-  with position: sticky (AppBar, Navigation, Notifications, Tools) will
-  be set to the header height value. The offset top value for AppLayout
-  contentMain children with position: sticky will be the combined value of the
-  header and notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
-  */
-  &:not(.disable-body-scroll) {
-    #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
-    min-height: var(#{custom-props.$contentHeight});
-
-    &:not(.has-sticky-notifications) {
-      #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
-    }
-
-    // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-    &.has-sticky-notifications {
-      #{custom-props.$offsetTopWithNotifications}: calc(
-        var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
-      );
-    }
   }
 
   /*
@@ -256,16 +246,14 @@ explicitly set in script.
 }
 
 /*
-If disableBodyScroll is true (very uncommon use case) then the
-AppLayout component and not the document body will be the scrollable
-element. This requires a fixed height instead of a minimum height
-with a vertical scroll policy. The offset top value for components
-with position: sticky (AppBar, Navigation, Notifications, Tools) will
-be set zero since the AppLayout is nearest scrollable parent and any
-existing header does not matter. The offset top value for AppLayout
-contentMain children with position: sticky will be the value of the
-notifications height in addition to the notifications top margin
-and some additional vertical space for aesthetics.
+If disableBodyScroll is true (very uncommon use case) then the AppLayout component 
+and not the document body will be the scrollable element. This requires a fixed height 
+instead of a minimum height with a vertical scroll policy. The offset top value for 
+components with position: sticky (AppBar, Navigation, Notifications, Tools) will be 
+set zero since the AppLayout is nearest scrollable parent and any existing header does 
+not matter. The offset top value for AppLayout contentMain children with 
+position: sticky will be the value of the notifications height in addition to the 
+notifications top margin and some additional vertical space for aesthetics.
 */
 .layout.disable-body-scroll {
   #{custom-props.$offsetTop}: 0px;
@@ -296,7 +284,6 @@ and some additional vertical space for aesthetics.
       var(#{custom-props.$mainGap})
       var(#{custom-props.$overlapHeight})
       repeat(2, auto);
-    height: var(#{custom-props.$contentHeight});
   }
 
   &:not(.has-sticky-notifications) {
