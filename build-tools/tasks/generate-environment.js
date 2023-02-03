@@ -8,6 +8,7 @@ const workspace = require('../utils/workspace');
 function writeEnvironmentFile(theme) {
   const filepath = 'internal/environment';
   const values = {
+    PACKAGE_SOURCE: workspace.packageSource,
     PACKAGE_VERSION: workspace.packageVersion,
     THEME: theme.name,
     ALWAYS_VISUAL_REFRESH: !!theme.alwaysVisualRefresh,
