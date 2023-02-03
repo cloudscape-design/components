@@ -43,7 +43,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -166,7 +166,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         collapsedIndex: index,
       }));
 
-  const ariaLabel = i18nStrings?.ariaLabel;
   const notificationBarText = i18nStrings?.notificationBarText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>

@@ -28,6 +28,8 @@ function generateItem(
   };
 }
 
+const ariaLabel = 'Notifications';
+
 export default function FlashbarPermutations() {
   const dismiss = (index: string) => {
     setItems(items => items.filter(item => item.id !== index));
@@ -54,11 +56,11 @@ export default function FlashbarPermutations() {
   const [collapsible, setCollapsible] = useState(false);
   const [items, setItems] = useState(() => [...range(5).map(() => generateItem('info', dismiss, false, true))]);
 
-  const privateProps = collapsible
+  const restProps = collapsible
     ? {
         stackItems: true,
         i18nStrings: {
-          ariaLabel: 'Notifications',
+          ariaLabel,
           notificationBarText: 'Notifications',
           notificationBarAriaLabel: 'View all notifications',
           errorIconAriaLabel: 'Error',
@@ -68,7 +70,11 @@ export default function FlashbarPermutations() {
           inProgressIconAriaLabel: 'In progress',
         },
       }
-    : {};
+    : {
+        i18nStrings: {
+          ariaLabel,
+        },
+      };
 
   return (
     <>
@@ -94,7 +100,7 @@ export default function FlashbarPermutations() {
           </Button>
           <Button onClick={() => removeLastAndAdd('error')}>Add And Remove</Button>
         </SpaceBetween>
-        <Flashbar items={items} {...privateProps} />
+        <Flashbar items={items} {...restProps} />
       </SpaceBetween>
     </>
   );

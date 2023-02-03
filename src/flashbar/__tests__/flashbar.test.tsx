@@ -6,7 +6,7 @@ import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
 import Button from '../../../lib/components/button';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/flashbar/styles.css.js';
-import { createFlashbarWrapper } from './common';
+import { createFlashbarWrapper, findList } from './common';
 
 let mockUseAnimations = false;
 let useAnimations = false;
@@ -333,6 +333,44 @@ describe('Flashbar component', () => {
           'aria-label',
           iconLabel
         );
+      });
+
+      describe('Accessibility', () => {
+        test('renders items in an unordered list', () => {
+          const flashbar = createFlashbarWrapper(
+            <Flashbar
+              items={[
+                {
+                  header: 'The header',
+                  content: 'The content',
+                },
+              ]}
+            />
+          );
+          const list = flashbar.find('ul')!;
+          expect(list).toBeTruthy();
+          expect(list.findAll('li')).toHaveLength(1);
+        });
+
+        test('applies ARIA label to the unordered list', () => {
+          const customAriaLabel = 'Custom text';
+          const flashbar = createFlashbarWrapper(
+            <Flashbar
+              items={[
+                {
+                  header: 'The header',
+                  content: 'The content',
+                },
+              ]}
+              i18nStrings={{
+                ariaLabel: customAriaLabel,
+              }}
+            />
+          );
+          const list = findList(flashbar)!;
+          expect(list).toBeTruthy();
+          expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
+        });
       });
     });
   }

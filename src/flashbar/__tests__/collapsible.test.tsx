@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { createFlashbarWrapper } from './common';
+import { createFlashbarWrapper, findList } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
@@ -255,10 +255,6 @@ describe('Collapsible Flashbar', () => {
     });
   });
 });
-
-function findList(flashbar: FlashbarWrapper) {
-  return flashbar.find('ul');
-}
 
 // Entire interactive element including the counter and the actual <button/> element
 function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
