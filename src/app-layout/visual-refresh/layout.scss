@@ -174,21 +174,6 @@ explicitly set in script.
   }
 
   /*
-  Determine the grid gap that preceeds the header template area. The content header 
-  is deprecated so this is an edge case for teams that migrated to visual refresh 
-  before the Content Layout was released. If the notifications and breadcrumbs 
-  do not exist then the gap should align the header with the trigger buttons.
-  */
-  &.has-notifications-content.has-header,
-  &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: 0;
-  }
-
-  &:not(.has-notifications-content):not(.has-breadcrumbs).has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-  }
-
-  /*
   Determine the grid gap that preceeds the main area when the overlap is disabled.
   If the overlap is disabled it means there is not a Cards, ContentLayout, Table, 
   Wizard component. Additionally, the disableContentHeaderOverlap which is deprecated 
@@ -210,6 +195,21 @@ explicitly set in script.
 
   &.is-overlap-disabled.has-breadcrumbs:not(.has-header) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  /*
+  Determine the grid gap that preceeds the header template area. The content header 
+  is deprecated so this is an edge case for teams that migrated to visual refresh 
+  before the Content Layout was released. If the notifications and breadcrumbs 
+  do not exist then the gap should align the header with the trigger buttons.
+  */
+  &.has-notifications-content.has-header,
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: 0;
+  }
+
+  &:not(.has-notifications-content):not(.has-breadcrumbs).has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
   /*
