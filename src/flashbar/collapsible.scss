@@ -118,12 +118,14 @@ the grid layout will be:
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   grid-column: 2;
   grid-row: 2;
-  gap: awsui.$space-xs;
+  gap: awsui.$space-xxs;
   letter-spacing: awsui.$font-button-letter-spacing;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
   text-decoration: none;
   z-index: 1;
 
@@ -138,20 +140,25 @@ the grid layout will be:
   }
 
   > .status {
+    display: inline-block;
+
     > .header {
       font-weight: awsui.$font-button-weight;
       display: inline;
-      margin-right: awsui.$space-s;
     }
 
     > .item-count {
-      margin-left: awsui.$space-xxs;
+      margin-left: awsui.$space-m;
+      margin-right: awsui.$space-m;
+      white-space: nowrap;
 
       > .type-count {
-        margin-right: awsui.$space-s;
-
         > .count-number {
           margin-left: awsui.$space-xxs;
+        }
+
+        &:not(:last-child) {
+          margin-right: awsui.$space-s;
         }
       }
     }
@@ -196,6 +203,7 @@ the grid layout will be:
 
   > .button {
     display: inline-block;
+    flex-grow: 1;
     background: none;
     border: 0 none;
 
