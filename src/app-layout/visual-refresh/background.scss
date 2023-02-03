@@ -9,7 +9,7 @@
 div.background {
   display: contents;
 
-  > .notifications-appbar-header {
+  > .notifications-breadcrumbs-header {
     background-color: awsui.$color-background-layout-main;
     color: awsui.$color-text-body-default;
     grid-column: 1 / span 5;

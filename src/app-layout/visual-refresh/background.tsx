@@ -15,7 +15,7 @@ export default function Background() {
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>
       <div
-        className={clsx(styles['notifications-appbar-header'], {
+        className={clsx(styles['notifications-breadcrumbs-header'], {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['sticky-notifications']]: stickyNotifications,

@@ -29,6 +29,7 @@ export default function Layout({ children }: LayoutProps) {
     footerHeight,
     hasNotificationsContent,
     headerHeight,
+    isMobile,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
@@ -66,7 +67,7 @@ export default function Layout({ children }: LayoutProps) {
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
-          [styles['has-breadcrumbs']]: breadcrumbs,
+          [styles['has-breadcrumbs']]: breadcrumbs && !isMobile,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-header']]: contentHeader,

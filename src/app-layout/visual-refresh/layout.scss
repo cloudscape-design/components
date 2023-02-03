@@ -75,14 +75,6 @@ explicitly set in script.
   color: awsui.$color-text-body-default;
 
   /*
-  Override the dark header overlap height property if isOverlapDisabled is true.
-  The is computed state from props that can be found in the AppLayout context.
-  */
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
-  }
-
-  /*
   Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
   width custom property for the middle column definition if the maxContentWidth property 
   has been explicitly set to a non-zero value and subsequently set the has-max-content-width 
@@ -108,12 +100,12 @@ explicitly set in script.
   }
 
   /*
-  Warning! This is a hack! We are implementing a short term fix to prevent the
-  tools drawer from potentially getting pushed off screen. Currently there is no
-  protection against a navigationWidth, minContentWidth, and toolsWidth that are
-  in excess ove the available space in the viewport. To accomodate this we remove
-  the minContentWidth and set it to zero in small viewports and below until the
-  isMobile breakpoint sets the drawers to overlay at 100vw.
+  Warning! This is a hack! We are implementing a short term fix to prevent the tools drawer 
+  from potentially getting pushed off screen. Currently there is no protection against a 
+  navigationWidth, minContentWidth, and toolsWidth that are in excess ove the available 
+  space in the viewport. To accomodate this we remove the minContentWidth and set it to 
+  zero in small viewports and below until the isMobile breakpoint sets the drawers to 
+  overlay at 100vw.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: var(#{custom-props.$minContentWidth}, 280px);
@@ -121,6 +113,19 @@ explicitly set in script.
 
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
+  }
+
+  /*
+  Determine the grid gap that preceeds the breadcrumbs template area. If the notifications 
+  exist the gap should put minimal space before the breadcrumbs. If notifications do not 
+  exist the gap should align the breadcrumbs with the trigger buttons.
+  */
+  &.has-notifications-content.has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &:not(.has-notifications-content).has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
   }
 
   /*
@@ -139,50 +144,147 @@ explicitly set in script.
   &:not(.disable-body-scroll) {
     #{custom-props.$offsetTop}: var(#{custom-props.$headerHeight});
     min-height: var(#{custom-props.$contentHeight});
-  }
 
-  &:not(.disable-body-scroll):not(.has-sticky-notifications) {
-    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
-  }
+    &:not(.has-sticky-notifications) {
+      #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
+    }
 
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &:not(.disable-body-scroll).has-sticky-notifications {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
-    );
+    // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+    &.has-sticky-notifications {
+      #{custom-props.$offsetTopWithNotifications}: calc(
+        var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+      );
+    }
   }
 
   /*
-  If disableBodyScroll is true (very uncommon use case) then the
-  AppLayout component and not the document body will be the scrollable
-  element. This requires a fixed height instead of a minimum height
-  with a vertical scroll policy. The offset top value for components
-  with position: sticky (AppBar, Navigation, Notifications, Tools) will
-  be set zero since the AppLayout is nearest scrollable parent and any
-  existing header does not matter. The offset top value for AppLayout
-  contentMain children with position: sticky will be the value of the
-  notifications height in addition to the notifications top margin
-  and some additional vertical space for aesthetics.
+  Determine the grid gap that preceeds the main area when there is an overlap. If there is 
+  an overlap but no header it indicates that a Cards, ContentLayout, Table, or Wizard 
+  component is in use.
   */
-  &.disable-body-scroll {
-    #{custom-props.$offsetTop}: 0px;
-    grid-template-rows:
-      auto
-      var(#{custom-props.$notificationsGap})
-      auto
-      var(#{custom-props.$breadcrumbsGap})
-      auto
-      var(#{custom-props.$headerGap})
-      auto
-      var(#{custom-props.$mainGap})
-      var(#{custom-props.$overlapHeight})
-      1fr
-      auto;
-    height: var(#{custom-props.$contentHeight});
-    overflow-y: scroll;
+  &:not(.is-overlap-disabled).has-breadcrumbs:not(.has-header) {
+    #{custom-props.$mainGap}: 0;
   }
 
-  &.disable-body-scroll.has-split-panel.split-panel-position-bottom {
+  &:not(.is-overlap-disabled):not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &:not(.is-overlap-disabled).has-header {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+  }
+
+  /*
+  Determine the grid gap that preceeds the main area when the overlap is disabled.
+  If the overlap is disabled it means there is not a Cards, ContentLayout, Table, 
+  Wizard component. Additionally, the disableContentHeaderOverlap which is deprecated 
+  could also be in use. Override the dark header overlap height property if 
+  disableContentHeaderOverlap is true.
+  */
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
+
+  &.is-overlap-disabled:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
+    #{custom-props.$mainGap}: 0;
+  }
+
+  &.is-overlap-disabled.has-header,
+  &.is-overlap-disabled.has-notifications-content:not(.has-breadcrumbs):not(.has-header) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.is-overlap-disabled.has-breadcrumbs:not(.has-header) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  /*
+  Determine the grid gap that preceeds the header template area. The content header 
+  is deprecated so this is an edge case for teams that migrated to visual refresh 
+  before the Content Layout was released. If the notifications and breadcrumbs 
+  do not exist then the gap should align the header with the trigger buttons.
+  */
+  &.has-notifications-content.has-header,
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: 0;
+  }
+
+  &:not(.has-notifications-content):not(.has-breadcrumbs).has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  /*
+  Determine the grid gap that preceeds the notifications template area. If the 
+  notifications exist it will always be the first content on the page. The gap 
+  should align the first notification with the trigger buttons.
+  */
+  &.has-notifications-content {
+    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  /*
+  In desktop viewports the content gap property for the left and right
+  columns should override the default of zero if the navigationHide
+  or toolsHide property is set. This ensures adequate horizontal space
+  for the center column from the edges of the viewport when there is
+  not left or right content.
+  
+  Warning! If these design tokens change it will adversely impact the 
+  calculation used to determine the Split Panel maximum width in the 
+  handleSplitPanelMaxWidth function in the context.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &.has-content-gap-left {
+      #{custom-props.$contentGapLeft}: #{awsui.$space-scaled-2x-xxxl};
+    }
+
+    &.has-content-gap-right {
+      #{custom-props.$contentGapRight}: #{awsui.$space-scaled-2x-xxxl};
+    }
+  }
+
+  /*
+  In mobile viewports the Navigation and Tools drawers are hidden
+  and triggered by the AppBar which then take up the entire viewport.
+  The center column needs permanent space from the horizontal viewport
+  edges regardless of whether or not there is a Navigation or Tools.
+  */
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$contentGapLeft}: #{awsui.$space-l};
+    #{custom-props.$contentGapRight}: #{awsui.$space-l};
+  }
+}
+
+/*
+If disableBodyScroll is true (very uncommon use case) then the
+AppLayout component and not the document body will be the scrollable
+element. This requires a fixed height instead of a minimum height
+with a vertical scroll policy. The offset top value for components
+with position: sticky (AppBar, Navigation, Notifications, Tools) will
+be set zero since the AppLayout is nearest scrollable parent and any
+existing header does not matter. The offset top value for AppLayout
+contentMain children with position: sticky will be the value of the
+notifications height in addition to the notifications top margin
+and some additional vertical space for aesthetics.
+*/
+.layout.disable-body-scroll {
+  #{custom-props.$offsetTop}: 0px;
+  grid-template-rows:
+    auto
+    var(#{custom-props.$notificationsGap})
+    auto
+    var(#{custom-props.$breadcrumbsGap})
+    auto
+    var(#{custom-props.$headerGap})
+    auto
+    var(#{custom-props.$mainGap})
+    var(#{custom-props.$overlapHeight})
+    1fr
+    auto;
+  height: var(#{custom-props.$contentHeight});
+  overflow-y: scroll;
+
+  &.has-split-panel.split-panel-position-bottom {
     grid-template-rows:
       auto
       var(#{custom-props.$notificationsGap})
@@ -197,91 +299,15 @@ explicitly set in script.
     height: var(#{custom-props.$contentHeight});
   }
 
-  &.disable-body-scroll:not(.has-sticky-notifications) {
+  &:not(.has-sticky-notifications) {
     #{custom-props.$offsetTopWithNotifications}: 0px;
   }
 
   // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.disable-body-scroll.has-sticky-notifications {
+  &.has-sticky-notifications {
     #{custom-props.$offsetTopWithNotifications}: calc(
       var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxs}
     );
-  }
-
-  /*
-  Set the default gap values for the notifications, header, and main template areas.
-  If there is no notifications content, breadcrumbs, or header and the overlap is 
-  not disabled this means the ContentLayout is the first component on the page.
-  */
-  &.has-notifications-content {
-    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
-  }
-
-  &:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header):not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
-    /*
-    In desktop viewports Breadcrumbs are rendered between the 
-    notifications and header template areas. When there is no header 
-    they will be the adjacent sibling to the main template area.
-    */
-    &.has-breadcrumbs {
-      #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
-    }
-
-    &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-    }
-
-    &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-    }
-
-    /*
-    In desktop viewports the content gap property for the left and right
-    columns should override the default of zero if the navigationHide
-    or toolsHide property is set. This ensures adequate horizontal space
-    for the center column from the edges of the viewport when there is
-    not left or right content.
-    
-    Warning! If these design tokens change it will adversely impact the 
-    calculation used to determine the Split Panel maximum width in the 
-    handleSplitPanelMaxWidth function in the context.
-    */
-    &.has-content-gap-left {
-      #{custom-props.$contentGapLeft}: #{awsui.$space-scaled-2x-xxxl};
-    }
-
-    &.has-content-gap-right {
-      #{custom-props.$contentGapRight}: #{awsui.$space-scaled-2x-xxxl};
-    }
-  }
-
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    /*
-    In mobile viewports the Breadcrumbs are rendered in the AppBar component.
-    If there is no header content the Notifications will be the adjacent 
-    sibling to the main template area.
-    */
-    &.has-notifications-content:not(.has-header) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-    }
-
-    /*
-    In mobile viewports the Navigation and Tools drawers are hidden
-    and triggered by the AppBar which then take up the entire viewport.
-    The center column needs permanent space from the horizontal viewport
-    edges regardless of whether or not there is a Navigation or Tools.
-    */
-    #{custom-props.$contentGapLeft}: #{awsui.$space-l};
-    #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 }
 
