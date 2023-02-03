@@ -13,14 +13,14 @@ export const copyPreferences = ({
   pageSize,
   wrapLines,
   stripedRows,
-  compactMode,
+  contentDensity,
   visibleContent,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
   wrapLines,
   stripedRows,
-  compactMode,
+  contentDensity,
   visibleContent,
   custom,
 });
@@ -32,7 +32,7 @@ export const mergePreferences = (
   pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
   wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
   stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
-  compactMode: newPref.compactMode !== undefined ? newPref.compactMode : oldPref.compactMode,
+  contentDensity: newPref.contentDensity !== undefined ? newPref.contentDensity : oldPref.contentDensity,
   visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
   custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
 });
@@ -116,17 +116,17 @@ export const StripedRowsPreference = ({ label, description, value, onChange }: S
   </InternalCheckbox>
 );
 
-interface CompactModePreferenceProps extends CollectionPreferencesProps.CompactModePreference {
-  onChange: (value: boolean) => void;
-  value?: boolean;
+interface ContentDensityPreferenceProps extends CollectionPreferencesProps.ContentDensityPreference {
+  onChange: (value: 'comfortable' | 'compact') => void;
+  value?: 'comfortable' | 'compact';
 }
 
-export const CompactModePreference = ({ label, description, value, onChange }: CompactModePreferenceProps) => (
+export const ContentDensityPreference = ({ label, description, value, onChange }: ContentDensityPreferenceProps) => (
   <InternalCheckbox
-    checked={!!value}
+    checked={value === 'compact'}
     description={description}
-    onChange={({ detail }) => onChange(detail.checked)}
-    className={styles['compact-mode']}
+    onChange={({ detail }) => onChange(detail.checked ? 'compact' : 'comfortable')}
+    className={styles['content-density']}
   >
     {label}
   </InternalCheckbox>

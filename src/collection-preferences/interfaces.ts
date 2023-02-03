@@ -67,9 +67,9 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `label` (string) - Specifies the label for the option checkbox.
    * - `description` (string) - Specifies the text displayed below the checkbox label.
    *
-   * You must set the current value in the `preferences.compactMode` property.
+   * You must set the current value in the `preferences.contentDensity` property.
    */
-  compactModePreference?: CollectionPreferencesProps.CompactModePreference;
+  contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
@@ -147,7 +147,7 @@ export namespace CollectionPreferencesProps {
     pageSize?: number;
     wrapLines?: boolean;
     stripedRows?: boolean;
-    compactMode?: boolean;
+    contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
@@ -188,7 +188,7 @@ export namespace CollectionPreferencesProps {
     description: string;
   }
 
-  export interface CompactModePreference {
+  export interface ContentDensityPreference {
     label: string;
     description: string;
   }

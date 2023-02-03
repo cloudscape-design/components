@@ -16,7 +16,7 @@ import {
   PageSizePreference,
   WrapLinesPreference,
   StripedRowsPreference,
-  CompactModePreference,
+  ContentDensityPreference,
   CustomPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
@@ -36,7 +36,7 @@ interface ModalContentProps
     | 'pageSizePreference'
     | 'wrapLinesPreference'
     | 'stripedRowsPreference'
-    | 'compactModePreference'
+    | 'contentDensityPreference'
     | 'customPreference'
   > {
   onChange: (preferences: CollectionPreferencesProps.Preferences) => void;
@@ -47,7 +47,7 @@ const ModalContent = ({
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
-  compactModePreference,
+  contentDensityPreference,
   customPreference,
   visibleContentPreference,
   onChange,
@@ -57,7 +57,7 @@ const ModalContent = ({
     !pageSizePreference &&
     !wrapLinesPreference &&
     !stripedRowsPreference &&
-    !compactModePreference &&
+    !contentDensityPreference &&
     customPreference
   ) {
     return (
@@ -94,11 +94,11 @@ const ModalContent = ({
               onChange={stripedRows => onChange({ stripedRows })}
             />
           )}
-          {compactModePreference && (
-            <CompactModePreference
-              value={preferences.compactMode}
-              {...compactModePreference}
-              onChange={compactMode => onChange({ compactMode })}
+          {contentDensityPreference && (
+            <ContentDensityPreference
+              value={preferences.contentDensity}
+              {...contentDensityPreference}
+              onChange={contentDensity => onChange({ contentDensity })}
             />
           )}
           {customPreference && (
@@ -134,7 +134,7 @@ export default function CollectionPreferences({
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
-  compactModePreference,
+  contentDensityPreference,
   preferences,
   customPreference,
   ...rest
@@ -217,7 +217,7 @@ export default function CollectionPreferences({
             pageSizePreference={pageSizePreference}
             wrapLinesPreference={wrapLinesPreference}
             stripedRowsPreference={stripedRowsPreference}
-            compactModePreference={compactModePreference}
+            contentDensityPreference={contentDensityPreference}
             customPreference={customPreference}
             onChange={changedPreferences =>
               setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences))

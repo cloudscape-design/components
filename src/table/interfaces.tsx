@@ -144,9 +144,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
   stripedRows?: boolean;
 
   /**
-   * Toggles the content density of the table.
+   * Toggles the content density of the table. Defaults to "comfortable"
    */
-  compactMode?: boolean;
+  contentDensity?: 'comfortable' | 'compact';
 
   /**
    * Specifies if columns can be resized. If set to `true`, users can resize the columns in the table.

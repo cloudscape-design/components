@@ -33,15 +33,18 @@ export default function () {
       })}
     </div>
   );
+  const [density, setDensity] = useState('comfortable' as 'comfortable' | 'compact');
   return (
     <ScreenshotArea style={{ padding: '10px 50px' }}>
       {variantButtons}
+      <button onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}>Toggle Density</button>
       <Table
         header={<Header headingTagOverride="h1">Testing table</Header>}
         columnDefinitions={columnsConfig}
         items={items}
         stickyHeader={true}
         variant={variant}
+        contentDensity={density}
       />
       <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
     </ScreenshotArea>

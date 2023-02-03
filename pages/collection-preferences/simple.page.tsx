@@ -32,9 +32,9 @@ const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference = {
   description: 'Wrap lines description',
 };
 
-const compactModePreference: CollectionPreferencesProps.CompactModePreference = {
-  label: 'Compact mode',
-  description: 'Display content in more compact, denser mode',
+const contentDensityPreference: CollectionPreferencesProps.ContentDensityPreference = {
+  label: 'Compact table',
+  description: 'Display the content in a denser mode',
 };
 
 const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
@@ -87,7 +87,7 @@ export default function CollectionPreferencesPermutations() {
           {...baseProperties}
           pageSizePreference={pageSizePreference}
           wrapLinesPreference={wrapLinesPreference}
-          compactModePreference={compactModePreference}
+          contentDensityPreference={contentDensityPreference}
           visibleContentPreference={visibleContentPreference}
           customPreference={customPreference}
         />

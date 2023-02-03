@@ -67,7 +67,7 @@ const InternalTable = React.forwardRef(
       onRowContextMenu,
       wrapLines,
       stripedRows,
-      compactMode,
+      contentDensity,
       submitEdit,
       onEditCancel,
       resizableColumns,
@@ -93,9 +93,12 @@ const InternalTable = React.forwardRef(
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
     const tableWrapperRef = useRef(null);
-    useEffect(() => {
-      applyDensity(compactMode ? Density.Compact : Density.Comfortable, tableWrapperRef?.current || undefined);
-    }, [compactMode, tableWrapperRef]);
+    // useEffect(() => {
+    //   applyDensity(
+    //     contentDensity === Density.Compact ? Density.Compact : Density.Comfortable,
+    //     tableWrapperRef?.current || undefined
+    //   );
+    // }, [contentDensity, tableWrapperRef]);
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
@@ -242,6 +245,7 @@ const InternalTable = React.forwardRef(
                     tableRef={tableRefObject}
                     onScroll={handleScroll}
                     tableHasHeader={hasHeader}
+                    contentDensity={contentDensity}
                   />
                 )}
               </>
@@ -279,7 +283,9 @@ const InternalTable = React.forwardRef(
               )}
               <table
                 ref={tableRef}
-                className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'])}
+                className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'], {
+                  'awsui-polaris-compact-mode awsui-compact-mode': contentDensity === 'compact',
+                })}
                 // Browsers have weird mechanism to guess whether it's a data table or a layout table.
                 // If we state explicitly, they get it always correctly even with low number of rows.
                 role="table"

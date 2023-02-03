@@ -22,6 +22,7 @@ interface StickyHeaderProps {
   secondaryWrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
+  contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
 }
 
@@ -37,6 +38,7 @@ function StickyHeader(
     onScroll,
     tableRef,
     tableHasHeader,
+    contentDensity,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -68,7 +70,13 @@ function StickyHeader(
       ref={secondaryWrapperRef}
       onScroll={onScroll}
     >
-      <table className={clsx(styles.table, styles['table-layout-fixed'])} role="table" ref={secondaryTableRef}>
+      <table
+        className={clsx(styles.table, styles['table-layout-fixed'], {
+          'awsui-polaris-compact-mode awsui-compact-mode': contentDensity === 'compact',
+        })}
+        role="table"
+        ref={secondaryTableRef}
+      >
         <Thead ref={secondaryTheadRef} sticky={true} stuck={isStuck} showFocusRing={focusedColumn} {...theadProps} />
       </table>
     </div>
