@@ -100,6 +100,78 @@ explicitly set in script.
   &.has-max-content-width {
     #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
   }
+  
+  // Override the dark header overlap height property if disableContentHeaderOverlap is true.
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
+
+  /*
+  Set the grid gaps for notifications, breadcrumbs, header, and main when they are the 
+  first child in the content area. This will align the first content of the page with 
+  the trigger buttons.
+  */
+  &.content-first-child-notifications {
+    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.content-first-child-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
+  }
+
+  &.content-first-child-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.content-first-child-main:not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  /*
+  When breadcrumbs, header, and main are not the first child content set the grid gaps
+  for all combinations of adjacent siblings.
+  */
+  &.has-notifications-content.has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-notifications-content.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  &.has-header:not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+  }
+
+  &.has-header.is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  /*
+  Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
+  width custom property for the middle column definition if the maxContentWidth property 
+  has been explicitly set to a non-zero value and subsequently set the has-max-content-width 
+  data attribute to true.
+  */
+  &:not(.has-max-content-width) {
+    @each $breakpoint, $width in constants.$adaptive-content-widths {
+      @include styles.media-breakpoint-up($breakpoint) {
+        #{custom-props.$defaultMaxContentWidth}: $width;
+      }
+    }
+  }
+
+  &.has-max-content-width {
+    #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
+  }
 
   /*
   Warning! This is a hack! We are implementing a short term fix to prevent the tools drawer 
@@ -115,102 +187,6 @@ explicitly set in script.
 
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
-  }
-
-  /*
-  Determine the grid gap that preceeds the notifications template area. If the 
-  notifications exist it will always be the first content on the page. The gap 
-  should align the first notification with the trigger buttons.
-  */
-  &.has-notifications-content {
-    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
-  }
-
-  /*
-  The offset top value for components with position: sticky (AppBar, Navigation,
-  Notifications, Tools) will be set to the header height value. The offset top value 
-  for AppLayout contentMain children with position: sticky will be the combined value 
-  of the header and notifications height in addition to the notifications top margin 
-  and some additional vertical space for aesthetics.
-  */
-  &:not(.has-sticky-notifications) {
-    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
-  }
-
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.has-sticky-notifications {
-    #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
-    );
-  }
-
-  /*
-  Determine the grid gap that preceeds the breadcrumbs template area. If the notifications 
-  exist the gap should put minimal space before the breadcrumbs. If notifications do not 
-  exist the gap should align the breadcrumbs with the trigger buttons.
-  */
-  &.has-notifications-content.has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &:not(.has-notifications-content).has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
-  }
-
-  /*
-  Determine the grid gap that preceeds the main area when there is an overlap. If there is 
-  an overlap but no header it indicates that a Cards, ContentLayout, Table, or Wizard 
-  component is in use.
-  */
-  &:not(.is-overlap-disabled).has-breadcrumbs:not(.has-header) {
-    #{custom-props.$mainGap}: 0;
-  }
-
-  &:not(.is-overlap-disabled):not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &:not(.is-overlap-disabled).has-header {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
-  }
-
-  /*
-  Determine the grid gap that preceeds the main area when the overlap is disabled.
-  If the overlap is disabled it means there is not a Cards, ContentLayout, Table, 
-  Wizard component. Additionally, the disableContentHeaderOverlap which is deprecated 
-  could also be in use. Override the dark header overlap height property if 
-  disableContentHeaderOverlap is true.
-  */
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
-  }
-
-  &.is-overlap-disabled:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header) {
-    #{custom-props.$mainGap}: 0;
-  }
-
-  &.is-overlap-disabled.has-header,
-  &.is-overlap-disabled.has-notifications-content:not(.has-breadcrumbs):not(.has-header) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.is-overlap-disabled.has-breadcrumbs:not(.has-header) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  /*
-  Determine the grid gap that preceeds the header template area. The content header 
-  is deprecated so this is an edge case for teams that migrated to visual refresh 
-  before the Content Layout was released. If the notifications and breadcrumbs 
-  do not exist then the gap should align the header with the trigger buttons.
-  */
-  &.has-notifications-content.has-header,
-  &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: 0;
-  }
-
-  &:not(.has-notifications-content):not(.has-breadcrumbs).has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
   /*
