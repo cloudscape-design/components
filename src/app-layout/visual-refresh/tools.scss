@@ -149,7 +149,7 @@ handleSplitPanelMaxWidth function in the context.
   }
 
   /*
-  Apply the animation only in desktop viewports because the AppBar will
+  Apply the animation only in desktop viewports because the MobileToolbar will 
   take control in responsive viewports.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {

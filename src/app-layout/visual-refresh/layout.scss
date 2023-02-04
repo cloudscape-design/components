@@ -45,7 +45,7 @@ explicitly set in script.
   background-color: awsui.$color-background-layout-main;
   display: grid;
   grid-template-areas:
-    '. . appBar . .'
+    '. . mobileToolbar . .'
     '. . notificationsGap . .'
     '. . notifications . .'
     '. . breadcrumbsGap . .'
@@ -62,7 +62,7 @@ explicitly set in script.
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
     min-content;
   grid-template-rows:
-    auto // appbar template area
+    auto // mobileToolbar template area
     var(#{custom-props.$notificationsGap})
     auto // notifications template area
     var(#{custom-props.$breadcrumbsGap})
@@ -212,7 +212,7 @@ explicitly set in script.
 
   /*
   In mobile viewports the Navigation and Tools drawers are hidden
-  and triggered by the AppBar which then take up the entire viewport.
+  and triggered by the MobileToolbar which then take up the entire viewport.
   The center column needs permanent space from the horizontal viewport
   edges regardless of whether or not there is a Navigation or Tools.
   */
@@ -226,7 +226,7 @@ explicitly set in script.
 If disableBodyScroll is true (very uncommon use case) then the AppLayout component 
 and not the document body will be the scrollable element. This requires a fixed height 
 instead of a minimum height with a vertical scroll policy. The offset top value for 
-components with position: sticky (AppBar, Navigation, Notifications, Tools) will be 
+components with position: sticky (MobileToolbar, Navigation, Notifications, Tools) will be 
 set zero since the AppLayout is nearest scrollable parent and any existing header does 
 not matter. The offset top value for AppLayout contentMain children with 
 position: sticky will be the value of the notifications height in addition to the 
