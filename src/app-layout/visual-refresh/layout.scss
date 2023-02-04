@@ -43,6 +43,7 @@ explicitly set in script.
   #{custom-props.$offsetTopWithNotifications}: 0px;
   #{custom-props.$overlapHeight}: #{awsui.$space-dark-header-overlap-distance};
   background-color: awsui.$color-background-layout-main;
+  color: awsui.$color-text-body-default;
   display: grid;
   grid-template-areas:
     '. . mobileToolbar . .'
@@ -74,7 +75,6 @@ explicitly set in script.
     var(#{custom-props.$mainTemplateRows}); // main template area
   min-height: var(#{custom-props.$contentHeight});
   position: relative;
-  color: awsui.$color-text-body-default;
 
   /*
   Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
@@ -169,6 +169,11 @@ explicitly set in script.
     }
   }
 
+  /*
+  Only use the max content width custom property for the middle column definition
+  if the maxContentWidth property has been explicitly set to a non-zero value and
+  subsequently set the has-max-content-width data attribute to true.
+  */
   &.has-max-content-width {
     #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
   }
@@ -187,6 +192,32 @@ explicitly set in script.
 
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
+  }
+
+  /*
+  Override the dark header overlap height property if isOverlapDisabled is true.
+  The is computed state from props that can be found in the AppLayout context.
+  */
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
+  }
+
+  /*
+  The offset top value for components with position: sticky (AppBar, Navigation, 
+  Notifications, Tools) will be set to the header height value. The offset top value 
+  for AppLayout contentMain children with position: sticky will be the combined value 
+  of the header and notifications height in addition to the notifications top margin
+  and some additional vertical space for aesthetics.
+  */
+  &:not(.has-sticky-notifications) {
+    #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
+  }
+
+  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
+  &.has-sticky-notifications {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+    );
   }
 
   /*
@@ -219,6 +250,55 @@ explicitly set in script.
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$contentGapLeft}: #{awsui.$space-l};
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
+  }
+
+  /*
+  Set the grid gaps for notifications, breadcrumbs, header, and main when they are the 
+  first child in the content area. This will align the first content of the page with 
+  the trigger buttons.
+  */
+  &.content-first-child-notifications {
+    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.content-first-child-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
+  }
+
+  &.content-first-child-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.content-first-child-main:not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  /*
+  When breadcrumbs, header, and main are not the first child content set the grid gaps
+  for all combinations of adjacent siblings.
+  */
+  &.has-notifications-content.has-breadcrumbs {
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-notifications-content.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  &.has-header:not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
+  }
+
+  &.has-header.is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
 }
 
