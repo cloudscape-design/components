@@ -57,6 +57,7 @@ export default function Layout({ children }: LayoutProps) {
     toolsHide
   );
 
+  // Determine the first content child so the gap will vertically align with the trigger buttons
   const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
 
   return (
