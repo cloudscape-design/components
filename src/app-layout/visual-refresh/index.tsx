@@ -24,9 +24,9 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
         <Layout>
           <Background />
 
-          <MobileToolbar />
-
           <Navigation />
+
+          <MobileToolbar />
 
           <Notifications />
 
