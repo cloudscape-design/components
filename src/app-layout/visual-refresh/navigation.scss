@@ -2,88 +2,134 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+
 @use '../../internal/styles/' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
-.navigation-trigger-container {
-  display: grid;
-  grid-column: 1;
-  grid-row: 1 / span 10;
-  height: awsui.$space-layout-toggle-diameter;
-  margin: awsui.$space-scaled-s awsui.$space-layout-toggle-padding 0;
-  position: sticky;
-  top: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-scaled-s});
-  width: awsui.$space-layout-toggle-diameter;
-  z-index: 850;
-
-  &.is-navigation-open {
-    @include styles.with-motion {
-      opacity: 0;
-      transition: 0;
-    }
-  }
-
-  &:not(.is-navigation-open) {
-    @include styles.with-motion {
-      opacity: 1;
-      transition: awsui.$motion-duration-refresh-only-slow;
-    }
-  }
-
-  > .navigation-trigger {
-    grid-column: 2;
-  }
-}
-
-.navigation-drawer {
+.navigation-container {
   #{custom-props.$navigationWidth}: 280px;
-  background-color: awsui.$color-background-container-content;
-  box-shadow: awsui.$shadow-panel;
-  display: grid;
+  display: flex;
   grid-column: 1;
   grid-row: 1 / span 10;
-  grid-template-columns: 1fr auto awsui.$space-m;
-  grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
   height: var(#{custom-props.$contentHeight});
-  overflow-x: hidden;
+  /*
+  The navigation and tools containers (that contain the toggle buttons) stretch the full 
+  height of the app layout. Normally, this wouldn't be an issue because they sit above 
+  the app layout's content padding. But if disableContentPaddings is set to true and 
+  there are buttons on the left/right edges of the screen, they will be covered by 
+  the containers. So we need to disable pointer events in the container and re-enable 
+  them in the panels and toggle buttons.
+  */
+  pointer-events: none;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 850;
-
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-  }
-
-  &:not(.is-navigation-open) {
-    opacity: 0;
-    width: 0;
-  }
-
-  &.is-navigation-open {
-    opacity: 1;
-    width: var(#{custom-props.$navigationWidth});
-  }
-
-  > .navigation-close-button {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  > .navigation-content {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 3;
-    width: var(#{custom-props.$navigationWidth});
-  }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     #{custom-props.$navigationWidth}: 320px;
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    #{custom-props.$navigationWidth}: 100vw;
     left: 0;
     position: fixed;
+    top: var(#{custom-props.$offsetTop});
     z-index: 1001;
   }
+}
+
+nav.show-navigation {
+  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+
+  // Animation for the buttons when they are added to the DOM
+  @keyframes showButtons {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  &.is-navigation-open {
+    display: none;
+  }
+
+  /*
+  Apply the animation only in desktop viewports because the AppBar will 
+  take control in responsive viewports.
+  */
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    &:not(.is-navigation-open) {
+      display: block;
+      &.animating {
+        @include styles.with-motion {
+          animation: showButtons awsui.$motion-duration-refresh-only-fast;
+        }
+      }
+    }
+  }
+}
+
+nav.navigation {
+  background-color: awsui.$color-background-container-content;
+  box-shadow: awsui.$shadow-panel;
+  bottom: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  position: relative;
+  word-wrap: break-word;
+  pointer-events: auto;
+
+  // Animation for the Navigation opacity and width when it is added to the DOM
+  @keyframes openNavigation {
+    from {
+      opacity: 0;
+      width: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
+    }
+
+    to {
+      opacity: 1;
+      width: var(#{custom-props.$navigationWidth});
+    }
+  }
+
+  // All content is hidden by the overflow-x property
+  &:not(.is-navigation-open) {
+    width: 0;
+    // We need to hide the closed panel to make containing focusable elements not focusable anymore.
+    display: none;
+  }
+
+  // Apply the animation when the Navigation is opened
+  &.is-navigation-open {
+    &.animating {
+      @include styles.with-motion {
+        animation: openNavigation awsui.$motion-duration-refresh-only-fast;
+      }
+    }
+  }
+
+  /*
+  A non-semantic node is added with a fixed width equal to the final Navigation 
+  width. This will create the visual appearance of horizontal movement and 
+  prevent unwanted text wrapping.
+  */
+  > .animated-content {
+    width: var(#{custom-props.$navigationWidth});
+  }
+
+  // The Navigation drawer will take up the entire viewport on mobile
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    #{custom-props.$navigationWidth}: 100vw;
+  }
+}
+
+.hide-navigation {
+  position: absolute;
+  right: awsui.$space-m;
+  top: awsui.$size-vertical-panel-icon-offset;
 }

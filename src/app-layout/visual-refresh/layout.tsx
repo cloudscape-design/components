@@ -22,7 +22,6 @@ export default function Layout({ children }: LayoutProps) {
   const {
     breadcrumbs,
     contentHeader,
-    contentType,
     disableBodyScroll,
     disableContentHeaderOverlap,
     dynamicOverlapHeight,
@@ -62,7 +61,6 @@ export default function Layout({ children }: LayoutProps) {
     <main
       className={clsx(
         styles.layout,
-        styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-body-scroll']]: disableBodyScroll,

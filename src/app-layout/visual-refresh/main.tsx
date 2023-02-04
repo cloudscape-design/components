@@ -10,7 +10,6 @@ import testutilStyles from '../test-classes/styles.css.js';
 export default function Main() {
   const {
     content,
-    contentType,
     disableContentPaddings,
     isNavigationOpen,
     isSplitPanelOpen,
@@ -31,7 +30,6 @@ export default function Main() {
     <div
       className={clsx(
         styles.container,
-        styles[`content-type-${contentType}`],
         styles[`split-panel-position-${splitPanelPosition ?? 'bottom'}`],
         {
           [styles['disable-content-paddings']]: disableContentPaddings,
