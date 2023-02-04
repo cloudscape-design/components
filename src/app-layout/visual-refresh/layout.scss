@@ -179,12 +179,12 @@ explicitly set in script.
   }
 
   /*
-  Warning! This is a hack! We are implementing a short term fix to prevent the tools drawer 
-  from potentially getting pushed off screen. Currently there is no protection against a 
-  navigationWidth, minContentWidth, and toolsWidth that are in excess ove the available 
-  space in the viewport. To accomodate this we remove the minContentWidth and set it to 
-  zero in small viewports and below until the isMobile breakpoint sets the drawers to 
-  overlay at 100vw.
+  Warning! This is a hack! We are implementing a short term fix to prevent the
+  tools drawer from potentially getting pushed off screen. Currently there is no
+  protection against a navigationWidth, minContentWidth, and toolsWidth that are
+  in excess ove the available space in the viewport. To accomodate this we remove
+  the minContentWidth and set it to zero in small viewports and below until the
+  isMobile breakpoint sets the drawers to overlay at 100vw.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: var(#{custom-props.$minContentWidth}, 280px);
