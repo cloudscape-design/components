@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import AppBar from './app-bar';
 import { AppLayoutInternalsProvider } from './context';
 import { AppLayoutProps } from '../interfaces';
 import Background from './background';
@@ -9,6 +8,7 @@ import Breadcrumbs from './breadcrumbs';
 import Header from './header';
 import Layout from './layout';
 import Main from './main';
+import MobileToolbar from './mobile-toolbar';
 import Navigation from './navigation';
 import Notifications from './notifications';
 import SplitPanel from './split-panel';
@@ -24,7 +24,7 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
         <Layout>
           <Background />
 
-          <AppBar />
+          <MobileToolbar />
 
           <Navigation />
 

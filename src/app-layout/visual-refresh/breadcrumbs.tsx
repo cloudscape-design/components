@@ -6,10 +6,6 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
-/**
- * The CSS class 'awsui-context-content-header' needs to be added to the root element so
- * that the design tokens used are overridden with the appropriate values.
- */
 export default function Breadcrumbs() {
   const { breadcrumbs, hasStickyBackground, isMobile } = useAppLayoutInternals();
 
@@ -18,13 +14,15 @@ export default function Breadcrumbs() {
   }
 
   return (
-    <div className={clsx(
-      styles.breadcrumbs, 
-      testutilStyles.breadcrumbs, 
-      {
-        [styles['has-sticky-background']]: hasStickyBackground
-      },
-      'awsui-context-content-header')}
+    <div
+      className={clsx(
+        styles.breadcrumbs,
+        testutilStyles.breadcrumbs,
+        {
+          [styles['has-sticky-background']]: hasStickyBackground,
+        },
+        'awsui-context-content-header'
+      )}
     >
       {breadcrumbs}
     </div>

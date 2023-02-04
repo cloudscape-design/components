@@ -8,11 +8,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { useFocusControl } from '../utils/use-focus-control';
 
-/**
- * The CSS class 'awsui-context-content-header' needs to be added to the root element so
- * that the design tokens used are overridden with the appropriate values.
- */
-export default function AppBar() {
+export default function MobileToolbar() {
   const {
     ariaLabels,
     breadcrumbs,
@@ -36,7 +32,7 @@ export default function AppBar() {
   return (
     <section
       className={clsx(
-        styles.appbar,
+        styles['mobile-toolbar'],
         {
           [styles.unfocusable]: isAnyPanelOpen,
         },
@@ -47,7 +43,7 @@ export default function AppBar() {
       {!navigationHide && (
         <nav
           aria-hidden={isNavigationOpen}
-          className={clsx(styles['appbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
+          className={clsx(styles['mobile-toolbar-nav'], { [testutilStyles['drawer-closed']]: !isNavigationOpen })}
         >
           <InternalButton
             ariaLabel={ariaLabels?.navigationToggle ?? undefined}
@@ -65,14 +61,14 @@ export default function AppBar() {
       )}
 
       {breadcrumbs && (
-        <div className={clsx(styles['appbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
+        <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
       {!toolsHide && (
         <aside
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
-          className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
+          className={clsx(styles['mobile-toolbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
         >
           <InternalButton
             className={testutilStyles['tools-toggle']}

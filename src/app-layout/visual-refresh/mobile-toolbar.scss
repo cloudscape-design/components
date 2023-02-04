@@ -7,7 +7,7 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
-section.appbar {
+section.mobile-toolbar {
   align-items: center;
   background-color: awsui.$color-background-home-header;
   border-bottom: 1px solid awsui.$color-border-divider-default;
@@ -23,17 +23,17 @@ section.appbar {
   top: var(#{custom-props.$offsetTop});
   z-index: 1000;
 
-  > .appbar-nav {
+  > .mobile-toolbar-nav {
     grid-column: 1;
     margin-right: awsui.$space-m;
   }
 
-  > .appbar-breadcrumbs {
+  > .mobile-toolbar-breadcrumbs {
     grid-column: 2;
     background-color: awsui.$color-background-layout-main;
   }
 
-  > .appbar-tools {
+  > .mobile-toolbar-tools {
     grid-column: 3;
     margin-left: awsui.$space-m;
   }
