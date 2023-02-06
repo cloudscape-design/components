@@ -53,8 +53,8 @@ const permutations = createPermutations<FlashbarProps>([
       [sampleNotifications.success],
       [sampleNotifications.error],
       [sampleNotifications.warning],
-      [sampleNotifications.success, sampleNotifications.error],
-      [sampleNotifications.success, sampleNotifications.error, sampleNotifications.warning],
+      [sampleNotifications.error, sampleNotifications.success],
+      [sampleNotifications.warning, sampleNotifications.error, sampleNotifications.success],
     ],
   },
 ]);
