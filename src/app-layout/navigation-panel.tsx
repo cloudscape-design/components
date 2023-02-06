@@ -10,7 +10,6 @@ import useContentHeight from './utils/use-content-height';
 
 interface NavigationPanelProps {
   navigationOpen: boolean;
-  isHidden: DesktopDrawerProps['isHidden'];
 
   navigationDrawerWidth: number;
   navigationWidth: number;
@@ -23,7 +22,6 @@ interface NavigationPanelProps {
   ariaLabels: AppLayoutProps['ariaLabels'];
 
   isMobile: boolean;
-  isMotionEnabled: boolean;
 
   onNavigationToggle: DesktopDrawerProps['onToggle'];
   onClick: DesktopDrawerProps['onClick'];
@@ -35,7 +33,6 @@ export function NavigationPanel({
   ariaLabels,
   footerHeight,
   headerHeight,
-  isHidden,
   isMobile,
   navigation,
   navigationDrawerWidth,
@@ -62,13 +59,12 @@ export function NavigationPanel({
           isMobile={isMobile}
           width={navigationWidth}
           isOpen={navigationOpen}
-          isHidden={isHidden}
           onToggle={onNavigationToggle}
           toggleRefs={toggleRefs}
           onClick={onClick}
-          contentClassName={clsx(styles.navigation, testutilStyles.navigation)}
-          closeClassName={clsx(styles['navigation-close'], testutilStyles['navigation-close'])}
-          toggleClassName={clsx(styles['navigation-toggle'], testutilStyles['navigation-toggle'])}
+          contentClassName={testutilStyles.navigation}
+          closeClassName={testutilStyles['navigation-close']}
+          toggleClassName={testutilStyles['navigation-toggle']}
           topOffset={headerHeight}
           bottomOffset={footerHeight}
           ariaLabels={ariaLabels}
