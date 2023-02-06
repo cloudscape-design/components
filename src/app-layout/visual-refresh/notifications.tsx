@@ -7,13 +7,7 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export default function Notifications() {
-  const { 
-    ariaLabels, 
-    isAnyPanelOpen,
-    isMobile,
-    notifications, 
-    notificationsElement, 
-    stickyNotifications } =
+  const { ariaLabels, isAnyPanelOpen, isMobile, notifications, notificationsElement, stickyNotifications } =
     useAppLayoutInternals();
 
   if (!notifications) {

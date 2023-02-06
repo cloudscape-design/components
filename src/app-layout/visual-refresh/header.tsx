@@ -13,12 +13,13 @@ export default function Header() {
   }
 
   return (
-    <header className={clsx(
-      styles.content, {
-        [styles.unfocusable]: isMobile && isAnyPanelOpen,
-      },
-      'awsui-context-content-header'
-    )}>
+    <header
+      className={clsx(
+        styles.content,
+        { [styles.unfocusable]: isMobile && isAnyPanelOpen },
+        'awsui-context-content-header'
+      )}
+    >
       {contentHeader}
     </header>
   );
