@@ -278,7 +278,7 @@ explicitly set in script.
   for all combinations of adjacent siblings.
   */
   &.has-notifications-content.has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
+    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
   }
 
   &.has-notifications-content:not(.has-breadcrumbs).has-header {
@@ -289,8 +289,16 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
 
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
   &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled):not(.has-sticky-background) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
 
   &.has-header:not(.is-overlap-disabled) {
