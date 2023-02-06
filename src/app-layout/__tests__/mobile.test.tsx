@@ -221,6 +221,8 @@ describeEachThemeAppLayout(true, theme => {
   describe('unfocusable content', () => {
     const props = {
       content: 'Body content',
+      contentHeader: 'Content header',
+      notifications: 'Notifications',
       navigation: 'Navigation',
       tools: 'Help',
       breadcrumbs: 'Breadcrumbs',
@@ -238,7 +240,7 @@ describeEachThemeAppLayout(true, theme => {
       if (isUsingGridLayout) {
         // In refactored Visual Refresh we make tools-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
-        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(3);
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(5);
         expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(testUtilsStyles.content)?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(visualRefreshRefactoredStyles['tools-container'])?.getElement()).toHaveClass(
@@ -257,7 +259,7 @@ describeEachThemeAppLayout(true, theme => {
       if (isUsingGridLayout) {
         // In refactored Visual Refresh we make navigation-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
-        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(3);
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(5);
         expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(testUtilsStyles.content)?.getElement()).toHaveClass(unfocusableClassName);
         expect(

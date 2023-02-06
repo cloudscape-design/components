@@ -23,8 +23,10 @@ export default function () {
       }
       navigation={<Navigation />}
       navigationOpen={navigationOpen}
+      onNavigationChange={e => setNavigationOpen(e.detail.open)}
       tools={<Tools>{toolsContent.long}</Tools>}
       toolsOpen={toolsOpen}
+      onToolsChange={e => setToolsOpen(e.detail.open)}
       breadcrumbs={<Breadcrumbs />}
       maxContentWidth={maxContentWidth}
       content={
