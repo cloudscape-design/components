@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { setupTest } from './pages/interactive-page';
+import { FlashbarInteractivePage, setupTest } from './pages/interactive-page';
 import { FOCUS_THROTTLE_DELAY } from '../utils';
+import { createWrapper } from '@cloudscape-design/test-utils-core/selectors';
 
 describe('Collapsible Flashbar', () => {
   describe('Keyboard navigation', () => {
@@ -129,4 +130,29 @@ describe('Collapsible Flashbar', () => {
       );
     });
   });
+
+  describe('Layout', () => {
+    test(
+      'keeps a space to the screen bottom to prevent the notification bar from getting cropped',
+      setupTest(async page => {
+        const smallWindowHeight = 400;
+        await page.toggleStackingFeature();
+        await page.toggleCollapsedState();
+        await page.setWindowSize({ width: 1000, height: smallWindowHeight });
+        expect(await getLastFlashBottom(page)).toBeGreaterThan(smallWindowHeight);
+        await page.windowScrollTo({ top: 1000 });
+        expect(await getLastFlashBottom(page)).toBeLessThan(smallWindowHeight);
+        await page.setWindowSize({ width: 1000, height: smallWindowHeight + 5 });
+        expect(await getLastFlashBottom(page)).toBeLessThan(smallWindowHeight);
+        await page.setWindowSize({ width: 1000, height: smallWindowHeight });
+        expect(await getLastFlashBottom(page)).toBeLessThan(smallWindowHeight);
+      })
+    );
+  });
 });
+
+async function getLastFlashBottom(page: FlashbarInteractivePage) {
+  const items = createWrapper().findFlashbar().findItems();
+  const lastItem = items.get(await page.countFlashes());
+  return (await page.getBoundingBox(lastItem.toSelector())).bottom;
+}

@@ -105,16 +105,16 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         const listElement = listElementRef?.current;
         const flashbar = listElement?.parentElement;
         if (listElement && flashbar) {
-          const bottom = listElement.getBoundingClientRect().bottom;
-          const windowHeight = window.innerHeight;
-          // Apply the class first (before rendering)
-          // so that we can make calculations based on the applied padding-bottom;
+          // Make sure the bottom padding is present when we make the calculations,
           // then we might decide to remove it or not.
-          flashbar.classList.add(styles['spaced-bottom']);
-          const applySpacing =
-            isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) >= windowHeight;
+          flashbar.classList.remove(styles.floating);
+          // We add `window.scrollY` because `getBoundingClientRect().bottom` returns coordinates relative to the
+          // window, but we are interested in the vertical coordinate of the Flashbar relative to the document body top.
+          const bottom = flashbar.getBoundingClientRect().bottom + window.scrollY;
+          const windowHeight = window.innerHeight;
+          const applySpacing = isFlashbarStackExpanded && bottom >= windowHeight;
           if (!applySpacing) {
-            flashbar.classList.remove(styles['spaced-bottom']);
+            flashbar.classList.add(styles.floating);
           }
         }
       }, resizeListenerThrottleDelay),
