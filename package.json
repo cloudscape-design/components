@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
+    "@cloudscape-design/component-toolkit": "^1.0.0-beta.6",
     "@cloudscape-design/test-utils-core": "^1.0.0",
     "@cloudscape-design/theming-runtime": "^1.0.0",
     "@juggle/resize-observer": "^3.3.1",

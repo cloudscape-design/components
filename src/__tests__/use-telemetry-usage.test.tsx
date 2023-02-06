@@ -8,7 +8,7 @@ import {
   MetricsTestHelper,
   formatVersionForMetricName,
   formatMajorVersionForMetricDetail,
-} from '../../lib/components/internal/metrics';
+} from '@cloudscape-design/component-toolkit/internal/base-component';
 import { THEME, PACKAGE_VERSION } from '../../lib/components/internal/environment';
 import { Checkbox, Button } from '../../lib/components';
 

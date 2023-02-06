@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import useBaseComponent, {
   InternalBaseComponentProps,
 } from '../../../../../lib/components/internal/hooks/use-base-component';
-import { COMPONENT_METADATA_KEY } from '../../../../../lib/components/internal/hooks/use-base-component/component-metadata';
+import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal/base-component';
 import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
