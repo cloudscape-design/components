@@ -10,7 +10,7 @@ import styles from './styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Header() {
-  const { breadcrumbs, contentHeader, hasNotificationsContent } = useAppLayoutInternals();
+  const { breadcrumbs, contentHeader, hasNotificationsContent, isMobile, isAnyPanelOpen } = useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
@@ -23,6 +23,7 @@ export default function Header() {
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles['has-notifications-content']]: hasNotificationsContent,
+          [styles.unfocusable]: isMobile && isAnyPanelOpen,
         },
         'awsui-context-content-header'
       )}
