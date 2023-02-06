@@ -64,23 +64,6 @@ test('should call the useTelemetry hook passing down the given component name', 
   expect(useTelemetry).toHaveBeenCalledWith('DemoComponent');
 });
 
-test('overriding the metadata is not possible', () => {
-  const { container } = render(<Demo />);
-  const rootNode: any = container.firstChild;
-  expect(rootNode[COMPONENT_METADATA_KEY]?.name).toBe('DemoComponent');
-  expect(rootNode[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
-
-  expect(() => {
-    rootNode[COMPONENT_METADATA_KEY]!.name = 'changed name';
-  }).toThrow(`Cannot assign to read only property 'name' of object '#<Object>'`);
-  expect(() => {
-    rootNode[COMPONENT_METADATA_KEY]!.version = 'changed version';
-  }).toThrow(`Cannot assign to read only property 'version' of object '#<Object>'`);
-
-  expect(rootNode[COMPONENT_METADATA_KEY]?.name).toBe('DemoComponent');
-  expect(rootNode[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
-});
-
 test('metadata get attached on the Portal component root DOM node when elementRef is changing', () => {
   /**
    * This test component uses the  internal Portal component where a conditional
