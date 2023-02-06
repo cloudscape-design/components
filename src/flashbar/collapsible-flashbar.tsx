@@ -88,9 +88,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   useLayoutEffect(() => {
     if (isFlashbarStackExpanded && items?.length) {
-      const lastItem = items[items.length - 1];
-      if (lastItem.id !== undefined) {
-        focusFlashById(ref.current, lastItem.id);
+      const mostRecentItem = items[0];
+      if (mostRecentItem.id !== undefined) {
+        focusFlashById(ref.current, mostRecentItem.id);
       }
     }
     // Run this after expanding, but not every time the items change.
@@ -152,16 +152,13 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const isCollapsible = items.length > maxNonCollapsibleItems;
 
-  // When using the stacking feature, the items are shown in reverse order (last item on top)
-  const reversedItems = items.slice().reverse();
-
   const countByType = getFlashTypeCount(items);
 
   const stackDepth = Math.min(3, items.length);
 
   const itemsToShow = isFlashbarStackExpanded
-    ? reversedItems.map((item, index) => ({ ...item, expandedIndex: index }))
-    : getVisibleCollapsedItems(reversedItems, stackDepth).map((item: StackableItem, index: number) => ({
+    ? items.map((item, index) => ({ ...item, expandedIndex: index }))
+    : getVisibleCollapsedItems(items, stackDepth).map((item: StackableItem, index: number) => ({
         ...item,
         collapsedIndex: index,
       }));

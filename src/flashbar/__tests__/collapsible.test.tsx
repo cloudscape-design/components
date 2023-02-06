@@ -35,12 +35,12 @@ const defaultProps = {
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
-    it('shows only the header and content of the last item in the array when collapsed', () => {
+    it('shows only the header and content of the first item in the array when collapsed', () => {
       const flashbar = renderFlashbar();
       const items = flashbar.findItems();
       expect(items.length).toBe(1);
-      expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
-      expect(items[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+      expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+      expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
     });
 
     it('shows toggle element with desired text', () => {
@@ -64,24 +64,24 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const items = flashbar.findItems();
       expect(items.length).toBe(1);
-      expect(items[0].findHeader()!.getElement()).toHaveTextContent('Success');
-      expect(items[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+      expect(items[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+      expect(items[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
 
       findNotificationBar(flashbar)!.click();
 
       const expandedItems = flashbar.findItems();
       expect(expandedItems.length).toBe(2);
-      expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent('Success');
-      expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
-      expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent('Error');
-      expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent('There was an error');
+      expect(expandedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+      expect(expandedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
+      expect(expandedItems[1].findHeader()!.getElement()).toHaveTextContent(defaultItems[1].header!.toString());
+      expect(expandedItems[1].findContent()!.getElement()).toHaveTextContent(defaultItems[1].content!.toString());
 
       findNotificationBar(flashbar)!.click();
 
       const collapsedItems = flashbar.findItems();
       expect(collapsedItems.length).toBe(1);
-      expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent('Success');
-      expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent('Everything went fine');
+      expect(collapsedItems[0].findHeader()!.getElement()).toHaveTextContent(defaultItems[0].header!.toString());
+      expect(collapsedItems[0].findContent()!.getElement()).toHaveTextContent(defaultItems[0].content!.toString());
     });
 
     it('collapses automatically when enough items are added', () => {

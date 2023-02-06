@@ -36,7 +36,7 @@ export default function FlashbarPermutations() {
   };
 
   const add = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [...items, generateItem(type, dismiss, hasHeader)]);
+    setItems(items => [generateItem(type, dismiss, hasHeader), ...items]);
   };
 
   const addMultiple = (type: FlashbarProps.Type, hasHeader = false) => {
@@ -45,12 +45,12 @@ export default function FlashbarPermutations() {
     setTimeout(() => add(type, hasHeader), 200);
   };
 
-  const addTop = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [generateItem(type, dismiss, hasHeader), ...items]);
+  const addToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
+    setItems(items => [...items, generateItem(type, dismiss, hasHeader)]);
   };
 
-  const removeLastAndAdd = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [...items.slice(0, items.length - 1), generateItem(type, dismiss, hasHeader)]);
+  const removeAndAddToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
+    setItems(items => [generateItem(type, dismiss, hasHeader), ...items.slice(1, items.length)]);
   };
 
   const [collapsible, setCollapsible] = useState(false);
@@ -95,10 +95,10 @@ export default function FlashbarPermutations() {
             Add Multiple Error Flashes
           </Button>
           <Button onClick={() => add('warning')}>Add Warning Flash</Button>
-          <Button data-id="add-to-top" onClick={() => addTop('error')}>
-            Add To Top
+          <Button data-id="add-error-to-bottom" onClick={() => addToBottom('error')}>
+            Add To Bottom
           </Button>
-          <Button onClick={() => removeLastAndAdd('error')}>Add And Remove</Button>
+          <Button onClick={() => removeAndAddToBottom('error')}>Add And Remove</Button>
         </SpaceBetween>
         <Flashbar items={items} {...restProps} />
       </SpaceBetween>

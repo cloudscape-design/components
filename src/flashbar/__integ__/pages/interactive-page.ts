@@ -16,15 +16,15 @@ export class FlashbarInteractivePage extends BasePageObject {
     await this.click('[data-id="add-error"]');
   }
 
-  async addErrorFlashToTop() {
-    await this.click('[data-id="add-to-top"]');
+  async addErrorFlashToBottom() {
+    await this.click('[data-id="add-error-to-bottom"]');
   }
 
   async addSequentialErrorFlashes() {
     await this.click('[data-id="add-multiple"]');
   }
 
-  async toggleCollapsibleFeature() {
+  async toggleStackingFeature() {
     await this.click('[data-id="stack-items"]');
   }
 
@@ -33,7 +33,7 @@ export class FlashbarInteractivePage extends BasePageObject {
     await this.click(selector);
   }
 
-  findFlashes() {
+  countFlashes() {
     return this.getElementsCount(createWrapper().findFlashbar().findItems().toSelector());
   }
 
