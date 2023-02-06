@@ -49,7 +49,7 @@ div.background {
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
       &.has-sticky-background {
         position: sticky;
-        top: var(#{custom-props.$offsetTopWithNotifications});
+        top: calc(var(#{custom-props.$offsetTopWithNotifications}) - #{awsui.$space-scaled-xxs});
         z-index: 799;
       }
     }

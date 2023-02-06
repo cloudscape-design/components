@@ -269,10 +269,6 @@ explicitly set in script.
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
-  &.content-first-child-main:not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
   /*
   When breadcrumbs, header, and main are not the first child content set the grid gaps
   for all combinations of adjacent siblings.
@@ -286,28 +282,37 @@ explicitly set in script.
   }
 
   &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
   }
 
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-sticky-background) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled):not(.has-sticky-background) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-header:not(.is-overlap-disabled) {
+  // dark-header-main
+  &.has-header {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
   }
 
-  &.has-header.is-overlap-disabled {
+  // dark-header-headless
+  &.has-breadcrumbs:not(.has-header) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  // disable-paddings-edge-controls
+  // legacy-nav-empty
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
+  &:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
+
+  // with-table
+  &:not(.has-header):not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
+  }
+
+  // known bugs:
+  // legacy-nav-empty
+  // no-panels-with-notifications
+  // with-notifications
+  // with-wizard-and-table
+  // with-wizard
 }
 
 /*
