@@ -281,11 +281,11 @@ explicitly set in script.
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
   }
 
-  &.has-notifications-content.has-header {
+  &.has-notifications-content:not(.has-breadcrumbs).has-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-sticky-background) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
 
