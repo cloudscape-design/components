@@ -23,7 +23,7 @@ jobs:
       artifact-name: build
   deploy:
     needs: build
-    uses: cloudscape-design/.github/.github/workflows/deploy.yml@main
+    uses: cloudscape-design/.github/.github/workflows/deploy.yml@feat/deployments-test
     secrets: inherit
     with:
       artifact-name: build
