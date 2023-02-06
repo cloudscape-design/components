@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Metrics } from '../../metrics';
 
-jest.mock('../../environment', () => ({ PACKAGE_VERSION: '3.0 (HEAD)' }), { virtual: true });
+import { Metrics } from '../../metrics/metrics';
+
+const metrics = new Metrics('components', '3.0 (HEAD)');
 
 declare global {
   interface Window {
@@ -22,7 +23,7 @@ describe('Client Metrics support', () => {
   };
 
   const initMetrics = () => {
-    Metrics.initMetrics('default');
+    metrics.initMetrics('default');
   };
 
   const definePanorama = () => {
@@ -54,12 +55,12 @@ describe('Client Metrics support', () => {
 
   describe('sendMetric', () => {
     test('does nothing when window.AWSC is undefined', () => {
-      Metrics.sendMetric('name', 0); // only proves no exception thrown
+      metrics.sendMetric('name', 0); // only proves no exception thrown
     });
 
     test('does nothing when window.AWSC.Clog is undefined', () => {
       window.AWSC = undefined;
-      Metrics.sendMetric('name', 0); // only proves no exception thrown
+      metrics.sendMetric('name', 0); // only proves no exception thrown
     });
 
     test('does nothing when window.AWSC.Clog.log is undefined', () => {
@@ -68,7 +69,7 @@ describe('Client Metrics support', () => {
       window.AWSC = {
         Clog: undefined,
       };
-      Metrics.sendMetric('name', 0); // only proves no exception thrown
+      metrics.sendMetric('name', 0); // only proves no exception thrown
     });
 
     describe('within an iframe', () => {
@@ -92,7 +93,7 @@ describe('Client Metrics support', () => {
         setupIframe();
         expect(window.parent.AWSC).toBeUndefined();
 
-        Metrics.sendMetric('name', 0); // only proves no exception thrown
+        metrics.sendMetric('name', 0); // only proves no exception thrown
       });
 
       test('works if parent has AWSC', () => {
@@ -106,7 +107,7 @@ describe('Client Metrics support', () => {
         });
         jest.spyOn(window.parent.AWSC.Clog, 'log');
 
-        Metrics.sendMetric('name', 0, undefined);
+        metrics.sendMetric('name', 0, undefined);
         expect(window.parent.AWSC.Clog.log).toHaveBeenCalledWith('name', 0, undefined);
       });
     });
@@ -123,21 +124,21 @@ describe('Client Metrics support', () => {
       });
 
       test('delegates to window.AWSC.Clog.log when defined', () => {
-        Metrics.sendMetric('name', 0, undefined);
+        metrics.sendMetric('name', 0, undefined);
         expect(window.AWSC.Clog.log).toHaveBeenCalledWith('name', 0, undefined);
       });
 
       describe('Metric name validation', () => {
         const tryValidMetric = (metricName: string) => {
           it(`calls AWSC.Clog.log when valid metric name used (${metricName})`, () => {
-            Metrics.sendMetric(metricName, 1, 'detail');
+            metrics.sendMetric(metricName, 1, 'detail');
             expect(window.AWSC.Clog.log).toHaveBeenCalledWith(metricName, 1, 'detail');
           });
         };
 
         const tryInvalidMetric = (metricName: string) => {
           it(`logs an error when invalid metric name used (${metricName})`, () => {
-            Metrics.sendMetric(metricName, 0, 'detail');
+            metrics.sendMetric(metricName, 0, 'detail');
             expect(consoleSpy).toHaveBeenCalledWith(`Invalid metric name: ${metricName}`);
             consoleSpy.mockReset();
           });
@@ -159,13 +160,13 @@ describe('Client Metrics support', () => {
       describe('Metric detail validation', () => {
         test('accepts details up to 200 characters', () => {
           const validDetail = new Array(201).join('a');
-          Metrics.sendMetric('metricName', 1, validDetail);
+          metrics.sendMetric('metricName', 1, validDetail);
           expect(window.AWSC.Clog.log).toHaveBeenCalledWith('metricName', 1, validDetail);
         });
 
         test('throws an error when detail is too long', () => {
           const invalidDetail = new Array(202).join('a');
-          Metrics.sendMetric('metricName', 0, new Array(202).join('a'));
+          metrics.sendMetric('metricName', 0, new Array(202).join('a'));
           expect(consoleSpy).toHaveBeenCalledWith(`Detail for metric metricName is too long: ${invalidDetail}`);
           consoleSpy.mockReset();
         });
@@ -177,14 +178,14 @@ describe('Client Metrics support', () => {
     test('logs a metric name only once', () => {
       defineClog();
 
-      Metrics.sendMetricOnce('my-event', 1);
+      metrics.sendMetricOnce('my-event', 1);
       expect(window.AWSC.Clog.log).toHaveBeenCalledWith('my-event', 1, undefined);
       expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(1);
 
-      Metrics.sendMetricOnce('my-event', 2);
+      metrics.sendMetricOnce('my-event', 2);
       expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(1);
 
-      Metrics.sendMetricOnce('My-Event', 3);
+      metrics.sendMetricOnce('My-Event', 3);
       expect(window.AWSC.Clog.log).toHaveBeenCalledWith('My-Event', 3, undefined);
       expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(2);
     });
@@ -195,7 +196,7 @@ describe('Client Metrics support', () => {
 
     describe('correctly maps input object to metric name', () => {
       test('applies default values for theme (default) and framework (react)', () => {
-        Metrics.sendMetricObject(
+        metrics.sendMetricObject(
           {
             source: 'pkg',
             action: 'used',
@@ -217,7 +218,7 @@ describe('Client Metrics support', () => {
 
       versionTestCases.forEach(testCase => {
         it(`correctly interprets version ${testCase[0]}`, () => {
-          Metrics.sendMetricObject(
+          metrics.sendMetricObject(
             {
               source: 'pkg',
               action: 'used',
@@ -241,12 +242,12 @@ describe('Client Metrics support', () => {
         version: '5.0',
       };
 
-      Metrics.sendMetricObjectOnce(metricObj, 1);
-      Metrics.sendMetricObjectOnce(metricObj, 1);
+      metrics.sendMetricObjectOnce(metricObj, 1);
+      metrics.sendMetricObjectOnce(metricObj, 1);
       expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(1);
     });
     test('logs a metric only once if same source and action but different versions', () => {
-      Metrics.sendMetricObjectOnce(
+      metrics.sendMetricObjectOnce(
         {
           source: 'pkg1',
           action: 'used',
@@ -254,7 +255,7 @@ describe('Client Metrics support', () => {
         },
         1
       );
-      Metrics.sendMetricObjectOnce(
+      metrics.sendMetricObjectOnce(
         {
           source: 'pkg1',
           action: 'used',
@@ -265,7 +266,7 @@ describe('Client Metrics support', () => {
       expect(window.AWSC.Clog.log).toHaveBeenCalledTimes(1);
     });
     test('logs a metric multiple times if same source but different actions', () => {
-      Metrics.sendMetricObjectOnce(
+      metrics.sendMetricObjectOnce(
         {
           source: 'pkg2',
           action: 'used',
@@ -273,7 +274,7 @@ describe('Client Metrics support', () => {
         },
         1
       );
-      Metrics.sendMetricObjectOnce(
+      metrics.sendMetricObjectOnce(
         {
           source: 'pkg2',
           action: 'loaded',
@@ -292,10 +293,10 @@ describe('Client Metrics support', () => {
 
     test('sets theme', () => {
       defineClog();
-      Metrics.initMetrics('dummy-theme');
+      metrics.initMetrics('dummy-theme');
 
       // check that the theme is correctly set
-      Metrics.sendMetricObject(
+      metrics.sendMetricObject(
         {
           source: 'pkg',
           action: 'used',
@@ -310,7 +311,7 @@ describe('Client Metrics support', () => {
   describe('logComponentUsed', () => {
     test('logs the usage of the given component name', () => {
       defineClog();
-      Metrics.logComponentUsed('DummyComponentName');
+      metrics.logComponentUsed('DummyComponentName');
       checkMetric(`awsui_DummyComponentName_d30`, [
         'main',
         'DummyComponentName',
@@ -325,14 +326,14 @@ describe('Client Metrics support', () => {
   describe('logComponentLoaded', () => {
     test('logs the component loaded metric', () => {
       defineClog();
-      Metrics.logComponentLoaded();
+      metrics.logComponentLoaded();
       checkMetric(`awsui_components_d30`, ['main', 'components', 'default', 'loaded', 'react', '3.0(HEAD)']);
     });
   });
 
   describe('sendPanoramaMetric', () => {
     test('does nothing when panorama is undefined', () => {
-      Metrics.sendPanoramaMetric({}); // only proves no exception thrown
+      metrics.sendPanoramaMetric({}); // only proves no exception thrown
     });
 
     describe('when panorama is defined', () => {
@@ -358,7 +359,7 @@ describe('Client Metrics support', () => {
         const mockDateNow = new Date('2022-12-16T00:00:00.00Z').valueOf();
         jest.spyOn(global.Date, 'now').mockImplementationOnce(() => mockDateNow);
 
-        Metrics.sendPanoramaMetric(metric);
+        metrics.sendPanoramaMetric(metric);
         expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', { ...metric, timestamp: mockDateNow });
       });
 
@@ -369,7 +370,7 @@ describe('Client Metrics support', () => {
             eventDetail: new Array(201).join('a'),
           };
 
-          Metrics.sendPanoramaMetric(inputMetric);
+          metrics.sendPanoramaMetric(inputMetric);
           expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(inputMetric));
         });
 
@@ -379,7 +380,7 @@ describe('Client Metrics support', () => {
             eventDetail: new Array(202).join('a'),
           };
 
-          Metrics.sendPanoramaMetric(invalidMetric);
+          metrics.sendPanoramaMetric(invalidMetric);
           expect(consoleSpy).toHaveBeenCalledWith(`Detail for metric is too long: ${invalidMetric.eventDetail}`);
           consoleSpy.mockReset();
         });
@@ -397,7 +398,7 @@ describe('Client Metrics support', () => {
             eventDetail: JSON.stringify(inputMetric.eventDetail),
           };
 
-          Metrics.sendPanoramaMetric(inputMetric);
+          metrics.sendPanoramaMetric(inputMetric);
           expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(expectedMetric));
         });
 
@@ -414,7 +415,7 @@ describe('Client Metrics support', () => {
             eventValue: JSON.stringify(inputMetric.eventValue),
           };
 
-          Metrics.sendPanoramaMetric(inputMetric);
+          metrics.sendPanoramaMetric(inputMetric);
           expect(window.panorama).toHaveBeenCalledWith('trackCustomEvent', expect.objectContaining(expectedMetric));
         });
       });

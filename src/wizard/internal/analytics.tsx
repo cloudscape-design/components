@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../../internal/environment';
 import { Metrics } from '../../internal/metrics';
 import { WizardProps } from '../interfaces';
+
+const metrics = new Metrics(PACKAGE_SOURCE, PACKAGE_VERSION);
 
 const prefix = 'csa_wizard';
 
@@ -45,7 +48,7 @@ export const trackStartStep = (stepIndex?: number) => {
   // Start a new timer of the current step
   timeStart();
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('step'),
@@ -61,7 +64,7 @@ export const trackNavigate = (
   const eventContext = createEventContext(activeStepIndex);
   const time = timeEnd();
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(requestedStepIndex),
     eventType: createEventType('navigate'),
@@ -74,7 +77,7 @@ export const trackSubmit = (stepIndex: number) => {
   // End the timer of the wizard
   const time = timeEnd(prefix);
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('submit'),
