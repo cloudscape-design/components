@@ -285,12 +285,12 @@ explicitly set in script.
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-sticky-background) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
   &.has-breadcrumbs.has-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header):not(.has-sticky-background) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
   }
 
   &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
