@@ -322,7 +322,6 @@ explicitly set in script.
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-      // #{custom-props.$mainGap}: 0;
     }
   }
 
