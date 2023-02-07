@@ -259,20 +259,20 @@ explicitly set in script.
   &.content-first-child-notifications {
     #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
 
+    &.has-breadcrumbs {
+      #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
+    }
+
     &:not(.has-breadcrumbs).has-header,
     &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
     }
 
-    &.has-breadcrumbs {
-      #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
-    }
-
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
 
-      &:not(.has-breadcrumbs):not(.has-header):not(.is-overlap-disabled),
-      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled,
+      &:not(.has-breadcrumbs):not(.has-header):not(.is-overlap-disabled) {
         #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
       }
     }
