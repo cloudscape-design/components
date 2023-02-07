@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { FlashbarProps, CollapsibleFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
 import CollapsibleFlashbar from './collapsible-flashbar';
 import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
@@ -10,7 +10,7 @@ import { sendRenderMetric } from './internal/analytics';
 
 export { FlashbarProps };
 
-export default function Flashbar(props: FlashbarProps | CollapsibleFlashbarProps) {
+export default function Flashbar(props: FlashbarProps) {
   useEffect(() => {
     if (props.items.length > 0) {
       sendRenderMetric(props.items);
@@ -24,7 +24,7 @@ export default function Flashbar(props: FlashbarProps | CollapsibleFlashbarProps
   }
 }
 
-function isStackedFlashbar(props: any): props is CollapsibleFlashbarProps {
+function isStackedFlashbar(props: FlashbarProps) {
   return 'stackItems' in props && props.stackItems;
 }
 

@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import { Flash } from './flash';
-import { CollapsibleFlashbarProps, FlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -14,7 +14,7 @@ import { useFlashbar } from './common';
 
 export { FlashbarProps };
 
-export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps | CollapsibleFlashbarProps) {
+export default function NonCollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
   const { allItemsHaveId, ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar(
     {
       items,

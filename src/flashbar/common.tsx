@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getBaseProps } from '../internal/base-component';
-import { CollapsibleFlashbarProps, FlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
 import { focusFlashById } from './flash';
 
 export const componentName = 'Flashbar';
@@ -19,7 +19,7 @@ export function useFlashbar({
   onItemsChanged,
   onItemsRemoved,
   ...restProps
-}: CollapsibleFlashbarProps & {
+}: FlashbarProps & {
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
