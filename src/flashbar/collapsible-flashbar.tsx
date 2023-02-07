@@ -108,11 +108,12 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           // Make sure the bottom padding is present when we make the calculations,
           // then we might decide to remove it or not.
           flashbar.classList.remove(styles.floating);
-          // We add `window.scrollY` because `getBoundingClientRect().bottom` returns coordinates relative to the
-          // window, but we are interested in the vertical coordinate of the Flashbar relative to the document body top.
-          const bottom = flashbar.getBoundingClientRect().bottom + window.scrollY;
           const windowHeight = window.innerHeight;
-          const applySpacing = isFlashbarStackExpanded && bottom >= windowHeight;
+          // Take the parent region into account if using the App Layout, because it might have additional margins.
+          // Otherwise we use the Flashbar component for this calculation.
+          const outerElement = flashbar.parentElement?.parentElement || flashbar;
+          const applySpacing =
+            isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
           if (!applySpacing) {
             flashbar.classList.add(styles.floating);
           }
@@ -286,7 +287,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         {isCollapsible && (
           <div
             className={clsx(
-              styles.toggle,
+              styles['notification-bar'],
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
               transitioning && styles['animation-running']

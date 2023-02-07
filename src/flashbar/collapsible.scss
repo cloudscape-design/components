@@ -107,7 +107,7 @@ the grid layout will be:
   }
 }
 
-.stack > .toggle {
+.stack > .notification-bar {
   @include styles.text-wrapping;
 
   background: awsui.$color-background-layout-toggle-default;
@@ -226,10 +226,8 @@ the grid layout will be:
   }
 }
 
-// Leave some space below the Flashbar, but only when it reaches the end of the page (not "floating").
-.stack.expanded {
-  padding-bottom: awsui.$space-xxl;
-  &.floating {
-    padding-bottom: 0;
-  }
+// Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
+.stack.expanded:not(.floating) {
+  // Default to 0 so that this does not apply to non-sticky Flashbar.
+  padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
 }
