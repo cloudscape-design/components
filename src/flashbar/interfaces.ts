@@ -73,16 +73,18 @@ export interface FlashbarProps extends BaseComponentProps {
 
   /**
    * An object containing all the necessary localized strings required by the component. The object should contain:
+   *
    * * `ariaLabel` - Specifies the ARIA label for the list of notifications.
    *
-   * If stackItems is set to true, it should also contain:
+   * If `stackItems` is set to `true`, it should also contain:
+   *
    * * `notificationBarAriaLabel` - (optional) Specifies the ARIA label for the notification bar
-   * * `notificationBarText` - Specifies the text shown in the notification bar
-   * * `errorIconAriaLabel` - Specifies the ARIA label for the icon displayed next to the number of items of type error.
-   * * `warningIconAriaLabel` - Specifies the ARIA label for the icon displayed next to the number of items of type warning.
-   * * `infoIconAriaLabel` - Specifies the ARIA label for the icon displayed next to the number of items of type info.
-   * * `successIconAriaLabel` - Specifies the ARIA label for the icon displayed next to the number of items of type success.
-   * * `inProgressIconAriaLabel` - Specifies the ARIA label for the icon displayed next to the number of in-progress items (where loading is set to true).
+   * * `notificationBarText` - (optional) Specifies the text shown in the notification bar
+   * * `errorIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `error`.
+   * * `warningIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `warning`.
+   * * `infoIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `info`.
+   * * `successIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `success`.
+   * * `inProgressIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where `loading` is set to `true`).
    */
   i18nStrings?: FlashbarProps.I18nStrings;
 }
