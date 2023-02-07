@@ -252,88 +252,83 @@ explicitly set in script.
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
-  /*
-  Set the grid gap for Notifications when it is the first child content and the 
-  grid gaps for all adjacent sibling combinations.
-  */
-  &.content-first-child-notifications {
+  // Notifications will always be the first content if it exists
+  &.has-notifications-content {
     #{custom-props.$notificationsGap}: #{awsui.$space-xs};
-
-    &:not(.has-breadcrumbs).has-header {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-    }
-
-    &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-    }
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
-
-      &:not(.has-breadcrumbs).has-header {
-        #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
-      }
-
-      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
-        #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
-      }
-    }
   }
 
-  /*
-  Set the grid gap for Breadcrumbs when it is the first child content and the 
-  grid gaps for all adjacent sibling combinations.
-  */
-  &.content-first-child-breadcrumbs,
+  // The Breadcrumbs gap is the same when it is the first content or after the Notifications
   &.has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
   }
 
-  &.has-breadcrumbs {
-    &.has-header {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
-    }
-
-    &:not(.has-header).is-overlap-disabled {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-    }
-
-    &:not(.has-header):not(.is-overlap-disabled) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
-    }
-  }
-
-  /*
-  Set the grid gap for Header when it is the first child content and the 
-  grid gaps for all adjacent sibling combinations.
-  */
-  &.content-first-child-header {
+  // The Header gap is the same when it is the first content or after the Notifications
+  &.content-first-child-header,
+  &.has-notifications-content:not(.has-breadcrumbs).has-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-m};
-    }
   }
 
+  // The Header gap is slightly smaller when it comes after the Breadcrumbs
+  &.has-breadcrumbs.has-header {
+    #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
+  }
+
+  // Set the Main gap when it follows the Notifications
+  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-xs};
+  }
+
+  // Set the Main gap when it follows the Breadcrumbs
+  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  // Set the Main gap when it follows the Header
   &.has-header {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
   }
 
-  /*
-  Set the grid gap for Main when it is the first child content and the 
-  grid gaps for all adjacent sibling combinations.
-  */
-  &.content-first-child-main.is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-    }
+  // Set the Main gap when it follows the Header
+  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
   }
 
-  &.content-first-child-main:not(.is-overlap-disabled) {
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+  &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+  }
+
+  &.content-first-child-main.is-overlap-disabled.disable-content-paddings {
+    #{custom-props.$mainGap}: 0;
+  }
+
+  /*
+  Override the desktop gap values set above for the Notifications, Header, and Main
+  components for mobile viewports.
+  */
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    &.has-notifications-content {
+      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-header {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-m};
+    }
+
+    &.has-notifications-content:not(.has-breadcrumbs).has-header {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+    }
+
+    &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    }
+
+    // with cards fix
+    &.content-first-child-main:not(.is-overlap-disabled) {
+      #{custom-props.$mainGap}: 0;
     }
   }
 }

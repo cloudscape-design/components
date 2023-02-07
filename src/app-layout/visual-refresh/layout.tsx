@@ -24,6 +24,7 @@ export default function Layout({ children }: LayoutProps) {
     contentHeader,
     disableBodyScroll,
     disableContentHeaderOverlap,
+    disableContentPaddings,
     dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
@@ -70,6 +71,7 @@ export default function Layout({ children }: LayoutProps) {
         {
           [styles['disable-body-scroll']]: disableBodyScroll,
           [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+          [styles['disable-content-paddings']]: disableContentPaddings,
           [styles['has-breadcrumbs']]: breadcrumbs && !isMobile,
           [styles['has-content-gap-left']]: hasContentGapLeft,
           [styles['has-content-gap-right']]: hasContentGapRight,
