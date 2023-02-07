@@ -257,11 +257,7 @@ explicitly set in script.
   grid gaps for all adjacent sibling combinations.
   */
   &.content-first-child-notifications {
-    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
-
-    &.has-breadcrumbs {
-      #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
-    }
+    #{custom-props.$notificationsGap}: #{awsui.$space-xs};
 
     &:not(.has-breadcrumbs).has-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
@@ -288,7 +284,8 @@ explicitly set in script.
   Set the grid gap for Breadcrumbs when it is the first child content and the 
   grid gaps for all adjacent sibling combinations.
   */
-  &.content-first-child-breadcrumbs {
+  &.content-first-child-breadcrumbs,
+  &.has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
   }
 
@@ -297,8 +294,12 @@ explicitly set in script.
       #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
     }
 
-    &:not(.has-header) {
+    &:not(.has-header).is-overlap-disabled {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    }
+
+    &:not(.has-header):not(.is-overlap-disabled) {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
     }
   }
 
@@ -325,6 +326,12 @@ explicitly set in script.
   &.content-first-child-main.is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
 
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    }
+  }
+
+  &.content-first-child-main:not(.is-overlap-disabled) {
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
     }
