@@ -253,66 +253,94 @@ explicitly set in script.
   }
 
   /*
-  Set the grid gaps for notifications, breadcrumbs, header, and main when they are the 
-  first child in the content area. This will align the first content of the page with 
-  the trigger buttons.
+  Set the grid gap for Notifications when it is the first child content and the 
+  grid gaps for all adjacent sibling combinations.
   */
   &.content-first-child-notifications {
     #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
+
+    &:not(.has-breadcrumbs).has-header,
+    &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+    }
+
+    &.has-breadcrumbs {
+      #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
+    }
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
+
+      &:not(.has-breadcrumbs):not(.has-header):not(.is-overlap-disabled),
+      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+        #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
+      }
+    }
   }
 
+  /*
+  Set the grid gap for Breadcrumbs when it is the first child content and the 
+  grid gaps for all adjacent sibling combinations.
+  */
   &.content-first-child-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
   }
 
-  &.content-first-child-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+  &.has-breadcrumbs {
+    &.has-header,
+    &:not(.has-header):not(.is-overlap-disabled) {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
+    }
+
+    &:not(.has-header).is-overlap-disabled {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+    }
   }
 
   /*
-  When breadcrumbs, header, and main are not the first child content set the grid gaps
-  for all combinations of adjacent siblings.
+  Set the grid gap for Header when it is the first child content and the 
+  grid gaps for all adjacent sibling combinations.
   */
-  &.has-notifications-content.has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
-  }
-
-  &.has-notifications-content:not(.has-breadcrumbs).has-header {
+  &.content-first-child-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-m};
+    }
   }
 
-  &.has-breadcrumbs.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
-  }
-
-  // dark-header-main
   &.has-header {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
   }
 
-  // dark-header-headless
-  &.has-breadcrumbs:not(.has-header) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  // disable-paddings-edge-controls
-  // legacy-nav-empty
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
-  &:not(.has-notifications-content):not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+  /*
+  Set the grid gap for Maine when it is the first child content and the 
+  grid gaps for all adjacent sibling combinations.
+  */
+  &.content-first-child-main.is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+      // #{custom-props.$mainGap}: 0;
+    }
   }
 
-  // with-table
-  &:not(.has-header):not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
+  &.content-first-child-main:not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: 0;
   }
 
-  // known bugs:
-  // legacy-nav-empty
-  // no-panels-with-notifications
-  // with-notifications
-  // with-wizard-and-table
-  // with-wizard
+  // uncovered test cases
+  // header after top
+  // header after notifications
+  // main after notifications (overlap)
+
+  // known bugs
+  // no-panels-with-notifications (desktop)
+  // with-notifications (desktop)
+  // notifications-refresh (mobile)
+  // legacy-nav-scrollable (mobile)
+  // with-absolute-components (mobile)
 }
 
 /*

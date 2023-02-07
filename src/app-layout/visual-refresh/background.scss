@@ -9,11 +9,11 @@
 div.background {
   display: contents;
 
-  > .notifications-breadcrumbs-header {
+  > .notifications-breadcrumbs-header-main {
     background-color: awsui.$color-background-layout-main;
     color: awsui.$color-text-body-default;
     grid-column: 1 / span 5;
-    grid-row: 1 / span 7;
+    grid-row: 1 / span 8;
 
     /*
     The cards and table content types have a sticky dark header that is 
@@ -33,12 +33,7 @@ div.background {
   > .overlap {
     background-color: awsui.$color-background-layout-main;
     grid-column: 1 / span 5;
-<<<<<<< HEAD
-    grid-row: 4;
-    color: awsui.$color-text-body-default;
-=======
-    grid-row: 8 / span 2;
->>>>>>> bfb5bc9c (Refactor of paddings to gaps.)
+    grid-row: 9;
 
     /*
     The cards and table content types can have sticky header content that 
@@ -49,7 +44,7 @@ div.background {
     @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
       &.has-sticky-background {
         position: sticky;
-        top: calc(var(#{custom-props.$offsetTopWithNotifications}) - #{awsui.$space-scaled-xxs});
+        top: calc(var(#{custom-props.$offsetTopWithNotifications}));
         z-index: 799;
       }
     }

@@ -6,12 +6,24 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Background() {
-  const { hasNotificationsContent, hasStickyBackground, stickyNotifications } = useAppLayoutInternals();
+  const {
+    breadcrumbs,
+    contentHeader,
+    dynamicOverlapHeight,
+    hasNotificationsContent,
+    hasStickyBackground,
+    isMobile,
+    stickyNotifications,
+  } = useAppLayoutInternals();
+
+  if (!hasNotificationsContent && (!breadcrumbs || isMobile) && !contentHeader && dynamicOverlapHeight <= 0) {
+    return null;
+  }
 
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>
       <div
-        className={clsx(styles['notifications-breadcrumbs-header'], {
+        className={clsx(styles['notifications-breadcrumbs-header-main'], {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['sticky-notifications']]: stickyNotifications,
