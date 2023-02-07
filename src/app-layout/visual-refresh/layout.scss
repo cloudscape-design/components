@@ -263,16 +263,22 @@ explicitly set in script.
       #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-l};
     }
 
-    &:not(.has-breadcrumbs).has-header,
-    &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+    &:not(.has-breadcrumbs).has-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
+    }
+
+    &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+      #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
     }
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
 
-      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled,
-      &:not(.has-breadcrumbs):not(.has-header):not(.is-overlap-disabled) {
+      &:not(.has-breadcrumbs).has-header {
+        #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
+      }
+
+      &:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
         #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
       }
     }
@@ -287,12 +293,11 @@ explicitly set in script.
   }
 
   &.has-breadcrumbs {
-    &.has-header,
-    &:not(.has-header):not(.is-overlap-disabled) {
+    &.has-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-xxs};
     }
 
-    &:not(.has-header).is-overlap-disabled {
+    &:not(.has-header) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
     }
   }
@@ -314,7 +319,7 @@ explicitly set in script.
   }
 
   /*
-  Set the grid gap for Maine when it is the first child content and the 
+  Set the grid gap for Main when it is the first child content and the 
   grid gaps for all adjacent sibling combinations.
   */
   &.content-first-child-main.is-overlap-disabled {
@@ -324,22 +329,6 @@ explicitly set in script.
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
     }
   }
-
-  &.content-first-child-main:not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: 0;
-  }
-
-  // uncovered test cases
-  // header after top
-  // header after notifications
-  // main after notifications (overlap)
-
-  // known bugs
-  // no-panels-with-notifications (desktop)
-  // with-notifications (desktop)
-  // notifications-refresh (mobile)
-  // legacy-nav-scrollable (mobile)
-  // with-absolute-components (mobile)
 }
 
 /*
