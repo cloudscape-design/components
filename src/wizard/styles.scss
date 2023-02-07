@@ -33,12 +33,11 @@
   grid-column: 1;
   grid-row: 1 / span 2;
   padding-top: awsui.$space-scaled-xxs;
-  z-index: 1;
 
   > ul {
     background: awsui.$color-background-container-content;
-    border-radius: awsui.$border-radius-container;
-    box-shadow: awsui.$shadow-container;
+    position: relative;
+    @include styles.container-shadow;
     margin: 0;
     padding: awsui.$space-scaled-l awsui.$space-l;
     width: 280px;

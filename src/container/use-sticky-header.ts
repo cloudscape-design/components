@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext, useMemo } from 'react';
+import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
@@ -20,18 +20,6 @@ export const useStickyHeader = (
   __stickyHeader?: boolean,
   __stickyOffset?: number
 ) => {
-  const currentRootRef = rootRef.current;
-  const currentHeaderRef = headerRef.current;
-  const totalBorder = useMemo(() => {
-    const containerRootBorder = currentRootRef
-      ? parseInt(getComputedStyle(currentRootRef).getPropertyValue('border-top-width'), 10)
-      : 0;
-    const headerBorder = currentHeaderRef
-      ? parseInt(getComputedStyle(currentHeaderRef).getPropertyValue('border-top-width'), 10)
-      : 0;
-    return containerRootBorder + headerBorder;
-  }, [currentRootRef, currentHeaderRef]);
-
   // We reach into AppLayoutContext in case sticky header needs to be offset down by the height
   // of other sticky elements positioned on top of the view.
   const { stickyOffsetTop } = useAppLayoutContext();
@@ -62,7 +50,7 @@ export const useStickyHeader = (
    * body scroll then we will use that property. When a component is used outside AppLayout, we fall back
    * to the default offset calculated in AppLayoutDomContext.
    */
-  let computedOffset = `${effectiveStickyOffset - totalBorder}px`;
+  let computedOffset = `${effectiveStickyOffset}px`;
   if (isRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
@@ -81,13 +69,13 @@ export const useStickyHeader = (
     if (rootRef.current && headerRef.current) {
       const rootTop = rootRef.current.getBoundingClientRect().top;
       const headerTop = headerRef.current.getBoundingClientRect().top;
-      if (rootTop + totalBorder < headerTop) {
+      if (rootTop < headerTop) {
         setIsStuck(true);
       } else {
         setIsStuck(false);
       }
     }
-  }, [rootRef, headerRef, totalBorder]);
+  }, [rootRef, headerRef]);
   useEffect(() => {
     if (isSticky) {
       window.addEventListener('scroll', checkIfStuck, true);

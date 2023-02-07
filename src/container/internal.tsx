@@ -88,7 +88,8 @@ export default function InternalContainer({
         baseProps.className,
         styles.root,
         styles[`variant-${variant}`],
-        fitHeight && styles['root-fit-height']
+        fitHeight && styles['fit-height'],
+        isSticky && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >

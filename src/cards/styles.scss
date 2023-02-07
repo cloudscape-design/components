@@ -84,14 +84,9 @@
         calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width})
         calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
     }
-    // reset border color to prevent it from flashing black during selection animation
-    border-color: transparent;
     @include styles.container-shadow;
-    // container shadow comes with a top border, need to make it the same as the selection width
-    border-width: awsui.$border-item-width;
     width: 100%;
     min-width: 0;
-    box-sizing: border-box;
   }
   &-header {
     @include styles.font-heading-m;
@@ -107,12 +102,9 @@
   }
   &-selected {
     > .card-inner {
-      border: awsui.$border-item-width solid awsui.$color-border-item-selected;
       background-color: awsui.$color-background-item-selected;
-      padding: awsui.$space-scaled-l calc(#{awsui.$space-card-horizontal} - #{awsui.$border-item-width})
-        calc(#{awsui.$space-scaled-l} - #{awsui.$border-item-width});
-      > .card-header > .selection-control {
-        margin-right: calc(-1 * #{awsui.$border-item-width});
+      &::before {
+        border: awsui.$border-item-width solid awsui.$color-border-item-selected;
       }
     }
   }

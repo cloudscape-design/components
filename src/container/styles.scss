@@ -10,31 +10,53 @@
 .root {
   @include styles.styles-reset;
   word-wrap: break-word;
+  position: relative;
 
-  &-fit-height {
+  &.fit-height {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     height: 100%;
   }
 
   &.variant {
     &-default,
     &-stacked {
+      // Border and shadows are applied with ::before and ::after elements (respectively)
       @include shared.borders-and-shadows;
       background-color: awsui.$color-background-container-content;
     }
 
-    &-stacked:not(:last-child) {
+    // Meld container bottom corners into next adjoining container
+    &-stacked:not(:last-child),
+    &-stacked:not(:last-child)::before,
+    &-stacked:not(:last-child)::after {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
     }
-
-    &-stacked + &-stacked {
-      @include shared.divider;
+    // Meld container top corners into preceding container
+    &-stacked + &-stacked,
+    &-stacked + &-stacked::before,
+    &-stacked + &-stacked::after {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+    }
+    // Replace container border with a divider
+    &-stacked + &-stacked::before {
+      @include shared.divider;
+    }
+    // Reset container shadow to prevent unwanted overflow
+    &-stacked + &-stacked::after {
       box-shadow: awsui.$shadow-container-stacked;
+    }
+  }
+
+  // To ensure the top border/divider is visible on sticky elements which have a higher z-index
+  &.sticky-enabled {
+    &::before {
+      top: calc(-1 * #{awsui.$border-container-top-width});
+    }
+    &.variant-stacked::before {
+      top: calc(-1 * #{awsui.$border-divider-section-width});
     }
   }
 }
@@ -59,9 +81,13 @@
   }
 
   &-stuck {
-    box-shadow: awsui.$shadow-sticky-embedded;
-    border: 0;
     border-radius: 0;
+    &::before {
+      border: 0;
+    }
+    &:not(.header-variant-cards) {
+      box-shadow: awsui.$shadow-sticky-embedded;
+    }
   }
 
   &-dynamic-height.header-stuck {
@@ -83,20 +109,14 @@
   }
 
   &-variant-cards {
+    &:not(.header-sticky-enabled) {
+      position: relative;
+    }
     @include shared.borders-and-shadows;
 
-    &:not(:empty) {
-      // bottom shadow does not appear in IE11 due to the presence of background color
-      // Adding a bottom border
-      border-bottom: 1px solid #d5dbdb;
-
-      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-      @supports (--css-variable-support-check: #000) {
-        border-bottom: 0;
-      }
-    }
-
-    &.header-stuck {
+    &.header-stuck::after,
+    &.header-stuck::before {
+      border: 0;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
@@ -130,7 +150,7 @@ the default white background of the container component.
 }
 
 .content {
-  .root-fit-height > & {
+  .fit-height > & {
     flex: 1;
     overflow: auto;
   }
