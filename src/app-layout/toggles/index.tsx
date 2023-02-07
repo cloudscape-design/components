@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { ButtonProps } from '../../button/interfaces';
-import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutButtonProps } from './interfaces';
@@ -55,11 +54,10 @@ interface CloseButtonProps {
   className?: string;
   ariaLabel: string | undefined;
   onClick: () => void;
-  iconName: IconProps.Name;
 }
 
 export const CloseButton = React.forwardRef(
-  ({ className, ariaLabel, onClick, iconName }: CloseButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
+  ({ className, ariaLabel, onClick }: CloseButtonProps, ref: React.Ref<ButtonProps.Ref>) => {
     return (
       <span className={styles['close-button']}>
         <AppLayoutButton
@@ -67,7 +65,7 @@ export const CloseButton = React.forwardRef(
           className={className}
           ariaExpanded={true}
           ariaLabel={ariaLabel}
-          iconName={iconName}
+          iconName="close"
           onClick={onClick}
         />
       </span>

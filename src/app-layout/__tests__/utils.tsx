@@ -6,6 +6,7 @@ import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
@@ -91,18 +92,9 @@ export function describeEachAppLayout(callback: () => void) {
 }
 
 export function isDrawerClosed(drawer: ElementWrapper) {
-  const element = drawer.getElement();
-
   // The visibility class name we are attaching to the wrapping element,
   // however the test-util points to the inner element, which has the scrollbar
-  if (element.parentElement!.classList.contains(styles['drawer-closed'])) {
-    return true;
-  }
-  // Apply the same logic for the visual refresh app-layout where the testutils selector is used.
-  if (element.parentElement!.classList.contains(testutilStyles['drawer-closed'])) {
-    return true;
-  }
-  return false;
+  return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
 }
 
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {

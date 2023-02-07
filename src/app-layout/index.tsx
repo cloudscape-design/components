@@ -36,8 +36,8 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
-import { NavigationPanel } from './navigation-panel';
-import { ToolsAndSplitPanel } from './tools-and-split-panel';
+import { Drawer } from './drawer';
+import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
@@ -157,7 +157,7 @@ const OldAppLayout = React.forwardRef(
     const navigationVisible = !navigationHide && navigationOpen;
     const toolsVisible = !toolsHide && toolsOpen;
 
-    const { contentHeightStyle, headerHeight, footerHeight, panelHeightStyle } = useContentHeight(
+    const { contentHeightStyle, headerHeight, footerHeight } = useContentHeight(
       headerSelector,
       footerSelector,
       disableBodyScroll
@@ -375,30 +375,6 @@ const OldAppLayout = React.forwardRef(
         ? splitPanelReportedSize
         : splitPanelReportedHeaderHeight) ?? undefined;
 
-    const toolsDrawerWidth = (() => {
-      if (isMobile) {
-        return 0;
-      }
-
-      const toolsPanelWidth = toolsHide ? 0 : toolsOpen ? toolsWidth : closedDrawerWidth;
-      const splitPanelWidth =
-        !splitPanelDisplayed || finalSplitPanePosition !== 'side'
-          ? 0
-          : splitPanelOpen
-          ? splitPanelReportedSize
-          : closedDrawerWidth;
-
-      return toolsPanelWidth + splitPanelWidth;
-    })();
-
-    const navigationDrawerWidth = (() => {
-      if (isMobile) {
-        return 0;
-      }
-
-      return effectiveNavigationWidth;
-    })();
-
     return (
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
@@ -422,20 +398,23 @@ const OldAppLayout = React.forwardRef(
           )}
           <div className={clsx(styles.layout, disableBodyScroll && styles['layout-no-scroll'])}>
             {!navigationHide && (
-              <NavigationPanel
+              <Drawer
+                contentClassName={testutilStyles.navigation}
+                toggleClassName={testutilStyles['navigation-toggle']}
+                closeClassName={testutilStyles['navigation-close']}
                 ariaLabels={ariaLabels}
-                footerHeight={footerHeight}
-                headerHeight={headerHeight}
+                bottomOffset={footerHeight}
+                topOffset={headerHeight}
                 isMobile={isMobile}
-                navigation={navigation}
-                navigationDrawerWidth={navigationDrawerWidth}
-                navigationOpen={navigationOpen}
+                isOpen={navigationOpen}
                 onClick={isMobile ? onNavigationClick : undefined}
-                onNavigationToggle={onNavigationToggle}
-                panelHeightStyle={panelHeightStyle}
+                onToggle={onNavigationToggle}
                 toggleRefs={navigationRefs}
-                navigationWidth={navigationWidth}
-              />
+                type="navigation"
+                width={navigationWidth}
+              >
+                {navigation}
+              </Drawer>
             )}
             <main
               ref={legacyScrollRootRef}
@@ -521,22 +500,36 @@ const OldAppLayout = React.forwardRef(
               {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
             </main>
 
-            <ToolsAndSplitPanel
-              splitPanel={finalSplitPanePosition === 'side' ? splitPanelWrapped : undefined}
-              ariaLabels={ariaLabels}
-              drawerWidth={toolsDrawerWidth}
-              footerHeight={footerHeight}
-              headerHeight={headerHeight}
-              isMobile={isMobile}
-              onToolsToggle={onToolsToggle}
-              panelHeightStyle={panelHeightStyle}
-              toggleRefs={toolsRefs}
-              onLoseToolsFocus={loseToolsFocus}
-              tools={tools}
-              toolsHide={Boolean(toolsHide)}
-              toolsOpen={toolsOpen}
-              toolsWidth={toolsWidth}
-            />
+            {finalSplitPanePosition === 'side' && (
+              <SideSplitPanelDrawer
+                topOffset={headerHeight}
+                bottomOffset={footerHeight}
+                displayed={splitPanelDisplayed}
+                width={splitPanelOpen ? splitPanelSize : undefined}
+              >
+                {splitPanelWrapped}
+              </SideSplitPanelDrawer>
+            )}
+
+            {!toolsHide && (
+              <Drawer
+                contentClassName={testutilStyles.tools}
+                toggleClassName={testutilStyles['tools-toggle']}
+                closeClassName={testutilStyles['tools-close']}
+                ariaLabels={ariaLabels}
+                width={toolsWidth}
+                bottomOffset={footerHeight}
+                topOffset={headerHeight}
+                isMobile={isMobile}
+                onToggle={onToolsToggle}
+                isOpen={toolsOpen}
+                toggleRefs={toolsRefs}
+                type="tools"
+                onLoseFocus={loseToolsFocus}
+              >
+                {tools}
+              </Drawer>
+            )}
           </div>
         </div>
       </div>
