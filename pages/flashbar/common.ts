@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { FlashbarProps } from '~components';
+import { generateUniqueId } from '~components/internal/hooks/use-unique-id';
 
 export const i18nStrings = {
   ariaLabel: 'Notifications',
@@ -14,15 +15,13 @@ export const i18nStrings = {
   inProgressIconAriaLabel: 'In progress',
 };
 
-const RANDOM_NUMBER_RANGE = 1000;
-
 export function generateItem(
   type: FlashbarProps.Type,
   dismiss: (index: string) => void,
   hasHeader = false,
   initial = false
 ): FlashbarProps.MessageDefinition {
-  const randomKey = `key_${Math.floor(Math.random() * RANDOM_NUMBER_RANGE)}`;
+  const randomKey = generateUniqueId('key_');
   return {
     type,
     id: randomKey,
