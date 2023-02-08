@@ -3,7 +3,7 @@
     "lib": ["es5", "es2015.collection", "es2015.Iterable", "es2015.promise", "dom"],
     "types": [],
     "module": "esnext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "importHelpers": true,
     "strict": true,

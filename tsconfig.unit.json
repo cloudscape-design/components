@@ -3,7 +3,7 @@
     "target": "es2018",
     "lib": ["es2018", "dom"],
     "types": ["node", "jest", "@testing-library/jest-dom"],
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "downlevelIteration": true,
     "esModuleInterop": true,
     "strict": true,
