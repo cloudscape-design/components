@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { FlashbarProps } from '~components';
-import { generateUniqueId } from '~components/internal/hooks/use-unique-id';
+import pseudoRandom from '../utils/pseudo-random';
 
 export const i18nStrings = {
   ariaLabel: 'Notifications',
@@ -15,22 +15,29 @@ export const i18nStrings = {
   inProgressIconAriaLabel: 'In progress',
 };
 
-export function generateItem(
-  type: FlashbarProps.Type,
-  dismiss: (index: string) => void,
+export function generateItem({
+  type,
+  dismiss,
+  id = pseudoRandom().toString(),
   hasHeader = false,
-  initial = false
-): FlashbarProps.MessageDefinition {
-  const randomKey = generateUniqueId('key_');
+  initial = false,
+}: {
+  type: FlashbarProps.Type;
+  dismiss: (index: string) => void;
+  id?: string;
+  hasHeader?: boolean;
+  initial?: boolean;
+}): FlashbarProps.MessageDefinition {
   return {
     type,
-    id: randomKey,
+    id,
     dismissible: true,
     dismissLabel: 'Dismiss',
-    onDismiss: () => dismiss(randomKey),
+    onDismiss: () => dismiss(id),
     buttonText: 'Do Action',
+    onButtonClick: () => null,
     statusIconAriaLabel: 'Info',
-    content: `This is a flash item with key ${randomKey.split('_').join(' ')}`,
+    content: `This is a flash item with key ${id}`,
     ariaRole: initial ? undefined : type === 'error' ? 'alert' : 'status',
     ...(hasHeader && { header: 'Has Header Content' }),
   };

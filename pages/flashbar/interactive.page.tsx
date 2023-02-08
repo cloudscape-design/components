@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { range } from 'lodash';
-import { Button, SpaceBetween, Flashbar, FlashbarProps, Toggle } from '~components';
+import { Box, Button, SpaceBetween, Flashbar, FlashbarProps, Toggle } from '~components';
 import { generateItem, i18nStrings } from './common';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function InteractiveFlashbar() {
   const dismiss = (index: string) => {
@@ -12,25 +13,50 @@ export default function InteractiveFlashbar() {
   };
 
   const add = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [generateItem(type, dismiss, hasHeader), ...items]);
+    setNextId(id => {
+      setItems(items => [generateItem({ type, id: id.toString(), dismiss, hasHeader }), ...items]);
+      return id + 1;
+    });
   };
 
-  const addMultiple = (type: FlashbarProps.Type, hasHeader = false) => {
-    add(type, hasHeader);
-    setTimeout(() => add(type, hasHeader), 100);
-    setTimeout(() => add(type, hasHeader), 200);
+  const addMultiple = (type: FlashbarProps.Type, hasHeader = false, amount: number) => {
+    const id = nextId;
+    for (const i of range(amount)) {
+      setTimeout(() => {
+        setItems(items => [generateItem({ type, id: (id + i).toString(), dismiss, hasHeader }), ...items]);
+      }, i * 100);
+    }
+    setNextId(id + amount);
   };
 
   const addToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [...items, generateItem(type, dismiss, hasHeader)]);
+    setNextId(id => {
+      setItems(items => [...items, generateItem({ type, dismiss, hasHeader, id: id.toString() })]);
+      return id + 1;
+    });
   };
 
   const removeAndAddToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
-    setItems(items => [generateItem(type, dismiss, hasHeader), ...items.slice(1, items.length)]);
+    setNextId(id => {
+      setItems(items => [
+        generateItem({ type, dismiss, hasHeader, id: id.toString() }),
+        ...items.slice(1, items.length),
+      ]);
+      return id + 1;
+    });
   };
 
+  const initialItems = [
+    generateItem({ type: 'success', dismiss, hasHeader: true, initial: true, id: '4' }),
+    generateItem({ type: 'info', dismiss, hasHeader: true, initial: false, id: '3' }),
+    generateItem({ type: 'error', dismiss, hasHeader: true, initial: false, id: '2' }),
+    generateItem({ type: 'info', dismiss, hasHeader: false, initial: false, id: '1' }),
+    generateItem({ type: 'info', dismiss, hasHeader: false, initial: false, id: '0' }),
+  ];
+
   const [collapsible, setCollapsible] = useState(false);
-  const [items, setItems] = useState(() => [...range(5).map(() => generateItem('info', dismiss, false, true))]);
+  const [items, setItems] = useState(initialItems);
+  const [nextId, setNextId] = useState(initialItems.length);
 
   const restProps = collapsible
     ? {
@@ -58,7 +84,7 @@ export default function InteractiveFlashbar() {
           <Button data-id="add-error" onClick={() => add('error', true)}>
             Add Error Flash
           </Button>
-          <Button data-id="add-multiple" onClick={() => addMultiple('error', true)}>
+          <Button data-id="add-multiple" onClick={() => addMultiple('error', true, 3)}>
             Add Multiple Error Flashes
           </Button>
           <Button onClick={() => add('warning')}>Add Warning Flash</Button>
@@ -67,7 +93,11 @@ export default function InteractiveFlashbar() {
           </Button>
           <Button onClick={() => removeAndAddToBottom('error')}>Add And Remove</Button>
         </SpaceBetween>
-        <Flashbar items={items} {...restProps} />
+        <ScreenshotArea>
+          <Box padding="xxl">
+            <Flashbar items={items} {...restProps} />
+          </Box>
+        </ScreenshotArea>
       </SpaceBetween>
     </>
   );
