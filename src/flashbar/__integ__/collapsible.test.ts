@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { setupTest } from './pages/interactive-page';
 import { FOCUS_THROTTLE_DELAY } from '../utils';
+import { setupTest } from './pages/interactive-page';
+import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page';
 
 describe('Collapsible Flashbar', () => {
   describe('Keyboard navigation', () => {
@@ -128,5 +129,23 @@ describe('Collapsible Flashbar', () => {
         })
       );
     });
+  });
+
+  describe('Sticky Flashbar', () => {
+    test(
+      'keeps a space to the screen bottom to prevent the notification bar from getting cropped',
+      setupStickyFlashbarTest(async page => {
+        const windowDimensions = { width: 1000, height: 500 };
+        await page.setWindowSize(windowDimensions);
+        await page.toggleCollapsedState();
+        expect(await page.getNotificationBarBottom()).toBeGreaterThan(windowDimensions.height);
+        await page.windowScrollTo({ top: 1200 });
+        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
+        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height + 5 });
+        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height + 5);
+        await page.setWindowSize({ width: windowDimensions.width, height: windowDimensions.height });
+        expect(await page.getNotificationBarBottom()).toBeLessThan(windowDimensions.height);
+      })
+    );
   });
 });
