@@ -209,14 +209,25 @@ explicitly set in script.
   of the header and notifications height in addition to the notifications top margin
   and some additional vertical space for aesthetics.
   */
-  &:not(.has-sticky-notifications) {
+  &:not(.has-sticky-notifications):not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: var(#{custom-props.$headerHeight});
   }
 
-  // #{awsui.$space-xs} token needs to align with the top margin in the notifications CSS
-  &.has-sticky-notifications {
+  &:not(.has-sticky-notifications).has-sticky-background {
+    #{custom-props.$offsetTopWithNotifications}: calc(var(#{custom-props.$headerHeight}) + #{awsui.$space-scaled-s});
+  }
+
+  &.has-sticky-notifications:not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: calc(
-      var(#{custom-props.$headerHeight}) + var(#{custom-props.$notificationsHeight}) + #{awsui.$space-xs} + #{awsui.$space-xxxs}
+      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
+        var(#{custom-props.$notificationsHeight})
+    );
+  }
+
+  &.has-sticky-notifications.has-sticky-background {
+    #{custom-props.$offsetTopWithNotifications}: calc(
+      var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
+        var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
     );
   }
 
@@ -293,12 +304,9 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
   }
 
+  &.content-first-child-main:not(.is-overlap-disabled),
   &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.content-first-child-main.is-overlap-disabled.disable-content-paddings {
-    #{custom-props.$mainGap}: 0;
   }
 
   /*
@@ -318,17 +326,13 @@ explicitly set in script.
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
-    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled,
+    &.content-first-child-main:not(.is-overlap-disabled) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
 
     &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-    }
-
-    // with cards fix
-    &.content-first-child-main:not(.is-overlap-disabled) {
-      #{custom-props.$mainGap}: 0;
     }
   }
 }
@@ -379,4 +383,3 @@ when the navigation or tools drawers are open in responsive viewports.
 .unfocusable * {
   visibility: hidden !important;
 }
-/* stylelint-enable selector-max-universal, selector-combinator-disallowed-list */

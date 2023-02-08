@@ -22,19 +22,15 @@ export default function Background() {
 
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>
-      <div
-        className={clsx(styles['notifications-breadcrumbs-header-main'], {
-          [styles['has-notifications-content']]: hasNotificationsContent,
-          [styles['has-sticky-background']]: hasStickyBackground,
-          [styles['sticky-notifications']]: stickyNotifications,
-        })}
-      />
+      <div className={styles['scrolling-background']} />
 
-      <div
-        className={clsx(styles.overlap, {
-          [styles['has-sticky-background']]: hasStickyBackground,
-        })}
-      />
+      {!isMobile && hasStickyBackground && (
+        <div
+          className={clsx(styles['sticky-background'], {
+            [styles['has-sticky-notifications']]: stickyNotifications,
+          })}
+        />
+      )}
     </div>
   );
 }
