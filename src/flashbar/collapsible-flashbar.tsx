@@ -12,13 +12,20 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
+import {
+  counterTypes,
+  getFlashTypeCount,
+  getVisibleCollapsedItems,
+  isElementTopBeyondViewport,
+  StackableItem,
+} from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 
 export { FlashbarProps };
 
@@ -140,12 +147,24 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
     if (initialAnimationState) {
       updateBottomSpacing();
+
+      // When collapsing, scroll up if necessary to avoid losing track of the focused button
+      const shouldScrollUp =
+        notificationBarRef.current &&
+        !isFlashbarStackExpanded &&
+        isElementTopBeyondViewport(notificationBarRef.current);
+
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
         newElementInitialState: ({ top }) => ({ scale: 0.9, y: -0.2 * top }),
         onTransitionsEnd: () => setTransitioning(false),
       });
+
+      if (notificationBarRef.current && shouldScrollUp) {
+        scrollElementIntoView(notificationBarRef.current);
+      }
+
       setTransitioning(true);
       setInitialAnimationState(null);
     }

@@ -1,5 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+let mockScrollingConditions = false;
+jest.mock('../../../lib/components/flashbar/utils', () => {
+  const originalModule = jest.requireActual('../../../lib/components/flashbar/utils');
+  return {
+    __esModule: true,
+    ...originalModule,
+    isElementTopBeyondViewport: (...args: any) =>
+      mockScrollingConditions ? true : originalModule.isElementTopBeyondViewport(...args),
+  };
+});
+
+const scrollElementIntoViewMock = jest.fn();
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => {
+  const originalModule = jest.requireActual('../../../lib/components/internal/utils/scrollable-containers');
+  return {
+    __esModule: true,
+    ...originalModule,
+    scrollElementIntoView: scrollElementIntoViewMock,
+  };
+});
+
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper, findList } from './common';
@@ -60,7 +82,7 @@ describe('Collapsible Flashbar', () => {
       expect(findNotificationBar(flashbar)).toBeFalsy();
     });
 
-    it('expands and collapses by clicking on toggle element', () => {
+    it('expands and collapses by clicking on notification bar', () => {
       const flashbar = renderFlashbar();
       const items = flashbar.findItems();
       expect(items.length).toBe(1);
@@ -252,6 +274,22 @@ describe('Collapsible Flashbar', () => {
         expect(innerCounter!.querySelector(`[aria-label="${ariaLabel}"]`)).toBeTruthy();
         expect(innerCounter!.querySelector(`[title="${ariaLabel}"]`)).toBeTruthy();
       }
+    });
+  });
+
+  describe('Sticky', () => {
+    beforeAll(() => {
+      mockScrollingConditions = true;
+    });
+    afterAll(() => {
+      mockScrollingConditions = false;
+    });
+
+    it('scrolls the button into view when collapsing if it moves up beyond the viewport', () => {
+      const flashbar = renderFlashbar();
+      findNotificationBar(flashbar)!.click();
+      findNotificationBar(flashbar)!.click();
+      expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
     });
   });
 });
