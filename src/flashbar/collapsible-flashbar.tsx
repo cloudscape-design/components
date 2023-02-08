@@ -19,6 +19,7 @@ import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
+import { isKeyboardInteraction, isElementTopBeyondViewport } from './scroll-utils';
 
 export { FlashbarProps };
 
@@ -139,16 +140,29 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
     if (initialAnimationState) {
       updateBottomSpacing();
+
+      // When collapsing with the keyboard, scroll up if necessary to avoid losing track of the focused button
+      const shouldScrollUp =
+        notificationBarRef.current &&
+        !isFlashbarStackExpanded &&
+        isKeyboardInteraction(isFocusVisible) &&
+        isElementTopBeyondViewport(notificationBarRef.current);
+
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
         newElementInitialState: ({ top }) => ({ scale: 0.9, y: -0.2 * top }),
         onTransitionsEnd: () => setTransitioning(false),
       });
+
+      if (shouldScrollUp) {
+        window.scrollTo({ top: 0 });
+      }
+
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
+  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, isFocusVisible]);
 
   const isCollapsible = items.length > maxNonCollapsibleItems;
 

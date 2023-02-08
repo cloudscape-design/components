@@ -2,36 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { createFlashbarWrapper, findList } from './common';
+import { defaultItems, defaultStrings, findList, findNotificationBar, renderFlashbar, sampleItems } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
-
-const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
-  error: { type: 'error', header: 'Error', content: 'There was an error' },
-  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
-  warning: { type: 'warning', header: 'Warning' },
-  info: { type: 'info', header: 'Information' },
-  progress: { type: 'info', loading: true, header: 'Operation in progress' },
-};
-
-const defaultStrings = {
-  ariaLabel: 'Notifications',
-  notificationBarText: 'Notifications',
-  notificationBarAriaLabel: 'View all notifications',
-  errorIconAriaLabel: 'Error',
-  warningIconAriaLabel: 'Warning',
-  successIconAriaLabel: 'Success',
-  infoIconAriaLabel: 'Information',
-  inProgressIconAriaLabel: 'In progress',
-};
-
-const defaultItems = [sampleItems.error, sampleItems.success];
-
-const defaultProps = {
-  stackItems: true,
-  i18nStrings: defaultStrings,
-};
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
@@ -60,7 +33,7 @@ describe('Collapsible Flashbar', () => {
       expect(findNotificationBar(flashbar)).toBeFalsy();
     });
 
-    it('expands and collapses by clicking on toggle element', () => {
+    it('expands and collapses by clicking on notification bar', () => {
       const flashbar = renderFlashbar();
       const items = flashbar.findItems();
       expect(items.length).toBe(1);
@@ -256,16 +229,6 @@ describe('Collapsible Flashbar', () => {
   });
 });
 
-// Entire interactive element including the counter and the actual <button/> element
-function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
-  const element = Array.from(flashbar.getElement().children).find(
-    element => element instanceof HTMLElement && element.tagName !== 'UL'
-  );
-  if (element) {
-    return element as HTMLElement;
-  }
-}
-
 // Actual <button/> element inside the toggle element
 function findToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefined {
   return findNotificationBar(flashbar)?.querySelector('button') || undefined;
@@ -290,18 +253,4 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
       return element as HTMLElement;
     }
   }
-}
-
-function renderFlashbar(
-  customProps: Partial<
-    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'stackItems'> & {
-      i18nStrings?: Partial<CollapsibleFlashbarProps.I18nStrings>;
-    }
-  > = {
-    items: defaultItems,
-  }
-) {
-  const { items, ...restProps } = customProps;
-  const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
-  return createFlashbarWrapper(<Flashbar {...props} items={items || defaultItems} />);
 }
