@@ -148,7 +148,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     if (initialAnimationState) {
       updateBottomSpacing();
 
-      // When collapsing with the keyboard, scroll up if necessary to avoid losing track of the focused button
+      // When collapsing, scroll up if necessary to avoid losing track of the focused button
       const shouldScrollUp =
         notificationBarRef.current &&
         !isFlashbarStackExpanded &&
