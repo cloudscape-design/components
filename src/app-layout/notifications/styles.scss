@@ -4,7 +4,7 @@
 */
 
 @use '../../internal/styles/tokens' as awsui;
-@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../internal/generated/custom-css-properties/index' as custom-props;
 
 .notifications-sticky {
   top: 0;
