@@ -21,6 +21,7 @@ export { ProgressBarProps };
 
 export default function ProgressBar({
   value = 0,
+  max,
   status = 'in-progress',
   variant = 'standalone',
   resultButtonText,
@@ -71,7 +72,7 @@ export default function ProgressBar({
         <div>
           {isInProgressState ? (
             <>
-              <Progress value={value} labelId={labelId} isInFlash={isInFlash} />
+              <Progress value={value} max={max} labelId={labelId} isInFlash={isInFlash} />
               <LiveRegion delay={0}>{assertion}</LiveRegion>
             </>
           ) : (
