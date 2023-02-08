@@ -17,7 +17,6 @@ import {
   getFlashTypeCount,
   getVisibleCollapsedItems,
   isElementTopBeyondViewport,
-  isKeyboardInteraction,
   StackableItem,
 } from './utils';
 import { animate, getDOMRects } from '../internal/animate';
@@ -26,6 +25,7 @@ import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 
 export { FlashbarProps };
 
@@ -151,7 +151,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       const shouldScrollUp =
         notificationBarRef.current &&
         !isFlashbarStackExpanded &&
-        isKeyboardInteraction(isFocusVisible) &&
         isElementTopBeyondViewport(notificationBarRef.current);
 
       animate({
@@ -161,8 +160,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         onTransitionsEnd: () => setTransitioning(false),
       });
 
-      if (shouldScrollUp) {
-        window.scrollTo({ top: 0 });
+      if (notificationBarRef.current && shouldScrollUp) {
+        scrollElementIntoView(notificationBarRef.current);
       }
 
       setTransitioning(true);

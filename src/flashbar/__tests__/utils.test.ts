@@ -4,7 +4,6 @@ import {
   getVisibleCollapsedItems,
   getItemType,
   isElementTopBeyondViewport,
-  isKeyboardInteraction,
 } from '../../../lib/components/flashbar/utils';
 import { FlashbarProps, FlashType } from '../interfaces';
 
@@ -126,14 +125,5 @@ describe('isElementTopBeyondViewport', () => {
   it('returns false when element top is zero', () => {
     top = 0;
     expect(isElementTopBeyondViewport(element)).toBe(false);
-  });
-});
-
-describe('isKeyboardInteraction', () => {
-  it('returns true when isFocusVisible is not empty', () => {
-    expect(isKeyboardInteraction({ 'data-awsui-focus-visible': true })).toBe(true);
-  });
-  it('returns true when isFocusVisible is empty', () => {
-    expect(isKeyboardInteraction({})).toBe(false);
   });
 });

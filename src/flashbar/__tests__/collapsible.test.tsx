@@ -9,8 +9,16 @@ jest.mock('../../../lib/components/flashbar/utils', () => {
     ...originalModule,
     isElementTopBeyondViewport: (...args: any) =>
       mockScrollingConditions ? true : originalModule.isElementTopBeyondViewport(...args),
-    isKeyboardInteraction: (...args: any) =>
-      mockScrollingConditions ? true : originalModule.isKeyboardInteraction(...args),
+  };
+});
+
+const scrollElementIntoViewMock = jest.fn();
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => {
+  const originalModule = jest.requireActual('../../../lib/components/internal/utils/scrollable-containers');
+  return {
+    __esModule: true,
+    ...originalModule,
+    scrollElementIntoView: scrollElementIntoViewMock,
   };
 });
 
@@ -277,12 +285,11 @@ describe('Collapsible Flashbar', () => {
       mockScrollingConditions = false;
     });
 
-    it('calls window.scrollTop when collapsing with the keyboard if button is above viewport', () => {
-      const spy = jest.spyOn(window, 'scrollTo').mockImplementation();
+    it('scrolls the button into view when collapsing if it moves up beyond the viewport', () => {
       const flashbar = renderFlashbar();
       findNotificationBar(flashbar)!.click();
       findNotificationBar(flashbar)!.click();
-      expect(spy).toHaveBeenCalledTimes(1);
+      expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
     });
   });
 });
