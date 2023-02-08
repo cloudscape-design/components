@@ -10,6 +10,11 @@ export interface ProgressBarProps extends BaseComponentProps {
   value?: number;
 
   /**
+   * Indicates the maximum value of the progress bar. If this is set, progress bar shows the value and max as a ratio instead of as a percent.
+   */
+  max?: number;
+
+  /**
    * Specifies the status of the progress bar. You can set it to one of the following:
    *
    * - `"in-progress"` - Displays a progress bar.
@@ -72,4 +77,5 @@ export interface ProgressBarProps extends BaseComponentProps {
 export namespace ProgressBarProps {
   export type Status = 'in-progress' | 'success' | 'error';
   export type Variant = 'standalone' | 'flash' | 'key-value';
+  export type ContentType = 'percentage' | 'ratio';
 }
