@@ -13,7 +13,7 @@ export class StickyFlashbarPage extends FlashbarBasePage {
 export const setupTest = (testFn: (page: StickyFlashbarPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new StickyFlashbarPage(browser);
-    await browser.url(`#/light/flashbar/sticky`);
+    await browser.url(`#/light/flashbar/sticky-app-layout`);
     await page.waitForVisible(flashbar.toSelector());
     await testFn(page);
   });
