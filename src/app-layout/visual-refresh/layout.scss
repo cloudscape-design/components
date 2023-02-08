@@ -217,6 +217,7 @@ explicitly set in script.
     #{custom-props.$offsetTopWithNotifications}: calc(var(#{custom-props.$headerHeight}) + #{awsui.$space-scaled-s});
   }
 
+  /* stylelint-disable scss/operator-no-newline-after */
   &.has-sticky-notifications:not(.has-sticky-background) {
     #{custom-props.$offsetTopWithNotifications}: calc(
       var(#{custom-props.$offsetTop}) + var(#{custom-props.$notificationsGap}) +
@@ -230,6 +231,7 @@ explicitly set in script.
         var(#{custom-props.$notificationsHeight}) + #{awsui.$space-scaled-s}
     );
   }
+  /* stylelint-enable scss/operator-no-newline-after */
 
   /*
   In desktop viewports the content gap property for the left and right
@@ -383,3 +385,4 @@ when the navigation or tools drawers are open in responsive viewports.
 .unfocusable * {
   visibility: hidden !important;
 }
+/* stylelint-enable selector-max-universal, selector-combinator-disallowed-list */
