@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState, useRef } from 'react';
-import ProgressBar from '~components/progress-bar';
+import ProgressBar, { ProgressBarProps } from '~components/progress-bar';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
 import Button from '~components/button';
@@ -49,44 +49,67 @@ export default function ProgressBarWithUpdates() {
   return (
     <div>
       <Header variant={'h1'}>Dynamic progress bar</Header>
-      <SpaceBetween direction={'vertical'} size={'s'}>
-        <div>
-          <Box variant={'div'} fontWeight={'bold'}>
-            High granularity (step == 1)
-          </Box>
-          <ProgressBar
-            status={progressStep1 < 100 ? 'in-progress' : 'success'}
-            value={progressStep1}
-            variant={'standalone'}
-            label={'Tea'}
-            description={'We will make a nice cup of tea ...'}
-            additionalInfo={'Take some cookie as a desert'}
-            resultText={'Your tea is ready!'}
-          />
-          <div style={{ display: 'flex' }}>
-            <Button onClick={activateTimerStep1}>Start</Button>
-            <Button onClick={resetTimeoutStep1}>Reset</Button>
+      <div>
+        <Header variant={'h2'}>Percentage</Header>
+        <SpaceBetween direction={'vertical'} size={'s'}>
+          <div>
+            <Box variant={'div'} fontWeight={'bold'}>
+              High granularity (step == 1)
+            </Box>
+            <ProgressBarFactory value={progressStep1} />
+            <Buttons activate={activateTimerStep1} reset={resetTimeoutStep1} />
           </div>
-        </div>
-        <div>
-          <Box variant={'div'} fontWeight={'bold'}>
-            Low granularity (step == 10)
-          </Box>
-          <ProgressBar
-            status={progressStep10 < 100 ? 'in-progress' : 'success'}
-            value={progressStep10}
-            variant={'standalone'}
-            label={'Tea'}
-            description={'We will make a nice cup of tea ...'}
-            additionalInfo={'Take some cookie as a desert'}
-            resultText={'Your tea is ready!'}
-          />
-          <div style={{ display: 'flex' }}>
-            <Button onClick={activateTimerStep10}>Start</Button>
-            <Button onClick={resetTimeoutStep10}>Reset</Button>
+          <div>
+            <Box variant={'div'} fontWeight={'bold'}>
+              Low granularity (step == 10)
+            </Box>
+            <ProgressBarFactory value={progressStep10} />
+            <Buttons activate={activateTimerStep10} reset={resetTimeoutStep10} />
           </div>
-        </div>
-      </SpaceBetween>
+        </SpaceBetween>
+        <div />
+      </div>
+
+      <div>
+        <Header variant={'h2'}>Ratio</Header>
+        <SpaceBetween direction={'vertical'} size={'s'}>
+          <div>
+            <Box variant={'div'} fontWeight={'bold'}>
+              High granularity (step == 1)
+            </Box>
+            <ProgressBarFactory value={progressStep1} max={100} />
+            <Buttons activate={activateTimerStep1} reset={resetTimeoutStep1} />
+          </div>
+          <div>
+            <Box variant={'div'} fontWeight={'bold'}>
+              Low granularity (step == 10)
+            </Box>
+            <ProgressBarFactory value={progressStep10} max={100} />
+            <Buttons activate={activateTimerStep10} reset={resetTimeoutStep10} />
+          </div>
+        </SpaceBetween>
+      </div>
     </div>
   );
 }
+
+const ProgressBarFactory = ({ value = 1, max }: ProgressBarProps) => (
+  <ProgressBar
+    status={value < (max || 100) ? 'in-progress' : 'success'}
+    value={value}
+    max={max}
+    variant={'standalone'}
+    label={'Tea'}
+    description={'We will make a nice cup of tea ...'}
+    additionalInfo={'Take some cookie as a desert'}
+    resultText={'Your tea is ready!'}
+  />
+);
+
+type VoidFunction = () => void;
+const Buttons = ({ activate, reset }: { activate: VoidFunction; reset: VoidFunction }) => (
+  <div style={{ display: 'flex' }}>
+    <Button onClick={activate}>Start</Button>
+    <Button onClick={reset}>Reset</Button>
+  </div>
+);
