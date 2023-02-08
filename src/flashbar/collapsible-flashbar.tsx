@@ -168,7 +168,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       setTransitioning(true);
       setInitialAnimationState(null);
     }
-  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded, isFocusVisible]);
+  }, [updateBottomSpacing, getElementsToAnimate, initialAnimationState, isFlashbarStackExpanded]);
 
   const isCollapsible = items.length > maxNonCollapsibleItems;
 
