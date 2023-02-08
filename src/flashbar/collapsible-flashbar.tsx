@@ -12,14 +12,20 @@ import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
-import { counterTypes, getFlashTypeCount, getVisibleCollapsedItems, StackableItem } from './utils';
+import {
+  counterTypes,
+  getFlashTypeCount,
+  getVisibleCollapsedItems,
+  isElementTopBeyondViewport,
+  isKeyboardInteraction,
+  StackableItem,
+} from './utils';
 import { animate, getDOMRects } from '../internal/animate';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
-import { isKeyboardInteraction, isElementTopBeyondViewport } from './scroll-utils';
 
 export { FlashbarProps };
 

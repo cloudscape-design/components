@@ -1,10 +1,51 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+let mockScrollingConditions = false;
+jest.mock('../../../lib/components/flashbar/utils', () => {
+  const originalModule = jest.requireActual('../../../lib/components/flashbar/utils');
+  return {
+    __esModule: true,
+    ...originalModule,
+    isElementTopBeyondViewport: (...args: any) =>
+      mockScrollingConditions ? true : originalModule.isElementTopBeyondViewport(...args),
+    isKeyboardInteraction: (...args: any) =>
+      mockScrollingConditions ? true : originalModule.isKeyboardInteraction(...args),
+  };
+});
+
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { defaultItems, defaultStrings, findList, findNotificationBar, renderFlashbar, sampleItems } from './common';
+import { createFlashbarWrapper, findList } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
+import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
 import { render } from '@testing-library/react';
+
+const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
+  error: { type: 'error', header: 'Error', content: 'There was an error' },
+  success: { type: 'success', header: 'Success', content: 'Everything went fine' },
+  warning: { type: 'warning', header: 'Warning' },
+  info: { type: 'info', header: 'Information' },
+  progress: { type: 'info', loading: true, header: 'Operation in progress' },
+};
+
+const defaultStrings = {
+  ariaLabel: 'Notifications',
+  notificationBarText: 'Notifications',
+  notificationBarAriaLabel: 'View all notifications',
+  errorIconAriaLabel: 'Error',
+  warningIconAriaLabel: 'Warning',
+  successIconAriaLabel: 'Success',
+  infoIconAriaLabel: 'Information',
+  inProgressIconAriaLabel: 'In progress',
+};
+
+const defaultItems = [sampleItems.error, sampleItems.success];
+
+const defaultProps = {
+  stackItems: true,
+  i18nStrings: defaultStrings,
+};
 
 describe('Collapsible Flashbar', () => {
   describe('Basic behavior', () => {
@@ -227,7 +268,34 @@ describe('Collapsible Flashbar', () => {
       }
     });
   });
+
+  describe('Sticky', () => {
+    beforeAll(() => {
+      mockScrollingConditions = true;
+    });
+    afterAll(() => {
+      mockScrollingConditions = false;
+    });
+
+    it('calls window.scrollTop when collapsing with the keyboard if button is above viewport', () => {
+      const spy = jest.spyOn(window, 'scrollTo').mockImplementation();
+      const flashbar = renderFlashbar();
+      findNotificationBar(flashbar)!.click();
+      findNotificationBar(flashbar)!.click();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
+
+// Entire interactive element including the counter and the actual <button/> element
+function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined {
+  const element = Array.from(flashbar.getElement().children).find(
+    element => element instanceof HTMLElement && element.tagName !== 'UL'
+  );
+  if (element) {
+    return element as HTMLElement;
+  }
+}
 
 // Actual <button/> element inside the toggle element
 function findToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefined {
@@ -253,4 +321,18 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
       return element as HTMLElement;
     }
   }
+}
+
+function renderFlashbar(
+  customProps: Partial<
+    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'stackItems'> & {
+      i18nStrings?: Partial<CollapsibleFlashbarProps.I18nStrings>;
+    }
+  > = {
+    items: defaultItems,
+  }
+) {
+  const { items, ...restProps } = customProps;
+  const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
+  return createFlashbarWrapper(<Flashbar {...props} items={items || defaultItems} />);
 }
