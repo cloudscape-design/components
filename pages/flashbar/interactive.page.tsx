@@ -4,33 +4,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { range } from 'lodash';
 import { Button, SpaceBetween, Flashbar, FlashbarProps, Toggle } from '~components';
+import { generateItem, i18nStrings } from './common';
 
-const RANDOM_NUMBER_RANGE = 1000;
-
-function generateItem(
-  type: FlashbarProps.Type,
-  dismiss: (index: string) => void,
-  hasHeader = false,
-  initial = false
-): FlashbarProps.MessageDefinition {
-  const randomKey = `key_${Math.floor(Math.random() * RANDOM_NUMBER_RANGE)}`;
-  return {
-    type,
-    id: randomKey,
-    dismissible: true,
-    dismissLabel: 'Dismiss',
-    onDismiss: () => dismiss(randomKey),
-    buttonText: 'Do Action',
-    statusIconAriaLabel: 'Info',
-    content: `This is a flash item with key ${randomKey.split('_').join(' ')}`,
-    ariaRole: initial ? undefined : type === 'error' ? 'alert' : 'status',
-    ...(hasHeader && { header: 'Has Header Content' }),
-  };
-}
-
-const ariaLabel = 'Notifications';
-
-export default function FlashbarPermutations() {
+export default function InteractiveFlashbar() {
   const dismiss = (index: string) => {
     setItems(items => items.filter(item => item.id !== index));
   };
@@ -59,26 +35,17 @@ export default function FlashbarPermutations() {
   const restProps = collapsible
     ? {
         stackItems: true,
-        i18nStrings: {
-          ariaLabel,
-          notificationBarText: 'Notifications',
-          notificationBarAriaLabel: 'View all notifications',
-          errorIconAriaLabel: 'Error',
-          successIconAriaLabel: 'Success',
-          warningIconAriaLabel: 'Warning',
-          infoIconAriaLabel: 'Information',
-          inProgressIconAriaLabel: 'In progress',
-        },
+        i18nStrings,
       }
     : {
         i18nStrings: {
-          ariaLabel,
+          ariaLabel: i18nStrings.ariaLabel,
         },
       };
 
   return (
     <>
-      <h1>Flashbar dismissal test</h1>
+      <h1>Flashbar interactions test</h1>
       <SpaceBetween size="xs">
         <Toggle checked={collapsible} onChange={({ detail }) => setCollapsible(detail.checked)}>
           <span data-id="stack-items">Stack items</span>

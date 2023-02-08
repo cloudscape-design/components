@@ -28,6 +28,7 @@
     &.sticky-notifications {
       position: sticky;
       top: calc(var(#{custom-props.$offsetTop}) + #{awsui.$space-xs});
+      #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
     }
 
     &:not(.has-notifications-content) {

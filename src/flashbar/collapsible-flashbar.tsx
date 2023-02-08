@@ -105,16 +105,17 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         const listElement = listElementRef?.current;
         const flashbar = listElement?.parentElement;
         if (listElement && flashbar) {
-          const bottom = listElement.getBoundingClientRect().bottom;
-          const windowHeight = window.innerHeight;
-          // Apply the class first (before rendering)
-          // so that we can make calculations based on the applied padding-bottom;
+          // Make sure the bottom padding is present when we make the calculations,
           // then we might decide to remove it or not.
-          flashbar.classList.add(styles['spaced-bottom']);
+          flashbar.classList.remove(styles.floating);
+          const windowHeight = window.innerHeight;
+          // Take the parent region into account if using the App Layout, because it might have additional margins.
+          // Otherwise we use the Flashbar component for this calculation.
+          const outerElement = flashbar.parentElement?.parentElement || flashbar;
           const applySpacing =
-            isFlashbarStackExpanded && bottom + parseInt(getComputedStyle(flashbar).paddingBottom) >= windowHeight;
+            isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
           if (!applySpacing) {
-            flashbar.classList.remove(styles['spaced-bottom']);
+            flashbar.classList.add(styles.floating);
           }
         }
       }, resizeListenerThrottleDelay),
@@ -286,7 +287,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         {isCollapsible && (
           <div
             className={clsx(
-              styles.toggle,
+              styles['notification-bar'],
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
               transitioning && styles['animation-running']
