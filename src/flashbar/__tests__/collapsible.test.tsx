@@ -1,17 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-let mockScrollingConditions = false;
-jest.mock('../../../lib/components/flashbar/utils', () => {
-  const originalModule = jest.requireActual('../../../lib/components/flashbar/utils');
-  return {
-    __esModule: true,
-    ...originalModule,
-    isElementTopBeyondViewport: (...args: any) =>
-      mockScrollingConditions ? true : originalModule.isElementTopBeyondViewport(...args),
-  };
-});
-
 const scrollElementIntoViewMock = jest.fn();
 jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => {
   const originalModule = jest.requireActual('../../../lib/components/internal/utils/scrollable-containers');
@@ -278,14 +267,8 @@ describe('Collapsible Flashbar', () => {
   });
 
   describe('Sticky', () => {
-    beforeAll(() => {
-      mockScrollingConditions = true;
-    });
-    afterAll(() => {
-      mockScrollingConditions = false;
-    });
-
-    it('scrolls the button into view when collapsing if it moves up beyond the viewport', () => {
+    it('scrolls the button into view when collapsing', () => {
+      scrollElementIntoViewMock.mockClear();
       const flashbar = renderFlashbar();
       findNotificationBar(flashbar)!.click();
       findNotificationBar(flashbar)!.click();
