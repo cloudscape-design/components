@@ -5543,6 +5543,70 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`ariaLabel\` - Specifies the ARIA label for the list of notifications.
+
+If \`stackItems\` is set to \`true\`, it should also contain:
+
+* \`notificationBarAriaLabel\` - (optional) Specifies the ARIA label for the notification bar
+* \`notificationBarText\` - (optional) Specifies the text shown in the notification bar
+* \`errorIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`error\`.
+* \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
+* \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
+* \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).
+",
+      "inlineType": Object {
+        "name": "FlashbarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "ariaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "inProgressIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "infoIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "notificationBarAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "notificationBarText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "successIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "FlashbarProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5578,6 +5642,12 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
+    },
+    Object {
+      "description": "Specifies whether flash messages should be stacked.",
+      "name": "stackItems",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
