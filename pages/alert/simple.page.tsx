@@ -11,7 +11,7 @@ export default function AlertScenario() {
   const [visible, setVisible] = useState(true);
   return (
     <article>
-      <h1>Simple alert</h1>
+      <h1>Simple alert - Hello world</h1>
       <ScreenshotArea>
         <SpaceBetween size="s">
           <div className={styles['alert-container']}>
