@@ -328,7 +328,7 @@ explicitly set in script.
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
-    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled,
+    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
     &.content-first-child-main:not(.is-overlap-disabled) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
