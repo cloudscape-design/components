@@ -7,7 +7,7 @@ import Table, { TableProps } from '~components/table';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
+import { ARIA_LABELS } from './shared-configs';
 function createSimpleItems(count: number) {
   const texts = ['One', 'Two', 'Three', 'Four'];
   return range(count).map(number => ({ number, text: texts[number % texts.length] }));
@@ -50,13 +50,6 @@ const PROPERTY_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     cell: item => item.value,
   },
 ];
-
-const ARIA_LABELS: TableProps['ariaLabels'] = {
-  selectionGroupLabel: 'group label',
-  allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
-  itemSelectionLabel: ({ selectedItems }, item) =>
-    `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
-};
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<TableProps>([
@@ -175,14 +168,12 @@ const permutations = createPermutations<TableProps>([
     items: [createSimpleItems(3)],
     sortingColumn: [SORTABLE_COLUMNS[0], undefined],
     sortingDisabled: [true, false],
-    ariaLabels: [ARIA_LABELS],
   },
   {
     columnDefinitions: [SORTABLE_COLUMNS],
     items: [createSimpleItems(3)],
     sortingColumn: [SORTABLE_COLUMNS[0]],
     sortingDescending: [true],
-    ariaLabels: [ARIA_LABELS],
   },
 ]);
 /* eslint-enable react/jsx-key */
@@ -192,7 +183,10 @@ export default function () {
     <>
       <h1>Table permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Table {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => <Table {...permutation} ariaLabels={ARIA_LABELS} />}
+        />
       </ScreenshotArea>
     </>
   );

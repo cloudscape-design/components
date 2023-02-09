@@ -10,7 +10,7 @@ import Table, { TableProps } from '~components/table';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
+import { ARIA_LABELS } from './shared-configs';
 function createSimpleItems(count: number) {
   const texts = ['One', 'Two', 'Three', 'Four'];
   return range(count).map(number => ({ number, text: texts[number % texts.length] }));
@@ -29,13 +29,6 @@ const SIMPLE_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     header: 'Number',
   },
 ];
-
-const ARIA_LABELS: TableProps['ariaLabels'] = {
-  selectionGroupLabel: 'group label',
-  allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
-  itemSelectionLabel: ({ selectedItems }, item) =>
-    `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
-};
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<TableProps>([
@@ -82,7 +75,6 @@ const permutations = createPermutations<TableProps>([
     selectedItems: [SELECTED_ITEMS, SELECTED_ITEMS.slice(0, 2)],
     trackBy: ['text'],
     isItemDisabled: [undefined, () => true],
-    ariaLabels: [ARIA_LABELS],
   },
   {
     columnDefinitions: [SIMPLE_COLUMNS],
@@ -102,9 +94,12 @@ const permutations = createPermutations<TableProps>([
 export default function () {
   return (
     <>
-      <h1>Table permutations</h1>
+      <h1>Simple table permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Table {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => <Table {...permutation} ariaLabels={ARIA_LABELS} />}
+        />
       </ScreenshotArea>
     </>
   );
