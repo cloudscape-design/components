@@ -26,5 +26,5 @@ jobs:
     uses: cloudscape-design/.github/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
-      artifact-name: dev-pages
+      artifact-name: does-not-exist
       deployment-path: lib/static-default
