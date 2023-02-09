@@ -23,7 +23,7 @@ jobs:
       artifact-name: dev-pages
   deploy:
     needs: build
-    uses: cloudscape-design/.github/.github/workflows/deploy.yml@main
+    uses: cloudscape-design/.github/.github/workflows/deploy.yml@chore/deploy-continue-on-error
     secrets: inherit
     with:
       artifact-name: dev-pages
