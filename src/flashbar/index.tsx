@@ -17,15 +17,11 @@ export default function Flashbar(props: FlashbarProps) {
     }
   }, [props.items]);
 
-  if (isStackedFlashbar(props)) {
+  if (props.stackItems) {
     return <CollapsibleFlashbar {...props} />;
   } else {
     return <NonCollapsibleFlashbar {...props} />;
   }
-}
-
-function isStackedFlashbar(props: FlashbarProps) {
-  return 'stackItems' in props && props.stackItems;
 }
 
 applyDisplayName(Flashbar, 'Flashbar');
