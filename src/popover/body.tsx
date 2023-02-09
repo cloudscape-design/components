@@ -73,17 +73,26 @@ export default function PopoverBody({
     </div>
   );
 
+  const isDialog = showDismissButton;
+  const shouldTrapFocus = showDismissButton && variant !== 'annotation';
+
+  const dialogProps = isDialog
+    ? {
+        role: 'dialog',
+        'aria-modal': shouldTrapFocus ? true : undefined,
+        'aria-labelledby': ariaLabelledby ?? (header ? labelledById : undefined),
+      }
+    : {};
+
   return (
     <div
       className={clsx(styles.body, className, {
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
-      role={header ? 'dialog' : undefined}
       onKeyDown={onKeyDown}
-      aria-modal={showDismissButton && variant !== 'annotation' ? true : undefined}
-      aria-labelledby={ariaLabelledby ?? (header ? labelledById : undefined)}
+      {...dialogProps}
     >
-      <FocusLock disabled={variant === 'annotation' || !showDismissButton} autoFocus={false}>
+      <FocusLock disabled={!shouldTrapFocus} autoFocus={false}>
         {header && (
           <div className={clsx(styles['header-row'], showDismissButton && styles['has-dismiss'])}>
             {dismissButton}
