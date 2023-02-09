@@ -72,8 +72,8 @@ the grid layout will be:
     );
   }
 
-  > .item:not(:last-child) > .flash,
-  > .item.flash {
+  > .item:not(:last-child) > .flash::before,
+  > .item.flash::before {
     box-shadow: awsui.$shadow-flash-collapsed;
   }
 }
