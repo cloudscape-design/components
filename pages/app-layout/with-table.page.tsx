@@ -18,6 +18,7 @@ const items = generateItems(20);
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
+  const [selectedItems, setSelectedItems] = useState<Instance[]>([]);
 
   function openHelp(article: keyof typeof toolsContent) {
     setToolsOpen(true);
@@ -52,6 +53,10 @@ export default function () {
               </Header>
             }
             stickyHeader={true}
+            resizableColumns={true}
+            selectionType="multi"
+            selectedItems={selectedItems}
+            onSelectionChange={e => setSelectedItems(e.detail.selectedItems)}
             variant="full-page"
             columnDefinitions={columnsConfig}
             items={items}

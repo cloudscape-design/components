@@ -63,7 +63,7 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
     }: TheadProps,
-    outerRef: React.Ref<HTMLTableRowElement>
+    outerRef: React.Ref<HTMLTableSectionElement>
   ) => {
     const isVisualRefresh = useVisualRefresh();
 
@@ -85,8 +85,8 @@ const Thead = React.forwardRef(
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
     return (
-      <thead className={clsx(!hidden && styles['thead-active'])}>
-        <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
+      <thead ref={outerRef} className={clsx(!hidden && styles['thead-active'])}>
+        <tr {...focusMarkers.all} aria-rowindex={1}>
           {selectionType === 'multi' && (
             <th
               className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}

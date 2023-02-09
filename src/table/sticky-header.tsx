@@ -40,7 +40,7 @@ function StickyHeader(
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
-  const secondaryTheadRef = useRef<HTMLTableRowElement>(null);
+  const secondaryTheadRef = useRef<HTMLTableSectionElement>(null);
   const secondaryTableRef = useRef<HTMLTableElement>(null);
   const { isStuck } = useContext(StickyHeaderContext);
 

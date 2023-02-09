@@ -214,7 +214,11 @@ the default white background of the container component.
   padding: awsui.$space-scaled-s awsui.$space-table-footer-horizontal;
 }
 
-.thead-active,
+.thead-active {
+  position: sticky;
+  z-index: 1;
+}
+
 .row,
 .row-selected {
   /* used in test-utils */

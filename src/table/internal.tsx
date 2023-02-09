@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -23,7 +23,7 @@ import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import StickyHeader, { StickyHeaderRef } from './sticky-header';
+import { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
 import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -84,7 +84,7 @@ const InternalTable = React.forwardRef(
     stickyHeader = stickyHeader && supportsStickyPosition();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
-    const wrapperRefObject = useRef(null);
+    const wrapperRefObject = useRef<HTMLDivElement>(null);
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
@@ -92,7 +92,7 @@ const InternalTable = React.forwardRef(
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
-    const theadRef = useRef<HTMLTableRowElement>(null);
+    const theadRef = useRef<HTMLTableSectionElement>(null);
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
@@ -200,6 +200,17 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
+    useEffect(() => {
+      const onScroll = () => {
+        const { top: wrapperTop } = wrapperRefObject.current!.getBoundingClientRect();
+        requestAnimationFrame(() => {
+          theadRef.current!.style.top = `${-1 * wrapperTop + 134}px`;
+        });
+      };
+      window.addEventListener('scroll', onScroll);
+      return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     return (
@@ -214,31 +225,16 @@ const InternalTable = React.forwardRef(
           __internalRootRef={__internalRootRef}
           className={clsx(baseProps.className, styles.root)}
           header={
-            <>
-              {hasHeader && (
-                <div
-                  ref={overlapElement}
-                  className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
-                >
-                  <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
-                    <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
-                  </div>
+            hasHeader && (
+              <div
+                ref={overlapElement}
+                className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
+              >
+                <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
+                  <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
                 </div>
-              )}
-              {stickyHeader && (
-                <StickyHeader
-                  ref={stickyHeaderRef}
-                  variant={computedVariant}
-                  theadProps={theadProps}
-                  wrapperRef={wrapperRefObject}
-                  theadRef={theadRef}
-                  secondaryWrapperRef={secondaryWrapperRef}
-                  tableRef={tableRefObject}
-                  onScroll={handleScroll}
-                  tableHasHeader={hasHeader}
-                />
-              )}
-            </>
+              </div>
+            )
           }
           disableHeaderPaddings={true}
           disableContentPaddings={true}
@@ -280,13 +276,7 @@ const InternalTable = React.forwardRef(
               aria-label={ariaLabels?.tableLabel}
               aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
             >
-              <Thead
-                ref={theadRef}
-                hidden={stickyHeader}
-                onCellFocus={colIndex => stickyHeaderRef.current?.setFocusedColumn(colIndex)}
-                onCellBlur={() => stickyHeaderRef.current?.setFocusedColumn(null)}
-                {...theadProps}
-              />
+              <Thead ref={theadRef} {...theadProps} />
               <tbody>
                 {loading || items.length === 0 ? (
                   <tr>
@@ -328,7 +318,7 @@ const InternalTable = React.forwardRef(
                           // However, that behaviour is unwanted when the focus is received as result of a click
                           // as it causes the click to never reach the target element.
                           if (!currentTarget.contains(getMouseDownTarget())) {
-                            stickyHeaderRef.current?.scrollToRow(currentTarget);
+                            currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' });
                           }
                         }}
                         {...focusMarkers.item}
