@@ -123,7 +123,3 @@ export const counterTypes: {
   { type: 'info', labelName: 'infoIconAriaLabel', iconName: 'status-info' },
   { type: 'progress', labelName: 'inProgressIconAriaLabel', iconName: 'status-in-progress' },
 ];
-
-export function isElementTopBeyondViewport(element: HTMLElement) {
-  return element.getBoundingClientRect().top < 0;
-}
