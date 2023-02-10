@@ -32,8 +32,5 @@ export function getVisualContextClassname(contextName: string) {
 }
 
 export default function VisualContext({ contextName, className, children }: VisualContextProps) {
-  if (!contextName) {
-    return <>{children}</>;
-  }
   return <div className={clsx(getVisualContextClassname(contextName), className)}>{children}</div>;
 }

@@ -7,6 +7,7 @@ import { TableProps } from './interfaces';
 import Thead, { TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
@@ -71,9 +72,11 @@ function StickyHeader(
       onScroll={onScroll}
     >
       <table
-        className={clsx(styles.table, styles['table-layout-fixed'], {
-          'awsui-polaris-compact-mode awsui-compact-mode': contentDensity === 'compact',
-        })}
+        className={clsx(
+          styles.table,
+          styles['table-layout-fixed'],
+          contentDensity === 'compact' && getVisualContextClassname('compact-table')
+        )}
         role="table"
         ref={secondaryTableRef}
       >

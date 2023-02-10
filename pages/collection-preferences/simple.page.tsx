@@ -33,8 +33,8 @@ const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference = {
 };
 
 const contentDensityPreference: CollectionPreferencesProps.ContentDensityPreference = {
-  label: 'Compact table',
-  description: 'Display the content in a denser mode',
+  label: 'Compact mode',
+  description: 'Content density description',
 };
 
 const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {

@@ -6,8 +6,6 @@ import { useCollection } from '@cloudscape-design/collection-hooks';
 import Button from '~components/button';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Header from '~components/header';
-import Container from '~components/container';
-import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Pagination from '~components/pagination';
 import Table, { TableProps } from '~components/table';
@@ -35,9 +33,7 @@ export default function App() {
     pageSize: 20,
     visibleContent: ['id', 'type', 'dnsName', 'state'],
     wrapLines: false,
-
-    // set to true for default striped rows.
-    stripedRows: true,
+    // set to "compact" for default "compact density setting".
     contentDensity: 'compact',
   });
   const [selectedItems, setSelectedItems] = React.useState<any>([]);
@@ -66,33 +62,34 @@ export default function App() {
     }
   );
 
+  const [variant, setVariant] = useState<TableProps.Variant>('container');
+  const variants: TableProps.Variant[] = ['container', 'embedded', 'full-page', 'stacked'];
+
+  const variantButtons = (
+    <div style={{ paddingBottom: '10px', display: 'inline-flex', gap: '10px' }}>
+      <b>Sticky header variant: </b>
+      {variants.map((value, i) => {
+        return (
+          <label key={i} htmlFor={value}>
+            <input
+              type="radio"
+              name="variant"
+              id={value}
+              value={value}
+              onChange={() => setVariant(value)}
+              checked={variant === value}
+            />{' '}
+            {value}
+          </label>
+        );
+      })}
+    </div>
+  );
+  const [density, setDensity] = useState('compact' as 'comfortable' | 'compact');
+
   return (
     <ScreenshotArea>
       <SpaceBetween size="l">
-        <Container
-          header={
-            <Header
-              variant="h2"
-              headingTagOverride="h1"
-              description={
-                <>
-                  Some additional text{' '}
-                  <Link fontSize="inherit" variant="primary">
-                    with a link
-                  </Link>
-                  .
-                </>
-              }
-              info={<Link variant="info">Info</Link>}
-            >
-              Container with tag override
-            </Header>
-          }
-        >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-          tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-          tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-        </Container>
         <Table<Instance>
           {...collectionProps}
           header={
@@ -141,72 +138,26 @@ export default function App() {
                 label: 'Striped rows',
                 description: 'Striped rows description',
               }}
+              contentDensityPreference={{
+                label: 'Compact mode',
+                description: 'Display content in a more compact, denser mode',
+              }}
             />
           }
         />
-        <Container header={<Header variant="h2">Container header</Header>}>
-          This container uses a semantically correct h2 in the header. Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui tortor, mollis vitae molestie sed,
-          malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui tortor, mollis vitae molestie sed.
-          Phasellus tincidunt suscipit varius.
-        </Container>
-
-        <Container header={<Header variant="h2">With footer</Header>} footer="Some footer text">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Phasellus tincidunt suscipit varius. Nullam dui
-          tortor, mollis vitae molestie sed, malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing. Nullam dui
-          tortor, mollis vitae molestie sed. Phasellus tincidunt suscipit varius.
-        </Container>
-        <Table<Instance>
-          {...collectionProps}
-          header={
-            <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-              Instances
-            </Header>
-          }
-          ariaLabels={ariaLabels}
-          selectionType="multi"
-          onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-          selectedItems={selectedItems}
-          stripedRows={preferences.stripedRows}
-          contentDensity={preferences.contentDensity}
-          wrapLines={preferences.wrapLines}
+        {variantButtons}
+        <button onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}>
+          Toggle Density
+        </button>
+        <Table
+          header={<Header headingTagOverride="h1">Sticky header table</Header>}
           columnDefinitions={columnsConfig}
           items={items}
-          pagination={<Pagination {...paginationProps} ariaLabels={paginationLabels} />}
-          filter={
-            <TextFilter
-              {...filterProps!}
-              countText={getMatchesCountText(filteredItemsCount!)}
-              filteringAriaLabel="Filter instances"
-            />
-          }
-          visibleColumns={preferences.visibleContent}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              pageSizePreference={{
-                title: 'Select page size',
-                options: pageSizeOptions,
-              }}
-              visibleContentPreference={{
-                title: 'Select visible columns',
-                options: visibleContentOptions,
-              }}
-              wrapLinesPreference={{
-                label: 'Wrap lines',
-                description: 'Wrap lines description',
-              }}
-              stripedRowsPreference={{
-                label: 'Striped rows',
-                description: 'Striped rows description',
-              }}
-            />
-          }
+          stickyHeader={true}
+          variant={variant}
+          contentDensity={density}
         />
+        <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
       </SpaceBetween>
     </ScreenshotArea>
   );

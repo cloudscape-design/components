@@ -1,23 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { StyleDictionary } from '../../utils/interfaces';
-import { tokens as parentTokens } from '../colors';
+import { tokens as parentTokens } from '../spacing';
 import merge from 'lodash/merge';
-import { expandColorDictionary } from '../../utils';
-const tokens: StyleDictionary.ColorsDictionary = {
-  colorBorderDividerDefault: 'pink',
-  colorBorderButtonNormalDefault: '{colorGrey100}',
-  colorBackgroundButtonNormalDefault: 'transparent',
-  colorTextButtonNormalHover: '{colorWhite}',
-  colorBorderButtonNormalHover: '{colorWhite}',
-  colorBackgroundButtonNormalHover: 'rgba(0, 7, 22, 0.15)',
-  colorTextButtonNormalActive: '{colorWhite}',
-  colorBorderButtonNormalActive: '{colorWhite}',
-  colorBackgroundButtonNormalActive: 'rgba(0, 7, 22, 0.2)',
-  colorBorderItemFocused: '{colorGrey100}',
+import { expandDensityDictionary } from '../../utils';
+const tokens: StyleDictionary.SpacingDictionary = {
+  spaceScaledXxs: '{spaceXxxs}',
+  spaceScaledXs: '{spaceXxs}',
+  spaceScaledL: '{spaceM}',
 };
 
-const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(
+const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
   merge({}, parentTokens, tokens)
 );
 
