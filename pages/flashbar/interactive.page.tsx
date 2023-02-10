@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { range } from 'lodash';
 import { Box, Button, SpaceBetween, Flashbar, FlashbarProps, Toggle } from '~components';
 import { generateItem, i18nStrings } from './common';
@@ -13,37 +13,29 @@ export default function InteractiveFlashbar() {
   };
 
   const add = (type: FlashbarProps.Type, hasHeader = false) => {
-    setNextId(id => {
-      setItems(items => [generateItem({ type, id: id.toString(), dismiss, hasHeader }), ...items]);
-      return id + 1;
-    });
+    setItems(items => [generateItem({ type, id: nextId.current.toString(), dismiss, hasHeader }), ...items]);
+    nextId.current = nextId.current + 1;
   };
 
   const addMultiple = (type: FlashbarProps.Type, hasHeader = false, amount: number) => {
-    const id = nextId;
     for (const i of range(amount)) {
       setTimeout(() => {
-        setItems(items => [generateItem({ type, id: (id + i).toString(), dismiss, hasHeader }), ...items]);
+        add(type, hasHeader);
       }, i * 100);
     }
-    setNextId(id + amount);
   };
 
   const addToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
-    setNextId(id => {
-      setItems(items => [...items, generateItem({ type, dismiss, hasHeader, id: id.toString() })]);
-      return id + 1;
-    });
+    setItems(items => [...items, generateItem({ type, dismiss, hasHeader, id: nextId.current.toString() })]);
+    nextId.current = nextId.current + 1;
   };
 
   const removeAndAddToBottom = (type: FlashbarProps.Type, hasHeader = false) => {
-    setNextId(id => {
-      setItems(items => [
-        generateItem({ type, dismiss, hasHeader, id: id.toString() }),
-        ...items.slice(1, items.length),
-      ]);
-      return id + 1;
-    });
+    setItems(items => [
+      generateItem({ type, dismiss, hasHeader, id: nextId.current.toString() }),
+      ...items.slice(1, items.length),
+    ]);
+    nextId.current = nextId.current + 1;
   };
 
   const initialItems = [
@@ -56,7 +48,7 @@ export default function InteractiveFlashbar() {
 
   const [collapsible, setCollapsible] = useState(false);
   const [items, setItems] = useState(initialItems);
-  const [nextId, setNextId] = useState(initialItems.length);
+  const nextId = useRef(initialItems.length);
 
   const restProps = collapsible
     ? {
