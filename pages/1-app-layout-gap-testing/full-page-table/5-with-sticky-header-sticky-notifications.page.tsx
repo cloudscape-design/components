@@ -29,6 +29,7 @@ export default function () {
       <AppLayout
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
+        navigationOpen={false}
         navigation={<Navigation />}
         contentType="table"
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}

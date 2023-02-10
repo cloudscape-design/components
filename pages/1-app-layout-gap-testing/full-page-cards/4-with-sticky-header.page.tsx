@@ -6,7 +6,7 @@ import Header from '~components/header';
 import Link from '~components/link';
 import Cards, { CardsProps } from '~components/cards';
 import ScreenshotArea from '../../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from '../../app-layout/utils/content-blocks';
+import { Breadcrumbs, Navigation, Tools, Footer } from '../../app-layout/utils/content-blocks';
 import * as toolsContent from '../../app-layout/utils/tools-content';
 import labels from '../../app-layout/utils/labels';
 import Button from '~components/button';
@@ -76,12 +76,13 @@ export default function () {
         contentType="table"
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}
+        navigationOpen={false}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-        notifications={<Notifications />}
         content={
           <Cards<Item>
             items={items}
             cardDefinition={cardDefinition}
+            stickyHeader={true}
             variant="full-page"
             header={
               <Header

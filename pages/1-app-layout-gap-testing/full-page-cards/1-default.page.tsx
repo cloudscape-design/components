@@ -73,6 +73,7 @@ export default function () {
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
+        navigationOpen={false}
         contentType="table"
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}

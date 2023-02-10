@@ -5,7 +5,7 @@ import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Link from '~components/link';
 import ScreenshotArea from '../../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer } from '../../app-layout/utils/content-blocks';
+import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from '../../app-layout/utils/content-blocks';
 import * as toolsContent from '../../app-layout/utils/tools-content';
 import labels from '../../app-layout/utils/labels';
 import Table from '~components/table';
@@ -35,6 +35,7 @@ export default function () {
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
+        notifications={<Notifications />}
         content={
           <Table<Instance>
             header={

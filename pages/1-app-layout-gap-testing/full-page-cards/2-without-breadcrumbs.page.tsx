@@ -4,16 +4,59 @@ import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Link from '~components/link';
+import Cards, { CardsProps } from '~components/cards';
 import ScreenshotArea from '../../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from '../../app-layout/utils/content-blocks';
+import { Navigation, Tools, Footer } from '../../app-layout/utils/content-blocks';
 import * as toolsContent from '../../app-layout/utils/tools-content';
 import labels from '../../app-layout/utils/labels';
-import Table from '~components/table';
-import { generateItems, Instance } from '../../table/generate-data';
-import { columnsConfig } from '../../table/shared-configs';
 import Button from '~components/button';
+import range from 'lodash/range';
 
-const items = generateItems(20);
+interface Item {
+  number: number;
+  text: string;
+}
+
+function createSimpleItems(count: number) {
+  const texts = ['One', 'Two', 'Three', 'Four', 'Five'];
+  return range(count).map(number => ({ number, text: texts[number % texts.length] }));
+}
+
+const cardDefinition: CardsProps.CardDefinition<Item> = {
+  header: item => item.text,
+  sections: [
+    {
+      id: 'description',
+      header: 'Number',
+      content: item => item.number,
+    },
+    {
+      id: 'type',
+      header: 'Text',
+      content: item => item.text,
+    },
+  ],
+};
+
+const config: CardsProps['cardsPerRow'] = [
+  {
+    cards: 1,
+  },
+  {
+    minWidth: 400,
+    cards: 2,
+  },
+  {
+    cards: 3,
+    minWidth: 700,
+  },
+  {
+    cards: 4,
+    minWidth: 1000,
+  },
+];
+
+const items = createSimpleItems(16);
 
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -28,15 +71,17 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         contentType="table"
+        navigationOpen={false}
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
-        notifications={<Notifications />}
         content={
-          <Table<Instance>
+          <Cards<Item>
+            items={items}
+            cardDefinition={cardDefinition}
+            variant="full-page"
             header={
               <Header
                 variant="awsui-h1-sticky"
@@ -51,9 +96,7 @@ export default function () {
                 Sticky Scrollbar Example
               </Header>
             }
-            variant="full-page"
-            columnDefinitions={columnsConfig}
-            items={items}
+            cardsPerRow={config}
           />
         }
       />
