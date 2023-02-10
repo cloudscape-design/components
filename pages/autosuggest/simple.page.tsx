@@ -26,6 +26,7 @@ export default function AutosuggestPage() {
         onChange={event => setValue(event.detail.value)}
         enteredTextLabel={enteredTextLabel}
         ariaLabel={'simple autosuggest'}
+        selectedAriaLabel="Selected"
         empty={empty}
       />
       <button id="remove-options" onClick={() => setHasOptions(false)}>

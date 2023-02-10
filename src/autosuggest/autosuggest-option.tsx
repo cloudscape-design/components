@@ -17,6 +17,7 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   option: AutosuggestItem;
   highlighted: boolean;
   highlightType: HighlightType;
+  current: boolean;
   enteredTextLabel: (value: string) => string;
   virtualPosition?: number;
   padBottom?: boolean;
@@ -32,6 +33,7 @@ const AutosuggestOption = (
     option,
     highlighted,
     highlightType,
+    current,
     enteredTextLabel,
     virtualPosition,
     padBottom,
@@ -70,7 +72,7 @@ const AutosuggestOption = (
     <SelectableItem
       {...baseProps}
       className={styles.option}
-      ariaSelected={highlighted}
+      ariaSelected={current}
       highlighted={highlighted}
       disabled={option.disabled}
       hasBackground={useEntered}
