@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import styles from '../../../lib/components/autosuggest/styles.css.js';
+import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
@@ -88,6 +89,14 @@ test('should display entered text option/label', () => {
   wrapper.setInputValue('1');
   expect(enteredTextLabel).toBeCalledWith('1');
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
+});
+
+test('entered text option should not get screenreader override', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" />);
+  wrapper.focus();
+  expect(
+    wrapper.findEnteredTextOption()!.findByClassName(itemStyles['screenreader-content'])?.getElement().textContent
+  ).toBeFalsy();
 });
 
 test('should not close dropdown when no realted target in blur', () => {
