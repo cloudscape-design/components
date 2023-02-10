@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal/base-component';
+import { initAwsUiVersions } from '@cloudscape-design/component-toolkit/internal';
 import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
 
 // these styles needed to be imported for every public component

@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { getAllComponents, requireComponent, supportsDOMProperties } from './utils';
 import { getRequiredPropsForComponent } from './required-props-for-components';
-import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal/base-component';
+import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 import { pascalCase } from 'change-case';
 import { PACKAGE_VERSION } from '../../lib/components/internal/environment';
 
