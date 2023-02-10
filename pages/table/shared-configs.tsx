@@ -157,3 +157,10 @@ export const simpleColumns: TableProps.ColumnDefinition<Item>[] = [
     header: 'Number',
   },
 ];
+
+export const ARIA_LABELS: TableProps['ariaLabels'] = {
+  selectionGroupLabel: 'group label',
+  allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
+  itemSelectionLabel: ({ selectedItems }, item) =>
+    `${item.text} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
+};
