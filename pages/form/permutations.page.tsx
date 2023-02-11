@@ -62,7 +62,7 @@ const permutations = createPermutations<FormProps>([
         <Button variant="primary">Submit</Button>
       </SpaceBetween>,
     ],
-    variant: ['full-page', 'embedded'],
+    variant: ['embedded'],
   },
 ]);
 
