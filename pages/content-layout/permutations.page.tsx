@@ -54,14 +54,11 @@ const formPermutations = createPermutations<ContentLayoutProps>([
 
 export default function ContentLayoutPermutations() {
   return (
-    <>
+    <main>
       <h1>Content Layout permutations</h1>
       <ScreenshotArea>
-        <PermutationsView
-          permutations={[...formPermutations]}
-          render={permutation => <ContentLayout {...permutation} />}
-        />
+        <PermutationsView permutations={formPermutations} render={permutation => <ContentLayout {...permutation} />} />
       </ScreenshotArea>
-    </>
+    </main>
   );
 }

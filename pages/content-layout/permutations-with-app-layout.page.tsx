@@ -12,6 +12,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import AppLayout from '~components/app-layout';
 import { BreadcrumbGroup } from '~components';
+import appLayoutLabels from '../app-layout/utils/labels';
 
 /* eslint-disable react/jsx-key */
 const formPermutations = createPermutations<ContentLayoutProps>([
@@ -45,10 +46,13 @@ export default function ContentLayoutPermutations() {
       <h1>Content Layout + Form + App Layout permutations</h1>
       <ScreenshotArea>
         <PermutationsView
-          permutations={[...formPermutations]}
+          permutations={formPermutations}
           render={permutation => (
             <AppLayout
               contentType="form"
+              ariaLabels={appLayoutLabels}
+              toolsHide={true}
+              navigationHide={true}
               breadcrumbs={
                 <BreadcrumbGroup
                   items={[

@@ -5728,6 +5728,26 @@ Object {
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Determines whether the form displays a dark header and overlap with content.
+* A full-page form displays the dark header and overlap, similar to what the [ContentLayout](/components/content-layout/) component provides by default.
+  Use this variant if the form is the first and primary element on the page.
+* An embedded form is one which is not used in a typical [create](/patterns/resource-management/create/single-page-create/) or
+  [edit](/patterns/resource-management/edit/page-edit/) page, and is instead used in another context which doesn't occupy the full page.
+  This variant does not use a dark header.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "full-page",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
+    },
   ],
   "regions": Array [
     Object {

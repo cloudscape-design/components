@@ -12,6 +12,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import AppLayout, { AppLayoutProps } from '~components/app-layout';
+import appLayoutLabels from './utils/labels';
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<AppLayoutProps>([
@@ -24,7 +25,7 @@ const permutations = createPermutations<AppLayoutProps>([
           <Form>
             <Container header={<Header variant="h2">Form section header</Header>}>
               <FormField label="First field">
-                <Input value="" readOnly={true} />
+                <Input value="" />
               </FormField>
             </Container>
           </Form>
@@ -69,7 +70,12 @@ export default function ContentLayoutPermutations() {
     <>
       <h1>Form + Content Layout permutations</h1>
       <ScreenshotArea>
-        <PermutationsView permutations={permutations} render={permutation => <AppLayout {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <AppLayout toolsHide={true} navigationHide={true} ariaLabels={appLayoutLabels} {...permutation} />
+          )}
+        />
       </ScreenshotArea>
     </>
   );
