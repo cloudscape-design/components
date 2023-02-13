@@ -6,7 +6,7 @@ import Header from '~components/header';
 import Link from '~components/link';
 import Cards, { CardsProps } from '~components/cards';
 import ScreenshotArea from '../../utils/screenshot-area';
-import { Breadcrumbs, Navigation, Tools, Footer, Notifications } from '../../app-layout/utils/content-blocks';
+import { Navigation, Tools, Footer, Notifications } from '../../app-layout/utils/content-blocks';
 import * as toolsContent from '../../app-layout/utils/tools-content';
 import labels from '../../app-layout/utils/labels';
 import Button from '~components/button';
@@ -71,7 +71,6 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         navigationOpen={false}
         contentType="table"

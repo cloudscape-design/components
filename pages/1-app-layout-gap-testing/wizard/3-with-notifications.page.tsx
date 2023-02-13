@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { AppLayout, Box, Button, ColumnLayout, Container, Header, SpaceBetween, Table, Wizard } from '~components';
 import { columnsConfig } from '../../table/shared-configs';
 import { generateItems, Instance } from '../../table/generate-data';
-import { Breadcrumbs, Notifications } from '../../app-layout/utils/content-blocks';
+import { Notifications } from '../../app-layout/utils/content-blocks';
 import labels from '../../app-layout/utils/labels';
 
 import ScreenshotArea from '../../utils/screenshot-area';
@@ -18,7 +18,6 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
         navigationHide={false}
         navigationOpen={false}
         notifications={<Notifications />}
