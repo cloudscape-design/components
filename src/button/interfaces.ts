@@ -82,6 +82,12 @@ export interface ButtonProps extends BaseComponentProps {
   target?: string;
 
   /**
+   * Adds a `rel` attribute to the link. By default, the component sets the `rel` attribute to "noopener noreferrer" when `target` is `"_blank"`.
+   * If the `rel` property is provided, it overrides the default behaviour.
+   */
+  rel?: string;
+
+  /**
    * Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
    * You can specify a string value that will be suggested as the name of the downloaded file.
    * This property only applies when an `href` is provided.

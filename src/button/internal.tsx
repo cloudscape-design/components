@@ -40,6 +40,7 @@ export const InternalButton = React.forwardRef(
       wrapText = true,
       href,
       target,
+      rel,
       download,
       formAction = 'submit',
       ariaLabel,
@@ -125,7 +126,7 @@ export const InternalButton = React.forwardRef(
             href={href}
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
-            rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+            rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
             tabIndex={isDisabled ? -1 : undefined}
             aria-disabled={isDisabled ? true : undefined}
             download={download}
