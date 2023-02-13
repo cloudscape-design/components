@@ -11,31 +11,31 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 type PageHeadersContext = React.Context<
   AppContextType<{
-    overflowHeading: boolean;
+    truncateHeading: boolean;
   }>
 >;
 
 export default function HeadersLevel3Demo() {
   const {
-    urlParams: { overflowHeading = false },
+    urlParams: { truncateHeading = false },
     setUrlParams,
   } = useContext(AppContext as PageHeadersContext);
 
   return (
     <>
-      <Checkbox checked={overflowHeading} onChange={e => setUrlParams({ overflowHeading: e.detail.checked })}>
-        Overflow heading
+      <Checkbox checked={truncateHeading} onChange={e => setUrlParams({ truncateHeading: e.detail.checked })}>
+        Truncate heading
       </Checkbox>
       <ScreenshotArea>
         <SpaceBetween size="xs">
-          <Header variant="h3" headingTagOverride="h1" overflowHeading={overflowHeading}>
+          <Header variant="h3" headingTagOverride="h1" truncateHeading={truncateHeading}>
             h1 override
           </Header>
           <Header
             variant="h3"
             headingTagOverride="h2"
             actions={<Button>Edit</Button>}
-            overflowHeading={overflowHeading}
+            truncateHeading={truncateHeading}
           >
             Wizard section header
           </Header>
@@ -44,7 +44,7 @@ export default function HeadersLevel3Demo() {
             description="Some header description"
             info={<Link variant="info">Info</Link>}
             counter="3"
-            overflowHeading={overflowHeading}
+            truncateHeading={truncateHeading}
           >
             Full blown header
           </Header>

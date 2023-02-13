@@ -11,20 +11,20 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 type PageHeadersContext = React.Context<
   AppContextType<{
-    overflowHeading: boolean;
+    truncateHeading: boolean;
   }>
 >;
 
 export default function PageHeadersDemo() {
   const {
-    urlParams: { overflowHeading = false },
+    urlParams: { truncateHeading = false },
     setUrlParams,
   } = useContext(AppContext as PageHeadersContext);
 
   return (
     <>
-      <Checkbox checked={overflowHeading} onChange={e => setUrlParams({ overflowHeading: e.detail.checked })}>
-        Overflow heading
+      <Checkbox checked={truncateHeading} onChange={e => setUrlParams({ truncateHeading: e.detail.checked })}>
+        Truncate heading
       </Checkbox>
       <ScreenshotArea>
         <Header
@@ -36,12 +36,12 @@ export default function PageHeadersDemo() {
               <Button>And a third Button with very long text</Button>
             </SpaceBetween>
           }
-          overflowHeading={overflowHeading}
+          truncateHeading={truncateHeading}
         >
           My large and long title with buttons
         </Header>
 
-        <Header variant="h1" actions={<Button>Button</Button>} overflowHeading={overflowHeading}>
+        <Header variant="h1" actions={<Button>Button</Button>} truncateHeading={truncateHeading}>
           My large and long title with single button
         </Header>
 
@@ -50,12 +50,12 @@ export default function PageHeadersDemo() {
           actions={<Button>Button</Button>}
           info={<Link variant="info">Info</Link>}
           description="This is a page header"
-          overflowHeading={overflowHeading}
+          truncateHeading={truncateHeading}
         >
           Page header with description and info link
         </Header>
 
-        <Header variant="h1" actions={<Button>Button</Button>} overflowHeading={overflowHeading}>
+        <Header variant="h1" actions={<Button>Button</Button>} truncateHeading={truncateHeading}>
           LongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableText
         </Header>
       </ScreenshotArea>

@@ -5931,9 +5931,9 @@ provided by the variant.",
       "type": "string",
     },
     Object {
-      "description": "Determines if the heading (specified with the \`children\` property) overflows with ellipsis when there is not enough space.
+      "description": "Determines if the heading (specified with the \`children\` property) should be truncated with ellipsis when there is not enough space.
 Defaults to \`false\`.",
-      "name": "overflowHeading",
+      "name": "truncateHeading",
       "optional": true,
       "type": "boolean",
     },

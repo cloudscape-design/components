@@ -42,10 +42,10 @@ export interface HeaderProps extends BaseComponentProps {
    */
   info?: React.ReactNode;
   /**
-   * Determines if the heading (specified with the `children` property) overflows with ellipsis when there is not enough space.
+   * Determines if the heading (specified with the `children` property) should be truncated with ellipsis when there is not enough space.
    * Defaults to `false`.
    */
-  overflowHeading?: boolean;
+  truncateHeading?: boolean;
 }
 
 export namespace HeaderProps {

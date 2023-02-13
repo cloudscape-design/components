@@ -17,7 +17,7 @@ interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, Inte
 
 export default function InternalHeader({
   variant,
-  overflowHeading,
+  truncateHeading,
   headingTagOverride,
   children,
   actions,
@@ -66,16 +66,16 @@ export default function InternalHeader({
             className={clsx(
               styles.heading,
               styles[`heading-variant-${variantOverride}`],
-              overflowHeading && styles['heading-overflow']
+              truncateHeading && styles['heading-overflow']
             )}
           >
             <span
               className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
-              aria-hidden={overflowHeading}
+              aria-hidden={truncateHeading}
             >
               {children}
             </span>
-            {overflowHeading && <ScreenreaderOnly>{children}</ScreenreaderOnly>}
+            {truncateHeading && <ScreenreaderOnly>{children}</ScreenreaderOnly>}
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
           {info && <span className={styles.info}>{info}</span>}

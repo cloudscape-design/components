@@ -13,20 +13,20 @@ import AppContext, { AppContextType } from '../app/app-context';
 
 type PageHeadersContext = React.Context<
   AppContextType<{
-    overflowHeading: boolean;
+    truncateHeading: boolean;
   }>
 >;
 
 export default function ContainerHeadersDemo() {
   const {
-    urlParams: { overflowHeading = false },
+    urlParams: { truncateHeading = false },
     setUrlParams,
   } = useContext(AppContext as PageHeadersContext);
 
   return (
     <>
-      <Checkbox checked={overflowHeading} onChange={e => setUrlParams({ overflowHeading: e.detail.checked })}>
-        Overflow heading
+      <Checkbox checked={truncateHeading} onChange={e => setUrlParams({ truncateHeading: e.detail.checked })}>
+        Truncate heading
       </Checkbox>
       <ScreenshotArea>
         <SpaceBetween size="l">
@@ -34,13 +34,13 @@ export default function ContainerHeadersDemo() {
             variant="h2"
             headingTagOverride="h1"
             actions={<Button>Button</Button>}
-            overflowHeading={overflowHeading}
+            truncateHeading={truncateHeading}
           >
             Standalone header
           </Header>
           <Container
             header={
-              <Header variant="h2" actions={<Button>Button</Button>} overflowHeading={overflowHeading}>
+              <Header variant="h2" actions={<Button>Button</Button>} truncateHeading={truncateHeading}>
                 Container
               </Header>
             }
@@ -49,7 +49,7 @@ export default function ContainerHeadersDemo() {
           </Container>
           <Container
             header={
-              <Header variant="h2" info={<Link variant="info">Info</Link>} overflowHeading={overflowHeading}>
+              <Header variant="h2" info={<Link variant="info">Info</Link>} truncateHeading={truncateHeading}>
                 With info-link
               </Header>
             }
@@ -77,7 +77,7 @@ export default function ContainerHeadersDemo() {
                     <Button>And a third Button with very long text</Button>
                   </SpaceBetween>
                 }
-                overflowHeading={overflowHeading}
+                truncateHeading={truncateHeading}
               >
                 Container #3 has a very long title that will interfere with the button group on the right
               </Header>
@@ -105,7 +105,7 @@ export default function ContainerHeadersDemo() {
                     .
                   </>
                 }
-                overflowHeading={overflowHeading}
+                truncateHeading={truncateHeading}
               >
                 Container
               </Header>
@@ -121,7 +121,7 @@ export default function ContainerHeadersDemo() {
                 counter="10"
                 info={<Link variant="info">Info</Link>}
                 description="This container uses a semantically correct h2 in the header. Here is some more text for a very long example because sometimes descriptions have a lot of text and you just need to know what it will look like so here is more text."
-                overflowHeading={overflowHeading}
+                truncateHeading={truncateHeading}
               >
                 Container with a counter and a longer title so you can see how the info link wraps to the next line
               </Header>
@@ -131,7 +131,7 @@ export default function ContainerHeadersDemo() {
           </Container>
           <Container
             header={
-              <Header variant="h2" actions={<Button>Button</Button>} overflowHeading={overflowHeading}>
+              <Header variant="h2" actions={<Button>Button</Button>} truncateHeading={truncateHeading}>
                 Container#6LongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableTextLongUnbreakableText
               </Header>
             }
