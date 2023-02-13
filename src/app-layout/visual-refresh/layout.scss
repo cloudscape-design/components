@@ -265,17 +265,17 @@ explicitly set in script.
     #{custom-props.$contentGapRight}: #{awsui.$space-l};
   }
 
-  // Notifications will always be the first content if it exists
+  // Vertically align the notifications with the trigger buttons
   &.content-first-child-notifications {
     #{custom-props.$notificationsGap}: #{awsui.$space-xs};
   }
 
-  // The Breadcrumbs gap is the same when it is the first content or after the Notifications
+  // Vertically align the breadcrumbs with the trigger buttons
   &.has-breadcrumbs {
     #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
   }
 
-  // The Header gap is the same when it is the first content or after the Notifications
+  // Vertically align the content header with the trigger buttons
   &.content-first-child-header,
   &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
@@ -291,9 +291,14 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-xs};
   }
 
-  // Set the Main gap when it follows the Breadcrumbs
+  // Set the Main gap when it follows the Breadcrumbs without an overlap
   &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
+  }
+
+  // Set the Main gap when it follows the Breadcrumbs with an overlap
+  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
+    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
   }
 
   // Set the Main gap when it follows the Header
@@ -301,11 +306,7 @@ explicitly set in script.
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
   }
 
-  // Set the Main gap when it follows the Header
-  &.has-breadcrumbs:not(.has-header):not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xxs};
-  }
-
+  // Set the Main gap when it is the first page content
   &.content-first-child-main:not(.is-overlap-disabled),
   &.content-first-child-main.is-overlap-disabled:not(.disable-content-paddings) {
     #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
