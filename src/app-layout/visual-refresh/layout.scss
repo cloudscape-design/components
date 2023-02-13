@@ -266,7 +266,7 @@ explicitly set in script.
   }
 
   // Notifications will always be the first content if it exists
-  &.has-notifications-content {
+  &.content-first-child-notifications {
     #{custom-props.$notificationsGap}: #{awsui.$space-xs};
   }
 
@@ -277,7 +277,7 @@ explicitly set in script.
 
   // The Header gap is the same when it is the first content or after the Notifications
   &.content-first-child-header,
-  &.has-notifications-content:not(.has-breadcrumbs).has-header {
+  &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
     #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
   }
 
@@ -287,7 +287,7 @@ explicitly set in script.
   }
 
   // Set the Main gap when it follows the Notifications
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
+  &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header) {
     #{custom-props.$mainGap}: #{awsui.$space-xs};
   }
 
@@ -316,7 +316,7 @@ explicitly set in script.
   components for mobile viewports.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.has-notifications-content {
+    &.content-first-child-notifications {
       #{custom-props.$notificationsGap}: #{awsui.$space-scaled-s};
     }
 
@@ -324,11 +324,11 @@ explicitly set in script.
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
-    &.has-notifications-content:not(.has-breadcrumbs).has-header {
+    &.content-first-child-notifications:not(.has-breadcrumbs).has-header {
       #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
-    &.has-notifications-content:not(.has-breadcrumbs):not(.has-header),
+    &.content-first-child-notifications:not(.has-breadcrumbs):not(.has-header),
     &.content-first-child-main:not(.is-overlap-disabled) {
       #{custom-props.$mainGap}: #{awsui.$space-scaled-s};
     }
