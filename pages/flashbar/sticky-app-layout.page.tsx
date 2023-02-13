@@ -7,7 +7,11 @@ import { generateItem, i18nStrings } from './common';
 import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function StickyFlashbar() {
-  const items = [...range(10).map(() => generateItem('info', () => null, false, true))];
+  const items = [
+    ...range(10).map(index =>
+      generateItem({ type: 'info', dismiss: () => null, hasHeader: false, initial: true, id: index.toString() })
+    ),
+  ];
   return (
     <AppLayout
       ariaLabels={appLayoutLabels}
