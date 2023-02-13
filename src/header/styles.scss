@@ -185,6 +185,7 @@
 }
 
 .heading-text {
+  /* used in test-utils */
   &-variant-h1 {
     @include styles.font-heading-xl;
   }
