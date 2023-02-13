@@ -9,6 +9,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { HeaderProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
@@ -16,6 +17,7 @@ interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, Inte
 
 export default function InternalHeader({
   variant,
+  overflowHeading,
   headingTagOverride,
   children,
   actions,
@@ -60,10 +62,20 @@ export default function InternalHeader({
             isRefresh && styles[`title-variant-${variantOverride}-refresh`]
           )}
         >
-          <HeadingTag className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}>
-            <span className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}>
+          <HeadingTag
+            className={clsx(
+              styles.heading,
+              styles[`heading-variant-${variantOverride}`],
+              overflowHeading && styles['heading-overflow']
+            )}
+          >
+            <span
+              className={clsx(styles['heading-text'], styles[`heading-text-variant-${variantOverride}`])}
+              aria-hidden={overflowHeading}
+            >
               {children}
             </span>
+            {overflowHeading && <ScreenreaderOnly>{children}</ScreenreaderOnly>}
             {counter !== undefined && <span className={styles.counter}> {counter}</span>}
           </HeadingTag>
           {info && <span className={styles.info}>{info}</span>}

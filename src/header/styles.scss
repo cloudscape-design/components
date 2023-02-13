@@ -103,6 +103,10 @@
 }
 
 .title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+
   @include styles.text-wrapping;
   color: awsui.$color-text-heading-default;
 
@@ -159,7 +163,7 @@
 .heading {
   margin: 0;
   // We display heading element inline to achieve the proper line-wrapping with info links
-  display: inline;
+  display: inline-block;
   font-size: inherit;
   @include styles.info-link-spacing();
 
@@ -172,10 +176,15 @@
   &-variant-h3 {
     @include styles.font(heading-m);
   }
+  &-overflow {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 }
 
 .heading-text {
-  /* used in test-utils */
   &-variant-h1 {
     @include styles.font-heading-xl;
   }

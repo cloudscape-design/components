@@ -41,6 +41,11 @@ export interface HeaderProps extends BaseComponentProps {
    * Area next to the heading to display an Info link.
    */
   info?: React.ReactNode;
+  /**
+   * Determines if the heading (specified with the `children` property) overflows with ellipsis when there is not enough space.
+   * Defaults to `false`.
+   */
+  overflowHeading?: boolean;
 }
 
 export namespace HeaderProps {
