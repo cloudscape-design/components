@@ -21,7 +21,7 @@
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-bottom: calc(#{awsui.$space-container-header-vertical} + #{awsui.$space-scaled-xxs});
+    padding-bottom: #{awsui.$space-container-header-vertical};
   }
 }
 

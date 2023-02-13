@@ -321,7 +321,7 @@ explicitly set in script.
     }
 
     &.content-first-child-header {
-      #{custom-props.$headerGap}: #{awsui.$space-scaled-m};
+      #{custom-props.$headerGap}: #{awsui.$space-scaled-s};
     }
 
     &.has-notifications-content:not(.has-breadcrumbs).has-header {

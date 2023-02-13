@@ -64,13 +64,7 @@ export default function WizardForm({
   return (
     <>
       <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
-        <div
-          className={clsx(
-            styles['collapsed-steps'],
-            !showCollapsedSteps && styles['collapsed-steps-hidden'],
-            isVisualRefresh && isMobile && styles['collapsed-steps-extra-padding']
-          )}
-        >
+        <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
           {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
