@@ -7,11 +7,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { FocusTarget, sampleNotifications } from './common';
 
 const items = [
-  { ...sampleNotifications.warning, id: '0' },
+  { ...sampleNotifications.warning, id: '2' },
   { ...sampleNotifications.error, id: '1' },
   {
     ...sampleNotifications.success,
-    id: '2',
+    id: '0',
   },
 ];
 
