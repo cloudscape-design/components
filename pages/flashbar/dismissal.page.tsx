@@ -5,6 +5,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import Flashbar from '~components/flashbar';
 import { useState } from 'react';
 import range from 'lodash/range';
+import { FocusTarget } from './common';
 
 function generateArray<T>(count: number, func: (index: number) => T): Array<T> {
   return range(count).map((_, index) => func(index));
@@ -29,12 +30,7 @@ export default function FlashbarPermutations() {
   return (
     <>
       <h1>Flashbar dismissal test</h1>
-      <p>
-        Click here to focus so we can tab to the content below{' '}
-        <button type="button" id="focus-target">
-          focus
-        </button>
-      </p>
+      <FocusTarget />
       <ScreenshotArea disableAnimations={true}>
         <Flashbar items={items} />
       </ScreenshotArea>
