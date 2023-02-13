@@ -20,9 +20,8 @@
   padding: awsui.$space-scaled-xs 0 awsui.$space-scaled-xxs;
 
   &-filtering {
-    flex: 1 1 0%;
+    flex: 1 1 fit-content;
     max-width: 100%;
-    margin-right: awsui.$space-l;
   }
 
   &-align-right {
