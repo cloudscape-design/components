@@ -2758,8 +2758,8 @@ It prevents users from clicking the button.",
       "type": "string",
     },
     Object {
-      "description": "Adds a \`rel\` attribute to the link. If the \`rel\` property is provided, it overrides the default behaviour.
-By default, the component sets the \`rel\` attribute to \\"noopener noreferrer\\" when \`target\` is \`\\"_blank\\"\`.",
+      "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to \\"noopener noreferrer\\" when \`target\` is \`\\"_blank\\"\`.
+If the \`rel\` property is provided, it overrides the default behavior.",
       "name": "rel",
       "optional": true,
       "type": "string",
