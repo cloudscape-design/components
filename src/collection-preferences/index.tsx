@@ -69,46 +69,51 @@ const ModalContent = ({
     );
   }
 
+  const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
+  // const hasRightContent = !!visibleContentPreference;
+
   return (
     <ModalContentLayout
       left={
-        <InternalSpaceBetween size="l">
-          {pageSizePreference && (
-            <PageSizePreference
-              value={preferences.pageSize}
-              {...pageSizePreference}
-              onChange={pageSize => onChange({ pageSize })}
-            />
-          )}
-          {wrapLinesPreference && (
-            <WrapLinesPreference
-              value={preferences.wrapLines}
-              {...wrapLinesPreference}
-              onChange={wrapLines => onChange({ wrapLines })}
-            />
-          )}
-          {stripedRowsPreference && (
-            <StripedRowsPreference
-              value={preferences.stripedRows}
-              {...stripedRowsPreference}
-              onChange={stripedRows => onChange({ stripedRows })}
-            />
-          )}
-          {contentDensityPreference && (
-            <ContentDensityPreference
-              value={preferences.contentDensity}
-              {...contentDensityPreference}
-              onChange={contentDensity => onChange({ contentDensity })}
-            />
-          )}
-          {customPreference && (
-            <CustomPreference
-              value={preferences.custom}
-              customPreference={customPreference}
-              onChange={custom => onChange({ custom })}
-            />
-          )}
-        </InternalSpaceBetween>
+        hasLeftContent && (
+          <InternalSpaceBetween size="l">
+            {pageSizePreference && (
+              <PageSizePreference
+                value={preferences.pageSize}
+                {...pageSizePreference}
+                onChange={pageSize => onChange({ pageSize })}
+              />
+            )}
+            {wrapLinesPreference && (
+              <WrapLinesPreference
+                value={preferences.wrapLines}
+                {...wrapLinesPreference}
+                onChange={wrapLines => onChange({ wrapLines })}
+              />
+            )}
+            {stripedRowsPreference && (
+              <StripedRowsPreference
+                value={preferences.stripedRows}
+                {...stripedRowsPreference}
+                onChange={stripedRows => onChange({ stripedRows })}
+              />
+            )}
+            {contentDensityPreference && (
+              <ContentDensityPreference
+                value={preferences.contentDensity}
+                {...contentDensityPreference}
+                onChange={contentDensity => onChange({ contentDensity })}
+              />
+            )}
+            {customPreference && (
+              <CustomPreference
+                value={preferences.custom}
+                customPreference={customPreference}
+                onChange={custom => onChange({ custom })}
+              />
+            )}
+          </InternalSpaceBetween>
+        )
       }
       right={
         visibleContentPreference && (
@@ -128,6 +133,7 @@ export default function CollectionPreferences({
   confirmLabel,
   cancelLabel,
   disabled = false,
+  modalSize = 'large',
   onConfirm,
   onCancel,
   visibleContentPreference,
@@ -208,7 +214,7 @@ export default function CollectionPreferences({
             </InternalBox>
           }
           closeAriaLabel={cancelLabel}
-          size="large"
+          size={modalSize}
           onDismiss={onCancelListener}
         >
           <ModalContent

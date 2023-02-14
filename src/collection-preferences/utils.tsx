@@ -55,11 +55,11 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
     );
   }
 
-  const columns = right ? 2 : 1;
+  const columns = left && right ? 2 : 1;
   return (
     <div ref={ref}>
       <InternalColumnLayout columns={columns} variant="text-grid">
-        <div>{left}</div>
+        {left && <div>{left}</div>}
         {right && <div>{right}</div>}
       </InternalColumnLayout>
     </div>
