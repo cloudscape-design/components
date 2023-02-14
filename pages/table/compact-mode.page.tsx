@@ -274,6 +274,12 @@ export default function App() {
           submitEdit={async () => {
             await new Promise(e => setTimeout(e, 1e3));
           }}
+          ariaLabels={{
+            tableLabel: 'Distributions',
+            activateEditLabel: column => `Edit ${column.header}`,
+            cancelEditLabel: column => `Cancel editing ${column.header}`,
+            submitEditLabel: column => `Submit edit ${column.header}`,
+          }}
           contentDensity={inlineEditTableDensity}
           empty={
             <Box textAlign="center" color="inherit">
