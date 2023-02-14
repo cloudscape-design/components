@@ -152,6 +152,7 @@ export default function App() {
         />
         <h2>Table with inline edit</h2>
         <button
+          aria-label="Toggle inline edit table content density"
           onClick={() =>
             setInlineEditTableDensity(inlineEditTableDensity === 'comfortable' ? 'compact' : 'comfortable')
           }
@@ -289,6 +290,7 @@ export default function App() {
         <h2>Sticky header table variants</h2>
         {variantButtons}
         <button
+          aria-label="Toggle sticky header table content density"
           onClick={() =>
             setStickyHeaderTableDensity(stickyHeaderTableDensity === 'comfortable' ? 'compact' : 'comfortable')
           }
