@@ -5,9 +5,15 @@ import { tokens as parentTokens } from '../spacing';
 import merge from 'lodash/merge';
 import { expandDensityDictionary } from '../../utils';
 const tokens: StyleDictionary.SpacingDictionary = {
+  spaceScaledXxxs: '{spaceNone}',
   spaceScaledXxs: '{spaceXxxs}',
   spaceScaledXs: '{spaceXxs}',
+  spaceScaledS: '{spaceXs}',
+  spaceScaledM: '{spaceS}',
   spaceScaledL: '{spaceM}',
+  spaceScaledXl: '{spaceL}',
+  spaceScaledXxl: '{spaceXl}',
+  spaceScaledXxxl: '{spaceXxl}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
