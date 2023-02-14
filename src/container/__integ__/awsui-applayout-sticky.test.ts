@@ -16,8 +16,6 @@ const stickyToggleSelector = createWrapper().findFlashbar().findItems().get(1).f
 const headerSelector = '#b #h';
 const scrollableDivSelector = '#scrollable-div';
 
-const CONTAINER_ROOT_BORDER = 1;
-
 class AppLayoutStickyPage extends BasePageObject {
   async isNotificationVisible() {
     const elements = await this.browser.$$(appLayoutWrapper.findNotifications().toSelector());
@@ -47,11 +45,11 @@ test(
   setupTest({}, async page => {
     const { top: containerTopBefore } = await page.getBoundingBox(containerHeaderSelector);
     const { bottom: flashBarBottomBefore } = await page.getBoundingBox(flashBarSelector);
-    expect(containerTopBefore).toBeGreaterThan(flashBarBottomBefore - CONTAINER_ROOT_BORDER);
+    expect(containerTopBefore).toBeGreaterThan(flashBarBottomBefore);
     await page.windowScrollTo({ top: 200 });
     const { top: containerTopAfter } = await page.getBoundingBox(containerHeaderSelector);
     const { bottom: flashBarBottomAfter } = await page.getBoundingBox(flashBarSelector);
-    expect(containerTopAfter).toEqual(flashBarBottomAfter - CONTAINER_ROOT_BORDER);
+    expect(containerTopAfter).toEqual(flashBarBottomAfter);
   })
 );
 
@@ -61,11 +59,11 @@ test(
     await page.toggleStickiness();
     const { top: containerTopBefore } = await page.getBoundingBox(containerHeaderSelector);
     const { bottom: headerBottomBefore } = await page.getBoundingBox(headerSelector);
-    expect(containerTopBefore).toBeGreaterThan(headerBottomBefore - CONTAINER_ROOT_BORDER);
+    expect(containerTopBefore).toBeGreaterThan(headerBottomBefore);
     await page.windowScrollTo({ top: 200 });
     const { top: containerTopAfter } = await page.getBoundingBox(containerHeaderSelector);
     const { bottom: headerBottomAfter } = await page.getBoundingBox(headerSelector);
-    expect(containerTopAfter).toEqual(headerBottomAfter - CONTAINER_ROOT_BORDER);
+    expect(containerTopAfter).toEqual(headerBottomAfter);
   })
 );
 
@@ -74,13 +72,13 @@ test(
   setupTest({}, async page => {
     const { top: containerHeaderTopBefore } = await page.getBoundingBox(containerInsideDivHeaderSelector);
     const { top: scrollableDivTopBefore } = await page.getBoundingBox(scrollableDivSelector);
-    expect(containerHeaderTopBefore - CONTAINER_ROOT_BORDER).toEqual(scrollableDivTopBefore);
+    expect(containerHeaderTopBefore).toEqual(scrollableDivTopBefore);
 
     await page.elementScrollTo(scrollableDivSelector, { top: 50 });
 
     const { top: containerHeaderTopAfter } = await page.getBoundingBox(containerInsideDivHeaderSelector);
     const { top: scrollableDivTopAfter } = await page.getBoundingBox(scrollableDivSelector);
-    expect(containerHeaderTopAfter).toEqual(scrollableDivTopAfter - CONTAINER_ROOT_BORDER);
+    expect(containerHeaderTopAfter).toEqual(scrollableDivTopAfter);
   })
 );
 

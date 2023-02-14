@@ -7,7 +7,7 @@
 @use '../tokens' as awsui;
 @use '../typography' as typography;
 @use '../foundation' as foundation;
-@use '../utils/theming' as theming;
+@use '../utils' as utils;
 @use './constants' as constants;
 
 @mixin link-focus {
@@ -131,10 +131,24 @@
 }
 
 @mixin container-shadow {
-  box-shadow: awsui.$shadow-container;
-  border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
   border-radius: awsui.$border-radius-container;
   box-sizing: border-box;
+
+  &::before {
+    @include utils.base-pseudo-element;
+    // Reset border color to prevent it from flashing black during card selection animation
+    border-color: transparent;
+    border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
+    border-radius: awsui.$border-radius-container;
+    z-index: 1;
+  }
+
+  &::after {
+    @include utils.base-pseudo-element;
+    box-shadow: awsui.$shadow-container;
+    border-radius: awsui.$border-radius-container;
+    mix-blend-mode: multiply;
+  }
 
   // HACK: because of the issues with IE's box shadow rendering we draw
   // a border and don't mind the pixel fitting

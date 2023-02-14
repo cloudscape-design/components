@@ -134,6 +134,9 @@ const defaultProps: Record<string, Record<string, any>> = {
   'area-chart': {
     series: [],
   },
+  flashbar: {
+    items: [],
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {

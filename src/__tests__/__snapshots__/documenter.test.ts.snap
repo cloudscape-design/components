@@ -1081,6 +1081,11 @@ A maximum of four fields are supported.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "itemRemovedAriaLive",
+            "optional": true,
+            "type": "string",
+          },
         ],
         "type": "object",
       },
@@ -5578,6 +5583,70 @@ Object {
       "type": "string",
     },
     Object {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`ariaLabel\` - Specifies the ARIA label for the list of notifications.
+
+If \`stackItems\` is set to \`true\`, it should also contain:
+
+* \`notificationBarAriaLabel\` - (optional) Specifies the ARIA label for the notification bar
+* \`notificationBarText\` - (optional) Specifies the text shown in the notification bar
+* \`errorIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`error\`.
+* \`warningIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`warning\`.
+* \`infoIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`info\`.
+* \`successIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type \`success\`.
+* \`inProgressIconAriaLabel\` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where \`loading\` is set to \`true\`).
+",
+      "inlineType": Object {
+        "name": "FlashbarProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "ariaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "inProgressIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "infoIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "notificationBarAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "notificationBarText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "successIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "FlashbarProps.I18nStrings",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified ID to the root element of the component.",
       "name": "id",
@@ -5596,7 +5665,7 @@ A flash message object contains the following properties:
 When a user clicks on this button the \`onDismiss\` handler is called.
 * \`dismissLabel\` (string) - Specifies an \`aria-label\` for to the dismiss icon button for improved accessibility.
 * \`statusIconAriaLabel\` (string) - Specifies an \`aria-label\` for to the status icon for improved accessibility.
-* \`ariaRole\` (boolean) - For flash messages added after page load, specifies how this message is communicated to assistive
+* \`ariaRole\` (string) - For flash messages added after page load, specifies how this message is communicated to assistive
 technology. Use \\"status\\" for status updates or informational content. Use \\"alert\\" for important messages that need the
 user's attention.
 * \`action\` (ReactNode) - Specifies an action for the flash message. Although it is technically possible to insert any content,
@@ -5606,14 +5675,19 @@ When a user clicks on this button the \`onButtonClick\` handler is called.
 If the \`action\` property is set, this property is ignored. **Deprecated**, replaced by \`action\`.
 * \`onButtonClick\` (event => void) - Called when a user clicks on the action button. This is not called if you create a custom button
   using the \`action\` property. **Deprecated**, replaced by \`action\`.
-* \`id\` (string) - Specifies a unique flash message identifier. This property  is used in two ways:
+* \`id\` (string) - Specifies a unique flash message identifier. This property is used in two ways:
   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
 ",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
-      "visualRefreshTag": "\`id\` property",
+    },
+    Object {
+      "description": "Specifies whether flash messages should be stacked.",
+      "name": "stackItems",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [],
@@ -10615,7 +10689,7 @@ to the href of the clicked item so you'll have to do it yourself.
           Object {
             "name": "type",
             "optional": true,
-            "type": "\\"expandable-link-group\\" | \\"link\\" | \\"link-group\\"",
+            "type": "\\"expandable-link-group\\" | \\"link\\" | \\"link-group\\" | \\"section-header\\"",
           },
         ],
         "type": "object",
@@ -10718,6 +10792,13 @@ Object that represents a section within the navigation.
 - \`items\` (array) - Specifies the content of the section. You can use any valid item from this list.
     Although there is no technical limitation to the nesting level,
     our UX recommendation is to use only one level.
+
+#### Section Group
+Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
+You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
+- \`type\`: \`'section-group'\`.
+- \`title\` (string) - Specifies the text to display as a title of the section group.
+- \`items\` (array) - Specifies the content of the section header group. You can use \`Section\`, \`Link\`, \`LinkGroup\`, \`ExpandableLinkGroup\`.
 
 #### LinkGroup
 Object that represents a group of links.
@@ -11886,6 +11967,11 @@ character validation. You should use this property only when absolutely necessar
           Object {
             "name": "invalidValueError",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "itemRemovedAriaLive",
+            "optional": true,
             "type": "string",
           },
           Object {

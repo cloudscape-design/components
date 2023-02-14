@@ -4,15 +4,30 @@ on:
   pull_request:
     branches:
       - main
+  merge_group:
+    branches:
+      - main
   push:
     branches:
       - main
 
 permissions:
+  id-token: write
   actions: read
   contents: read
   security-events: write
+  deployments: write
 
 jobs:
   build:
     uses: cloudscape-design/.github/.github/workflows/build-lint-test.yml@main
+    with:
+      artifact-path: lib/static-default
+      artifact-name: dev-pages
+  deploy:
+    needs: build
+    uses: cloudscape-design/.github/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: dev-pages
+      deployment-path: lib/static-default

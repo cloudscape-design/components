@@ -4,7 +4,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { getAllComponents, requireComponent } from './utils';
 import { getRequiredPropsForComponent } from './required-props-for-components';
-import { MetricsTestHelper } from '../../lib/components/internal/metrics';
+import {
+  MetricsTestHelper,
+  formatVersionForMetricName,
+  formatMajorVersionForMetricDetail,
+} from '../../lib/components/internal/metrics';
 import { THEME, PACKAGE_VERSION } from '../../lib/components/internal/environment';
 import { Checkbox, Button } from '../../lib/components';
 
@@ -24,7 +28,7 @@ const verifyMetricsAreLoggedOnlyOnce = () => {
 };
 
 const getExpectedMetricName = (lowerCaseComponentName: string) => {
-  return `awsui_${lowerCaseComponentName}_${MetricsTestHelper.formatVersionForMetricName(THEME, PACKAGE_VERSION)}`;
+  return `awsui_${lowerCaseComponentName}_${formatVersionForMetricName(THEME, PACKAGE_VERSION)}`;
 };
 
 describe('useTelemetry hook is used in all public components', () => {
@@ -49,7 +53,7 @@ describe('useTelemetry hook is used in all public components', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    MetricsTestHelper.resetOneTimeMetricsCache();
+    new MetricsTestHelper().resetOneTimeMetricsCache();
   });
 
   describe('emit the metrics and viewport dimensions for component usage', () => {
@@ -83,7 +87,7 @@ describe('useTelemetry hook is used in all public components', () => {
             t: 'default',
             a: 'used',
             f: 'react',
-            v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),
+            v: formatMajorVersionForMetricDetail(PACKAGE_VERSION),
           })
         );
 
@@ -109,7 +113,7 @@ describe('useTelemetry hook is used in all public components', () => {
           t: 'default',
           a: 'used',
           f: 'react',
-          v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),
+          v: formatMajorVersionForMetricDetail(PACKAGE_VERSION),
         })
       );
     });
@@ -126,7 +130,7 @@ describe('useTelemetry hook is used in all public components', () => {
           t: 'default',
           a: 'used',
           f: 'react',
-          v: MetricsTestHelper.formatMajorVersionForMetricDetail(PACKAGE_VERSION),
+          v: formatMajorVersionForMetricDetail(PACKAGE_VERSION),
         })
       );
     });

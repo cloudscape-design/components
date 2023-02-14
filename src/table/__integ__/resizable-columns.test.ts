@@ -112,7 +112,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
       if (sticky) {
         await page.toggleStickyHeader();
         await page.windowScrollTo({ top: 400 });
-        await expect(page.getHeaderTopOffset()).resolves.toEqual(-1);
+        await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
       }
       await testFn(page);
     });

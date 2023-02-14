@@ -27,9 +27,10 @@ describe('Content selection', () => {
   test('correctly displays title', () => {
     const wrapper = renderWithContentSelection({});
     wrapper.findTriggerButton().click();
-    expect(wrapper.findModal()!.findVisibleContentPreference()!.findTitle().getElement()).toHaveTextContent(
-      'Content selection title'
-    );
+
+    const titleElement = wrapper.findModal()!.findVisibleContentPreference()!.findTitle().getElement();
+    expect(titleElement).toHaveTextContent('Content selection title');
+    expect(titleElement.tagName).toBe('H3');
   });
   test('correctly displays group labels', () => {
     const wrapper = renderWithContentSelection({});

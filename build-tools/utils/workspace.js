@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 const { version } = require('../../package.json');
 const gitCommitVersion = (process.env.GITHUB_SHA || 'HEAD').slice(0, 8);
+const packageSource = 'components';
 const packageVersion = `${version} (${gitCommitVersion})`;
 
 const targetPath = 'lib';
 
 module.exports = {
   isProd: process.env.NODE_ENV === 'production',
+  packageSource,
   packageVersion,
   sourcePath: 'src',
   generatedPath: 'src/internal/generated',

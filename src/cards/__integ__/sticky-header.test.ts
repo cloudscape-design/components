@@ -4,8 +4,6 @@ import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-too
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper, { CardsWrapper, ContainerWrapper } from '../../../lib/components/test-utils/selectors';
 
-const CONTAINER_ROOT_BORDER = 1;
-
 export default class StickyHeaderCardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());
   containerWrapper = new ContainerWrapper(this.wrapper.find(`.${ContainerWrapper.rootSelector}`).getElement());
@@ -47,7 +45,6 @@ describe('Cards Sticky Header', () => {
   const toggleVerticalOffsetBtn = '#toggle-vertical-offset-btn';
   const overflowParentPageHeight = 300;
   const verticalOffset = 50;
-  const containerBorder = 1;
 
   test(
     'non-sticky header is not visible when scrolling',
@@ -57,7 +54,7 @@ describe('Cards Sticky Header', () => {
 
       const headerRect = await page.getBoundingBox(page.findCardsHeader().toSelector());
       const overflowRect = await page.getBoundingBox(overflowParent);
-      expect(contains(overflowRect, headerRect, { top: CONTAINER_ROOT_BORDER })).toBe(false);
+      expect(contains(overflowRect, headerRect)).toBe(false);
     })
   );
 
@@ -68,7 +65,7 @@ describe('Cards Sticky Header', () => {
 
       const headerRect = await page.getBoundingBox(page.findCardsHeader().toSelector());
       const overflowRect = await page.getBoundingBox(overflowParent);
-      expect(contains(overflowRect, headerRect, { top: CONTAINER_ROOT_BORDER })).toBe(true);
+      expect(contains(overflowRect, headerRect)).toBe(true);
     })
   );
 
@@ -93,9 +90,7 @@ describe('Cards Sticky Header', () => {
 
       await page.click(scrollTopToBtn);
 
-      expect(page.getElementScroll(overflowParent)).resolves.toEqual(
-        expect.objectContaining({ top: verticalOffset + containerBorder })
-      );
+      expect(page.getElementScroll(overflowParent)).resolves.toEqual(expect.objectContaining({ top: verticalOffset }));
     })
   );
 
@@ -107,9 +102,7 @@ describe('Cards Sticky Header', () => {
 
       await page.click(scrollTopToBtn);
 
-      expect(page.getElementScroll(overflowParent)).resolves.toEqual(
-        expect.objectContaining({ top: verticalOffset + containerBorder })
-      );
+      expect(page.getElementScroll(overflowParent)).resolves.toEqual(expect.objectContaining({ top: verticalOffset }));
     })
   );
 
@@ -123,7 +116,7 @@ describe('Cards Sticky Header', () => {
       const headerTop = (await page.getBoundingBox(page.findCardsHeader().toSelector())).top;
       const overflowParentTop = (await page.getBoundingBox(overflowParent)).top;
       const diff = headerTop - overflowParentTop;
-      expect(diff).toEqual(verticalOffset - containerBorder);
+      expect(diff).toEqual(verticalOffset);
     })
   );
 

@@ -4,9 +4,11 @@
 */
 
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index' as custom-props;
 
 .notifications-sticky {
   top: 0;
   z-index: 825;
   position: sticky;
+  #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
 }

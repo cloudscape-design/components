@@ -249,6 +249,7 @@ const PropertyFilter = React.forwardRef(
               )
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
+            clearAriaLabel={i18nStrings.clearAriaLabel}
           />
           <span
             aria-live="polite"

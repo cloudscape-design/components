@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../../internal/environment';
 import { Metrics } from '../../internal/metrics';
 import { WizardProps } from '../interfaces';
+
+const metrics = new Metrics(PACKAGE_SOURCE, PACKAGE_VERSION);
 
 const prefix = 'csa_wizard';
 
@@ -32,13 +35,12 @@ const timeEnd = (key = 'current', clear = false) => {
   return (Date.now() - start) / 1000; // Convert to seconds
 };
 
-export const trackStartStep = (stepIndex?: number) => {
-  const eventContext = createEventContext(stepIndex);
+export const trackStartWizard = () => {
+  timeStart(prefix);
+};
 
-  // Track the starting time of the wizard
-  if (stepIndex === undefined) {
-    timeStart(prefix);
-  }
+export const trackStartStep = (stepIndex?: number, funnelId?: string) => {
+  const eventContext = createEventContext(stepIndex);
 
   // End the timer of the previous step
   const time = timeEnd();
@@ -46,10 +48,11 @@ export const trackStartStep = (stepIndex?: number) => {
   // Start a new timer of the current step
   timeStart();
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('step'),
+    ...(funnelId && { funnel: funnelId }),
     ...(time !== undefined && { eventValue: time.toString() }),
   });
 };
@@ -57,28 +60,31 @@ export const trackStartStep = (stepIndex?: number) => {
 export const trackNavigate = (
   activeStepIndex: number,
   requestedStepIndex: number,
-  reason: WizardProps.NavigationReason
+  reason: WizardProps.NavigationReason,
+  funnelId?: string
 ) => {
   const eventContext = createEventContext(activeStepIndex);
   const time = timeEnd();
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(requestedStepIndex),
     eventType: createEventType('navigate'),
     eventValue: { reason, ...(time !== undefined && { time }) },
+    ...(funnelId && { funnel: funnelId }),
   });
 };
 
-export const trackSubmit = (stepIndex: number) => {
+export const trackSubmit = (stepIndex: number, funnelId?: string) => {
   const eventContext = createEventContext(stepIndex);
   // End the timer of the wizard
   const time = timeEnd(prefix);
 
-  Metrics.sendPanoramaMetric({
+  metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('submit'),
     ...(time !== undefined && { eventValue: time.toString() }),
+    ...(funnelId && { funnel: funnelId }),
   });
 };

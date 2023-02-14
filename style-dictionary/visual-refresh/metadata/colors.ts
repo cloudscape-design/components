@@ -23,6 +23,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundCellShaded: {
+    description: 'The background color of shaded table cells.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundContainerContent: {
     description:
       'The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.',
@@ -475,6 +480,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorTextStatusWarning: { description: 'The color of warning icons.', themeable: true, public: true },
+  colorBoardPlaceholderActive: {
+    description: 'The color of board placeholder in active state.',
+    themeable: false,
+    public: true,
+  },
+  colorBoardPlaceholderHover: {
+    description: 'The color of board placeholder in hovered state.',
+    themeable: false,
+    public: true,
+  },
 };
 
 export default metadata;

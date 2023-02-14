@@ -3,24 +3,10 @@
 
 // these styles needed to be imported for every public component
 import './styles.css.js';
-import { PACKAGE_VERSION } from '../environment';
+import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../environment';
+import { initAwsUiVersions } from './init-awsui-versions.js';
 
-// not using `declare global {}` to avoid polluting customers' typings with this info
-interface CustomWindow extends Window {
-  awsuiVersions?: { components?: string[] };
-}
-declare const window: CustomWindow | undefined;
-
-// expose version info, so it can be checked using the browser devtools
-if (typeof window !== 'undefined') {
-  if (!window.awsuiVersions) {
-    window.awsuiVersions = {};
-  }
-  if (!window.awsuiVersions.components) {
-    window.awsuiVersions.components = [];
-  }
-  window.awsuiVersions.components.push(PACKAGE_VERSION);
-}
+initAwsUiVersions(PACKAGE_SOURCE, PACKAGE_VERSION);
 
 export interface BaseComponentProps {
   /**

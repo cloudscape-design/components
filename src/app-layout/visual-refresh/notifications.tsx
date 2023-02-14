@@ -11,8 +11,15 @@ import testutilStyles from '../test-classes/styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Notifications() {
-  const { ariaLabels, hasNotificationsContent, notifications, notificationsElement, stickyNotifications } =
-    useAppLayoutInternals();
+  const {
+    ariaLabels,
+    hasNotificationsContent,
+    notifications,
+    notificationsElement,
+    stickyNotifications,
+    isMobile,
+    isAnyPanelOpen,
+  } = useAppLayoutInternals();
 
   if (!notifications) {
     return null;
@@ -27,6 +34,7 @@ export default function Notifications() {
         {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['sticky-notifications']]: stickyNotifications,
+          [styles.unfocusable]: isMobile && isAnyPanelOpen,
         },
         testutilStyles.notifications,
         'awsui-context-content-header'

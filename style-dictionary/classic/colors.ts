@@ -37,8 +37,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleHover: '{colorGrey600}',
   colorBackgroundModalOverlay: { light: '{colorGreyOpaque90}', dark: '{colorGreyOpaque80}' },
   colorBackgroundProgressBarContentInFlash: { light: '{colorGreyOpaque70}', dark: '{colorGrey100}' },
-  colorBackgroundSegmentActive: '{colorBackgroundButtonNormalActive}',
-  colorBackgroundSegmentHover: '{colorBackgroundButtonNormalHover}',
+  colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundStatusWarning: { dark: '{colorGrey700}' },
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
@@ -117,10 +116,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextLinkPrimaryUnderline: 'transparent',
   colorTextPaginationPageNumberActiveDisabled: '{colorTextBodySecondary}',
   colorTextPaginationPageNumberDefault: { dark: '{colorTextInteractiveDefault}' },
-  colorTextSegmentActive: '{colorTextButtonNormalHover}',
+  colorTextSegmentActive: { dark: '{colorGrey800}' },
   colorTextSegmentDefault: '{colorTextButtonNormalDefault}',
-  colorTextSegmentHover: '{colorTextButtonNormalHover}',
   colorTextStatusInfo: { dark: '{colorBlue400}' },
+  colorBoardPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
+  colorBoardPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(

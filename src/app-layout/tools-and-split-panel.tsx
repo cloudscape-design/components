@@ -11,33 +11,17 @@ import testutilStyles from './test-classes/styles.css.js';
 interface ToolsAndSplitPanelProps {
   toolsHide: boolean;
   toolsOpen: boolean;
-  isHidden: DesktopDrawerProps['isHidden'];
-
-  splitPanelOpen: boolean;
-
   drawerWidth: number;
   toolsWidth: number;
-  splitPanelReportedSize: number;
-  closedDrawerWidth: number;
-
   headerHeight: DesktopDrawerProps['topOffset'];
   footerHeight: DesktopDrawerProps['bottomOffset'];
   panelHeightStyle: ReturnType<typeof useContentHeight>['panelHeightStyle'];
-  contentHeightStyle: ReturnType<typeof useContentHeight>['contentHeightStyle'];
-
   tools: React.ReactNode;
   splitPanel: React.ReactNode;
-
   ariaLabels: AppLayoutProps['ariaLabels'];
-
-  disableContentPaddings: AppLayoutProps['disableContentPaddings'];
   isMobile: boolean;
-  isMotionEnabled: boolean;
-
   onToolsToggle: DesktopDrawerProps['onToggle'];
-
   toggleRefs: DesktopDrawerProps['toggleRefs'];
-
   onLoseToolsFocus: (event: React.FocusEvent) => void;
 }
 
@@ -46,7 +30,6 @@ export function ToolsAndSplitPanel({
   drawerWidth,
   footerHeight,
   headerHeight,
-  isHidden,
   isMobile,
   onToolsToggle,
   panelHeightStyle,
@@ -57,10 +40,7 @@ export function ToolsAndSplitPanel({
   toolsHide,
   toolsOpen,
   toolsWidth,
-  splitPanelOpen,
 }: ToolsAndSplitPanelProps) {
-  const splitPanelVisible = splitPanelOpen && Boolean(splitPanel);
-
   return (
     <>
       <div
@@ -87,15 +67,12 @@ export function ToolsAndSplitPanel({
               onToggle={onToolsToggle}
               toggleRefs={toggleRefs}
               onLoseFocus={onLoseToolsFocus}
-              isHidden={isHidden}
-              contentClassName={clsx(styles.tools, testutilStyles.tools)}
-              closeClassName={clsx(styles['tools-close'], testutilStyles['tools-close'])}
-              toggleClassName={clsx(styles['tools-toggle'], testutilStyles['tools-toggle'])}
+              contentClassName={testutilStyles.tools}
+              closeClassName={testutilStyles['tools-close']}
+              toggleClassName={testutilStyles['tools-toggle']}
               topOffset={headerHeight}
               bottomOffset={footerHeight}
               ariaLabels={ariaLabels}
-              extendRight={0}
-              hasDividerWithSplitPanel={splitPanelVisible}
             >
               {tools}
             </Drawer>

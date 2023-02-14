@@ -8,7 +8,15 @@
 
 .card-inner {
   @include styles.with-motion {
-    transition-property: background-color, border-top-color, border-bottom-color, border-left-color, border-right-color;
+    transition-property: background-color;
+    transition-duration: awsui.$motion-duration-transition-show-paced;
+    transition-timing-function: awsui.$motion-easing-transition-show-paced;
+  }
+}
+
+.card-inner::before {
+  @include styles.with-motion {
+    transition-property: border-top-color, border-right-color, border-bottom-color, border-left-color;
     transition-duration: awsui.$motion-duration-transition-show-paced;
     transition-timing-function: awsui.$motion-easing-transition-show-paced;
   }

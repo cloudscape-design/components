@@ -539,6 +539,21 @@ describe('Metrics', () => {
     jest.spyOn(window, 'panorama');
   });
 
+  test('sets the funnel to the wizard id if provided', () => {
+    renderDefaultWizard({ id: 'wizard-id' });
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_wizard_step1',
+        eventDetail: 'step1',
+        eventType: 'csa_wizard_step',
+        timestamp: expect.any(Number),
+        funnel: 'wizard-id',
+      })
+    );
+  });
+
   test('sends a startStep step metric on initial render', () => {
     renderDefaultWizard();
     expect(window.panorama).toBeCalledTimes(1);
@@ -655,6 +670,32 @@ describe('Metrics', () => {
         eventContext: 'csa_wizard_step1',
         eventDetail: 'step2',
         eventType: 'csa_wizard_navigate',
+        timestamp: expect.any(Number),
+      })
+    );
+  });
+
+  test('sends a submit metric using the submit button', () => {
+    const [wrapper] = renderDefaultWizard({
+      steps: [
+        { title: 'Step 1', content: 'content 1' },
+        { title: 'Step 2', content: 'content 2' },
+      ],
+    });
+
+    act(() => wrapper.findPrimaryButton().click()); // Move to step 2
+
+    window.panorama?.mockClear(); // clear previous events
+    act(() => wrapper.findPrimaryButton().click()); // Submit
+
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_wizard_step2',
+        eventDetail: 'step2',
+        eventType: 'csa_wizard_submit',
+        eventValue: expect.any(String),
         timestamp: expect.any(Number),
       })
     );

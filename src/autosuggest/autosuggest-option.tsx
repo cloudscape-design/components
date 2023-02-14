@@ -51,6 +51,9 @@ const AutosuggestOption = (
   let optionContent;
   if (useEntered) {
     optionContent = enteredTextLabel(option.value || '');
+    // we don't want fancy generated content for screenreader for the "Use..." option,
+    // just the visible text is fine
+    screenReaderContent = undefined;
   } else if (isParent) {
     optionContent = option.label;
   } else {

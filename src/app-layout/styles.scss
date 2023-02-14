@@ -75,20 +75,12 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
       display: none;
     }
   }
-
-  &.opaque-background {
-    background: awsui.$color-background-layout-panel-content;
-  }
 }
 
 .drawer-content {
   position: fixed;
   overflow: auto;
   background-color: awsui.$color-background-layout-panel-content;
-
-  .opaque-background > & {
-    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
-  }
 
   .drawer-mobile > & {
     z-index: $drawer-z-index-mobile;
@@ -132,29 +124,6 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   }
 }
 
-.button-toggles-container {
-  min-width: $drawer-width;
-  position: relative;
-  // to allow help panel slide under the container
-  z-index: $drawer-z-index + 1;
-  &-is-hidden {
-    min-width: 0;
-  }
-  &.opaque-background {
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      width: $drawer-width;
-
-      background: awsui.$color-background-layout-panel-content;
-      border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-side;
-    }
-  }
-}
-
 .breadcrumbs-desktop {
   padding-top: awsui.$space-scaled-m;
   padding-bottom: awsui.$space-scaled-s;
@@ -178,63 +147,10 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   padding-top: awsui.$space-scaled-m;
 }
 
-/* stylelint-disable-next-line selector-max-universal */
-.navigation-toggle > * {
-  pointer-events: none;
-}
-
-/* stylelint-disable-next-line selector-max-universal */
-.tools-toggle > * {
-  pointer-events: none;
-}
-
-// This series of selectors is applied to both mobile and desktop version of the component.
-// Customers can use these selectors via test-utils to interact with app layout universally on any breakpoint.
-
-.navigation {
-  /* used in test-utils */
-}
-
-.navigation-toggle {
-  /* used in test-utils */
-}
-
-.navigation-close {
-  /* used in test-utils */
-}
-
-.tools {
-  /* used in test-utils */
-}
-
-.tools-toggle {
-  /* used in test-utils */
-}
-
-.tools-close {
-  /* used in test-utils */
-}
-
-.notifications {
-  /* used in test-utils */
-}
-
-.breadcrumbs {
-  /* used in test-utils */
-}
-
-.content {
-  /* used in test-utils */
-}
-
-.panel-wrapper-outer,
-.panel-wrapper-inner {
-  z-index: $drawer-z-index;
-}
-
 .panel-wrapper-outer {
   position: fixed;
   height: 100%;
+  z-index: $drawer-z-index;
   display: flex;
 
   &.mobile {

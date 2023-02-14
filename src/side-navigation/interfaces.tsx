@@ -60,6 +60,13 @@ export interface SideNavigationProps extends BaseComponentProps {
    *     Although there is no technical limitation to the nesting level,
    *     our UX recommendation is to use only one level.
    *
+   * #### Section Group
+   * Aggregates a set of items that are conceptually related to each other, and can be displayed under a single heading to provide further organization.
+   * You can nest sections, links, link groups and expandable link groups within a section group depending on your information architecture needs.
+   * - `type`: `'section-group'`.
+   * - `title` (string) - Specifies the text to display as a title of the section group.
+   * - `items` (array) - Specifies the content of the section header group. You can use `Section`, `Link`, `LinkGroup`, `ExpandableLinkGroup`.
+   *
    * #### LinkGroup
    * Object that represents a group of links.
    * - `type`: `'link-group'`.
@@ -142,6 +149,11 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
+  export interface SectionGroup {
+    type: 'section-group';
+    title: string;
+    items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
+  }
   export interface LinkGroup {
     type: 'link-group';
     text: string;
@@ -157,7 +169,7 @@ export namespace SideNavigationProps {
     defaultExpanded?: boolean;
   }
 
-  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup;
+  export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionGroup;
 
   export interface ChangeDetail {
     item: Section | ExpandableLinkGroup;
@@ -168,7 +180,7 @@ export namespace SideNavigationProps {
   export interface FollowDetail extends BaseNavigationDetail {
     text?: string;
     href: string;
-    type?: 'link' | 'link-group' | 'expandable-link-group';
+    type?: 'link' | 'link-group' | 'expandable-link-group' | 'section-header';
     info?: React.ReactNode;
   }
 }

@@ -87,20 +87,20 @@ export function MobileToolbar({
         <MobileToggle
           ref={toggleRefs.navigation}
           type="navigation"
-          className={clsx(sharedStyles['navigation-toggle'], testutilStyles['navigation-toggle'])}
+          className={testutilStyles['navigation-toggle']}
           ariaLabels={ariaLabels}
           disabled={anyPanelOpen}
           onClick={onNavigationOpen}
         />
       )}
       <div className={styles['mobile-bar-breadcrumbs']}>
-        {children && <div className={clsx(sharedStyles.breadcrumbs, testutilStyles.breadcrumbs)}>{children}</div>}
+        {children && <div className={testutilStyles.breadcrumbs}>{children}</div>}
       </div>
       {!toolsHide && (
         <MobileToggle
           ref={toggleRefs.tools}
           type="tools"
-          className={clsx(sharedStyles['tools-toggle'], testutilStyles['tools-toggle'])}
+          className={testutilStyles['tools-toggle']}
           ariaLabels={ariaLabels}
           disabled={anyPanelOpen}
           onClick={onToolsOpen}
