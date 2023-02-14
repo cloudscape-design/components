@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useVisualContext } from '../../components/visual-context';
 import { useCurrentMode, useDensityMode, useVisualRefresh } from '../use-visual-mode';
+import { ALWAYS_VISUAL_REFRESH } from '../../environment';
 
 export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
   const colorMode = useCurrentMode(ref);
@@ -13,7 +14,7 @@ export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
   return clsx({
     'awsui-polaris-dark-mode awsui-dark-mode': colorMode === 'dark',
     'awsui-polaris-compact-mode awsui-compact-mode': densityMode === 'compact',
-    'awsui-visual-refresh': visualRefresh,
+    'awsui-visual-refresh': !ALWAYS_VISUAL_REFRESH && visualRefresh,
     [`awsui-context-${context}`]: context,
   });
 }

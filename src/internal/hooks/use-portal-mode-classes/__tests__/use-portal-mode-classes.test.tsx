@@ -49,10 +49,6 @@ describe('usePortalModeClasses', () => {
   });
 
   test('should detect visual refresh mode', () => {
-    // This assumes implementation details about the implementation of useVisualRefresh hook. It works
-    // as an integration test.
-    window.CSS.supports = jest.fn(() => true);
-
     (useVisualRefresh as jest.Mock).mockImplementation(() => true);
 
     render(<RenderTest refClasses="" />);
