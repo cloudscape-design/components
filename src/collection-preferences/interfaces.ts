@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
-import { ModalProps } from '../modal/interfaces';
 
 export interface CollectionPreferencesProps<CustomPreferenceType = any> extends BaseComponentProps {
   /**
@@ -21,11 +20,6 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Determines whether the preferences trigger button is disabled.
    */
   disabled?: boolean;
-  /**
-   * Determines the width of the preferences modal dialog.
-   * Refer to the [modal documentation](/components/modal/) for more details.
-   */
-  modalSize?: ModalProps.Size;
   /**
    * Configures the built-in "page size selection" preference.
    *

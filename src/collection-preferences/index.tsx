@@ -70,7 +70,6 @@ const ModalContent = ({
   }
 
   const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
-  // const hasRightContent = !!visibleContentPreference;
 
   return (
     <ModalContentLayout
@@ -133,7 +132,6 @@ export default function CollectionPreferences({
   confirmLabel,
   cancelLabel,
   disabled = false,
-  modalSize = 'large',
   onConfirm,
   onCancel,
   visibleContentPreference,
@@ -170,6 +168,9 @@ export default function CollectionPreferences({
     setModalVisible(false);
     setTemporaryPreferences(copyPreferences(preferences || {}));
   };
+
+  const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
+  const hasRightContent = !!visibleContentPreference;
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -214,7 +215,7 @@ export default function CollectionPreferences({
             </InternalBox>
           }
           closeAriaLabel={cancelLabel}
-          size={modalSize}
+          size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
           onDismiss={onCancelListener}
         >
           <ModalContent

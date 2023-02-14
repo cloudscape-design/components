@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
 import InternalFormField from '../form-field/internal';
@@ -49,8 +50,8 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
   if (smallContainer) {
     return (
       <div ref={ref}>
-        <div>{left}</div>
-        {right && <div className={styles['second-column-small']}>{right}</div>}
+        {left && <div>{left}</div>}
+        {right && <div className={clsx(left && styles['second-column-small'])}>{right}</div>}
       </div>
     );
   }
