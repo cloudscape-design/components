@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import useBaseComponent, {
   InternalBaseComponentProps,
 } from '../../../../../lib/components/internal/hooks/use-base-component';
-import { COMPONENT_METADATA_KEY } from '../../../../../lib/components/internal/hooks/use-base-component/component-metadata';
+import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
 import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
@@ -62,23 +62,6 @@ test('should call the useTelemetry hook passing down the given component name', 
   jest.resetAllMocks();
   render(<Demo />);
   expect(useTelemetry).toHaveBeenCalledWith('DemoComponent');
-});
-
-test('overriding the metadata is not possible', () => {
-  const { container } = render(<Demo />);
-  const rootNode: any = container.firstChild;
-  expect(rootNode[COMPONENT_METADATA_KEY]?.name).toBe('DemoComponent');
-  expect(rootNode[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
-
-  expect(() => {
-    rootNode[COMPONENT_METADATA_KEY]!.name = 'changed name';
-  }).toThrow(`Cannot assign to read only property 'name' of object '#<Object>'`);
-  expect(() => {
-    rootNode[COMPONENT_METADATA_KEY]!.version = 'changed version';
-  }).toThrow(`Cannot assign to read only property 'version' of object '#<Object>'`);
-
-  expect(rootNode[COMPONENT_METADATA_KEY]?.name).toBe('DemoComponent');
-  expect(rootNode[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
 });
 
 test('metadata get attached on the Portal component root DOM node when elementRef is changing', () => {
