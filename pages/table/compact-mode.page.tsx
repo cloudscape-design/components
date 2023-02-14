@@ -8,6 +8,9 @@ import CollectionPreferences, { CollectionPreferencesProps } from '~components/c
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Pagination from '~components/pagination';
+import Select from '~components/select';
+import Box from '~components/box';
+import Input from '~components/input';
 import Table, { TableProps } from '~components/table';
 import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
@@ -85,11 +88,13 @@ export default function App() {
       })}
     </div>
   );
-  const [density, setDensity] = useState('compact' as 'comfortable' | 'compact');
+  const [inlineEditTableDensity, setInlineEditTableDensity] = useState('compact' as 'comfortable' | 'compact');
+  const [stickyHeaderTableDensity, setStickyHeaderTableDensity] = useState('compact' as 'comfortable' | 'compact');
 
   return (
     <ScreenshotArea>
       <SpaceBetween size="l">
+        <h2>Table with content density preferences</h2>
         <Table<Instance>
           {...collectionProps}
           header={
@@ -145,9 +150,150 @@ export default function App() {
             />
           }
         />
+        <h2>Table with inline edit</h2>
+        <button
+          onClick={() =>
+            setInlineEditTableDensity(inlineEditTableDensity === 'comfortable' ? 'compact' : 'comfortable')
+          }
+        >
+          Toggle inline edit table content density
+        </button>
+        <Table
+          columnDefinitions={[
+            {
+              id: 'variable',
+              header: 'Variable name',
+              minWidth: 176,
+              cell: item => {
+                return item.name;
+              },
+              editConfig: {
+                ariaLabel: 'Name',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Name Error',
+                editingCell: (item, { currentValue, setValue }) => {
+                  return (
+                    <Input
+                      autoFocus={true}
+                      value={currentValue ?? item.name}
+                      onChange={event => setValue(event.detail.value)}
+                    />
+                  );
+                },
+              },
+            },
+            {
+              id: 'type',
+              header: 'Type',
+              minWidth: 176,
+              editConfig: {
+                ariaLabel: 'Type',
+                editIconAriaLabel: 'editable',
+                editingCell: (item, { currentValue, setValue }) => {
+                  const value = currentValue ?? item.type;
+                  return (
+                    <Select
+                      autoFocus={true}
+                      selectedOption={
+                        [
+                          { label: '1A', value: '1A' },
+                          { label: '1B', value: '1B' },
+                          { label: '2A', value: '2A' },
+                          { label: '2B', value: '2B' },
+                        ].find(option => option.value === value) ?? null
+                      }
+                      onChange={event => {
+                        setValue(event.detail.selectedOption.value ?? item.type);
+                      }}
+                      options={[
+                        { label: '1A', value: '1A' },
+                        { label: '1B', value: '1B' },
+                        { label: '2A', value: '2A' },
+                        { label: '2B', value: '2B' },
+                      ]}
+                    />
+                  );
+                },
+              },
+              cell: item => {
+                return item.type;
+              },
+            },
+            {
+              id: 'description',
+              header: 'Description',
+              cell: e => e.description,
+            },
+          ]}
+          items={[
+            {
+              name: 'Item 1',
+              alt: 'First',
+              description: 'This is the first item',
+              type: '1A',
+              size: 'Small',
+            },
+            {
+              name: 'Item 2',
+              alt: 'Second',
+              description: 'This is the second item',
+              type: '1B',
+              size: 'Large',
+            },
+            {
+              name: 'Item 3',
+              alt: 'Third',
+              description: '-',
+              type: '1A',
+              size: 'Large',
+            },
+            {
+              name: 'Item 4',
+              alt: 'Fourth',
+              description: 'This is the fourth item',
+              type: '2A',
+              size: 'Small',
+            },
+            {
+              name: 'Item 5',
+              alt: '-',
+              description: 'This is the fifth item with a longer description',
+              type: '2A',
+              size: 'Large',
+            },
+            {
+              name: 'Item 6',
+              alt: 'Sixth',
+              description: 'This is the sixth item',
+              type: '1A',
+              size: 'Small',
+            },
+          ]}
+          loadingText="Loading resources"
+          submitEdit={async () => {
+            await new Promise(e => setTimeout(e, 1e3));
+          }}
+          contentDensity={inlineEditTableDensity}
+          empty={
+            <Box textAlign="center" color="inherit">
+              <b>No resources</b>
+              <Box padding={{ bottom: 's' }} variant="p" color="inherit">
+                No resources to display.
+              </Box>
+              <Button>Create resource</Button>
+            </Box>
+          }
+          header={<Header>Table with inline editing</Header>}
+        />
+
+        <h2>Sticky header table variants</h2>
         {variantButtons}
-        <button onClick={() => setDensity(density === 'comfortable' ? 'compact' : 'comfortable')}>
-          Toggle Density
+        <button
+          onClick={() =>
+            setStickyHeaderTableDensity(stickyHeaderTableDensity === 'comfortable' ? 'compact' : 'comfortable')
+          }
+        >
+          Toggle sticky header table content density
         </button>
         <Table
           header={<Header headingTagOverride="h1">Sticky header table</Header>}
@@ -155,7 +301,7 @@ export default function App() {
           items={items}
           stickyHeader={true}
           variant={variant}
-          contentDensity={density}
+          contentDensity={stickyHeaderTableDensity}
         />
         <div style={{ height: '90vh', padding: 10 }}>Placeholder to allow page scroll beyond table</div>
       </SpaceBetween>
