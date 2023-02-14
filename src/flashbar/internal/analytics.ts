@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../../internal/environment';
-import { Metrics } from '../../internal/metrics';
+import { Metrics } from '@cloudscape-design/component-toolkit/internal';
 import { FlashbarProps } from '../interfaces';
 import { getFlashTypeCount } from '../utils';
 
