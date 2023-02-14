@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
@@ -35,7 +36,6 @@ import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
-import { getVisualContextClassname } from '../internal/components/visual-context';
 
 const InternalTable = React.forwardRef(
   <T,>(

@@ -4,7 +4,8 @@ import { StyleDictionary } from '../../utils/interfaces';
 import { tokens as parentTokens } from '../spacing';
 import merge from 'lodash/merge';
 import { expandDensityDictionary } from '../../utils';
-const tokens: StyleDictionary.SpacingDictionary = {
+
+const spacingTokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxxs: '{spaceNone}',
   spaceScaledXxs: '{spaceXxxs}',
   spaceScaledXs: '{spaceXxs}',
@@ -16,8 +17,12 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceScaledXxxl: '{spaceXxl}',
 };
 
+const sizeTokens: StyleDictionary.SizesDictionary = {
+  sizeVerticalInput: '30px',
+};
+
 const expandedTokens: StyleDictionary.ExpandedDensityScopeDictionary = expandDensityDictionary(
-  merge({}, parentTokens, tokens)
+  merge({}, parentTokens, { ...spacingTokens, ...sizeTokens })
 );
 
 export { expandedTokens as tokens };
