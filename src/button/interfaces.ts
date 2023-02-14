@@ -83,7 +83,7 @@ export interface ButtonProps extends BaseComponentProps {
 
   /**
    * Adds a `rel` attribute to the link. By default, the component sets the `rel` attribute to "noopener noreferrer" when `target` is `"_blank"`.
-   * If the `rel` property is provided, it overrides the default behaviour.
+   * If the `rel` property is provided, it overrides the default behavior.
    */
   rel?: string;
 
