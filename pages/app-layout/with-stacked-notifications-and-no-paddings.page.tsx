@@ -48,7 +48,12 @@ export default function () {
         }
         disableContentPaddings={true}
         content={
-          <Table header={<Header>Sticky Table Header</Header>} items={[]} columnDefinitions={[]} stickyHeader={true} />
+          <Table
+            header={<Header variant="h1">Sticky Table Header</Header>}
+            items={[]}
+            columnDefinitions={[]}
+            stickyHeader={true}
+          />
         }
       />
     </ScreenshotArea>
