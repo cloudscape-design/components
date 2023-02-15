@@ -73,7 +73,7 @@ export default function CollectionPreferences({
   const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
   const hasRightContent = !!visibleContentPreference;
 
-  const onChange = changedPreferences =>
+  const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
     setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
 
   return (
