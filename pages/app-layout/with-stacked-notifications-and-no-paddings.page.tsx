@@ -34,6 +34,16 @@ export default function () {
               },
             ]}
             stackItems={true}
+            i18nStrings={{
+              ariaLabel: 'Notifications',
+              notificationBarText: 'Notifications',
+              notificationBarAriaLabel: 'View all notifications',
+              errorIconAriaLabel: 'Error',
+              successIconAriaLabel: 'Success',
+              warningIconAriaLabel: 'Warning',
+              infoIconAriaLabel: 'Information',
+              inProgressIconAriaLabel: 'In progress',
+            }}
           />
         }
         disableContentPaddings={true}
