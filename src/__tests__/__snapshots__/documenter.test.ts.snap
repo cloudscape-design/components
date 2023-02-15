@@ -11437,7 +11437,7 @@ add a meaningful description to the whole selection.
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
     },
     Object {
-      "description": "Toggles the content density of the table. Defaults to \\"comfortable\\"",
+      "description": "Toggles the content density of the table. Defaults to \\"comfortable\\".",
       "inlineType": Object {
         "name": "",
         "type": "union",
