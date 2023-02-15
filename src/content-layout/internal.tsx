@@ -25,7 +25,7 @@ export default function InternalContentLayout({
 
   const rootElement = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
-  const overlapElement = useDynamicOverlap();
+  const overlapElement = useDynamicOverlap({ disabled: !header || !children });
   const isVisualRefresh = useVisualRefresh();
 
   /**
