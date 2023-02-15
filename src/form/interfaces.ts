@@ -35,13 +35,16 @@ export interface FormProps extends BaseComponentProps {
   secondaryActions?: React.ReactNode;
 
   /**
-   * Determines whether the form displays a dark header and overlap with content.
-   * * A full-page form displays the dark header and overlap, similar to what the [ContentLayout](/components/content-layout/) component provides by default.
-   *   Use this variant if the form is the first and primary element on the page.
-   * * An embedded form is one which is not used in a typical [create](/patterns/resource-management/create/single-page-create/) or
-   *   [edit](/patterns/resource-management/edit/page-edit/) page, and is instead used in another context which doesn't occupy the full page.
-   *   This variant does not use a dark header.
+   * Specify a form variant with one of the following:
+   * * `full-page` - Use this variant when the form contains the entire content of the page. Full page variants will implement the high contrast header and content behavior automatically.
+   * * `embedded` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.
    * @visualrefresh
    */
   variant?: 'full-page' | 'embedded';
+}
+
+export interface FormLayoutProps {
+  children?: React.ReactNode;
+  header?: React.ReactNode;
+  variant: FormProps['variant'];
 }
