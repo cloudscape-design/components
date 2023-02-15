@@ -9,6 +9,7 @@ import RadioButton from '../../radio-group/radio-button';
 
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
+import { InteractiveElement } from '../thead';
 
 export interface SelectionControlProps {
   selectionType: TableProps['selectionType'];
@@ -22,6 +23,9 @@ export interface SelectionControlProps {
   onFocusDown?: KeyboardEventHandler;
   ariaLabel?: string;
   tabIndex?: -1;
+
+  focusedElement?: InteractiveElement | null;
+  onFocusedElementChange?: (element: InteractiveElement | null) => void;
 }
 
 export default function SelectionControl({
@@ -32,6 +36,9 @@ export default function SelectionControl({
   onFocusDown,
   name,
   ariaLabel,
+
+  focusedElement,
+  onFocusedElementChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -76,7 +83,14 @@ export default function SelectionControl({
   };
 
   const selector = isMultiSelection ? (
-    <InternalCheckbox {...sharedProps} controlId={controlId} indeterminate={indeterminate} />
+    <InternalCheckbox
+      {...sharedProps}
+      forceOutline={focusedElement?.type === 'selection'}
+      onFocus={() => onFocusedElementChange?.({ type: 'selection' })}
+      onBlur={() => onFocusedElementChange?.(null)}
+      controlId={controlId}
+      indeterminate={indeterminate}
+    />
   ) : (
     <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
   );

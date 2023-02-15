@@ -14,6 +14,11 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 
+export type InteractiveElement =
+  | { type: 'selection' }
+  | { type: 'column'; col: number }
+  | { type: 'resizer'; col: number };
+
 export interface TheadProps {
   containerWidth: number | null;
   selectionType: TableProps.SelectionType | undefined;
@@ -26,16 +31,16 @@ export interface TheadProps {
   resizableColumns: boolean | undefined;
   selectAllProps: SelectionControlProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
-  onCellFocus?: (colIndex: number) => void;
-  onCellBlur?: () => void;
   onResizeFinish: (newWidths: Record<string, number>) => void;
-  showFocusRing?: number | null;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
   sticky?: boolean;
   hidden?: boolean;
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
+
+  focusedElement?: InteractiveElement | null;
+  onFocusedElementChange?: (element: InteractiveElement | null) => void;
 }
 
 const Thead = React.forwardRef(
@@ -52,16 +57,16 @@ const Thead = React.forwardRef(
       variant,
       wrapLines,
       onFocusMove,
-      onCellFocus,
-      onCellBlur,
       onSortingChange,
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
       stripedRows,
-      showFocusRing = null,
       sticky = false,
       hidden = false,
       stuck = false,
+
+      focusedElement,
+      onFocusedElementChange,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -93,9 +98,13 @@ const Thead = React.forwardRef(
               scope="col"
             >
               <SelectionControl
-                onFocusDown={event => onFocusMove!(event.target as HTMLElement, -1, +1)}
+                onFocusDown={event => {
+                  onFocusMove!(event.target as HTMLElement, -1, +1);
+                }}
+                focusedElement={focusedElement}
+                onFocusedElementChange={onFocusedElementChange}
                 {...selectAllProps}
-                {...(hidden ? { tabIndex: -1 } : {})}
+                {...(sticky ? { tabIndex: -1 } : {})}
               />
             </th>
           )}
@@ -129,7 +138,8 @@ const Thead = React.forwardRef(
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
                 tabIndex={sticky ? -1 : 0}
-                showFocusRing={colIndex === showFocusRing}
+                focusedElement={focusedElement}
+                onFocusedElementChange={onFocusedElementChange}
                 column={column}
                 activeSortingColumn={sortingColumn}
                 sortingDescending={sortingDescending}
@@ -141,8 +151,6 @@ const Thead = React.forwardRef(
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
-                onFocus={() => onCellFocus?.(colIndex)}
-                onBlur={onCellBlur}
                 isEditable={!!column.editConfig}
               />
             );
