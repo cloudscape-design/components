@@ -28,105 +28,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { CollectionPreferencesProps };
 
-interface ModalContentProps
-  extends Pick<
-    CollectionPreferencesProps,
-    | 'preferences'
-    | 'visibleContentPreference'
-    | 'pageSizePreference'
-    | 'wrapLinesPreference'
-    | 'stripedRowsPreference'
-    | 'contentDensityPreference'
-    | 'customPreference'
-  > {
-  onChange: (preferences: CollectionPreferencesProps.Preferences) => void;
-}
-
-const ModalContent = ({
-  preferences = {},
-  pageSizePreference,
-  wrapLinesPreference,
-  stripedRowsPreference,
-  contentDensityPreference,
-  customPreference,
-  visibleContentPreference,
-  onChange,
-}: ModalContentProps) => {
-  if (
-    !visibleContentPreference &&
-    !pageSizePreference &&
-    !wrapLinesPreference &&
-    !stripedRowsPreference &&
-    !contentDensityPreference &&
-    customPreference
-  ) {
-    return (
-      <CustomPreference
-        value={preferences.custom}
-        customPreference={customPreference}
-        onChange={custom => onChange({ custom })}
-      />
-    );
-  }
-
-  const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
-
-  return (
-    <ModalContentLayout
-      left={
-        hasLeftContent && (
-          <InternalSpaceBetween size="l">
-            {pageSizePreference && (
-              <PageSizePreference
-                value={preferences.pageSize}
-                {...pageSizePreference}
-                onChange={pageSize => onChange({ pageSize })}
-              />
-            )}
-            {wrapLinesPreference && (
-              <WrapLinesPreference
-                value={preferences.wrapLines}
-                {...wrapLinesPreference}
-                onChange={wrapLines => onChange({ wrapLines })}
-              />
-            )}
-            {stripedRowsPreference && (
-              <StripedRowsPreference
-                value={preferences.stripedRows}
-                {...stripedRowsPreference}
-                onChange={stripedRows => onChange({ stripedRows })}
-              />
-            )}
-            {contentDensityPreference && (
-              <ContentDensityPreference
-                value={preferences.contentDensity}
-                {...contentDensityPreference}
-                onChange={contentDensity => onChange({ contentDensity })}
-              />
-            )}
-            {customPreference && (
-              <CustomPreference
-                value={preferences.custom}
-                customPreference={customPreference}
-                onChange={custom => onChange({ custom })}
-              />
-            )}
-          </InternalSpaceBetween>
-        )
-      }
-      right={
-        visibleContentPreference && (
-          <VisibleContentPreference
-            value={preferences.visibleContent}
-            {...visibleContentPreference}
-            onChange={visibleContent => onChange({ visibleContent })}
-          />
-        )
-      }
-    />
-  );
-};
-
 export default function CollectionPreferences({
   title,
   confirmLabel,
@@ -171,6 +72,9 @@ export default function CollectionPreferences({
 
   const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
   const hasRightContent = !!visibleContentPreference;
+
+  const onChange = changedPreferences =>
+    setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -218,16 +122,56 @@ export default function CollectionPreferences({
           size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
           onDismiss={onCancelListener}
         >
-          <ModalContent
-            preferences={temporaryPreferences}
-            visibleContentPreference={visibleContentPreference}
-            pageSizePreference={pageSizePreference}
-            wrapLinesPreference={wrapLinesPreference}
-            stripedRowsPreference={stripedRowsPreference}
-            contentDensityPreference={contentDensityPreference}
-            customPreference={customPreference}
-            onChange={changedPreferences =>
-              setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences))
+          <ModalContentLayout
+            left={
+              hasLeftContent && (
+                <InternalSpaceBetween size="l">
+                  {pageSizePreference && (
+                    <PageSizePreference
+                      value={temporaryPreferences.pageSize}
+                      {...pageSizePreference}
+                      onChange={pageSize => onChange({ pageSize })}
+                    />
+                  )}
+                  {wrapLinesPreference && (
+                    <WrapLinesPreference
+                      value={temporaryPreferences.wrapLines}
+                      {...wrapLinesPreference}
+                      onChange={wrapLines => onChange({ wrapLines })}
+                    />
+                  )}
+                  {stripedRowsPreference && (
+                    <StripedRowsPreference
+                      value={temporaryPreferences.stripedRows}
+                      {...stripedRowsPreference}
+                      onChange={stripedRows => onChange({ stripedRows })}
+                    />
+                  )}
+                  {contentDensityPreference && (
+                    <ContentDensityPreference
+                      value={temporaryPreferences.contentDensity}
+                      {...contentDensityPreference}
+                      onChange={contentDensity => onChange({ contentDensity })}
+                    />
+                  )}
+                  {customPreference && (
+                    <CustomPreference
+                      value={temporaryPreferences.custom}
+                      customPreference={customPreference}
+                      onChange={custom => onChange({ custom })}
+                    />
+                  )}
+                </InternalSpaceBetween>
+              )
+            }
+            right={
+              visibleContentPreference && (
+                <VisibleContentPreference
+                  value={temporaryPreferences.visibleContent}
+                  {...visibleContentPreference}
+                  onChange={visibleContent => onChange({ visibleContent })}
+                />
+              )
             }
           />
         </InternalModal>
