@@ -25,6 +25,8 @@ describe('Collection preferences', () => {
       // The content is small enough so that it doesn't need column layout
       const columnLayout = wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
+
+      await expect(page.isExisting(wrapper.findModal().findWrapLinesPreference().toSelector())).resolves.toBe(true);
     })
   );
 
@@ -38,6 +40,10 @@ describe('Collection preferences', () => {
       // The content is small enough so that it doesn't need column layout
       const columnLayout = wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
+
+      await expect(page.isExisting(wrapper.findModal().findVisibleContentPreference().toSelector())).resolves.toBe(
+        true
+      );
     })
   );
 
