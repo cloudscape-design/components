@@ -41,6 +41,7 @@ export default function () {
   return (
     <AppLayout
       ariaLabels={labels}
+      navigationOpen={false}
       notifications={
         <ColumnLayout columns={3}>
           <SpaceBetween size="xxs">

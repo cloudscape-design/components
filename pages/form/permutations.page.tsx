@@ -97,13 +97,33 @@ const secondaryActionsPermutations = createPermutations<FormProps>([
   },
 ]);
 
+const layoutPermutations = createPermutations<FormProps>([
+  {
+    header: [<Header variant="h1">Form header</Header>, undefined],
+    children: [
+      <Container header={<Header variant="h2">Form section</Header>}>
+        <FormField label="Form field">
+          <Input value="" readOnly={true} />
+        </FormField>
+      </Container>,
+    ],
+    actions: [
+      <SpaceBetween direction="horizontal" size="xs">
+        <Button variant="link">Cancel</Button>
+        <Button variant="primary">Submit</Button>
+      </SpaceBetween>,
+    ],
+    variant: ['embedded', 'full-page'],
+  },
+]);
+
 export default function FormPermutations() {
   return (
     <>
       <h1>Form permutations</h1>
       <ScreenshotArea>
         <PermutationsView
-          permutations={[...permutations, ...secondaryActionsPermutations]}
+          permutations={[...permutations, ...secondaryActionsPermutations, ...layoutPermutations]}
           render={permutation => <Form {...permutation} />}
         />
       </ScreenshotArea>
