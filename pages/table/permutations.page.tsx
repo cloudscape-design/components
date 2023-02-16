@@ -3,11 +3,15 @@
 import React from 'react';
 import range from 'lodash/range';
 import Link from '~components/link';
+import PropertyFilter from '~components/property-filter';
+import Header from '~components/header';
 import Table, { TableProps } from '~components/table';
+import { i18nStrings } from '../property-filter/common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { ARIA_LABELS } from './shared-configs';
+
 function createSimpleItems(count: number) {
   const texts = ['One', 'Two', 'Three', 'Four'];
   return range(count).map(number => ({ number, text: texts[number % texts.length] }));
@@ -174,6 +178,68 @@ const permutations = createPermutations<TableProps>([
     items: [createSimpleItems(3)],
     sortingColumn: [SORTABLE_COLUMNS[0]],
     sortingDescending: [true],
+  },
+  {
+    columnDefinitions: [SORTABLE_COLUMNS],
+    header: [<Header variant="h2">Table Header</Header>],
+    pagination: ['pagination'],
+    filter: [
+      <PropertyFilter
+        filteringProperties={[
+          {
+            key: 'text',
+            operators: ['=', '!=', ':', '!:'],
+            propertyLabel: 'Text',
+            groupValuesLabel: 'Text values',
+          },
+          {
+            key: 'number',
+            operators: ['=', '!=', ':', '!:'],
+            propertyLabel: 'Number',
+            groupValuesLabel: 'Number values',
+          },
+        ]}
+        i18nStrings={i18nStrings}
+        query={{
+          operation: 'or',
+          tokens: [
+            {
+              value: 'One',
+              propertyKey: 'text',
+              operator: '=',
+            },
+            {
+              value: 'Two',
+              propertyKey: 'text',
+              operator: '=',
+            },
+            {
+              value: 'Three',
+              propertyKey: 'text',
+              operator: '=',
+            },
+            {
+              value: 1,
+              propertyKey: 'number',
+              operator: '=',
+            },
+            {
+              value: 2,
+              propertyKey: 'number',
+              operator: '=',
+            },
+            {
+              value: 3,
+              propertyKey: 'number',
+              operator: '=',
+            },
+          ],
+        }}
+        onChange={() => {}}
+      />,
+    ],
+    preferences: ['preferences'],
+    items: [createSimpleItems(3)],
   },
 ]);
 /* eslint-enable react/jsx-key */
