@@ -61,6 +61,7 @@ export default function AutosuggestEventsPage() {
           enteredTextLabel={enteredTextLabel}
           expandToViewport={urlParams.expandToViewport}
           ariaLabel={'events autosuggest'}
+          selectedAriaLabel="Selected"
         />
       </div>
     </div>
