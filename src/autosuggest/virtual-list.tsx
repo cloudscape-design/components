@@ -77,6 +77,7 @@ const VirtualList = ({
             highlightText={highlightText}
             option={item}
             highlighted={item === autosuggestItemsState.highlightedOption}
+            current={item.value === highlightText}
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
             virtualPosition={start + (index === 0 ? 1 : 0)}

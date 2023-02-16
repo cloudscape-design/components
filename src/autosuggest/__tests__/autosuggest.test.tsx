@@ -255,18 +255,49 @@ describe('a11y props', () => {
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 
-  test('Option should have aria-selected', () => {
-    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  test('Option should have appropriate aria-selected values', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="2" />);
     wrapper.focus();
     expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
       'aria-selected',
       'false'
     );
-    wrapper.findNativeInput().keydown(KeyCode.down);
-    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+    expect(wrapper.findDropdown()!.find('[data-test-index="2"]')!.getElement()).toHaveAttribute(
       'aria-selected',
       'true'
     );
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(wrapper.findDropdown()!.find('[data-test-index="1"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'false'
+    );
+    expect(wrapper.findDropdown()!.find('[data-test-index="2"]')!.getElement()).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  });
+
+  test('Option should have appropriate aria label', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} value="1" selectedAriaLabel="Selected" />);
+    wrapper.focus();
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(
+      wrapper
+        .findDropdown()!
+        .find('[data-test-index="1"]')!
+        .findByClassName(itemStyles['screenreader-content'])!
+        .getElement()
+    ).toHaveTextContent('Selected');
+    wrapper.findNativeInput().keydown(KeyCode.down);
+    expect(
+      wrapper
+        .findDropdown()!
+        .find('[data-test-index="2"]')!
+        .findByClassName(itemStyles['screenreader-content'])!
+        .getElement()
+    ).not.toHaveTextContent('Selected');
   });
 });
 
