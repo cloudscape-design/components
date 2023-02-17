@@ -21,17 +21,19 @@ export default function InternalContentLayout({
   ...rest
 }: InternalContentLayoutProps) {
   const baseProps = getBaseProps(rest);
-  const isVisualRefresh = useVisualRefresh();
-  const { hasBreadcrumbs } = useAppLayoutContext();
   const rootElement = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(rootElement, __internalRootRef);
+
+  const isVisualRefresh = useVisualRefresh();
+  const { hasBreadcrumbs } = useAppLayoutContext();
+  const overlapElement = useDynamicOverlap();
+
   /**
    * Disable the overlap if the component is missing either a header or child
    * content. If the component is not using visual refresh then the overlap
    * will not be displayed at all. This is handled in the CSS not the JavaScript.
    */
   const isOverlapDisabled = !children || !header || disableOverlap;
-  const overlapElement = useDynamicOverlap({ disabled: isOverlapDisabled });
 
   return (
     <div

@@ -34,36 +34,34 @@ export default function InternalForm({
         }
         variant={variant}
       >
-        <>
-          {children && <div className={styles.content}>{children}</div>}
-          {errorText && (
-            <InternalBox margin={{ top: 'l' }}>
-              <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
-                <div className={styles.error}>{errorText}</div>
-              </InternalAlert>
-            </InternalBox>
-          )}
-          {(actions || secondaryActions) && (
-            <div className={styles.footer}>
-              <div className={styles['actions-section']}>
-                {actions && <div className={styles.actions}>{actions}</div>}
-                {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
-              </div>
+        {children && <div className={styles.content}>{children}</div>}
+        {errorText && (
+          <InternalBox margin={{ top: 'l' }}>
+            <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
+              <div className={styles.error}>{errorText}</div>
+            </InternalAlert>
+          </InternalBox>
+        )}
+        {(actions || secondaryActions) && (
+          <div className={styles.footer}>
+            <div className={styles['actions-section']}>
+              {actions && <div className={styles.actions}>{actions}</div>}
+              {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
             </div>
-          )}
-          {errorText && (
-            <LiveRegion assertive={true}>
-              {errorIconAriaLabel}, {errorText}
-            </LiveRegion>
-          )}
-        </>
+          </div>
+        )}
+        {errorText && (
+          <LiveRegion assertive={true}>
+            {errorIconAriaLabel}, {errorText}
+          </LiveRegion>
+        )}
       </FormLayout>
     </div>
   );
 }
 
 function FormLayout({ children, header, variant }: FormLayoutProps) {
-  return variant === 'full-page' ? (
+  return variant === 'full-page' && header ? (
     <InternalContentLayout header={header}>{children}</InternalContentLayout>
   ) : (
     <>

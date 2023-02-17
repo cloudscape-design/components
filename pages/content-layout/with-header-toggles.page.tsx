@@ -13,34 +13,37 @@ import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
 
-import { Breadcrumbs } from './utils/content-blocks';
-import labels from './utils/labels';
+import { Breadcrumbs } from '../app-layout/utils/content-blocks';
+import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function () {
   const [appLayoutHeader, toggleAppLayoutHeader] = useState(false);
   const [appLayoutOverlap, toggleAppLayoutOverlap] = useState(true);
 
   const [contentLayout, toggleContentLayout] = useState(false);
-  const [contentLayoutHeader, toggleContentLayoutHeader] = useState(false);
+  const [contentLayoutHeader, toggleContentLayoutHeader] = useState(true);
   const [contentLayoutOverlap, toggleContentLayoutOverlap] = useState(true);
 
   const [formHeader, toggleFormHeader] = useState(true);
+  const [formContent, toggleFormContent] = useState(true);
 
   const form = (
     <form>
       <Form header={formHeader && <Header variant="h1">Form header</Header>}>
-        <Container header={<Header variant="h2">Form section header</Header>}>
-          <FormField label="Form field">
-            <Input value="" readOnly={true} />
-          </FormField>
-        </Container>
+        {formContent && (
+          <Container header={<Header variant="h2">Form section header</Header>}>
+            <FormField label="Form field">
+              <Input value="" readOnly={true} />
+            </FormField>
+          </Container>
+        )}
       </Form>
     </form>
   );
 
   return (
     <AppLayout
-      ariaLabels={labels}
+      ariaLabels={appLayoutLabels}
       navigationOpen={false}
       notifications={
         <ColumnLayout columns={3}>
@@ -61,6 +64,7 @@ export default function () {
                 onChange={() => toggleContentLayoutHeader(!contentLayoutHeader)}
                 disabled={!contentLayout}
                 checked={contentLayoutHeader}
+                data-testid="toggle-content-layout-header"
               >
                 Content layout header
               </Toggle>
@@ -74,8 +78,15 @@ export default function () {
             </Box>
           </SpaceBetween>
           <SpaceBetween size="xxs">
-            <Toggle onChange={() => toggleFormHeader(!formHeader)} checked={formHeader}>
+            <Toggle
+              onChange={() => toggleFormHeader(!formHeader)}
+              checked={formHeader}
+              data-testid="toggle-form-header"
+            >
               Form header
+            </Toggle>
+            <Toggle onChange={() => toggleFormContent(!formContent)} checked={formContent}>
+              Form content
             </Toggle>
           </SpaceBetween>
         </ColumnLayout>
