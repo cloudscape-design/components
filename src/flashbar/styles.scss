@@ -12,6 +12,10 @@
 
 .flashbar {
   position: relative;
+  /* stylelint-disable-next-line selector-max-type */
+  > li + li {
+    padding-top: 0;
+  }
 }
 
 .flashbar,
