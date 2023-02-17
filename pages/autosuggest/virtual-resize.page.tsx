@@ -36,6 +36,7 @@ export default function AutosuggestPage() {
           onChange={event => setValue(event.detail.value)}
           enteredTextLabel={enteredTextLabel}
           ariaLabel={'simple autosuggest'}
+          selectedAriaLabel="Selected"
           virtualScroll={true}
         />
       </div>

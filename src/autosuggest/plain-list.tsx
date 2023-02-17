@@ -85,6 +85,7 @@ const PlainList = ({
             highlightText={highlightText}
             option={item}
             highlighted={item === autosuggestItemsState.highlightedOption}
+            current={item.value === highlightText}
             key={index}
             data-mouse-target={index}
             enteredTextLabel={enteredTextLabel}
