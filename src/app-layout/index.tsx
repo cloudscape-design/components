@@ -164,7 +164,9 @@ const OldAppLayout = React.forwardRef(
     );
     const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
 
-    const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
+    const [notificationsHeight, notificationsRef] = useContainerQuery(
+      rect => rect.target.querySelector('ul')!.clientHeight
+    );
     const anyPanelOpen = navigationVisible || toolsVisible;
     const hasRenderedNotifications = notificationsHeight ? notificationsHeight > 0 : false;
     const stickyNotificationsHeight = stickyNotifications ? notificationsHeight : null;
@@ -453,6 +455,7 @@ const OldAppLayout = React.forwardRef(
               >
                 {notifications && (
                   <Notifications
+                    disableContentPaddings={disableContentPaddings}
                     testUtilsClassName={testutilStyles.notifications}
                     labels={ariaLabels}
                     topOffset={disableBodyScroll ? 0 : headerHeight}

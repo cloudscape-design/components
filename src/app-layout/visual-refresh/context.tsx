@@ -446,7 +446,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * that it is not repeated in various components (such as AppBar) that need to
      * know if the notifications slot is empty.
      */
-    const [notificationsContainerQuery, notificationsElement] = useContainerQuery(rect => rect.height);
+    const [notificationsContainerQuery, notificationsElement] = useContainerQuery(
+      rect => rect.target.querySelector('ul')!.clientHeight
+    );
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
 

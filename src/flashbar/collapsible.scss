@@ -33,13 +33,15 @@ the grid layout will be:
 [10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
 [10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
 */
+$collapsed-item-overflow: 10px;
+
 .stack > .collapsed {
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px)
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px);
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow);
   row-gap: 8px;
   z-index: 0;
 
@@ -83,27 +85,26 @@ the grid layout will be:
   @include stacked-flash-z-index;
 }
 
-@mixin toggle-button-layout($top-overlap-collapsed, $border-width) {
-  $margin-top-when-collapsed: -$top-overlap-collapsed;
+@mixin notification-bar-layout($offset, $border-width) {
+  $top-overlap-collapsed: awsui.$space-scaled-xl;
+  $top-overlap-expanded: awsui.$space-scaled-s;
   $line-height: awsui.$font-body-m-line-height;
   $padding-vertical: styles.$control-padding-vertical;
-  $margin-top-when-expanded: -12px;
 
   padding-top: $padding-vertical;
   padding-bottom: $padding-vertical;
 
   &:not(.expanded) {
-    margin-top: #{$margin-top-when-collapsed};
-    margin-bottom: calc(
-      #{-$margin-top-when-collapsed} - (#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}))
-    );
+    &:not(.short-list) {
+      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}px));
+    }
+    &.short-list {
+      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}px) + #{$collapsed-item-overflow});
+    }
   }
 
   &.expanded {
-    margin-top: #{$margin-top-when-expanded};
-    margin-bottom: calc(
-      #{-$margin-top-when-expanded} - (#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}))
-    );
+    margin-top: calc(-1 * #{$top-overlap-expanded});
   }
 }
 
@@ -123,6 +124,7 @@ the grid layout will be:
   grid-row: 2;
   gap: awsui.$space-xxs;
   letter-spacing: awsui.$font-button-letter-spacing;
+  margin-bottom: var(#{custom-props.$notificationBarMarginBottom}, 0);
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -177,9 +179,7 @@ the grid layout will be:
 
   &.visual-refresh {
     $border-width: 2px;
-    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
-    $top-overlap-collapsed: 27px;
-    @include toggle-button-layout($top-overlap-collapsed, $border-width);
+    @include notification-bar-layout(3, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
@@ -187,9 +187,7 @@ the grid layout will be:
 
   &:not(.visual-refresh) {
     $border-width: 1px;
-    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
-    $top-overlap-collapsed: 24px;
-    @include toggle-button-layout($top-overlap-collapsed, $border-width);
+    @include notification-bar-layout(3, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;
     padding-right: awsui.$space-s;
@@ -208,6 +206,8 @@ the grid layout will be:
     flex-grow: 1;
     background: none;
     border: 0 none;
+    padding-top: 0;
+    padding-bottom: 0;
 
     > .icon {
       @include styles.with-motion {
@@ -226,10 +226,4 @@ the grid layout will be:
       @include styles.focus-highlight(0px);
     }
   }
-}
-
-// Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
-.stack.expanded:not(.floating) {
-  // Default to 0 so that this does not apply to non-sticky Flashbar.
-  padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
 }
