@@ -4,15 +4,14 @@ import React, { useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
 import labels from './utils/labels';
 import { FlashbarProps } from '~components/flashbar';
-import { sampleNotifications } from '../flashbar/common';
-import { AppLayout, Box, Button, Flashbar, Header, SpaceBetween, Table, Toggle } from '~components';
+import { AppLayout, Box, Button, Flashbar, Header, SpaceBetween, SplitPanel, Table, Toggle } from '~components';
 
 export default function () {
   const [notifications, setNotifications] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [nextId, setNextId] = useState(0);
-  const [disableContentPaddings, setDisableContentPaddings] = useState(false);
+  const [disableContentPaddings, setDisableContentPaddings] = useState(true);
   const [stackItems, setStackItems] = useState(true);
-  const [stickyNotifications, setStickyNotifications] = useState(true);
+  const [stickyNotifications, setStickyNotifications] = useState(false);
   const [stickyTableHeader, setStickyTableHeader] = useState(true);
 
   const addNotification = () => {
@@ -20,9 +19,9 @@ export default function () {
       const id = nextId.toString();
       return [
         {
-          ...sampleNotifications.info,
+          statusIconAriaLabel: 'Info',
           content:
-            'Considerably long notification message to verify whether the notifications bar in the Flashbar does not overlap the text. This should be properly tested in collapsed as well as in expanded state, and in compact as well as in comfortable mode.',
+            'Considerably long notification message to verify whether the notifications bar in the Flashbar does not overlap the text.',
           id,
           dismissible: true,
           onDismiss: () => dismissNotification(id),
@@ -98,6 +97,27 @@ export default function () {
           </Box>
         }
         toolsOpen={true}
+        splitPanelOpen={true}
+        splitPanel={
+          <SplitPanel
+            header={'Split Panel'}
+            i18nStrings={{
+              preferencesTitle: 'Split panel preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Resize split panel',
+            }}
+          >
+            <p>Split panel content</p>
+          </SplitPanel>
+        }
+        splitPanelPreferences={{ position: 'bottom' }}
       />
     </ScreenshotArea>
   );
