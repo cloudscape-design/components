@@ -85,21 +85,23 @@ $collapsed-item-overflow: 10px;
   @include stacked-flash-z-index;
 }
 
-@mixin notification-bar-layout($offset, $border-width) {
+@mixin notification-bar-layout($border-width) {
   $top-overlap-collapsed: awsui.$space-scaled-xl;
   $top-overlap-expanded: awsui.$space-scaled-s;
   $line-height: awsui.$font-body-m-line-height;
   $padding-vertical: styles.$control-padding-vertical;
+
+  $offset: 3px;
 
   padding-top: $padding-vertical;
   padding-bottom: $padding-vertical;
 
   &:not(.expanded) {
     &:not(.short-list) {
-      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}px));
+      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}));
     }
     &.short-list {
-      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}px) + #{$collapsed-item-overflow});
+      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}) + #{$collapsed-item-overflow} - #{$offset});
     }
   }
 
@@ -179,7 +181,7 @@ $collapsed-item-overflow: 10px;
 
   &.visual-refresh {
     $border-width: 2px;
-    @include notification-bar-layout(3, $border-width);
+    @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
@@ -187,7 +189,7 @@ $collapsed-item-overflow: 10px;
 
   &:not(.visual-refresh) {
     $border-width: 1px;
-    @include notification-bar-layout(3, $border-width);
+    @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;
     padding-right: awsui.$space-s;
