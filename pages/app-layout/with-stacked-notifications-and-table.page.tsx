@@ -13,6 +13,7 @@ export default function () {
   const [stackItems, setStackItems] = useState(true);
   const [stickyNotifications, setStickyNotifications] = useState(false);
   const [stickyTableHeader, setStickyTableHeader] = useState(true);
+  const [splitPanelOpen, setSplitPanelOpen] = useState(true);
 
   const addNotification = () => {
     setNotifications(notifications => {
@@ -64,9 +65,12 @@ export default function () {
                 variant="h1"
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
-                    <Button>Secondary button</Button>
-                    <Button>Secondary button</Button>
-                    <Button variant="primary">Primary button</Button>
+                    <Button>Dummy secondary button</Button>
+                    <Button>Dummy secondary button</Button>
+                    <Button>Dummy secondary button</Button>
+                    <Button variant="primary" onClick={addNotification}>
+                      Add notification
+                    </Button>
                   </SpaceBetween>
                 }
               >
@@ -90,7 +94,6 @@ export default function () {
         tools={
           <Box padding="xl">
             <SpaceBetween direction="vertical" size="l">
-              <Button onClick={addNotification}>Add notification</Button>
               <Toggle
                 checked={disableContentPaddings}
                 onChange={event => setDisableContentPaddings(event.detail.checked)}
@@ -110,7 +113,8 @@ export default function () {
           </Box>
         }
         toolsOpen={true}
-        splitPanelOpen={true}
+        splitPanelOpen={splitPanelOpen}
+        onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
         splitPanel={
           <SplitPanel
             header={'Split Panel'}
