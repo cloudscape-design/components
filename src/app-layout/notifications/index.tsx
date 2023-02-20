@@ -32,7 +32,11 @@ export const Notifications = React.forwardRef(
       <div
         role="region"
         ref={ref}
-        className={clsx(props.testUtilsClassName, disableContentPaddings && styles['extra-margin-bottom'])}
+        className={clsx(
+          props.testUtilsClassName,
+          styles.notifications,
+          disableContentPaddings && styles['extra-margin-bottom']
+        )}
         aria-label={props.labels?.notifications}
       >
         {props.children}
