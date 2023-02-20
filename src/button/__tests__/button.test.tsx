@@ -368,6 +368,11 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('rel');
     });
 
+    test('does not set the default "rel" attribute for "target=_blank" if a "rel" prop is provided', () => {
+      const wrapper = renderButton({ href: 'https://amazon.com', target: '_blank', rel: 'nofollow' });
+      expect(wrapper.getElement()).toHaveAttribute('rel', 'nofollow');
+    });
+
     test('can add a download attribute if it is a link', () => {
       let wrapper = renderButton({ download: 'fileName' });
       expect(wrapper.getElement()).not.toHaveAttribute('download');
