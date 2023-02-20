@@ -21,7 +21,7 @@ export default function () {
         {
           statusIconAriaLabel: 'Info',
           content:
-            'Considerably long notification message to verify whether the notifications bar in the Flashbar does not overlap the text.',
+            'Considerably long notification message to verify that the notifications bar in the Flashbar does not overlap the text.',
           id,
           dismissible: true,
           onDismiss: () => dismissNotification(id),
@@ -59,7 +59,20 @@ export default function () {
         disableContentPaddings={disableContentPaddings}
         content={
           <Table
-            header={<Header variant="h1">Sticky Table Header</Header>}
+            header={
+              <Header
+                variant="h1"
+                actions={
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <Button>Secondary button</Button>
+                    <Button>Secondary button</Button>
+                    <Button variant="primary">Primary button</Button>
+                  </SpaceBetween>
+                }
+              >
+                Table Header
+              </Header>
+            }
             footer={
               <div style={{ height: '150vh' }}>
                 <p>Long footer to make the main content scrollable.</p>
