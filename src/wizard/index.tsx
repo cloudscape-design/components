@@ -16,7 +16,14 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-import { trackStartStep, trackNavigate, trackSubmit, trackStartWizard } from './internal/analytics';
+import {
+  trackStartStep,
+  trackNavigate,
+  trackSubmit,
+  trackStartWizard,
+  trackEndWizard,
+  trackCancel,
+} from './internal/analytics';
 
 export { WizardProps };
 
@@ -61,7 +68,10 @@ export default function Wizard({
   };
   const onStepClick = (stepIndex: number) => navigationEvent(stepIndex, 'step');
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
-  const onCancelClick = () => fireNonCancelableEvent(onCancel);
+  const onCancelClick = () => {
+    trackCancel(actualActiveStepIndex, funnelId);
+    fireNonCancelableEvent(onCancel);
+  };
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
   const onPrimaryClick = () => {
     if (isLastStep) {
@@ -90,6 +100,11 @@ export default function Wizard({
 
   useEffect(() => {
     trackStartWizard();
+
+    return () => {
+      trackEndWizard(funnelId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- this is intentional
   }, []);
 
   useEffect(() => {

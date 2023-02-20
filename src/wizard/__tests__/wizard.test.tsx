@@ -695,7 +695,6 @@ describe('Metrics', () => {
         eventContext: 'csa_wizard_step2',
         eventDetail: 'step2',
         eventType: 'csa_wizard_submit',
-        eventValue: expect.any(String),
         timestamp: expect.any(Number),
       })
     );
