@@ -9,9 +9,12 @@
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
 
+$collapsed-item-overflow: 10px;
+
 .stack {
+  $notification-bar-horizontal-margin: 3 * $collapsed-item-overflow;
   display: grid;
-  grid-template-columns: 1fr minmax(70px, auto) 1fr;
+  grid-template-columns: $notification-bar-horizontal-margin 1fr $notification-bar-horizontal-margin;
 }
 
 .stack > .expanded {
@@ -33,13 +36,14 @@ the grid layout will be:
 [10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
 [10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
 */
+
 .stack > .collapsed {
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px)
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px);
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow);
   row-gap: 8px;
   z-index: 0;
 
