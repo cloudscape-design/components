@@ -160,17 +160,15 @@ the grid layout will be:
       display: inline-block;
     }
 
-    > .item-count {
+    > .item-count > .type-count {
       white-space: nowrap;
 
-      > .type-count {
-        > .count-number {
-          margin-left: awsui.$space-xxs;
-        }
+      > .count-number {
+        margin-left: awsui.$space-xxs;
+      }
 
-        &:not(:last-child) {
-          margin-right: awsui.$space-s;
-        }
+      &:not(:last-child) {
+        margin-right: awsui.$space-s;
       }
     }
   }
