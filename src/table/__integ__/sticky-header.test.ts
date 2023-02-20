@@ -118,14 +118,12 @@ describe('Sticky header', () => {
     setupTest(async page => {
       await page.click(togglePaginationSelector);
       await page.click(tableWrapper.findTextFilter().findInput().toSelector());
-      // skip preferences toggle
-      await page.keys(['Tab', 'Tab']);
+      // skip preferences toggle and table scrollable region
+      await page.keys(['Tab', 'Tab', 'Tab']);
       // select all checkbox
       await expect(
         page.isFocused(tableWrapper.findSelectAllTrigger().find('input').toSelector())
       ).resolves.toBeTruthy();
-      // skips table scrollable region
-      await page.keys('Tab');
       // column headers
       for (const column of ['ID', 'Type', 'DNS name', 'Image ID', 'State']) {
         await page.keys('Tab');

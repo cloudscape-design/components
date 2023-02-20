@@ -4,14 +4,14 @@ import clsx from 'clsx';
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { TableProps } from './interfaces';
-import Thead, { InteractiveElement, TheadProps } from './thead';
+import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
   scrollToRow(node: null | HTMLElement): void;
-  setFocus(element: InteractiveElement | null): void;
+  setFocus(element: InteractiveComponent | null): void;
 }
 
 interface StickyHeaderProps {
@@ -44,7 +44,7 @@ function StickyHeader(
   const secondaryTableRef = useRef<HTMLTableElement>(null);
   const { isStuck } = useContext(StickyHeaderContext);
 
-  const [focusedElement, setFocusedElement] = useState<InteractiveElement | null>(null);
+  const [focusedComponent, setFocusedComponent] = useState<InteractiveComponent | null>(null);
   const { scrollToRow, scrollToTop } = useStickyHeader(
     tableRef,
     theadRef,
@@ -56,7 +56,7 @@ function StickyHeader(
   useImperativeHandle(ref, () => ({
     scrollToTop,
     scrollToRow,
-    setFocus: setFocusedElement,
+    setFocus: setFocusedComponent,
   }));
 
   return (
@@ -73,7 +73,13 @@ function StickyHeader(
       onScroll={onScroll}
     >
       <table className={clsx(styles.table, styles['table-layout-fixed'])} role="table" ref={secondaryTableRef}>
-        <Thead ref={secondaryTheadRef} sticky={true} stuck={isStuck} {...theadProps} focusedElement={focusedElement} />
+        <Thead
+          ref={secondaryTheadRef}
+          sticky={true}
+          stuck={isStuck}
+          focusedComponent={focusedComponent}
+          {...theadProps}
+        />
       </table>
     </div>
   );

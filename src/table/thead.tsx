@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 
-export type InteractiveElement =
+export type InteractiveComponent =
   | { type: 'selection' }
   | { type: 'column'; col: number }
   | { type: 'resizer'; col: number };
@@ -39,8 +39,8 @@ export interface TheadProps {
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
 
-  focusedElement?: InteractiveElement | null;
-  onFocusedElementChange?: (element: InteractiveElement | null) => void;
+  focusedComponent?: InteractiveComponent | null;
+  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
 
 const Thead = React.forwardRef(
@@ -65,8 +65,8 @@ const Thead = React.forwardRef(
       hidden = false,
       stuck = false,
 
-      focusedElement,
-      onFocusedElementChange,
+      focusedComponent,
+      onFocusedComponentChange,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -101,8 +101,8 @@ const Thead = React.forwardRef(
                 onFocusDown={event => {
                   onFocusMove!(event.target as HTMLElement, -1, +1);
                 }}
-                focusedElement={focusedElement}
-                onFocusedElementChange={onFocusedElementChange}
+                focusedComponent={focusedComponent}
+                onFocusedComponentChange={onFocusedComponentChange}
                 {...selectAllProps}
                 {...(sticky ? { tabIndex: -1 } : {})}
               />
@@ -138,8 +138,8 @@ const Thead = React.forwardRef(
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                 }}
                 tabIndex={sticky ? -1 : 0}
-                focusedElement={focusedElement}
-                onFocusedElementChange={onFocusedElementChange}
+                focusedComponent={focusedComponent}
+                onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
                 activeSortingColumn={sortingColumn}
                 sortingDescending={sortingDescending}

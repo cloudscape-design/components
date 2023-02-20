@@ -9,7 +9,7 @@ import RadioButton from '../../radio-group/radio-button';
 
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
-import { InteractiveElement } from '../thead';
+import { InteractiveComponent } from '../thead';
 
 export interface SelectionControlProps {
   selectionType: TableProps['selectionType'];
@@ -24,8 +24,8 @@ export interface SelectionControlProps {
   ariaLabel?: string;
   tabIndex?: -1;
 
-  focusedElement?: InteractiveElement | null;
-  onFocusedElementChange?: (element: InteractiveElement | null) => void;
+  focusedComponent?: InteractiveComponent | null;
+  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
 
 export default function SelectionControl({
@@ -37,8 +37,8 @@ export default function SelectionControl({
   name,
   ariaLabel,
 
-  focusedElement,
-  onFocusedElementChange,
+  focusedComponent,
+  onFocusedComponentChange,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -85,9 +85,9 @@ export default function SelectionControl({
   const selector = isMultiSelection ? (
     <InternalCheckbox
       {...sharedProps}
-      forceOutline={focusedElement?.type === 'selection'}
-      onFocus={() => onFocusedElementChange?.({ type: 'selection' })}
-      onBlur={() => onFocusedElementChange?.(null)}
+      showOutline={focusedComponent?.type === 'selection'}
+      onFocus={() => onFocusedComponentChange?.({ type: 'selection' })}
+      onBlur={() => onFocusedComponentChange?.(null)}
       controlId={controlId}
       indeterminate={indeterminate}
     />
