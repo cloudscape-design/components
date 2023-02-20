@@ -14,6 +14,7 @@
   position: relative;
   /* stylelint-disable-next-line selector-max-type */
   > li + li {
+    // Avoid Flashbar list gets additional padding to fix issue AWSUI-20382
     padding-top: 0;
   }
 }
