@@ -52,7 +52,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   word-wrap: break-word;
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
-  z-index: 851;
+  z-index: 840;
   &-closed {
     cursor: pointer;
     min-width: constants.$sidebar-size-closed;
@@ -114,7 +114,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   }
 
   /*
-  Removed the position fixed with the AppLayout refactor because the 
+  Removed the position fixed with the AppLayout refactor because the
   SplitPanel is no longer in fixed position in the DOM.
   */
   &.refresh {
