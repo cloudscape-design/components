@@ -24,11 +24,7 @@ export const Notifications = React.forwardRef(
         className={clsx(styles['notifications-sticky'], disableContentPaddings && styles['extra-margin-bottom'])}
         style={{ top: props.topOffset }}
       >
-        <div
-          role="region"
-          className={props.testUtilsClassName}
-          aria-label={props.labels?.notifications}
-        >
+        <div role="region" className={props.testUtilsClassName} aria-label={props.labels?.notifications}>
           {props.children}
         </div>
       </div>
