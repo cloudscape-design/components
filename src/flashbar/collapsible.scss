@@ -127,6 +127,7 @@ the grid layout will be:
   grid-column: 2;
   grid-row: 2;
   column-gap: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
+  justify-content: center;
   letter-spacing: awsui.$font-button-letter-spacing;
   margin-left: auto;
   margin-right: auto;
@@ -160,15 +161,16 @@ the grid layout will be:
       display: inline-block;
     }
 
-    > .item-count > .type-count {
-      white-space: nowrap;
+    > .item-count {
+      column-gap: awsui.$space-s;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0;
 
-      > .count-number {
+      > .type-count > .count-number {
         margin-left: awsui.$space-xxs;
-      }
-
-      &:not(:last-child) {
-        margin-right: awsui.$space-s;
       }
     }
   }
