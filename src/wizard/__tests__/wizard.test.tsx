@@ -539,6 +539,21 @@ describe('Metrics', () => {
     jest.spyOn(window, 'panorama');
   });
 
+  test('sets the funnel to the wizard id if provided', () => {
+    renderDefaultWizard({ id: 'wizard-id' });
+    expect(window.panorama).toBeCalledTimes(1);
+    expect(window.panorama).toHaveBeenCalledWith(
+      'trackCustomEvent',
+      expect.objectContaining({
+        eventContext: 'csa_wizard_step1',
+        eventDetail: 'step1',
+        eventType: 'csa_wizard_step',
+        timestamp: expect.any(Number),
+        funnel: 'wizard-id',
+      })
+    );
+  });
+
   test('sends a startStep step metric on initial render', () => {
     renderDefaultWizard();
     expect(window.panorama).toBeCalledTimes(1);

@@ -39,7 +39,7 @@ export const trackStartWizard = () => {
   timeStart(prefix);
 };
 
-export const trackStartStep = (stepIndex?: number) => {
+export const trackStartStep = (stepIndex?: number, funnelId?: string) => {
   const eventContext = createEventContext(stepIndex);
 
   // End the timer of the previous step
@@ -52,6 +52,7 @@ export const trackStartStep = (stepIndex?: number) => {
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('step'),
+    ...(funnelId && { funnel: funnelId }),
     ...(time !== undefined && { eventValue: time.toString() }),
   });
 };
@@ -59,7 +60,8 @@ export const trackStartStep = (stepIndex?: number) => {
 export const trackNavigate = (
   activeStepIndex: number,
   requestedStepIndex: number,
-  reason: WizardProps.NavigationReason
+  reason: WizardProps.NavigationReason,
+  funnelId?: string
 ) => {
   const eventContext = createEventContext(activeStepIndex);
   const time = timeEnd();
@@ -69,10 +71,11 @@ export const trackNavigate = (
     eventDetail: createEventDetail(requestedStepIndex),
     eventType: createEventType('navigate'),
     eventValue: { reason, ...(time !== undefined && { time }) },
+    ...(funnelId && { funnel: funnelId }),
   });
 };
 
-export const trackSubmit = (stepIndex: number) => {
+export const trackSubmit = (stepIndex: number, funnelId?: string) => {
   const eventContext = createEventContext(stepIndex);
   // End the timer of the wizard
   const time = timeEnd(prefix);
@@ -82,5 +85,6 @@ export const trackSubmit = (stepIndex: number) => {
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('submit'),
     ...(time !== undefined && { eventValue: time.toString() }),
+    ...(funnelId && { funnel: funnelId }),
   });
 };

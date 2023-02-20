@@ -72,8 +72,8 @@ the grid layout will be:
     );
   }
 
-  > .item:not(:last-child) > .flash,
-  > .item.flash {
+  > .item:not(:last-child) > .flash::before,
+  > .item.flash::before {
     box-shadow: awsui.$shadow-flash-collapsed;
   }
 }
@@ -137,6 +137,8 @@ the grid layout will be:
     cursor: pointer;
     margin-top: 0;
     margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   > .status {
@@ -144,7 +146,7 @@ the grid layout will be:
 
     > .header {
       font-weight: awsui.$font-button-weight;
-      display: inline;
+      display: inline-block;
     }
 
     > .item-count {

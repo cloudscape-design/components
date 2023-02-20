@@ -1,46 +1,80 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import ColumnLayout from '~components/column-layout';
-import Container from '~components/container';
+import Container, { ContainerProps } from '~components/container';
 import Grid from '~components/grid';
 import Header from '~components/header';
 import Link from '~components/link';
+import SpaceBetween from '~components/space-between';
+import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import styles from './fit-height.scss';
 
+type DemoContext = React.Context<AppContextType<{ hideFooters: boolean; disableContentPaddings: boolean }>>;
+
+function ContainerPlayground(props: ContainerProps) {
+  const { urlParams } = useContext(AppContext as DemoContext);
+  return (
+    <Container
+      {...props}
+      disableContentPaddings={urlParams.disableContentPaddings}
+      footer={urlParams.hideFooters ? null : props.footer}
+    />
+  );
+}
+
 function SmallContainer() {
   return (
-    <Container fitHeight={true} header={<Header>Short</Header>} footer="footer">
+    <ContainerPlayground fitHeight={true} header={<Header>Short</Header>} footer="footer">
       <p>One line of text</p>
-    </Container>
+    </ContainerPlayground>
   );
 }
 
 function MediumContainer() {
   return (
-    <Container fitHeight={true} header={<Header>Mid size</Header>} footer="footer">
+    <ContainerPlayground fitHeight={true} header={<Header>Mid size</Header>} footer="footer">
       <p>Content placeholder</p>
       <div style={{ height: 100 }} className={styles.placeholder}></div>
-    </Container>
+    </ContainerPlayground>
   );
 }
 
 function LargeContainer() {
   return (
-    <Container fitHeight={true} header={<Header>Large</Header>} footer="footer">
+    <ContainerPlayground fitHeight={true} header={<Header>Large</Header>} footer="footer">
       <p>
         This container overflows available space. <Link href="#">Learn more</Link>.
       </p>
       <div style={{ height: 400 }} className={styles.placeholder}></div>
-    </Container>
+    </ContainerPlayground>
   );
 }
 
 export default function () {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   return (
     <article>
       <h1>Fit height property demo</h1>
+      <SpaceBetween size="s" direction="horizontal">
+        <label>
+          <input
+            type="checkbox"
+            checked={urlParams.hideFooters ?? false}
+            onChange={event => setUrlParams({ hideFooters: event.target.checked })}
+          />{' '}
+          Hide footers
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={urlParams.disableContentPaddings ?? false}
+            onChange={event => setUrlParams({ disableContentPaddings: event.target.checked })}
+          />{' '}
+          Disable content paddings
+        </label>
+      </SpaceBetween>
       <ScreenshotArea>
         <h2>Inside display:grid</h2>
         <div className={styles.grid}>

@@ -17,6 +17,7 @@ export interface AutosuggestOptionProps extends BaseComponentProps {
   option: AutosuggestItem;
   highlighted: boolean;
   highlightType: HighlightType;
+  current: boolean;
   enteredTextLabel: (value: string) => string;
   virtualPosition?: number;
   padBottom?: boolean;
@@ -32,6 +33,7 @@ const AutosuggestOption = (
     option,
     highlighted,
     highlightType,
+    current,
     enteredTextLabel,
     virtualPosition,
     padBottom,
@@ -51,6 +53,9 @@ const AutosuggestOption = (
   let optionContent;
   if (useEntered) {
     optionContent = enteredTextLabel(option.value || '');
+    // we don't want fancy generated content for screenreader for the "Use..." option,
+    // just the visible text is fine
+    screenReaderContent = undefined;
   } else if (isParent) {
     optionContent = option.label;
   } else {
@@ -70,7 +75,7 @@ const AutosuggestOption = (
     <SelectableItem
       {...baseProps}
       className={styles.option}
-      ariaSelected={highlighted}
+      ariaSelected={current}
       highlighted={highlighted}
       disabled={option.disabled}
       hasBackground={useEntered}

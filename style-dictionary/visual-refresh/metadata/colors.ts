@@ -23,6 +23,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorBackgroundCellShaded: {
+    description: 'The background color of shaded table cells.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundContainerContent: {
     description:
       'The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards.',
