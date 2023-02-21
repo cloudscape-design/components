@@ -285,6 +285,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         styles.flashbar,
         styles[`breakpoint-${breakpoint}`],
         styles.stack,
+        isCollapsible && styles.collapsible,
+        items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
         getVisualContextClassname('flashbar')
       )}

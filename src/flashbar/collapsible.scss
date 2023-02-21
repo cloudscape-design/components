@@ -33,16 +33,17 @@ the grid layout will be:
 [10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
 [10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
 */
-$collapsed-item-overflow: 10px;
+$collapsed-item-overflow-x: 10px;
+$collapsed-item-overflow-y: 8px;
 
 .stack > .collapsed {
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow)
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow-x)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow);
-  row-gap: 8px;
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow-x);
+  row-gap: $collapsed-item-overflow-y;
   z-index: 0;
 
   > .item {
@@ -80,6 +81,28 @@ $collapsed-item-overflow: 10px;
   }
 }
 
+$top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + 3px);
+$top-overlap-expanded: awsui.$space-scaled-s;
+
+@mixin collapsible-stack-bottom-margin($extra-amount) {
+  $default-margin-bottom: awsui.$space-scaled-m;
+  margin-bottom: calc(var(#{custom-props.$notificationBarMarginBottom}, #{$default-margin-bottom}) + #{$extra-amount});
+}
+
+.stack.collapsible {
+  &:not(.expanded) {
+    &:not(.short-list) {
+      @include collapsible-stack-bottom-margin(0px);
+    }
+    &.short-list {
+      @include collapsible-stack-bottom-margin($collapsed-item-overflow-y);
+    }
+  }
+  &.expanded {
+    @include collapsible-stack-bottom-margin(calc(#{$top-overlap-collapsed} - #{$top-overlap-expanded}));
+  }
+}
+
 .stack > .expanded.animation-running > .flash-list-item {
   position: relative;
   @include stacked-flash-z-index;
@@ -96,17 +119,13 @@ $collapsed-item-overflow: 10px;
 }
 
 @mixin notification-bar-layout($border-width) {
-  $offset: 3px;
-  $top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + #{$offset});
-  $top-overlap-expanded: awsui.$space-scaled-s;
-
   &:not(.expanded) {
     &:not(.short-list) {
       @include notification-bar-vertical-margins($top-overlap-collapsed, $border-width);
     }
     &.short-list {
       @include notification-bar-vertical-margins(
-        calc(#{$top-overlap-collapsed} - #{$collapsed-item-overflow}),
+        calc(#{$top-overlap-collapsed} - #{$collapsed-item-overflow-y}),
         $border-width
       );
     }
@@ -133,7 +152,6 @@ $collapsed-item-overflow: 10px;
   grid-row: 2;
   gap: awsui.$space-xxs;
   letter-spacing: awsui.$font-button-letter-spacing;
-  margin-bottom: var(#{custom-props.$notificationBarMarginBottom}, 0);
   margin-left: auto;
   margin-right: auto;
   text-align: center;

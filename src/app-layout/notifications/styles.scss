@@ -22,5 +22,5 @@
 }
 
 .extra-margin-bottom {
-  #{custom-props.$notificationBarMarginBottom}: #{awsui.$space-xs};
+  #{custom-props.$notificationBarMarginBottom}: #{awsui.$space-scaled-m};
 }
