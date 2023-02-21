@@ -11,14 +11,9 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content,
 .visible-content-toggle,
 .visible-content-groups,
-.visible-content-group {
-  /* used in test-utils */
-}
+.visible-content-group,
 .visible-content-title {
-  @include styles.font-label;
-  color: awsui.$color-text-form-label;
-  margin: 0;
-  margin-bottom: awsui.$space-scaled-l;
+  /* used in test-utils */
 }
 
 .visible-content-group-label {

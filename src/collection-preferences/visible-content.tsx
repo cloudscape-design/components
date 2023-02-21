@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import InternalBox from '../box/internal';
 import InternalExpandableSection from '../expandable-section/internal';
 import InternalToggle from '../toggle/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -71,9 +72,9 @@ export default function VisibleContentPreference({
   const outerGroupLabelId = `${idPrefix}-outer`;
   return (
     <div className={styles['visible-content']}>
-      <h3 {...className('title')} id={outerGroupLabelId}>
+      <InternalBox variant="h3" {...className('title')} id={outerGroupLabelId}>
         {title}
-      </h3>
+      </InternalBox>
       <div {...className('groups')}>
         {options.map((optionGroup, optionGroupIndex) => {
           return (
