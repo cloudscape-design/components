@@ -62,7 +62,7 @@ export default function () {
           <Table
             header={
               <Header
-                variant="h1"
+                variant="h2"
                 actions={
                   <SpaceBetween direction="horizontal" size="xs">
                     <Button>Dummy secondary button</Button>
