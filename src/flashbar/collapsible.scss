@@ -85,28 +85,35 @@ $collapsed-item-overflow: 10px;
   @include stacked-flash-z-index;
 }
 
-@mixin notification-bar-layout($border-width) {
-  $top-overlap-collapsed: awsui.$space-scaled-xl;
-  $top-overlap-expanded: awsui.$space-scaled-s;
+@mixin notification-bar-vertical-margins($top-overlap, $border-width) {
   $line-height: awsui.$font-body-m-line-height;
   $padding-vertical: styles.$control-padding-vertical;
-
-  $offset: 3px;
-
+  $full-height: calc(#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}));
+  margin-top: calc(-1 * #{$top-overlap});
+  margin-bottom: calc(#{$top-overlap} - #{$full-height});
   padding-top: $padding-vertical;
   padding-bottom: $padding-vertical;
+}
+
+@mixin notification-bar-layout($border-width) {
+  $offset: 3px;
+  $top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + #{$offset});
+  $top-overlap-expanded: awsui.$space-scaled-s;
 
   &:not(.expanded) {
     &:not(.short-list) {
-      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}));
+      @include notification-bar-vertical-margins($top-overlap-collapsed, $border-width);
     }
     &.short-list {
-      margin-top: calc(-1 * (#{$top-overlap-collapsed} + #{$offset}) + #{$collapsed-item-overflow} - #{$offset});
+      @include notification-bar-vertical-margins(
+        calc(#{$top-overlap-collapsed} - #{$collapsed-item-overflow}),
+        $border-width
+      );
     }
   }
 
   &.expanded {
-    margin-top: calc(-1 * #{$top-overlap-expanded});
+    @include notification-bar-vertical-margins($top-overlap-expanded, $border-width);
   }
 }
 
