@@ -254,3 +254,9 @@ $top-overlap-expanded: awsui.$space-scaled-s;
     }
   }
 }
+
+// Prevent the sticky Flashbar from reaching the end of the window by leaving some space below.
+.stack.expanded:not(.floating) {
+  // Default to 0 so that this does not apply to non-sticky Flashbar.
+  padding-bottom: var(#{custom-props.$flashbarStickyBottomMargin}, 0);
+}
