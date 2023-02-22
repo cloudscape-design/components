@@ -20,7 +20,7 @@ export default function InternalForm({
   errorIconAriaLabel,
   actions,
   secondaryActions,
-  variant = 'full-page',
+  variant,
   __internalRootRef,
   ...props
 }: InternalFormProps) {

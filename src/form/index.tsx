@@ -8,9 +8,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { FormProps };
 
-export default function Form(props: FormProps) {
+export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const baseComponentProps = useBaseComponent('Form');
-  return <InternalForm {...props} {...baseComponentProps} />;
+  return <InternalForm variant={variant} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(Form, 'Form');

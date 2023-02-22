@@ -184,7 +184,7 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * Specify a cards variant with one of the following:
    * * `container` - Use this variant to have the cards displayed as a container.
    * * `full-page` – Use this variant when cards are the entire content of a page. Full page variants
-   *               will implement the high contrast header and content behavior automatically.
+   *                 implement the high contrast header and content behavior automatically.
    * @visualrefresh `full-page` variant
    */
   variant?: 'container' | 'full-page';
