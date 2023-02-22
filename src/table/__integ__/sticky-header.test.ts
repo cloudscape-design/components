@@ -4,6 +4,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import styles from '../../../lib/components/table/styles.selectors.js';
+import selectionStyles from '../../../lib/components/table/selection-control/styles.selectors.js';
 
 const tableWrapper = createWrapper().findTable();
 const tableScrollWrapper = tableWrapper.findByClassName(styles.wrapper);
@@ -26,8 +27,13 @@ class StickyHeaderPage extends BasePageObject {
         }));
     }, selector);
   }
+
   findTable() {
     return tableWrapper.toSelector();
+  }
+
+  findTableHiddenSelectAllTrigger() {
+    return tableWrapper.find(`.${styles.wrapper} .${selectionStyles.root} input`);
   }
 }
 
@@ -120,10 +126,8 @@ describe('Sticky header', () => {
       await page.click(tableWrapper.findTextFilter().findInput().toSelector());
       // skip preferences toggle and table scrollable region
       await page.keys(['Tab', 'Tab', 'Tab']);
-      // select all checkbox
-      await expect(
-        page.isFocused(tableWrapper.findSelectAllTrigger().find('input').toSelector())
-      ).resolves.toBeTruthy();
+      // find the hidden table select checkbox
+      await expect(page.isFocused(page.findTableHiddenSelectAllTrigger().getElement())).resolves.toBeTruthy();
       // column headers
       for (const column of ['ID', 'Type', 'DNS name', 'Image ID', 'State']) {
         await page.keys('Tab');
