@@ -7,8 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use './constants' as constants;
 
-// should be above sticky notifications
-$drawer-z-index: 850;
+$drawer-z-index: 830;
 // should be above mobile toolbar
 $drawer-z-index-mobile: 1001;
 

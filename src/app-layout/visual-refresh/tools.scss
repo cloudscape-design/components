@@ -8,12 +8,12 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
-The Tools component container has a max width calculation that depends on the 
+The Tools component container has a max width calculation that depends on the
 state of the other siblings within the Layout grid definition. The layout width
-is set in the resize observer in the Layout component. The main offset left 
-will calculate the distance from the start of the Layout component. The minimum 
+is set in the resize observer in the Layout component. The main offset left
+will calculate the distance from the start of the Layout component. The minimum
 content width has a default value that can be set directly with the minContentWidth
-property. The content gap right is computed in the Layout styles based on the 
+property. The content gap right is computed in the Layout styles based on the
 viewport size and state of the Tools drawer.
 */
 .tools-container {
@@ -31,7 +31,7 @@ viewport size and state of the Tools drawer.
   max-width: var(#{custom-props.$toolsMaxWidth});
   position: sticky;
   top: var(#{custom-props.$offsetTop});
-  z-index: 850;
+  z-index: 830;
 
   pointer-events: none;
 
@@ -91,8 +91,8 @@ viewport size and state of the Tools drawer.
   }
 
   /*
-  A non-semantic node is added with a fixed width equal to the final Tools 
-  width. This will create the visual appearance of horizontal movement and 
+  A non-semantic node is added with a fixed width equal to the final Tools
+  width. This will create the visual appearance of horizontal movement and
   prevent unwanted text wrapping.
   */
   > .animated-content {
@@ -101,7 +101,7 @@ viewport size and state of the Tools drawer.
 
   /*
   A right border is needed if the Tools is open and the buttons are persistent in
-  the DOM. This creates a visual vertical boundary between the Tools and the Buttons 
+  the DOM. This creates a visual vertical boundary between the Tools and the Buttons
   only when they are both present. This is the circumstance when there is a Split Panel
   in the side position.
   */
@@ -125,8 +125,8 @@ viewport size and state of the Tools drawer.
 }
 
 /*
-Warning! If these design tokens for padding change it will adversely impact 
-the calculation used to determine the Split Panel maximum width in the 
+Warning! If these design tokens for padding change it will adversely impact
+the calculation used to determine the Split Panel maximum width in the
 handleSplitPanelMaxWidth function in the context.
 */
 .show-tools {
@@ -149,7 +149,7 @@ handleSplitPanelMaxWidth function in the context.
   }
 
   /*
-  Apply the animation only in desktop viewports because the AppBar will 
+  Apply the animation only in desktop viewports because the AppBar will
   take control in responsive viewports.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
