@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use 'sass:map';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
@@ -9,12 +10,20 @@
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
 
-$notification-bar-top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + 3px);
-$notification-bar-top-overlap-expanded: awsui.$space-scaled-s;
+$notification-bar-top-overlap: (
+  'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
+  'expanded': awsui.$space-scaled-s,
+);
 $notification-bar-line-height: awsui.$font-body-m-line-height;
 $notification-bar-padding-vertical: styles.$control-padding-vertical;
-$notification-bar-collapsed-item-overflow-x: 10px;
-$notification-bar-collapsed-item-overflow-y: 8px;
+$notification-bar-collapsed-item-overflow: (
+  'x': 10px,
+  'y': 8px,
+);
+$notification-bar-border-width: (
+  'classic': 1px,
+  'visual-refresh': 3px,
+);
 
 .stack {
   display: grid;
@@ -45,10 +54,10 @@ the grid layout will be:
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), $notification-bar-collapsed-item-overflow-x)
+    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'))
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), $notification-bar-collapsed-item-overflow-x);
-  row-gap: $notification-bar-collapsed-item-overflow-y;
+    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'));
+  row-gap: map.get($notification-bar-collapsed-item-overflow, 'y');
   z-index: 0;
 
   > .item {
@@ -95,12 +104,12 @@ the grid layout will be:
   /*
    The default bottom margin ($default-margin-bottom) is just enough to keep the notification at a distance of
    a couple pixels to the next element below the notifications. But if using disableContentPaddings,
-   $notificationRegionBottomMargin will be set at the App Layout level so that this distance is increased to prevent
+   $stackedNotificationsBottomMargin will be set at the App Layout level so that this distance is increased to prevent
    excessive overlaps.
    */
   $default-margin-bottom: awsui.$space-scaled-s;
   margin-bottom: calc(
-    var(#{custom-props.$notificationRegionBottomMargin}, #{$default-margin-bottom}) + #{$extra-amount}
+    var(#{custom-props.$stackedNotificationsBottomMargin}, #{$default-margin-bottom}) + #{$extra-amount}
   );
 }
 
@@ -109,13 +118,17 @@ the grid layout will be:
     &:not(.short-list) {
       @include collapsible-stack-bottom-margin(0px);
     }
+
     &.short-list {
-      @include collapsible-stack-bottom-margin($notification-bar-collapsed-item-overflow-y);
+      @include collapsible-stack-bottom-margin(map.get($notification-bar-collapsed-item-overflow, 'y'));
     }
   }
+
   &.expanded {
     @include collapsible-stack-bottom-margin(
-      calc(#{$notification-bar-top-overlap-collapsed} - #{$notification-bar-top-overlap-expanded})
+      calc(
+        #{map.get($notification-bar-top-overlap, 'collapsed')} - #{map.get($notification-bar-top-overlap, 'expanded')}
+      )
     );
   }
 }
@@ -133,18 +146,24 @@ the grid layout will be:
 @mixin notification-bar-layout($border-width) {
   &:not(.expanded) {
     &:not(.short-list) {
-      @include notification-bar-vertical-spacing($notification-bar-top-overlap-collapsed, $border-width);
+      @include notification-bar-vertical-spacing(map.get($notification-bar-top-overlap, 'collapsed'), $border-width);
     }
+
     &.short-list {
       @include notification-bar-vertical-spacing(
-        calc(#{$notification-bar-top-overlap-collapsed} - #{$notification-bar-collapsed-item-overflow-y}),
+        calc(
+          #{map.get($notification-bar-top-overlap, 'collapsed')} - #{map.get(
+              $notification-bar-collapsed-item-overflow,
+              'y'
+            )}
+        ),
         $border-width
       );
     }
   }
 
   &.expanded {
-    @include notification-bar-vertical-spacing($notification-bar-top-overlap-expanded, $border-width);
+    @include notification-bar-vertical-spacing(map.get($notification-bar-top-overlap, 'expanded'), $border-width);
   }
 }
 
@@ -217,7 +236,7 @@ the grid layout will be:
   }
 
   &.visual-refresh {
-    $border-width: 2px;
+    $border-width: map.get($notification-bar-border-width, 'visual-refresh');
     @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
@@ -225,7 +244,7 @@ the grid layout will be:
   }
 
   &:not(.visual-refresh) {
-    $border-width: 1px;
+    $border-width: map.get($notification-bar-border-width, 'classic');
     @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;

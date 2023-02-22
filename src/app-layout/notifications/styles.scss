@@ -23,5 +23,5 @@
 }
 
 .extra-margin-bottom {
-  #{custom-props.$notificationRegionBottomMargin}: #{awsui.$space-scaled-m};
+  #{custom-props.$stackedNotificationsBottomMargin}: #{awsui.$space-scaled-m};
 }
