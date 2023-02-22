@@ -25,6 +25,7 @@ const Button = React.forwardRef(
       wrapText = true,
       href,
       target,
+      rel,
       download,
       formAction = 'submit',
       ariaLabel,
@@ -54,6 +55,7 @@ const Button = React.forwardRef(
         wrapText={wrapText}
         href={href}
         target={target}
+        rel={rel}
         download={download}
         formAction={formAction}
         ariaLabel={ariaLabel}
