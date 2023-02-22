@@ -9,13 +9,6 @@
 .notifications,
 .notifications-sticky {
   z-index: 825;
-  &.no-content-padding {
-    /*
-    When using the disableContentPaddings option, the Flashbar will use this custom property to add additional space
-    when the notification bar is rendered, to prevent it from overlapping the content.
-     */
-    #{custom-props.$stackedNotificationsBottomMargin}: #{awsui.$space-scaled-l};
-  }
 }
 
 .notifications {
@@ -27,4 +20,12 @@
   top: 0;
   position: sticky;
   #{custom-props.$flashbarStickyBottomMargin}: #{awsui.$space-xxl};
+}
+
+.no-content-paddings {
+  /*
+  When using the disableContentPaddings option, the Flashbar will use this custom property to add additional space
+  when the notification bar is rendered, to prevent it from overlapping the content.
+   */
+  #{custom-props.$stackedNotificationsBottomMargin}: #{awsui.$space-scaled-l};
 }
