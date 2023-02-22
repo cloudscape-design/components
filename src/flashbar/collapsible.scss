@@ -9,6 +9,13 @@
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
 
+$notification-bar-top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + 3px);
+$notification-bar-top-overlap-expanded: awsui.$space-scaled-s;
+$notification-bar-line-height: awsui.$font-body-m-line-height;
+$notification-bar-padding-vertical: styles.$control-padding-vertical;
+$notification-bar-collapsed-item-overflow-x: 10px;
+$notification-bar-collapsed-item-overflow-y: 8px;
+
 .stack {
   display: grid;
   grid-template-columns: 1fr minmax(70px, auto) 1fr;
@@ -33,17 +40,15 @@ the grid layout will be:
 [10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
 [10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
 */
-$collapsed-item-overflow-x: 10px;
-$collapsed-item-overflow-y: 8px;
 
 .stack > .collapsed {
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow-x)
+    repeat(var(#{custom-props.$flashbarStackDepth}), $notification-bar-collapsed-item-overflow-x)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow-x);
-  row-gap: $collapsed-item-overflow-y;
+    repeat(var(#{custom-props.$flashbarStackDepth}), $notification-bar-collapsed-item-overflow-x);
+  row-gap: $notification-bar-collapsed-item-overflow-y;
   z-index: 0;
 
   > .item {
@@ -81,12 +86,16 @@ $collapsed-item-overflow-y: 8px;
   }
 }
 
-$top-overlap-collapsed: calc(#{awsui.$space-scaled-xl} + 3px);
-$top-overlap-expanded: awsui.$space-scaled-s;
+.stack > .expanded.animation-running > .flash-list-item {
+  position: relative;
+  @include stacked-flash-z-index;
+}
 
 @mixin collapsible-stack-bottom-margin($extra-amount) {
-  $default-margin-bottom: awsui.$space-scaled-m;
-  margin-bottom: calc(var(#{custom-props.$notificationBarMarginBottom}, #{$default-margin-bottom}) + #{$extra-amount});
+  $default-margin-bottom: awsui.$space-scaled-s;
+  margin-bottom: calc(
+    var(#{custom-props.$notificationRegionBottomMargin}, #{$default-margin-bottom}) + #{$extra-amount}
+  );
 }
 
 .stack.collapsible {
@@ -95,44 +104,41 @@ $top-overlap-expanded: awsui.$space-scaled-s;
       @include collapsible-stack-bottom-margin(0px);
     }
     &.short-list {
-      @include collapsible-stack-bottom-margin($collapsed-item-overflow-y);
+      @include collapsible-stack-bottom-margin($notification-bar-collapsed-item-overflow-y);
     }
   }
   &.expanded {
-    @include collapsible-stack-bottom-margin(calc(#{$top-overlap-collapsed} - #{$top-overlap-expanded}));
+    @include collapsible-stack-bottom-margin(
+      calc(#{$notification-bar-top-overlap-collapsed} - #{$notification-bar-top-overlap-expanded})
+    );
   }
 }
 
-.stack > .expanded.animation-running > .flash-list-item {
-  position: relative;
-  @include stacked-flash-z-index;
-}
-
-@mixin notification-bar-vertical-margins($top-overlap, $border-width) {
-  $line-height: awsui.$font-body-m-line-height;
-  $padding-vertical: styles.$control-padding-vertical;
-  $full-height: calc(#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}));
+@mixin notification-bar-vertical-spacing($top-overlap, $border-width) {
+  $notification-bar-full-height: calc(
+    #{$notification-bar-line-height} + 2 * (#{$notification-bar-padding-vertical} + #{$border-width})
+  );
   margin-top: calc(-1 * #{$top-overlap});
-  margin-bottom: calc(#{$top-overlap} - #{$full-height});
-  padding-top: $padding-vertical;
-  padding-bottom: $padding-vertical;
+  margin-bottom: calc(#{$top-overlap} - #{$notification-bar-full-height});
+  padding-top: $notification-bar-padding-vertical;
+  padding-bottom: $notification-bar-padding-vertical;
 }
 
 @mixin notification-bar-layout($border-width) {
   &:not(.expanded) {
     &:not(.short-list) {
-      @include notification-bar-vertical-margins($top-overlap-collapsed, $border-width);
+      @include notification-bar-vertical-spacing($notification-bar-top-overlap-collapsed, $border-width);
     }
     &.short-list {
-      @include notification-bar-vertical-margins(
-        calc(#{$top-overlap-collapsed} - #{$collapsed-item-overflow-y}),
+      @include notification-bar-vertical-spacing(
+        calc(#{$notification-bar-top-overlap-collapsed} - #{$notification-bar-collapsed-item-overflow-y}),
         $border-width
       );
     }
   }
 
   &.expanded {
-    @include notification-bar-vertical-margins($top-overlap-expanded, $border-width);
+    @include notification-bar-vertical-spacing($notification-bar-top-overlap-expanded, $border-width);
   }
 }
 

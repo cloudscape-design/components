@@ -19,12 +19,12 @@ interface NotificationWrapperProps extends NotificationsProps {
 export const Notifications = React.forwardRef(
   ({ sticky, disableContentPaddings, ...props }: NotificationWrapperProps, ref: React.Ref<HTMLDivElement>) => {
     return sticky ? (
-      <div
-        ref={ref}
-        className={clsx(styles['notifications-sticky'], disableContentPaddings && styles['extra-margin-bottom'])}
-        style={{ top: props.topOffset }}
-      >
-        <div role="region" className={props.testUtilsClassName} aria-label={props.labels?.notifications}>
+      <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
+        <div
+          role="region"
+          className={clsx(props.testUtilsClassName, disableContentPaddings && styles['extra-margin-bottom'])}
+          aria-label={props.labels?.notifications}
+        >
           {props.children}
         </div>
       </div>
