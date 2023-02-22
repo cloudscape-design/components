@@ -92,6 +92,12 @@ the grid layout will be:
 }
 
 @mixin collapsible-stack-bottom-margin($extra-amount) {
+  /*
+   The default bottom margin ($default-margin-bottom) is just enough to keep the notification at a distance of
+   a couple pixels to the next element below the notifications. But if using disableContentPaddings,
+   $notificationRegionBottomMargin will be set at the App Layout level so that this distance is increased to prevent
+   excessive overlaps.
+   */
   $default-margin-bottom: awsui.$space-scaled-s;
   margin-bottom: calc(
     var(#{custom-props.$notificationRegionBottomMargin}, #{$default-margin-bottom}) + #{$extra-amount}
