@@ -68,7 +68,7 @@ export default function () {
                     <Button>Dummy secondary button</Button>
                     <Button>Dummy secondary button</Button>
                     <Button>Dummy secondary button</Button>
-                    <Button variant="primary" onClick={addNotification}>
+                    <Button variant="primary" onClick={addNotification} data-id="add-notification">
                       Add notification
                     </Button>
                   </SpaceBetween>
@@ -97,16 +97,29 @@ export default function () {
               <Toggle
                 checked={disableContentPaddings}
                 onChange={event => setDisableContentPaddings(event.detail.checked)}
+                data-id="toggle-content-paddings"
               >
                 Disable content paddings
               </Toggle>
-              <Toggle checked={stickyNotifications} onChange={event => setStickyNotifications(event.detail.checked)}>
+              <Toggle
+                checked={stickyNotifications}
+                onChange={event => setStickyNotifications(event.detail.checked)}
+                data-id="toggle-sticky-notifications"
+              >
                 Sticky Notifications
               </Toggle>
-              <Toggle checked={stickyTableHeader} onChange={event => setStickyTableHeader(event.detail.checked)}>
+              <Toggle
+                checked={stickyTableHeader}
+                onChange={event => setStickyTableHeader(event.detail.checked)}
+                data-id="toggle-sticky-table-header"
+              >
                 Sticky Table header
               </Toggle>
-              <Toggle checked={stackItems} onChange={event => setStackItems(event.detail.checked)}>
+              <Toggle
+                checked={stackItems}
+                onChange={event => setStackItems(event.detail.checked)}
+                data-id="toggle-stack-items"
+              >
                 Stack notifications
               </Toggle>
             </SpaceBetween>
