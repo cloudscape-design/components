@@ -25,6 +25,11 @@ export default function Notifications() {
     return null;
   }
 
+  /*
+  The notificationsElement ref is assigned to an inner div to prevent internal bottom margin from affecting the
+  calculated height, which is used for sticky elements below.
+   */
+
   return (
     <div
       role="region"
@@ -39,9 +44,8 @@ export default function Notifications() {
         testutilStyles.notifications,
         'awsui-context-content-header'
       )}
-      ref={notificationsElement}
     >
-      {notifications}
+      <div ref={notificationsElement}>{notifications}</div>
     </div>
   );
 }
