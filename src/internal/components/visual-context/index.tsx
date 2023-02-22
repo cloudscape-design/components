@@ -1,24 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useState } from 'react';
-import { useMutationObserver } from '../../hooks/use-mutation-observer';
+import React, { useLayoutEffect, useState } from 'react';
 import { findUpUntil } from '../../utils/dom';
-
-export const useVisualContext = (elementRef: React.RefObject<HTMLElement>) => {
-  const contextMatch = /awsui-context-([\w-]+)/;
-  const [value, setValue] = useState('');
-  useMutationObserver(elementRef, node => {
-    const contextParent = findUpUntil(node, node => !!node.className.match(contextMatch));
-    setValue(contextParent ? contextParent.className.match(contextMatch)![1] : '');
-  });
-  return value;
-};
 
 interface VisualContextProps {
   contextName: string;
   className?: string;
   children: React.ReactNode;
+}
+
+const contextMatch = /awsui-context-([\w-]+)/;
+
+export function useVisualContext(elementRef: React.RefObject<HTMLElement>) {
+  const [value, setValue] = useState('');
+
+  useLayoutEffect(() => {
+    if (elementRef.current) {
+      const contextParent = findUpUntil(elementRef.current, node => !!node.className.match(contextMatch));
+      setValue(contextParent?.className.match(contextMatch)![1] ?? '');
+    }
+  }, [elementRef]);
+
+  return value;
 }
 
 /**
