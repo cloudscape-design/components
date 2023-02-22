@@ -22,7 +22,7 @@ export const Notifications = React.forwardRef(
       <div ref={ref} className={styles['notifications-sticky']} style={{ top: props.topOffset }}>
         <div
           role="region"
-          className={clsx(props.testUtilsClassName, disableContentPaddings && styles['extra-margin-bottom'])}
+          className={clsx(props.testUtilsClassName, disableContentPaddings && styles['no-content-paddings'])}
           aria-label={props.labels?.notifications}
         >
           {props.children}
@@ -35,7 +35,7 @@ export const Notifications = React.forwardRef(
         className={clsx(
           props.testUtilsClassName,
           styles.notifications,
-          disableContentPaddings && styles['extra-margin-bottom']
+          disableContentPaddings && styles['no-content-paddings']
         )}
         aria-label={props.labels?.notifications}
       >
