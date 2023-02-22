@@ -289,6 +289,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isCollapsible && styles.collapsible,
         items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
+        isVisualRefresh && styles['visual-refresh'],
         getVisualContextClassname('flashbar')
       )}
       ref={mergedRef}

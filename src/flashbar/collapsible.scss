@@ -98,7 +98,7 @@ the grid layout will be:
   );
 }
 
-.stack.collapsible {
+.stack.collapsible:not(.visual-refresh) {
   &:not(.expanded) {
     &:not(.short-list) {
       @include collapsible-stack-bottom-margin(0px);
