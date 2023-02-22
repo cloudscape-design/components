@@ -100,70 +100,88 @@ the grid layout will be:
   @include stacked-flash-z-index;
 }
 
-@mixin collapsible-stack-bottom-margin($extra-amount) {
-  /*
-   The default bottom margin ($default-margin-bottom) is just enough to keep the notification at a distance of
-   a couple pixels to the next element below the notifications. But if using disableContentPaddings,
-   $stackedNotificationsBottomMargin will be set at the App Layout level so that this distance is increased to prevent
-   excessive overlaps.
-   */
-  $default-margin-bottom: awsui.$space-scaled-s;
-  margin-bottom: calc(
-    var(#{custom-props.$stackedNotificationsBottomMargin}, #{$default-margin-bottom}) + #{$extra-amount}
+@mixin vertical-spacing($top-overlap, $border-width, $buffer-bottom: 0px, $offset-bottom: 0px) {
+  $notification-bar-full-height: calc(
+    #{$notification-bar-line-height} + 2 * (#{$notification-bar-padding-vertical} + #{$border-width})
   );
+
+  /*
+ The default bottom margin ($default-margin-bottom) is just enough to prevent the notification bar from overlapping the
+ elements below. But if using disableContentPaddings, $stackedNotificationsBottomMargin will be set at the App Layout
+ level so that this distance is increased to prevent the main area from touching the notifications area.
+ */
+  $default-margin-bottom: calc(#{$notification-bar-full-height} - #{$top-overlap});
+  margin-bottom: calc(
+    var(#{custom-props.$stackedNotificationsBottomMargin}, #{$default-margin-bottom}) + #{$buffer-bottom} + #{$offset-bottom}
+  );
+
+  > .notification-bar {
+    margin-top: calc(-1 * #{$top-overlap} + #{$offset-bottom});
+    margin-bottom: calc(#{$top-overlap} - #{$notification-bar-full-height} - #{$offset-bottom});
+    padding-top: $notification-bar-padding-vertical;
+    padding-bottom: $notification-bar-padding-vertical;
+  }
 }
 
 .stack.collapsible {
   &:not(.expanded) {
     &:not(.short-list) {
-      @include collapsible-stack-bottom-margin(0px);
+      &:not(.visual-refresh) {
+        @include vertical-spacing(
+          map.get($notification-bar-top-overlap, 'collapsed'),
+          map.get($notification-bar-border-width, 'classic')
+        );
+      }
+      &.visual-refresh {
+        @include vertical-spacing(
+          map.get($notification-bar-top-overlap, 'collapsed'),
+          map.get($notification-bar-border-width, 'visual-refresh')
+        );
+      }
     }
 
+    /*
+    Since the notification bar is anchored to the bottom of the Flashbar, we need to push it up to account for the
+    missing third item when there are only 2 items in the stack.
+     */
     &.short-list {
-      @include collapsible-stack-bottom-margin(map.get($notification-bar-collapsed-item-overflow, 'y'));
+      &:not(.visual-refresh) {
+        @include vertical-spacing(
+          map.get($notification-bar-top-overlap, 'collapsed'),
+          map.get($notification-bar-border-width, 'classic'),
+          0px,
+          map.get($notification-bar-collapsed-item-overflow, 'y')
+        );
+      }
+      &.visual-refresh {
+        @include vertical-spacing(
+          map.get($notification-bar-top-overlap, 'collapsed'),
+          map.get($notification-bar-border-width, 'visual-refresh'),
+          0px,
+          map.get($notification-bar-collapsed-item-overflow, 'y')
+        );
+      }
     }
   }
 
   &.expanded {
-    @include collapsible-stack-bottom-margin(
-      calc(
-        #{map.get($notification-bar-top-overlap, 'collapsed')} - #{map.get($notification-bar-top-overlap, 'expanded')}
-      )
-    );
-  }
-}
-
-@mixin notification-bar-vertical-spacing($top-overlap, $border-width) {
-  $notification-bar-full-height: calc(
-    #{$notification-bar-line-height} + 2 * (#{$notification-bar-padding-vertical} + #{$border-width})
-  );
-  margin-top: calc(-1 * #{$top-overlap});
-  margin-bottom: calc(#{$top-overlap} - #{$notification-bar-full-height});
-  padding-top: $notification-bar-padding-vertical;
-  padding-bottom: $notification-bar-padding-vertical;
-}
-
-@mixin notification-bar-layout($border-width) {
-  &:not(.expanded) {
-    &:not(.short-list) {
-      @include notification-bar-vertical-spacing(map.get($notification-bar-top-overlap, 'collapsed'), $border-width);
-    }
-
-    &.short-list {
-      @include notification-bar-vertical-spacing(
-        calc(
-          #{map.get($notification-bar-top-overlap, 'collapsed')} - #{map.get(
-              $notification-bar-collapsed-item-overflow,
-              'y'
-            )}
-        ),
-        $border-width
+    &:not(.visual-refresh) {
+      /*
+      Give a bit more bottom margin when expanded, but only in Classic because in Visual Refresh the margin around the
+      notifications slot already gives it enough space.
+       */
+      @include vertical-spacing(
+        map.get($notification-bar-top-overlap, 'expanded'),
+        map.get($notification-bar-border-width, 'classic'),
+        awsui.$space-scaled-m
       );
     }
-  }
-
-  &.expanded {
-    @include notification-bar-vertical-spacing(map.get($notification-bar-top-overlap, 'expanded'), $border-width);
+    &.visual-refresh {
+      @include vertical-spacing(
+        map.get($notification-bar-top-overlap, 'expanded'),
+        map.get($notification-bar-border-width, 'visual-refresh')
+      );
+    }
   }
 }
 
@@ -237,7 +255,6 @@ the grid layout will be:
 
   &.visual-refresh {
     $border-width: map.get($notification-bar-border-width, 'visual-refresh');
-    @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
@@ -245,7 +262,6 @@ the grid layout will be:
 
   &:not(.visual-refresh) {
     $border-width: map.get($notification-bar-border-width, 'classic');
-    @include notification-bar-layout($border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;
     padding-right: awsui.$space-s;
