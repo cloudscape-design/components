@@ -79,6 +79,7 @@ export default function () {
             }
             footer={
               <div style={{ height: '150vh' }}>
+                <h1>Table Footer</h1>
                 <p>Long footer to make the main content scrollable.</p>
                 <p>
                   Use the controls in the Tools panel on the right and the checkboxes at the top in order to test the
