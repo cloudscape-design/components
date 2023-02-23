@@ -87,7 +87,7 @@ export default function InteractiveFlashbar() {
         </SpaceBetween>
         <ScreenshotArea>
           <Box padding="xxl">
-            <Flashbar items={items} {...restProps} />
+            <Flashbar data-testid="flashbar" items={items} {...restProps} />
           </Box>
         </ScreenshotArea>
       </SpaceBetween>

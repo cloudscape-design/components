@@ -105,6 +105,7 @@
     "mockdate": "^3.0.5",
     "please-upgrade-node": "^3.2.0",
     "prettier": "^2.4.1",
+    "puppeteer-core": "^19.7.2",
     "qs": "^6.10.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
