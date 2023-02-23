@@ -7,6 +7,7 @@ import { TableProps } from './interfaces';
 import Thead, { TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 
 export interface StickyHeaderRef {
   scrollToTop(): void;
@@ -22,6 +23,7 @@ interface StickyHeaderProps {
   secondaryWrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
+  contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
 }
 
@@ -37,6 +39,7 @@ function StickyHeader(
     onScroll,
     tableRef,
     tableHasHeader,
+    contentDensity,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -68,7 +71,15 @@ function StickyHeader(
       ref={secondaryWrapperRef}
       onScroll={onScroll}
     >
-      <table className={clsx(styles.table, styles['table-layout-fixed'])} role="table" ref={secondaryTableRef}>
+      <table
+        className={clsx(
+          styles.table,
+          styles['table-layout-fixed'],
+          contentDensity === 'compact' && getVisualContextClassname('compact-table')
+        )}
+        role="table"
+        ref={secondaryTableRef}
+      >
         <Thead ref={secondaryTheadRef} sticky={true} stuck={isStuck} showFocusRing={focusedColumn} {...theadProps} />
       </table>
     </div>

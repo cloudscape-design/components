@@ -10,6 +10,14 @@ export const createTopNavigationContext = (tokens: TokenCategory<string, GlobalV
   };
 };
 
+export const createCompactTableContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'compact-table',
+    selector: '.awsui-context-compact-table',
+    tokens,
+  };
+};
+
 export const createHeaderContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
   return {
     id: 'header',

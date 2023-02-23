@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
-import { createTopNavigationContext, createHeaderContext, createFlashbarContext } from '../utils/contexts';
+import {
+  createTopNavigationContext,
+  createCompactTableContext,
+  createHeaderContext,
+  createFlashbarContext,
+} from '../utils/contexts';
 import alertContextTokens from './contexts/alert';
 
 const modes = [
@@ -29,6 +34,8 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
     builder.addTokens(tokens, mode);
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createCompactTableContext(require('./contexts/compact-table').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
