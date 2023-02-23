@@ -20,6 +20,7 @@ import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
+import { findUpUntil } from '../internal/utils/dom';
 
 export { FlashbarProps };
 
@@ -112,7 +113,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           const windowHeight = window.innerHeight;
           // Take the parent region into account if using the App Layout, because it might have additional margins.
           // Otherwise we use the Flashbar component for this calculation.
-          const outerElement = flashbar.parentElement?.parentElement || flashbar;
+          const outerElement = findUpUntil(flashbar, element => element.getAttribute('role') === 'region') || flashbar;
           const applySpacing =
             isFlashbarStackExpanded && Math.ceil(outerElement.getBoundingClientRect().bottom) >= windowHeight;
           if (!applySpacing) {
@@ -285,7 +286,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         styles.flashbar,
         styles[`breakpoint-${breakpoint}`],
         styles.stack,
+        isCollapsible && styles.collapsible,
+        items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
+        isVisualRefresh && styles['visual-refresh'],
         getVisualContextClassname('flashbar')
       )}
       ref={mergedRef}
@@ -298,7 +302,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               styles['notification-bar'],
               isVisualRefresh && styles['visual-refresh'],
               isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-              transitioning && styles['animation-running']
+              transitioning && styles['animation-running'],
+              items.length === 2 && styles['short-list']
             )}
             onClick={toggleCollapseExpand}
             ref={notificationBarRef}
