@@ -1,0 +1,40 @@
+@use '../../../lib/design-tokens/index.scss' as cs;
+
+@mixin focus-highlight($gutter: 4px, $border-radius: cs.$border-radius-control-default-focus-ring) {
+  position: relative;
+  box-sizing: border-box;
+  outline: none;
+  & {
+    outline: 2px dotted transparent;
+    outline-offset: calc($gutter - 1px);
+  }
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+    left: calc(-1 * #{$gutter});
+    top: calc(-1 * #{$gutter});
+    width: calc(100% + 2 * #{$gutter});
+    height: calc(100% + 2 * #{$gutter});
+    border-radius: cs.$border-radius-control-default-focus-ring;
+    border: 2px solid cs.$color-border-item-focused;
+  }
+}
+
+.handle {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: cs.$space-scaled-xxs;
+
+  color: cs.$color-text-interactive-default;
+
+  &:hover {
+    color: cs.$color-text-interactive-hover;
+  }
+
+  &:focus-visible {
+    @include focus-highlight();
+  }
+}

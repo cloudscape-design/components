@@ -1,0 +1,7 @@
+.handle {
+  cursor: grab;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
