@@ -13,12 +13,14 @@ export const copyPreferences = ({
   pageSize,
   wrapLines,
   stripedRows,
+  contentDensity,
   visibleContent,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
   wrapLines,
   stripedRows,
+  contentDensity,
   visibleContent,
   custom,
 });
@@ -30,6 +32,7 @@ export const mergePreferences = (
   pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
   wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
   stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
+  contentDensity: newPref.contentDensity !== undefined ? newPref.contentDensity : oldPref.contentDensity,
   visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
   custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
 });
@@ -108,6 +111,22 @@ export const StripedRowsPreference = ({ label, description, value, onChange }: S
     description={description}
     onChange={({ detail }) => onChange(detail.checked)}
     className={styles['striped-rows']}
+  >
+    {label}
+  </InternalCheckbox>
+);
+
+interface ContentDensityPreferenceProps extends CollectionPreferencesProps.ContentDensityPreference {
+  onChange: (value: 'comfortable' | 'compact') => void;
+  value?: 'comfortable' | 'compact';
+}
+
+export const ContentDensityPreference = ({ label, description, value, onChange }: ContentDensityPreferenceProps) => (
+  <InternalCheckbox
+    checked={value === 'compact'}
+    description={description}
+    onChange={({ detail }) => onChange(detail.checked ? 'compact' : 'comfortable')}
+    className={styles['content-density']}
   >
     {label}
   </InternalCheckbox>

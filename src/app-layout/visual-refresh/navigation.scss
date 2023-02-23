@@ -15,13 +15,13 @@
   height: var(#{custom-props.$contentHeight});
   position: sticky;
   top: var(#{custom-props.$offsetTop});
-  z-index: 850;
+  z-index: 830;
 
   /*
   The navigation and tools containers (that contain the toggle buttons)
   stretch the full height of the app layout. Normally, this wouldn't be an
   issue because they sit above the app layout's content padding.
-  
+
   But if disableContentPaddings is set to true and there are buttons on the
   left/right edges of the screen, they will be covered by the containers. So
   we need to disable pointer events in the container and re-enable them in
@@ -60,7 +60,7 @@ nav.show-navigation {
   }
 
   /*
-  Apply the animation only in desktop viewports because the AppBar will 
+  Apply the animation only in desktop viewports because the AppBar will
   take control in responsive viewports.
   */
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
@@ -117,8 +117,8 @@ nav.navigation {
   }
 
   /*
-  A non-semantic node is added with a fixed width equal to the final Navigation 
-  width. This will create the visual appearance of horizontal movement and 
+  A non-semantic node is added with a fixed width equal to the final Navigation
+  width. This will create the visual appearance of horizontal movement and
   prevent unwanted text wrapping.
   */
   > .animated-content {

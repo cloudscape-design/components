@@ -8,9 +8,9 @@
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
 /*
-When the Split Panel is in the bottom position it was share the same row 
-as the content area. This row is defined as 1 fractional unit which will 
-consume the remaining vertical space in the grid after the notifications 
+When the Split Panel is in the bottom position it was share the same row
+as the content area. This row is defined as 1 fractional unit which will
+consume the remaining vertical space in the grid after the notifications
 and breadcrumbs.
 */
 section.split-panel-bottom {
@@ -24,13 +24,13 @@ section.split-panel-bottom {
   grid-column: 1 / 6;
   grid-row: 5;
   height: auto;
-  /* 
+  /*
   The position sticky will work in conjunction with the align self: end; property.
-  If the grid row scrolls beyond the viewport, the sticky bottom position 
+  If the grid row scrolls beyond the viewport, the sticky bottom position
   will lift it up above the footer so it is always visible.
   */
   position: sticky;
-  z-index: 851;
+  z-index: 840;
 
   // Animation for the height when opening the split panel
   @keyframes openSplitPanelBottom {
@@ -57,7 +57,7 @@ section.split-panel-bottom {
   }
 
   /*
-  Unlike the side position the Split Panel is persistent in the DOM 
+  Unlike the side position the Split Panel is persistent in the DOM
   when in the bottom position.
   */
   &.position-bottom {
@@ -65,11 +65,11 @@ section.split-panel-bottom {
   }
 
   /*
-  Warning! This is a hack! The existing design token for the split panel 
+  Warning! This is a hack! The existing design token for the split panel
   shadow in the bottom position does not render in the refactored code.
-  It appears to be related to the fact that the legacy split panel element 
-  has a height equal to the expanded height and a corresponding translation 
-  of the Y position so it is moved off the screen. This will need to be 
+  It appears to be related to the fact that the legacy split panel element
+  has a height equal to the expanded height and a corresponding translation
+  of the Y position so it is moved off the screen. This will need to be
   refactored with an adjustment to the split panel design token.
   */
   &:not(.is-split-panel-open).position-bottom {
@@ -114,8 +114,8 @@ section.split-panel-side {
   }
 
   /*
-  The min and max widths are applied when the Split Panel is opened otherwise 
-  it would not be possible to animate the width and the box shadow would 
+  The min and max widths are applied when the Split Panel is opened otherwise
+  it would not be possible to animate the width and the box shadow would
   be persistent in the DOM when closed.
   */
   &.is-split-panel-open.position-side {
@@ -130,8 +130,8 @@ section.split-panel-side {
   }
 
   /*
-  A non-semantic node is added with a fixed width equal to the final Split Panel 
-  width. This will create the visual appearance of horizontal movement and 
+  A non-semantic node is added with a fixed width equal to the final Split Panel
+  width. This will create the visual appearance of horizontal movement and
   prevent unwanted text wrapping.
   */
   > .animated-content {
