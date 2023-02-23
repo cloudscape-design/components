@@ -7,6 +7,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
+import DragHandle from '../internal/drag-handle';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -53,6 +54,18 @@ export default function VisibleContentPreference({
     const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
     return (
       <div key={optionIndex} {...className('option')}>
+        <DragHandle
+          ariaLabelledBy={''}
+          ariaDescribedBy={''}
+          onPointerDown={function (event: React.PointerEvent<Element>): void {
+            console.log(event);
+            throw new Error('Function not implemented.');
+          }}
+          onKeyDown={function (event: React.KeyboardEvent<Element>): void {
+            console.log(event);
+            throw new Error('Function not implemented.');
+          }}
+        />
         <label {...className('option-label')} htmlFor={labelId}>
           {option.label}
         </label>
