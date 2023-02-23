@@ -9,7 +9,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 export { TableProps };
 const Table = React.forwardRef(
   <T,>(
-    { items = [], selectedItems = [], variant = 'container', ...props }: TableProps<T>,
+    { items = [], selectedItems = [], variant = 'container', contentDensity = 'comfortable', ...props }: TableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Table');
@@ -18,6 +18,7 @@ const Table = React.forwardRef(
         items={items}
         selectedItems={selectedItems}
         variant={variant}
+        contentDensity={contentDensity}
         {...props}
         {...baseComponentProps}
         ref={ref}
