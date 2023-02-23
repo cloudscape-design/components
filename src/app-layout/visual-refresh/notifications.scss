@@ -10,11 +10,11 @@
 .notifications {
   grid-column: 3;
   grid-row: 1;
-  z-index: 825;
+  z-index: 850;
 
   /*
-  In desktop viewports the notifications will always be the first 
-  slot rendered in the center column. The padding should create 
+  In desktop viewports the notifications will always be the first
+  slot rendered in the center column. The padding should create
   a centered vertical alignment with the circular buttons for the
   navigation and tools drawers.
   */
@@ -22,8 +22,8 @@
     margin: awsui.$space-xs 0;
 
     /*
-    #{awsui.$space-xs} token needs to align with the $offsetTopWithNotifications 
-    calculation in the layout CSS. 
+    #{awsui.$space-xs} token needs to align with the $offsetTopWithNotifications
+    calculation in the layout CSS.
     */
     &.sticky-notifications {
       position: sticky;
@@ -37,8 +37,8 @@
   }
 
   /*
-  In mobile viewports the notifications should never be sticky even 
-  if the property is set. Padding is added to give adequate 
+  In mobile viewports the notifications should never be sticky even
+  if the property is set. Padding is added to give adequate
   vertical space from the sticky AppBar the subsequent adjacent sibling.
   */
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
