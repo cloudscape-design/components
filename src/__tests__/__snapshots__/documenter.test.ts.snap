@@ -11445,7 +11445,7 @@ add a meaningful description to the whole selection.
     },
     Object {
       "defaultValue": "'comfortable'",
-      "description": "Toggles the content density of the table. Defaults to \\"comfortable\\".",
+      "description": "Toggles the content density of the table. Defaults to \`'comfortable'\`.",
       "inlineType": Object {
         "name": "",
         "type": "union",
