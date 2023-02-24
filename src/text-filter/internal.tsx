@@ -37,7 +37,7 @@ const InternalTextFilter = React.forwardRef(
     const inputRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, inputRef);
 
-    const liveContentId = useUniqueId('text-filter');
+    const countTextId = useUniqueId('text-filter');
     const showResults = filteringText && countText && !disabled;
 
     return (
@@ -51,14 +51,14 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
-          ariaDescribedby={showResults ? liveContentId : undefined}
+          ariaDescribedby={countTextId}
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
         <span className={clsx(styles.results, showResults && styles['results-visible'])}>
           <LiveRegion delay={LIVE_REGION_DELAY} visible={true}>
-            <span id={liveContentId}>{showResults ? countText : ''}</span>
+            <span id={countTextId}>{showResults ? countText : ''}</span>
           </LiveRegion>
         </span>
       </div>
