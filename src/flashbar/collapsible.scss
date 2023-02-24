@@ -102,23 +102,34 @@ the grid layout will be:
 }
 
 @mixin vertical-spacing($top-overlap, $border-width, $buffer-bottom: 0px, $offset-bottom: 0px) {
-  $notification-bar-full-height: calc(
-    #{$notification-bar-line-height} + 2 * (#{$notification-bar-padding-vertical} + #{$border-width})
-  );
-
   /*
- The default bottom margin ($default-margin-bottom) is just enough to prevent the notification bar from overlapping the
- elements below. But if using disableContentPaddings, $stackedNotificationsBottomMargin will be set at the App Layout
- level so that this distance is increased to prevent the main area from touching the notifications area.
+ The default bottom margin (custom-props.$stackedNotificationsDefaultBottomMargin) is just enough to prevent the
+ notification bar from overlapping the elements below. But if using disableContentPaddings,
+ $stackedNotificationsBottomMargin will be set at the App Layout level so that this distance is increased to prevent the
+ main area from touching the notifications area.
  */
-  $default-margin-bottom: calc(#{$notification-bar-full-height} - #{$top-overlap});
+
+  /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
+  is the full height of the notification bar */
+  #{custom-props.$stackedNotificationsDefaultBottomMargin}: calc(
+    #{$notification-bar-line-height} + 2 * #{$notification-bar-padding-vertical} + 2 * #{$border-width} - #{$top-overlap}
+  );
   margin-bottom: calc(
-    var(#{custom-props.$stackedNotificationsBottomMargin}, #{$default-margin-bottom}) + #{$buffer-bottom} + #{$offset-bottom}
+    var(
+        #{custom-props.$stackedNotificationsBottomMargin},
+        var(#{custom-props.$stackedNotificationsDefaultBottomMargin})
+      ) + #{$buffer-bottom} + #{$offset-bottom}
   );
 
   > .notification-bar {
     margin-top: calc(-1 * #{$top-overlap} + #{$offset-bottom});
-    margin-bottom: calc(#{$top-overlap} - #{$notification-bar-full-height} - #{$offset-bottom});
+    /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
+    is the full height of the notification bar */
+    /* stylelint-disable scss/operator-no-newline-after */
+    margin-bottom: calc(
+      #{$top-overlap} - #{$notification-bar-line-height} - 2 * #{$notification-bar-padding-vertical} - 2 * #{$border-width} -
+        #{$offset-bottom}
+    );
     padding-top: $notification-bar-padding-vertical;
     padding-bottom: $notification-bar-padding-vertical;
   }

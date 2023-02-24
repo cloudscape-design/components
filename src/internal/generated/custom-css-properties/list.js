@@ -35,5 +35,6 @@ const customCssPropertiesList = [
   'flashbarStackIndex',
   'flashbarStickyBottomMargin',
   'stackedNotificationsBottomMargin',
+  'stackedNotificationsDefaultBottomMargin',
 ];
 module.exports = customCssPropertiesList;
