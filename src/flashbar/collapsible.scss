@@ -2,7 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use 'sass:map';
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../internal/hooks/focus-visible' as focus-visible;
 @use '../internal/styles/tokens' as awsui;
@@ -10,23 +9,10 @@
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
 
-$notification-bar-top-overlap: (
-  'collapsed': calc(#{awsui.$space-scaled-xl} + 3px),
-  'expanded': awsui.$space-scaled-s,
-);
-$notification-bar-line-height: awsui.$font-body-m-line-height;
-$notification-bar-padding-vertical: styles.$control-padding-vertical;
-$notification-bar-collapsed-item-overflow: (
-  'x': 10px,
-  'y': 8px,
-);
-$notification-bar-border-width: (
-  'classic': 1px,
-  'visual-refresh': 2px,
-);
+$collapsed-item-overflow: 10px;
 
 .stack {
-  $notification-bar-horizontal-margin: 3 * map.get($notification-bar-collapsed-item-overflow, 'x');
+  $notification-bar-horizontal-margin: 3 * $collapsed-item-overflow;
   display: grid;
   grid-template-columns: $notification-bar-horizontal-margin 1fr $notification-bar-horizontal-margin;
 }
@@ -55,10 +41,10 @@ the grid layout will be:
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'))
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), map.get($notification-bar-collapsed-item-overflow, 'x'));
-  row-gap: map.get($notification-bar-collapsed-item-overflow, 'y');
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow);
+  row-gap: 8px;
   z-index: 0;
 
   > .item {
@@ -101,88 +87,27 @@ the grid layout will be:
   @include stacked-flash-z-index;
 }
 
-@mixin vertical-spacing($top-overlap, $border-width, $buffer-bottom: 0px, $offset-bottom: 0px) {
-  $notification-bar-full-height: calc(
-    #{$notification-bar-line-height} + 2 * (#{$notification-bar-padding-vertical} + #{$border-width})
-  );
+@mixin toggle-button-layout($top-overlap-collapsed, $border-width) {
+  $margin-top-when-collapsed: -$top-overlap-collapsed;
+  $line-height: awsui.$font-body-m-line-height;
+  $padding-vertical: styles.$control-padding-vertical;
+  $margin-top-when-expanded: -12px;
 
-  /*
- The default bottom margin ($default-margin-bottom) is just enough to prevent the notification bar from overlapping the
- elements below. But if using disableContentPaddings, $stackedNotificationsBottomMargin will be set at the App Layout
- level so that this distance is increased to prevent the main area from touching the notifications area.
- */
-  $default-margin-bottom: calc(#{$notification-bar-full-height} - #{$top-overlap});
-  margin-bottom: calc(
-    var(#{custom-props.$stackedNotificationsBottomMargin}, #{$default-margin-bottom}) + #{$buffer-bottom} + #{$offset-bottom}
-  );
+  padding-top: $padding-vertical;
+  padding-bottom: $padding-vertical;
 
-  > .notification-bar {
-    margin-top: calc(-1 * #{$top-overlap} + #{$offset-bottom});
-    margin-bottom: calc(#{$top-overlap} - #{$notification-bar-full-height} - #{$offset-bottom});
-    padding-top: $notification-bar-padding-vertical;
-    padding-bottom: $notification-bar-padding-vertical;
-  }
-}
-
-.stack.collapsible {
   &:not(.expanded) {
-    &:not(.short-list) {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic')
-        );
-      }
-      &.visual-refresh {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'visual-refresh')
-        );
-      }
-    }
-
-    /*
-    Since the notification bar is anchored to the bottom of the Flashbar, we need to push it up to account for the
-    missing third item when there are only 2 items in the stack.
-     */
-    &.short-list {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic'),
-          0px,
-          map.get($notification-bar-collapsed-item-overflow, 'y')
-        );
-      }
-      &.visual-refresh {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'visual-refresh'),
-          0px,
-          map.get($notification-bar-collapsed-item-overflow, 'y')
-        );
-      }
-    }
+    margin-top: #{$margin-top-when-collapsed};
+    margin-bottom: calc(
+      #{-$margin-top-when-collapsed} - (#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}))
+    );
   }
 
   &.expanded {
-    &:not(.visual-refresh) {
-      /*
-      Give a bit more bottom margin when expanded, but only in Classic because in Visual Refresh the margin around the
-      notifications slot already gives it enough space.
-       */
-      @include vertical-spacing(
-        map.get($notification-bar-top-overlap, 'expanded'),
-        map.get($notification-bar-border-width, 'classic'),
-        awsui.$space-scaled-m
-      );
-    }
-    &.visual-refresh {
-      @include vertical-spacing(
-        map.get($notification-bar-top-overlap, 'expanded'),
-        map.get($notification-bar-border-width, 'visual-refresh')
-      );
-    }
+    margin-top: #{$margin-top-when-expanded};
+    margin-bottom: calc(
+      #{-$margin-top-when-expanded} - (#{$line-height} + 2 * (#{$padding-vertical} + #{$border-width}))
+    );
   }
 }
 
@@ -260,14 +185,20 @@ the grid layout will be:
   }
 
   &.visual-refresh {
-    $border-width: map.get($notification-bar-border-width, 'visual-refresh');
+    $border-width: 2px;
+    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
+    $top-overlap-collapsed: 27px;
+    @include toggle-button-layout($top-overlap-collapsed, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-l;
     padding-right: awsui.$space-l;
   }
 
   &:not(.visual-refresh) {
-    $border-width: map.get($notification-bar-border-width, 'classic');
+    $border-width: 1px;
+    // Amount of pixels that the element is pushed up to overlap the Flashbar (when collapsed)
+    $top-overlap-collapsed: 24px;
+    @include toggle-button-layout($top-overlap-collapsed, $border-width);
     border-width: $border-width;
     padding-left: awsui.$space-s;
     padding-right: awsui.$space-s;
@@ -286,8 +217,6 @@ the grid layout will be:
     flex-grow: 1;
     background: none;
     border: 0 none;
-    padding-top: 0;
-    padding-bottom: 0;
 
     > .icon {
       @include styles.with-motion {

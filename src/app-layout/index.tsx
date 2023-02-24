@@ -453,7 +453,6 @@ const OldAppLayout = React.forwardRef(
               >
                 {notifications && (
                   <Notifications
-                    disableContentPaddings={disableContentPaddings}
                     testUtilsClassName={testutilStyles.notifications}
                     labels={ariaLabels}
                     topOffset={disableBodyScroll ? 0 : headerHeight}
