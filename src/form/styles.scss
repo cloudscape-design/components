@@ -10,7 +10,7 @@
   @include styles.styles-reset;
 }
 
-.header {
+.header:not(.full-page) {
   margin-bottom: awsui.$space-scaled-m;
 }
 
