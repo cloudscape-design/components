@@ -59,6 +59,18 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   stripedRowsPreference?: CollectionPreferencesProps.StripedRowsPreference;
   /**
+   * Configures the content density preference (Comfortable / Compact).
+   *
+   * If you set it, the component displays this preference in the modal.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the label for the option checkbox.
+   * - `description` (string) - Specifies the text displayed below the checkbox label.
+   *
+   * You must set the current value in the `preferences.contentDensity` property.
+   */
+  contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
+  /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
    * If you set it, the component displays this preference in the modal.
@@ -135,6 +147,7 @@ export namespace CollectionPreferencesProps {
     pageSize?: number;
     wrapLines?: boolean;
     stripedRows?: boolean;
+    contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
@@ -171,6 +184,11 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface StripedRowsPreference {
+    label: string;
+    description: string;
+  }
+
+  export interface ContentDensityPreference {
     label: string;
     description: string;
   }

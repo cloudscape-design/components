@@ -187,6 +187,7 @@ export default class App extends React.Component {
           onLoadItems={this.handleLoadItems}
           enteredTextLabel={enteredTextLabel}
           ariaLabel="async autosuggest"
+          selectedAriaLabel="Selected"
           virtualScroll={this.state.virtualScroll}
           expandToViewport={this.state.expandToViewport}
         />

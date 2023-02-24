@@ -2758,6 +2758,13 @@ It prevents users from clicking the button.",
       "type": "string",
     },
     Object {
+      "description": "Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to \\"noopener noreferrer\\" when \`target\` is \`\\"_blank\\"\`.
+If the \`rel\` property is provided, it overrides the default behavior.",
+      "name": "rel",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`).
 This property only applies when an \`href\` is provided.",
       "name": "target",
@@ -3995,6 +4002,11 @@ The values for all configured preferences are present even if the user didn't ch
         "name": "CollectionPreferencesProps.Preferences",
         "properties": Array [
           Object {
+            "name": "contentDensity",
+            "optional": true,
+            "type": "\\"comfortable\\" | \\"compact\\"",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4047,6 +4059,36 @@ The values for all configured preferences are present even if the user didn't ch
       "name": "confirmLabel",
       "optional": false,
       "type": "string",
+    },
+    Object {
+      "description": "Configures the content density preference (Comfortable / Compact).
+If you set it, the component displays this preference in the modal.
+
+It contains the following:
+- \`label\` (string) - Specifies the label for the option checkbox.
+- \`description\` (string) - Specifies the text displayed below the checkbox label.
+
+You must set the current value in the \`preferences.contentDensity\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.ContentDensityPreference",
+        "properties": Array [
+          Object {
+            "name": "description",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "label",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "contentDensityPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ContentDensityPreference",
     },
     Object {
       "description": "Configures custom preferences. The function receives two parameters:
@@ -4129,6 +4171,11 @@ It contains the following:
       "inlineType": Object {
         "name": "CollectionPreferencesProps.Preferences",
         "properties": Array [
+          Object {
+            "name": "contentDensity",
+            "optional": true,
+            "type": "\\"comfortable\\" | \\"compact\\"",
+          },
           Object {
             "name": "custom",
             "optional": true,
@@ -11395,6 +11442,21 @@ add a meaningful description to the whole selection.
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
+    },
+    Object {
+      "defaultValue": "'comfortable'",
+      "description": "Toggles the content density of the table. Defaults to \`'comfortable'\`.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "comfortable",
+          "compact",
+        ],
+      },
+      "name": "contentDensity",
+      "optional": true,
+      "type": "string",
     },
     Object {
       "description": " Use this property to inform screen readers which range of items is currently displayed in the table.

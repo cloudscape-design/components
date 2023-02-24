@@ -27,6 +27,10 @@ class PreferencesModalWrapper extends ModalWrapper {
     return this.findComponent(`.${styles['striped-rows']}`, CheckboxWrapper);
   }
 
+  findContentDensityPreference(): CheckboxWrapper | null {
+    return this.findComponent(`.${styles['content-density']}`, CheckboxWrapper);
+  }
+
   findPageSizePreference(): PageSizePreferenceWrapper | null {
     return this.findComponent(`.${PageSizePreferenceWrapper.rootSelector}`, PageSizePreferenceWrapper);
   }

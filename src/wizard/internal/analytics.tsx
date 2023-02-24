@@ -16,7 +16,10 @@ const createEventDetail = (stepIndex = 0) => `step${stepIndex + 1}`;
 // A custom time cache is used to not clear the timer between navigation attempts
 // This allows us the ability to track time to attempt each step as well as the time to complete
 // each step
-const timeCache: Record<string, number> = {};
+let timeCache: Record<string, number>;
+let currentStepIndex: number;
+let success: boolean;
+
 const timeStart = (key = 'current') => {
   timeCache[key] = Date.now();
 };
@@ -36,10 +39,29 @@ const timeEnd = (key = 'current', clear = false) => {
 };
 
 export const trackStartWizard = () => {
+  timeCache = {};
+  currentStepIndex = 0;
+  success = false;
+
   timeStart(prefix);
 };
 
-export const trackStartStep = (stepIndex?: number, funnelId?: string) => {
+export const trackEndWizard = (funnelId: string | undefined) => {
+  // End the timer of the wizard
+  const time = timeEnd(prefix, true);
+
+  const eventContext = createEventContext(currentStepIndex);
+  metrics.sendPanoramaMetric({
+    eventContext,
+    eventDetail: `${success}`,
+    eventType: createEventType('end'),
+    ...(time !== undefined && { eventValue: time.toString() }),
+    ...(funnelId && { funnel: funnelId }),
+  });
+};
+
+export const trackStartStep = (stepIndex: number, funnelId?: string) => {
+  currentStepIndex = stepIndex;
   const eventContext = createEventContext(stepIndex);
 
   // End the timer of the previous step
@@ -76,14 +98,28 @@ export const trackNavigate = (
 };
 
 export const trackSubmit = (stepIndex: number, funnelId?: string) => {
-  const eventContext = createEventContext(stepIndex);
-  // End the timer of the wizard
+  success = true;
   const time = timeEnd(prefix);
+  const eventContext = createEventContext(stepIndex);
 
   metrics.sendPanoramaMetric({
     eventContext,
     eventDetail: createEventDetail(stepIndex),
     eventType: createEventType('submit'),
+    ...(time !== undefined && { eventValue: time.toString() }),
+    ...(funnelId && { funnel: funnelId }),
+  });
+};
+
+export const trackCancel = (stepIndex: number, funnelId?: string) => {
+  success = false;
+  const time = timeEnd(prefix);
+  const eventContext = createEventContext(stepIndex);
+
+  metrics.sendPanoramaMetric({
+    eventContext,
+    eventDetail: createEventDetail(stepIndex),
+    eventType: createEventType('cancel'),
     ...(time !== undefined && { eventValue: time.toString() }),
     ...(funnelId && { funnel: funnelId }),
   });

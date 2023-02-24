@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
+import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import ToolsHeader from './tools-header';
@@ -33,7 +34,6 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -67,6 +67,7 @@ const InternalTable = React.forwardRef(
       onRowContextMenu,
       wrapLines,
       stripedRows,
+      contentDensity,
       submitEdit,
       onEditCancel,
       resizableColumns,
@@ -236,6 +237,7 @@ const InternalTable = React.forwardRef(
                   tableRef={tableRefObject}
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
+                  contentDensity={contentDensity}
                 />
               )}
             </>
@@ -273,7 +275,11 @@ const InternalTable = React.forwardRef(
             )}
             <table
               ref={tableRef}
-              className={clsx(styles.table, resizableColumns && styles['table-layout-fixed'])}
+              className={clsx(
+                styles.table,
+                resizableColumns && styles['table-layout-fixed'],
+                contentDensity === 'compact' && getVisualContextClassname('compact-table')
+              )}
               // Browsers have weird mechanism to guess whether it's a data table or a layout table.
               // If we state explicitly, they get it always correctly even with low number of rows.
               role="table"

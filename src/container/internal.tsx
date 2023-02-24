@@ -89,7 +89,9 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        isSticky && [styles['sticky-enabled']]
+        isSticky && [styles['sticky-enabled']],
+        !disableContentPaddings && styles['with-content-paddings'],
+        footer && styles['with-footer']
       )}
       ref={mergedRef}
     >
@@ -116,13 +118,7 @@ export default function InternalContainer({
           </div>
         </StickyHeaderContext.Provider>
       )}
-      <div
-        className={clsx(styles.content, {
-          [styles['with-paddings']]: !disableContentPaddings,
-        })}
-      >
-        {children}
-      </div>
+      <div className={styles.content}>{children}</div>
       {footer && (
         <div
           className={clsx(styles.footer, {
