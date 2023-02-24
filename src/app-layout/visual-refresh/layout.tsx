@@ -77,7 +77,6 @@ export default function Layout({ children }: LayoutProps) {
           [styles['has-content-gap-right']]: hasContentGapRight,
           [styles['has-header']]: contentHeader,
           [styles['has-max-content-width']]: maxContentWidth && maxContentWidth > 0,
-          [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['has-split-panel']]: splitPanelDisplayed,
           [styles['has-sticky-background']]: hasStickyBackground,
           [styles['has-sticky-notifications']]: stickyNotifications && hasNotificationsContent,
