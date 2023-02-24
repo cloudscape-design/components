@@ -3427,7 +3427,8 @@ It's also used for connecting \`items\` and \`selectedItems\` values when they d
       "defaultValue": "'container'",
       "description": "Specify a cards variant with one of the following:
 * \`container\` - Use this variant to have the cards displayed as a container.
-* \`full-page\` – Use this variant when cards is the primary element on the page.",
+* \`full-page\` – Use this variant when cards are the entire content of a page. Full page variants
+                implement the high contrast header and content behavior automatically.",
       "inlineType": Object {
         "name": "",
         "type": "union",
@@ -5727,6 +5728,24 @@ Object {
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "defaultValue": "\\"full-page\\"",
+      "description": "Specify a form variant with one of the following:
+* \`full-page\` - Use this variant when the form contains the entire content of the page. Full page variants implement the high contrast header and content behavior automatically.
+* \`embedded\` - Use this variant when the form doesn't occupy the full page. This variant doesn't use a high contrast header.",
+      "inlineType": Object {
+        "name": "",
+        "type": "union",
+        "values": Array [
+          "full-page",
+          "embedded",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+      "visualRefreshTag": "",
     },
   ],
   "regions": Array [
@@ -11659,7 +11678,8 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
                section, container or split panel).
 * \`stacked\` - Use this variant adjacent to other stacked containers (such as a container,
               table).
-* \`full-page\` – Use this variant when table is the primary element on the page.",
+* \`full-page\` – Use this variant when the table is the entire content of a page. Full page variants
+                implement the high contrast header and content behavior automatically.",
       "inlineType": Object {
         "name": "TableProps.Variant",
         "type": "union",
