@@ -48,7 +48,7 @@ describe('Collection preferences', () => {
   );
 
   test(
-    'renders 2 columns',
+    'renders 2 columns if all preferences are present',
     setupTest(async page => {
       const wrapper = createWrapper().findCollectionPreferences('.cp-1');
       await page.waitForVisible(wrapper.findTriggerButton().toSelector());
