@@ -46,41 +46,6 @@ export default function VisibleContentPreference({
     }
   };
 
-  const selectionOption = (
-    option: CollectionPreferencesProps.VisibleContentOption,
-    optionGroupIndex: number,
-    optionIndex: number
-  ) => {
-    const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
-    return (
-      <div key={optionIndex} {...className('option')}>
-        <DragHandle
-          ariaLabelledBy={''}
-          ariaDescribedBy={''}
-          onPointerDown={function (event: React.PointerEvent<Element>): void {
-            console.log(event);
-            throw new Error('Function not implemented.');
-          }}
-          onKeyDown={function (event: React.KeyboardEvent<Element>): void {
-            console.log(event);
-            throw new Error('Function not implemented.');
-          }}
-        />
-        <label {...className('option-label')} htmlFor={labelId}>
-          {option.label}
-        </label>
-        <div {...className('toggle')}>
-          <InternalToggle
-            checked={isVisible(option.id, value)}
-            onChange={() => onToggle(option.id)}
-            disabled={option.editable === false}
-            controlId={labelId}
-          />
-        </div>
-      </div>
-    );
-  };
-
   const outerGroupLabelId = `${idPrefix}-outer`;
   return (
     <div className={styles['visible-content']}>
@@ -101,14 +66,67 @@ export default function VisibleContentPreference({
                 {optionGroup.label}
               </div>
               <div>
-                {optionGroup.options.map((option, optionIndex) =>
-                  selectionOption(option, optionGroupIndex, optionIndex)
-                )}
+                {optionGroup.options.map((option, optionIndex) => (
+                  <SelectionOption
+                    idPrefix={idPrefix}
+                    key={option.id}
+                    option={option}
+                    optionGroupIndex={optionGroupIndex}
+                    optionIndex={optionIndex}
+                    onToggle={onToggle}
+                    value={value}
+                  />
+                ))}
               </div>
             </div>
           );
         })}
       </InternalSpaceBetween>
+    </div>
+  );
+}
+
+function SelectionOption({
+  idPrefix,
+  option,
+  optionGroupIndex,
+  optionIndex,
+  onToggle,
+  value = [],
+}: {
+  idPrefix: string;
+  option: CollectionPreferencesProps.VisibleContentOption;
+  optionGroupIndex: number;
+  optionIndex: number;
+  onToggle: (id: string) => void;
+  value: VisibleContentPreferenceProps['value'];
+}) {
+  const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
+  return (
+    <div key={optionIndex} {...className('option')}>
+      <DragHandle
+        ariaLabelledBy={''}
+        ariaDescribedBy={''}
+        onPointerDown={function (event: React.PointerEvent<Element>): void {
+          console.log(event);
+          throw new Error('Function not implemented.');
+        }}
+        onKeyDown={function (event: React.KeyboardEvent<Element>): void {
+          console.log(event);
+          throw new Error('Function not implemented.');
+        }}
+      />
+      <label {...className('option-label')} htmlFor={labelId}>
+        {option.label}
+      </label>
+      <div {...className('toggle')}>
+        <InternalToggle
+          checked={isVisible(option.id, value)}
+          onChange={() => onToggle(option.id)}
+          disabled={option.editable === false}
+          controlId={labelId}
+        />
+      </div>
     </div>
   );
 }
