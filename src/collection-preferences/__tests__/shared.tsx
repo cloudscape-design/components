@@ -52,3 +52,8 @@ export const stripedRowsPreference: CollectionPreferencesProps.StripedRowsPrefer
   label: 'Striped rows label',
   description: 'Striped rows description',
 };
+
+export const contentDensityPreference: CollectionPreferencesProps.ContentDensityPreference = {
+  label: 'Compact mode',
+  description: 'Display the content in a denser, more compact mode',
+};

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getVisibleCollapsedItems, getItemType } from '../utils';
+import { getVisibleCollapsedItems, getItemType } from '../../../lib/components/flashbar/utils';
 import { FlashbarProps, FlashType } from '../interfaces';
 
 describe('getVisibleCollapsedItems', () => {

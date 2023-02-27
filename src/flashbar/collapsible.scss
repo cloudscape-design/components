@@ -9,9 +9,12 @@
 @use '../internal/styles/typography' as typography;
 @use './collapsible.motion';
 
+$collapsed-item-overflow: 10px;
+
 .stack {
+  $notification-bar-horizontal-margin: 3 * $collapsed-item-overflow;
   display: grid;
-  grid-template-columns: 1fr minmax(70px, auto) 1fr;
+  grid-template-columns: $notification-bar-horizontal-margin 1fr $notification-bar-horizontal-margin;
 }
 
 .stack > .expanded {
@@ -33,13 +36,14 @@ the grid layout will be:
 [10px] [item 2 start] [10px] [fractional unit] [10px] [item 2 end] [10px]
 [10px] [10px] [item 3 start] [fractional unit] [item 3 end] [10px] [10px]
 */
+
 .stack > .collapsed {
   display: grid;
   grid-column: 1 / 4;
   grid-template-columns:
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px)
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow)
     1fr
-    repeat(var(#{custom-props.$flashbarStackDepth}), 10px);
+    repeat(var(#{custom-props.$flashbarStackDepth}), $collapsed-item-overflow);
   row-gap: 8px;
   z-index: 0;
 
@@ -72,8 +76,8 @@ the grid layout will be:
     );
   }
 
-  > .item:not(:last-child) > .flash,
-  > .item.flash {
+  > .item:not(:last-child) > .flash::before,
+  > .item.flash::before {
     box-shadow: awsui.$shadow-flash-collapsed;
   }
 }
@@ -118,13 +122,16 @@ the grid layout will be:
   color: awsui.$color-text-layout-toggle;
   cursor: pointer;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   grid-column: 2;
   grid-row: 2;
-  gap: awsui.$space-xxs;
+  column-gap: calc(#{awsui.$space-m} + #{awsui.$space-xxs});
+  justify-content: center;
   letter-spacing: awsui.$font-button-letter-spacing;
   margin-left: auto;
   margin-right: auto;
+  row-gap: 0;
   text-align: center;
   text-decoration: none;
   z-index: 1;
@@ -137,29 +144,33 @@ the grid layout will be:
     cursor: pointer;
     margin-top: 0;
     margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   > .status {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: awsui.$space-m;
+    justify-content: center;
+    row-gap: 0;
 
     > .header {
       font-weight: awsui.$font-button-weight;
-      display: inline;
+      display: inline-block;
     }
 
     > .item-count {
-      margin-left: awsui.$space-m;
-      margin-right: awsui.$space-m;
-      white-space: nowrap;
+      column-gap: awsui.$space-s;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 0;
 
-      > .type-count {
-        > .count-number {
-          margin-left: awsui.$space-xxs;
-        }
-
-        &:not(:last-child) {
-          margin-right: awsui.$space-s;
-        }
+      > .type-count > .count-number {
+        margin-left: awsui.$space-xxs;
       }
     }
   }

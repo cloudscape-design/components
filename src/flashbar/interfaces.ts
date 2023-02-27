@@ -21,6 +21,17 @@ export namespace FlashbarProps {
     onDismiss?: ButtonProps['onClick'];
   }
 
+  export interface I18nStrings {
+    ariaLabel: string;
+    errorIconAriaLabel?: string;
+    infoIconAriaLabel?: string;
+    inProgressIconAriaLabel?: string;
+    notificationBarAriaLabel?: string;
+    notificationBarText?: string;
+    successIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
+  }
+
   export type Type = 'success' | 'warning' | 'info' | 'error';
   export type AriaRole = 'alert' | 'status';
 }
@@ -54,25 +65,28 @@ export interface FlashbarProps extends BaseComponentProps {
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
+
+  /**
+   * Specifies whether flash messages should be stacked.
+   */
+  stackItems?: boolean;
+
+  /**
+   * An object containing all the necessary localized strings required by the component. The object should contain:
+   *
+   * * `ariaLabel` - Specifies the ARIA label for the list of notifications.
+   *
+   * If `stackItems` is set to `true`, it should also contain:
+   *
+   * * `notificationBarAriaLabel` - (optional) Specifies the ARIA label for the notification bar
+   * * `notificationBarText` - (optional) Specifies the text shown in the notification bar
+   * * `errorIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `error`.
+   * * `warningIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `warning`.
+   * * `infoIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `info`.
+   * * `successIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of items of type `success`.
+   * * `inProgressIconAriaLabel` - (optional) Specifies the ARIA label for the icon displayed next to the number of in-progress items (where `loading` is set to `true`).
+   */
+  i18nStrings?: FlashbarProps.I18nStrings;
 }
 
 export type FlashType = FlashbarProps.Type | 'progress';
-
-export interface CollapsibleFlashbarProps extends BaseComponentProps {
-  items: ReadonlyArray<FlashbarProps.MessageDefinition>;
-  stackItems?: boolean;
-  i18nStrings?: CollapsibleFlashbarProps.I18nStrings;
-}
-
-export namespace CollapsibleFlashbarProps {
-  export interface I18nStrings {
-    ariaLabel: string;
-    errorIconAriaLabel?: string;
-    infoIconAriaLabel?: string;
-    inProgressIconAriaLabel?: string;
-    notificationBarAriaLabel?: string;
-    notificationBarText?: string;
-    successIconAriaLabel?: string;
-    warningIconAriaLabel?: string;
-  }
-}

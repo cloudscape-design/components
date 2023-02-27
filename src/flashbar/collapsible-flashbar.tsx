@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps, CollapsibleFlashbarProps } from './interfaces';
+import { FlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
@@ -19,6 +19,7 @@ import { IconProps } from '../icon/interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 
 export { FlashbarProps };
 
@@ -28,7 +29,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps & CollapsibleFlashbarProps) {
+export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -140,12 +141,19 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
     if (initialAnimationState) {
       updateBottomSpacing();
+
       animate({
         elements: getElementsToAnimate(),
         oldState: initialAnimationState,
         newElementInitialState: ({ top }) => ({ scale: 0.9, y: -0.2 * top }),
         onTransitionsEnd: () => setTransitioning(false),
       });
+
+      // When collapsing, scroll up if necessary to avoid losing track of the focused button
+      if (!isFlashbarStackExpanded && notificationBarRef.current) {
+        scrollElementIntoView(notificationBarRef.current);
+      }
+
       setTransitioning(true);
       setInitialAnimationState(null);
     }

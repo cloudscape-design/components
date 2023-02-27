@@ -16,7 +16,14 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
-import { trackStartStep, trackNavigate, trackSubmit, trackStartWizard } from './internal/analytics';
+import {
+  trackStartStep,
+  trackNavigate,
+  trackSubmit,
+  trackStartWizard,
+  trackEndWizard,
+  trackCancel,
+} from './internal/analytics';
 
 export { WizardProps };
 
@@ -34,6 +41,7 @@ export default function Wizard({
 }: WizardProps) {
   const { __internalRootRef } = useBaseComponent('Wizard');
   const baseProps = getBaseProps(rest);
+  const funnelId = baseProps.id;
 
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
@@ -54,17 +62,20 @@ export default function Wizard({
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
-    trackNavigate(actualActiveStepIndex, requestedStepIndex, reason);
+    trackNavigate(actualActiveStepIndex, requestedStepIndex, reason, funnelId);
     setActiveStepIndex(requestedStepIndex);
     fireNonCancelableEvent(onNavigate, { requestedStepIndex, reason });
   };
   const onStepClick = (stepIndex: number) => navigationEvent(stepIndex, 'step');
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
-  const onCancelClick = () => fireNonCancelableEvent(onCancel);
+  const onCancelClick = () => {
+    trackCancel(actualActiveStepIndex, funnelId);
+    fireNonCancelableEvent(onCancel);
+  };
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
   const onPrimaryClick = () => {
     if (isLastStep) {
-      trackSubmit(actualActiveStepIndex);
+      trackSubmit(actualActiveStepIndex, funnelId);
       fireNonCancelableEvent(onSubmit);
     } else {
       navigationEvent(actualActiveStepIndex + 1, 'next');
@@ -89,11 +100,16 @@ export default function Wizard({
 
   useEffect(() => {
     trackStartWizard();
+
+    return () => {
+      trackEndWizard(funnelId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- this is intentional
   }, []);
 
   useEffect(() => {
-    trackStartStep(actualActiveStepIndex);
-  }, [actualActiveStepIndex]);
+    trackStartStep(actualActiveStepIndex, funnelId);
+  }, [actualActiveStepIndex, funnelId]);
 
   return (
     <div {...baseProps} className={clsx(styles.root, baseProps.className)} ref={ref}>

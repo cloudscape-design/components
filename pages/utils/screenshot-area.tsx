@@ -7,7 +7,7 @@ import { colorTextStatusError } from '~design-tokens';
 import styles from './screenshot-area.scss';
 
 // replicates the same constant from BrowserTestTools package
-const MAX_PAGE_HEIGHT = 20000;
+const MAX_PAGE_HEIGHT = 16000;
 
 interface ScreenshotAreaProps {
   className?: string;

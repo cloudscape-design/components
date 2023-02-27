@@ -9,6 +9,8 @@ export default class FlashbarWrapper extends ComponentWrapper {
 
   /**
    * Returns the individual flashes of this flashbar.
+   *
+   * If the items are stacked, only the item at the top of the stack is returned.
    */
   findItems(): Array<FlashWrapper> {
     return this.findAllByClassName(styles['flash-list-item']).map(item => new FlashWrapper(item.getElement()));

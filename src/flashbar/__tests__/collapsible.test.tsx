@@ -1,10 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+const scrollElementIntoViewMock = jest.fn();
+jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => {
+  const originalModule = jest.requireActual('../../../lib/components/internal/utils/scrollable-containers');
+  return {
+    __esModule: true,
+    ...originalModule,
+    scrollElementIntoView: scrollElementIntoViewMock,
+  };
+});
+
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
 import { createFlashbarWrapper, findList } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps, FlashType, CollapsibleFlashbarProps } from '../interfaces';
+import { FlashbarProps, FlashType } from '../interfaces';
 import { render } from '@testing-library/react';
 
 const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
@@ -60,7 +71,7 @@ describe('Collapsible Flashbar', () => {
       expect(findNotificationBar(flashbar)).toBeFalsy();
     });
 
-    it('expands and collapses by clicking on toggle element', () => {
+    it('expands and collapses by clicking on notification bar', () => {
       const flashbar = renderFlashbar();
       const items = flashbar.findItems();
       expect(items.length).toBe(1);
@@ -254,6 +265,16 @@ describe('Collapsible Flashbar', () => {
       }
     });
   });
+
+  describe('Sticky', () => {
+    it('scrolls the button into view when collapsing', () => {
+      scrollElementIntoViewMock.mockClear();
+      const flashbar = renderFlashbar();
+      findNotificationBar(flashbar)!.click();
+      findNotificationBar(flashbar)!.click();
+      expect(scrollElementIntoViewMock).toHaveBeenCalledTimes(1);
+    });
+  });
 });
 
 // Entire interactive element including the counter and the actual <button/> element
@@ -294,8 +315,8 @@ function findInnerCounterElement(flashbar: FlashbarWrapper) {
 
 function renderFlashbar(
   customProps: Partial<
-    Omit<CollapsibleFlashbarProps, 'i18nStrings' | 'stackItems'> & {
-      i18nStrings?: Partial<CollapsibleFlashbarProps.I18nStrings>;
+    Omit<FlashbarProps, 'i18nStrings' | 'stackItems'> & {
+      i18nStrings?: Partial<FlashbarProps.I18nStrings>;
     }
   > = {
     items: defaultItems,

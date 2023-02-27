@@ -144,6 +144,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
   stripedRows?: boolean;
 
   /**
+   * Toggles the content density of the table. Defaults to `'comfortable'`.
+   */
+  contentDensity?: 'comfortable' | 'compact';
+
+  /**
    * Specifies if columns can be resized. If set to `true`, users can resize the columns in the table.
    */
   resizableColumns?: boolean;
@@ -249,7 +254,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                section, container or split panel).
    * * `stacked` - Use this variant adjacent to other stacked containers (such as a container,
    *               table).
-   * * `full-page` – Use this variant when table is the primary element on the page.
+   * * `full-page` – Use this variant when the table is the entire content of a page. Full page variants
+   *                 implement the high contrast header and content behavior automatically.
    * @visualrefresh `embedded`, `stacked`, and `full-page` variants
    */
   variant?: TableProps.Variant;
