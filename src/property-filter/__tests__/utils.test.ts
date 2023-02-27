@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { ComparisonOperator, FilteringProperty } from '../interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix } from '../utils';
+import { ComparisonOperator, FilteringProperty, Token } from '../interfaces';
+import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
 
 const filteringProperties: FilteringProperty[] = [
   {
@@ -103,5 +103,37 @@ describe('matchOperatorPrefix', () => {
   test('should return null if filtering text has leading space', () => {
     const operatorPrefix = matchOperatorPrefix(operators, ' !');
     expect(operatorPrefix).toBe(null);
+  });
+});
+
+describe('matchTokenValue', () => {
+  test('should return token as-is if no match found', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [{ propertyKey: 'key', value: 'two' }]);
+    expect(result.value).toBe('one');
+  });
+  test('should match by label', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { propertyKey: 'key', label: 'one', value: '1' },
+      { propertyKey: 'key', value: 'two' },
+    ]);
+    expect(result.value).toBe('1');
+  });
+  test('should case-insensitive match', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { propertyKey: 'key', value: 'One' },
+      { propertyKey: 'key', value: 'two' },
+    ]);
+    expect(result.value).toBe('One');
+  });
+  test('should prefer case-sensitive match', () => {
+    const token: Token = { propertyKey: 'key', operator: '=', value: 'one' };
+    const result = matchTokenValue(token, [
+      { propertyKey: 'key', value: 'One' },
+      { propertyKey: 'key', value: 'one' },
+    ]);
+    expect(result.value).toBe('one');
   });
 });
