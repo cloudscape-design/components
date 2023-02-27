@@ -8947,6 +8947,12 @@ Use the \`buttonText\` property and the \`onButtonClick\` event listener of the 
       "type": "string",
     },
     Object {
+      "description": "Indicates the maximum value of the progress bar. If this is set, progress bar shows the value and max as a ratio instead of as a percent.",
+      "name": "max",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
       "description": "Specifies the text for the button that's displayed when the \`status\` is set to \`error\` or \`success\`.
 If \`resultButtonText\` is empty, the result button isn't displayed.
 Note: If you use the \`flash\` variant, the result button isn't displayed.
