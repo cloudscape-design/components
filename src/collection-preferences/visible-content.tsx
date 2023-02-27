@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalToggle from '../toggle/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -8,6 +8,9 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
 import DragHandle from '../internal/drag-handle';
+import { useThrottledEventHandler } from '../internal/utils/use-throttled-event-handler';
+import { Coordinates } from '../internal/utils/coordinates';
+import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -102,15 +105,44 @@ function SelectionOption({
   value: VisibleContentPreferenceProps['value'];
 }) {
   const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
+  const initialPosition = useRef<Coordinates>();
+  const [dragAmount, setDragAmount] = useState({ x: 0, y: 0 });
+  const onPointerMove = useThrottledEventHandler((event: PointerEvent) => {
+    if (initialPosition.current) {
+      const coordinates = Coordinates.fromEvent(event);
+      setDragAmount({ x: coordinates.x - initialPosition.current.x, y: coordinates.y - initialPosition.current.y });
+    }
+  }, 10);
+
+  const onPointerUp = useStableEventHandler(() => {
+    onPointerMove.cancel();
+    window.removeEventListener('pointermove', onPointerMove);
+    setDragAmount({ x: 0, y: 0 });
+  });
+
+  const onPointerDown = (event: ReactPointerEvent) => {
+    initialPosition.current = Coordinates.fromEvent(event);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  };
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointermove', onPointerUp);
+    };
+  }, [onPointerMove, onPointerUp]);
+
   return (
-    <div key={optionIndex} {...className('option')}>
+    <div
+      key={optionIndex}
+      {...className('option')}
+      style={{ transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)` }}
+    >
       <DragHandle
         ariaLabelledBy={''}
         ariaDescribedBy={''}
-        onPointerDown={function (event: React.PointerEvent<Element>): void {
-          console.log(event);
-          throw new Error('Function not implemented.');
-        }}
+        onPointerDown={onPointerDown}
         onKeyDown={function (event: React.KeyboardEvent<Element>): void {
           console.log(event);
           throw new Error('Function not implemented.');
