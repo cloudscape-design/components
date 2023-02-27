@@ -70,7 +70,13 @@ export default function CollectionPreferences({
     setTemporaryPreferences(copyPreferences(preferences || {}));
   };
 
-  const hasLeftContent = !!(pageSizePreference || wrapLinesPreference || stripedRowsPreference || customPreference);
+  const hasLeftContent = !!(
+    pageSizePreference ||
+    wrapLinesPreference ||
+    stripedRowsPreference ||
+    contentDensityPreference ||
+    customPreference
+  );
   const hasRightContent = !!visibleContentPreference;
 
   const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>

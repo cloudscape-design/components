@@ -100,7 +100,7 @@ export default function CollectionPreferencesPermutations() {
           customPreference={customPreference}
         />
         <CollectionPreferences
-          className={`cp-4`}
+          className="cp-4"
           {...baseProperties}
           visibleContentPreference={visibleContentPreference}
         />
