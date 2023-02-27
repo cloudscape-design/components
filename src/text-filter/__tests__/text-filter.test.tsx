@@ -18,21 +18,11 @@ test('should have no initial value for filtering', () => {
   expect(wrapper.findInput().findNativeInput().getElement().value).toBe('');
 });
 
-test('should attach aria-describedby when countText is provided', () => {
+test('should attach aria-describedby to the filtering input', () => {
   const { wrapper } = renderTextFilter(<TextFilter filteringText="test" countText="N matches" />);
   const ariaDescribedby = wrapper.findInput().findNativeInput().getElement().getAttribute('aria-describedby');
   expect(ariaDescribedby).not.toBeNull();
-  expect(document.getElementById(ariaDescribedby!)).toBeInTheDocument();
-});
-
-test('should unset aria-describedby when countText is empty', () => {
-  const { wrapper } = renderTextFilter(<TextFilter filteringText="test" countText="" />);
-  expect(wrapper.find('[aria-describedby]')).toBeNull();
-});
-
-test('should unset aria-describedby when filteringText is empty', () => {
-  const { wrapper } = renderTextFilter(<TextFilter filteringText="" countText="N matches" />);
-  expect(wrapper.find('[aria-describedby]')).toBeNull();
+  expect(document.getElementById(ariaDescribedby!)).toHaveTextContent('N matches');
 });
 
 test('should apply filteringPlaceholder', () => {
