@@ -55,6 +55,7 @@
   @include styles.text-flex-wrapping;
   color: awsui.$color-text-body-secondary;
   flex: 1 1 auto;
+  min-width: 0;
   &-overflow-visible {
     overflow: visible;
   }
