@@ -15,6 +15,7 @@ import Toggle from '~components/toggle';
 
 import { Breadcrumbs } from '../app-layout/utils/content-blocks';
 import appLayoutLabels from '../app-layout/utils/labels';
+import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const [appLayoutHeader, toggleAppLayoutHeader] = useState(false);
@@ -42,70 +43,72 @@ export default function () {
   );
 
   return (
-    <AppLayout
-      ariaLabels={appLayoutLabels}
-      navigationOpen={false}
-      notifications={
-        <ColumnLayout columns={3}>
-          <SpaceBetween size="xxs">
-            <Toggle onChange={() => toggleAppLayoutHeader(!appLayoutHeader)} checked={appLayoutHeader}>
-              App layout header
-            </Toggle>
-            <Toggle onChange={() => toggleAppLayoutOverlap(!appLayoutOverlap)} checked={appLayoutOverlap}>
-              App layout overlap
-            </Toggle>
-          </SpaceBetween>
-          <SpaceBetween size="xxs">
-            <Toggle onChange={() => toggleContentLayout(!contentLayout)} checked={contentLayout}>
-              Content layout
-            </Toggle>
-            <Box padding={{ left: 'xxl' }}>
-              <Toggle
-                onChange={() => toggleContentLayoutHeader(!contentLayoutHeader)}
-                disabled={!contentLayout}
-                checked={contentLayoutHeader}
-                data-testid="toggle-content-layout-header"
-              >
-                Content layout header
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ariaLabels={appLayoutLabels}
+        navigationOpen={false}
+        notifications={
+          <ColumnLayout columns={3}>
+            <SpaceBetween size="xxs">
+              <Toggle onChange={() => toggleAppLayoutHeader(!appLayoutHeader)} checked={appLayoutHeader}>
+                App layout header
               </Toggle>
-              <Toggle
-                onChange={() => toggleContentLayoutOverlap(!contentLayoutOverlap)}
-                disabled={!contentLayout}
-                checked={contentLayoutOverlap}
-              >
-                Content layout overlap
+              <Toggle onChange={() => toggleAppLayoutOverlap(!appLayoutOverlap)} checked={appLayoutOverlap}>
+                App layout overlap
               </Toggle>
-            </Box>
-          </SpaceBetween>
-          <SpaceBetween size="xxs">
-            <Toggle
-              onChange={() => toggleFormHeader(!formHeader)}
-              checked={formHeader}
-              data-testid="toggle-form-header"
+            </SpaceBetween>
+            <SpaceBetween size="xxs">
+              <Toggle onChange={() => toggleContentLayout(!contentLayout)} checked={contentLayout}>
+                Content layout
+              </Toggle>
+              <Box padding={{ left: 'xxl' }}>
+                <Toggle
+                  onChange={() => toggleContentLayoutHeader(!contentLayoutHeader)}
+                  disabled={!contentLayout}
+                  checked={contentLayoutHeader}
+                  data-testid="toggle-content-layout-header"
+                >
+                  Content layout header
+                </Toggle>
+                <Toggle
+                  onChange={() => toggleContentLayoutOverlap(!contentLayoutOverlap)}
+                  disabled={!contentLayout}
+                  checked={contentLayoutOverlap}
+                >
+                  Content layout overlap
+                </Toggle>
+              </Box>
+            </SpaceBetween>
+            <SpaceBetween size="xxs">
+              <Toggle
+                onChange={() => toggleFormHeader(!formHeader)}
+                checked={formHeader}
+                data-testid="toggle-form-header"
+              >
+                Form header
+              </Toggle>
+              <Toggle onChange={() => toggleFormContent(!formContent)} checked={formContent}>
+                Form content
+              </Toggle>
+            </SpaceBetween>
+          </ColumnLayout>
+        }
+        breadcrumbs={<Breadcrumbs />}
+        contentHeader={appLayoutHeader && <Header variant="h1">App layout header</Header>}
+        disableContentHeaderOverlap={!appLayoutOverlap}
+        content={
+          contentLayout ? (
+            <ContentLayout
+              header={contentLayoutHeader && <Header variant="h1">Content layout header</Header>}
+              disableOverlap={!contentLayoutOverlap}
             >
-              Form header
-            </Toggle>
-            <Toggle onChange={() => toggleFormContent(!formContent)} checked={formContent}>
-              Form content
-            </Toggle>
-          </SpaceBetween>
-        </ColumnLayout>
-      }
-      breadcrumbs={<Breadcrumbs />}
-      contentHeader={appLayoutHeader && <Header variant="h1">App layout header</Header>}
-      disableContentHeaderOverlap={!appLayoutOverlap}
-      content={
-        contentLayout ? (
-          <ContentLayout
-            header={contentLayoutHeader && <Header variant="h1">Content layout header</Header>}
-            disableOverlap={!contentLayoutOverlap}
-          >
-            {form}
-          </ContentLayout>
-        ) : (
-          form
-        )
-      }
-    />
+              {form}
+            </ContentLayout>
+          ) : (
+            form
+          )
+        }
+      />
+    </ScreenshotArea>
   );
 }
