@@ -99,6 +99,11 @@ export default function CollectionPreferencesPermutations() {
           wrapLinesPreference={wrapLinesPreference}
           customPreference={customPreference}
         />
+        <CollectionPreferences
+          className="cp-4"
+          {...baseProperties}
+          visibleContentPreference={visibleContentPreference}
+        />
       </ScreenshotArea>
     </>
   );
