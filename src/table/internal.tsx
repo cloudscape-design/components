@@ -270,7 +270,7 @@ const InternalTable = React.forwardRef(
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
-                <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length })}</span>
+                <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
               </LiveRegion>
             )}
             <table
