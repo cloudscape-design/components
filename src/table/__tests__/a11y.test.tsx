@@ -94,7 +94,7 @@ describe('labels', () => {
     test('Should render a live region with table total count and indices when renderAriaLive and firstIndex are available', () => {
       const firstIndex = 1;
       const totalItemsCount = defaultItems.length;
-      const lastIndex = firstIndex + defaultItems.length;
+      const lastIndex = firstIndex + defaultItems.length - 1;
 
       const wrapper = renderTableWrapper({
         firstIndex,
