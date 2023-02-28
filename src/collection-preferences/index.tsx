@@ -140,7 +140,7 @@ export default function CollectionPreferences({
   ...rest
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
-  checkControlled('CollectioPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
+  checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
   const baseProps = getBaseProps(rest);
   const [modalVisible, setModalVisible] = useState(false);
   const [temporaryPreferences, setTemporaryPreferences] = useState(copyPreferences(preferences || {}));
