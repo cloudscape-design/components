@@ -111,7 +111,7 @@ describe('Collection preferences - Warnings', () => {
     renderCollectionPreferences({ preferences: {} });
     expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      '[AwsUi] [CollectioPreferences] You provided `preferences` prop without an `onConfirm` handler. This will render a read-only component. If the component should be mutable, set an `onConfirm` handler.'
+      '[AwsUi] [CollectionPreferences] You provided `preferences` prop without an `onConfirm` handler. This will render a read-only component. If the component should be mutable, set an `onConfirm` handler.'
     );
   });
 });
