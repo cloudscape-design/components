@@ -11,6 +11,7 @@ import DragHandle from '../internal/drag-handle';
 import { useThrottledEventHandler } from '../internal/utils/use-throttled-event-handler';
 import { Coordinates } from '../internal/utils/coordinates';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
+import clsx from 'clsx';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -141,7 +142,7 @@ function SelectionOption({
   return (
     <div
       key={optionIndex}
-      {...className('option')}
+      className={clsx(className('option').className, reorderContent && styles.draggable)}
       style={{ transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)` }}
     >
       {reorderContent && (

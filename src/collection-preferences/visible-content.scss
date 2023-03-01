@@ -32,10 +32,18 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: start;
-  padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-l;
+  padding-top: awsui.$space-xs;
+  padding-bottom: awsui.$space-xs;
+  padding-right: 0;
   border-bottom: $border;
   &:last-child {
     border-bottom: none;
+  }
+  &:not(.draggable) {
+    padding-left: awsui.$space-scaled-l;
+  }
+  &.draggable {
+    padding-left: 0;
   }
 }
 
