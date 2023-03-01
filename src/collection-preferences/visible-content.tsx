@@ -54,6 +54,8 @@ export default function VisibleContentPreference({
 
   const outerGroupLabelId = `${idPrefix}-outer`;
 
+  const optionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const boundingBoxes = useRef<Record<string, DOMRect>>();
   const initialCursorPosition = useRef<Coordinates>();
   const draggedOptionId = useRef<string | null>(null);
   const [dragAmount, setDragAmount] = useState({ x: 0, y: 0 });
@@ -75,6 +77,15 @@ export default function VisibleContentPreference({
 
   const onPointerDown = (event: ReactPointerEvent) => {
     initialCursorPosition.current = Coordinates.fromEvent(event);
+    const boxes: Record<string, DOMRect> = {};
+    for (const id of Object.keys(optionRefs.current)) {
+      const rect = optionRefs.current[id]?.getBoundingClientRect();
+      if (rect) {
+        boxes[id] = rect;
+      }
+    }
+    boundingBoxes.current = boxes;
+    console.log(boundingBoxes.current);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
   };
@@ -118,6 +129,7 @@ export default function VisibleContentPreference({
                             }
                           : undefined
                       }
+                      ref={element => (optionRefs.current[labelId] = element)}
                     >
                       {reorderContent && (
                         <DragHandle
