@@ -14,6 +14,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content-group {
   /* used in test-utils */
 }
+
 .visible-content-title {
   @include styles.font-label;
   color: awsui.$color-text-form-label;
@@ -21,10 +22,19 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   margin-bottom: awsui.$space-scaled-l;
 }
 
+.visible-content-group {
+  position: relative;
+}
+
 .visible-content-group-label {
   color: awsui.$color-text-group-label;
   padding-bottom: awsui.$space-xs;
   border-bottom: $border;
+}
+
+.visible-content-option-dragged-background {
+  background: lightblue;
+  min-height: awsui.$space-xl;
 }
 
 .visible-content-option {
@@ -44,6 +54,12 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   }
   &.draggable {
     padding-left: 0;
+    padding-right: awsui.$space-scaled-xxs;
+    &.dragged {
+      background-color: awsui.$color-background-container-content;
+      position: relative;
+      z-index: 1;
+    }
   }
 }
 

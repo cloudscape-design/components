@@ -71,6 +71,35 @@ const visibleContentPreference: CollectionPreferencesProps.VisibleContentPrefere
   ],
 };
 
+const reorderContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
+  title: 'Content Selection',
+  options: [
+    {
+      label: 'Main distribution properties',
+      options: [
+        { id: 'id', label: 'Distribution ID', editable: false },
+        {
+          id: 'domainName',
+          label:
+            'Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name Domain name',
+        },
+        {
+          id: 'deliveryMethod',
+          label: 'Deliverymethod',
+          editable: true,
+        },
+        { id: 'priceClass', label: 'Price class', editable: false },
+        { id: 'sslCertificate', label: 'SSL certificate' },
+        {
+          id: 'origin',
+          label:
+            'OriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOriginOrigin',
+        },
+      ],
+    },
+  ],
+};
+
 const customPreference = (customState: boolean) => (
   <Checkbox checked={customState} onChange={() => {}}>
     View as
@@ -107,7 +136,7 @@ export default function CollectionPreferencesPermutations() {
         <CollectionPreferences
           className="cp-5"
           {...baseProperties}
-          visibleContentPreference={visibleContentPreference}
+          visibleContentPreference={reorderContentPreference}
           reorderContent={true}
         />
       </ScreenshotArea>
