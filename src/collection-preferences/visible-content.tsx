@@ -13,6 +13,7 @@ import { Coordinates } from '../internal/utils/coordinates';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
 import { getSortedOptions } from './reorder-utils';
+import { reorderOptions } from './reorder-utils';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -55,18 +56,25 @@ export default function VisibleContentPreference({
 
   const outerGroupLabelId = `${idPrefix}-outer`;
 
-  const [contentOrder] = useState(flatOptionsIds);
+  const [contentOrder, setContentOrder] = useState(flatOptionsIds);
   const optionRefs = useRef<Record<string, HTMLElement | null>>({});
-  const boundingBoxes = useRef<Record<string, DOMRect>>();
+  const verticalCenters = useRef<Record<string, number>>();
   const initialCursorPosition = useRef<Coordinates>();
   const draggedOptionId = useRef<string | null>(null);
   const [dragAmount, setDragAmount] = useState({ x: 0, y: 0 });
   const onPointerMove = useThrottledEventHandler((event: PointerEvent) => {
-    if (initialCursorPosition.current) {
+    if (initialCursorPosition.current && draggedOptionId.current && verticalCenters.current) {
       const coordinates = Coordinates.fromEvent(event);
+      const dragY = coordinates.y - initialCursorPosition.current.y;
+      const newOrder = reorderOptions({
+        draggedOptionId: draggedOptionId.current,
+        verticalCenters: verticalCenters.current,
+        dragAmount: dragY,
+      });
+      setContentOrder(newOrder);
       setDragAmount({
         x: coordinates.x - initialCursorPosition.current.x,
-        y: coordinates.y - initialCursorPosition.current.y,
+        y: dragY,
       });
     }
   }, 10);
@@ -79,15 +87,15 @@ export default function VisibleContentPreference({
 
   const onPointerDown = (event: ReactPointerEvent) => {
     initialCursorPosition.current = Coordinates.fromEvent(event);
-    const boxes: Record<string, DOMRect> = {};
+    const centers: Record<string, number> = {};
     for (const id of Object.keys(optionRefs.current)) {
       const rect = optionRefs.current[id]?.getBoundingClientRect();
       if (rect) {
-        boxes[id] = rect;
+        centers[id] = rect.top + rect.height / 2;
       }
     }
-    boundingBoxes.current = boxes;
-    console.log(boundingBoxes.current);
+    verticalCenters.current = centers;
+    console.log(verticalCenters.current);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
   };
@@ -125,20 +133,20 @@ export default function VisibleContentPreference({
                       key={optionIndex}
                       className={clsx(className('option').className, reorderContent && styles.draggable)}
                       style={
-                        draggedOptionId.current === labelId
+                        draggedOptionId.current === option.id
                           ? {
                               transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)`,
                             }
                           : undefined
                       }
-                      ref={element => (optionRefs.current[labelId] = element)}
+                      ref={element => (optionRefs.current[option.id] = element)}
                     >
                       {reorderContent && (
                         <DragHandle
                           ariaLabelledBy={''}
                           ariaDescribedBy={''}
                           onPointerDown={event => {
-                            draggedOptionId.current = labelId;
+                            draggedOptionId.current = option.id;
                             onPointerDown(event);
                           }}
                           onKeyDown={function (event: React.KeyboardEvent<Element>): void {

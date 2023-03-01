@@ -15,3 +15,21 @@ export function getSortedOptions({
   );
   return order.map(id => optionsSet[id]).filter(Boolean);
 }
+
+export function reorderOptions({
+  draggedOptionId,
+  verticalCenters,
+  dragAmount,
+}: {
+  draggedOptionId: string;
+  verticalCenters: Record<string, number>;
+  dragAmount: number;
+}) {
+  const centersArray = [];
+  for (const id of Object.keys(verticalCenters)) {
+    const center = id === draggedOptionId ? verticalCenters[id] + dragAmount : verticalCenters[id];
+    centersArray.push({ id, center });
+  }
+  const sortedCenters = [...centersArray].sort((center1, center2) => center1.center - center2.center);
+  return sortedCenters.map(({ id }) => id);
+}
