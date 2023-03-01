@@ -111,12 +111,15 @@ function SelectionOption({
   value: VisibleContentPreferenceProps['value'];
 }) {
   const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
-  const initialPosition = useRef<Coordinates>();
+  const initialCursorPosition = useRef<Coordinates>();
   const [dragAmount, setDragAmount] = useState({ x: 0, y: 0 });
   const onPointerMove = useThrottledEventHandler((event: PointerEvent) => {
-    if (initialPosition.current) {
+    if (initialCursorPosition.current) {
       const coordinates = Coordinates.fromEvent(event);
-      setDragAmount({ x: coordinates.x - initialPosition.current.x, y: coordinates.y - initialPosition.current.y });
+      setDragAmount({
+        x: coordinates.x - initialCursorPosition.current.x,
+        y: coordinates.y - initialCursorPosition.current.y,
+      });
     }
   }, 10);
 
@@ -127,7 +130,7 @@ function SelectionOption({
   });
 
   const onPointerDown = (event: ReactPointerEvent) => {
-    initialPosition.current = Coordinates.fromEvent(event);
+    initialCursorPosition.current = Coordinates.fromEvent(event);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
   };
