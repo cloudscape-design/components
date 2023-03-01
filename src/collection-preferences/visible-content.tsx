@@ -53,65 +53,9 @@ export default function VisibleContentPreference({
   };
 
   const outerGroupLabelId = `${idPrefix}-outer`;
-  return (
-    <div className={styles['visible-content']}>
-      <h3 {...className('title')} id={outerGroupLabelId}>
-        {title}
-      </h3>
-      <InternalSpaceBetween {...className('groups')} size="xs">
-        {options.map((optionGroup, optionGroupIndex) => {
-          const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
-          return (
-            <div
-              key={optionGroupIndex}
-              {...className('group')}
-              role="group"
-              aria-labelledby={`${outerGroupLabelId} ${groupLabelId}`}
-            >
-              <div {...className('group-label')} id={groupLabelId}>
-                {optionGroup.label}
-              </div>
-              <div>
-                {optionGroup.options.map((option, optionIndex) => (
-                  <SelectionOption
-                    idPrefix={idPrefix}
-                    key={option.id}
-                    option={option}
-                    optionGroupIndex={optionGroupIndex}
-                    optionIndex={optionIndex}
-                    onToggle={onToggle}
-                    reorderContent={reorderContent}
-                    value={value}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </InternalSpaceBetween>
-    </div>
-  );
-}
 
-function SelectionOption({
-  idPrefix,
-  option,
-  optionGroupIndex,
-  optionIndex,
-  onToggle,
-  reorderContent = false,
-  value = [],
-}: {
-  idPrefix: string;
-  option: CollectionPreferencesProps.VisibleContentOption;
-  optionGroupIndex: number;
-  optionIndex: number;
-  onToggle: (id: string) => void;
-  reorderContent?: boolean;
-  value: VisibleContentPreferenceProps['value'];
-}) {
-  const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
   const initialCursorPosition = useRef<Coordinates>();
+  const draggedOptionId = useRef<string | null>(null);
   const [dragAmount, setDragAmount] = useState({ x: 0, y: 0 });
   const onPointerMove = useThrottledEventHandler((event: PointerEvent) => {
     if (initialCursorPosition.current) {
@@ -143,33 +87,71 @@ function SelectionOption({
   }, [onPointerMove, onPointerUp]);
 
   return (
-    <div
-      key={optionIndex}
-      className={clsx(className('option').className, reorderContent && styles.draggable)}
-      style={{ transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)` }}
-    >
-      {reorderContent && (
-        <DragHandle
-          ariaLabelledBy={''}
-          ariaDescribedBy={''}
-          onPointerDown={onPointerDown}
-          onKeyDown={function (event: React.KeyboardEvent<Element>): void {
-            console.log(event);
-            throw new Error('Function not implemented.');
-          }}
-        />
-      )}
-      <label {...className('option-label')} htmlFor={labelId}>
-        {option.label}
-      </label>
-      <div {...className('toggle')}>
-        <InternalToggle
-          checked={isVisible(option.id, value)}
-          onChange={() => onToggle(option.id)}
-          disabled={option.editable === false}
-          controlId={labelId}
-        />
-      </div>
+    <div className={styles['visible-content']}>
+      <h3 {...className('title')} id={outerGroupLabelId}>
+        {title}
+      </h3>
+      <InternalSpaceBetween {...className('groups')} size="xs">
+        {options.map((optionGroup, optionGroupIndex) => {
+          const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
+          return (
+            <div
+              key={optionGroupIndex}
+              {...className('group')}
+              role="group"
+              aria-labelledby={`${outerGroupLabelId} ${groupLabelId}`}
+            >
+              <div {...className('group-label')} id={groupLabelId}>
+                {optionGroup.label}
+              </div>
+              <div>
+                {optionGroup.options.map((option, optionIndex) => {
+                  const labelId = `${idPrefix}-${optionGroupIndex}-${option.id}`;
+                  return (
+                    <div
+                      key={optionIndex}
+                      className={clsx(className('option').className, reorderContent && styles.draggable)}
+                      style={
+                        draggedOptionId.current === labelId
+                          ? {
+                              transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)`,
+                            }
+                          : undefined
+                      }
+                    >
+                      {reorderContent && (
+                        <DragHandle
+                          ariaLabelledBy={''}
+                          ariaDescribedBy={''}
+                          onPointerDown={event => {
+                            draggedOptionId.current = labelId;
+                            onPointerDown(event);
+                          }}
+                          onKeyDown={function (event: React.KeyboardEvent<Element>): void {
+                            console.log(event);
+                            throw new Error('Function not implemented.');
+                          }}
+                        />
+                      )}
+                      <label {...className('option-label')} htmlFor={labelId}>
+                        {option.label}
+                      </label>
+                      <div {...className('toggle')}>
+                        <InternalToggle
+                          checked={isVisible(option.id, value)}
+                          onChange={() => onToggle(option.id)}
+                          disabled={option.editable === false}
+                          controlId={labelId}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </InternalSpaceBetween>
     </div>
   );
 }
