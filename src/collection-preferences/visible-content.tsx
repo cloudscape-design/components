@@ -76,6 +76,7 @@ export default function VisibleContentPreference({
       });
       if (!areOrdersEqual(contentOrder, newOrder)) {
         setContentOrder(newOrder);
+        onChange(newOrder.filter(id => value?.indexOf(id) !== -1));
       }
       setDragAmount({
         x: dragX,

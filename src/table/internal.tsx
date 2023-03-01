@@ -76,6 +76,7 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
+      customOrder,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -115,7 +116,9 @@ const InternalTable = React.forwardRef(
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
     const visibleColumnDefinitions = visibleColumns
-      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
+      ? customOrder
+        ? visibleColumns.map(id => columnDefinitions.filter(column => column.id === id)[0]).filter(Boolean)
+        : columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
