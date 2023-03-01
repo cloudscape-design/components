@@ -12,6 +12,7 @@ import { useThrottledEventHandler } from '../internal/utils/use-throttled-event-
 import { Coordinates } from '../internal/utils/coordinates';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
+import { getSortedOptions } from './reorder-utils';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -54,6 +55,7 @@ export default function VisibleContentPreference({
 
   const outerGroupLabelId = `${idPrefix}-outer`;
 
+  const [contentOrder] = useState(flatOptionsIds);
   const optionRefs = useRef<Record<string, HTMLElement | null>>({});
   const boundingBoxes = useRef<Record<string, DOMRect>>();
   const initialCursorPosition = useRef<Coordinates>();
@@ -116,7 +118,7 @@ export default function VisibleContentPreference({
                 {optionGroup.label}
               </div>
               <div>
-                {optionGroup.options.map((option, optionIndex) => {
+                {getSortedOptions({ options: optionGroup.options, order: contentOrder }).map((option, optionIndex) => {
                   const labelId = `${idPrefix}-${optionGroupIndex}-${option.id}`;
                   return (
                     <div
