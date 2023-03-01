@@ -42,6 +42,7 @@ export default function CollectionPreferences({
   contentDensityPreference,
   preferences,
   customPreference,
+  reorderContent,
   ...rest
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
@@ -175,6 +176,7 @@ export default function CollectionPreferences({
                 <VisibleContentPreference
                   value={temporaryPreferences.visibleContent}
                   {...visibleContentPreference}
+                  reorderContent={reorderContent}
                   onChange={visibleContent => onChange({ visibleContent })}
                 />
               )

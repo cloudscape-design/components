@@ -22,6 +22,7 @@ const className = (suffix: string): ClassNameProps => ({
 });
 
 interface VisibleContentPreferenceProps extends CollectionPreferencesProps.VisibleContentPreference {
+  reorderContent?: boolean;
   onChange: (value: ReadonlyArray<string>) => void;
   value?: ReadonlyArray<string>;
 }
@@ -31,6 +32,7 @@ export default function VisibleContentPreference({
   options,
   value = [],
   onChange,
+  reorderContent,
 }: VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
 
@@ -77,6 +79,7 @@ export default function VisibleContentPreference({
                     optionGroupIndex={optionGroupIndex}
                     optionIndex={optionIndex}
                     onToggle={onToggle}
+                    reorderContent={reorderContent}
                     value={value}
                   />
                 ))}
@@ -95,6 +98,7 @@ function SelectionOption({
   optionGroupIndex,
   optionIndex,
   onToggle,
+  reorderContent = false,
   value = [],
 }: {
   idPrefix: string;
@@ -102,6 +106,7 @@ function SelectionOption({
   optionGroupIndex: number;
   optionIndex: number;
   onToggle: (id: string) => void;
+  reorderContent?: boolean;
   value: VisibleContentPreferenceProps['value'];
 }) {
   const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
@@ -139,15 +144,17 @@ function SelectionOption({
       {...className('option')}
       style={{ transform: `translate(${dragAmount.x}px, ${dragAmount.y}px)` }}
     >
-      <DragHandle
-        ariaLabelledBy={''}
-        ariaDescribedBy={''}
-        onPointerDown={onPointerDown}
-        onKeyDown={function (event: React.KeyboardEvent<Element>): void {
-          console.log(event);
-          throw new Error('Function not implemented.');
-        }}
-      />
+      {reorderContent && (
+        <DragHandle
+          ariaLabelledBy={''}
+          ariaDescribedBy={''}
+          onPointerDown={onPointerDown}
+          onKeyDown={function (event: React.KeyboardEvent<Element>): void {
+            console.log(event);
+            throw new Error('Function not implemented.');
+          }}
+        />
+      )}
       <label {...className('option-label')} htmlFor={labelId}>
         {option.label}
       </label>

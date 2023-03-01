@@ -104,6 +104,12 @@ export default function CollectionPreferencesPermutations() {
           {...baseProperties}
           visibleContentPreference={visibleContentPreference}
         />
+        <CollectionPreferences
+          className="cp-5"
+          {...baseProperties}
+          visibleContentPreference={visibleContentPreference}
+          reorderContent={true}
+        />
       </ScreenshotArea>
     </>
   );

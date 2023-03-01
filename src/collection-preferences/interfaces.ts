@@ -140,6 +140,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * The values for all configured preferences are present even if the user didn't change their values.
    */
   onConfirm?: NonCancelableEventHandler<CollectionPreferencesProps.Preferences<CustomPreferenceType>>;
+  reorderContent?: boolean;
 }
 
 export namespace CollectionPreferencesProps {
