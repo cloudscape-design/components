@@ -24,7 +24,7 @@ const Highlight = ({ str }: HighlightMatchProps) =>
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
   if (!str || !highlightText) {
-    return <>{str}</>;
+    return <span>{str}</span>;
   }
 
   if (str === highlightText) {
@@ -36,10 +36,10 @@ export default function HighlightMatch({ str, highlightText }: HighlightMatchPro
   const highlighted: (string | JSX.Element)[] = [];
 
   noMatches.forEach((noMatch, idx) => {
-    highlighted.push(noMatch);
+    highlighted.push(<span key={`noMatch-${idx}`}>{noMatch}</span>);
 
     if (matches && idx < matches.length) {
-      highlighted.push(<Highlight key={idx} str={matches[idx]} />);
+      highlighted.push(<Highlight key={`match-${idx}`} str={matches[idx]} />);
     }
   });
 
