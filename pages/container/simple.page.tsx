@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import Box from '~components/box';
 import Container from '~components/container';
 import Header from '~components/header';
 import ExpandableSection from '~components/expandable-section';
@@ -106,6 +107,9 @@ export default function SimpleContainers() {
             disableContentPaddings={true}
             header={<Header variant="h2">Container Without Content</Header>}
           ></Container>
+          <Container disableContentPaddings={true} header="Container with disabled paddings and box">
+            <Box margin={'m'}>Content that has margin</Box>
+          </Container>
         </SpaceBetween>
       </ScreenshotArea>
     </article>
