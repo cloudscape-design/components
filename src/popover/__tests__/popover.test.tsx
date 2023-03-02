@@ -203,17 +203,6 @@ describe('ARIA labels', () => {
     expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('aria-labelledby');
   });
 
-  it('sets aria-labelledby when dismiss button is not present', () => {
-    const wrapper = renderPopover({
-      children: 'Trigger',
-      content: 'Popover',
-      header: 'Hello!',
-      dismissButton: false,
-    });
-    wrapper.findTrigger().click();
-    expect(wrapper.findBody()!.getElement()).toHaveAttribute('aria-labelledby');
-  });
-
   it('does not use aria-live if dismissButton is true', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
     wrapper.findTrigger().click();
@@ -250,15 +239,15 @@ describe('ARIA labels', () => {
     expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'Close');
   });
 
-  it('does not set role="dialog" when there is no header', () => {
-    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissAriaLabel: 'Close' });
-    wrapper.findTrigger().click();
-    expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('role', 'dialog');
-  });
-
-  it('set role="dialog" when there is a header', () => {
-    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', header: 'Header' });
+  it('sets role="dialog" if dismissButton is true', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: true });
     wrapper.findTrigger().click();
     expect(wrapper.findBody()!.getElement()).toHaveAttribute('role', 'dialog');
+  });
+
+  it('does not set role="dialog" if dismissButton is false', () => {
+    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
+    wrapper.findTrigger().click();
+    expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('role', 'dialog');
   });
 });
