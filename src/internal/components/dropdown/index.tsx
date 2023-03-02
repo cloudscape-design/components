@@ -291,9 +291,7 @@ const Dropdown = ({
       return;
     }
     const clickListener = (e: MouseEvent) => {
-      const target = e.composedPath()[0];
-
-      if (!dropdownRef.current?.contains(target as Node) && !triggerRef.current?.contains(target as Node)) {
+      if (!dropdownRef.current?.contains(e.target as Node) && !triggerRef.current?.contains(e.target as Node)) {
         fireNonCancelableEvent(onDropdownClose);
       }
     };
