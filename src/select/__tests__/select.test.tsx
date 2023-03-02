@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Select, { SelectProps } from '../../../lib/components/select';
 import selectPartsStyles from '../../../lib/components/select/parts/styles.css.js';
@@ -60,6 +61,18 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue('1')).toBeTruthy();
     wrapper.closeDropdown({ expandToViewport });
     expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeFalsy();
+  });
+
+  test('allows dropdown to be opened with Space', () => {
+    const { wrapper } = renderSelect();
+    wrapper.findTrigger()!.keydown(KeyCode.space);
+    expect(wrapper.findDropdown({ expandToViewport })).toBeTruthy();
+  });
+
+  test('allows dropdown to be opened with Enter', () => {
+    const { wrapper } = renderSelect();
+    wrapper.findTrigger()!.keydown(KeyCode.enter);
+    expect(wrapper.findDropdown({ expandToViewport })).toBeTruthy();
   });
 
   test('selects top-level option', () => {
