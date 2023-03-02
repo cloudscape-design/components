@@ -79,6 +79,7 @@ export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome })
           openDropdown();
           break;
         case KeyCode.space:
+        case KeyCode.enter:
           e.preventDefault();
           openDropdown();
           break;
