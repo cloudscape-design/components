@@ -26,24 +26,30 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
   cell: item => item.test,
 };
 
-it('renders a fake focus outline on the sort control', () => {
-  const { container } = render(
+function TableWrapper({ children }: { children: React.ReactNode }) {
+  return (
     <table>
       <thead>
-        <tr>
-          <TableHeaderCell<typeof testItem>
-            focusedComponent={{ type: 'column', col: 0 }}
-            column={column}
-            colIndex={0}
-            tabIndex={0}
-            onFocusedComponentChange={() => {}}
-            updateColumn={() => {}}
-            onClick={() => {}}
-            onResizeFinish={() => {}}
-          />
-        </tr>
+        <tr>{children}</tr>
       </thead>
     </table>
+  );
+}
+
+it('renders a fake focus outline on the sort control', () => {
+  const { container } = render(
+    <TableWrapper>
+      <TableHeaderCell<typeof testItem>
+        focusedComponent={{ type: 'column', col: 0 }}
+        column={column}
+        colIndex={0}
+        tabIndex={0}
+        onFocusedComponentChange={() => {}}
+        updateColumn={() => {}}
+        onClick={() => {}}
+        onResizeFinish={() => {}}
+      />
+    </TableWrapper>
   );
   // Activate focus-visible
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
@@ -52,23 +58,19 @@ it('renders a fake focus outline on the sort control', () => {
 
 it('renders a fake focus outline on the resize control', () => {
   const { container } = render(
-    <table>
-      <thead>
-        <tr>
-          <TableHeaderCell<typeof testItem>
-            focusedComponent={{ type: 'resizer', col: 0 }}
-            column={column}
-            colIndex={0}
-            tabIndex={0}
-            resizableColumns={true}
-            onFocusedComponentChange={() => {}}
-            updateColumn={() => {}}
-            onClick={() => {}}
-            onResizeFinish={() => {}}
-          />
-        </tr>
-      </thead>
-    </table>
+    <TableWrapper>
+      <TableHeaderCell<typeof testItem>
+        focusedComponent={{ type: 'resizer', col: 0 }}
+        column={column}
+        colIndex={0}
+        tabIndex={0}
+        resizableColumns={true}
+        onFocusedComponentChange={() => {}}
+        updateColumn={() => {}}
+        onClick={() => {}}
+        onResizeFinish={() => {}}
+      />
+    </TableWrapper>
   );
   // Activate focus-visible
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
