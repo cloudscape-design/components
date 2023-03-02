@@ -1,3 +1,8 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
 @use '../../../lib/design-tokens/index.scss' as cs;
 
 @mixin focus-highlight($gutter: 4px, $border-radius: cs.$border-radius-control-default-focus-ring) {
