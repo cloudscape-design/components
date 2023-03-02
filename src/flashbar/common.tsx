@@ -8,6 +8,8 @@ import { useReducedMotion, useVisualRefresh } from '../internal/hooks/use-visual
 import { getBaseProps } from '../internal/base-component';
 import { FlashbarProps } from './interfaces';
 import { focusFlashById } from './flash';
+import { isDevelopment } from '../internal/is-development';
+import { warnOnce } from '../internal/logging';
 
 export const componentName = 'Flashbar';
 
@@ -35,6 +37,15 @@ export function useFlashbar({
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
 
+  if (isDevelopment) {
+    if (items?.some(item => item.ariaRole === 'alert' && !item.id)) {
+      warnOnce(
+        'Flashbar',
+        `You provided \`ariaRole="alert"\` for a flashbar item without providing an \`id\`. Focus will not be moved to the newly added flash message.`
+      );
+    }
+  }
+
   // Track new or removed item IDs in state to only trigger focus changes for newly added items.
   // https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
   if (items) {
@@ -42,18 +53,13 @@ export function useFlashbar({
     const removedItems = previousItems.filter(({ id }) => id && !items.some(item => item.id === id));
     if (newItems.length > 0 || removedItems.length > 0) {
       setPreviousItems(items);
-      if (onItemsAdded) {
-        onItemsAdded(newItems);
-      }
-      if (onItemsRemoved) {
-        onItemsRemoved(removedItems);
-      }
+      onItemsAdded?.(newItems);
+      onItemsRemoved?.(removedItems);
+      onItemsChanged?.({ allItemsHaveId, isReducedMotion });
+
       const newFocusItems = newItems.filter(({ ariaRole }) => ariaRole === 'alert');
       if (newFocusItems.length > 0) {
         setNextFocusId(newFocusItems[0].id!);
-      }
-      if (onItemsChanged) {
-        onItemsChanged({ allItemsHaveId, isReducedMotion });
       }
     }
   }
