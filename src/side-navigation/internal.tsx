@@ -64,7 +64,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           <span className={styles['header-link-text']}>{definition.text}</span>
         </a>
       </h2>
-      <Divider role="presentation" variant="header" />
+      <Divider isPresentational={true} variant="header" />
     </>
   );
 }
@@ -78,7 +78,7 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
   return (
     <ul className={clsx(styles.list, styles[`list-variant-${variant}`])}>
       {items.map((item, i) => (
-        <li key={i} className={styles['list-item']}>
+        <li key={i} className={styles['list-item']} role={item.type === 'divider' ? 'presentation' : 'listitem'}>
           {item.type === 'divider' && <Divider variant="default" />}
           {item.type === 'link' && (
             <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
@@ -115,11 +115,16 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
 
 interface DividerProps {
   variant: 'default' | 'header';
-  role?: 'presentation' | 'separator';
+  isPresentational?: boolean;
 }
 
-function Divider({ variant = 'default', role = 'separator' }: DividerProps) {
-  return <hr className={clsx(styles.divider, styles[`divider-${variant}`])} role={role} />;
+function Divider({ variant = 'default', isPresentational = false }: DividerProps) {
+  return (
+    <hr
+      className={clsx(styles.divider, styles[`divider-${variant}`])}
+      role={isPresentational ? 'presentation' : undefined}
+    />
+  );
 }
 
 interface LinkProps extends BaseItemComponentProps {
