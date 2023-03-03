@@ -5,8 +5,8 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "deprecatedTag": "Replaced by \`action\`.",
-      "description": "Fired when the user clicks the action button.",
+      "description": "Fired when the user clicks the action button.
+**Deprecated** Replaced by \`action\`.",
       "name": "onButtonClick",
     },
     Object {
@@ -3636,9 +3636,9 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "deprecatedTag": "Replaced by \`onDelayedChange\`.",
       "description": "An event handler called when the value changes.
-The event \`detail\` contains the current value of the code editor content.",
+The event \`detail\` contains the current value of the code editor content.
+**Deprecated** Replaced by \`onDelayedChange\`.",
       "detailInlineType": Object {
         "name": "CodeEditorProps.ChangeDetail",
         "properties": Array [
