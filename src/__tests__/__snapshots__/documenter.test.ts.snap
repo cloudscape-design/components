@@ -4041,6 +4041,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
+            "name": "contentOrder",
+            "optional": true,
+            "type": "ReadonlyArray<string>",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4211,6 +4216,11 @@ It contains the following:
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
+            "name": "contentOrder",
+            "optional": true,
+            "type": "ReadonlyArray<string>",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4241,6 +4251,11 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "name": "reorderContent",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Configures the built-in \\"striped rows\\" preference.
@@ -11494,6 +11509,11 @@ add a meaningful description to the whole selection.
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
+    },
+    Object {
+      "name": "columnOrder",
+      "optional": true,
+      "type": "ReadonlyArray<string>",
     },
     Object {
       "defaultValue": "'comfortable'",
