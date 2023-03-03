@@ -26,7 +26,7 @@ const className = (suffix: string): ClassNameProps => ({
 
 interface VisibleContentPreferenceProps extends CollectionPreferencesProps.VisibleContentPreference {
   reorderContent?: boolean;
-  onChange: (value: { itemOrder: ReadonlyArray<string>; visibleItems: ReadonlyArray<string> }) => void;
+  onChange: (value: { itemOrder?: ReadonlyArray<string>; visibleItems: ReadonlyArray<string> }) => void;
   visibleItems?: ReadonlyArray<string>;
   itemOrder?: ReadonlyArray<string>;
 }
@@ -44,15 +44,16 @@ export default function VisibleContentPreference({
   const flatOptionsIds = getFlatOptionIds(options);
 
   const onToggle = (id: string) => {
+    const order = reorderContent ? itemOrder : undefined;
     if (!isVisible(id, visibleItems)) {
       onChange({
-        itemOrder,
+        itemOrder: order,
         visibleItems: [...visibleItems, id].sort(
           (firstId, secondId) => flatOptionsIds.indexOf(firstId) - flatOptionsIds.indexOf(secondId)
         ),
       });
     } else {
-      onChange({ itemOrder, visibleItems: visibleItems.filter(currentId => currentId !== id) });
+      onChange({ itemOrder: order, visibleItems: visibleItems.filter(currentId => currentId !== id) });
     }
   };
 
