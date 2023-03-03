@@ -5,6 +5,7 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
+      "deprecatedTag": "Replaced by \`action\`.",
       "description": "Fired when the user clicks the action button.",
       "name": "onButtonClick",
     },
@@ -3635,6 +3636,7 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
+      "deprecatedTag": "Replaced by \`onDelayedChange\`.",
       "description": "An event handler called when the value changes.
 The event \`detail\` contains the current value of the code editor content.",
       "detailInlineType": Object {
