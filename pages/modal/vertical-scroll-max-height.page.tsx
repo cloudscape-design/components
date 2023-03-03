@@ -328,8 +328,8 @@ export default function () {
           <div>
             <h3>Modal with vertical scroll</h3>
             <p>
-              This is a modal which never vertically overflows the viewport. Interactive components with floating
-              elements are positioned inside, both in the body and in the footer, to see how they behave:
+              This is a modal which vertically overflows the viewport. Interactive components with floating elements are
+              positioned inside, both in the body and in the footer, to see how they behave:
             </p>
             <ul>
               <li>Popover</li>
