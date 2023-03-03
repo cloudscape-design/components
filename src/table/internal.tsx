@@ -76,7 +76,7 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
-      customOrder,
+      columnOrder,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -115,11 +115,14 @@ const InternalTable = React.forwardRef(
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
+
     const visibleColumnDefinitions = visibleColumns
-      ? customOrder
-        ? visibleColumns.map(id => columnDefinitions.filter(column => column.id === id)[0]).filter(Boolean)
-        : columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
+      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
+    const sortedVisibleColumnDefinitions = columnOrder
+      ? columnOrder.map(id => visibleColumnDefinitions.filter(column => column.id === id)[0]).filter(Boolean)
+      : visibleColumnDefinitions;
+
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -156,7 +159,7 @@ const InternalTable = React.forwardRef(
       containerWidth,
       selectionType,
       selectAllProps,
-      columnDefinitions: visibleColumnDefinitions,
+      columnDefinitions: sortedVisibleColumnDefinitions,
       variant: computedVariant,
       wrapLines,
       resizableColumns,
@@ -202,12 +205,12 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, sortedVisibleColumnDefinitions, items?.length);
 
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
-        visibleColumnDefinitions={visibleColumnDefinitions}
+        visibleColumnDefinitions={sortedVisibleColumnDefinitions}
         resizableColumns={resizableColumns}
         hasSelection={hasSelection}
       >
@@ -296,7 +299,11 @@ const InternalTable = React.forwardRef(
                 {loading || items.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
+                      colSpan={
+                        selectionType
+                          ? sortedVisibleColumnDefinitions.length + 1
+                          : sortedVisibleColumnDefinitions.length
+                      }
                       className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                     >
                       <div
@@ -364,7 +371,7 @@ const InternalTable = React.forwardRef(
                             />
                           </TableTdElement>
                         )}
-                        {visibleColumnDefinitions.map((column, colIndex) => {
+                        {sortedVisibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;

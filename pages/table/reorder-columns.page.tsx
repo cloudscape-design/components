@@ -70,7 +70,7 @@ export default function App() {
           />
         }
         visibleColumns={preferences.visibleContent}
-        customOrder={true}
+        columnOrder={preferences.contentOrder}
         preferences={
           <CollectionPreferences
             title="Preferences"

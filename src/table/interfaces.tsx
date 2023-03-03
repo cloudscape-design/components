@@ -199,6 +199,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    */
   visibleColumns?: ReadonlyArray<string>;
 
+  columnOrder?: ReadonlyArray<string>;
+
   /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
    * including the hidden via preferences columns. Use this event to persist the column widths.
@@ -286,8 +288,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * validation states, or show warning for unsaved changes.
    */
   onEditCancel?: CancelableEventHandler;
-
-  customOrder?: boolean;
 }
 
 export namespace TableProps {
