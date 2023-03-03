@@ -77,9 +77,7 @@ $modal-z-index: 5000;
 
 .container {
   @include styles.styles-reset;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 2 * awsui.$space-s);
+  display: block;
   background-color: awsui.$color-background-container-content;
   word-wrap: break-word;
   border-top: awsui.$border-container-top-width solid awsui.$color-border-container-top;
@@ -88,7 +86,6 @@ $modal-z-index: 5000;
 }
 
 .content {
-  overflow-y: auto;
   padding: awsui.$space-container-content-top awsui.$space-modal-horizontal awsui.$space-modal-content-bottom;
   &.no-paddings {
     padding: 0;
