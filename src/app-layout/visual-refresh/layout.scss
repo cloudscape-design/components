@@ -47,6 +47,7 @@
     minmax(var(#{custom-props.$contentGapRight}), 1fr)
     min-content;
   position: relative;
+  color: awsui.$color-text-body-default;
 
   // Add unified max-width for AppLayout content based on breakpoints.
   &:not(.has-max-content-width) {
