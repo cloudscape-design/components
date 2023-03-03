@@ -174,10 +174,13 @@ export default function CollectionPreferences({
             right={
               visibleContentPreference && (
                 <VisibleContentPreference
-                  value={temporaryPreferences.visibleContent}
+                  visibleItems={temporaryPreferences.visibleContent}
+                  itemOrder={temporaryPreferences.customContentOrder}
                   {...visibleContentPreference}
                   reorderContent={reorderContent}
-                  onChange={visibleContent => onChange({ visibleContent })}
+                  onChange={({ itemOrder, visibleItems }) =>
+                    onChange({ customContentOrder: itemOrder, visibleContent: visibleItems })
+                  }
                 />
               )
             }

@@ -12,7 +12,7 @@ import { useThrottledEventHandler } from '../internal/utils/use-throttled-event-
 import { Coordinates } from '../internal/utils/coordinates';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
-import { areOrdersEqual, getSortedOptions } from './reorder-utils';
+import { areOrdersEqual, getFlatOptionIds, getSortedOptions } from './reorder-utils';
 import { reorderOptions } from './reorder-utils';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
@@ -26,37 +26,38 @@ const className = (suffix: string): ClassNameProps => ({
 
 interface VisibleContentPreferenceProps extends CollectionPreferencesProps.VisibleContentPreference {
   reorderContent?: boolean;
-  onChange: (value: ReadonlyArray<string>) => void;
-  value?: ReadonlyArray<string>;
+  onChange: (value: { itemOrder: ReadonlyArray<string>; visibleItems: ReadonlyArray<string> }) => void;
+  visibleItems?: ReadonlyArray<string>;
+  itemOrder?: ReadonlyArray<string>;
 }
 
 export default function VisibleContentPreference({
   title,
   options,
-  value = [],
+  visibleItems = [],
+  itemOrder = getFlatOptionIds(options),
   onChange,
   reorderContent,
 }: VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
 
-  const flatOptionsIds = options.reduce<string[]>(
-    (ids, group) => [...ids, ...group.options.reduce<string[]>((groupIds, option) => [...groupIds, option.id], [])],
-    []
-  );
+  const flatOptionsIds = getFlatOptionIds(options);
 
   const onToggle = (id: string) => {
-    if (!isVisible(id, value)) {
-      onChange(
-        [...value, id].sort((firstId, secondId) => flatOptionsIds.indexOf(firstId) - flatOptionsIds.indexOf(secondId))
-      );
+    if (!isVisible(id, visibleItems)) {
+      onChange({
+        itemOrder,
+        visibleItems: [...visibleItems, id].sort(
+          (firstId, secondId) => flatOptionsIds.indexOf(firstId) - flatOptionsIds.indexOf(secondId)
+        ),
+      });
     } else {
-      onChange(value.filter(currentId => currentId !== id));
+      onChange({ itemOrder, visibleItems: visibleItems.filter(currentId => currentId !== id) });
     }
   };
 
   const outerGroupLabelId = `${idPrefix}-outer`;
 
-  const [contentOrder, setContentOrder] = useState(flatOptionsIds);
   const optionRefs = useRef<Record<string, HTMLElement | null>>({});
   const verticalCenters = useRef<Record<string, number>>();
   const initialCursorPosition = useRef<Coordinates>();
@@ -74,9 +75,8 @@ export default function VisibleContentPreference({
         verticalCenters: verticalCenters.current,
         dragAmount: dragY,
       });
-      if (!areOrdersEqual(contentOrder, newOrder)) {
-        setContentOrder(newOrder);
-        onChange(newOrder.filter(id => value?.indexOf(id) !== -1));
+      if (!areOrdersEqual(itemOrder, newOrder)) {
+        onChange({ itemOrder: newOrder, visibleItems });
       }
       setDragAmount({
         x: dragX,
@@ -94,7 +94,7 @@ export default function VisibleContentPreference({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contentOrder]);
+  }, [itemOrder]);
 
   const calculatePositions = () => {
     const centers: Record<string, number> = {};
@@ -158,7 +158,7 @@ export default function VisibleContentPreference({
                 {optionGroup.label}
               </div>
               <div>
-                {getSortedOptions({ options: optionGroup.options, order: contentOrder }).map(option => {
+                {getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(option => {
                   const labelId = `${idPrefix}-${optionGroupIndex}-${option.id}`;
                   return (
                     <div
@@ -203,7 +203,7 @@ export default function VisibleContentPreference({
                         </label>
                         <div {...className('toggle')}>
                           <InternalToggle
-                            checked={isVisible(option.id, value)}
+                            checked={isVisible(option.id, visibleItems)}
                             onChange={() => onToggle(option.id)}
                             disabled={option.editable === false}
                             controlId={labelId}

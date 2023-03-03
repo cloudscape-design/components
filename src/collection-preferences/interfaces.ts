@@ -150,6 +150,7 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
+    customContentOrder?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
 

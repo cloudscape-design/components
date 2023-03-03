@@ -47,3 +47,10 @@ export function areOrdersEqual(order1: Order, order2: Order) {
   }
   return true;
 }
+
+export function getFlatOptionIds(options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup>) {
+  return options.reduce<string[]>(
+    (ids, group) => [...ids, ...group.options.reduce<string[]>((groupIds, option) => [...groupIds, option.id], [])],
+    []
+  );
+}

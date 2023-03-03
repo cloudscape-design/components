@@ -16,6 +16,7 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
+  customContentOrder,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
@@ -23,20 +24,33 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
+  customContentOrder,
   custom,
 });
+
+type CopyPreferenceName = keyof CollectionPreferencesProps.Preferences;
 
 export const mergePreferences = (
   newPref: CollectionPreferencesProps.Preferences,
   oldPref: CollectionPreferencesProps.Preferences
-): CollectionPreferencesProps.Preferences => ({
-  pageSize: newPref.pageSize !== undefined ? newPref.pageSize : oldPref.pageSize,
-  wrapLines: newPref.wrapLines !== undefined ? newPref.wrapLines : oldPref.wrapLines,
-  stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
-  contentDensity: newPref.contentDensity !== undefined ? newPref.contentDensity : oldPref.contentDensity,
-  visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
-  custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
-});
+): CollectionPreferencesProps.Preferences => {
+  const newObj = { ...oldPref };
+  const prefNames: CopyPreferenceName[] = [
+    'pageSize',
+    'wrapLines',
+    'stripedRows',
+    'contentDensity',
+    'visibleContent',
+    'custom',
+    'customContentOrder',
+  ];
+  for (const prefName of prefNames) {
+    if (newPref[prefName] !== undefined) {
+      newObj[prefName] = newPref[prefName];
+    }
+  }
+  return newObj;
+};
 
 interface ModalContentLayoutProps {
   left: React.ReactNode;
