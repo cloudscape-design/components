@@ -164,12 +164,13 @@ export default function VisibleContentPreference({
                     <div
                       key={option.id}
                       className={clsx(
-                        draggedOptionId.current === option.id && className('option-dragged-background').className
+                        className('option').className,
+                        draggedOptionId.current === option.id && className('option-dragged').className
                       )}
                     >
                       <div
                         className={clsx(
-                          className('option').className,
+                          className('option-content').className,
                           reorderContent && styles.draggable,
                           draggedOptionId.current === option.id && styles.dragged
                         )}
