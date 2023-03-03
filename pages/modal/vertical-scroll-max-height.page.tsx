@@ -92,7 +92,6 @@ export default function () {
       enteredTextLabel: (text: string) => `Use: "${text}"`,
     },
     countText: '5 matches',
-    expandToViewport: false,
     filteringOptions: [
       {
         propertyKey: 'instanceid',
@@ -227,6 +226,7 @@ export default function () {
         placeholder="YYYY/MM/DD"
         previousMonthAriaLabel="Previous month"
         todayAriaLabel="Today"
+        expandToViewport={expandToViewport}
       />
       <DateRangePicker
         onChange={({ detail }) => {
@@ -334,6 +334,7 @@ export default function () {
             <ul>
               <li>Popover</li>
               <li>Date Picker</li>
+              <li>Date Range Picker</li>
               <li>Button Dropdown</li>
               <li>Property Filter</li>
               <li>Select</li>
