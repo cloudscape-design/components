@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { Ref } from 'react';
 import { TableProps } from './interfaces';
 import SelectionControl, { SelectionControlProps } from './selection-control';
 import { focusMarkers } from './use-selection';
@@ -28,6 +28,8 @@ export interface TheadProps {
   sortingDisabled: boolean | undefined;
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
+  ref: React.Ref<any>;
+  tableCellRefs: ReadonlyArray<HTMLTableCellElement>;
   resizableColumns: boolean | undefined;
   selectAllProps: SelectionControlProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
@@ -38,9 +40,10 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
-
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  stickyColumns?: ReadonlyArray<string>;
+  cellWidths;
 }
 
 const Thead = React.forwardRef(
@@ -61,10 +64,11 @@ const Thead = React.forwardRef(
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
       stripedRows,
+      stickyColumns,
+      cellWidths,
       sticky = false,
       hidden = false,
       stuck = false,
-
       focusedComponent,
       onFocusedComponentChange,
     }: TheadProps,
@@ -117,17 +121,22 @@ const Thead = React.forwardRef(
             </th>
           )}
           {columnDefinitions.map((column, colIndex) => {
+            const isLastColumn = colIndex === columnDefinitions.length - 1;
+            const isStickyColumn = column.id && stickyColumns?.indexOf(column.id) !== -1 ? 'left' : undefined;
             let widthOverride;
+            // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {
               if (columnWidths) {
                 // use stateful value if available
                 widthOverride = columnWidths[getColumnKey(column, colIndex)];
               }
-              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
+              if (isLastColumn && containerWidth && containerWidth > totalWidth) {
                 // let the last column grow and fill the container width
                 widthOverride = 'auto';
               }
             }
+            const left = isStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto';
+            console.log('LEFT!', left);
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
@@ -136,6 +145,7 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
+                  left: isStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -152,6 +162,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                isStickyColumn={isStickyColumn}
               />
             );
           })}

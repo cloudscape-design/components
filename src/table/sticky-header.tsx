@@ -25,6 +25,8 @@ interface StickyHeaderProps {
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
+  stickyColumns?: ReadonlyArray<string>;
+  cellWidths: any;
 }
 
 export default forwardRef(StickyHeader);
@@ -40,6 +42,8 @@ function StickyHeader(
     tableRef,
     tableHasHeader,
     contentDensity,
+    stickyColumns,
+    cellWidths,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -85,10 +89,12 @@ function StickyHeader(
         ref={secondaryTableRef}
       >
         <Thead
+          focusedComponent={focusedComponent}
+          stickyColumns={stickyColumns}
+          cellWidths={cellWidths}
           ref={secondaryTheadRef}
           sticky={true}
           stuck={isStuck}
-          focusedComponent={focusedComponent}
           {...theadProps}
         />
       </table>

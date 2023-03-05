@@ -60,7 +60,6 @@ function TableCellEditable<ItemType>({
     onFocus: scheduleRestoreScrollPosition,
     'data-inline-editing-active': isEditing.toString(),
   };
-
   useEffectOnUpdate(() => {
     if (!isEditing && editActivateRef.current) {
       editActivateRef.current.focus({ preventScroll: true });
@@ -110,13 +109,18 @@ function TableCellEditable<ItemType>({
   );
 }
 
-export function TableBodyCell<ItemType>({
-  isEditable,
-  ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
+  props: TableBodyCellProps<ItemType> & { isEditable: boolean },
+  ref: React.Ref<any>
+) {
+  const { isEditable, ...rest } = props;
   if (isEditable || rest.isEditing) {
     return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
-}
+  return (
+    <TableTdElement ref={ref} {...rest}>
+      {column.cell(item)}
+    </TableTdElement>
+  );
+});

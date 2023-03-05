@@ -30,30 +30,35 @@ interface TableHeaderCellProps<ItemType> {
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
-
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  isStickyColumn?: 'left' | 'right';
 }
 
-export function TableHeaderCell<ItemType>({
-  className,
-  style,
-  tabIndex,
-  column,
-  activeSortingColumn,
-  sortingDescending,
-  sortingDisabled,
-  wrapLines,
-  focusedComponent,
-  onFocusedComponentChange,
-  hidden,
-  onClick,
-  colIndex,
-  updateColumn,
-  resizableColumns,
-  onResizeFinish,
-  isEditable,
-}: TableHeaderCellProps<ItemType>) {
+export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
+  props: TableHeaderCellProps<ItemType>,
+  ref: React.Ref<any>
+) {
+  const {
+    className,
+    style,
+    tabIndex,
+    column,
+    activeSortingColumn,
+    sortingDescending,
+    sortingDisabled,
+    wrapLines,
+    colIndex,
+    hidden,
+    onFocusedComponentChange,
+    focusedComponent,
+    updateColumn,
+    resizableColumns,
+    onResizeFinish,
+    isEditable,
+    isStickyColumn,
+  } = props;
+
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -74,9 +79,9 @@ export function TableHeaderCell<ItemType>({
       handleClick();
     }
   };
-
+  console.log({ isStickyColumn });
   const headerId = useUniqueId('table-header-');
-
+  console.log({ style, colIndex });
   return (
     <th
       className={clsx(className, {
@@ -87,9 +92,11 @@ export function TableHeaderCell<ItemType>({
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
+        [styles['header-cell-freeze']]: isStickyColumn !== undefined,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
+      ref={ref}
       scope="col"
     >
       <div
@@ -154,4 +161,4 @@ export function TableHeaderCell<ItemType>({
       )}
     </th>
   );
-}
+});

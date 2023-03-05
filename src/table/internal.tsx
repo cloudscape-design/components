@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useEffect, useRef, useState, Ref, forwardRef, createRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -34,10 +34,11 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
-const InternalTable = React.forwardRef(
+const InternalTable = forwardRef(
   <T,>(
     {
       header,
@@ -61,6 +62,7 @@ const InternalTable = React.forwardRef(
       sortingDescending,
       sortingDisabled,
       visibleColumns,
+      stickyColumns,
       stickyHeader,
       stickyHeaderVerticalOffset,
       onRowClick,
@@ -79,7 +81,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       ...rest
     }: InternalTableProps<T>,
-    ref: React.Ref<TableProps.Ref>
+    ref: Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
@@ -92,10 +94,17 @@ const InternalTable = React.forwardRef(
     const tableRefObject = useRef(null);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
-    const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
+    const secondaryWrapperRef = useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
-    const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
-    const scrollbarRef = React.useRef<HTMLDivElement>(null);
+    const stickyHeaderRef = useRef<StickyHeaderRef>(null);
+    const scrollbarRef = useRef<HTMLDivElement>(null);
+
+    // Sticky columns
+    const [tableCellRefs, setTableCellRefs] = useState<React.Ref<HTMLTableCellElement>[]>([]);
+    const [cellWidths, setCellWidths] = useState<number[]>([]);
+    const [rightCellWidths, setRightCellWidths] = useState<number[]>([]);
+
+    // Inline editing
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
@@ -118,6 +127,35 @@ const InternalTable = React.forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
+    const visibleColumnsLength = visibleColumnDefinitions.length;
+
+    useEffect(() => {
+      // add or remove refs
+      setTableCellRefs(tableCellRefs =>
+        [...new Array(visibleColumnsLength)].map(
+          (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
+        )
+      );
+    }, [visibleColumnsLength]);
+
+    const getCellWidths = tableCellRefs => {
+      let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
+      widthsArray = widthsArray.filter(x => x);
+      widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+
+      let rightWidthsArray = tableCellRefs.map(ref => ref.current?.nextSibling?.offsetWidth);
+      rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
+      rightWidthsArray = rightWidthsArray
+        .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+        .reverse();
+
+      setCellWidths([0, ...widthsArray]);
+      setRightCellWidths([...rightWidthsArray, 0]);
+    };
+    useEffect(() => {
+      getCellWidths(tableCellRefs);
+    }, [tableCellRefs]);
+
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -170,6 +208,7 @@ const InternalTable = React.forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
+          stickyColumns && stickyColumns.length > 0 && getCellWidths(tableCellRefs);
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
@@ -202,7 +241,6 @@ const InternalTable = React.forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -238,6 +276,8 @@ const InternalTable = React.forwardRef(
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
                   contentDensity={contentDensity}
+                  stickyColumns={stickyColumns}
+                  cellWidths={cellWidths}
                 />
               )}
             </>
@@ -290,6 +330,11 @@ const InternalTable = React.forwardRef(
                 ref={theadRef}
                 hidden={stickyHeader}
                 onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
+                onCellFocus={colIndex => stickyHeaderRef.current?.setFocusedColumn(colIndex)}
+                onCellBlur={() => stickyHeaderRef.current?.setFocusedColumn(null)}
+                hidden={stickyHeader}
+                stickyColumns={stickyColumns}
+                cellWidths={cellWidths}
                 {...theadProps}
               />
               <tbody>
@@ -364,25 +409,56 @@ const InternalTable = React.forwardRef(
                             />
                           </TableTdElement>
                         )}
+                        {console.log(tableCellRefs)}
                         {visibleColumnDefinitions.map((column, colIndex) => {
+                          const currentCell = tableCellRefs[colIndex]?.current;
+                          const nextSibling = currentCell?.nextSibling as HTMLElement | undefined;
+                          console.log(cellWidths[colIndex]);
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
+
+                          const isSticky =
+                            stickyColumns?.length > 0 && !!column.id
+                              ? stickyColumns?.indexOf(column.id) !== -1 && 'left'
+                              : undefined;
+
+                          console.log('nextSibling?.style.left', nextSibling?.style.left);
+                          console.log('currentCell?.style.left', currentCell?.style.left);
+
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
-                                  ? {}
+                                  ? {
+                                      left:
+                                        column.id && stickyColumns?.indexOf(column.id) !== -1
+                                          ? `${cellWidths[colIndex]}px`
+                                          : 'auto',
+                                      boxShadow:
+                                        nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
+                                          ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
+                                          : 'none',
+                                    }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
+                                      left:
+                                        column.id && stickyColumns?.indexOf(column.id) !== -1
+                                          ? `${cellWidths[colIndex]}px`
+                                          : 'auto',
+                                      boxShadow:
+                                        nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
+                                          ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
+                                          : 'none',
                                     }
                               }
                               ariaLabels={ariaLabels}
                               column={column}
                               item={item}
+                              ref={tableCellRefs[colIndex]}
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}
@@ -391,6 +467,7 @@ const InternalTable = React.forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
+                              isStickyColumn={isSticky}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});

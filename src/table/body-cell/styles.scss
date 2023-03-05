@@ -101,6 +101,10 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
     }
   }
+  &-freeze {
+    position: sticky;
+    background: awsui.$color-background-container-content;
+  }
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {

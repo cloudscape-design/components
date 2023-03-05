@@ -20,6 +20,11 @@
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
+  &-freeze {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 1;
+  }
   &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
   }

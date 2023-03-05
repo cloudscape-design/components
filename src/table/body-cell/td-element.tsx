@@ -21,6 +21,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
+  isStickyColumn?: 'left' | 'right';
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -42,6 +43,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isVisualRefresh,
       hasSelection,
       hasFooter,
+      isStickyColumn,
     },
     ref
   ) => {
@@ -61,7 +63,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
-          hasFooter && styles['has-footer']
+          hasFooter && styles['has-footer'],
+          isStickyColumn && styles['body-cell-freeze']
         )}
         onClick={onClick}
         ref={ref}
