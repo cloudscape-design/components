@@ -236,7 +236,6 @@ export default () => {
           header={<Header>Table with 3 sticky columns</Header>}
         />
         <Table
-          stickyColumns={['variable', 'alt']}
           resizableColumns={true}
           columnDefinitions={[
             {

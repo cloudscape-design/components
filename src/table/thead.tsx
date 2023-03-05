@@ -122,7 +122,8 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const isStickyColumn = column.id && stickyColumns?.indexOf(column.id) !== -1 ? 'left' : undefined;
+            const isStickyColumn =
+              column.id && !!stickyColumns && stickyColumns?.indexOf(column.id) !== -1 ? 'left' : undefined;
             let widthOverride;
             // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {

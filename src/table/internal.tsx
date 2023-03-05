@@ -413,13 +413,12 @@ const InternalTable = forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const currentCell = tableCellRefs[colIndex]?.current;
                           const nextSibling = currentCell?.nextSibling as HTMLElement | undefined;
-                          console.log(cellWidths[colIndex]);
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
                           const isSticky =
-                            stickyColumns?.length > 0 && !!column.id
+                            stickyColumns && stickyColumns?.length > 0 && !!column.id
                               ? stickyColumns?.indexOf(column.id) !== -1 && 'left'
                               : undefined;
 
