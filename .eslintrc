@@ -77,12 +77,6 @@
   "env": {
     "browser": true
   },
-  "globals": {
-    // it is a part of es6, but supported in IE11
-    "Set": true,
-    "Map": true,
-    "WeakMap": true
-  },
   "overrides": [
     {
       "files": ["*.js", "build-tools/**"],
