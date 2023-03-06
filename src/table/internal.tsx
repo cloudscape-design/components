@@ -289,8 +289,7 @@ const InternalTable = React.forwardRef(
               <Thead
                 ref={theadRef}
                 hidden={stickyHeader}
-                onCellFocus={colIndex => stickyHeaderRef.current?.setFocusedColumn(colIndex)}
-                onCellBlur={() => stickyHeaderRef.current?.setFocusedColumn(null)}
+                onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
                 {...theadProps}
               />
               <tbody>

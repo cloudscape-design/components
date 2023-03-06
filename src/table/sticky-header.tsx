@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { TableProps } from './interfaces';
-import Thead, { TheadProps } from './thead';
+import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
@@ -12,7 +12,7 @@ import { getVisualContextClassname } from '../internal/components/visual-context
 export interface StickyHeaderRef {
   scrollToTop(): void;
   scrollToRow(node: null | HTMLElement): void;
-  setFocusedColumn(columnIndex: null | number): void;
+  setFocus(element: InteractiveComponent | null): void;
 }
 
 interface StickyHeaderProps {
@@ -47,7 +47,7 @@ function StickyHeader(
   const secondaryTableRef = useRef<HTMLTableElement>(null);
   const { isStuck } = useContext(StickyHeaderContext);
 
-  const [focusedColumn, setFocusedColumn] = useState<number | null>(null);
+  const [focusedComponent, setFocusedComponent] = useState<InteractiveComponent | null>(null);
   const { scrollToRow, scrollToTop } = useStickyHeader(
     tableRef,
     theadRef,
@@ -56,7 +56,11 @@ function StickyHeader(
     wrapperRef
   );
 
-  useImperativeHandle(ref, () => ({ scrollToTop, scrollToRow, setFocusedColumn }));
+  useImperativeHandle(ref, () => ({
+    scrollToTop,
+    scrollToRow,
+    setFocus: setFocusedComponent,
+  }));
 
   return (
     <div
@@ -80,7 +84,13 @@ function StickyHeader(
         role="table"
         ref={secondaryTableRef}
       >
-        <Thead ref={secondaryTheadRef} sticky={true} stuck={isStuck} showFocusRing={focusedColumn} {...theadProps} />
+        <Thead
+          ref={secondaryTheadRef}
+          sticky={true}
+          stuck={isStuck}
+          focusedComponent={focusedComponent}
+          {...theadProps}
+        />
       </table>
     </div>
   );

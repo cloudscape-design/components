@@ -11,6 +11,7 @@ export interface AbstractSwitchProps extends React.HTMLAttributes<HTMLElement>, 
   controlId?: string;
   controlClassName: string;
   outlineClassName: string;
+  showOutline?: boolean;
   disabled?: boolean;
   nativeControl: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactElement;
   styledControl: React.ReactElement;
@@ -31,6 +32,7 @@ export default function AbstractSwitch({
   controlId,
   controlClassName,
   outlineClassName,
+  showOutline,
   disabled,
   nativeControl,
   styledControl,
@@ -85,7 +87,7 @@ export default function AbstractSwitch({
             'aria-labelledby': ariaLabelledByIds.length ? joinString(ariaLabelledByIds) : undefined,
             'aria-label': ariaLabel,
           })}
-          <span className={clsx(styles.outline, outlineClassName)} />
+          <span className={clsx(styles.outline, outlineClassName, showOutline && styles['show-outline'])} />
         </span>
         <span className={clsx(styles.content, !label && !description && styles['empty-content'])}>
           {label && (

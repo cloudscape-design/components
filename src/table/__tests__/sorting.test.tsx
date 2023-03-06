@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';
+import tableStyles from '../../../lib/components/table/styles.css.js';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
@@ -35,6 +37,10 @@ function renderTable(jsx: React.ReactElement) {
   const { container, rerender, getByTestId, queryByTestId } = render(jsx);
   const wrapper = createWrapper(container).findTable()!;
   return { wrapper, rerender, getByTestId, queryByTestId };
+}
+
+function findNativeTable(wrapper: TableWrapper) {
+  return wrapper.find(`.${tableStyles.wrapper} table`);
 }
 
 function getHeaderCell(wrapper: TableWrapper, idx: number) {
@@ -215,6 +221,46 @@ test('removes the button when disabled', () => {
   );
   assertColumnSorted(wrapper, 1, false);
   expect(wrapper.findColumnSortingArea(3)).toBeFalsy();
+});
+
+describe('with stickyHeader=true', () => {
+  const originalFn = window.CSS.supports;
+
+  beforeEach(() => {
+    window.CSS.supports = jest.fn().mockReturnValue(true);
+  });
+  afterEach(() => {
+    window.CSS.supports = originalFn;
+  });
+
+  test('renders a fake focus ring on sort control when the hidden sort button is focused', () => {
+    const { wrapper } = renderTable(
+      <Table
+        columnDefinitions={defaultColumns}
+        items={defaultItems}
+        sortingColumn={defaultColumns[0]}
+        stickyHeader={true}
+      />
+    );
+    findNativeTable(wrapper)!.findByClassName(headerCellStyles['header-cell-content'])!.focus();
+    fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
+    expect(wrapper.findByClassName(headerCellStyles['header-cell-fake-focus'])).not.toBeFalsy();
+  });
+
+  test('renders a fake focus ring on resizer when the hidden sort button is focused', () => {
+    const { wrapper } = renderTable(
+      <Table
+        columnDefinitions={defaultColumns}
+        items={defaultItems}
+        sortingColumn={defaultColumns[0]}
+        stickyHeader={true}
+        resizableColumns={true}
+      />
+    );
+    findNativeTable(wrapper)!.findByClassName(resizerStyles.resizer)!.focus();
+    fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
+    expect(wrapper.findByClassName(resizerStyles['has-focus'])).not.toBeFalsy();
+  });
 });
 
 test('matches currently sorted column, when `sortingColumn` value is a copy of the column object', () => {

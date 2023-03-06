@@ -10,6 +10,7 @@ import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './u
 import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { InteractiveComponent } from '../thead';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -20,7 +21,6 @@ interface TableHeaderCellProps<ItemType> {
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
   wrapLines?: boolean;
-  showFocusRing: boolean;
   hidden?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
@@ -30,6 +30,9 @@ interface TableHeaderCellProps<ItemType> {
   onBlur?: () => void;
   resizableColumns?: boolean;
   isEditable?: boolean;
+
+  focusedComponent?: InteractiveComponent | null;
+  onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -41,12 +44,11 @@ export function TableHeaderCell<ItemType>({
   sortingDescending,
   sortingDisabled,
   wrapLines,
-  showFocusRing,
+  focusedComponent,
+  onFocusedComponentChange,
   hidden,
   onClick,
   colIndex,
-  onFocus,
-  onBlur,
   updateColumn,
   resizableColumns,
   onResizeFinish,
@@ -92,7 +94,10 @@ export function TableHeaderCell<ItemType>({
     >
       <div
         className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]: showFocusRing && focusVisible['data-awsui-focus-visible'],
+          [styles['header-cell-fake-focus']]:
+            focusedComponent?.type === 'column' &&
+            focusedComponent.col === colIndex &&
+            focusVisible['data-awsui-focus-visible'],
         })}
         aria-label={
           column.ariaLabel
@@ -111,8 +116,8 @@ export function TableHeaderCell<ItemType>({
               role: 'button',
               ...focusVisible,
               onClick: handleClick,
-              onFocus,
-              onBlur,
+              onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
+              onBlur: () => onFocusedComponentChange?.(null),
             })}
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
@@ -132,9 +137,17 @@ export function TableHeaderCell<ItemType>({
       {resizableColumns && (
         <>
           <Resizer
+            tabIndex={tabIndex}
+            showFocusRing={
+              focusedComponent?.type === 'resizer' &&
+              focusedComponent.col === colIndex &&
+              focusVisible['data-awsui-focus-visible']
+            }
             onDragMove={newWidth => updateColumn(colIndex, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
+            onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}
+            onBlur={() => onFocusedComponentChange?.(null)}
             minWidth={typeof column.minWidth === 'string' ? parseInt(column.minWidth) : column.minWidth}
           />
         </>

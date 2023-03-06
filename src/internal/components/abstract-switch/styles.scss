@@ -15,11 +15,13 @@
 
 .outline {
   display: none;
+  &.show-outline {
+    display: block;
+  }
 }
 
 .native-input {
   @include focus-visible.when-visible {
-    /* stylelint-disable-next-line selector-max-type, @cloudscape-design/no-implicit-descendant */
     & + .outline {
       display: block;
     }
