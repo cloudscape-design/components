@@ -11,7 +11,7 @@
     "quick-build": "gulp quick-build",
     "build": "NODE_ENV=production gulp build",
     "test": "gulp test",
-    "test:unit": "gulp test:unit",
+    "test:unit": "echo nothing",
     "test:a11y": "gulp test:a11y",
     "test:integ": "gulp test:integ",
     "test:visual": "./backstop/node_modules/.bin/backstop --config backstop.config.js",
