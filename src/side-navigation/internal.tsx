@@ -79,7 +79,7 @@ export function ItemList({ variant, items, activeHref, fireChange, fireFollow }:
     <ul className={clsx(styles.list, styles[`list-variant-${variant}`])}>
       {items.map((item, i) => (
         <li key={i} className={styles['list-item']} role={item.type === 'divider' ? 'presentation' : 'listitem'}>
-          {item.type === 'divider' && <Divider variant="default" />}
+          {item.type === 'divider' && <Divider isPresentational={true} variant="default" />}
           {item.type === 'link' && (
             <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
           )}
