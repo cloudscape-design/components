@@ -54,6 +54,7 @@ export const TabButton = React.forwardRef(
           [styles['tab-button--disabled']]: disabled,
           [styles['tab-button--refresh']]: isRefresh,
         })}
+        type="button"
         onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
