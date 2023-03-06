@@ -1,14 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalToggle from '../toggle/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
+import InternalIcon from '../icon/internal';
+import clsx from 'clsx';
 
-const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
+// const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
 interface ClassNameProps {
   className: string;
@@ -20,53 +31,65 @@ const className = (suffix: string): ClassNameProps => ({
 interface VisibleContentPreferenceProps extends CollectionPreferencesProps.VisibleContentPreference {
   onChange: (value: ReadonlyArray<string>) => void;
   value?: ReadonlyArray<string>;
+  multiColumnVisibleContent: boolean;
+}
+
+function SortableItem({ option }: { option: CollectionPreferencesProps.VisibleContentOption }) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} {...className('option')} style={style}>
+      <span {...attributes} {...listeners} {...className('drag-handle')}>
+        <InternalIcon name="menu" variant="subtle" />
+      </span>
+      <label {...className('option-label')}>{option.label}</label>
+      <div {...className('toggle')}>
+        <InternalToggle
+          // checked={isVisible(option.id, value)}
+          checked={true}
+          // onChange={() => onToggle(option.id)}
+          disabled={option.editable === false}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default function VisibleContentPreference({
   title,
   options,
+  multiColumnVisibleContent,
+}: /*
   value = [],
-  onChange,
-}: VisibleContentPreferenceProps) {
+   onChange,
+  */
+VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
 
-  const flatOptionsIds = options.reduce<string[]>(
-    (ids, group) => [...ids, ...group.options.reduce<string[]>((groupIds, option) => [...groupIds, option.id], [])],
+  const flatOptions = options.reduce<Array<CollectionPreferencesProps.VisibleContentOption>>(
+    (options, group) => [
+      ...options,
+      ...group.options.reduce<Array<CollectionPreferencesProps.VisibleContentOption>>(
+        (groupOptions, option) => [...groupOptions, option],
+        []
+      ),
+    ],
     []
   );
 
-  const onToggle = (id: string) => {
-    if (!isVisible(id, value)) {
-      onChange(
-        [...value, id].sort((firstId, secondId) => flatOptionsIds.indexOf(firstId) - flatOptionsIds.indexOf(secondId))
-      );
-    } else {
-      onChange(value.filter(currentId => currentId !== id));
-    }
-  };
+  const [sortedOptions, setSortedOptions] = useState(flatOptions);
 
-  const selectionOption = (
-    option: CollectionPreferencesProps.VisibleContentOption,
-    optionGroupIndex: number,
-    optionIndex: number
-  ) => {
-    const labelId = `${idPrefix}-${optionGroupIndex}-${optionIndex}`;
-    return (
-      <div key={optionIndex} {...className('option')}>
-        <label {...className('option-label')} htmlFor={labelId}>
-          {option.label}
-        </label>
-        <div {...className('toggle')}>
-          <InternalToggle
-            checked={isVisible(option.id, value)}
-            onChange={() => onToggle(option.id)}
-            disabled={option.editable === false}
-            controlId={labelId}
-          />
-        </div>
-      </div>
-    );
-  };
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const outerGroupLabelId = `${idPrefix}-outer`;
   return (
@@ -78,21 +101,34 @@ export default function VisibleContentPreference({
         {options.map((optionGroup, optionGroupIndex) => {
           const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
           return (
-            <div
+            <DndContext
               key={optionGroupIndex}
-              {...className('group')}
-              role="group"
-              aria-labelledby={`${outerGroupLabelId} ${groupLabelId}`}
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={event => {
+                const { active, over } = event;
+
+                if (over && active.id !== over.id) {
+                  setSortedOptions(items => {
+                    const oldIndex = items.findIndex(option => option.id === active.id);
+                    const newIndex = items.findIndex(option => option.id === over.id);
+
+                    return arrayMove(items, oldIndex, newIndex);
+                  });
+                }
+              }}
             >
               <div {...className('group-label')} id={groupLabelId}>
                 {optionGroup.label}
               </div>
-              <div>
-                {optionGroup.options.map((option, optionIndex) =>
-                  selectionOption(option, optionGroupIndex, optionIndex)
-                )}
-              </div>
-            </div>
+              <SortableContext items={sortedOptions} strategy={verticalListSortingStrategy}>
+                <div className={clsx(multiColumnVisibleContent && styles['multi-columns'])}>
+                  {sortedOptions.map(option => (
+                    <SortableItem key={option.id} option={option} />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           );
         })}
       </InternalSpaceBetween>

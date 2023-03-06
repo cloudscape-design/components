@@ -42,6 +42,8 @@ export default function CollectionPreferences({
   contentDensityPreference,
   preferences,
   customPreference,
+  stickyModalFooter = false,
+  multiColumnVisibleContent = false,
   ...rest
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
@@ -102,6 +104,7 @@ export default function CollectionPreferences({
           className={styles['modal-root']}
           visible={true}
           header={title}
+          stickyFooter={stickyModalFooter}
           footer={
             <InternalBox float="right">
               <InternalSpaceBetween direction="horizontal" size="xs">
@@ -129,6 +132,7 @@ export default function CollectionPreferences({
           onDismiss={onCancelListener}
         >
           <ModalContentLayout
+            multiColumnVisibleContent={multiColumnVisibleContent}
             left={
               hasLeftContent && (
                 <InternalSpaceBetween size="l">
@@ -173,6 +177,7 @@ export default function CollectionPreferences({
             right={
               visibleContentPreference && (
                 <VisibleContentPreference
+                  multiColumnVisibleContent={multiColumnVisibleContent}
                   value={temporaryPreferences.visibleContent}
                   {...visibleContentPreference}
                   onChange={visibleContent => onChange({ visibleContent })}

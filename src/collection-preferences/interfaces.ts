@@ -20,6 +20,11 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * Determines whether the preferences trigger button is disabled.
    */
   disabled?: boolean;
+
+  stickyModalFooter?: boolean;
+
+  multiColumnVisibleContent?: boolean;
+
   /**
    * Configures the built-in "page size selection" preference.
    *

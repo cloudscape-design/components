@@ -48,6 +48,8 @@ export interface ModalProps extends BaseComponentProps {
    * If a modal root isn't provided, the modal will render to an element under `document.body`.
    */
   modalRoot?: HTMLElement;
+
+  stickyFooter?: boolean;
 }
 
 export namespace ModalProps {

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import InternalCheckbox from '../checkbox/internal';
-import InternalColumnLayout from '../column-layout/internal';
+import InternalGrid from '../grid/internal';
 import InternalFormField from '../form-field/internal';
 import InternalRadioGroup from '../radio-group/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -41,9 +41,10 @@ export const mergePreferences = (
 interface ModalContentLayoutProps {
   left: React.ReactNode;
   right: React.ReactNode;
+  multiColumnVisibleContent?: boolean;
 }
 
-export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => {
+export const ModalContentLayout = ({ left, right, multiColumnVisibleContent = false }: ModalContentLayoutProps) => {
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const smallContainer = breakpoint === 'default';
 
@@ -59,10 +60,18 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
   const columns = left && right ? 2 : 1;
   return (
     <div ref={ref}>
-      <InternalColumnLayout columns={columns} variant="text-grid">
+      <InternalGrid
+        gridDefinition={
+          columns === 1
+            ? [{ colspan: 12 }]
+            : multiColumnVisibleContent
+            ? [{ colspan: 3 }, { colspan: 9 }]
+            : [{ colspan: 6 }, { colspan: 6 }]
+        }
+      >
         {left && <div>{left}</div>}
         {right && <div>{right}</div>}
-      </InternalColumnLayout>
+      </InternalGrid>
     </div>
   );
 };

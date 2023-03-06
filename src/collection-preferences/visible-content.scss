@@ -31,7 +31,8 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-l;
+  // padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-l;
+  padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-xs;
   border-bottom: $border;
   &:last-child {
     border-bottom: none;
@@ -43,4 +44,13 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   text-overflow: ellipsis;
   padding-right: awsui.$space-l;
   flex-grow: 1;
+}
+
+.visible-content-drag-handle {
+  cursor: pointer;
+  margin-right: awsui.$space-xs;
+}
+
+.multi-columns {
+  columns: 2;
 }

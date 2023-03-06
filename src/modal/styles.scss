@@ -112,6 +112,13 @@ $modal-z-index: 5000;
     display: table;
     clear: both;
   }
+
+  &.footer--sticky {
+    position: sticky;
+    bottom: 0;
+    background-color: awsui.$color-background-container-content;
+    border-radius: 0 0 awsui.$border-radius-container awsui.$border-radius-container;
+  }
 }
 
 .dismiss-control {
