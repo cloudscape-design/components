@@ -4686,7 +4686,7 @@ Don't use read-only inputs outside a form.
       "type": "boolean",
     },
     Object {
-      "description": "Specifies the text entered into the form element.",
+      "description": "The current input value, in YYYY-MM-DD format.",
       "name": "value",
       "optional": false,
       "type": "string",
