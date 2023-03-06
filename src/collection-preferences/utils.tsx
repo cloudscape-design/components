@@ -166,3 +166,11 @@ export const CustomPreference = ({ value, customPreference, onChange }: CustomPr
   }
   return null;
 };
+
+interface ClassNameProps {
+  className: string;
+}
+
+export const className = (suffix: string): ClassNameProps => ({
+  className: styles[`visible-content-${suffix}`],
+});
