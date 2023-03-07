@@ -20,6 +20,7 @@ $drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{awsui.$space-
   display: flex;
   flex-direction: column;
   position: relative;
+  color: awsui.$color-text-body-default;
 }
 
 .root-no-scroll {
