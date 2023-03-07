@@ -40,14 +40,10 @@ describe('SideNavigation', () => {
 
   it('renders dividers', () => {
     const wrapper = renderSideNavigation({
-      items: [
-        { type: 'link', text: 'Page 1', href: '#something' },
-        { type: 'divider' },
-        { type: 'link', text: 'Page 2', href: '#something-else' },
-      ],
+      items: [{ type: 'divider' }],
     });
 
-    expect(wrapper.findItemByIndex(2)!.findDivider()).toBeTruthy();
+    expect(wrapper.findItemByIndex(1)?.findDivider()).toBeTruthy();
   });
 
   it('re-renders different section types correctly', () => {
