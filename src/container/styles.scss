@@ -11,10 +11,10 @@
   @include styles.styles-reset;
   word-wrap: break-word;
   position: relative;
-  display: flex;
-  flex-direction: column;
 
   &.fit-height {
+    display: flex;
+    flex-direction: column;
     height: 100%;
   }
 
