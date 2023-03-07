@@ -3,6 +3,26 @@
 import { StyleDictionary } from '../../utils/interfaces';
 
 const metadata: StyleDictionary.MetadataIndex = {
+  colorBackgroundButtonNormalActive: {
+    description: 'The background color of normal buttons in active state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDefault: {
+    description: 'The default background color of normal buttons.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalDisabled: {
+    description: 'The background color of normal buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
+  colorBackgroundButtonNormalHover: {
+    description: 'The background color of normal buttons in hover state.',
+    themeable: true,
+    public: true,
+  },
   colorBackgroundButtonPrimaryActive: {
     description: 'The background color of primary buttons in active state.',
     themeable: true,
