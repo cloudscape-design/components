@@ -47,7 +47,7 @@ describe('SideNavigation', () => {
       ],
     });
 
-    expect(wrapper.findItemByIndex(2)?.findDivider()).toBeTruthy();
+    expect(wrapper.findItemByIndex(2)!.findDivider()).toBeTruthy();
   });
 
   it('re-renders different section types correctly', () => {
