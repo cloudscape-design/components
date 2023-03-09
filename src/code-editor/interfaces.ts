@@ -165,4 +165,11 @@ export namespace CodeEditorProps {
   export interface ValidateDetail {
     annotations: Ace.Annotation[];
   }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the code editor control.
+     */
+    focus(): void;
+  }
 }

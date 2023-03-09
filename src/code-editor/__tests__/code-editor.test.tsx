@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '../../internal/keycode';
-import CodeEditor from '../../../lib/components/code-editor';
+import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import {
   aceMock,
   editorMock,
@@ -34,6 +34,13 @@ describe('Code editor component', () => {
     const { wrapper } = renderCodeEditor({ loading: true });
     expect(wrapper.findLoadingScreen()).toBeDefined();
     expect(wrapper.findLoadingScreen()!.getElement()).toHaveTextContent('Loading code editor');
+  });
+
+  it('allows programmatically to be focused', () => {
+    const ref = React.createRef<CodeEditorProps.Ref>();
+    const { wrapper } = renderCodeEditor({}, ref);
+    ref.current!.focus();
+    expect(wrapper.findEditor()?.getElement()).toHaveFocus();
   });
 
   it('displays error screen', () => {
