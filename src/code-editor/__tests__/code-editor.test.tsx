@@ -16,6 +16,7 @@ import styles from '../../../lib/components/code-editor/styles.css.js';
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -347,6 +348,30 @@ describe('Code editor component', () => {
 
     expect(editorMock.focus).toHaveBeenCalledTimes(1);
     expect(editorMock.gotoLine).toHaveBeenCalledWith(2, 1, false);
+  });
+
+  it('does not submit a parent `form` when clicking errors', () => {
+    editorMock.session.getAnnotations.mockReturnValueOnce([{ type: 'error' }]);
+
+    const onSubmit = jest.fn((e: React.FormEvent<HTMLFormElement>) => {
+      // JSDOM doesn't support form submissions, so we need to call preventDefault.
+      e.preventDefault();
+      // jest.fn accesses the event multiple times to print invocation logs on failure.
+      e.persist();
+    });
+
+    const { container } = render(
+      <form data-testid="form" onSubmit={onSubmit}>
+        <CodeEditor {...defaultProps} />
+      </form>
+    );
+    const wrapper = createWrapper(container).findCodeEditor()!;
+
+    act(() => emulateAceAnnotationEvent!());
+
+    wrapper.findErrorsTab()!.click();
+
+    expect(onSubmit).not.toBeCalled();
   });
 
   it('closes the Pane on ESC', () => {
