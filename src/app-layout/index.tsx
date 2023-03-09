@@ -337,6 +337,9 @@ const OldAppLayout = React.forwardRef(
     const contentWrapperProps: ContentWrapperProps = {
       contentType,
       navigationPadding: navigationHide || !!navigationOpen,
+      contentWidthStyles: !isMobile
+        ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
+        : undefined,
       toolsPadding:
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
@@ -371,10 +374,6 @@ const OldAppLayout = React.forwardRef(
         : splitPanelOpen
         ? splitPanelReportedSize
         : splitPanelReportedHeaderHeight) ?? undefined;
-
-    const contentWidthStyles = !isMobile
-      ? { minWidth: defaults.minContentWidth, maxWidth: defaults.maxContentWidth }
-      : undefined;
 
     const toolsDrawerWidth = (() => {
       if (isMobile) {
@@ -464,11 +463,9 @@ const OldAppLayout = React.forwardRef(
                   </Notifications>
                 )}
                 {((!isMobile && breadcrumbs) || contentHeader) && (
-                  <ContentWrapper {...contentWrapperProps} contentWidthStyles={contentWidthStyles}>
+                  <ContentWrapper {...contentWrapperProps}>
                     {!isMobile && breadcrumbs && (
-                      <div
-                        className={clsx(styles.breadcrumbs, testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}
-                      >
+                      <div className={clsx(testutilStyles.breadcrumbs, styles['breadcrumbs-desktop'])}>
                         {breadcrumbs}
                       </div>
                     )}
@@ -499,6 +496,8 @@ const OldAppLayout = React.forwardRef(
                       (isMobile || !breadcrumbs) &&
                       !contentHeader &&
                       styles['content-extra-top-padding'],
+                    testutilStyles.content,
+                    !disableContentHeaderOverlap && contentHeader && styles['content-overlapped'],
                     !hasRenderedNotifications &&
                       !breadcrumbs &&
                       !isMobile &&
@@ -506,26 +505,17 @@ const OldAppLayout = React.forwardRef(
                       styles['content-wrapper-first-child']
                   )}
                 >
-                  <div
-                    className={clsx(
-                      styles.content,
-                      testutilStyles.content,
-                      !disableContentHeaderOverlap && contentHeader && styles['content-overlapped']
-                    )}
-                    style={contentWidthStyles}
+                  <AppLayoutContext.Provider
+                    value={{
+                      stickyOffsetTop:
+                        (disableBodyScroll ? 0 : headerHeight) +
+                        (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                      stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                      hasBreadcrumbs: !!breadcrumbs,
+                    }}
                   >
-                    <AppLayoutContext.Provider
-                      value={{
-                        stickyOffsetTop:
-                          (disableBodyScroll ? 0 : headerHeight) +
-                          (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
-                        stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
-                        hasBreadcrumbs: !!breadcrumbs,
-                      }}
-                    >
-                      {content}
-                    </AppLayoutContext.Provider>
-                  </div>
+                    {content}
+                  </AppLayoutContext.Provider>
                 </ContentWrapper>
               </div>
               {finalSplitPanePosition === 'bottom' && splitPanelWrapped}

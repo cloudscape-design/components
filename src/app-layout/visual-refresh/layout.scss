@@ -56,6 +56,13 @@
         #{custom-props.$defaultMaxContentWidth}: $width;
       }
     }
+    &.content-type-dashboard {
+      @each $breakpoint, $width in constants.$dashboard-content-widths {
+        @include styles.media-breakpoint-up($breakpoint) {
+          #{custom-props.$defaultMaxContentWidth}: $width;
+        }
+      }
+    }
   }
 
   /*

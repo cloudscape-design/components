@@ -41,16 +41,15 @@ const ContentWrapper = React.forwardRef(
       <div
         ref={ref}
         className={clsx(
-          className,
           styles['content-wrapper'],
-          styles[`content-type-${contentType}`],
           !navigationPadding && styles['content-wrapper-no-navigation-padding'],
           !toolsPadding && styles['content-wrapper-no-tools-padding'],
           isMobile && styles['content-wrapper-mobile']
         )}
-        style={contentWidthStyles}
       >
-        {children}
+        <div style={contentWidthStyles} className={clsx(className, styles[`content-type-${contentType}`])}>
+          {children}
+        </div>
       </div>
     );
   }
