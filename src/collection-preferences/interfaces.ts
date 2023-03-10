@@ -164,9 +164,6 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndStarted: string;
     liveAnnouncementDndItemReordered: (position: number) => string;
     liveAnnouncementDndDiscarded: string;
-    navigationAriaLabel?: string;
-    navigationAriaDescription?: string;
-    navigationItemAriaLabel?: string;
   }
 
   export interface VisibleContentOptionsGroup {
