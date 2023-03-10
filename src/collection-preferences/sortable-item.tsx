@@ -38,8 +38,8 @@ export function SortableItem({
         style={style}
       >
         {reorderContent && (
-          <div {...listeners}>
-            <DragHandle ariaLabelledBy={''} ariaDescribedBy={''} />
+          <div {...listeners} {...className('drag-handle-wrapper')}>
+            <DragHandle ariaLabelledBy={''} ariaDescribedBy={''} {...listeners} />
           </div>
         )}
         <label {...className('option-label')} htmlFor={labelId}>
