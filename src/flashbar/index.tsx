@@ -7,6 +7,7 @@ import CollapsibleFlashbar from './collapsible-flashbar';
 import NonCollapsibleFlashbar from './non-collapsible-flashbar';
 
 import { sendRenderMetric } from './internal/analytics';
+import { useI18nStrings } from '../internal/i18n/use-i18n-strings';
 
 export { FlashbarProps };
 
@@ -17,10 +18,11 @@ export default function Flashbar(props: FlashbarProps) {
     }
   }, [props.items]);
 
+  const propsWithI18n = useI18nStrings('flashbar', props);
   if (props.stackItems) {
-    return <CollapsibleFlashbar {...props} />;
+    return <CollapsibleFlashbar {...propsWithI18n} />;
   } else {
-    return <NonCollapsibleFlashbar {...props} />;
+    return <NonCollapsibleFlashbar {...propsWithI18n} />;
   }
 }
 

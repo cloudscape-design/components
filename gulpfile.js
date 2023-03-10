@@ -16,6 +16,7 @@ const {
   buildPages,
   testUtils,
   a11y,
+  generateI18nMessages,
   integ,
   licenses,
   themeableSource,
@@ -24,7 +25,7 @@ const {
 
 const quickBuild = series(
   clean,
-  parallel(packageJSON, generateEnvironment, generateIcons, generateIndexFile, licenses),
+  parallel(packageJSON, generateI18nMessages, generateEnvironment, generateIcons, generateIndexFile, licenses),
   parallel(generateCustomCssPropertiesMap, styles, typescript, testUtils)
 );
 
@@ -35,6 +36,8 @@ exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
+
+exports.i18n = generateI18nMessages;
 
 exports.watch = () => {
   watch(
@@ -48,6 +51,7 @@ exports.watch = () => {
     ],
     typescript
   );
+  watch(['src/internal/i18n/messages/*.json'], generateI18nMessages);
   watch(['src/test-utils/dom/**/*.ts', '!src/test-utils/dom/index.ts'], testUtils);
   watch(['style-dictionary/**/*.ts', 'src/**/*.scss'], styles);
 };

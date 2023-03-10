@@ -28,6 +28,7 @@ import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './pro
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
+import { useI18nStrings } from '../internal/i18n/use-i18n-strings';
 
 export { PropertyFilterProps };
 
@@ -35,7 +36,7 @@ const PropertyFilter = React.forwardRef(
   (
     {
       disabled,
-      i18nStrings,
+      i18nStrings: _i18nStrings,
       countText,
       query,
       hideOperations,
@@ -61,6 +62,8 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const { i18nStrings } = useI18nStrings('property-filter', { i18nStrings: _i18nStrings });
+
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);

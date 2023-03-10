@@ -8,8 +8,11 @@ import Box from '~components/box';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
+import { columnDefinitions, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
+import { I18nProvider } from '~components/internal/i18n';
+
+import i18nMessages from '~components/internal/i18n/messages/all.en-US.js';
 
 export default function () {
   const [tokenLimit, setTokenLimit] = useState<number>();
@@ -39,7 +42,7 @@ export default function () {
   });
 
   return (
-    <>
+    <I18nProvider value={i18nMessages}>
       <ScreenshotArea disableAnimations={true}>
         <ul>
           <li>
@@ -76,9 +79,9 @@ export default function () {
           filter={
             <PropertyFilter
               {...propertyFilterProps}
+              {...({} as any)}
               virtualScroll={true}
               countText={`${items.length} matches`}
-              i18nStrings={i18nStrings}
               tokenLimit={tokenLimit}
               hideOperations={hideOperations}
               disableFreeTextFiltering={disableFreeTextFiltering}
@@ -87,6 +90,6 @@ export default function () {
           columnDefinitions={columnDefinitions}
         />
       </ScreenshotArea>
-    </>
+    </I18nProvider>
   );
 }
