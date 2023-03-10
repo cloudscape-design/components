@@ -122,7 +122,7 @@ export default function VisibleContentPreference({
                 <div {...className('group-label')} id={groupLabelId}>
                   {optionGroup.label}
                 </div>
-                <div onKeyDown={handleKeyDown}>
+                <div onKeyDown={handleKeyDown} {...className('group-list')}>
                   <SortableContext
                     items={getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(({ id }) => id)}
                     strategy={verticalListSortingStrategy}

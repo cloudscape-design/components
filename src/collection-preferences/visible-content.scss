@@ -33,7 +33,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   border-bottom: $border;
 }
 
-.visible-content-option-dragged {
+.visible-content-group-list {
   background: lightblue;
 }
 
@@ -55,10 +55,11 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   &.draggable {
     padding-left: 0;
     padding-right: awsui.$space-scaled-xxs;
+    background-color: awsui.$color-background-container-content;
+    z-index: 1;
     &.dragged {
-      background-color: awsui.$color-background-container-content;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
   }
 }

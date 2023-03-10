@@ -23,7 +23,7 @@ export function SortableItem({
   option: CollectionPreferencesProps.VisibleContentOption;
   reorderContent: boolean;
 }) {
-  const { listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
+  const { isDragging, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -34,7 +34,11 @@ export function SortableItem({
     <div className={clsx(className('option').className)}>
       <div
         ref={setNodeRef}
-        className={clsx(className('option-content').className, reorderContent && styles.draggable)}
+        className={clsx(
+          className('option-content').className,
+          reorderContent && styles.draggable,
+          reorderContent && isDragging && styles.dragged
+        )}
         style={style}
       >
         {reorderContent && (
