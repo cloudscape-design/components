@@ -15,6 +15,7 @@ import { AlertProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
+import { useI18n } from '../internal/i18n/context';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -41,6 +42,7 @@ export default function InternalAlert({
   ...rest
 }: InternalAlertProps) {
   const baseProps = getBaseProps(rest);
+  const format = useI18n();
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
@@ -91,7 +93,7 @@ export default function InternalAlert({
                 variant="icon"
                 iconName="close"
                 formAction="none"
-                ariaLabel={dismissAriaLabel}
+                ariaLabel={format('alert', 'dismissAriaLabel', dismissAriaLabel)}
                 onClick={() => fireNonCancelableEvent(onDismiss)}
               />
             </div>

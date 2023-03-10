@@ -3,31 +3,28 @@
 
 const fs = require('fs');
 const path = require('path');
-const MessageFormat = require('@messageformat/core');
-const compileModule = require('@messageformat/core/compile-module');
+const { parse } = require('@formatjs/icu-messageformat-parser');
 
 const { targetPath } = require('../utils/workspace');
 const { writeFile } = require('../utils/files');
 
-const declarationFile = `
-const I18nMessages: Record<string, Record<string, (input?: Record<string, string>) => string>>;
-export default I18nMessages;`;
-
-module.exports = function generateI18nModules() {
+module.exports = function generateI18nMessages() {
   const messagesDir = path.resolve(__dirname, '../../src/internal/i18n/messages');
   const files = fs.readdirSync(messagesDir);
   for (const fileName of files) {
     const filePath = path.join(messagesDir, fileName);
     const { locale, messages } = require(filePath);
-    const mf = new MessageFormat(locale);
-    const compiledModule = compileModule(mf, messages);
-    writeFile(
-      path.join(targetPath, 'components/internal/i18n/messages', fileName.replace(/\.json$/, '.js')),
-      compiledModule
+
+    const parsedMessages = Object.fromEntries(
+      Object.entries(messages).map(([component, messages]) => [
+        component,
+        Object.fromEntries(Object.entries(messages).map(([key, icuMessage]) => [key, parse(icuMessage, { locale })])),
+      ])
     );
+
     writeFile(
-      path.join(targetPath, 'components/internal/i18n/messages', fileName.replace(/\.json$/, '.d.ts')),
-      declarationFile
+      path.join(targetPath, 'components/internal/i18n/messages', fileName),
+      JSON.stringify({ locale, messages: parsedMessages })
     );
   }
   return Promise.resolve();

@@ -3,48 +3,86 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { useI18nStrings } from '../use-i18n-strings';
-import { I18nProvider } from '../context';
+import { useI18n } from '../context';
+import { I18nProvider, I18nProviderProps } from '../provider';
 
 interface TestComponentProps {
   topLevelString?: string;
-  // topLevelI18nFunction?: () => string;
+  topLevelFunction?: (type: 'function') => string;
   nested?: {
-    nestedString: string;
-    // nestedI18nFunction: () => string;
+    nestedString?: string;
+    nestedFunction?: (props: { type: 'function' }) => string;
   };
 }
 
 const MESSAGES = {
-  'test-component': {
-    topLevelString: () => 'top level string',
-    // topLevelI18nFunction: () => 'top level i18n function',
-    'nested.nestedString': () => 'nested string',
-    // 'nested.nestedI18nFunction': () => 'nested i18n function',
+  locale: 'en-US',
+  messages: {
+    'test-component': {
+      topLevelString: 'top level string',
+      topLevelFunction: 'top level {type}',
+      'nested.nestedString': 'nested string',
+      'nested.nestedFunction': 'nested {type}',
+    },
   },
 };
 
-function TestComponent(_props: TestComponentProps) {
-  const props = useI18nStrings('test-component', _props);
+const CUSTOM_HANDLERS: Record<string, Record<string, I18nProviderProps.CustomHandler<any>>> = {
+  'test-component': {
+    topLevelFunction: format => (type: string) => format({ type }),
+    'nested.nestedFunction': format => {
+      return ({ type }: { type: string }) => format({ type });
+    },
+  },
+};
+
+function TestComponent(props: TestComponentProps) {
+  const format = useI18n();
   return (
     <ul>
-      <li id="top-level-string">{props.topLevelString}</li>
-      {/* <li id="top-level-i18n-function">{props.topLevelI18nFunction?.()}</li> */}
-      <li id="nested-string">{props.nested?.nestedString}</li>
-      {/* <li id="nested-i18n-function">{props.nested?.nestedI18nFunction?.()}</li> */}
+      <li id="top-level-string">{format('test-component', 'topLevelString', props.topLevelString)}</li>
+      <li id="top-level-function">
+        {format('test-component', 'topLevelFunction', props.topLevelFunction)?.('function')}
+      </li>
+
+      <li id="nested-string">{format('test-component', 'nested.nestedString', props.nested?.nestedString)}</li>
+      <li id="nested-function">
+        {format('test-component', 'nested.nestedFunction', props.nested?.nestedFunction)?.({ type: 'function' })}
+      </li>
     </ul>
   );
 }
 
-it('provides top-level and dot-notation nested strings', () => {
+it('provides top-level and dot-notation values for static strings', () => {
   const { container } = render(
-    <I18nProvider value={MESSAGES}>
+    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
       <TestComponent />
     </I18nProvider>
   );
 
-  expect(container.querySelector('#top-level-string')).toHaveTextContent(MESSAGES['test-component'].topLevelString());
-  expect(container.querySelector('#nested-string')).toHaveTextContent(
-    MESSAGES['test-component']['nested.nestedString']()
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('top level string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('provides top-level and dot-notation values for i18n functions', () => {
+  const { container } = render(
+    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
+      <TestComponent />
+    </I18nProvider>
   );
+
+  expect(container.querySelector('#top-level-function')).toHaveTextContent('top level function');
+  expect(container.querySelector('#nested-function')).toHaveTextContent('nested function');
+});
+
+it("doesn't override existing strings", () => {
+  const { container } = render(
+    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
+      <TestComponent topLevelString="My custom string" nested={{ nestedString: 'My custom string' }} />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('My custom string');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('My custom string');
+  expect(container.querySelector('#nested-function')).toHaveTextContent('nested function');
 });

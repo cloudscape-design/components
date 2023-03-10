@@ -3,12 +3,9 @@
 
 import React, { useContext } from 'react';
 
-export type LocaleMessages = Record<string, Record<string, (input?: Record<string, string>) => string>>;
+export type FormatFunction = <T>(component: string, key: string, provided: T) => T;
+export const InternalI18nContext = React.createContext<FormatFunction>((_component, _key, provided) => provided);
 
-const I18nContext = React.createContext<LocaleMessages | null>(null);
-I18nContext.displayName = 'I18nContext';
-
-export const I18nProvider = I18nContext.Provider;
-export function useI18nContext() {
-  return useContext(I18nContext);
+export function useI18n() {
+  return useContext(InternalI18nContext);
 }

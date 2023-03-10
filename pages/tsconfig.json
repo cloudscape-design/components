@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "strict": true,
+    "resolveJsonModule": true,
     "paths": {
       "~components": ["../lib/components"],
       "~components/*": ["../lib/components/*"],
