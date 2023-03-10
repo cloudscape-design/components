@@ -174,3 +174,5 @@ interface ClassNameProps {
 export const className = (suffix: string): ClassNameProps => ({
   className: styles[`visible-content-${suffix}`],
 });
+
+export const isEscape = (key: string) => key === 'Escape' || key === 'Esc';

@@ -15,7 +15,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
-import { className } from './utils';
+import { className, isEscape } from './utils';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -130,5 +130,3 @@ export default function VisibleContentPreference({
     </div>
   );
 }
-
-const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
