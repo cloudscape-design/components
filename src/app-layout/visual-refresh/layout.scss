@@ -97,78 +97,6 @@ explicitly set in script.
     }
   }
 
-  &.has-max-content-width {
-    #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
-  }
-  
-  // Override the dark header overlap height property if disableContentHeaderOverlap is true.
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
-  }
-
-  /*
-  Set the grid gaps for notifications, breadcrumbs, header, and main when they are the 
-  first child in the content area. This will align the first content of the page with 
-  the trigger buttons.
-  */
-  &.content-first-child-notifications {
-    #{custom-props.$notificationsGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.content-first-child-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-m};
-  }
-
-  &.content-first-child-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.content-first-child-main:not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  /*
-  When breadcrumbs, header, and main are not the first child content set the grid gaps
-  for all combinations of adjacent siblings.
-  */
-  &.has-notifications-content.has-breadcrumbs {
-    #{custom-props.$breadcrumbsGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-notifications-content.has-header {
-    #{custom-props.$headerGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-notifications-content:not(.has-breadcrumbs):not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  &.has-breadcrumbs:not(.has-header).is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-m};
-  }
-
-  &.has-header:not(.is-overlap-disabled) {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xl};
-  }
-
-  &.has-header.is-overlap-disabled {
-    #{custom-props.$mainGap}: #{awsui.$space-scaled-xs};
-  }
-
-  /*
-  Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
-  width custom property for the middle column definition if the maxContentWidth property 
-  has been explicitly set to a non-zero value and subsequently set the has-max-content-width 
-  data attribute to true.
-  */
-  &:not(.has-max-content-width) {
-    @each $breakpoint, $width in constants.$adaptive-content-widths {
-      @include styles.media-breakpoint-up($breakpoint) {
-        #{custom-props.$defaultMaxContentWidth}: $width;
-      }
-    }
-  }
-
   /*
   Only use the max content width custom property for the middle column definition
   if the maxContentWidth property has been explicitly set to a non-zero value and
@@ -176,6 +104,11 @@ explicitly set in script.
   */
   &.has-max-content-width {
     #{custom-props.$defaultMaxContentWidth}: var(#{custom-props.$maxContentWidth});
+  }
+
+  // Override the dark header overlap height property if disableContentHeaderOverlap is true.
+  &.is-overlap-disabled {
+    #{custom-props.$overlapHeight}: 0;
   }
 
   /*
@@ -192,14 +125,6 @@ explicitly set in script.
 
   @include styles.media-breakpoint-down(styles.$breakpoint-small) {
     #{custom-props.$defaultMinContentWidth}: 0px;
-  }
-
-  /*
-  Override the dark header overlap height property if isOverlapDisabled is true.
-  The is computed state from props that can be found in the AppLayout context.
-  */
-  &.is-overlap-disabled {
-    #{custom-props.$overlapHeight}: 0;
   }
 
   /*
