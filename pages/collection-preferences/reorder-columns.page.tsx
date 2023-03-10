@@ -11,33 +11,41 @@ import {
 } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
   {
-    label: 'Instance properties',
+    label: 'Main properties',
     options: [
       {
-        id: 'id',
-        label: 'ID',
+        id: 'id1',
+        label: 'Item 1',
         editable: false,
       },
-      { id: 'type', label: 'Type' },
+      { id: 'id2', label: 'Item 2' },
       {
-        id: 'dnsName',
-        label: 'DNS name',
+        id: 'id3',
+        label: 'Item 3',
       },
       {
-        id: 'imageId',
-        label: 'Image ID',
+        id: 'id4',
+        label: 'Item 4',
       },
       {
-        id: 'longText',
-        label: 'Long text long text long text long text long text long text long text long text long text long text',
+        id: 'id5',
+        label:
+          'Item with long text to make sure that the reordering feature behaves as expected and that the placeholder behind always has the same size as the item being dragged',
       },
       {
-        id: 'state',
-        label: 'State',
+        id: 'id6',
+        label: 'Item 6',
       },
     ],
+  },
+];
+
+const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+  {
+    label: 'Main properties',
+    options: new Array(50).fill(1).map((item, index) => ({ id: `id_${index}`, label: `Item ${index}` })),
   },
 ];
 
@@ -53,7 +61,24 @@ export default function App() {
         reorderContent={true}
         visibleContentPreference={{
           title: 'Select visible columns',
-          options: visibleContentOptions,
+          options: shortOptionsList,
+          i18nStrings: {
+            liveAnnouncementDndStarted: 'Dragging',
+            liveAnnouncementDndDiscarded: 'Reordering canceled',
+            liveAnnouncementDndItemReordered: i => `Item moved to position ${i}`,
+          },
+        }}
+      />
+      <CollectionPreferences
+        {...baseProperties}
+        pageSizePreference={pageSizePreference}
+        wrapLinesPreference={wrapLinesPreference}
+        contentDensityPreference={contentDensityPreference}
+        customPreference={customPreference}
+        reorderContent={true}
+        visibleContentPreference={{
+          title: 'Select visible columns',
+          options: longOptionsList,
           i18nStrings: {
             liveAnnouncementDndStarted: 'Dragging',
             liveAnnouncementDndDiscarded: 'Reordering canceled',
