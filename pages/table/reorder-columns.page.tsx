@@ -9,17 +9,40 @@ import Pagination from '~components/pagination';
 import Table from '~components/table';
 import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
-import {
-  columnsConfig,
-  EmptyState,
-  getMatchesCountText,
-  paginationLabels,
-  pageSizeOptions,
-  visibleContentOptions,
-} from './shared-configs';
+import { columnsConfig, EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
 const allItems = generateItems();
+
+const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+  {
+    label: 'Instance properties',
+    options: [
+      {
+        id: 'id',
+        label: 'ID',
+        editable: false,
+      },
+      { id: 'type', label: 'Type' },
+      {
+        id: 'dnsName',
+        label: 'DNS name',
+      },
+      {
+        id: 'imageId',
+        label: 'Image ID',
+      },
+      {
+        id: 'longText',
+        label: 'Long text long text long text long text long text long text long text long text long text long text',
+      },
+      {
+        id: 'state',
+        label: 'State',
+      },
+    ],
+  },
+];
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({

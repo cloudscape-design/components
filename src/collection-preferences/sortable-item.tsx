@@ -26,15 +26,20 @@ export function SortableItem({
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
   };
 
   return (
     <div className={clsx(className('option').className)}>
-      <div className={clsx(className('option-content').className, reorderContent && styles.draggable)} style={style}>
+      <div
+        {...attributes}
+        ref={setNodeRef}
+        className={clsx(className('option-content').className, reorderContent && styles.draggable)}
+        style={style}
+      >
         {reorderContent && (
-          <div ref={setNodeRef} {...attributes} {...listeners}>
+          <div {...listeners}>
             <DragHandle ariaLabelledBy={''} ariaDescribedBy={''} />
           </div>
         )}

@@ -8,7 +8,12 @@ import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
 import { getFlatOptionIds, getSortedOptions } from './reorder-utils';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from '@dnd-kit/sortable';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
 import { className } from './utils';
 
@@ -89,7 +94,7 @@ export default function VisibleContentPreference({
                 <div>
                   <SortableContext
                     items={getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(({ id }) => id)}
-                    strategy={rectSortingStrategy}
+                    strategy={verticalListSortingStrategy}
                   >
                     {getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(option => {
                       const labelId = `${idPrefix}-${optionGroupIndex}-${option.id}`;
