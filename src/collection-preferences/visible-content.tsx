@@ -33,6 +33,7 @@ export default function VisibleContentPreference({
   itemOrder = getFlatOptionIds(options),
   onChange,
   reorderContent = false,
+  i18nStrings,
 }: VisibleContentPreferenceProps) {
   const idPrefix = useUniqueId('visible-content');
   const sensors = useSensors(
@@ -87,6 +88,25 @@ export default function VisibleContentPreference({
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
+                accessibility={{
+                  announcements: {
+                    onDragStart() {
+                      return i18nStrings ? i18nStrings.liveAnnouncementDndStarted : undefined;
+                    },
+                    onDragOver() {
+                      return undefined;
+                    },
+                    onDragEnd({ over }) {
+                      if (over && i18nStrings?.liveAnnouncementDndItemReordered) {
+                        const position = optionGroup.options.findIndex(option => option.id === over.id);
+                        return i18nStrings.liveAnnouncementDndItemReordered(position);
+                      }
+                    },
+                    onDragCancel() {
+                      return i18nStrings ? i18nStrings.liveAnnouncementDndDiscarded : undefined;
+                    },
+                  },
+                }}
                 onDragStart={() => setIsDragging(true)}
                 onDragEnd={event => {
                   setIsDragging(false);

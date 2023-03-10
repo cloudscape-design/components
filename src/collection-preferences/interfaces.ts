@@ -157,6 +157,16 @@ export namespace CollectionPreferencesProps {
   export interface VisibleContentPreference {
     title: string;
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup>;
+    i18nStrings?: I18nStrings;
+  }
+
+  export interface I18nStrings {
+    liveAnnouncementDndStarted: string;
+    liveAnnouncementDndItemReordered: (position: number) => string;
+    liveAnnouncementDndDiscarded: string;
+    navigationAriaLabel?: string;
+    navigationAriaDescription?: string;
+    navigationItemAriaLabel?: string;
   }
 
   export interface VisibleContentOptionsGroup {

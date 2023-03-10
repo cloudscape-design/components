@@ -109,6 +109,11 @@ export default function App() {
             visibleContentPreference={{
               title: 'Select visible columns',
               options: visibleContentOptions,
+              i18nStrings: {
+                liveAnnouncementDndStarted: 'Dragging',
+                liveAnnouncementDndDiscarded: 'Reordering canceled',
+                liveAnnouncementDndItemReordered: i => `Item moved to position ${i}`,
+              },
             }}
             wrapLinesPreference={{
               label: 'Wrap lines',
