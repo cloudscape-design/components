@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import InternalSpaceBetween from '../space-between/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
@@ -58,6 +58,15 @@ export default function VisibleContentPreference({
     }
   };
 
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (isDragging && isEscape(event.key)) {
+      // Prevent modal from closing when pressing Esc to cancel the dragging action
+      event.stopPropagation();
+    }
+  };
+
   const outerGroupLabelId = `${idPrefix}-outer`;
 
   return (
@@ -78,7 +87,9 @@ export default function VisibleContentPreference({
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
+                onDragStart={() => setIsDragging(true)}
                 onDragEnd={event => {
+                  setIsDragging(false);
                   const { active, over } = event;
 
                   if (over && active.id !== over.id) {
@@ -91,7 +102,7 @@ export default function VisibleContentPreference({
                 <div {...className('group-label')} id={groupLabelId}>
                   {optionGroup.label}
                 </div>
-                <div>
+                <div onKeyDown={handleKeyDown}>
                   <SortableContext
                     items={getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(({ id }) => id)}
                     strategy={verticalListSortingStrategy}
@@ -119,3 +130,5 @@ export default function VisibleContentPreference({
     </div>
   );
 }
+
+const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
