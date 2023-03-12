@@ -13,7 +13,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          stickyColumns={['variable', 'alt']}
+          stickyColumns={{ left: ['variable', 'alt'], right: ['descriptio7'] }}
           stickyHeader={true}
           columnDefinitions={[
             {
@@ -125,7 +125,7 @@ export default () => {
           header={<Header>Table with sticky column and sticky header</Header>}
         />
         <Table
-          stickyColumns={['variable', 'alt']}
+          stickyColumns={{ left: ['variable', 'alt'], right: ['descriptio7'] }}
           columnDefinitions={[
             {
               id: 'variable',

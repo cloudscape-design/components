@@ -200,13 +200,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
-   * Specifies an array containing the `id`s of the sticky columns. Currently we support having the first two and last columns sticky.
+   * Specifies an array containing the `id`s of the sticky columns. Currently we support having the first two and/or the last columns sticky.
    *
    * Use it in conjunction with the sticky columns preference of the [collection preferences](/components/collection-preferences/) component.
    *
    * In case the `id`s of the columns are not the first two or last, this property will be ignored.
    */
-  stickyColumns?: ReadonlyArray<string>;
+  //stickyColumns?: ReadonlyArray<string>;
+  stickyColumns?: { left?: ReadonlyArray<string>; right?: ReadonlyArray<string> };
 
   /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
@@ -351,6 +352,7 @@ export namespace TableProps {
   } & SortingColumn<ItemType>;
 
   export type SelectionType = 'single' | 'multi';
+
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;

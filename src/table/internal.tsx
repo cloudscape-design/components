@@ -178,6 +178,10 @@ const InternalTable = forwardRef(
       }
     }
 
+    const checkForStickyColumns = () => {
+      return stickyColumns?.left?.length > 0 || stickyColumns?.right?.length > 0;
+    };
+
     const isVisualRefresh = useVisualRefresh();
     const computedVariant = isVisualRefresh
       ? variant
@@ -208,7 +212,7 @@ const InternalTable = forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
-          stickyColumns && stickyColumns.length > 0 && getCellWidths(tableCellRefs);
+          checkForStickyColumns() && getCellWidths(tableCellRefs);
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
@@ -335,6 +339,7 @@ const InternalTable = forwardRef(
                 hidden={stickyHeader}
                 stickyColumns={stickyColumns}
                 cellWidths={cellWidths}
+                rightCellWidths={rightCellWidths}
                 {...theadProps}
               />
               <tbody>
@@ -418,8 +423,9 @@ const InternalTable = forwardRef(
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
                           const isSticky =
-                            stickyColumns && stickyColumns?.length > 0 && !!column.id
-                              ? stickyColumns?.indexOf(column.id) !== -1 && 'left'
+                            checkForStickyColumns() && !!column.id
+                              ? (stickyColumns?.left?.indexOf(column.id) !== -1 && 'left') ||
+                                (stickyColumns?.right?.indexOf(column.id) !== -1 && 'right')
                               : undefined;
 
                           console.log('nextSibling?.style.left', nextSibling?.style.left);
@@ -432,7 +438,7 @@ const InternalTable = forwardRef(
                                 resizableColumns
                                   ? {
                                       left:
-                                        column.id && stickyColumns?.indexOf(column.id) !== -1
+                                        column.id && stickyColumns?.left?.indexOf(column.id) !== -1
                                           ? `${cellWidths[colIndex]}px`
                                           : 'auto',
                                       boxShadow:
@@ -445,8 +451,12 @@ const InternalTable = forwardRef(
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
                                       left:
-                                        column.id && stickyColumns?.indexOf(column.id) !== -1
+                                        column.id && stickyColumns?.left?.indexOf(column.id) !== -1
                                           ? `${cellWidths[colIndex]}px`
+                                          : 'auto',
+                                      right:
+                                        column.id && stickyColumns?.right?.indexOf(column.id) !== -1
+                                          ? `${rightCellWidths[colIndex]}px`
                                           : 'auto',
                                       boxShadow:
                                         nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'

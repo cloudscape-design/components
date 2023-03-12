@@ -122,8 +122,11 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const isStickyColumn =
-              column.id && !!stickyColumns && stickyColumns?.indexOf(column.id) !== -1 ? 'left' : undefined;
+            const isLeftStickyColumn =
+              column.id && !!stickyColumns && stickyColumns?.left?.indexOf(column.id) !== -1 ? 'left' : undefined;
+            const isRightStickyColumn =
+              column.id && !!stickyColumns && stickyColumns?.right?.indexOf(column.id) !== -1 ? 'right' : undefined;
+
             let widthOverride;
             // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {
@@ -136,7 +139,7 @@ const Thead = React.forwardRef(
                 widthOverride = 'auto';
               }
             }
-            const left = isStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto';
+            const left = isLeftStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto';
             console.log('LEFT!', left);
             return (
               <TableHeaderCell
@@ -146,7 +149,8 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  left: isStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto',
+                  left: isLeftStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto',
+                  right: isRightStickyColumn && rightCellWidths ? `${rightCellWidths[colIndex]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -163,7 +167,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                isStickyColumn={isStickyColumn}
+                isStickyColumn={isLeftStickyColumn || isRightStickyColumn}
               />
             );
           })}

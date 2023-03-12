@@ -21,7 +21,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
-  isStickyColumn?: 'left' | 'right';
+  isStickyColumn?: false | 'left' | 'right';
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
