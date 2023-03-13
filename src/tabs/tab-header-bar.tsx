@@ -15,7 +15,7 @@ import {
   hasRightOverflow,
   scrollIntoView,
 } from './scroll-utils';
-import { isPlainLeftClick } from '../internal/events';
+import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface TabHeaderBarProps {
@@ -181,7 +181,7 @@ export function TabHeaderBar({
     ) {
       const { keyCode } = event;
       const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
-      if (specialKeys.indexOf(keyCode) === -1) {
+      if (hasModifierKeys(event) || specialKeys.indexOf(keyCode) === -1) {
         return;
       }
       event.preventDefault();
