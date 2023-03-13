@@ -52,6 +52,7 @@ const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOp
 export default function App() {
   return (
     <ScreenshotArea>
+      <h1>CollectionPreferences page with content reordering</h1>
       <CollectionPreferences
         {...baseProperties}
         pageSizePreference={pageSizePreference}
