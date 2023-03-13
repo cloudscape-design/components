@@ -37,9 +37,9 @@ function InternalFileUpload(
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
-  const fileInput = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleButtonClick = () => fileInput.current && fileInput.current.click();
+  const handleButtonClick = () => fileInputRef.current?.click();
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +96,7 @@ function InternalFileUpload(
         <InternalButton ref={ref} iconName="upload" formAction="none" disabled={disabled} onClick={handleButtonClick}>
           <input
             id={id}
-            ref={fileInput}
+            ref={fileInputRef}
             type="file"
             multiple={false}
             disabled={disabled}
