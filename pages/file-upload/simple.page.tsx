@@ -29,6 +29,7 @@ export default function FileUploadScenario() {
             constraintText="File size must not exceed 1MB"
             buttonText="Choose file"
             accept="image"
+            fileMetadata={{ size: 'KB' }}
           />
           <FileUpload
             multiple={true}
@@ -43,6 +44,7 @@ export default function FileUploadScenario() {
             constraintText="Combined file size must not exceed 1MB"
             buttonText="Choose files"
             accept="application/pdf"
+            fileMetadata={{ size: 'KB' }}
           />
         </SpaceBetween>
       </SpaceBetween>
