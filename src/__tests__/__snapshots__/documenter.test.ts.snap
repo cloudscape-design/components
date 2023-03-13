@@ -3736,7 +3736,14 @@ Use this to retry loading the code editor or to provide another option for the u
       "name": "onValidate",
     },
   ],
-  "functions": Array [],
+  "functions": Array [
+    Object {
+      "description": "Sets input focus onto the code editor control.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
   "name": "CodeEditor",
   "properties": Array [
     Object {

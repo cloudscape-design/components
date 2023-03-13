@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import { Ace } from 'ace-builds';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -27,9 +27,10 @@ import PreferencesModal from './preferences-modal';
 import LoadingScreen from './loading-screen';
 import ErrorScreen from './error-screen';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { useContainerQuery } from '../internal/hooks/container-queries/use-container-query';
-import useBaseComponent from '../internal/hooks/use-base-component';
 import { useCurrentMode } from '../internal/hooks/use-visual-mode';
 import { StatusBar } from './status-bar';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -41,7 +42,8 @@ import styles from './styles.css.js';
 
 export { CodeEditorProps };
 
-export default function CodeEditor(props: CodeEditorProps) {
+const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditorProps.Ref>) => {
+  const codeEditorRef = useRef<HTMLDivElement>(null);
   const { __internalRootRef } = useBaseComponent('CodeEditor');
   const { controlId, ariaLabelledby, ariaDescribedby } = useFormFieldContext(props);
   const {
@@ -64,23 +66,6 @@ export default function CodeEditor(props: CodeEditorProps) {
   const [editor, setEditor] = useState<Ace.Editor>();
   const mode = useCurrentMode(__internalRootRef);
   const defaultTheme = mode === 'dark' ? DEFAULT_DARK_THEME : DEFAULT_LIGHT_THEME;
-
-  const editorRef = useCallback(
-    (elem: HTMLDivElement) => {
-      if (!ace || !elem) {
-        return;
-      }
-
-      const config = getDefaultConfig();
-      setEditor(
-        ace.edit(elem, {
-          ...config,
-          theme: getAceTheme(getDefaultTheme(elem)),
-        })
-      );
-    },
-    [ace]
-  );
 
   useEffect(() => {
     if (!editor) {
@@ -105,10 +90,22 @@ export default function CodeEditor(props: CodeEditorProps) {
 
   const errorsTabRef = useRef<HTMLButtonElement>(null);
   const warningsTabRef = useRef<HTMLButtonElement>(null);
-
+  useEffect(() => {
+    const elem = codeEditorRef.current;
+    if (!ace || !elem) {
+      return;
+    }
+    const config = getDefaultConfig();
+    setEditor(
+      ace.edit(elem, {
+        ...config,
+        theme: getAceTheme(getDefaultTheme(elem)),
+      })
+    );
+  }, [ace, props.loading]);
   const [codeEditorWidth, codeEditorMeasureRef] = useContainerQuery(rect => rect.width);
   const mergedRef = useMergeRefs(codeEditorMeasureRef, __internalRootRef);
-
+  useForwardFocus(ref, codeEditorRef);
   const isRefresh = useVisualRefresh();
 
   useEffect(() => {
@@ -287,7 +284,7 @@ export default function CodeEditor(props: CodeEditorProps) {
             }}
           >
             <div
-              ref={editorRef}
+              ref={codeEditorRef}
               className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
@@ -349,6 +346,7 @@ export default function CodeEditor(props: CodeEditorProps) {
       )}
     </div>
   );
-}
+});
 
 applyDisplayName(CodeEditor, 'CodeEditor');
+export default CodeEditor;
