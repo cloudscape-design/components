@@ -91,15 +91,7 @@ export namespace FileUploadProps {
     file: File;
   }
 
-  export enum FileSize {
-    BYTES = 'bytes',
-    KB = 'KB',
-    KIB = 'KiB',
-    MB = 'MB',
-    MIB = 'MiB',
-    GB = 'GB',
-    GIB = 'GiB',
-  }
+  export type FileSize = 'BYTES' | 'KB' | 'KIB' | 'MB' | 'MIB' | 'GB' | 'GIB';
 
   export interface FileMetadata {
     /**

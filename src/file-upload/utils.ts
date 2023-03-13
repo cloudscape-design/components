@@ -7,27 +7,27 @@ import { FileUploadProps } from './interfaces';
 export const convertBytesTo = (bytes: number, unit: FileUploadProps.FileSize): number => {
   switch (unit) {
     // Decimal
-    case FileUploadProps.FileSize.KB: {
+    case 'KB': {
       return bytes / 1000;
     }
-    case FileUploadProps.FileSize.MB: {
+    case 'MB': {
       return bytes / 1000 ** 2;
     }
-    case FileUploadProps.FileSize.GB: {
+    case 'GB': {
       return bytes / 1000 ** 3;
     }
     // Binary
-    case FileUploadProps.FileSize.KIB: {
+    case 'KIB': {
       return bytes / 1024;
     }
-    case FileUploadProps.FileSize.MIB: {
+    case 'MIB': {
       return bytes / 1024 ** 2;
     }
-    case FileUploadProps.FileSize.GIB: {
+    case 'GIB': {
       return bytes / 1024 ** 3;
     }
     // Default
-    case FileUploadProps.FileSize.BYTES:
+    case 'BYTES':
     default: {
       return bytes;
     }
@@ -37,7 +37,7 @@ export const convertBytesTo = (bytes: number, unit: FileUploadProps.FileSize): n
 export const defaultFileMetadata: FileUploadProps.FileMetadata = {
   name: true,
   type: false,
-  size: FileUploadProps.FileSize.BYTES,
+  size: 'BYTES',
   lastModified: false,
   thumbnail: false,
 };
