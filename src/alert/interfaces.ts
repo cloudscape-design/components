@@ -59,7 +59,7 @@ export interface AlertProps extends BaseComponentProps {
   onDismiss?: NonCancelableEventHandler;
   /**
    * Fired when the user clicks the action button.
-   * @deprecated Replaced by `action`.
+   * **Deprecated** Replaced by `action`.
    */
   onButtonClick?: NonCancelableEventHandler;
 }

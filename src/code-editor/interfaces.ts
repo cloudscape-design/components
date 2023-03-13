@@ -33,7 +33,7 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   /**
    * An event handler called when the value changes.
    * The event `detail` contains the current value of the code editor content.
-   * @deprecated Replaced by `onDelayedChange`.
+   * **Deprecated** Replaced by `onDelayedChange`.
    */
   onChange?: NonCancelableEventHandler<CodeEditorProps.ChangeDetail>;
 
