@@ -208,7 +208,7 @@ const PropertyFilter = React.forwardRef(
       getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
 
     return (
-      <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
@@ -306,7 +306,7 @@ const PropertyFilter = React.forwardRef(
             </InternalSpaceBetween>
           </div>
         )}
-      </span>
+      </div>
     );
   }
 );

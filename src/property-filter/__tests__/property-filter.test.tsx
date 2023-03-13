@@ -20,6 +20,7 @@ import {
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import '../../__a11y__/to-validate-a11y';
 
 const states: Record<string, string> = {
   0: 'Stopped',
@@ -1241,5 +1242,10 @@ describe('property filter parts', () => {
   test('property filter input can be found with styles.input', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findByClassName(styles.input)!.getElement()).not.toBe(null);
+  });
+
+  test('check a11y', async () => {
+    const { container } = render(<PropertyFilter {...defaultProps} />);
+    await expect(container).toValidateA11y();
   });
 });
