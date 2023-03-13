@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, useMemo, ReactNode } from 'react';
 import clsx from 'clsx';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
@@ -64,63 +64,159 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           <span className={styles['header-link-text']}>{definition.text}</span>
         </a>
       </h2>
-      <Divider variant="header" />
+      <Divider isPresentational={true} variant="header" />
     </>
   );
 }
 
-export interface ItemListProps extends BaseItemComponentProps {
+export interface NavigationItemsListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-export function ItemList({ variant, items, activeHref, fireChange, fireFollow }: ItemListProps) {
+interface Item {
+  element?: ReactNode;
+  listVariant?: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
+  items?: Array<Item>;
+}
+
+export function NavigationItemsList({ items, variant, activeHref, fireChange, fireFollow }: NavigationItemsListProps) {
+  const lists: Array<Item> = [];
+  let currentListIndex = 0;
+  lists[currentListIndex] = {
+    listVariant: variant,
+    items: [],
+  };
+
+  items.forEach((item, index) => {
+    const itemid = index + 1;
+    switch (item.type) {
+      case 'divider': {
+        const dividerIndex = lists.length;
+        lists[dividerIndex] = {
+          element: (
+            <div data-itemid={`item-${itemid}`}>
+              <Divider variant="default" />
+            </div>
+          ),
+        };
+        currentListIndex = lists.length;
+        lists[currentListIndex] = {
+          listVariant: variant,
+          items: [],
+        };
+        return;
+      }
+      case 'link': {
+        lists[currentListIndex].items?.push({
+          element: (
+            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+              <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+            </li>
+          ),
+        });
+        return;
+      }
+      case 'section': {
+        lists[currentListIndex].items?.push({
+          element: (
+            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+              <Section
+                definition={item}
+                activeHref={activeHref}
+                variant={variant}
+                fireChange={fireChange}
+                fireFollow={fireFollow}
+              />
+            </li>
+          ),
+        });
+        return;
+      }
+      case 'section-group': {
+        lists[currentListIndex].items?.push({
+          element: (
+            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+              <SectionGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+            </li>
+          ),
+        });
+        return;
+      }
+      case 'link-group': {
+        lists[currentListIndex].items?.push({
+          element: (
+            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+              <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+            </li>
+          ),
+        });
+        return;
+      }
+      case 'expandable-link-group': {
+        lists[currentListIndex].items?.push({
+          element: (
+            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+              <ExpandableLinkGroup
+                definition={item}
+                activeHref={activeHref}
+                fireChange={fireChange}
+                fireFollow={fireFollow}
+                variant={variant}
+              />
+            </li>
+          ),
+        });
+        return;
+      }
+    }
+  });
+
+  const lastListIndex = lists.length - 1;
+
   return (
-    <ul className={clsx(styles.list, styles[`list-variant-${variant}`])}>
-      {items.map((item, i) => (
-        <li key={i} className={styles['list-item']}>
-          {item.type === 'link' && (
-            <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
-          )}
-          {item.type === 'section' && (
-            <Section
-              definition={item}
-              activeHref={activeHref}
-              fireChange={fireChange}
-              fireFollow={fireFollow}
-              variant={variant}
-            />
-          )}
-          {item.type === 'section-group' && (
-            <SectionGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
-          )}
-          {item.type === 'link-group' && (
-            <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
-          )}
-          {item.type === 'expandable-link-group' && (
-            <ExpandableLinkGroup
-              definition={item}
-              activeHref={activeHref}
-              fireChange={fireChange}
-              fireFollow={fireFollow}
-              variant={variant}
-            />
-          )}
-          {((i === 0 && item.type === 'divider') || (items[i + 1] && items[i + 1].type === 'divider')) && (
-            <Divider variant="default" />
-          )}
-        </li>
-      ))}
-    </ul>
+    <>
+      {lists.map((list, index) => {
+        if (!list.items || list.items.length === 0) {
+          return (
+            <div
+              key={`hr-${index}`}
+              className={clsx(styles.list, styles[`list-variant-${variant}`], {
+                [styles['list-variant-root--last']]: list.listVariant === 'root' && index === lastListIndex,
+              })}
+            >
+              {list.element}
+            </div>
+          );
+        } else {
+          return (
+            <ul
+              key={`list-${index}`}
+              className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
+                [styles['list-variant-root--last']]: list.listVariant === 'root' && index === lastListIndex,
+              })}
+            >
+              {list.items.map(item => item.element)}
+            </ul>
+          );
+        }
+      })}
+    </>
   );
 }
 
 interface DividerProps {
   variant: 'default' | 'header';
+  isPresentational?: boolean;
 }
 
-function Divider({ variant = 'default' }: DividerProps) {
-  return <hr className={clsx(styles.divider, styles[`divider-${variant}`])} />;
+function Divider({ variant = 'default', isPresentational = false }: DividerProps) {
+  return (
+    <hr
+      className={clsx(styles.divider, styles[`divider-${variant}`])}
+      role={isPresentational ? 'presentation' : undefined}
+    />
+  );
 }
 
 interface LinkProps extends BaseItemComponentProps {
@@ -202,7 +298,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant }: Se
       className={clsx(styles.section, variant === 'section-group' && styles['section--no-ident'])}
       headerText={definition.text}
     >
-      <ItemList
+      <NavigationItemsList
         variant="section"
         items={definition.items}
         fireFollow={fireFollow}
@@ -223,7 +319,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange }: Sectio
       <InternalBox className={styles['section-group-title']} variant="h3">
         {definition.title}
       </InternalBox>
-      <ItemList
+      <NavigationItemsList
         variant="section-group"
         items={definition.items}
         fireFollow={fireFollow}
@@ -249,7 +345,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
         fireChange={fireChange}
         activeHref={activeHref}
       />
-      <ItemList
+      <NavigationItemsList
         variant="link-group"
         items={definition.items}
         fireFollow={fireFollow}
@@ -328,7 +424,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
         />
       }
     >
-      <ItemList
+      <NavigationItemsList
         variant="expandable-link-group"
         items={definition.items}
         fireFollow={fireFollow}
