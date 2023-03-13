@@ -79,9 +79,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
       handleClick();
     }
   };
-  console.log({ isStickyColumn });
   const headerId = useUniqueId('table-header-');
-  console.log({ style, colIndex });
   return (
     <th
       className={clsx(className, {

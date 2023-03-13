@@ -3,6 +3,8 @@
 import React from 'react';
 import Button from '~components/button';
 import Table from '~components/table';
+import Link from '~components/link';
+import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 import Box from '~components/box';
 import Header from '~components/header';
@@ -13,23 +15,36 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          stickyColumns={{ left: ['variable', 'alt'], right: ['descriptio7'] }}
+          stickyColumns={{ left: ['variable'], right: ['description-7'] }}
           stickyHeader={true}
           columnDefinitions={[
             {
               id: 'variable',
               header: 'Variable name',
-              cell: item => item.name || '-',
-              sortingField: 'name',
-              width: '300px',
-              minWidth: '300px',
-              maxWidth: '300px',
+              minWidth: 176,
+              cell: item => {
+                return item.name;
+              },
             },
             {
               id: 'alt',
               header: 'Text value',
               cell: item => item.alt || '-',
               sortingField: 'alt',
+              editConfig: {
+                ariaLabel: 'Name',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Name Error',
+                editingCell: (item, { currentValue, setValue }) => {
+                  return (
+                    <Input
+                      autoFocus={true}
+                      value={currentValue ?? item.name}
+                      onChange={event => setValue(event.detail.value)}
+                    />
+                  );
+                },
+              },
             },
             {
               id: 'description',
@@ -62,7 +77,7 @@ export default () => {
               cell: item => item.description || '-',
             },
             {
-              id: 'descriptio7',
+              id: 'description-7',
               header: 'Description',
               cell: item => item.description || '-',
             },
@@ -124,7 +139,7 @@ export default () => {
           }
           header={<Header>Table with sticky column and sticky header</Header>}
         />
-        <Table
+        {/* <Table
           stickyColumns={{ left: ['variable', 'alt'], right: ['descriptio7'] }}
           columnDefinitions={[
             {
@@ -145,7 +160,7 @@ export default () => {
             {
               id: 'description',
               header: 'Description',
-              cell: item => item.description || '-',
+              cell: item => <Link href="#">{item.description}</Link> || '-',
             },
             {
               id: 'description-2',
@@ -384,7 +399,7 @@ export default () => {
             </Box>
           }
           header={<Header>Table with dynamic sticky columns and resizable columns</Header>}
-        />
+        /> */}
       </SpaceBetween>
     </ScreenshotArea>
   );

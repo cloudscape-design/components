@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
@@ -24,6 +24,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
+  ref;
 }
 
 function TableCellEditable<ItemType>({
@@ -36,10 +37,10 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  cellRef,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
   const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
 
@@ -115,11 +116,11 @@ export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
 ) {
   const { isEditable, ...rest } = props;
   if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} />;
+    return <TableCellEditable {...rest} cellRef={ref} />;
   }
   const { column, item } = rest;
   return (
-    <TableTdElement ref={ref} {...rest}>
+    <TableTdElement {...rest} ref={ref}>
       {column.cell(item)}
     </TableTdElement>
   );

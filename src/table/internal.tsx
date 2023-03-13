@@ -127,7 +127,10 @@ const InternalTable = forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
-    const visibleColumnsLength = visibleColumnDefinitions.length;
+    const visibleColumnsLength = React.useMemo(
+      () => visibleColumnDefinitions.length,
+      [visibleColumnDefinitions.length]
+    );
 
     useEffect(() => {
       // add or remove refs
@@ -137,23 +140,20 @@ const InternalTable = forwardRef(
         )
       );
     }, [visibleColumnsLength]);
-
-    const getCellWidths = tableCellRefs => {
-      let widthsArray = tableCellRefs.map(ref => ref.current?.previousSibling?.offsetWidth);
+    useEffect(() => {
+      let widthsArray = tableCellRefs.map(ref => ref?.current?.previousSibling?.offsetWidth);
       widthsArray = widthsArray.filter(x => x);
       widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
 
-      let rightWidthsArray = tableCellRefs.map(ref => ref.current?.nextSibling?.offsetWidth);
+      let rightWidthsArray = tableCellRefs.map(ref => ref?.current?.nextSibling?.offsetWidth);
       rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
       rightWidthsArray = rightWidthsArray
         .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
         .reverse();
+      console.log({ widthsArray, rightWidthsArray });
 
       setCellWidths([0, ...widthsArray]);
       setRightCellWidths([...rightWidthsArray, 0]);
-    };
-    useEffect(() => {
-      getCellWidths(tableCellRefs);
     }, [tableCellRefs]);
 
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
@@ -212,7 +212,6 @@ const InternalTable = forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
-          checkForStickyColumns() && getCellWidths(tableCellRefs);
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
@@ -282,6 +281,7 @@ const InternalTable = forwardRef(
                   contentDensity={contentDensity}
                   stickyColumns={stickyColumns}
                   cellWidths={cellWidths}
+                  rightCellWidths={rightCellWidths}
                 />
               )}
             </>
@@ -414,7 +414,6 @@ const InternalTable = forwardRef(
                             />
                           </TableTdElement>
                         )}
-                        {console.log(tableCellRefs)}
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const currentCell = tableCellRefs[colIndex]?.current;
                           const nextSibling = currentCell?.nextSibling as HTMLElement | undefined;
@@ -428,40 +427,36 @@ const InternalTable = forwardRef(
                                 (stickyColumns?.right?.indexOf(column.id) !== -1 && 'right')
                               : undefined;
 
-                          console.log('nextSibling?.style.left', nextSibling?.style.left);
-                          console.log('currentCell?.style.left', currentCell?.style.left);
-
+                          const getStickyStyles = (stickySide?: 'left' | 'right') => {
+                            const result = {
+                              left:
+                                column.id && stickyColumns?.left?.indexOf(column.id) !== -1
+                                  ? `${cellWidths[colIndex]}px`
+                                  : 'auto',
+                              right:
+                                column.id && stickyColumns?.right?.indexOf(column.id) !== -1
+                                  ? `${rightCellWidths[colIndex]}px`
+                                  : 'auto',
+                              boxShadow:
+                                nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
+                                  ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
+                                  : 'none',
+                            };
+                            return result;
+                          };
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
                                   ? {
-                                      left:
-                                        column.id && stickyColumns?.left?.indexOf(column.id) !== -1
-                                          ? `${cellWidths[colIndex]}px`
-                                          : 'auto',
-                                      boxShadow:
-                                        nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
-                                          ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
-                                          : 'none',
+                                      ...getStickyStyles(),
                                     }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
-                                      left:
-                                        column.id && stickyColumns?.left?.indexOf(column.id) !== -1
-                                          ? `${cellWidths[colIndex]}px`
-                                          : 'auto',
-                                      right:
-                                        column.id && stickyColumns?.right?.indexOf(column.id) !== -1
-                                          ? `${rightCellWidths[colIndex]}px`
-                                          : 'auto',
-                                      boxShadow:
-                                        nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
-                                          ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
-                                          : 'none',
+                                      ...getStickyStyles(),
                                     }
                               }
                               ariaLabels={ariaLabels}

@@ -127,6 +127,7 @@ const Thead = React.forwardRef(
             const isRightStickyColumn =
               column.id && !!stickyColumns && stickyColumns?.right?.indexOf(column.id) !== -1 ? 'right' : undefined;
 
+            console.log({ isRightStickyColumn, rightCellWidths });
             let widthOverride;
             // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {
@@ -139,8 +140,6 @@ const Thead = React.forwardRef(
                 widthOverride = 'auto';
               }
             }
-            const left = isLeftStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto';
-            console.log('LEFT!', left);
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
