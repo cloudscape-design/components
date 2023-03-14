@@ -99,4 +99,11 @@ export namespace FileUploadProps {
      */
     thumbnail?: boolean;
   }
+
+  export interface Ref {
+    /**
+     * Sets focus on the element without opening the dropdown or showing a visual focus indicator.
+     */
+    focus(): void;
+  }
 }

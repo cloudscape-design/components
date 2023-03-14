@@ -4,61 +4,27 @@
 import React from 'react';
 import { FileUploadProps } from './interfaces';
 
-export const convertBytesTo = (bytes: number, unit: FileUploadProps.FileSize): number => {
-  switch (unit) {
-    // Decimal
-    case 'KB': {
-      return bytes / 1000;
-    }
-    case 'MB': {
-      return bytes / 1000 ** 2;
-    }
-    case 'GB': {
-      return bytes / 1000 ** 3;
-    }
-    // Binary
-    case 'KIB': {
-      return bytes / 1024;
-    }
-    case 'MIB': {
-      return bytes / 1024 ** 2;
-    }
-    case 'GIB': {
-      return bytes / 1024 ** 3;
-    }
-    // Default
-    case 'BYTES':
-    default: {
-      return bytes;
-    }
-  }
-};
-
-export const defaultFileMetadata: FileUploadProps.FileMetadata = {
-  name: true,
-  type: false,
-  size: 'BYTES',
-  lastModified: false,
-  thumbnail: false,
-};
-
-export function getBaseMetadata(metadata?: FileUploadProps.FileMetadata): FileUploadProps.FileMetadata {
-  const baseMetadata: FileUploadProps.FileMetadata = Object.create(defaultFileMetadata);
-  if (metadata) {
-    Object.assign(baseMetadata, metadata);
-  }
-  return baseMetadata;
+export function getBaseMetadata(customMetadata: FileUploadProps.FileMetadata = {}): FileUploadProps.FileMetadata {
+  return {
+    name: true,
+    type: false,
+    size: 'BYTES',
+    lastModified: false,
+    thumbnail: false,
+    ...customMetadata,
+  };
 }
 
 export function isImageFile(file: File): boolean {
   return !!file.type && file.type.split('/')[0] === 'image';
 }
 
+// TODO: use i18n
 export function formatFileSize(size: number, metadata: FileUploadProps.FileMetadata): React.ReactNode {
   if (!metadata.size || !size) {
     return null;
   }
-  const convertedSize = convertBytesTo(size, metadata.size).toFixed(2);
+  const convertedSize = bytesToUnit(metadata.size, size).toFixed(2);
   return `${convertedSize} ${metadata.size}`;
 }
 
@@ -77,7 +43,7 @@ function checkLocale(locale: string | null | undefined): string {
   return locale;
 }
 
-export function mergeLocales(locale: string, fullLocale: string): string {
+function mergeLocales(locale: string, fullLocale: string): string {
   const isShort = locale.length === 2;
   if (isShort && fullLocale.indexOf(locale) === 0) {
     return fullLocale;
@@ -85,7 +51,7 @@ export function mergeLocales(locale: string, fullLocale: string): string {
   return locale;
 }
 
-export function normalizeLocale(locale: string | undefined): string {
+function normalizeLocale(locale: string | undefined): string {
   locale = checkLocale(locale);
   const browserLocale = getBrowserLocale();
   if (locale) {
@@ -120,4 +86,34 @@ export function formatFileLastModified(rawDate: number, metadata: FileUploadProp
     hour12: false,
   });
   return `${dateStr} ${timeStr}`;
+}
+
+function bytesToUnit(unit: FileUploadProps.FileSize, bytes: number): number {
+  switch (unit) {
+    // Decimal
+    case 'KB': {
+      return bytes / 1000;
+    }
+    case 'MB': {
+      return bytes / 1000 ** 2;
+    }
+    case 'GB': {
+      return bytes / 1000 ** 3;
+    }
+    // Binary
+    case 'KIB': {
+      return bytes / 1024;
+    }
+    case 'MIB': {
+      return bytes / 1024 ** 2;
+    }
+    case 'GIB': {
+      return bytes / 1024 ** 3;
+    }
+    // Default
+    case 'BYTES':
+    default: {
+      return bytes;
+    }
+  }
 }
