@@ -12,8 +12,8 @@ export default function FileUploadScenario() {
   const [profileImageFile, setProfileImageFile] = useState<FileUploadProps.FileType>(null);
   const [profileImageError, setProfileError] = useState<string | null>(null);
 
-  const [documentFiles, setDocumentFiles] = useState<FileUploadProps.FileType>(null);
-  const [documentsError, setDocumentsError] = useState<string | null>(null);
+  const [contractFiles, setContractFiles] = useState<FileUploadProps.FileType>(null);
+  const [contractsError, setContractsError] = useState<string | null>(null);
 
   return (
     <Box margin="xl">
@@ -40,17 +40,17 @@ export default function FileUploadScenario() {
           </FormField>
 
           <FormField
-            errorText={documentsError}
-            label="Documents"
+            errorText={contractsError}
+            label="Contracts"
             description="Upload your contract with all amendments"
             constraintText="File size must not exceed 250 KB. Combined file size must not exceed 500 KB"
           >
             <FileUpload
               multiple={true}
-              value={documentFiles}
+              value={contractFiles}
               onChange={event => {
-                setDocumentFiles(event.detail.value);
-                setDocumentsError(validateFileSize(event.detail.value, 250 * KB, 500 * KB));
+                setContractFiles(event.detail.value);
+                setContractsError(validateFileSize(event.detail.value, 250 * KB, 500 * KB));
               }}
               buttonText="Choose files"
               accept="application/pdf"
