@@ -10,9 +10,13 @@ import { SelectedFileList } from './components/selected-file-list';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalButton from '../button/internal';
-import InternalFormField from '../form-field/internal';
 import styles from './styles.css.js';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { getBaseProps } from '../internal/base-component';
+import { useFormFieldContext } from '../contexts/form-field';
+import checkControlled from '../internal/hooks/check-controlled';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import clsx from 'clsx';
 
 type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
 
@@ -24,20 +28,24 @@ function InternalFileUpload(
     ariaLabel,
     ariaRequired,
     buttonText,
-    description,
     disabled,
-    errorText,
     fileMetadata,
-    constraintText,
-    id,
-    label,
     multiple = false,
     onChange,
     value,
+    __internalRootRef = null,
+    ...restProps
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const baseProps = getBaseProps(restProps);
+  const formFieldContext = useFormFieldContext(restProps);
+
+  const selfControlId = useUniqueId('input');
+  const controlId = formFieldContext.controlId ?? selfControlId;
+
+  checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
   const handleButtonClick = () => fileInputRef.current?.click();
 
@@ -73,7 +81,7 @@ function InternalFileUpload(
   );
 
   const selectedFiles = useMemo((): React.ReactNode => {
-    if (errorText) {
+    if (formFieldContext.invalid) {
       return null;
     }
     if (!multiple && value instanceof File) {
@@ -82,33 +90,32 @@ function InternalFileUpload(
     if (multiple && value instanceof Array) {
       return <SelectedFileList fileList={value} metadata={fileMetadata} onDismiss={handleDismiss} />;
     }
-  }, [errorText, value, multiple, fileMetadata, handleDismiss]);
+  }, [formFieldContext.invalid, value, multiple, fileMetadata, handleDismiss]);
 
   return (
-    <InternalSpaceBetween size="xs" className={styles.root}>
-      <InternalFormField
-        controlId={id}
-        label={label}
-        description={description}
-        errorText={errorText}
-        constraintText={constraintText}
-      >
-        <InternalButton ref={ref} iconName="upload" formAction="none" disabled={disabled} onClick={handleButtonClick}>
-          <input
-            id={id}
-            ref={fileInputRef}
-            type="file"
-            multiple={false}
-            disabled={disabled}
-            aria-label={ariaLabel}
-            aria-required={ariaRequired ? 'true' : 'false'}
-            accept={accept}
-            onChange={handleChange}
-            hidden={true}
-          />
-          <span>{buttonText}</span>
-        </InternalButton>
-      </InternalFormField>
+    <InternalSpaceBetween
+      {...baseProps}
+      size="xs"
+      className={clsx(baseProps.className, styles.root)}
+      __internalRootRef={__internalRootRef}
+    >
+      <InternalButton ref={ref} iconName="upload" formAction="none" disabled={disabled} onClick={handleButtonClick}>
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple={false}
+          disabled={disabled}
+          aria-label={ariaLabel}
+          aria-required={ariaRequired ? 'true' : 'false'}
+          accept={accept}
+          onChange={handleChange}
+          hidden={true}
+          {...formFieldContext}
+          id={controlId}
+        />
+        <span>{buttonText}</span>
+      </InternalButton>
+
       {selectedFiles}
     </InternalSpaceBetween>
   );

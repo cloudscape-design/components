@@ -5,8 +5,9 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import FileUpload, { FileUploadProps } from '~components/file-upload';
+import { FormField, FormFieldProps } from '~components';
 
-const permutations = createPermutations<FileUploadProps>([
+const permutations = createPermutations<FileUploadProps & FormFieldProps>([
   {
     label: ['Profile image'],
     description: ['Upload your photo'],
@@ -44,13 +45,15 @@ export default function FileUploadPermutations() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
-            <FileUpload
-              onChange={() => {
-                /*empty handler to suppress react controlled property warning*/
-              }}
-              {...permutation}
-            />
+          render={({ label, description, constraintText, errorText, ...fileUploadProps }) => (
+            <FormField label={label} description={description} constraintText={constraintText} errorText={errorText}>
+              <FileUpload
+                onChange={() => {
+                  /*empty handler to suppress react controlled property warning*/
+                }}
+                {...fileUploadProps}
+              />
+            </FormField>
           )}
         />
       </ScreenshotArea>

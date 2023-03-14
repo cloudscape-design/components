@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps {
+export interface FileUploadProps extends BaseComponentProps, FormFieldValidationControlProps {
   /**
    * A string that defines the file types the file input should accept.
    * This string is a comma-separated list of unique file type specifiers.
@@ -28,38 +28,16 @@ export interface FileUploadProps extends BaseComponentProps {
    */
   buttonText: string;
   /**
-   * Detailed information about the form field that's displayed below the label.
-   */
-  description?: React.ReactNode;
-  /**
    * Specifies if the control is disabled, which prevents the user from
    * modifying the value and prevents the value from being included in a
    * form submission. A disabled control can't receive focus.
    */
   disabled?: boolean;
   /**
-   * Text that displays as a validation message. If this is set to a
-   * non-empty string, it will render the form field as invalid.
-   */
-  errorText?: React.ReactNode;
-  /**
    * File metadata helps the user to validate and compare the files selected.
    * Choose the most relevant file metadata to display, based on your use case.
    */
   fileMetadata?: FileUploadProps.FileMetadata;
-  /**
-   * Constraint text that's displayed below the control. Use this to
-   * provide additional information about valid formats, etc.
-   */
-  constraintText?: React.ReactNode;
-  /**
-   * Adds the specified ID to the root element of the component.
-   */
-  id?: string;
-  /**
-   * The main label for the form field.
-   */
-  label?: React.ReactNode;
   /**
    * Use to allow the selection of multiple files for upload from the
    * user's local drive. It uses tokens to display multiple files.
