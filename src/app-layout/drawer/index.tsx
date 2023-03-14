@@ -2,27 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
-import { ButtonProps } from '../button/interfaces';
-import { AppLayoutButton, CloseButton, togglesConfig } from './toggles';
-import { AppLayoutProps } from './interfaces';
+import { ButtonProps } from '../../button/interfaces';
+import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
+import { AppLayoutProps } from '../interfaces';
+import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface DesktopDrawerProps {
-  contentClassName?: string;
-  toggleClassName?: string;
-  closeClassName?: string;
+  contentClassName: string;
+  toggleClassName: string;
+  closeClassName: string;
   toggleRefs: {
     toggle: React.Ref<ButtonProps.Ref>;
     close: React.Ref<ButtonProps.Ref>;
   };
   width: number;
-  topOffset?: number;
-  bottomOffset?: number;
-  ariaLabels?: AppLayoutProps.Labels;
+  topOffset: number | undefined;
+  bottomOffset: number | undefined;
+  ariaLabels: AppLayoutProps.Labels | undefined;
   children: React.ReactNode;
   type: keyof typeof togglesConfig;
-  isMobile?: boolean;
-  isOpen?: boolean;
+  isMobile: boolean;
+  isOpen: boolean;
   onToggle: (isOpen: boolean) => void;
   onClick?: (event: React.MouseEvent) => void;
   onLoseFocus?: (event: React.FocusEvent) => void;
@@ -66,7 +67,6 @@ export function Drawer({
   const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
   const drawerContentWidthOpen = isMobile ? undefined : width;
   const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
-  const closeIconName = 'close';
 
   const regularOpenButton = (
     <TagName aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
@@ -85,11 +85,10 @@ export function Drawer({
     <div
       className={clsx(styles.drawer, {
         [styles['drawer-closed']]: !isOpen,
+        [testutilStyles['drawer-closed']]: !isOpen,
         [styles['drawer-mobile']]: isMobile,
       })}
-      style={{
-        width: drawerContentWidth,
-      }}
+      style={{ width: drawerContentWidth }}
       onBlur={
         onLoseFocus
           ? e => {
@@ -123,7 +122,6 @@ export function Drawer({
             className={closeClassName}
             ariaLabel={closeLabel}
             onClick={() => onToggle(false)}
-            iconName={closeIconName}
           />
           {children}
         </TagName>

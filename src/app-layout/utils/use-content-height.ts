@@ -24,8 +24,5 @@ export default function useContentHeight(headerSelector: string, footerSelector:
     contentHeightStyle: {
       [disableBodyScroll ? 'height' : 'minHeight']: heightStyleValue,
     },
-    panelHeightStyle: {
-      height: heightStyleValue,
-    },
   };
 }
