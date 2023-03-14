@@ -17,20 +17,21 @@ import { useFormFieldContext } from '../contexts/form-field';
 import checkControlled from '../internal/hooks/check-controlled';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import clsx from 'clsx';
+import { SomeRequired } from '../internal/types';
 
-type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
+type InternalFileUploadProps = SomeRequired<FileUploadProps, 'accept' | 'multiple'> & InternalBaseComponentProps;
 
 export default React.forwardRef(InternalFileUpload);
 
 function InternalFileUpload(
   {
-    accept = 'text/plain',
+    accept,
     ariaLabel,
     ariaRequired,
     buttonText,
     disabled,
     fileMetadata,
-    multiple = false,
+    multiple,
     onChange,
     value,
     __internalRootRef = null,

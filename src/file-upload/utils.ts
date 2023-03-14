@@ -6,7 +6,6 @@ import { FileUploadProps } from './interfaces';
 
 export function getBaseMetadata(customMetadata: FileUploadProps.FileMetadata = {}): FileUploadProps.FileMetadata {
   return {
-    name: true,
     type: false,
     size: 'BYTES',
     lastModified: false,

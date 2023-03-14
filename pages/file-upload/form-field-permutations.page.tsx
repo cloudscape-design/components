@@ -14,9 +14,7 @@ const permutations = createPermutations<FileUploadProps & FormFieldProps>([
     constraintText: ['File size must not exceed 1MB'],
     buttonText: ['Choose file'],
     value: [new File([new Blob(['demo content 1'], { type: 'text/plain' })], 'demo file 1')],
-    fileMetadata: [
-      { name: true, type: true, size: 'KB', lastModified: true, lastModifiedLocale: 'de-DE', thumbnail: true },
-    ],
+    fileMetadata: [{ type: true, size: 'KB', lastModified: true, lastModifiedLocale: 'de-DE', thumbnail: true }],
     errorText: [null, 'File is too large'],
   },
   {
@@ -31,9 +29,7 @@ const permutations = createPermutations<FileUploadProps & FormFieldProps>([
         new File([new Blob(['demo content 2'], { type: 'text/plain' })], 'demo file 2'),
       ],
     ],
-    fileMetadata: [
-      { name: true, type: true, size: 'KB', lastModified: true, lastModifiedLocale: 'de-DE', thumbnail: true },
-    ],
+    fileMetadata: [{ type: true, size: 'KB', lastModified: true, lastModifiedLocale: 'de-DE', thumbnail: true }],
     errorText: [null, 'Files are too large'],
   },
 ]);

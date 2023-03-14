@@ -10,11 +10,15 @@ import { getExternalProps } from '../internal/utils/external-props';
 
 export { FileUploadProps };
 
-const FileUpload = React.forwardRef((props: FileUploadProps, ref: React.Ref<FileUploadProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('FileUpload');
-  const externalProps = getExternalProps(props);
-  return <InternalFileUpload ref={ref} {...externalProps} {...baseComponentProps} />;
-});
+const FileUpload = React.forwardRef(
+  ({ accept = 'text/plain', multiple = false, ...restProps }: FileUploadProps, ref: React.Ref<FileUploadProps.Ref>) => {
+    const baseComponentProps = useBaseComponent('FileUpload');
+    const externalProps = getExternalProps(restProps);
+    return (
+      <InternalFileUpload ref={ref} accept={accept} multiple={multiple} {...externalProps} {...baseComponentProps} />
+    );
+  }
+);
 
 applyDisplayName(FileUpload, 'FileUpload');
 export default FileUpload;
