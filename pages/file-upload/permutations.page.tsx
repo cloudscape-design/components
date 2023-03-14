@@ -30,10 +30,10 @@ const permutations = createPermutations<FileUploadProps>([
   {
     buttonText: ['Choose file (metadata)'],
     value: [new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')],
-    fileMetadata: [
-      { type: false, size: undefined, lastModified: false, thumbnail: false },
-      { type: true, size: 'KB', lastModified: true, lastModifiedLocale: 'de-DE', thumbnail: true },
-    ],
+    showFileType: [true],
+    showFileSize: [true],
+    showFileLastModified: [true],
+    showFileThumbnail: [true],
   },
 ]);
 

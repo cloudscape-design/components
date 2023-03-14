@@ -1,30 +1,34 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { LegacyRef, useEffect, useMemo, useRef } from 'react';
+import React, { LegacyRef, useEffect, useRef } from 'react';
 
-import { formatFileSize, formatFileLastModified, getBaseMetadata, isImageFile } from '../utils';
-import { FileUploadProps } from '../interfaces';
+import { FileMetadata, FileUploadProps } from '../interfaces';
 import InternalBox from '../../box/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalIcon from '../../icon/internal';
 import styles from '../styles.css.js';
+import { formatFileLastModified, formatFileSize } from '../formatters';
 
 interface SelectedFileProps {
-  metadata?: FileUploadProps.FileMetadata;
+  metadata: FileMetadata;
   file: File;
-  className?: string;
-  multiple?: boolean;
+  multiple: boolean;
+  i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export const SelectedFile: React.FC<SelectedFileProps> = ({ metadata, file, multiple = false }: SelectedFileProps) => {
+export const SelectedFile: React.FC<SelectedFileProps> = ({
+  metadata,
+  file,
+  multiple,
+  i18nStrings,
+}: SelectedFileProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
-  const baseMetadata = getBaseMetadata(metadata);
 
-  const isImg = useMemo(() => isImageFile(file), [file]);
+  const isImage = !!file.type && file.type.split('/')[0] === 'image';
 
   useEffect(() => {
-    if (multiple && baseMetadata.thumbnail && isImg) {
+    if (multiple && metadata.showFileThumbnail && isImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (thumbnail.current && thumbnail.current.src) {
@@ -33,12 +37,12 @@ export const SelectedFile: React.FC<SelectedFileProps> = ({ metadata, file, mult
       };
       reader.readAsDataURL(file);
     }
-  }, [multiple, file, baseMetadata.thumbnail, isImg]);
+  }, [multiple, file, metadata.showFileThumbnail, isImage]);
 
   return (
     <InternalBox className={styles['selected-file-file']}>
       <InternalIcon variant="success" name="status-positive" />
-      {baseMetadata.thumbnail && multiple && isImg && (
+      {metadata.showFileThumbnail && multiple && isImage && (
         <InternalBox className={styles['selected-file-file-thumb']}>
           <img className={styles['selected-file-file-thumb-img']} alt={file.name} ref={thumbnail} src="" />
         </InternalBox>
@@ -50,19 +54,19 @@ export const SelectedFile: React.FC<SelectedFileProps> = ({ metadata, file, mult
               <span title={file.name}>{file.name}</span>
             </InternalBox>
           }
-          {baseMetadata.type && file.type && (
+          {metadata.showFileType && file.type && (
             <InternalBox fontSize="body-s" color="text-body-secondary">
               {file.type}
             </InternalBox>
           )}
-          {baseMetadata.size && file.size && (
+          {metadata.showFileSize && file.size && (
             <InternalBox fontSize="body-s" color="text-body-secondary">
-              {formatFileSize(file.size, baseMetadata)}
+              {formatFileSize(file.size, i18nStrings)}
             </InternalBox>
           )}
-          {baseMetadata.lastModified && file.lastModified && (
+          {metadata.showFileLastModified && file.lastModified && (
             <InternalBox fontSize="body-s" color="text-body-secondary">
-              {formatFileLastModified(file.lastModified, baseMetadata)}
+              {formatFileLastModified(new Date(file.lastModified), i18nStrings)}
             </InternalBox>
           )}
         </InternalSpaceBetween>

@@ -11,11 +11,34 @@ import { getExternalProps } from '../internal/utils/external-props';
 export { FileUploadProps };
 
 const FileUpload = React.forwardRef(
-  ({ accept = 'text/plain', multiple = false, ...restProps }: FileUploadProps, ref: React.Ref<FileUploadProps.Ref>) => {
+  (
+    {
+      accept = 'text/plain',
+      multiple = false,
+      showFileType = false,
+      showFileSize = false,
+      showFileLastModified = false,
+      showFileThumbnail = false,
+      i18nStrings = {},
+      ...restProps
+    }: FileUploadProps,
+    ref: React.Ref<FileUploadProps.Ref>
+  ) => {
     const baseComponentProps = useBaseComponent('FileUpload');
     const externalProps = getExternalProps(restProps);
     return (
-      <InternalFileUpload ref={ref} accept={accept} multiple={multiple} {...externalProps} {...baseComponentProps} />
+      <InternalFileUpload
+        ref={ref}
+        accept={accept}
+        multiple={multiple}
+        showFileType={showFileType}
+        showFileSize={showFileSize}
+        showFileLastModified={showFileLastModified}
+        showFileThumbnail={showFileThumbnail}
+        i18nStrings={i18nStrings}
+        {...externalProps}
+        {...baseComponentProps}
+      />
     );
   }
 );
