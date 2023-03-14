@@ -19,7 +19,11 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
 
-type InternalFileUploadProps = SomeRequired<FileUploadProps, 'accept' | 'multiple'> & InternalBaseComponentProps;
+type InternalFileUploadProps = SomeRequired<
+  FileUploadProps,
+  'accept' | 'multiple' | 'showFileType' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
+> &
+  InternalBaseComponentProps;
 
 export default React.forwardRef(InternalFileUpload);
 
@@ -30,10 +34,14 @@ function InternalFileUpload(
     ariaRequired,
     buttonText,
     disabled,
-    fileMetadata,
     multiple,
     onChange,
     value,
+    showFileType,
+    showFileSize,
+    showFileLastModified,
+    showFileThumbnail,
+    i18nStrings,
     __internalRootRef = null,
     ...restProps
   }: InternalFileUploadProps,
@@ -81,6 +89,8 @@ function InternalFileUpload(
     [value, multiple, onChange]
   );
 
+  const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -106,9 +116,9 @@ function InternalFileUpload(
       </InternalButton>
 
       {value instanceof File ? (
-        <SelectedFile file={value} metadata={fileMetadata} multiple={false} />
+        <SelectedFile file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
       ) : value instanceof Array ? (
-        <SelectedFileList fileList={value} metadata={fileMetadata} onDismiss={handleDismiss} />
+        <SelectedFileList fileList={value} metadata={metadata} onDismiss={handleDismiss} i18nStrings={i18nStrings} />
       ) : null}
     </InternalSpaceBetween>
   );

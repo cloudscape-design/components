@@ -5,6 +5,9 @@ import { FileUpload, FileUploadProps, FormField } from '~components';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 
+const KB = 1000;
+const MB = 1000 ** 2;
+
 export default function FileUploadScenario() {
   const [profileImageFile, setProfileImageFile] = useState<FileUploadProps.FileType>(null);
   const [profileImageError, setProfileError] = useState<string | null>(null);
@@ -21,17 +24,18 @@ export default function FileUploadScenario() {
             errorText={profileImageError}
             label="Profile picture"
             description="Upload a picture of yourself"
-            constraintText="File size must not exceed 1MB"
+            constraintText="File size must not exceed 1 MB"
           >
             <FileUpload
               value={profileImageFile}
               onChange={event => {
                 setProfileImageFile(event.detail.value);
-                setProfileError(validateFileSize('MB', event.detail.value, 1 * 1024 ** 2));
+                setProfileError(validateFileSize(event.detail.value, 1 * MB));
               }}
               buttonText="Choose file"
               accept="image"
-              fileMetadata={{ size: 'KB' }}
+              showFileSize={true}
+              showFileLastModified={true}
             />
           </FormField>
 
@@ -39,18 +43,19 @@ export default function FileUploadScenario() {
             errorText={documentsError}
             label="Documents"
             description="Upload your contract with all amendments"
-            constraintText="Combined file size must not exceed 1MB"
+            constraintText="File size must not exceed 250 KB. Combined file size must not exceed 500 KB"
           >
             <FileUpload
               multiple={true}
               value={documentFiles}
               onChange={event => {
                 setDocumentFiles(event.detail.value);
-                setDocumentsError(validateFileSize('KB', event.detail.value, (1 * 1024 ** 2) / 3, (1 * 1024 ** 2) / 2));
+                setDocumentsError(validateFileSize(event.detail.value, 250 * KB, 500 * KB));
               }}
               buttonText="Choose files"
               accept="application/pdf"
-              fileMetadata={{ size: 'KB' }}
+              showFileSize={true}
+              showFileLastModified={true}
             />
           </FormField>
         </SpaceBetween>
@@ -60,7 +65,6 @@ export default function FileUploadScenario() {
 }
 
 function validateFileSize(
-  unit: FileUploadProps.FileSize,
   input: FileUploadProps.FileType,
   maxFileSize: number,
   maxTotalSize = maxFileSize
@@ -70,17 +74,7 @@ function validateFileSize(
   }
 
   const formatFileSize = (bytes: number): string => {
-    switch (unit) {
-      case 'KB': {
-        return (bytes / 1000).toFixed(1) + 'KB';
-      }
-      case 'MB': {
-        return (bytes / 1000 ** 2).toFixed(1) + 'MB';
-      }
-      default: {
-        return bytes.toString();
-      }
-    }
+    return bytes < MB ? `${(bytes / KB).toFixed(2)} KB` : `${(bytes / MB).toFixed(2)} MB`;
   };
 
   const files = input instanceof File ? [input] : input;

@@ -34,10 +34,25 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   disabled?: boolean;
   /**
-   * File metadata helps the user to validate and compare the files selected.
-   * Choose the most relevant file metadata to display, based on your use case.
+   * Show file's MIME type in the token.
+   * Default: `false`.
    */
-  fileMetadata?: FileUploadProps.FileMetadata;
+  showFileType?: boolean;
+  /**
+   * Show file's size in the token.
+   * Default: `false`.
+   */
+  showFileSize?: boolean;
+  /**
+   * Show file's last modified timestamp in the token.
+   * Default: `false`.
+   */
+  showFileLastModified?: boolean;
+  /**
+   * Show file's thumbnail in the token. Use for multiple files upload case only. Only supported for images.
+   * Default: `false`.
+   */
+  showFileThumbnail?: boolean;
   /**
    * Use to allow the selection of multiple files for upload from the
    * user's local drive. It uses tokens to display multiple files.
@@ -55,6 +70,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * If you want to clear the selection, use null.
    */
   value: FileUploadProps.FileType;
+  /**
+   * An object containing all the localized strings required by the component.
+   */
+  i18nStrings?: FileUploadProps.I18nStrings;
 }
 
 export namespace FileUploadProps {
@@ -69,30 +88,9 @@ export namespace FileUploadProps {
     file: File;
   }
 
-  export type FileSize = 'BYTES' | 'KB' | 'KIB' | 'MB' | 'MIB' | 'GB' | 'GIB';
-
-  export interface FileMetadata {
-    /**
-     * Show the file MIME type.
-     * Default: false
-     */
-    type?: boolean;
-    /**
-     * Show file size expressed in bytes, KB, MB, GB, KiB, MiB, or GiB.
-     * Default: 'bytes'
-     */
-    size?: FileSize;
-    /**
-     * Show the file last modified date.
-     * Default: false
-     */
-    lastModified?: boolean;
-    lastModifiedLocale?: string;
-    /**
-     * Show file thumbnail in multiple files upload case only.
-     * Default: false
-     */
-    thumbnail?: boolean;
+  export interface I18nStrings {
+    formatFileSize?: (sizeInBytes: number) => string;
+    formatFileTimestamp?: (date: Date) => string;
   }
 
   export interface Ref {
@@ -101,4 +99,11 @@ export namespace FileUploadProps {
      */
     focus(): void;
   }
+}
+
+export interface FileMetadata {
+  showFileType: boolean;
+  showFileSize: boolean;
+  showFileLastModified: boolean;
+  showFileThumbnail: boolean;
 }
