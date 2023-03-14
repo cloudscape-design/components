@@ -3,8 +3,8 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { useI18n } from '../context';
-import { I18nProvider, I18nProviderProps } from '../provider';
+import { useInternalI18n } from '../context';
+import { I18nProvider } from '../provider';
 
 interface TestComponentProps {
   topLevelString?: string;
@@ -27,27 +27,28 @@ const MESSAGES = {
   },
 };
 
-const CUSTOM_HANDLERS: Record<string, Record<string, I18nProviderProps.CustomHandler<any>>> = {
-  'test-component': {
-    topLevelFunction: format => (type: string) => format({ type }),
-    'nested.nestedFunction': format => {
-      return ({ type }: { type: string }) => format({ type });
-    },
-  },
-};
-
 function TestComponent(props: TestComponentProps) {
-  const format = useI18n();
+  const format = useInternalI18n();
   return (
     <ul>
       <li id="top-level-string">{format('test-component', 'topLevelString', props.topLevelString)}</li>
       <li id="top-level-function">
-        {format('test-component', 'topLevelFunction', props.topLevelFunction)?.('function')}
+        {format(
+          'test-component',
+          'topLevelFunction',
+          props.topLevelFunction,
+          format => type => format({ type })
+        )?.('function')}
       </li>
 
       <li id="nested-string">{format('test-component', 'nested.nestedString', props.nested?.nestedString)}</li>
       <li id="nested-function">
-        {format('test-component', 'nested.nestedFunction', props.nested?.nestedFunction)?.({ type: 'function' })}
+        {format(
+          'test-component',
+          'nested.nestedFunction',
+          props.nested?.nestedFunction,
+          format => props => format(props)
+        )?.({ type: 'function' })}
       </li>
     </ul>
   );
@@ -55,7 +56,7 @@ function TestComponent(props: TestComponentProps) {
 
 it('provides top-level and dot-notation values for static strings', () => {
   const { container } = render(
-    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
+    <I18nProvider value={MESSAGES}>
       <TestComponent />
     </I18nProvider>
   );
@@ -66,7 +67,7 @@ it('provides top-level and dot-notation values for static strings', () => {
 
 it('provides top-level and dot-notation values for i18n functions', () => {
   const { container } = render(
-    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
+    <I18nProvider value={MESSAGES}>
       <TestComponent />
     </I18nProvider>
   );
@@ -77,7 +78,7 @@ it('provides top-level and dot-notation values for i18n functions', () => {
 
 it("doesn't override existing strings", () => {
   const { container } = render(
-    <I18nProvider value={MESSAGES} customHandlers={CUSTOM_HANDLERS}>
+    <I18nProvider value={MESSAGES}>
       <TestComponent topLevelString="My custom string" nested={{ nestedString: 'My custom string' }} />
     </I18nProvider>
   );

@@ -15,7 +15,7 @@ import { AlertProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
-import { useI18n } from '../internal/i18n/context';
+import { useInternalI18n } from '../internal/i18n/context';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
@@ -42,7 +42,7 @@ export default function InternalAlert({
   ...rest
 }: InternalAlertProps) {
   const baseProps = getBaseProps(rest);
-  const format = useI18n();
+  const format = useInternalI18n();
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);

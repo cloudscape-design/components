@@ -21,6 +21,7 @@ import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { FlashbarProps };
 
@@ -45,7 +46,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -134,6 +135,26 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const { i18nStrings } = restProps;
 
+  const format = useInternalI18n();
+  const ariaLabel = format('flashbar', 'i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const notificationBarText = format('flashbar', 'i18nStrings.notificationBarText', i18nStrings?.notificationBarText);
+  const notificationBarAriaLabel = format(
+    'flashbar',
+    'i18nStrings.notificationBarAriaLabel',
+    i18nStrings?.notificationBarAriaLabel
+  );
+  const iconAriaLabels = {
+    errorIconAriaLabel: format('flashbar', 'i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+    inProgressIconAriaLabel: format(
+      'flashbar',
+      'i18nStrings.inProgressIconAriaLabel',
+      i18nStrings?.inProgressIconAriaLabel
+    ),
+    infoIconAriaLabel: format('flashbar', 'i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
+    successIconAriaLabel: format('flashbar', 'i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
+    warningIconAriaLabel: format('flashbar', 'i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+  };
+
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
     // so it's a good moment to trigger animations that will make calculations based on old and new DOM state.
@@ -172,8 +193,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         ...item,
         collapsedIndex: index,
       }));
-
-  const notificationBarText = i18nStrings?.notificationBarText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
@@ -315,7 +334,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                   <NotificationTypeCount
                     key={type}
                     iconName={iconName}
-                    label={i18nStrings ? i18nStrings[labelName] : undefined}
+                    label={iconAriaLabels[labelName]}
                     count={countByType[type]}
                   />
                 ))}
@@ -325,7 +344,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               aria-controls={flashbarElementId}
               aria-describedby={itemCountElementId}
               aria-expanded={isFlashbarStackExpanded}
-              aria-label={i18nStrings?.notificationBarAriaLabel}
+              aria-label={notificationBarAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
               {...isFocusVisible}
             >

@@ -43,7 +43,6 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
-import { useI18nStrings } from '../internal/i18n/use-i18n-strings';
 
 export { AppLayoutProps };
 
@@ -56,7 +55,7 @@ const AppLayout = React.forwardRef(
     const isRefresh = useVisualRefresh();
 
     // This re-builds the props including the default values
-    const props = { contentType, headerSelector, footerSelector, ...useI18nStrings('app-layout', rest) };
+    const props = { contentType, headerSelector, footerSelector, ...rest };
 
     const baseProps = getBaseProps(rest);
 
