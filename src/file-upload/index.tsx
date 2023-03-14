@@ -6,12 +6,15 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { FileUploadProps } from './interfaces';
 import InternalFileUpload from './internal';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { getExternalProps } from '../internal/utils/external-props';
 
 export { FileUploadProps };
 
-export default function FileUpload({ ...props }: FileUploadProps) {
+const FileUpload = React.forwardRef((props: FileUploadProps, ref: React.Ref<FileUploadProps.Ref>) => {
   const baseComponentProps = useBaseComponent('FileUpload');
-  return <InternalFileUpload {...props} {...baseComponentProps} />;
-}
+  const externalProps = getExternalProps(props);
+  return <InternalFileUpload ref={ref} {...externalProps} {...baseComponentProps} />;
+});
 
 applyDisplayName(FileUpload, 'FileUpload');
+export default FileUpload;
