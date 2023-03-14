@@ -73,11 +73,6 @@ export namespace FileUploadProps {
 
   export interface FileMetadata {
     /**
-     * Show each file name.
-     * Default: true
-     */
-    name?: boolean;
-    /**
      * Show the file MIME type.
      * Default: false
      */

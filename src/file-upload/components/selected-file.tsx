@@ -45,11 +45,11 @@ export const SelectedFile: React.FC<SelectedFileProps> = ({ metadata, file, mult
       )}
       <InternalBox className={styles['selected-file-file-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
-          {baseMetadata.name && file.name && (
+          {
             <InternalBox className={styles['selected-file-file-name']}>
               <span title={file.name}>{file.name}</span>
             </InternalBox>
-          )}
+          }
           {baseMetadata.type && file.type && (
             <InternalBox fontSize="body-s" color="text-body-secondary">
               {file.type}
