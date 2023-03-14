@@ -15,6 +15,7 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
+import { useInternalI18n } from '../internal/i18n/context';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -52,6 +53,7 @@ export default function InternalFormField({
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
+  const format = useInternalI18n('form-field');
 
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
@@ -115,7 +117,10 @@ export default function InternalFormField({
       {(constraintText || errorText) && (
         <div className={styles.hints}>
           {errorText && (
-            <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+            <FormFieldError
+              id={slotIds.error}
+              errorIconAriaLabel={format('i18nStrings?.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
+            >
               {errorText}
             </FormFieldError>
           )}

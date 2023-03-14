@@ -10,9 +10,6 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from './table.data';
 import { columnDefinitions, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
-import { I18nProvider } from '~components/internal/i18n';
-
-import i18nMessages from '~components/internal/i18n/messages/all.en-US.js';
 
 export default function () {
   const [tokenLimit, setTokenLimit] = useState<number>();
@@ -42,54 +39,52 @@ export default function () {
   });
 
   return (
-    <I18nProvider value={i18nMessages}>
-      <ScreenshotArea disableAnimations={true}>
-        <ul>
-          <li>
-            <label>
-              Token limit
-              <input
-                type="number"
-                value={tokenLimit === undefined ? '' : tokenLimit}
-                onChange={e => setTokenLimit(parseInt(e.target.value))}
-              />
-            </label>
-          </li>
-          <li>
-            <label>
-              Toggle hideOperations
-              <input type="checkbox" checked={hideOperations} onChange={() => setHideOperations(!hideOperations)} />
-            </label>
-          </li>
-          <li>
-            <label>
-              Toggle disableFreeTextFiltering
-              <input
-                type="checkbox"
-                checked={disableFreeTextFiltering}
-                onChange={() => setDisableFreeText(!disableFreeTextFiltering)}
-              />
-            </label>
-          </li>
-        </ul>
-        <Table<TableItem>
-          header={<Header headingTagOverride={'h1'}>Instances</Header>}
-          items={items}
-          {...collectionProps}
-          filter={
-            <PropertyFilter
-              {...propertyFilterProps}
-              {...({} as any)}
-              virtualScroll={true}
-              countText={`${items.length} matches`}
-              tokenLimit={tokenLimit}
-              hideOperations={hideOperations}
-              disableFreeTextFiltering={disableFreeTextFiltering}
+    <ScreenshotArea disableAnimations={true}>
+      <ul>
+        <li>
+          <label>
+            Token limit
+            <input
+              type="number"
+              value={tokenLimit === undefined ? '' : tokenLimit}
+              onChange={e => setTokenLimit(parseInt(e.target.value))}
             />
-          }
-          columnDefinitions={columnDefinitions}
-        />
-      </ScreenshotArea>
-    </I18nProvider>
+          </label>
+        </li>
+        <li>
+          <label>
+            Toggle hideOperations
+            <input type="checkbox" checked={hideOperations} onChange={() => setHideOperations(!hideOperations)} />
+          </label>
+        </li>
+        <li>
+          <label>
+            Toggle disableFreeTextFiltering
+            <input
+              type="checkbox"
+              checked={disableFreeTextFiltering}
+              onChange={() => setDisableFreeText(!disableFreeTextFiltering)}
+            />
+          </label>
+        </li>
+      </ul>
+      <Table<TableItem>
+        header={<Header headingTagOverride={'h1'}>Instances</Header>}
+        items={items}
+        {...collectionProps}
+        filter={
+          <PropertyFilter
+            {...propertyFilterProps}
+            {...({} as any)}
+            virtualScroll={true}
+            countText={`${items.length} matches`}
+            tokenLimit={tokenLimit}
+            hideOperations={hideOperations}
+            disableFreeTextFiltering={disableFreeTextFiltering}
+          />
+        }
+        columnDefinitions={columnDefinitions}
+      />
+    </ScreenshotArea>
   );
 }

@@ -28,6 +28,7 @@ import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './pro
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { PropertyFilterProps };
 
@@ -35,7 +36,6 @@ const PropertyFilter = React.forwardRef(
   (
     {
       disabled,
-      i18nStrings,
       countText,
       query,
       hideOperations,
@@ -64,6 +64,49 @@ const PropertyFilter = React.forwardRef(
 
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
+
+    const format = useInternalI18n('property-filter');
+    const i18nStrings = {
+      ...rest.i18nStrings,
+      allPropertiesLabel: format('i18nStrings.allPropertiesLabel', rest.i18nStrings.allPropertiesLabel),
+      applyActionText: format('i18nStrings.applyActionText', rest.i18nStrings.applyActionText),
+      cancelActionText: format('i18nStrings.cancelActionText', rest.i18nStrings.cancelActionText),
+      clearFiltersText: format('i18nStrings.clearFiltersText', rest.i18nStrings.clearFiltersText),
+      editTokenHeader: format('i18nStrings.editTokenHeader', rest.i18nStrings.editTokenHeader),
+      enteredTextLabel: format('i18nStrings.enteredTextLabel', rest.i18nStrings.enteredTextLabel),
+      groupPropertiesText: format('i18nStrings.groupPropertiesText', rest.i18nStrings.groupPropertiesText),
+      groupValuesText: format('i18nStrings.groupValuesText', rest.i18nStrings.groupValuesText),
+      operationAndText: format('i18nStrings.operationAndText', rest.i18nStrings.operationAndText),
+      operationOrText: format('i18nStrings.operationOrText', rest.i18nStrings.operationOrText),
+      operatorContainsText: format('i18nStrings.operatorContainsText', rest.i18nStrings.operatorContainsText),
+      operatorDoesNotContainText: format(
+        'i18nStrings.operatorDoesNotContainText',
+        rest.i18nStrings.operatorDoesNotContainText
+      ),
+      operatorDoesNotEqualText: format(
+        'i18nStrings.operatorDoesNotEqualText',
+        rest.i18nStrings.operatorDoesNotEqualText
+      ),
+      operatorEqualsText: format('i18nStrings.operatorEqualsText', rest.i18nStrings.operatorEqualsText),
+      operatorGreaterOrEqualText: format(
+        'i18nStrings.operatorGreaterOrEqualText',
+        rest.i18nStrings.operatorGreaterOrEqualText
+      ),
+      operatorGreaterText: format('i18nStrings.operatorGreaterText', rest.i18nStrings.operatorGreaterText),
+      operatorLessOrEqualText: format('i18nStrings.operatorLessOrEqualText', rest.i18nStrings.operatorLessOrEqualText),
+      operatorLessText: format('i18nStrings.operatorLessText', rest.i18nStrings.operatorLessText),
+      operatorText: format('i18nStrings.operatorText', rest.i18nStrings.operatorText),
+      operatorsText: format('i18nStrings.operatorsText', rest.i18nStrings.operatorsText),
+      propertyText: format('i18nStrings.propertyText', rest.i18nStrings.propertyText),
+      tokenLimitShowFewer: format('i18nStrings.tokenLimitShowFewer', rest.i18nStrings.tokenLimitShowFewer),
+      tokenLimitShowMore: format('i18nStrings.tokenLimitShowMore', rest.i18nStrings.tokenLimitShowMore),
+      valueText: format('i18nStrings.valueText', rest.i18nStrings.valueText),
+      removeTokenButtonAriaLabel: format(
+        'i18nStrings.removeTokenButtonAriaLabel',
+        rest.i18nStrings.removeTokenButtonAriaLabel
+      ),
+    };
+
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
     const showResults = tokens?.length && !disabled;

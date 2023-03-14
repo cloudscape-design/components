@@ -21,8 +21,8 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     ...restProps,
   });
 
-  const format = useInternalI18n();
-  const ariaLabel = format('flashbar', 'i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const format = useInternalI18n('flashbar');
+  const ariaLabel = format('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
 
   /**
    * All the flash items should have ids so we can identify which DOM element is being

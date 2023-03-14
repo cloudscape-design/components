@@ -8,13 +8,14 @@ import SpaceBetween from '~components/space-between';
 import styles from './styles.scss';
 
 import { I18nProvider } from '~components/internal/i18n';
-// import messages from '~components/internal/i18n/messages/all.en-US.json';
-import messages from './messages.json';
+import messages from '~components/internal/i18n/messages/all.en';
+
+const MESSAGES = [messages];
 
 export default function AlertScenario() {
   const [visible, setVisible] = useState(true);
   return (
-    <I18nProvider value={messages}>
+    <I18nProvider messages={MESSAGES} locale="en">
       <article>
         <h1>Simple alert</h1>
         <ScreenshotArea>
