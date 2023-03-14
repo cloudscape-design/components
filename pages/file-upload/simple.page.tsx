@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { FileUpload, FileUploadProps } from '~components';
+import { FileUpload, FileUploadProps, FormField } from '~components';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 
@@ -17,35 +17,42 @@ export default function FileUploadScenario() {
       <SpaceBetween size="m">
         <h1>File upload demo</h1>
         <SpaceBetween size="m" direction="horizontal">
-          <FileUpload
-            value={profileImageFile}
-            onChange={event => {
-              setProfileImageFile(event.detail.value);
-              setProfileError(validateFileSize(event.detail.value, 1 * 1024 ** 2));
-            }}
+          <FormField
             errorText={profileImageError}
             label="Profile picture"
             description="Upload a picture of yourself"
             constraintText="File size must not exceed 1MB"
-            buttonText="Choose file"
-            accept="image"
-            fileMetadata={{ size: 'KB' }}
-          />
-          <FileUpload
-            multiple={true}
-            value={documentFiles}
-            onChange={event => {
-              setDocumentFiles(event.detail.value);
-              setDocumentsError(validateFileSize(event.detail.value, 1 * 1024 ** 2));
-            }}
+          >
+            <FileUpload
+              value={profileImageFile}
+              onChange={event => {
+                setProfileImageFile(event.detail.value);
+                setProfileError(validateFileSize(event.detail.value, 1 * 1024 ** 2));
+              }}
+              buttonText="Choose file"
+              accept="image"
+              fileMetadata={{ size: 'KB' }}
+            />
+          </FormField>
+
+          <FormField
             errorText={documentsError}
             label="Documents"
             description="Upload your contract with all amendments"
             constraintText="Combined file size must not exceed 1MB"
-            buttonText="Choose files"
-            accept="application/pdf"
-            fileMetadata={{ size: 'KB' }}
-          />
+          >
+            <FileUpload
+              multiple={true}
+              value={documentFiles}
+              onChange={event => {
+                setDocumentFiles(event.detail.value);
+                setDocumentsError(validateFileSize(event.detail.value, 1 * 1024 ** 2));
+              }}
+              buttonText="Choose files"
+              accept="application/pdf"
+              fileMetadata={{ size: 'KB' }}
+            />
+          </FormField>
         </SpaceBetween>
       </SpaceBetween>
     </Box>
