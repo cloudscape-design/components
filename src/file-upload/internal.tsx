@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useCallback, useMemo, useRef } from 'react';
+import React, { ChangeEvent, ForwardedRef, useCallback, useRef } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -80,18 +80,6 @@ function InternalFileUpload(
     [value, multiple, onChange]
   );
 
-  const selectedFiles = useMemo((): React.ReactNode => {
-    if (formFieldContext.invalid) {
-      return null;
-    }
-    if (!multiple && value instanceof File) {
-      return <SelectedFile file={value} metadata={fileMetadata} multiple={false} />;
-    }
-    if (multiple && value instanceof Array) {
-      return <SelectedFileList fileList={value} metadata={fileMetadata} onDismiss={handleDismiss} />;
-    }
-  }, [formFieldContext.invalid, value, multiple, fileMetadata, handleDismiss]);
-
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -116,7 +104,11 @@ function InternalFileUpload(
         <span>{buttonText}</span>
       </InternalButton>
 
-      {selectedFiles}
+      {value instanceof File ? (
+        <SelectedFile file={value} metadata={fileMetadata} multiple={false} />
+      ) : value instanceof Array ? (
+        <SelectedFileList fileList={value} metadata={fileMetadata} onDismiss={handleDismiss} />
+      ) : null}
     </InternalSpaceBetween>
   );
 }
