@@ -108,7 +108,7 @@ export default function App() {
               options: pageSizeOptions,
             }}
             visibleContentPreference={{
-              title: 'Select visible columns',
+              title: 'Column preferences',
               description: 'Customize the columns visibility and order.',
               options: visibleContentOptions,
               i18nStrings: collectionPreferencesI18nStrings,
