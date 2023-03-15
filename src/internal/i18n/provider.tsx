@@ -37,9 +37,9 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   const messages = useMemo(() => mergeMessages(messagesArray), [messagesArray]);
 
   // If a locale isn't provided, we can try and guess from the html lang,
-  // and default to English.
-  // NOTE: Should we support widening IETF language tags? (e.g. match en-GB from en)
-  const locale = providedLocale ?? document?.documentElement.lang ?? 'en';
+  // and lastly default to English. Locales have a recommended case, but are
+  // matched case-insensitively.
+  const locale = (providedLocale ?? document?.documentElement.lang ?? 'en').toLowerCase();
 
   const format = useCallback<FormatFunction>(
     <T,>(namespace: string, component: string, key: string, provided: T, customHandler?: CustomHandler<T>): T => {
@@ -47,17 +47,35 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
       // treated as "not provided". So even if a user explicitly provides an
       // undefined value, it will default to i18n values. This may need to
       // be changed.
-      if (provided !== undefined || messages?.[namespace]?.[locale]?.[component]?.[key] === undefined) {
+      if (provided !== undefined) {
         return provided;
       }
 
+      // For the given locale and cache key, the computed message will always
+      // be the same. So we can safely return the cached value.
       const cacheKey = `${namespace}.${component}.${key}`;
       if (cache.has(cacheKey)) {
         return cache.get(cacheKey)! as T;
       }
 
+      // Widen the locale string (e.g. en-GB -> en) until we find a locale
+      // that contains the message we need.
+      let message: string | MessageFormatElement[] | undefined;
+      const matchableLocales = getMatchableLocales(locale);
+      for (const matchableLocale of matchableLocales) {
+        const localeMessage = messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
+        if (localeMessage !== undefined) {
+          message = localeMessage;
+        }
+      }
+
+      // If a message wasn't found, exit early.
+      if (message === undefined) {
+        return provided;
+      }
+
       let value: T;
-      const intlMessageFormat = new IntlMessageFormat(messages[namespace][locale][component][key], locale);
+      const intlMessageFormat = new IntlMessageFormat(message, locale);
       if (customHandler) {
         // NOTE: Because the results of the custom handler are cached, the
         // custom handler is expected to be pure. We can exclude these from
@@ -84,7 +102,8 @@ function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18n
         result[namespace] = messages[namespace];
         continue;
       }
-      for (const locale in messages[namespace]) {
+      for (const casedLocale in messages[namespace]) {
+        const locale = casedLocale.toLowerCase();
         if (!(locale in result[namespace])) {
           result[namespace][locale] = messages[namespace][locale];
           continue;
@@ -102,4 +121,17 @@ function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18n
     }
   }
   return result;
+}
+
+function getMatchableLocales(ietfLanguageTag: string): string[] {
+  const parts = ietfLanguageTag.split('-');
+  if (parts.length === 1) {
+    return [ietfLanguageTag];
+  }
+
+  const localeStrings = [];
+  for (let i = parts.length; i > 0; i--) {
+    localeStrings.push(parts.slice(0, i).join('-'));
+  }
+  return localeStrings;
 }
