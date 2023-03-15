@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
 .root {
@@ -14,9 +13,7 @@
   width: 100%;
   min-width: 0;
   display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-start;
-  gap: 8px;
+  gap: awsui.$space-scaled-xs;
 }
 
 .file-option-thumbnail {
