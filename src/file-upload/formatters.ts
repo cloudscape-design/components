@@ -14,6 +14,6 @@ export function formatFileSize(size: number, i18nStrings: FileUploadProps.I18nSt
 
 function defaultFormat(size: number): string {
   const KB = 1000;
-  const MB = 1000 * 2;
+  const MB = 1000 ** 2;
   return size < MB ? `${(size / KB).toFixed(2)} KB` : `${(size / MB).toFixed(2)} MB`;
 }

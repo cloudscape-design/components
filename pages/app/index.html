@@ -23,6 +23,10 @@
       if (location.hash.includes('code-editor')) {
         csp['img-src'] = 'data:';
       }
+      // Custom CSP required for thumbnails in FileUpload component
+      if (location.hash.includes('file-upload')) {
+        csp['img-src'] = 'data:';
+      }
 
       const cspString = Object.entries(csp)
         .map(([key, value]) => `${key} ${value}`)
