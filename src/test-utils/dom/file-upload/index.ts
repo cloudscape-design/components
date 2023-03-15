@@ -7,7 +7,7 @@ import ButtonWrapper from '../button';
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = styles.root;
 
-  findUploadButton(): ComponentWrapper {
+  findUploadButton(): ButtonWrapper {
     return this.findComponent(`.${styles['upload-button']}`, ButtonWrapper)!;
   }
 
@@ -21,6 +21,11 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
 
   findFileTokenByName(fileName: string): null {
     return null;
+  }
+
+  @usesDom
+  isDisabled(): boolean {
+    return this.findUploadButton().isDisabled();
   }
 }
 

@@ -132,7 +132,7 @@ function InternalFileUpload(
         <input
           ref={fileInputRef}
           type="file"
-          multiple={false}
+          multiple={multiple}
           disabled={disabled}
           aria-label={ariaLabel}
           aria-required={ariaRequired ? 'true' : 'false'}
