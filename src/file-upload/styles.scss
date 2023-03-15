@@ -10,44 +10,30 @@
   /* used in test-utils */
 }
 
-.selected-file-file {
+.file-option {
+  width: 100%;
   min-width: 0;
   display: flex;
   flex-flow: row nowrap;
   align-items: flex-start;
   gap: 8px;
 }
-.selected-file-file-thumb {
+
+.file-option-thumbnail {
   max-width: 60px;
 }
-.selected-file-file-thumb-img {
+
+.file-option-thumbnail-image {
   width: 100%;
   height: auto;
 }
-.selected-file-file-metadata {
-  overflow: hidden;
-}
-.selected-file-file-name {
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+.file-option-metadata {
   overflow: hidden;
 }
 
-.selected-file-list-token {
-  align-items: flex-start;
-  background-color: awsui.$color-background-item-selected;
-  border-radius: 2px;
-  border: 1px solid awsui.$color-border-item-selected;
-  box-sizing: border-box;
-  color: awsui.$color-text-body-default;
-  display: flex;
-  height: 100%;
-  padding: 4px 4px 4px 8px;
-}
-.selected-file-list-dismiss-button {
-  background-color: initial;
-  border: 1px solid #0000;
-  color: awsui.$color-text-body-secondary;
-  margin-left: auto;
-  padding: 0 4px;
+.file-option-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
