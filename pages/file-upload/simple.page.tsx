@@ -55,10 +55,11 @@ export default function FileUploadScenario() {
                 setContractsError(validateFileSize(event.detail.value, 250 * KB, 500 * KB));
               }}
               buttonText="Choose files"
-              accept="application/pdf"
+              accept="application/pdf, image/png, image/jpeg"
               showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
+              showFileThumbnail={true}
               dismissAriaLabel="Dismiss"
             />
           </FormField>

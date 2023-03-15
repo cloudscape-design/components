@@ -38,9 +38,9 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
       {metadata.showFileThumbnail && multiple && isImage && (
-        <InternalBox className={styles['file-option-thumbnail']}>
+        <div className={styles['file-option-thumbnail']}>
           <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
-        </InternalBox>
+        </div>
       )}
       <InternalBox className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">

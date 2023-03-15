@@ -124,7 +124,7 @@ function InternalFileUpload(
           alignment="vertical"
           items={value}
           getItemAttributes={() => ({ dismissLabel: dismissAriaLabel })}
-          renderItem={item => <FileOption file={item} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />}
+          renderItem={item => <FileOption file={item} metadata={metadata} multiple={true} i18nStrings={i18nStrings} />}
           onDismiss={index => handleDismiss(index)}
         />
       ) : null}
