@@ -38,7 +38,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 }
 
 .visible-content-option {
-  background: awsui.$board-placeholder-hover;
+  background: awsui.$color-board-placeholder-hover;
 }
 
 .visible-content-option-content {
@@ -74,10 +74,4 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   text-overflow: ellipsis;
   padding-right: awsui.$space-l;
   flex-grow: 1;
-}
-
-.visible-content-drag-handle-wrapper {
-  display: flex;
-  align-items: start;
-  margin-right: awsui.$space-xxs;
 }
