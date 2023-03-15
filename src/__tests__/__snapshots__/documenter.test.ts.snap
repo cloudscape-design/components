@@ -4314,6 +4314,11 @@ You must set the current list of visible content \`id\`s in the \`preferences.vi
         "name": "CollectionPreferencesProps.VisibleContentPreference",
         "properties": Array [
           Object {
+            "name": "description",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "i18nStrings",
             "optional": true,
             "type": "CollectionPreferencesProps.I18nStrings",
