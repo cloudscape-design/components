@@ -10,6 +10,7 @@ import {
   wrapLinesPreference,
 } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { collectionPreferencesI18nStrings } from '../common/i18n-strings';
 
 const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
   {
@@ -63,11 +64,7 @@ export default function App() {
         visibleContentPreference={{
           title: 'Select visible columns',
           options: shortOptionsList,
-          i18nStrings: {
-            liveAnnouncementDndStarted: 'Dragging',
-            liveAnnouncementDndDiscarded: 'Reordering canceled',
-            liveAnnouncementDndItemReordered: i => `Item moved to position ${i}`,
-          },
+          i18nStrings: collectionPreferencesI18nStrings,
         }}
       />
       <CollectionPreferences
@@ -80,11 +77,7 @@ export default function App() {
         visibleContentPreference={{
           title: 'Select visible columns',
           options: longOptionsList,
-          i18nStrings: {
-            liveAnnouncementDndStarted: 'Dragging',
-            liveAnnouncementDndDiscarded: 'Reordering canceled',
-            liveAnnouncementDndItemReordered: i => `Item moved to position ${i}`,
-          },
+          i18nStrings: collectionPreferencesI18nStrings,
         }}
       />
     </ScreenshotArea>

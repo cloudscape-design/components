@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import InternalSpaceBetween from '../space-between/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
@@ -60,6 +60,7 @@ export default function VisibleContentPreference({
   };
 
   const [isDragging, setIsDragging] = useState(false);
+  const isFirstAnnouncement = useRef(true);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (isDragging && isEscape(event.key)) {
@@ -69,6 +70,12 @@ export default function VisibleContentPreference({
   };
 
   const outerGroupLabelId = `${idPrefix}-outer`;
+
+  useEffect(() => {
+    if (!isDragging) {
+      isFirstAnnouncement.current = true;
+    }
+  }, [isDragging]);
 
   return (
     <div className={styles['visible-content']}>
@@ -90,22 +97,51 @@ export default function VisibleContentPreference({
                 collisionDetection={closestCenter}
                 accessibility={{
                   announcements: {
-                    onDragStart() {
-                      return i18nStrings ? i18nStrings.liveAnnouncementDndStarted : undefined;
+                    onDragStart({ active }) {
+                      if (active && i18nStrings?.liveAnnouncementDndStarted) {
+                        const index = getSortedOptions({ options: optionGroup.options, order: itemOrder }).findIndex(
+                          option => option.id === active.id
+                        );
+                        return i18nStrings.liveAnnouncementDndStarted(index + 1, optionGroup.options.length);
+                      }
                     },
-                    onDragOver() {
-                      return undefined;
-                    },
-                    onDragEnd({ over }) {
+                    onDragOver({ over }) {
+                      // Don't announce on the first dragOver because it's redundant with onDragStart.
+                      if (isFirstAnnouncement.current) {
+                        isFirstAnnouncement.current = false;
+                        return;
+                      }
+
                       if (over && i18nStrings?.liveAnnouncementDndItemReordered) {
-                        const position = optionGroup.options.findIndex(option => option.id === over.id);
-                        return i18nStrings.liveAnnouncementDndItemReordered(position);
+                        const sortedOptions = getSortedOptions({
+                          options: optionGroup.options,
+                          order: itemOrder,
+                        });
+                        const finalIndex = sortedOptions.findIndex(option => option.id === over.id);
+                        return i18nStrings.liveAnnouncementDndItemReordered(finalIndex + 1, optionGroup.options.length);
+                      }
+                    },
+                    onDragEnd({ active, over }) {
+                      if (over && i18nStrings?.liveAnnouncementDndItemCommitted) {
+                        const initialIndex = getSortedOptions({
+                          options: optionGroup.options,
+                          order: itemOrder,
+                        }).findIndex(option => option.id === active.id);
+                        const finalIndex = optionGroup.options.findIndex(option => option.id === over.id);
+                        return i18nStrings.liveAnnouncementDndItemCommitted(
+                          initialIndex + 1,
+                          finalIndex + 1,
+                          optionGroup.options.length
+                        );
                       }
                     },
                     onDragCancel() {
                       return i18nStrings ? i18nStrings.liveAnnouncementDndDiscarded : undefined;
                     },
                   },
+                  screenReaderInstructions: i18nStrings?.screenReaderInstructions
+                    ? { draggable: i18nStrings?.screenReaderInstructions }
+                    : undefined,
                 }}
                 onDragStart={() => setIsDragging(true)}
                 onDragEnd={event => {

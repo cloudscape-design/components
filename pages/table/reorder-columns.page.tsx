@@ -11,6 +11,7 @@ import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
 import { columnsConfig, EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { collectionPreferencesI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 
@@ -109,11 +110,7 @@ export default function App() {
             visibleContentPreference={{
               title: 'Select visible columns',
               options: visibleContentOptions,
-              i18nStrings: {
-                liveAnnouncementDndStarted: 'Dragging',
-                liveAnnouncementDndDiscarded: 'Reordering canceled',
-                liveAnnouncementDndItemReordered: i => `Item moved to position ${i}`,
-              },
+              i18nStrings: collectionPreferencesI18nStrings,
             }}
             wrapLinesPreference={{
               label: 'Wrap lines',

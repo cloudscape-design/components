@@ -161,9 +161,12 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface I18nStrings {
-    liveAnnouncementDndStarted: string;
-    liveAnnouncementDndItemReordered: (position: number) => string;
-    liveAnnouncementDndDiscarded: string;
+    liveAnnouncementDndStarted?: (position: number, total: number) => string;
+    liveAnnouncementDndItemReordered?: (position: number, total: number) => string;
+    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
+    liveAnnouncementDndDiscarded?: string;
+    screenReaderInstructions?: string;
+    description?: string;
   }
 
   export interface VisibleContentOptionsGroup {
