@@ -110,7 +110,7 @@ function InternalFileUpload(
       </InternalButton>
 
       {value instanceof File ? (
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <div className={styles['single-file-token']}>
           <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
           <InternalButton
             iconName="close"
