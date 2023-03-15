@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useCallback, useRef } from 'react';
+import React, { ChangeEvent, ForwardedRef, useCallback, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-import { FileOption } from './file-option';
+import { FileNameEditingProps, FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalButton from '../button/internal';
@@ -85,6 +85,36 @@ function InternalFileUpload(
 
   const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
 
+  const [editingFileIndex, setEditingFileIndex] = useState(-1);
+  const [editingFileName, setEditingFileName] = useState<null | string>(null);
+  const editingProps: FileNameEditingProps = {
+    editingFileName,
+    onNameChange: (fileName: string) => setEditingFileName(fileName),
+    onNameEditStart: (file: File) => {
+      const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
+      setEditingFileIndex(files.indexOf(file));
+      setEditingFileName(file.name);
+    },
+    onNameEditSubmit: () => {
+      if (value instanceof File) {
+        fireNonCancelableEvent(onChange, { value: new File([value], editingFileName!) });
+      } else if (Array.isArray(value) && value[editingFileIndex]) {
+        const files = [...value];
+        const updated = new File([files[editingFileIndex]], editingFileName!);
+        files.splice(editingFileIndex, 1, updated);
+        fireNonCancelableEvent(onChange, { value: files });
+      }
+      setEditingFileName(null);
+      setEditingFileIndex(-1);
+    },
+    onNameEditCancel: () => {
+      setEditingFileName(null);
+      setEditingFileIndex(-1);
+    },
+  };
+
+  const isEditing = editingFileName !== null;
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -113,23 +143,37 @@ function InternalFileUpload(
 
       {value instanceof File ? (
         <div className={styles['single-file-token']}>
-          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
-          <div className={styles['single-file-token-dismiss']}>
-            <InternalButton
-              iconName="close"
-              variant="icon"
-              formAction="none"
-              onClick={() => handleDismiss(0)}
-              ariaLabel={dismissAriaLabel}
-            />
-          </div>
+          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} {...editingProps} />
+          {!isEditing && (
+            <div className={styles['single-file-token-dismiss']}>
+              <InternalButton
+                iconName="close"
+                variant="icon"
+                formAction="none"
+                onClick={() => handleDismiss(0)}
+                ariaLabel={dismissAriaLabel}
+              />
+            </div>
+          )}
         </div>
       ) : value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={() => ({ dismissLabel: dismissAriaLabel })}
-          renderItem={item => <FileOption file={item} metadata={metadata} multiple={true} i18nStrings={i18nStrings} />}
+          getItemAttributes={(_, itemIndex) => ({
+            dismissLabel: dismissAriaLabel,
+            showDismiss: itemIndex !== editingFileIndex,
+          })}
+          renderItem={(item, itemIndex) => (
+            <FileOption
+              file={item}
+              metadata={metadata}
+              multiple={true}
+              i18nStrings={i18nStrings}
+              {...editingProps}
+              editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
+            />
+          )}
           onDismiss={index => handleDismiss(index)}
         />
       ) : null}

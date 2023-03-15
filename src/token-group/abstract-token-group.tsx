@@ -19,8 +19,11 @@ import { SomeRequired } from '../internal/types';
 type AbstractTokenGroupProps<Item> = Omit<SomeRequired<TokenGroupProps, 'alignment'>, 'items' | 'onDismiss'> &
   InternalBaseComponentProps & {
     items: readonly Item[];
-    renderItem: (item: Item) => React.ReactNode;
-    getItemAttributes: (item: Item) => { disabled?: boolean; dismissLabel?: string };
+    renderItem: (item: Item, index: number) => React.ReactNode;
+    getItemAttributes: (
+      item: Item,
+      index: number
+    ) => { disabled?: boolean; dismissLabel?: string; showDismiss?: boolean };
     onDismiss?: (index: number, item: Item) => void;
   };
 
@@ -51,10 +54,10 @@ export default function AbstractTokenGroup<Item>({
           {slicedItems.map((item: Item, itemIndex) => (
             <Token
               key={itemIndex}
-              {...getItemAttributes(item)}
+              {...getItemAttributes(item, itemIndex)}
               onDismiss={onDismiss && (() => onDismiss(itemIndex, item))}
             >
-              {renderItem(item)}
+              {renderItem(item, itemIndex)}
             </Token>
           ))}
         </SpaceBetween>
@@ -76,18 +79,21 @@ export default function AbstractTokenGroup<Item>({
 interface TokenProps {
   disabled?: boolean;
   dismissLabel?: string;
+  showDismiss?: boolean;
   children: React.ReactNode;
   onDismiss?: () => void;
 }
 
-export function Token({ disabled, dismissLabel, onDismiss, children }: TokenProps) {
+export function Token({ disabled, dismissLabel, showDismiss, onDismiss, children }: TokenProps) {
   return (
     <div
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >
       {children}
-      {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
+      {showDismiss && onDismiss && (
+        <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />
+      )}
     </div>
   );
 }

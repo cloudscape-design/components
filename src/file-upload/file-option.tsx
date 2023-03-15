@@ -10,15 +10,35 @@ import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
 import { formatFileLastModified, formatFileSize } from './formatters';
 import InternalButton from '../button/internal';
+import InternalInput from '../input/internal';
+import clsx from 'clsx';
 
-interface FileOptionProps {
+export interface FileNameEditingProps {
+  editingFileName: null | string;
+  onNameChange: (fileName: string) => void;
+  onNameEditStart: (file: File) => void;
+  onNameEditSubmit: () => void;
+  onNameEditCancel: () => void;
+}
+
+interface FileOptionProps extends FileNameEditingProps {
   metadata: FileMetadata;
   file: File;
   multiple: boolean;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple, i18nStrings }: FileOptionProps) => {
+export const FileOption: React.FC<FileOptionProps> = ({
+  metadata,
+  file,
+  multiple,
+  i18nStrings,
+  editingFileName,
+  onNameChange,
+  onNameEditStart,
+  onNameEditSubmit,
+  onNameEditCancel,
+}: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
 
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
@@ -35,6 +55,8 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
     }
   }, [multiple, file, metadata.showFileThumbnail, isImage]);
 
+  const isEditing = editingFileName !== null;
+
   return (
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
@@ -48,13 +70,50 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
       <div className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
-            <div className={styles['file-option-name']}>
-              <div className={styles['file-option-name-label']} title={file.name}>
-                {file.name}
-              </div>
-              <div className={styles['file-option-name-edit']}>
-                <InternalButton __hideFocusOutline={true} formAction="none" iconName="edit" variant="inline-icon" />
-              </div>
+            <div
+              className={clsx(styles['file-option-name'], isEditing && styles['file-name-edit-active'])}
+              onClick={() => !isEditing && onNameEditStart(file)}
+            >
+              {isEditing ? (
+                <div className={styles['file-option-name-input']}>
+                  <InternalInput
+                    value={editingFileName}
+                    onChange={event => onNameChange(event.detail.value)}
+                    spellcheck={false}
+                  />
+                </div>
+              ) : (
+                <div className={styles['file-option-name-label']} title={file.name}>
+                  {file.name}
+                </div>
+              )}
+
+              {isEditing ? (
+                <InternalSpaceBetween size="xxs" direction="horizontal">
+                  <InternalButton
+                    formAction="none"
+                    iconName="close"
+                    variant="inline-icon"
+                    className={styles['file-option-name-edit-cancel']}
+                    onClick={onNameEditCancel}
+                  />
+                  <InternalButton
+                    formAction="none"
+                    iconName="check"
+                    variant="inline-icon"
+                    className={styles['file-option-name-edit-submit']}
+                    onClick={onNameEditSubmit}
+                  />
+                </InternalSpaceBetween>
+              ) : (
+                <InternalButton
+                  __hideFocusOutline={true}
+                  formAction="none"
+                  iconName="edit"
+                  variant="inline-icon"
+                  className={styles['file-option-name-edit']}
+                />
+              )}
             </div>
           }
           {metadata.showFileType && file.type && (

@@ -30,7 +30,7 @@ export default function FileUploadScenario() {
               value={profileImageFile}
               onChange={event => {
                 setProfileImageFile(event.detail.value);
-                setProfileError(validateFileSize(event.detail.value, 1 * MB));
+                setProfileError(validateFileSize(event.detail.value, 1 * MB) ?? validateFileName(event.detail.value));
               }}
               buttonText="Choose file"
               accept="image/png, image/jpeg"
@@ -52,7 +52,9 @@ export default function FileUploadScenario() {
               value={contractFiles}
               onChange={event => {
                 setContractFiles(event.detail.value);
-                setContractsError(validateFileSize(event.detail.value, 250 * KB, 500 * KB));
+                setContractsError(
+                  validateFileSize(event.detail.value, 250 * KB, 500 * KB) ?? validateFileName(event.detail.value)
+                );
               }}
               buttonText="Choose files"
               accept="application/pdf, image/png, image/jpeg"
@@ -96,6 +98,21 @@ function validateFileSize(
     return `Files combined size (${formatFileSize(totalSize)}) is above the allowed maximum (${formatFileSize(
       maxTotalSize
     )})`;
+  }
+
+  return null;
+}
+
+function validateFileName(input: FileUploadProps.FileType) {
+  if (!input) {
+    return null;
+  }
+
+  const files = input instanceof File ? [input] : input;
+  const violation = files.find(file => file.name.split('.')[0].length < 5);
+
+  if (violation) {
+    return `File name "${violation.name}" is not allowed: the name must be at least 5 characters long`;
   }
 
   return null;
