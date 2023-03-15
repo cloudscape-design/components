@@ -45,9 +45,9 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
       <InternalBox className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
-            <InternalBox className={styles['file-option-name']}>
-              <span title={file.name}>{file.name}</span>
-            </InternalBox>
+            <div className={styles['file-option-name']} title={file.name}>
+              {file.name}
+            </div>
           }
           {metadata.showFileType && file.type && (
             <InternalBox fontSize="body-s" color="text-body-secondary">
