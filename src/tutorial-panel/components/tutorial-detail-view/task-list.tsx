@@ -8,7 +8,7 @@ import InternalBox from '../../../box/internal';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { HotspotContext } from '../../../annotation-context/context';
 import { Task } from './task';
-import { getStepInfo } from '../../../annotation-context/index.js';
+import { getStepInfo } from '../../../annotation-context/utils';
 
 export interface TaskListProps {
   tasks: ReadonlyArray<TutorialPanelProps.Task>;
