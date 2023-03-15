@@ -3,26 +3,21 @@
 
 import React, { LegacyRef, useEffect, useRef } from 'react';
 
-import { FileMetadata, FileUploadProps } from '../interfaces';
-import InternalBox from '../../box/internal';
-import InternalSpaceBetween from '../../space-between/internal';
-import InternalIcon from '../../icon/internal';
-import styles from '../styles.css.js';
-import { formatFileLastModified, formatFileSize } from '../formatters';
+import { FileMetadata, FileUploadProps } from './interfaces';
+import InternalBox from '../box/internal';
+import InternalSpaceBetween from '../space-between/internal';
+import InternalIcon from '../icon/internal';
+import styles from './styles.css.js';
+import { formatFileLastModified, formatFileSize } from './formatters';
 
-interface SelectedFileProps {
+interface FileOptionProps {
   metadata: FileMetadata;
   file: File;
   multiple: boolean;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export const SelectedFile: React.FC<SelectedFileProps> = ({
-  metadata,
-  file,
-  multiple,
-  i18nStrings,
-}: SelectedFileProps) => {
+export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple, i18nStrings }: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
 
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
@@ -40,17 +35,17 @@ export const SelectedFile: React.FC<SelectedFileProps> = ({
   }, [multiple, file, metadata.showFileThumbnail, isImage]);
 
   return (
-    <InternalBox className={styles['selected-file-file']}>
+    <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
       {metadata.showFileThumbnail && multiple && isImage && (
-        <InternalBox className={styles['selected-file-file-thumb']}>
-          <img className={styles['selected-file-file-thumb-img']} alt={file.name} ref={thumbnail} src="" />
+        <InternalBox className={styles['file-option-thumbnail']}>
+          <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
         </InternalBox>
       )}
-      <InternalBox className={styles['selected-file-file-metadata']}>
+      <InternalBox className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
-            <InternalBox className={styles['selected-file-file-name']}>
+            <InternalBox className={styles['file-option-name']}>
               <span title={file.name}>{file.name}</span>
             </InternalBox>
           }

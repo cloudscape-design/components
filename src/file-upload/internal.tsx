@@ -5,19 +5,19 @@ import React, { ChangeEvent, ForwardedRef, useCallback, useRef } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-import { SelectedFile } from './components/selected-file';
-import { SelectedFileList } from './components/selected-file-list';
+import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalButton from '../button/internal';
 import styles from './styles.css.js';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../contexts/form-field';
 import checkControlled from '../internal/hooks/check-controlled';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
+import AbstractTokenGroup from '../token-group/abstract-token-group';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -75,18 +75,14 @@ function InternalFileUpload(
     [value, multiple, onChange]
   );
 
-  const handleDismiss: NonCancelableEventHandler<FileUploadProps.DismissDetail> = useCallback(
-    ({ detail }) => {
-      const { index, file } = detail;
-      let newValue = value;
-      if (multiple && value instanceof Array && value[index]) {
-        newValue = value.filter((f, i) => f !== file && i !== index);
-      }
+  const handleDismiss = useCallback(
+    (index: number) => {
       if (onChange) {
-        fireNonCancelableEvent(onChange, { value: newValue });
+        const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
+        fireNonCancelableEvent(onChange, { value: files.filter((_, fileIndex) => fileIndex !== index) });
       }
     },
-    [value, multiple, onChange]
+    [value, onChange]
   );
 
   const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
@@ -116,9 +112,15 @@ function InternalFileUpload(
       </InternalButton>
 
       {value instanceof File ? (
-        <SelectedFile file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
-      ) : value instanceof Array ? (
-        <SelectedFileList fileList={value} metadata={metadata} onDismiss={handleDismiss} i18nStrings={i18nStrings} />
+        <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
+      ) : value instanceof Array && value.length > 0 ? (
+        <AbstractTokenGroup
+          alignment="vertical"
+          items={value}
+          getItemAttributes={() => ({ dismissLabel: 'TODO: dismiss label' })}
+          renderItem={item => <FileOption file={item} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />}
+          onDismiss={index => handleDismiss(index)}
+        />
       ) : null}
     </InternalSpaceBetween>
   );

@@ -33,7 +33,7 @@ export default function FileUploadScenario() {
                 setProfileError(validateFileSize(event.detail.value, 1 * MB));
               }}
               buttonText="Choose file"
-              accept="image"
+              accept="image/png, image/jpeg"
               showFileSize={true}
               showFileLastModified={true}
             />
