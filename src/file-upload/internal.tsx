@@ -60,15 +60,12 @@ function InternalFileUpload(
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      let newValue = null;
-      if (target.files && target.files[0]) {
-        newValue = multiple
+      if (target.files && target.files[0] && onChange) {
+        const newValue = multiple
           ? value instanceof Array
             ? [...value, target.files[0]]
             : [target.files[0]]
           : target.files[0];
-      }
-      if (onChange) {
         fireNonCancelableEvent(onChange, { value: newValue });
       }
     },
@@ -112,7 +109,10 @@ function InternalFileUpload(
       </InternalButton>
 
       {value instanceof File ? (
-        <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
+          <InternalButton iconName="close" variant="icon" onClick={() => handleDismiss(0)}></InternalButton>
+        </div>
       ) : value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
