@@ -103,7 +103,9 @@ function InternalFileUpload(
           accept={accept}
           onChange={handleChange}
           hidden={true}
-          {...formFieldContext}
+          aria-labelledby={formFieldContext.ariaLabelledby}
+          aria-describedby={formFieldContext.ariaDescribedby}
+          aria-invalid={formFieldContext.invalid}
           id={controlId}
         />
         <span>{buttonText}</span>
