@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
@@ -25,6 +25,13 @@ export namespace I18nProviderProps {
   }
 }
 
+/**
+ * Context to send parent messages down to child I18nProviders. This isn't
+ * included in the InternalI18nContext to avoid components from depending on
+ * MessageFormatElement types.
+ */
+const I18nMessagesContext = React.createContext<I18nProviderProps.Messages>({});
+
 export function I18nProvider({ messages: messagesArray, locale: providedLocale, children }: I18nProviderProps) {
   // Keep a cache per render for improved performance. Generally, it's expected
   // to have an I18nProvider pretty high up the render tree and for it to
@@ -32,27 +39,27 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   const cache = useMemo(() => new Map<string, unknown>(), []);
   cache.clear();
 
-  // The provider accepts an array of configs. We flatten the tree early on so that
-  // accesses by key are simpler and faster.
-  const messages = useMemo(() => mergeMessages(messagesArray), [messagesArray]);
+  // The provider accepts an array of configs. We merge parent messages and
+  // flatten the tree early on so that accesses by key are simpler and faster.
+  const parentMessages = useContext(I18nMessagesContext);
+  const messages = useMemo(() => mergeMessages([parentMessages, ...messagesArray]), [parentMessages, messagesArray]);
 
   // If a locale isn't provided, we can try and guess from the html lang,
   // and lastly default to English. Locales have a recommended case, but are
-  // matched case-insensitively.
-  const locale = (providedLocale ?? document?.documentElement.lang ?? 'en').toLowerCase();
+  // matched case-insensitively, so we lowercase it internally.
+  const locale = (providedLocale || document?.documentElement.lang || 'en').toLowerCase();
 
   const format = useCallback<FormatFunction>(
     <T,>(namespace: string, component: string, key: string, provided: T, customHandler?: CustomHandler<T>): T => {
       // A general rule in the library is that undefined is basically
       // treated as "not provided". So even if a user explicitly provides an
-      // undefined value, it will default to i18n values. This may need to
-      // be changed.
+      // undefined value, it will default to i18n values.
       if (provided !== undefined) {
         return provided;
       }
 
-      // For the given locale and cache key, the computed message will always
-      // be the same. So we can safely return the cached value.
+      // For the given locale and cache key, the computed message should
+      // always be the same. So we can safely return the cached value.
       const cacheKey = `${namespace}.${component}.${key}`;
       if (cache.has(cacheKey)) {
         return cache.get(cacheKey)! as T;
@@ -82,6 +89,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
         // caching in the future if it turns out to be a problem.
         value = customHandler(args => intlMessageFormat.format(args) as string);
       } else {
+        // Assuming `T extends string` since a customHandler wasn't provided.
         value = intlMessageFormat.format() as T;
       }
 
@@ -91,7 +99,11 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
     [messages, locale, cache]
   );
 
-  return <InternalI18nContext.Provider value={format}>{children}</InternalI18nContext.Provider>;
+  return (
+    <InternalI18nContext.Provider value={format}>
+      <I18nMessagesContext.Provider value={messages}>{children}</I18nMessagesContext.Provider>
+    </InternalI18nContext.Provider>
+  );
 }
 
 function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18nProviderProps.Messages {
