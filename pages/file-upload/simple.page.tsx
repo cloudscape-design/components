@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FileUpload, FileUploadProps, FormField } from '~components';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
+import { i18nStrings } from './shared';
 
 const KB = 1000;
 const MB = 1000 ** 2;
@@ -37,7 +38,7 @@ export default function FileUploadScenario() {
               showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
-              dismissAriaLabel="Dismiss"
+              i18nStrings={i18nStrings}
             />
           </FormField>
 
@@ -62,7 +63,7 @@ export default function FileUploadScenario() {
               showFileSize={true}
               showFileLastModified={true}
               showFileThumbnail={true}
-              dismissAriaLabel="Dismiss"
+              i18nStrings={i18nStrings}
             />
           </FormField>
         </SpaceBetween>

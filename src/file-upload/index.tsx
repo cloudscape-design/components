@@ -19,7 +19,6 @@ const FileUpload = React.forwardRef(
       showFileSize = false,
       showFileLastModified = false,
       showFileThumbnail = false,
-      i18nStrings = {},
       ...restProps
     }: FileUploadProps,
     ref: React.Ref<FileUploadProps.Ref>
@@ -35,7 +34,6 @@ const FileUpload = React.forwardRef(
         showFileSize={showFileSize}
         showFileLastModified={showFileLastModified}
         showFileThumbnail={showFileThumbnail}
-        i18nStrings={i18nStrings}
         {...externalProps}
         {...baseComponentProps}
       />

@@ -80,6 +80,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     value={editingFileName}
                     onChange={event => onNameChange(event.detail.value)}
                     spellcheck={false}
+                    ariaLabel={i18nStrings.editFileNameInputAriaLabel}
                   />
                 </div>
               ) : (
@@ -96,6 +97,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     variant="inline-icon"
                     className={styles['file-option-name-edit-cancel']}
                     onClick={onNameEditCancel}
+                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
                   />
                   <InternalButton
                     formAction="none"
@@ -103,6 +105,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     variant="inline-icon"
                     className={styles['file-option-name-edit-submit']}
                     onClick={onNameEditSubmit}
+                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
                   />
                 </InternalSpaceBetween>
               ) : (
@@ -112,6 +115,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                   iconName="edit"
                   variant="inline-icon"
                   className={styles['file-option-name-edit']}
+                  ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
                 />
               )}
             </div>

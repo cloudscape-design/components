@@ -24,10 +24,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
-   * Specifies aria-label to the dismiss button.
-   */
-  dismissAriaLabel: string;
-  /**
    * Text displayed in the button element.
    */
   buttonText: string;
@@ -77,7 +73,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   /**
    * An object containing all the localized strings required by the component.
    */
-  i18nStrings?: FileUploadProps.I18nStrings;
+  i18nStrings: FileUploadProps.I18nStrings;
 }
 
 export namespace FileUploadProps {
@@ -95,6 +91,11 @@ export namespace FileUploadProps {
   export interface I18nStrings {
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileTimestamp?: (date: Date) => string;
+    removeFileAriaLabel: string;
+    activateFileNameEditAriaLabel: string;
+    submitFileNameEditAriaLabel: string;
+    cancelFileNameEditAriaLabel: string;
+    editFileNameInputAriaLabel: string;
   }
 
   export interface Ref {

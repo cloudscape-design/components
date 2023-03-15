@@ -31,7 +31,6 @@ function InternalFileUpload(
   {
     accept,
     ariaLabel,
-    dismissAriaLabel,
     ariaRequired,
     buttonText,
     disabled,
@@ -151,7 +150,7 @@ function InternalFileUpload(
                 variant="icon"
                 formAction="none"
                 onClick={() => handleDismiss(0)}
-                ariaLabel={dismissAriaLabel}
+                ariaLabel={i18nStrings.removeFileAriaLabel}
               />
             </div>
           )}
@@ -161,7 +160,7 @@ function InternalFileUpload(
           alignment="vertical"
           items={value}
           getItemAttributes={(_, itemIndex) => ({
-            dismissLabel: dismissAriaLabel,
+            dismissLabel: i18nStrings.removeFileAriaLabel,
             showDismiss: itemIndex !== editingFileIndex,
           })}
           renderItem={(item, itemIndex) => (
