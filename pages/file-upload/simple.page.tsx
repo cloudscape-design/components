@@ -34,6 +34,7 @@ export default function FileUploadScenario() {
               }}
               buttonText="Choose file"
               accept="image/png, image/jpeg"
+              showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
             />
@@ -54,6 +55,7 @@ export default function FileUploadScenario() {
               }}
               buttonText="Choose files"
               accept="application/pdf"
+              showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
             />
