@@ -24,6 +24,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
+   * Specifies aria-label to the dismiss button.
+   */
+  dismissAriaLabel: string;
+  /**
    * Text displayed in the button element.
    */
   buttonText: string;

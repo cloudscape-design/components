@@ -6,7 +6,7 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import FileUpload, { FileUploadProps } from '~components/file-upload';
 
-const permutations = createPermutations<FileUploadProps>([
+const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'>>([
   {
     buttonText: ['Choose file (empty)'],
     value: [null],
@@ -46,6 +46,7 @@ export default function FileUploadPermutations() {
           permutations={permutations}
           render={permutation => (
             <FileUpload
+              dismissAriaLabel="Dismiss"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}
