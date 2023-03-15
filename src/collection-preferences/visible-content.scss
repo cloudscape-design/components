@@ -37,7 +37,6 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content-group-label {
   color: awsui.$color-text-group-label;
   padding-bottom: awsui.$space-xs;
-  border-bottom: $border;
 }
 
 .visible-content-option {
@@ -45,6 +44,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 }
 
 .visible-content-option-content {
+  border-top: $border;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -52,7 +52,6 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   padding-top: awsui.$space-xs;
   padding-bottom: awsui.$space-xs;
   padding-right: 0;
-  border-bottom: $border;
   &:last-child {
     border-bottom: none;
   }
