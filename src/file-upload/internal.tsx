@@ -121,7 +121,14 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      <InternalButton ref={ref} iconName="upload" formAction="none" disabled={disabled} onClick={handleButtonClick}>
+      <InternalButton
+        ref={ref}
+        iconName="upload"
+        formAction="none"
+        disabled={disabled}
+        onClick={handleButtonClick}
+        className={styles['upload-button']}
+      >
         <input
           ref={fileInputRef}
           type="file"

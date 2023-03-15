@@ -5,7 +5,8 @@
 
 @use '../internal/styles/tokens' as awsui;
 
-.root {
+.root,
+.upload-button {
   /* used in test-utils */
 }
 

@@ -31,7 +31,7 @@ export default function FileUploadScenario() {
               value={profileImageFile}
               onChange={event => {
                 setProfileImageFile(event.detail.value);
-                setProfileError(validateFileSize(event.detail.value, 1 * MB) ?? validateFileName(event.detail.value));
+                setProfileError(validateFileName(event.detail.value) ?? validateFileSize(event.detail.value, 1 * MB));
               }}
               buttonText="Choose file"
               accept="image/png, image/jpeg"
@@ -54,7 +54,7 @@ export default function FileUploadScenario() {
               onChange={event => {
                 setContractFiles(event.detail.value);
                 setContractsError(
-                  validateFileSize(event.detail.value, 250 * KB, 500 * KB) ?? validateFileName(event.detail.value)
+                  validateFileName(event.detail.value) ?? validateFileSize(event.detail.value, 250 * KB, 500 * KB)
                 );
               }}
               buttonText="Choose files"
