@@ -141,7 +141,7 @@ function getMatchableLocales(ietfLanguageTag: string): string[] {
     return [ietfLanguageTag];
   }
 
-  const localeStrings = [];
+  const localeStrings: string[] = [];
   for (let i = parts.length; i > 0; i--) {
     localeStrings.push(parts.slice(0, i).join('-'));
   }

@@ -8,7 +8,7 @@ import Box from '~components/box';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
 import { allItems, TableItem } from './table.data';
-import { columnDefinitions, filteringProperties } from './common-props';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 export default function () {
@@ -75,9 +75,9 @@ export default function () {
         filter={
           <PropertyFilter
             {...propertyFilterProps}
-            {...({} as any)}
             virtualScroll={true}
             countText={`${items.length} matches`}
+            i18nStrings={i18nStrings}
             tokenLimit={tokenLimit}
             hideOperations={hideOperations}
             disableFreeTextFiltering={disableFreeTextFiltering}
