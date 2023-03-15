@@ -9,6 +9,12 @@
   /* used in test-utils */
 }
 
+.single-file-token {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
 .file-option {
   width: 100%;
   min-width: 0;
