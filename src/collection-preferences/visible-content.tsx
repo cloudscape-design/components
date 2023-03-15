@@ -16,6 +16,7 @@ import {
 } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
 import { className, isEscape } from './utils';
+import clsx from 'clsx';
 
 const isVisible = (id: string, visibleIds: ReadonlyArray<string>) => visibleIds.indexOf(id) !== -1;
 
@@ -80,10 +81,13 @@ export default function VisibleContentPreference({
 
   return (
     <div className={styles['visible-content']}>
-      <h3 {...className('title')} id={outerGroupLabelId}>
+      <h3
+        className={clsx(className('title').className, description && styles['has-description'])}
+        id={outerGroupLabelId}
+      >
         {title}
       </h3>
-      {description && <p {...className(styles.description)}>{description}</p>}
+      {description && <p {...className('description')}>{description}</p>}
       <InternalSpaceBetween {...className('groups')} size="xs">
         {options.map((optionGroup, optionGroupIndex) => {
           const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
@@ -157,9 +161,11 @@ export default function VisibleContentPreference({
                   }
                 }}
               >
-                <div {...className('group-label')} id={groupLabelId}>
-                  {optionGroup.label}
-                </div>
+                {options.length > 1 && (
+                  <div {...className('group-label')} id={groupLabelId}>
+                    {optionGroup.label}
+                  </div>
+                )}
                 <div onKeyDown={handleKeyDown} {...className('group-list')}>
                   <SortableContext
                     items={getSortedOptions({ options: optionGroup.options, order: itemOrder }).map(({ id }) => id)}

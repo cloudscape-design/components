@@ -20,11 +20,14 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   @include styles.font-label;
   color: awsui.$color-text-form-label;
   margin: 0;
-  margin-bottom: awsui.$space-scaled-l;
+  &:not(.has-description) {
+    margin-bottom: awsui.$space-scaled-l;
+  }
 }
 
 .visible-content-description {
   @include styles.form-control-description;
+  margin-top: awsui.$space-scaled-xxxs;
 }
 
 .visible-content-group {
