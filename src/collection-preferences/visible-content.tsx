@@ -161,7 +161,7 @@ export default function VisibleContentPreference({
                   }
                 }}
               >
-                {options.length > 1 && (
+                {!reorderContent && options.length > 1 && (
                   <div {...className('group-label')} id={groupLabelId}>
                     {optionGroup.label}
                   </div>
