@@ -114,12 +114,15 @@ function InternalFileUpload(
       {value instanceof File ? (
         <div className={styles['single-file-token']}>
           <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
-          <InternalButton
-            iconName="close"
-            variant="icon"
-            onClick={() => handleDismiss(0)}
-            ariaLabel={dismissAriaLabel}
-          ></InternalButton>
+          <div className={styles['single-file-token-dismiss']}>
+            <InternalButton
+              iconName="close"
+              variant="icon"
+              formAction="none"
+              onClick={() => handleDismiss(0)}
+              ariaLabel={dismissAriaLabel}
+            />
+          </div>
         </div>
       ) : value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup

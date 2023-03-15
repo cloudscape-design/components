@@ -9,6 +9,7 @@ import InternalSpaceBetween from '../space-between/internal';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
 import { formatFileLastModified, formatFileSize } from './formatters';
+import InternalButton from '../button/internal';
 
 interface FileOptionProps {
   metadata: FileMetadata;
@@ -37,16 +38,23 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
   return (
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
+
       {metadata.showFileThumbnail && multiple && isImage && (
         <div className={styles['file-option-thumbnail']}>
           <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
         </div>
       )}
-      <InternalBox className={styles['file-option-metadata']}>
+
+      <div className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
-            <div className={styles['file-option-name']} title={file.name}>
-              {file.name}
+            <div className={styles['file-option-name']}>
+              <div className={styles['file-option-name-label']} title={file.name}>
+                {file.name}
+              </div>
+              <div className={styles['file-option-name-edit']}>
+                <InternalButton __hideFocusOutline={true} formAction="none" iconName="edit" variant="inline-icon" />
+              </div>
             </div>
           }
           {metadata.showFileType && file.type && (
@@ -65,7 +73,7 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
             </InternalBox>
           )}
         </InternalSpaceBetween>
-      </InternalBox>
+      </div>
     </InternalBox>
   );
 };

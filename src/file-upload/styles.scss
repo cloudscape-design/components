@@ -12,7 +12,10 @@
 .single-file-token {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+}
+
+.single-file-token-dismiss {
+  margin-top: -4px;
 }
 
 .file-option {
@@ -32,10 +35,32 @@
 }
 
 .file-option-metadata {
+  width: 100%;
   overflow: hidden;
 }
 
 .file-option-name {
+  display: flex;
+  justify-content: space-between;
+  gap: awsui.$space-scaled-xs;
+
+  cursor: pointer;
+  border: awsui.$border-divider-list-width solid transparent;
+
+  & > .file-option-name-edit {
+    opacity: 0;
+  }
+  &:hover {
+    background-color: awsui.$color-background-dropdown-item-hover;
+    border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+
+    & > .file-option-name-edit {
+      opacity: 1;
+    }
+  }
+}
+
+.file-option-name-label {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
