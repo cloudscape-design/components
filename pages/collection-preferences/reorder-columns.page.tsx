@@ -63,6 +63,7 @@ export default function App() {
         reorderContent={true}
         visibleContentPreference={{
           title: 'Select visible columns',
+          description: 'Customize the columns visibility and order.',
           options: shortOptionsList,
           i18nStrings: collectionPreferencesI18nStrings,
         }}
@@ -76,6 +77,7 @@ export default function App() {
         reorderContent={true}
         visibleContentPreference={{
           title: 'Select visible columns',
+          description: 'Customize the columns visibility and order.',
           options: longOptionsList,
           i18nStrings: collectionPreferencesI18nStrings,
         }}

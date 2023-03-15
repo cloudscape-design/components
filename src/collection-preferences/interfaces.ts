@@ -156,6 +156,7 @@ export namespace CollectionPreferencesProps {
 
   export interface VisibleContentPreference {
     title: string;
+    description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup>;
     i18nStrings?: I18nStrings;
   }
@@ -167,7 +168,6 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndDiscarded?: string;
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
-    description?: string;
   }
 
   export interface VisibleContentOptionsGroup {

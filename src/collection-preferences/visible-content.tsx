@@ -28,6 +28,7 @@ interface VisibleContentPreferenceProps extends CollectionPreferencesProps.Visib
 
 export default function VisibleContentPreference({
   title,
+  description,
   options,
   visibleItems = [],
   itemOrder = getFlatOptionIds(options),
@@ -82,6 +83,7 @@ export default function VisibleContentPreference({
       <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
       </h3>
+      {description && <p {...className(styles.description)}>{description}</p>}
       <InternalSpaceBetween {...className('groups')} size="xs">
         {options.map((optionGroup, optionGroupIndex) => {
           const groupLabelId = `${idPrefix}-${optionGroupIndex}`;
