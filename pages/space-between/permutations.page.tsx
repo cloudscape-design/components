@@ -32,7 +32,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
     direction: ['horizontal', 'vertical'],
     children: [
       [
-        () => null,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="s">
           <ExampleContent renderNull={true} />
           <ExampleContent />
@@ -41,7 +41,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
           <ExampleContent />
           <ExampleContent renderNull={true} />
         </SpaceBetween>,
-        () => null,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="l">
           <ExampleContent renderNull={true} />
           <ExampleContent />
@@ -56,7 +56,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
           <ExampleContent />
           <ExampleContent renderNull={true} />
         </SpaceBetween>,
-        () => null,
+        <ExampleContent renderNull={true} />,
       ],
     ],
     note: ['nested vertical'],
@@ -66,7 +66,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
     direction: ['horizontal', 'vertical'],
     children: [
       [
-        () => null,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="s" direction="horizontal">
           <ExampleContent renderNull={true} />
           <ExampleContent />
@@ -75,7 +75,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
           <ExampleContent />
           <ExampleContent renderNull={true} />
         </SpaceBetween>,
-        () => null,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="l" direction="horizontal">
           <ExampleContent renderNull={true} />
           <ExampleContent />
@@ -90,7 +90,7 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
           <ExampleContent />
           <ExampleContent renderNull={true} />
         </SpaceBetween>,
-        () => null,
+        <ExampleContent renderNull={true} />,
       ],
     ],
     note: ['nested horizontal'],

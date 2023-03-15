@@ -64,8 +64,7 @@ $sizes-vertical: (
 
   @each $name, $size in $sizes-vertical {
     &-#{$name} {
-      // This cancels out the margins of the children in the first row / in the first column.
-      gap: $size;
+      row-gap: $size;
     }
   }
 }
