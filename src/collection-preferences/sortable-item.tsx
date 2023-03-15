@@ -11,12 +11,14 @@ import { className } from './utils';
 import { CollectionPreferencesProps } from './interfaces';
 
 export function SortableItem({
+  dragHandleAriaLabel,
   isVisible,
   labelId,
   onToggle,
   option,
   reorderContent,
 }: {
+  dragHandleAriaLabel?: string;
   isVisible: boolean;
   labelId: string;
   onToggle: (id: string) => void;
@@ -30,6 +32,11 @@ export function SortableItem({
     transition,
   };
 
+  const dragHandleAttributes = {
+    ['aria-label']: dragHandleAriaLabel,
+    ['aria-describedby']: attributes['aria-describedby'],
+  };
+
   return (
     <div className={clsx(className('option').className)}>
       <div
@@ -41,7 +48,7 @@ export function SortableItem({
         )}
         style={style}
       >
-        {reorderContent && <DragHandle attributes={attributes} listeners={listeners} />}
+        {reorderContent && <DragHandle attributes={dragHandleAttributes} listeners={listeners} />}
         <label {...className('option-label')} htmlFor={labelId}>
           {option.label}
         </label>

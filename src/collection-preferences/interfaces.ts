@@ -165,7 +165,8 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndItemReordered?: (position: number, total: number) => string;
     liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
     liveAnnouncementDndDiscarded?: string;
-    screenReaderInstructions?: string;
+    dragHandleAriaLabel?: string;
+    dragHandleAriaDescription?: string;
     description?: string;
   }
 

@@ -139,8 +139,8 @@ export default function VisibleContentPreference({
                       return i18nStrings ? i18nStrings.liveAnnouncementDndDiscarded : undefined;
                     },
                   },
-                  screenReaderInstructions: i18nStrings?.screenReaderInstructions
-                    ? { draggable: i18nStrings?.screenReaderInstructions }
+                  screenReaderInstructions: i18nStrings?.dragHandleAriaDescription
+                    ? { draggable: i18nStrings?.dragHandleAriaDescription }
                     : undefined,
                 }}
                 onDragStart={() => setIsDragging(true)}
@@ -167,6 +167,7 @@ export default function VisibleContentPreference({
                       const labelId = `${idPrefix}-${optionGroupIndex}-${option.id}`;
                       return (
                         <SortableItem
+                          dragHandleAriaLabel={i18nStrings?.dragHandleAriaLabel}
                           key={option.id}
                           labelId={labelId}
                           isVisible={isVisible(option.id, visibleItems)}

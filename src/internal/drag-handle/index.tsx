@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ButtonHTMLAttributes, ForwardedRef, forwardRef } from 'react';
 
 import Handle from '../handle';
 import DragHandleIcon from './icon';
 import styles from './styles.css.js';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
-import { DraggableAttributes } from '@dnd-kit/core';
 
 export interface DragHandleProps {
-  attributes: DraggableAttributes;
+  attributes: ButtonHTMLAttributes<HTMLButtonElement>;
   listeners?: SyntheticListenerMap;
 }
 
