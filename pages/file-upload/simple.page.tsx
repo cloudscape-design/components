@@ -37,6 +37,7 @@ export default function FileUploadScenario() {
               showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
+              dismissAriaLabel="Dismiss"
             />
           </FormField>
 
@@ -58,6 +59,7 @@ export default function FileUploadScenario() {
               showFileType={true}
               showFileSize={true}
               showFileLastModified={true}
+              dismissAriaLabel="Dismiss"
             />
           </FormField>
         </SpaceBetween>

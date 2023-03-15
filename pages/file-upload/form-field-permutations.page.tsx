@@ -7,7 +7,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import FileUpload, { FileUploadProps } from '~components/file-upload';
 import { FormField, FormFieldProps } from '~components';
 
-const permutations = createPermutations<FileUploadProps & FormFieldProps>([
+const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'> & FormFieldProps>([
   {
     label: ['Profile image'],
     description: ['Upload your photo'],
@@ -50,6 +50,7 @@ export default function FileUploadPermutations() {
           render={({ label, description, constraintText, errorText, ...fileUploadProps }) => (
             <FormField label={label} description={description} constraintText={constraintText} errorText={errorText}>
               <FileUpload
+                dismissAriaLabel="Dismiss"
                 onChange={() => {
                   /*empty handler to suppress react controlled property warning*/
                 }}

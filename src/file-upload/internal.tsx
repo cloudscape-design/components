@@ -31,6 +31,7 @@ function InternalFileUpload(
   {
     accept,
     ariaLabel,
+    dismissAriaLabel,
     ariaRequired,
     buttonText,
     disabled,
@@ -115,14 +116,14 @@ function InternalFileUpload(
             iconName="close"
             variant="icon"
             onClick={() => handleDismiss(0)}
-            ariaLabel="TODO: dismiss label"
+            ariaLabel={dismissAriaLabel}
           ></InternalButton>
         </div>
       ) : value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={() => ({ dismissLabel: 'TODO: dismiss label' })}
+          getItemAttributes={() => ({ dismissLabel: dismissAriaLabel })}
           renderItem={item => <FileOption file={item} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />}
           onDismiss={index => handleDismiss(index)}
         />
