@@ -8,35 +8,55 @@ import ScreenshotArea from '../utils/screenshot-area';
 import styles from './styles.scss';
 import Container from '~components/container';
 
-const ExampleContent = () => <div className={styles.box}>This is some text.</div>;
+const ExampleContent = ({ renderNull }: { renderNull?: boolean }) =>
+  renderNull ? null : <div className={styles.box}>This is some text.</div>;
 
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
   {
     size: ['xxxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
     direction: ['vertical', 'horizontal'],
-    children: [[<ExampleContent />, <ExampleContent />, <ExampleContent />]],
+    children: [
+      [
+        <ExampleContent renderNull={true} />,
+        <ExampleContent />,
+        <ExampleContent renderNull={true} />,
+        <ExampleContent />,
+        <ExampleContent />,
+        <ExampleContent renderNull={true} />,
+      ],
+    ],
   },
   {
     size: ['xs', 'xl'],
     direction: ['horizontal', 'vertical'],
     children: [
       [
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="s">
+          <ExampleContent renderNull={true} />
+          <ExampleContent />
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
-          <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="l">
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
           <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
         <SpaceBetween size="xxl">
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
           <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
+        <ExampleContent renderNull={true} />,
       ],
     ],
     note: ['nested vertical'],
@@ -46,21 +66,31 @@ const permutations = createPermutations<SpaceBetweenProps & { note?: string }>([
     direction: ['horizontal', 'vertical'],
     children: [
       [
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="s" direction="horizontal">
+          <ExampleContent renderNull={true} />
+          <ExampleContent />
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
-          <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
+        <ExampleContent renderNull={true} />,
         <SpaceBetween size="l" direction="horizontal">
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
           <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
         <SpaceBetween size="xxl" direction="horizontal">
+          <ExampleContent renderNull={true} />
           <ExampleContent />
           <ExampleContent />
           <ExampleContent />
+          <ExampleContent renderNull={true} />
         </SpaceBetween>,
+        <ExampleContent renderNull={true} />,
       ],
     ],
     note: ['nested horizontal'],

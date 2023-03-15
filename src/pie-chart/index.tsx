@@ -134,7 +134,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
 
   return (
     <div {...containerAttr} ref={mergedRef} onBlur={onBlur}>
-      {statusType === 'finished' && !isEmpty && (
+      {statusType === 'finished' && !isEmpty && (additionalFilters || !hideFilter) && (
         <InternalBox className={styles['filter-container']} margin={{ bottom: 'l' }}>
           <InternalSpaceBetween
             size="l"
