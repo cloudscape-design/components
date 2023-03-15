@@ -111,7 +111,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     visibleData: visibleSeries,
     statusType,
   });
-  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch);
+  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch) && (additionalFilters || !hideFilter);
   const showLegend = !hideLegend && !isEmpty && statusType === 'finished';
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);
