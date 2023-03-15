@@ -23,7 +23,7 @@ export function SortableItem({
   option: CollectionPreferencesProps.VisibleContentOption;
   reorderContent: boolean;
 }) {
-  const { isDragging, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
+  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -41,11 +41,7 @@ export function SortableItem({
         )}
         style={style}
       >
-        {reorderContent && (
-          <div {...listeners} {...className('drag-handle-wrapper')}>
-            <DragHandle ariaLabelledBy={''} ariaDescribedBy={''} {...listeners} />
-          </div>
-        )}
+        {reorderContent && <DragHandle attributes={attributes} listeners={listeners} />}
         <label {...className('option-label')} htmlFor={labelId}>
           {option.label}
         </label>
