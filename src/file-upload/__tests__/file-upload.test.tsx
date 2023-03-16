@@ -92,7 +92,7 @@ describe('File upload single file token rendering', () => {
     //
   });
 
-  test('file token can be found by name', () => {
+  test('file token can be found by index', () => {
     //
   });
 

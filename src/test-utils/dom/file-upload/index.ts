@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../file-upload/styles.selectors.js';
+import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
+import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
 import ButtonWrapper from '../button';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
@@ -15,14 +17,22 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
     return this.findByClassName(styles['upload-button'])!.find('input')!;
   }
 
-  // findFileTokens(): Array<FileTokenWrapper> {
-  //   return this.findAllByClassName(styles.disabled).map(
-  //     (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
-  //   );
-  // }
+  findFileTokens(): Array<FileTokenWrapper> {
+    return this.findAllByClassName(tokenGroupSelectors.token).map(
+      tokenElement => new FileTokenWrapper(tokenElement.getElement())
+    );
+  }
 
-  findFileTokenByName(fileName: string): null | FileTokenWrapper {
-    return null;
+  /**
+   * Returns a file token from for a given index.
+   *
+   * @param tokenIndex 1-based index of the file token to return.
+   */
+  findFileToken(fileTokenIndex: number): null | FileTokenWrapper {
+    return this.findComponent(
+      `.${spaceBetweenSelectors.child}:nth-child(${fileTokenIndex}) > .${tokenGroupSelectors.token}`,
+      FileTokenWrapper
+    );
   }
 
   @usesDom
@@ -32,28 +42,28 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
 }
 
 class FileTokenWrapper extends ElementWrapper {
-  findFileName(): null {
-    return null;
+  findFileName(): ElementWrapper {
+    return this.findByClassName(styles['file-option-name-label'])!;
   }
 
-  findFileType(): null {
-    return null;
+  findFileType(): null | ElementWrapper {
+    return this.findByClassName(styles['file-option-type']);
   }
 
-  findFileSize(): null {
-    return null;
+  findFileSize(): null | ElementWrapper {
+    return this.findByClassName(styles['file-option-size']);
   }
 
-  findFileLastUpdateTimestamp(): null {
-    return null;
+  findFileLastUpdateTimestamp(): null | ElementWrapper {
+    return this.findByClassName(styles['file-option-last-modified']);
   }
 
-  findFileThumbnail(): null {
-    return null;
+  findFileThumbnail(): null | ElementWrapper {
+    return this.findByClassName(styles['file-option-thumbnail-image']);
   }
 
-  findRemoveButton(): null {
-    return null;
+  findRemoveButton(): null | ElementWrapper {
+    return this.findByClassName(tokenGroupSelectors['dismiss-button']);
   }
 
   findActivateNameEditButton(): null {

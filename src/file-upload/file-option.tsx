@@ -121,17 +121,17 @@ export const FileOption: React.FC<FileOptionProps> = ({
             </div>
           }
           {metadata.showFileType && file.type && (
-            <InternalBox fontSize="body-s" color="text-body-secondary">
+            <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-type']}>
               {file.type}
             </InternalBox>
           )}
           {metadata.showFileSize && file.size && (
-            <InternalBox fontSize="body-s" color="text-body-secondary">
+            <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-size']}>
               {formatFileSize(file.size, i18nStrings)}
             </InternalBox>
           )}
           {metadata.showFileLastModified && file.lastModified && (
-            <InternalBox fontSize="body-s" color="text-body-secondary">
+            <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-last-modified']}>
               {formatFileLastModified(new Date(file.lastModified), i18nStrings)}
             </InternalBox>
           )}
