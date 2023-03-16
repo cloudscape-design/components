@@ -9,8 +9,6 @@ export const collectionPreferencesI18nStrings: CollectionPreferencesProps.Visibl
   liveAnnouncementDndItemCommitted: (initialPosition, finalPosition, total) =>
     `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
   dragHandleAriaDescription:
-    'To pick up a draggable item, press space or enter. \n' +
-    'While dragging, use the arrow keys to move the item in any given direction.\n' +
-    'Press space or enter again to drop the item in its new position, or press escape to cancel.',
+    'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
   dragHandleAriaLabel: 'Drag handle',
 };
