@@ -4,7 +4,16 @@ import React from 'react';
 import { render as testingLibraryRender, screen } from '@testing-library/react';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { warnOnce } from '../../../lib/components/internal/logging';
 import '../../__a11y__/to-validate-a11y';
+
+jest.mock('../../../lib/components/internal/logging', () => ({
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 // TODO: use validate a11y
 // TODO: test all test-utils
@@ -14,6 +23,7 @@ import '../../__a11y__/to-validate-a11y';
 const defaultProps: FileUploadProps = {
   buttonText: 'Choose file',
   value: [],
+  onChange: () => undefined,
   i18nStrings: {
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',
@@ -33,7 +43,7 @@ function render(props: Partial<FileUploadProps>) {
   return createWrapper(renderResult.container).findFileUpload()!;
 }
 
-describe('FileUpload input properties rendering', () => {
+describe('FileUpload input', () => {
   test('`multiple` property is assigned', () => {
     expect(render({ multiple: false }).findNativeInput().getElement()).not.toHaveAttribute('multiple');
     expect(render({ multiple: true }).findNativeInput().getElement()).toHaveAttribute('multiple');
@@ -81,22 +91,64 @@ describe('FileUpload input properties rendering', () => {
     expect(render({ invalid: false }).findUploadButton().getElement()).not.toBeInvalid();
     expect(render({ invalid: true }).findUploadButton().getElement()).toBeInvalid();
   });
+
+  test('dev warning is issued when `onChange` handler is missing', () => {
+    render({ onChange: undefined });
+
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith(
+      'FileUpload',
+      'You provided `value` prop without an `onChange` handler. This will render a read-only component. If the component should be mutable, set an `onChange` handler.'
+    );
+  });
 });
 
-describe('File upload single file token rendering', () => {
-  test('file token is not found when no file specified', () => {
-    //
+describe('File upload tokens', () => {
+  test('when multiple=true all file tokens are shown', () => {
+    const wrapper = render({
+      multiple: true,
+      value: [
+        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
+        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
+      ],
+    });
+
+    expect(wrapper.findFileTokens()).toHaveLength(2);
+
+    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('Test file 1');
+
+    expect(wrapper.findFileTokens()[1].getElement()).toHaveTextContent('Test file 2');
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveTextContent('Test file 2');
   });
 
-  test('when multiple files provided only the first one is rendered', () => {
-    //
-  });
+  test('when multiple=false only the first token is shown', () => {
+    const wrapper = render({
+      value: [
+        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
+        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
+      ],
+    });
 
-  test('file token can be found by index', () => {
-    //
+    expect(wrapper.findFileTokens()).toHaveLength(1);
+
+    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('Test file 1');
   });
 
   test('dev warning is issued when using multiple files with a singular file upload', () => {
+    render({
+      value: [
+        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
+        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
+      ],
+    });
+
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
+  });
+
+  test('files tokens are disabled if file upload is disabled', () => {
     //
   });
 
@@ -121,12 +173,6 @@ describe('File upload single file token rendering', () => {
   });
 
   test('thumbnail is not shown for a singular file upload and a dev warning is issued', () => {
-    //
-  });
-});
-
-describe('File upload multiple file tokens rendering', () => {
-  test('file tokens are not found when no files specified', () => {
     //
   });
 });

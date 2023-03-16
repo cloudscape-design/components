@@ -18,6 +18,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
 import AbstractTokenGroup from '../token-group/abstract-token-group';
+import { warnOnce } from '../internal/logging';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -114,6 +115,10 @@ function InternalFileUpload(
     nativeAttributes['aria-required'] = true;
   }
 
+  if (!multiple && value.length > 1) {
+    warnOnce('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
+  }
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -147,8 +152,9 @@ function InternalFileUpload(
       {value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
-          items={value}
+          items={multiple ? value : value.slice(0, 1)}
           getItemAttributes={(_, itemIndex) => ({
+            disabled,
             dismissLabel: i18nStrings.removeFileAriaLabel,
             showDismiss: itemIndex !== editingFileIndex,
           })}
