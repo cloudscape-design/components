@@ -12,6 +12,7 @@ import SelectToggle from '../token-group/toggle';
 import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
+import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { PropertyFilterProps, ParsedText, Ref, FilteringProperty, ComparisonOperator, Token } from './interfaces';
 import { TokenButton } from './token';
 import {
@@ -31,6 +32,17 @@ import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
 
 export { PropertyFilterProps };
+
+const OPERATOR_I18N_MAPPING: Record<PropertyFilterOperator, string> = {
+  '=': 'equals',
+  '!=': 'not_equals',
+  '>': 'greater_than',
+  '>=': 'greater_than_equal',
+  '<': 'less_than',
+  '<=': 'less_than_equal',
+  ':': 'contains',
+  '!:': 'not_contains',
+};
 
 const PropertyFilter = React.forwardRef(
   (
@@ -103,7 +115,13 @@ const PropertyFilter = React.forwardRef(
       valueText: format('i18nStrings.valueText', rest.i18nStrings.valueText),
       removeTokenButtonAriaLabel: format(
         'i18nStrings.removeTokenButtonAriaLabel',
-        rest.i18nStrings.removeTokenButtonAriaLabel
+        rest.i18nStrings.removeTokenButtonAriaLabel,
+        format => token =>
+          format({
+            token__operator: OPERATOR_I18N_MAPPING[token.operator],
+            token__propertyKey: token.propertyKey ?? '',
+            token__value: token.value,
+          })
       ),
     };
 

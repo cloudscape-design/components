@@ -31,13 +31,12 @@ const quickBuild = series(
 
 exports.clean = clean;
 exports['quick-build'] = quickBuild;
+exports.i18n = generateI18nMessages;
 exports.build = series(quickBuild, bundleVendorFiles, parallel(buildPages, themeableSource, docs));
 exports.test = series(unit, integ, a11y);
 exports['test:unit'] = unit;
 exports['test:integ'] = integ;
 exports['test:a11y'] = a11y;
-
-exports.i18n = generateI18nMessages;
 
 exports.watch = () => {
   watch(
