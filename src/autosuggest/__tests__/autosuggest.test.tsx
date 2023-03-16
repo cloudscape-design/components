@@ -133,7 +133,7 @@ describe('onSelect', () => {
     expect(onSelect).toHaveBeenCalledWith({ value: '1' });
   });
 
-  test('should select `enteredText` option', () => {
+  test('should not select `enteredText` option', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
     const { wrapper } = renderAutosuggest(
@@ -145,9 +145,11 @@ describe('onSelect', () => {
       />
     );
     wrapper.focus();
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
     wrapper.findEnteredTextOption()!.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
-    expect(onChange).toHaveBeenCalledWith({ value: 'test' });
-    expect(onSelect).toHaveBeenCalledWith({ value: 'test' });
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
+    expect(wrapper.findDropdown().findOpenDropdown()).toBeFalsy();
   });
 });
 
