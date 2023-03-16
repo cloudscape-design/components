@@ -11,10 +11,49 @@ const KB = 1000;
 const MB = 1000 ** 2;
 const contractFileNamePattern = /[\w]+_(contract)|(amendment_[\d]+).pdf/;
 
-interface ToolsContent {
-  header: string;
-  content: React.ReactNode;
-}
+const defaultToolsContent = {
+  header: 'File upload',
+  content: <Box>File upload test scenario page</Box>,
+};
+const profilePictureToolsContent = {
+  header: 'Profile picture',
+  content: (
+    <SpaceBetween size="s">
+      <Box>The profile picture must satisfy the below requirements:</Box>
+      <ul>
+        <li>Maximum size: 1 MB; Density: at least 300 x 300 pixels</li>
+        <li>The profile picture must be a photo of you</li>
+        <li>Do not use pictures that contain other people</li>
+        <li>Your face should not be blurry</li>
+        <li>Do not wear sunglasses</li>
+      </ul>
+    </SpaceBetween>
+  ),
+};
+const contractsToolsContent = {
+  header: 'Contract files',
+  content: (
+    <SpaceBetween size="s">
+      <Box>
+        Attach your contract and all amendments as PDF files. The size of one file must not exceed 250 KB. The size or
+        all attachments must not exceed 500 KB.
+      </Box>
+      <Box>The file name must follow the pattern (one of):</Box>
+      <ul>
+        <li>
+          <Box variant="span" fontWeight="bold">
+            [your_id]_contract.pdf
+          </Box>
+        </li>
+        <li>
+          <Box variant="span" fontWeight="bold">
+            [your_id]_amendment_[#].pdf
+          </Box>
+        </li>
+      </ul>
+    </SpaceBetween>
+  ),
+};
 
 export default function FileUploadScenario() {
   const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
@@ -25,10 +64,7 @@ export default function FileUploadScenario() {
 
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const [toolsContent, setToolsContent] = useState<ToolsContent>({
-    header: 'File upload',
-    content: 'File upload test scenario page',
-  });
+  const [toolsContent, setToolsContent] = useState(defaultToolsContent);
 
   return (
     <AppLayout
@@ -51,22 +87,8 @@ export default function FileUploadScenario() {
                 <Link
                   variant="info"
                   onFollow={() => {
-                    setToolsOpen(prev => !prev);
-                    setToolsContent({
-                      header: 'Profile picture',
-                      content: (
-                        <SpaceBetween size="s">
-                          <Box>The profile picture must satisfy the below requirements:</Box>
-                          <ul>
-                            <li>Maximum size: 1 MB; Density: at least 300 x 300 pixels</li>
-                            <li>The profile picture must be a photo of you</li>
-                            <li>Do not use pictures that contain other people</li>
-                            <li>Your face should not be blurry</li>
-                            <li>Do not wear sunglasses</li>
-                          </ul>
-                        </SpaceBetween>
-                      ),
-                    });
+                    setToolsOpen(!toolsOpen || toolsContent !== profilePictureToolsContent);
+                    setToolsContent(profilePictureToolsContent);
                   }}
                 >
                   info
@@ -97,31 +119,8 @@ export default function FileUploadScenario() {
                 <Link
                   variant="info"
                   onFollow={() => {
-                    setToolsOpen(prev => !prev);
-                    setToolsContent({
-                      header: 'Contract files',
-                      content: (
-                        <SpaceBetween size="s">
-                          <Box>
-                            Attach your contract and all amendments as PDF files. The size of one file must not exceed
-                            250 KB. The size or all attachments must not exceed 500 KB.
-                          </Box>
-                          <Box>The file name must follow the pattern (one of):</Box>
-                          <ul>
-                            <li>
-                              <Box variant="span" fontWeight="bold">
-                                [your_id]_contract.pdf
-                              </Box>
-                            </li>
-                            <li>
-                              <Box variant="span" fontWeight="bold">
-                                [your_id]_amendment_[#].pdf
-                              </Box>
-                            </li>
-                          </ul>
-                        </SpaceBetween>
-                      ),
-                    });
+                    setToolsOpen(!toolsOpen || toolsContent !== contractsToolsContent);
+                    setToolsContent(contractsToolsContent);
                   }}
                 >
                   info
