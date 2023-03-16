@@ -19,7 +19,6 @@ const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentO
       {
         id: 'id1',
         label: 'Item 1',
-        editable: false,
       },
       { id: 'id2', label: 'Item 2' },
       {
@@ -45,7 +44,7 @@ const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentO
 const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
   {
     label: 'Main properties',
-    options: new Array(50).fill(1).map((item, index) => ({ id: `id_${index}`, label: `Item ${index}` })),
+    options: new Array(50).fill(1).map((item, index) => ({ id: `id_${index}`, label: `Item ${index + 1}` })),
   },
 ];
 
@@ -54,6 +53,7 @@ export default function App() {
     <ScreenshotArea>
       <h1>CollectionPreferences page with content reordering</h1>
       <CollectionPreferences
+        className={`cp-1`}
         {...baseProperties}
         pageSizePreference={pageSizePreference}
         wrapLinesPreference={wrapLinesPreference}
@@ -68,6 +68,7 @@ export default function App() {
         }}
       />
       <CollectionPreferences
+        className={`cp-2`}
         {...baseProperties}
         pageSizePreference={pageSizePreference}
         wrapLinesPreference={wrapLinesPreference}
