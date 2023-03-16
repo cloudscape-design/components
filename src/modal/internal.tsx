@@ -34,6 +34,7 @@ export default function InternalModal({
   disableContentPaddings,
   onDismiss,
   modalRoot,
+  stickyFooter = false,
   __internalRootRef = null,
   ...rest
 }: InternalModalProps) {
@@ -143,7 +144,9 @@ export default function InternalModal({
                 <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
                   {children}
                 </div>
-                {footer && <div className={styles.footer}>{footer}</div>}
+                {footer && (
+                  <div className={clsx(styles.footer, { [styles['footer--sticky']]: stickyFooter })}>{footer}</div>
+                )}
               </div>
             </div>
           </FocusLock>
