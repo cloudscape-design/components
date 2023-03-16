@@ -111,22 +111,19 @@ function mergeMessages(sources: ReadonlyArray<I18nProviderProps.Messages>): I18n
   for (const messages of sources) {
     for (const namespace in messages) {
       if (!(namespace in result)) {
-        result[namespace] = messages[namespace];
-        continue;
+        result[namespace] = {};
       }
       for (const casedLocale in messages[namespace]) {
         const locale = casedLocale.toLowerCase();
         if (!(locale in result[namespace])) {
-          result[namespace][locale] = messages[namespace][locale];
-          continue;
+          result[namespace][locale] = {};
         }
-        for (const component in messages[namespace][locale]) {
+        for (const component in messages[namespace][casedLocale]) {
           if (!(component in result[namespace][locale])) {
-            result[namespace][locale][component] = messages[namespace][locale][component];
-            continue;
+            result[namespace][locale][component] = {};
           }
-          for (const key in messages[namespace][locale][component]) {
-            result[namespace][locale][component][key] = messages[namespace][locale][component][key];
+          for (const key in messages[namespace][casedLocale][component]) {
+            result[namespace][locale][component][key] = messages[namespace][casedLocale][component][key];
           }
         }
       }
