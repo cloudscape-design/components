@@ -103,8 +103,6 @@ function InternalFileUpload(
     },
   };
 
-  const isEditing = editingFileName !== null;
-
   const nativeAttributes: Record<string, any> = {
     'aria-labelledby': formFieldContext.ariaLabelledby,
     'aria-describedby': formFieldContext.ariaDescribedby,
@@ -146,47 +144,7 @@ function InternalFileUpload(
         <span>{buttonText}</span>
       </InternalButton>
 
-      {!multiple && value.length > 0 ? (
-        <div className={styles['single-file-token']}>
-          <FileOption
-            file={value[0]}
-            metadata={metadata}
-            multiple={false}
-            i18nStrings={i18nStrings}
-            {...editingProps}
-          />
-          {!isEditing && (
-            <div className={styles['single-file-token-dismiss']}>
-              <InternalButton
-                iconName="close"
-                variant="icon"
-                formAction="none"
-                onClick={() => handleDismiss(0)}
-                ariaLabel={i18nStrings.removeFileAriaLabel}
-              />
-            </div>
-          )}
-        </div>
-      ) : // <AbstractTokenGroup
-      //   alignment="vertical"
-      //   items={value}
-      //   getItemAttributes={(_, itemIndex) => ({
-      //     dismissLabel: i18nStrings.removeFileAriaLabel,
-      //     showDismiss: itemIndex !== editingFileIndex,
-      //   })}
-      //   renderItem={(item, itemIndex) => (
-      //     <FileOption
-      //       file={item}
-      //       metadata={metadata}
-      //       multiple={true}
-      //       i18nStrings={i18nStrings}
-      //       {...editingProps}
-      //       editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
-      //     />
-      //   )}
-      //   onDismiss={index => handleDismiss(index)}
-      // />
-      value instanceof Array && value.length > 0 ? (
+      {value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
           items={value}
@@ -198,7 +156,7 @@ function InternalFileUpload(
             <FileOption
               file={item}
               metadata={metadata}
-              multiple={true}
+              multiple={multiple}
               i18nStrings={i18nStrings}
               {...editingProps}
               editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
