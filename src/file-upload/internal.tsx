@@ -114,6 +114,17 @@ function InternalFileUpload(
 
   const isEditing = editingFileName !== null;
 
+  const nativeAttributes: Record<string, any> = {
+    'aria-labelledby': formFieldContext.ariaLabelledby,
+    'aria-describedby': formFieldContext.ariaDescribedby,
+  };
+  if (formFieldContext.invalid) {
+    nativeAttributes['aria-invalid'] = true;
+  }
+  if (ariaRequired) {
+    nativeAttributes['aria-required'] = true;
+  }
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -123,26 +134,23 @@ function InternalFileUpload(
     >
       <InternalButton
         ref={ref}
+        id={controlId}
         iconName="upload"
         formAction="none"
         disabled={disabled}
         onClick={handleButtonClick}
         className={styles['upload-button']}
+        ariaLabel={ariaLabel}
+        __nativeAttributes={nativeAttributes}
       >
         <input
           ref={fileInputRef}
           type="file"
+          hidden={true}
           multiple={multiple}
           disabled={disabled}
-          aria-label={ariaLabel}
-          aria-required={ariaRequired ? 'true' : 'false'}
           accept={accept}
           onChange={handleChange}
-          hidden={true}
-          aria-labelledby={formFieldContext.ariaLabelledby}
-          aria-describedby={formFieldContext.ariaDescribedby}
-          aria-invalid={formFieldContext.invalid}
-          id={controlId}
         />
         <span>{buttonText}</span>
       </InternalButton>

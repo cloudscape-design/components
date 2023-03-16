@@ -1,15 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render as testingLibraryRender } from '@testing-library/react';
+import { render as testingLibraryRender, screen } from '@testing-library/react';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import '../../__a11y__/to-validate-a11y';
 
 // TODO: use validate a11y
-// TODO: check ARIA labels
 // TODO: test all test-utils
-// TODO: test form-field context integration
 // TODO: test default formatters
 // TODO: add integ tests for happy flow to at least ensure no errors in the console
 
@@ -26,7 +24,12 @@ const defaultProps: FileUploadProps = {
 };
 
 function render(props: Partial<FileUploadProps>) {
-  const renderResult = testingLibraryRender(<FileUpload {...{ ...defaultProps, ...props }} />);
+  const renderResult = testingLibraryRender(
+    <div>
+      <FileUpload {...{ ...defaultProps, ...props }} />
+      <div id="test-label">Test label</div>
+    </div>
+  );
   return createWrapper(renderResult.container).findFileUpload()!;
 }
 
@@ -44,27 +47,35 @@ describe('FileUpload input properties rendering', () => {
     expect(render({ buttonText: 'Choose file' }).findUploadButton().getElement()).toHaveTextContent('Choose file');
   });
 
-  test('`ariaLabel` property is assigned', () => {
-    // TODO: check aria label is assigned and accessible
+  test('`ariaRequired` property is assigned', () => {
+    expect(render({ ariaRequired: false }).findUploadButton().getElement()).not.toHaveAttribute('aria-required');
+    expect(render({ ariaRequired: true }).findUploadButton().getElement()).toHaveAttribute('aria-required');
   });
 
-  test('`ariaRequired` property is assigned', () => {
-    // TODO: check aria required is assigned and accessible
+  test('`ariaLabel` property is assigned', () => {
+    render({ ariaLabel: 'Choose file button' });
+    expect(screen.getByLabelText('Choose file button')).toBeDefined();
   });
 
   test('`ariaLabelledby` property is assigned', () => {
-    // TODO: check aria labelled is assigned and accessible
+    render({ ariaLabelledby: 'test-label' });
+    expect(screen.getByLabelText('Test label')).toBeDefined();
   });
 
   test('`ariaDescribedby` property is assigned', () => {
-    // TODO: check aria described is assigned and accessible
+    const uploadButton = render({ ariaDescribedby: 'test-label' }).findUploadButton().getElement();
+    expect(uploadButton).toHaveAccessibleDescription('Test label');
   });
 
   test('`disabled` property is assigned', () => {
-    // TODO: check disabled is assigned and accessible
+    expect(render({ disabled: false }).findUploadButton().getElement()).not.toBeDisabled();
+    expect(render({ disabled: false }).findNativeInput().getElement()).not.toBeDisabled();
+    expect(render({ disabled: true }).findUploadButton().getElement()).toBeDisabled();
+    expect(render({ disabled: true }).findNativeInput().getElement()).toBeDisabled();
   });
 
   test('`invalid` property is assigned', () => {
-    // TODO: check invalid is assigned and accessible
+    expect(render({ invalid: false }).findUploadButton().getElement()).not.toBeInvalid();
+    expect(render({ invalid: true }).findUploadButton().getElement()).toBeInvalid();
   });
 });
