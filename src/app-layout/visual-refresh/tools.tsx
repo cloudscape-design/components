@@ -114,15 +114,11 @@ export default function Tools({ children }: ToolsProps) {
             <aside
               aria-hidden={!hasToolsForm ? true : false}
               aria-label={ariaLabels?.tools ?? undefined}
-              className={clsx(
-                styles['show-tools'],
-                {
-                  [styles.animating]: state === 'exiting',
-                  [styles['has-tools-form']]: hasToolsForm,
-                  [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
-                },
-                splitPanelStyles.root
-              )}
+              className={clsx(styles['show-tools'], {
+                [styles.animating]: state === 'exiting',
+                [styles['has-tools-form']]: hasToolsForm,
+                [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
+              })}
               ref={state === 'exiting' ? transitionEventsRef : undefined}
             >
               {!toolsHide && (

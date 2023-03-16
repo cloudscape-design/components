@@ -7,6 +7,7 @@ import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { renderComponent, splitPanelI18nStrings } from './utils';
+import splitPanelStyles from '../../../lib/components/split-panel/styles.selectors.js';
 
 const defaultSplitPanel = (
   <SplitPanel i18nStrings={splitPanelI18nStrings} header="test header">
@@ -136,6 +137,12 @@ for (const theme of ['refresh', 'classic']) {
         expect(wrapper.findSplitPanel()!.findOpenButton()!.getElement()).toHaveFocus();
       });
     });
+    test(`should not render split panel when it is not defined in ${theme}`, () => {
+      const { wrapper, rerender } = renderComponent(<AppLayout splitPanel={defaultSplitPanel} />);
+      expect(wrapper.findSplitPanel()).toBeTruthy();
+      rerender(<AppLayout />);
+      expect(wrapper.findSplitPanel()).toBeFalsy();
+    });
   });
 }
 
@@ -205,7 +212,7 @@ describe('Visual refresh only features', () => {
 
   test('does not render open-button bar in default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
-    expect(wrapper.findSplitPanel()!.findOpenButton()).toBeFalsy();
+    expect(wrapper.find(`.${splitPanelStyles['open-button']}`)).toBeFalsy();
   });
 });
 

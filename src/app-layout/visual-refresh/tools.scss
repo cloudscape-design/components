@@ -170,4 +170,6 @@ handleSplitPanelMaxWidth function in the context.
       z-index: 1;
     }
   }
+
+  @include styles.styles-reset;
 }
