@@ -276,7 +276,7 @@ const PropertyFilter = React.forwardRef(
           <PropertyFilterAutosuggest
             ref={inputRef}
             virtualScroll={virtualScroll}
-            enteredTextLabel={i18nStrings.enteredTextLabel}
+            enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
             value={filteringText}
