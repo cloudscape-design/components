@@ -146,9 +146,15 @@ function InternalFileUpload(
         <span>{buttonText}</span>
       </InternalButton>
 
-      {value instanceof File ? (
+      {!multiple && value.length > 0 ? (
         <div className={styles['single-file-token']}>
-          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} {...editingProps} />
+          <FileOption
+            file={value[0]}
+            metadata={metadata}
+            multiple={false}
+            i18nStrings={i18nStrings}
+            {...editingProps}
+          />
           {!isEditing && (
             <div className={styles['single-file-token-dismiss']}>
               <InternalButton
@@ -161,7 +167,26 @@ function InternalFileUpload(
             </div>
           )}
         </div>
-      ) : value instanceof Array && value.length > 0 ? (
+      ) : // <AbstractTokenGroup
+      //   alignment="vertical"
+      //   items={value}
+      //   getItemAttributes={(_, itemIndex) => ({
+      //     dismissLabel: i18nStrings.removeFileAriaLabel,
+      //     showDismiss: itemIndex !== editingFileIndex,
+      //   })}
+      //   renderItem={(item, itemIndex) => (
+      //     <FileOption
+      //       file={item}
+      //       metadata={metadata}
+      //       multiple={true}
+      //       i18nStrings={i18nStrings}
+      //       {...editingProps}
+      //       editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
+      //     />
+      //   )}
+      //   onDismiss={index => handleDismiss(index)}
+      // />
+      value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
           items={value}

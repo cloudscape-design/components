@@ -9,7 +9,6 @@ import '../../__a11y__/to-validate-a11y';
 // TODO: use validate a11y
 // TODO: test all test-utils
 // TODO: test default formatters
-// TODO: add integ tests for happy flow to at least ensure no errors in the console
 // TODO: ensure coverage
 
 const defaultProps: FileUploadProps = {
@@ -90,6 +89,10 @@ describe('File upload single file token rendering', () => {
   });
 
   test('when multiple files provided only the first one is rendered', () => {
+    //
+  });
+
+  test('file token can be found by name', () => {
     //
   });
 

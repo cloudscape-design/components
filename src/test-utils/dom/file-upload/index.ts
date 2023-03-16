@@ -15,11 +15,13 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
     return this.findByClassName(styles['upload-button'])!.find('input')!;
   }
 
-  findFileTokens(): null {
-    return null;
-  }
+  // findFileTokens(): Array<FileTokenWrapper> {
+  //   return this.findAllByClassName(styles.disabled).map(
+  //     (elementWrapper: ElementWrapper) => new OptionWrapper(elementWrapper.getElement())
+  //   );
+  // }
 
-  findFileTokenByName(fileName: string): null {
+  findFileTokenByName(fileName: string): null | FileTokenWrapper {
     return null;
   }
 
