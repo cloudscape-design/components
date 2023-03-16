@@ -1,13 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { FileUpload, FormField } from '~components';
-import Box from '~components/box';
+import { AppLayout, Box, FileUpload, FormField, Header, Link } from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
+import appLayoutLabels from '../app-layout/utils/labels';
+import { Navigation, Tools } from '../app-layout/utils/content-blocks';
 
 const KB = 1000;
 const MB = 1000 ** 2;
+const contractFileNamePattern = /[\w]+_(contract)|(amendment_[\d]+).pdf/;
+
+interface ToolsContent {
+  header: string;
+  content: React.ReactNode;
+}
 
 export default function FileUploadScenario() {
   const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
@@ -16,69 +23,164 @@ export default function FileUploadScenario() {
   const [contractFiles, setContractFiles] = useState<File[]>([]);
   const [contractsError, setContractsError] = useState<string | null>(null);
 
-  return (
-    <Box margin="xl">
-      <SpaceBetween size="m">
-        <h1>File upload demo</h1>
-        <SpaceBetween size="m" direction="horizontal">
-          <FormField
-            errorText={profileImageError}
-            label="Profile picture"
-            description="Upload a picture of yourself"
-            constraintText="File size must not exceed 1 MB"
-          >
-            <FileUpload
-              value={profileImageFile}
-              onChange={event => {
-                setProfileImageFile(event.detail.value);
-                setProfileError(
-                  validateFileName(event.detail.value[0]) ?? validateFileSize(event.detail.value[0], 1 * MB)
-                );
-              }}
-              buttonText="Choose file"
-              accept="image/png, image/jpeg"
-              showFileType={true}
-              showFileSize={true}
-              showFileLastModified={true}
-              i18nStrings={i18nStrings}
-            />
-          </FormField>
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [toolsContent, setToolsContent] = useState<ToolsContent>({
+    header: 'File upload',
+    content: 'File upload test scenario page',
+  });
 
-          <FormField
-            errorText={contractsError}
-            label="Contracts"
-            description="Upload your contract with all amendments"
-            constraintText="File size must not exceed 250 KB. Combined file size must not exceed 500 KB"
-          >
-            <FileUpload
-              multiple={true}
-              value={contractFiles}
-              onChange={event => {
-                setContractFiles(event.detail.value);
-                setContractsError(
-                  validateFileName(event.detail.value) ?? validateFileSize(event.detail.value, 250 * KB, 500 * KB)
-                );
-              }}
-              buttonText="Choose files"
-              accept="application/pdf, image/png, image/jpeg"
-              showFileType={true}
-              showFileSize={true}
-              showFileLastModified={true}
-              showFileThumbnail={true}
-              i18nStrings={i18nStrings}
-            />
-          </FormField>
+  return (
+    <AppLayout
+      ariaLabels={appLayoutLabels}
+      navigationOpen={navigationOpen}
+      onNavigationChange={event => setNavigationOpen(event.detail.open)}
+      toolsOpen={toolsOpen}
+      onToolsChange={event => setToolsOpen(event.detail.open)}
+      tools={<Tools header={toolsContent.header}>{toolsContent.content}</Tools>}
+      navigation={<Navigation />}
+      content={
+        <SpaceBetween size="m">
+          <Header variant="h1">File upload demo</Header>
+          <SpaceBetween size="m" direction="horizontal">
+            <FormField
+              errorText={profileImageError}
+              label="Profile picture"
+              description="Upload a picture of yourself"
+              info={
+                <Link
+                  variant="info"
+                  onFollow={() => {
+                    setToolsOpen(prev => !prev);
+                    setToolsContent({
+                      header: 'Profile picture',
+                      content: (
+                        <SpaceBetween size="s">
+                          <Box>The profile picture must satisfy the below requirements:</Box>
+                          <ul>
+                            <li>Maximum size: 1 MB; Density: at least 300 x 300 pixels</li>
+                            <li>The profile picture must be a photo of you</li>
+                            <li>Do not use pictures that contain other people</li>
+                            <li>Your face should not be blurry</li>
+                            <li>Do not wear sunglasses</li>
+                          </ul>
+                        </SpaceBetween>
+                      ),
+                    });
+                  }}
+                >
+                  info
+                </Link>
+              }
+              constraintText="File size must not exceed 1 MB"
+            >
+              <FileUpload
+                value={profileImageFile}
+                onChange={event => {
+                  setProfileImageFile(event.detail.value);
+                  setProfileError(validateProfilePictureFile(event.detail.value[0]));
+                }}
+                buttonText="Choose file"
+                accept="image/png, image/jpeg"
+                showFileType={true}
+                showFileSize={true}
+                showFileLastModified={true}
+                i18nStrings={i18nStrings}
+              />
+            </FormField>
+
+            <FormField
+              errorText={contractsError}
+              label="Contracts"
+              description="Upload your contract with all amendments"
+              info={
+                <Link
+                  variant="info"
+                  onFollow={() => {
+                    setToolsOpen(prev => !prev);
+                    setToolsContent({
+                      header: 'Contract files',
+                      content: (
+                        <SpaceBetween size="s">
+                          <Box>
+                            Attach your contract and all amendments as PDF files. The size of one file must not exceed
+                            250 KB. The size or all attachments must not exceed 500 KB.
+                          </Box>
+                          <Box>The file name must follow the pattern (one of):</Box>
+                          <ul>
+                            <li>
+                              <Box variant="span" fontWeight="bold">
+                                [your_id]_contract.pdf
+                              </Box>
+                            </li>
+                            <li>
+                              <Box variant="span" fontWeight="bold">
+                                [your_id]_amendment_[#].pdf
+                              </Box>
+                            </li>
+                          </ul>
+                        </SpaceBetween>
+                      ),
+                    });
+                  }}
+                >
+                  info
+                </Link>
+              }
+              constraintText="File size must not exceed 250 KB. Combined file size must not exceed 500 KB"
+            >
+              <FileUpload
+                multiple={true}
+                value={contractFiles}
+                onChange={event => {
+                  setContractFiles(event.detail.value);
+                  setContractsError(validateContractFiles(event.detail.value));
+                }}
+                buttonText="Choose files"
+                accept="application/pdf, image/png, image/jpeg"
+                showFileType={true}
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={i18nStrings}
+              />
+            </FormField>
+          </SpaceBetween>
         </SpaceBetween>
-      </SpaceBetween>
-    </Box>
+      }
+    />
   );
 }
 
-function validateFileSize(input: null | File | File[], maxFileSize: number, maxTotalSize = maxFileSize): null | string {
-  if (!input) {
+function validateProfilePictureFile(file: File | undefined): null | string {
+  if (!file) {
     return null;
   }
+  const fileSizeError = validateFileSize(file, 1 * MB);
+  const fileNameNotEmptyError = validateFileNameNotEmpty(file);
+  const fileExtensionError = validateFileExtensions(file, ['png', 'jpg', 'jpeg']);
+  return fileSizeError ?? fileNameNotEmptyError ?? fileExtensionError ?? null;
+}
 
+function validateContractFiles(files: File[]): null | string {
+  const fileSizeError = validateFileSize(files, 250 * KB, 500 * KB);
+  const fileNameNotEmptyError = validateFiles(files, validateFileNameNotEmpty);
+  const fileExtensionError = validateFiles(files, file => validateFileExtensions(file, ['pdf']));
+  const fileNamePatternError = validateFiles(files, validateContractFilePattern);
+  return fileSizeError ?? fileNameNotEmptyError ?? fileExtensionError ?? fileNamePatternError ?? null;
+}
+
+function validateFiles(files: File[], validate: (file: File) => null | string): null | string {
+  for (const file of files) {
+    const result = validate(file);
+    if (result !== null) {
+      return result;
+    }
+  }
+  return null;
+}
+
+function validateFileSize(input: File | File[], maxFileSize: number, maxTotalSize = maxFileSize): null | string {
   const formatFileSize = (bytes: number): string => {
     return bytes < MB ? `${(bytes / KB).toFixed(2)} KB` : `${(bytes / MB).toFixed(2)} MB`;
   };
@@ -102,17 +204,25 @@ function validateFileSize(input: null | File | File[], maxFileSize: number, maxT
   return null;
 }
 
-function validateFileName(input: null | File | File[]) {
-  if (!input) {
-    return null;
+function validateFileNameNotEmpty(file: File): null | string {
+  if (file.name.length === 0) {
+    return 'Empty file name is not allowed.';
   }
+  return null;
+}
 
-  const files = input instanceof File ? [input] : input;
-  const violation = files.find(file => file.name.split('.')[0].length < 5);
-
-  if (violation) {
-    return `File name "${violation.name}" is not allowed: the name must be at least 5 characters long`;
+function validateFileExtensions(file: File, extensions: string[]): null | string {
+  const fileNameParts = file.name.split('.');
+  const fileExtension = fileNameParts[fileNameParts.length - 1];
+  if (!extensions.includes(fileExtension.toLowerCase())) {
+    return `File "${file.name}" is not supported. Allowed extensions are ${extensions.map(e => `"${e}"`).join(', ')}.`;
   }
+  return null;
+}
 
+function validateContractFilePattern(file: File) {
+  if (!file.name.match(contractFileNamePattern)) {
+    return `File "${file.name}" does not satisfy naming guidelines. Check "info" for details.`;
+  }
   return null;
 }

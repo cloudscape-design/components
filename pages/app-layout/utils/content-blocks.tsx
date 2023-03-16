@@ -45,8 +45,8 @@ export function Containers() {
   );
 }
 
-export function Tools({ children }: { children: React.ReactNode }) {
-  return <HelpPanel header={<h2>Overview</h2>}>{children}</HelpPanel>;
+export function Tools({ header = 'Overview', children }: { header?: string; children: React.ReactNode }) {
+  return <HelpPanel header={<h2>{header}</h2>}>{children}</HelpPanel>;
 }
 
 export function Navigation() {
