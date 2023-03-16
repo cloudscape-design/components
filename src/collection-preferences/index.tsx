@@ -127,6 +127,7 @@ export default function CollectionPreferences({
           closeAriaLabel={cancelLabel}
           size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
           onDismiss={onCancelListener}
+          stickyFooter={true}
         >
           <ModalContentLayout
             left={
