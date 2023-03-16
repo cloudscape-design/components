@@ -39,7 +39,7 @@ export default function InternalTokenGroup({
   const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
   const baseProps = getBaseProps(props);
-  const className = clsx(baseProps.className, styles.root, hasItems && slicedItems.length && styles['has-items']);
+  const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
 
   return (
     <div {...baseProps} className={className} ref={__internalRootRef}>

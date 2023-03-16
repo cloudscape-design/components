@@ -36,7 +36,7 @@ export default function InternalSpaceBetween({
         const key = (child as any).key;
 
         return (
-          <div key={key} className={styles.child}>
+          <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
           </div>
         );

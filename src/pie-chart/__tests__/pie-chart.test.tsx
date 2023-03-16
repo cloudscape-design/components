@@ -183,9 +183,9 @@ describe('Filter container', () => {
     expect(wrapper.findDefaultFilter()).not.toBeNull();
   });
 
-  test('is not rendered when hideFilter is set', () => {
+  test('is rendered when hideFilter is set but does not contain the default filter', () => {
     const { wrapper } = renderPieChart(<PieChart data={defaultData} hideFilter={true} />);
-    expect(wrapper.findFilterContainer()).toBeNull();
+    expect(wrapper.findFilterContainer()).not.toBeNull();
     expect(wrapper.findDefaultFilter()).toBeNull();
   });
 

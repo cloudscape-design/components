@@ -44,7 +44,7 @@ describe('SpaceBetween', () => {
         </SpaceBetween>
       );
 
-      expect(container.firstChild).toHaveClass(styles['vertical-s']);
+      expect(container.firstChild!.firstChild).toHaveClass(styles['child-vertical-s']);
     }
     {
       const { container } = render(
@@ -54,7 +54,7 @@ describe('SpaceBetween', () => {
         </SpaceBetween>
       );
 
-      expect(container.firstChild).toHaveClass(styles['vertical-m']);
+      expect(container.firstChild!.firstChild).toHaveClass(styles['child-vertical-m']);
     }
     {
       const { container } = render(
@@ -64,7 +64,7 @@ describe('SpaceBetween', () => {
         </SpaceBetween>
       );
 
-      expect(container.firstChild).toHaveClass(styles['vertical-xxl']);
+      expect(container.firstChild!.firstChild).toHaveClass(styles['child-vertical-xxl']);
     }
   });
 
