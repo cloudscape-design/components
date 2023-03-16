@@ -49,7 +49,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
         <a
           {...focusVisible}
           href={definition.href}
-          className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
+          className={styles['header-link']}
           aria-current={definition.href === activeHref ? 'page' : undefined}
           onClick={onClick}
         >
@@ -61,7 +61,9 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
               {...definition.logo}
             />
           )}
-          <span className={styles['header-link-text']}>{definition.text}</span>
+          <InternalBox variant="h2" tagOverride="span" padding="n" fontWeight={definition.logo && 'normal'}>
+            {definition.text}
+          </InternalBox>
         </a>
       </h2>
       <Divider isPresentational={true} variant="header" />

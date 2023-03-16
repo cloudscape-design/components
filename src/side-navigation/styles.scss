@@ -13,7 +13,6 @@
 }
 
 .header {
-  @include styles.font-panel-header;
   margin: 0;
   padding: awsui.$space-scaled-l awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
@@ -26,12 +25,6 @@
   min-height: awsui.$font-panel-header-line-height;
 
   display: flex;
-
-  &--has-logo {
-    > .header-link-text {
-      font-weight: styles.$font-weight-normal;
-    }
-  }
 }
 
 .header-logo {
