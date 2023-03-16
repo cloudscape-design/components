@@ -41,7 +41,7 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   }
 }
 
-class FileTokenWrapper extends ElementWrapper {
+class FileTokenWrapper extends ComponentWrapper {
   findFileName(): ElementWrapper {
     return this.findByClassName(styles['file-option-name-label'])!;
   }

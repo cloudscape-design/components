@@ -11,8 +11,11 @@ jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
 }));
 
+const onChange = jest.fn();
+
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
+  onChange.mockReset();
 });
 
 // TODO: use validate a11y
@@ -23,7 +26,7 @@ afterEach(() => {
 const defaultProps: FileUploadProps = {
   buttonText: 'Choose file',
   value: [],
-  onChange: () => undefined,
+  onChange,
   i18nStrings: {
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',
@@ -32,6 +35,9 @@ const defaultProps: FileUploadProps = {
     editFileNameInputAriaLabel: 'File name input',
   },
 };
+
+const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1');
+const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2');
 
 function render(props: Partial<FileUploadProps>) {
   const renderResult = testingLibraryRender(
@@ -105,13 +111,7 @@ describe('FileUpload input', () => {
 
 describe('File upload tokens', () => {
   test('when multiple=true all file tokens are shown', () => {
-    const wrapper = render({
-      multiple: true,
-      value: [
-        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
-        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
-      ],
-    });
+    const wrapper = render({ multiple: true, value: [file1, file2] });
 
     expect(wrapper.findFileTokens()).toHaveLength(2);
 
@@ -123,12 +123,7 @@ describe('File upload tokens', () => {
   });
 
   test('when multiple=false only the first token is shown', () => {
-    const wrapper = render({
-      value: [
-        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
-        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
-      ],
-    });
+    const wrapper = render({ value: [file1, file2] });
 
     expect(wrapper.findFileTokens()).toHaveLength(1);
 
@@ -137,27 +132,37 @@ describe('File upload tokens', () => {
   });
 
   test('dev warning is issued when using multiple files with a singular file upload', () => {
-    render({
-      value: [
-        new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1'),
-        new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2'),
-      ],
-    });
+    render({ value: [file1, file2] });
 
     expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
   });
 
   test('files tokens are disabled if file upload is disabled', () => {
-    //
+    const wrapperSingular = render({ disabled: true, value: [file1] });
+    expect(wrapperSingular.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
+
+    const wrapperMultiple = render({ disabled: true, multiple: true, value: [file1] });
+    expect(wrapperMultiple.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
   });
 
-  test('selected file remove token has ARIA label set', () => {
-    //
+  test('file token remove button has ARIA label set', () => {
+    const wrapper = render({ value: [file1] });
+    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Remove file');
   });
 
   test('selected file can be removed', () => {
-    //
+    const wrapperSingular = render({ value: [file1] });
+    wrapperSingular.findFileToken(1)!.findRemoveButton()!.click();
+
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
+
+    const wrapperMultiple = render({ multiple: true, value: [file1, file2] });
+    wrapperMultiple.findFileToken(1)!.findRemoveButton()!.click();
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ detail: { value: expect.arrayContaining([file2]) } })
+    );
   });
 
   test('selected file has all metadata', () => {
