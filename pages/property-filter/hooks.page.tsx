@@ -11,7 +11,11 @@ import { allItems, TableItem } from './table.data';
 import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
+import { I18nProvider } from '~components/internal/i18n';
+import messages from '~components/internal/i18n/messages/all.all';
+
 export default function () {
+  const [locale, setLocale] = useState('en');
   const [tokenLimit, setTokenLimit] = useState<number>();
   const [hideOperations, setHideOperations] = useState<boolean>(false);
   const [disableFreeTextFiltering, setDisableFreeText] = useState<boolean>(false);
@@ -40,51 +44,72 @@ export default function () {
 
   return (
     <ScreenshotArea disableAnimations={true}>
-      <ul>
-        <li>
-          <label>
-            Token limit
-            <input
-              type="number"
-              value={tokenLimit === undefined ? '' : tokenLimit}
-              onChange={e => setTokenLimit(parseInt(e.target.value))}
+      <I18nProvider messages={[messages]} locale={locale}>
+        <ul>
+          <li>
+            <label>
+              Token limit
+              <input
+                type="number"
+                value={tokenLimit === undefined ? '' : tokenLimit}
+                onChange={e => setTokenLimit(parseInt(e.target.value))}
+              />
+            </label>
+          </li>
+          <li>
+            <label>
+              Toggle hideOperations
+              <input type="checkbox" checked={hideOperations} onChange={() => setHideOperations(!hideOperations)} />
+            </label>
+          </li>
+          <li>
+            <label>
+              Toggle disableFreeTextFiltering
+              <input
+                type="checkbox"
+                checked={disableFreeTextFiltering}
+                onChange={() => setDisableFreeText(!disableFreeTextFiltering)}
+              />
+            </label>
+          </li>
+          <li>
+            <label>
+              Language
+              <select value={locale} onChange={event => setLocale(event.currentTarget.value)}>
+                <option value="de">Deutsch</option>
+                <option value="en">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="id">Bahasa Indonesia</option>
+                <option value="it">Italiano</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="pt-BR">Português</option>
+                <option value="zh-CN">中文(简体)</option>
+                <option value="zh-TW">中文(繁體)</option>
+              </select>
+            </label>
+          </li>
+        </ul>
+        <Table<TableItem>
+          header={<Header headingTagOverride={'h1'}>Instances</Header>}
+          items={items}
+          {...collectionProps}
+          filter={
+            <PropertyFilter
+              {...propertyFilterProps}
+              virtualScroll={true}
+              countText={`${items.length} matches`}
+              i18nStrings={{ filteringAriaLabel: i18nStrings.filteringAriaLabel }}
+              tokenLimit={tokenLimit}
+              hideOperations={hideOperations}
+              disableFreeTextFiltering={disableFreeTextFiltering}
             />
-          </label>
-        </li>
-        <li>
-          <label>
-            Toggle hideOperations
-            <input type="checkbox" checked={hideOperations} onChange={() => setHideOperations(!hideOperations)} />
-          </label>
-        </li>
-        <li>
-          <label>
-            Toggle disableFreeTextFiltering
-            <input
-              type="checkbox"
-              checked={disableFreeTextFiltering}
-              onChange={() => setDisableFreeText(!disableFreeTextFiltering)}
-            />
-          </label>
-        </li>
-      </ul>
-      <Table<TableItem>
-        header={<Header headingTagOverride={'h1'}>Instances</Header>}
-        items={items}
-        {...collectionProps}
-        filter={
-          <PropertyFilter
-            {...propertyFilterProps}
-            virtualScroll={true}
-            countText={`${items.length} matches`}
-            i18nStrings={i18nStrings}
-            tokenLimit={tokenLimit}
-            hideOperations={hideOperations}
-            disableFreeTextFiltering={disableFreeTextFiltering}
-          />
-        }
-        columnDefinitions={columnDefinitions}
-      />
+          }
+          columnDefinitions={columnDefinitions}
+        />
+      </I18nProvider>
     </ScreenshotArea>
   );
 }

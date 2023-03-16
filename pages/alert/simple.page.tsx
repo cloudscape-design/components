@@ -8,7 +8,7 @@ import SpaceBetween from '~components/space-between';
 import styles from './styles.scss';
 
 import { I18nProvider } from '~components/internal/i18n';
-import messages from '~components/internal/i18n/messages/all.en';
+import messages from '~components/internal/i18n/messages/all.all';
 
 const MESSAGES = [messages];
 
