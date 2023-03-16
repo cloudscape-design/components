@@ -54,7 +54,7 @@ class FileTokenWrapper extends ComponentWrapper {
     return this.findByClassName(styles['file-option-size']);
   }
 
-  findFileLastUpdateTimestamp(): null | ElementWrapper {
+  findFileLastModified(): null | ElementWrapper {
     return this.findByClassName(styles['file-option-last-modified']);
   }
 

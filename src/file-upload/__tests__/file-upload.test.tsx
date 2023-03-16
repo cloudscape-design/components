@@ -10,6 +10,9 @@ import '../../__a11y__/to-validate-a11y';
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
 }));
+jest.mock('../../../lib/components/internal/utils/date-time', () => ({
+  formatDateTime: () => '2020-06-01T00:00:00',
+}));
 
 const onChange = jest.fn();
 
@@ -20,7 +23,6 @@ afterEach(() => {
 
 // TODO: use validate a11y
 // TODO: test all test-utils
-// TODO: test default formatters
 // TODO: ensure coverage
 
 const defaultProps: FileUploadProps = {
@@ -36,8 +38,14 @@ const defaultProps: FileUploadProps = {
   },
 };
 
-const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1');
-const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2');
+const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1', {
+  type: 'text/plain',
+  lastModified: 1590962400000,
+});
+const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2', {
+  type: 'image/png',
+  lastModified: 1590962400000,
+});
 
 function render(props: Partial<FileUploadProps>) {
   const renderResult = testingLibraryRender(
@@ -165,20 +173,66 @@ describe('File upload tokens', () => {
     );
   });
 
-  test('selected file has all metadata', () => {
-    //
+  test('file token only shows name by default', () => {
+    const wrapper = render({ value: [file1] });
+
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.findFileType()).toBe(null);
+    expect(wrapper.findFileToken(1)!.findFileSize()).toBe(null);
+    expect(wrapper.findFileToken(1)!.findFileLastModified()).toBe(null);
+    expect(wrapper.findFileToken(1)!.findFileThumbnail()).toBe(null);
+  });
+
+  test.each([false, true])('file token metadata can be selected for multiple=%s', multiple => {
+    const wrapper = render({
+      multiple,
+      value: [file1],
+      showFileType: true,
+      showFileSize: true,
+      showFileLastModified: true,
+    });
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.findFileType()!.getElement()).toHaveTextContent('text/plain');
+    expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('0.01 KB');
+    expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020-06-01T00:00:00');
+  });
+
+  test('thumbnail is only shown  when file type starts with "image"', () => {
+    expect(
+      render({ value: [file1], showFileThumbnail: true })
+        .findFileToken(1)!
+        .findFileThumbnail()
+    ).toBe(null);
+
+    expect(
+      render({ value: [file2], showFileThumbnail: true })
+        .findFileToken(1)!
+        .findFileThumbnail()
+    ).not.toBe(null);
   });
 
   test('selected file size can be customized', () => {
-    //
+    const wrapper = render({
+      value: [file1],
+      showFileSize: true,
+      i18nStrings: {
+        ...defaultProps.i18nStrings,
+        formatFileSize: sizeInBytes => `${sizeInBytes} bytes`,
+      },
+    });
+    expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('14 bytes');
   });
 
   test('selected file last update timestamp can be customized', () => {
-    //
-  });
-
-  test('thumbnail is not shown for a singular file upload and a dev warning is issued', () => {
-    //
+    const wrapper = render({
+      value: [file1],
+      showFileLastModified: true,
+      i18nStrings: {
+        ...defaultProps.i18nStrings,
+        formatFileTimestamp: date => `${date.getFullYear()} year`,
+      },
+    });
+    expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020 year');
   });
 });
 

@@ -57,6 +57,10 @@ function InternalFileUpload(
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
+  if (!multiple && value.length > 1) {
+    warnOnce('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
+  }
+
   const handleButtonClick = () => fileInputRef.current?.click();
 
   const handleChange = useCallback(
@@ -115,10 +119,6 @@ function InternalFileUpload(
     nativeAttributes['aria-required'] = true;
   }
 
-  if (!multiple && value.length > 1) {
-    warnOnce('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
-  }
-
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -162,7 +162,6 @@ function InternalFileUpload(
             <FileOption
               file={item}
               metadata={metadata}
-              multiple={multiple}
               i18nStrings={i18nStrings}
               {...editingProps}
               editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}

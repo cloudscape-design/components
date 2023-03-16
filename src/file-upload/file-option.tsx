@@ -24,14 +24,12 @@ export interface FileNameEditingProps {
 interface FileOptionProps extends FileNameEditingProps {
   metadata: FileMetadata;
   file: File;
-  multiple: boolean;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
 export const FileOption: React.FC<FileOptionProps> = ({
   metadata,
   file,
-  multiple,
   i18nStrings,
   editingFileName,
   onNameChange,
@@ -44,7 +42,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
 
   useEffect(() => {
-    if (multiple && metadata.showFileThumbnail && isImage) {
+    if (metadata.showFileThumbnail && isImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (thumbnail.current && thumbnail.current.src) {
@@ -53,7 +51,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
       };
       reader.readAsDataURL(file);
     }
-  }, [multiple, file, metadata.showFileThumbnail, isImage]);
+  }, [file, metadata.showFileThumbnail, isImage]);
 
   const isEditing = editingFileName !== null;
 
@@ -61,7 +59,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
 
-      {metadata.showFileThumbnail && multiple && isImage && (
+      {metadata.showFileThumbnail && isImage && (
         <div className={styles['file-option-thumbnail']}>
           <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
         </div>
