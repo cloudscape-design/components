@@ -60,13 +60,13 @@ function InternalFileUpload(
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      if (target.files && target.files[0] && onChange) {
-        const newValue = multiple
-          ? value instanceof Array
-            ? [...value, target.files[0]]
-            : [target.files[0]]
-          : target.files[0];
-        fireNonCancelableEvent(onChange, { value: newValue });
+      if (!multiple && target.files && target.files[0] && onChange) {
+        fireNonCancelableEvent(onChange, { value: target.files[0] });
+      }
+      if (multiple && target.files && onChange) {
+        fireNonCancelableEvent(onChange, {
+          value: Array.isArray(value) ? [...value, ...Array.from(target.files)] : Array.from(target.files),
+        });
       }
     },
     [value, multiple, onChange]
