@@ -9,15 +9,36 @@ import InternalSpaceBetween from '../space-between/internal';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
 import { formatFileLastModified, formatFileSize } from './formatters';
+import InternalButton from '../button/internal';
+import InternalInput from '../input/internal';
+import clsx from 'clsx';
 
-interface FileOptionProps {
+export interface FileNameEditingProps {
+  editingFileName: null | string;
+  onNameChange: (fileName: string) => void;
+  onNameEditStart: (file: File) => void;
+  onNameEditSubmit: () => void;
+  onNameEditCancel: () => void;
+}
+
+interface FileOptionProps extends FileNameEditingProps {
   metadata: FileMetadata;
   file: File;
   multiple: boolean;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple, i18nStrings }: FileOptionProps) => {
+export const FileOption: React.FC<FileOptionProps> = ({
+  metadata,
+  file,
+  multiple,
+  i18nStrings,
+  editingFileName,
+  onNameChange,
+  onNameEditStart,
+  onNameEditSubmit,
+  onNameEditCancel,
+}: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
 
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
@@ -34,19 +55,69 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
     }
   }, [multiple, file, metadata.showFileThumbnail, isImage]);
 
+  const isEditing = editingFileName !== null;
+
   return (
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
+
       {metadata.showFileThumbnail && multiple && isImage && (
         <div className={styles['file-option-thumbnail']}>
           <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
         </div>
       )}
-      <InternalBox className={styles['file-option-metadata']}>
+
+      <div className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
-            <div className={styles['file-option-name']} title={file.name}>
-              {file.name}
+            <div
+              className={clsx(styles['file-option-name'], isEditing && styles['file-name-edit-active'])}
+              onClick={() => !isEditing && onNameEditStart(file)}
+            >
+              {isEditing ? (
+                <div className={styles['file-option-name-input']}>
+                  <InternalInput
+                    value={editingFileName}
+                    onChange={event => onNameChange(event.detail.value)}
+                    spellcheck={false}
+                    ariaLabel={i18nStrings.editFileNameInputAriaLabel}
+                  />
+                </div>
+              ) : (
+                <div className={styles['file-option-name-label']} title={file.name}>
+                  {file.name}
+                </div>
+              )}
+
+              {isEditing ? (
+                <InternalSpaceBetween size="xxs" direction="horizontal">
+                  <InternalButton
+                    formAction="none"
+                    iconName="close"
+                    variant="inline-icon"
+                    className={styles['file-option-name-edit-cancel']}
+                    onClick={onNameEditCancel}
+                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
+                  />
+                  <InternalButton
+                    formAction="none"
+                    iconName="check"
+                    variant="inline-icon"
+                    className={styles['file-option-name-edit-submit']}
+                    onClick={onNameEditSubmit}
+                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
+                  />
+                </InternalSpaceBetween>
+              ) : (
+                <InternalButton
+                  __hideFocusOutline={true}
+                  formAction="none"
+                  iconName="edit"
+                  variant="inline-icon"
+                  className={styles['file-option-name-edit']}
+                  ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
+                />
+              )}
             </div>
           }
           {metadata.showFileType && file.type && (
@@ -65,7 +136,7 @@ export const FileOption: React.FC<FileOptionProps> = ({ metadata, file, multiple
             </InternalBox>
           )}
         </InternalSpaceBetween>
-      </InternalBox>
+      </div>
     </InternalBox>
   );
 };

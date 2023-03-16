@@ -5,14 +5,18 @@
 
 @use '../internal/styles/tokens' as awsui;
 
-.root {
+.root,
+.upload-button {
   /* used in test-utils */
 }
 
 .single-file-token {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+}
+
+.single-file-token-dismiss {
+  margin-top: -4px;
 }
 
 .file-option {
@@ -32,11 +36,46 @@
 }
 
 .file-option-metadata {
+  width: 100%;
   overflow: hidden;
 }
 
 .file-option-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: awsui.$space-scaled-xs;
+
+  cursor: pointer;
+  border: awsui.$border-divider-list-width solid transparent;
+
+  &:not(.file-name-edit-active) {
+    & > .file-option-name-edit {
+      opacity: 0;
+    }
+    &:hover {
+      background-color: awsui.$color-background-dropdown-item-hover;
+      border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+
+      & > .file-option-name-edit {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.file-option-name-input {
+  flex-grow: 1;
+}
+
+.file-option-name-label {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.file-option-name-edit,
+.file-option-name-edit-cancel,
+.file-option-name-edit-submit {
+  /* used in test-utils */
 }

@@ -58,6 +58,10 @@ const formFieldControlComponents = [
     componentName: 'date-range-picker',
     findNativeElement: (wrapper: ElementWrapper) => wrapper.findDateRangePicker()?.findLabel()?.getElement(),
   },
+  {
+    componentName: 'file-upload',
+    findNativeElement: (wrapper: ElementWrapper) => wrapper.findFileUpload()?.findUploadButton().getElement(),
+  },
 ];
 
 formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {

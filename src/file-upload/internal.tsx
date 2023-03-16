@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useCallback, useRef } from 'react';
+import React, { ChangeEvent, ForwardedRef, useCallback, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-import { FileOption } from './file-option';
+import { FileNameEditingProps, FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalButton from '../button/internal';
@@ -31,7 +31,6 @@ function InternalFileUpload(
   {
     accept,
     ariaLabel,
-    dismissAriaLabel,
     ariaRequired,
     buttonText,
     disabled,
@@ -61,14 +60,10 @@ function InternalFileUpload(
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      if (target.files && target.files[0] && onChange) {
-        const newValue = multiple
-          ? value instanceof Array
-            ? [...value, target.files[0]]
-            : [target.files[0]]
-          : target.files[0];
-        fireNonCancelableEvent(onChange, { value: newValue });
-      }
+      const currentFiles = [...value];
+      const newFiles = target.files ? Array.from(target.files) : [];
+      const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
+      fireNonCancelableEvent(onChange, { value: newValue });
     },
     [value, multiple, onChange]
   );
@@ -76,14 +71,50 @@ function InternalFileUpload(
   const handleDismiss = useCallback(
     (index: number) => {
       if (onChange) {
-        const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
-        fireNonCancelableEvent(onChange, { value: files.filter((_, fileIndex) => fileIndex !== index) });
+        fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== index) });
       }
     },
     [value, onChange]
   );
 
   const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
+
+  const [editingFileIndex, setEditingFileIndex] = useState(-1);
+  const [editingFileName, setEditingFileName] = useState<null | string>(null);
+  const editingProps: FileNameEditingProps = {
+    editingFileName,
+    onNameChange: (fileName: string) => setEditingFileName(fileName),
+    onNameEditStart: (file: File) => {
+      const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
+      setEditingFileIndex(files.indexOf(file));
+      setEditingFileName(file.name);
+    },
+    onNameEditSubmit: () => {
+      const files = [...value];
+      const updated = new File([files[editingFileIndex]], editingFileName!);
+      files.splice(editingFileIndex, 1, updated);
+      fireNonCancelableEvent(onChange, { value: files });
+      setEditingFileName(null);
+      setEditingFileIndex(-1);
+    },
+    onNameEditCancel: () => {
+      setEditingFileName(null);
+      setEditingFileIndex(-1);
+    },
+  };
+
+  const isEditing = editingFileName !== null;
+
+  const nativeAttributes: Record<string, any> = {
+    'aria-labelledby': formFieldContext.ariaLabelledby,
+    'aria-describedby': formFieldContext.ariaDescribedby,
+  };
+  if (formFieldContext.invalid) {
+    nativeAttributes['aria-invalid'] = true;
+  }
+  if (ariaRequired) {
+    nativeAttributes['aria-required'] = true;
+  }
 
   return (
     <InternalSpaceBetween
@@ -92,41 +123,62 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      <InternalButton ref={ref} iconName="upload" formAction="none" disabled={disabled} onClick={handleButtonClick}>
+      <InternalButton
+        ref={ref}
+        id={controlId}
+        iconName="upload"
+        formAction="none"
+        disabled={disabled}
+        onClick={handleButtonClick}
+        className={styles['upload-button']}
+        ariaLabel={ariaLabel}
+        __nativeAttributes={nativeAttributes}
+      >
         <input
           ref={fileInputRef}
           type="file"
-          multiple={false}
+          hidden={true}
+          multiple={multiple}
           disabled={disabled}
-          aria-label={ariaLabel}
-          aria-required={ariaRequired ? 'true' : 'false'}
           accept={accept}
           onChange={handleChange}
-          hidden={true}
-          aria-labelledby={formFieldContext.ariaLabelledby}
-          aria-describedby={formFieldContext.ariaDescribedby}
-          aria-invalid={formFieldContext.invalid}
-          id={controlId}
         />
         <span>{buttonText}</span>
       </InternalButton>
 
       {value instanceof File ? (
         <div className={styles['single-file-token']}>
-          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} />
-          <InternalButton
-            iconName="close"
-            variant="icon"
-            onClick={() => handleDismiss(0)}
-            ariaLabel={dismissAriaLabel}
-          ></InternalButton>
+          <FileOption file={value} metadata={metadata} multiple={false} i18nStrings={i18nStrings} {...editingProps} />
+          {!isEditing && (
+            <div className={styles['single-file-token-dismiss']}>
+              <InternalButton
+                iconName="close"
+                variant="icon"
+                formAction="none"
+                onClick={() => handleDismiss(0)}
+                ariaLabel={i18nStrings.removeFileAriaLabel}
+              />
+            </div>
+          )}
         </div>
       ) : value instanceof Array && value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={() => ({ dismissLabel: dismissAriaLabel })}
-          renderItem={item => <FileOption file={item} metadata={metadata} multiple={true} i18nStrings={i18nStrings} />}
+          getItemAttributes={(_, itemIndex) => ({
+            dismissLabel: i18nStrings.removeFileAriaLabel,
+            showDismiss: itemIndex !== editingFileIndex,
+          })}
+          renderItem={(item, itemIndex) => (
+            <FileOption
+              file={item}
+              metadata={metadata}
+              multiple={true}
+              i18nStrings={i18nStrings}
+              {...editingProps}
+              editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
+            />
+          )}
           onDismiss={index => handleDismiss(index)}
         />
       ) : null}

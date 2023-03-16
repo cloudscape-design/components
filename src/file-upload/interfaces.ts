@@ -24,10 +24,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
-   * Specifies aria-label to the dismiss button.
-   */
-  dismissAriaLabel: string;
-  /**
    * Text displayed in the button element.
    */
   buttonText: string;
@@ -71,20 +67,18 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   onChange?: NonCancelableEventHandler<FileUploadProps.ChangeDetail>;
   /**
    * Specifies the currently selected file(s).
-   * If you want to clear the selection, use null.
+   * If you want to clear the selection, use empty array.
    */
-  value: FileUploadProps.FileType;
+  value: File[];
   /**
    * An object containing all the localized strings required by the component.
    */
-  i18nStrings?: FileUploadProps.I18nStrings;
+  i18nStrings: FileUploadProps.I18nStrings;
 }
 
 export namespace FileUploadProps {
-  export type FileType = File | File[] | null;
-
   export interface ChangeDetail {
-    value: FileType;
+    value: File[];
   }
 
   export interface DismissDetail {
@@ -95,11 +89,16 @@ export namespace FileUploadProps {
   export interface I18nStrings {
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileTimestamp?: (date: Date) => string;
+    removeFileAriaLabel: string;
+    activateFileNameEditAriaLabel: string;
+    submitFileNameEditAriaLabel: string;
+    cancelFileNameEditAriaLabel: string;
+    editFileNameInputAriaLabel: string;
   }
 
   export interface Ref {
     /**
-     * Sets focus on the element without opening the dropdown or showing a visual focus indicator.
+     * Sets focus on the upload button.
      */
     focus(): void;
   }
