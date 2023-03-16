@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Button, Modal } from '~components';
+import { Button, Modal, SpaceBetween } from '~components';
 
 export default function () {
   const [visible, setVisible] = useState(false);
+  const [stickyFooter, setStickyFooter] = useState(false);
 
   const content = [];
 
@@ -22,7 +23,26 @@ export default function () {
   return (
     <article>
       <h1>Vertical scroll modal</h1>
-      <Button onClick={() => setVisible(true)}>Show modal</Button>
+      <SpaceBetween size="m" direction="horizontal">
+        <Button
+          onClick={() => {
+            setStickyFooter(false);
+            setVisible(true);
+          }}
+        >
+          Show modal
+        </Button>
+        <Button
+          data-testid="sticky-footer"
+          onClick={() => {
+            setStickyFooter(true);
+            setVisible(true);
+          }}
+        >
+          Show modal with sticky footer
+        </Button>
+      </SpaceBetween>
+
       <ScreenshotArea>
         <Modal
           header="Modal title"
@@ -30,6 +50,7 @@ export default function () {
           onDismiss={() => setVisible(false)}
           closeAriaLabel="Close modal"
           footer="What?"
+          stickyFooter={stickyFooter}
         >
           <div>
             <h3>Modal with vertical scroll</h3>
