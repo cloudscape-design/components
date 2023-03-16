@@ -138,7 +138,7 @@ const defaultProps: Record<string, Record<string, any>> = {
     items: [],
   },
   'file-upload': {
-    value: null,
+    value: [],
     buttonText: 'Choose file',
   },
 };

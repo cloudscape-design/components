@@ -10,11 +10,11 @@ import { i18nStrings } from './shared';
 const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel' | 'i18nStrings'>>([
   {
     buttonText: ['Choose file (empty)'],
-    value: [null],
+    value: [[]],
   },
   {
     buttonText: ['Choose file (single)'],
-    value: [new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')],
+    value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
     disabled: [true, false],
   },
   {
@@ -30,7 +30,7 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
   },
   {
     buttonText: ['Choose file (metadata)'],
-    value: [new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')],
+    value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
     showFileType: [true],
     showFileSize: [true],
     showFileLastModified: [true],

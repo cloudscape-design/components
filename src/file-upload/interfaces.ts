@@ -67,9 +67,9 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   onChange?: NonCancelableEventHandler<FileUploadProps.ChangeDetail>;
   /**
    * Specifies the currently selected file(s).
-   * If you want to clear the selection, use null.
+   * If you want to clear the selection, use empty array.
    */
-  value: FileUploadProps.FileType;
+  value: File[];
   /**
    * An object containing all the localized strings required by the component.
    */
@@ -77,10 +77,8 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
 }
 
 export namespace FileUploadProps {
-  export type FileType = File | File[] | null;
-
   export interface ChangeDetail {
-    value: FileType;
+    value: File[];
   }
 
   export interface DismissDetail {
@@ -100,7 +98,7 @@ export namespace FileUploadProps {
 
   export interface Ref {
     /**
-     * Sets focus on the element without opening the dropdown or showing a visual focus indicator.
+     * Sets focus on the upload button.
      */
     focus(): void;
   }

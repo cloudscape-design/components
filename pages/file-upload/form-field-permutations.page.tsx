@@ -16,7 +16,7 @@ const permutations = createPermutations<
     description: ['Upload your photo'],
     constraintText: ['File size must not exceed 1MB'],
     buttonText: ['Choose file'],
-    value: [new File([new Blob(['demo content 1'], { type: 'text/plain' })], 'demo file 1')],
+    value: [[new File([new Blob(['demo content 1'], { type: 'text/plain' })], 'demo file 1')]],
     showFileType: [true],
     showFileSize: [true],
     showFileLastModified: [true],

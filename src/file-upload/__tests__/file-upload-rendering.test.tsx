@@ -13,7 +13,7 @@ import '../../__a11y__/to-validate-a11y';
 
 const defaultProps: FileUploadProps = {
   buttonText: 'Choose file',
-  value: null,
+  value: [],
   i18nStrings: {
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { FileUpload, FileUploadProps, FormField } from '~components';
+import { FileUpload, FormField } from '~components';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
@@ -10,10 +10,10 @@ const KB = 1000;
 const MB = 1000 ** 2;
 
 export default function FileUploadScenario() {
-  const [profileImageFile, setProfileImageFile] = useState<FileUploadProps.FileType>(null);
+  const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
   const [profileImageError, setProfileError] = useState<string | null>(null);
 
-  const [contractFiles, setContractFiles] = useState<FileUploadProps.FileType>(null);
+  const [contractFiles, setContractFiles] = useState<File[]>([]);
   const [contractsError, setContractsError] = useState<string | null>(null);
 
   return (
@@ -31,7 +31,9 @@ export default function FileUploadScenario() {
               value={profileImageFile}
               onChange={event => {
                 setProfileImageFile(event.detail.value);
-                setProfileError(validateFileName(event.detail.value) ?? validateFileSize(event.detail.value, 1 * MB));
+                setProfileError(
+                  validateFileName(event.detail.value[0]) ?? validateFileSize(event.detail.value[0], 1 * MB)
+                );
               }}
               buttonText="Choose file"
               accept="image/png, image/jpeg"
@@ -72,11 +74,7 @@ export default function FileUploadScenario() {
   );
 }
 
-function validateFileSize(
-  input: FileUploadProps.FileType,
-  maxFileSize: number,
-  maxTotalSize = maxFileSize
-): null | string {
+function validateFileSize(input: null | File | File[], maxFileSize: number, maxTotalSize = maxFileSize): null | string {
   if (!input) {
     return null;
   }
@@ -104,7 +102,7 @@ function validateFileSize(
   return null;
 }
 
-function validateFileName(input: FileUploadProps.FileType) {
+function validateFileName(input: null | File | File[]) {
   if (!input) {
     return null;
   }

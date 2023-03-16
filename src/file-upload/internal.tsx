@@ -60,14 +60,10 @@ function InternalFileUpload(
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
-      if (!multiple && target.files && target.files[0] && onChange) {
-        fireNonCancelableEvent(onChange, { value: target.files[0] });
-      }
-      if (multiple && target.files && onChange) {
-        fireNonCancelableEvent(onChange, {
-          value: Array.isArray(value) ? [...value, ...Array.from(target.files)] : Array.from(target.files),
-        });
-      }
+      const currentFiles = [...value];
+      const newFiles = target.files ? Array.from(target.files) : [];
+      const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
+      fireNonCancelableEvent(onChange, { value: newValue });
     },
     [value, multiple, onChange]
   );
@@ -75,8 +71,7 @@ function InternalFileUpload(
   const handleDismiss = useCallback(
     (index: number) => {
       if (onChange) {
-        const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
-        fireNonCancelableEvent(onChange, { value: files.filter((_, fileIndex) => fileIndex !== index) });
+        fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== index) });
       }
     },
     [value, onChange]
@@ -95,14 +90,10 @@ function InternalFileUpload(
       setEditingFileName(file.name);
     },
     onNameEditSubmit: () => {
-      if (value instanceof File) {
-        fireNonCancelableEvent(onChange, { value: new File([value], editingFileName!) });
-      } else if (Array.isArray(value) && value[editingFileIndex]) {
-        const files = [...value];
-        const updated = new File([files[editingFileIndex]], editingFileName!);
-        files.splice(editingFileIndex, 1, updated);
-        fireNonCancelableEvent(onChange, { value: files });
-      }
+      const files = [...value];
+      const updated = new File([files[editingFileIndex]], editingFileName!);
+      files.splice(editingFileIndex, 1, updated);
+      fireNonCancelableEvent(onChange, { value: files });
       setEditingFileName(null);
       setEditingFileIndex(-1);
     },
