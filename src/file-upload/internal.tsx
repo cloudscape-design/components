@@ -126,30 +126,32 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      <InternalButton
-        ref={ref}
-        id={controlId}
-        iconName="upload"
-        formAction="none"
-        disabled={disabled}
-        onClick={handleButtonClick}
-        className={styles['upload-button']}
-        ariaLabel={ariaLabel}
-        __nativeAttributes={nativeAttributes}
-      >
-        {buttonText}
-      </InternalButton>
+      <div>
+        <InternalButton
+          ref={ref}
+          id={controlId}
+          iconName="upload"
+          formAction="none"
+          disabled={disabled}
+          onClick={handleButtonClick}
+          className={styles['upload-button']}
+          ariaLabel={ariaLabel}
+          __nativeAttributes={nativeAttributes}
+        >
+          {buttonText}
+        </InternalButton>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        hidden={true}
-        multiple={multiple}
-        disabled={disabled}
-        accept={accept}
-        onChange={handleChange}
-        className={styles['upload-input']}
-      />
+        <input
+          ref={fileInputRef}
+          type="file"
+          hidden={true}
+          multiple={multiple}
+          disabled={disabled}
+          accept={accept}
+          onChange={handleChange}
+          className={styles['upload-input']}
+        />
+      </div>
 
       {value.length > 0 ? (
         <AbstractTokenGroup
