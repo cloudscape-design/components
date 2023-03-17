@@ -43,6 +43,7 @@ import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { AppLayoutProps };
 
@@ -54,8 +55,19 @@ const AppLayout = React.forwardRef(
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
     const isRefresh = useVisualRefresh();
 
+    const format = useInternalI18n('app-layout');
+    const ariaLabels = {
+      navigation: format('ariaLabels.navigation', rest.ariaLabels?.navigation),
+      navigationClose: format('ariaLabels.navigationClose', rest.ariaLabels?.navigationClose),
+      navigationToggle: format('ariaLabels.navigationToggle', rest.ariaLabels?.navigationToggle),
+      notifications: format('ariaLabels.notifications', rest.ariaLabels?.notifications),
+      tools: format('ariaLabels.tools', rest.ariaLabels?.tools),
+      toolsClose: format('ariaLabels.toolsClose', rest.ariaLabels?.toolsClose),
+      toolsToggle: format('ariaLabels.toolsToggle', rest.ariaLabels?.toolsToggle),
+    };
+
     // This re-builds the props including the default values
-    const props = { contentType, headerSelector, footerSelector, ...rest };
+    const props = { contentType, headerSelector, footerSelector, ...rest, ariaLabels };
 
     const baseProps = getBaseProps(rest);
 

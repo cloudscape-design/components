@@ -142,7 +142,7 @@ export const getAllValueSuggestions = (
   customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
-    label: i18nStrings.groupValuesText,
+    label: i18nStrings.groupValuesText ?? '',
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
@@ -244,7 +244,7 @@ export function getPropertySuggestions<T>(
   filteringPropertyToOption: (filteringProperty: FilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
-    label: i18nStrings.groupPropertiesText,
+    label: i18nStrings.groupPropertiesText ?? '',
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
@@ -346,7 +346,7 @@ export const getAutosuggestOptions = (
 };
 
 export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
-  const mapping: { [K in ComparisonOperator]: string } = {
+  const mapping: { [K in ComparisonOperator]: string | undefined } = {
     ['<']: i18nStrings.operatorLessText,
     ['<=']: i18nStrings.operatorLessOrEqualText,
     ['>']: i18nStrings.operatorGreaterText,

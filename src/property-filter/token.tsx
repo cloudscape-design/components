@@ -67,9 +67,9 @@ export const TokenButton = ({
     <FilteringToken
       showOperation={!first && !hideOperations}
       operation={operation}
-      andText={i18nStrings.operationAndText}
-      orText={i18nStrings.operationOrText}
-      dismissAriaLabel={i18nStrings.removeTokenButtonAriaLabel(token)}
+      andText={i18nStrings.operationAndText ?? ''}
+      orText={i18nStrings.operationOrText ?? ''}
+      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(token)}
       operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
       onChange={setOperation}
       onDismiss={removeToken}

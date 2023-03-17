@@ -10,6 +10,7 @@ import styles from './styles.css.js';
 import { getPaginationState, range } from './utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { PaginationProps } from './interfaces';
+import { useInternalI18n } from '../internal/i18n/context';
 
 const defaultAriaLabels: Required<PaginationProps.Labels> = {
   nextPageLabel: '',
@@ -87,8 +88,17 @@ export default function InternalPagination({
   ...rest
 }: InternalPaginationProps) {
   const baseProps = getBaseProps(rest);
-  const pageNumberLabelFn = ariaLabels?.pageLabel ?? defaultAriaLabels.pageLabel;
   const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
+
+  const format = useInternalI18n('pagination');
+
+  const nextPageLabel = format('nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
+  const paginationLabel = format('paginationLabel', ariaLabels?.paginationLabel) ?? defaultAriaLabels.paginationLabel;
+  const previousPageLabel =
+    format('previousPageLabel', ariaLabels?.previousPageLabel) ?? defaultAriaLabels.previousPageLabel;
+  const pageNumberLabelFn =
+    format('pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
+    defaultAriaLabels.pageLabel;
 
   function handlePrevPageClick(requestedPageIndex: number) {
     handlePageClick(requestedPageIndex);
@@ -112,7 +122,7 @@ export default function InternalPagination({
 
   return (
     <ul
-      aria-label={ariaLabels?.paginationLabel}
+      aria-label={paginationLabel}
       {...baseProps}
       className={clsx(baseProps.className, styles.root, disabled && styles['root-disabled'])}
       ref={__internalRootRef}
@@ -120,7 +130,7 @@ export default function InternalPagination({
       <PageButton
         className={styles.arrow}
         pageIndex={currentPageIndex - 1}
-        ariaLabel={ariaLabels?.previousPageLabel ?? defaultAriaLabels.nextPageLabel}
+        ariaLabel={previousPageLabel ?? defaultAriaLabels.nextPageLabel}
         disabled={disabled || currentPageIndex === 1}
         onClick={handlePrevPageClick}
       >
@@ -157,7 +167,7 @@ export default function InternalPagination({
       <PageButton
         className={styles.arrow}
         pageIndex={currentPageIndex + 1}
-        ariaLabel={ariaLabels?.nextPageLabel ?? defaultAriaLabels.nextPageLabel}
+        ariaLabel={nextPageLabel ?? defaultAriaLabels.nextPageLabel}
         disabled={disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount))}
         onClick={handleNextPageClick}
       >

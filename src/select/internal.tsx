@@ -30,6 +30,7 @@ import { OptionGroup } from '../internal/components/option/interfaces.js';
 import { SomeRequired } from '../internal/types';
 import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
+import { useInternalI18n } from '../internal/i18n/context.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
@@ -55,7 +56,6 @@ const InternalSelect = React.forwardRef(
       recoveryText,
       noMatch,
       triggerVariant = 'label',
-      selectedAriaLabel,
       renderHighlightedAriaLive,
       selectedOption,
       onBlur,
@@ -73,6 +73,10 @@ const InternalSelect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+
+    const format = useInternalI18n('select');
+    const errorIconAriaLabel = format('errorIconAriaLabel', restProps.errorIconAriaLabel);
+    const selectedAriaLabel = format('selectedAriaLabel', restProps.selectedAriaLabel);
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,
@@ -179,8 +183,8 @@ const InternalSelect = React.forwardRef(
       isEmpty,
       isNoMatch,
       noMatch,
+      errorIconAriaLabel,
       onRecoveryClick: handleRecoveryClick,
-      errorIconAriaLabel: restProps.errorIconAriaLabel,
     });
 
     const announcement = useAnnouncement({
