@@ -23,16 +23,24 @@ interface FormFieldErrorProps {
   errorIconAriaLabel?: string;
 }
 
-export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => (
-  <div id={id} className={styles.error}>
-    <div className={styles['error-icon-shake-wrapper']}>
-      <div role="img" aria-label={errorIconAriaLabel} className={styles['error-icon-scale-wrapper']}>
-        <InternalIcon name="status-warning" size="small" />
+export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => {
+  const i18n = useInternalI18n('form-field');
+
+  return (
+    <div id={id} className={styles.error}>
+      <div className={styles['error-icon-shake-wrapper']}>
+        <div
+          role="img"
+          aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
+          className={styles['error-icon-scale-wrapper']}
+        >
+          <InternalIcon name="status-warning" size="small" />
+        </div>
       </div>
+      <span className={styles.error__message}>{children}</span>
     </div>
-    <span className={styles.error__message}>{children}</span>
-  </div>
-);
+  );
+};
 
 export default function InternalFormField({
   controlId,
@@ -53,7 +61,6 @@ export default function InternalFormField({
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
-  const i18n = useInternalI18n('form-field');
 
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
@@ -117,10 +124,7 @@ export default function InternalFormField({
       {(constraintText || errorText) && (
         <div className={styles.hints}>
           {errorText && (
-            <FormFieldError
-              id={slotIds.error}
-              errorIconAriaLabel={i18n('i18nStrings?.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
-            >
+            <FormFieldError id={slotIds.error} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
               {errorText}
             </FormFieldError>
           )}
