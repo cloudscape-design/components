@@ -10,6 +10,7 @@ import styles from './styles.css.js';
 import { FormLayoutProps, FormProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import LiveRegion from '../internal/components/live-region';
+import { useInternalI18n } from '../internal/i18n/context';
 
 type InternalFormProps = FormProps & InternalBaseComponentProps;
 
@@ -17,7 +18,7 @@ export default function InternalForm({
   children,
   header,
   errorText,
-  errorIconAriaLabel,
+  errorIconAriaLabel: errorIconAriaLabelOverride,
   actions,
   secondaryActions,
   variant,
@@ -25,6 +26,8 @@ export default function InternalForm({
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
+  const i18n = useInternalI18n('form');
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

@@ -21,13 +21,13 @@ import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
+import { useInternalI18n } from '../internal/i18n/context';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
 export default function InternalModal({
   size,
   visible,
-  closeAriaLabel,
   header,
   children,
   footer,
@@ -41,6 +41,9 @@ export default function InternalModal({
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
+
+  const i18n = useInternalI18n('modal');
+  const closeAriaLabel = i18n('closeAriaLabel', rest.closeAriaLabel);
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);

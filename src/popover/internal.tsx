@@ -19,6 +19,7 @@ import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/e
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -37,7 +38,6 @@ function InternalPopover(
     fixedWidth = false,
     triggerType = 'text',
     dismissButton = true,
-    dismissAriaLabel,
 
     children,
     header,
@@ -56,6 +56,9 @@ function InternalPopover(
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
+
+  const i18n = useInternalI18n('popover');
+  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
 
   const [visible, setVisible] = useState(false);
 
