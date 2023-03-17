@@ -20,7 +20,4 @@ export default class EventsAutosuggestPage extends AutosuggestPage {
   async focusOutsideInput() {
     await this.click('#focusable');
   }
-  getAutosuggestValue() {
-    return this.getValue(this.wrapper.findNativeInput().toSelector());
-  }
 }
