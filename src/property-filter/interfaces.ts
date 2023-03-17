@@ -200,40 +200,40 @@ export namespace PropertyFilterProps {
      * See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.
      */
     filteringAriaLabel: string;
-    dismissAriaLabel: string;
+    dismissAriaLabel?: string;
     clearAriaLabel?: string;
 
     filteringPlaceholder?: string;
-    groupValuesText: string;
-    groupPropertiesText: string;
-    operatorsText: string;
+    groupValuesText?: string;
+    groupPropertiesText?: string;
+    operatorsText?: string;
 
-    operationAndText: string;
-    operationOrText: string;
+    operationAndText?: string;
+    operationOrText?: string;
 
-    operatorLessText: string;
-    operatorLessOrEqualText: string;
-    operatorGreaterText: string;
-    operatorGreaterOrEqualText: string;
-    operatorContainsText: string;
-    operatorDoesNotContainText: string;
-    operatorEqualsText: string;
-    operatorDoesNotEqualText: string;
+    operatorLessText?: string;
+    operatorLessOrEqualText?: string;
+    operatorGreaterText?: string;
+    operatorGreaterOrEqualText?: string;
+    operatorContainsText?: string;
+    operatorDoesNotContainText?: string;
+    operatorEqualsText?: string;
+    operatorDoesNotEqualText?: string;
 
-    editTokenHeader: string;
-    propertyText: string;
-    operatorText: string;
-    valueText: string;
-    cancelActionText: string;
-    applyActionText: string;
-    allPropertiesLabel: string;
+    editTokenHeader?: string;
+    propertyText?: string;
+    operatorText?: string;
+    valueText?: string;
+    cancelActionText?: string;
+    applyActionText?: string;
+    allPropertiesLabel?: string;
 
     tokenLimitShowMore?: string;
     tokenLimitShowFewer?: string;
-    clearFiltersText: string;
+    clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
-    removeTokenButtonAriaLabel: (token: PropertyFilterProps.Token) => string;
-    enteredTextLabel: AutosuggestProps.EnteredTextLabel;
+    removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
+    enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
 
   export interface GroupText {
