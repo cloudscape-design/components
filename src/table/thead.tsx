@@ -122,12 +122,10 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const isLeftStickyColumn =
-              column.id && !!stickyColumns && stickyColumns?.left?.indexOf(column.id) !== -1 ? 'left' : undefined;
-            const isRightStickyColumn =
-              column.id && !!stickyColumns && stickyColumns?.right?.indexOf(column.id) !== -1 ? 'right' : undefined;
 
-            console.log({ isRightStickyColumn, rightCellWidths });
+            const isStickyLeft = colIndex + 1 <= (stickyColumns?.left || 0);
+            const isStickyRight = colIndex + 1 > columnDefinitions.length - (stickyColumns?.right || 0);
+
             let widthOverride;
             // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {
@@ -148,8 +146,8 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  left: isLeftStickyColumn && cellWidths ? `${cellWidths[colIndex]}px` : 'auto',
-                  right: isRightStickyColumn && rightCellWidths ? `${rightCellWidths[colIndex]}px` : 'auto',
+                  left: isStickyLeft && cellWidths ? `${cellWidths.left[colIndex]}px` : 'auto',
+                  right: isStickyRight && cellWidths ? `${cellWidths.right[colIndex]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -166,7 +164,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                isStickyColumn={isLeftStickyColumn || isRightStickyColumn}
+                isStickyColumn={isStickyLeft || isStickyRight}
               />
             );
           })}

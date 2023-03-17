@@ -21,7 +21,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
-  isStickyColumn?: false | 'left' | 'right';
+  isStickyColumn?: boolean;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -47,6 +47,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
+    console.log('CLASSNAME!', className);
     return (
       <td
         style={style}

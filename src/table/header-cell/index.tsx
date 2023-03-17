@@ -90,7 +90,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: isStickyColumn !== undefined,
+        [styles['header-cell-freeze']]: isStickyColumn,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}

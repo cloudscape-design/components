@@ -20,6 +20,7 @@ import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events'
 import { isDevelopment } from '../internal/is-development';
 import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -37,6 +38,11 @@ import { TableTdElement } from './body-cell/td-element';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
+
+interface CellWidths {
+  left: number[];
+  right: number[];
+}
 
 const InternalTable = forwardRef(
   <T,>(
@@ -83,6 +89,7 @@ const InternalTable = forwardRef(
     }: InternalTableProps<T>,
     ref: Ref<TableProps.Ref>
   ) => {
+    const isMobile = useMobile();
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
 
@@ -101,8 +108,7 @@ const InternalTable = forwardRef(
 
     // Sticky columns
     const [tableCellRefs, setTableCellRefs] = useState<React.Ref<HTMLTableCellElement>[]>([]);
-    const [cellWidths, setCellWidths] = useState<number[]>([]);
-    const [rightCellWidths, setRightCellWidths] = useState<number[]>([]);
+    const [cellWidths, setCellWidths] = useState<CellWidths>({ left: [], right: [] });
 
     // Inline editing
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
@@ -141,19 +147,23 @@ const InternalTable = forwardRef(
       );
     }, [visibleColumnsLength]);
     useEffect(() => {
-      let widthsArray = tableCellRefs.map(ref => ref?.current?.previousSibling?.offsetWidth);
-      widthsArray = widthsArray.filter(x => x);
-      widthsArray = widthsArray.map((elem, index) => widthsArray.slice(0, index + 1).reduce((a, b) => a + b));
+      if (!hasStickyColumns()) {
+        return;
+      }
+
+      let leftWidthsArray = tableCellRefs.map(ref => ref?.current?.previousSibling?.offsetWidth);
+      leftWidthsArray = leftWidthsArray.filter(x => x);
+      leftWidthsArray = leftWidthsArray.map((elem, index) =>
+        leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
+      );
 
       let rightWidthsArray = tableCellRefs.map(ref => ref?.current?.nextSibling?.offsetWidth);
       rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
       rightWidthsArray = rightWidthsArray
         .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
         .reverse();
-      console.log({ widthsArray, rightWidthsArray });
 
-      setCellWidths([0, ...widthsArray]);
-      setRightCellWidths([...rightWidthsArray, 0]);
+      setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
     }, [tableCellRefs]);
 
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
@@ -178,8 +188,8 @@ const InternalTable = forwardRef(
       }
     }
 
-    const checkForStickyColumns = () => {
-      return stickyColumns?.left?.length > 0 || stickyColumns?.right?.length > 0;
+    const hasStickyColumns = () => {
+      return Boolean(stickyColumns?.left) || Boolean(stickyColumns?.right);
     };
 
     const isVisualRefresh = useVisualRefresh();
@@ -281,7 +291,6 @@ const InternalTable = forwardRef(
                   contentDensity={contentDensity}
                   stickyColumns={stickyColumns}
                   cellWidths={cellWidths}
-                  rightCellWidths={rightCellWidths}
                 />
               )}
             </>
@@ -339,7 +348,6 @@ const InternalTable = forwardRef(
                 hidden={stickyHeader}
                 stickyColumns={stickyColumns}
                 cellWidths={cellWidths}
-                rightCellWidths={rightCellWidths}
                 {...theadProps}
               />
               <tbody>
@@ -415,34 +423,36 @@ const InternalTable = forwardRef(
                           </TableTdElement>
                         )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
-                          const currentCell = tableCellRefs[colIndex]?.current;
-                          const nextSibling = currentCell?.nextSibling as HTMLElement | undefined;
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
-                          const isSticky =
-                            checkForStickyColumns() && !!column.id
-                              ? (stickyColumns?.left?.indexOf(column.id) !== -1 && 'left') ||
-                                (stickyColumns?.right?.indexOf(column.id) !== -1 && 'right')
-                              : undefined;
+                          const isStickyLeft = colIndex + 1 <= stickyColumns?.left;
+                          const isStickyRight = colIndex + 1 > visibleColumnDefinitions.length - stickyColumns?.right;
+                          const isLastLeftStickyColumn = colIndex + 1 === stickyColumns?.left;
+                          const isLastRightStickyColumn =
+                            colIndex === visibleColumnDefinitions.length - stickyColumns?.right;
 
-                          const getStickyStyles = (stickySide?: 'left' | 'right') => {
-                            const result = {
-                              left:
-                                column.id && stickyColumns?.left?.indexOf(column.id) !== -1
-                                  ? `${cellWidths[colIndex]}px`
-                                  : 'auto',
-                              right:
-                                column.id && stickyColumns?.right?.indexOf(column.id) !== -1
-                                  ? `${rightCellWidths[colIndex]}px`
-                                  : 'auto',
-                              boxShadow:
-                                nextSibling?.style.left === 'auto' && currentCell?.style.left !== 'auto'
-                                  ? '2px 0px 0px 0 rgb(0 28 36 / 30%)'
-                                  : 'none',
+                          const getStickyStyles = () => {
+                            const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : undefined;
+                            const totalStickyColumns = stickyColumns?.left + stickyColumns?.right;
+                            // Sticky columns should be disabled for mobile
+                            if (!stickySide || isMobile || totalStickyColumns >= visibleColumnDefinitions.length) {
+                              return {};
+                            }
+
+                            const boxShadow = isLastLeftStickyColumn
+                              ? '3px 0px 3px rgba(0, 7, 22, 0.25)'
+                              : isLastRightStickyColumn
+                              ? '-3px 0px 3px rgba(0, 7, 22, 0.25)'
+                              : 'none';
+
+                            return {
+                              [stickySide]: `${
+                                stickySide === 'right' ? cellWidths.right[colIndex] : cellWidths.left[colIndex]
+                              }px`,
+                              boxShadow,
                             };
-                            return result;
                           };
                           return (
                             <TableBodyCell
@@ -471,7 +481,7 @@ const InternalTable = forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              isStickyColumn={isSticky}
+                              isStickyColumn={isStickyLeft || isStickyRight}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});

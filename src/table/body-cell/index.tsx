@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
@@ -24,7 +24,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
-  ref;
+  cellRef: React.Ref<any>;
 }
 
 function TableCellEditable<ItemType>({

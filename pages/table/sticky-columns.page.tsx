@@ -3,7 +3,6 @@
 import React from 'react';
 import Button from '~components/button';
 import Table from '~components/table';
-import Link from '~components/link';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 import Box from '~components/box';
@@ -15,7 +14,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          stickyColumns={{ left: ['variable'], right: ['description-7'] }}
+          stickyColumns={{ left: 1, right: 1 }}
           stickyHeader={true}
           columnDefinitions={[
             {
