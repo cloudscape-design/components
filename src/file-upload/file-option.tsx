@@ -123,7 +123,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                   formAction="none"
                   iconName="edit"
                   variant="inline-icon"
-                  className={styles['file-option-name-edit']}
+                  className={styles['file-option-name-edit-activate']}
                   ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
                 />
               )}

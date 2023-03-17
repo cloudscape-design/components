@@ -8,23 +8,15 @@
 .root,
 .upload-button,
 .upload-input,
-.file-option-name-edit,
+.file-option-name-edit-activate,
 .file-option-name-edit-cancel,
 .file-option-name-edit-submit,
 .file-option-name-input,
 .file-option-type,
 .file-option-size,
-.file-option-last-modified {
+.file-option-last-modified,
+.file-option-thumbnail {
   /* used in test-utils */
-}
-
-.single-file-token {
-  display: flex;
-  justify-content: space-between;
-}
-
-.single-file-token-dismiss {
-  margin-top: -4px;
 }
 
 .file-option {
@@ -58,14 +50,14 @@
   border: awsui.$border-divider-list-width solid transparent;
 
   &:not(.file-name-edit-active) {
-    & > .file-option-name-edit {
+    & > .file-option-name-edit-activate {
       opacity: 0;
     }
     &:hover {
       background-color: awsui.$color-background-dropdown-item-hover;
       border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
 
-      & > .file-option-name-edit {
+      & > .file-option-name-edit-activate {
         opacity: 1;
       }
     }

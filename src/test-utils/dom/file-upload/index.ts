@@ -68,7 +68,7 @@ class FileTokenWrapper extends ComponentWrapper {
   }
 
   findActivateNameEditButton(): null | ButtonWrapper {
-    return this.findComponent(`.${styles['file-option-name-edit']}`, ButtonWrapper);
+    return this.findComponent(`.${styles['file-option-name-edit-activate']}`, ButtonWrapper);
   }
 
   findSubmitNameEditButton(): null | ButtonWrapper {
