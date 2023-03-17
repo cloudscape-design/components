@@ -28,7 +28,8 @@ import { checkOptionValueField } from '../select/utils/check-option-value-field.
 import Filter from '../select/parts/filter';
 import Trigger from '../select/parts/trigger';
 
-import TokenGroup, { TokenGroupProps } from '../token-group/index.js';
+import InternalTokenGroup from '../token-group/internal';
+import { TokenGroupProps } from '../token-group/interfaces';
 
 import { MultiselectProps } from './interfaces';
 import styles from './styles.css.js';
@@ -303,7 +304,8 @@ const InternalMultiselect = React.forwardRef(
           />
         </Dropdown>
         {showTokens && (
-          <TokenGroup
+          <InternalTokenGroup
+            alignment="horizontal"
             limit={tokenLimit}
             items={tokens}
             onDismiss={handleTokenDismiss}
