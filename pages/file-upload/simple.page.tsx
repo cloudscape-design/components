@@ -24,8 +24,6 @@ const profilePictureToolsContent = {
         <li>Maximum size: 1 MB; Density: at least 300 x 300 pixels</li>
         <li>The profile picture must be a photo of you</li>
         <li>Do not use pictures that contain other people</li>
-        <li>Your face should not be blurry</li>
-        <li>Do not wear sunglasses</li>
       </ul>
     </SpaceBetween>
   ),
@@ -35,8 +33,8 @@ const contractsToolsContent = {
   content: (
     <SpaceBetween size="s">
       <Box>
-        Attach your contract and all amendments as PDF files. The size of one file must not exceed 250 KB. The size or
-        all attachments must not exceed 500 KB.
+        Attach your contract and contract amendments as PDF files. The size of one file must not exceed 250 KB. The size
+        of all attachments must not exceed 750 KB.
       </Box>
       <Box>The file name must follow the pattern (one of):</Box>
       <ul>
@@ -78,7 +76,7 @@ export default function FileUploadScenario() {
       content={
         <SpaceBetween size="m">
           <Header variant="h1">File upload demo</Header>
-          <SpaceBetween size="m" direction="horizontal">
+          <SpaceBetween size="m">
             <FormField
               errorText={profileImageError}
               label="Profile picture"
@@ -126,7 +124,7 @@ export default function FileUploadScenario() {
                   info
                 </Link>
               }
-              constraintText="File size must not exceed 250 KB. Combined file size must not exceed 500 KB"
+              constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
             >
               <FileUpload
                 multiple={true}
@@ -155,18 +153,22 @@ function validateProfilePictureFile(file: File | undefined): null | string {
   if (!file) {
     return null;
   }
-  const fileSizeError = validateFileSize(file, 1 * MB);
-  const fileNameNotEmptyError = validateFileNameNotEmpty(file);
-  const fileExtensionError = validateFileExtensions(file, ['png', 'jpg', 'jpeg']);
-  return fileSizeError ?? fileNameNotEmptyError ?? fileExtensionError ?? null;
+  return (
+    validateFileSize(file, 1 * MB) ??
+    validateFileNameNotEmpty(file) ??
+    validateFileExtensions(file, ['png', 'jpg', 'jpeg']) ??
+    null
+  );
 }
 
 function validateContractFiles(files: File[]): null | string {
-  const fileSizeError = validateFileSize(files, 250 * KB, 500 * KB);
-  const fileNameNotEmptyError = validateFiles(files, validateFileNameNotEmpty);
-  const fileExtensionError = validateFiles(files, file => validateFileExtensions(file, ['pdf']));
-  const fileNamePatternError = validateFiles(files, validateContractFilePattern);
-  return fileSizeError ?? fileNameNotEmptyError ?? fileExtensionError ?? fileNamePatternError ?? null;
+  return (
+    validateFileSize(files, 250 * KB, 750 * KB) ??
+    validateFiles(files, validateFileNameNotEmpty) ??
+    validateFiles(files, file => validateFileExtensions(file, ['pdf'])) ??
+    validateFiles(files, validateContractFilePattern) ??
+    null
+  );
 }
 
 function validateFiles(files: File[], validate: (file: File) => null | string): null | string {
@@ -180,18 +182,15 @@ function validateFiles(files: File[], validate: (file: File) => null | string): 
 }
 
 function validateFileSize(input: File | File[], maxFileSize: number, maxTotalSize = maxFileSize): null | string {
-  const formatFileSize = (bytes: number): string => {
-    return bytes < MB ? `${(bytes / KB).toFixed(2)} KB` : `${(bytes / MB).toFixed(2)} MB`;
-  };
+  if (input instanceof File && input.size > maxFileSize) {
+    return `File size is above the allowed maximum (${formatFileSize(maxFileSize)})`;
+  }
 
   const files = input instanceof File ? [input] : input;
-
   const largeFile = files.find(file => file.size > maxFileSize);
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
 
-  if (largeFile && input instanceof File) {
-    return `File size is above the allowed maximum (${formatFileSize(maxFileSize)})`;
-  } else if (largeFile) {
+  if (largeFile) {
     return `The size of file "${largeFile.name}" is above the allowed maximum (${formatFileSize(maxFileSize)})`;
   }
   if (totalSize > maxTotalSize) {
@@ -199,7 +198,6 @@ function validateFileSize(input: File | File[], maxFileSize: number, maxTotalSiz
       maxTotalSize
     )})`;
   }
-
   return null;
 }
 
@@ -224,4 +222,8 @@ function validateContractFilePattern(file: File) {
     return `File "${file.name}" does not satisfy naming guidelines. Check "info" for details.`;
   }
   return null;
+}
+
+function formatFileSize(bytes: number): string {
+  return bytes < MB ? `${(bytes / KB).toFixed(2)} KB` : `${(bytes / MB).toFixed(2)} MB`;
 }
