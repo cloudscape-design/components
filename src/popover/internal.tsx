@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
 import useFocusVisible from '../internal/hooks/focus-visible';
+import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
 import Portal from '../internal/components/portal';
@@ -151,25 +152,27 @@ function InternalPopover(
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(styles.root, baseProps.className)}
-      ref={mergedRef}
-      onMouseDown={() => {
-        // Indicate there was a click inside popover recently, including nested portals.
-        clickFrameId.current = requestAnimationFrame(() => {
-          clickFrameId.current = null;
-        });
-      }}
-    >
-      {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
-          <span className={styles['trigger-inner-text']}>{children}</span>
-        </button>
-      ) : (
-        <span {...triggerProps}>{children}</span>
-      )}
-      {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-    </div>
+    <FormFieldContext.Provider value={{}}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        ref={mergedRef}
+        onMouseDown={() => {
+          // Indicate there was a click inside popover recently, including nested portals.
+          clickFrameId.current = requestAnimationFrame(() => {
+            clickFrameId.current = null;
+          });
+        }}
+      >
+        {triggerType === 'text' ? (
+          <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
+            <span className={styles['trigger-inner-text']}>{children}</span>
+          </button>
+        ) : (
+          <span {...triggerProps}>{children}</span>
+        )}
+        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+      </div>
+    </FormFieldContext.Provider>
   );
 }

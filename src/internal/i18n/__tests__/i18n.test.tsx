@@ -50,28 +50,34 @@ function TestComponent(props: TestComponentProps) {
   );
 }
 
-it('detects locale from the html tag', () => {
-  document.documentElement.lang = 'es';
+describe('with custom "lang" on <html>', () => {
+  afterEach(() => {
+    document.documentElement.lang = '';
+  });
 
-  const spanishMessages: I18nProviderProps.Messages = {
-    '@cloudscape-design/components': {
-      es: {
-        'test-component': {
-          topLevelString: 'Custom Spanish string',
+  it('detects locale from the html tag', () => {
+    document.documentElement.lang = 'es';
+
+    const spanishMessages: I18nProviderProps.Messages = {
+      '@cloudscape-design/components': {
+        es: {
+          'test-component': {
+            topLevelString: 'Custom Spanish string',
+          },
         },
       },
-    },
-  };
+    };
 
-  const { container } = render(
-    <I18nProvider messages={[MESSAGES, spanishMessages]}>
-      <TestComponent />
-    </I18nProvider>
-  );
+    const { container } = render(
+      <I18nProvider messages={[MESSAGES, spanishMessages]}>
+        <TestComponent />
+      </I18nProvider>
+    );
 
-  expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom Spanish string');
-  // Shouldn't default to English for non-existent strings.
-  expect(container.querySelector('#nested-string')).toHaveTextContent('');
+    expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom Spanish string');
+    // Shouldn't default to English for non-existent strings.
+    expect(container.querySelector('#nested-string')).toHaveTextContent('');
+  });
 });
 
 it('provides top-level and dot-notation values for static strings', () => {
