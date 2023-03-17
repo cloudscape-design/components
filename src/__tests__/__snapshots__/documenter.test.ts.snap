@@ -5591,9 +5591,8 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "description": "Called when the user selects a file.
-The event detail contains the current value.
-Not cancellable.",
+      "description": "Called when the user selects new file(s) or removes a file.
+The event \`detail\` contains the current value of the component.",
       "detailInlineType": Object {
         "name": "FileUploadProps.ChangeDetail",
         "properties": Array [
@@ -5611,7 +5610,7 @@ Not cancellable.",
   ],
   "functions": Array [
     Object {
-      "description": "Sets focus on the upload button.",
+      "description": "Sets focus on the file upload button.",
       "name": "focus",
       "parameters": Array [],
       "returnType": "void",
@@ -5620,12 +5619,7 @@ Not cancellable.",
   "name": "FileUpload",
   "properties": Array [
     Object {
-      "defaultValue": "'text/plain'",
-      "description": "A string that defines the file types the file input should accept.
-This string is a comma-separated list of unique file type specifiers.
-Because a given file type may be identified in more than one manner,
-it's useful to provide a thorough set of type specifiers when you need
-files of a given format.",
+      "description": "Specifies the native file input \`accept\` attribute to describe the allow-list of file types.",
       "name": "accept",
       "optional": true,
       "type": "string",
@@ -5644,13 +5638,6 @@ and set the property to a string of each ID separated by spaces (for example, \`
       "type": "string",
     },
     Object {
-      "description": "Adds an aria-label to the native control.
-Use this if you don't have a visible label for this control.",
-      "name": "ariaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -5663,16 +5650,10 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Specifies whether to add aria-required to the native control.",
+      "description": "Specifies whether to add aria-required to the file upload control.",
       "name": "ariaRequired",
       "optional": true,
       "type": "boolean",
-    },
-    Object {
-      "description": "Text displayed in the button element.",
-      "name": "buttonText",
-      "optional": false,
-      "type": "string",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -5692,15 +5673,24 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is disabled, which prevents the user from
-modifying the value and prevents the value from being included in a
-form submission. A disabled control can't receive focus.",
+      "description": "Specifies if the control is disabled (the upload button and all file tokens), which prevents the user from
+modifying the value and prevents the value from being included in a form submission.
+A disabled control can't receive focus.",
       "name": "disabled",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "An object containing all the localized strings required by the component.",
+      "description": "An object containing all the localized strings required by the component.
+It includes:
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
+* \`removeFileAriaLabel\` (string): The ARIA label for file token remove button.
+* \`activateFileNameEditAriaLabel\` (string): The ARIA label for file token activate name edit button.
+* \`submitFileNameEditAriaLabel\` (string): The ARIA label for file token submit name edit button.
+* \`cancelFileNameEditAriaLabel\` (string): The ARIA label for file token cancel name edit button.
+* \`editFileNameInputAriaLabel\` (string): The ARIA label for file token name edit input.
+",
       "inlineType": Object {
         "name": "FileUploadProps.I18nStrings",
         "properties": Array [
@@ -5720,14 +5710,14 @@ form submission. A disabled control can't receive focus.",
             "type": "string",
           },
           Object {
-            "name": "formatFileSize",
-            "optional": true,
-            "type": "(sizeInBytes: number) => string",
-          },
-          Object {
             "name": "formatFileLastModified",
             "optional": true,
             "type": "(date: Date) => string",
+          },
+          Object {
+            "name": "formatFileSize",
+            "optional": true,
+            "type": "(sizeInBytes: number) => string",
           },
           Object {
             "name": "removeFileAriaLabel",
@@ -5765,16 +5755,16 @@ single form field.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Use to allow the selection of multiple files for upload from the
-user's local drive. It uses tokens to display multiple files.
-Files can be removed individually.",
+      "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
+When \`multiple=false\` but \`value\` contains more than one file only the first one will be displayed.
+Default: \`false\`.",
       "name": "multiple",
       "optional": true,
       "type": "boolean",
     },
     Object {
       "defaultValue": "false",
-      "description": "Show file's last modified timestamp in the token.
+      "description": "Show file's last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.
 Default: \`false\`.",
       "name": "showFileLastModified",
       "optional": true,
@@ -5782,7 +5772,7 @@ Default: \`false\`.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Show file's size in the token.
+      "description": "Show file's size in the token. Use \`i18nStrings.formatFileSize\` to customize it.
 Default: \`false\`.",
       "name": "showFileSize",
       "optional": true,
@@ -5803,6 +5793,12 @@ Default: \`false\`.",
       "name": "showFileType",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Text displayed in the file upload button.",
+      "name": "uploadButtonText",
+      "optional": false,
+      "type": "string",
     },
     Object {
       "description": "Specifies the currently selected file(s).

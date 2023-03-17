@@ -22,7 +22,7 @@ import { warnOnce } from '../internal/logging';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
-  'accept' | 'multiple' | 'showFileType' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
+  'multiple' | 'showFileType' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
 > &
   InternalBaseComponentProps;
 
@@ -31,9 +31,8 @@ export default React.forwardRef(InternalFileUpload);
 function InternalFileUpload(
   {
     accept,
-    ariaLabel,
     ariaRequired,
-    buttonText,
+    uploadButtonText,
     disabled,
     multiple,
     onChange,
@@ -135,10 +134,9 @@ function InternalFileUpload(
           disabled={disabled}
           onClick={handleButtonClick}
           className={styles['upload-button']}
-          ariaLabel={ariaLabel}
           __nativeAttributes={nativeAttributes}
         >
-          {buttonText}
+          {uploadButtonText}
         </InternalButton>
 
         <input

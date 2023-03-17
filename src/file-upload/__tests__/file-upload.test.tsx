@@ -23,7 +23,7 @@ afterEach(() => {
 });
 
 const defaultProps: FileUploadProps = {
-  buttonText: 'Choose file',
+  uploadButtonText: 'Choose file',
   value: [],
   onChange,
   i18nStrings: {
@@ -64,18 +64,15 @@ describe('FileUpload input', () => {
     expect(render({ accept: 'custom' }).findNativeInput().getElement()).toHaveAttribute('accept', 'custom');
   });
 
-  test('`buttonText` property is assigned', () => {
-    expect(render({ buttonText: 'Choose file' }).findUploadButton().getElement()).toHaveTextContent('Choose file');
+  test('`uploadButtonText` property is assigned', () => {
+    expect(render({ uploadButtonText: 'Choose file' }).findUploadButton().getElement()).toHaveTextContent(
+      'Choose file'
+    );
   });
 
   test('`ariaRequired` property is assigned', () => {
     expect(render({ ariaRequired: false }).findUploadButton().getElement()).not.toHaveAttribute('aria-required');
     expect(render({ ariaRequired: true }).findUploadButton().getElement()).toHaveAttribute('aria-required');
-  });
-
-  test('`ariaLabel` property is assigned', () => {
-    render({ ariaLabel: 'Choose file button' });
-    expect(screen.getByLabelText('Choose file button')).toBeDefined();
   });
 
   test('`ariaLabelledby` property is assigned', () => {

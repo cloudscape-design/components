@@ -13,7 +13,6 @@ export { FileUploadProps };
 const FileUpload = React.forwardRef(
   (
     {
-      accept = 'text/plain',
       multiple = false,
       showFileType = false,
       showFileSize = false,
@@ -28,7 +27,6 @@ const FileUpload = React.forwardRef(
     return (
       <InternalFileUpload
         ref={ref}
-        accept={accept}
         multiple={multiple}
         showFileType={showFileType}
         showFileSize={showFileSize}

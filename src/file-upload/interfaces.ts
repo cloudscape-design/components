@@ -7,30 +7,21 @@ import { NonCancelableEventHandler } from '../internal/events';
 
 export interface FileUploadProps extends BaseComponentProps, FormFieldValidationControlProps {
   /**
-   * A string that defines the file types the file input should accept.
-   * This string is a comma-separated list of unique file type specifiers.
-   * Because a given file type may be identified in more than one manner,
-   * it's useful to provide a thorough set of type specifiers when you need
-   * files of a given format.
+   * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
   accept?: string;
   /**
-   * Adds an aria-label to the native control.
-   * Use this if you don't have a visible label for this control.
-   */
-  ariaLabel?: string;
-  /**
-   * Specifies whether to add aria-required to the native control.
+   * Specifies whether to add aria-required to the file upload control.
    */
   ariaRequired?: boolean;
   /**
-   * Text displayed in the button element.
+   * Text displayed in the file upload button.
    */
-  buttonText: string;
+  uploadButtonText: string;
   /**
-   * Specifies if the control is disabled, which prevents the user from
-   * modifying the value and prevents the value from being included in a
-   * form submission. A disabled control can't receive focus.
+   * Specifies if the control is disabled (the upload button and all file tokens), which prevents the user from
+   * modifying the value and prevents the value from being included in a form submission.
+   * A disabled control can't receive focus.
    */
   disabled?: boolean;
   /**
@@ -39,12 +30,12 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   showFileType?: boolean;
   /**
-   * Show file's size in the token.
+   * Show file's size in the token. Use `i18nStrings.formatFileSize` to customize it.
    * Default: `false`.
    */
   showFileSize?: boolean;
   /**
-   * Show file's last modified timestamp in the token.
+   * Show file's last modified timestamp in the token. Use `i18nStrings.formatFileLastModified` to customize it.
    * Default: `false`.
    */
   showFileLastModified?: boolean;
@@ -54,15 +45,14 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   showFileThumbnail?: boolean;
   /**
-   * Use to allow the selection of multiple files for upload from the
-   * user's local drive. It uses tokens to display multiple files.
-   * Files can be removed individually.
+   * Specifies the native file input `multiple` attribute to allow users entering more than one file.
+   * When `multiple=false` but `value` contains more than one file only the first one will be displayed.
+   * Default: `false`.
    */
   multiple?: boolean;
   /**
-   * Called when the user selects a file.
-   * The event detail contains the current value.
-   * Not cancellable.
+   * Called when the user selects new file(s) or removes a file.
+   * The event `detail` contains the current value of the component.
    */
   onChange?: NonCancelableEventHandler<FileUploadProps.ChangeDetail>;
   /**
@@ -72,6 +62,15 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   value: File[];
   /**
    * An object containing all the localized strings required by the component.
+   *
+   * It includes:
+   * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
+   * * `formatFileLastModified` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
+   * * `removeFileAriaLabel` (string): The ARIA label for file token remove button.
+   * * `activateFileNameEditAriaLabel` (string): The ARIA label for file token activate name edit button.
+   * * `submitFileNameEditAriaLabel` (string): The ARIA label for file token submit name edit button.
+   * * `cancelFileNameEditAriaLabel` (string): The ARIA label for file token cancel name edit button.
+   * * `editFileNameInputAriaLabel` (string): The ARIA label for file token name edit input.
    */
   i18nStrings: FileUploadProps.I18nStrings;
 }
@@ -98,7 +97,7 @@ export namespace FileUploadProps {
 
   export interface Ref {
     /**
-     * Sets focus on the upload button.
+     * Sets focus on the file upload button.
      */
     focus(): void;
   }

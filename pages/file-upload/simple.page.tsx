@@ -100,7 +100,7 @@ export default function FileUploadScenario() {
                   setProfileImageFile(event.detail.value);
                   setProfileError(validateProfilePictureFile(event.detail.value[0]));
                 }}
-                buttonText="Choose file"
+                uploadButtonText="Choose file"
                 accept="image/png, image/jpeg"
                 showFileType={true}
                 showFileSize={true}
@@ -133,7 +133,7 @@ export default function FileUploadScenario() {
                   setContractFiles(event.detail.value);
                   setContractsError(validateContractFiles(event.detail.value));
                 }}
-                buttonText="Choose files"
+                uploadButtonText="Choose files"
                 accept="application/pdf, image/png, image/jpeg"
                 showFileType={true}
                 showFileSize={true}
