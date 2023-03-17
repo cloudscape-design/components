@@ -1,0 +1,76 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$border: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+
+.content-display,
+.content-display-toggle,
+.content-display-groups,
+.content-display-group,
+.content-display-option {
+  /* used in test-utils */
+}
+
+.content-display-title {
+  @include styles.font-label;
+  color: awsui.$color-text-form-label;
+  margin: 0;
+}
+
+.content-display-label {
+  @include styles.form-control-description;
+  margin-top: awsui.$space-scaled-xxxs;
+}
+
+.content-display-group {
+  position: relative;
+}
+
+.content-display-group-label {
+  color: awsui.$color-text-group-label;
+  padding-bottom: awsui.$space-xs;
+}
+
+.content-display-option {
+  background: awsui.$color-board-placeholder-hover;
+}
+
+.content-display-option-content {
+  border-top: $border;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: start;
+  padding-top: awsui.$space-xs;
+  padding-bottom: awsui.$space-xs;
+  padding-right: 0;
+  &:last-child {
+    border-bottom: none;
+  }
+  &:not(.draggable) {
+    padding-left: awsui.$space-scaled-l;
+  }
+  &.draggable {
+    padding-left: 0;
+    padding-right: awsui.$space-scaled-xxs;
+    background-color: awsui.$color-background-container-content;
+    z-index: 1;
+    &.dragged {
+      position: relative;
+      z-index: 2;
+      box-shadow: awsui.$shadow-container-active;
+    }
+  }
+}
+
+.content-display-option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: awsui.$space-l;
+  flex-grow: 1;
+}

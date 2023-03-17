@@ -12,41 +12,33 @@ import {
 import ScreenshotArea from '../utils/screenshot-area';
 import { collectionPreferencesI18nStrings } from '../common/i18n-strings';
 
-const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption> = [
   {
-    label: 'Main properties',
-    options: [
-      {
-        id: 'id1',
-        label: 'Item 1',
-      },
-      { id: 'id2', label: 'Item 2' },
-      {
-        id: 'id3',
-        label: 'Item 3',
-      },
-      {
-        id: 'id4',
-        label: 'Item 4',
-      },
-      {
-        id: 'id5',
-        label: 'Item 5',
-      },
-      {
-        id: 'id6',
-        label: 'Item 6',
-      },
-    ],
+    id: 'id1',
+    label: 'Item 1',
+  },
+  { id: 'id2', label: 'Item 2' },
+  {
+    id: 'id3',
+    label: 'Item 3',
+  },
+  {
+    id: 'id4',
+    label: 'Item 4',
+  },
+  {
+    id: 'id5',
+    label: 'Item 5',
+  },
+  {
+    id: 'id6',
+    label: 'Item 6',
   },
 ];
 
-const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
-  {
-    label: 'Main properties',
-    options: new Array(50).fill(1).map((item, index) => ({ id: `id_${index}`, label: `Item ${index + 1}` })),
-  },
-];
+const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption> = Array(50)
+  .fill(1)
+  .map((item, index) => ({ id: `id_${index}`, label: `Item ${index + 1}` }));
 
 export default function App() {
   return (
@@ -59,12 +51,11 @@ export default function App() {
         wrapLinesPreference={wrapLinesPreference}
         contentDensityPreference={contentDensityPreference}
         customPreference={customPreference}
-        reorderContent={true}
-        visibleContentPreference={{
+        contentDisplayPreference={{
           title: 'Column preferences',
-          description: 'Customize the columns visibility and order.',
+          label: 'Customize the columns visibility and order.',
           options: shortOptionsList,
-          i18nStrings: collectionPreferencesI18nStrings,
+          ...collectionPreferencesI18nStrings,
         }}
       />
       <CollectionPreferences
@@ -74,12 +65,11 @@ export default function App() {
         wrapLinesPreference={wrapLinesPreference}
         contentDensityPreference={contentDensityPreference}
         customPreference={customPreference}
-        reorderContent={true}
-        visibleContentPreference={{
+        contentDisplayPreference={{
           title: 'Column preferences',
-          description: 'Customize the columns visibility and order.',
+          label: 'Customize the columns visibility and order.',
           options: longOptionsList,
-          i18nStrings: collectionPreferencesI18nStrings,
+          ...collectionPreferencesI18nStrings,
         }}
       />
     </ScreenshotArea>

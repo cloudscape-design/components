@@ -94,7 +94,7 @@ export default function App() {
           />
         }
         visibleColumns={preferences.visibleContent}
-        columnOrder={preferences.contentOrder}
+        columnDisplay={preferences.contentDisplay}
         preferences={
           <CollectionPreferences
             title="Preferences"
@@ -102,16 +102,15 @@ export default function App() {
             cancelLabel="Cancel"
             onConfirm={({ detail }) => setPreferences(detail)}
             preferences={preferences}
-            reorderContent={true}
             pageSizePreference={{
               title: 'Select page size',
               options: pageSizeOptions,
             }}
-            visibleContentPreference={{
+            contentDisplayPreference={{
               title: 'Column preferences',
-              description: 'Customize the columns visibility and order.',
-              options: visibleContentOptions,
-              i18nStrings: collectionPreferencesI18nStrings,
+              label: 'Customize the columns visibility and order.',
+              options: visibleContentOptions[0].options,
+              ...collectionPreferencesI18nStrings,
             }}
             wrapLinesPreference={{
               label: 'Wrap lines',

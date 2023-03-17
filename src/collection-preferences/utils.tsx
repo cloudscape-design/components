@@ -16,7 +16,7 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
-  contentOrder,
+  contentDisplay,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
   pageSize,
@@ -24,7 +24,7 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
-  contentOrder,
+  contentDisplay,
   custom,
 });
 
@@ -42,7 +42,7 @@ export const mergePreferences = (
     'contentDensity',
     'visibleContent',
     'custom',
-    'contentOrder',
+    'contentDisplay',
   ];
   for (const prefName of prefNames) {
     if (newPref[prefName] !== undefined) {

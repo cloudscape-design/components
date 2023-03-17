@@ -4,6 +4,7 @@ import React from 'react';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler, CancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
+import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -199,7 +200,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    */
   visibleColumns?: ReadonlyArray<string>;
 
-  columnOrder?: ReadonlyArray<string>;
+  columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
@@ -415,4 +416,10 @@ export namespace TableProps {
     column: ColumnDefinition<ItemType>,
     newValue: ValueType
   ) => Promise<void> | void;
+
+  export interface ColumnDisplayProperties {
+    id: string;
+    visible?: boolean;
+    editable?: boolean;
+  }
 }

@@ -9,13 +9,13 @@ export function getSortedOptions({
   order,
 }: {
   options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
-  order: ReadonlyArray<string>;
+  order: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>;
 }) {
   const optionsSet: Record<string, CollectionPreferencesProps.VisibleContentOption> = options.reduce(
     (currentValue, option) => ({ ...currentValue, [option.id]: option }),
     {}
   );
-  return order.map(id => optionsSet[id]).filter(Boolean);
+  return order.map(({ id }) => optionsSet[id]).filter(Boolean);
 }
 
 export function reorderOptions({

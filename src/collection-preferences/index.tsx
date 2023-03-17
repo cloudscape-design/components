@@ -25,6 +25,7 @@ import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import ContentDisplayPreference from './content-display';
 
 export { CollectionPreferencesProps };
 
@@ -36,13 +37,13 @@ export default function CollectionPreferences({
   onConfirm,
   onCancel,
   visibleContentPreference,
+  contentDisplayPreference,
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
   contentDensityPreference,
   preferences,
   customPreference,
-  reorderContent,
   ...rest
 }: CollectionPreferencesProps) {
   const { __internalRootRef } = useBaseComponent('CollectionPreferences');
@@ -78,7 +79,7 @@ export default function CollectionPreferences({
     contentDensityPreference ||
     customPreference
   );
-  const hasRightContent = !!visibleContentPreference;
+  const hasRightContent = !!(visibleContentPreference || contentDisplayPreference);
 
   const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
     setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
@@ -172,16 +173,20 @@ export default function CollectionPreferences({
               )
             }
             right={
-              visibleContentPreference && (
-                <VisibleContentPreference
-                  visibleItems={temporaryPreferences.visibleContent}
-                  itemOrder={temporaryPreferences.contentOrder}
-                  {...visibleContentPreference}
-                  reorderContent={reorderContent}
-                  onChange={({ itemOrder, visibleItems }) =>
-                    onChange({ contentOrder: itemOrder, visibleContent: visibleItems })
-                  }
+              contentDisplayPreference ? (
+                <ContentDisplayPreference
+                  {...contentDisplayPreference}
+                  value={temporaryPreferences.contentDisplay}
+                  onChange={contentDisplay => onChange({ contentDisplay })}
                 />
+              ) : (
+                visibleContentPreference && (
+                  <VisibleContentPreference
+                    value={temporaryPreferences.visibleContent}
+                    {...visibleContentPreference}
+                    onChange={visibleItems => onChange({ visibleContent: visibleItems })}
+                  />
+                )
               )
             }
           />

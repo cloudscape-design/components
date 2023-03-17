@@ -11,7 +11,7 @@ describe('getSortedOptions', () => {
       },
       { id: 'b', label: 'b' },
     ];
-    const order = ['b', 'a'];
+    const order = [{ id: 'b' }, { id: 'a' }];
     const result = getSortedOptions({ options, order });
     expect(result).toEqual([
       { id: 'b', label: 'b' },

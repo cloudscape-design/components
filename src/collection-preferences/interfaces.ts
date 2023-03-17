@@ -70,6 +70,8 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * You must set the current value in the `preferences.contentDensity` property.
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
+
+  contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
   /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
@@ -140,7 +142,6 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * The values for all configured preferences are present even if the user didn't change their values.
    */
   onConfirm?: NonCancelableEventHandler<CollectionPreferencesProps.Preferences<CustomPreferenceType>>;
-  reorderContent?: boolean;
 }
 
 export namespace CollectionPreferencesProps {
@@ -150,24 +151,25 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
-    contentOrder?: ReadonlyArray<string>;
+    contentDisplay?: ReadonlyArray<ContentDisplay>;
     custom?: CustomPreferenceType;
   }
 
   export interface VisibleContentPreference {
     title: string;
-    description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup>;
-    i18nStrings?: I18nStrings;
   }
 
-  export interface I18nStrings {
-    liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    liveAnnouncementDndItemReordered?: (position: number, total: number) => string;
-    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
-    liveAnnouncementDndDiscarded?: string;
-    dragHandleAriaLabel?: string;
-    dragHandleAriaDescription?: string;
+  export interface ContentDisplayPreference extends ContentDisplayPreference.I18nStrings {
+    title: string;
+    label?: string;
+    options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
+  }
+
+  export interface ContentDisplay {
+    id: string;
+    visible?: boolean;
+    editable?: boolean;
   }
 
   export interface VisibleContentOptionsGroup {
@@ -204,5 +206,16 @@ export namespace CollectionPreferencesProps {
   export interface ContentDensityPreference {
     label: string;
     description: string;
+  }
+}
+
+export namespace ContentDisplayPreference {
+  export interface I18nStrings {
+    liveAnnouncementDndStarted?: (position: number, total: number) => string;
+    liveAnnouncementDndItemReordered?: (position: number, total: number) => string;
+    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
+    liveAnnouncementDndDiscarded?: string;
+    dragHandleAriaLabel?: string;
+    dragHandleAriaDescription?: string;
   }
 }
