@@ -8,7 +8,7 @@ import InternalBox from '../box/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import { formatFileLastModified, formatFileSize } from './formatters';
+import { defaultFileSizeFormat, defaultLastModifiedFormat } from './formatters';
 import InternalButton from '../button/internal';
 import InternalInput from '../input/internal';
 import clsx from 'clsx';
@@ -63,6 +63,8 @@ export const FileOption: React.FC<FileOptionProps> = ({
   };
 
   const isEditing = editingFileName !== null;
+  const formatFileSize = i18nStrings.formatFileSize ?? defaultFileSizeFormat;
+  const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
 
   return (
     <InternalBox className={styles['file-option']}>
@@ -137,13 +139,13 @@ export const FileOption: React.FC<FileOptionProps> = ({
 
           {metadata.showFileSize && file.size ? (
             <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-size']}>
-              {formatFileSize(file.size, i18nStrings)}
+              {formatFileSize(file.size)}
             </InternalBox>
           ) : null}
 
           {metadata.showFileLastModified && file.lastModified ? (
             <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-last-modified']}>
-              {formatFileLastModified(new Date(file.lastModified), i18nStrings)}
+              {formatFileLastModified(new Date(file.lastModified))}
             </InternalBox>
           ) : null}
         </InternalSpaceBetween>

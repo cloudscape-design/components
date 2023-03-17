@@ -88,7 +88,7 @@ export namespace FileUploadProps {
 
   export interface I18nStrings {
     formatFileSize?: (sizeInBytes: number) => string;
-    formatFileTimestamp?: (date: Date) => string;
+    formatFileLastModified?: (date: Date) => string;
     removeFileAriaLabel: string;
     activateFileNameEditAriaLabel: string;
     submitFileNameEditAriaLabel: string;

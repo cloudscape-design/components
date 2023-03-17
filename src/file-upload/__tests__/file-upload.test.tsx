@@ -223,7 +223,7 @@ describe('File upload tokens', () => {
       showFileLastModified: true,
       i18nStrings: {
         ...defaultProps.i18nStrings,
-        formatFileTimestamp: date => `${date.getFullYear()} year`,
+        formatFileLastModified: date => `${date.getFullYear()} year`,
       },
     });
     expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020 year');

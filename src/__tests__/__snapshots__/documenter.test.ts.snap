@@ -5725,7 +5725,7 @@ form submission. A disabled control can't receive focus.",
             "type": "(sizeInBytes: number) => string",
           },
           Object {
-            "name": "formatFileTimestamp",
+            "name": "formatFileLastModified",
             "optional": true,
             "type": "(date: Date) => string",
           },
