@@ -144,11 +144,9 @@ describe('File upload tokens', () => {
   });
 
   test('files tokens are disabled if file upload is disabled', () => {
-    const wrapperSingular = render({ disabled: true, value: [file1] });
-    expect(wrapperSingular.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
-
-    const wrapperMultiple = render({ disabled: true, multiple: true, value: [file1] });
-    expect(wrapperMultiple.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
+    const wrapper = render({ disabled: true, multiple: true, value: [file1, file2] });
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveAttribute('aria-disabled');
   });
 
   test('file token remove button has ARIA label set', () => {
@@ -180,9 +178,8 @@ describe('File upload tokens', () => {
     expect(wrapper.findFileToken(1)!.findFileThumbnail()).toBe(null);
   });
 
-  test.each([false, true])('file token metadata can be selected for multiple=%s', multiple => {
+  test('file token metadata can be opt-in', () => {
     const wrapper = render({
-      multiple,
       value: [file1],
       showFileType: true,
       showFileSize: true,
