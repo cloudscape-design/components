@@ -50,6 +50,7 @@ function TestComponent(props: TestComponentProps) {
   );
 }
 
+
 describe('with custom "lang" on <html>', () => {
   afterEach(() => {
     document.documentElement.lang = '';

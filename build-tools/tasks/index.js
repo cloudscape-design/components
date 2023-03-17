@@ -14,6 +14,7 @@ module.exports = {
   buildPages: require('./build-pages'),
   testUtils: require('./test-utils'),
   a11y: require('./a11y'),
+  generateI18nMessages: require('./generate-i18n-messages'),
   integ: require('./integ'),
   licenses: require('./licenses'),
   themeableSource: require('./themeable-source'),
