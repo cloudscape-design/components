@@ -6,6 +6,7 @@ import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import '../../__a11y__/to-validate-a11y';
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -21,10 +22,6 @@ afterEach(() => {
   onChange.mockReset();
 });
 
-// TODO: use validate a11y
-// TODO: test all test-utils
-// TODO: ensure coverage
-
 const defaultProps: FileUploadProps = {
   buttonText: 'Choose file',
   value: [],
@@ -32,17 +29,17 @@ const defaultProps: FileUploadProps = {
   i18nStrings: {
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',
-    submitFileNameEditAriaLabel: 'Submit file name',
+    submitFileNameEditAriaLabel: 'Submit file name edit',
     cancelFileNameEditAriaLabel: 'Cancel file name edit',
     editFileNameInputAriaLabel: 'File name input',
   },
 };
 
-const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'Test file 1', {
+const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
   type: 'text/plain',
   lastModified: 1590962400000,
 });
-const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'Test file 2', {
+const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'test-file-2.txt', {
   type: 'image/png',
   lastModified: 1590962400000,
 });
@@ -123,11 +120,11 @@ describe('File upload tokens', () => {
 
     expect(wrapper.findFileTokens()).toHaveLength(2);
 
-    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('Test file 1');
-    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('test-file-1.txt');
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('test-file-1.txt');
 
-    expect(wrapper.findFileTokens()[1].getElement()).toHaveTextContent('Test file 2');
-    expect(wrapper.findFileToken(2)!.getElement()).toHaveTextContent('Test file 2');
+    expect(wrapper.findFileTokens()[1].getElement()).toHaveTextContent('test-file-2.txt');
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveTextContent('test-file-2.txt');
   });
 
   test('when multiple=false only the first token is shown', () => {
@@ -135,8 +132,8 @@ describe('File upload tokens', () => {
 
     expect(wrapper.findFileTokens()).toHaveLength(1);
 
-    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('Test file 1');
-    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('test-file-1.txt');
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('test-file-1.txt');
   });
 
   test('dev warning is issued when using multiple files with a singular file upload', () => {
@@ -176,7 +173,7 @@ describe('File upload tokens', () => {
   test('file token only shows name by default', () => {
     const wrapper = render({ value: [file1] });
 
-    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
     expect(wrapper.findFileToken(1)!.findFileType()).toBe(null);
     expect(wrapper.findFileToken(1)!.findFileSize()).toBe(null);
     expect(wrapper.findFileToken(1)!.findFileLastModified()).toBe(null);
@@ -191,7 +188,7 @@ describe('File upload tokens', () => {
       showFileSize: true,
       showFileLastModified: true,
     });
-    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('Test file 1');
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
     expect(wrapper.findFileToken(1)!.findFileType()!.getElement()).toHaveTextContent('text/plain');
     expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('0.01 KB');
     expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020-06-01T00:00:00');
@@ -238,14 +235,68 @@ describe('File upload tokens', () => {
 
 describe('File upload inline editing', () => {
   test('ARIA labels of all inline editing controls are set', () => {
-    //
+    const fileToken = render({ value: [file1] }).findFileToken(1)!;
+
+    expect(fileToken.isNameEditingActive()).toBe(false);
+    expect(fileToken.findActivateNameEditButton()!.getElement()).toHaveAccessibleName('Edit file name');
+
+    fileToken.findActivateNameEditButton()!.click();
+
+    expect(fileToken.isNameEditingActive()).toBe(true);
+    expect(fileToken.findNameEditInput()!.findNativeInput().getElement()).toHaveAccessibleName('File name input');
+    expect(fileToken.findSubmitNameEditButton()!.getElement()).toHaveAccessibleName('Submit file name edit');
+    expect(fileToken.findCancelNameEditButton()!.getElement()).toHaveAccessibleName('Cancel file name edit');
   });
 
-  test('File name in a singular file upload can be edited', () => {
-    // or discarded!
+  test('File name can be edited', () => {
+    const fileToken = render({ value: [file1] }).findFileToken(1)!;
+
+    fileToken.findActivateNameEditButton()!.click();
+    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
+    fileToken.findSubmitNameEditButton()!.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { value: expect.arrayContaining([expect.objectContaining({ name: 'updated-file-1.txt' })]) },
+      })
+    );
   });
 
-  test('File name in a multiple file upload can be edited', () => {
-    // or discarded!
+  test('File name edit can be discarded with a cancel button', () => {
+    const fileToken = render({ value: [file1] }).findFileToken(1)!;
+
+    fileToken.findActivateNameEditButton()!.click();
+    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
+    fileToken.findCancelNameEditButton()!.click();
+
+    expect(fileToken.isNameEditingActive()).toBe(false);
+    expect(onChange).toHaveBeenCalledTimes(0);
   });
+
+  test('File name edit can be discarded with an Escape keypress', () => {
+    const fileToken = render({ value: [file1] }).findFileToken(1)!;
+
+    fileToken.findActivateNameEditButton()!.click();
+    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
+    fileToken.findNameEditInput()!.findNativeInput().keydown(KeyCode.escape);
+
+    expect(fileToken.isNameEditingActive()).toBe(false);
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+});
+
+test('a11y', async () => {
+  const wrapper = render({
+    multiple: true,
+    value: [file1, file2],
+    showFileType: true,
+    showFileSize: true,
+    showFileLastModified: true,
+    showFileThumbnail: true,
+  });
+  await expect(wrapper.getElement()).toValidateA11y();
+
+  wrapper.findFileToken(1)!.findActivateNameEditButton()!.click();
+  await expect(wrapper.getElement()).toValidateA11y();
 });

@@ -12,6 +12,8 @@ import { formatFileLastModified, formatFileSize } from './formatters';
 import InternalButton from '../button/internal';
 import InternalInput from '../input/internal';
 import clsx from 'clsx';
+import { KeyCode } from '../internal/keycode';
+import { BaseKeyDetail } from '../internal/events';
 
 export interface FileNameEditingProps {
   editingFileName: null | string;
@@ -53,6 +55,13 @@ export const FileOption: React.FC<FileOptionProps> = ({
     }
   }, [file, metadata.showFileThumbnail, isImage]);
 
+  const onFileNameEditInputKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
+    if (event.detail.keyCode === KeyCode.escape) {
+      event.preventDefault();
+      onNameEditCancel();
+    }
+  };
+
   const isEditing = editingFileName !== null;
 
   return (
@@ -73,12 +82,14 @@ export const FileOption: React.FC<FileOptionProps> = ({
               onClick={() => !isEditing && onNameEditStart(file)}
             >
               {isEditing ? (
-                <div className={styles['file-option-name-input']}>
+                <div className={styles['file-option-name-input-container']}>
                   <InternalInput
                     value={editingFileName}
                     onChange={event => onNameChange(event.detail.value)}
                     spellcheck={false}
                     ariaLabel={i18nStrings.editFileNameInputAriaLabel}
+                    className={styles['file-option-name-input']}
+                    onKeyDown={onFileNameEditInputKeyDown}
                   />
                 </div>
               ) : (
@@ -103,7 +114,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     variant="inline-icon"
                     className={styles['file-option-name-edit-submit']}
                     onClick={onNameEditSubmit}
-                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
+                    ariaLabel={i18nStrings.submitFileNameEditAriaLabel}
                   />
                 </InternalSpaceBetween>
               ) : (
