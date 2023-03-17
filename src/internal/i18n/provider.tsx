@@ -73,6 +73,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
         const localeMessage = messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
         if (localeMessage !== undefined) {
           message = localeMessage;
+          break;
         }
       }
 

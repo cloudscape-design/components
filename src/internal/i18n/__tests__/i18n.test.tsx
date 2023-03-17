@@ -85,6 +85,27 @@ it('provides top-level and dot-notation values for static strings', () => {
   expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
 });
 
+it('falls back to a less specific language tag if a string is not provided for a language', () => {
+  const britishEnglishMessages: I18nProviderProps.Messages = {
+    '@cloudscape-design/components': {
+      'en-GB': {
+        'test-component': {
+          topLevelString: 'Custom string - colour',
+        },
+      },
+    },
+  };
+
+  const { container } = render(
+    <I18nProvider messages={[MESSAGES, britishEnglishMessages]} locale="en-GB">
+      <TestComponent />
+    </I18nProvider>
+  );
+
+  expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom string - colour');
+  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
 it('provides top-level and dot-notation values for i18n functions', () => {
   const { container } = render(
     <I18nProvider messages={[MESSAGES]} locale="en">
