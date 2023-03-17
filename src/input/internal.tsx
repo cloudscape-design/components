@@ -82,7 +82,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
-  const format = useInternalI18n('input');
+  const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
   const handleChange = (value: string) => {
@@ -198,7 +198,7 @@ function InternalInput(
             formAction="none"
             iconName={__rightIcon}
             onClick={__onRightIconClick}
-            ariaLabel={format('clearAriaLabel', clearAriaLabelOverride)}
+            ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
             disabled={disabled}
           />
         </span>

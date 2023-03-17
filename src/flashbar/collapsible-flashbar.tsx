@@ -135,19 +135,16 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const { i18nStrings } = restProps;
 
-  const format = useInternalI18n('flashbar');
-  const ariaLabel = format('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
-  const notificationBarText = format('i18nStrings.notificationBarText', i18nStrings?.notificationBarText);
-  const notificationBarAriaLabel = format(
-    'i18nStrings.notificationBarAriaLabel',
-    i18nStrings?.notificationBarAriaLabel
-  );
+  const i18n = useInternalI18n('flashbar');
+  const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const notificationBarText = i18n('i18nStrings.notificationBarText', i18nStrings?.notificationBarText);
+  const notificationBarAriaLabel = i18n('i18nStrings.notificationBarAriaLabel', i18nStrings?.notificationBarAriaLabel);
   const iconAriaLabels = {
-    errorIconAriaLabel: format('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
-    inProgressIconAriaLabel: format('i18nStrings.inProgressIconAriaLabel', i18nStrings?.inProgressIconAriaLabel),
-    infoIconAriaLabel: format('i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
-    successIconAriaLabel: format('i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
-    warningIconAriaLabel: format('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+    errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+    inProgressIconAriaLabel: i18n('i18nStrings.inProgressIconAriaLabel', i18nStrings?.inProgressIconAriaLabel),
+    infoIconAriaLabel: i18n('i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
+    successIconAriaLabel: i18n('i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
+    warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
   };
 
   useLayoutEffect(() => {

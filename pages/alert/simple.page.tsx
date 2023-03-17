@@ -10,12 +10,10 @@ import styles from './styles.scss';
 import { I18nProvider } from '~components/internal/i18n';
 import messages from '~components/internal/i18n/messages/all.all';
 
-const MESSAGES = [messages];
-
 export default function AlertScenario() {
   const [visible, setVisible] = useState(true);
   return (
-    <I18nProvider messages={MESSAGES} locale="en">
+    <I18nProvider messages={[messages]} locale="en">
       <article>
         <h1>Simple alert</h1>
         <ScreenshotArea>
@@ -25,7 +23,6 @@ export default function AlertScenario() {
                 header="This is going to be an extremely long title for an alert not sure whether it makes any sense but whatever"
                 visible={visible}
                 statusIconAriaLabel="Warning"
-                // dismissAriaLabel="Close alert"
                 dismissible={true}
                 buttonText="Button text"
                 type="warning"

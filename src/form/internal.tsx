@@ -26,8 +26,8 @@ export default function InternalForm({
   ...props
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
-  const format = useInternalI18n('form');
-  const errorIconAriaLabel = format('errorIconAriaLabel', errorIconAriaLabelOverride);
+  const i18n = useInternalI18n('form');
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(styles.root, baseProps.className)}>

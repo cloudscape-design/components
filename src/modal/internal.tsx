@@ -41,8 +41,8 @@ export default function InternalModal({
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
 
-  const format = useInternalI18n('modal');
-  const closeAriaLabel = format('closeAriaLabel', rest.closeAriaLabel);
+  const i18n = useInternalI18n('modal');
+  const closeAriaLabel = i18n('closeAriaLabel', rest.closeAriaLabel);
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);

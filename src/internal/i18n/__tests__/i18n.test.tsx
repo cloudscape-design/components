@@ -29,18 +29,18 @@ const MESSAGES: I18nProviderProps.Messages = {
 };
 
 function TestComponent(props: TestComponentProps) {
-  const format = useInternalI18n('test-component');
+  const i18n = useInternalI18n('test-component');
 
   return (
     <ul>
-      <li id="top-level-string">{format('topLevelString', props.topLevelString)}</li>
+      <li id="top-level-string">{i18n('topLevelString', props.topLevelString)}</li>
       <li id="top-level-function">
-        {format('topLevelFunction', props.topLevelFunction, format => type => format({ type }))?.('function')}
+        {i18n('topLevelFunction', props.topLevelFunction, format => type => format({ type }))?.('function')}
       </li>
 
-      <li id="nested-string">{format('nested.nestedString', props.nested?.nestedString)}</li>
+      <li id="nested-string">{i18n('nested.nestedString', props.nested?.nestedString)}</li>
       <li id="nested-function">
-        {format(
+        {i18n(
           'nested.nestedFunction',
           props.nested?.nestedFunction,
           format => props => format(props)

@@ -56,8 +56,8 @@ function InternalPopover(
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
 
-  const format = useInternalI18n('popover');
-  const dismissAriaLabel = format('dismissAriaLabel', restProps.dismissAriaLabel);
+  const i18n = useInternalI18n('popover');
+  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
 
   const [visible, setVisible] = useState(false);
 

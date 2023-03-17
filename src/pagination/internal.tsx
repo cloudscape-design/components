@@ -90,14 +90,14 @@ export default function InternalPagination({
   const baseProps = getBaseProps(rest);
   const { leftDots, leftIndex, rightIndex, rightDots } = getPaginationState(currentPageIndex, pagesCount, openEnd);
 
-  const format = useInternalI18n('pagination');
+  const i18n = useInternalI18n('pagination');
 
-  const nextPageLabel = format('nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
-  const paginationLabel = format('paginationLabel', ariaLabels?.paginationLabel) ?? defaultAriaLabels.paginationLabel;
+  const nextPageLabel = i18n('nextPageLabel', ariaLabels?.nextPageLabel) ?? defaultAriaLabels.nextPageLabel;
+  const paginationLabel = i18n('paginationLabel', ariaLabels?.paginationLabel) ?? defaultAriaLabels.paginationLabel;
   const previousPageLabel =
-    format('previousPageLabel', ariaLabels?.previousPageLabel) ?? defaultAriaLabels.previousPageLabel;
+    i18n('previousPageLabel', ariaLabels?.previousPageLabel) ?? defaultAriaLabels.previousPageLabel;
   const pageNumberLabelFn =
-    format('pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
+    i18n('pageLabel', ariaLabels?.pageLabel, format => pageNumber => format({ pageNumber })) ??
     defaultAriaLabels.pageLabel;
 
   function handlePrevPageClick(requestedPageIndex: number) {

@@ -42,7 +42,7 @@ export default function InternalAlert({
   ...rest
 }: InternalAlertProps) {
   const baseProps = getBaseProps(rest);
-  const format = useInternalI18n('alert');
+  const i18n = useInternalI18n('alert');
 
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
@@ -93,7 +93,7 @@ export default function InternalAlert({
                 variant="icon"
                 iconName="close"
                 formAction="none"
-                ariaLabel={format('dismissAriaLabel', dismissAriaLabel)}
+                ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
                 onClick={() => fireNonCancelableEvent(onDismiss)}
               />
             </div>

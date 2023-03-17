@@ -55,15 +55,15 @@ const AppLayout = React.forwardRef(
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout');
     const isRefresh = useVisualRefresh();
 
-    const format = useInternalI18n('app-layout');
+    const i18n = useInternalI18n('app-layout');
     const ariaLabels = {
-      navigation: format('ariaLabels.navigation', rest.ariaLabels?.navigation),
-      navigationClose: format('ariaLabels.navigationClose', rest.ariaLabels?.navigationClose),
-      navigationToggle: format('ariaLabels.navigationToggle', rest.ariaLabels?.navigationToggle),
-      notifications: format('ariaLabels.notifications', rest.ariaLabels?.notifications),
-      tools: format('ariaLabels.tools', rest.ariaLabels?.tools),
-      toolsClose: format('ariaLabels.toolsClose', rest.ariaLabels?.toolsClose),
-      toolsToggle: format('ariaLabels.toolsToggle', rest.ariaLabels?.toolsToggle),
+      navigation: i18n('ariaLabels.navigation', rest.ariaLabels?.navigation),
+      navigationClose: i18n('ariaLabels.navigationClose', rest.ariaLabels?.navigationClose),
+      navigationToggle: i18n('ariaLabels.navigationToggle', rest.ariaLabels?.navigationToggle),
+      notifications: i18n('ariaLabels.notifications', rest.ariaLabels?.notifications),
+      tools: i18n('ariaLabels.tools', rest.ariaLabels?.tools),
+      toolsClose: i18n('ariaLabels.toolsClose', rest.ariaLabels?.toolsClose),
+      toolsToggle: i18n('ariaLabels.toolsToggle', rest.ariaLabels?.toolsToggle),
     };
 
     // This re-builds the props including the default values

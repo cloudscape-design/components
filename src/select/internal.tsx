@@ -74,9 +74,9 @@ const InternalSelect = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
 
-    const format = useInternalI18n('select');
-    const errorIconAriaLabel = format('errorIconAriaLabel', restProps.errorIconAriaLabel);
-    const selectedAriaLabel = format('selectedAriaLabel', restProps.selectedAriaLabel);
+    const i18n = useInternalI18n('select');
+    const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
+    const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
 
     const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
       onLoadItems,

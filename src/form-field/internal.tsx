@@ -53,7 +53,7 @@ export default function InternalFormField({
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
-  const format = useInternalI18n('form-field');
+  const i18n = useInternalI18n('form-field');
 
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
@@ -119,7 +119,7 @@ export default function InternalFormField({
           {errorText && (
             <FormFieldError
               id={slotIds.error}
-              errorIconAriaLabel={format('i18nStrings?.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
+              errorIconAriaLabel={i18n('i18nStrings?.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
             >
               {errorText}
             </FormFieldError>
