@@ -50,19 +50,23 @@ function TestComponent(props: TestComponentProps) {
   );
 }
 
-it('detects locale from the html tag', () => {
-  const spanishMessages: I18nProviderProps.Messages = {
-    '@cloudscape-design/components': {
-      es: {
-        'test-component': {
-          topLevelString: 'Custom Spanish string',
+describe('with custom "lang" on <html>', () => {
+  afterEach(() => {
+    document.documentElement.lang = '';
+  });
+
+  it('detects locale from the html tag', () => {
+    document.documentElement.lang = 'es';
+
+    const spanishMessages: I18nProviderProps.Messages = {
+      '@cloudscape-design/components': {
+        es: {
+          'test-component': {
+            topLevelString: 'Custom Spanish string',
+          },
         },
       },
-    },
-  };
-
-  try {
-    document.documentElement.lang = 'es';
+    };
 
     const { container } = render(
       <I18nProvider messages={[MESSAGES, spanishMessages]}>
@@ -73,9 +77,7 @@ it('detects locale from the html tag', () => {
     expect(container.querySelector('#top-level-string')).toHaveTextContent('Custom Spanish string');
     // Shouldn't default to English for non-existent strings.
     expect(container.querySelector('#nested-string')).toHaveTextContent('');
-  } finally {
-    document.documentElement.lang = '';
-  }
+  });
 });
 
 it('provides top-level and dot-notation values for static strings', () => {
