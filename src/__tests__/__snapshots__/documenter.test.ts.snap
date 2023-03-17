@@ -4041,9 +4041,9 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
-            "name": "contentOrder",
+            "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<string>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplay>",
           },
           Object {
             "name": "custom",
@@ -4128,6 +4128,62 @@ You must set the current value in the \`preferences.contentDensity\` property.
       "name": "contentDensityPreference",
       "optional": true,
       "type": "CollectionPreferencesProps.ContentDensityPreference",
+    },
+    Object {
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.ContentDisplayPreference",
+        "properties": Array [
+          Object {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "label",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "(initialPosition: number, finalPosition: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "(position: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "(position: number, total: number) => string",
+          },
+          Object {
+            "name": "options",
+            "optional": false,
+            "type": "ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>",
+          },
+          Object {
+            "name": "title",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "contentDisplayPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ContentDisplayPreference",
     },
     Object {
       "description": "Configures custom preferences. The function receives two parameters:
@@ -4216,9 +4272,9 @@ It contains the following:
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
-            "name": "contentOrder",
+            "name": "contentDisplay",
             "optional": true,
-            "type": "ReadonlyArray<string>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplay>",
           },
           Object {
             "name": "custom",
@@ -4251,11 +4307,6 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
-    },
-    Object {
-      "name": "reorderContent",
-      "optional": true,
-      "type": "boolean",
     },
     Object {
       "description": "Configures the built-in \\"striped rows\\" preference.
@@ -4313,16 +4364,6 @@ You must set the current list of visible content \`id\`s in the \`preferences.vi
       "inlineType": Object {
         "name": "CollectionPreferencesProps.VisibleContentPreference",
         "properties": Array [
-          Object {
-            "name": "description",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "i18nStrings",
-            "optional": true,
-            "type": "CollectionPreferencesProps.I18nStrings",
-          },
           Object {
             "name": "options",
             "optional": false,
@@ -11521,9 +11562,9 @@ add a meaningful description to the whole selection.
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
     },
     Object {
-      "name": "columnOrder",
+      "name": "columnDisplay",
       "optional": true,
-      "type": "ReadonlyArray<string>",
+      "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
     },
     Object {
       "defaultValue": "'comfortable'",
