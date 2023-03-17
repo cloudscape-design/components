@@ -15,7 +15,7 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findNativeInput(): ElementWrapper<HTMLInputElement> {
-    return this.findByClassName(styles['upload-button'])!.find('input')!;
+    return this.findByClassName(styles['upload-input'])!;
   }
 
   findFileTokens(): Array<FileTokenWrapper> {

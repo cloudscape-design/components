@@ -293,7 +293,6 @@ test('a11y', async () => {
     showFileType: true,
     showFileSize: true,
     showFileLastModified: true,
-    showFileThumbnail: true,
   });
   await expect(wrapper.getElement()).toValidateA11y();
 

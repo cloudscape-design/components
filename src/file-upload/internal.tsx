@@ -137,17 +137,19 @@ function InternalFileUpload(
         ariaLabel={ariaLabel}
         __nativeAttributes={nativeAttributes}
       >
-        <input
-          ref={fileInputRef}
-          type="file"
-          hidden={true}
-          multiple={multiple}
-          disabled={disabled}
-          accept={accept}
-          onChange={handleChange}
-        />
-        <span>{buttonText}</span>
+        {buttonText}
       </InternalButton>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        hidden={true}
+        multiple={multiple}
+        disabled={disabled}
+        accept={accept}
+        onChange={handleChange}
+        className={styles['upload-input']}
+      />
 
       {value.length > 0 ? (
         <AbstractTokenGroup
