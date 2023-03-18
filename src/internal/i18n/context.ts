@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 
 export type CustomHandler<T> = (formatFn: (args: Record<string, string | number>) => string) => T;
 
@@ -23,15 +23,12 @@ export interface ComponentFormatFunction {
   <T>(key: string, provided: T, handler?: CustomHandler<T>): T;
 }
 
-export function useInternalI18n(componentName: string) {
+export function useInternalI18n(componentName: string): ComponentFormatFunction {
   // HACK: useContext should return the default value if a provider
   // isn't present, but some consumers mock out React.useContext globally
   // in their tests, so we can't rely on this assumption.
   const format = useContext(InternalI18nContext) || defaultFormatFunction;
-  return useCallback<ComponentFormatFunction>(
-    <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
-      return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
-    },
-    [format, componentName]
-  );
+  return <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
+    return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
+  };
 }
