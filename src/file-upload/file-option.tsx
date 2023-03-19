@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { LegacyRef, useEffect, useRef } from 'react';
+import React, { LegacyRef, useEffect, useRef, useState } from 'react';
 
 import { FileMetadata, FileUploadProps } from './interfaces';
 import InternalBox from '../box/internal';
@@ -40,6 +40,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
   onNameEditCancel,
 }: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
+  const [isActivateButtonFocused, setActivateButtonFocused] = useState(false);
 
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
 
@@ -80,7 +81,11 @@ export const FileOption: React.FC<FileOptionProps> = ({
         <InternalSpaceBetween direction="vertical" size="xxxs">
           {
             <div
-              className={clsx(styles['file-option-name'], isEditing && styles['file-name-edit-active'])}
+              className={clsx(
+                styles['file-option-name'],
+                isEditing && styles['file-name-edit-active'],
+                isActivateButtonFocused && styles['file-name-edit-focused']
+              )}
               onClick={() => !isEditing && onNameEditStart(file)}
             >
               {isEditing ? (
@@ -127,6 +132,10 @@ export const FileOption: React.FC<FileOptionProps> = ({
                   variant="inline-icon"
                   className={styles['file-option-name-edit-activate']}
                   ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
+                  __nativeAttributes={{
+                    onFocus: () => setActivateButtonFocused(true),
+                    onBlur: () => setActivateButtonFocused(false),
+                  }}
                 />
               )}
             </div>

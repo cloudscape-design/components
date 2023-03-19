@@ -40,6 +40,14 @@
   overflow: hidden;
 }
 
+.file-option-name-edit-activate {
+  flex-shrink: 0;
+}
+
+.file-option-name-edit-submit {
+  margin-right: 1px;
+}
+
 .file-option-name {
   display: flex;
   align-items: center;
@@ -53,9 +61,10 @@
     & > .file-option-name-edit-activate {
       opacity: 0;
     }
+    &.file-name-edit-focused,
     &:hover {
-      background-color: awsui.$color-background-dropdown-item-hover;
-      border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
+      border: awsui.$border-divider-list-width solid awsui.$color-border-item-focused;
+      border-radius: awsui.$border-radius-control-default-focus-ring;
 
       & > .file-option-name-edit-activate {
         opacity: 1;
