@@ -19,7 +19,9 @@ import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import useFocusVisible from '../internal/hooks/focus-visible';
 
 interface FileNameEditingProps {
+  isEditing: boolean;
   value: string;
+  onActivate: () => void;
   onChange: (fileName: string) => void;
   onSubmit: () => void;
   onCancel: () => void;
@@ -29,8 +31,7 @@ interface FileOptionProps {
   metadata: FileMetadata;
   file: File;
   i18nStrings: FileUploadProps.I18nStrings;
-  nameEditing?: FileNameEditingProps;
-  onNameEditStart: () => void;
+  nameEditing: FileNameEditingProps;
 }
 
 export const FileOption: React.FC<FileOptionProps> = ({
@@ -38,7 +39,6 @@ export const FileOption: React.FC<FileOptionProps> = ({
   file,
   i18nStrings,
   nameEditing,
-  onNameEditStart,
 }: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
   const [isNameEditFocused, setNameEditFocused] = useState(false);
@@ -63,35 +63,34 @@ export const FileOption: React.FC<FileOptionProps> = ({
   const onFileNameEditInputKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
     if (event.detail.keyCode === KeyCode.escape) {
       event.preventDefault();
-      nameEditing?.onCancel();
+      nameEditing.onCancel();
     }
   };
 
   const onFileNameEditActivate = () => {
-    if (!nameEditing) {
-      onNameEditStart();
+    if (!nameEditing.isEditing) {
+      nameEditing.onActivate();
     }
   };
 
   const onFileNameEditCancel = () => {
     setNameEditFocused(false);
-    nameEditing?.onCancel();
+    nameEditing.onCancel();
   };
 
   const onFileNameEditSubmit = () => {
     setNameEditFocused(false);
-    nameEditing?.onSubmit();
+    nameEditing.onSubmit();
   };
 
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFileSizeFormat;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
 
-  const isEditingName = !!nameEditing;
   useEffectOnUpdate(() => {
-    if (!isEditingName) {
+    if (!nameEditing.isEditing) {
       fileNameEditActivateButtonRef.current?.focus();
     }
-  }, [isEditingName]);
+  }, [nameEditing.isEditing]);
 
   return (
     <InternalBox className={styles['file-option']}>
@@ -110,7 +109,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
               ref={fileOptionNameRef}
               className={clsx(
                 styles['file-option-name'],
-                isEditingName && styles['file-name-edit-active'],
+                nameEditing.isEditing && styles['file-name-edit-active'],
                 isNameEditFocused && isFocusVisible && styles['file-name-edit-focused']
               )}
               onClick={onFileNameEditActivate}
@@ -118,12 +117,12 @@ export const FileOption: React.FC<FileOptionProps> = ({
               onBlur={event => {
                 setNameEditFocused(false);
 
-                if (nameEditing && !fileOptionNameRef.current!.contains(event.relatedTarget)) {
+                if (nameEditing.isEditing && !fileOptionNameRef.current!.contains(event.relatedTarget)) {
                   nameEditing.onCancel();
                 }
               }}
             >
-              {nameEditing ? (
+              {nameEditing.isEditing ? (
                 <div className={styles['file-option-name-input-container']}>
                   <InternalInput
                     autoFocus={true}
@@ -141,7 +140,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                 </div>
               )}
 
-              {nameEditing ? (
+              {nameEditing.isEditing ? (
                 <InternalSpaceBetween size="xxs" direction="horizontal">
                   <InternalButton
                     formAction="none"

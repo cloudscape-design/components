@@ -85,6 +85,32 @@ function InternalFileUpload(
 
   const [fileNameEditing, setFileNameEditing] = useState(new Map<number, string>());
 
+  const getFileAttributes = (fileIndex: number) => {
+    return fileNameEditing.has(fileIndex)
+      ? {
+          dismiss: {
+            label: i18nStrings.removeFileAriaLabel,
+            onDismiss: () => onFileRemove(fileIndex),
+          },
+        }
+      : {};
+  };
+
+  const getFileNameEditingProps = (fileIndex: number) => {
+    const fileName = fileNameEditing.get(fileIndex) ?? value[fileIndex].name;
+    return {
+      isEditing: fileNameEditing.has(fileIndex),
+      value: fileName,
+      onActivate: () => setFileNameEditing(new Map([[fileIndex, value[fileIndex].name]])),
+      onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
+      onSubmit: () => {
+        onFileNameUpdate(fileIndex, fileName);
+        setFileNameEditing(new Map());
+      },
+      onCancel: () => setFileNameEditing(new Map()),
+    };
+  };
+
   const nativeAttributes: Record<string, any> = {
     'aria-labelledby': formFieldContext.ariaLabelledby,
     'aria-describedby': formFieldContext.ariaDescribedby,
@@ -131,38 +157,15 @@ function InternalFileUpload(
         <GenericTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={(_, fileIndex) => ({
-            dismiss: !fileNameEditing.has(fileIndex)
-              ? {
-                  label: i18nStrings.removeFileAriaLabel,
-                  onDismiss: () => onFileRemove(fileIndex),
-                }
-              : undefined,
-          })}
-          renderItem={(file, fileIndex) => {
-            const editingFileName = fileNameEditing.get(fileIndex);
-            return (
-              <FileOption
-                file={file}
-                metadata={metadata}
-                i18nStrings={i18nStrings}
-                onNameEditStart={() => setFileNameEditing(new Map([[fileIndex, file.name]]))}
-                nameEditing={
-                  editingFileName
-                    ? {
-                        value: editingFileName,
-                        onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
-                        onSubmit: () => {
-                          onFileNameUpdate(fileIndex, editingFileName);
-                          setFileNameEditing(new Map());
-                        },
-                        onCancel: () => setFileNameEditing(new Map()),
-                      }
-                    : undefined
-                }
-              />
-            );
-          }}
+          getItemAttributes={(_, fileIndex) => getFileAttributes(fileIndex)}
+          renderItem={(file, fileIndex) => (
+            <FileOption
+              file={file}
+              metadata={metadata}
+              i18nStrings={i18nStrings}
+              nameEditing={getFileNameEditingProps(fileIndex)}
+            />
+          )}
           limit={limit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,

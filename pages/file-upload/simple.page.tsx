@@ -164,6 +164,7 @@ function validateContractFiles(files: File[]): null | string {
   return (
     validateFileSize(files, 250 * KB, 750 * KB) ??
     validateFiles(files, validateFileNameNotEmpty) ??
+    validateDuplicateFileNames(files) ??
     validateFiles(files, file => validateFileExtensions(file, ['pdf'])) ??
     validateFiles(files, validateContractFilePattern) ??
     null
@@ -196,6 +197,18 @@ function validateFileSize(input: File | File[], maxFileSize: number, maxTotalSiz
     return `Files combined size (${formatFileSize(totalSize)}) is above the allowed maximum (${formatFileSize(
       maxTotalSize
     )})`;
+  }
+  return null;
+}
+
+function validateDuplicateFileNames(files: File[]): null | string {
+  const fileNames = files
+    .map(file => file.name)
+    .sort()
+    .reduce((map, fileName) => map.set(fileName, (map.get(fileName) ?? 0) + 1), new Map<string, number>());
+  const duplicateName = files.find(file => fileNames.get(file.name)! > 1)?.name;
+  if (duplicateName !== undefined) {
+    return `Files with duplicate names ("${duplicateName}") are not allowed`;
   }
   return null;
 }
