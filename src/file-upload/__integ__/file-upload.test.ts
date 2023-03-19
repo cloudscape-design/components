@@ -40,3 +40,17 @@ test(
     await expect(page.getText(wrapper.findFileToken(1).findFileName().toSelector())).resolves.toBe('contract-1.txt');
   })
 );
+
+test(
+  'file rename is cancelled on blur',
+  setupTest(async page => {
+    await expect(page.getText(wrapper.findFileToken(1).findFileName().toSelector())).resolves.toBe('contract-1.pdf');
+
+    await page.click(wrapper.findFileToken(1).findActivateNameEditButton().toSelector());
+    await page.click(wrapper.findFileToken(1).findNameEditInput().toSelector());
+    await page.keys(['Backspace', 'Backspace', 'Backspace', 't', 'x', 't']);
+    await page.keys(['Tab', 'Tab', 'Tab']);
+
+    await expect(page.getText(wrapper.findFileToken(1).findFileName().toSelector())).resolves.toBe('contract-1.pdf');
+  })
+);

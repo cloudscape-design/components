@@ -40,7 +40,8 @@ export const FileOption: React.FC<FileOptionProps> = ({
   onNameEditCancel,
 }: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
-  const [isActivateButtonFocused, setActivateButtonFocused] = useState(false);
+  const [isNameEditFocused, setNameEditFocused] = useState(false);
+  const fileOptionRef = useRef<HTMLDivElement>(null);
 
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
 
@@ -68,7 +69,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
 
   return (
-    <InternalBox className={styles['file-option']}>
+    <InternalBox className={styles['file-option']} __internalRootRef={fileOptionRef}>
       <InternalIcon variant="success" name="status-positive" />
 
       {metadata.showFileThumbnail && isImage && (
@@ -84,9 +85,17 @@ export const FileOption: React.FC<FileOptionProps> = ({
               className={clsx(
                 styles['file-option-name'],
                 isEditing && styles['file-name-edit-active'],
-                isActivateButtonFocused && styles['file-name-edit-focused']
+                isNameEditFocused && styles['file-name-edit-focused']
               )}
               onClick={() => !isEditing && onNameEditStart(file)}
+              onFocus={() => setNameEditFocused(true)}
+              onBlur={event => {
+                setNameEditFocused(false);
+
+                if (isEditing && !fileOptionRef.current!.contains(event.relatedTarget)) {
+                  onNameEditCancel();
+                }
+              }}
             >
               {isEditing ? (
                 <div className={styles['file-option-name-input-container']}>
@@ -132,10 +141,6 @@ export const FileOption: React.FC<FileOptionProps> = ({
                   variant="inline-icon"
                   className={styles['file-option-name-edit-activate']}
                   ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
-                  __nativeAttributes={{
-                    onFocus: () => setActivateButtonFocused(true),
-                    onBlur: () => setActivateButtonFocused(false),
-                  }}
                 />
               )}
             </div>
