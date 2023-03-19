@@ -66,6 +66,7 @@ export default function FileUploadScenario() {
 
   return (
     <AppLayout
+      contentType="form"
       ariaLabels={appLayoutLabels}
       navigationOpen={navigationOpen}
       onNavigationChange={event => setNavigationOpen(event.detail.open)}
