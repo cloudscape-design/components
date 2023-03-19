@@ -128,6 +128,7 @@ export default function FileUploadScenario() {
             >
               <FileUpload
                 multiple={true}
+                limit={3}
                 value={contractFiles}
                 onChange={event => {
                   setContractFiles(event.detail.value);

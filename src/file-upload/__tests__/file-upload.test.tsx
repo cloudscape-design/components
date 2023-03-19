@@ -32,6 +32,8 @@ const defaultProps: FileUploadProps = {
     submitFileNameEditAriaLabel: 'Submit file name edit',
     cancelFileNameEditAriaLabel: 'Cancel file name edit',
     editFileNameInputAriaLabel: 'File name input',
+    limitShowFewer: 'Show fewer files',
+    limitShowMore: 'Show more files',
   },
 };
 
@@ -224,6 +226,12 @@ describe('File upload tokens', () => {
       },
     });
     expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020 year');
+  });
+
+  test('the `limit` property controls the number of tokens shown by default', () => {
+    const wrapper = render({ multiple: true, value: [file1, file2], limit: 1 });
+    expect(wrapper.findFileTokens()).toHaveLength(1);
+    expect(wrapper.getElement().textContent).toContain('Show more files');
   });
 });
 

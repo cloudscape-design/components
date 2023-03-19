@@ -37,6 +37,7 @@ function InternalFileUpload(
     multiple,
     onChange,
     value,
+    limit,
     showFileType,
     showFileSize,
     showFileLastModified,
@@ -170,6 +171,11 @@ function InternalFileUpload(
             />
           )}
           onDismiss={index => handleDismiss(index)}
+          limit={limit}
+          i18nStrings={{
+            limitShowFewer: i18nStrings.limitShowFewer,
+            limitShowMore: i18nStrings.limitShowMore,
+          }}
         />
       ) : null}
     </InternalSpaceBetween>

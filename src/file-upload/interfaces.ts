@@ -61,6 +61,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   value: File[];
   /**
+   * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
+   */
+  limit?: number;
+  /**
    * An object containing all the localized strings required by the component.
    *
    * It includes:
@@ -93,6 +97,8 @@ export namespace FileUploadProps {
     submitFileNameEditAriaLabel: string;
     cancelFileNameEditAriaLabel: string;
     editFileNameInputAriaLabel: string;
+    limitShowFewer: string;
+    limitShowMore: string;
   }
 
   export interface Ref {
