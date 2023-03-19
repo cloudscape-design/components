@@ -103,8 +103,8 @@ describe('FileUpload input', () => {
 });
 
 describe('File upload tokens', () => {
-  test('when multiple=true all file tokens are shown', () => {
-    const wrapper = render({ multiple: true, value: [file1, file2] });
+  test.each([false, true])(`when multiple=%s all file tokens are shown`, multiple => {
+    const wrapper = render({ multiple, value: [file1, file2] });
 
     expect(wrapper.findFileTokens()).toHaveLength(2);
 
@@ -113,15 +113,6 @@ describe('File upload tokens', () => {
 
     expect(wrapper.findFileTokens()[1].getElement()).toHaveTextContent('test-file-2.txt');
     expect(wrapper.findFileToken(2)!.getElement()).toHaveTextContent('test-file-2.txt');
-  });
-
-  test('when multiple=false only the first token is shown', () => {
-    const wrapper = render({ value: [file1, file2] });
-
-    expect(wrapper.findFileTokens()).toHaveLength(1);
-
-    expect(wrapper.findFileTokens()[0].getElement()).toHaveTextContent('test-file-1.txt');
-    expect(wrapper.findFileToken(1)!.getElement()).toHaveTextContent('test-file-1.txt');
   });
 
   test('dev warning is issued when using multiple files with a singular file upload', () => {

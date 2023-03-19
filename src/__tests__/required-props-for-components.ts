@@ -139,7 +139,9 @@ const defaultProps: Record<string, Record<string, any>> = {
   },
   'file-upload': {
     value: [],
-    buttonText: 'Choose file',
+    i18nStrings: {
+      uploadButtonText: () => 'Choose file(s)',
+    },
   },
 };
 

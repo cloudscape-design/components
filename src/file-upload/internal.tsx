@@ -46,11 +46,10 @@ function InternalFileUpload(
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const baseProps = getBaseProps(restProps);
-  const formFieldContext = useFormFieldContext(restProps);
-
+  const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
   const selfControlId = useUniqueId('input');
+  const formFieldContext = useFormFieldContext(restProps);
   const controlId = formFieldContext.controlId ?? selfControlId;
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
@@ -58,6 +57,8 @@ function InternalFileUpload(
   if (!multiple && value.length > 1) {
     warnOnce('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
   }
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => fileInputRef.current?.click();
 
@@ -79,8 +80,6 @@ function InternalFileUpload(
     },
     [value, onChange]
   );
-
-  const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
 
   const [editingFileIndex, setEditingFileIndex] = useState(-1);
   const [editingFileName, setEditingFileName] = useState<null | string>(null);
@@ -151,7 +150,7 @@ function InternalFileUpload(
       {value.length > 0 ? (
         <AbstractTokenGroup
           alignment="vertical"
-          items={multiple ? value : value.slice(0, 1)}
+          items={value}
           getItemAttributes={(_, itemIndex) => ({
             dismissLabel: i18nStrings.removeFileAriaLabel,
             showDismiss: itemIndex !== editingFileIndex,
