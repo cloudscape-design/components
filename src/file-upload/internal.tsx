@@ -86,7 +86,7 @@ function InternalFileUpload(
   const [fileNameEditing, setFileNameEditing] = useState(new Map<number, string>());
 
   const getFileAttributes = (fileIndex: number) => {
-    return fileNameEditing.has(fileIndex)
+    return !fileNameEditing.has(fileIndex)
       ? {
           dismiss: {
             label: i18nStrings.removeFileAriaLabel,

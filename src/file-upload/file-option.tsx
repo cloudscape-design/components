@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { LegacyRef, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { FileMetadata, FileUploadProps } from './interfaces';
 import InternalBox from '../box/internal';
@@ -17,6 +17,7 @@ import { BaseKeyDetail } from '../internal/events';
 import { ButtonProps } from '../button/interfaces';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import useFocusVisible from '../internal/hooks/focus-visible';
+import { FileOptionThumbnail } from './file-option-thumbnail';
 
 interface FileNameEditingProps {
   isEditing: boolean;
@@ -28,37 +29,25 @@ interface FileNameEditingProps {
 }
 
 interface FileOptionProps {
-  metadata: FileMetadata;
   file: File;
-  i18nStrings: FileUploadProps.I18nStrings;
+  metadata: FileMetadata;
   nameEditing: FileNameEditingProps;
+  i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export const FileOption: React.FC<FileOptionProps> = ({
-  metadata,
-  file,
-  i18nStrings,
-  nameEditing,
-}: FileOptionProps) => {
-  const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
+export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOptionProps) {
+  const isImage = !!file.type && file.type.split('/')[0] === 'image';
   const [isNameEditFocused, setNameEditFocused] = useState(false);
   const isFocusVisible = !!useFocusVisible()['data-awsui-focus-visible'];
   const fileOptionNameRef = useRef<HTMLDivElement>(null);
   const fileNameEditActivateButtonRef = useRef<ButtonProps.Ref>(null);
 
-  const isImage = !!file.type && file.type.split('/')[0] === 'image';
-
-  useEffect(() => {
-    if (metadata.showFileThumbnail && isImage) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (thumbnail.current && thumbnail.current.src) {
-          thumbnail.current.src = reader.result as string;
-        }
-      };
-      reader.readAsDataURL(file);
+  // Focus on name editing activate button when existing name editing mode.
+  useEffectOnUpdate(() => {
+    if (!nameEditing.isEditing) {
+      fileNameEditActivateButtonRef.current?.focus();
     }
-  }, [file, metadata.showFileThumbnail, isImage]);
+  }, [nameEditing.isEditing]);
 
   const onFileNameEditInputKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
     if (event.detail.keyCode === KeyCode.escape) {
@@ -73,34 +62,14 @@ export const FileOption: React.FC<FileOptionProps> = ({
     }
   };
 
-  const onFileNameEditCancel = () => {
-    setNameEditFocused(false);
-    nameEditing.onCancel();
-  };
-
-  const onFileNameEditSubmit = () => {
-    setNameEditFocused(false);
-    nameEditing.onSubmit();
-  };
-
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFileSizeFormat;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
-
-  useEffectOnUpdate(() => {
-    if (!nameEditing.isEditing) {
-      fileNameEditActivateButtonRef.current?.focus();
-    }
-  }, [nameEditing.isEditing]);
 
   return (
     <InternalBox className={styles['file-option']}>
       <InternalIcon variant="success" name="status-positive" />
 
-      {metadata.showFileThumbnail && isImage && (
-        <div className={styles['file-option-thumbnail']}>
-          <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnail} src="" />
-        </div>
-      )}
+      {metadata.showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
 
       <div className={styles['file-option-metadata']}>
         <InternalSpaceBetween direction="vertical" size="xxxs">
@@ -147,7 +116,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     iconName="close"
                     variant="inline-icon"
                     className={styles['file-option-name-edit-cancel']}
-                    onClick={onFileNameEditCancel}
+                    onClick={nameEditing.onCancel}
                     ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
                   />
                   <InternalButton
@@ -155,7 +124,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     iconName="check"
                     variant="inline-icon"
                     className={styles['file-option-name-edit-submit']}
-                    onClick={onFileNameEditSubmit}
+                    onClick={nameEditing.onSubmit}
                     ariaLabel={i18nStrings.submitFileNameEditAriaLabel}
                   />
                 </InternalSpaceBetween>
@@ -193,4 +162,4 @@ export const FileOption: React.FC<FileOptionProps> = ({
       </div>
     </InternalBox>
   );
-};
+}

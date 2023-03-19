@@ -260,6 +260,13 @@ describe('File upload inline editing', () => {
     expect(fileToken.isNameEditingActive()).toBe(false);
     expect(onChange).toHaveBeenCalledTimes(0);
   });
+
+  test('File remove button is not shown in name editing mode', () => {
+    const fileToken = render({ value: [file1] }).findFileToken(1)!;
+
+    fileToken.findActivateNameEditButton()!.click();
+    expect(fileToken.findRemoveButton()).toBe(null);
+  });
 });
 
 test('a11y', async () => {
