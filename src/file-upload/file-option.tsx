@@ -8,7 +8,7 @@ import InternalBox from '../box/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import { defaultFileSizeFormat, defaultLastModifiedFormat } from './formatters';
+import * as defaultFormatters from './default-formatters';
 import InternalButton from '../button/internal';
 import InternalInput from '../input/internal';
 import clsx from 'clsx';
@@ -62,8 +62,20 @@ export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOpt
     }
   };
 
-  const formatFileSize = i18nStrings.formatFileSize ?? defaultFileSizeFormat;
-  const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
+  const onFileNameFocus = () => {
+    setNameEditFocused(true);
+  };
+
+  const onFileNameBlur = (event: React.FocusEvent) => {
+    setNameEditFocused(false);
+
+    if (nameEditing.isEditing && !fileOptionNameRef.current!.contains(event.relatedTarget)) {
+      nameEditing.onCancel();
+    }
+  };
+
+  const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
+  const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 
   return (
     <InternalBox className={styles['file-option']}>
@@ -82,17 +94,11 @@ export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOpt
                 isNameEditFocused && isFocusVisible && styles['file-name-edit-focused']
               )}
               onClick={onFileNameEditActivate}
-              onFocus={() => setNameEditFocused(true)}
-              onBlur={event => {
-                setNameEditFocused(false);
-
-                if (nameEditing.isEditing && !fileOptionNameRef.current!.contains(event.relatedTarget)) {
-                  nameEditing.onCancel();
-                }
-              }}
+              onFocus={onFileNameFocus}
+              onBlur={onFileNameBlur}
             >
               {nameEditing.isEditing ? (
-                <div className={styles['file-option-name-input-container']}>
+                <>
                   <InternalInput
                     autoFocus={true}
                     value={nameEditing.value}
@@ -102,42 +108,42 @@ export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOpt
                     className={styles['file-option-name-input']}
                     onKeyDown={onFileNameEditInputKeyDown}
                   />
-                </div>
-              ) : (
-                <div className={styles['file-option-name-label']} title={file.name}>
-                  {file.name}
-                </div>
-              )}
 
-              {nameEditing.isEditing ? (
-                <InternalSpaceBetween size="xxs" direction="horizontal">
-                  <InternalButton
-                    formAction="none"
-                    iconName="close"
-                    variant="inline-icon"
-                    className={styles['file-option-name-edit-cancel']}
-                    onClick={nameEditing.onCancel}
-                    ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
-                  />
-                  <InternalButton
-                    formAction="none"
-                    iconName="check"
-                    variant="inline-icon"
-                    className={styles['file-option-name-edit-submit']}
-                    onClick={nameEditing.onSubmit}
-                    ariaLabel={i18nStrings.submitFileNameEditAriaLabel}
-                  />
-                </InternalSpaceBetween>
+                  <InternalSpaceBetween size="xxs" direction="horizontal">
+                    <InternalButton
+                      formAction="none"
+                      iconName="close"
+                      variant="inline-icon"
+                      className={styles['file-option-name-edit-cancel']}
+                      onClick={nameEditing.onCancel}
+                      ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
+                    />
+                    <InternalButton
+                      formAction="none"
+                      iconName="check"
+                      variant="inline-icon"
+                      className={styles['file-option-name-edit-submit']}
+                      onClick={nameEditing.onSubmit}
+                      ariaLabel={i18nStrings.submitFileNameEditAriaLabel}
+                    />
+                  </InternalSpaceBetween>
+                </>
               ) : (
-                <InternalButton
-                  ref={fileNameEditActivateButtonRef}
-                  __hideFocusOutline={true}
-                  formAction="none"
-                  iconName="edit"
-                  variant="inline-icon"
-                  className={styles['file-option-name-edit-activate']}
-                  ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
-                />
+                <>
+                  <div className={styles['file-option-name-label']} title={file.name}>
+                    {file.name}
+                  </div>
+
+                  <InternalButton
+                    ref={fileNameEditActivateButtonRef}
+                    __hideFocusOutline={true}
+                    formAction="none"
+                    iconName="edit"
+                    variant="inline-icon"
+                    className={styles['file-option-name-edit-activate']}
+                    ariaLabel={i18nStrings.activateFileNameEditAriaLabel}
+                  />
+                </>
               )}
             </div>
           }
