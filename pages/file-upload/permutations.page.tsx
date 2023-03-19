@@ -9,16 +9,13 @@ import { i18nStrings } from './shared';
 
 const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel' | 'i18nStrings'>>([
   {
-    uploadButtonText: ['Choose file (empty)'],
     value: [[]],
   },
   {
-    uploadButtonText: ['Choose file (single)'],
     value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
   },
   {
     multiple: [true],
-    uploadButtonText: ['Choose file (multiple)'],
     value: [
       [
         new File([new Blob(['demo content 1'], { type: 'text/plain' })], 'demo file 1'),
@@ -27,7 +24,6 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
     ],
   },
   {
-    uploadButtonText: ['Choose file (metadata)'],
     value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
     showFileType: [true],
     showFileSize: [true],

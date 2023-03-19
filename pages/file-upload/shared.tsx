@@ -4,6 +4,7 @@
 import { FileUploadProps } from '~components';
 
 export const i18nStrings: FileUploadProps.I18nStrings = {
+  uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
   removeFileAriaLabel: 'Remove file',
   activateFileNameEditAriaLabel: 'Edit file name',
   submitFileNameEditAriaLabel: 'Submit file name',

@@ -15,10 +15,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
-   * Text displayed in the file upload button.
-   */
-  uploadButtonText: string;
-  /**
    * Show file's MIME type in the token.
    * Default: `false`.
    */
@@ -62,13 +58,16 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * An object containing all the localized strings required by the component.
    *
    * It includes:
-   * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
-   * * `formatFileLastModified` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
+   * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
    * * `removeFileAriaLabel` (string): The ARIA label for file token remove button.
    * * `activateFileNameEditAriaLabel` (string): The ARIA label for file token activate name edit button.
    * * `submitFileNameEditAriaLabel` (string): The ARIA label for file token submit name edit button.
    * * `cancelFileNameEditAriaLabel` (string): The ARIA label for file token cancel name edit button.
    * * `editFileNameInputAriaLabel` (string): The ARIA label for file token name edit input.
+   * * `limitShowFewer` (string): The text of the show more tokens button.
+   * * `limitShowMore` (string): The text of the show fewer tokens button.
+   * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
+   * * `formatFileLastModified` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
    */
   i18nStrings: FileUploadProps.I18nStrings;
 }
@@ -84,8 +83,7 @@ export namespace FileUploadProps {
   }
 
   export interface I18nStrings {
-    formatFileSize?: (sizeInBytes: number) => string;
-    formatFileLastModified?: (date: Date) => string;
+    uploadButtonText: (multiple: boolean) => string;
     removeFileAriaLabel: string;
     activateFileNameEditAriaLabel: string;
     submitFileNameEditAriaLabel: string;
@@ -93,6 +91,8 @@ export namespace FileUploadProps {
     editFileNameInputAriaLabel: string;
     limitShowFewer: string;
     limitShowMore: string;
+    formatFileSize?: (sizeInBytes: number) => string;
+    formatFileLastModified?: (date: Date) => string;
   }
 
   export interface Ref {

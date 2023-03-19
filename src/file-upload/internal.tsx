@@ -32,7 +32,6 @@ function InternalFileUpload(
   {
     accept,
     ariaRequired,
-    uploadButtonText,
     multiple,
     onChange,
     value,
@@ -135,7 +134,7 @@ function InternalFileUpload(
           className={styles['upload-button']}
           __nativeAttributes={nativeAttributes}
         >
-          {uploadButtonText}
+          {i18nStrings.uploadButtonText(multiple)}
         </InternalButton>
 
         <input

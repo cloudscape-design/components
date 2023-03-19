@@ -23,10 +23,10 @@ afterEach(() => {
 });
 
 const defaultProps: FileUploadProps = {
-  uploadButtonText: 'Choose file',
   value: [],
   onChange,
   i18nStrings: {
+    uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',
     submitFileNameEditAriaLabel: 'Submit file name edit',
@@ -67,9 +67,8 @@ describe('FileUpload input', () => {
   });
 
   test('`uploadButtonText` property is assigned', () => {
-    expect(render({ uploadButtonText: 'Choose file' }).findUploadButton().getElement()).toHaveTextContent(
-      'Choose file'
-    );
+    expect(render({}).findUploadButton().getElement()).toHaveTextContent('Choose file');
+    expect(render({ multiple: true }).findUploadButton().getElement()).toHaveTextContent('Choose files');
   });
 
   test('`ariaRequired` property is assigned', () => {

@@ -23,7 +23,6 @@ export default function FileUploadTestPage() {
             multiple={true}
             value={contractFiles}
             onChange={event => setContractFiles(event.detail.value)}
-            uploadButtonText="Choose files"
             accept="application/pdf, image/png, image/jpeg"
             showFileType={true}
             showFileSize={true}
