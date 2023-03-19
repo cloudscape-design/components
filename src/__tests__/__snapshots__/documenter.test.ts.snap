@@ -5673,24 +5673,17 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
-      "description": "Specifies if the control is disabled (the upload button and all file tokens), which prevents the user from
-modifying the value and prevents the value from being included in a form submission.
-A disabled control can't receive focus.",
-      "name": "disabled",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
-      "description": "An object containing all the localized strings required by the component.
-It includes:
-* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
-* \`formatFileLastModified\` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
+      "description": "An object containing all the localized strings required by the component:
+* \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
 * \`removeFileAriaLabel\` (string): The ARIA label for file token remove button.
 * \`activateFileNameEditAriaLabel\` (string): The ARIA label for file token activate name edit button.
 * \`submitFileNameEditAriaLabel\` (string): The ARIA label for file token submit name edit button.
 * \`cancelFileNameEditAriaLabel\` (string): The ARIA label for file token cancel name edit button.
 * \`editFileNameInputAriaLabel\` (string): The ARIA label for file token name edit input.
-",
+* \`limitShowFewer\` (string): The text of the show more tokens button.
+* \`limitShowMore\` (string): The text of the show fewer tokens button.
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes file last modified date object and produces a formatted string.",
       "inlineType": Object {
         "name": "FileUploadProps.I18nStrings",
         "properties": Array [
@@ -5720,6 +5713,16 @@ It includes:
             "type": "(sizeInBytes: number) => string",
           },
           Object {
+            "name": "limitShowFewer",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "limitShowMore",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
             "name": "removeFileAriaLabel",
             "optional": false,
             "type": "string",
@@ -5728,6 +5731,11 @@ It includes:
             "name": "submitFileNameEditAriaLabel",
             "optional": false,
             "type": "string",
+          },
+          Object {
+            "name": "uploadButtonText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
           },
         ],
         "type": "object",
@@ -5752,6 +5760,12 @@ single form field.",
       "name": "invalid",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.",
+      "name": "limit",
+      "optional": true,
+      "type": "number",
     },
     Object {
       "defaultValue": "false",
@@ -5793,12 +5807,6 @@ Default: \`false\`.",
       "name": "showFileType",
       "optional": true,
       "type": "boolean",
-    },
-    Object {
-      "description": "Text displayed in the file upload button.",
-      "name": "uploadButtonText",
-      "optional": false,
-      "type": "string",
     },
     Object {
       "description": "Specifies the currently selected file(s).
