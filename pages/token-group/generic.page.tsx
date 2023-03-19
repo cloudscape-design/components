@@ -34,8 +34,10 @@ export default function GenericTokenGroupPage() {
         renderItem={file => <FileOption file={file} />}
         getItemAttributes={(item, itemIndex) => ({
           disabled: item === 0,
-          dismissLabel: 'Remove file',
-          onDismiss: () => onDismiss(itemIndex),
+          dismiss: {
+            label: 'Remove file',
+            onDismiss: () => onDismiss(itemIndex),
+          },
         })}
       />
     </Box>

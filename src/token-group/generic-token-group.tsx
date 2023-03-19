@@ -17,8 +17,10 @@ import styles from './styles.css.js';
 
 interface ItemAttributes {
   disabled?: boolean;
-  dismissLabel?: string;
-  onDismiss?: () => void;
+  dismiss?: {
+    label?: string;
+    onDismiss: () => void;
+  };
 }
 
 interface GenericTokenGroupProps<Item> extends BaseComponentProps {
@@ -75,17 +77,16 @@ function GenericTokenGroup<Item>(
 
 interface GenericTokenProps extends ItemAttributes {
   children: React.ReactNode;
-  onDismiss?: () => void;
 }
 
-function GenericToken({ disabled, dismissLabel, onDismiss, children }: GenericTokenProps) {
+function GenericToken({ disabled, dismiss, children }: GenericTokenProps) {
   return (
     <div
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >
       {children}
-      {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
+      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
     </div>
   );
 }
