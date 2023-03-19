@@ -87,16 +87,6 @@ describe('FileUpload input', () => {
     expect(uploadButton).toHaveAccessibleDescription('Test label');
   });
 
-  test('`disabled` property is assigned', () => {
-    expect(render({ disabled: false }).isDisabled()).toBe(false);
-    expect(render({ disabled: false }).findUploadButton().getElement()).not.toBeDisabled();
-    expect(render({ disabled: false }).findNativeInput().getElement()).not.toBeDisabled();
-
-    expect(render({ disabled: true }).isDisabled()).toBe(true);
-    expect(render({ disabled: true }).findUploadButton().getElement()).toBeDisabled();
-    expect(render({ disabled: true }).findNativeInput().getElement()).toBeDisabled();
-  });
-
   test('`invalid` property is assigned', () => {
     expect(render({ invalid: false }).findUploadButton().getElement()).not.toBeInvalid();
     expect(render({ invalid: true }).findUploadButton().getElement()).toBeInvalid();
@@ -140,12 +130,6 @@ describe('File upload tokens', () => {
 
     expect(warnOnce).toHaveBeenCalledTimes(1);
     expect(warnOnce).toHaveBeenCalledWith('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
-  });
-
-  test('files tokens are disabled if file upload is disabled', () => {
-    const wrapper = render({ disabled: true, multiple: true, value: [file1, file2] });
-    expect(wrapper.findFileToken(1)!.getElement()).toHaveAttribute('aria-disabled');
-    expect(wrapper.findFileToken(2)!.getElement()).toHaveAttribute('aria-disabled');
   });
 
   test('file token remove button has ARIA label set', () => {

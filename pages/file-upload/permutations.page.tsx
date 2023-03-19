@@ -15,7 +15,6 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
   {
     uploadButtonText: ['Choose file (single)'],
     value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
-    disabled: [true, false],
   },
   {
     multiple: [true],
@@ -26,7 +25,6 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
         new File([new Blob(['demo content 2'], { type: 'text/plain' })], 'demo file 2'),
       ],
     ],
-    disabled: [true, false],
   },
   {
     uploadButtonText: ['Choose file (metadata)'],

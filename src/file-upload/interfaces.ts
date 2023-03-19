@@ -19,12 +19,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   uploadButtonText: string;
   /**
-   * Specifies if the control is disabled (the upload button and all file tokens), which prevents the user from
-   * modifying the value and prevents the value from being included in a form submission.
-   * A disabled control can't receive focus.
-   */
-  disabled?: boolean;
-  /**
    * Show file's MIME type in the token.
    * Default: `false`.
    */

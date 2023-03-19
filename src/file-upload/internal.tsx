@@ -33,7 +33,6 @@ function InternalFileUpload(
     accept,
     ariaRequired,
     uploadButtonText,
-    disabled,
     multiple,
     onChange,
     value,
@@ -132,7 +131,6 @@ function InternalFileUpload(
           id={controlId}
           iconName="upload"
           formAction="none"
-          disabled={disabled}
           onClick={handleButtonClick}
           className={styles['upload-button']}
           __nativeAttributes={nativeAttributes}
@@ -145,7 +143,6 @@ function InternalFileUpload(
           type="file"
           hidden={true}
           multiple={multiple}
-          disabled={disabled}
           accept={accept}
           onChange={handleChange}
           className={styles['upload-input']}
@@ -157,7 +154,6 @@ function InternalFileUpload(
           alignment="vertical"
           items={multiple ? value : value.slice(0, 1)}
           getItemAttributes={(_, itemIndex) => ({
-            disabled,
             dismissLabel: i18nStrings.removeFileAriaLabel,
             showDismiss: itemIndex !== editingFileIndex,
           })}
