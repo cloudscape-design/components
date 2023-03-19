@@ -17,7 +17,7 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
-import AbstractTokenGroup from '../token-group/abstract-token-group';
+import GenericTokenGroup from '../token-group/generic-token-group';
 import { warnOnce } from '../internal/logging';
 
 type InternalFileUploadProps = SomeRequired<
@@ -128,31 +128,41 @@ function InternalFileUpload(
       </div>
 
       {value.length > 0 ? (
-        <AbstractTokenGroup
+        <GenericTokenGroup
           alignment="vertical"
           items={value}
           getItemAttributes={(_, fileIndex) => ({
-            dismissLabel: i18nStrings.removeFileAriaLabel,
-            showDismiss: !fileNameEditing.has(fileIndex),
+            dismiss: !fileNameEditing.has(fileIndex)
+              ? {
+                  label: i18nStrings.removeFileAriaLabel,
+                  onDismiss: () => onFileRemove(fileIndex),
+                }
+              : undefined,
           })}
-          renderItem={(file, fileIndex) => (
-            <FileOption
-              file={file}
-              metadata={metadata}
-              i18nStrings={i18nStrings}
-              onNameEditStart={() => setFileNameEditing(new Map([[fileIndex, file.name]]))}
-              nameEditing={{
-                value: fileNameEditing.get(fileIndex) ?? file.name,
-                onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
-                onSubmit: () => {
-                  onFileNameUpdate(fileIndex, fileNameEditing.get(fileIndex) ?? file.name);
-                  setFileNameEditing(new Map());
-                },
-                onCancel: () => setFileNameEditing(new Map()),
-              }}
-            />
-          )}
-          onDismiss={index => onFileRemove(index)}
+          renderItem={(file, fileIndex) => {
+            const editingFileName = fileNameEditing.get(fileIndex);
+            return (
+              <FileOption
+                file={file}
+                metadata={metadata}
+                i18nStrings={i18nStrings}
+                onNameEditStart={() => setFileNameEditing(new Map([[fileIndex, file.name]]))}
+                nameEditing={
+                  editingFileName
+                    ? {
+                        value: editingFileName,
+                        onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
+                        onSubmit: () => {
+                          onFileNameUpdate(fileIndex, editingFileName);
+                          setFileNameEditing(new Map());
+                        },
+                        onCancel: () => setFileNameEditing(new Map()),
+                      }
+                    : undefined
+                }
+              />
+            );
+          }}
           limit={limit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,

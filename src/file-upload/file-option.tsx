@@ -26,7 +26,7 @@ interface FileOptionProps {
   metadata: FileMetadata;
   file: File;
   i18nStrings: FileUploadProps.I18nStrings;
-  nameEditing: FileNameEditingProps;
+  nameEditing?: FileNameEditingProps;
   onNameEditStart: () => void;
 }
 

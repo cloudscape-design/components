@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+
+import React, { forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { getBaseProps } from '../internal/base-component';
+import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 
 import SpaceBetween from '../space-between/internal';
 
@@ -14,29 +14,32 @@ import DismissButton from './dismiss-button';
 import SelectToggle from './toggle';
 
 import styles from './styles.css.js';
-import { SomeRequired } from '../internal/types';
 
-type AbstractTokenGroupProps<Item> = Omit<SomeRequired<TokenGroupProps, 'alignment'>, 'items' | 'onDismiss'> &
-  InternalBaseComponentProps & {
-    items: readonly Item[];
-    renderItem: (item: Item, index: number) => React.ReactNode;
-    getItemAttributes: (
-      item: Item,
-      index: number
-    ) => { disabled?: boolean; dismissLabel?: string; showDismiss?: boolean };
-    onDismiss?: (index: number, item: Item) => void;
+interface ItemAttributes {
+  disabled?: boolean;
+  dismiss?: {
+    label?: string;
+    onDismiss: () => void;
   };
+}
 
-export default function AbstractTokenGroup<Item>({
-  items,
-  renderItem,
-  getItemAttributes,
-  alignment,
-  onDismiss,
-  __internalRootRef,
-  limit,
-  ...props
-}: AbstractTokenGroupProps<Item>) {
+interface GenericTokenGroupProps<Item> extends BaseComponentProps {
+  items: readonly Item[];
+  limit?: number;
+  alignment: TokenGroupProps.Alignment;
+  renderItem: (item: Item, itemIndex: number) => React.ReactNode;
+  getItemAttributes: (item: Item, itemIndex: number) => ItemAttributes;
+  i18nStrings?: TokenGroupProps.I18nStrings;
+}
+
+export default forwardRef(GenericTokenGroup) as <T>(
+  props: GenericTokenGroupProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> }
+) => ReturnType<typeof GenericTokenGroup>;
+
+function GenericTokenGroup<Item>(
+  { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
+  ref: React.Ref<HTMLDivElement>
+) {
   const [expanded, setExpanded] = useState(false);
   const controlId = useUniqueId();
 
@@ -48,17 +51,13 @@ export default function AbstractTokenGroup<Item>({
   const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
 
   return (
-    <div {...baseProps} className={className} ref={__internalRootRef}>
+    <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
         <SpaceBetween id={controlId} direction={alignment} size="xs">
-          {slicedItems.map((item: Item, itemIndex) => (
-            <Token
-              key={itemIndex}
-              {...getItemAttributes(item, itemIndex)}
-              onDismiss={onDismiss && (() => onDismiss(itemIndex, item))}
-            >
+          {slicedItems.map((item, itemIndex) => (
+            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
               {renderItem(item, itemIndex)}
-            </Token>
+            </GenericToken>
           ))}
         </SpaceBetween>
       )}
@@ -76,24 +75,18 @@ export default function AbstractTokenGroup<Item>({
   );
 }
 
-interface TokenProps {
-  disabled?: boolean;
-  dismissLabel?: string;
-  showDismiss?: boolean;
+interface GenericTokenProps extends ItemAttributes {
   children: React.ReactNode;
-  onDismiss?: () => void;
 }
 
-export function Token({ disabled, dismissLabel, showDismiss, onDismiss, children }: TokenProps) {
+function GenericToken({ disabled, dismiss, children }: GenericTokenProps) {
   return (
     <div
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >
       {children}
-      {showDismiss && onDismiss && (
-        <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />
-      )}
+      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
     </div>
   );
 }
