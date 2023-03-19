@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, ForwardedRef, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-import { FileNameEditingProps, FileOption } from './file-option';
+import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalButton from '../button/internal';
@@ -60,50 +60,30 @@ function InternalFileUpload(
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleButtonClick = () => fileInputRef.current?.click();
+  const onUploadButtonClick = () => fileInputRef.current?.click();
 
-  const handleChange = useCallback(
-    ({ target }: ChangeEvent<HTMLInputElement>) => {
-      const currentFiles = [...value];
-      const newFiles = target.files ? Array.from(target.files) : [];
-      const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
-      fireNonCancelableEvent(onChange, { value: newValue });
-    },
-    [value, multiple, onChange]
-  );
-
-  const handleDismiss = useCallback(
-    (index: number) => {
-      if (onChange) {
-        fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== index) });
-      }
-    },
-    [value, onChange]
-  );
-
-  const [editingFileIndex, setEditingFileIndex] = useState(-1);
-  const [editingFileName, setEditingFileName] = useState<null | string>(null);
-  const editingProps: FileNameEditingProps = {
-    editingFileName,
-    onNameChange: (fileName: string) => setEditingFileName(fileName),
-    onNameEditStart: (file: File) => {
-      const files = value instanceof File ? [value] : Array.isArray(value) ? value : [];
-      setEditingFileIndex(files.indexOf(file));
-      setEditingFileName(file.name);
-    },
-    onNameEditSubmit: () => {
-      const files = [...value];
-      const updated = new File([files[editingFileIndex]], editingFileName!);
-      files.splice(editingFileIndex, 1, updated);
-      fireNonCancelableEvent(onChange, { value: files });
-      setEditingFileName(null);
-      setEditingFileIndex(-1);
-    },
-    onNameEditCancel: () => {
-      setEditingFileName(null);
-      setEditingFileIndex(-1);
-    },
+  const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const currentFiles = [...value];
+    const newFiles = target.files ? Array.from(target.files) : [];
+    const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
+    fireNonCancelableEvent(onChange, { value: newValue });
   };
+
+  const onFileRemove = (removeFileIndex: number) => {
+    fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== removeFileIndex) });
+  };
+
+  const onFileNameUpdate = (fileIndex: number, fileName: string) => {
+    if (value[fileIndex].name === fileName) {
+      return;
+    }
+    const files = [...value];
+    const updated = new File([files[fileIndex]], fileName);
+    files.splice(fileIndex, 1, updated);
+    fireNonCancelableEvent(onChange, { value: files });
+  };
+
+  const [fileNameEditing, setFileNameEditing] = useState(new Map<number, string>());
 
   const nativeAttributes: Record<string, any> = {
     'aria-labelledby': formFieldContext.ariaLabelledby,
@@ -129,7 +109,7 @@ function InternalFileUpload(
           id={controlId}
           iconName="upload"
           formAction="none"
-          onClick={handleButtonClick}
+          onClick={onUploadButtonClick}
           className={styles['upload-button']}
           __nativeAttributes={nativeAttributes}
         >
@@ -142,7 +122,7 @@ function InternalFileUpload(
           hidden={true}
           multiple={multiple}
           accept={accept}
-          onChange={handleChange}
+          onChange={onFileInputChange}
           className={styles['upload-input']}
         />
       </div>
@@ -151,20 +131,28 @@ function InternalFileUpload(
         <AbstractTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={(_, itemIndex) => ({
+          getItemAttributes={(_, fileIndex) => ({
             dismissLabel: i18nStrings.removeFileAriaLabel,
-            showDismiss: itemIndex !== editingFileIndex,
+            showDismiss: !fileNameEditing.has(fileIndex),
           })}
-          renderItem={(item, itemIndex) => (
+          renderItem={(file, fileIndex) => (
             <FileOption
-              file={item}
+              file={file}
               metadata={metadata}
               i18nStrings={i18nStrings}
-              {...editingProps}
-              editingFileName={itemIndex === editingFileIndex ? editingProps.editingFileName : null}
+              onNameEditStart={() => setFileNameEditing(new Map([[fileIndex, file.name]]))}
+              nameEditing={{
+                value: fileNameEditing.get(fileIndex) ?? file.name,
+                onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
+                onSubmit: () => {
+                  onFileNameUpdate(fileIndex, fileNameEditing.get(fileIndex) ?? file.name);
+                  setFileNameEditing(new Map());
+                },
+                onCancel: () => setFileNameEditing(new Map()),
+              }}
             />
           )}
-          onDismiss={index => handleDismiss(index)}
+          onDismiss={index => onFileRemove(index)}
           limit={limit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,

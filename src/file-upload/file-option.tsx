@@ -15,29 +15,27 @@ import clsx from 'clsx';
 import { KeyCode } from '../internal/keycode';
 import { BaseKeyDetail } from '../internal/events';
 
-export interface FileNameEditingProps {
-  editingFileName: null | string;
-  onNameChange: (fileName: string) => void;
-  onNameEditStart: (file: File) => void;
-  onNameEditSubmit: () => void;
-  onNameEditCancel: () => void;
+interface FileNameEditingProps {
+  value: string;
+  onChange: (fileName: string) => void;
+  onSubmit: () => void;
+  onCancel: () => void;
 }
 
-interface FileOptionProps extends FileNameEditingProps {
+interface FileOptionProps {
   metadata: FileMetadata;
   file: File;
   i18nStrings: FileUploadProps.I18nStrings;
+  nameEditing: FileNameEditingProps;
+  onNameEditStart: () => void;
 }
 
 export const FileOption: React.FC<FileOptionProps> = ({
   metadata,
   file,
   i18nStrings,
-  editingFileName,
-  onNameChange,
+  nameEditing,
   onNameEditStart,
-  onNameEditSubmit,
-  onNameEditCancel,
 }: FileOptionProps) => {
   const thumbnail: LegacyRef<HTMLImageElement> = useRef(null);
   const [isNameEditFocused, setNameEditFocused] = useState(false);
@@ -60,11 +58,10 @@ export const FileOption: React.FC<FileOptionProps> = ({
   const onFileNameEditInputKeyDown = (event: CustomEvent<BaseKeyDetail>) => {
     if (event.detail.keyCode === KeyCode.escape) {
       event.preventDefault();
-      onNameEditCancel();
+      nameEditing?.onCancel();
     }
   };
 
-  const isEditing = editingFileName !== null;
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFileSizeFormat;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultLastModifiedFormat;
 
@@ -84,24 +81,24 @@ export const FileOption: React.FC<FileOptionProps> = ({
             <div
               className={clsx(
                 styles['file-option-name'],
-                isEditing && styles['file-name-edit-active'],
+                nameEditing && styles['file-name-edit-active'],
                 isNameEditFocused && styles['file-name-edit-focused']
               )}
-              onClick={() => !isEditing && onNameEditStart(file)}
+              onClick={() => !nameEditing && onNameEditStart()}
               onFocus={() => setNameEditFocused(true)}
               onBlur={event => {
                 setNameEditFocused(false);
 
-                if (isEditing && !fileOptionRef.current!.contains(event.relatedTarget)) {
-                  onNameEditCancel();
+                if (nameEditing && !fileOptionRef.current!.contains(event.relatedTarget)) {
+                  nameEditing.onCancel();
                 }
               }}
             >
-              {isEditing ? (
+              {nameEditing ? (
                 <div className={styles['file-option-name-input-container']}>
                   <InternalInput
-                    value={editingFileName}
-                    onChange={event => onNameChange(event.detail.value)}
+                    value={nameEditing.value}
+                    onChange={event => nameEditing.onChange(event.detail.value)}
                     spellcheck={false}
                     ariaLabel={i18nStrings.editFileNameInputAriaLabel}
                     className={styles['file-option-name-input']}
@@ -114,14 +111,14 @@ export const FileOption: React.FC<FileOptionProps> = ({
                 </div>
               )}
 
-              {isEditing ? (
+              {nameEditing ? (
                 <InternalSpaceBetween size="xxs" direction="horizontal">
                   <InternalButton
                     formAction="none"
                     iconName="close"
                     variant="inline-icon"
                     className={styles['file-option-name-edit-cancel']}
-                    onClick={onNameEditCancel}
+                    onClick={nameEditing.onCancel}
                     ariaLabel={i18nStrings.cancelFileNameEditAriaLabel}
                   />
                   <InternalButton
@@ -129,7 +126,7 @@ export const FileOption: React.FC<FileOptionProps> = ({
                     iconName="check"
                     variant="inline-icon"
                     className={styles['file-option-name-edit-submit']}
-                    onClick={onNameEditSubmit}
+                    onClick={nameEditing.onSubmit}
                     ariaLabel={i18nStrings.submitFileNameEditAriaLabel}
                   />
                 </InternalSpaceBetween>
