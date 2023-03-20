@@ -105,6 +105,7 @@ export default function FileUploadScenario() {
                 showFileType={true}
                 showFileSize={true}
                 showFileLastModified={true}
+                showFileThumbnail={true}
                 i18nStrings={i18nStrings}
               />
             </FormField>
