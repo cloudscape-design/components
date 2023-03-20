@@ -19,6 +19,20 @@
   /* used in test-utils */
 }
 
+.dropzone {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: awsui.$color-board-placeholder-active;
+  &-hovered {
+    background-color: awsui.$color-board-placeholder-hover;
+  }
+}
+
 .file-option {
   width: 100%;
   min-width: 0;

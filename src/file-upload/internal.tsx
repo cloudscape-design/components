@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useRef, useState } from 'react';
+import React, { ChangeEvent, ForwardedRef, useEffect, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -19,6 +19,8 @@ import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
 import GenericTokenGroup from '../token-group/generic-token-group';
 import { warnOnce } from '../internal/logging';
+import InternalIcon from '../icon/internal';
+import InternalBox from '../box/internal';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -122,6 +124,38 @@ function InternalFileUpload(
     nativeAttributes['aria-required'] = true;
   }
 
+  const [isDropzoneShown, setDropzoneShown] = useState(false);
+  const [isDropzoneHovered, setDropzoneHovered] = useState(false);
+
+  useEffect(() => {
+    let dragTimer: any = null;
+
+    const onDragOver = (event: DragEvent) => {
+      const dt = event.dataTransfer;
+      if (dt && dt.types && dt.types.indexOf('Files') !== -1) {
+        setDropzoneShown(true);
+        window.clearTimeout(dragTimer);
+      }
+    };
+
+    const onDragLeave = () => {
+      dragTimer = setTimeout(() => {
+        setDropzoneShown(false);
+      }, 25);
+    };
+
+    document.addEventListener('dragover', onDragOver);
+    document.addEventListener('dragleave', onDragLeave);
+    document.addEventListener('drop', onDragLeave);
+
+    return () => {
+      clearTimeout(dragTimer);
+      document.removeEventListener('dragover', onDragOver);
+      document.removeEventListener('dragleave', onDragLeave);
+      document.removeEventListener('drop', onDragLeave);
+    };
+  }, []);
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -130,18 +164,6 @@ function InternalFileUpload(
       __internalRootRef={__internalRootRef}
     >
       <div>
-        <InternalButton
-          ref={ref}
-          id={controlId}
-          iconName="upload"
-          formAction="none"
-          onClick={onUploadButtonClick}
-          className={styles['upload-button']}
-          __nativeAttributes={nativeAttributes}
-        >
-          {i18nStrings.uploadButtonText(multiple)}
-        </InternalButton>
-
         <input
           ref={fileInputRef}
           type="file"
@@ -151,6 +173,73 @@ function InternalFileUpload(
           onChange={onFileInputChange}
           className={styles['upload-input']}
         />
+
+        {isDropzoneShown ? (
+          <div
+            className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
+            onDragOver={event => {
+              setDropzoneHovered(true);
+              event.preventDefault();
+            }}
+            onDragLeave={() => setDropzoneHovered(false)}
+            onDrop={event => {
+              // Prevent default behavior (Prevent file from being opened)
+              event.preventDefault();
+
+              const newFiles: File[] = [];
+
+              if (event.dataTransfer.items) {
+                // Use DataTransferItemList interface to access the file(s)
+                [...(event.dataTransfer.items as any)].forEach(item => {
+                  // If dropped items aren't files, reject them
+                  if (item.kind === 'file') {
+                    newFiles.push(item.getAsFile());
+                  }
+                });
+              } else {
+                // Use DataTransfer interface to access the file(s)
+                [...(event.dataTransfer.files as any)].forEach(file => {
+                  newFiles.push(file);
+                });
+              }
+
+              const currentFiles = [...value];
+              const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
+              fireNonCancelableEvent(onChange, { value: newValue });
+
+              setDropzoneHovered(false);
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+              }}
+            >
+              <InternalBox color={isDropzoneHovered ? 'text-status-info' : 'text-body-secondary'}>
+                <InternalIcon name="file" />
+              </InternalBox>
+              <InternalBox color={isDropzoneHovered ? 'text-status-info' : 'text-body-secondary'}>
+                Drop files to upload
+              </InternalBox>
+            </div>
+          </div>
+        ) : (
+          <InternalButton
+            ref={ref}
+            id={controlId}
+            iconName="upload"
+            formAction="none"
+            onClick={onUploadButtonClick}
+            className={styles['upload-button']}
+            __nativeAttributes={nativeAttributes}
+          >
+            {i18nStrings.uploadButtonText(multiple)}
+          </InternalButton>
+        )}
       </div>
 
       {value.length > 0 ? (
