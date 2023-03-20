@@ -84,7 +84,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
-      fireNonCancelableEvent(onSelect, { value });
+      fireNonCancelableEvent(onSelect, {
+        value,
+        selectedOption: option.type !== 'use-entered' ? option.option : undefined,
+      });
       autosuggestInputRef.current?.close();
     },
   });

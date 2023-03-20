@@ -1319,6 +1319,11 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
         "name": "AutosuggestProps.SelectDetail",
         "properties": Array [
           Object {
+            "name": "selectedOption",
+            "optional": true,
+            "type": "AutosuggestProps.Option",
+          },
+          Object {
             "name": "value",
             "optional": false,
             "type": "string",
