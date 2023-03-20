@@ -41,7 +41,7 @@ export function SortableItem({
   };
 
   return (
-    <div {...className('option')}>
+    <div className={styles['content-display-option']}>
       <div
         ref={setNodeRef}
         className={clsx(

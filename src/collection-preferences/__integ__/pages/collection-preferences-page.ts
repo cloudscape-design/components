@@ -12,10 +12,10 @@ export default class CollectionPreferencesPageObject extends BasePageObject {
   }
 
   async containsOptionsInOrder(options: string[]) {
-    const text = await this.getText(
-      this.wrapper.findModal().findVisibleContentPreference().findOptionsGroups().toSelector()
+    const texts = await this.getElementsText(
+      this.wrapper.findModal().findContentDisplayPreference().findOptions().toSelector()
     );
-    return text.includes(options.join('\n'));
+    return texts.join(`\n`).includes(options.join('\n'));
   }
 
   focusDragHandle(index = 0) {
