@@ -173,6 +173,7 @@ function InternalFileUpload(
           accept={accept}
           onChange={onFileInputChange}
           className={styles['upload-input']}
+          value=""
         />
 
         {isDropzoneShown ? (

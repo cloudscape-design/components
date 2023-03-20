@@ -144,7 +144,7 @@ export default function FileUploadScenario() {
                 showFileLastModified={true}
                 showFileThumbnail={true}
                 i18nStrings={i18nStrings}
-                fileProps={contractFileErrors.map(error => ({ status: error ? 'error' : 'success' }))}
+                fileProps={contractFileErrors.map(valid => ({ status: valid ? 'success' : 'error' }))}
               />
             </FormField>
           </SpaceBetween>
