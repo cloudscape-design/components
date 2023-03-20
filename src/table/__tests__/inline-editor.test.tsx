@@ -29,6 +29,7 @@ const TestComponent = () => {
     editConfig: {
       ariaLabel: 'test-input',
       errorIconAriaLabel: 'error-icon',
+      constraintText: 'Requirement',
       validation: () => (thereBeErrors ? 'there be errors' : undefined),
       editingCell: (item: any, { currentValue, setValue }: TableProps.CellContext<string>) => (
         <input value={currentValue ?? item.test} onChange={() => setValue('test')} />
@@ -146,5 +147,11 @@ describe('InlineEditor', () => {
       expect(button.findLoadingIndicator()).toBeNull();
       expect(button).not.toHaveAttribute('disabled');
     });
+  });
+
+  it('should show constraint text', () => {
+    const { wrapper } = renderComponent(<TestComponent />);
+
+    expect(wrapper.findFormField()?.findConstraint()?.getElement()).toHaveTextContent('Requirement');
   });
 });
