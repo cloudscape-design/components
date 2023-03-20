@@ -55,8 +55,7 @@ export default function ContentDisplayPreference({
   );
 
   const onToggle = (id: string) => {
-    const visible = isVisible(id, value);
-    return value.map(item => (item.id === id ? { ...item, visible } : item));
+    onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id, value) } : item)));
   };
 
   const [isDragging, setIsDragging] = useState(false);
