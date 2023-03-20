@@ -70,6 +70,19 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * You must set the current value in the `preferences.contentDensity` property.
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
+
+  /**
+   * Configures the sticky columns preference.
+   *
+   * You can set it for both left and right columns.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the label for each radio group.
+   * - `description` (string) - Specifies the text displayed below each radio group label.
+   *
+   * You must set the current value in the `preferences.stickyColumns` property.
+   */
+  stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
   /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
@@ -148,6 +161,7 @@ export namespace CollectionPreferencesProps {
     wrapLines?: boolean;
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
+    stickyColumns?: { left?: number; right?: number };
     visibleContent?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
@@ -191,5 +205,24 @@ export namespace CollectionPreferencesProps {
   export interface ContentDensityPreference {
     label: string;
     description: string;
+  }
+
+  export interface StickyColumnsPreference {
+    leftColumns?: {
+      title: string;
+      description: string;
+      options: ReadonlyArray<{
+        label: string;
+        value: number;
+      }>;
+    };
+    rightColumns?: {
+      title: string;
+      description: string;
+      options: ReadonlyArray<{
+        label: string;
+        value: number;
+      }>;
+    };
   }
 }

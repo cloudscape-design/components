@@ -440,16 +440,15 @@ const InternalTable = forwardRef(
                             if (!stickySide || isMobile || totalStickyColumns >= visibleColumnDefinitions.length) {
                               return {};
                             }
-
                             const boxShadow = isLastLeftStickyColumn
-                              ? '2px 0px 4px rgba(0, 0, 0, 0.25)'
+                              ? '4px 0px 20px 1px rgba(0, 7, 22, 0.1)'
                               : isLastRightStickyColumn
-                              ? '-2px 0px 4px rgba(0, 0, 0, 0.25)'
+                              ? '-4px 0px 4px 1px rgba(0, 7, 22, 0.1)'
                               : 'none';
                             const clipPath = isLastLeftStickyColumn
-                              ? 'inset(0 -8px 0 0)'
+                              ? 'inset(0 -24px 0 0)'
                               : isLastRightStickyColumn
-                              ? 'inset(0 0 0 -8px)'
+                              ? 'inset(0 0 0 -24px)'
                               : 'none';
 
                             return {

@@ -10,6 +10,7 @@ import Select, { SelectProps } from '~components/select';
 import Box from '~components/box';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
+import CollectionPreferences from '~components/collection-preferences';
 
 export default () => {
   const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
@@ -179,11 +180,38 @@ export default () => {
         />
 
         <Table
+          resizableColumns={true}
           stickyColumns={stickyColumns}
           stickyHeader={true}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              stickyColumnsPreference={{
+                leftColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 1 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                rightColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
           header={<Header>Table with resizable columns</Header>}
         />
         {/* <Table

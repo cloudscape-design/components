@@ -202,6 +202,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specifies the number of columns that should be sticky either on the `left` or `right` sides of the table.
    *
+   * We support having a maximum of two left and one right column sticky. Other values will be ignored.
+   *
    * Use it in conjunction with the sticky columns preference of the [collection preferences](/components/collection-preferences/) component.
    *
    */
@@ -362,8 +364,8 @@ export namespace TableProps {
   export type SelectionType = 'single' | 'multi';
 
   export interface StickyColumns {
-    left?: 0 | 1 | 2;
-    right?: 0 | 1;
+    left?: number;
+    right?: number;
   }
 
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
