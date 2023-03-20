@@ -147,10 +147,14 @@ const InternalTable = forwardRef(
       );
     }, [visibleColumnsLength]);
     useEffect(() => {
-      if (!hasStickyColumns()) {
+      //  first checks whether there are any sticky columns to calculate the widths for.
+      // If there are none, the effect returns and does nothing.
+      if (!(Boolean(stickyColumns?.left) || Boolean(stickyColumns?.right))) {
         return;
       }
 
+      // calculates the width of the columns to the left and right of the sticky columns
+      // by iterating over the array of references to each table cell.
       let leftWidthsArray = tableCellRefs.map(ref => ref?.current?.previousSibling?.offsetWidth);
       leftWidthsArray = leftWidthsArray.filter(x => x);
       leftWidthsArray = leftWidthsArray.map((elem, index) =>
@@ -164,7 +168,7 @@ const InternalTable = forwardRef(
         .reverse();
 
       setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
-    }, [tableCellRefs]);
+    }, [tableCellRefs, stickyColumns]);
 
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
@@ -187,10 +191,6 @@ const InternalTable = forwardRef(
         checkSortingState(columnDefinitions, sortingColumn.sortingComparator);
       }
     }
-
-    const hasStickyColumns = () => {
-      return Boolean(stickyColumns?.left) || Boolean(stickyColumns?.right);
-    };
 
     const isVisualRefresh = useVisualRefresh();
     const computedVariant = isVisualRefresh
@@ -442,9 +442,14 @@ const InternalTable = forwardRef(
                             }
 
                             const boxShadow = isLastLeftStickyColumn
-                              ? '3px 0px 3px rgba(0, 7, 22, 0.25)'
+                              ? '2px 0px 4px rgba(0, 0, 0, 0.25)'
                               : isLastRightStickyColumn
-                              ? '-3px 0px 3px rgba(0, 7, 22, 0.25)'
+                              ? '-2px 0px 4px rgba(0, 0, 0, 0.25)'
+                              : 'none';
+                            const clipPath = isLastLeftStickyColumn
+                              ? 'inset(0 -8px 0 0)'
+                              : isLastRightStickyColumn
+                              ? 'inset(0 0 0 -8px)'
                               : 'none';
 
                             return {
@@ -452,6 +457,7 @@ const InternalTable = forwardRef(
                                 stickySide === 'right' ? cellWidths.right[colIndex] : cellWidths.left[colIndex]
                               }px`,
                               boxShadow,
+                              clipPath,
                             };
                           };
                           return (

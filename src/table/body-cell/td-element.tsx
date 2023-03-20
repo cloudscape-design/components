@@ -47,7 +47,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
-    console.log('CLASSNAME!', className);
     return (
       <td
         style={style}

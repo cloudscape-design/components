@@ -92,10 +92,10 @@ function StickyHeader(
           focusedComponent={focusedComponent}
           stickyColumns={stickyColumns}
           cellWidths={cellWidths}
-          ref={secondaryTheadRef}
           sticky={true}
           stuck={isStuck}
           {...theadProps}
+          ref={secondaryTheadRef}
         />
       </table>
     </div>

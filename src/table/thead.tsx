@@ -75,7 +75,6 @@ const Thead = React.forwardRef(
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
     const isVisualRefresh = useVisualRefresh();
-
     const headerCellClass = clsx(
       headerCellStyles['header-cell'],
       headerCellStyles[`header-cell-variant-${variant}`],
