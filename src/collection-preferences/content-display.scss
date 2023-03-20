@@ -31,46 +31,11 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   position: relative;
 }
 
-.content-display-group-label {
-  color: awsui.$color-text-group-label;
-  padding-bottom: awsui.$space-xs;
-}
-
 .content-display-option {
   background: awsui.$color-board-placeholder-hover;
 }
 
-.content-display-option-content {
-  border-top: $border;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: start;
-  padding-top: awsui.$space-xs;
+.content-display-group-label {
+  color: awsui.$color-text-group-label;
   padding-bottom: awsui.$space-xs;
-  padding-right: 0;
-  &:last-child {
-    border-bottom: none;
-  }
-  &:not(.draggable) {
-    padding-left: awsui.$space-scaled-l;
-  }
-  &.draggable {
-    padding-left: 0;
-    padding-right: awsui.$space-scaled-xxs;
-    background-color: awsui.$color-background-container-content;
-    z-index: 1;
-    &.dragged {
-      position: relative;
-      z-index: 2;
-      box-shadow: awsui.$shadow-container-active;
-    }
-  }
-}
-
-.content-display-option-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: awsui.$space-l;
-  flex-grow: 1;
 }

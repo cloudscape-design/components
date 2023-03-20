@@ -1,0 +1,45 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+
+.sortable-item-option {
+  background: awsui.$color-board-placeholder-hover;
+}
+
+.sortable-item-content {
+  border-top: $border;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: start;
+  padding-top: awsui.$space-xs;
+  padding-bottom: awsui.$space-xs;
+  padding-right: 0;
+  &:last-child {
+    border-bottom: none;
+  }
+  &:not(.draggable) {
+    padding-left: awsui.$space-scaled-l;
+  }
+  &.draggable {
+    padding-left: 0;
+    padding-right: awsui.$space-scaled-xxs;
+    background-color: awsui.$color-background-container-content;
+    z-index: 1;
+    &.dragged {
+      position: relative;
+      z-index: 2;
+      box-shadow: awsui.$shadow-container-active;
+    }
+  }
+}
+
+.sortable-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: awsui.$space-l;
+  flex-grow: 1;
+}

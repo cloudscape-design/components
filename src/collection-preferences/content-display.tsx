@@ -14,10 +14,16 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
-import { className, isEscape } from './utils';
+import { isEscape } from './utils';
+
+const componentPrefix = 'content-display';
 
 const isVisible = (id: string, contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) =>
   !!contentDisplay.find(item => item.id === id)?.visible;
+
+const className = (suffix: string) => ({
+  className: styles[`${componentPrefix}-${suffix}`],
+});
 
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) => void;
@@ -40,7 +46,7 @@ export default function ContentDisplayPreference({
   dragHandleAriaDescription,
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
-  const idPrefix = useUniqueId('content-display');
+  const idPrefix = useUniqueId(componentPrefix);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -74,7 +80,7 @@ export default function ContentDisplayPreference({
   const sortedOptions = getSortedOptions({ options, order: value });
 
   return (
-    <div className={styles['content-display']}>
+    <div className={styles[componentPrefix]}>
       <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
       </h3>

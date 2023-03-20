@@ -6,6 +6,8 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @import './visible-content';
+@import './content-display';
+@import './sortable-item';
 
 .root,
 .modal-root,

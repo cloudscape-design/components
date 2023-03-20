@@ -11,8 +11,7 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
 .visible-content,
 .visible-content-toggle,
 .visible-content-groups,
-.visible-content-group,
-.visible-content-option {
+.visible-content-group {
   /* used in test-utils */
 }
 
@@ -20,54 +19,23 @@ $border: awsui.$border-divider-list-width solid awsui.$color-border-divider-defa
   @include styles.font-label;
   color: awsui.$color-text-form-label;
   margin: 0;
-  &:not(.has-description) {
-    margin-bottom: awsui.$space-scaled-l;
-  }
-}
-
-.visible-content-description {
-  @include styles.form-control-description;
-  margin-top: awsui.$space-scaled-xxxs;
-}
-
-.visible-content-group {
-  position: relative;
+  margin-bottom: awsui.$space-scaled-l;
 }
 
 .visible-content-group-label {
   color: awsui.$color-text-group-label;
   padding-bottom: awsui.$space-xs;
+  border-bottom: $border;
 }
 
 .visible-content-option {
-  background: awsui.$color-board-placeholder-hover;
-}
-
-.visible-content-option-content {
-  border-top: $border;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: start;
-  padding-top: awsui.$space-xs;
-  padding-bottom: awsui.$space-xs;
-  padding-right: 0;
+  padding: awsui.$space-xs 0px awsui.$space-xs awsui.$space-scaled-l;
+  border-bottom: $border;
   &:last-child {
     border-bottom: none;
-  }
-  &:not(.draggable) {
-    padding-left: awsui.$space-scaled-l;
-  }
-  &.draggable {
-    padding-left: 0;
-    padding-right: awsui.$space-scaled-xxs;
-    background-color: awsui.$color-background-container-content;
-    z-index: 1;
-    &.dragged {
-      position: relative;
-      z-index: 2;
-      box-shadow: awsui.$shadow-container-active;
-    }
   }
 }
 

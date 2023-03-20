@@ -7,8 +7,11 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import DragHandle from '../internal/drag-handle';
 import InternalToggle from '../toggle/internal';
-import { className } from './utils';
 import { CollectionPreferencesProps } from './interfaces';
+
+export const className = (suffix: string) => ({
+  className: styles[`sortable-item-${suffix}`],
+});
 
 export function SortableItem({
   dragHandleAriaLabel,
@@ -38,18 +41,18 @@ export function SortableItem({
   };
 
   return (
-    <div className={clsx(className('option').className)}>
+    <div {...className('option')}>
       <div
         ref={setNodeRef}
         className={clsx(
-          className('option-content').className,
+          className('content').className,
           reorderContent && styles.draggable,
           reorderContent && isDragging && styles.dragged
         )}
         style={style}
       >
         {reorderContent && <DragHandle attributes={dragHandleAttributes} listeners={listeners} />}
-        <label {...className('option-label')} htmlFor={labelId}>
+        <label {...className('label')} htmlFor={labelId}>
           {option.label}
         </label>
         <div {...className('toggle')}>
