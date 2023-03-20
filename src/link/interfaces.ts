@@ -73,8 +73,9 @@ export interface LinkProps extends BaseComponentProps {
 
   /**
    * Called when a link is clicked without any modifier keys.
-   * Use this event if you want to prevent default browser navigation
-   * (by calling `preventDefault`) and implement client-side routing yourself.
+   *
+   * If you want to implement client-side routing yourself,
+   * use this event and prevent default browser navigation (by calling `preventDefault`)
    */
   onFollow?: CancelableEventHandler<LinkProps.FollowDetail>;
 

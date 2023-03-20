@@ -7141,8 +7141,9 @@ Object {
     Object {
       "cancelable": true,
       "description": "Called when a link is clicked without any modifier keys.
-Use this event if you want to prevent default browser navigation
-(by calling \`preventDefault\`) and implement client-side routing yourself.",
+If you want to implement client-side routing yourself,
+use this event and prevent default browser navigation (by calling \`preventDefault\`)
+",
       "detailInlineType": Object {
         "name": "LinkProps.FollowDetail",
         "properties": Array [
