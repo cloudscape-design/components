@@ -39,6 +39,10 @@
         {
           "pattern": "./src/*/index.tsx",
           "message": "Disallowed import '{{ path }}'. Use the internal component for composition or the interface directly."
+        },
+        {
+          "pattern": "./src/*/index.js",
+          "message": "Disallowed import '{{ path }}'. Use the internal component for composition or the interface directly."
         }
       ]
     ],

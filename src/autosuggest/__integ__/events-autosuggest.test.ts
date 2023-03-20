@@ -25,7 +25,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
   );
 
   test(
-    'should allow entering spaces after selecting an item',
+    'should allow entering spaces after focusing a dropdown item',
     setupTest(async page => {
       await page.focusInput();
       await page.keys(['opt']);
@@ -102,7 +102,7 @@ describe.each<boolean>([false, true])('Autosuggest events (expandToViewport=%s)'
       await page.keys(['opt']);
       await page.clearEventList();
 
-      await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
+      await page.keys(['ArrowDown', 'Enter']);
       await page.focusOutsideInput();
       await page.assertEventsFired(['onChange', 'onBlur']);
     })

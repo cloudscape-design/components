@@ -34,7 +34,7 @@ jobs:
       - name: Generate reference images
         run: npm run test:visual reference
       - name: Upload reference artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: visual-regression-results
           path: |
@@ -48,8 +48,12 @@ jobs:
       - buildReference
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Download reference artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: visual-regression-results
           path: backstop
@@ -63,7 +67,7 @@ jobs:
       - name: Run visual regression tests
         run: npm run test:visual test
       - name: Upload results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: visual-regression-results

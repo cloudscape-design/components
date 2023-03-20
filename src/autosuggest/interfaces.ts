@@ -122,6 +122,7 @@ export namespace AutosuggestProps {
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;
+    selectedOption?: Option;
   }
 
   export interface ContainingOptionAndGroupString {

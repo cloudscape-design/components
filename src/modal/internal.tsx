@@ -14,19 +14,20 @@ import InternalHeader from '../header/internal';
 import Portal from '../internal/components/portal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { FormFieldContext } from '../internal/context/form-field-context';
 
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
+import { useInternalI18n } from '../internal/i18n/context';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
 export default function InternalModal({
   size,
   visible,
-  closeAriaLabel,
   header,
   children,
   footer,
@@ -40,6 +41,9 @@ export default function InternalModal({
   const headerId = `${rest.id || instanceUniqueId}-header`;
   const lastMouseDownElementRef = useRef<HTMLElement | null>(null);
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
+
+  const i18n = useInternalI18n('modal');
+  const closeAriaLabel = i18n('closeAriaLabel', rest.closeAriaLabel);
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
@@ -93,56 +97,58 @@ export default function InternalModal({
 
   return (
     <Portal container={modalRoot}>
-      <div
-        {...baseProps}
-        className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}
-        role="dialog"
-        aria-modal={true}
-        aria-labelledby={headerId}
-        onMouseDown={onOverlayMouseDown}
-        onClick={onOverlayClick}
-        ref={mergedRef}
-      >
-        <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
-          <div
-            className={clsx(
-              styles.dialog,
-              styles[size],
-              styles[`breakpoint-${breakpoint}`],
-              isRefresh && styles.refresh
-            )}
-            onKeyDown={escKeyHandler}
-            tabIndex={-1}
-          >
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <InternalHeader
-                  variant="h2"
-                  __disableActionsWrapping={true}
-                  actions={
-                    <InternalButton
-                      ariaLabel={closeAriaLabel}
-                      className={styles['dismiss-control']}
-                      variant="modal-dismiss"
-                      iconName="close"
-                      formAction="none"
-                      onClick={onCloseButtonClick}
-                    />
-                  }
-                >
-                  <span id={headerId} className={styles['header--text']}>
-                    {header}
-                  </span>
-                </InternalHeader>
+      <FormFieldContext.Provider value={{}}>
+        <div
+          {...baseProps}
+          className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}
+          role="dialog"
+          aria-modal={true}
+          aria-labelledby={headerId}
+          onMouseDown={onOverlayMouseDown}
+          onClick={onOverlayClick}
+          ref={mergedRef}
+        >
+          <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+            <div
+              className={clsx(
+                styles.dialog,
+                styles[size],
+                styles[`breakpoint-${breakpoint}`],
+                isRefresh && styles.refresh
+              )}
+              onKeyDown={escKeyHandler}
+              tabIndex={-1}
+            >
+              <div className={styles.container}>
+                <div className={styles.header}>
+                  <InternalHeader
+                    variant="h2"
+                    __disableActionsWrapping={true}
+                    actions={
+                      <InternalButton
+                        ariaLabel={closeAriaLabel}
+                        className={styles['dismiss-control']}
+                        variant="modal-dismiss"
+                        iconName="close"
+                        formAction="none"
+                        onClick={onCloseButtonClick}
+                      />
+                    }
+                  >
+                    <span id={headerId} className={styles['header--text']}>
+                      {header}
+                    </span>
+                  </InternalHeader>
+                </div>
+                <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
+                  {children}
+                </div>
+                {footer && <div className={styles.footer}>{footer}</div>}
               </div>
-              <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
-                {children}
-              </div>
-              {footer && <div className={styles.footer}>{footer}</div>}
             </div>
-          </div>
-        </FocusLock>
-      </div>
+          </FocusLock>
+        </div>
+      </FormFieldContext.Provider>
     </Portal>
   );
 }

@@ -15,7 +15,6 @@ export const componentName = 'Flashbar';
 
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({
-  i18nStrings,
   items,
   onItemsAdded,
   onItemsChanged,
@@ -72,7 +71,6 @@ export function useFlashbar({
 
   return {
     allItemsHaveId,
-    ariaLabel: i18nStrings?.ariaLabel,
     baseProps,
     breakpoint,
     isReducedMotion,

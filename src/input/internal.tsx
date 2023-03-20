@@ -14,6 +14,7 @@ import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import styles from './styles.css.js';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface InternalInputProps
   extends BaseComponentProps,
@@ -46,7 +47,7 @@ function InternalInput(
     inputMode,
     autoComplete = true,
     ariaLabel,
-    clearAriaLabel,
+    clearAriaLabel: clearAriaLabelOverride,
     name,
     value,
     placeholder,
@@ -81,6 +82,7 @@ function InternalInput(
   ref: Ref<HTMLInputElement>
 ) {
   const baseProps = getBaseProps(rest);
+  const i18n = useInternalI18n('input');
   const fireDelayedInput = useDebounceCallback((value: string) => fireNonCancelableEvent(__onDelayedInput, { value }));
 
   const handleChange = (value: string) => {
@@ -196,7 +198,7 @@ function InternalInput(
             formAction="none"
             iconName={__rightIcon}
             onClick={__onRightIconClick}
-            ariaLabel={clearAriaLabel}
+            ariaLabel={i18n('clearAriaLabel', clearAriaLabelOverride)}
             disabled={disabled}
           />
         </span>

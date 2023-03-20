@@ -130,10 +130,10 @@ describe('onSelect', () => {
     wrapper.focus();
     wrapper.selectSuggestion(1);
     expect(onChange).toHaveBeenCalledWith({ value: '1' });
-    expect(onSelect).toHaveBeenCalledWith({ value: '1' });
+    expect(onSelect).toHaveBeenCalledWith({ value: '1', selectedOption: defaultOptions[0] });
   });
 
-  test('should not select `enteredText` option', () => {
+  test('should select `enteredText` option', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
     const { wrapper } = renderAutosuggest(
@@ -145,10 +145,9 @@ describe('onSelect', () => {
       />
     );
     wrapper.focus();
-    expect(wrapper.findDropdown().findOpenDropdown()).toBeTruthy();
     wrapper.findEnteredTextOption()!.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
-    expect(onChange).not.toHaveBeenCalled();
-    expect(onSelect).not.toHaveBeenCalled();
+    expect(onChange).toHaveBeenCalledWith({ value: 'test' });
+    expect(onSelect).toHaveBeenCalledWith({ value: 'test', selectedOption: undefined });
     expect(wrapper.findDropdown().findOpenDropdown()).toBeFalsy();
   });
 });
@@ -311,7 +310,9 @@ describe('keyboard interactions', () => {
     wrapper.findNativeInput().keydown(KeyCode.down);
     wrapper.findNativeInput().keydown(KeyCode.enter);
     expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
-    expect(onSelect).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toBeCalledWith(
+      expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
+    );
   });
 
   test('closes dropdown on enter and opens it on arrow keys', () => {

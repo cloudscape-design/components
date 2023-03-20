@@ -82,11 +82,12 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filteringType,
     hideEnteredTextLabel: false,
     onSelectItem: (option: AutosuggestItem) => {
-      if (option.type !== 'use-entered') {
-        const value = option.value || '';
-        fireNonCancelableEvent(onChange, { value });
-        fireNonCancelableEvent(onSelect, { value });
-      }
+      const value = option.value || '';
+      fireNonCancelableEvent(onChange, { value });
+      fireNonCancelableEvent(onSelect, {
+        value,
+        selectedOption: option.type !== 'use-entered' ? option.option : undefined,
+      });
       autosuggestInputRef.current?.close();
     },
   });

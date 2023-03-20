@@ -1319,6 +1319,11 @@ Instead, use \`onSelect\` in combination with the \`onChange\` handler only as a
         "name": "AutosuggestProps.SelectDetail",
         "properties": Array [
           Object {
+            "name": "selectedOption",
+            "optional": true,
+            "type": "AutosuggestProps.Option",
+          },
+          Object {
             "name": "value",
             "optional": false,
             "type": "string",
@@ -5853,7 +5858,7 @@ If \`stackItems\` is set to \`true\`, it should also contain:
         "properties": Array [
           Object {
             "name": "ariaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -9518,17 +9523,17 @@ operations are communicated to the user in another way.",
         "properties": Array [
           Object {
             "name": "allPropertiesLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "applyActionText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "cancelActionText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -9538,22 +9543,22 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "clearFiltersText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "dismissAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "editTokenHeader",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "enteredTextLabel",
-            "optional": false,
+            "optional": true,
             "type": "AutosuggestProps.EnteredTextLabel",
           },
           Object {
@@ -9568,82 +9573,82 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "groupPropertiesText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "groupValuesText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operationAndText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operationOrText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorContainsText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorDoesNotContainText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorDoesNotEqualText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorEqualsText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorGreaterOrEqualText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorGreaterText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorLessOrEqualText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorLessText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "operatorsText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "propertyText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "removeTokenButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "(token: PropertyFilterProps.Token) => string",
           },
           Object {
@@ -9663,7 +9668,7 @@ operations are communicated to the user in another way.",
           },
           Object {
             "name": "valueText",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],

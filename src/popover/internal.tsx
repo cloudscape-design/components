@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
 import useFocusVisible from '../internal/hooks/focus-visible';
+import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
 import Portal from '../internal/components/portal';
@@ -18,6 +19,7 @@ import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/e
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export interface InternalPopoverProps extends PopoverProps, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
@@ -36,7 +38,6 @@ function InternalPopover(
     fixedWidth = false,
     triggerType = 'text',
     dismissButton = true,
-    dismissAriaLabel,
 
     children,
     header,
@@ -55,6 +56,9 @@ function InternalPopover(
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
+
+  const i18n = useInternalI18n('popover');
+  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
 
   const [visible, setVisible] = useState(false);
 
@@ -148,25 +152,27 @@ function InternalPopover(
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <div
-      {...baseProps}
-      className={clsx(styles.root, baseProps.className)}
-      ref={mergedRef}
-      onMouseDown={() => {
-        // Indicate there was a click inside popover recently, including nested portals.
-        clickFrameId.current = requestAnimationFrame(() => {
-          clickFrameId.current = null;
-        });
-      }}
-    >
-      {triggerType === 'text' ? (
-        <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
-          <span className={styles['trigger-inner-text']}>{children}</span>
-        </button>
-      ) : (
-        <span {...triggerProps}>{children}</span>
-      )}
-      {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-    </div>
+    <FormFieldContext.Provider value={{}}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, baseProps.className)}
+        ref={mergedRef}
+        onMouseDown={() => {
+          // Indicate there was a click inside popover recently, including nested portals.
+          clickFrameId.current = requestAnimationFrame(() => {
+            clickFrameId.current = null;
+          });
+        }}
+      >
+        {triggerType === 'text' ? (
+          <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
+            <span className={styles['trigger-inner-text']}>{children}</span>
+          </button>
+        ) : (
+          <span {...triggerProps}>{children}</span>
+        )}
+        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+      </div>
+    </FormFieldContext.Provider>
   );
 }
