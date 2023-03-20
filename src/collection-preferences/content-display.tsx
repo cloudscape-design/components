@@ -28,7 +28,10 @@ export default function ContentDisplayPreference({
   title,
   label,
   options,
-  value = [],
+  value = options.map(({ id }) => ({
+    id,
+    visible: true,
+  })),
   onChange,
   liveAnnouncementDndStarted,
   liveAnnouncementDndItemReordered,
@@ -68,12 +71,14 @@ export default function ContentDisplayPreference({
     }
   }, [isDragging]);
 
+  const sortedOptions = getSortedOptions({ options, order: value });
+
   return (
     <div className={styles['content-display']}>
       <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
       </h3>
-      {label && <p {...className('label')}>{label}</p>}
+      <p {...className('label')}>{label}</p>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -81,7 +86,7 @@ export default function ContentDisplayPreference({
           announcements: {
             onDragStart({ active }) {
               if (active && liveAnnouncementDndStarted) {
-                const index = getSortedOptions({ options, order: value }).findIndex(option => option.id === active.id);
+                const index = sortedOptions.findIndex(option => option.id === active.id);
                 return liveAnnouncementDndStarted(index + 1, options.length);
               }
             },
@@ -93,20 +98,13 @@ export default function ContentDisplayPreference({
               }
 
               if (over && liveAnnouncementDndItemReordered) {
-                const sortedOptions = getSortedOptions({
-                  options,
-                  order: value,
-                });
                 const finalIndex = sortedOptions.findIndex(option => option.id === over.id);
                 return liveAnnouncementDndItemReordered(finalIndex + 1, options.length);
               }
             },
             onDragEnd({ active, over }) {
               if (over && liveAnnouncementDndItemCommitted) {
-                const initialIndex = getSortedOptions({
-                  options: options,
-                  order: value,
-                }).findIndex(option => option.id === active.id);
+                const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
                 const finalIndex = options.findIndex(option => option.id === over.id);
                 return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, options.length);
               }
@@ -130,11 +128,8 @@ export default function ContentDisplayPreference({
         }}
       >
         <div onKeyDown={handleKeyDown} {...className('group-list')}>
-          <SortableContext
-            items={getSortedOptions({ options: options, order: value }).map(({ id }) => id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {getSortedOptions({ options: options, order: value }).map(option => {
+          <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
+            {sortedOptions.map(option => {
               const labelId = `${idPrefix}-${option.id}`;
               return (
                 <SortableItem
