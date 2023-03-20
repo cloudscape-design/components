@@ -224,7 +224,7 @@ function InternalFileUpload(
                 <InternalIcon name="file" />
               </InternalBox>
               <InternalBox color={isDropzoneHovered ? 'text-status-info' : 'text-body-secondary'}>
-                Drop files to upload
+                {i18nStrings.dropzoneText(multiple)}
               </InternalBox>
             </div>
           </div>

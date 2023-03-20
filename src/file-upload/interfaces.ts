@@ -90,6 +90,7 @@ export namespace FileUploadProps {
 
   export interface I18nStrings {
     uploadButtonText: (multiple: boolean) => string;
+    dropzoneText: (multiple: boolean) => string;
     removeFileAriaLabel: string;
     activateFileNameEditAriaLabel: string;
     submitFileNameEditAriaLabel: string;
