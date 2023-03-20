@@ -84,7 +84,13 @@ export function InlineEditor<ItemType>({
   }, [__onRender]);
 
   // asserting non-undefined editConfig here because this component is unreachable otherwise
-  const { ariaLabel = undefined, validation = noop, errorIconAriaLabel, editingCell } = column.editConfig!;
+  const {
+    ariaLabel = undefined,
+    validation = noop,
+    errorIconAriaLabel,
+    constraintText,
+    editingCell,
+  } = column.editConfig!;
 
   return (
     <form
@@ -96,6 +102,7 @@ export function InlineEditor<ItemType>({
       <FormField
         stretch={true}
         label={ariaLabel}
+        constraintText={constraintText}
         __hideLabel={true}
         __disableGutters={true}
         __useReactAutofocus={true}
