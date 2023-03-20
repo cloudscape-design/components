@@ -10,7 +10,7 @@ import Select, { SelectProps } from '~components/select';
 import Box from '~components/box';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
-import CollectionPreferences from '~components/collection-preferences';
+import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 
 export default () => {
   const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
@@ -128,6 +128,9 @@ export default () => {
     label: 'Last visible column',
     value: '1',
   });
+  const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
+    stickyColumns: { left: 1, right: 1 },
+  });
 
   const [stickyColumns, setStickyColumns] = React.useState<TableProps.StickyColumns>({ left: 1, right: 1 });
 
@@ -136,7 +139,8 @@ export default () => {
       left: Number(leftSticky.value) as unknown as 0 | 1 | 2,
       right: Number(rightSticky.value) as unknown as 0 | 1,
     });
-  }, [leftSticky, rightSticky]);
+    console.log(preferences);
+  }, [leftSticky, rightSticky, preferences]);
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
@@ -181,7 +185,7 @@ export default () => {
 
         <Table
           resizableColumns={true}
-          stickyColumns={stickyColumns}
+          stickyColumns={preferences.stickyColumns}
           stickyHeader={true}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
@@ -191,12 +195,14 @@ export default () => {
               title="Preferences"
               confirmLabel="Confirm"
               cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
               stickyColumnsPreference={{
                 leftColumns: {
                   title: 'Stick first visible column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
-                    { label: 'None', value: 1 },
+                    { label: 'None', value: 0 },
                     { label: 'First visible column', value: 1 },
                     { label: 'First two visible columns', value: 2 },
                   ],

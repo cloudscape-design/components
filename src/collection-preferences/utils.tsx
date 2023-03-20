@@ -165,7 +165,7 @@ export const StickyColumnsPreference = ({
               className={styles[`sticky-columns-${item.side}-options`]}
               value={`${value[item.side]}`}
               items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
-              onChange={({ detail }) => onChange({ ...value, [item.side]: detail.value })}
+              onChange={({ detail }) => onChange({ ...value, [item.side]: Number(detail.value) })}
             />
           </InternalFormField>
         );
