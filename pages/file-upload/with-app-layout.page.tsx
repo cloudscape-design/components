@@ -59,6 +59,7 @@ export default function FileUploadScenario() {
 
   const [contractFiles, setContractFiles] = useState<File[]>([]);
   const [contractsError, setContractsError] = useState<string | null>(null);
+  const [contractFileErrors, setContractFileErrors] = useState<boolean[]>([]);
 
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -107,6 +108,7 @@ export default function FileUploadScenario() {
                 showFileLastModified={true}
                 showFileThumbnail={true}
                 i18nStrings={i18nStrings}
+                fileProps={[{ status: profileImageError ? 'error' : 'success' }]}
               />
             </FormField>
 
@@ -134,6 +136,7 @@ export default function FileUploadScenario() {
                 onChange={event => {
                   setContractFiles(event.detail.value);
                   setContractsError(validateContractFiles(event.detail.value));
+                  setContractFileErrors(validateContractsPerFile(event.detail.value));
                 }}
                 accept="application/pdf, image/png, image/jpeg"
                 showFileType={true}
@@ -141,6 +144,7 @@ export default function FileUploadScenario() {
                 showFileLastModified={true}
                 showFileThumbnail={true}
                 i18nStrings={i18nStrings}
+                fileProps={contractFileErrors.map(error => ({ status: error ? 'error' : 'success' }))}
               />
             </FormField>
           </SpaceBetween>
@@ -170,6 +174,16 @@ function validateContractFiles(files: File[]): null | string {
     validateFiles(files, file => validateFileExtensions(file, ['pdf'])) ??
     validateFiles(files, validateContractFilePattern) ??
     null
+  );
+}
+
+function validateContractsPerFile(files: File[]): boolean[] {
+  return files.map(
+    file =>
+      file.size <= 250 * KB &&
+      !validateFileNameNotEmpty(file) &&
+      !validateFileExtensions(file, ['pdf']) &&
+      !validateContractFilePattern(file)
   );
 }
 

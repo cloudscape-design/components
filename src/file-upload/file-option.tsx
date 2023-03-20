@@ -31,11 +31,12 @@ interface FileNameEditingProps {
 interface FileOptionProps {
   file: File;
   metadata: FileMetadata;
+  fileProps?: FileUploadProps.FileProps;
   nameEditing: FileNameEditingProps;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOptionProps) {
+export function FileOption({ file, metadata, fileProps, nameEditing, i18nStrings }: FileOptionProps) {
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
   const [isNameEditFocused, setNameEditFocused] = useState(false);
   const isFocusVisible = !!useFocusVisible()['data-awsui-focus-visible'];
@@ -79,7 +80,11 @@ export function FileOption({ file, metadata, nameEditing, i18nStrings }: FileOpt
 
   return (
     <InternalBox className={styles['file-option']}>
-      <InternalIcon variant="success" name="status-positive" />
+      {!fileProps || fileProps?.status === 'success' ? (
+        <InternalIcon variant="success" name="status-positive" />
+      ) : (
+        <InternalIcon variant="error" name="status-warning" />
+      )}
 
       {metadata.showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
 

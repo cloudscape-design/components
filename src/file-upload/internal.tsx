@@ -36,6 +36,7 @@ function InternalFileUpload(
     ariaRequired,
     multiple,
     onChange,
+    fileProps,
     value,
     limit,
     showFileType,
@@ -251,6 +252,7 @@ function InternalFileUpload(
             <FileOption
               file={file}
               metadata={metadata}
+              fileProps={fileProps?.[fileIndex]}
               i18nStrings={i18nStrings}
               nameEditing={getFileNameEditingProps(fileIndex)}
             />

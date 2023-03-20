@@ -49,7 +49,11 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * Specifies the currently selected file(s).
    * If you want to clear the selection, use empty array.
    */
-  value: File[];
+  value: ReadonlyArray<File>;
+  /**
+   * TODO: add description
+   */
+  fileProps?: ReadonlyArray<FileUploadProps.FileProps>;
   /**
    * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
    */
@@ -71,6 +75,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
 }
 
 export namespace FileUploadProps {
+  export interface FileProps {
+    status: 'success' | 'error';
+  }
+
   export interface ChangeDetail {
     value: File[];
   }
