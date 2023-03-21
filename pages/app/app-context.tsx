@@ -9,6 +9,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 interface AppUrlParams {
   density: Density;
+  lang: string;
   visualRefresh: boolean;
   motionDisabled: boolean;
 }
@@ -27,6 +28,7 @@ const appContextDefaults: AppContextType = {
   urlParams: {
     density: Density.Comfortable,
     visualRefresh: THEME === 'default',
+    lang: 'en',
     motionDisabled: false,
   },
   setMode: () => {},

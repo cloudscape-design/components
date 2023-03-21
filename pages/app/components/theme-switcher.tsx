@@ -6,6 +6,21 @@ import SpaceBetween from '~components/space-between';
 import AppContext from '../app-context';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
+const LOCALES = {
+  de: `Deutsch`,
+  en: `English (US)`,
+  'en-GB': `English (UK)`,
+  es: `Español`,
+  fr: `Français`,
+  id: `Bahasa Indonesia`,
+  it: `Italiano`,
+  ja: `日本語`,
+  ko: `한국어`,
+  'pt-BR': `Português`,
+  'zh-CN': `中文(简体)`,
+  'zh-TW': `中文(繁體)`,
+};
+
 export default function ThemeSwitcher() {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
@@ -28,9 +43,19 @@ export default function ThemeSwitcher() {
   return (
     <SpaceBetween direction="horizontal" size="xs">
       <label>
-        Theme
+        Theme{' '}
         <select defaultValue={THEME}>
           <option value={THEME}>{THEME}</option>
+        </select>
+      </label>
+      <label>
+        Language{' '}
+        <select value={urlParams.lang} onChange={event => setUrlParams({ lang: event.target.value })}>
+          {(Object.keys(LOCALES) as (keyof typeof LOCALES)[]).map(locale => (
+            <option value={locale} key={locale}>
+              {LOCALES[locale]}
+            </option>
+          ))}
         </select>
       </label>
       <label>
