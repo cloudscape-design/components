@@ -68,7 +68,7 @@ export default function ContentDisplayPreference({
     }
   };
 
-  const outerGroupLabelId = `${idPrefix}-outer`;
+  const labelId = `${idPrefix}-label`;
 
   useEffect(() => {
     if (!isDragging) {
@@ -80,10 +80,10 @@ export default function ContentDisplayPreference({
 
   return (
     <div className={styles[componentPrefix]}>
-      <h3 {...className('title')} id={outerGroupLabelId}>
-        {title}
-      </h3>
-      <p {...className('label')}>{label}</p>
+      <h3 {...className('title')}>{title}</h3>
+      <p {...className('label')} id={labelId}>
+        {label}
+      </p>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -132,7 +132,7 @@ export default function ContentDisplayPreference({
           }
         }}
       >
-        <div onKeyDown={handleKeyDown} {...className('group-list')}>
+        <div onKeyDown={handleKeyDown} {...className('group-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               const labelId = `${idPrefix}-${option.id}`;
