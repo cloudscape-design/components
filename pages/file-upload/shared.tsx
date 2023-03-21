@@ -13,4 +13,5 @@ export const i18nStrings: FileUploadProps.I18nStrings = {
   editFileNameInputAriaLabel: 'File name input',
   limitShowFewer: 'Show fewer files',
   limitShowMore: 'Show more files',
+  invalidStateIconAlt: 'Error',
 };

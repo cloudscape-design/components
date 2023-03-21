@@ -53,17 +53,34 @@ const contractsToolsContent = {
   ),
 };
 
+interface FileError {
+  file: null | File;
+  error: string;
+}
+
 export default function FileUploadScenario() {
   const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
-  const [profileImageError, setProfileError] = useState<string | null>(null);
+  const [profileImageErrors, setProfileErrors] = useState<FileError[]>([]);
 
   const [contractFiles, setContractFiles] = useState<File[]>([]);
-  const [contractsError, setContractsError] = useState<string | null>(null);
-  const [contractFileErrors, setContractFileErrors] = useState<boolean[]>([]);
+  const [contractsErrors, setContractsErrors] = useState<FileError[]>([]);
 
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(defaultToolsContent);
+
+  function formFieldError(errors: FileError[]) {
+    if (errors.length === 0) {
+      return null;
+    }
+    if (errors.length === 1) {
+      return errors[0].error;
+    }
+    if (errors.length === 2) {
+      return `${errors[0].error}, and 1 more error`;
+    }
+    return `${errors[0].error}, and ${errors.length - 1} more errors`;
+  }
 
   return (
     <AppLayout
@@ -80,7 +97,7 @@ export default function FileUploadScenario() {
           <Header variant="h1">File upload demo</Header>
           <SpaceBetween size="m">
             <FormField
-              errorText={profileImageError}
+              errorText={formFieldError(profileImageErrors)}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -100,7 +117,7 @@ export default function FileUploadScenario() {
                 value={profileImageFile}
                 onChange={event => {
                   setProfileImageFile(event.detail.value);
-                  setProfileError(validateProfilePictureFile(event.detail.value[0]));
+                  setProfileErrors(validateProfilePictureFile(event.detail.value[0]));
                 }}
                 accept="image/png, image/jpeg"
                 showFileType={true}
@@ -108,12 +125,12 @@ export default function FileUploadScenario() {
                 showFileLastModified={true}
                 showFileThumbnail={true}
                 i18nStrings={i18nStrings}
-                fileProps={[{ status: profileImageError ? 'error' : 'success' }]}
+                fileProps={[{ status: profileImageErrors.length > 0 ? 'error' : 'success' }]}
               />
             </FormField>
 
             <FormField
-              errorText={contractsError}
+              errorText={formFieldError(contractsErrors)}
               label="Contracts"
               description="Upload your contract with all amendments"
               info={
@@ -135,8 +152,7 @@ export default function FileUploadScenario() {
                 value={contractFiles}
                 onChange={event => {
                   setContractFiles(event.detail.value);
-                  setContractsError(validateContractFiles(event.detail.value));
-                  setContractFileErrors(validateContractsPerFile(event.detail.value));
+                  setContractsErrors(validateContractFiles(event.detail.value));
                 }}
                 accept="application/pdf, image/png, image/jpeg"
                 showFileType={true}
@@ -144,7 +160,9 @@ export default function FileUploadScenario() {
                 showFileLastModified={true}
                 showFileThumbnail={true}
                 i18nStrings={i18nStrings}
-                fileProps={contractFileErrors.map(valid => ({ status: valid ? 'success' : 'error' }))}
+                fileProps={contractFiles.map(file => ({
+                  status: contractsErrors.find(error => error.file === file) ? 'error' : 'success',
+                }))}
               />
             </FormField>
           </SpaceBetween>
@@ -154,61 +172,49 @@ export default function FileUploadScenario() {
   );
 }
 
-function validateProfilePictureFile(file: File | undefined): null | string {
+function validateProfilePictureFile(file: File | undefined): FileError[] {
   if (!file) {
-    return null;
+    return [];
   }
-  return (
-    validateFileSize(file, 1 * MB) ??
-    validateFileNameNotEmpty(file) ??
-    validateFileExtensions(file, ['png', 'jpg', 'jpeg']) ??
-    null
-  );
+
+  const errors: FileError[] = [];
+  const addError = (file: null | File, error: null | string) => error && errors.push({ file, error });
+
+  addError(file, validateFileSize(file, 1 * MB));
+  addError(file, validateFileNameNotEmpty(file));
+  addError(file, validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
+
+  return errors;
 }
 
-function validateContractFiles(files: File[]): null | string {
-  return (
-    validateFileSize(files, 250 * KB, 750 * KB) ??
-    validateFiles(files, validateFileNameNotEmpty) ??
-    validateDuplicateFileNames(files) ??
-    validateFiles(files, file => validateFileExtensions(file, ['pdf'])) ??
-    validateFiles(files, validateContractFilePattern) ??
-    null
-  );
-}
-
-function validateContractsPerFile(files: File[]): boolean[] {
-  return files.map(
-    file =>
-      file.size <= 250 * KB &&
-      !validateFileNameNotEmpty(file) &&
-      !validateFileExtensions(file, ['pdf']) &&
-      !validateContractFilePattern(file)
-  );
-}
-
-function validateFiles(files: File[], validate: (file: File) => null | string): null | string {
-  for (const file of files) {
-    const result = validate(file);
-    if (result !== null) {
-      return result;
+function validateContractFiles(files: File[]): FileError[] {
+  const errors: FileError[] = [];
+  const addError = (file: null | File, error: null | string) => error && errors.push({ file, error });
+  const addErrors = (files: File[], validate: (file: File) => null | string) => {
+    for (const file of files) {
+      addError(file, validate(file));
     }
+  };
+
+  addErrors(files, file => validateFileSize(file, 250 * KB));
+  addError(null, validateTotalFileSize(files, 750 * KB));
+  addErrors(files, validateFileNameNotEmpty);
+  addError(null, validateDuplicateFileNames(files));
+  addErrors(files, file => validateFileExtensions(file, ['pdf']));
+  addErrors(files, validateContractFilePattern);
+
+  return errors;
+}
+
+function validateFileSize(file: File, maxFileSize: number): null | string {
+  if (file.size > maxFileSize) {
+    return `File "${file.name}" size is above the allowed maximum (${formatFileSize(maxFileSize)})`;
   }
   return null;
 }
 
-function validateFileSize(input: File | File[], maxFileSize: number, maxTotalSize = maxFileSize): null | string {
-  if (input instanceof File && input.size > maxFileSize) {
-    return `File size is above the allowed maximum (${formatFileSize(maxFileSize)})`;
-  }
-
-  const files = input instanceof File ? [input] : input;
-  const largeFile = files.find(file => file.size > maxFileSize);
+function validateTotalFileSize(files: File[], maxTotalSize: number): null | string {
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-
-  if (largeFile) {
-    return `The size of file "${largeFile.name}" is above the allowed maximum (${formatFileSize(maxFileSize)})`;
-  }
   if (totalSize > maxTotalSize) {
     return `Files combined size (${formatFileSize(totalSize)}) is above the allowed maximum (${formatFileSize(
       maxTotalSize

@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 import { useFormFieldContext } from '../contexts/form-field';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
+import InternalIcon from '../icon/internal';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
@@ -16,12 +17,13 @@ interface FileInputProps extends FormFieldValidationControlProps {
   multiple: boolean;
   onChange: (files: File[]) => void;
   children: React.ReactNode;
+  invalidStateIconAlt: string;
 }
 
 export default React.forwardRef(FileInput);
 
 function FileInput(
-  { accept, ariaRequired, multiple, onChange, children, ...restProps }: FileInputProps,
+  { accept, ariaRequired, multiple, onChange, children, invalidStateIconAlt, ...restProps }: FileInputProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const selfControlId = useUniqueId('input');
@@ -60,17 +62,21 @@ function FileInput(
         value=""
       />
 
-      <InternalButton
-        ref={ref}
-        id={controlId}
-        iconName="upload"
-        formAction="none"
-        onClick={onUploadButtonClick}
-        className={styles['upload-button']}
-        __nativeAttributes={nativeAttributes}
-      >
-        {children}
-      </InternalButton>
+      <div className={styles['file-input-container']}>
+        <InternalButton
+          ref={ref}
+          id={controlId}
+          iconName="upload"
+          formAction="none"
+          onClick={onUploadButtonClick}
+          className={styles['upload-button']}
+          __nativeAttributes={nativeAttributes}
+        >
+          {children}
+        </InternalButton>
+
+        {formFieldContext.invalid && <InternalIcon variant="error" name="status-warning" alt={invalidStateIconAlt} />}
+      </div>
     </div>
   );
 }

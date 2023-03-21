@@ -100,6 +100,7 @@ export namespace FileUploadProps {
     editFileNameInputAriaLabel: string;
     limitShowFewer: string;
     limitShowMore: string;
+    invalidStateIconAlt: string;
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileLastModified?: (date: Date) => string;
   }

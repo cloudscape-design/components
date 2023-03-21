@@ -35,6 +35,7 @@ const defaultProps: FileUploadProps = {
     editFileNameInputAriaLabel: 'File name input',
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
+    invalidStateIconAlt: 'Error',
   },
 };
 

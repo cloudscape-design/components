@@ -120,6 +120,7 @@ function InternalFileUpload(
           accept={accept}
           ariaRequired={ariaRequired}
           multiple={multiple}
+          invalidStateIconAlt={i18nStrings.invalidStateIconAlt}
           onChange={handleFilesChange}
           {...restProps}
         >
