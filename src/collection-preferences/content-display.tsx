@@ -131,6 +131,7 @@ export default function ContentDisplayPreference({
             onChange(arrayMove([...value], oldIndex, newIndex));
           }
         }}
+        onDragCancel={() => setIsDragging(false)}
       >
         <div onKeyDown={handleKeyDown} {...className('group-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
