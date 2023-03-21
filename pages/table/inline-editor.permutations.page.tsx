@@ -3,7 +3,6 @@
 import React from 'react';
 import { TableBodyCell } from '~components/table/body-cell';
 import { TableProps } from '~components/table';
-import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
 import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
@@ -20,7 +19,7 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
     editIconAriaLabel: ['editable'],
     errorIconAriaLabel: ['Error'],
     editingCell: [
-      () => <Input value="editing" />,
+      () => <Input value="editing" onChange={() => {}} />,
       () => (
         <Multiselect
           options={options}
@@ -40,33 +39,37 @@ export default function InlineEditorPermutations() {
     <>
       <h1>Table inline editor permutations</h1>
       <ScreenshotArea>
-        <SpaceBetween size="xs">
-          <PermutationsView
-            permutations={editPermutations}
-            render={permutation => (
-              <TableBodyCell
-                ariaLabels={{
-                  activateEditLabel: column => `Edit ${column.header}`,
-                  cancelEditLabel: column => `Cancel editing ${column.header}`,
-                  submitEditLabel: column => `Submit edit ${column.header}`,
-                }}
-                item={{}}
-                column={{ ...baseColumnDefinition, editConfig: permutation }}
-                isEditing={true}
-                isEditable={true}
-                isFirstRow={false}
-                isLastRow={false}
-                isNextSelected={false}
-                isPrevSelected={false}
-                isSelected={false}
-                onEditStart={() => {}}
-                onEditEnd={() => {}}
-                wrapLines={false}
-                {...permutation}
-              />
-            )}
-          />
-        </SpaceBetween>
+        <PermutationsView
+          permutations={editPermutations}
+          render={permutation => (
+            <table>
+              <tbody>
+                <tr>
+                  <TableBodyCell
+                    ariaLabels={{
+                      activateEditLabel: column => `Edit ${column.header}`,
+                      cancelEditLabel: column => `Cancel editing ${column.header}`,
+                      submitEditLabel: column => `Submit edit ${column.header}`,
+                    }}
+                    item={{}}
+                    column={{ ...baseColumnDefinition, editConfig: permutation }}
+                    isEditing={true}
+                    isEditable={true}
+                    isFirstRow={false}
+                    isLastRow={false}
+                    isNextSelected={false}
+                    isPrevSelected={false}
+                    isSelected={false}
+                    onEditStart={() => {}}
+                    onEditEnd={() => {}}
+                    wrapLines={false}
+                    {...permutation}
+                  />
+                </tr>
+              </tbody>
+            </table>
+          )}
+        />
       </ScreenshotArea>
     </>
   );
