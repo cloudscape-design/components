@@ -1553,6 +1553,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -2979,6 +2980,8 @@ in a slight, visible lag when scrolling complex pages.",
 - \`id\` (string) - allows to identify the item that the user clicked on. Mandatory for individual items, optional for categories.
 
 - \`text\` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
+
+- \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
 
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 
@@ -8110,6 +8113,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -10492,6 +10496,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
