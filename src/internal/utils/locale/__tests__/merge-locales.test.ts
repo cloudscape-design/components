@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { mergeLocales } from '../../../../../lib/components/internal/utils/locale';
+import { mergeLocales } from '../../../../../lib/components/internal/utils/locale/merge-locales';
 
 test('should return the first locale if it is fully specified', () => {
   expect(mergeLocales('en-US', 'fr-CA')).toEqual('en-US');

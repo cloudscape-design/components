@@ -5,7 +5,7 @@ import React, { Ref, useCallback, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import { DatePickerProps } from './interfaces';
 import InternalCalendar from '../calendar/internal';
-import { normalizeLocale } from '../internal/utils/locale';
+import { useEnhancedLocale } from '../internal/utils/locale';
 import { getDateLabel, renderMonthAndYear } from '../calendar/utils/intl';
 import { InputProps } from '../input/interfaces';
 import { KeyCode } from '../internal/keycode';
@@ -63,7 +63,7 @@ const DatePicker = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-    const normalizedLocale = normalizeLocale('DatePicker', locale);
+    const normalizedLocale = useEnhancedLocale('DatePicker', locale);
     const focusVisible = useFocusVisible();
     const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
 

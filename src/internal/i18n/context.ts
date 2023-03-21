@@ -11,11 +11,17 @@ export interface FormatFunction {
   <T>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T>): T;
 }
 
-function defaultFormatFunction<T>(_namespace: string, _component: string, _key: string, provided: T) {
-  return provided;
+export interface InternalI18nContextProps {
+  locale: string | null;
+  format: FormatFunction;
 }
 
-export const InternalI18nContext = React.createContext<FormatFunction>(defaultFormatFunction);
+export const InternalI18nContext = React.createContext<InternalI18nContextProps>({
+  locale: null,
+  format<T>(_namespace: string, _component: string, _key: string, provided: T) {
+    return provided;
+  },
+});
 
 export interface ComponentFormatFunction {
   (key: string, provided: string): string;
@@ -23,11 +29,20 @@ export interface ComponentFormatFunction {
   <T>(key: string, provided: T, handler?: CustomHandler<T>): T;
 }
 
+export function getDocumentLanguage(): string | null {
+  return typeof document !== 'undefined' ? document.documentElement.lang || null : null;
+}
+
+export function getBrowserLocale(): string {
+  return new Intl.DateTimeFormat().resolvedOptions().locale;
+}
+
+export function useLocale(): string {
+  return useContext(InternalI18nContext).locale ?? getDocumentLanguage() ?? getBrowserLocale();
+}
+
 export function useInternalI18n(componentName: string): ComponentFormatFunction {
-  // HACK: useContext should return the default value if a provider
-  // isn't present, but some consumers mock out React.useContext globally
-  // in their tests, so we can't rely on this assumption.
-  const format = useContext(InternalI18nContext) || defaultFormatFunction;
+  const { format } = useContext(InternalI18nContext);
   return <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
     return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
   };

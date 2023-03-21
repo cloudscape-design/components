@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
-import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { InternalI18nContext, FormatFunction, CustomHandler, getDocumentLanguage } from './context';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -32,6 +32,8 @@ export namespace I18nProviderProps {
  */
 const I18nMessagesContext = React.createContext<I18nProviderProps.Messages>({});
 
+const DEFAULT_LOCALE = 'en';
+
 export function I18nProvider({ messages: messagesArray, locale: providedLocale, children }: I18nProviderProps) {
   // The provider accepts an array of configs. We merge parent messages and
   // flatten the tree early on so that accesses by key are simpler and faster.
@@ -41,7 +43,11 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   // If a locale isn't provided, we can try and guess from the html lang,
   // and lastly default to English. Locales have a recommended case, but are
   // matched case-insensitively, so we lowercase it internally.
-  const locale = (providedLocale || document?.documentElement.lang || 'en').toLowerCase();
+  //
+  // Unlike useLocale, when an explicit provider is used, we should never fall
+  // back to the browser default locale because predictability is much more
+  // important when matching keys in messages.
+  const locale = (providedLocale || getDocumentLanguage() || DEFAULT_LOCALE).toLowerCase();
 
   const format: FormatFunction = <T,>(
     namespace: string,
@@ -83,7 +89,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   };
 
   return (
-    <InternalI18nContext.Provider value={format}>
+    <InternalI18nContext.Provider value={{ locale, format }}>
       <I18nMessagesContext.Provider value={messages}>{children}</I18nMessagesContext.Provider>
     </InternalI18nContext.Provider>
   );

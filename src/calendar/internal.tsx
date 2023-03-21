@@ -6,7 +6,7 @@ import { isSameMonth } from 'date-fns';
 import styles from './styles.css.js';
 import CalendarHeader from './header';
 import Grid from './grid';
-import { normalizeLocale, normalizeStartOfWeek } from '../internal/utils/locale';
+import { useEnhancedLocale, normalizeStartOfWeek } from '../internal/utils/locale';
 import { formatDate, parseDate } from '../internal/utils/date-time';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import checkControlled from '../internal/hooks/check-controlled/index.js';
@@ -38,7 +38,7 @@ export default function Calendar({
   checkControlled('Calendar', 'value', value, 'onChange', onChange);
 
   const baseProps = getBaseProps(rest);
-  const normalizedLocale = normalizeLocale('Calendar', locale);
+  const normalizedLocale = useEnhancedLocale('Calendar', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const gridWrapperRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
