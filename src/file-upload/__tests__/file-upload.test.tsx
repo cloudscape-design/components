@@ -27,6 +27,7 @@ const defaultProps: FileUploadProps = {
   onChange,
   i18nStrings: {
     uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
+    dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
     removeFileAriaLabel: 'Remove file',
     activateFileNameEditAriaLabel: 'Edit file name',
     submitFileNameEditAriaLabel: 'Submit file name edit',

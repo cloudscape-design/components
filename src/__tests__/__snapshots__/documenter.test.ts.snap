@@ -5678,6 +5678,14 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
+      "description": "An array of file properties corresponding the \`value\` files.
+Supported properties:
+* \`status\` (string) - An enum of \\"success\\", \\"error\\" to represent the file status.",
+      "name": "fileProps",
+      "optional": true,
+      "type": "ReadonlyArray<FileUploadProps.FileProps>",
+    },
+    Object {
       "description": "An object containing all the localized strings required by the component:
 * \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
 * \`removeFileAriaLabel\` (string): The ARIA label for file token remove button.
@@ -5701,6 +5709,11 @@ is provided by its parent form field component.
             "name": "cancelFileNameEditAriaLabel",
             "optional": false,
             "type": "string",
+          },
+          Object {
+            "name": "dropzoneText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
           },
           Object {
             "name": "editFileNameInputAriaLabel",
@@ -5818,7 +5831,7 @@ Default: \`false\`.",
 If you want to clear the selection, use empty array.",
       "name": "value",
       "optional": false,
-      "type": "Array<File>",
+      "type": "ReadonlyArray<File>",
     },
   ],
   "regions": Array [],
