@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ChangeEvent, ForwardedRef, useRef } from 'react';
+import React, { ChangeEvent, ForwardedRef, useEffect, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
@@ -15,6 +15,7 @@ interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
   ariaRequired?: boolean;
   multiple: boolean;
+  value: readonly File[];
   onChange: (files: File[]) => void;
   children: React.ReactNode;
   invalidStateIconAlt: string;
@@ -23,7 +24,7 @@ interface FileInputProps extends FormFieldValidationControlProps {
 export default React.forwardRef(FileInput);
 
 function FileInput(
-  { accept, ariaRequired, multiple, onChange, children, invalidStateIconAlt, ...restProps }: FileInputProps,
+  { accept, ariaRequired, multiple, value, onChange, children, invalidStateIconAlt, ...restProps }: FileInputProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const selfControlId = useUniqueId('input');
@@ -48,6 +49,14 @@ function FileInput(
   if (ariaRequired) {
     nativeAttributes['aria-required'] = true;
   }
+
+  useEffect(() => {
+    const dataTransfer = new DataTransfer();
+    for (const file of value) {
+      dataTransfer.items.add(file);
+    }
+    fileInputRef.current!.files = dataTransfer.files;
+  }, [value]);
 
   return (
     <div>

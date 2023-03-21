@@ -70,7 +70,10 @@ function InternalFileUpload(
       return;
     }
     const files = [...value];
-    const updated = new File([files[fileIndex]], fileName);
+    const updated = new File([files[fileIndex]], fileName, {
+      type: files[fileIndex].type,
+      lastModified: files[fileIndex].lastModified,
+    });
     files.splice(fileIndex, 1, updated);
     fireNonCancelableEvent(onChange, { value: files });
   };
@@ -122,6 +125,7 @@ function InternalFileUpload(
           multiple={multiple}
           invalidStateIconAlt={i18nStrings.invalidStateIconAlt}
           onChange={handleFilesChange}
+          value={value}
           {...restProps}
         >
           {i18nStrings.uploadButtonText(multiple)}
