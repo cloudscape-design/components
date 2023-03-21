@@ -5731,6 +5731,11 @@ Supported properties:
             "type": "(sizeInBytes: number) => string",
           },
           Object {
+            "name": "invalidStateIconAlt",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
             "name": "limitShowFewer",
             "optional": false,
             "type": "string",
