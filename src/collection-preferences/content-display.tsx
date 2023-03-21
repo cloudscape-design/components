@@ -111,7 +111,7 @@ export default function ContentDisplayPreference({
             onDragEnd({ active, over }) {
               if (over && liveAnnouncementDndItemCommitted) {
                 const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-                const finalIndex = options.findIndex(option => option.id === over.id);
+                const finalIndex = sortedOptions.findIndex(option => option.id === over.id);
                 return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, options.length);
               }
             },
