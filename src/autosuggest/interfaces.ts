@@ -28,6 +28,7 @@ export interface AutosuggestProps
    * #### Option
    * - `value` (string) - The returned value of the option when selected.
    * - `label` (string) - (Optional) Option text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option is disabled.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.

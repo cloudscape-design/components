@@ -17,7 +17,10 @@ jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => ({
   generateUniqueId: () => 'random-' + uniqueId++,
 }));
 
-const defaultOptions: AutosuggestProps.Options = [{ value: '1', label: 'One' }, { value: '2' }];
+const defaultOptions: AutosuggestProps.Options = [
+  { value: '1', label: 'One' },
+  { value: '2', lang: 'fr' },
+];
 const defaultProps: AutosuggestProps = {
   enteredTextLabel: () => 'Use value',
   value: '',
@@ -37,6 +40,12 @@ test('renders correct labels when focused', () => {
   wrapper.focus();
   expect(wrapper.findDropdown().findOptionByValue('1')!.getElement()).toHaveTextContent('One');
   expect(wrapper.findDropdown().findOptionByValue('2')!.getElement()).toHaveTextContent('2');
+});
+
+test('renders lang on options', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.focus();
+  expect(wrapper.findDropdown()!.findOptionByValue('2')!.getElement()).toHaveAttribute('lang', 'fr');
 });
 
 test('option can be selected', () => {
