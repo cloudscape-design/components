@@ -51,7 +51,9 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   value: ReadonlyArray<File>;
   /**
-   * TODO: add description
+   * An array of file properties corresponding the `value` files.
+   * Supported properties:
+   * * `status` (string) - An enum of "success", "error" to represent the file status.
    */
   fileProps?: ReadonlyArray<FileUploadProps.FileProps>;
   /**

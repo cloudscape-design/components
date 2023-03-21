@@ -43,7 +43,7 @@ export function FileOption({ file, metadata, fileProps, nameEditing, i18nStrings
   const fileOptionNameRef = useRef<HTMLDivElement>(null);
   const fileNameEditActivateButtonRef = useRef<ButtonProps.Ref>(null);
 
-  // Focus on name editing activate button when existing name editing mode.
+  // Focus on name editing activate button when exiting name editing mode.
   useEffectOnUpdate(() => {
     if (!nameEditing.isEditing) {
       fileNameEditActivateButtonRef.current?.focus();

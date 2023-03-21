@@ -497,6 +497,7 @@ export type BordersTokenName =
   | 'borderRadiusControlCircularFocusRing'
   | 'borderRadiusControlDefaultFocusRing'
   | 'borderRadiusDropdown'
+  | 'borderRadiusDropzone'
   | 'borderRadiusFlashbar'
   | 'borderRadiusInput'
   | 'borderRadiusItem'
