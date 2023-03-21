@@ -3,9 +3,6 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { preset } from '../../../lib/components/internal/generated/theming/index.cjs';
-import createWrapper from '../../../lib/components/test-utils/selectors';
-
-const wrapper = createWrapper();
 
 class ColorTokensMosaikPage extends BasePageObject {
   async getCustomPropertyMap(): Promise<Record<string, string>> {
@@ -24,37 +21,17 @@ class ColorTokensMosaikPage extends BasePageObject {
     });
     return map;
   }
-  async enableDarkMode() {
-    await this.click('#preferences-button');
-    await this.waitForVisible(wrapper.findModal().toSelector());
-    const modeSelector = wrapper.findSelect('#mode-selector');
-    await this.click(modeSelector.findTrigger().toSelector());
-    await this.waitForVisible(modeSelector.findDropdown().findOpenDropdown().toSelector());
-    await this.click(modeSelector.findDropdown().findOptionByValue('dark').toSelector());
-  }
-  async toggleCompactDensity() {
-    await this.click('#preferences-button');
-    await this.waitForVisible(wrapper.findModal().toSelector());
-    return this.click('#density-toggle');
-  }
-  async toggleDisabledMotion() {
-    await this.click('#preferences-button');
-    await this.waitForVisible(wrapper.findModal().toSelector());
-    return this.click('#disabled-motion-toggle');
-  }
-  async toggleVisualRefresh() {
-    await this.click('#preferences-button');
-    await this.waitForVisible(wrapper.findModal().toSelector());
-    return this.click('#visual-refresh-toggle');
-  }
 }
 
-const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>) => {
+const setupTest = (
+  mode: 'light' | 'dark',
+  params: Record<string, string>,
+  testFn: (page: ColorTokensMosaikPage) => Promise<void>
+) => {
   return useBrowser(async browser => {
     const page = new ColorTokensMosaikPage(browser);
-    await browser.url('#/light/theming/tokens');
-    // The default theme is VR by default, so we toggle once to go to classic mode
-    await page.toggleVisualRefresh();
+    const urlParams = new URLSearchParams({ visualRefresh: 'false', ...params }).toString();
+    await browser.url(`#/${mode}/theming/tokens?${urlParams}`);
     await testFn(page);
   });
 };
@@ -75,84 +52,65 @@ const darkMap = colorTokens.reduce((acc, current) => {
 
 test(
   'applies theming in default',
-  setupTest(async page => {
+  setupTest('light', {}, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(defaultMap);
   })
 );
+
 test(
   'applies theming in compact density',
-  setupTest(async page => {
-    await page.toggleCompactDensity();
-
+  setupTest('light', { density: 'compact' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(defaultMap);
   })
 );
+
 test(
   'applies theming in disabled motion',
-  setupTest(async page => {
-    await page.toggleDisabledMotion();
-
+  setupTest('light', { disabledMotion: 'true' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(defaultMap);
   })
 );
+
 // TODO: re-enable test after implementing theming in visual refresh
 test.skip(
   'applies theming in visual refresh',
-  setupTest(async page => {
-    await page.toggleVisualRefresh();
-
+  setupTest('light', { visualRefresh: 'true' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(defaultMap);
   })
 );
+
 test(
   'applies theming in dark mode',
-  setupTest(async page => {
-    await page.enableDarkMode();
-
+  setupTest('dark', {}, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(darkMap);
   })
 );
+
 test(
   'applies theming in dark mode + compact mode',
-  setupTest(async page => {
-    await page.enableDarkMode();
-    await page.toggleCompactDensity();
-
+  setupTest('dark', { density: 'compact' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(darkMap);
   })
 );
+
 test(
   'applies theming in dark mode + reduced motion',
-  setupTest(async page => {
-    await page.enableDarkMode();
-    await page.toggleDisabledMotion();
-
+  setupTest('dark', { density: 'compact', motionDisabled: 'true' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(darkMap);
   })
 );
-// TODO: re-enable test after implementing theming in visual refresh
+
 test.skip(
   'applies theming in dark mode + visual refresh',
-  setupTest(async page => {
-    await page.enableDarkMode();
-    await page.toggleVisualRefresh();
-
+  setupTest('dark', { visualRefresh: 'true' }, async page => {
     const actual = await page.getCustomPropertyMap();
-
     expect(actual).toMatchObject(darkMap);
   })
 );

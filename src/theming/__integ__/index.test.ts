@@ -13,10 +13,11 @@ class ThemingPage extends BasePageObject {
   async enableDarkMode() {
     await this.click('#preferences-button');
     await this.waitForVisible(wrapper.findModal().toSelector());
-    const modeSelector = wrapper.findSelect('#mode-selector');
+    const modeSelector = wrapper.findSelect('[data-test-id="mode-selector"]');
     await this.click(modeSelector.findTrigger().toSelector());
     await this.waitForVisible(modeSelector.findDropdown().findOpenDropdown().toSelector());
     await this.click(modeSelector.findDropdown().findOptionByValue('dark').toSelector());
+    await this.click('[data-test-id="apply-preferences-button"]');
   }
   async getCSSProperty(selector: string, property: string) {
     const elem = await this.browser.$(selector);

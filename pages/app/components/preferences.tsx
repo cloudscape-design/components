@@ -86,7 +86,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
               <Button variant="link" onClick={onDismiss}>
                 Cancel
               </Button>
-              <Button variant="primary" onClick={applyPreferences}>
+              <Button data-test-id="apply-preferences-button" variant="primary" onClick={applyPreferences}>
                 Apply
               </Button>
             </SpaceBetween>
@@ -106,7 +106,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
 
             <FormField label="Mode">
               <Select
-                id="mode-selector"
+                data-test-id="mode-selector"
                 selectedOption={selectedMode}
                 options={(Object.keys(MODES) as (keyof typeof MODES)[]).map(mode => ({
                   value: mode,
@@ -118,7 +118,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
 
             <FormField label="Language">
               <Select
-                id="language-selector"
+                data-test-id="language-selector"
                 selectedOption={selectedLang}
                 options={(Object.keys(LOCALES) as (keyof typeof LOCALES)[]).map(lang => ({
                   value: lang,
@@ -131,7 +131,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
 
           <SpaceBetween size="xs">
             <Toggle
-              id="visual-refresh-toggle"
+              data-test-id="visual-refresh-toggle"
               checked={selectedRefresh}
               disabled={!!ALWAYS_VISUAL_REFRESH}
               onChange={({ detail }) => setSelectedRefresh(detail.checked)}
@@ -140,7 +140,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
             </Toggle>
 
             <Toggle
-              id="density-toggle"
+              data-test-id="density-toggle"
               checked={selectedDensity === Density.Compact}
               onChange={({ detail }) => setSelectedDensity(detail.checked ? Density.Compact : Density.Comfortable)}
             >
@@ -148,7 +148,7 @@ function PreferencesModal({ onDismiss }: { onDismiss: () => void }) {
             </Toggle>
 
             <Toggle
-              id="disabled-motion-toggle"
+              data-test-id="disabled-motion-toggle"
               checked={selectedMotionDisabled}
               onChange={({ detail }) => setSelectedMotionDisabled(detail.checked)}
             >
