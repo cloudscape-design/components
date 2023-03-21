@@ -14,29 +14,29 @@ export const className = (suffix: string) => ({
 });
 
 export function SortableItem({
-  dragHandleAriaLabel,
+  dragHandleAriaLabelId,
   isVisible,
-  labelId,
+  idPrefix,
   onToggle,
   option,
-  reorderContent,
 }: {
-  dragHandleAriaLabel?: string;
+  dragHandleAriaLabelId: string;
   isVisible: boolean;
-  labelId: string;
+  idPrefix: string;
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
-  reorderContent: boolean;
 }) {
   const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
-
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
   };
 
+  const controlId = `${idPrefix}-control-${option.id}`;
+  const labelId = `${idPrefix}-label-${option.id}`;
+
   const dragHandleAttributes = {
-    ['aria-label']: dragHandleAriaLabel,
+    ['aria-labelledby']: `${dragHandleAriaLabelId} ${labelId}`,
     ['aria-describedby']: attributes['aria-describedby'],
   };
 
@@ -44,15 +44,12 @@ export function SortableItem({
     <div className={styles['content-display-option']}>
       <div
         ref={setNodeRef}
-        className={clsx(
-          className('content').className,
-          reorderContent && styles.draggable,
-          reorderContent && isDragging && styles.dragged
-        )}
+        className={clsx(className('content').className, styles.draggable, isDragging && styles.dragged)}
         style={style}
       >
-        {reorderContent && <DragHandle attributes={dragHandleAttributes} listeners={listeners} />}
-        <label {...className('label')} htmlFor={labelId}>
+        <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+
+        <label {...className('label')} id={labelId} htmlFor={controlId}>
           {option.label}
         </label>
         <div {...className('toggle')}>
@@ -60,7 +57,7 @@ export function SortableItem({
             checked={isVisible}
             onChange={() => onToggle(option.id)}
             disabled={option.editable === false}
-            controlId={labelId}
+            controlId={controlId}
           />
         </div>
       </div>

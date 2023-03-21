@@ -77,6 +77,7 @@ export default function ContentDisplayPreference({
   }, [isDragging]);
 
   const sortedOptions = getSortedOptions({ options, order: value });
+  const dragHandleAriaLabelId = `${idPrefix}-drag-handle-aria-label`;
 
   return (
     <div className={styles[componentPrefix]}>
@@ -136,22 +137,23 @@ export default function ContentDisplayPreference({
         <div onKeyDown={handleKeyDown} {...className('group-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
-              const labelId = `${idPrefix}-${option.id}`;
               return (
                 <SortableItem
-                  dragHandleAriaLabel={dragHandleAriaLabel}
+                  dragHandleAriaLabelId={dragHandleAriaLabelId}
                   key={option.id}
-                  labelId={labelId}
+                  idPrefix={idPrefix}
                   isVisible={isVisible(option.id, value)}
                   onToggle={onToggle}
                   option={option}
-                  reorderContent={true}
                 />
               );
             })}
           </SortableContext>
         </div>
       </DndContext>
+      <div style={{ display: 'none' }} id={dragHandleAriaLabelId}>
+        {dragHandleAriaLabel}
+      </div>
     </div>
   );
 }
