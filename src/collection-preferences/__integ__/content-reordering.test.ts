@@ -91,11 +91,12 @@ describe('Collection preferences with custom content reordering', () => {
         await page.focusDragHandle(0);
         await page.keys('Space');
         for (let i = 0; i < 30; i++) {
-          await new Promise(resolve => setTimeout(resolve, 100));
           await page.keys('ArrowDown');
+          // Wait for scroll
+          await new Promise(resolve => setTimeout(resolve, 200));
         }
         await page.keys('Space');
-        return expect(await page.containsOptionsInOrder(['Item 30', 'Item 1'])).toBe(true);
+        return expect(await page.containsOptionsInOrder(['Item 31', 'Item 1'])).toBe(true);
       })
     );
   });
