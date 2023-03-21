@@ -3,6 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { preset } from '../../../lib/components/internal/generated/theming/index.cjs';
+import createWrapper from '../../../lib/components/test-utils/selectors';
+
+const wrapper = createWrapper();
 
 class ColorTokensMosaikPage extends BasePageObject {
   async getCustomPropertyMap(): Promise<Record<string, string>> {
@@ -21,16 +24,27 @@ class ColorTokensMosaikPage extends BasePageObject {
     });
     return map;
   }
-  toggleDarkMode() {
-    return this.click('#mode-toggle');
+  async enableDarkMode() {
+    await this.click('#preferences-button');
+    await this.waitForVisible(wrapper.findModal().toSelector());
+    const modeSelector = wrapper.findSelect('#mode-selector');
+    await this.click(modeSelector.findTrigger().toSelector());
+    await this.waitForVisible(modeSelector.findDropdown().findOpenDropdown().toSelector());
+    await this.click(modeSelector.findDropdown().findOptionByValue('dark').toSelector());
   }
-  toggleCompactDensity() {
+  async toggleCompactDensity() {
+    await this.click('#preferences-button');
+    await this.waitForVisible(wrapper.findModal().toSelector());
     return this.click('#density-toggle');
   }
-  toggleDisabledMotion() {
+  async toggleDisabledMotion() {
+    await this.click('#preferences-button');
+    await this.waitForVisible(wrapper.findModal().toSelector());
     return this.click('#disabled-motion-toggle');
   }
-  toggleVisualRefresh() {
+  async toggleVisualRefresh() {
+    await this.click('#preferences-button');
+    await this.waitForVisible(wrapper.findModal().toSelector());
     return this.click('#visual-refresh-toggle');
   }
 }
@@ -101,7 +115,7 @@ test.skip(
 test(
   'applies theming in dark mode',
   setupTest(async page => {
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
 
     const actual = await page.getCustomPropertyMap();
 
@@ -111,7 +125,7 @@ test(
 test(
   'applies theming in dark mode + compact mode',
   setupTest(async page => {
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
     await page.toggleCompactDensity();
 
     const actual = await page.getCustomPropertyMap();
@@ -122,7 +136,7 @@ test(
 test(
   'applies theming in dark mode + reduced motion',
   setupTest(async page => {
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
     await page.toggleDisabledMotion();
 
     const actual = await page.getCustomPropertyMap();
@@ -134,7 +148,7 @@ test(
 test.skip(
   'applies theming in dark mode + visual refresh',
   setupTest(async page => {
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
     await page.toggleVisualRefresh();
 
     const actual = await page.getCustomPropertyMap();

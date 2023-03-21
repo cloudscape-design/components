@@ -10,8 +10,13 @@ class ThemingPage extends BasePageObject {
   switchTheme() {
     return this.click('[data-testid="change-theme"]');
   }
-  toggleDarkMode() {
-    return this.click('#mode-toggle');
+  async enableDarkMode() {
+    await this.click('#preferences-button');
+    await this.waitForVisible(wrapper.findModal().toSelector());
+    const modeSelector = wrapper.findSelect('#mode-selector');
+    await this.click(modeSelector.findTrigger().toSelector());
+    await this.waitForVisible(modeSelector.findDropdown().findOpenDropdown().toSelector());
+    await this.click(modeSelector.findDropdown().findOptionByValue('dark').toSelector());
   }
   async getCSSProperty(selector: string, property: string) {
     const elem = await this.browser.$(selector);
@@ -58,7 +63,7 @@ test(
     await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.light);
     await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
 
     await expect(page.getButtonBackgroundColor()).resolves.toBe(buttonBackgroundColor.dark);
     await expect(page.getLinkTextColor()).resolves.toBe(linkTextColor.dark);
@@ -79,7 +84,7 @@ test(
 
     await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.light);
 
-    await page.toggleDarkMode();
+    await page.enableDarkMode();
 
     await expect(page.getFakeLinkTextColor()).resolves.toBe(linkTextColor.dark);
 
