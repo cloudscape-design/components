@@ -144,45 +144,41 @@ export default () => {
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
-        <Box float="left">
-          <SpaceBetween direction="horizontal" size="xl">
-            <Box>
-              Stick first visible column(s):
-              <Select
-                selectedOption={leftSticky}
-                onChange={({ detail }) => setLeftSticky(detail.selectedOption)}
-                options={[
-                  { label: 'None', value: '0' },
-                  { label: 'First visible column', value: '1' },
-                  { label: 'First two visible columns', value: '2' },
-                ]}
-                selectedAriaLabel="Selected"
-              />
-            </Box>
-            <Box>
-              Stick last visible column:
-              <Select
-                selectedOption={rightSticky}
-                onChange={({ detail }) => setRightSticky(detail.selectedOption)}
-                options={[
-                  { label: 'None', value: '0' },
-                  { label: 'Last visible column', value: '1' },
-                ]}
-                selectedAriaLabel="Selected"
-              />
-            </Box>
-          </SpaceBetween>
-        </Box>
-
         <Table
-          stickyColumns={stickyColumns}
-          stickyHeader={true}
+          stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
-          items={[...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS]}
+          items={ITEMS}
           sortingDisabled={true}
-          header={<Header>Table with sticky column and sticky header</Header>}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                leftColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                rightColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
+          header={<Header>Simple table</Header>}
         />
-
         <Table
           resizableColumns={true}
           stickyColumns={preferences.stickyColumns}
@@ -220,6 +216,46 @@ export default () => {
           }
           header={<Header>Table with resizable columns</Header>}
         />
+
+        <Box float="left">
+          <SpaceBetween direction="horizontal" size="xl">
+            <Box>
+              Stick first visible column(s):
+              <Select
+                selectedOption={leftSticky}
+                onChange={({ detail }) => setLeftSticky(detail.selectedOption)}
+                options={[
+                  { label: 'None', value: '0' },
+                  { label: 'First visible column', value: '1' },
+                  { label: 'First two visible columns', value: '2' },
+                ]}
+                selectedAriaLabel="Selected"
+              />
+            </Box>
+            <Box>
+              Stick last visible column:
+              <Select
+                selectedOption={rightSticky}
+                onChange={({ detail }) => setRightSticky(detail.selectedOption)}
+                options={[
+                  { label: 'None', value: '0' },
+                  { label: 'Last visible column', value: '1' },
+                ]}
+                selectedAriaLabel="Selected"
+              />
+            </Box>
+          </SpaceBetween>
+        </Box>
+
+        <Table
+          stickyColumns={stickyColumns}
+          stickyHeader={true}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={[...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS]}
+          sortingDisabled={true}
+          header={<Header>Table sticky header</Header>}
+        />
+
         {/* <Table
           stickyColumns={{ left: ['variable', 'alt'], right: ['descriptio7'] }}
           columnDefinitions={[
