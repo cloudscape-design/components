@@ -65,6 +65,7 @@ const Option = ({
       data-value={option.value}
       className={className}
       aria-disabled={disabled}
+      lang={option.lang}
       {...baseProps}
     >
       {icon}
