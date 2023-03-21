@@ -21,7 +21,14 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
     errorIconAriaLabel: ['Error'],
     editingCell: [
       () => <Input value="editing" />,
-      () => <Multiselect options={options} selectedOptions={[options[2]]} placeholder="Choose an option" />,
+      () => (
+        <Multiselect
+          options={options}
+          selectedOptions={[options[2]]}
+          placeholder="Choose an option"
+          deselectAriaLabel={() => 'Dismiss'}
+        />
+      ),
     ],
     constraintText: [undefined, 'This requirement needs to be met.'],
     validation: [undefined, () => 'There was an error!'],
