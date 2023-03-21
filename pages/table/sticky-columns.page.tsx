@@ -139,7 +139,6 @@ export default () => {
       left: Number(leftSticky.value) as unknown as 0 | 1 | 2,
       right: Number(rightSticky.value) as unknown as 0 | 1,
     });
-    console.log(preferences);
   }, [leftSticky, rightSticky, preferences]);
   return (
     <ScreenshotArea>
