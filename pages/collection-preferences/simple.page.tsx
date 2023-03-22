@@ -16,7 +16,7 @@ const baseProperties: CollectionPreferencesProps<boolean> = {
     pageSize: 10,
     visibleContent: ['id', 'sslCertificate', 'origin'],
     custom: true,
-    stickyColumns: { left: 1, right: 1 },
+    stickyColumns: { start: 1, end: 1 },
   },
 };
 
@@ -39,7 +39,7 @@ const contentDensityPreference: CollectionPreferencesProps.ContentDensityPrefere
 };
 
 const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
-  leftColumns: {
+  startColumns: {
     title: 'Stick first visible column(s)',
     description: 'Keep the first column(s) visible while horizontally scrolling table content.',
     options: [
@@ -48,7 +48,7 @@ const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreferenc
       { label: 'First two visible columns', value: 2 },
     ],
   },
-  rightColumns: {
+  endColumns: {
     title: 'Stick last visible column',
     description: 'Keep the last column visible when tables are wider than the viewport.',
     options: [

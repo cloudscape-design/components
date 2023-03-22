@@ -364,8 +364,8 @@ export namespace TableProps {
   export type SelectionType = 'single' | 'multi';
 
   export interface StickyColumns {
-    left?: number;
-    right?: number;
+    start?: number;
+    end?: number;
   }
 
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';

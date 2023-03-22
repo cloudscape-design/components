@@ -107,7 +107,7 @@ const InternalTable = forwardRef(
     const scrollbarRef = useRef<HTMLDivElement>(null);
 
     // Sticky columns
-    const [tableCellRefs, setTableCellRefs] = useState<React.Ref<HTMLTableCellElement>[]>([]);
+    const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
     const [cellWidths, setCellWidths] = useState<CellWidths>({ left: [], right: [] });
 
     // Inline editing
@@ -139,34 +139,35 @@ const InternalTable = forwardRef(
     );
 
     useEffect(() => {
-      // add or remove refs
+      // Add and remove refs
       setTableCellRefs(tableCellRefs =>
-        [...new Array(visibleColumnsLength)].map(
+        [...new Array(visibleColumnsLength + (selectionType ? 1 : 0))].map(
           (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
         )
       );
-    }, [visibleColumnsLength]);
+    }, [visibleColumnsLength, selectionType]);
+
     useEffect(() => {
       //  first checks whether there are any sticky columns to calculate the widths for.
       // If there are none, the effect returns and does nothing.
-      if (!(Boolean(stickyColumns?.left) || Boolean(stickyColumns?.right))) {
+      if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
         return;
       }
 
       // calculates the width of the columns to the left and right of the sticky columns
       // by iterating over the array of references to each table cell.
-      let leftWidthsArray = tableCellRefs.map(ref => ref?.current?.previousSibling?.offsetWidth);
-      leftWidthsArray = leftWidthsArray.filter(x => x);
+      let leftWidthsArray = tableCellRefs
+        .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+        .filter(x => x);
       leftWidthsArray = leftWidthsArray.map((elem, index) =>
         leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
       );
 
-      let rightWidthsArray = tableCellRefs.map(ref => ref?.current?.nextSibling?.offsetWidth);
+      let rightWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
       rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
       rightWidthsArray = rightWidthsArray
         .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
         .reverse();
-
       setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
     }, [tableCellRefs, stickyColumns]);
 
@@ -221,6 +222,24 @@ const InternalTable = forwardRef(
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
+          console.log('ON RESIZE FINISH!');
+          let leftWidthsArray = tableCellRefs
+            .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+            .filter(x => x);
+          leftWidthsArray = leftWidthsArray.map((elem, index) =>
+            leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
+          );
+
+          let rightWidthsArray = tableCellRefs.map(
+            ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth
+          );
+          rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
+          rightWidthsArray = rightWidthsArray
+            .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+            .reverse();
+          console.log('SETTING CELL WIDTHS!!');
+          setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
+
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
         }
       },
@@ -252,6 +271,20 @@ const InternalTable = forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+
+    const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
+    const lastRightStickyColumnIndex = stickyColumns?.end
+      ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
+      : 0;
+    const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
+    console.log({
+      lastLeftStickyColumnIndex,
+      lastRightStickyColumnIndex,
+      cellWidths,
+      containerWidth,
+      totalStickySpace,
+      visibleColumnDefinitions,
+    });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -413,6 +446,12 @@ const InternalTable = forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            ref={tableCellRefs[0]}
+                            style={
+                              (stickyColumns?.start ?? 0) > 0
+                                ? { position: 'sticky', left: cellWidths.left[0], background: 'white', zIndex: '1' }
+                                : {}
+                            }
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -427,17 +466,29 @@ const InternalTable = forwardRef(
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
-                          const isStickyLeft = colIndex + 1 <= stickyColumns?.left;
-                          const isStickyRight = colIndex + 1 > visibleColumnDefinitions.length - stickyColumns?.right;
-                          const isLastLeftStickyColumn = colIndex + 1 === stickyColumns?.left;
+                          const lastLeftStickyColumnIndex = stickyColumns?.start
+                            ? stickyColumns?.start + (hasSelection ? 1 : 0)
+                            : 0;
+                          const lastRightStickyColumnIndex = stickyColumns?.end
+                            ? visibleColumnDefinitions.length - stickyColumns?.end
+                            : 0;
+
+                          const totalStickySpace =
+                            cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
+                          console.log({ totalStickySpace, containerWidth });
+                          const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
+                          const isStickyRight =
+                            colIndex + 1 > visibleColumnDefinitions.length - (stickyColumns?.end ?? 0);
+                          const isLastLeftStickyColumn = colIndex + 1 === stickyColumns?.start;
                           const isLastRightStickyColumn =
-                            colIndex === visibleColumnDefinitions.length - stickyColumns?.right;
+                            colIndex === visibleColumnDefinitions.length - (stickyColumns?.end ?? 0);
 
                           const getStickyStyles = () => {
                             const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : undefined;
-                            const totalStickyColumns = stickyColumns?.left + stickyColumns?.right;
-                            // Sticky columns should be disabled for mobile
+                            const totalStickyColumns = (stickyColumns?.start ?? 0) + (stickyColumns?.end ?? 0);
+                            // Sticky columns disabled conditions
                             if (!stickySide || isMobile || totalStickyColumns >= visibleColumnDefinitions.length) {
+                              console.log('Stickyness disabled, returning no styles');
                               return {};
                             }
                             const boxShadow = isLastLeftStickyColumn
@@ -453,7 +504,9 @@ const InternalTable = forwardRef(
 
                             return {
                               [stickySide]: `${
-                                stickySide === 'right' ? cellWidths.right[colIndex] : cellWidths.left[colIndex]
+                                stickySide === 'right'
+                                  ? cellWidths.right[colIndex + (selectionType ? 1 : 0)]
+                                  : cellWidths.left[colIndex + (selectionType ? 1 : 0)]
                               }px`,
                               boxShadow,
                               clipPath,
@@ -477,7 +530,7 @@ const InternalTable = forwardRef(
                               ariaLabels={ariaLabels}
                               column={column}
                               item={item}
-                              ref={tableCellRefs[colIndex]}
+                              ref={tableCellRefs[colIndex + (selectionType ? 1 : 0)]}
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}

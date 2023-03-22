@@ -28,8 +28,6 @@ export interface TheadProps {
   sortingDisabled: boolean | undefined;
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
-  ref: React.Ref<any>;
-  tableCellRefs: ReadonlyArray<HTMLTableCellElement>;
   resizableColumns: boolean | undefined;
   selectAllProps: SelectionControlProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
@@ -91,13 +89,19 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-
+    const hasStartingStickyColumn = (stickyColumns?.left ?? 0) > 0;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
+              )}
+              style={{ left: cellWidths?.left[0] }}
               scope="col"
             >
               <SelectionControl
@@ -113,7 +117,13 @@ const Thead = React.forwardRef(
           )}
           {selectionType === 'single' && (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
+              )}
+              style={{ left: cellWidths?.left[0] }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
@@ -122,11 +132,10 @@ const Thead = React.forwardRef(
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
 
-            const isStickyLeft = colIndex + 1 <= (stickyColumns?.left || 0);
-            const isStickyRight = colIndex + 1 > columnDefinitions.length - (stickyColumns?.right || 0);
+            const isStickyLeft = colIndex + 1 <= (stickyColumns?.start || 0);
+            const isStickyRight = colIndex + 1 > columnDefinitions.length - (stickyColumns?.end || 0);
 
             let widthOverride;
-            // const currentCell = tableCellRefs[colIndex];
             if (resizableColumns) {
               if (columnWidths) {
                 // use stateful value if available
@@ -145,8 +154,10 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  left: isStickyLeft && cellWidths ? `${cellWidths.left[colIndex]}px` : 'auto',
-                  right: isStickyRight && cellWidths ? `${cellWidths.right[colIndex]}px` : 'auto',
+                  left:
+                    isStickyLeft && cellWidths ? `${cellWidths.left[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
+                  right:
+                    isStickyRight && cellWidths ? `${cellWidths.right[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}

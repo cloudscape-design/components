@@ -133,7 +133,7 @@ export function ColumnWidthsProvider({
   if (hasSelection) {
     totalWidth += SELECTION_CELL_WIDTH;
   }
-
+  console.log({ totalWidth });
   return <WidthsContext.Provider value={{ columnWidths, totalWidth, updateColumn }}>{children}</WidthsContext.Provider>;
 }
 

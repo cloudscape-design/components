@@ -161,7 +161,7 @@ export namespace CollectionPreferencesProps {
     wrapLines?: boolean;
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
-    stickyColumns?: { left?: number; right?: number };
+    stickyColumns?: { start?: number; end?: number };
     visibleContent?: ReadonlyArray<string>;
     custom?: CustomPreferenceType;
   }
@@ -208,7 +208,7 @@ export namespace CollectionPreferencesProps {
   }
 
   export interface StickyColumnsPreference {
-    leftColumns?: {
+    startColumns?: {
       title: string;
       description: string;
       options: ReadonlyArray<{
@@ -216,7 +216,7 @@ export namespace CollectionPreferencesProps {
         value: number;
       }>;
     };
-    rightColumns?: {
+    endColumns?: {
       title: string;
       description: string;
       options: ReadonlyArray<{

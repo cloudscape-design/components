@@ -143,8 +143,8 @@ interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.Sticky
 }
 
 export const StickyColumnsPreference = ({
-  leftColumns,
-  rightColumns,
+  startColumns,
+  endColumns,
   onChange,
   value,
 }: StickyColumnsPreferenceProps) => {
@@ -152,8 +152,8 @@ export const StickyColumnsPreference = ({
   return (
     <InternalSpaceBetween size="l">
       {[
-        { side: 'left', preference: leftColumns },
-        { side: 'right', preference: rightColumns },
+        { side: 'start', preference: startColumns },
+        { side: 'end', preference: endColumns },
       ].map(item => {
         if (!item.preference) {
           return;
