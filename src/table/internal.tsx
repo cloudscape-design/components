@@ -1,7 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useEffect, useRef, useState, Ref, forwardRef, createRef } from 'react';
+import React, {
+  useImperativeHandle,
+  useEffect,
+  useRef,
+  useState,
+  Ref,
+  forwardRef,
+  createRef,
+  useLayoutEffect,
+} from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -39,7 +48,7 @@ import { TableTdElement } from './body-cell/td-element';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
-interface CellWidths {
+export interface CellWidths {
   left: number[];
   right: number[];
 }
@@ -147,7 +156,7 @@ const InternalTable = forwardRef(
       );
     }, [visibleColumnsLength, selectionType]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       //  first checks whether there are any sticky columns to calculate the widths for.
       // If there are none, the effect returns and does nothing.
       if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
@@ -272,19 +281,11 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
-    const lastRightStickyColumnIndex = stickyColumns?.end
-      ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
-      : 0;
-    const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
-    console.log({
-      lastLeftStickyColumnIndex,
-      lastRightStickyColumnIndex,
-      cellWidths,
-      containerWidth,
-      totalStickySpace,
-      visibleColumnDefinitions,
-    });
+    // const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
+    // const lastRightStickyColumnIndex = stickyColumns?.end
+    //   ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
+    //   : 0;
+    //const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -470,9 +471,8 @@ const InternalTable = forwardRef(
                             ? visibleColumnDefinitions.length - stickyColumns?.end
                             : 0;
 
-                          const totalStickySpace =
-                            cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
-                          console.log({ totalStickySpace, containerWidth });
+                          // const totalStickySpace =
+                          //   cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
                           const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
                           const isStickyRight =
                             colIndex + 1 > visibleColumnDefinitions.length - (stickyColumns?.end ?? 0);
@@ -485,7 +485,6 @@ const InternalTable = forwardRef(
                             const totalStickyColumns = (stickyColumns?.start ?? 0) + (stickyColumns?.end ?? 0);
                             // Sticky columns disabled conditions
                             if (!stickySide || isMobile || totalStickyColumns >= visibleColumnDefinitions.length) {
-                              console.log('Stickyness disabled, returning no styles');
                               return {};
                             }
                             const boxShadow = isLastLeftStickyColumn

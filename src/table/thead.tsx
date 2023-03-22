@@ -13,6 +13,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { CellWidths } from './internal';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -41,7 +42,7 @@ export interface TheadProps {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
-  cellWidths?: { left: number[]; right: number[] };
+  cellWidths?: CellWidths;
 }
 
 const Thead = React.forwardRef(
@@ -146,6 +147,7 @@ const Thead = React.forwardRef(
                 widthOverride = 'auto';
               }
             }
+
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
