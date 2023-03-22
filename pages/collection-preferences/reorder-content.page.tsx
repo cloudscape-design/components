@@ -28,7 +28,8 @@ const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentO
   },
   {
     id: 'id5',
-    label: 'Item 5',
+    label:
+      'Item with long text to make sure that the reordering feature behaves as expected and that the placeholder behind always has the same size as the item being dragged',
   },
   {
     id: 'id6',
