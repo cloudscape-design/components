@@ -148,7 +148,6 @@ export const StickyColumnsPreference = ({
   onChange,
   value,
 }: StickyColumnsPreferenceProps) => {
-  console.log({ value });
   return (
     <InternalSpaceBetween size="l">
       {[

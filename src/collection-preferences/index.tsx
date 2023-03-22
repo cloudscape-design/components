@@ -29,111 +29,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { CollectionPreferencesProps };
 
-interface ModalContentProps
-  extends Pick<
-    CollectionPreferencesProps,
-    | 'preferences'
-    | 'visibleContentPreference'
-    | 'pageSizePreference'
-    | 'wrapLinesPreference'
-    | 'stripedRowsPreference'
-    | 'contentDensityPreference'
-    | 'stickyColumnsPreference'
-    | 'customPreference'
-  > {
-  onChange: (preferences: CollectionPreferencesProps.Preferences) => void;
-}
-
-const ModalContent = ({
-  preferences = {},
-  pageSizePreference,
-  wrapLinesPreference,
-  stripedRowsPreference,
-  contentDensityPreference,
-  customPreference,
-  visibleContentPreference,
-  stickyColumnsPreference,
-  onChange,
-}: ModalContentProps) => {
-  if (
-    !visibleContentPreference &&
-    !pageSizePreference &&
-    !wrapLinesPreference &&
-    !stripedRowsPreference &&
-    !contentDensityPreference &&
-    !stickyColumnsPreference &&
-    customPreference
-  ) {
-    return (
-      <CustomPreference
-        value={preferences.custom}
-        customPreference={customPreference}
-        onChange={custom => onChange({ custom })}
-      />
-    );
-  }
-
-  return (
-    <ModalContentLayout
-      left={
-        <InternalSpaceBetween size="l">
-          {pageSizePreference && (
-            <PageSizePreference
-              value={preferences.pageSize}
-              {...pageSizePreference}
-              onChange={pageSize => onChange({ pageSize })}
-            />
-          )}
-          {wrapLinesPreference && (
-            <WrapLinesPreference
-              value={preferences.wrapLines}
-              {...wrapLinesPreference}
-              onChange={wrapLines => onChange({ wrapLines })}
-            />
-          )}
-          {stripedRowsPreference && (
-            <StripedRowsPreference
-              value={preferences.stripedRows}
-              {...stripedRowsPreference}
-              onChange={stripedRows => onChange({ stripedRows })}
-            />
-          )}
-          {contentDensityPreference && (
-            <ContentDensityPreference
-              value={preferences.contentDensity}
-              {...contentDensityPreference}
-              onChange={contentDensity => onChange({ contentDensity })}
-            />
-          )}
-          {stickyColumnsPreference && (
-            <StickyColumnsPreference
-              value={preferences.stickyColumns}
-              {...stickyColumnsPreference}
-              onChange={stickyColumns => onChange({ stickyColumns })}
-            />
-          )}
-          {customPreference && (
-            <CustomPreference
-              value={preferences.custom}
-              customPreference={customPreference}
-              onChange={custom => onChange({ custom })}
-            />
-          )}
-        </InternalSpaceBetween>
-      }
-      right={
-        visibleContentPreference && (
-          <VisibleContentPreference
-            value={preferences.visibleContent}
-            {...visibleContentPreference}
-            onChange={visibleContent => onChange({ visibleContent })}
-          />
-        )
-      }
-    />
-  );
-};
-
 export default function CollectionPreferences({
   title,
   confirmLabel,
@@ -187,6 +82,9 @@ export default function CollectionPreferences({
   );
   const hasRightContent = !!visibleContentPreference;
 
+  const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
+    setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
+
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
       <InternalButton
@@ -233,17 +131,63 @@ export default function CollectionPreferences({
           size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
           onDismiss={onCancelListener}
         >
-          <ModalContent
-            preferences={temporaryPreferences}
-            visibleContentPreference={visibleContentPreference}
-            pageSizePreference={pageSizePreference}
-            wrapLinesPreference={wrapLinesPreference}
-            stripedRowsPreference={stripedRowsPreference}
-            contentDensityPreference={contentDensityPreference}
-            stickyColumnsPreference={stickyColumnsPreference}
-            customPreference={customPreference}
-            onChange={changedPreferences =>
-              setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences))
+          <ModalContentLayout
+            left={
+              hasLeftContent && (
+                <InternalSpaceBetween size="l">
+                  {pageSizePreference && (
+                    <PageSizePreference
+                      value={temporaryPreferences.pageSize}
+                      {...pageSizePreference}
+                      onChange={pageSize => onChange({ pageSize })}
+                    />
+                  )}
+                  {wrapLinesPreference && (
+                    <WrapLinesPreference
+                      value={temporaryPreferences.wrapLines}
+                      {...wrapLinesPreference}
+                      onChange={wrapLines => onChange({ wrapLines })}
+                    />
+                  )}
+                  {stripedRowsPreference && (
+                    <StripedRowsPreference
+                      value={temporaryPreferences.stripedRows}
+                      {...stripedRowsPreference}
+                      onChange={stripedRows => onChange({ stripedRows })}
+                    />
+                  )}
+                  {contentDensityPreference && (
+                    <ContentDensityPreference
+                      value={temporaryPreferences.contentDensity}
+                      {...contentDensityPreference}
+                      onChange={contentDensity => onChange({ contentDensity })}
+                    />
+                  )}
+                  {stickyColumnsPreference && (
+                    <StickyColumnsPreference
+                      value={temporaryPreferences.stickyColumns}
+                      {...stickyColumnsPreference}
+                      onChange={stickyColumns => onChange({ stickyColumns })}
+                    />
+                  )}
+                  {customPreference && (
+                    <CustomPreference
+                      value={temporaryPreferences.custom}
+                      customPreference={customPreference}
+                      onChange={custom => onChange({ custom })}
+                    />
+                  )}
+                </InternalSpaceBetween>
+              )
+            }
+            right={
+              visibleContentPreference && (
+                <VisibleContentPreference
+                  value={temporaryPreferences.visibleContent}
+                  {...visibleContentPreference}
+                  onChange={visibleContent => onChange({ visibleContent })}
+                />
+              )
             }
           />
         </InternalModal>
