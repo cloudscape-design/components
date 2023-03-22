@@ -102,7 +102,7 @@ const Thead = React.forwardRef(
                 hidden && headerCellStyles['header-cell-hidden'],
                 hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellWidths?.left[0] }}
+              style={{ left: cellWidths?.start[0] }}
               scope="col"
             >
               <SelectionControl
@@ -124,7 +124,7 @@ const Thead = React.forwardRef(
                 hidden && headerCellStyles['header-cell-hidden'],
                 hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellWidths?.left[0] }}
+              style={{ left: cellWidths?.start[0] }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
@@ -157,9 +157,9 @@ const Thead = React.forwardRef(
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
                   left:
-                    isStickyLeft && cellWidths ? `${cellWidths.left[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
+                    isStickyLeft && cellWidths ? `${cellWidths.start[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
                   right:
-                    isStickyRight && cellWidths ? `${cellWidths.right[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
+                    isStickyRight && cellWidths ? `${cellWidths.end[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}

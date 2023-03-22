@@ -95,7 +95,6 @@ export function ColumnWidthsProvider({
 }: WidthProviderProps) {
   const visibleColumns = useRef<(string | undefined)[] | null>(null);
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
-
   useEffect(() => {
     if (!resizableColumns) {
       return;
@@ -133,7 +132,6 @@ export function ColumnWidthsProvider({
   if (hasSelection) {
     totalWidth += SELECTION_CELL_WIDTH;
   }
-  console.log({ totalWidth });
   return <WidthsContext.Provider value={{ columnWidths, totalWidth, updateColumn }}>{children}</WidthsContext.Provider>;
 }
 

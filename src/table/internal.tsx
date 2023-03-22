@@ -1,16 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, {
-  useImperativeHandle,
-  useEffect,
-  useRef,
-  useState,
-  Ref,
-  forwardRef,
-  createRef,
-  useLayoutEffect,
-} from 'react';
+import React, { useImperativeHandle, useRef, useState, Ref, forwardRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -29,7 +20,6 @@ import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events'
 import { isDevelopment } from '../internal/is-development';
 import { checkColumnWidths, ColumnWidthsProvider, DEFAULT_WIDTH } from './use-column-widths';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { ResizeTracker } from './resizer';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -44,13 +34,20 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import {
+  getStickyStyles,
+  isStickyColumn,
+  shouldDisableStickyColumns,
+  updateCellWidths,
+  useStickyColumn,
+} from './use-sticky-column';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
 export interface CellWidths {
-  left: number[];
-  right: number[];
+  start: number[];
+  end: number[];
 }
 
 const InternalTable = forwardRef(
@@ -98,7 +95,6 @@ const InternalTable = forwardRef(
     }: InternalTableProps<T>,
     ref: Ref<TableProps.Ref>
   ) => {
-    const isMobile = useMobile();
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
 
@@ -116,8 +112,8 @@ const InternalTable = forwardRef(
     const scrollbarRef = useRef<HTMLDivElement>(null);
 
     // Sticky columns
-    const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
-    const [cellWidths, setCellWidths] = useState<CellWidths>({ left: [], right: [] });
+    //  const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
+    //const [cellWidths, setCellWidths] = useState<CellWidths>({ left: [], right: [] });
 
     // Inline editing
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
@@ -142,44 +138,39 @@ const InternalTable = forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
-    const visibleColumnsLength = React.useMemo(
-      () => visibleColumnDefinitions.length,
-      [visibleColumnDefinitions.length]
-    );
+    const visibleColumnsLength = visibleColumnDefinitions.length;
+    // useEffect(() => {
+    //   // Add and remove refs
+    //   setTableCellRefs(tableCellRefs =>
+    //     [...new Array(visibleColumnsLength + (selectionType ? 1 : 0))].map(
+    //       (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
+    //     )
+    //   );
+    // }, [visibleColumnsLength, selectionType]);
 
-    useEffect(() => {
-      // Add and remove refs
-      setTableCellRefs(tableCellRefs =>
-        [...new Array(visibleColumnsLength + (selectionType ? 1 : 0))].map(
-          (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
-        )
-      );
-    }, [visibleColumnsLength, selectionType]);
+    // useLayoutEffect(() => {
+    //   //  first checks whether there are any sticky columns to calculate the widths for.
+    //   // If there are none, the effect returns and does nothing.
+    //   if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
+    //     return;
+    //   }
 
-    useLayoutEffect(() => {
-      //  first checks whether there are any sticky columns to calculate the widths for.
-      // If there are none, the effect returns and does nothing.
-      if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
-        return;
-      }
+    //   // calculates the width of the columns to the left and right of the sticky columns
+    //   // by iterating over the array of references to each table cell.
+    //   let leftWidthsArray = tableCellRefs
+    //     .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+    //     .filter(x => x);
+    //   leftWidthsArray = leftWidthsArray.map((elem, index) =>
+    //     leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
+    //   );
 
-      // calculates the width of the columns to the left and right of the sticky columns
-      // by iterating over the array of references to each table cell.
-      let leftWidthsArray = tableCellRefs
-        .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
-        .filter(x => x);
-      leftWidthsArray = leftWidthsArray.map((elem, index) =>
-        leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
-      );
-
-      let rightWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
-      rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
-      rightWidthsArray = rightWidthsArray
-        .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
-        .reverse();
-      setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
-    }, [tableCellRefs, stickyColumns]);
-
+    //   let rightWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
+    //   rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
+    //   rightWidthsArray = rightWidthsArray
+    //     .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+    //     .reverse();
+    //   setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
+    // }, [tableCellRefs, stickyColumns]);
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -212,6 +203,12 @@ const InternalTable = forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
+    const { tableCellRefs, cellWidths, setCellWidths } = useStickyColumn({
+      visibleColumnsLength,
+      hasSelection,
+      stickyColumns,
+    });
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -231,24 +228,7 @@ const InternalTable = forwardRef(
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
-          console.log('ON RESIZE FINISH!');
-          let leftWidthsArray = tableCellRefs
-            .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
-            .filter(x => x);
-          leftWidthsArray = leftWidthsArray.map((elem, index) =>
-            leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
-          );
-
-          let rightWidthsArray = tableCellRefs.map(
-            ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth
-          );
-          rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
-          rightWidthsArray = rightWidthsArray
-            .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
-            .reverse();
-          console.log('SETTING CELL WIDTHS!!');
-          setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
-
+          updateCellWidths({ tableCellRefs, setCellWidths });
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
         }
       },
@@ -280,12 +260,6 @@ const InternalTable = forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-
-    const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
-    const lastRightStickyColumnIndex = stickyColumns?.end
-      ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
-      : 0;
-    const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -445,11 +419,8 @@ const InternalTable = forwardRef(
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
                             ref={tableCellRefs[0]}
-                            style={
-                              (stickyColumns?.start ?? 0) > 0
-                                ? { position: 'sticky', left: cellWidths.left[0], background: 'white', zIndex: '1' }
-                                : {}
-                            }
+                            isStickyColumn={(stickyColumns?.start ?? 0) > 0}
+                            style={(stickyColumns?.start ?? 0) > 0 ? { left: cellWidths.start[0] } : {}}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -464,63 +435,36 @@ const InternalTable = forwardRef(
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
-                          const lastLeftStickyColumnIndex = stickyColumns?.start
-                            ? stickyColumns?.start + (hasSelection ? 1 : 0)
-                            : 0;
-                          const lastRightStickyColumnIndex = stickyColumns?.end
-                            ? visibleColumnDefinitions.length - stickyColumns?.end
-                            : 0;
+                          const stickyStyles =
+                            (!shouldDisableStickyColumns({
+                              visibleColumnsLength,
+                              stickyColumns,
+                              cellWidths,
+                              containerWidth,
+                              hasSelection,
+                            }) &&
+                              getStickyStyles({
+                                colIndex,
+                                stickyColumns,
+                                visibleColumnsLength,
+                                hasSelection,
+                                cellWidths,
+                              })) ||
+                            {};
 
-                          // const totalStickySpace =
-                          //   cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
-                          const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
-                          const isStickyRight =
-                            colIndex + 1 > visibleColumnDefinitions.length - (stickyColumns?.end ?? 0);
-                          const isLastLeftStickyColumn = colIndex + 1 === stickyColumns?.start;
-                          const isLastRightStickyColumn =
-                            colIndex === visibleColumnDefinitions.length - (stickyColumns?.end ?? 0);
-
-                          const getStickyStyles = () => {
-                            const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : undefined;
-                            const totalStickyColumns = (stickyColumns?.start ?? 0) + (stickyColumns?.end ?? 0);
-                            // Sticky columns disabled conditions
-                            if (!stickySide || isMobile || totalStickyColumns >= visibleColumnDefinitions.length) {
-                              return {};
-                            }
-                            const boxShadow = isLastLeftStickyColumn
-                              ? '4px 0px 20px 1px rgba(0, 7, 22, 0.1)'
-                              : isLastRightStickyColumn
-                              ? '-4px 0px 4px 1px rgba(0, 7, 22, 0.1)'
-                              : 'none';
-                            const clipPath = isLastLeftStickyColumn
-                              ? 'inset(0 -24px 0 0)'
-                              : isLastRightStickyColumn
-                              ? 'inset(0 0 0 -24px)'
-                              : 'none';
-
-                            return {
-                              [stickySide]: `${
-                                stickySide === 'right'
-                                  ? cellWidths.right[colIndex + (selectionType ? 1 : 0)]
-                                  : cellWidths.left[colIndex + (selectionType ? 1 : 0)]
-                              }px`,
-                              boxShadow,
-                              clipPath,
-                            };
-                          };
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
                                   ? {
-                                      ...getStickyStyles(),
+                                      ...stickyStyles,
                                     }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
-                                      ...getStickyStyles(),
+                                      ...stickyStyles,
                                     }
                               }
                               ariaLabels={ariaLabels}
@@ -535,7 +479,7 @@ const InternalTable = forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              isStickyColumn={isStickyLeft || isStickyRight}
+                              isStickyColumn={isStickyColumn({ visibleColumnsLength, stickyColumns, colIndex })}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});
