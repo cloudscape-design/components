@@ -2,7 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Button, Modal, SpaceBetween } from '~components';
+import { Button, Modal, SpaceBetween, Select } from '~components';
+
+const options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'].map(value => ({
+  value,
+  label: `Option ${value}`,
+}));
 
 export default function () {
   const [visible, setVisible] = useState(false);
@@ -68,6 +73,7 @@ export default function () {
               steak. Kevin tri-tip pork chop short loin corned beef, beef drumstick doner. Beef kevin jerky tail.
             </p>
             {content}
+            <Select options={options} selectedOption={null} />
           </div>
         </Modal>
       </ScreenshotArea>
