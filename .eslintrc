@@ -27,7 +27,10 @@
     "react/no-danger": "error",
     "react/no-unstable-nested-components": ["error", { "allowAsProps": true }],
     "react/prop-types": "off",
-    "react/forbid-component-props": ["warn", { "forbid": ["className", "id"] }],
+    "react/forbid-component-props": ["warn", { "forbid": ["className", {
+      "propName": "id",
+      "allowedFor": ["ScreenreaderOnly"]
+    }] }],
     "react/jsx-boolean-value": ["error", "always"],
     "@cloudscape-design/ban-files": [
       "error",
