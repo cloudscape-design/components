@@ -47,6 +47,11 @@ import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
+import {
+  AnalyticsContextProvider,
+  AnalyticsProvider,
+  useAnalyticsProvider,
+} from '../internal/context/analytics-context';
 
 export { AppLayoutProps };
 
@@ -73,11 +78,16 @@ const AppLayout = React.forwardRef(
     const props = { contentType, headerSelector, footerSelector, ...rest, ariaLabels };
 
     const baseProps = getBaseProps(rest);
+    const track = useAnalyticsProvider();
 
     return (
-      <div ref={__internalRootRef} {...baseProps}>
-        {isRefresh ? <RefreshedAppLayout {...props} ref={ref} /> : <OldAppLayout {...props} ref={ref} />}
-      </div>
+      <AnalyticsProvider value={track}>
+        <AnalyticsContextProvider value={{ contentType }}>
+          <div ref={__internalRootRef} {...baseProps}>
+            {isRefresh ? <RefreshedAppLayout {...props} ref={ref} /> : <OldAppLayout {...props} ref={ref} />}
+          </div>
+        </AnalyticsContextProvider>
+      </AnalyticsProvider>
     );
   }
 );

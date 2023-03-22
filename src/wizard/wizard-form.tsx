@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
@@ -10,6 +10,7 @@ import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useAnalyticsContext, WithContext } from '../internal/context/analytics-context';
 
 interface WizardFormProps {
   steps: ReadonlyArray<WizardProps.Step>;
@@ -25,6 +26,25 @@ interface WizardFormProps {
   onPrimaryClick: () => void;
   onSkipToClick: (stepIndex: number) => void;
 }
+
+const StepContent: React.FC<{ stepIndex: number }> = ({ children, stepIndex }) => {
+  const timeInFocus = useRef(0);
+  const { trackEvent } = useAnalyticsContext();
+
+  useEffect(() => {
+    trackEvent({ action: 'step_mount' });
+    timeInFocus.current = Date.now();
+
+    return () => {
+      const duration = Date.now() - timeInFocus.current;
+      trackEvent({ action: 'step_unmount', duration });
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stepIndex]);
+
+  return <div data-analytics-step-index={stepIndex}>{children}</div>;
+};
 
 export default function WizardForm({
   steps,
@@ -59,7 +79,7 @@ export default function WizardForm({
       : undefined;
 
   return (
-    <>
+    <WithContext value={{ currentStepIndex: activeStepIndex, currentStepTitle: title }}>
       <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
         <div
           className={clsx(
@@ -101,9 +121,9 @@ export default function WizardForm({
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       >
-        {content}
+        <StepContent stepIndex={activeStepIndex + 1}>{content}</StepContent>
       </InternalForm>
-    </>
+    </WithContext>
   );
 }
 

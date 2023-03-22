@@ -32,6 +32,7 @@ import ScreenreaderOnly from '../internal/components/screenreader-only/index.js'
 import { joinStrings } from '../internal/utils/strings/join-strings.js';
 import { useInternalI18n } from '../internal/i18n/context.js';
 
+import { useAnalyticsContext } from '../internal/context/analytics-context';
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: boolean;
 }
@@ -73,6 +74,7 @@ const InternalSelect = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
+    const { trackEvent } = useAnalyticsContext();
 
     const i18n = useInternalI18n('select');
     const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
@@ -83,6 +85,12 @@ const InternalSelect = React.forwardRef(
       options,
       statusType,
     });
+
+    useEffect(() => {
+      if (statusType === 'error') {
+        trackEvent({ componentName: 'Form', action: 'error', errorText });
+      }
+    }, [errorText, statusType, trackEvent]);
 
     checkControlled('Select', 'selectedOption', selectedOption, 'onChange', onChange);
 

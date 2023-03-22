@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
@@ -16,6 +16,8 @@ import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useAnalyticsContext } from '../internal/context/analytics-context';
+import { toString } from '../internal/utils/html-to-string';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -27,7 +29,7 @@ export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldEr
   const i18n = useInternalI18n('form-field');
 
   return (
-    <div id={id} className={styles.error}>
+    <div id={id} className={styles.error} data-analytics-error={toString(children)}>
       <div className={styles['error-icon-shake-wrapper']}>
         <div
           role="img"
@@ -65,6 +67,8 @@ export default function InternalFormField({
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
 
+  const { trackEvent } = useAnalyticsContext();
+
   const slotIds = getSlotIds(formFieldId, label, description, constraintText, errorText);
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
@@ -83,9 +87,17 @@ export default function InternalFormField({
     invalid: !!errorText || !!parentInvalid,
   };
 
+  useEffect(() => {
+    if (errorText) {
+      trackEvent({ componentName: 'Form', action: 'error', errorText, label });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorText, label]);
+
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
-      <div className={clsx(__hideLabel && styles['visually-hidden'])}>
+      <div className={clsx(__hideLabel && styles['visually-hidden'])} data-analytics-label={toString(label)}>
         {label && (
           <label className={styles.label} id={slotIds.label} htmlFor={generatedControlId}>
             {label}

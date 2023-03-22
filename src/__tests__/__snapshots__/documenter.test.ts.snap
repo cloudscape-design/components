@@ -13665,7 +13665,6 @@ If you set it to a value that exceeds the maximum value (that is, the number of 
       "type": "number",
     },
     Object {
-      "defaultValue": "false",
       "description": "When set to \`false\`, the *skip-to* button is never shown.
 When set to \`true\`, the *skip-to* button may appear to offer faster navigation for the user.
 The *skip-to* button only allows to skip optional steps. It is shown when there is one or more optional
@@ -13783,7 +13782,6 @@ Defaults to \`false\`.
       "type": "string",
     },
     Object {
-      "defaultValue": "false",
       "description": "Renders the *next* or *submit* button in a loading state.
 Use this if you need to wait for a response from the server before the user can proceed to the next step, such as during server-side validation or retrieving the next step's information.
 ",

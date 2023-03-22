@@ -11,6 +11,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import LiveRegion from '../internal/components/live-region';
+import { useAnalyticsContext } from '../internal/context/analytics-context';
 
 type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
@@ -55,11 +56,14 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
+    const isDisabled = loading || disabled;
+    const isSubmit = formAction === 'submit' && variant === 'primary';
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);
+    const { trackEvent } = useAnalyticsContext();
 
     const handleClick = useCallback(
       (event: React.MouseEvent) => {
@@ -71,10 +75,12 @@ export const InternalButton = React.forwardRef(
           fireCancelableEvent(onFollow, null, event);
         }
 
+        trackEvent({ componentName: 'Button', action: isSubmit ? 'submit' : 'click', variant });
+
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
       },
-      [isAnchor, isNotInteractive, onClick, onFollow]
+      [isAnchor, isNotInteractive, onClick, onFollow, trackEvent, isSubmit, variant]
     );
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {

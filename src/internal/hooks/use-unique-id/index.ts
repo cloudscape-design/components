@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 let counter = 0;
 const useIdFallback = () => {
@@ -16,3 +16,22 @@ const useId: typeof useIdFallback = (React as any).useId ?? useIdFallback;
 export function useUniqueId(prefix?: string) {
   return `${prefix ? prefix : ''}` + useId();
 }
+
+const componentIndexes: Record<string, number> = {};
+export const useUniqueIndex = (prefix: string) => {
+  const ref = useRef<number>();
+
+  useEffect(() => {
+    if (!componentIndexes[prefix]) {
+      componentIndexes[prefix] = 0;
+    }
+
+    componentIndexes[prefix] += 1;
+    ref.current = componentIndexes[prefix];
+    return () => {
+      componentIndexes[prefix] -= 1;
+    };
+  }, [prefix]);
+
+  return ref.current;
+};

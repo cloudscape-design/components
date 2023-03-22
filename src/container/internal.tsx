@@ -5,12 +5,15 @@ import React, { useEffect, useRef } from 'react';
 import { ContainerProps } from './interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
+
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
+import { useAnalyticsContext } from '../internal/context/analytics-context';
+import { useUniqueIndex } from '../internal/hooks/use-unique-id';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -52,8 +55,15 @@ export default function InternalContainer({
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const isFocused = useRef(false);
+  const timeInFocus = useRef(0);
+
+  const uniqueIndex = useUniqueIndex('Container');
+  const { trackEvent } = useAnalyticsContext();
+
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
   const { setHasStickyBackground } = useAppLayoutContext();
+
   const isRefresh = useVisualRefresh();
 
   const hasDynamicHeight = isRefresh && variant === 'full-page';
@@ -84,6 +94,7 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
+      data-analytics-substep-index={uniqueIndex}
       className={clsx(
         baseProps.className,
         styles.root,
@@ -91,6 +102,27 @@ export default function InternalContainer({
         fitHeight && styles['fit-height'],
         isSticky && [styles['sticky-enabled']]
       )}
+      onFocus={() => {
+        if (!isFocused.current) {
+          timeInFocus.current = Date.now();
+          trackEvent({
+            action: 'focusin',
+            currentStepIndex: uniqueIndex,
+          });
+          isFocused.current = true;
+        }
+      }}
+      onBlur={event => {
+        if (isFocused.current && !__internalRootRef?.current.contains(event.relatedTarget)) {
+          const duration = Date.now() - timeInFocus.current;
+          trackEvent({
+            action: 'focusout',
+            duration,
+            currentStepIndex: uniqueIndex,
+          });
+          isFocused.current = false;
+        }
+      }}
       ref={mergedRef}
     >
       {header && (

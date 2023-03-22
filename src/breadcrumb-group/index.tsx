@@ -14,6 +14,7 @@ export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = Br
   ...props
 }: BreadcrumbGroupProps<T>) {
   const baseComponentProps = useBaseComponent('BreadcrumbGroup');
+
   return <InternalBreadcrumbGroup items={items} expandAriaLabel={expandAriaLabel} {...props} {...baseComponentProps} />;
 }
 
