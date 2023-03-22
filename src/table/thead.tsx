@@ -91,7 +91,7 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-    const hasStartingStickyColumn = (stickyColumns?.start ?? 0) > 0;
+    const hasLeftStickyColumns = (stickyColumns?.start ?? 0) > 0;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
@@ -101,7 +101,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
+                hasLeftStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"
@@ -123,7 +123,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasStartingStickyColumn && headerCellStyles['header-cell-freeze']
+                hasLeftStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"
