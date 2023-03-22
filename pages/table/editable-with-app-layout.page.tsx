@@ -14,6 +14,7 @@ import Multiselect, { MultiselectProps } from '~components/multiselect';
 import { Link, Box, Button, Modal, SpaceBetween } from '~components';
 import { initialItems, DistributionInfo, tlsVersions, originSuggestions, tagOptions } from './editable-data';
 import { HelpContent } from './editable-utils';
+import ScreenshotArea from '../utils/screenshot-area';
 
 let __editStateDirty = false;
 
@@ -275,60 +276,62 @@ export default function () {
   });
 
   return (
-    <AppLayout
-      contentType="table"
-      navigationHide={true}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: 'AWS-UI Demos', href: '#' },
-            { text: 'Editable table', href: '#' },
-          ]}
-        />
-      }
-      ariaLabels={{
-        navigation: 'Side navigation',
-        navigationToggle: 'Open navigation',
-        navigationClose: 'Close navigation',
-        notifications: 'Notifications',
-        tools: 'Tools',
-        toolsToggle: 'Open tools',
-        toolsClose: 'Close tools',
-      }}
-      tools={<HelpContent />}
-      content={
-        <>
-          <Demo setModalVisible={setModalVisible} ref={tableRef} />
-          <Modal
-            visible={modalVisible}
-            header="Discard changes"
-            closeAriaLabel="Close modal"
-            onDismiss={withCleanState(() => setModalVisible(false))}
-            footer={
-              <Box float="right">
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={withCleanState(() => {
-                      setModalVisible(false);
-                      tableRef.current?.cancelEdit?.();
-                    })}
-                  >
-                    Discard
-                  </Button>
-                </SpaceBetween>
-              </Box>
-            }
-          >
-            <Alert type="warning" statusIconAriaLabel="Warning">
-              Are you sure you want to discard any unsaved changes?
-            </Alert>
-          </Modal>
-        </>
-      }
-    />
+    <ScreenshotArea disableAnimations={true}>
+      <AppLayout
+        contentType="table"
+        navigationHide={true}
+        breadcrumbs={
+          <BreadcrumbGroup
+            items={[
+              { text: 'AWS-UI Demos', href: '#' },
+              { text: 'Editable table', href: '#' },
+            ]}
+          />
+        }
+        ariaLabels={{
+          navigation: 'Side navigation',
+          navigationToggle: 'Open navigation',
+          navigationClose: 'Close navigation',
+          notifications: 'Notifications',
+          tools: 'Tools',
+          toolsToggle: 'Open tools',
+          toolsClose: 'Close tools',
+        }}
+        tools={<HelpContent />}
+        content={
+          <>
+            <Demo setModalVisible={setModalVisible} ref={tableRef} />
+            <Modal
+              visible={modalVisible}
+              header="Discard changes"
+              closeAriaLabel="Close modal"
+              onDismiss={withCleanState(() => setModalVisible(false))}
+              footer={
+                <Box float="right">
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={withCleanState(() => {
+                        setModalVisible(false);
+                        tableRef.current?.cancelEdit?.();
+                      })}
+                    >
+                      Discard
+                    </Button>
+                  </SpaceBetween>
+                </Box>
+              }
+            >
+              <Alert type="warning" statusIconAriaLabel="Warning">
+                Are you sure you want to discard any unsaved changes?
+              </Alert>
+            </Modal>
+          </>
+        }
+      />
+    </ScreenshotArea>
   );
 }
