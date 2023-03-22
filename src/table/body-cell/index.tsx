@@ -24,25 +24,26 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
-  cellRef: React.Ref<any>;
 }
 
-function TableCellEditable<ItemType>({
-  className,
-  item,
-  column,
-  isEditing,
-  onEditStart,
-  onEditEnd,
-  submitEdit,
-  ariaLabels,
-  isVisualRefresh,
-  cellRef,
-  ...rest
-}: TableBodyCellProps<ItemType>) {
+const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
+  {
+    className,
+    item,
+    column,
+    isEditing,
+    onEditStart,
+    onEditEnd,
+    submitEdit,
+    ariaLabels,
+    isVisualRefresh,
+    ...rest
+  }: TableBodyCellProps<ItemType>,
+  ref: React.Ref<any>
+) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
-  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
+  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(ref);
 
   const handleEditStart = () => {
     storeScrollPosition();
@@ -80,7 +81,7 @@ function TableCellEditable<ItemType>({
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={handleEditStart}
-      ref={cellRef}
+      ref={ref}
     >
       {isEditing ? (
         <InlineEditor
@@ -108,7 +109,7 @@ function TableCellEditable<ItemType>({
       )}
     </TableTdElement>
   );
-}
+});
 
 export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
   props: TableBodyCellProps<ItemType> & { isEditable: boolean },
@@ -116,11 +117,11 @@ export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
 ) {
   const { isEditable, ...rest } = props;
   if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} cellRef={ref} />;
+    return <TableCellEditable ref={ref} {...rest} />;
   }
   const { column, item } = rest;
   return (
-    <TableTdElement {...rest} ref={ref}>
+    <TableTdElement ref={ref} {...rest}>
       {column.cell(item)}
     </TableTdElement>
   );
