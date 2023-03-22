@@ -26,7 +26,7 @@ interface ShouldDisableStickyColumnsParams {
     start?: number;
     end?: number;
   };
-  cellWidths: CellWidths;
+  cellWidths?: CellWidths;
   containerWidth: number | null;
   hasSelection: boolean;
 }
@@ -43,7 +43,7 @@ export const getStickyStyles = ({
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   hasSelection: boolean;
-  cellWidths: CellWidths;
+  cellWidths?: CellWidths;
   isHeader?: boolean;
 }): StickyStyles => {
   const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
@@ -66,8 +66,8 @@ export const getStickyStyles = ({
   return {
     [stickySide]: `${
       stickySide === 'right'
-        ? cellWidths.end[colIndex + (hasSelection ? 1 : 0)]
-        : cellWidths.start[colIndex + (hasSelection ? 1 : 0)]
+        ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
+        : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
     }px`,
     ...(!isHeader && { boxShadow }),
     ...(!isHeader && { clipPath }),
@@ -122,7 +122,8 @@ export const shouldDisableStickyColumns = ({
   const lastEndStickyColumnIndex = stickyColumns?.end
     ? visibleColumnsLength - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
     : 0;
-  const totalStickySpace = cellWidths.start[lastStartStickyColumnIndex] + cellWidths.end[lastEndStickyColumnIndex];
+  const totalStickySpace =
+    (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
   const shouldDisable = totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? 0);
   if (shouldDisable) {
     warnOnce(

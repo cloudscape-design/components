@@ -43,7 +43,7 @@ export interface TheadProps {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
-  cellWidths: CellWidths;
+  cellWidths?: CellWidths;
 }
 
 const Thead = React.forwardRef(

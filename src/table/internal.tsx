@@ -111,11 +111,6 @@ const InternalTable = forwardRef(
     const stickyHeaderRef = useRef<StickyHeaderRef>(null);
     const scrollbarRef = useRef<HTMLDivElement>(null);
 
-    // Sticky columns
-    //  const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
-    //const [cellWidths, setCellWidths] = useState<CellWidths>({ left: [], right: [] });
-
-    // Inline editing
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
@@ -139,38 +134,7 @@ const InternalTable = forwardRef(
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
     const visibleColumnsLength = visibleColumnDefinitions.length;
-    // useEffect(() => {
-    //   // Add and remove refs
-    //   setTableCellRefs(tableCellRefs =>
-    //     [...new Array(visibleColumnsLength + (selectionType ? 1 : 0))].map(
-    //       (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
-    //     )
-    //   );
-    // }, [visibleColumnsLength, selectionType]);
 
-    // useLayoutEffect(() => {
-    //   //  first checks whether there are any sticky columns to calculate the widths for.
-    //   // If there are none, the effect returns and does nothing.
-    //   if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
-    //     return;
-    //   }
-
-    //   // calculates the width of the columns to the left and right of the sticky columns
-    //   // by iterating over the array of references to each table cell.
-    //   let leftWidthsArray = tableCellRefs
-    //     .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
-    //     .filter(x => x);
-    //   leftWidthsArray = leftWidthsArray.map((elem, index) =>
-    //     leftWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
-    //   );
-
-    //   let rightWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
-    //   rightWidthsArray = rightWidthsArray.filter(x => x).reverse();
-    //   rightWidthsArray = rightWidthsArray
-    //     .map((elem, index) => rightWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
-    //     .reverse();
-    //   setCellWidths({ left: [0, ...leftWidthsArray], right: [...rightWidthsArray, 0] });
-    // }, [tableCellRefs, stickyColumns]);
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
