@@ -14,6 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { CellWidths } from './internal';
+import { getStickyStyles, isStickyColumn, shouldDisableStickyColumns } from './use-sticky-column';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -42,7 +43,7 @@ export interface TheadProps {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
-  cellWidths?: CellWidths;
+  cellWidths: CellWidths;
 }
 
 const Thead = React.forwardRef(
@@ -133,9 +134,6 @@ const Thead = React.forwardRef(
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
 
-            const isStickyLeft = colIndex + 1 <= (stickyColumns?.start || 0);
-            const isStickyRight = colIndex + 1 > columnDefinitions.length - (stickyColumns?.end || 0);
-
             let widthOverride;
             if (resizableColumns) {
               if (columnWidths) {
@@ -148,6 +146,30 @@ const Thead = React.forwardRef(
               }
             }
 
+            const isSticky = isStickyColumn({
+              colIndex,
+              visibleColumnsLength: columnDefinitions.length,
+              stickyColumns,
+            });
+            const stickyStyles =
+              (isSticky &&
+                !shouldDisableStickyColumns({
+                  visibleColumnsLength: columnDefinitions.length,
+                  stickyColumns,
+                  cellWidths,
+                  containerWidth,
+                  hasSelection: !!selectionType,
+                }) &&
+                getStickyStyles({
+                  colIndex,
+                  visibleColumnsLength: columnDefinitions.length,
+                  stickyColumns,
+                  cellWidths,
+                  hasSelection: !!selectionType,
+                  isHeader: true,
+                })) ||
+              {};
+
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
@@ -156,10 +178,7 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  left:
-                    isStickyLeft && cellWidths ? `${cellWidths.start[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
-                  right:
-                    isStickyRight && cellWidths ? `${cellWidths.end[colIndex + (selectionType ? 1 : 0)]}px` : 'auto',
+                  ...stickyStyles,
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -176,7 +195,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                isStickyColumn={isStickyLeft || isStickyRight}
+                isStickyColumn={isSticky}
               />
             );
           })}

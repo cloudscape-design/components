@@ -10,8 +10,8 @@ interface CellWidths {
 interface StickyStyles {
   left?: string;
   right?: string;
-  boxShadow: string;
-  clipPath: string;
+  boxShadow?: string;
+  clipPath?: string;
 }
 
 interface StickyColumnParams {
@@ -37,12 +37,14 @@ export const getStickyStyles = ({
   visibleColumnsLength,
   hasSelection,
   cellWidths,
+  isHeader,
 }: {
   colIndex: number;
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   hasSelection: boolean;
   cellWidths: CellWidths;
+  isHeader?: boolean;
 }): StickyStyles => {
   const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
   const isStickyEnd = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
@@ -67,8 +69,8 @@ export const getStickyStyles = ({
         ? cellWidths.end[colIndex + (hasSelection ? 1 : 0)]
         : cellWidths.start[colIndex + (hasSelection ? 1 : 0)]
     }px`,
-    boxShadow,
-    clipPath,
+    ...(!isHeader && { boxShadow }),
+    ...(!isHeader && { clipPath }),
   };
 };
 
@@ -78,7 +80,7 @@ export const isStickyColumn = ({
   visibleColumnsLength,
 }: {
   colIndex: number;
-  stickyColumns: TableProps.StickyColumns;
+  stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
 }) => {
   return colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
@@ -121,11 +123,11 @@ export const shouldDisableStickyColumns = ({
     ? visibleColumnsLength - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
     : 0;
   const totalStickySpace = cellWidths.start[lastStartStickyColumnIndex] + cellWidths.end[lastEndStickyColumnIndex];
-  const shouldDisable = totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > containerWidth;
+  const shouldDisable = totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? 0);
   if (shouldDisable) {
     warnOnce(
       'Table',
-      `stickyColumns widths must not be greater than the table container width minus ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
+      `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
     );
   }
   return shouldDisable;
