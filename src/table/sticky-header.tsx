@@ -26,7 +26,6 @@ interface StickyHeaderProps {
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
   stickyColumns?: TableProps.StickyColumns;
-  cellWidths: any;
 }
 
 export default forwardRef(StickyHeader);
@@ -43,7 +42,6 @@ function StickyHeader(
     tableHasHeader,
     contentDensity,
     stickyColumns,
-    cellWidths,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -91,7 +89,6 @@ function StickyHeader(
         <Thead
           focusedComponent={focusedComponent}
           stickyColumns={stickyColumns}
-          cellWidths={cellWidths}
           sticky={true}
           stuck={isStuck}
           {...theadProps}

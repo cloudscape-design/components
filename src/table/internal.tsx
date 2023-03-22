@@ -376,9 +376,6 @@ const InternalTable = forwardRef(
                 ref={theadRef}
                 hidden={stickyHeader}
                 onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
-                onCellFocus={colIndex => stickyHeaderRef.current?.setFocusedColumn(colIndex)}
-                onCellBlur={() => stickyHeaderRef.current?.setFocusedColumn(null)}
-                hidden={stickyHeader}
                 stickyColumns={stickyColumns}
                 cellWidths={cellWidths}
                 {...theadProps}

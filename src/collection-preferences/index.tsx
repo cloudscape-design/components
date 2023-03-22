@@ -182,12 +182,10 @@ export default function CollectionPreferences({
     wrapLinesPreference ||
     stripedRowsPreference ||
     contentDensityPreference ||
+    stickyColumnsPreference ||
     customPreference
   );
   const hasRightContent = !!visibleContentPreference;
-
-  const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
-    setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>

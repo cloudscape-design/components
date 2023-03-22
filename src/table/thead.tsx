@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { Ref } from 'react';
+import React from 'react';
 import { TableProps } from './interfaces';
 import SelectionControl, { SelectionControlProps } from './selection-control';
 import { focusMarkers } from './use-selection';
@@ -40,8 +40,8 @@ export interface TheadProps {
   stripedRows?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  stickyColumns?: ReadonlyArray<string>;
-  cellWidths;
+  stickyColumns?: TableProps.StickyColumns;
+  cellWidths?: { left: number[]; right: number[] };
 }
 
 const Thead = React.forwardRef(

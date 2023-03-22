@@ -32,7 +32,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  isStickyColumn?: 'left' | 'right';
+  isStickyColumn?: boolean;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
@@ -50,6 +50,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     wrapLines,
     colIndex,
     hidden,
+    onClick,
     onFocusedComponentChange,
     focusedComponent,
     updateColumn,
@@ -90,7 +91,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: isStickyColumn,
+        [styles['header-cell-freeze']]: !!isStickyColumn,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
