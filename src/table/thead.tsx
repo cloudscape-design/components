@@ -89,7 +89,7 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-    const hasStartingStickyColumn = (stickyColumns?.left ?? 0) > 0;
+    const hasStartingStickyColumn = (stickyColumns?.start ?? 0) > 0;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>

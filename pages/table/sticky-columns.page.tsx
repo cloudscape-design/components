@@ -144,6 +144,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
+          selectionType="multi"
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
