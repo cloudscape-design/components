@@ -11,6 +11,7 @@ export interface BaseOption {
 
 export interface OptionDefinition extends BaseOption {
   value?: string;
+  lang?: string;
   labelTag?: string;
   description?: string;
   iconAlt?: string;

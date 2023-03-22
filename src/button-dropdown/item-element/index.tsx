@@ -73,7 +73,7 @@ interface MenuItemProps {
 }
 
 function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
-  const menuItemRef = useRef<HTMLSpanElement | HTMLAnchorElement>(null);
+  const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
 
   useEffect(() => {
     if (highlighted && menuItemRef.current) {
@@ -83,8 +83,9 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
 
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
-  const menuItemProps: React.HTMLProps<HTMLSpanElement | HTMLAnchorElement> = {
+  const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     className: styles['menu-item'],
+    lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.
     // The current element will always have tabindex=0 which means that it can be tabbed to,
@@ -93,9 +94,10 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
     ...getMenuItemProps({ disabled }),
     ...(isDisabledWithReason ? targetProps : {}),
   };
+
   const menuItem = isLinkItem(item) ? (
     <a
-      {...(menuItemProps as React.HTMLProps<HTMLAnchorElement>)}
+      {...menuItemProps}
       href={!disabled ? item.href : undefined}
       target={getItemTarget(item)}
       rel={item.external ? 'noopener noreferrer' : undefined}
