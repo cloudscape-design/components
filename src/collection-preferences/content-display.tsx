@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
 import { isEscape } from './utils';
+import ScreenReaderOnly from '../internal/components/screenreader-only';
 
 const componentPrefix = 'content-display';
 
@@ -151,9 +152,8 @@ export default function ContentDisplayPreference({
           </SortableContext>
         </div>
       </DndContext>
-      <div style={{ display: 'none' }} id={dragHandleAriaLabelId}>
-        {dragHandleAriaLabel}
-      </div>
+      {/* eslint-disable-next-line react/forbid-component-props */}
+      <ScreenReaderOnly id={dragHandleAriaLabelId}>{dragHandleAriaLabel}</ScreenReaderOnly>
     </div>
   );
 }
