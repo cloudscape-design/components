@@ -281,11 +281,11 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    // const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
-    // const lastRightStickyColumnIndex = stickyColumns?.end
-    //   ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
-    //   : 0;
-    //const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
+    const lastLeftStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
+    const lastRightStickyColumnIndex = stickyColumns?.end
+      ? visibleColumnDefinitions.length - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
+      : 0;
+    const totalStickySpace = cellWidths.left[lastLeftStickyColumnIndex] + cellWidths.right[lastRightStickyColumnIndex];
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (

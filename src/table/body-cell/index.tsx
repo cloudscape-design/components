@@ -11,6 +11,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import { useStableScrollPosition } from './use-stable-scroll-position';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -43,7 +44,10 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
 ) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
-  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(ref);
+  const cellRef = useRef<HTMLTableCellElement>(null);
+  const mergedRef = useMergeRefs(ref, cellRef);
+
+  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
 
   const handleEditStart = () => {
     storeScrollPosition();
@@ -81,7 +85,7 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={handleEditStart}
-      ref={ref}
+      ref={mergedRef}
     >
       {isEditing ? (
         <InlineEditor
