@@ -231,5 +231,18 @@ describe('TokenGroup', () => {
 
       expect(wrapper.findTokenToggle()!.getElement()).toHaveFocus();
     });
+
+    test('Focus returns to body when no active token and no "show more" button after token removal', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1', disabled: true },
+          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '3', dismissLabel: 'Remove 3' },
+        ],
+      });
+      act(() => wrapper.findToken(3)!.findDismiss().click());
+
+      expect(document.body).toHaveFocus();
+    });
   });
 });
