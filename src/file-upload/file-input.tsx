@@ -10,6 +10,7 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import InternalIcon from '../icon/internal';
+import { joinStrings } from '../internal/utils/strings';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
@@ -27,11 +28,11 @@ function FileInput(
   { accept, ariaRequired, multiple, value, onChange, children, invalidStateIconAlt, ...restProps }: FileInputProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadButtonLabelId = useUniqueId('button-label');
   const selfControlId = useUniqueId('input');
   const formFieldContext = useFormFieldContext(restProps);
   const controlId = formFieldContext.controlId ?? selfControlId;
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onUploadButtonClick = () => fileInputRef.current?.click();
 
@@ -40,7 +41,7 @@ function FileInput(
   };
 
   const nativeAttributes: Record<string, any> = {
-    'aria-labelledby': formFieldContext.ariaLabelledby,
+    'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
     'aria-describedby': formFieldContext.ariaDescribedby,
   };
   if (formFieldContext.invalid) {
@@ -51,11 +52,13 @@ function FileInput(
   }
 
   useEffect(() => {
-    const dataTransfer = new DataTransfer();
-    for (const file of value) {
-      dataTransfer.items.add(file);
+    if (window.DataTransfer) {
+      const dataTransfer = new DataTransfer();
+      for (const file of value) {
+        dataTransfer.items.add(file);
+      }
+      fileInputRef.current!.files = dataTransfer.files;
     }
-    fileInputRef.current!.files = dataTransfer.files;
   }, [value]);
 
   return (
@@ -81,7 +84,7 @@ function FileInput(
           className={styles['upload-button']}
           __nativeAttributes={nativeAttributes}
         >
-          {children}
+          <span id={uploadButtonLabelId}>{children}</span>
         </InternalButton>
 
         {formFieldContext.invalid && <InternalIcon variant="error" name="status-warning" alt={invalidStateIconAlt} />}

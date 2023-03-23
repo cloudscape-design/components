@@ -78,6 +78,11 @@ describe('FileUpload input', () => {
     expect(screen.getByLabelText('Test label')).toBeDefined();
   });
 
+  test('`ariaLabelledby` is joined with `uploadButtonText`', () => {
+    const wrapper = render({ ariaLabelledby: 'test-label' });
+    expect(wrapper.findUploadButton().getElement()).toHaveAccessibleName('Test label Choose file');
+  });
+
   test('`ariaDescribedby` property is assigned', () => {
     const uploadButton = render({ ariaDescribedby: 'test-label' }).findUploadButton().getElement();
     expect(uploadButton).toHaveAccessibleDescription('Test label');
@@ -214,8 +219,5 @@ test('a11y', async () => {
     showFileSize: true,
     showFileLastModified: true,
   });
-  await expect(wrapper.getElement()).toValidateA11y();
-
-  wrapper.findFileToken(1)!.findActivateNameEditButton()!.click();
   await expect(wrapper.getElement()).toValidateA11y();
 });
