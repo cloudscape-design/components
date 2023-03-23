@@ -24,6 +24,7 @@ export default function InternalTokenGroup({ items, onDismiss, __internalRootRef
       items={items}
       renderItem={item => <Option option={item} />}
       getItemAttributes={(item, itemIndex) => ({
+        name: item.label ?? '',
         disabled: item.disabled,
         dismiss: {
           label: item.dismissLabel,

@@ -95,7 +95,8 @@ function InternalFileUpload(
         <GenericTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={(_, fileIndex) => ({
+          getItemAttributes={(file, fileIndex) => ({
+            name: file.name,
             dismiss: {
               label: i18nStrings.removeFileAriaLabel,
               onDismiss: () => onFileRemove(fileIndex),
@@ -104,6 +105,7 @@ function InternalFileUpload(
           renderItem={(file, fileIndex) => (
             <FileOption file={file} metadata={metadata} fileProps={fileProps?.[fileIndex]} i18nStrings={i18nStrings} />
           )}
+          list={multiple}
           limit={limit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,

@@ -31,6 +31,11 @@ $sizes-vertical: (
 .root {
   display: flex;
 }
+ul.root {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
 .child {
   /* used in test-utils */

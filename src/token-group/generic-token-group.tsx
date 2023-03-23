@@ -16,6 +16,7 @@ import SelectToggle from './toggle';
 import styles from './styles.css.js';
 
 interface ItemAttributes {
+  name: string;
   disabled?: boolean;
   dismiss?: {
     label?: string;
@@ -25,6 +26,7 @@ interface ItemAttributes {
 
 interface GenericTokenGroupProps<Item> extends BaseComponentProps {
   items: readonly Item[];
+  list?: boolean;
   limit?: number;
   alignment: TokenGroupProps.Alignment;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
@@ -37,7 +39,7 @@ export default forwardRef(GenericTokenGroup) as <T>(
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
+  { items, alignment, renderItem, getItemAttributes, list, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
   const [expanded, setExpanded] = useState(false);
@@ -53,9 +55,9 @@ function GenericTokenGroup<Item>(
   return (
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
-        <SpaceBetween id={controlId} direction={alignment} size="xs">
+        <SpaceBetween id={controlId} direction={alignment} size="xs" list={list}>
           {slicedItems.map((item, itemIndex) => (
-            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
+            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)} group={!list}>
               {renderItem(item, itemIndex)}
             </GenericToken>
           ))}
@@ -76,12 +78,15 @@ function GenericTokenGroup<Item>(
 }
 
 interface GenericTokenProps extends ItemAttributes {
+  group: boolean;
   children: React.ReactNode;
 }
 
-function GenericToken({ disabled, dismiss, children }: GenericTokenProps) {
+function GenericToken({ name, disabled, dismiss, group, children }: GenericTokenProps) {
+  const groupProps = group ? { role: 'group', 'aria-label': name } : {};
   return (
     <div
+      {...groupProps}
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >

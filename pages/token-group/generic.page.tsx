@@ -32,11 +32,12 @@ export default function GenericTokenGroupPage() {
         i18nStrings={i18nStrings}
         limit={5}
         renderItem={file => <FileOption file={file} />}
-        getItemAttributes={(item, itemIndex) => ({
-          disabled: item === 0,
+        getItemAttributes={(file, fileIndex) => ({
+          name: `agreement-${file + 1}.pdf`,
+          disabled: file === 0,
           dismiss: {
             label: 'Remove file',
-            onDismiss: () => onDismiss(itemIndex),
+            onDismiss: () => onDismiss(fileIndex),
           },
         })}
       />
