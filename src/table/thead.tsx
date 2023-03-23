@@ -146,7 +146,7 @@ const Thead = React.forwardRef(
               }
             }
 
-            const isSticky = isStickyColumn({
+            const { isSticky } = isStickyColumn({
               colIndex,
               visibleColumnsLength: columnDefinitions.length,
               stickyColumns,
@@ -166,7 +166,6 @@ const Thead = React.forwardRef(
                   stickyColumns,
                   cellWidths,
                   hasSelection: !!selectionType,
-                  isHeader: true,
                 })) ||
               {};
 

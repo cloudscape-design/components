@@ -22,6 +22,7 @@ export interface TableTdElementProps {
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
   isStickyColumn?: boolean;
+  isLastStickyColumn?: 'start' | 'end' | undefined;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -44,9 +45,18 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSelection,
       hasFooter,
       isStickyColumn,
+      isLastStickyColumn,
     },
     ref
   ) => {
+    console.log({ styles });
+    const lastStickyColumnStyles =
+      isLastStickyColumn === 'start'
+        ? styles['body-cell-freeze-start-last']
+        : isLastStickyColumn === 'end'
+        ? styles['body-cell-freeze-end-last']
+        : undefined;
+    console.log({ lastStickyColumnStyles, isLastStickyColumn });
     return (
       <td
         style={style}
@@ -64,7 +74,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
-          isStickyColumn && styles['body-cell-freeze']
+          isStickyColumn && styles['body-cell-freeze'],
+          lastStickyColumnStyles
         )}
         onClick={onClick}
         ref={ref}

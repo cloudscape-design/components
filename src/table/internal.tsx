@@ -399,14 +399,22 @@ const InternalTable = forwardRef(
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
+                          // Sticky columns
+                          const { isSticky, isLastStart, isLastEnd } = isStickyColumn({
+                            visibleColumnsLength,
+                            stickyColumns,
+                            colIndex,
+                          });
+                          const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
+                          const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
+                            visibleColumnsLength,
+                            stickyColumns,
+                            cellWidths,
+                            containerWidth,
+                            hasSelection,
+                          });
                           const stickyStyles =
-                            (!shouldDisableStickyColumns({
-                              visibleColumnsLength,
-                              stickyColumns,
-                              cellWidths,
-                              containerWidth,
-                              hasSelection,
-                            }) &&
+                            (!shouldDisableStickyColumnsFeature &&
                               getStickyStyles({
                                 colIndex,
                                 stickyColumns,
@@ -443,7 +451,8 @@ const InternalTable = forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              isStickyColumn={isStickyColumn({ visibleColumnsLength, stickyColumns, colIndex })}
+                              isStickyColumn={isSticky}
+                              isLastStickyColumn={isLastStickyColumn}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});

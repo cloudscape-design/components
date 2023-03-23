@@ -37,31 +37,16 @@ export const getStickyStyles = ({
   visibleColumnsLength,
   hasSelection,
   cellWidths,
-  isHeader,
 }: {
   colIndex: number;
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   hasSelection: boolean;
   cellWidths?: CellWidths;
-  isHeader?: boolean;
 }): StickyStyles => {
   const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
   const isStickyEnd = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-  const isLastLeftStickyColumn = colIndex + 1 === stickyColumns?.start;
-  const isLastRightStickyColumn = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
   const stickySide = isStickyStart ? 'left' : isStickyEnd ? 'right' : '';
-
-  const boxShadow = isLastLeftStickyColumn
-    ? '4px 0px 20px 1px rgba(0, 7, 22, 0.1)'
-    : isLastRightStickyColumn
-    ? '-4px 0px 4px 1px rgba(0, 7, 22, 0.1)'
-    : 'none';
-  const clipPath = isLastLeftStickyColumn
-    ? 'inset(0 -24px 0 0)'
-    : isLastRightStickyColumn
-    ? 'inset(0 0 0 -24px)'
-    : 'none';
 
   return {
     [stickySide]: `${
@@ -69,8 +54,6 @@ export const getStickyStyles = ({
         ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
         : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
     }px`,
-    ...(!isHeader && { boxShadow }),
-    ...(!isHeader && { clipPath }),
   };
 };
 
@@ -83,7 +66,12 @@ export const isStickyColumn = ({
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
 }) => {
-  return colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+  return {
+    isSticky:
+      colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0),
+    isLastStart: colIndex + 1 === stickyColumns?.start,
+    isLastEnd: colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0),
+  };
 };
 
 export const updateCellWidths = ({

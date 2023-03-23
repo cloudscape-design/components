@@ -106,6 +106,14 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 11;
+    &-start-last {
+      box-shadow: awsui.$shadow-sticky-column-start;
+      clip-path: inset(0px -24px 0px 0px);
+    }
+    &-end-last {
+      box-shadow: awsui.$shadow-sticky-column-end;
+      clip-path: inset(0 0 0 -24px);
+    }
   }
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
@@ -178,11 +186,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
   &.body-cell-editable {
+    position: relative;
+    cursor: pointer;
     &.body-cell-freeze {
       position: sticky;
     }
-    position: relative;
-    cursor: pointer;
 
     &.body-cell-edit-active {
       overflow: visible;
@@ -194,13 +202,13 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       }
       &:hover {
         position: relative;
-        &.body-cell-freeze {
-          position: sticky;
-        }
         background-color: awsui.$color-background-dropdown-item-hover;
         border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
+        &.body-cell-freeze {
+          position: sticky;
+        }
         & > .body-cell-editor {
           padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
         }
