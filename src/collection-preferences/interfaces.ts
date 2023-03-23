@@ -212,7 +212,7 @@ export namespace CollectionPreferencesProps {
 export namespace ContentDisplayPreference {
   export interface I18nStrings {
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    liveAnnouncementDndItemReordered?: (position: number, total: number) => string;
+    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
     liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
     liveAnnouncementDndDiscarded?: string;
     dragHandleAriaLabel?: string;

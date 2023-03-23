@@ -5,9 +5,14 @@ import { ContentDisplayPreference } from '~components/collection-preferences/int
 export const collectionPreferencesI18nStrings: ContentDisplayPreference.I18nStrings = {
   liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,
   liveAnnouncementDndDiscarded: 'Reordering canceled',
-  liveAnnouncementDndItemReordered: (position, total) => `Moving item to position ${position} of ${total}`,
+  liveAnnouncementDndItemReordered: (initialPosition, currentPosition, total) =>
+    initialPosition === currentPosition
+      ? `Moving item back to position ${currentPosition} of ${total}`
+      : `Moving item to position ${currentPosition} of ${total}`,
   liveAnnouncementDndItemCommitted: (initialPosition, finalPosition, total) =>
-    `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
+    initialPosition === finalPosition
+      ? `Item moved back to its original position ${initialPosition} of ${total}`
+      : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
   dragHandleAriaDescription:
     'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
   dragHandleAriaLabel: 'Drag handle',

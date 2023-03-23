@@ -4,11 +4,11 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import CollectionPreferencesPageObject from './pages/collection-preferences-page';
 
-const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<void>) => {
+const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<void>, height = 1200) => {
   return useBrowser(async browser => {
     const page = new CollectionPreferencesPageObject(browser);
     await browser.url('#/light/collection-preferences/reorder-content');
-    await page.setWindowSize({ width: 1200, height: 1200 });
+    await page.setWindowSize({ width: 1200, height });
     await testFn(page);
   });
 };
@@ -25,9 +25,13 @@ describe('Collection preferences with custom content reordering', () => {
 
         await page.focusDragHandle(0);
         await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
         await page.keys('ArrowDown');
+        await page.expectAnnouncement('Moving item to position 2 of 6');
         await page.keys('Space');
-        return expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+
+        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+        return page.expectAnnouncement('Item moved from position 1 to position 2 of 6');
       })
     );
 
@@ -41,9 +45,13 @@ describe('Collection preferences with custom content reordering', () => {
 
         await page.focusDragHandle(1);
         await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 2 of 6');
         await page.keys('ArrowUp');
+        await page.expectAnnouncement('Moving item to position 1 of 6');
         await page.keys('Space');
-        return expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+
+        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+        return page.expectAnnouncement('Item moved from position 2 to position 1 of 6');
       })
     );
 
@@ -57,10 +65,15 @@ describe('Collection preferences with custom content reordering', () => {
 
         await page.focusDragHandle(0);
         await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
         await page.keys('ArrowDown');
+        await page.expectAnnouncement('Moving item to position 2 of 6');
         await page.keys('ArrowUp');
+        await page.expectAnnouncement('Moving item back to position 1 of 6');
         await page.keys('Space');
-        return expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+        return page.expectAnnouncement('Item moved back to its original position 1 of 6');
       })
     );
 
@@ -74,9 +87,13 @@ describe('Collection preferences with custom content reordering', () => {
 
         await page.focusDragHandle(0);
         await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
         await page.keys('ArrowDown');
+        await page.expectAnnouncement('Moving item to position 2 of 6');
         await page.keys('Escape');
-        return expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+        return page.expectAnnouncement('Reordering canceled');
       })
     );
 
@@ -96,6 +113,7 @@ describe('Collection preferences with custom content reordering', () => {
           await new Promise(resolve => setTimeout(resolve, 200));
         }
         await page.keys('Space');
+
         return expect(await page.containsOptionsInOrder(['Item 31', 'Item 1'])).toBe(true);
       })
     );

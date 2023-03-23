@@ -237,22 +237,24 @@ export default function ContentDisplayPreference({
                 return liveAnnouncementDndStarted(index + 1, options.length);
               }
             },
-            onDragOver({ over }) {
-              // Don't announce on the first dragOver because it's redundant with onDragStart.
-              if (isFirstAnnouncement.current) {
-                isFirstAnnouncement.current = false;
-                return;
-              }
-
-              if (over && liveAnnouncementDndItemReordered) {
-                const finalIndex = sortedOptions.findIndex(option => option.id === over.id);
-                return liveAnnouncementDndItemReordered(finalIndex + 1, options.length);
+            onDragOver({ active, over }) {
+              if (liveAnnouncementDndItemReordered) {
+                // Don't announce on the first dragOver because it's redundant with onDragStart.
+                if (isFirstAnnouncement.current) {
+                  isFirstAnnouncement.current = false;
+                  if (!over || over.id === active.id) {
+                    return;
+                  }
+                }
+                const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
+                const currentIdex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
+                return liveAnnouncementDndItemReordered(initialIndex + 1, currentIdex + 1, options.length);
               }
             },
             onDragEnd({ active, over }) {
-              if (over && liveAnnouncementDndItemCommitted) {
+              if (liveAnnouncementDndItemCommitted) {
                 const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-                const finalIndex = sortedOptions.findIndex(option => option.id === over.id);
+                const finalIndex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
                 return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, options.length);
               }
             },
