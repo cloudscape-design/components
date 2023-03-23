@@ -8,6 +8,7 @@ import { useClickAway } from './click-away';
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
+import FocusLock from '../../internal/components/focus-lock';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -93,45 +94,44 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <form
-      ref={clickAwayRef}
-      onSubmit={onSubmitClick}
-      onKeyDown={handleEscape}
-      className={styles['body-cell-editor-form']}
-    >
-      <FormField
-        stretch={true}
-        label={ariaLabel}
-        constraintText={constraintText}
-        __hideLabel={true}
-        __disableGutters={true}
-        i18nStrings={{ errorIconAriaLabel }}
-        errorText={validation(item, currentEditValue)}
-      >
-        <div className={styles['body-cell-editor-row']}>
-          {editingCell(item, cellContext)}
-          <span className={styles['body-cell-editor-controls']}>
-            <SpaceBetween direction="horizontal" size="xxs">
-              {!currentEditLoading ? (
-                <Button
-                  ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
-                  formAction="none"
-                  iconName="close"
-                  variant="inline-icon"
-                  onClick={onCancel}
-                />
-              ) : null}
-              <Button
-                ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                formAction="submit"
-                iconName="check"
-                variant="inline-icon"
-                loading={currentEditLoading}
-              />
-            </SpaceBetween>
-          </span>
-        </div>
-      </FormField>
-    </form>
+    <FocusLock restoreFocus={true}>
+      <div role="dialog" aria-label={ariaLabel} onKeyDown={handleEscape}>
+        <form ref={clickAwayRef} onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+          <FormField
+            stretch={true}
+            label={ariaLabel}
+            constraintText={constraintText}
+            __hideLabel={true}
+            __disableGutters={true}
+            i18nStrings={{ errorIconAriaLabel }}
+            errorText={validation(item, currentEditValue)}
+          >
+            <div className={styles['body-cell-editor-row']}>
+              {editingCell(item, cellContext)}
+              <span className={styles['body-cell-editor-controls']}>
+                <SpaceBetween direction="horizontal" size="xxs">
+                  {!currentEditLoading ? (
+                    <Button
+                      ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
+                      formAction="none"
+                      iconName="close"
+                      variant="inline-icon"
+                      onClick={onCancel}
+                    />
+                  ) : null}
+                  <Button
+                    ariaLabel={ariaLabels?.submitEditLabel?.(column)}
+                    formAction="submit"
+                    iconName="check"
+                    variant="inline-icon"
+                    loading={currentEditLoading}
+                  />
+                </SpaceBetween>
+              </span>
+            </div>
+          </FormField>
+        </form>
+      </div>
+    </FocusLock>
   );
 }
