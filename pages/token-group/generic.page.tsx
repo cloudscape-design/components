@@ -10,8 +10,6 @@ import Icon from '~components/icon';
 import styles from './styles.scss';
 import { Button } from '~components';
 
-let nextFileIndex = 4;
-
 const i18nStrings: TokenGroupProps.I18nStrings = {
   limitShowMore: 'Show more chosen options',
   limitShowFewer: 'Show fewer chosen options',
@@ -19,7 +17,7 @@ const i18nStrings: TokenGroupProps.I18nStrings = {
 
 export default function GenericTokenGroupPage() {
   const tokenGroupRef = useRef<TokenGroupProps.Ref>(null);
-  const [files, setFiles] = useState(range(0, nextFileIndex).reverse());
+  const [files, setFiles] = useState(range(0, 4).reverse());
 
   const onDismiss = (itemIndex: number) => {
     const newItems = [...files];
@@ -33,12 +31,11 @@ export default function GenericTokenGroupPage() {
       <SpaceBetween size="m">
         <Button
           onClick={() => {
-            setFiles(prev => [nextFileIndex, ...prev]);
-            nextFileIndex += 1;
-            tokenGroupRef.current?.focusToken(0);
+            setFiles(prev => [Math.max(...prev) + 1, ...prev]);
+            setTimeout(() => tokenGroupRef.current?.focusToken(0), 0);
           }}
         >
-          Add token
+          Add file
         </Button>
 
         <GenericTokenGroup
@@ -48,12 +45,13 @@ export default function GenericTokenGroupPage() {
           i18nStrings={i18nStrings}
           limit={5}
           renderItem={file => <FileOption file={file} />}
-          getItemAttributes={(item, itemIndex) => ({
-            disabled: item === 0,
+          getItemAttributes={(file, fileIndex) => ({
+            name: `agreement-${file + 1}.pdf`,
+            disabled: file === 0,
             dismiss: {
-              label: `Remove file ${itemIndex + 1}`,
+              label: `Remove file ${fileIndex + 1}`,
             },
-            onDismiss: () => onDismiss(itemIndex),
+            onDismiss: () => onDismiss(fileIndex),
           })}
         />
       </SpaceBetween>

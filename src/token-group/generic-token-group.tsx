@@ -17,6 +17,7 @@ import SelectToggle from './toggle';
 import styles from './styles.css.js';
 
 interface ItemAttributes {
+  name: string;
   disabled?: boolean;
   dismiss?: {
     label?: string;
@@ -45,8 +46,8 @@ function GenericTokenGroup<Item>(
   { items, alignment, renderItem, getItemAttributes, limit, __internalRootRef, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<GenericTokenGroupRef>
 ) {
+  const tokenRefs = useRef<{ [key: number]: GenericTokenRef }>({});
   const showMoreButtonRef = useRef<HTMLButtonElement>(null);
-  const dismissButtonRefs = useRef<{ [key: number]: HTMLButtonElement }>({});
   const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
   const [expanded, setExpanded] = useState(false);
   const controlId = useUniqueId();
@@ -59,7 +60,7 @@ function GenericTokenGroup<Item>(
   const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
 
   useImperativeHandle(ref, () => ({
-    focusToken: index => dismissButtonRefs.current[index]?.focus(),
+    focusToken: index => tokenRefs.current[index]?.focus(),
   }));
 
   useEffect(() => {
@@ -67,7 +68,7 @@ function GenericTokenGroup<Item>(
       return;
     }
 
-    const activeItemIndices = Object.keys(dismissButtonRefs.current).map(key => parseInt(key));
+    const activeItemIndices = Object.keys(tokenRefs.current).map(key => parseInt(key));
 
     let closestPrevIndex = Number.NEGATIVE_INFINITY;
     let closestNextIndex = Number.POSITIVE_INFINITY;
@@ -82,10 +83,10 @@ function GenericTokenGroup<Item>(
       }
     }
 
-    if (dismissButtonRefs.current[closestNextIndex]) {
-      dismissButtonRefs.current[closestNextIndex].focus();
-    } else if (dismissButtonRefs.current[closestPrevIndex]) {
-      dismissButtonRefs.current[closestPrevIndex].focus();
+    if (tokenRefs.current[closestNextIndex]) {
+      tokenRefs.current[closestNextIndex].focusDismissButton();
+    } else if (tokenRefs.current[closestPrevIndex]) {
+      tokenRefs.current[closestPrevIndex].focusDismissButton();
     } else if (showMoreButtonRef.current) {
       showMoreButtonRef.current.focus();
     }
@@ -108,9 +109,9 @@ function GenericTokenGroup<Item>(
                 key={itemIndex}
                 ref={elem => {
                   if (elem && !itemAttributes.disabled) {
-                    dismissButtonRefs.current[itemIndex] = elem;
+                    tokenRefs.current[itemIndex] = elem;
                   } else {
-                    delete dismissButtonRefs.current[itemIndex];
+                    delete tokenRefs.current[itemIndex];
                   }
                 }}
                 {...itemAttributes}
@@ -141,15 +142,43 @@ interface GenericTokenProps extends ItemAttributes {
   children: React.ReactNode;
 }
 
+interface GenericTokenRef {
+  focus(): void;
+  focusDismissButton(): void;
+}
+
 const GenericToken = forwardRef(
-  ({ disabled, dismiss, onDismiss, children }: GenericTokenProps, ref: Ref<HTMLButtonElement>) => {
+  ({ name, disabled, dismiss, onDismiss, children }: GenericTokenProps, ref: Ref<GenericTokenRef>) => {
+    const tokenRef = useRef<HTMLDivElement & { focus: () => void }>(null);
+    const dismissButtonRef = useRef<HTMLButtonElement>(null);
+
+    useImperativeHandle(ref, () => ({
+      focus() {
+        tokenRef.current?.focus();
+      },
+      focusDismissButton() {
+        dismissButtonRef.current?.focus();
+      },
+    }));
+
     return (
       <div
+        ref={tokenRef}
+        role="group"
+        aria-label={name}
         className={clsx(styles.token, disabled && styles['token-disabled'])}
         aria-disabled={disabled ? 'true' : undefined}
+        tabIndex={!disabled ? -1 : undefined}
       >
         {children}
-        {dismiss && <DismissButton ref={ref} disabled={disabled} dismissLabel={dismiss.label} onDismiss={onDismiss} />}
+        {dismiss && (
+          <DismissButton
+            ref={dismissButtonRef}
+            disabled={disabled}
+            dismissLabel={dismiss.label}
+            onDismiss={onDismiss}
+          />
+        )}
       </div>
     );
   }
