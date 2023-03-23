@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 import Link from '~components/link';
-import Button from '~components/button';
 import Table, { TableProps } from '~components/table';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
@@ -144,7 +143,6 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          selectionType="multi"
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
@@ -180,9 +178,80 @@ export default () => {
           header={<Header>Simple table</Header>}
         />
         <Table
+          selectionType="single"
+          stickyColumns={preferences.stickyColumns}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                startColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                endColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
+          header={<Header>Simple table with selection type "single"</Header>}
+        />
+        <Table
+          selectionType="multi"
+          stickyColumns={preferences.stickyColumns}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                startColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                endColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
+          header={<Header>Simple table with selection type "multi"</Header>}
+        />
+        <Table
           resizableColumns={true}
           stickyColumns={preferences.stickyColumns}
-          stickyHeader={true}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
@@ -215,6 +284,57 @@ export default () => {
             />
           }
           header={<Header>Table with resizable columns</Header>}
+        />
+
+        <Table
+          stickyColumns={stickyColumns}
+          stickyHeader={true}
+          columnDefinitions={[
+            {
+              id: 'inline-edit-start',
+              header: 'Edit cells',
+              cell: item => item.alt || '-',
+              sortingField: 'alt',
+              editConfig: {
+                ariaLabel: 'Name',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Name Error',
+                editingCell: (item, { currentValue, setValue }) => {
+                  return (
+                    <Input
+                      autoFocus={true}
+                      value={currentValue ?? item.name}
+                      onChange={event => setValue(event.detail.value)}
+                    />
+                  );
+                },
+              },
+            },
+            ...COLUMN_DEFINITIONS,
+            {
+              id: 'inline-edit-end',
+              header: 'Edit cells',
+              cell: item => item.alt || '-',
+              sortingField: 'alt',
+              editConfig: {
+                ariaLabel: 'Name',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Name Error',
+                editingCell: (item, { currentValue, setValue }) => {
+                  return (
+                    <Input
+                      autoFocus={true}
+                      value={currentValue ?? item.name}
+                      onChange={event => setValue(event.detail.value)}
+                    />
+                  );
+                },
+              },
+            },
+          ]}
+          items={[...ITEMS]}
+          sortingDisabled={true}
+          header={<Header>Table with sticky inline editing</Header>}
         />
         <Box float="left">
           <SpaceBetween direction="horizontal" size="xl">

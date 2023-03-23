@@ -11,6 +11,8 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
+import { updateCellWidths } from '../use-sticky-column';
+import { CellWidths } from '../internal';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -33,6 +35,8 @@ interface TableHeaderCellProps<ItemType> {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   isStickyColumn?: boolean;
+  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
+  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
@@ -58,6 +62,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     onResizeFinish,
     isEditable,
     isStickyColumn,
+    tableCellRefs,
+    setCellWidths,
   } = props;
 
   const focusVisible = useFocusVisible();
@@ -149,7 +155,10 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
               focusedComponent.col === colIndex &&
               focusVisible['data-awsui-focus-visible']
             }
-            onDragMove={newWidth => updateColumn(colIndex, newWidth)}
+            onDragMove={newWidth => {
+              updateColumn(colIndex, newWidth);
+              updateCellWidths({ setCellWidths, tableCellRefs });
+            }}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}

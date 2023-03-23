@@ -24,11 +24,11 @@
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 11;
-    &-start-last {
+    &-last-start {
       box-shadow: awsui.$shadow-sticky-column-start;
       clip-path: inset(0px -24px 0px 0px);
     }
-    &-end-last {
+    &-last-end {
       box-shadow: awsui.$shadow-sticky-column-end;
       clip-path: inset(0 0 0 -24px);
     }

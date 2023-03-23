@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState, Ref, forwardRef } from 'react';
+import React, { useImperativeHandle, useRef, useState, Ref, forwardRef, useEffect } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -34,13 +34,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import {
-  getStickyStyles,
-  isStickyColumn,
-  shouldDisableStickyColumns,
-  updateCellWidths,
-  useStickyColumn,
-} from './use-sticky-column';
+import { getStickyStyles, isStickyColumn, shouldDisableStickyColumns, useStickyColumn } from './use-sticky-column';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -173,6 +167,14 @@ const InternalTable = forwardRef(
       stickyColumns,
     });
 
+    const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
+      visibleColumnsLength,
+      stickyColumns,
+      cellWidths,
+      containerWidth,
+      hasSelection,
+    });
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -192,7 +194,6 @@ const InternalTable = forwardRef(
         );
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
-          updateCellWidths({ tableCellRefs, setCellWidths });
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
         }
       },
@@ -201,7 +202,7 @@ const InternalTable = forwardRef(
     };
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
+    const isWrapperScrollable = !!tableWidth && !!containerWidth && tableWidth > containerWidth;
     const wrapperProps = isWrapperScrollable
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
@@ -317,6 +318,8 @@ const InternalTable = forwardRef(
                 onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
                 stickyColumns={stickyColumns}
                 cellWidths={cellWidths}
+                tableCellRefs={tableCellRefs}
+                setCellWidths={setCellWidths}
                 {...theadProps}
               />
               <tbody>
@@ -406,13 +409,7 @@ const InternalTable = forwardRef(
                             colIndex,
                           });
                           const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
-                          const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
-                            visibleColumnsLength,
-                            stickyColumns,
-                            cellWidths,
-                            containerWidth,
-                            hasSelection,
-                          });
+
                           const stickyStyles =
                             (!shouldDisableStickyColumnsFeature &&
                               getStickyStyles({
@@ -451,8 +448,8 @@ const InternalTable = forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              isStickyColumn={isSticky}
-                              isLastStickyColumn={isLastStickyColumn}
+                              isStickyColumn={!shouldDisableStickyColumnsFeature && isWrapperScrollable && isSticky}
+                              isLastStickyColumn={!shouldDisableStickyColumnsFeature && isLastStickyColumn}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});

@@ -47,7 +47,6 @@ export const getStickyStyles = ({
   const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
   const isStickyEnd = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
   const stickySide = isStickyStart ? 'left' : isStickyEnd ? 'right' : '';
-
   return {
     [stickySide]: `${
       stickySide === 'right'
@@ -81,6 +80,9 @@ export const updateCellWidths = ({
   tableCellRefs: React.RefObject<HTMLTableCellElement>[];
   setCellWidths: (cellWidths: CellWidths) => void;
 }): void => {
+  if (!tableCellRefs) {
+    return;
+  }
   let startWidthsArray = tableCellRefs
     .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
     .filter(x => x);
@@ -103,16 +105,23 @@ export const shouldDisableStickyColumns = ({
   containerWidth,
   hasSelection,
 }: ShouldDisableStickyColumnsParams) => {
-  // We allow the table to have a minimum of 200px besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 200;
+  // We allow the table to have a minimum of 100px besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 100;
 
-  const lastStartStickyColumnIndex = stickyColumns?.start ? stickyColumns?.start + (hasSelection ? 1 : 0) : 0;
-  const lastEndStickyColumnIndex = stickyColumns?.end
-    ? visibleColumnsLength - 1 - stickyColumns?.end + (hasSelection ? 1 : 0)
-    : 0;
+  if (!stickyColumns) {
+    return true;
+  }
+
+  const { start = 0, end = 0 } = stickyColumns;
+  const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
+  const lastEndStickyColumnIndex = visibleColumnsLength - end + (hasSelection ? 1 : 0);
+
   const totalStickySpace =
     (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
-  const shouldDisable = totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? 0);
+  console.log({ totalStickySpace, containerWidth, cellWidths });
+  const shouldDisable =
+    totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+
   if (shouldDisable) {
     warnOnce(
       'Table',

@@ -44,6 +44,8 @@ export interface TheadProps {
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
   cellWidths?: CellWidths;
+  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
+  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
 }
 
 const Thead = React.forwardRef(
@@ -71,6 +73,8 @@ const Thead = React.forwardRef(
       stuck = false,
       focusedComponent,
       onFocusedComponentChange,
+      setCellWidths,
+      tableCellRefs,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -89,6 +93,14 @@ const Thead = React.forwardRef(
       styles['selection-control-header'],
       isVisualRefresh && styles['is-visual-refresh']
     );
+
+    const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
+      visibleColumnsLength: columnDefinitions.length,
+      stickyColumns,
+      cellWidths,
+      containerWidth,
+      hasSelection: !!selectionType,
+    });
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
     const hasLeftStickyColumns = (stickyColumns?.start ?? 0) > 0;
@@ -151,15 +163,10 @@ const Thead = React.forwardRef(
               visibleColumnsLength: columnDefinitions.length,
               stickyColumns,
             });
+
             const stickyStyles =
               (isSticky &&
-                !shouldDisableStickyColumns({
-                  visibleColumnsLength: columnDefinitions.length,
-                  stickyColumns,
-                  cellWidths,
-                  containerWidth,
-                  hasSelection: !!selectionType,
-                }) &&
+                !shouldDisableStickyColumnsFeature &&
                 getStickyStyles({
                   colIndex,
                   visibleColumnsLength: columnDefinitions.length,
@@ -195,6 +202,8 @@ const Thead = React.forwardRef(
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 isStickyColumn={isSticky}
+                tableCellRefs={tableCellRefs}
+                setCellWidths={setCellWidths}
               />
             );
           })}
