@@ -8,12 +8,16 @@ import flattenChildren from 'react-keyed-flatten-children';
 import { SpaceBetweenProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-type InternalSpaceBetweenProps = SpaceBetweenProps & InternalBaseComponentProps;
+type InternalSpaceBetweenProps = SpaceBetweenProps &
+  InternalBaseComponentProps & {
+    asList?: boolean;
+  };
 
 export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
+  asList,
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -24,8 +28,11 @@ export default function InternalSpaceBetween({
    */
   const flattenedChildren = flattenChildren(children);
 
+  const ParentTag = asList ? 'ul' : 'div';
+  const ChildTag = asList ? 'li' : 'div';
+
   return (
-    <div
+    <ParentTag
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
       ref={__internalRootRef}
@@ -36,11 +43,11 @@ export default function InternalSpaceBetween({
         const key = (child as any).key;
 
         return (
-          <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
+          <ChildTag key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
-          </div>
+          </ChildTag>
         );
       })}
-    </div>
+    </ParentTag>
   );
 }

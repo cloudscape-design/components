@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 
-import SpaceBetween from '../space-between/internal';
+import InternalSpaceBetween from '../space-between/internal';
 
 import { TokenGroupProps } from './interfaces';
 import DismissButton from './dismiss-button';
@@ -16,6 +16,7 @@ import SelectToggle from './toggle';
 import styles from './styles.css.js';
 
 interface ItemAttributes {
+  name: string;
   disabled?: boolean;
   dismiss?: {
     label?: string;
@@ -23,8 +24,9 @@ interface ItemAttributes {
   };
 }
 
-interface GenericTokenGroupProps<Item> extends BaseComponentProps {
+export interface GenericTokenGroupProps<Item> extends BaseComponentProps {
   items: readonly Item[];
+  asList?: boolean;
   limit?: number;
   alignment: TokenGroupProps.Alignment;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
@@ -37,7 +39,7 @@ export default forwardRef(GenericTokenGroup) as <T>(
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
+  { items, alignment, renderItem, getItemAttributes, asList, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
   const [expanded, setExpanded] = useState(false);
@@ -53,13 +55,13 @@ function GenericTokenGroup<Item>(
   return (
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
-        <SpaceBetween id={controlId} direction={alignment} size="xs">
+        <InternalSpaceBetween id={controlId} direction={alignment} asList={asList} size="xs">
           {slicedItems.map((item, itemIndex) => (
-            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
+            <GenericToken asGroup={!asList} key={itemIndex} {...getItemAttributes(item, itemIndex)}>
               {renderItem(item, itemIndex)}
             </GenericToken>
           ))}
-        </SpaceBetween>
+        </InternalSpaceBetween>
       )}
       {hasHiddenItems && (
         <SelectToggle
@@ -76,12 +78,15 @@ function GenericTokenGroup<Item>(
 }
 
 interface GenericTokenProps extends ItemAttributes {
+  asGroup: boolean;
   children: React.ReactNode;
 }
 
-function GenericToken({ disabled, dismiss, children }: GenericTokenProps) {
+function GenericToken({ asGroup, name, disabled, dismiss, children }: GenericTokenProps) {
+  const groupProps = asGroup ? { role: 'group', 'aria-label': name } : {};
   return (
     <div
+      {...groupProps}
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >

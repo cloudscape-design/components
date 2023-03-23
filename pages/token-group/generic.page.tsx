@@ -30,13 +30,15 @@ export default function GenericTokenGroupPage() {
         alignment="vertical"
         items={files}
         i18nStrings={i18nStrings}
+        asList={true}
         limit={5}
         renderItem={file => <FileOption file={file} />}
-        getItemAttributes={(item, itemIndex) => ({
-          disabled: item === 0,
+        getItemAttributes={(file, fileIndex) => ({
+          name: `agreement-${file + 1}.pdf`,
+          disabled: file === 0,
           dismiss: {
-            label: 'Remove file',
-            onDismiss: () => onDismiss(itemIndex),
+            label: `Remove file ${fileIndex + 1}`,
+            onDismiss: () => onDismiss(fileIndex),
           },
         })}
       />
