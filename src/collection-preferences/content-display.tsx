@@ -56,8 +56,8 @@ export default function ContentDisplayPreference({
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
   const isKeyboard = useRef(false);
-  const top = useRef<number | null>(null);
   const positionDelta = useRef(0);
+  const keyboardDirection = useRef<'up' | 'down' | null>(null);
 
   const idPrefix = useUniqueId(componentPrefix);
   const sensors = useSensors(
@@ -78,6 +78,15 @@ export default function ContentDisplayPreference({
   const isFirstAnnouncement = useRef(true);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (isKeyboard.current) {
+      // We can't use onDragMove for this because that function gets triggered also on window scroll.
+      if (event.key === 'ArrowDown') {
+        keyboardDirection.current = 'down';
+      }
+      if (event.key === 'ArrowUp') {
+        keyboardDirection.current = 'up';
+      }
+    }
     if (isDragging && isEscape(event.key)) {
       // Prevent modal from closing when pressing Esc to cancel the dragging action
       event.stopPropagation();
@@ -91,7 +100,6 @@ export default function ContentDisplayPreference({
       isFirstAnnouncement.current = true;
       isKeyboard.current = false;
       positionDelta.current = 0;
-      top.current = null;
     }
   }, [isDragging]);
 
@@ -123,14 +131,9 @@ export default function ContentDisplayPreference({
     droppableRects,
     pointerCoordinates,
   }) => {
-    if (isKeyboard) {
-      const previousTop = top.current !== null ? top.current : active.rect.current.initial?.top;
-      if (previousTop === undefined) {
-        return [];
-      }
-      const topDelta = collisionRect.top - previousTop;
-      positionDelta.current += topDelta === 0 ? 0 : topDelta < 0 ? -1 : 1;
-      top.current = collisionRect.top;
+    if (isKeyboard.current) {
+      positionDelta.current += keyboardDirection.current === 'up' ? -1 : keyboardDirection.current === 'down' ? 1 : 0;
+      keyboardDirection.current = null;
       if (positionDelta.current === 0) {
         // Back at initial position, no need to check for colliding items to swap with
         return [];
