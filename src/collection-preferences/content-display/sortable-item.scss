@@ -3,14 +3,14 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles/tokens' as awsui;
+@use '../../internal/styles/tokens' as awsui;
 
 .content-display-option {
   background: awsui.$color-board-placeholder-hover;
 }
 
 .sortable-item-content {
-  border-top: $border;
+  border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;

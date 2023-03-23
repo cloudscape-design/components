@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../internal/styles' as styles;
-@use '../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
 
-$border: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+@import 'sortable-item';
 
 .content-display,
 .content-display-toggle,

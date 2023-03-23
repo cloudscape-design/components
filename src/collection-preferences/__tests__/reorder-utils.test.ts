@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getSortedOptions } from '../reorder-utils';
+import { getSortedOptions } from '../content-display/reorder-utils';
 
 describe('getSortedOptions', () => {
   it('returns the passed-in options sorted according to the desired order', () => {

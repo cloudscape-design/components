@@ -4,10 +4,10 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
-import styles from './styles.css.js';
-import DragHandle from '../internal/drag-handle';
-import InternalToggle from '../toggle/internal';
-import { CollectionPreferencesProps } from './interfaces';
+import styles from '../styles.css.js';
+import DragHandle from '../../internal/drag-handle';
+import InternalToggle from '../../toggle/internal';
+import { CollectionPreferencesProps } from '../interfaces';
 
 export const className = (suffix: string) => ({
   className: styles[`sortable-item-${suffix}`],

@@ -1,29 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-import { CollectionPreferencesProps } from './interfaces';
-import styles from './styles.css.js';
+import { CollectionPreferencesProps } from '../interfaces';
+import styles from '../styles.css.js';
 import { getSortedOptions } from './reorder-utils';
 import {
-  DndContext,
+  Active,
   closestCenter,
+  CollisionDetection,
+  DndContext,
+  DroppableContainer,
+  getScrollableAncestors,
+  KeyboardCoordinateGetter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  CollisionDetection,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, hasSortableData, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
-import { isEscape } from './utils';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { isEscape } from '../utils';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 
 const componentPrefix = 'content-display';
 
@@ -37,6 +36,16 @@ const className = (suffix: string) => ({
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) => void;
   value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>;
+}
+
+enum KeyboardCode {
+  Space = 'Space',
+  Down = 'ArrowDown',
+  Right = 'ArrowRight',
+  Left = 'ArrowLeft',
+  Up = 'ArrowUp',
+  Esc = 'Escape',
+  Enter = 'Enter',
 }
 
 export default function ContentDisplayPreference({
@@ -60,16 +69,6 @@ export default function ContentDisplayPreference({
   const keyboardDirection = useRef<'up' | 'down' | null>(null);
 
   const idPrefix = useUniqueId(componentPrefix);
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-      onActivation: () => {
-        isKeyboard.current = true;
-      },
-    })
-  );
-
   const onToggle = (id: string) => {
     onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id, value) } : item)));
   };
@@ -86,6 +85,8 @@ export default function ContentDisplayPreference({
       if (event.key === 'ArrowUp') {
         keyboardDirection.current = 'up';
       }
+      positionDelta.current += keyboardDirection.current === 'up' ? -1 : keyboardDirection.current === 'down' ? 1 : 0;
+      keyboardDirection.current = null;
     }
     if (isDragging && isEscape(event.key)) {
       // Prevent modal from closing when pressing Esc to cancel the dragging action
@@ -106,6 +107,15 @@ export default function ContentDisplayPreference({
   const sortedOptions = getSortedOptions({ options, order: value });
   const dragHandleAriaLabelId = `${idPrefix}-drag-handle-aria-label`;
 
+  const getClosestId = (active: Active) => {
+    if (positionDelta.current === 0) {
+      return active.id;
+    }
+    const currentIndex = sortedOptions.findIndex(({ id }) => id === active.id);
+    const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
+    return sortedOptions[newIndex].id;
+  };
+
   // A custom collision detection algorithm is used when using a keyboard to
   // work around an unexpected behavior when reordering items of variable height
   // with the keyboard.
@@ -117,13 +127,11 @@ export default function ContentDisplayPreference({
 
   // Instead of relying on coordinates, the expected results are achieved by
   // moving X positions up or down in the initially sorted array, depending on
-  // the desired direction. This is actually what the
-  // sortableKeyboardCoordinates coordinateGetter already does correctly as
-  // well.
+  // the desired direction.
 
-  // Because a pure CollisionDetection function would have no way to know
-  // whether we are moving up and down just from its arguments, we can't move
-  // this one outside the component.
+  // We let customCollisionDetection and customCoordinateGetter use the same
+  // getClosestId function which takes its value from the current component
+  // state, to make sure they are always in sync.
   const customCollisionDetection: CollisionDetection = ({
     active,
     collisionRect,
@@ -132,33 +140,85 @@ export default function ContentDisplayPreference({
     pointerCoordinates,
   }) => {
     if (isKeyboard.current) {
-      positionDelta.current += keyboardDirection.current === 'up' ? -1 : keyboardDirection.current === 'down' ? 1 : 0;
-      keyboardDirection.current = null;
-      if (positionDelta.current === 0) {
-        // Back at initial position, no need to check for colliding items to swap with
-        return [];
-      }
-      const currentIndex = sortedOptions.findIndex(({ id }) => id === active.id);
-      const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
-      const collidingContainerId = sortedOptions[newIndex].id;
-      const collidingContainer = droppableContainers.find(({ id }) => id === collidingContainerId);
-      if (collidingContainer) {
-        return [
-          {
-            id: collidingContainer.id,
-            data: {
-              droppableContainer: collidingContainer,
-              value: 0,
+      const collidingContainerId = getClosestId(active);
+      if (collidingContainerId !== active.id) {
+        const collidingContainer = droppableContainers.find(({ id }) => id === collidingContainerId);
+        if (collidingContainer) {
+          return [
+            {
+              id: collidingContainer.id,
+              data: {
+                droppableContainer: collidingContainer,
+                value: 0,
+              },
             },
-          },
-        ];
-      } else {
-        return [];
+          ];
+        }
       }
+      return [];
     } else {
       return closestCenter({ active, collisionRect, droppableRects, droppableContainers, pointerCoordinates });
     }
   };
+
+  const customCoordinateGetter: KeyboardCoordinateGetter = (
+    event,
+    { context: { active, collisionRect, droppableRects, droppableContainers, scrollableAncestors } }
+  ) => {
+    if (event.code === KeyboardCode.Up || event.code === KeyboardCode.Down) {
+      event.preventDefault();
+
+      if (!active || !collisionRect) {
+        return;
+      }
+
+      const closestId = getClosestId(active);
+
+      if (closestId !== null) {
+        const activeDroppable = droppableContainers.get(active.id);
+        const newDroppable = droppableContainers.get(closestId);
+        const newRect = newDroppable ? droppableRects.get(newDroppable.id) : null;
+        const newNode = newDroppable?.node.current;
+
+        if (newNode && newRect && activeDroppable && newDroppable) {
+          const newScrollAncestors = getScrollableAncestors(newNode);
+          const hasDifferentScrollAncestors = newScrollAncestors.some(
+            (element, index) => scrollableAncestors[index] !== element
+          );
+          const hasSameContainer = isSameContainer(activeDroppable, newDroppable);
+          const isAfterActive = isAfter(activeDroppable, newDroppable);
+          const offset =
+            hasDifferentScrollAncestors || !hasSameContainer
+              ? {
+                  x: 0,
+                  y: 0,
+                }
+              : {
+                  x: isAfterActive ? collisionRect.width - newRect.width : 0,
+                  y: isAfterActive ? collisionRect.height - newRect.height : 0,
+                };
+          const rectCoordinates = {
+            x: newRect.left,
+            y: newRect.top,
+          };
+
+          return offset.x && offset.y ? rectCoordinates : subtract(rectCoordinates, offset);
+        }
+      }
+    }
+
+    return undefined;
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: customCoordinateGetter,
+      onActivation: () => {
+        isKeyboard.current = true;
+      },
+    })
+  );
 
   return (
     <div className={styles[componentPrefix]}>
@@ -237,3 +297,48 @@ export default function ContentDisplayPreference({
     </div>
   );
 }
+
+function isSameContainer(a: DroppableContainer, b: DroppableContainer) {
+  if (!hasSortableData(a) || !hasSortableData(b)) {
+    return false;
+  }
+
+  return a.data.current.sortable.containerId === b.data.current.sortable.containerId;
+}
+
+function isAfter(a: DroppableContainer, b: DroppableContainer) {
+  if (!hasSortableData(a) || !hasSortableData(b)) {
+    return false;
+  }
+
+  if (!isSameContainer(a, b)) {
+    return false;
+  }
+
+  return a.data.current.sortable.index < b.data.current.sortable.index;
+}
+
+function createAdjustmentFn(modifier: number) {
+  return <T extends Record<U, number>, U extends string>(object: T, ...adjustments: Partial<T>[]): T => {
+    return adjustments.reduce<T>(
+      (accumulator, adjustment) => {
+        for (const key of Object.keys(adjustment)) {
+          const value = accumulator[key as U];
+          const valueAdjustment = adjustment[key as U];
+
+          if (value !== null && valueAdjustment !== undefined) {
+            accumulator[key as U] = (value + modifier * valueAdjustment) as T[U];
+          }
+        }
+
+        return accumulator;
+      },
+      {
+        ...object,
+      }
+    );
+  };
+}
+
+export const add = createAdjustmentFn(1);
+export const subtract = createAdjustmentFn(-1);
