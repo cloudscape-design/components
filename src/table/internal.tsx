@@ -97,6 +97,7 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
+    const [lastSuccessfulEditCell, setLastSuccessfulEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
     useImperativeHandle(
@@ -367,6 +368,10 @@ const InternalTable = React.forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          const successfulEdit =
+                            !!lastSuccessfulEditCell &&
+                            lastSuccessfulEditCell[0] === rowIndex &&
+                            lastSuccessfulEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
                           return (
                             <TableBodyCell
@@ -391,11 +396,16 @@ const InternalTable = React.forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
+                              successfulEdit={successfulEdit}
+                              onEditStart={() => {
+                                setLastSuccessfulEditCell(null);
+                                setCurrentEditCell([rowIndex, colIndex]);
+                              }}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});
                                 if (!wasCancelled) {
                                   setCurrentEditCell(null);
+                                  setLastSuccessfulEditCell([rowIndex, colIndex]);
                                 }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}

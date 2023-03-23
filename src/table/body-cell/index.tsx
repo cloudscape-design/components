@@ -6,6 +6,8 @@ import React, { useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
+import Icon from '../../icon/internal';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
@@ -19,6 +21,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  successfulEdit?: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
@@ -35,6 +38,7 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
@@ -59,6 +63,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
+        successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
@@ -74,6 +79,14 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
+          {successfulEdit && (
+            <span className={styles['body-cell-success']} aria-hidden="true">
+              <Icon name="status-positive" variant="success" />
+            </span>
+          )}
+          <span aria-live="polite" aria-atomic="true">
+            <ScreenreaderOnly>{successfulEdit ? 'Edit successful' : ''}</ScreenreaderOnly>
+          </span>
           <span className={styles['body-cell-editor']}>
             <Button
               __hideFocusOutline={true}

@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
 import FocusLock from '../../internal/components/focus-lock';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -126,6 +127,9 @@ export function InlineEditor<ItemType>({
                     variant="inline-icon"
                     loading={currentEditLoading}
                   />
+                  <span aria-live="polite" aria-atomic="true">
+                    <ScreenreaderOnly>{currentEditLoading ? 'Loading edit' : ''}</ScreenreaderOnly>
+                  </span>
                 </SpaceBetween>
               </span>
             </div>

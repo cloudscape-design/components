@@ -135,6 +135,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
+
+  &-success,
   &-editor {
     top: 0;
     right: 0;
@@ -146,7 +148,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     justify-content: flex-end;
 
     padding-right: awsui.$space-xs;
+  }
 
+  &-editor {
     &-form {
       margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
       .is-visual-refresh.body-cell:first-child.has-striped-rows > & {
@@ -207,12 +211,20 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         }
       }
       &:hover,
-      &[data-awsui-focus-visible='true']:focus-within {
+      &[data-awsui-focus-visible='true']:focus-within,
+      &.body-cell-has-success {
         padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+      }
+      &:hover,
+      &[data-awsui-focus-visible='true']:focus-within {
         & > .body-cell-editor {
           opacity: 1;
         }
+        & > .body-cell-success {
+          display: none;
+        }
       }
+
       &:hover:first-child {
         left: 0;
         right: 0;
