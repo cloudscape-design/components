@@ -20,6 +20,7 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
+  rowHeader?: boolean;
   isVisualRefresh?: boolean;
 }
 
@@ -42,11 +43,13 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isVisualRefresh,
       hasSelection,
       hasFooter,
+      rowHeader = false,
     },
     ref
   ) => {
+    const TagName = rowHeader ? 'th' : 'td';
     return (
-      <td
+      <TagName
         style={style}
         className={clsx(
           className,
@@ -65,10 +68,11 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         )}
         onClick={onClick}
         ref={ref}
+        scope={rowHeader ? 'row' : undefined}
         {...nativeAttributes}
       >
         {children}
-      </td>
+      </TagName>
     );
   }
 );

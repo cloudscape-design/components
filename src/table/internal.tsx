@@ -402,6 +402,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              rowHeader={!!column.rowHeader}
                               isVisualRefresh={isVisualRefresh}
                             />
                           );

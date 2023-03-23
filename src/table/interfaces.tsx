@@ -89,6 +89,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   to reorder the items. This property accepts a custom comparator that is used to compare two items.
    *   The comparator must implement ascending ordering, and the output is inverted automatically in case of descending order.
    *   If present, the `sortingField` property is ignored.
+   * * `rowHeader` (boolean) - Specifies that the content of this column is used as a header for each row. Sets `scope="row"` for all of its cells.
    * * `editConfig` (EditConfig) - Enables inline editing in column when present. The value is used to configure the editing behavior.
    * * * `editConfig.ariaLabel` (string) - Specifies a label for the edit control. Visually hidden but read by screen readers.
    * * * `editConfig.errorIconAriaLabel` (string) - Specifies an ariaLabel for the error icon that is displayed when the validation fails.
@@ -338,6 +339,7 @@ export namespace TableProps {
     minWidth?: number | string;
     maxWidth?: number | string;
     editConfig?: EditConfig<ItemType>;
+    rowHeader?: boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
