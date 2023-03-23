@@ -47,6 +47,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
+    // Row header cells need to be <th> for better screenreader support
     const TagName = rowHeader ? 'th' : 'td';
     return (
       <TagName
