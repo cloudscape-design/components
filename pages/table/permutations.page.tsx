@@ -41,6 +41,7 @@ const PROPERTY_COLUMNS: TableProps.ColumnDefinition<any>[] = [
   {
     id: 'variable',
     header: 'Property',
+    rowHeader: true,
     cell: item => <Link href="#">{item.name}</Link>,
   },
   {

@@ -48,6 +48,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
   {
     id: 'Id',
     header: 'Distribution ID',
+    rowHeader: true,
     sortingField: 'Id',
     width: 180,
     cell: (item: DistributionInfo) => <Link href={`/#/distributions/${item.Id}`}>{item.Id}</Link>,

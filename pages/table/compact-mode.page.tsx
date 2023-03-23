@@ -164,6 +164,7 @@ export default function App() {
             {
               id: 'variable',
               header: 'Variable name',
+              rowHeader: true,
               minWidth: 176,
               cell: item => {
                 return item.name;

@@ -64,6 +64,7 @@ export const columnsConfig: TableProps.ColumnDefinition<Instance>[] = [
     cell: item => <Link href={`#${item.id}`}>{item.id}</Link>,
     ariaLabel: columnLabel('id'),
     sortingField: 'id',
+    rowHeader: true,
   },
   { id: 'type', header: 'Type', cell: item => item.type, ariaLabel: columnLabel('type'), sortingField: 'type' },
   {
