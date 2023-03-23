@@ -17,12 +17,14 @@ export function SortableItem({
   dragHandleAriaLabelId,
   isVisible,
   idPrefix,
+  onKeyDown,
   onToggle,
   option,
 }: {
   dragHandleAriaLabelId: string;
   isVisible: boolean;
   idPrefix: string;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
 }) {
@@ -40,6 +42,18 @@ export function SortableItem({
     ['aria-describedby']: attributes['aria-describedby'],
   };
 
+  const combinedListeners = {
+    ...listeners,
+    onKeyDown: (event: React.KeyboardEvent) => {
+      if (onKeyDown) {
+        onKeyDown(event);
+      }
+      if (listeners?.onKeyDown) {
+        listeners.onKeyDown(event);
+      }
+    },
+  };
+
   return (
     <div className={styles['content-display-option']}>
       <div
@@ -47,7 +61,7 @@ export function SortableItem({
         className={clsx(className('content').className, styles.draggable, isDragging && styles.dragged)}
         style={style}
       >
-        <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+        <DragHandle attributes={dragHandleAttributes} listeners={combinedListeners} />
 
         <label {...className('label')} id={labelId} htmlFor={controlId}>
           {option.label}

@@ -215,7 +215,7 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setIsDragging(false)}
       >
-        <div onKeyDown={handleKeyDown} {...className('group-list')} aria-describedby={labelId}>
+        <div {...className('group-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (
@@ -224,6 +224,7 @@ export default function ContentDisplayPreference({
                   key={option.id}
                   idPrefix={idPrefix}
                   isVisible={isVisible(option.id, value)}
+                  onKeyDown={handleKeyDown}
                   onToggle={onToggle}
                   option={option}
                 />
