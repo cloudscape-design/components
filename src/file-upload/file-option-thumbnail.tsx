@@ -22,7 +22,7 @@ export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   }, [file]);
 
   return (
-    <div className={styles['file-option-thumbnail']}>
+    <div className={styles['file-option-thumbnail']} aria-hidden={true}>
       <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnailRef} src="" />
     </div>
   );
