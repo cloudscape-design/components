@@ -6,7 +6,6 @@ import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '../../../lib/components/internal/logging';
 import '../../__a11y__/to-validate-a11y';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -29,10 +28,6 @@ const defaultProps: FileUploadProps = {
     uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
     dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
     removeFileAriaLabel: 'Remove file',
-    activateFileNameEditAriaLabel: 'Edit file name',
-    submitFileNameEditAriaLabel: 'Submit file name edit',
-    cancelFileNameEditAriaLabel: 'Cancel file name edit',
-    editFileNameInputAriaLabel: 'File name input',
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
     invalidStateIconAlt: 'Error',
@@ -208,66 +203,6 @@ describe('File upload tokens', () => {
     const wrapper = render({ multiple: true, value: [file1, file2], limit: 1 });
     expect(wrapper.findFileTokens()).toHaveLength(1);
     expect(wrapper.getElement().textContent).toContain('Show more files');
-  });
-});
-
-describe('File upload inline editing', () => {
-  test('ARIA labels of all inline editing controls are set', () => {
-    const fileToken = render({ value: [file1] }).findFileToken(1)!;
-
-    expect(fileToken.isNameEditingActive()).toBe(false);
-    expect(fileToken.findActivateNameEditButton()!.getElement()).toHaveAccessibleName('Edit file name');
-
-    fileToken.findActivateNameEditButton()!.click();
-
-    expect(fileToken.isNameEditingActive()).toBe(true);
-    expect(fileToken.findNameEditInput()!.findNativeInput().getElement()).toHaveAccessibleName('File name input');
-    expect(fileToken.findSubmitNameEditButton()!.getElement()).toHaveAccessibleName('Submit file name edit');
-    expect(fileToken.findCancelNameEditButton()!.getElement()).toHaveAccessibleName('Cancel file name edit');
-  });
-
-  test('File name can be edited', () => {
-    const fileToken = render({ value: [file1] }).findFileToken(1)!;
-
-    fileToken.findActivateNameEditButton()!.click();
-    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
-    fileToken.findSubmitNameEditButton()!.click();
-
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: { value: expect.arrayContaining([expect.objectContaining({ name: 'updated-file-1.txt' })]) },
-      })
-    );
-  });
-
-  test('File name edit can be discarded with a cancel button', () => {
-    const fileToken = render({ value: [file1] }).findFileToken(1)!;
-
-    fileToken.findActivateNameEditButton()!.click();
-    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
-    fileToken.findCancelNameEditButton()!.click();
-
-    expect(fileToken.isNameEditingActive()).toBe(false);
-    expect(onChange).toHaveBeenCalledTimes(0);
-  });
-
-  test('File name edit can be discarded with an Escape keypress', () => {
-    const fileToken = render({ value: [file1] }).findFileToken(1)!;
-
-    fileToken.findActivateNameEditButton()!.click();
-    fileToken.findNameEditInput()!.setInputValue('updated-file-1.txt');
-    fileToken.findNameEditInput()!.findNativeInput().keydown(KeyCode.escape);
-
-    expect(fileToken.isNameEditingActive()).toBe(false);
-    expect(onChange).toHaveBeenCalledTimes(0);
-  });
-
-  test('File remove button is not shown in name editing mode', () => {
-    const fileToken = render({ value: [file1] }).findFileToken(1)!;
-
-    fileToken.findActivateNameEditButton()!.click();
-    expect(fileToken.findRemoveButton()).toBe(null);
   });
 });
 

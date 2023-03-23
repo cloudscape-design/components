@@ -5,7 +5,6 @@ import styles from '../../../file-upload/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
 import ButtonWrapper from '../button';
-import InputWrapper from '../input';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = styles.root;
@@ -65,26 +64,5 @@ class FileTokenWrapper extends ComponentWrapper {
 
   findRemoveButton(): null | ElementWrapper {
     return this.findByClassName(tokenGroupSelectors['dismiss-button']);
-  }
-
-  findActivateNameEditButton(): null | ButtonWrapper {
-    return this.findComponent(`.${styles['file-option-name-edit-activate']}`, ButtonWrapper);
-  }
-
-  findSubmitNameEditButton(): null | ButtonWrapper {
-    return this.findComponent(`.${styles['file-option-name-edit-submit']}`, ButtonWrapper);
-  }
-
-  findCancelNameEditButton(): null | ButtonWrapper {
-    return this.findComponent(`.${styles['file-option-name-edit-cancel']}`, ButtonWrapper);
-  }
-
-  findNameEditInput(): null | InputWrapper {
-    return this.findComponent(`.${styles['file-option-name-input']}`, InputWrapper);
-  }
-
-  @usesDom
-  isNameEditingActive(): boolean {
-    return !!this.findNameEditInput();
   }
 }

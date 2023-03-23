@@ -8,10 +8,7 @@
 .root,
 .upload-button,
 .upload-input,
-.file-option-name-edit-activate,
-.file-option-name-edit-cancel,
-.file-option-name-edit-submit,
-.file-option-name-input,
+.file-option-name,
 .file-option-type,
 .file-option-size,
 .file-option-last-modified,
@@ -59,48 +56,5 @@
 
 .file-option-metadata {
   width: 100%;
-  overflow: hidden;
-}
-
-.file-option-name-edit-activate {
-  flex-shrink: 0;
-}
-
-.file-option-name-edit-submit {
-  margin-right: 1px;
-}
-
-.file-option-name {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: awsui.$space-scaled-xs;
-
-  cursor: pointer;
-  border: awsui.$border-divider-list-width solid transparent;
-
-  &:not(.file-name-edit-active) {
-    & > .file-option-name-edit-activate {
-      opacity: 0;
-    }
-    &.file-name-edit-focused,
-    &:hover {
-      border: awsui.$border-divider-list-width solid awsui.$color-border-item-focused;
-      border-radius: awsui.$border-radius-control-default-focus-ring;
-
-      & > .file-option-name-edit-activate {
-        opacity: 1;
-      }
-    }
-  }
-}
-
-.file-option-name-input {
-  flex-grow: 1;
-}
-
-.file-option-name-label {
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
 }

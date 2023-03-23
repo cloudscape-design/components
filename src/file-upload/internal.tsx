@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef, useState } from 'react';
+import React, { ForwardedRef } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -65,47 +65,6 @@ function InternalFileUpload(
     fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== removeFileIndex) });
   };
 
-  const onFileNameUpdate = (fileIndex: number, fileName: string) => {
-    if (value[fileIndex].name === fileName) {
-      return;
-    }
-    const files = [...value];
-    const updated = new File([files[fileIndex]], fileName, {
-      type: files[fileIndex].type,
-      lastModified: files[fileIndex].lastModified,
-    });
-    files.splice(fileIndex, 1, updated);
-    fireNonCancelableEvent(onChange, { value: files });
-  };
-
-  const [fileNameEditing, setFileNameEditing] = useState(new Map<number, string>());
-
-  const getFileAttributes = (fileIndex: number) => {
-    return !fileNameEditing.has(fileIndex)
-      ? {
-          dismiss: {
-            label: i18nStrings.removeFileAriaLabel,
-            onDismiss: () => onFileRemove(fileIndex),
-          },
-        }
-      : {};
-  };
-
-  const getFileNameEditingProps = (fileIndex: number) => {
-    const fileName = fileNameEditing.get(fileIndex) ?? value[fileIndex].name;
-    return {
-      isEditing: fileNameEditing.has(fileIndex),
-      value: fileName,
-      onActivate: () => setFileNameEditing(new Map([[fileIndex, value[fileIndex].name]])),
-      onChange: (fileName: string) => setFileNameEditing(new Map([[fileIndex, fileName]])),
-      onSubmit: () => {
-        onFileNameUpdate(fileIndex, fileName);
-        setFileNameEditing(new Map());
-      },
-      onCancel: () => setFileNameEditing(new Map()),
-    };
-  };
-
   const isDropzoneVisible = useDropzoneVisible();
 
   return (
@@ -136,15 +95,14 @@ function InternalFileUpload(
         <GenericTokenGroup
           alignment="vertical"
           items={value}
-          getItemAttributes={(_, fileIndex) => getFileAttributes(fileIndex)}
+          getItemAttributes={(_, fileIndex) => ({
+            dismiss: {
+              label: i18nStrings.removeFileAriaLabel,
+              onDismiss: () => onFileRemove(fileIndex),
+            },
+          })}
           renderItem={(file, fileIndex) => (
-            <FileOption
-              file={file}
-              metadata={metadata}
-              fileProps={fileProps?.[fileIndex]}
-              i18nStrings={i18nStrings}
-              nameEditing={getFileNameEditingProps(fileIndex)}
-            />
+            <FileOption file={file} metadata={metadata} fileProps={fileProps?.[fileIndex]} i18nStrings={i18nStrings} />
           )}
           limit={limit}
           i18nStrings={{
