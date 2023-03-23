@@ -232,7 +232,11 @@ const Demo = forwardRef(
     return (
       <Table
         ref={tableRef}
-        header={<Header counter={`(${items.length})`}>Distributions</Header>}
+        header={
+          <Header headingTagOverride="h1" counter={`(${items.length})`}>
+            Distributions
+          </Header>
+        }
         submitEdit={handleSubmit}
         onEditCancel={evt => {
           if (__editStateDirty) {
