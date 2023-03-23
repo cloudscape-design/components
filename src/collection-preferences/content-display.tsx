@@ -6,7 +6,15 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
 import { getSortedOptions } from './reorder-utils';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  CollisionDetection,
+} from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
@@ -47,11 +55,18 @@ export default function ContentDisplayPreference({
   dragHandleAriaDescription,
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
+  const isKeyboard = useRef(false);
+  const top = useRef<number | null>(null);
+  const positionDelta = useRef(0);
+
   const idPrefix = useUniqueId(componentPrefix);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
+      onActivation: () => {
+        isKeyboard.current = true;
+      },
     })
   );
 
@@ -74,11 +89,73 @@ export default function ContentDisplayPreference({
   useEffect(() => {
     if (!isDragging) {
       isFirstAnnouncement.current = true;
+      isKeyboard.current = false;
+      positionDelta.current = 0;
+      top.current = null;
     }
   }, [isDragging]);
 
   const sortedOptions = getSortedOptions({ options, order: value });
   const dragHandleAriaLabelId = `${idPrefix}-drag-handle-aria-label`;
+
+  // A custom collision detection algorithm is used when using a keyboard to
+  // work around an unexpected behavior when reordering items of variable height
+  // with the keyboard.
+
+  // Neither closestCenter nor closestCorners work really well for this case,
+  // because the center (or corners) of a tall rectangle might be so low that it
+  // is detected as being closest to the rectangle below of the one it should
+  // actually swap with.
+
+  // Instead of relying on coordinates, the expected results are achieved by
+  // moving X positions up or down in the initially sorted array, depending on
+  // the desired direction. This is actually what the
+  // sortableKeyboardCoordinates coordinateGetter already does correctly as
+  // well.
+
+  // Because a pure CollisionDetection function would have no way to know
+  // whether we are moving up and down just from its arguments, we can't move
+  // this one outside the component.
+  const customCollisionDetection: CollisionDetection = ({
+    active,
+    collisionRect,
+    droppableContainers,
+    droppableRects,
+    pointerCoordinates,
+  }) => {
+    if (isKeyboard) {
+      const previousTop = top.current !== null ? top.current : active.rect.current.initial?.top;
+      if (previousTop === undefined) {
+        return [];
+      }
+      const topDelta = collisionRect.top - previousTop;
+      positionDelta.current += topDelta === 0 ? 0 : topDelta < 0 ? -1 : 1;
+      top.current = collisionRect.top;
+      if (positionDelta.current === 0) {
+        // Back at initial position, no need to check for colliding items to swap with
+        return [];
+      }
+      const currentIndex = sortedOptions.findIndex(({ id }) => id === active.id);
+      const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
+      const collidingContainerId = sortedOptions[newIndex].id;
+      const collidingContainer = droppableContainers.find(({ id }) => id === collidingContainerId);
+      if (collidingContainer) {
+        return [
+          {
+            id: collidingContainer.id,
+            data: {
+              droppableContainer: collidingContainer,
+              value: 0,
+            },
+          },
+        ];
+      } else {
+        return [];
+      }
+    } else {
+      return closestCenter({ active, collisionRect, droppableRects, droppableContainers, pointerCoordinates });
+    }
+  };
 
   return (
     <div className={styles[componentPrefix]}>
@@ -88,7 +165,7 @@ export default function ContentDisplayPreference({
       </p>
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={customCollisionDetection}
         accessibility={{
           announcements: {
             onDragStart({ active }) {
