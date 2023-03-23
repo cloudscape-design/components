@@ -27,7 +27,7 @@ import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
+import { useInternalI18n, useLocale } from '../internal/i18n/context.js';
 
 export { DatePickerProps };
 
@@ -64,9 +64,11 @@ const DatePicker = React.forwardRef(
     const previousMonthAriaLabel = i18n('previousMonthAriaLabel', restProps.previousMonthAriaLabel);
     const todayAriaLabel = i18n('todayAriaLabel', restProps.todayAriaLabel);
 
+    const contextLocale = useLocale();
+    const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
+
     const baseProps = getBaseProps(restProps);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-    const normalizedLocale = normalizeLocale('DatePicker', locale);
     const focusVisible = useFocusVisible();
     const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(restProps);
 
