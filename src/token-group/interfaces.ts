@@ -67,4 +67,8 @@ export namespace TokenGroupProps {
     limitShowFewer?: string;
     limitShowMore?: string;
   }
+
+  export interface Ref {
+    focusToken(tokenIndex: number): void;
+  }
 }

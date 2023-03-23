@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 
 import Option from '../internal/components/option';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -14,12 +14,18 @@ import GenericTokenGroup from './generic-token-group';
 
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
 
-export default function InternalTokenGroup({ items, onDismiss, __internalRootRef, ...props }: InternalTokenGroupProps) {
+export default forwardRef(InternalTokenGroup);
+
+function InternalTokenGroup(
+  { items, onDismiss, __internalRootRef, ...props }: InternalTokenGroupProps,
+  ref: Ref<TokenGroupProps.Ref>
+) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
 
   return (
     <GenericTokenGroup
-      ref={__internalRootRef}
+      ref={ref}
+      __internalRootRef={__internalRootRef}
       {...props}
       items={items}
       renderItem={item => <Option option={item} />}
