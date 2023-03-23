@@ -98,7 +98,7 @@ function InternalFileUpload(
           getItemAttributes={(file, fileIndex) => ({
             name: file.name,
             dismiss: {
-              label: i18nStrings.removeFileAriaLabel,
+              label: i18nStrings.removeFileAriaLabel(file, fileIndex),
               onDismiss: () => onFileRemove(fileIndex),
             },
           })}

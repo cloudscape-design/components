@@ -27,7 +27,7 @@ const defaultProps: FileUploadProps = {
   i18nStrings: {
     uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
     dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
-    removeFileAriaLabel: 'Remove file',
+    removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
     invalidStateIconAlt: 'Error',
@@ -126,7 +126,7 @@ describe('File upload tokens', () => {
 
   test('file token remove button has ARIA label set', () => {
     const wrapper = render({ value: [file1] });
-    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Remove file');
+    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Remove file 1');
   });
 
   test('selected file can be removed', () => {

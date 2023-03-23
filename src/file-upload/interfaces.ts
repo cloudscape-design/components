@@ -63,7 +63,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
-   * * `removeFileAriaLabel` (string): The ARIA label for file token remove button.
+   * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
    * * `limitShowFewer` (string): The text of the show more tokens button.
    * * `limitShowMore` (string): The text of the show fewer tokens button.
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
@@ -89,7 +89,7 @@ export namespace FileUploadProps {
   export interface I18nStrings {
     uploadButtonText: (multiple: boolean) => string;
     dropzoneText: (multiple: boolean) => string;
-    removeFileAriaLabel: string;
+    removeFileAriaLabel: (file: File, fileIndex: number) => string;
     limitShowFewer: string;
     limitShowMore: string;
     invalidStateIconAlt: string;

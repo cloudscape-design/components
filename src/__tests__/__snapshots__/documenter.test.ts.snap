@@ -5688,11 +5688,7 @@ Supported properties:
     Object {
       "description": "An object containing all the localized strings required by the component:
 * \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
-* \`removeFileAriaLabel\` (string): The ARIA label for file token remove button.
-* \`activateFileNameEditAriaLabel\` (string): The ARIA label for file token activate name edit button.
-* \`submitFileNameEditAriaLabel\` (string): The ARIA label for file token submit name edit button.
-* \`cancelFileNameEditAriaLabel\` (string): The ARIA label for file token cancel name edit button.
-* \`editFileNameInputAriaLabel\` (string): The ARIA label for file token name edit input.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
 * \`limitShowFewer\` (string): The text of the show more tokens button.
 * \`limitShowMore\` (string): The text of the show fewer tokens button.
 * \`formatFileSize\` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
@@ -5701,24 +5697,9 @@ Supported properties:
         "name": "FileUploadProps.I18nStrings",
         "properties": Array [
           Object {
-            "name": "activateFileNameEditAriaLabel",
-            "optional": false,
-            "type": "string",
-          },
-          Object {
-            "name": "cancelFileNameEditAriaLabel",
-            "optional": false,
-            "type": "string",
-          },
-          Object {
             "name": "dropzoneText",
             "optional": false,
             "type": "(multiple: boolean) => string",
-          },
-          Object {
-            "name": "editFileNameInputAriaLabel",
-            "optional": false,
-            "type": "string",
           },
           Object {
             "name": "formatFileLastModified",
@@ -5748,12 +5729,7 @@ Supported properties:
           Object {
             "name": "removeFileAriaLabel",
             "optional": false,
-            "type": "string",
-          },
-          Object {
-            "name": "submitFileNameEditAriaLabel",
-            "optional": false,
-            "type": "string",
+            "type": "(file: File, fileIndex: number) => string",
           },
           Object {
             "name": "uploadButtonText",
