@@ -36,8 +36,8 @@ export default function GenericTokenGroupPage() {
           disabled: item === 0,
           dismiss: {
             label: 'Remove file',
-            onDismiss: () => onDismiss(itemIndex),
           },
+          onDismiss: () => onDismiss(itemIndex),
         })}
       />
     </Box>

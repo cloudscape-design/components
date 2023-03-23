@@ -27,8 +27,8 @@ export default function InternalTokenGroup({ items, onDismiss, __internalRootRef
         disabled: item.disabled,
         dismiss: {
           label: item.dismissLabel,
-          onDismiss: () => fireNonCancelableEvent(onDismiss, { itemIndex }),
         },
+        onDismiss: () => fireNonCancelableEvent(onDismiss, { itemIndex }),
       })}
     />
   );

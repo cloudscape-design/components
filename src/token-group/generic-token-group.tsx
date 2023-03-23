@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -19,8 +19,8 @@ interface ItemAttributes {
   disabled?: boolean;
   dismiss?: {
     label?: string;
-    onDismiss: () => void;
   };
+  onDismiss: () => void;
 }
 
 interface GenericTokenGroupProps<Item> extends BaseComponentProps {
@@ -40,6 +40,9 @@ function GenericTokenGroup<Item>(
   { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
+  const showMoreButtonRef = useRef<HTMLButtonElement>(null);
+  const dismissButtonRefs = useRef<{ [key: number]: HTMLButtonElement }>({});
+  const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
   const [expanded, setExpanded] = useState(false);
   const controlId = useUniqueId();
 
@@ -50,19 +53,69 @@ function GenericTokenGroup<Item>(
   const baseProps = getBaseProps(props);
   const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
 
+  useEffect(() => {
+    if (removedItemIndex === null) {
+      return;
+    }
+
+    const activeItemIndices = Object.keys(dismissButtonRefs.current).map(key => parseInt(key));
+
+    let closestPrevIndex = Number.NEGATIVE_INFINITY;
+    let closestNextIndex = Number.POSITIVE_INFINITY;
+
+    for (const activeIndex of activeItemIndices) {
+      if (activeIndex < removedItemIndex) {
+        closestPrevIndex =
+          removedItemIndex - activeIndex < removedItemIndex - closestPrevIndex ? activeIndex : closestPrevIndex;
+      } else {
+        closestNextIndex =
+          activeIndex - removedItemIndex < closestNextIndex - removedItemIndex ? activeIndex : closestNextIndex;
+      }
+    }
+
+    if (dismissButtonRefs.current[closestNextIndex]) {
+      dismissButtonRefs.current[closestNextIndex].focus();
+    } else if (dismissButtonRefs.current[closestPrevIndex]) {
+      dismissButtonRefs.current[closestPrevIndex].focus();
+    } else if (showMoreButtonRef.current) {
+      showMoreButtonRef.current.focus();
+    }
+
+    setRemovedItemIndex(null);
+  }, [removedItemIndex]);
+
   return (
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
         <SpaceBetween id={controlId} direction={alignment} size="xs">
-          {slicedItems.map((item, itemIndex) => (
-            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
-              {renderItem(item, itemIndex)}
-            </GenericToken>
-          ))}
+          {slicedItems.map((item, itemIndex) => {
+            const itemAttributes = getItemAttributes(item, itemIndex);
+            const onDismiss = () => {
+              itemAttributes?.onDismiss();
+              setRemovedItemIndex(itemIndex);
+            };
+            return (
+              <GenericToken
+                key={itemIndex}
+                ref={elem => {
+                  if (elem && !itemAttributes.disabled) {
+                    dismissButtonRefs.current[itemIndex] = elem;
+                  } else {
+                    delete dismissButtonRefs.current[itemIndex];
+                  }
+                }}
+                {...itemAttributes}
+                onDismiss={onDismiss}
+              >
+                {renderItem(item, itemIndex)}
+              </GenericToken>
+            );
+          })}
         </SpaceBetween>
       )}
       {hasHiddenItems && (
         <SelectToggle
+          ref={showMoreButtonRef}
           controlId={controlId}
           allHidden={limit === 0}
           expanded={expanded}
@@ -79,14 +132,16 @@ interface GenericTokenProps extends ItemAttributes {
   children: React.ReactNode;
 }
 
-function GenericToken({ disabled, dismiss, children }: GenericTokenProps) {
-  return (
-    <div
-      className={clsx(styles.token, disabled && styles['token-disabled'])}
-      aria-disabled={disabled ? 'true' : undefined}
-    >
-      {children}
-      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
-    </div>
-  );
-}
+const GenericToken = forwardRef(
+  ({ disabled, dismiss, onDismiss, children }: GenericTokenProps, ref: Ref<HTMLButtonElement>) => {
+    return (
+      <div
+        className={clsx(styles.token, disabled && styles['token-disabled'])}
+        aria-disabled={disabled ? 'true' : undefined}
+      >
+        {children}
+        {dismiss && <DismissButton ref={ref} disabled={disabled} dismissLabel={dismiss.label} onDismiss={onDismiss} />}
+      </div>
+    );
+  }
+);
