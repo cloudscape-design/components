@@ -10,14 +10,15 @@ import { IconProps } from '../../icon/interfaces';
 
 interface TriggerButtonProps {
   ariaLabel?: string;
-  iconName: IconProps.Name;
+  className?: string;
+  iconName?: IconProps.Name;
+  iconSvg?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
-  className?: string;
 }
 
 function TriggerButton(
-  { ariaLabel, iconName, onClick, selected = false, className }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, selected = false }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   const focusVisible = useFocusVisible();
@@ -39,7 +40,8 @@ function TriggerButton(
       ref={ref as React.Ref<HTMLButtonElement>}
       {...focusVisible}
     >
-      <Icon name={iconName} />
+      {iconName && !iconSvg && <Icon name={iconName} />}
+      {iconSvg}
     </button>
   );
 }

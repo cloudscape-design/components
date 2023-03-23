@@ -64,6 +64,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   toolsFocusControl: FocusControlState;
+  toolsTriggers: Array<any>;
 }
 
 /**
@@ -180,6 +181,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * useControllable hook and also fire the onToolsChange function to
      * emit the state change.
      */
+    const toolsTriggers = (props as any).toolsTriggers;
     const toolsWidth = props.toolsWidth ?? 290;
     const hasDefaultToolsWidth = props.toolsWidth === undefined;
 
@@ -521,6 +523,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           setSplitPanelToggle,
           toolsHide,
           toolsOpen: isToolsOpen,
+          toolsTriggers,
           toolsWidth,
           toolsFocusControl,
         }}

@@ -29,19 +29,20 @@ export default function Tools({ children }: ToolsProps) {
     handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
+    isAnyPanelOpen,
     isNavigationOpen,
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
-    splitPanelDisplayed,
-    tools,
-    toolsHide,
-    toolsWidth,
-    isAnyPanelOpen,
     navigationHide,
-    toolsFocusControl,
+    splitPanelDisplayed,
     splitPanelPosition,
     splitPanelToggle,
+    tools,
+    toolsFocusControl,
+    toolsHide,
+    toolsTriggers,
+    toolsWidth,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
@@ -131,6 +132,17 @@ export default function Tools({ children }: ToolsProps) {
                   ref={focusRefs.toggle}
                 />
               )}
+
+              {toolsTriggers &&
+                toolsTriggers.map((trigger: any, key) => (
+                  <TriggerButton
+                    ariaLabel={trigger.ariaLabel}
+                    key={key}
+                    iconName={trigger.iconName}
+                    iconSvg={trigger.iconSvg}
+                    onClick={trigger.onClick}
+                  />
+                ))}
 
               {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton

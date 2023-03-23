@@ -23,12 +23,13 @@ export default function AppBar() {
     handleToolsClick,
     hasNotificationsContent,
     hasStickyBackground,
+    isAnyPanelOpen,
     isMobile,
-    navigationHide,
     isNavigationOpen,
     isToolsOpen,
+    navigationHide,
     toolsHide,
-    isAnyPanelOpen,
+    toolsTriggers,
   } = useAppLayoutInternals();
   const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
   const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
@@ -89,6 +90,21 @@ export default function AppBar() {
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
         >
+          {toolsTriggers &&
+            toolsTriggers.map((trigger: any, key) => (
+              <InternalButton
+                ariaLabel={trigger.ariaLabel}
+                disabled={isAnyPanelOpen}
+                key={key}
+                iconName={trigger.iconName}
+                iconSvg={trigger.iconSvg}
+                formAction="none"
+                onClick={trigger.onClick}
+                variant="icon"
+                __nativeAttributes={{ 'aria-haspopup': true }}
+              />
+            ))}
+
           <InternalButton
             className={testutilStyles['tools-toggle']}
             ariaExpanded={isToolsOpen}
