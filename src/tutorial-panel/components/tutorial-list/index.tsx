@@ -65,20 +65,21 @@ export default function TutorialList({
           </InternalBox>
         </InternalSpaceBetween>
         <InternalSpaceBetween size="l">
-          <a
-            {...focusVisible}
-            href={downloadUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles['download-link']}
-            aria-label={i18nStrings.labelTutorialListDownloadLink}
-          >
-            <InternalIcon name="download" />
-            <InternalBox padding={{ left: 'xs' }} color="inherit" fontWeight="bold" display="inline">
-              {i18nStrings.tutorialListDownloadLinkText}
-            </InternalBox>
-          </a>
-
+          {downloadUrl && (
+            <a
+              {...focusVisible}
+              href={downloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles['download-link']}
+              aria-label={i18nStrings.labelTutorialListDownloadLink}
+            >
+              <InternalIcon name="download" />
+              <InternalBox padding={{ left: 'xs' }} color="inherit" fontWeight="bold" display="inline">
+                {i18nStrings.tutorialListDownloadLinkText}
+              </InternalBox>
+            </a>
+          )}
           {/*
           <FormField label="Filter tutorials">
             <Input type="search" value={searchTerm} placeholder="Filter tutorials" onChange={onSearchChangeCallback} />

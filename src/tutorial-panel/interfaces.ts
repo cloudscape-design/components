@@ -59,7 +59,7 @@ export interface TutorialPanelProps extends BaseComponentProps {
   /**
    * The link to a file documenting all tutorials (usually a PDF).
    */
-  downloadUrl: string;
+  downloadUrl?: string;
 
   /**
    * An object containing all the necessary localized strings required by the component.
