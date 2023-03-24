@@ -72,18 +72,11 @@ export default function TutorialList({
               <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
             </InternalStatusIndicator>
           ) : (
-            <>
-              <ul className={styles['tutorial-list']} role="list">
-                {tutorials.map((tutorial, index) => (
-                  <Tutorial
-                    tutorial={tutorial}
-                    key={index}
-                    onStartTutorial={onStartTutorial}
-                    i18nStrings={i18nStrings}
-                  />
-                ))}
-              </ul>
-            </>
+            <ul className={styles['tutorial-list']} role="list">
+              {tutorials.map((tutorial, index) => (
+                <Tutorial tutorial={tutorial} key={index} onStartTutorial={onStartTutorial} i18nStrings={i18nStrings} />
+              ))}
+            </ul>
           )}
         </InternalSpaceBetween>
       </InternalSpaceBetween>
