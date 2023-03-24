@@ -22,6 +22,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   warning: 'status-warning',
   success: 'status-positive',
   info: 'status-info',
+  progress: 'status-in-progress',
 };
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;

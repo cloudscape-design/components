@@ -123,6 +123,7 @@ export namespace IconProps {
     | 'settings'
     | 'share'
     | 'shrink'
+    | 'spinner'
     | 'status-in-progress'
     | 'status-info'
     | 'status-negative'
