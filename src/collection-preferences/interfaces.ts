@@ -160,10 +160,16 @@ export namespace CollectionPreferencesProps {
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup>;
   }
 
-  export interface ContentDisplayPreference extends ContentDisplayPreference.I18nStrings {
+  export interface ContentDisplayPreference {
     title: string;
     label?: string;
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
+    liveAnnouncementDndStarted?: (position: number, total: number) => string;
+    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
+    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
+    liveAnnouncementDndDiscarded?: string;
+    dragHandleAriaLabel?: string;
+    dragHandleAriaDescription?: string;
   }
 
   export interface ContentDisplay {
@@ -206,16 +212,5 @@ export namespace CollectionPreferencesProps {
   export interface ContentDensityPreference {
     label: string;
     description: string;
-  }
-}
-
-export namespace ContentDisplayPreference {
-  export interface I18nStrings {
-    liveAnnouncementDndStarted?: (position: number, total: number) => string;
-    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
-    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
-    liveAnnouncementDndDiscarded?: string;
-    dragHandleAriaLabel?: string;
-    dragHandleAriaDescription?: string;
   }
 }
