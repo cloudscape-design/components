@@ -48,7 +48,7 @@ describe('Collection preferences', () => {
     'renders 2 columns if all preferences are present',
     setupTest(async page => {
       const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-      await page.openCollectionPreferencesModal();
+      await page.openCollectionPreferencesModal(wrapper);
 
       const columnLayout = wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.findColumn(1).toSelector())).resolves.toBe(true);
