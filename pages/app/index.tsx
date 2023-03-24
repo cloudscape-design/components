@@ -7,6 +7,9 @@ import { createHashHistory } from 'history';
 import { applyMode, applyDensity, disableMotion } from '@cloudscape-design/global-styles';
 import './polyfills';
 
+import { I18nProvider } from '~components/internal/i18n';
+import messages from '~components/internal/i18n/messages/all.all';
+
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
@@ -22,7 +25,7 @@ function App() {
   const {
     mode,
     pageId,
-    urlParams: { density, motionDisabled },
+    urlParams: { density, motionDisabled, lang },
   } = useContext(AppContext);
 
   const isAppLayout =
@@ -45,6 +48,12 @@ function App() {
   }, [motionDisabled]);
 
   useEffect(() => {
+    if (lang) {
+      document.documentElement.lang = lang;
+    }
+  }, [lang]);
+
+  useEffect(() => {
     if (isMacOS) {
       document.body.classList.add(styles.macos);
     } else {
@@ -55,13 +64,16 @@ function App() {
   if (!mode) {
     return <Redirect to="/light/" />;
   }
+
   return (
     <StrictModeWrapper pageId={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
-        <ContentTag>
-          <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
-          {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
-        </ContentTag>
+        <I18nProvider messages={[messages]} locale={lang}>
+          <ContentTag>
+            <Header sticky={isAppLayout && pageId !== undefined && pageId.indexOf('legacy') === -1} />
+            {pageId ? <PageView pageId={pageId} /> : <IndexPage />}
+          </ContentTag>
+        </I18nProvider>
       </Suspense>
     </StrictModeWrapper>
   );
