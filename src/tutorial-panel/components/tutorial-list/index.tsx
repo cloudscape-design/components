@@ -24,7 +24,6 @@ export interface TutorialListProps {
   loading?: boolean;
   tutorials: TutorialPanelProps['tutorials'];
   onStartTutorial: HotspotContext['onStartTutorial'];
-  filteringFunction: (tutorial: TutorialPanelProps.Tutorial, searchTerm: string) => boolean;
   i18nStrings: TutorialPanelProps['i18nStrings'];
   downloadUrl: TutorialPanelProps['downloadUrl'];
 }
@@ -37,18 +36,6 @@ export default function TutorialList({
   downloadUrl,
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
-
-  /*
-  // Filtering is not available in the Beta release.
-
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const onSearchChangeCallback: InputProps['onChange'] = useCallback(event => setSearchTerm(event.detail.value), [
-    setSearchTerm
-  ]);
-
-  const filteredTutorials = tutorials.filter(tutorial => filteringFunction(tutorial, searchTerm))
-  */
 
   const focusVisible = useFocusVisible();
   const isRefresh = useVisualRefresh();
@@ -80,11 +67,6 @@ export default function TutorialList({
               </InternalBox>
             </a>
           )}
-          {/*
-          <FormField label="Filter tutorials">
-            <Input type="search" value={searchTerm} placeholder="Filter tutorials" onChange={onSearchChangeCallback} />
-          </FormField>
-        */}
           {loading ? (
             <InternalStatusIndicator type="loading">
               <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
@@ -101,7 +83,6 @@ export default function TutorialList({
                   />
                 ))}
               </ul>
-              {/* {filteredTutorials.length === 0 && searchTerm && <Box>No tutorials match this search filter.</Box>} */}
             </>
           )}
         </InternalSpaceBetween>

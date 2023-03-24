@@ -14,30 +14,18 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { TutorialPanelProps };
 
-const defaultFilteringFunction = (tutorial: TutorialPanelProps.Tutorial, searchTerm: string) => {
-  if (searchTerm === '') {
-    return true;
-  }
-  return tutorial.title?.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-};
-
 export default function TutorialPanel({
   i18nStrings,
   loading,
   tutorials,
   onFeedbackClick,
   downloadUrl,
-  // Filtering is not available in the Beta release.
-  //filteringFunction: customFilteringFunction,
   ...restProps
 }: TutorialPanelProps) {
   const { __internalRootRef } = useBaseComponent('TutorialPanel');
 
   const baseProps = getBaseProps(restProps);
   const context = useContext(hotspotContext);
-
-  //const filteringFunction = customFilteringFunction ?? defaultFilteringFunction;
-  const filteringFunction = defaultFilteringFunction;
 
   return (
     <>
@@ -56,7 +44,6 @@ export default function TutorialPanel({
             tutorials={tutorials}
             loading={loading}
             onStartTutorial={context.onStartTutorial}
-            filteringFunction={filteringFunction}
             downloadUrl={downloadUrl}
           />
         )}
