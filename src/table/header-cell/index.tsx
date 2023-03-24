@@ -108,9 +108,8 @@ export function TableHeaderCell<ItemType>({
               })
             : undefined
         }
-        {...(sortingDisabled || !sortingStatus
-          ? { ['aria-disabled']: 'true' }
-          : {
+        {...(sortingStatus && !sortingDisabled
+          ? {
               onKeyPress: handleKeyPress,
               tabIndex: tabIndex,
               role: 'button',
@@ -118,7 +117,8 @@ export function TableHeaderCell<ItemType>({
               onClick: handleClick,
               onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
               onBlur: () => onFocusedComponentChange?.(null),
-            })}
+            }
+          : {})}
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
