@@ -283,7 +283,7 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setIsDragging(false)}
       >
-        <div {...className('group-list')} aria-describedby={labelId}>
+        <ul {...className('option-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (
@@ -299,7 +299,7 @@ export default function ContentDisplayPreference({
               );
             })}
           </SortableContext>
-        </div>
+        </ul>
       </DndContext>
       <ScreenreaderOnly id={dragHandleAriaLabelId}>{dragHandleAriaLabel}</ScreenreaderOnly>
     </div>
