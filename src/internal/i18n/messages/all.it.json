@@ -15,7 +15,7 @@
     "errorIconAriaLabel": "Errore",
     "selectedAriaLabel": "Selezionato"
   },
-  "date-picker": {
+  "calendar": {
     "nextMonthAriaLabel": "Mese successivo",
     "previousMonthAriaLabel": "Mese precedente",
     "todayAriaLabel": "Oggi"

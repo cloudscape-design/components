@@ -15,7 +15,7 @@
     "errorIconAriaLabel": "錯誤",
     "selectedAriaLabel": "已選取"
   },
-  "date-picker": {
+  "calendar": {
     "nextMonthAriaLabel": "下個月",
     "previousMonthAriaLabel": "上個月",
     "todayAriaLabel": "今天"

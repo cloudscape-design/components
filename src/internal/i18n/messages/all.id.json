@@ -15,7 +15,7 @@
     "errorIconAriaLabel": "Kesalahan",
     "selectedAriaLabel": "Dipilih"
   },
-  "date-picker": {
+  "calendar": {
     "nextMonthAriaLabel": "Bulan berikutnya",
     "previousMonthAriaLabel": "Bulan sebelumnya",
     "todayAriaLabel": "Hari ini"

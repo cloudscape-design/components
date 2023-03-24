@@ -15,7 +15,7 @@
     "errorIconAriaLabel": "오류",
     "selectedAriaLabel": "선택됨"
   },
-  "date-picker": {
+  "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",
     "todayAriaLabel": "오늘"
