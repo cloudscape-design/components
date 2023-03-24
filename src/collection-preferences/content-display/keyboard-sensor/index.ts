@@ -43,6 +43,7 @@ export class KeyboardSensor implements SensorInstance {
 
     this.windowListeners.add(EventName.Resize, this.handleCancel);
     this.windowListeners.add(EventName.VisibilityChange, this.handleCancel);
+    this.props.event.target?.addEventListener(EventName.Blur, this.handleCancel);
 
     setTimeout(() => this.listeners.add(EventName.Keydown, this.handleKeyDown));
   }
@@ -227,7 +228,7 @@ export class KeyboardSensor implements SensorInstance {
 
   private handleCancel(event: Event) {
     const { onCancel } = this.props;
-    if (!(isKeyboardEvent(event) && event.code === 'Tab')) {
+    if (event.type !== EventName.Blur && !(isKeyboardEvent(event) && event.code === 'Tab')) {
       event.preventDefault();
     }
     this.detach();
@@ -235,6 +236,7 @@ export class KeyboardSensor implements SensorInstance {
   }
 
   private detach() {
+    this.props.event.target?.removeEventListener(EventName.Blur, this.handleCancel);
     this.listeners.removeAll();
     this.windowListeners.removeAll();
   }

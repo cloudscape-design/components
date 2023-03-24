@@ -118,6 +118,26 @@ describe('Collection preferences with custom content reordering', () => {
     );
 
     test(
+      'cancels reordering by clicking somewhere else',
+      setupTest(async page => {
+        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal(wrapper);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+
+        await page.focusDragHandle(0);
+        await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
+        await page.keys('ArrowDown');
+        await page.expectAnnouncement('Moving item to position 2 of 6');
+        await page.click(wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+        return page.expectAnnouncement('Reordering canceled');
+      })
+    );
+
+    test(
       'scrolls if necessary',
       setupTest(async page => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-2');
