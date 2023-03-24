@@ -107,6 +107,7 @@ describe('Collection preferences with custom content reordering', () => {
 
         await page.focusDragHandle(0);
         await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 50');
         for (let i = 0; i < 30; i++) {
           await page.keys('ArrowDown');
           // Wait for scroll
@@ -114,7 +115,8 @@ describe('Collection preferences with custom content reordering', () => {
         }
         await page.keys('Space');
 
-        return expect(await page.containsOptionsInOrder(['Item 31', 'Item 1'])).toBe(true);
+        await expect(await page.containsOptionsInOrder(['Item 31', 'Item 1'])).toBe(true);
+        return page.expectAnnouncement('Item moved from position 1 to position 31 of 50');
       })
     );
   });

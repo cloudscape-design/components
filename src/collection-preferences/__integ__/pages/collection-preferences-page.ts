@@ -17,9 +17,13 @@ export default class CollectionPreferencesPageObject extends BasePageObject {
     return texts.join(`\n`).includes(options.join('\n'));
   }
 
-  expectAnnouncement(announcement: string) {
-    const liveRegion = this.wrapper!.findModal().findContentDisplayPreference().find('[aria-live="assertive"]');
-    return expect(this.getText(liveRegion.toSelector())).resolves.toBe(announcement);
+  async expectAnnouncement(announcement: string) {
+    const liveRegion = await this.browser.$(
+      this.wrapper!.findModal().findContentDisplayPreference().find('[aria-live="assertive"]').toSelector()
+    );
+    // Using getHTML because getText returns an empty string if the live region is outside the viewport.
+    // See https://webdriver.io/docs/api/element/getText/
+    return expect(liveRegion.getHTML(false)).resolves.toBe(announcement);
   }
 
   focusDragHandle(index = 0) {
