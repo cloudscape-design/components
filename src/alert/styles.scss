@@ -102,7 +102,7 @@ $_border-colors: (
   'warning': awsui.$color-border-status-warning,
   'success': awsui.$color-border-status-success,
   'info': awsui.$color-border-status-info,
-  'progress': awsui.$color-border-status-warning,
+  'spinner': awsui.$color-border-status-warning,
 );
 
 $_background-colors: (
@@ -110,7 +110,7 @@ $_background-colors: (
   'warning': awsui.$color-background-status-warning,
   'success': awsui.$color-background-status-success,
   'info': awsui.$color-background-status-info,
-  'progress': awsui.$color-background-status-warning,
+  'spinner': awsui.$color-background-status-warning,
 );
 
 $_text-colors: (
@@ -118,7 +118,7 @@ $_text-colors: (
   'warning': awsui.$color-text-status-warning,
   'success': awsui.$color-text-status-success,
   'info': awsui.$color-text-status-info,
-  'progress': awsui.$color-text-status-warning,
+  'spinner': awsui.$color-text-status-inactive,
 );
 
 @each $type in map.keys($_text-colors) {

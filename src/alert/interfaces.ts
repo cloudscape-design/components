@@ -5,7 +5,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace AlertProps {
-  export type Type = 'success' | 'error' | 'warning' | 'info' | 'progress';
+  export type Type = 'success' | 'error' | 'warning' | 'info' | 'spinner';
 }
 
 export interface AlertProps extends BaseComponentProps {
