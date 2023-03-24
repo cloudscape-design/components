@@ -4,15 +4,19 @@ import React, { useState } from 'react';
 import { Button } from '~components';
 import Alert from '~components/alert';
 import AppLayout from '~components/app-layout';
-import Header from '~components/header';
-import Link from '~components/link';
-import SpaceBetween from '~components/space-between';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
-import ScreenshotArea from '../utils/screenshot-area';
 import appLayoutLabels from './utils/labels';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
+import Header from '~components/header';
+import HelpPanel from '~components/help-panel';
+import Link from '~components/link';
+import ScreenshotArea from '../utils/screenshot-area';
+import SpaceBetween from '~components/space-between';
 
 export default function () {
   const [alertVisible, setVisible] = useState(true);
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [toolsContent, setToolsContent] = useState(<Info />);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -22,19 +26,29 @@ export default function () {
         contentHeader={
           <SpaceBetween size="m">
             <Header
-              variant="h1"
-              info={<Link>Info</Link>}
-              description="When you create an Amazon CloudFront distribution."
               actions={<Button variant="primary">Create distribution</Button>}
+              info={
+                <Link
+                  onFollow={() => {
+                    setToolsContent(<Info />);
+                    setIsToolsOpen(!isToolsOpen);
+                  }}
+                >
+                  Info
+                </Link>
+              }
+              description="When you create an Amazon CloudFront distribution."
+              variant="h1"
             >
               Create distribution
             </Header>
+
             {alertVisible && (
               <Alert
-                statusIconAriaLabel="Info"
-                dismissible={true}
                 dismissAriaLabel="Close alert"
+                dismissible={true}
                 onDismiss={() => setVisible(false)}
+                statusIconAriaLabel="Info"
               >
                 Demo alert
               </Alert>
@@ -42,26 +56,54 @@ export default function () {
           </SpaceBetween>
         }
         content={<Containers />}
+        onToolsChange={({ detail }) => {
+          console.log('onToolsChange');
+          setIsToolsOpen(detail.open);
+        }}
+        tools={toolsContent}
+        toolsOpen={isToolsOpen}
         {...{
           toolsTriggers: [
             {
-              ariaLabel: 'Open Expert Help',
-              iconName: 'settings',
-              iconSvg: (
-                <svg viewBox="0 0 16 16" fill="none">
-                  <path
-                    d="M8 15H1V5h14v3m-6.5 4.25H16M12.25 8.5V16M5 1h6v4H5V1Z"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              ),
-              onClick: () => console.log('Open Expert Help'),
+              ariaLabel: 'View Info content',
+              iconName: 'status-info',
+              onClick: () => {
+                setToolsContent(<Info />);
+                setIsToolsOpen(!isToolsOpen);
+              },
+            },
+            {
+              ariaLabel: 'View Pro Help content',
+              iconSvg: <IconBriefcase />,
+              onClick: () => {
+                setToolsContent(<ProHelp />);
+                setIsToolsOpen(!isToolsOpen);
+              },
             },
           ],
         }}
       />
     </ScreenshotArea>
   );
+}
+
+function Info() {
+  return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
+}
+
+function IconBriefcase() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none">
+      <path
+        d="M8 15H1V5h14v3m-6.5 4.25H16M12.25 8.5V16M5 1h6v4H5V1Z"
+        stroke="#fff"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ProHelp() {
+  return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
 }

@@ -90,6 +90,21 @@ export default function AppBar() {
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
         >
+          {!toolsTriggers && (
+            <InternalButton
+              className={testutilStyles['tools-toggle']}
+              ariaExpanded={isToolsOpen}
+              disabled={isAnyPanelOpen}
+              ariaLabel={ariaLabels?.toolsToggle ?? undefined}
+              iconName="status-info"
+              formAction="none"
+              onClick={() => handleToolsClick(true)}
+              variant="icon"
+              ref={focusRefsTools.toggle}
+              __nativeAttributes={{ 'aria-haspopup': true }}
+            />
+          )}
+
           {toolsTriggers &&
             toolsTriggers.map((trigger: any, key) => (
               <InternalButton
@@ -104,19 +119,6 @@ export default function AppBar() {
                 __nativeAttributes={{ 'aria-haspopup': true }}
               />
             ))}
-
-          <InternalButton
-            className={testutilStyles['tools-toggle']}
-            ariaExpanded={isToolsOpen}
-            disabled={isAnyPanelOpen}
-            ariaLabel={ariaLabels?.toolsToggle ?? undefined}
-            iconName="status-info"
-            formAction="none"
-            onClick={() => handleToolsClick(true)}
-            variant="icon"
-            ref={focusRefsTools.toggle}
-            __nativeAttributes={{ 'aria-haspopup': true }}
-          />
         </aside>
       )}
     </section>

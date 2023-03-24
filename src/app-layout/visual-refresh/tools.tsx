@@ -123,26 +123,30 @@ export default function Tools({ children }: ToolsProps) {
               ref={state === 'exiting' ? transitionEventsRef : undefined}
             >
               {!toolsHide && (
-                <TriggerButton
-                  ariaLabel={ariaLabels?.toolsToggle}
-                  iconName="status-info"
-                  onClick={() => handleToolsClick(!isToolsOpen)}
-                  selected={hasSplitPanel && isToolsOpen}
-                  className={testutilStyles['tools-toggle']}
-                  ref={focusRefs.toggle}
-                />
-              )}
+                <>
+                  {!toolsTriggers && (
+                    <TriggerButton
+                      ariaLabel={ariaLabels?.toolsToggle}
+                      iconName="status-info"
+                      onClick={() => handleToolsClick(!isToolsOpen)}
+                      selected={hasSplitPanel && isToolsOpen}
+                      className={testutilStyles['tools-toggle']}
+                      ref={focusRefs.toggle}
+                    />
+                  )}
 
-              {toolsTriggers &&
-                toolsTriggers.map((trigger: any, key) => (
-                  <TriggerButton
-                    ariaLabel={trigger.ariaLabel}
-                    key={key}
-                    iconName={trigger.iconName}
-                    iconSvg={trigger.iconSvg}
-                    onClick={trigger.onClick}
-                  />
-                ))}
+                  {toolsTriggers &&
+                    toolsTriggers.map((trigger: any, key) => (
+                      <TriggerButton
+                        ariaLabel={trigger.ariaLabel}
+                        key={key}
+                        iconName={trigger.iconName}
+                        iconSvg={trigger.iconSvg}
+                        onClick={trigger.onClick}
+                      />
+                    ))}
+                </>
+              )}
 
               {hasSplitPanel && splitPanelToggle.displayed && (
                 <TriggerButton
