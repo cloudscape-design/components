@@ -46,8 +46,21 @@ export default function Tools({ children }: ToolsProps) {
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
-  const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
-  const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
+  const toolsTriggerCount = getToolsTriggerCount(hasSplitPanel, toolsTriggers, toolsHide);
+  const hasToolsForm = getToolsFormStatus(
+    hasSplitPanel,
+    toolsTriggerCount,
+    isMobile,
+    isSplitPanelOpen,
+    isToolsOpen,
+    toolsHide
+  );
+  const hasToolsFormPersistence = getToolsFormPersistence(
+    hasSplitPanel,
+    toolsTriggerCount,
+    isSplitPanelOpen,
+    isToolsOpen
+  );
 
   const { refs: focusRefs } = toolsFocusControl;
 
@@ -200,6 +213,7 @@ function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: s
  */
 function getToolsFormStatus(
   hasSplitPanel: boolean,
+  toolsTriggerCount: number,
   isMobile: boolean,
   isSplitPanelOpen?: boolean,
   isToolsOpen?: boolean,
@@ -222,6 +236,11 @@ function getToolsFormStatus(
     if (!hasSplitPanel && !toolsHide && !isToolsOpen) {
       hasToolsForm = true;
     }
+
+    //
+    if (toolsTriggerCount > 1) {
+      hasToolsForm = true;
+    }
   }
 
   return hasToolsForm;
@@ -237,16 +256,41 @@ function getToolsFormStatus(
  */
 function getToolsFormPersistence(
   hasSplitPanel: boolean,
+  toolsTriggerCount: number,
   isSplitPanelOpen?: boolean,
-  isToolsOpen?: boolean,
-  toolsHide?: boolean
+  isToolsOpen?: boolean
 ) {
   let hasToolsFormPersistence = false;
 
   // Both Tools and Split Panel exist and one or both is open
-  if (hasSplitPanel && !toolsHide && (isSplitPanelOpen || isToolsOpen)) {
+  if (toolsTriggerCount > 1 && ((hasSplitPanel && isSplitPanelOpen) || isToolsOpen)) {
     hasToolsFormPersistence = true;
   }
 
   return hasToolsFormPersistence;
+}
+
+/**
+ *
+ */
+function getToolsTriggerCount(
+  hasSplitPanel: boolean,
+  toolsTriggers: Array<Record<string, unknown>>,
+  toolsHide?: boolean
+) {
+  let toolsTriggerCount = 0;
+
+  if (hasSplitPanel) {
+    toolsTriggerCount++;
+  }
+
+  if (!toolsHide && !toolsTriggers) {
+    toolsTriggerCount++;
+  }
+
+  if (!toolsHide && toolsTriggers) {
+    toolsTriggerCount += toolsTriggers.length;
+  }
+
+  return toolsTriggerCount;
 }
