@@ -29,11 +29,10 @@ viewport size and state of the Tools drawer.
   grid-row: 1 / span 5;
   height: var(#{custom-props.$contentHeight});
   max-width: var(#{custom-props.$toolsMaxWidth});
+  pointer-events: none;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
   z-index: 830;
-
-  pointer-events: none;
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
     #{custom-props.$toolsWidth}: 360px;

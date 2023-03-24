@@ -11,11 +11,12 @@ import HelpPanel from '~components/help-panel';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import SpaceBetween from '~components/space-between';
+import SplitPanel from '~components/split-panel';
 
 export default function () {
   const [alertVisible, setVisible] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [toolsContent, setToolsContent] = useState(<Info />);
+  const [toolsContent, setToolsContent] = useState('info');
 
   return (
     <ScreenshotArea gutters={false}>
@@ -30,8 +31,8 @@ export default function () {
               info={
                 <Link
                   onFollow={() => {
-                    setToolsContent(<Info />);
-                    setIsToolsOpen(!isToolsOpen);
+                    setToolsContent('info');
+                    setIsToolsOpen(true);
                   }}
                 >
                   Info
@@ -59,7 +60,31 @@ export default function () {
         onToolsChange={({ detail }) => {
           setIsToolsOpen(detail.open);
         }}
-        tools={toolsContent}
+        splitPanel={
+          <SplitPanel
+            header="Split panel header"
+            i18nStrings={{
+              preferencesTitle: 'Preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Slider',
+            }}
+          >
+            This is the Split Panel!
+          </SplitPanel>
+        }
+        tools={
+          <>
+            {toolsContent === 'info' && <Info />}
+            {toolsContent === 'proHelp' && <ProHelp />}
+          </>
+        }
         toolsOpen={isToolsOpen}
         {...{
           toolsTriggers: [
@@ -67,17 +92,19 @@ export default function () {
               ariaLabel: 'View Info content',
               iconName: 'status-info',
               onClick: () => {
-                setToolsContent(<Info />);
-                setIsToolsOpen(!isToolsOpen);
+                setToolsContent('info');
+                setIsToolsOpen(true);
               },
+              selected: isToolsOpen && toolsContent === 'info',
             },
             {
               ariaLabel: 'View Pro Help content',
               iconSvg: <IconBriefcase />,
               onClick: () => {
-                setToolsContent(<ProHelp />);
-                setIsToolsOpen(!isToolsOpen);
+                setToolsContent('proHelp');
+                setIsToolsOpen(true);
               },
+              selected: isToolsOpen && toolsContent === 'proHelp',
             },
           ],
         }}

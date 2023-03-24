@@ -143,6 +143,7 @@ export default function Tools({ children }: ToolsProps) {
                         iconSvg={trigger.iconSvg}
                         key={key}
                         onClick={trigger.onClick}
+                        selected={trigger.selected}
                       />
                     ))}
                 </>
