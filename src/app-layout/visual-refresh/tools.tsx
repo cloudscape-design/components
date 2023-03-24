@@ -127,11 +127,11 @@ export default function Tools({ children }: ToolsProps) {
                   {!toolsTriggers && (
                     <TriggerButton
                       ariaLabel={ariaLabels?.toolsToggle}
+                      className={testutilStyles['tools-toggle']}
                       iconName="status-info"
                       onClick={() => handleToolsClick(!isToolsOpen)}
-                      selected={hasSplitPanel && isToolsOpen}
-                      className={testutilStyles['tools-toggle']}
                       ref={focusRefs.toggle}
+                      selected={hasSplitPanel && isToolsOpen}
                     />
                   )}
 
@@ -139,9 +139,9 @@ export default function Tools({ children }: ToolsProps) {
                     toolsTriggers.map((trigger: any, key) => (
                       <TriggerButton
                         ariaLabel={trigger.ariaLabel}
-                        key={key}
                         iconName={trigger.iconName}
                         iconSvg={trigger.iconSvg}
+                        key={key}
                         onClick={trigger.onClick}
                       />
                     ))}

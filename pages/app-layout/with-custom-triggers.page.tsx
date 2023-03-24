@@ -57,7 +57,6 @@ export default function () {
         }
         content={<Containers />}
         onToolsChange={({ detail }) => {
-          console.log('onToolsChange');
           setIsToolsOpen(detail.open);
         }}
         tools={toolsContent}
