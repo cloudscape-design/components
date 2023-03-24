@@ -4,10 +4,17 @@ const { parallel } = require('gulp');
 const execa = require('execa');
 const themes = require('../utils/themes');
 const { task } = require('../utils/gulp-utils');
+const { isProd } = require('../utils/workspace');
 
 function compileTypescript(theme) {
-  return task(`typescript:${theme.name}`, () =>
-    execa(
+  return task(`typescript:${theme.name}`, () => {
+    // Don't generate source maps for prod builds because source map's `source` path is not accurate anymore on custom themed builds.
+    const additionalOptions = [];
+    if (!isProd) {
+      additionalOptions.push('--declarationMap', '--sourceMap', '--inlineSources');
+    }
+
+    return execa(
       'tsc',
       [
         '-p',
@@ -16,15 +23,13 @@ function compileTypescript(theme) {
         theme.outputPath,
         '--tsBuildInfoFile',
         `./lib/${theme.name}.tsbuildinfo`,
-        '--declarationMap',
-        '--sourceMap',
-        '--inlineSources',
+        ...additionalOptions,
       ],
       {
         stdio: 'inherit',
       }
-    )
-  );
+    );
+  });
 }
 
 module.exports = parallel(themes.map(theme => compileTypescript(theme)));
