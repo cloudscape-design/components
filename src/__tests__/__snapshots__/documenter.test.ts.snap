@@ -4161,7 +4161,7 @@ You must set the current value in the \`preferences.contentDensity\` property.
           Object {
             "name": "liveAnnouncementDndItemReordered",
             "optional": true,
-            "type": "(position: number, total: number) => string",
+            "type": "(initialPosition: number, currentPosition: number, total: number) => string",
           },
           Object {
             "name": "liveAnnouncementDndStarted",
