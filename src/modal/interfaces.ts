@@ -48,10 +48,6 @@ export interface ModalProps extends BaseComponentProps {
    * If a modal root isn't provided, the modal will render to an element under `document.body`.
    */
   modalRoot?: HTMLElement;
-  /**
-   * If set to `true`, the modal footer remains visible when the user scrolls down.
-   */
-  stickyFooter?: boolean;
 }
 
 export namespace ModalProps {

@@ -7774,13 +7774,6 @@ largest size allowed by the design guidelines. Other sizes
       "type": "string",
     },
     Object {
-      "defaultValue": "false",
-      "description": "If set to \`true\`, the modal footer remains visible when the user scrolls down.",
-      "name": "stickyFooter",
-      "optional": true,
-      "type": "boolean",
-    },
-    Object {
       "description": "Determines whether the modal is displayed on the screen. Modals are hidden by default.
 Set this property to \`true\` to show them.",
       "name": "visible",

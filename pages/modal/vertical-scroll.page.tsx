@@ -2,16 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Button, Modal, SpaceBetween, Select } from '~components';
-
-const options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'].map(value => ({
-  value,
-  label: `Option ${value}`,
-}));
+import { Button, Modal } from '~components';
 
 export default function () {
   const [visible, setVisible] = useState(false);
-  const [stickyFooter, setStickyFooter] = useState(false);
 
   const content = [];
 
@@ -28,26 +22,7 @@ export default function () {
   return (
     <article>
       <h1>Vertical scroll modal</h1>
-      <SpaceBetween size="m" direction="horizontal">
-        <Button
-          onClick={() => {
-            setStickyFooter(false);
-            setVisible(true);
-          }}
-        >
-          Show modal
-        </Button>
-        <Button
-          data-testid="sticky-footer"
-          onClick={() => {
-            setStickyFooter(true);
-            setVisible(true);
-          }}
-        >
-          Show modal with sticky footer
-        </Button>
-      </SpaceBetween>
-
+      <Button onClick={() => setVisible(true)}>Show modal</Button>
       <ScreenshotArea>
         <Modal
           header="Modal title"
@@ -55,7 +30,6 @@ export default function () {
           onDismiss={() => setVisible(false)}
           closeAriaLabel="Close modal"
           footer="What?"
-          stickyFooter={stickyFooter}
         >
           <div>
             <h3>Modal with vertical scroll</h3>
@@ -73,7 +47,6 @@ export default function () {
               steak. Kevin tri-tip pork chop short loin corned beef, beef drumstick doner. Beef kevin jerky tail.
             </p>
             {content}
-            <Select options={options} selectedOption={null} />
           </div>
         </Modal>
       </ScreenshotArea>
