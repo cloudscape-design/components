@@ -78,7 +78,7 @@ const PropertyFilter = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
-    const i18nStrings = {
+    const i18nStrings: PropertyFilterProps.I18nStrings = {
       ...rest.i18nStrings,
       allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings.allPropertiesLabel),
       applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings.applyActionText),

@@ -3147,13 +3147,13 @@ Supported values and formats are listed in the
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -3166,7 +3166,7 @@ By default the starting day of the week is defined by the locale, but you can us
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4902,7 +4902,7 @@ Supported values and formats are listed in the
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4934,7 +4934,7 @@ a human-readable localised string representing the current value of the input.
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4958,7 +4958,7 @@ By default the starting day of the week is defined by the locale, but you can us
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -13425,7 +13425,7 @@ Object {
     Object {
       "description": "The link to a file documenting all tutorials (usually a PDF).",
       "name": "downloadUrl",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -13705,7 +13705,7 @@ Defaults to \`false\`.
         "properties": Array [
           Object {
             "name": "cancelButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13720,7 +13720,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "nextButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13730,7 +13730,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "previousButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13740,7 +13740,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "collapsedStepsLabel",
-            "optional": false,
+            "optional": true,
             "type": "(stepNumber: number, stepsCount: number) => string",
           },
           Object {
@@ -13750,7 +13750,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "stepNumberLabel",
-            "optional": false,
+            "optional": true,
             "type": "(stepNumber: number) => string",
           },
         ],

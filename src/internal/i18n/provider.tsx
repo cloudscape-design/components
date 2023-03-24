@@ -6,6 +6,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import { MessageFormatElement } from '@formatjs/icu-messageformat-parser';
 
 import { InternalI18nContext, FormatFunction, CustomHandler } from './context';
+import { warnOnce } from '../logging';
 
 export interface I18nProviderProps {
   messages: ReadonlyArray<I18nProviderProps.Messages>;
@@ -33,15 +34,31 @@ export namespace I18nProviderProps {
 const I18nMessagesContext = React.createContext<I18nProviderProps.Messages>({});
 
 export function I18nProvider({ messages: messagesArray, locale: providedLocale, children }: I18nProviderProps) {
+  if (typeof document === 'undefined' && !providedLocale) {
+    warnOnce(
+      'I18nProvider',
+      'An explicit locale was not provided during server rendering. This can lead to a hydration mismatch on the client.'
+    );
+  }
+
   // The provider accepts an array of configs. We merge parent messages and
   // flatten the tree early on so that accesses by key are simpler and faster.
   const parentMessages = useContext(I18nMessagesContext);
   const messages = mergeMessages([parentMessages, ...messagesArray]);
 
-  // If a locale isn't provided, we can try and guess from the html lang,
-  // and lastly default to English. Locales have a recommended case, but are
-  // matched case-insensitively, so we lowercase it internally.
-  const locale = (providedLocale || document?.documentElement.lang || 'en').toLowerCase();
+  let locale: string;
+  if (providedLocale) {
+    // If a locale is explicitly provided, use the string directly.
+    // Locales have a recommended case, but are matched case-insensitively,
+    // so we lowercase it internally.
+    locale = providedLocale.toLowerCase();
+  } else if (typeof document !== 'undefined' && document.documentElement.lang) {
+    // Otherwise, use the value provided in the HTML tag.
+    locale = document.documentElement.lang.toLowerCase();
+  } else {
+    // Lastly, fall back to English.
+    locale = 'en';
+  }
 
   const format: FormatFunction = <T,>(
     namespace: string,
@@ -83,7 +100,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   };
 
   return (
-    <InternalI18nContext.Provider value={format}>
+    <InternalI18nContext.Provider value={{ locale, format }}>
       <I18nMessagesContext.Provider value={messages}>{children}</I18nMessagesContext.Provider>
     </InternalI18nContext.Provider>
   );
