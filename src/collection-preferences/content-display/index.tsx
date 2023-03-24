@@ -14,7 +14,6 @@ import {
   DroppableContainer,
   getScrollableAncestors,
   KeyboardCoordinateGetter,
-  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -23,6 +22,7 @@ import { arrayMove, hasSortableData, SortableContext, verticalListSortingStrateg
 import { SortableItem } from './sortable-item';
 import { isEscape } from '../utils';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { KeyboardSensor } from './keyboard-sensor';
 
 const componentPrefix = 'content-display';
 
@@ -214,6 +214,12 @@ export default function ContentDisplayPreference({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: customCoordinateGetter,
+      keyboardCodes: {
+        start: ['Space', 'Enter'],
+        // Cancel reordering when pressing Escape but also when losing focus
+        cancel: ['Escape', 'Tab'],
+        end: ['Space', 'Enter'],
+      },
       onActivation: () => {
         isKeyboard.current = true;
       },
