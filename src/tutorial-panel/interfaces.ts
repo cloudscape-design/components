@@ -70,12 +70,6 @@ export interface TutorialPanelProps extends BaseComponentProps {
    * Fired when the user clicks on the feedback link at the end of a tutorial.
    */
   onFeedbackClick: NonCancelableEventHandler<TutorialPanelProps.TutorialDetail>;
-
-  /*
-  Filtering is not available in the Beta release.
-
-  filteringFunction?: (tutorial: TutorialPanelProps.Tutorial, searchTerm: string) => boolean;
-  */
 }
 
 export namespace TutorialPanelProps {
