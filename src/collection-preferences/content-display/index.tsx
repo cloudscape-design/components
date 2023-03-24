@@ -21,7 +21,6 @@ import {
 import { arrayMove, hasSortableData, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
 import { isEscape } from '../utils';
-import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { KeyboardSensor } from './keyboard-sensor';
 
 const componentPrefix = 'content-display';
@@ -105,7 +104,6 @@ export default function ContentDisplayPreference({
   }, [isDragging]);
 
   const sortedOptions = getSortedOptions({ options, order: value });
-  const dragHandleAriaLabelId = `${idPrefix}-drag-handle-aria-label`;
 
   const getClosestId = (active: Active) => {
     if (positionDelta.current === 0) {
@@ -288,7 +286,7 @@ export default function ContentDisplayPreference({
             {sortedOptions.map(option => {
               return (
                 <SortableItem
-                  dragHandleAriaLabelId={dragHandleAriaLabelId}
+                  dragHandleAriaLabel={dragHandleAriaLabel}
                   key={option.id}
                   idPrefix={idPrefix}
                   isVisible={isVisible(option.id, value)}
@@ -301,7 +299,6 @@ export default function ContentDisplayPreference({
           </SortableContext>
         </ul>
       </DndContext>
-      <ScreenreaderOnly id={dragHandleAriaLabelId}>{dragHandleAriaLabel}</ScreenreaderOnly>
     </div>
   );
 }

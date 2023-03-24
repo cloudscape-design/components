@@ -14,14 +14,14 @@ export const className = (suffix: string) => ({
 });
 
 export function SortableItem({
-  dragHandleAriaLabelId,
+  dragHandleAriaLabel,
   isVisible,
   idPrefix,
   onKeyDown,
   onToggle,
   option,
 }: {
-  dragHandleAriaLabelId: string;
+  dragHandleAriaLabel?: string;
   isVisible: boolean;
   idPrefix: string;
   onKeyDown?: (event: React.KeyboardEvent) => void;
@@ -38,7 +38,7 @@ export function SortableItem({
   const labelId = `${idPrefix}-label-${option.id}`;
 
   const dragHandleAttributes = {
-    ['aria-labelledby']: `${dragHandleAriaLabelId} ${labelId}`,
+    ['aria-label']: dragHandleAriaLabel,
     ['aria-describedby']: attributes['aria-describedby'],
   };
 
@@ -55,7 +55,7 @@ export function SortableItem({
   };
 
   return (
-    <div className={styles['content-display-option']}>
+    <li className={styles['content-display-option']} aria-labelledby={labelId}>
       <div
         ref={setNodeRef}
         className={clsx(className('content').className, styles.draggable, isDragging && styles.active)}
@@ -75,6 +75,6 @@ export function SortableItem({
           />
         </div>
       </div>
-    </div>
+    </li>
   );
 }

@@ -16,6 +16,15 @@ describe('Content display', () => {
     const labelElement = wrapper.findLabel().getElement();
     expect(labelElement).toHaveTextContent('Content display label');
   });
+
+  it('displays list of options as unordered list', () => {
+    const wrapper = renderContentDisplay({});
+    const items = wrapper.findOptions();
+    for (const item of items) {
+      expect(item.getElement().tagName).toBe('LI');
+      expect(item.getElement().parentElement!.tagName).toBe('UL');
+    }
+  });
 });
 
 const contentDisplayPreference: CollectionPreferencesProps.ContentDisplayPreference = {
