@@ -13425,7 +13425,7 @@ Object {
     Object {
       "description": "The link to a file documenting all tutorials (usually a PDF).",
       "name": "downloadUrl",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
