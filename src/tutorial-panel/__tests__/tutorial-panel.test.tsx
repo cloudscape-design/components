@@ -258,7 +258,6 @@ describe('URL sanitization', () => {
 
       const { container } = renderTutorialPanelWithContext({ tutorials, downloadUrl: undefined }, context);
       const wrapper = createWrapper(container).findTutorialPanel()!;
-      console.log(wrapper.findDownloadLink());
       expect(wrapper.findDownloadLink()).toBeFalsy();
     });
   });
