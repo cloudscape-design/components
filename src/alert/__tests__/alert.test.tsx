@@ -84,7 +84,7 @@ describe('Alert Component', () => {
       expect(wrapper.getElement()).toBeVisible();
     });
     it('displays correct type', () => {
-      (['error', 'warning', 'info', 'success'] as AlertProps.Type[]).forEach(alertType => {
+      (['error', 'warning', 'info', 'success', 'spinner'] as AlertProps.Type[]).forEach(alertType => {
         const { wrapper } = renderAlert({ type: alertType });
         expect(wrapper.findRootElement().getElement()).toHaveClass(styles[`type-${alertType}`]);
       });

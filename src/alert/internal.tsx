@@ -16,12 +16,14 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { useInternalI18n } from '../internal/i18n/context';
+import Spinner from '../spinner/internal';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',
   warning: 'status-warning',
   success: 'status-positive',
   info: 'status-info',
+  spinner: 'status-in-progress',
 };
 
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps;
@@ -77,7 +79,7 @@ export default function InternalAlert({
       <VisualContext contextName="alert">
         <div className={clsx(styles.alert, styles[`type-${type}`])}>
           <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-            <InternalIcon name={typeToIcon[type]} size={size} />
+            <InternalIcon name={typeToIcon[type]} size={size} {...(type === 'spinner' && { svg: <Spinner /> })} />
           </div>
           <div className={styles.body}>
             <div className={clsx(styles.message, styles.text)}>
