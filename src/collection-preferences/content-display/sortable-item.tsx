@@ -58,7 +58,7 @@ export function SortableItem({
     <div className={styles['content-display-option']}>
       <div
         ref={setNodeRef}
-        className={clsx(className('content').className, styles.draggable, isDragging && styles.dragged)}
+        className={clsx(className('content').className, styles.draggable, isDragging && styles.active)}
         style={style}
       >
         <DragHandle attributes={dragHandleAttributes} listeners={combinedListeners} />
