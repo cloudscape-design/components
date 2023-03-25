@@ -5,8 +5,20 @@
 
 @use '../../internal/styles/tokens' as awsui;
 
-.content-display-option {
+$border-radius: awsui.$border-radius-item;
+
+.sortable-item {
+  position: relative;
+}
+
+.sortable-item-placeholder {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: awsui.$color-board-placeholder-hover;
+  border-radius: $border-radius;
 }
 
 .sortable-item-content {
@@ -30,6 +42,7 @@
       position: relative;
       z-index: 2;
       box-shadow: awsui.$shadow-container-active;
+      border-radius: $border-radius;
     }
   }
 }

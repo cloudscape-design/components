@@ -28,7 +28,9 @@ export function SortableItem({
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
 }) {
-  const { attributes, isDragging, listeners, setNodeRef, transform, transition } = useSortable({ id: option.id });
+  const { attributes, isDragging, listeners, over, rect, setNodeRef, transform, transition } = useSortable({
+    id: option.id,
+  });
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
@@ -54,8 +56,20 @@ export function SortableItem({
     },
   };
 
+  // The placeholder is rendered from within the dragged item, but is shown at the position of the displaced item.
+  // Therefore, we need to translate it by the right amount.
+  const placeholderOffsetY =
+    isDragging && over?.rect?.top !== undefined && rect.current?.top !== undefined
+      ? over.rect.top > rect.current?.top
+        ? over.rect.bottom - rect.current?.bottom
+        : over.rect.top - rect.current?.top
+      : undefined;
+
+  const placeholderStyle = placeholderOffsetY ? { transform: `translateY(${placeholderOffsetY}px)` } : undefined;
+
   return (
-    <li className={styles['content-display-option']} aria-labelledby={labelId}>
+    <li className={clsx(styles['content-display-option'], styles['sortable-item'])} aria-labelledby={labelId}>
+      {isDragging && <div {...className('placeholder')} style={placeholderStyle} />}
       <div
         ref={setNodeRef}
         className={clsx(className('content').className, styles.draggable, isDragging && styles.active)}
