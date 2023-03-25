@@ -28,12 +28,11 @@ export function SortableItem({
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
 }) {
-  const { attributes, isDragging, listeners, over, rect, setNodeRef, transform, transition } = useSortable({
+  const { attributes, isDragging, isSorting, listeners, over, rect, setNodeRef, transform } = useSortable({
     id: option.id,
   });
   const style = {
     transform: CSS.Translate.toString(transform),
-    transition,
   };
 
   const controlId = `${idPrefix}-control-${option.id}`;
@@ -72,7 +71,12 @@ export function SortableItem({
       {isDragging && <div {...className('placeholder')} style={placeholderStyle} />}
       <div
         ref={setNodeRef}
-        className={clsx(className('content').className, styles.draggable, isDragging && styles.active)}
+        className={clsx(
+          className('content').className,
+          styles.draggable,
+          isDragging && styles.active,
+          isSorting && styles.sorting
+        )}
         style={style}
       >
         <DragHandle attributes={dragHandleAttributes} listeners={combinedListeners} />

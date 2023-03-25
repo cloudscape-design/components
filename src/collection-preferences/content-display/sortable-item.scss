@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
 $border-radius: awsui.$border-radius-item;
@@ -38,6 +39,11 @@ $border-radius: awsui.$border-radius-item;
     padding-right: awsui.$space-scaled-xxs;
     background-color: awsui.$color-background-container-content;
     z-index: 1;
+    &:not(.active).sorting {
+      @include styles.with-motion {
+        transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+      }
+    }
     &.active {
       position: relative;
       z-index: 2;
