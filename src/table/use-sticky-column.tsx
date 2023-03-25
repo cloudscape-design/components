@@ -79,10 +79,7 @@ export const updateCellWidths = ({
 }: {
   tableCellRefs: React.RefObject<HTMLTableCellElement>[];
   setCellWidths: (cellWidths: CellWidths) => void;
-}): void => {
-  if (!tableCellRefs) {
-    return;
-  }
+}) => {
   let startWidthsArray = tableCellRefs
     .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
     .filter(x => x);
@@ -105,8 +102,8 @@ export const shouldDisableStickyColumns = ({
   containerWidth,
   hasSelection,
 }: ShouldDisableStickyColumnsParams) => {
-  // We allow the table to have a minimum of 100px besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 100;
+  // We allow the table to have a minimum of 150px besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
 
   if (!stickyColumns) {
     return true;
@@ -114,8 +111,7 @@ export const shouldDisableStickyColumns = ({
 
   const { start = 0, end = 0 } = stickyColumns;
   const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
-  const lastEndStickyColumnIndex = visibleColumnsLength - end + (hasSelection ? 1 : 0);
-
+  const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
   const totalStickySpace =
     (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
   console.log({ totalStickySpace, containerWidth, cellWidths });

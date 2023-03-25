@@ -44,6 +44,8 @@ function StickyHeader(
     contentDensity,
     stickyColumns,
     cellWidths,
+    tableCellRefs,
+    setCellWidths,
   }: StickyHeaderProps,
   ref: React.Ref<StickyHeaderRef>
 ) {
@@ -94,6 +96,8 @@ function StickyHeader(
           sticky={true}
           stuck={isStuck}
           cellWidths={cellWidths}
+          tableCellRefs={tableCellRefs}
+          setCellWidths={setCellWidths}
           {...theadProps}
           ref={secondaryTheadRef}
         />

@@ -264,6 +264,8 @@ const InternalTable = forwardRef(
                   contentDensity={contentDensity}
                   stickyColumns={stickyColumns}
                   cellWidths={cellWidths}
+                  tableCellRefs={tableCellRefs}
+                  setCellWidths={setCellWidths}
                 />
               )}
             </>
@@ -411,7 +413,8 @@ const InternalTable = forwardRef(
                           const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
 
                           const stickyStyles =
-                            (!shouldDisableStickyColumnsFeature &&
+                            (isSticky &&
+                              !shouldDisableStickyColumnsFeature &&
                               getStickyStyles({
                                 colIndex,
                                 stickyColumns,
