@@ -31,11 +31,6 @@ $sizes-vertical: (
 .root {
   display: flex;
 }
-ul.root {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
 
 .child {
   /* used in test-utils */
@@ -56,8 +51,8 @@ ul.root {
   @each $name, $size in $sizes-horizontal {
     &-#{$name} {
       // This cancels out the margins of the children in the first row / in the first column.
-      margin-left: calc(-1 * #{$size}) !important;
-      margin-bottom: calc(-1 * #{$size}) !important;
+      margin-left: calc(-1 * #{$size});
+      margin-bottom: calc(-1 * #{$size});
     }
   }
 }

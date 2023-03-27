@@ -8,16 +8,12 @@ import flattenChildren from 'react-keyed-flatten-children';
 import { SpaceBetweenProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
-type InternalSpaceBetweenProps = SpaceBetweenProps &
-  InternalBaseComponentProps & {
-    variant?: 'div' | 'ul';
-  };
+type InternalSpaceBetweenProps = SpaceBetweenProps & InternalBaseComponentProps;
 
 export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
-  variant: Variant = 'div',
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -29,7 +25,7 @@ export default function InternalSpaceBetween({
   const flattenedChildren = flattenChildren(children);
 
   return (
-    <Variant
+    <div
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
       ref={__internalRootRef}
@@ -37,18 +33,12 @@ export default function InternalSpaceBetween({
       {flattenedChildren.map(child => {
         const key = typeof child === 'object' ? child.key : undefined;
 
-        // When using "ul" variant we avoid extra element wrappers to keep list semantics.
-        if (Variant === 'ul' && typeof child === 'object') {
-          const className = clsx(child.props.className, styles.child, styles[`child-${direction}-${size}`]);
-          return React.cloneElement(child, { className });
-        }
-
         return (
           <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
           </div>
         );
       })}
-    </Variant>
+    </div>
   );
 }
