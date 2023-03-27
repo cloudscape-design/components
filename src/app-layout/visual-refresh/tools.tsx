@@ -39,7 +39,8 @@ export default function Tools({ children }: ToolsProps) {
     toolsWidth,
     isAnyPanelOpen,
     navigationHide,
-    toolsFocusControl,
+    toolsRefs,
+    loseToolsFocus,
     splitPanelPosition,
     splitPanelToggle,
   } = useAppLayoutInternals();
@@ -47,8 +48,6 @@ export default function Tools({ children }: ToolsProps) {
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
-
-  const { refs: focusRefs } = toolsFocusControl;
 
   if (toolsHide && !hasSplitPanel) {
     return null;
@@ -71,7 +70,7 @@ export default function Tools({ children }: ToolsProps) {
           }}
           onBlur={e => {
             if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-              toolsFocusControl.loseFocus();
+              loseToolsFocus();
             }
           }}
         >
@@ -101,7 +100,7 @@ export default function Tools({ children }: ToolsProps) {
                     variant="icon"
                     formAction="none"
                     className={testutilStyles['tools-close']}
-                    ref={focusRefs.close}
+                    ref={toolsRefs.close}
                   />
                 </div>
 
@@ -128,7 +127,7 @@ export default function Tools({ children }: ToolsProps) {
                   onClick={() => handleToolsClick(!isToolsOpen)}
                   selected={hasSplitPanel && isToolsOpen}
                   className={testutilStyles['tools-toggle']}
-                  ref={focusRefs.toggle}
+                  ref={toolsRefs.toggle}
                 />
               )}
 
