@@ -56,15 +56,30 @@ function GenericTokenGroup<Item>(
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
         <InternalSpaceBetween id={controlId} direction={alignment} listProps={listProps} size="xs">
-          {slicedItems.map((item, itemIndex) => (
-            <GenericToken
-              variant={listProps ? 'list-item' : 'group'}
-              key={itemIndex}
-              {...getItemAttributes(item, itemIndex)}
-            >
-              {renderItem(item, itemIndex)}
-            </GenericToken>
-          ))}
+          {slicedItems.map((item, itemIndex) => {
+            const Tag = listProps ? 'li' : 'div';
+            const tagAttributes = listProps
+              ? {
+                  'aria-setsize': items.length,
+                  'aria-posinset': itemIndex + 1,
+                }
+              : { role: 'group' };
+            const { name, disabled, dismiss } = getItemAttributes(item, itemIndex);
+            return (
+              <Tag
+                key={itemIndex}
+                aria-label={name}
+                aria-disabled={disabled ? 'true' : undefined}
+                className={clsx(styles.token, disabled && styles['token-disabled'])}
+                {...tagAttributes}
+              >
+                {renderItem(item, itemIndex)}
+                {dismiss && (
+                  <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />
+                )}
+              </Tag>
+            );
+          })}
         </InternalSpaceBetween>
       )}
       {hasHiddenItems && (
@@ -78,25 +93,5 @@ function GenericTokenGroup<Item>(
         />
       )}
     </div>
-  );
-}
-
-interface GenericTokenProps extends ItemAttributes {
-  variant: 'list-item' | 'group';
-  children: React.ReactNode;
-}
-
-function GenericToken({ variant, name, disabled, dismiss, children }: GenericTokenProps) {
-  const Tag = variant === 'list-item' ? 'li' : 'div';
-  return (
-    <Tag
-      role={variant === 'group' ? 'group' : undefined}
-      aria-label={name}
-      aria-disabled={disabled ? 'true' : undefined}
-      className={clsx(styles.token, disabled && styles['token-disabled'])}
-    >
-      {children}
-      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
-    </Tag>
   );
 }
