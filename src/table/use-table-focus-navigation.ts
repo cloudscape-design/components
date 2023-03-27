@@ -40,8 +40,8 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
     return cols;
   }, [columnDefinitions, selectionType]);
 
-  const maxColumnIndex = useMemo(() => focusableColumns.length - 1, [focusableColumns]);
-  const minColumnIndex = useMemo(() => (selectionType !== 'none' ? 1 : 0), [selectionType]);
+  const maxColumnIndex = focusableColumns.length - 1;
+  const minColumnIndex = selectionType !== 'none' ? 1 : 0;
 
   const focusCell = useCallback(
     (rowIndex: number, columnIndex: number) => {
