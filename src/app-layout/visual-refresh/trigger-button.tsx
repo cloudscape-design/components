@@ -8,7 +8,7 @@ import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
 
-interface TriggerButtonProps {
+export interface TriggerButtonProps {
   ariaLabel?: string;
   className?: string;
   iconName?: IconProps.Name;
@@ -36,8 +36,8 @@ function TriggerButton(
         className
       )}
       onClick={onClick}
-      type="button"
       ref={ref as React.Ref<HTMLButtonElement>}
+      type="button"
       {...focusVisible}
     >
       {iconName && !iconSvg && <Icon name={iconName} />}

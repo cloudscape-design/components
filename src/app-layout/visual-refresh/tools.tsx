@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
-import { useAppLayoutInternals } from './context';
-import TriggerButton from './trigger-button';
-import styles from './styles.css.js';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 import { Transition } from '../../internal/components/transition';
-import customCssProps from '../../internal/generated/custom-css-properties';
+import TriggerButton, { TriggerButtonProps } from './trigger-button';
+import { useAppLayoutInternals } from './context';
+import styles from './styles.css.js';
 
 interface ToolsProps {
   children: React.ReactNode;
@@ -61,14 +61,12 @@ export default function Tools({ children }: ToolsProps) {
     isSplitPanelOpen,
     isToolsOpen
   );
-
   const { refs: focusRefs } = toolsFocusControl;
+  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   if (toolsHide && !hasSplitPanel) {
     return null;
   }
-
-  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   return (
     <Transition in={isToolsOpen ?? false}>
@@ -149,7 +147,7 @@ export default function Tools({ children }: ToolsProps) {
                   )}
 
                   {toolsTriggers &&
-                    toolsTriggers.map((trigger: any, key) => (
+                    toolsTriggers.map((trigger: TriggerButtonProps, key) => (
                       <TriggerButton
                         ariaLabel={trigger.ariaLabel}
                         iconName={trigger.iconName}
@@ -206,7 +204,7 @@ function getSplitPanelStatus(splitPanelDisplayed: boolean, splitPanelPosition: s
 }
 
 /**
- * By default the Tools form is styled as display: none; This behavior should
+ * By default the Tools form is styled as display: none. This behavior should
  * be unchanged in mobile viewports where the Tools form is always suppressed.
  * In large viewports, however the Tools form and its corresponding buttons
  * should be present in the UI under the below circumstances.
@@ -237,7 +235,7 @@ function getToolsFormStatus(
       hasToolsForm = true;
     }
 
-    //
+    // The Form is required any time there are 2 or more buttons
     if (toolsTriggerCount > 1) {
       hasToolsForm = true;
     }
@@ -271,13 +269,11 @@ function getToolsFormPersistence(
 }
 
 /**
- *
+ * Compute the number of triggers that are rendered next to the Tools drawer.
+ * This number will vary based on the suppression of the drawer, the use of a
+ * SplitPanel in the side position, and the existence of custom trigger buttons.
  */
-function getToolsTriggerCount(
-  hasSplitPanel: boolean,
-  toolsTriggers: Array<Record<string, unknown>>,
-  toolsHide?: boolean
-) {
+function getToolsTriggerCount(hasSplitPanel: boolean, toolsTriggers: Array<TriggerButtonProps>, toolsHide?: boolean) {
   let toolsTriggerCount = 0;
 
   if (hasSplitPanel) {

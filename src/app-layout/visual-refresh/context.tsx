@@ -171,6 +171,12 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
+     * The toolsTriggers property will override the default behavior of the
+     * tools drawer. This property will provide an array of trigger buttons
+     * that must be manually connected to the tools drawer with a controlled
+     * state. If the toolsHide property is set to true it will suppress the
+     * toolsTriggers similar to the default behavior.
+     *
      * The useControllable hook will set the default value and manage either
      * the controlled or uncontrolled state of the Tools drawer. The logic
      * for determining the default state is colocated with the Tools component.
