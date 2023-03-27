@@ -2592,6 +2592,13 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     Object {
+      "description": "The <form> element to associate the button with. The value of this attribute must be the id of a <form> in the same document.
+use this property when the button is not an ancestor of a <form> element. e.g. in a Modal",
+      "name": "form",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "'submit'",
       "description": "The form action that is performed by a button click.",
       "inlineType": Object {
