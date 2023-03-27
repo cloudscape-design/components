@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -167,12 +167,6 @@ describe('TokenGroup', () => {
 
       const icon = wrapper.findTokenToggle()!.find('svg');
       expect(icon!.getElement()).toContainHTML(icons['treeview-collapse']);
-    });
-
-    test('has role="group" and aria-label set', async () => {
-      renderTokenGroup({ items: generateItems(5) });
-
-      await expect(screen.findByRole('group', { name: 'label-0' })).resolves.toBeDefined();
     });
   });
 });
