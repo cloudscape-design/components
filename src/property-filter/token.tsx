@@ -13,7 +13,7 @@ import {
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getExtendedOperator, getPropertyByKey } from './controller';
+import { getFormattedToken } from './controller';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -37,7 +37,6 @@ interface TokenProps {
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: Token) => void;
   token: Token;
-  className?: string;
 }
 
 export const TokenButton = ({
@@ -58,46 +57,39 @@ export const TokenButton = ({
   disabled,
   disableFreeTextFiltering,
   expandToViewport,
-  className,
 }: TokenProps) => {
-  const valueFormatter =
-    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const formattedToken = getFormattedToken(filteringProperties, token);
   return (
-    <li aria-label={propertyLabel + token.operator + tokenValue} className={className}>
-      <FilteringToken
-        showOperation={!first && !hideOperations}
-        operation={operation}
-        andText={i18nStrings.operationAndText ?? ''}
-        orText={i18nStrings.operationOrText ?? ''}
-        dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(token)}
-        operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
-        onChange={setOperation}
-        onDismiss={removeToken}
-        disabled={disabled}
-      >
-        <TokenEditor
-          setToken={setToken}
-          triggerComponent={
-            <span className={styles['token-trigger']}>
-              <TokenTrigger property={propertyLabel} operator={token.operator} value={tokenValue} />
-            </span>
-          }
-          filteringOptions={filteringOptions}
-          filteringProperties={filteringProperties}
-          token={token}
-          asyncProps={asyncProps}
-          onLoadItems={onLoadItems}
-          i18nStrings={i18nStrings}
-          asyncProperties={asyncProperties}
-          customGroupsText={customGroupsText}
-          disableFreeTextFiltering={disableFreeTextFiltering}
-          expandToViewport={expandToViewport}
-        />
-      </FilteringToken>
-    </li>
+    <FilteringToken
+      showOperation={!first && !hideOperations}
+      operation={operation}
+      andText={i18nStrings.operationAndText ?? ''}
+      orText={i18nStrings.operationOrText ?? ''}
+      dismissAriaLabel={i18nStrings?.removeTokenButtonAriaLabel?.(token)}
+      operatorAriaLabel={i18nStrings.tokenOperatorAriaLabel}
+      onChange={setOperation}
+      onDismiss={removeToken}
+      disabled={disabled}
+    >
+      <TokenEditor
+        setToken={setToken}
+        triggerComponent={
+          <span className={styles['token-trigger']}>
+            <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
+          </span>
+        }
+        filteringOptions={filteringOptions}
+        filteringProperties={filteringProperties}
+        token={token}
+        asyncProps={asyncProps}
+        onLoadItems={onLoadItems}
+        i18nStrings={i18nStrings}
+        asyncProperties={asyncProperties}
+        customGroupsText={customGroupsText}
+        disableFreeTextFiltering={disableFreeTextFiltering}
+        expandToViewport={expandToViewport}
+      />
+    </FilteringToken>
   );
 };
 

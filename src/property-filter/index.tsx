@@ -1,15 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
-import SelectToggle from '../token-group/toggle';
-import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -21,6 +19,7 @@ import {
   getAutosuggestOptions,
   getAllowedOperators,
   getExtendedOperator,
+  getFormattedToken,
 } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
@@ -30,6 +29,7 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
+import { TokenList } from '../token-group/token-list';
 
 export { PropertyFilterProps };
 
@@ -256,11 +256,6 @@ const PropertyFilter = React.forwardRef(
 
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
-    const [tokensExpanded, setTokensExpanded] = useState(false);
-    const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);
-    const hasHiddenOptions = tokenLimit !== undefined && tokens.length > tokenLimit;
-    const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
-    const controlId = useMemo(() => generateUniqueId(), []);
 
     const operatorForm =
       parsedText.step === 'property' &&
@@ -321,15 +316,23 @@ const PropertyFilter = React.forwardRef(
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
-              <InternalSpaceBetween size="xs" direction="horizontal" id={controlId} variant="ul">
-                {slicedTokens.map((token, index) => (
+              <TokenList
+                variant="ul"
+                alignment="horizontal"
+                limit={tokenLimit}
+                items={tokens}
+                getItemAttributes={token => {
+                  const formattedToken = getFormattedToken(filteringProperties, token);
+                  const name = (formattedToken.property ?? '') + formattedToken.operator + formattedToken.value;
+                  return { name, disabled };
+                }}
+                renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}
-                    first={index === 0}
+                    first={tokenIndex === 0}
                     operation={operation}
-                    key={index}
-                    removeToken={() => removeToken(index)}
-                    setToken={(newToken: Token) => setToken(index, newToken)}
+                    removeToken={() => removeToken(tokenIndex)}
+                    setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
                     filteringOptions={filteringOptions}
                     filteringProperties={filteringProperties}
@@ -343,24 +346,12 @@ const PropertyFilter = React.forwardRef(
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                   />
-                ))}
-              </InternalSpaceBetween>
-
-              {hasHiddenOptions && (
-                <div className={styles['toggle-collapsed']}>
-                  <SelectToggle
-                    controlId={controlId}
-                    allHidden={tokenLimit === 0}
-                    expanded={tokensExpanded}
-                    numberOfHiddenOptions={tokens.length - slicedTokens.length}
-                    i18nStrings={{
-                      limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                      limitShowMore: i18nStrings.tokenLimitShowMore,
-                    }}
-                    onClick={toggleExpandedTokens}
-                  />
-                </div>
-              )}
+                )}
+                i18nStrings={{
+                  limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                  limitShowMore: i18nStrings.tokenLimitShowMore,
+                }}
+              />
 
               <div className={styles.separator} />
 

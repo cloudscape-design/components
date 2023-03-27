@@ -24,12 +24,8 @@
   border-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
-}
-.token-content {
   display: flex;
   align-items: flex-start;
-}
-div.token {
   height: 100%;
 }
 
@@ -103,4 +99,36 @@ div.token {
   > .description {
     margin-left: awsui.$space-xxs;
   }
+}
+
+.token-list {
+  display: flex;
+}
+ul.token-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.token-list-horizontal,
+div.token-list-horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  // This cancels out the margins of the children in the first row / in the first column.
+  margin-left: calc(-1 * #{awsui.$space-xs});
+  margin-bottom: calc(-1 * #{awsui.$space-xs});
+}
+
+.token-list-child-horizontal {
+  margin-left: awsui.$space-xs;
+  margin-bottom: awsui.$space-xs;
+}
+
+.token-list-vertical {
+  flex-direction: column;
+}
+
+.token-list-child-vertical:not(:last-child) {
+  margin-bottom: awsui.$space-xs;
 }
