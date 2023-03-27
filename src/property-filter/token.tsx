@@ -65,6 +65,7 @@ export const TokenButton = ({
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   return (
     <FilteringToken
+      ariaLabel={propertyLabel + token.operator + tokenValue}
       showOperation={!first && !hideOperations}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}

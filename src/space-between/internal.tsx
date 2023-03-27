@@ -29,7 +29,6 @@ export default function InternalSpaceBetween({
   const flattenedChildren = flattenChildren(children);
 
   const ParentTag = listProps ? 'ul' : 'div';
-  const ChildTag = listProps ? 'li' : 'div';
 
   return (
     <ParentTag
@@ -43,9 +42,9 @@ export default function InternalSpaceBetween({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const key = (child as any).key;
         return (
-          <ChildTag key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
+          <div key={key} role="presentation" className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
-          </ChildTag>
+          </div>
         );
       })}
     </ParentTag>

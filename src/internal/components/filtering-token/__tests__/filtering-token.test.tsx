@@ -7,6 +7,7 @@ import FilteringToken, { FilteringTokenProps } from '../../../../../lib/componen
 import FilteringTokenWrapper from '../../../../../lib/components/test-utils/dom/internal/filtering-token';
 
 const DEFAULT_PROPS: FilteringTokenProps = {
+  ariaLabel: 'token',
   andText: 'and',
   orText: 'or',
   dismissAriaLabel: '',

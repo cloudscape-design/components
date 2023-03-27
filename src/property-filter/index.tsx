@@ -320,44 +320,47 @@ const PropertyFilter = React.forwardRef(
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
-            <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
-              {slicedTokens.map((token, index) => (
-                <TokenButton
-                  token={token}
-                  first={index === 0}
-                  operation={operation}
-                  key={index}
-                  removeToken={() => removeToken(index)}
-                  setToken={(newToken: Token) => setToken(index, newToken)}
-                  setOperation={setOperation}
-                  filteringOptions={filteringOptions}
-                  filteringProperties={filteringProperties}
-                  asyncProps={asyncProps}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                  asyncProperties={asyncProperties}
-                  hideOperations={hideOperations}
-                  customGroupsText={customGroupsText}
-                  disableFreeTextFiltering={disableFreeTextFiltering}
-                  disabled={disabled}
-                  expandToViewport={expandToViewport}
-                />
-              ))}
-              {hasHiddenOptions && (
-                <div className={styles['toggle-collapsed']}>
-                  <SelectToggle
-                    controlId={controlId}
-                    allHidden={tokenLimit === 0}
-                    expanded={tokensExpanded}
-                    numberOfHiddenOptions={tokens.length - slicedTokens.length}
-                    i18nStrings={{
-                      limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                      limitShowMore: i18nStrings.tokenLimitShowMore,
-                    }}
-                    onClick={toggleExpandedTokens}
+            <InternalSpaceBetween size="xs" direction="horizontal">
+              <InternalSpaceBetween size="xs" direction="horizontal" id={controlId} listProps={{}}>
+                {slicedTokens.map((token, index) => (
+                  <TokenButton
+                    token={token}
+                    first={index === 0}
+                    operation={operation}
+                    key={index}
+                    removeToken={() => removeToken(index)}
+                    setToken={(newToken: Token) => setToken(index, newToken)}
+                    setOperation={setOperation}
+                    filteringOptions={filteringOptions}
+                    filteringProperties={filteringProperties}
+                    asyncProps={asyncProps}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                    asyncProperties={asyncProperties}
+                    hideOperations={hideOperations}
+                    customGroupsText={customGroupsText}
+                    disableFreeTextFiltering={disableFreeTextFiltering}
+                    disabled={disabled}
+                    expandToViewport={expandToViewport}
                   />
-                </div>
-              )}
+                ))}
+                {hasHiddenOptions && (
+                  <div className={styles['toggle-collapsed']}>
+                    <SelectToggle
+                      controlId={controlId}
+                      allHidden={tokenLimit === 0}
+                      expanded={tokensExpanded}
+                      numberOfHiddenOptions={tokens.length - slicedTokens.length}
+                      i18nStrings={{
+                        limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                        limitShowMore: i18nStrings.tokenLimitShowMore,
+                      }}
+                      onClick={toggleExpandedTokens}
+                    />
+                  </div>
+                )}
+              </InternalSpaceBetween>
+
               <div className={styles.separator} />
               <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
                 {i18nStrings.clearFiltersText}
