@@ -28,8 +28,13 @@ export default function InternalTokenGroup({
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
 
   const baseProps = getBaseProps(props);
+  const hasItems = items.length > 0;
   return (
-    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+    <div
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, hasItems && styles['has-items'])}
+      ref={__internalRootRef}
+    >
       <TokenList
         alignment={alignment}
         limit={limit}

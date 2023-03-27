@@ -28,9 +28,9 @@ export default function GenericTokenGroupPage() {
     <Box padding="xl">
       <h1>Generic token group</h1>
       <SpaceBetween size="l" direction="vertical">
-        <Token disabled={true} dismiss={{ label: 'Dismiss', onDismiss: () => undefined }}>
-          Custom token
-        </Token>
+        <div role="group" aria-label="Custom token">
+          <Token dismiss={{ label: 'Dismiss', onDismiss: () => undefined }}>Custom token</Token>
+        </div>
 
         <TokenList
           alignment="vertical"
@@ -43,6 +43,7 @@ export default function GenericTokenGroupPage() {
           })}
           renderItem={(file, fileIndex) => (
             <Token
+              disabled={file === 0}
               dismiss={{
                 label: `Remove file ${fileIndex + 1}`,
                 onDismiss: () => onDismiss(fileIndex),

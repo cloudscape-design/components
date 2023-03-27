@@ -9,10 +9,6 @@
 
 .root {
   @include styles.styles-reset;
-
-  &.has-items {
-    padding-top: awsui.$space-xs;
-  }
 }
 
 .list {

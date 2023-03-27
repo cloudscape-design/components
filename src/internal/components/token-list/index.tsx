@@ -33,7 +33,7 @@ export function TokenList<Item>({
   const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
   return (
-    <div className={clsx(styles.root, hasItems && styles['has-items'])}>
+    <div className={styles.root}>
       <ul id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
         {slicedItems.map((item, itemIndex) => {
           const { ariaLabel, disabled } = getItemAttributes(item, itemIndex);
