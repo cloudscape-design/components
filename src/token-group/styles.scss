@@ -28,6 +28,9 @@
   align-items: flex-start;
   height: 100%;
 }
+.token-content {
+  flex: 1;
+}
 
 .dismiss-button {
   margin: -1px -1px 0 awsui.$space-xxs;

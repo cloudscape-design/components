@@ -305,7 +305,6 @@ const InternalMultiselect = React.forwardRef(
         </Dropdown>
         {showTokens && (
           <InternalTokenGroup
-            list={true}
             alignment="horizontal"
             limit={tokenLimit}
             items={tokens}

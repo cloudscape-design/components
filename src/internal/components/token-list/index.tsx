@@ -9,7 +9,6 @@ import { I18nStrings, ItemAttributes } from './interfaces';
 import { useUniqueId } from '../../hooks/use-unique-id';
 
 interface TokenListProps<Item> {
-  variant: 'div' | 'ul';
   alignment: 'vertical' | 'horizontal';
   items: readonly Item[];
   limit?: number;
@@ -19,7 +18,6 @@ interface TokenListProps<Item> {
 }
 
 export function TokenList<Item>({
-  variant: ListTag = 'div',
   alignment = 'vertical',
   items,
   limit,
@@ -36,25 +34,23 @@ export function TokenList<Item>({
 
   return (
     <div className={clsx(styles.root, hasItems && styles['has-items'])}>
-      <ListTag id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
+      <ul id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
         {slicedItems.map((item, itemIndex) => {
-          const ItemTag = ListTag === 'div' ? 'div' : 'li';
           const { ariaLabel, disabled } = getItemAttributes(item, itemIndex);
           return (
-            <ItemTag
+            <li
               key={itemIndex}
-              role={ListTag === 'div' ? 'group' : undefined}
               aria-label={ariaLabel}
               aria-disabled={disabled}
-              aria-setsize={ListTag === 'ul' ? items.length : undefined}
-              aria-posinset={ListTag === 'ul' ? itemIndex + 1 : undefined}
+              aria-setsize={limit !== undefined ? items.length : undefined}
+              aria-posinset={limit !== undefined ? itemIndex + 1 : undefined}
               className={styles[`child-${alignment}`]}
             >
               {renderItem(item, itemIndex)}
-            </ItemTag>
+            </li>
           );
         })}
-      </ListTag>
+      </ul>
 
       {hasHiddenItems && (
         <SelectToggle

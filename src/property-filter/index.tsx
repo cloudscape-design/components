@@ -29,7 +29,7 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
-import { TokenList } from '../internal/components/token-list/token-list';
+import { TokenList } from '../internal/components/token-list';
 
 export { PropertyFilterProps };
 
@@ -317,7 +317,6 @@ const PropertyFilter = React.forwardRef(
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
               <TokenList
-                variant="ul"
                 alignment="horizontal"
                 limit={tokenLimit}
                 items={tokens}

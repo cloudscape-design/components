@@ -17,15 +17,12 @@
 
 .list {
   display: flex;
-}
-ul.list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-ul.list-horizontal,
-div.list-horizontal {
+.list-horizontal {
   flex-direction: row;
   flex-wrap: wrap;
 
