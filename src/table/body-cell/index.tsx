@@ -18,7 +18,7 @@ const submitHandlerFallback = () => {
 };
 
 interface TableBodyCellProps<ItemType> extends TableTdElementProps {
-  column: TableProps.ColumnDefinition<ItemType>;
+  column: TableProps.ColumnDefinition<any>;
   item: ItemType;
   isEditing: boolean;
   onEditStart: () => void;
@@ -116,10 +116,9 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
 });
 
 export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
-  props: TableBodyCellProps<ItemType> & { isEditable: boolean },
+  { isEditable, ...rest }: TableBodyCellProps<ItemType> & { isEditable: boolean },
   ref: React.Ref<HTMLTableCellElement>
 ) {
-  const { isEditable, ...rest } = props;
   if (isEditable || rest.isEditing) {
     return <TableCellEditable ref={ref} {...rest} />;
   }

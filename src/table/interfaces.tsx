@@ -351,7 +351,7 @@ export namespace TableProps {
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-    editConfig?: EditConfig<ItemType>;
+    editConfig?: EditConfig<any>;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 

@@ -99,7 +99,6 @@ const InternalTable = forwardRef(
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
-
     const secondaryWrapperRef = useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = useRef<StickyHeaderRef>(null);
@@ -167,7 +166,7 @@ const InternalTable = forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
-
+    console.log('useFocusVisible', useFocusVisible());
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
       if (!submitEdit) {
@@ -193,7 +192,8 @@ const InternalTable = forwardRef(
       containerWidth,
     });
 
-    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns();
+    const disableStickyColumns =
+      Object.keys(useFocusVisible()).length > 0 || !isWrapperScrollable || shouldDisableStickyColumns();
 
     const theadProps: TheadProps = {
       containerWidth,
