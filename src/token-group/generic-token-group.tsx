@@ -26,7 +26,7 @@ interface ItemAttributes {
 
 export interface GenericTokenGroupProps<Item> extends BaseComponentProps {
   items: readonly Item[];
-  asList?: boolean;
+  listProps?: React.HTMLProps<HTMLUListElement>;
   limit?: number;
   alignment: TokenGroupProps.Alignment;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
@@ -39,7 +39,7 @@ export default forwardRef(GenericTokenGroup) as <T>(
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, asList, limit, ...props }: GenericTokenGroupProps<Item>,
+  { items, alignment, renderItem, getItemAttributes, listProps, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
   const [expanded, setExpanded] = useState(false);
@@ -55,9 +55,13 @@ function GenericTokenGroup<Item>(
   return (
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
-        <InternalSpaceBetween id={controlId} direction={alignment} asList={asList} size="xs">
+        <InternalSpaceBetween id={controlId} direction={alignment} listProps={listProps} size="xs">
           {slicedItems.map((item, itemIndex) => (
-            <GenericToken asGroup={!asList} key={itemIndex} {...getItemAttributes(item, itemIndex)}>
+            <GenericToken
+              variant={listProps ? 'list-item' : 'group'}
+              key={itemIndex}
+              {...getItemAttributes(item, itemIndex)}
+            >
               {renderItem(item, itemIndex)}
             </GenericToken>
           ))}
@@ -78,20 +82,21 @@ function GenericTokenGroup<Item>(
 }
 
 interface GenericTokenProps extends ItemAttributes {
-  asGroup: boolean;
+  variant: 'list-item' | 'group';
   children: React.ReactNode;
 }
 
-function GenericToken({ asGroup, name, disabled, dismiss, children }: GenericTokenProps) {
-  const groupProps = asGroup ? { role: 'group', 'aria-label': name } : {};
+function GenericToken({ variant, name, disabled, dismiss, children }: GenericTokenProps) {
+  const Tag = variant === 'list-item' ? 'li' : 'div';
   return (
-    <div
-      {...groupProps}
-      className={clsx(styles.token, disabled && styles['token-disabled'])}
+    <Tag
+      role={variant === 'group' ? 'group' : undefined}
+      aria-label={name}
       aria-disabled={disabled ? 'true' : undefined}
+      className={clsx(styles.token, disabled && styles['token-disabled'])}
     >
       {children}
       {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
-    </div>
+    </Tag>
   );
 }

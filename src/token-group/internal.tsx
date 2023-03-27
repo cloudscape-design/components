@@ -12,7 +12,10 @@ import { TokenGroupProps } from './interfaces';
 import { SomeRequired } from '../internal/types';
 import GenericTokenGroup from './generic-token-group';
 
-type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
+type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> &
+  InternalBaseComponentProps & {
+    listProps?: React.HTMLProps<HTMLUListElement>;
+  };
 
 export default function InternalTokenGroup({ items, onDismiss, __internalRootRef, ...props }: InternalTokenGroupProps) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);

@@ -30,7 +30,7 @@ export default function GenericTokenGroupPage() {
         alignment="vertical"
         items={files}
         i18nStrings={i18nStrings}
-        asList={true}
+        listProps={{}}
         limit={5}
         renderItem={file => <FileOption file={file} />}
         getItemAttributes={(file, fileIndex) => ({

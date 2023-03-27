@@ -10,14 +10,14 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 type InternalSpaceBetweenProps = SpaceBetweenProps &
   InternalBaseComponentProps & {
-    asList?: boolean;
+    listProps?: React.HTMLProps<HTMLUListElement>;
   };
 
 export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
-  asList,
+  listProps,
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -28,12 +28,13 @@ export default function InternalSpaceBetween({
    */
   const flattenedChildren = flattenChildren(children);
 
-  const ParentTag = asList ? 'ul' : 'div';
-  const ChildTag = asList ? 'li' : 'div';
+  const ParentTag = listProps ? 'ul' : 'div';
+  const ChildTag = listProps ? 'li' : 'div';
 
   return (
     <ParentTag
       {...baseProps}
+      {...(listProps as React.HTMLProps<HTMLElement>)}
       className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
       ref={__internalRootRef}
     >
@@ -41,7 +42,6 @@ export default function InternalSpaceBetween({
         // If this react child is a primitive value, the key will be undefined
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const key = (child as any).key;
-
         return (
           <ChildTag key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
