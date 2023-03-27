@@ -14,8 +14,6 @@ import { generateItems } from '../table/generate-data';
 import Box from '~components/box';
 import Link from '~components/link';
 
-// SCROLLABLE_CONTAINER.scrollTo(FOCUSED_CELL.offsetLeft - TOTAL_LEFT_STICKY, FOCUSED_CELL.offsetHeight)
-
 export default function () {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);

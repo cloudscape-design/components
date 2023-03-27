@@ -178,6 +178,42 @@ export default () => {
           header={<Header>Simple table</Header>}
         />
         <Table
+          stickyColumns={preferences.stickyColumns}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          variant="embedded"
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                startColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                endColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
+          header={<Header>Embedded table</Header>}
+        />
+
+        <Table
           selectionType="single"
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
@@ -211,7 +247,7 @@ export default () => {
               }}
             />
           }
-          header={<Header>Simple table with selection type "single"</Header>}
+          header={<Header>Simple table with selection type `single`</Header>}
         />
         <Table
           selectionType="multi"
@@ -247,7 +283,7 @@ export default () => {
               }}
             />
           }
-          header={<Header>Simple table with selection type "multi"</Header>}
+          header={<Header>Simple table with selection type `multi`</Header>}
         />
         <Table
           resizableColumns={true}
@@ -375,6 +411,76 @@ export default () => {
           header={<Header>Table sticky header</Header>}
         />
       </SpaceBetween>
+      <Table
+        stickyColumns={preferences.stickyColumns}
+        columnDefinitions={COLUMN_DEFINITIONS}
+        items={ITEMS}
+        variant="stacked"
+        preferences={
+          <CollectionPreferences
+            title="Preferences"
+            confirmLabel="Confirm"
+            cancelLabel="Cancel"
+            onConfirm={({ detail }) => setPreferences(detail)}
+            preferences={preferences}
+            stickyColumnsPreference={{
+              startColumns: {
+                title: 'Stick first visible column(s)',
+                description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                options: [
+                  { label: 'None', value: 0 },
+                  { label: 'First visible column', value: 1 },
+                  { label: 'First two visible columns', value: 2 },
+                ],
+              },
+              endColumns: {
+                title: 'Stick last visible column',
+                description: 'Keep the last column visible when tables are wider than the viewport.',
+                options: [
+                  { label: 'None', value: 0 },
+                  { label: 'Last visible column', value: 1 },
+                ],
+              },
+            }}
+          />
+        }
+        header={<Header>Stacked table</Header>}
+      />
+      <Table
+        stickyColumns={preferences.stickyColumns}
+        columnDefinitions={COLUMN_DEFINITIONS}
+        items={ITEMS}
+        variant="stacked"
+        preferences={
+          <CollectionPreferences
+            title="Preferences"
+            confirmLabel="Confirm"
+            cancelLabel="Cancel"
+            onConfirm={({ detail }) => setPreferences(detail)}
+            preferences={preferences}
+            stickyColumnsPreference={{
+              startColumns: {
+                title: 'Stick first visible column(s)',
+                description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                options: [
+                  { label: 'None', value: 0 },
+                  { label: 'First visible column', value: 1 },
+                  { label: 'First two visible columns', value: 2 },
+                ],
+              },
+              endColumns: {
+                title: 'Stick last visible column',
+                description: 'Keep the last column visible when tables are wider than the viewport.',
+                options: [
+                  { label: 'None', value: 0 },
+                  { label: 'Last visible column', value: 1 },
+                ],
+              },
+            }}
+          />
+        }
+        header={<Header>Stacked table</Header>}
+      />
     </ScreenshotArea>
   );
 };
