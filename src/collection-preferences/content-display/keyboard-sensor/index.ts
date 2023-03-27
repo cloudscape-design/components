@@ -228,7 +228,7 @@ export class KeyboardSensor implements SensorInstance {
 
   private handleCancel(event: Event) {
     const { onCancel } = this.props;
-    if (event.type !== EventName.Blur && !(isKeyboardEvent(event) && event.code === 'Tab')) {
+    if (event.type !== EventName.Blur) {
       event.preventDefault();
     }
     this.detach();

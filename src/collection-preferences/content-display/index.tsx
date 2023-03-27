@@ -75,6 +75,7 @@ export default function ContentDisplayPreference({
         collisionDetection={collisionDetection}
         accessibility={{
           announcements,
+          restoreFocus: false,
           screenReaderInstructions: dragHandleAriaDescription ? { draggable: dragHandleAriaDescription } : undefined,
         }}
         onDragStart={() => setIsDragging(true)}

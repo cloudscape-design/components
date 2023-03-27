@@ -164,12 +164,6 @@ export default function useDragAndDropReorder({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter,
-      keyboardCodes: {
-        start: ['Space', 'Enter'],
-        // Cancel reordering when pressing Escape but also when losing focus
-        cancel: ['Escape', 'Tab'],
-        end: ['Space', 'Enter'],
-      },
       onActivation: () => {
         isKeyboard.current = true;
       },
