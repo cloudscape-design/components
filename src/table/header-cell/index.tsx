@@ -41,7 +41,7 @@ interface TableHeaderCellProps<ItemType> {
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
   props: TableHeaderCellProps<ItemType>,
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLTableCellElement>
 ) {
   const {
     className,

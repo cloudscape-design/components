@@ -40,7 +40,7 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
     isVisualRefresh,
     ...rest
   }: TableBodyCellProps<ItemType>,
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLTableCellElement>
 ) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
@@ -117,7 +117,7 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
 
 export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
   props: TableBodyCellProps<ItemType> & { isEditable: boolean },
-  ref: React.Ref<any>
+  ref: React.Ref<HTMLTableCellElement>
 ) {
   const { isEditable, ...rest } = props;
   if (isEditable || rest.isEditing) {

@@ -128,7 +128,7 @@ export const useStickyColumns = ({
   }, [visibleColumnsLength, hasSelection]);
 
   useLayoutEffect(() => {
-    //  first checks whether there are any sticky columns to calculate the widths for.
+    // First checks whether there are any sticky columns to calculate the widths for.
     // If there are none, the effect returns and does nothing.
     if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
       return;

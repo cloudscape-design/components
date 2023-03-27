@@ -200,24 +200,18 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
-   * Specifies the number of columns that should be sticky either on the `left` or `right` sides of the table.
+   * Specifies the number of columns that should be sticky
+   * either on the `left` and/or `right` sides of the table.
    *
    * We support having a maximum of two left and one right column sticky. Other values will be ignored.
    *
-   * Use it in conjunction with the sticky columns preference of the [collection preferences](/components/collection-preferences/) component.
+   * If the sum of the sticky columns widths exceeds the difference between the container width and 150px, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
    *
    */
   stickyColumns?: TableProps.StickyColumns;
-
-  /**
-   * Specifies an array containing the `id`s of the sticky columns. Currently we support having the first two and/or the last columns sticky.
-   *
-   * Use it in conjunction with the sticky columns preference of the [collection preferences](/components/collection-preferences/) component.
-   *
-   * In case the `id`s of the columns are not the first two or last, this property will be ignored.
-   */
-  //stickyColumns?: ReadonlyArray<string>;
-  //stickyColumns?: { left?: ReadonlyArray<string>; right?: ReadonlyArray<string> };
 
   /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
