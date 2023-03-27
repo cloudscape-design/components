@@ -192,8 +192,29 @@ const InternalTable = forwardRef(
       containerWidth,
     });
 
-    const disableStickyColumns =
-      Object.keys(useFocusVisible()).length > 0 || !isWrapperScrollable || shouldDisableStickyColumns();
+    const [hasFocus, setHasFocus] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!tableRefObject.current) {
+        return;
+      }
+      const currentTableEl = tableRefObject.current as HTMLTableElement;
+      const handleFocusIn = () => {
+        setHasFocus(true);
+      };
+      const handleFocusOut = () => {
+        setHasFocus(false);
+      };
+      currentTableEl.addEventListener('focusin', handleFocusIn);
+      currentTableEl.addEventListener('focusout', handleFocusOut);
+      return () => {
+        setHasFocus(false);
+        currentTableEl.removeEventListener('focusin', handleFocusIn);
+        currentTableEl.removeEventListener('focusout', handleFocusOut);
+      };
+    }, [tableRefObject]);
+
+    const disableStickyColumns = hasFocus || !isWrapperScrollable || shouldDisableStickyColumns();
 
     const theadProps: TheadProps = {
       containerWidth,
