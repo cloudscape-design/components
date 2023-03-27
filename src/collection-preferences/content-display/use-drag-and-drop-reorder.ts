@@ -35,10 +35,8 @@ export default function useDragAndDropReorder({
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
-  const isFirstAnnouncement = useRef(true);
 
   if (!isDragging) {
-    isFirstAnnouncement.current = true;
     isKeyboard.current = false;
     positionDelta.current = 0;
   }
@@ -182,8 +180,8 @@ export default function useDragAndDropReorder({
     collisionDetection,
     coordinateGetter,
     handleKeyDown,
-    isFirstAnnouncement,
-    isKeyboard,
+    isDragging,
+    isKeyboard: isKeyboard.current,
     sensors,
     setIsDragging,
   };

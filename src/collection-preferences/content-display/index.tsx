@@ -10,6 +10,7 @@ import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
 import useReordering from './use-drag-and-drop-reorder';
+import useLiveAnnouncements from './use-live-announcements';
 
 const componentPrefix = 'content-display';
 
@@ -50,7 +51,16 @@ export default function ContentDisplayPreference({
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
-  const { collisionDetection, handleKeyDown, isFirstAnnouncement, isKeyboard, sensors, setIsDragging } = useReordering({
+  const { collisionDetection, handleKeyDown, isDragging, isKeyboard, sensors, setIsDragging } = useReordering({
+    sortedOptions,
+  });
+
+  const announcements = useLiveAnnouncements({
+    isDragging,
+    liveAnnouncementDndStarted,
+    liveAnnouncementDndItemReordered,
+    liveAnnouncementDndItemCommitted,
+    liveAnnouncementDndDiscarded,
     sortedOptions,
   });
 
@@ -64,38 +74,7 @@ export default function ContentDisplayPreference({
         sensors={sensors}
         collisionDetection={collisionDetection}
         accessibility={{
-          announcements: {
-            onDragStart({ active }) {
-              if (active && liveAnnouncementDndStarted) {
-                const index = sortedOptions.findIndex(option => option.id === active.id);
-                return liveAnnouncementDndStarted(index + 1, options.length);
-              }
-            },
-            onDragOver({ active, over }) {
-              if (liveAnnouncementDndItemReordered) {
-                // Don't announce on the first dragOver because it's redundant with onDragStart.
-                if (isFirstAnnouncement.current) {
-                  isFirstAnnouncement.current = false;
-                  if (!over || over.id === active.id) {
-                    return;
-                  }
-                }
-                const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-                const currentIdex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
-                return liveAnnouncementDndItemReordered(initialIndex + 1, currentIdex + 1, options.length);
-              }
-            },
-            onDragEnd({ active, over }) {
-              if (liveAnnouncementDndItemCommitted) {
-                const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-                const finalIndex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
-                return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, options.length);
-              }
-            },
-            onDragCancel() {
-              return liveAnnouncementDndDiscarded;
-            },
-          },
+          announcements,
           screenReaderInstructions: dragHandleAriaDescription ? { draggable: dragHandleAriaDescription } : undefined,
         }}
         onDragStart={() => setIsDragging(true)}
@@ -119,7 +98,7 @@ export default function ContentDisplayPreference({
                   dragHandleAriaLabel={dragHandleAriaLabel}
                   key={option.id}
                   idPrefix={idPrefix}
-                  isKeyboard={isKeyboard.current}
+                  isKeyboard={isKeyboard}
                   isVisible={isVisible(option.id, value)}
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}
