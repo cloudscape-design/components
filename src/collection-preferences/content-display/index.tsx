@@ -65,7 +65,6 @@ export default function ContentDisplayPreference({
 }: ContentDisplayPreferenceProps) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
-  const keyboardDirection = useRef<'up' | 'down' | null>(null);
 
   const idPrefix = useUniqueId(componentPrefix);
   const onToggle = (id: string) => {
@@ -79,13 +78,11 @@ export default function ContentDisplayPreference({
     if (isKeyboard.current) {
       // We can't use onDragMove for this because that function gets triggered also on window scroll.
       if (event.key === 'ArrowDown') {
-        keyboardDirection.current = 'down';
+        positionDelta.current += 1;
       }
       if (event.key === 'ArrowUp') {
-        keyboardDirection.current = 'up';
+        positionDelta.current -= 1;
       }
-      positionDelta.current += keyboardDirection.current === 'up' ? -1 : keyboardDirection.current === 'down' ? 1 : 0;
-      keyboardDirection.current = null;
     }
     if (isDragging && isEscape(event.key)) {
       // Prevent modal from closing when pressing Esc to cancel the dragging action
