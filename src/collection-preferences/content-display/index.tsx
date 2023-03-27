@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from '../interfaces';
@@ -95,13 +95,11 @@ export default function ContentDisplayPreference({
 
   const labelId = `${idPrefix}-label`;
 
-  useEffect(() => {
-    if (!isDragging) {
-      isFirstAnnouncement.current = true;
-      isKeyboard.current = false;
-      positionDelta.current = 0;
-    }
-  }, [isDragging]);
+  if (!isDragging) {
+    isFirstAnnouncement.current = true;
+    isKeyboard.current = false;
+    positionDelta.current = 0;
+  }
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
