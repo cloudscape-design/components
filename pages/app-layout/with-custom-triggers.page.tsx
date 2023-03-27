@@ -10,7 +10,6 @@ export default function () {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState('info');
   const [triggerStatus, setTriggerStatus] = useState('custom-triggers');
-  const [splitPanelStatus, setSplitPanelStatus] = useState('show-split-panel');
 
   const customTriggers =
     triggerStatus !== 'custom-triggers'
@@ -19,18 +18,18 @@ export default function () {
           toolsTriggers: [
             {
               ariaExpanded: isToolsOpen,
-              ariaLabel: 'View Info content',
-              iconName: 'status-info',
+              ariaLabel: 'View Security content',
+              iconName: 'security',
 
               onClick: () => {
-                if (isToolsOpen && toolsContent === 'info') {
+                if (isToolsOpen && toolsContent === 'security') {
                   setIsToolsOpen(false);
                 } else {
-                  setToolsContent('info');
+                  setToolsContent('security');
                   setIsToolsOpen(true);
                 }
               },
-              selected: isToolsOpen && toolsContent === 'info',
+              selected: isToolsOpen && toolsContent === 'security',
             },
             {
               ariaExpanded: isToolsOpen,
@@ -84,16 +83,6 @@ export default function () {
               ]}
               selectedId={triggerStatus}
             />
-
-            <SegmentedControl
-              label="Split Panel Status"
-              onChange={({ detail }) => setSplitPanelStatus(detail.selectedId)}
-              options={[
-                { text: 'Show SplitPanel', id: 'show-split-panel' },
-                { text: 'Hide SplitPanel', id: 'hide-split-panel' },
-              ]}
-              selectedId={splitPanelStatus}
-            />
           </SpaceBetween>
         }
         content={<Containers />}
@@ -104,30 +93,29 @@ export default function () {
           position: 'side',
         }}
         splitPanel={
-          splitPanelStatus === 'show-split-panel' && (
-            <SplitPanel
-              header="Split panel header"
-              i18nStrings={{
-                preferencesTitle: 'Preferences',
-                preferencesPositionLabel: 'Split panel position',
-                preferencesPositionDescription: 'Choose the default split panel position for the service.',
-                preferencesPositionSide: 'Side',
-                preferencesPositionBottom: 'Bottom',
-                preferencesConfirm: 'Confirm',
-                preferencesCancel: 'Cancel',
-                closeButtonAriaLabel: 'Close panel',
-                openButtonAriaLabel: 'Open panel',
-                resizeHandleAriaLabel: 'Slider',
-              }}
-            >
-              This is the Split Panel!
-            </SplitPanel>
-          )
+          <SplitPanel
+            header="Split panel header"
+            i18nStrings={{
+              preferencesTitle: 'Preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Slider',
+            }}
+          >
+            This is the Split Panel!
+          </SplitPanel>
         }
         tools={
           <>
-            {toolsContent === 'info' && <Info />}
-            {toolsContent === 'proHelp' && <ProHelp />}
+            {(triggerStatus === 'default-trigger' || toolsContent === 'info') && <Info />}
+            {triggerStatus === 'custom-triggers' && toolsContent === 'proHelp' && <ProHelp />}
+            {triggerStatus === 'custom-triggers' && toolsContent === 'security' && <Security />}
           </>
         }
         toolsHide={triggerStatus === 'hide-tools' ? true : false}
@@ -153,6 +141,10 @@ function IconBriefcase() {
       />
     </svg>
   );
+}
+
+function Security() {
+  return <HelpPanel header={<h2>Security</h2>}>Keep your passwords secret!</HelpPanel>;
 }
 
 function ProHelp() {
