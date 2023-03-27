@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { range } from 'lodash';
 import { TokenGroupProps } from '~components/token-group';
 import GenericTokenGroup from '~components/token-group/generic-token-group';
@@ -8,9 +8,6 @@ import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import Icon from '~components/icon';
 import styles from './styles.scss';
-import { Button } from '~components';
-
-let nextFileIndex = 4;
 
 const i18nStrings: TokenGroupProps.I18nStrings = {
   limitShowMore: 'Show more chosen options',
@@ -18,8 +15,7 @@ const i18nStrings: TokenGroupProps.I18nStrings = {
 };
 
 export default function GenericTokenGroupPage() {
-  const tokenGroupRef = useRef<TokenGroupProps.Ref>(null);
-  const [files, setFiles] = useState(range(0, nextFileIndex).reverse());
+  const [files, setFiles] = useState(range(0, 4));
 
   const onDismiss = (itemIndex: number) => {
     const newItems = [...files];
@@ -30,33 +26,20 @@ export default function GenericTokenGroupPage() {
   return (
     <Box padding="xl">
       <h1>Generic token group</h1>
-      <SpaceBetween size="m">
-        <Button
-          onClick={() => {
-            setFiles(prev => [nextFileIndex, ...prev]);
-            nextFileIndex += 1;
-            tokenGroupRef.current?.focusToken(0);
-          }}
-        >
-          Add token
-        </Button>
-
-        <GenericTokenGroup
-          ref={tokenGroupRef}
-          alignment="vertical"
-          items={files}
-          i18nStrings={i18nStrings}
-          limit={5}
-          renderItem={file => <FileOption file={file} />}
-          getItemAttributes={(item, itemIndex) => ({
-            disabled: item === 0,
-            dismiss: {
-              label: `Remove file ${itemIndex + 1}`,
-            },
-            onDismiss: () => onDismiss(itemIndex),
-          })}
-        />
-      </SpaceBetween>
+      <GenericTokenGroup
+        alignment="vertical"
+        items={files}
+        i18nStrings={i18nStrings}
+        limit={5}
+        renderItem={file => <FileOption file={file} />}
+        getItemAttributes={(item, itemIndex) => ({
+          disabled: item === 0,
+          dismiss: {
+            label: 'Remove file',
+          },
+          onDismiss: () => onDismiss(itemIndex),
+        })}
+      />
     </Box>
   );
 }

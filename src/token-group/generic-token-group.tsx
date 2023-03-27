@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 import SpaceBetween from '../space-between/internal';
 
@@ -24,7 +23,7 @@ interface ItemAttributes {
   onDismiss: () => void;
 }
 
-export interface GenericTokenGroupProps<Item> extends BaseComponentProps, InternalBaseComponentProps {
+interface GenericTokenGroupProps<Item> extends BaseComponentProps {
   items: readonly Item[];
   limit?: number;
   alignment: TokenGroupProps.Alignment;
@@ -33,17 +32,13 @@ export interface GenericTokenGroupProps<Item> extends BaseComponentProps, Intern
   i18nStrings?: TokenGroupProps.I18nStrings;
 }
 
-export interface GenericTokenGroupRef {
-  focusToken(tokenIndex: number): void;
-}
-
 export default forwardRef(GenericTokenGroup) as <T>(
-  props: GenericTokenGroupProps<T> & { ref?: React.ForwardedRef<GenericTokenGroupRef> }
+  props: GenericTokenGroupProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> }
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, limit, __internalRootRef, ...props }: GenericTokenGroupProps<Item>,
-  ref: React.Ref<GenericTokenGroupRef>
+  { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
+  ref: React.Ref<HTMLDivElement>
 ) {
   const showMoreButtonRef = useRef<HTMLButtonElement>(null);
   const dismissButtonRefs = useRef<{ [key: number]: HTMLButtonElement }>({});
@@ -57,10 +52,6 @@ function GenericTokenGroup<Item>(
 
   const baseProps = getBaseProps(props);
   const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
-
-  useImperativeHandle(ref, () => ({
-    focusToken: index => dismissButtonRefs.current[index]?.focus(),
-  }));
 
   useEffect(() => {
     if (removedItemIndex === null) {
@@ -94,7 +85,7 @@ function GenericTokenGroup<Item>(
   }, [removedItemIndex]);
 
   return (
-    <div {...baseProps} className={className} ref={__internalRootRef}>
+    <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
         <SpaceBetween id={controlId} direction={alignment} size="xs">
           {slicedItems.map((item, itemIndex) => {
