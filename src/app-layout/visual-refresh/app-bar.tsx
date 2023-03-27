@@ -108,7 +108,7 @@ export default function AppBar() {
           {toolsTriggers &&
             toolsTriggers.map((trigger: any, key) => (
               <InternalButton
-                ariaExpanded={isToolsOpen}
+                ariaExpanded={trigger.ariaExpanded}
                 ariaLabel={trigger.ariaLabel}
                 disabled={isAnyPanelOpen}
                 formAction="none"
@@ -116,7 +116,6 @@ export default function AppBar() {
                 iconName={trigger.iconName}
                 iconSvg={trigger.iconSvg}
                 onClick={trigger.onClick}
-                ref={focusRefsTools.toggle}
                 variant="icon"
                 __nativeAttributes={{ 'aria-haspopup': true }}
               />

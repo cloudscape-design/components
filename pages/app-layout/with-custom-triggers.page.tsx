@@ -89,6 +89,7 @@ export default function () {
         {...{
           toolsTriggers: [
             {
+              ariaExpanded: isToolsOpen,
               ariaLabel: 'View Info content',
               iconName: 'status-info',
               onClick: () => {
@@ -98,6 +99,7 @@ export default function () {
               selected: isToolsOpen && toolsContent === 'info',
             },
             {
+              ariaExpanded: isToolsOpen,
               ariaLabel: 'View Pro Help content',
               iconSvg: <IconBriefcase />,
               onClick: () => {
