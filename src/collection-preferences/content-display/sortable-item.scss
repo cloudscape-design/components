@@ -39,7 +39,8 @@ $border-radius: awsui.$border-radius-item;
     padding-right: awsui.$space-scaled-xxs;
     background-color: awsui.$color-background-container-content;
     z-index: 1;
-    &:not(.active).sorting {
+    &:not(.active).sorting,
+    &.active.keyboard {
       @include styles.with-motion {
         transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
       }

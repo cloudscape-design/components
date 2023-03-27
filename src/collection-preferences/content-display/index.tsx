@@ -289,6 +289,7 @@ export default function ContentDisplayPreference({
                   dragHandleAriaLabel={dragHandleAriaLabel}
                   key={option.id}
                   idPrefix={idPrefix}
+                  isKeyboard={isKeyboard.current}
                   isVisible={isVisible(option.id, value)}
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}

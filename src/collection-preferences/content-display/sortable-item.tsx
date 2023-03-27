@@ -15,15 +15,17 @@ export const className = (suffix: string) => ({
 
 export function SortableItem({
   dragHandleAriaLabel,
-  isVisible,
   idPrefix,
+  isVisible,
+  isKeyboard,
   onKeyDown,
   onToggle,
   option,
 }: {
   dragHandleAriaLabel?: string;
-  isVisible: boolean;
   idPrefix: string;
+  isKeyboard: boolean;
+  isVisible: boolean;
   onKeyDown?: (event: React.KeyboardEvent) => void;
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
@@ -75,6 +77,7 @@ export function SortableItem({
           className('content').className,
           styles.draggable,
           isDragging && styles.active,
+          isKeyboard && styles.keyboard,
           isSorting && styles.sorting
         )}
         style={style}
