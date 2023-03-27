@@ -26,7 +26,7 @@ interface ItemAttributes {
 
 export interface GenericTokenGroupProps<Item> extends BaseComponentProps {
   items: readonly Item[];
-  listProps?: React.HTMLProps<HTMLUListElement>;
+  list?: boolean;
   limit?: number;
   alignment: TokenGroupProps.Alignment;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
@@ -39,7 +39,7 @@ export default forwardRef(GenericTokenGroup) as <T>(
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, listProps, limit, ...props }: GenericTokenGroupProps<Item>,
+  { items, alignment, renderItem, getItemAttributes, list, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
   const [expanded, setExpanded] = useState(false);
@@ -55,10 +55,10 @@ function GenericTokenGroup<Item>(
   return (
     <div {...baseProps} className={className} ref={ref}>
       {hasItems && (
-        <InternalSpaceBetween id={controlId} direction={alignment} listProps={listProps} size="xs">
+        <InternalSpaceBetween id={controlId} direction={alignment} variant={list ? 'ul' : 'div'} size="xs">
           {slicedItems.map((item, itemIndex) => {
-            const Tag = listProps ? 'li' : 'div';
-            const tagAttributes = listProps
+            const Tag = list ? 'li' : 'div';
+            const tagAttributes = list
               ? {
                   'aria-setsize': items.length,
                   'aria-posinset': itemIndex + 1,
@@ -73,10 +73,12 @@ function GenericTokenGroup<Item>(
                 className={clsx(styles.token, disabled && styles['token-disabled'])}
                 {...tagAttributes}
               >
-                {renderItem(item, itemIndex)}
-                {dismiss && (
-                  <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />
-                )}
+                <div className={styles['token-content']}>
+                  {renderItem(item, itemIndex)}
+                  {dismiss && (
+                    <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />
+                  )}
+                </div>
               </Tag>
             );
           })}

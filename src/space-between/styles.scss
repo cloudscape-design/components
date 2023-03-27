@@ -56,8 +56,8 @@ ul.root {
   @each $name, $size in $sizes-horizontal {
     &-#{$name} {
       // This cancels out the margins of the children in the first row / in the first column.
-      margin-left: calc(-1 * #{$size});
-      margin-bottom: calc(-1 * #{$size});
+      margin-left: calc(-1 * #{$size}) !important;
+      margin-bottom: calc(-1 * #{$size}) !important;
     }
   }
 }

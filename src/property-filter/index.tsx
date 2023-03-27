@@ -321,7 +321,7 @@ const PropertyFilter = React.forwardRef(
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
-              <InternalSpaceBetween size="xs" direction="horizontal" id={controlId} listProps={{}}>
+              <InternalSpaceBetween size="xs" direction="horizontal" id={controlId} variant="ul">
                 {slicedTokens.map((token, index) => (
                   <TokenButton
                     token={token}
@@ -344,24 +344,26 @@ const PropertyFilter = React.forwardRef(
                     expandToViewport={expandToViewport}
                   />
                 ))}
-                {hasHiddenOptions && (
-                  <div className={styles['toggle-collapsed']}>
-                    <SelectToggle
-                      controlId={controlId}
-                      allHidden={tokenLimit === 0}
-                      expanded={tokensExpanded}
-                      numberOfHiddenOptions={tokens.length - slicedTokens.length}
-                      i18nStrings={{
-                        limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                        limitShowMore: i18nStrings.tokenLimitShowMore,
-                      }}
-                      onClick={toggleExpandedTokens}
-                    />
-                  </div>
-                )}
               </InternalSpaceBetween>
 
+              {hasHiddenOptions && (
+                <div className={styles['toggle-collapsed']}>
+                  <SelectToggle
+                    controlId={controlId}
+                    allHidden={tokenLimit === 0}
+                    expanded={tokensExpanded}
+                    numberOfHiddenOptions={tokens.length - slicedTokens.length}
+                    i18nStrings={{
+                      limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                      limitShowMore: i18nStrings.tokenLimitShowMore,
+                    }}
+                    onClick={toggleExpandedTokens}
+                  />
+                </div>
+              )}
+
               <div className={styles.separator} />
+
               <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
                 {i18nStrings.clearFiltersText}
               </InternalButton>

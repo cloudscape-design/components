@@ -14,7 +14,6 @@ export namespace FilteringTokenProps {
 }
 
 export interface FilteringTokenProps {
-  ariaLabel: string;
   showOperation: boolean;
   operation: FilteringTokenProps.Operation;
   andText: string;
@@ -30,7 +29,6 @@ export interface FilteringTokenProps {
 }
 
 export default function FilteringToken({
-  ariaLabel,
   showOperation,
   operation,
   andText,
@@ -44,7 +42,7 @@ export default function FilteringToken({
 }: FilteringTokenProps) {
   const focusVisible = useFocusVisible();
   return (
-    <li className={styles.root} aria-label={ariaLabel}>
+    <div className={styles.root}>
       {showOperation && (
         <InternalSelect
           __inFilteringToken={true}
@@ -75,6 +73,6 @@ export default function FilteringToken({
           <InternalIcon name="close" />
         </button>
       </div>
-    </li>
+    </div>
   );
 }

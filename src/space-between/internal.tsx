@@ -10,14 +10,14 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 type InternalSpaceBetweenProps = SpaceBetweenProps &
   InternalBaseComponentProps & {
-    listProps?: React.HTMLProps<HTMLUListElement>;
+    variant?: 'div' | 'ul';
   };
 
 export default function InternalSpaceBetween({
   direction = 'vertical',
   size,
   children,
-  listProps,
+  variant: Variant = 'div',
   __internalRootRef,
   ...props
 }: InternalSpaceBetweenProps) {
@@ -28,25 +28,27 @@ export default function InternalSpaceBetween({
    */
   const flattenedChildren = flattenChildren(children);
 
-  const ParentTag = listProps ? 'ul' : 'div';
-
   return (
-    <ParentTag
+    <Variant
       {...baseProps}
-      {...(listProps as React.HTMLProps<HTMLElement>)}
       className={clsx(baseProps.className, styles.root, styles[direction], styles[`${direction}-${size}`])}
       ref={__internalRootRef}
     >
       {flattenedChildren.map(child => {
-        // If this react child is a primitive value, the key will be undefined
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const key = (child as any).key;
+        const key = typeof child === 'object' ? child.key : undefined;
+
+        // When using "ul" variant we avoid extra element wrappers to keep list semantics.
+        if (Variant === 'ul' && typeof child === 'object') {
+          const className = clsx(child.props.className, styles.child, styles[`child-${direction}-${size}`]);
+          return React.cloneElement(child, { className });
+        }
+
         return (
-          <div key={key} role="presentation" className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
+          <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
             {child}
           </div>
         );
       })}
-    </ParentTag>
+    </Variant>
   );
 }
