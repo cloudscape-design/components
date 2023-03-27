@@ -113,7 +113,7 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   };
 
   // Add ellipsis
-  if (breadcrumbItems.length >= 3) {
+  if (breadcrumbItems.length >= 2) {
     const dropdownItems: Array<LinkItem> = items
       .slice(1, items.length - 1)
       .map((item: BreadcrumbGroupProps.Item, index: number) => ({
@@ -138,7 +138,12 @@ export default function InternalBreadcrumbGroup<T extends BreadcrumbGroupProps.I
   return (
     <nav
       {...baseProps}
-      className={clsx(styles['breadcrumb-group'], isMobile && styles.mobile, baseProps.className)}
+      className={clsx(
+        styles['breadcrumb-group'],
+        isMobile && styles.mobile,
+        items.length <= 2 && styles['mobile-short'],
+        baseProps.className
+      )}
       aria-label={ariaLabel || undefined}
       ref={__internalRootRef}
     >
