@@ -1,27 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from '../interfaces';
 import styles from '../styles.css.js';
 import { getSortedOptions } from './reorder-utils';
-import {
-  Active,
-  closestCenter,
-  CollisionDetection,
-  DndContext,
-  DroppableContainer,
-  getScrollableAncestors,
-  KeyboardCoordinateGetter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import { arrayMove, hasSortableData, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { DndContext } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
-import { isEscape } from '../utils';
-import { KeyboardSensor } from './keyboard-sensor';
+import useReordering from './use-drag-and-drop-reorder';
 
 const componentPrefix = 'content-display';
 
@@ -35,16 +23,6 @@ const className = (suffix: string) => ({
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) => void;
   value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>;
-}
-
-enum KeyboardCode {
-  Space = 'Space',
-  Down = 'ArrowDown',
-  Right = 'ArrowRight',
-  Left = 'ArrowLeft',
-  Up = 'ArrowUp',
-  Esc = 'Escape',
-  Enter = 'Enter',
 }
 
 export default function ContentDisplayPreference({
@@ -63,161 +41,18 @@ export default function ContentDisplayPreference({
   dragHandleAriaDescription,
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
-  const isKeyboard = useRef(false);
-  const positionDelta = useRef(0);
-
   const idPrefix = useUniqueId(componentPrefix);
   const onToggle = (id: string) => {
     onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id, value) } : item)));
   };
 
-  const [isDragging, setIsDragging] = useState(false);
-  const isFirstAnnouncement = useRef(true);
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (isKeyboard.current) {
-      // We can't use onDragMove for this because that function gets triggered also on window scroll.
-      if (event.key === 'ArrowDown') {
-        positionDelta.current += 1;
-      }
-      if (event.key === 'ArrowUp') {
-        positionDelta.current -= 1;
-      }
-    }
-    if (isDragging && isEscape(event.key)) {
-      // Prevent modal from closing when pressing Esc to cancel the dragging action
-      event.stopPropagation();
-    }
-  };
-
   const labelId = `${idPrefix}-label`;
-
-  if (!isDragging) {
-    isFirstAnnouncement.current = true;
-    isKeyboard.current = false;
-    positionDelta.current = 0;
-  }
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
-  const getClosestId = (active: Active) => {
-    if (positionDelta.current === 0) {
-      return active.id;
-    }
-    const currentIndex = sortedOptions.findIndex(({ id }) => id === active.id);
-    const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
-    return sortedOptions[newIndex].id;
-  };
-
-  // A custom collision detection algorithm is used when using a keyboard to
-  // work around an unexpected behavior when reordering items of variable height
-  // with the keyboard.
-
-  // Neither closestCenter nor closestCorners work really well for this case,
-  // because the center (or corners) of a tall rectangle might be so low that it
-  // is detected as being closest to the rectangle below of the one it should
-  // actually swap with.
-
-  // Instead of relying on coordinates, the expected results are achieved by
-  // moving X positions up or down in the initially sorted array, depending on
-  // the desired direction.
-
-  // We let customCollisionDetection and customCoordinateGetter use the same
-  // getClosestId function which takes its value from the current component
-  // state, to make sure they are always in sync.
-  const customCollisionDetection: CollisionDetection = ({
-    active,
-    collisionRect,
-    droppableContainers,
-    droppableRects,
-    pointerCoordinates,
-  }) => {
-    if (isKeyboard.current) {
-      const collidingContainerId = getClosestId(active);
-      if (collidingContainerId !== active.id) {
-        const collidingContainer = droppableContainers.find(({ id }) => id === collidingContainerId);
-        if (collidingContainer) {
-          return [
-            {
-              id: collidingContainer.id,
-              data: {
-                droppableContainer: collidingContainer,
-                value: 0,
-              },
-            },
-          ];
-        }
-      }
-      return [];
-    } else {
-      return closestCenter({ active, collisionRect, droppableRects, droppableContainers, pointerCoordinates });
-    }
-  };
-
-  const customCoordinateGetter: KeyboardCoordinateGetter = (
-    event,
-    { context: { active, collisionRect, droppableRects, droppableContainers, scrollableAncestors } }
-  ) => {
-    if (event.code === KeyboardCode.Up || event.code === KeyboardCode.Down) {
-      event.preventDefault();
-
-      if (!active || !collisionRect) {
-        return;
-      }
-
-      const closestId = getClosestId(active);
-
-      if (closestId !== null) {
-        const activeDroppable = droppableContainers.get(active.id);
-        const newDroppable = droppableContainers.get(closestId);
-        const newRect = newDroppable ? droppableRects.get(newDroppable.id) : null;
-        const newNode = newDroppable?.node.current;
-
-        if (newNode && newRect && activeDroppable && newDroppable) {
-          const newScrollAncestors = getScrollableAncestors(newNode);
-          const hasDifferentScrollAncestors = newScrollAncestors.some(
-            (element, index) => scrollableAncestors[index] !== element
-          );
-          const hasSameContainer = isSameContainer(activeDroppable, newDroppable);
-          const isAfterActive = isAfter(activeDroppable, newDroppable);
-          const offset =
-            hasDifferentScrollAncestors || !hasSameContainer
-              ? {
-                  x: 0,
-                  y: 0,
-                }
-              : {
-                  x: isAfterActive ? collisionRect.width - newRect.width : 0,
-                  y: isAfterActive ? collisionRect.height - newRect.height : 0,
-                };
-          const rectCoordinates = {
-            x: newRect.left,
-            y: newRect.top,
-          };
-
-          return offset.x && offset.y ? rectCoordinates : subtract(rectCoordinates, offset);
-        }
-      }
-    }
-
-    return undefined;
-  };
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: customCoordinateGetter,
-      keyboardCodes: {
-        start: ['Space', 'Enter'],
-        // Cancel reordering when pressing Escape but also when losing focus
-        cancel: ['Escape', 'Tab'],
-        end: ['Space', 'Enter'],
-      },
-      onActivation: () => {
-        isKeyboard.current = true;
-      },
-    })
-  );
+  const { collisionDetection, handleKeyDown, isFirstAnnouncement, isKeyboard, sensors, setIsDragging } = useReordering({
+    sortedOptions,
+  });
 
   return (
     <div className={styles[componentPrefix]}>
@@ -227,7 +62,7 @@ export default function ContentDisplayPreference({
       </p>
       <DndContext
         sensors={sensors}
-        collisionDetection={customCollisionDetection}
+        collisionDetection={collisionDetection}
         accessibility={{
           announcements: {
             onDragStart({ active }) {
@@ -298,48 +133,3 @@ export default function ContentDisplayPreference({
     </div>
   );
 }
-
-function isSameContainer(a: DroppableContainer, b: DroppableContainer) {
-  if (!hasSortableData(a) || !hasSortableData(b)) {
-    return false;
-  }
-
-  return a.data.current.sortable.containerId === b.data.current.sortable.containerId;
-}
-
-function isAfter(a: DroppableContainer, b: DroppableContainer) {
-  if (!hasSortableData(a) || !hasSortableData(b)) {
-    return false;
-  }
-
-  if (!isSameContainer(a, b)) {
-    return false;
-  }
-
-  return a.data.current.sortable.index < b.data.current.sortable.index;
-}
-
-function createAdjustmentFn(modifier: number) {
-  return <T extends Record<U, number>, U extends string>(object: T, ...adjustments: Partial<T>[]): T => {
-    return adjustments.reduce<T>(
-      (accumulator, adjustment) => {
-        for (const key of Object.keys(adjustment)) {
-          const value = accumulator[key as U];
-          const valueAdjustment = adjustment[key as U];
-
-          if (value !== null && valueAdjustment !== undefined) {
-            accumulator[key as U] = (value + modifier * valueAdjustment) as T[U];
-          }
-        }
-
-        return accumulator;
-      },
-      {
-        ...object,
-      }
-    );
-  };
-}
-
-export const add = createAdjustmentFn(1);
-export const subtract = createAdjustmentFn(-1);
