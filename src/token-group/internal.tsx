@@ -48,7 +48,7 @@ export default function InternalTokenGroup({
             dismiss={{ label: item.dismissLabel, onDismiss: () => fireNonCancelableEvent(onDismiss, { itemIndex }) }}
             disabled={item.disabled}
           >
-            <Option option={item} />
+            <Option option={item} isPresentational={true} />
           </Token>
         )}
         i18nStrings={i18nStrings}

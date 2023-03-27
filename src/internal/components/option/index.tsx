@@ -27,6 +27,7 @@ const Option = ({
   isGroupOption = false,
   highlightedOption = false,
   selectedOption = false,
+  isPresentational = false,
   ...restProps
 }: OptionProps) => {
   if (!option) {
@@ -61,6 +62,7 @@ const Option = ({
 
   return (
     <span
+      role={isPresentational ? 'presentation' : undefined}
       title={option.label ?? option.value}
       data-value={option.value}
       className={className}
