@@ -9,7 +9,7 @@ import { getSortedOptions } from './reorder-utils';
 import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
-import useReordering from './use-drag-and-drop-reorder';
+import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 
 const componentPrefix = 'content-display';
@@ -51,7 +51,7 @@ export default function ContentDisplayPreference({
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
-  const { collisionDetection, handleKeyDown, isDragging, isKeyboard, sensors, setIsDragging } = useReordering({
+  const { collisionDetection, handleKeyDown, isDragging, isKeyboard, sensors, setIsDragging } = useDragAndDropReorder({
     sortedOptions,
   });
 
