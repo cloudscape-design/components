@@ -9,6 +9,7 @@ import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
 
 export interface TriggerButtonProps {
+  ariaExpanded?: boolean;
   ariaLabel?: string;
   className?: string;
   iconName?: IconProps.Name;
@@ -25,9 +26,9 @@ function TriggerButton(
 
   return (
     <button
-      aria-label={ariaLabel}
       aria-expanded={false}
       aria-haspopup={true}
+      aria-label={ariaLabel}
       className={clsx(
         styles.trigger,
         {

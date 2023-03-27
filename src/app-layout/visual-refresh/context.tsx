@@ -25,6 +25,7 @@ import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { TriggerButtonProps } from './trigger-button';
 
 interface AppLayoutInternals extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -64,7 +65,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   toolsFocusControl: FocusControlState;
-  toolsTriggers: Array<any>;
+  toolsTriggers: Array<TriggerButtonProps>;
 }
 
 /**
