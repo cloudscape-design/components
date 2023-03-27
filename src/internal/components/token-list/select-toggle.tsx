@@ -1,29 +1,31 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
-import InternalIcon from '../icon/internal';
-import useFocusVisible from '../internal/hooks/focus-visible';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/events';
 
-import { TokenGroupProps } from './interfaces';
+import React, { useCallback } from 'react';
+import InternalIcon from '../../../icon/internal';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import useFocusVisible from '../../hooks/focus-visible';
+import { I18nStrings } from './interfaces';
+
 import styles from './styles.css.js';
-export interface SelectToggleProps {
+
+interface SelectToggleProps {
   controlId: string;
   allHidden: boolean;
   expanded: boolean;
   numberOfHiddenOptions: number;
   onClick?: NonCancelableEventHandler<null>;
-  i18nStrings?: Pick<TokenGroupProps.I18nStrings, 'limitShowFewer' | 'limitShowMore'>;
+  i18nStrings?: I18nStrings;
 }
 
-const SelectToggle = ({
+export function SelectToggle({
   controlId,
   allHidden,
   expanded,
   numberOfHiddenOptions,
   onClick,
   i18nStrings = {},
-}: SelectToggleProps) => {
+}: SelectToggleProps) {
   const focusVisible = useFocusVisible();
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;
   const description = expanded
@@ -47,6 +49,4 @@ const SelectToggle = ({
       <span className={styles.description}>{description}</span>
     </button>
   );
-};
-
-export default SelectToggle;
+}

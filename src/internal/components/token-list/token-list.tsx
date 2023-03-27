@@ -1,16 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import clsx from 'clsx';
 import React, { useState } from 'react';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { TokenGroupProps } from './interfaces';
 import styles from './styles.css.js';
-import SelectToggle from './toggle';
-
-interface TokenListItemAttributes {
-  name: string;
-  disabled?: boolean;
-}
+import { SelectToggle } from './select-toggle';
+import { I18nStrings, ItemAttributes } from './interfaces';
+import { useUniqueId } from '../../hooks/use-unique-id';
 
 interface TokenListProps<Item> {
   variant: 'div' | 'ul';
@@ -18,8 +14,8 @@ interface TokenListProps<Item> {
   items: readonly Item[];
   limit?: number;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
-  getItemAttributes: (item: Item, itemIndex: number) => TokenListItemAttributes;
-  i18nStrings?: TokenGroupProps.I18nStrings;
+  getItemAttributes: (item: Item, itemIndex: number) => ItemAttributes;
+  i18nStrings?: I18nStrings;
 }
 
 export function TokenList<Item>({
@@ -39,20 +35,20 @@ export function TokenList<Item>({
   const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
   return (
-    <div>
-      <ListTag id={controlId} className={clsx(styles['token-list'], styles[`token-list-${alignment}`])}>
+    <div className={clsx(styles.root, hasItems && styles['has-items'])}>
+      <ListTag id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
         {slicedItems.map((item, itemIndex) => {
           const ItemTag = ListTag === 'div' ? 'div' : 'li';
-          const { name, disabled } = getItemAttributes(item, itemIndex);
+          const { ariaLabel, disabled } = getItemAttributes(item, itemIndex);
           return (
             <ItemTag
               key={itemIndex}
               role={ListTag === 'div' ? 'group' : undefined}
-              aria-label={name}
+              aria-label={ariaLabel}
               aria-disabled={disabled}
               aria-setsize={ListTag === 'ul' ? items.length : undefined}
               aria-posinset={ListTag === 'ul' ? itemIndex + 1 : undefined}
-              className={styles[`token-list-child-${alignment}`]}
+              className={styles[`child-${alignment}`]}
             >
               {renderItem(item, itemIndex)}
             </ItemTag>

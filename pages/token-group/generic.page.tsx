@@ -34,7 +34,7 @@ export default function GenericTokenGroupPage() {
         limit={5}
         renderItem={file => <FileOption file={file} />}
         getItemAttributes={(file, fileIndex) => ({
-          name: `agreement-${file + 1}.pdf`,
+          ariaLabel: `agreement-${file + 1}.pdf`,
           disabled: file === 0,
           dismiss: {
             label: `Remove file ${fileIndex + 1}`,

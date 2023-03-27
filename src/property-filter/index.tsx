@@ -29,7 +29,7 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
-import { TokenList } from '../token-group/token-list';
+import { TokenList } from '../internal/components/token-list/token-list';
 
 export { PropertyFilterProps };
 
@@ -323,8 +323,8 @@ const PropertyFilter = React.forwardRef(
                 items={tokens}
                 getItemAttributes={token => {
                   const formattedToken = getFormattedToken(filteringProperties, token);
-                  const name = (formattedToken.property ?? '') + formattedToken.operator + formattedToken.value;
-                  return { name, disabled };
+                  const ariaLabel = (formattedToken.property ?? '') + formattedToken.operator + formattedToken.value;
+                  return { ariaLabel, disabled };
                 }}
                 renderItem={(token, tokenIndex) => (
                   <TokenButton

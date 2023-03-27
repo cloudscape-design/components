@@ -10,10 +10,10 @@ import { TokenGroupProps } from './interfaces';
 import DismissButton from './dismiss-button';
 
 import styles from './styles.css.js';
-import { TokenList } from './token-list';
+import { TokenList } from '../internal/components/token-list/token-list';
 
 interface ItemAttributes {
-  name: string;
+  ariaLabel: string;
   disabled?: boolean;
   dismiss?: {
     label?: string;
@@ -39,11 +39,9 @@ function GenericTokenGroup<Item>(
   { items, alignment, renderItem, getItemAttributes, list, limit, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
-  const hasItems = items.length > 0;
   const baseProps = getBaseProps(props);
-  const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
   return (
-    <div {...baseProps} className={className} ref={ref}>
+    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={ref}>
       <TokenList
         variant={list ? 'ul' : 'div'}
         alignment={alignment}
