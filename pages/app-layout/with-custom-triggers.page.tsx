@@ -1,22 +1,53 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { Button } from '~components';
-import Alert from '~components/alert';
-import AppLayout from '~components/app-layout';
+import { AppLayout, Header, HelpPanel, Link, SegmentedControl, SpaceBetween, SplitPanel } from '~components';
 import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
-import Header from '~components/header';
-import HelpPanel from '~components/help-panel';
-import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
-import SpaceBetween from '~components/space-between';
-import SplitPanel from '~components/split-panel';
 
 export default function () {
-  const [alertVisible, setVisible] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState('info');
+  const [triggerStatus, setTriggerStatus] = useState('custom-triggers');
+  const [splitPanelStatus, setSplitPanelStatus] = useState('show-split-panel');
+
+  const customTriggers =
+    triggerStatus !== 'custom-triggers'
+      ? null
+      : {
+          toolsTriggers: [
+            {
+              ariaExpanded: isToolsOpen,
+              ariaLabel: 'View Info content',
+              iconName: 'status-info',
+
+              onClick: () => {
+                if (isToolsOpen && toolsContent === 'info') {
+                  setIsToolsOpen(false);
+                } else {
+                  setToolsContent('info');
+                  setIsToolsOpen(true);
+                }
+              },
+              selected: isToolsOpen && toolsContent === 'info',
+            },
+            {
+              ariaExpanded: isToolsOpen,
+              ariaLabel: 'View Pro Help content',
+              iconSvg: <IconBriefcase />,
+              onClick: () => {
+                if (isToolsOpen && toolsContent === 'proHelp') {
+                  setIsToolsOpen(false);
+                } else {
+                  setToolsContent('proHelp');
+                  setIsToolsOpen(true);
+                }
+              },
+              selected: isToolsOpen && toolsContent === 'proHelp',
+            },
+          ],
+        };
 
   return (
     <ScreenshotArea gutters={false}>
@@ -27,7 +58,6 @@ export default function () {
         contentHeader={
           <SpaceBetween size="m">
             <Header
-              actions={<Button variant="primary">Create distribution</Button>}
               info={
                 <Link
                   onFollow={() => {
@@ -38,46 +68,61 @@ export default function () {
                   Info
                 </Link>
               }
-              description="When you create an Amazon CloudFront distribution."
+              description="Sometimes you need custom triggers to get the job done."
               variant="h1"
             >
-              Create distribution
+              Custom Trigger Testing!
             </Header>
 
-            {alertVisible && (
-              <Alert
-                dismissAriaLabel="Close alert"
-                dismissible={true}
-                onDismiss={() => setVisible(false)}
-                statusIconAriaLabel="Info"
-              >
-                Demo alert
-              </Alert>
-            )}
+            <SegmentedControl
+              label="Trigger Status"
+              onChange={({ detail }) => setTriggerStatus(detail.selectedId)}
+              options={[
+                { text: 'Custom Triggers', id: 'custom-triggers' },
+                { text: 'Default Trigger', id: 'default-trigger' },
+                { text: 'Hide Tools', id: 'hide-tools' },
+              ]}
+              selectedId={triggerStatus}
+            />
+
+            <SegmentedControl
+              label="Split Panel Status"
+              onChange={({ detail }) => setSplitPanelStatus(detail.selectedId)}
+              options={[
+                { text: 'Show SplitPanel', id: 'show-split-panel' },
+                { text: 'Hide SplitPanel', id: 'hide-split-panel' },
+              ]}
+              selectedId={splitPanelStatus}
+            />
           </SpaceBetween>
         }
         content={<Containers />}
         onToolsChange={({ detail }) => {
           setIsToolsOpen(detail.open);
         }}
+        splitPanelPreferences={{
+          position: 'side',
+        }}
         splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
-            This is the Split Panel!
-          </SplitPanel>
+          splitPanelStatus === 'show-split-panel' && (
+            <SplitPanel
+              header="Split panel header"
+              i18nStrings={{
+                preferencesTitle: 'Preferences',
+                preferencesPositionLabel: 'Split panel position',
+                preferencesPositionDescription: 'Choose the default split panel position for the service.',
+                preferencesPositionSide: 'Side',
+                preferencesPositionBottom: 'Bottom',
+                preferencesConfirm: 'Confirm',
+                preferencesCancel: 'Cancel',
+                closeButtonAriaLabel: 'Close panel',
+                openButtonAriaLabel: 'Open panel',
+                resizeHandleAriaLabel: 'Slider',
+              }}
+            >
+              This is the Split Panel!
+            </SplitPanel>
+          )
         }
         tools={
           <>
@@ -85,31 +130,9 @@ export default function () {
             {toolsContent === 'proHelp' && <ProHelp />}
           </>
         }
+        toolsHide={triggerStatus === 'hide-tools' ? true : false}
         toolsOpen={isToolsOpen}
-        {...{
-          toolsTriggers: [
-            {
-              ariaExpanded: isToolsOpen,
-              ariaLabel: 'View Info content',
-              iconName: 'status-info',
-              onClick: () => {
-                setToolsContent('info');
-                setIsToolsOpen(true);
-              },
-              selected: isToolsOpen && toolsContent === 'info',
-            },
-            {
-              ariaExpanded: isToolsOpen,
-              ariaLabel: 'View Pro Help content',
-              iconSvg: <IconBriefcase />,
-              onClick: () => {
-                setToolsContent('proHelp');
-                setIsToolsOpen(true);
-              },
-              selected: isToolsOpen && toolsContent === 'proHelp',
-            },
-          ],
-        }}
+        {...customTriggers}
       />
     </ScreenshotArea>
   );
