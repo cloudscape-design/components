@@ -11,6 +11,10 @@ import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import { columnsConfig } from '../table/shared-configs';
 import { generateItems } from '../table/generate-data';
+import Box from '~components/box';
+import Link from '~components/link';
+
+// SCROLLABLE_CONTAINER.scrollTo(FOCUSED_CELL.offsetLeft - TOTAL_LEFT_STICKY, FOCUSED_CELL.offsetHeight)
 
 export default function () {
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -41,6 +45,11 @@ export default function () {
             resizableColumns={true}
             variant="full-page"
             stickyHeader={true}
+            footer={
+              <Box textAlign="center">
+                <Link href="#">View all</Link>
+              </Box>
+            }
             stickyColumns={preferences.stickyColumns}
             preferences={
               <CollectionPreferences

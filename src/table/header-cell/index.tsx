@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { updateCellWidths } from '../use-sticky-column';
+import { updateCellWidths } from '../use-sticky-columns';
 import { CellWidths } from '../internal';
 
 interface TableHeaderCellProps<ItemType> {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
+import { GetStickyColumn } from '../use-sticky-columns.js';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
@@ -22,7 +23,7 @@ export interface TableTdElementProps {
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
   isStickyColumn?: boolean;
-  isLastStickyColumn?: 'start' | 'end' | false;
+  stickyColumn?: GetStickyColumn;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -45,10 +46,12 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasSelection,
       hasFooter,
       isStickyColumn,
-      isLastStickyColumn,
+      stickyColumn,
     },
     ref
   ) => {
+    const { isLastStart, isLastEnd } = stickyColumn || {};
+    const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
     const lastStickyColumnStyles =
       isLastStickyColumn === 'start'
         ? styles['body-cell-freeze-last-start']
@@ -73,7 +76,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           isStickyColumn && styles['body-cell-freeze'],
-          isStickyColumn && lastStickyColumnStyles
+          isLastStickyColumn && lastStickyColumnStyles
         )}
         onClick={onClick}
         ref={ref}

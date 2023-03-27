@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState, Ref, forwardRef, useEffect } from 'react';
+import React, { useImperativeHandle, useRef, useState, Ref, forwardRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -34,7 +34,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { getStickyStyles, isStickyColumn, shouldDisableStickyColumns, useStickyColumn } from './use-sticky-column';
+import { useStickyColumns } from './use-sticky-columns';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -161,19 +161,39 @@ const InternalTable = forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
-    const { tableCellRefs, cellWidths, setCellWidths } = useStickyColumn({
+    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
+    const isWrapperScrollable = !!tableWidth && !!containerWidth && tableWidth > containerWidth;
+    const wrapperProps = isWrapperScrollable
+      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
+      : {};
+    const focusVisibleProps = useFocusVisible();
+
+    const getMouseDownTarget = useMouseDownTarget();
+    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
+      if (!submitEdit) {
+        return undefined;
+      }
+      return async (...args: Parameters<typeof submitEdit>) => {
+        setCurrentEditLoading(true);
+        try {
+          await submitEdit(...args);
+        } finally {
+          setCurrentEditLoading(false);
+        }
+      };
+    };
+
+    const hasDynamicHeight = computedVariant === 'full-page';
+    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+
+    const { tableCellRefs, cellWidths, setCellWidths, getStickyColumn, shouldDisableStickyColumns } = useStickyColumns({
       visibleColumnsLength,
       hasSelection,
       stickyColumns,
+      containerWidth,
     });
 
-    const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
-      visibleColumnsLength,
-      stickyColumns,
-      cellWidths,
-      containerWidth,
-      hasSelection,
-    });
+    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns();
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -199,32 +219,12 @@ const InternalTable = forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
+      getStickyColumn: !disableStickyColumns ? getStickyColumn : undefined,
+      tableCellRefs,
+      setCellWidths,
+      cellWidths,
+      stickyColumns,
     };
-
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = !!tableWidth && !!containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
-    const focusVisibleProps = useFocusVisible();
-
-    const getMouseDownTarget = useMouseDownTarget();
-    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
-      if (!submitEdit) {
-        return undefined;
-      }
-      return async (...args: Parameters<typeof submitEdit>) => {
-        setCurrentEditLoading(true);
-        try {
-          await submitEdit(...args);
-        } finally {
-          setCurrentEditLoading(false);
-        }
-      };
-    };
-
-    const hasDynamicHeight = computedVariant === 'full-page';
-    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -262,10 +262,6 @@ const InternalTable = forwardRef(
                   onScroll={handleScroll}
                   tableHasHeader={hasHeader}
                   contentDensity={contentDensity}
-                  stickyColumns={stickyColumns}
-                  cellWidths={cellWidths}
-                  tableCellRefs={tableCellRefs}
-                  setCellWidths={setCellWidths}
                 />
               )}
             </>
@@ -318,10 +314,6 @@ const InternalTable = forwardRef(
                 ref={theadRef}
                 hidden={stickyHeader}
                 onFocusedComponentChange={component => stickyHeaderRef.current?.setFocus(component)}
-                stickyColumns={stickyColumns}
-                cellWidths={cellWidths}
-                tableCellRefs={tableCellRefs}
-                setCellWidths={setCellWidths}
                 {...theadProps}
               />
               <tbody>
@@ -388,7 +380,7 @@ const InternalTable = forwardRef(
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
                             ref={tableCellRefs[0]}
-                            isStickyColumn={(stickyColumns?.start ?? 0) > 0}
+                            isStickyColumn={!disableStickyColumns && (stickyColumns?.start ?? 0) > 0}
                             style={(stickyColumns?.start ?? 0) > 0 ? { left: cellWidths.start[0] } : {}}
                           >
                             <SelectionControl
@@ -405,24 +397,8 @@ const InternalTable = forwardRef(
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
                           // Sticky columns
-                          const { isSticky, isLastStart, isLastEnd } = isStickyColumn({
-                            visibleColumnsLength,
-                            stickyColumns,
-                            colIndex,
-                          });
-                          const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
-
-                          const stickyStyles =
-                            (isSticky &&
-                              !shouldDisableStickyColumnsFeature &&
-                              getStickyStyles({
-                                colIndex,
-                                stickyColumns,
-                                visibleColumnsLength,
-                                hasSelection,
-                                cellWidths,
-                              })) ||
-                            {};
+                          const stickyColumn = getStickyColumn(colIndex);
+                          const { isSticky, stickyStyles } = stickyColumn;
 
                           return (
                             <TableBodyCell
@@ -451,8 +427,6 @@ const InternalTable = forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              isStickyColumn={!shouldDisableStickyColumnsFeature && isWrapperScrollable && isSticky}
-                              isLastStickyColumn={!shouldDisableStickyColumnsFeature && isLastStickyColumn}
                               onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
                               onEditEnd={() => {
                                 const wasCancelled = fireCancelableEvent(onEditCancel, {});
@@ -465,6 +439,8 @@ const InternalTable = forwardRef(
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
                               isVisualRefresh={isVisualRefresh}
+                              stickyColumn={!disableStickyColumns ? stickyColumn : undefined}
+                              isStickyColumn={!disableStickyColumns && isSticky}
                             />
                           );
                         })}

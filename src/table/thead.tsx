@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { CellWidths } from './internal';
-import { getStickyStyles, isStickyColumn, shouldDisableStickyColumns } from './use-sticky-column';
+import { GetStickyColumn } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -46,6 +46,7 @@ export interface TheadProps {
   cellWidths?: CellWidths;
   setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
   tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
+  getStickyColumn?: (colIndex: number) => GetStickyColumn;
 }
 
 const Thead = React.forwardRef(
@@ -75,6 +76,7 @@ const Thead = React.forwardRef(
       onFocusedComponentChange,
       setCellWidths,
       tableCellRefs,
+      getStickyColumn,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -94,16 +96,8 @@ const Thead = React.forwardRef(
       isVisualRefresh && styles['is-visual-refresh']
     );
 
-    const shouldDisableStickyColumnsFeature = shouldDisableStickyColumns({
-      visibleColumnsLength: columnDefinitions.length,
-      stickyColumns,
-      cellWidths,
-      containerWidth,
-      hasSelection: !!selectionType,
-    });
-
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-    const hasLeftStickyColumns = (stickyColumns?.start ?? 0) > 0;
+    const hasStartStickyColumns = (stickyColumns?.start ?? 0) > 0;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
@@ -113,7 +107,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasLeftStickyColumns && headerCellStyles['header-cell-freeze']
+                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"
@@ -135,7 +129,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasLeftStickyColumns && headerCellStyles['header-cell-freeze']
+                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"
@@ -158,23 +152,7 @@ const Thead = React.forwardRef(
               }
             }
 
-            const { isSticky } = isStickyColumn({
-              colIndex,
-              visibleColumnsLength: columnDefinitions.length,
-              stickyColumns,
-            });
-
-            const stickyStyles =
-              (isSticky &&
-                !shouldDisableStickyColumnsFeature &&
-                getStickyStyles({
-                  colIndex,
-                  visibleColumnsLength: columnDefinitions.length,
-                  stickyColumns,
-                  cellWidths,
-                  hasSelection: !!selectionType,
-                })) ||
-              {};
+            const { isSticky = false, stickyStyles = {} } = getStickyColumn ? getStickyColumn(colIndex) : {};
 
             return (
               <TableHeaderCell

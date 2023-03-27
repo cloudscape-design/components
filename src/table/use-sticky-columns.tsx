@@ -18,17 +18,14 @@ interface StickyColumnParams {
   visibleColumnsLength: number;
   hasSelection: boolean;
   stickyColumns?: TableProps.StickyColumns;
+  containerWidth: number | null;
 }
 
-interface ShouldDisableStickyColumnsParams {
-  visibleColumnsLength: number;
-  stickyColumns?: {
-    start?: number;
-    end?: number;
-  };
-  cellWidths?: CellWidths;
-  containerWidth: number | null;
-  hasSelection: boolean;
+export interface GetStickyColumn {
+  isSticky: boolean;
+  isLastStart: boolean;
+  isLastEnd: boolean;
+  stickyStyles: StickyStyles;
 }
 
 export const getStickyStyles = ({
@@ -56,23 +53,6 @@ export const getStickyStyles = ({
   };
 };
 
-export const isStickyColumn = ({
-  colIndex,
-  stickyColumns,
-  visibleColumnsLength,
-}: {
-  colIndex: number;
-  stickyColumns?: TableProps.StickyColumns;
-  visibleColumnsLength: number;
-}) => {
-  return {
-    isSticky:
-      colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0),
-    isLastStart: colIndex + 1 === stickyColumns?.start,
-    isLastEnd: colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0),
-  };
-};
-
 export const updateCellWidths = ({
   tableCellRefs,
   setCellWidths,
@@ -95,41 +75,48 @@ export const updateCellWidths = ({
   setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
 };
 
-export const shouldDisableStickyColumns = ({
+export const useStickyColumns = ({
   visibleColumnsLength,
-  stickyColumns,
-  cellWidths,
-  containerWidth,
   hasSelection,
-}: ShouldDisableStickyColumnsParams) => {
-  // We allow the table to have a minimum of 150px besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
-
-  if (!stickyColumns) {
-    return true;
-  }
-
-  const { start = 0, end = 0 } = stickyColumns;
-  const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
-  const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
-  const totalStickySpace =
-    (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
-  console.log({ totalStickySpace, containerWidth, cellWidths });
-  const shouldDisable =
-    totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
-
-  if (shouldDisable) {
-    warnOnce(
-      'Table',
-      `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
-    );
-  }
-  return shouldDisable;
-};
-
-export const useStickyColumn = ({ visibleColumnsLength, hasSelection, stickyColumns }: StickyColumnParams) => {
+  stickyColumns,
+  containerWidth,
+}: StickyColumnParams) => {
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
+
+  const shouldDisableStickyColumns = () => {
+    // We allow the table to have a minimum of 150px besides the sum of the widths of the sticky columns
+    const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
+    if (!stickyColumns) {
+      return true;
+    }
+
+    const { start = 0, end = 0 } = stickyColumns;
+    const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
+    const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
+    const totalStickySpace =
+      (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
+    const shouldDisable =
+      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+
+    if (shouldDisable) {
+      warnOnce(
+        'Table',
+        `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
+      );
+    }
+    return shouldDisable;
+  };
+
+  const getStickyColumn = (colIndex: number): GetStickyColumn => {
+    return {
+      isSticky:
+        colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0),
+      isLastStart: colIndex + 1 === stickyColumns?.start,
+      isLastEnd: colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0),
+      stickyStyles: getStickyStyles({ colIndex, stickyColumns, visibleColumnsLength, hasSelection, cellWidths }),
+    };
+  };
 
   useEffect(() => {
     // Add and remove refs
@@ -149,5 +136,5 @@ export const useStickyColumn = ({ visibleColumnsLength, hasSelection, stickyColu
     updateCellWidths({ tableCellRefs, setCellWidths });
   }, [tableCellRefs, stickyColumns]);
 
-  return { tableCellRefs, cellWidths, setCellWidths };
+  return { tableCellRefs, cellWidths, setCellWidths, getStickyColumn, shouldDisableStickyColumns };
 };
