@@ -44,7 +44,7 @@ export function TokenList<Item>({
               aria-disabled={disabled}
               aria-setsize={limit !== undefined ? items.length : undefined}
               aria-posinset={limit !== undefined ? itemIndex + 1 : undefined}
-              className={styles[`child-${alignment}`]}
+              className={clsx(styles.child, styles[`child-${alignment}`])}
             >
               {renderItem(item, itemIndex)}
             </li>

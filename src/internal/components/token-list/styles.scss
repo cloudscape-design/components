@@ -36,6 +36,10 @@
   flex-direction: column;
 }
 
+.child {
+  /* used in test-utils */
+}
+
 .child-vertical:not(:last-child) {
   margin-bottom: awsui.$space-xs;
 }
