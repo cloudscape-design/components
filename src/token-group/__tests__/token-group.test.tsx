@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -196,7 +196,7 @@ describe('TokenGroup', () => {
           { label: '4', dismissLabel: 'Remove 4' },
         ],
       });
-      act(() => wrapper.findToken(2)!.findDismiss().click());
+      wrapper.findToken(2)!.findDismiss().click();
 
       expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
     });
@@ -211,7 +211,7 @@ describe('TokenGroup', () => {
           { label: '5', dismissLabel: 'Remove 5', disabled: true },
         ],
       });
-      act(() => wrapper.findToken(4)!.findDismiss().click());
+      wrapper.findToken(4)!.findDismiss().click();
 
       expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
     });
@@ -227,7 +227,7 @@ describe('TokenGroup', () => {
         ],
         limit: 3,
       });
-      act(() => wrapper.findToken(3)!.findDismiss().click());
+      wrapper.findToken(3)!.findDismiss().click();
 
       expect(wrapper.findTokenToggle()!.getElement()).toHaveFocus();
     });
@@ -240,7 +240,7 @@ describe('TokenGroup', () => {
           { label: '3', dismissLabel: 'Remove 3' },
         ],
       });
-      act(() => wrapper.findToken(3)!.findDismiss().click());
+      wrapper.findToken(3)!.findDismiss().click();
 
       expect(document.body).toHaveFocus();
     });
