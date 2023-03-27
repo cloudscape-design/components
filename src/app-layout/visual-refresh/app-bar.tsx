@@ -112,9 +112,9 @@ export default function AppBar() {
                 ariaLabel={trigger.ariaLabel}
                 disabled={isAnyPanelOpen}
                 formAction="none"
-                key={key}
                 iconName={trigger.iconName}
                 iconSvg={trigger.iconSvg}
+                key={key}
                 onClick={trigger.onClick}
                 variant="icon"
                 __nativeAttributes={{ 'aria-haspopup': true }}
