@@ -41,7 +41,6 @@ function setupTest(
           setupTest(
             async page => {
               await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-              await page.keys('Enter');
               await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
               await page.keys(['Tab', 'Tab']);
               await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);

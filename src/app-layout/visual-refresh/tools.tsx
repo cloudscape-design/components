@@ -43,6 +43,7 @@ export default function Tools({ children }: ToolsProps) {
     loseToolsFocus,
     splitPanelPosition,
     splitPanelToggle,
+    splitPanelRefs,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
@@ -138,7 +139,7 @@ export default function Tools({ children }: ToolsProps) {
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}
                   className={splitPanelStyles['open-button']}
-                  // TODO should this button also get focus handling? (i.e. when the split panel is toggled)
+                  ref={splitPanelRefs.toggle}
                 />
               )}
             </aside>

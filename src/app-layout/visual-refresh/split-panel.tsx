@@ -26,7 +26,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     splitPanelPosition,
     splitPanelSize,
     setSplitPanelToggle,
-    splitPanelLastInteraction,
+    splitPanelRefs,
     headerHeight,
     footerHeight,
   } = useAppLayoutInternals();
@@ -53,7 +53,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     size: splitPanelSize || 0,
     topOffset: 0,
     setSplitPanelToggle,
-    lastInteraction: splitPanelLastInteraction,
+    refs: splitPanelRefs,
   };
 
   return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;

@@ -24,7 +24,8 @@ import { applyDefaults } from '../defaults';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
-import { SplitPanelLastInteraction, SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -63,7 +64,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelToggle: SplitPanelSideToggleProps;
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
-  splitPanelLastInteraction?: SplitPanelLastInteraction;
+  splitPanelRefs: SplitPanelFocusControlRefs;
   navigationRefs: FocusControlRefs;
   toolsRefs: FocusControlRefs;
   loseToolsFocus: () => void;
@@ -293,7 +294,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'splitPanelOpen', changeHandler: 'onSplitPanelToggle' }
     );
 
-    const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl();
 
     const handleSplitPanelClick = useCallback(
       function handleSplitPanelChange() {
@@ -301,7 +302,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
         fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
       },
-      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen]
+      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen, setSplitPanelLastInteraction]
     );
 
     /**
@@ -382,7 +383,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setSplitPanelLastInteraction({ type: 'position' });
         fireNonCancelableEvent(props.onSplitPanelPreferencesChange, detail);
       },
-      [props.onSplitPanelPreferencesChange, setSplitPanelPreferences]
+      [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
     /**
@@ -534,7 +535,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelSize,
           splitPanelToggle,
           setSplitPanelToggle,
-          splitPanelLastInteraction,
+          splitPanelRefs,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,

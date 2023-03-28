@@ -23,7 +23,6 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import {
   SplitPanelContextProvider,
   SplitPanelContextProps,
-  SplitPanelLastInteraction,
   SplitPanelSideToggleProps,
 } from '../internal/context/split-panel-context';
 import {
@@ -43,6 +42,7 @@ import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 
 export { AppLayoutProps };
 
@@ -240,7 +240,7 @@ const OldAppLayout = React.forwardRef(
     const mainContentRef = useRef<HTMLDivElement>(null);
     const legacyScrollRootRef = useRef<HTMLElement>(null);
 
-    const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl();
 
     const onSplitPanelPreferencesSet = useCallback(
       (detail: { position: 'side' | 'bottom' }) => {
@@ -248,7 +248,7 @@ const OldAppLayout = React.forwardRef(
         setSplitPanelLastInteraction({ type: 'position' });
         fireNonCancelableEvent(onSplitPanelPreferencesChange, detail);
       },
-      [setSplitPanelPreferences, onSplitPanelPreferencesChange]
+      [setSplitPanelPreferences, onSplitPanelPreferencesChange, setSplitPanelLastInteraction]
     );
     const onSplitPanelSizeSet = useCallback(
       (detail: { size: number }) => {
@@ -340,13 +340,13 @@ const OldAppLayout = React.forwardRef(
       isOpen: splitPanelOpen,
       isMobile,
       isForcedPosition: isSplitpanelForcedPosition,
-      lastInteraction: splitPanelLastInteraction,
       onResize: onSplitPanelSizeSet,
       onToggle: onSplitPanelToggleHandler,
       onPreferencesChange: onSplitPanelPreferencesSet,
       setSplitPanelToggle: setSplitPanelReportedToggle,
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
+      refs: splitPanelRefs,
     };
     const splitPanelWrapped = splitPanel && (
       <SplitPanelContextProvider value={splitPanelContext}>{splitPanel}</SplitPanelContextProvider>
