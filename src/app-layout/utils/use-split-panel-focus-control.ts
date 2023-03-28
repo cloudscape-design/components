@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { DependencyList, RefObject, useEffect, useRef } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
 export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
@@ -15,16 +15,16 @@ interface SplitPanelFocusControlState {
   setLastInteraction: (interaction: SplitPanelLastInteraction) => void;
 }
 
-export function useSplitPanelFocusControl(): SplitPanelFocusControlState {
+export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPanelFocusControlState {
   const refs = {
     toggle: useRef<ButtonProps.Ref>(null),
     slider: useRef<HTMLDivElement>(null),
     preferences: useRef<ButtonProps.Ref>(null),
   };
-  const [lastInteraction, setLastInteraction] = useState<SplitPanelLastInteraction | undefined>();
+  const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);
 
   useEffect(() => {
-    switch (lastInteraction?.type) {
+    switch (lastInteraction.current?.type) {
       case 'open':
         refs.slider.current?.focus();
         break;
@@ -35,13 +35,12 @@ export function useSplitPanelFocusControl(): SplitPanelFocusControlState {
         refs.preferences.current?.focus();
         break;
     }
-    setLastInteraction(undefined);
-    // We explictly only want this effect to run when `lastInteraction` changes
+    lastInteraction.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastInteraction]);
+  }, dependencies);
 
   return {
     refs,
-    setLastInteraction,
+    setLastInteraction: (interaction: SplitPanelLastInteraction) => (lastInteraction.current = interaction),
   };
 }

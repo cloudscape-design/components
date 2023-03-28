@@ -254,7 +254,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
-          focusToolsClose: focusToolsButtons,
+          focusToolsClose: () => focusToolsButtons(true),
         };
       },
       [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons]
@@ -294,17 +294,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'splitPanelOpen', changeHandler: 'onSplitPanelToggle' }
     );
 
-    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl();
-
-    const handleSplitPanelClick = useCallback(
-      function handleSplitPanelChange() {
-        setIsSplitPanelOpen(!isSplitPanelOpen);
-        setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
-        fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
-      },
-      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen, setSplitPanelLastInteraction]
-    );
-
     /**
      * The useControllable hook will manage the controlled or uncontrolled
      * state of the splitPanelPreferences. By default the splitPanelPreferences
@@ -324,6 +313,20 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         controlledProp: 'splitPanelPreferences',
         changeHandler: 'onSplitPanelPreferencesChange',
       }
+    );
+
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl([
+      splitPanelPreferences,
+      isSplitPanelOpen,
+    ]);
+
+    const handleSplitPanelClick = useCallback(
+      function handleSplitPanelChange() {
+        setIsSplitPanelOpen(!isSplitPanelOpen);
+        setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
+        fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
+      },
+      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen, setSplitPanelLastInteraction]
     );
 
     /**

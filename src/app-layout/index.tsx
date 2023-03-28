@@ -240,7 +240,10 @@ const OldAppLayout = React.forwardRef(
     const mainContentRef = useRef<HTMLDivElement>(null);
     const legacyScrollRootRef = useRef<HTMLElement>(null);
 
-    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl();
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl([
+      splitPanelPreferences,
+      splitPanelOpen,
+    ]);
 
     const onSplitPanelPreferencesSet = useCallback(
       (detail: { position: 'side' | 'bottom' }) => {
@@ -378,7 +381,7 @@ const OldAppLayout = React.forwardRef(
             onNavigationToggle(false);
           }
         },
-        focusToolsClose: focusToolsButtons,
+        focusToolsClose: () => focusToolsButtons(true),
       }),
       [isMobile, onNavigationToggle, onToolsToggle, focusToolsButtons]
     );

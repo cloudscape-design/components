@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
 export interface FocusControlRefs {
@@ -10,7 +10,7 @@ export interface FocusControlRefs {
 
 interface FocusControlState {
   refs: FocusControlRefs;
-  setFocus: () => void;
+  setFocus: (force?: boolean) => void;
   loseFocus: () => void;
 }
 
@@ -20,10 +20,10 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
     close: useRef<ButtonProps.Ref>(null),
   };
   const previousFocusedElement = useRef<HTMLElement>();
-  const [shouldFocus, setShouldFocus] = useState(false);
+  const shouldFocus = useRef(false);
 
-  useEffect(() => {
-    if (!shouldFocus) {
+  const doFocus = () => {
+    if (!shouldFocus.current) {
       return;
     }
     if (isOpen) {
@@ -38,14 +38,25 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
         refs.toggle.current?.focus();
       }
     }
-    setShouldFocus(false);
-    // We explictly only want this effect to run when `shouldFocus` changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldFocus]);
+    shouldFocus.current = false;
+  };
+
+  // We explictly want this effect to run when only `isOpen` changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(doFocus, [isOpen]);
 
   const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;
   }, []);
 
-  return { refs, setFocus: () => setShouldFocus(true), loseFocus };
+  return {
+    refs,
+    setFocus: force => {
+      shouldFocus.current = true;
+      if (force && isOpen) {
+        doFocus();
+      }
+    },
+    loseFocus,
+  };
 }
