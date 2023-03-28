@@ -7,19 +7,32 @@ import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
 import {
+  FileError,
+  formatValidationFileErrors,
   SIZE,
+  useFileUploadState,
   validateDuplicateFileNames,
   validateFileExtensions,
   validateFileNameNotEmpty,
   validateFileSize,
   validateTotalFileSize,
 } from './validations';
+import { UploadProgress } from './upload-progress';
 
-const defaultToolsContent = {
+interface InfoContent {
+  header: string;
+  content: React.ReactNode;
+}
+
+interface FileUploadScenarioProps {
+  onInfo?: (content: InfoContent) => void;
+}
+
+const defaultToolsContent: InfoContent = {
   header: 'File upload',
   content: <Box>File upload test scenario page</Box>,
 };
-const profilePictureToolsContent = {
+const profilePictureToolsContent: InfoContent = {
   header: 'Profile picture',
   content: (
     <SpaceBetween size="s">
@@ -32,7 +45,7 @@ const profilePictureToolsContent = {
     </SpaceBetween>
   ),
 };
-const contractsToolsContent = {
+const contractsToolsContent: InfoContent = {
   header: 'Contract files',
   content: (
     <SpaceBetween size="s">
@@ -57,12 +70,7 @@ const contractsToolsContent = {
   ),
 };
 
-interface FileError {
-  file: null | File;
-  error: string;
-}
-
-export default function FileUploadScenario() {
+export default function FileUploadScenarios() {
   const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
   const [profileImageErrors, setProfileErrors] = useState<FileError[]>([]);
 
@@ -73,18 +81,10 @@ export default function FileUploadScenario() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(defaultToolsContent);
 
-  function formFieldError(errors: FileError[]) {
-    if (errors.length === 0) {
-      return null;
-    }
-    if (errors.length === 1) {
-      return errors[0].error;
-    }
-    if (errors.length === 2) {
-      return `${errors[0].error}, and 1 more error`;
-    }
-    return `${errors[0].error}, and ${errors.length - 1} more errors`;
-  }
+  const onInfo = (content: InfoContent) => {
+    setToolsOpen(!toolsOpen || toolsContent !== content);
+    setToolsContent(content);
+  };
 
   return (
     <AppLayout
@@ -97,21 +97,15 @@ export default function FileUploadScenario() {
       tools={<Tools header={toolsContent.header}>{toolsContent.content}</Tools>}
       navigation={<Navigation />}
       content={
-        <SpaceBetween size="m">
-          <Header variant="h1">File upload demo</Header>
+        <SpaceBetween size="l">
+          <Header variant="h1">File upload scenarios</Header>
           <SpaceBetween size="m">
             <FormField
-              errorText={formFieldError(profileImageErrors)}
+              errorText={formatValidationFileErrors(profileImageErrors)}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
-                <Link
-                  variant="info"
-                  onFollow={() => {
-                    setToolsOpen(!toolsOpen || toolsContent !== profilePictureToolsContent);
-                    setToolsContent(profilePictureToolsContent);
-                  }}
-                >
+                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
                   info
                 </Link>
               }
@@ -134,17 +128,11 @@ export default function FileUploadScenario() {
             </FormField>
 
             <FormField
-              errorText={formFieldError(contractsErrors)}
+              errorText={formatValidationFileErrors(contractsErrors)}
               label="Contracts"
               description="Upload your contract with all amendments"
               info={
-                <Link
-                  variant="info"
-                  onFollow={() => {
-                    setToolsOpen(!toolsOpen || toolsContent !== contractsToolsContent);
-                    setToolsContent(contractsToolsContent);
-                  }}
-                >
+                <Link variant="info" onFollow={() => onInfo(contractsToolsContent)}>
                   info
                 </Link>
               }
@@ -170,9 +158,102 @@ export default function FileUploadScenario() {
               />
             </FormField>
           </SpaceBetween>
+
+          <StandaloneFileUploadScenario onInfo={onInfo} />
+          <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} />
+          <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} />
+          <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} />
         </SpaceBetween>
       }
     />
+  );
+}
+
+function StandaloneFileUploadScenario({ onInfo }: FileUploadScenarioProps) {
+  const fileState = useFileUploadState();
+  return (
+    <SpaceBetween size="m">
+      <Header
+        variant="h2"
+        description="When used as standalone files are uploaded to the server and validated upon selection"
+      >
+        Scenario 1: Standalone file upload
+      </Header>
+
+      <FormField
+        errorText={fileState.serverError ?? fileState.validationError}
+        label="Contracts"
+        description="Upload your contract with all amendments"
+        info={
+          <Link variant="info" onFollow={() => onInfo?.(contractsToolsContent)}>
+            info
+          </Link>
+        }
+        constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+        secondaryControl={
+          fileState.files.length > 0 ? (
+            <UploadProgress
+              files={fileState.files}
+              progress={fileState.progress}
+              error={!!fileState.serverError}
+              onRefresh={fileState.onRefresh}
+            />
+          ) : null
+        }
+      >
+        <FileUpload
+          multiple={true}
+          limit={3}
+          value={fileState.files}
+          onChange={event => fileState.onChange(event.detail.value, validateContractFiles(event.detail.value))}
+          accept="application/pdf, image/png, image/jpeg"
+          showFileType={true}
+          showFileSize={true}
+          showFileLastModified={true}
+          showFileThumbnail={true}
+          i18nStrings={i18nStrings}
+        />
+      </FormField>
+    </SpaceBetween>
+  );
+}
+
+function FileUploadInFormWithUploadOnSubmitScenario({ onInfo }: FileUploadScenarioProps) {
+  return (
+    <SpaceBetween size="m">
+      <Header
+        variant="h2"
+        description="When used in a form both server upload and validation can happen on form submit"
+      >
+        Scenario 2: File upload form with on-submit upload and validation
+      </Header>
+    </SpaceBetween>
+  );
+}
+
+function FileUploadInFormWithInstantUploadScenario({ onInfo }: FileUploadScenarioProps) {
+  return (
+    <SpaceBetween size="m">
+      <Header
+        variant="h2"
+        description="When used in a form it is still possible and advised to use in-place upload and validation"
+      >
+        Scenario 3: File upload form with in-place upload and validation
+      </Header>
+    </SpaceBetween>
+  );
+}
+
+function FileUploadInFormWithMixedValidationScenario({ onInfo }: FileUploadScenarioProps) {
+  return (
+    <SpaceBetween size="m">
+      <Header
+        variant="h2"
+        description="When used in a form with on-submit upload both in-place and on-submit validation might exist"
+      >
+        Scenario 4: File upload form with on-submit upload and mixed validation
+      </Header>
+    </SpaceBetween>
   );
 }
 

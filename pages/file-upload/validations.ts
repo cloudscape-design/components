@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { useEffect, useState } from 'react';
+
 export const SIZE = {
   KB: 1000,
   MB: 1000 ** 2,
@@ -63,6 +65,118 @@ export function validateFileNamePattern(patten: RegExp, file: File) {
   return null;
 }
 
+class DummyServer {
+  private files: File[] = [];
+  private progress: number[] = [];
+  private globalError: null | string = null;
+  private fileErrors: (null | string)[] = [];
+  private timeout: null | ReturnType<typeof setTimeout> = null;
+
+  upload(
+    files: File[],
+    onProgress: (progress: number[], globalError: null | string, fileErrors: (null | string)[]) => void
+  ) {
+    this.files = files;
+    this.progress = files.map(() => 0);
+    this.globalError = null;
+    this.fileErrors = files.map(() => null);
+
+    let tick = 0;
+    const totalSizeInBytes = files.reduce((sum, file) => sum + file.size, 0);
+    const speedInBytes = totalSizeInBytes / 100;
+
+    const upload = () => {
+      tick += 1;
+
+      setTimeout(() => {
+        const progressIndex = this.progress.findIndex(p => p !== 100);
+        if (progressIndex === -1) {
+          return;
+        }
+        const fileToUpload = this.files[progressIndex];
+
+        // Emulate errors.
+        if (tick === 50) {
+          if (Math.random() < 0.33) {
+            this.globalError = '502: Cannot connect to the sever';
+            onProgress([...this.progress], this.globalError, [...this.fileErrors]);
+            return;
+          }
+          if (Math.random() < 0.5) {
+            this.progress[progressIndex] = 100;
+            this.fileErrors[progressIndex] = `File "${fileToUpload.name}" can't be uploaded to the server`;
+            onProgress([...this.progress], this.globalError, [...this.fileErrors]);
+            upload();
+            return;
+          }
+        }
+
+        const nextFileProgressInBytes = (fileToUpload.size * this.progress[progressIndex]) / 100 + speedInBytes;
+        const nextFileProgress = Math.min(100, 100 * (nextFileProgressInBytes / fileToUpload.size));
+        this.progress[progressIndex] = nextFileProgress;
+        onProgress([...this.progress], this.globalError, [...this.fileErrors]);
+        upload();
+      }, 25);
+    };
+
+    upload();
+  }
+
+  cancel() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  }
+}
+
+export function useFileUploadState() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [validationErrors, setValidationErrors] = useState<FileError[]>([]);
+  const [progress, setProgress] = useState<number[]>([]);
+  const [serverError, setServerError] = useState<null | string>(null);
+  const [serverFileErrors, setServerFileErrors] = useState<(null | string)[]>([]);
+
+  useEffect(() => {
+    if (files.length > 0 && validationErrors.length === 0) {
+      const server = new DummyServer();
+      server.upload(files, (progress, serverError, fileErrors) => {
+        setProgress(progress);
+        setServerError(serverError);
+        setServerFileErrors(fileErrors);
+      });
+      return () => server.cancel();
+    }
+  }, [files, validationErrors]);
+
+  return {
+    files,
+    progress,
+    serverError: serverError ?? serverFileErrors.find(e => e),
+    validationError: formatValidationFileErrors(validationErrors),
+    onChange: (files: File[], validationErrors: FileError[]) => {
+      setFiles(files);
+      setValidationErrors(validationErrors);
+      setProgress(files.map(() => 0));
+      setServerError(null);
+      setServerFileErrors(files.map(() => null));
+    },
+    onRefresh: () => setFiles([...files]),
+  };
+}
+
 export function formatFileSize(bytes: number): string {
   return bytes < SIZE.MB ? `${(bytes / SIZE.KB).toFixed(2)} KB` : `${(bytes / SIZE.MB).toFixed(2)} MB`;
+}
+
+export function formatValidationFileErrors(errors: FileError[]) {
+  if (errors.length === 0) {
+    return null;
+  }
+  if (errors.length === 1) {
+    return errors[0].error;
+  }
+  if (errors.length === 2) {
+    return `${errors[0].error}, and 1 more error`;
+  }
+  return `${errors[0].error}, and ${errors.length - 1} more errors`;
 }
