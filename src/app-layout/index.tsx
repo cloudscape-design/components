@@ -34,7 +34,7 @@ import {
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { Drawer } from './drawer';
+import { Drawer, DrawerItem, DrawerTriggersBar } from './drawer';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
@@ -112,6 +112,7 @@ const OldAppLayout = React.forwardRef(
       onSplitPanelToggle,
       onNavigationChange,
       onToolsChange,
+      ...props
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
@@ -123,6 +124,9 @@ const OldAppLayout = React.forwardRef(
         );
       }
     }
+
+    const drawers = (props as any).drawers;
+
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
 
@@ -140,6 +144,37 @@ const OldAppLayout = React.forwardRef(
       isMobile ? false : defaults.toolsOpen,
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
+
+    const [activeDrawerId, setActiveDrawersId] = useControllable(
+      drawers?.activeDrawerId,
+      drawers?.onDrawersChange,
+      '',
+      {
+        componentName: 'AppLayout',
+        controlledProp: 'activeDrawerId',
+        changeHandler: 'onDrawersChange',
+      }
+    );
+
+    const toolsItem = {
+      id: 'tools',
+      content: tools,
+      trigger: {
+        iconName: 'status-info',
+        ariaLabel: 'View tools',
+      },
+    };
+
+    const getAllDrawerItems = () => {
+      if (drawers) {
+        return tools ? [toolsItem, ...drawers.items] : drawers.items;
+      }
+    };
+
+    const selectedDrawer =
+      drawers &&
+      drawers.items &&
+      getAllDrawerItems().filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
@@ -164,6 +199,7 @@ const OldAppLayout = React.forwardRef(
       },
       [setToolsOpen, onToolsChange, focusToolsButtons]
     );
+
     const onNavigationClick = (event: React.MouseEvent) => {
       const hasLink = findUpUntil(
         event.target as HTMLElement,
@@ -219,9 +255,9 @@ const OldAppLayout = React.forwardRef(
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
     const effectiveToolsWidth =
-      toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side')
+      toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && !drawers
         ? 0
-        : toolsOpen
+        : toolsOpen || activeDrawerId !== undefined
         ? toolsWidth
         : closedDrawerWidth;
 
@@ -321,7 +357,7 @@ const OldAppLayout = React.forwardRef(
     }, [contentWidthWithSplitPanel, defaults.minContentWidth, isMobile]);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
-    const toolsClosedWidth = toolsHide || isMobile ? 0 : closedDrawerWidth;
+    const toolsClosedWidth = toolsHide || isMobile || (!drawers && toolsHide) ? 0 : closedDrawerWidth;
 
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
@@ -333,7 +369,17 @@ const OldAppLayout = React.forwardRef(
       bottomOffset: footerHeight,
       leftOffset:
         leftOffset + (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
-      rightOffset: rightOffset + (isMobile ? 0 : !toolsHide && toolsOpen ? toolsWidth : toolsClosedWidth),
+      rightOffset:
+        rightOffset +
+        (isMobile
+          ? 0
+          : drawers && activeDrawerId
+          ? toolsWidth + closedDrawerWidth
+          : drawers && !activeDrawerId
+          ? closedDrawerWidth
+          : !toolsHide && toolsOpen && !drawers
+          ? toolsWidth
+          : toolsClosedWidth),
       position: finalSplitPanePosition,
       size: splitPanelSize,
       getMaxWidth: getSplitPanelMaxWidth,
@@ -364,7 +410,8 @@ const OldAppLayout = React.forwardRef(
       toolsPadding:
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
-        (toolsHide && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
+        toolsHide ||
+        (drawers && !activeDrawerId && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -410,6 +457,18 @@ const OldAppLayout = React.forwardRef(
               onNavigationOpen={() => onNavigationToggle(true)}
               onToolsOpen={() => onToolsToggle(true)}
               unfocusable={anyPanelOpen}
+              drawers={
+                drawers
+                  ? {
+                      items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                      activeDrawerId: selectedDrawer?.id,
+                      onDrawersChange: changeDetail => {
+                        setActiveDrawersId(changeDetail.activeDrawerId);
+                        fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
+                      },
+                    }
+                  : undefined
+              }
             >
               {breadcrumbs}
             </MobileToolbar>
@@ -529,24 +588,74 @@ const OldAppLayout = React.forwardRef(
               </SideSplitPanelDrawer>
             )}
 
-            {!toolsHide && (
-              <Drawer
+            {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
+              (drawers ? (
+                getAllDrawerItems().map(
+                  (drawerItem: DrawerItem, index: number) =>
+                    drawerItem.id === selectedDrawer.id && (
+                      <Drawer
+                        key={`drawer-${index}`}
+                        contentClassName={testutilStyles.tools}
+                        toggleClassName={testutilStyles['tools-toggle']}
+                        closeClassName={testutilStyles['tools-close']}
+                        ariaLabels={ariaLabels}
+                        width={effectiveToolsWidth}
+                        bottomOffset={footerHeight}
+                        topOffset={headerHeight}
+                        isMobile={isMobile}
+                        onToggle={onToolsToggle}
+                        isOpen={activeDrawerId !== undefined}
+                        toggleRefs={toolsRefs}
+                        type="tools"
+                        onLoseFocus={loseToolsFocus}
+                        drawers={{
+                          items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                          activeDrawerId: selectedDrawer?.id,
+                          onDrawersChange: changeDetail => {
+                            setActiveDrawersId(changeDetail.activeDrawerId);
+                            fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
+                          },
+                        }}
+                      >
+                        {selectedDrawer?.content}
+                      </Drawer>
+                    )
+                )
+              ) : (
+                <Drawer
+                  contentClassName={testutilStyles.tools}
+                  toggleClassName={testutilStyles['tools-toggle']}
+                  closeClassName={testutilStyles['tools-close']}
+                  ariaLabels={ariaLabels}
+                  width={effectiveToolsWidth}
+                  bottomOffset={footerHeight}
+                  topOffset={headerHeight}
+                  isMobile={isMobile}
+                  onToggle={onToolsToggle}
+                  isOpen={toolsOpen}
+                  toggleRefs={toolsRefs}
+                  type="tools"
+                  onLoseFocus={loseToolsFocus}
+                >
+                  {tools}
+                </Drawer>
+              ))}
+            {drawers && (
+              <DrawerTriggersBar
                 contentClassName={testutilStyles.tools}
-                toggleClassName={testutilStyles['tools-toggle']}
-                closeClassName={testutilStyles['tools-close']}
                 ariaLabels={ariaLabels}
-                width={toolsWidth}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
-                onToggle={onToolsToggle}
-                isOpen={toolsOpen}
-                toggleRefs={toolsRefs}
-                type="tools"
-                onLoseFocus={loseToolsFocus}
-              >
-                {tools}
-              </Drawer>
+                drawers={{
+                  items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                  activeDrawerId: selectedDrawer?.id,
+                  onDrawersChange: changeDetail => {
+                    setActiveDrawersId(changeDetail.activeDrawerId);
+                    fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
+                  },
+                }}
+              />
             )}
           </div>
         </div>

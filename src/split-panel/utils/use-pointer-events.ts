@@ -19,6 +19,7 @@ export const usePointerEvents = ({
 
       if (position === 'side') {
         const mouseClientX = event.clientX;
+        console.log('im here and the position is side!');
 
         // The handle offset aligns the cursor with the middle of the resize handle.
         const handleOffset = handleRef.current.getBoundingClientRect().width / 2;

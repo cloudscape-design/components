@@ -2,17 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React, { useRef } from 'react';
+import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
+import { IconProps } from '../../icon/interfaces';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
   contentClassName: string;
   toggleClassName: string;
   closeClassName: string;
-  toggleRefs: FocusControlRefs;
+  toggleRefs: {
+    toggle: React.Ref<ButtonProps.Ref>;
+    close: React.Ref<ButtonProps.Ref>;
+  };
   width: number;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
@@ -24,6 +28,34 @@ export interface DesktopDrawerProps {
   onToggle: (isOpen: boolean) => void;
   onClick?: (event: React.MouseEvent) => void;
   onLoseFocus?: (event: React.FocusEvent) => void;
+  drawers?: {
+    items: Array<DrawerItem>;
+    activeDrawerId: string | undefined;
+    onDrawersChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+  };
+}
+
+export interface DesktopStaticDrawerProps {
+  contentClassName: string;
+  topOffset: number | undefined;
+  bottomOffset: number | undefined;
+  ariaLabels: AppLayoutProps.Labels | undefined;
+  isMobile: boolean;
+  drawers?: {
+    items: Array<DrawerItem>;
+    activeDrawerId: string | undefined;
+    onDrawersChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+  };
+}
+
+export interface DrawerItem {
+  id: string;
+  content: React.ReactNode;
+  trigger: {
+    iconName?: IconProps.Name;
+    iconSvg?: React.ReactNode;
+    ariaLabel: string;
+  };
 }
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
@@ -59,6 +91,7 @@ export function Drawer({
   onToggle,
   onClick,
   onLoseFocus,
+  drawers,
 }: DesktopDrawerProps) {
   const { TagName, iconName, getLabels } = togglesConfig[type];
   const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
@@ -70,7 +103,7 @@ export function Drawer({
     <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
       <AppLayoutButton
         ref={toggleRefs.toggle}
-        className={toggleClassName}
+        className={clsx(styles.trigger, toggleClassName)}
         iconName={iconName}
         ariaLabel={openLabel}
         onClick={() => onToggle(true)}
@@ -78,7 +111,6 @@ export function Drawer({
       />
     </TagName>
   );
-
   return (
     <div
       className={clsx(styles.drawer, {
@@ -100,7 +132,6 @@ export function Drawer({
         if (onClick) {
           onClick(event);
         }
-
         if (!isOpen) {
           // to prevent calling onToggle from the drawer when it's called from the toggle button
           if (
@@ -122,10 +153,58 @@ export function Drawer({
             ref={toggleRefs.close}
             className={closeClassName}
             ariaLabel={closeLabel}
-            onClick={() => onToggle(false)}
+            onClick={() => {
+              onToggle(false);
+              drawers?.onDrawersChange({ activeDrawerId: undefined });
+            }}
           />
           {children}
         </TagName>
+      </div>
+    </div>
+  );
+}
+
+export function DrawerTriggersBar({
+  isMobile,
+  topOffset,
+  bottomOffset,
+  drawers,
+  contentClassName,
+  ariaLabels,
+}: DesktopStaticDrawerProps) {
+  const { getLabels } = togglesConfig.tools;
+  const { mainLabel } = getLabels(ariaLabels);
+
+  return (
+    <div
+      className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
+        [styles['drawer-mobile']]: isMobile,
+      })}
+    >
+      <div
+        style={{ top: topOffset, bottom: bottomOffset }}
+        className={clsx(styles['drawer-content'], styles['non-interactive'], contentClassName)}
+      >
+        {!isMobile && (
+          <aside aria-label={mainLabel} className={styles.toggle}>
+            {drawers?.items?.map((item: DrawerItem, index: number) => (
+              <AppLayoutButton
+                className={clsx(
+                  styles.trigger,
+                  styles['trigger-drawer'],
+                  drawers.activeDrawerId === item.id && styles.selected
+                )}
+                key={`drawer-trigger-${index}`}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                ariaLabel={item.trigger.ariaLabel}
+                onClick={() => drawers.onDrawersChange({ activeDrawerId: item.id })}
+                ariaExpanded={drawers.activeDrawerId !== undefined}
+              />
+            ))}
+          </aside>
+        )}
       </div>
     </div>
   );
