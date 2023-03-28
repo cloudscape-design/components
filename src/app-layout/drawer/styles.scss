@@ -12,7 +12,7 @@ $drawer-z-index-mobile: 1001;
 
 .toggle {
   box-sizing: border-box;
-  padding: constants.$toggle-padding;
+  // padding: constants.$toggle-padding;
 }
 
 .drawer {
@@ -51,9 +51,40 @@ $drawer-z-index-mobile: 1001;
     &:hover {
       background: awsui.$color-background-layout-panel-hover;
     }
+    &.non-interactive {
+      &:hover {
+        background: awsui.$color-background-layout-panel-content;
+        cursor: default;
+      }
+    }
   }
 
   & > [aria-hidden='true'] {
     display: none;
   }
+}
+
+.trigger {
+  .toggle > & {
+    padding: awsui.$space-xs awsui.$space-s;
+
+    &-drawer {
+      &:hover:not(.selected) {
+        color: awsui.$color-text-layout-panel-trigger-hover;
+      }
+    }
+
+    &.selected {
+      background-color: awsui.$color-background-layout-panel-trigger-active;
+      color: awsui.$color-text-layout-panel-trigger-active;
+
+      &:hover {
+        cursor: default;
+      }
+    }
+  }
+}
+
+.display-none {
+  display: none;
 }
