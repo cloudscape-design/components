@@ -111,6 +111,11 @@ export default function () {
               items={items}
               selectionType="single"
               selectedItems={selectedItems}
+              ariaLabels={{
+                itemSelectionLabel(data, row) {
+                  return `Select item ${row.id}`;
+                },
+              }}
               onSelectionChange={e => {
                 setSelectedItems(e.detail.selectedItems);
                 setSplitPanelOpen(e.detail.selectedItems.length > 0);
