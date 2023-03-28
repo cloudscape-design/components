@@ -106,7 +106,7 @@ export default function FileUploadScenarios() {
       tools={<Tools header={toolsContent.header}>{toolsContent.content}</Tools>}
       navigation={<Navigation />}
       content={
-        <SpaceBetween size="l">
+        <SpaceBetween size="xl">
           <Header variant="h1">File upload scenarios</Header>
 
           <StandaloneFileUploadScenario onInfo={onInfo} onSuccess={onSuccess} />
@@ -120,7 +120,13 @@ export default function FileUploadScenarios() {
 }
 
 function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState({ onSuccess });
+  const fileState = useFileUploadState();
+
+  useEffect(() => {
+    if (fileState.success) {
+      onSuccess();
+    }
+  }, [fileState.success, onSuccess]);
 
   return (
     <SpaceBetween size="m">
@@ -173,9 +179,15 @@ function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioP
 }
 
 function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState({ onSuccess });
+  const fileState = useFileUploadState();
   const [alias, setAlias] = useState('');
   const [aliasError, setAliasError] = useState('');
+
+  useEffect(() => {
+    if (fileState.success) {
+      onSuccess();
+    }
+  }, [fileState.success, onSuccess]);
 
   return (
     <SpaceBetween size="m">
@@ -191,6 +203,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
           e.preventDefault();
           fileState.onChange(fileState.files, validateProfilePictureFile(fileState.files[0]));
           if (alias.trim().length > 0) {
+            fileState.onRefresh();
             fileState.onSubmit();
           } else {
             setAliasError('Alias must not be empty');
@@ -199,7 +212,11 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
       >
         <Form
           actions={
-            <Button variant="primary" formAction="submit">
+            <Button
+              variant="primary"
+              formAction="submit"
+              loading={fileState.submitted && !fileState.serverError && !fileState.success}
+            >
               Upload
             </Button>
           }
@@ -256,7 +273,11 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
   );
 }
 
-function FileUploadInFormWithInstantUploadScenario({ onInfo }: FileUploadScenarioProps) {
+function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
+  const fileState = useFileUploadState();
+  const [alias, setAlias] = useState('');
+  const [aliasError, setAliasError] = useState('');
+
   return (
     <SpaceBetween size="m">
       <Header
@@ -265,11 +286,93 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo }: FileUploadScenari
       >
         Scenario 3: File upload form with in-place upload and validation
       </Header>
+
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          if (alias.trim().length > 0) {
+            fileState.success && onSuccess();
+          } else {
+            setAliasError('Alias must not be empty');
+          }
+        }}
+      >
+        <Form
+          actions={
+            <Button
+              variant="primary"
+              formAction="submit"
+              loading={fileState.submitted && !fileState.serverError && !fileState.success}
+            >
+              Upload
+            </Button>
+          }
+        >
+          <SpaceBetween size="m">
+            <FormField
+              errorText={fileState.serverError ?? fileState.validationError}
+              label="Profile picture"
+              description="Upload a picture of yourself"
+              info={
+                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
+                  info
+                </Link>
+              }
+              constraintText="File size must not exceed 1 MB"
+              secondaryControl={
+                fileState.submitted &&
+                fileState.files.length > 0 && (
+                  <UploadProgress
+                    files={fileState.files}
+                    progress={fileState.progress}
+                    error={!!fileState.serverError}
+                    onRefresh={fileState.onRefresh}
+                  />
+                )
+              }
+            >
+              <FileUpload
+                value={fileState.files}
+                onChange={event => {
+                  fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
+                  fileState.onSubmit();
+                }}
+                accept="image/png, image/jpeg"
+                showFileType={true}
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={i18nStrings}
+              />
+            </FormField>
+
+            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
+              <Input
+                value={alias}
+                onChange={e => {
+                  setAlias(e.detail.value);
+                  setAliasError('');
+                }}
+              />
+            </FormField>
+          </SpaceBetween>
+        </Form>
+      </form>
     </SpaceBetween>
   );
 }
 
-function FileUploadInFormWithMixedValidationScenario({ onInfo }: FileUploadScenarioProps) {
+function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
+  const fileState = useFileUploadState();
+  const [alias, setAlias] = useState('');
+  const [aliasError, setAliasError] = useState('');
+
+  useEffect(() => {
+    if (fileState.success) {
+      onSuccess();
+    }
+  }, [fileState.success, onSuccess]);
+
   return (
     <SpaceBetween size="m">
       <Header
@@ -278,6 +381,77 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo }: FileUploadScena
       >
         Scenario 4: File upload form with on-submit upload and mixed validation
       </Header>
+
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          if (alias.trim().length > 0) {
+            fileState.onRefresh();
+            fileState.onSubmit();
+          } else {
+            setAliasError('Alias must not be empty');
+          }
+        }}
+      >
+        <Form
+          actions={
+            <Button
+              variant="primary"
+              formAction="submit"
+              loading={fileState.submitted && !fileState.serverError && !fileState.success}
+            >
+              Upload
+            </Button>
+          }
+        >
+          <SpaceBetween size="m">
+            <FormField
+              errorText={fileState.serverError ?? fileState.validationError}
+              label="Profile picture"
+              description="Upload a picture of yourself"
+              info={
+                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
+                  info
+                </Link>
+              }
+              constraintText="File size must not exceed 1 MB"
+              secondaryControl={
+                fileState.submitted &&
+                fileState.files.length > 0 && (
+                  <UploadProgress
+                    files={fileState.files}
+                    progress={fileState.progress}
+                    error={!!fileState.serverError}
+                  />
+                )
+              }
+            >
+              <FileUpload
+                value={fileState.files}
+                onChange={event => {
+                  fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
+                }}
+                accept="image/png, image/jpeg"
+                showFileType={true}
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={i18nStrings}
+              />
+            </FormField>
+
+            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
+              <Input
+                value={alias}
+                onChange={e => {
+                  setAlias(e.detail.value);
+                  setAliasError('');
+                }}
+              />
+            </FormField>
+          </SpaceBetween>
+        </Form>
+      </form>
     </SpaceBetween>
   );
 }

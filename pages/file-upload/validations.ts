@@ -129,7 +129,7 @@ class DummyServer {
   }
 }
 
-export function useFileUploadState({ onSuccess }: { onSuccess: () => void }) {
+export function useFileUploadState() {
   const [files, setFiles] = useState<File[]>([]);
   const [validationErrors, setValidationErrors] = useState<FileError[]>([]);
   const [serverState, setServerState] = useState<{
@@ -153,27 +153,20 @@ export function useFileUploadState({ onSuccess }: { onSuccess: () => void }) {
     }
   }, [submitted, files, validationErrors]);
 
+  const serverError = serverState.globalError ?? serverState.fileErrors.find(e => e);
   const emptySubmissionError = submitted && files.length === 0 ? 'No file(s) submitted' : null;
+  const validationError = emptySubmissionError ?? formatValidationFileErrors(validationErrors);
 
-  const showSuccess =
-    submitted &&
-    serverState.progress.length !== 0 &&
-    serverState.progress.every(p => p === 100) &&
-    !serverState.globalError &&
-    serverState.fileErrors.filter(Boolean).length === 0;
-
-  useEffect(() => {
-    if (showSuccess) {
-      onSuccess();
-    }
-  }, [showSuccess, onSuccess]);
+  const success =
+    submitted && serverState.progress.length !== 0 && serverState.progress.every(p => p === 100) && !serverError;
 
   return {
     files,
     progress: serverState.progress,
-    serverError: serverState.globalError ?? serverState.fileErrors.find(e => e),
-    validationError: emptySubmissionError ?? formatValidationFileErrors(validationErrors),
+    serverError,
+    validationError,
     submitted,
+    success,
     onChange: (files: File[], validationErrors: FileError[]) => {
       setFiles(files);
       setValidationErrors(validationErrors);
