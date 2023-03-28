@@ -61,4 +61,14 @@
       }
     }
   }
+
+  // Test utils rely on the ellipsis being present even if there are
+  // only 2 items in the list, so we display but hide it.
+  &.mobile-short {
+    > .breadcrumb-group-list {
+      > .ellipsis {
+        display: none;
+      }
+    }
+  }
 }

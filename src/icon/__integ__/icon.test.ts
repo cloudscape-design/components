@@ -13,11 +13,8 @@ const hiddenIconSelector = createWrapper().findIcon('#visibility-test-2').toSele
 const dynamicHeightInput = '#height-input';
 
 class IconSizeInherit extends BasePageObject {
-  async toggleVisualRefresh() {
-    await this.click('#preferences-button');
-    await this.waitForVisible(createWrapper().findModal().toSelector());
-    await this.click('[data-test-id="visual-refresh-toggle"] input');
-    await this.click('[data-test-id="apply-preferences-button"]');
+  async toggleMode() {
+    await this.click('label=Visual refresh');
   }
 
   async toggleVisibility() {
@@ -38,8 +35,10 @@ describe('Icon', () => {
   const setupTest = (testFn: (page: IconSizeInherit) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new IconSizeInherit(browser);
-      await browser.url('#/light/icon/size-inherit?visualRefresh=false');
+      await browser.url('#/light/icon/size-inherit');
       await page.waitForVisible(dynamicIconSelector);
+      // The default theme is VR by default, so we toggle once to go to classic mode
+      await page.toggleMode();
       await testFn(page);
     });
   };
@@ -61,7 +60,7 @@ describe('Icon', () => {
       await expect(page.getHeight(staticIconSelector)).resolves.toEqual(22);
       await expect(page.hasSize('size-normal', staticIconSelector)).resolves.toBe(true);
 
-      await page.toggleVisualRefresh();
+      await page.toggleMode();
 
       await expect(page.getHeight(staticIconSelector)).resolves.toEqual(24);
       await expect(page.hasSize('size-medium', staticIconSelector)).resolves.toBe(true);

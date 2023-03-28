@@ -248,6 +248,6 @@ describe('Keyboard navigation', () => {
 });
 
 async function focusChart(page: LineChartPageObject) {
-  await page.click(chartWrapper.findDefaultFilter().findTrigger().toSelector());
+  await page.click('button');
   await page.keys(['Escape', 'Tab', 'ArrowRight']);
 }
