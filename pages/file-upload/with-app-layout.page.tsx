@@ -137,7 +137,20 @@ function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioP
         Scenario 1: Standalone file upload
       </Header>
 
-      <FormField
+      <FileUpload
+        multiple={true}
+        limit={3}
+        value={fileState.files}
+        onChange={event => {
+          fileState.onChange(event.detail.value, validateContractFiles(event.detail.value));
+          fileState.onSubmit();
+        }}
+        accept="application/pdf, image/png, image/jpeg"
+        showFileType={true}
+        showFileSize={true}
+        showFileLastModified={true}
+        showFileThumbnail={true}
+        i18nStrings={i18nStrings}
         errorText={fileState.serverError ?? fileState.validationError}
         label="Contracts"
         description="Upload your contract with all amendments"
@@ -157,23 +170,7 @@ function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioP
             />
           ) : null
         }
-      >
-        <FileUpload
-          multiple={true}
-          limit={3}
-          value={fileState.files}
-          onChange={event => {
-            fileState.onChange(event.detail.value, validateContractFiles(event.detail.value));
-            fileState.onSubmit();
-          }}
-          accept="application/pdf, image/png, image/jpeg"
-          showFileType={true}
-          showFileSize={true}
-          showFileLastModified={true}
-          showFileThumbnail={true}
-          i18nStrings={i18nStrings}
-        />
-      </FormField>
+      />
     </SpaceBetween>
   );
 }
@@ -222,8 +219,18 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
           }
         >
           <SpaceBetween size="m">
-            <FormField
-              errorText={fileState.serverError ?? fileState.validationError}
+            <FileUpload
+              value={fileState.files}
+              onChange={event => {
+                fileState.onChange(event.detail.value, []);
+              }}
+              accept="image/png, image/jpeg"
+              showFileType={true}
+              showFileSize={true}
+              showFileLastModified={true}
+              showFileThumbnail={true}
+              i18nStrings={i18nStrings}
+              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -242,20 +249,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
                   />
                 )
               }
-            >
-              <FileUpload
-                value={fileState.files}
-                onChange={event => {
-                  fileState.onChange(event.detail.value, []);
-                }}
-                accept="image/png, image/jpeg"
-                showFileType={true}
-                showFileSize={true}
-                showFileLastModified={true}
-                showFileThumbnail={true}
-                i18nStrings={i18nStrings}
-              />
-            </FormField>
+            />
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
               <Input
@@ -309,8 +303,19 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUp
           }
         >
           <SpaceBetween size="m">
-            <FormField
-              errorText={fileState.serverError ?? fileState.validationError}
+            <FileUpload
+              value={fileState.files}
+              onChange={event => {
+                fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
+                fileState.onSubmit();
+              }}
+              accept="image/png, image/jpeg"
+              showFileType={true}
+              showFileSize={true}
+              showFileLastModified={true}
+              showFileThumbnail={true}
+              i18nStrings={i18nStrings}
+              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -330,21 +335,7 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUp
                   />
                 )
               }
-            >
-              <FileUpload
-                value={fileState.files}
-                onChange={event => {
-                  fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
-                  fileState.onSubmit();
-                }}
-                accept="image/png, image/jpeg"
-                showFileType={true}
-                showFileSize={true}
-                showFileLastModified={true}
-                showFileThumbnail={true}
-                i18nStrings={i18nStrings}
-              />
-            </FormField>
+            />
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
               <Input
@@ -405,8 +396,18 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
           }
         >
           <SpaceBetween size="m">
-            <FormField
-              errorText={fileState.serverError ?? fileState.validationError}
+            <FileUpload
+              value={fileState.files}
+              onChange={event => {
+                fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
+              }}
+              accept="image/png, image/jpeg"
+              showFileType={true}
+              showFileSize={true}
+              showFileLastModified={true}
+              showFileThumbnail={true}
+              i18nStrings={i18nStrings}
+              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -425,20 +426,7 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
                   />
                 )
               }
-            >
-              <FileUpload
-                value={fileState.files}
-                onChange={event => {
-                  fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
-                }}
-                accept="image/png, image/jpeg"
-                showFileType={true}
-                showFileSize={true}
-                showFileLastModified={true}
-                showFileThumbnail={true}
-                i18nStrings={i18nStrings}
-              />
-            </FormField>
+            />
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
               <Input

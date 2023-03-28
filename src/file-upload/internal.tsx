@@ -18,6 +18,7 @@ import GenericTokenGroup from '../token-group/generic-token-group';
 import { warnOnce } from '../internal/logging';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
+import InternalFormField from '../form-field/internal';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -42,6 +43,15 @@ function InternalFileUpload(
     showFileThumbnail,
     i18nStrings,
     __internalRootRef = null,
+    // form-field props
+    constraintText,
+    controlId,
+    description,
+    errorText,
+    info,
+    label,
+    secondaryControl,
+    stretch,
     ...restProps
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
@@ -74,22 +84,32 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      {isDropzoneVisible ? (
-        <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
-      ) : (
-        <FileInput
-          ref={ref}
-          accept={accept}
-          ariaRequired={ariaRequired}
-          multiple={multiple}
-          invalidStateIconAlt={i18nStrings.invalidStateIconAlt}
-          onChange={handleFilesChange}
-          value={value}
-          {...restProps}
-        >
-          {i18nStrings.uploadButtonText(multiple)}
-        </FileInput>
-      )}
+      <InternalFormField
+        constraintText={constraintText}
+        controlId={controlId}
+        description={description}
+        errorText={errorText}
+        info={info}
+        label={label}
+        secondaryControl={secondaryControl}
+        stretch={stretch}
+      >
+        {isDropzoneVisible ? (
+          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+        ) : (
+          <FileInput
+            ref={ref}
+            accept={accept}
+            ariaRequired={ariaRequired}
+            multiple={multiple}
+            onChange={handleFilesChange}
+            value={value}
+            {...restProps}
+          >
+            {i18nStrings.uploadButtonText(multiple)}
+          </FileInput>
+        )}
+      </InternalFormField>
 
       {value.length > 0 ? (
         <GenericTokenGroup

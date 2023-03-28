@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { FormFieldProps } from '../form-field/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps, FormFieldValidationControlProps {
+export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps, 'i18nStrings'> {
   /**
    * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
@@ -61,6 +61,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   limit?: number;
   /**
+   * // TODO: refine
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
    * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
@@ -92,7 +93,9 @@ export namespace FileUploadProps {
     removeFileAriaLabel: (file: File, fileIndex: number) => string;
     limitShowFewer: string;
     limitShowMore: string;
+    // TODO: refine
     invalidStateIconAlt: string;
+    errorIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileLastModified?: (date: Date) => string;
   }

@@ -9,7 +9,6 @@ import styles from './styles.css.js';
 import { useFormFieldContext } from '../contexts/form-field';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import InternalIcon from '../icon/internal';
 import { joinStrings } from '../internal/utils/strings';
 
 interface FileInputProps extends FormFieldValidationControlProps {
@@ -19,13 +18,12 @@ interface FileInputProps extends FormFieldValidationControlProps {
   value: readonly File[];
   onChange: (files: File[]) => void;
   children: React.ReactNode;
-  invalidStateIconAlt: string;
 }
 
 export default React.forwardRef(FileInput);
 
 function FileInput(
-  { accept, ariaRequired, multiple, value, onChange, children, invalidStateIconAlt, ...restProps }: FileInputProps,
+  { accept, ariaRequired, multiple, value, onChange, children, ...restProps }: FileInputProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -86,8 +84,6 @@ function FileInput(
         >
           <span id={uploadButtonLabelId}>{children}</span>
         </InternalButton>
-
-        {formFieldContext.invalid && <InternalIcon variant="error" name="status-warning" alt={invalidStateIconAlt} />}
       </div>
     </div>
   );

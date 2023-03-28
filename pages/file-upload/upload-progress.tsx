@@ -24,16 +24,14 @@ export function UploadProgress({ files, progress, error, onRefresh }: UploadProg
   const uploadedSize = files.reduce((sum, file, index) => sum + (file.size * progress[index]) / 100, 0);
   const totalProgress = Math.round(100 * (uploadedSize / totalSize));
   return (
-    <SpaceBetween direction="vertical" size="s">
-      <SpaceBetween direction="horizontal" size="s">
-        <StatusIndicator type={error ? 'error' : totalProgress < 100 ? 'in-progress' : 'success'}>
-          Uploaded files {progress.length} / {progress.filter(p => p === 100).length}
-        </StatusIndicator>
-
-        {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
-      </SpaceBetween>
+    <SpaceBetween direction="horizontal" size="s">
+      <StatusIndicator type={error ? 'error' : totalProgress < 100 ? 'in-progress' : 'success'}>
+        Files uploaded {progress.length} / {progress.filter(p => p === 100).length}
+      </StatusIndicator>
 
       <ProgressBar value={totalProgress} />
+
+      {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
     </SpaceBetween>
   );
 }

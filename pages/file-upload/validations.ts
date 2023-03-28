@@ -154,8 +154,8 @@ export function useFileUploadState() {
   }, [submitted, files, validationErrors]);
 
   const serverError = serverState.globalError ?? serverState.fileErrors.find(e => e);
-  const emptySubmissionError = submitted && files.length === 0 ? 'No file(s) submitted' : null;
-  const validationError = emptySubmissionError ?? formatValidationFileErrors(validationErrors);
+  const submissionError = submitted && files.length === 0 ? 'No file(s) submitted' : null;
+  const validationError = formatValidationFileErrors(validationErrors);
 
   const success =
     submitted && serverState.progress.length !== 0 && serverState.progress.every(p => p === 100) && !serverError;
@@ -164,6 +164,7 @@ export function useFileUploadState() {
     files,
     progress: serverState.progress,
     serverError,
+    submissionError,
     validationError,
     submitted,
     success,
