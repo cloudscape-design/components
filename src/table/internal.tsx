@@ -166,7 +166,6 @@ const InternalTable = forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
     const focusVisibleProps = useFocusVisible();
-    console.log('useFocusVisible', useFocusVisible());
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
       if (!submitEdit) {
@@ -185,36 +184,22 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    const { tableCellRefs, cellWidths, setCellWidths, getStickyColumn, shouldDisableStickyColumns } = useStickyColumns({
+    const {
+      tableCellRefs,
+      cellWidths,
+      setCellWidths,
+      getStickyColumn,
+      shouldDisableStickyColumns,
+      startStickyColumnsWidth,
+      endStickyColumnsWidth,
+    } = useStickyColumns({
       visibleColumnsLength,
       hasSelection,
       stickyColumns,
       containerWidth,
     });
 
-    const [hasFocus, setHasFocus] = React.useState(false);
-
-    React.useEffect(() => {
-      if (!tableRefObject.current) {
-        return;
-      }
-      const currentTableEl = tableRefObject.current as HTMLTableElement;
-      const handleFocusIn = () => {
-        setHasFocus(true);
-      };
-      const handleFocusOut = () => {
-        setHasFocus(false);
-      };
-      currentTableEl.addEventListener('focusin', handleFocusIn);
-      currentTableEl.addEventListener('focusout', handleFocusOut);
-      return () => {
-        setHasFocus(false);
-        currentTableEl.removeEventListener('focusin', handleFocusIn);
-        currentTableEl.removeEventListener('focusout', handleFocusOut);
-      };
-    }, [tableRefObject]);
-
-    const disableStickyColumns = hasFocus || !isWrapperScrollable || shouldDisableStickyColumns();
+    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns();
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -246,7 +231,6 @@ const InternalTable = forwardRef(
       cellWidths,
       stickyColumns,
     };
-
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
       <ColumnWidthsProvider
@@ -309,6 +293,7 @@ const InternalTable = forwardRef(
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
+            style={{ scrollPaddingLeft: startStickyColumnsWidth, scrollPaddingRight: endStickyColumnsWidth }}
             onScroll={handleScroll}
             {...wrapperProps}
             {...focusVisibleProps}

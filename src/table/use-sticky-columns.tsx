@@ -84,6 +84,13 @@ export const useStickyColumns = ({
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
 
+  const { start = 0, end = 0 } = stickyColumns || {};
+  const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
+  const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
+  const startStickyColumnsWidth = cellWidths?.start[lastStartStickyColumnIndex] ?? 0;
+  const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
+  const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
+
   const shouldDisableStickyColumns = () => {
     // We allow the table to have a minimum of 150px besides the sum of the widths of the sticky columns
     const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
@@ -91,11 +98,6 @@ export const useStickyColumns = ({
       return true;
     }
 
-    const { start = 0, end = 0 } = stickyColumns;
-    const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
-    const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
-    const totalStickySpace =
-      (cellWidths?.start[lastStartStickyColumnIndex] ?? 0) + (cellWidths?.end[lastEndStickyColumnIndex] ?? 0);
     const shouldDisable =
       totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
 
@@ -136,5 +138,13 @@ export const useStickyColumns = ({
     updateCellWidths({ tableCellRefs, setCellWidths });
   }, [tableCellRefs, stickyColumns]);
 
-  return { tableCellRefs, cellWidths, setCellWidths, getStickyColumn, shouldDisableStickyColumns };
+  return {
+    tableCellRefs,
+    cellWidths,
+    setCellWidths,
+    getStickyColumn,
+    shouldDisableStickyColumns,
+    startStickyColumnsWidth,
+    endStickyColumnsWidth,
+  };
 };
