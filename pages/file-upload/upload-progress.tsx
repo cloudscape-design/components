@@ -8,7 +8,7 @@ interface UploadProgressProps {
   files: File[];
   progress: number[];
   error: boolean;
-  onRefresh: () => void;
+  onRefresh?: () => void;
 }
 
 export function UploadProgress({ files, progress, error, onRefresh }: UploadProgressProps) {
@@ -30,7 +30,7 @@ export function UploadProgress({ files, progress, error, onRefresh }: UploadProg
           Uploaded files {progress.length} / {progress.filter(p => p === 100).length}
         </StatusIndicator>
 
-        {error && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
+        {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
       </SpaceBetween>
 
       <ProgressBar value={totalProgress} />

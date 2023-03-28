@@ -104,7 +104,7 @@ class DummyServer {
           }
           if (Math.random() < 0.5) {
             this.progress[progressIndex] = 100;
-            this.fileErrors[progressIndex] = `File "${fileToUpload.name}" can't be uploaded to the server`;
+            this.fileErrors[progressIndex] = `File "${fileToUpload.name}" is not accepted by server`;
             onProgress([...this.progress], this.globalError, [...this.fileErrors]);
             upload();
             return;
@@ -129,46 +129,71 @@ class DummyServer {
   }
 }
 
-export function useFileUploadState() {
+export function useFileUploadState({ onSuccess }: { onSuccess: () => void }) {
   const [files, setFiles] = useState<File[]>([]);
   const [validationErrors, setValidationErrors] = useState<FileError[]>([]);
-  const [progress, setProgress] = useState<number[]>([]);
-  const [serverError, setServerError] = useState<null | string>(null);
-  const [serverFileErrors, setServerFileErrors] = useState<(null | string)[]>([]);
+  const [serverState, setServerState] = useState<{
+    progress: number[];
+    globalError: null | string;
+    fileErrors: (null | string)[];
+  }>({
+    progress: [],
+    globalError: null,
+    fileErrors: [],
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    if (files.length > 0 && validationErrors.length === 0) {
+    if (submitted && files.length > 0 && validationErrors.length === 0) {
       const server = new DummyServer();
-      server.upload(files, (progress, serverError, fileErrors) => {
-        setProgress(progress);
-        setServerError(serverError);
-        setServerFileErrors(fileErrors);
-      });
+      server.upload(files, (progress, globalError, fileErrors) =>
+        setServerState({ progress, globalError, fileErrors })
+      );
       return () => server.cancel();
     }
-  }, [files, validationErrors]);
+  }, [submitted, files, validationErrors]);
+
+  const emptySubmissionError = submitted && files.length === 0 ? 'No file(s) submitted' : null;
+
+  const showSuccess =
+    submitted &&
+    serverState.progress.length !== 0 &&
+    serverState.progress.every(p => p === 100) &&
+    !serverState.globalError &&
+    serverState.fileErrors.filter(Boolean).length === 0;
+
+  useEffect(() => {
+    if (showSuccess) {
+      onSuccess();
+    }
+  }, [showSuccess, onSuccess]);
 
   return {
     files,
-    progress,
-    serverError: serverError ?? serverFileErrors.find(e => e),
-    validationError: formatValidationFileErrors(validationErrors),
+    progress: serverState.progress,
+    serverError: serverState.globalError ?? serverState.fileErrors.find(e => e),
+    validationError: emptySubmissionError ?? formatValidationFileErrors(validationErrors),
+    submitted,
     onChange: (files: File[], validationErrors: FileError[]) => {
       setFiles(files);
       setValidationErrors(validationErrors);
-      setProgress(files.map(() => 0));
-      setServerError(null);
-      setServerFileErrors(files.map(() => null));
+      setServerState({ progress: files.map(() => 0), globalError: null, fileErrors: files.map(() => null) });
+      setSubmitted(false);
     },
-    onRefresh: () => setFiles([...files]),
+    onSubmit: () => {
+      setSubmitted(true);
+    },
+    onRefresh: () => {
+      setFiles([...files]);
+    },
   };
 }
 
-export function formatFileSize(bytes: number): string {
+function formatFileSize(bytes: number): string {
   return bytes < SIZE.MB ? `${(bytes / SIZE.KB).toFixed(2)} KB` : `${(bytes / SIZE.MB).toFixed(2)} MB`;
 }
 
-export function formatValidationFileErrors(errors: FileError[]) {
+function formatValidationFileErrors(errors: FileError[]) {
   if (errors.length === 0) {
     return null;
   }

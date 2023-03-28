@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import { AppLayout, Box, FileUpload, FormField, Header, Link } from '~components';
+import React, { useCallback, useEffect, useState } from 'react';
+import { AppLayout, Box, Button, FileUpload, Flashbar, Form, FormField, Header, Input, Link } from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
 import {
   FileError,
-  formatValidationFileErrors,
   SIZE,
   useFileUploadState,
   validateDuplicateFileNames,
@@ -25,7 +24,8 @@ interface InfoContent {
 }
 
 interface FileUploadScenarioProps {
-  onInfo?: (content: InfoContent) => void;
+  onInfo: (content: InfoContent) => void;
+  onSuccess: () => void;
 }
 
 const defaultToolsContent: InfoContent = {
@@ -71,26 +71,35 @@ const contractsToolsContent: InfoContent = {
 };
 
 export default function FileUploadScenarios() {
-  const [profileImageFile, setProfileImageFile] = useState<File[]>([]);
-  const [profileImageErrors, setProfileErrors] = useState<FileError[]>([]);
-
-  const [contractFiles, setContractFiles] = useState<File[]>([]);
-  const [contractsErrors, setContractsErrors] = useState<FileError[]>([]);
-
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(defaultToolsContent);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const onInfo = (content: InfoContent) => {
     setToolsOpen(!toolsOpen || toolsContent !== content);
     setToolsContent(content);
   };
 
+  const onSuccess = useCallback(() => {
+    setShowSuccess(true);
+
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
+  }, []);
+
   return (
     <AppLayout
       contentType="form"
       ariaLabels={appLayoutLabels}
       navigationOpen={navigationOpen}
+      notifications={
+        showSuccess && (
+          <Flashbar items={[{ type: 'success', header: 'File(s) uploaded', statusIconAriaLabel: 'success' }]} />
+        )
+      }
+      stickyNotifications={true}
       onNavigationChange={event => setNavigationOpen(event.detail.open)}
       toolsOpen={toolsOpen}
       onToolsChange={event => setToolsOpen(event.detail.open)}
@@ -99,78 +108,20 @@ export default function FileUploadScenarios() {
       content={
         <SpaceBetween size="l">
           <Header variant="h1">File upload scenarios</Header>
-          <SpaceBetween size="m">
-            <FormField
-              errorText={formatValidationFileErrors(profileImageErrors)}
-              label="Profile picture"
-              description="Upload a picture of yourself"
-              info={
-                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
-                  info
-                </Link>
-              }
-              constraintText="File size must not exceed 1 MB"
-            >
-              <FileUpload
-                value={profileImageFile}
-                onChange={event => {
-                  setProfileImageFile(event.detail.value);
-                  setProfileErrors(validateProfilePictureFile(event.detail.value[0]));
-                }}
-                accept="image/png, image/jpeg"
-                showFileType={true}
-                showFileSize={true}
-                showFileLastModified={true}
-                showFileThumbnail={true}
-                i18nStrings={i18nStrings}
-                fileProps={[{ status: profileImageErrors.length > 0 ? 'error' : 'success' }]}
-              />
-            </FormField>
 
-            <FormField
-              errorText={formatValidationFileErrors(contractsErrors)}
-              label="Contracts"
-              description="Upload your contract with all amendments"
-              info={
-                <Link variant="info" onFollow={() => onInfo(contractsToolsContent)}>
-                  info
-                </Link>
-              }
-              constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
-            >
-              <FileUpload
-                multiple={true}
-                limit={3}
-                value={contractFiles}
-                onChange={event => {
-                  setContractFiles(event.detail.value);
-                  setContractsErrors(validateContractFiles(event.detail.value));
-                }}
-                accept="application/pdf, image/png, image/jpeg"
-                showFileType={true}
-                showFileSize={true}
-                showFileLastModified={true}
-                showFileThumbnail={true}
-                i18nStrings={i18nStrings}
-                fileProps={contractFiles.map(file => ({
-                  status: contractsErrors.find(error => error.file === file) ? 'error' : 'success',
-                }))}
-              />
-            </FormField>
-          </SpaceBetween>
-
-          <StandaloneFileUploadScenario onInfo={onInfo} />
-          <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} />
-          <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} />
-          <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} />
+          <StandaloneFileUploadScenario onInfo={onInfo} onSuccess={onSuccess} />
+          <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} onSuccess={onSuccess} />
+          <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} onSuccess={onSuccess} />
+          <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} onSuccess={onSuccess} />
         </SpaceBetween>
       }
     />
   );
 }
 
-function StandaloneFileUploadScenario({ onInfo }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState();
+function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
+  const fileState = useFileUploadState({ onSuccess });
+
   return (
     <SpaceBetween size="m">
       <Header
@@ -185,7 +136,7 @@ function StandaloneFileUploadScenario({ onInfo }: FileUploadScenarioProps) {
         label="Contracts"
         description="Upload your contract with all amendments"
         info={
-          <Link variant="info" onFollow={() => onInfo?.(contractsToolsContent)}>
+          <Link variant="info" onFollow={() => onInfo(contractsToolsContent)}>
             info
           </Link>
         }
@@ -205,7 +156,10 @@ function StandaloneFileUploadScenario({ onInfo }: FileUploadScenarioProps) {
           multiple={true}
           limit={3}
           value={fileState.files}
-          onChange={event => fileState.onChange(event.detail.value, validateContractFiles(event.detail.value))}
+          onChange={event => {
+            fileState.onChange(event.detail.value, validateContractFiles(event.detail.value));
+            fileState.onSubmit();
+          }}
           accept="application/pdf, image/png, image/jpeg"
           showFileType={true}
           showFileSize={true}
@@ -218,7 +172,11 @@ function StandaloneFileUploadScenario({ onInfo }: FileUploadScenarioProps) {
   );
 }
 
-function FileUploadInFormWithUploadOnSubmitScenario({ onInfo }: FileUploadScenarioProps) {
+function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
+  const fileState = useFileUploadState({ onSuccess });
+  const [alias, setAlias] = useState('');
+  const [aliasError, setAliasError] = useState('');
+
   return (
     <SpaceBetween size="m">
       <Header
@@ -227,6 +185,73 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo }: FileUploadScenar
       >
         Scenario 2: File upload form with on-submit upload and validation
       </Header>
+
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          fileState.onChange(fileState.files, validateProfilePictureFile(fileState.files[0]));
+          if (alias.trim().length > 0) {
+            fileState.onSubmit();
+          } else {
+            setAliasError('Alias must not be empty');
+          }
+        }}
+      >
+        <Form
+          actions={
+            <Button variant="primary" formAction="submit">
+              Upload
+            </Button>
+          }
+        >
+          <SpaceBetween size="m">
+            <FormField
+              errorText={fileState.serverError ?? fileState.validationError}
+              label="Profile picture"
+              description="Upload a picture of yourself"
+              info={
+                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
+                  info
+                </Link>
+              }
+              constraintText="File size must not exceed 1 MB"
+              secondaryControl={
+                fileState.submitted &&
+                fileState.files.length > 0 && (
+                  <UploadProgress
+                    files={fileState.files}
+                    progress={fileState.progress}
+                    error={!!fileState.serverError}
+                  />
+                )
+              }
+            >
+              <FileUpload
+                value={fileState.files}
+                onChange={event => {
+                  fileState.onChange(event.detail.value, []);
+                }}
+                accept="image/png, image/jpeg"
+                showFileType={true}
+                showFileSize={true}
+                showFileLastModified={true}
+                showFileThumbnail={true}
+                i18nStrings={i18nStrings}
+              />
+            </FormField>
+
+            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
+              <Input
+                value={alias}
+                onChange={e => {
+                  setAlias(e.detail.value);
+                  setAliasError('');
+                }}
+              />
+            </FormField>
+          </SpaceBetween>
+        </Form>
+      </form>
     </SpaceBetween>
   );
 }
