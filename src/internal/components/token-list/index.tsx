@@ -10,6 +10,7 @@ import { useUniqueId } from '../../hooks/use-unique-id';
 
 interface TokenListProps<Item> {
   alignment: 'vertical' | 'horizontal';
+  toggleAlignment?: 'vertical' | 'horizontal';
   items: readonly Item[];
   limit?: number;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
@@ -19,6 +20,7 @@ interface TokenListProps<Item> {
 
 export function TokenList<Item>({
   alignment = 'vertical',
+  toggleAlignment = 'vertical',
   items,
   limit,
   renderItem,
@@ -33,7 +35,7 @@ export function TokenList<Item>({
   const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
   return (
-    <div className={styles.root}>
+    <div className={clsx(styles.root, styles[`root-${toggleAlignment}`])}>
       <ul id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
         {slicedItems.map((item, itemIndex) => {
           const { ariaLabel, disabled } = getItemAttributes(item, itemIndex);

@@ -318,6 +318,7 @@ const PropertyFilter = React.forwardRef(
             <InternalSpaceBetween size="xs" direction="horizontal">
               <TokenList
                 alignment="horizontal"
+                toggleAlignment="horizontal"
                 limit={tokenLimit}
                 items={tokens}
                 getItemAttributes={token => {

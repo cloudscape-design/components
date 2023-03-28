@@ -9,6 +9,16 @@
 
 .root {
   @include styles.styles-reset;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs;
+}
+.root-horizontal {
+  align-items: center;
+}
+.root-vertical {
+  flex-direction: column;
 }
 
 .list {
@@ -53,7 +63,6 @@
   background-color: transparent;
   border: styles.$control-border-width solid transparent;
 
-  margin-top: awsui.$space-scaled-xs;
   padding: 0;
 
   // Icon svg has one pixel around it. We need to shift the button one

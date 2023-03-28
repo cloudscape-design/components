@@ -107,11 +107,6 @@
   background-color: awsui.$color-border-divider-default;
 }
 
-.toggle-collapsed {
-  margin-top: calc(-1 * #{awsui.$space-scaled-xxs});
-  margin-left: awsui.$space-xs;
-}
-
 .token-trigger {
   @include styles.text-wrapping;
 }
