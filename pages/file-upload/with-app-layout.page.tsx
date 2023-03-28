@@ -6,10 +6,14 @@ import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
-
-const KB = 1000;
-const MB = 1000 ** 2;
-const contractFileNamePattern = /[\w]+_(contract)|(amendment_[\d]+).pdf/;
+import {
+  SIZE,
+  validateDuplicateFileNames,
+  validateFileExtensions,
+  validateFileNameNotEmpty,
+  validateFileSize,
+  validateTotalFileSize,
+} from './validations';
 
 const defaultToolsContent = {
   header: 'File upload',
@@ -180,7 +184,7 @@ function validateProfilePictureFile(file: File | undefined): FileError[] {
   const errors: FileError[] = [];
   const addError = (file: null | File, error: null | string) => error && errors.push({ file, error });
 
-  addError(file, validateFileSize(file, 1 * MB));
+  addError(file, validateFileSize(file, 1 * SIZE.MB));
   addError(file, validateFileNameNotEmpty(file));
   addError(file, validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
 
@@ -196,8 +200,8 @@ function validateContractFiles(files: File[]): FileError[] {
     }
   };
 
-  addErrors(files, file => validateFileSize(file, 250 * KB));
-  addError(null, validateTotalFileSize(files, 750 * KB));
+  addErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
+  addError(null, validateTotalFileSize(files, 750 * SIZE.KB));
   addErrors(files, validateFileNameNotEmpty);
   addError(null, validateDuplicateFileNames(files));
   addErrors(files, file => validateFileExtensions(file, ['pdf']));
@@ -206,58 +210,9 @@ function validateContractFiles(files: File[]): FileError[] {
   return errors;
 }
 
-function validateFileSize(file: File, maxFileSize: number): null | string {
-  if (file.size > maxFileSize) {
-    return `File "${file.name}" size is above the allowed maximum (${formatFileSize(maxFileSize)})`;
-  }
-  return null;
-}
-
-function validateTotalFileSize(files: File[], maxTotalSize: number): null | string {
-  const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-  if (totalSize > maxTotalSize) {
-    return `Files combined size (${formatFileSize(totalSize)}) is above the allowed maximum (${formatFileSize(
-      maxTotalSize
-    )})`;
-  }
-  return null;
-}
-
-function validateDuplicateFileNames(files: File[]): null | string {
-  const fileNames = files
-    .map(file => file.name)
-    .sort()
-    .reduce((map, fileName) => map.set(fileName, (map.get(fileName) ?? 0) + 1), new Map<string, number>());
-  const duplicateName = files.find(file => fileNames.get(file.name)! > 1)?.name;
-  if (duplicateName !== undefined) {
-    return `Files with duplicate names ("${duplicateName}") are not allowed`;
-  }
-  return null;
-}
-
-function validateFileNameNotEmpty(file: File): null | string {
-  if (file.name.length === 0) {
-    return 'Empty file name is not allowed.';
-  }
-  return null;
-}
-
-function validateFileExtensions(file: File, extensions: string[]): null | string {
-  const fileNameParts = file.name.split('.');
-  const fileExtension = fileNameParts[fileNameParts.length - 1];
-  if (!extensions.includes(fileExtension.toLowerCase())) {
-    return `File "${file.name}" is not supported. Allowed extensions are ${extensions.map(e => `"${e}"`).join(', ')}.`;
-  }
-  return null;
-}
-
 function validateContractFilePattern(file: File) {
-  if (!file.name.match(contractFileNamePattern)) {
+  if (!file.name.match(/[\w]+_(contract)|(amendment_[\d]+).pdf/)) {
     return `File "${file.name}" does not satisfy naming guidelines. Check "info" for details.`;
   }
   return null;
-}
-
-function formatFileSize(bytes: number): string {
-  return bytes < MB ? `${(bytes / KB).toFixed(2)} KB` : `${(bytes / MB).toFixed(2)} MB`;
 }
