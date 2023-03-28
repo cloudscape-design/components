@@ -39,16 +39,26 @@ export function useStableScrollPosition<T extends HTMLElement>(
   activeElementRef: React.RefObject<T>
 ): UseStableScrollPositionResult {
   const scrollRef = useRef<Parameters<HTMLBodyElement['scroll']>>();
+  const scrollableParentRef = useRef<HTMLElement>();
 
   const storeScrollPosition = useCallback(() => {
-    const scrollableParent = getScrollableParent(activeElementRef.current ?? document.body);
+    if (!activeElementRef.current) {
+      return;
+    }
+
+    const scrollableParent = getScrollableParent(activeElementRef.current);
     if (scrollableParent) {
+      scrollableParentRef.current = scrollableParent;
       scrollRef.current = [scrollableParent.scrollLeft, scrollableParent.scrollTop];
     }
   }, [activeElementRef]);
 
   const restoreScrollPosition = useCallback(() => {
-    const scrollableParent = getScrollableParent(activeElementRef.current ?? document.body);
+    if (!activeElementRef.current || !scrollableParentRef.current) {
+      return;
+    }
+
+    const scrollableParent = scrollableParentRef.current;
     if (
       scrollRef.current &&
       scrollRef.current.toString() !== '0,0' &&
