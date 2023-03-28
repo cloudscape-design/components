@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useContext } from 'react';
 import styles from './header.scss';
 import { Link } from 'react-router-dom';
-import Preferences from './preferences';
+import ThemeSwitcher from './theme-switcher';
 import AppContext from '../app-context';
 
 export default function Header({ sticky }: { sticky?: boolean }) {
@@ -14,7 +14,7 @@ export default function Header({ sticky }: { sticky?: boolean }) {
       {/* #h selector for compatibility with global navigation */}
       <header id="h" className={clsx(styles.header, sticky && styles['header-sticky'])}>
         <Link to={`/${mode}/`}>Demo Assets</Link>
-        <Preferences />
+        <ThemeSwitcher />
       </header>
     </>
   );
