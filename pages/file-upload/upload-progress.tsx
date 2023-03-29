@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { Button, ProgressBar, StatusIndicator } from '~components';
-import SpaceBetween from '~components/space-between';
 
 interface UploadProgressProps {
   files: File[];
@@ -24,14 +23,18 @@ export function UploadProgress({ files, progress, error, onRefresh }: UploadProg
   const uploadedSize = files.reduce((sum, file, index) => sum + (file.size * progress[index]) / 100, 0);
   const totalProgress = Math.round(100 * (uploadedSize / totalSize));
   return (
-    <SpaceBetween direction="horizontal" size="s">
+    <div
+      style={{ display: 'flex', height: '100%', width: '100%', alignItems: 'center', minWidth: '300px', gap: '16px' }}
+    >
       <StatusIndicator type={error ? 'error' : totalProgress < 100 ? 'in-progress' : 'success'}>
-        Files uploaded {progress.length} / {progress.filter(p => p === 100).length}
+        Uploaded {progress.length} / {progress.filter(p => p === 100).length}
       </StatusIndicator>
 
-      <ProgressBar value={totalProgress} />
+      <div style={{ flex: '1' }}>
+        <ProgressBar value={totalProgress} />
+      </div>
 
       {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
-    </SpaceBetween>
+    </div>
   );
 }

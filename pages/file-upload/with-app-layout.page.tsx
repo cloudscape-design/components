@@ -218,6 +218,12 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
               Upload
             </Button>
           }
+          secondaryActions={
+            fileState.submitted &&
+            fileState.files.length > 0 && (
+              <UploadProgress files={fileState.files} progress={fileState.progress} error={!!fileState.serverError} />
+            )
+          }
         >
           <SpaceBetween size="m">
             <FileUpload
@@ -241,16 +247,6 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
                 </Link>
               }
               constraintText="File size must not exceed 1 MB"
-              secondaryControl={
-                fileState.submitted &&
-                fileState.files.length > 0 && (
-                  <UploadProgress
-                    files={fileState.files}
-                    progress={fileState.progress}
-                    error={!!fileState.serverError}
-                  />
-                )
-              }
             />
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
@@ -397,6 +393,12 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
               Upload
             </Button>
           }
+          secondaryActions={
+            fileState.submitted &&
+            fileState.files.length > 0 && (
+              <UploadProgress files={fileState.files} progress={fileState.progress} error={!!fileState.serverError} />
+            )
+          }
         >
           <SpaceBetween size="m">
             <FileUpload
@@ -420,16 +422,6 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
                 </Link>
               }
               constraintText="File size must not exceed 1 MB"
-              secondaryControl={
-                fileState.submitted &&
-                fileState.files.length > 0 && (
-                  <UploadProgress
-                    files={fileState.files}
-                    progress={fileState.progress}
-                    error={!!fileState.serverError}
-                  />
-                )
-              }
             />
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
