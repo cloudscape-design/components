@@ -61,6 +61,7 @@ $active-separator-width: 2px;
   width: 0;
   top: 0;
   bottom: 0;
+  z-index: 12; // Higher than sticky-columns
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     display: block;
