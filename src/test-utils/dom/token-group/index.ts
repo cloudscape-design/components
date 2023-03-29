@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import selectors from '../../../token-group/styles.selectors.js';
 import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
+import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import TokenWrapper from './token';
 
 export default class TokenGroupWrapper extends ComponentWrapper {
@@ -30,6 +31,6 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    * Returns the token toggle button.
    */
   findTokenToggle(): ElementWrapper | null {
-    return this.findByClassName(selectors.toggle);
+    return this.findByClassName(tokenListSelectors.toggle);
   }
 }
