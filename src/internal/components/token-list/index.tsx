@@ -23,11 +23,12 @@ export default function TokenList<Item>({
   const hasItems = items.length > 0;
   const hasHiddenItems = hasItems && limit !== undefined && items.length > limit;
   const visibleItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
+  const hasVisibleItems = visibleItems.length > 0;
 
   const toggle = hasHiddenItems ? (
     <div className={styles[`toggle-container-${alignment}`]}>
       <TokenLimitToggle
-        controlId={controlId}
+        controlId={hasVisibleItems ? controlId : undefined}
         allHidden={limit === 0}
         expanded={expanded}
         numberOfHiddenOptions={items.length - visibleItems.length}
@@ -54,7 +55,7 @@ export default function TokenList<Item>({
 
   return (
     <InternalSpaceBetween className={styles.root} size="xs">
-      {hasItems && (
+      {hasVisibleItems && (
         <InternalSpaceBetween id={controlId} direction={alignment} size="xs" className={styles.list}>
           {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
         </InternalSpaceBetween>

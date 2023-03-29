@@ -9,7 +9,7 @@ import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
 interface TokenLimitToggleProps {
-  controlId: string;
+  controlId?: string;
   allHidden: boolean;
   expanded: boolean;
   numberOfHiddenOptions: number;
