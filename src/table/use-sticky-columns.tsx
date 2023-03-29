@@ -83,6 +83,7 @@ export const useStickyColumns = ({
 }: StickyColumnParams) => {
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
+  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
 
   const { start = 0, end = 0 } = stickyColumns || {};
   const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
@@ -91,24 +92,8 @@ export const useStickyColumns = ({
   const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
 
-  const shouldDisableStickyColumns = () => {
-    // We allow the table to have a minimum of 150px besides the sum of the widths of the sticky columns
-    const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
-    if (!stickyColumns) {
-      return true;
-    }
-
-    const shouldDisable =
-      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
-
-    if (shouldDisable) {
-      warnOnce(
-        'Table',
-        `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
-      );
-    }
-    return shouldDisable;
-  };
+  // We allow the table to have a minimum of 150px of available space besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
     return {
@@ -129,6 +114,19 @@ export const useStickyColumns = ({
     );
   }, [visibleColumnsLength, hasSelection]);
 
+  useEffect(() => {
+    const shouldDisable =
+      !stickyColumns ||
+      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+    if (shouldDisable) {
+      warnOnce(
+        'Table',
+        `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
+      );
+    }
+    setShouldDisable(shouldDisable);
+  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength]);
+
   useLayoutEffect(() => {
     // First checks whether there are any sticky columns to calculate the widths for.
     // If there are none, the effect returns and does nothing.
@@ -143,7 +141,7 @@ export const useStickyColumns = ({
     cellWidths,
     setCellWidths,
     getStickyColumn,
-    shouldDisableStickyColumns,
+    shouldDisableStickyColumns: shouldDisable,
     startStickyColumnsWidth,
     endStickyColumnsWidth,
   };

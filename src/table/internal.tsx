@@ -199,7 +199,7 @@ const InternalTable = forwardRef(
       containerWidth,
     });
 
-    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns();
+    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns;
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -404,7 +404,7 @@ const InternalTable = forwardRef(
 
                           // Sticky columns
                           const stickyColumn = getStickyColumn(colIndex);
-                          const { isSticky, stickyStyles } = stickyColumn;
+                          const { isSticky = false, stickyStyles = {} } = !disableStickyColumns ? stickyColumn : {};
 
                           return (
                             <TableBodyCell
