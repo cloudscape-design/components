@@ -21,6 +21,11 @@
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
   &-freeze {
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-paced;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 11;

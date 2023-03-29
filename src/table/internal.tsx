@@ -106,7 +106,6 @@ const InternalTable = forwardRef(
 
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
-
     useImperativeHandle(
       ref,
       () => ({
@@ -197,6 +196,8 @@ const InternalTable = forwardRef(
       hasSelection,
       stickyColumns,
       containerWidth,
+      tableRefObject,
+      wrapperRefObject,
     });
 
     const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns;
@@ -231,6 +232,7 @@ const InternalTable = forwardRef(
       cellWidths,
       stickyColumns,
     };
+
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
       <ColumnWidthsProvider

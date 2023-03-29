@@ -103,6 +103,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
   &-freeze {
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-paced;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 11;
