@@ -10,7 +10,6 @@ import icons from '../../../lib/components/icon/icons';
 import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
-import spacebetweenSelectors from '../../../lib/components/space-between/styles.selectors.js';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);
@@ -53,13 +52,13 @@ describe('TokenGroup', () => {
 
   test('aligns tokens horizontally by default', () => {
     const wrapper = renderTokenGroup({ items, onDismiss });
-    expect(wrapper.findByClassName(spacebetweenSelectors.horizontal)).not.toBeNull();
+    expect(wrapper.findByClassName(tokenListSelectors['list-horizontal'])).not.toBeNull();
   });
 
   test('applies the alignment correctly', () => {
     const wrapper = renderTokenGroup({ alignment: 'vertical', items, onDismiss });
-    expect(wrapper.findByClassName(spacebetweenSelectors.horizontal)).toBeNull();
-    expect(wrapper.findByClassName(spacebetweenSelectors.vertical)).not.toBeNull();
+    expect(wrapper.findByClassName(tokenListSelectors['list-horizontal'])).toBeNull();
+    expect(wrapper.findByClassName(tokenListSelectors['list-vertical'])).not.toBeNull();
   });
 
   describe('Token', () => {

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import selectors from '../../../token-group/styles.selectors.js';
-import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import TokenWrapper from './token';
 
@@ -22,7 +21,7 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    */
   findToken(tokenIndex: number): TokenWrapper | null {
     return this.findComponent(
-      `.${spaceBetweenSelectors.child}:nth-child(${tokenIndex}) > .${TokenWrapper.rootSelector}`,
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenWrapper.rootSelector}`,
       TokenWrapper
     );
   }

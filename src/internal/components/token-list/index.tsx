@@ -43,7 +43,11 @@ export default function TokenList<Item>({
       <div className={styles.root}>
         {hasItems && (
           <div id={controlId} className={clsx(styles.list, styles['list-horizontal'])}>
-            {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
+            {visibleItems.map((item, itemIndex) => (
+              <div key={itemIndex} className={styles['list-item']}>
+                {renderItem(item, itemIndex)}
+              </div>
+            ))}
             {toggle}
             {after && <div className={styles.separator} />}
             {after}
@@ -57,7 +61,11 @@ export default function TokenList<Item>({
     <div className={styles.root}>
       {hasVisibleItems && (
         <div id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
-          {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
+          {visibleItems.map((item, itemIndex) => (
+            <div key={itemIndex} className={styles['list-item']}>
+              {renderItem(item, itemIndex)}
+            </div>
+          ))}
         </div>
       )}
       {toggle}

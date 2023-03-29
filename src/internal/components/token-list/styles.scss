@@ -26,6 +26,10 @@
   flex-direction: column;
 }
 
+.list-item {
+  /* used in test-utils */
+}
+
 .toggle-container-inline {
   padding-left: awsui.$space-xs;
   display: flex;
