@@ -14,11 +14,9 @@ export interface DragHandleProps {
 
 function DragHandle({ attributes, listeners }: DragHandleProps, ref: ForwardedRef<HTMLButtonElement>) {
   return (
-    <div role="application">
-      <Handle ref={ref} className={styles.handle} {...attributes} {...listeners}>
-        <DragHandleIcon />
-      </Handle>
-    </div>
+    <Handle ref={ref} className={styles.handle} {...attributes} {...listeners}>
+      <DragHandleIcon />
+    </Handle>
   );
 }
 

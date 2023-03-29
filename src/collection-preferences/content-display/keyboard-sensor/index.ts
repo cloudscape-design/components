@@ -243,25 +243,19 @@ export class KeyboardSensor implements SensorInstance {
 
   static activators: Activators<KeyboardSensorOptions> = [
     {
-      eventName: 'onKeyDown' as const,
-      handler: (event: React.KeyboardEvent, { keyboardCodes = defaultKeyboardCodes, onActivation }, { active }) => {
-        const { code } = event.nativeEvent;
+      eventName: 'onClick' as const,
+      handler: (event: React.KeyboardEvent, { onActivation }, { active }) => {
+        const activator = active.activatorNode.current;
 
-        if (keyboardCodes.start.indexOf(code) !== -1) {
-          const activator = active.activatorNode.current;
-
-          if (activator && event.target !== activator) {
-            return false;
-          }
-
-          event.preventDefault();
-
-          onActivation?.({ event: event.nativeEvent });
-
-          return true;
+        if (activator && event.target !== activator) {
+          return false;
         }
 
-        return false;
+        event.preventDefault();
+
+        onActivation?.({ event: event.nativeEvent });
+
+        return true;
       },
     },
   ];
