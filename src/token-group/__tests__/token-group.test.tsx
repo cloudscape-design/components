@@ -9,6 +9,7 @@ import icons from '../../../lib/components/icon/icons';
 
 import selectors from '../../../lib/components/token-group/styles.selectors.js';
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
+import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 import spacebetweenSelectors from '../../../lib/components/space-between/styles.selectors.js';
 
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
@@ -150,7 +151,7 @@ describe('TokenGroup', () => {
     test('toggle button has aria-controls property that points to the token container', () => {
       const wrapper = renderTokenGroup({ items: generateItems(5), i18nStrings, limit: 2 });
 
-      const id = wrapper.findByClassName(spacebetweenSelectors.root)!.getElement().getAttribute('id');
+      const id = wrapper.findByClassName(tokenListSelectors.list)!.getElement().getAttribute('id');
       expect(wrapper.findTokenToggle()!.getElement()).toHaveAttribute('aria-controls', id);
     });
 

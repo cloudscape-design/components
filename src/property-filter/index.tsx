@@ -316,8 +316,7 @@ const PropertyFilter = React.forwardRef(
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
               <TokenList
-                alignment="horizontal"
-                toggleAlignment="horizontal"
+                alignment="inline"
                 limit={tokenLimit}
                 items={tokens}
                 renderItem={(token, tokenIndex) => (
@@ -346,11 +345,12 @@ const PropertyFilter = React.forwardRef(
                   limitShowFewer: i18nStrings.tokenLimitShowFewer,
                   limitShowMore: i18nStrings.tokenLimitShowMore,
                 }}
+                after={
+                  <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
+                    {i18nStrings.clearFiltersText}
+                  </InternalButton>
+                }
               />
-              <div className={styles.separator} />
-              <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
-                {i18nStrings.clearFiltersText}
-              </InternalButton>
             </InternalSpaceBetween>
           </div>
         )}

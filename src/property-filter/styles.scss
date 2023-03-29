@@ -100,13 +100,6 @@
   }
 }
 
-.separator {
-  margin: 0px awsui.$space-scaled-m;
-  height: 100%;
-  width: awsui.$border-divider-section-width;
-  background-color: awsui.$color-border-divider-default;
-}
-
 .token-trigger {
   @include styles.text-wrapping;
 }

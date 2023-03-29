@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
-import clsx from 'clsx';
 
 import { TokenLimitToggle } from './token-limit-toggle';
 import styles from './styles.css.js';
@@ -13,9 +12,9 @@ import { useUniqueId } from '../../hooks/use-unique-id';
 export default function TokenList<Item>({
   items,
   alignment,
-  toggleAlignment,
   renderItem,
   limit,
+  after,
   i18nStrings,
 }: TokenListProps<Item>) {
   const controlId = useUniqueId();
@@ -25,23 +24,43 @@ export default function TokenList<Item>({
   const hasHiddenItems = hasItems && limit !== undefined && items.length > limit;
   const visibleItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
+  const toggle = hasHiddenItems ? (
+    <div className={styles[`toggle-container-${alignment}`]}>
+      <TokenLimitToggle
+        controlId={controlId}
+        allHidden={limit === 0}
+        expanded={expanded}
+        numberOfHiddenOptions={items.length - visibleItems.length}
+        i18nStrings={i18nStrings}
+        onClick={() => setExpanded(!expanded)}
+      />
+    </div>
+  ) : null;
+
+  if (alignment === 'inline') {
+    return (
+      <div className={styles.root}>
+        {hasItems && (
+          <InternalSpaceBetween id={controlId} direction="horizontal" size="xs" className={styles.list}>
+            {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
+            {toggle}
+            {after && <div className={styles.separator} />}
+            {after}
+          </InternalSpaceBetween>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className={clsx(styles.root, styles[`root-${toggleAlignment}`])}>
+    <InternalSpaceBetween className={styles.root} size="xs">
       {hasItems && (
-        <InternalSpaceBetween id={controlId} direction={alignment} size="xs">
+        <InternalSpaceBetween id={controlId} direction={alignment} size="xs" className={styles.list}>
           {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
         </InternalSpaceBetween>
       )}
-      {hasHiddenItems && (
-        <TokenLimitToggle
-          controlId={controlId}
-          allHidden={limit === 0}
-          expanded={expanded}
-          numberOfHiddenOptions={items.length - visibleItems.length}
-          i18nStrings={i18nStrings}
-          onClick={() => setExpanded(!expanded)}
-        />
-      )}
-    </div>
+      {toggle}
+      {after}
+    </InternalSpaceBetween>
   );
 }
