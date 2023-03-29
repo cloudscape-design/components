@@ -76,6 +76,11 @@ export default () => {
       header: 'Description',
       cell: item => item.description || '-',
     },
+    {
+      id: 'description-8',
+      header: 'Description',
+      cell: item => <Link href="#">{item.description}</Link> || '-',
+    },
   ];
   const ITEMS = [
     {
@@ -132,6 +137,12 @@ export default () => {
   });
 
   const [stickyColumns, setStickyColumns] = React.useState<TableProps.StickyColumns>({ start: 1, end: 1 });
+  const [singleSelectedItems, setSingleSelectedItems] = React.useState([
+    { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
+  ]);
+  const [multiSelectedItems, setMultiSelectedItems] = React.useState([
+    { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
+  ]);
 
   useEffect(() => {
     setStickyColumns({
@@ -143,6 +154,7 @@ export default () => {
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
+          stripedRows={true}
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
@@ -181,6 +193,7 @@ export default () => {
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
+          resizableColumns={true}
           variant="embedded"
           preferences={
             <CollectionPreferences
@@ -215,10 +228,15 @@ export default () => {
 
         <Table
           selectionType="single"
+          selectedItems={singleSelectedItems}
+          onSelectionChange={({ detail: { selectedItems } }) => {
+            setSingleSelectedItems(selectedItems);
+          }}
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          trackBy={item => item.alt}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -251,6 +269,11 @@ export default () => {
         />
         <Table
           selectionType="multi"
+          selectedItems={multiSelectedItems}
+          onSelectionChange={({ detail: { selectedItems } }) => {
+            setMultiSelectedItems(selectedItems);
+          }}
+          trackBy={item => item.alt}
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
@@ -323,8 +346,36 @@ export default () => {
         />
 
         <Table
-          stickyColumns={stickyColumns}
           stickyHeader={true}
+          stickyColumns={preferences.stickyColumns}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                startColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                endColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
           columnDefinitions={[
             {
               id: 'inline-edit-start',
