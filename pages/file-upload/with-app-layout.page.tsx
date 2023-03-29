@@ -1,31 +1,41 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useState } from 'react';
-import { AppLayout, Box, Button, FileUpload, Flashbar, Form, FormField, Header, Input, Link, Tabs } from '~components';
+import React, { useCallback, useState } from 'react';
+import {
+  AppLayout,
+  Box,
+  Button,
+  Checkbox,
+  FileUpload,
+  Flashbar,
+  Form,
+  FormField,
+  Header,
+  Input,
+  Link,
+  Tabs,
+} from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
+import { UploadProgress } from './upload-progress';
+import { SIZE, ValidationState } from './utils';
 import {
-  ValidationState,
-  SIZE,
-  useFileUploadState,
   validateDuplicateFileNames,
   validateFileExtensions,
   validateFileNameNotEmpty,
   validateFileSize,
   validateTotalFileSize,
 } from './validations';
-import { UploadProgress } from './upload-progress';
+import { useFileUploadFormField, useFormField } from './form-helpers';
+import { DummyServer } from './dummy-server';
+
+const server = new DummyServer();
 
 interface InfoContent {
   header: string;
   content: React.ReactNode;
-}
-
-interface FileUploadScenarioProps {
-  onInfo: (content: InfoContent) => void;
-  onSuccess: () => void;
 }
 
 const defaultToolsContent: InfoContent = {
@@ -75,6 +85,11 @@ export default function FileUploadScenarios() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsContent, setToolsContent] = useState(defaultToolsContent);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [imitateServerFailure, setImitateServerFailure] = useState(false);
+  const [imitateServerValidation, setImitateServerValidation] = useState(false);
+
+  server.imitateServerError = imitateServerFailure;
+  server.imitateServerFileError = imitateServerValidation;
 
   const onInfo = (content: InfoContent) => {
     setToolsOpen(!toolsOpen || toolsContent !== content);
@@ -109,27 +124,82 @@ export default function FileUploadScenarios() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload scenarios</Header>
 
+          <SpaceBetween size="s" direction="horizontal">
+            <Checkbox checked={imitateServerFailure} onChange={event => setImitateServerFailure(event.detail.checked)}>
+              Imitate server failure
+            </Checkbox>
+            <Checkbox
+              checked={imitateServerValidation}
+              onChange={event => setImitateServerValidation(event.detail.checked)}
+            >
+              Imitate server validation
+            </Checkbox>
+          </SpaceBetween>
+
           <Tabs
             tabs={[
               {
                 id: '1',
                 label: 'Scenario 1',
-                content: <StandaloneFileUploadScenario onInfo={onInfo} onSuccess={onSuccess} />,
+                content: (
+                  <Scenario
+                    title="Scenario 1: Standalone file upload"
+                    description="When used as standalone files are uploaded to the server and validated upon selection"
+                  >
+                    <StandaloneFileUpload onInfo={onInfo} onSuccess={onSuccess} />
+                  </Scenario>
+                ),
               },
               {
                 id: '2',
                 label: 'Scenario 2',
-                content: <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} onSuccess={onSuccess} />,
+                content: (
+                  <Scenario
+                    title="Scenario 2: File upload form with on-submit upload and validation"
+                    description="When used in a form both server upload and validation can happen on form submit"
+                  >
+                    <FileUploadForm
+                      onInfo={onInfo}
+                      onSuccess={onSuccess}
+                      uploadOnSelect={false}
+                      validateOnSelect={false}
+                    />
+                  </Scenario>
+                ),
               },
               {
                 id: '3',
                 label: 'Scenario 3',
-                content: <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} onSuccess={onSuccess} />,
+                content: (
+                  <Scenario
+                    title="Scenario 3: File upload form with in-place upload and validation"
+                    description="When used in a form it is still possible and advised to use in-place upload and validation"
+                  >
+                    <FileUploadForm
+                      onInfo={onInfo}
+                      onSuccess={onSuccess}
+                      uploadOnSelect={true}
+                      validateOnSelect={true}
+                    />
+                  </Scenario>
+                ),
               },
               {
                 id: '4',
                 label: 'Scenario 4',
-                content: <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} onSuccess={onSuccess} />,
+                content: (
+                  <Scenario
+                    title="Scenario 4: File upload form with on-submit upload and mixed validation"
+                    description="When used in a form with on-submit upload both in-place and on-submit validation might exist"
+                  >
+                    <FileUploadForm
+                      onInfo={onInfo}
+                      onSuccess={onSuccess}
+                      uploadOnSelect={false}
+                      validateOnSelect={true}
+                    />
+                  </Scenario>
+                ),
               },
             ]}
           />
@@ -139,394 +209,184 @@ export default function FileUploadScenarios() {
   );
 }
 
-function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState();
-
-  useEffect(() => {
-    if (fileState.success) {
-      onSuccess();
-    }
-  }, [fileState.success, onSuccess]);
-
+function Scenario({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
   return (
     <SpaceBetween size="m">
-      <Header
-        variant="h2"
-        description="When used as standalone files are uploaded to the server and validated upon selection"
-      >
-        Scenario 1: Standalone file upload
+      <Header variant="h2" description={description}>
+        {title}
       </Header>
 
-      <FileUpload
-        multiple={true}
-        limit={3}
-        value={fileState.files}
-        onChange={event => {
-          fileState.onChange(event.detail.value, validateContractFiles(event.detail.value));
-          fileState.onSubmit();
-        }}
-        accept="application/pdf, image/png, image/jpeg"
-        showFileType={true}
-        showFileSize={true}
-        showFileLastModified={true}
-        showFileThumbnail={true}
-        i18nStrings={i18nStrings}
-        errorText={fileState.serverError ?? fileState.validationError}
-        fileErrors={fileState.fileErrors}
-        label="Contracts"
-        description="Upload your contract with all amendments"
-        info={
-          <Link variant="info" onFollow={() => onInfo(contractsToolsContent)}>
-            info
-          </Link>
-        }
-        constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
-        secondaryControl={
-          fileState.files.length > 0 ? (
-            <UploadProgress
-              files={fileState.files}
-              progress={fileState.progress}
-              error={!!fileState.serverError}
-              onRefresh={fileState.onRefresh}
-            />
-          ) : null
-        }
-      />
+      <Box>{children}</Box>
     </SpaceBetween>
   );
 }
 
-function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState();
-  const [alias, setAlias] = useState('');
-  const [aliasError, setAliasError] = useState('');
+function StandaloneFileUpload({
+  onInfo,
+  onSuccess,
+}: {
+  onInfo: (content: InfoContent) => void;
+  onSuccess: () => void;
+}) {
+  const contractsField = useFileUploadFormField({ onUploadReady: onSuccess });
+  return (
+    <FileUpload
+      multiple={true}
+      limit={3}
+      value={contractsField.value}
+      onChange={event => {
+        contractsField.onChange(event.detail.value, validateContractFiles(event.detail.value));
+        contractsField.onUpload(server);
+      }}
+      accept="application/pdf, image/png, image/jpeg"
+      showFileType={true}
+      showFileSize={true}
+      showFileLastModified={true}
+      showFileThumbnail={true}
+      i18nStrings={i18nStrings}
+      errorText={contractsField.error}
+      fileErrors={contractsField.fileErrors}
+      label="Contracts"
+      description="Upload your contract with all amendments"
+      info={
+        <Link variant="info" onFollow={() => onInfo(contractsToolsContent)}>
+          info
+        </Link>
+      }
+      constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+      secondaryControl={
+        contractsField.progress ? (
+          <UploadProgress
+            files={contractsField.value}
+            progress={contractsField.progress}
+            error={!!contractsField.error}
+            onRefresh={() => contractsField.onUpload(server)}
+          />
+        ) : null
+      }
+    />
+  );
+}
 
-  useEffect(() => {
-    if (fileState.success) {
-      onSuccess();
-    }
-  }, [fileState.success, onSuccess]);
+function FileUploadForm({
+  onInfo,
+  onSuccess,
+  validateOnSelect,
+  uploadOnSelect,
+}: {
+  onInfo: (content: InfoContent) => void;
+  onSuccess: () => void;
+  validateOnSelect: boolean;
+  uploadOnSelect: boolean;
+}) {
+  const profileImageField = useFileUploadFormField({ onUploadReady: uploadOnSelect ? undefined : onSuccess });
+  const aliasField = useFormField('');
+
+  const uploadProgress = profileImageField.progress && (
+    <UploadProgress
+      files={profileImageField.value}
+      progress={profileImageField.progress}
+      error={!!profileImageField.error}
+      onRefresh={uploadOnSelect ? () => profileImageField.onUpload(server) : undefined}
+    />
+  );
 
   return (
-    <SpaceBetween size="m">
-      <Header
-        variant="h2"
-        description="When used in a form both server upload and validation can happen on form submit"
-      >
-        Scenario 2: File upload form with on-submit upload and validation
-      </Header>
+    <form
+      onSubmit={e => {
+        e.preventDefault();
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
+        const profileImageError = validateProfilePictureFile(profileImageField.value, true);
+        const aliasError = aliasField.value.trim().length === 0 ? 'Alias must not be empty' : '';
 
-          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
-          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
+        profileImageError.hasError && profileImageField.onChange(profileImageField.value, profileImageError);
+        aliasError && aliasField.onChange(aliasField.value, aliasError);
 
-          if (!aliasError && !fileErrors.hasError) {
-            fileState.onChange([...fileState.files]);
-            fileState.onSubmit();
+        if (!profileImageError.hasError && !aliasError) {
+          if (uploadOnSelect) {
+            profileImageField.uploadStatus === 'ready' && onSuccess();
           } else {
-            setAliasError(aliasError);
-            fileState.onChange(fileState.files, fileErrors);
+            profileImageField.onUpload(server);
           }
-        }}
+        }
+      }}
+    >
+      <Form
+        actions={
+          <Button variant="primary" formAction="submit" loading={profileImageField.uploadStatus === 'loading'}>
+            Upload
+          </Button>
+        }
+        secondaryActions={!uploadOnSelect && uploadProgress}
       >
-        <Form
-          actions={
-            <Button
-              variant="primary"
-              formAction="submit"
-              loading={fileState.submitted && !fileState.serverError && !fileState.success}
-            >
-              Upload
-            </Button>
-          }
-          secondaryActions={
-            fileState.submitted &&
-            fileState.files.length > 0 && (
-              <UploadProgress files={fileState.files} progress={fileState.progress} error={!!fileState.serverError} />
-            )
-          }
-        >
-          <SpaceBetween size="m">
-            <FileUpload
+        <SpaceBetween size="m">
+          <FileUpload
+            ariaRequired={true}
+            value={profileImageField.value}
+            onChange={event => {
+              const validation = validateOnSelect ? validateProfilePictureFile(profileImageField.value) : undefined;
+              profileImageField.onChange(event.detail.value, validation);
+              if (uploadOnSelect) {
+                profileImageField.onUpload(server);
+              }
+            }}
+            accept="image/png, image/jpeg"
+            showFileType={true}
+            showFileSize={true}
+            showFileLastModified={true}
+            showFileThumbnail={true}
+            i18nStrings={i18nStrings}
+            errorText={profileImageField.error}
+            fileErrors={profileImageField.fileErrors}
+            label="Profile picture"
+            description="Upload a picture of yourself"
+            info={
+              <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
+                info
+              </Link>
+            }
+            constraintText="File size must not exceed 1 MB"
+            secondaryControl={uploadOnSelect && uploadProgress}
+          />
+
+          <FormField label="Alias" description="Specify your alias" errorText={aliasField.error}>
+            <Input
               ariaRequired={true}
-              value={fileState.files}
-              onChange={event => {
-                fileState.onChange(event.detail.value);
-              }}
-              accept="image/png, image/jpeg"
-              showFileType={true}
-              showFileSize={true}
-              showFileLastModified={true}
-              showFileThumbnail={true}
-              i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError}
-              fileErrors={fileState.fileErrors}
-              label="Profile picture"
-              description="Upload a picture of yourself"
-              info={
-                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
-                  info
-                </Link>
-              }
-              constraintText="File size must not exceed 1 MB"
+              value={aliasField.value}
+              onChange={e => aliasField.onChange(e.detail.value, '')}
             />
-
-            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
-              <Input
-                ariaRequired={true}
-                value={alias}
-                onChange={e => {
-                  setAlias(e.detail.value);
-                  setAliasError('');
-                }}
-              />
-            </FormField>
-          </SpaceBetween>
-        </Form>
-      </form>
-    </SpaceBetween>
+          </FormField>
+        </SpaceBetween>
+      </Form>
+    </form>
   );
 }
 
-function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState();
-  const [alias, setAlias] = useState('');
-  const [aliasError, setAliasError] = useState('');
+function validateProfilePictureFile(files: File[], required = false): ValidationState {
+  const state = new ValidationState(files.length);
 
-  return (
-    <SpaceBetween size="m">
-      <Header
-        variant="h2"
-        description="When used in a form it is still possible and advised to use in-place upload and validation"
-      >
-        Scenario 3: File upload form with in-place upload and validation
-      </Header>
+  state.addError(required && files.length === 0 ? 'No file selected' : null);
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
+  state.addFileErrors(files, file => validateFileSize(file, 1 * SIZE.MB));
+  state.addFileErrors(files, file => validateFileNameNotEmpty(file));
+  state.addFileErrors(files, file => validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
 
-          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
-          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
-
-          if (!aliasError && !fileErrors.hasError) {
-            fileState.success && onSuccess();
-          } else {
-            setAliasError(aliasError);
-            fileState.onChange(fileState.files, fileErrors);
-          }
-        }}
-      >
-        <Form
-          actions={
-            <Button
-              variant="primary"
-              formAction="submit"
-              loading={fileState.submitted && !fileState.serverError && !fileState.success}
-            >
-              Upload
-            </Button>
-          }
-        >
-          <SpaceBetween size="m">
-            <FileUpload
-              value={fileState.files}
-              onChange={event => {
-                fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
-                fileState.onSubmit();
-              }}
-              accept="image/png, image/jpeg"
-              showFileType={true}
-              showFileSize={true}
-              showFileLastModified={true}
-              showFileThumbnail={true}
-              i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError}
-              fileErrors={fileState.fileErrors}
-              label="Profile picture"
-              description="Upload a picture of yourself"
-              info={
-                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
-                  info
-                </Link>
-              }
-              constraintText="File size must not exceed 1 MB"
-              secondaryControl={
-                fileState.submitted &&
-                fileState.files.length > 0 && (
-                  <UploadProgress
-                    files={fileState.files}
-                    progress={fileState.progress}
-                    error={!!fileState.serverError}
-                    onRefresh={fileState.onRefresh}
-                  />
-                )
-              }
-            />
-
-            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
-              <Input
-                value={alias}
-                onChange={e => {
-                  setAlias(e.detail.value);
-                  setAliasError('');
-                }}
-              />
-            </FormField>
-          </SpaceBetween>
-        </Form>
-      </form>
-    </SpaceBetween>
-  );
-}
-
-function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: FileUploadScenarioProps) {
-  const fileState = useFileUploadState();
-  const [alias, setAlias] = useState('');
-  const [aliasError, setAliasError] = useState('');
-
-  useEffect(() => {
-    if (fileState.success) {
-      onSuccess();
-    }
-  }, [fileState.success, onSuccess]);
-
-  return (
-    <SpaceBetween size="m">
-      <Header
-        variant="h2"
-        description="When used in a form with on-submit upload both in-place and on-submit validation might exist"
-      >
-        Scenario 4: File upload form with on-submit upload and mixed validation
-      </Header>
-
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-
-          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
-          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
-
-          if (!aliasError && !fileErrors.hasError) {
-            fileState.onChange([...fileState.files]);
-            fileState.onSubmit();
-          } else {
-            setAliasError(aliasError);
-            fileState.onChange(fileState.files, fileErrors);
-          }
-        }}
-      >
-        <Form
-          actions={
-            <Button
-              variant="primary"
-              formAction="submit"
-              loading={fileState.submitted && !fileState.serverError && !fileState.success}
-            >
-              Upload
-            </Button>
-          }
-          secondaryActions={
-            fileState.submitted &&
-            fileState.files.length > 0 && (
-              <UploadProgress files={fileState.files} progress={fileState.progress} error={!!fileState.serverError} />
-            )
-          }
-        >
-          <SpaceBetween size="m">
-            <FileUpload
-              value={fileState.files}
-              onChange={event => {
-                fileState.onChange(event.detail.value, validateProfilePictureFile(event.detail.value[0]));
-              }}
-              accept="image/png, image/jpeg"
-              showFileType={true}
-              showFileSize={true}
-              showFileLastModified={true}
-              showFileThumbnail={true}
-              i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError}
-              fileErrors={fileState.fileErrors}
-              label="Profile picture"
-              description="Upload a picture of yourself"
-              info={
-                <Link variant="info" onFollow={() => onInfo(profilePictureToolsContent)}>
-                  info
-                </Link>
-              }
-              constraintText="File size must not exceed 1 MB"
-            />
-
-            <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
-              <Input
-                value={alias}
-                onChange={e => {
-                  setAlias(e.detail.value);
-                  setAliasError('');
-                }}
-              />
-            </FormField>
-          </SpaceBetween>
-        </Form>
-      </form>
-    </SpaceBetween>
-  );
-}
-
-function validateProfilePictureFile(file: File | undefined, required = false): ValidationState {
-  if (!file) {
-    return { hasError: required, errors: required ? ['No files selected'] : [], fileErrors: [] };
-  }
-
-  let hasError = false;
-  const fileErrors: string[][] = [[]];
-  const addError = (error: null | string) => {
-    hasError = hasError || !!error;
-    error && fileErrors[0].push(error);
-  };
-
-  addError(validateFileSize(file, 1 * SIZE.MB));
-  addError(validateFileNameNotEmpty(file));
-  addError(validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
-
-  return { hasError, errors: [], fileErrors };
+  return state;
 }
 
 function validateContractFiles(files: File[], required = false): ValidationState {
-  if (files.length === 0) {
-    return { hasError: required, errors: required ? ['No files selected'] : [], fileErrors: [] };
-  }
+  const state = new ValidationState(files.length);
 
-  let hasError = false;
-  const errors: string[] = [];
-  const fileErrors: string[][] = files.map(() => []);
+  state.addError(required && files.length === 0 ? 'No files selected' : null);
+  state.addError(validateTotalFileSize(files, 750 * SIZE.KB));
+  state.addError(validateDuplicateFileNames(files));
 
-  const addError = (error: null | string) => {
-    hasError = hasError || !!error;
-    error && errors.push(error);
-  };
-  const addFileErrors = (files: File[], validate: (file: File) => null | string) => {
-    for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
-      const fileError = validate(files[fileIndex]);
-      if (fileError) {
-        hasError = true;
-        fileErrors[fileIndex].push(fileError);
-      }
-    }
-  };
+  state.addFileErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
+  state.addFileErrors(files, file => validateFileNameNotEmpty(file));
+  state.addFileErrors(files, file => validateFileExtensions(file, ['pdf']));
+  state.addFileErrors(files, file => validateContractFilePattern(file));
 
-  addError(validateTotalFileSize(files, 750 * SIZE.KB));
-  addError(validateDuplicateFileNames(files));
-
-  addFileErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
-  addFileErrors(files, validateFileNameNotEmpty);
-  addFileErrors(files, file => validateFileExtensions(file, ['pdf']));
-  addFileErrors(files, validateContractFilePattern);
-
-  return { hasError, errors, fileErrors };
+  return state;
 }
 
 function validateContractFilePattern(file: File) {

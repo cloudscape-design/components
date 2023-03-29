@@ -34,7 +34,7 @@ export function UploadProgress({ files, progress, error, onRefresh }: UploadProg
         <ProgressBar value={totalProgress} />
       </div>
 
-      {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} />}
+      {error && onRefresh && <Button variant="inline-icon" iconName="refresh" onClick={onRefresh} formAction="none" />}
     </div>
   );
 }
