@@ -108,8 +108,8 @@ export interface ButtonProps extends BaseComponentProps {
    */
   variant?: ButtonProps.Variant;
 
-  /** The id of the <form> element to associate the button with. The value of this attribute must be the id of a <form> in the same document.
-   * use this property when the button is not an ancestor of a <form> element. e.g. in a Modal
+  /** The id of the form element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
+   *  Use when a button is not the ancestor of a form element, such as when used in a modal.
    */
   form?: string;
 
