@@ -1,0 +1,54 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles/tokens' as awsui;
+@use '../../styles' as styles;
+@use '../../hooks/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-scaled-xs;
+}
+.root-horizontal {
+  align-items: center;
+}
+.root-vertical {
+  flex-direction: column;
+}
+
+.toggle {
+  @include styles.styles-reset;
+  @include styles.link-default;
+
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: styles.$control-border-width solid transparent;
+
+  padding: 0;
+
+  // Icon svg has one pixel around it. We need to shift the button one
+  // pixel to the left to vertically align it with the input field
+  margin-left: -1px;
+
+  &:active,
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    text-decoration-color: transparent;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
+  }
+
+  > .description {
+    margin-left: awsui.$space-xxs;
+  }
+}

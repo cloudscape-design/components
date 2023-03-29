@@ -1,19 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
-
-import SpaceBetween from '../space-between/internal';
 
 import { TokenGroupProps } from './interfaces';
 import DismissButton from './dismiss-button';
-import SelectToggle from './toggle';
 
 import styles from './styles.css.js';
+import TokenList from '../internal/components/token-list';
 
 interface ItemAttributes {
   disabled?: boolean;
@@ -37,40 +34,23 @@ export default forwardRef(GenericTokenGroup) as <T>(
 ) => ReturnType<typeof GenericTokenGroup>;
 
 function GenericTokenGroup<Item>(
-  { items, alignment, renderItem, getItemAttributes, limit, ...props }: GenericTokenGroupProps<Item>,
+  { items, alignment, renderItem, getItemAttributes, limit, i18nStrings, ...props }: GenericTokenGroupProps<Item>,
   ref: React.Ref<HTMLDivElement>
 ) {
-  const [expanded, setExpanded] = useState(false);
-  const controlId = useUniqueId();
-
-  const hasItems = items.length > 0;
-  const hasHiddenItems = hasItems && limit !== undefined && items.length > limit;
-  const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
-
   const baseProps = getBaseProps(props);
-  const className = clsx(baseProps.className, styles.root, hasItems && styles['has-items']);
-
   return (
-    <div {...baseProps} className={className} ref={ref}>
-      {hasItems && (
-        <SpaceBetween id={controlId} direction={alignment} size="xs">
-          {slicedItems.map((item, itemIndex) => (
-            <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
-              {renderItem(item, itemIndex)}
-            </GenericToken>
-          ))}
-        </SpaceBetween>
-      )}
-      {hasHiddenItems && (
-        <SelectToggle
-          controlId={controlId}
-          allHidden={limit === 0}
-          expanded={expanded}
-          numberOfHiddenOptions={items.length - slicedItems.length}
-          i18nStrings={props.i18nStrings}
-          onClick={() => setExpanded(!expanded)}
-        />
-      )}
+    <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={ref}>
+      <TokenList
+        alignment={alignment}
+        items={items}
+        limit={limit}
+        renderItem={(item, itemIndex) => (
+          <GenericToken key={itemIndex} {...getItemAttributes(item, itemIndex)}>
+            {renderItem(item, itemIndex)}
+          </GenericToken>
+        )}
+        i18nStrings={i18nStrings}
+      />
     </div>
   );
 }
