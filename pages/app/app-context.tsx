@@ -9,7 +9,6 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 interface AppUrlParams {
   density: Density;
-  lang: string;
   visualRefresh: boolean;
   motionDisabled: boolean;
 }
@@ -18,8 +17,6 @@ export interface AppContextType<T = unknown> {
   mode: Mode;
   pageId?: string;
   urlParams: AppUrlParams & T;
-  update: (options: { mode?: Mode; urlParams?: Partial<AppUrlParams & T> }) => void;
-
   setUrlParams: (newParams: Partial<AppUrlParams & T>) => void;
   setMode: (newMode: Mode) => void;
 }
@@ -30,12 +27,10 @@ const appContextDefaults: AppContextType = {
   urlParams: {
     density: Density.Comfortable,
     visualRefresh: THEME === 'default',
-    lang: 'en',
     motionDisabled: false,
   },
   setMode: () => {},
   setUrlParams: () => {},
-  update: () => {},
 };
 
 const AppContext = createContext<AppContextType>(appContextDefaults);
@@ -67,28 +62,18 @@ export function AppContextProvider({ children }: { children: React.ReactNode }) 
   const { mode, pageId } = match ? match.params : { mode: undefined, pageId: undefined };
   const urlParams = parseQuery(location.search) as AppUrlParams;
 
-  function update({
-    mode: newMode = mode,
-    urlParams: newUrlParams = {},
-  }: {
-    mode?: Mode;
-    urlParams?: Partial<AppUrlParams>;
-  }) {
+  function setUrlParams(newParams: Partial<AppUrlParams>) {
+    const pathname = [mode, pageId].filter(segment => !!segment).join('/') + '/';
+    history.replace(`/${pathname}${formatQuery({ ...urlParams, ...newParams })}`);
+  }
+
+  function updateMode(newMode: Mode) {
     const pathname = [newMode, pageId].filter(segment => !!segment).join('/') + '/';
-    history.replace('/' + pathname + formatQuery({ ...urlParams, ...newUrlParams }) + location.hash);
+    history.replace('/' + pathname + location.search + location.hash);
   }
 
   return (
-    <AppContext.Provider
-      value={{
-        pageId,
-        mode: mode!,
-        urlParams,
-        update,
-        setMode: mode => update({ mode }),
-        setUrlParams: urlParams => update({ urlParams }),
-      }}
-    >
+    <AppContext.Provider value={{ mode: mode!, pageId, urlParams, setUrlParams: setUrlParams, setMode: updateMode }}>
       {children}
     </AppContext.Provider>
   );

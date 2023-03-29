@@ -6,7 +6,6 @@ import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 
 /**
  * The CSS class 'awsui-context-content-header' needs to be added to the root element so
@@ -29,9 +28,9 @@ export default function AppBar() {
     isToolsOpen,
     toolsHide,
     isAnyPanelOpen,
+    navigationRefs,
+    toolsRefs,
   } = useAppLayoutInternals();
-  const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
-  const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
   if (navigationHide && !breadcrumbs && toolsHide) {
     return null;
@@ -63,7 +62,7 @@ export default function AppBar() {
             onClick={() => handleNavigationClick(true)}
             variant="icon"
             className={testutilStyles['navigation-toggle']}
-            ref={focusRefsNav.toggle}
+            ref={navigationRefs.toggle}
             disabled={isAnyPanelOpen}
             __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
@@ -98,7 +97,7 @@ export default function AppBar() {
             formAction="none"
             onClick={() => handleToolsClick(true)}
             variant="icon"
-            ref={focusRefsTools.toggle}
+            ref={toolsRefs.toggle}
             __nativeAttributes={{ 'aria-haspopup': true }}
           />
         </aside>

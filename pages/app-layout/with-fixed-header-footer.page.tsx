@@ -17,11 +17,8 @@ export default function () {
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
 
   function openHelp(article: keyof typeof toolsContent) {
-    if (toolsOpen) {
-      appLayoutRef.current?.focusToolsClose();
-    } else {
-      setToolsOpen(true);
-    }
+    setToolsOpen(true);
+    appLayoutRef.current?.focusToolsClose();
     setSelectedTool(article);
   }
 
