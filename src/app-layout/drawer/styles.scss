@@ -12,7 +12,6 @@ $drawer-z-index-mobile: 1001;
 
 .toggle {
   box-sizing: border-box;
-  // padding: constants.$toggle-padding;
 }
 
 .drawer {
@@ -66,7 +65,7 @@ $drawer-z-index-mobile: 1001;
 
 .trigger {
   .toggle > & {
-    padding: awsui.$space-xs awsui.$space-s;
+    padding: awsui.$space-scaled-xs awsui.$space-s;
 
     &-drawer {
       &:hover:not(.selected) {
@@ -83,8 +82,4 @@ $drawer-z-index-mobile: 1001;
       }
     }
   }
-}
-
-.display-none {
-  display: none;
 }

@@ -170,7 +170,6 @@ const OldAppLayout = React.forwardRef(
         return tools ? [toolsItem, ...drawers.items] : drawers.items;
       }
     };
-
     const selectedDrawer =
       drawers &&
       drawers.items &&

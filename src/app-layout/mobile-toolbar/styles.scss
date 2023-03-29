@@ -47,4 +47,9 @@
   &:hover {
     background: awsui.$color-background-layout-panel-hover;
   }
+
+  &-with-drawers {
+    display: flex;
+    width: auto;
+  }
 }

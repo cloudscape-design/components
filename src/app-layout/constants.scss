@@ -8,7 +8,7 @@
 
 // Toggle should have 40px width, whereas button is 26px wide.
 // 40 - 26 = 14px in total or 7px on each side
-$toggle-padding-horizontal: 0;
+$toggle-padding-horizontal: 0.7 * styles.$base-size;
 $toggle-padding-vertical: awsui.$space-xxs;
 $toggle-padding: $toggle-padding-vertical $toggle-padding-horizontal;
 
