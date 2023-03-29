@@ -34,7 +34,7 @@ function InternalFileUpload(
     ariaRequired,
     multiple,
     onChange,
-    fileProps,
+    fileErrors,
     value,
     limit,
     showFileType,
@@ -117,13 +117,19 @@ function InternalFileUpload(
           items={value}
           getItemAttributes={(file, fileIndex) => ({
             name: file.name,
+            error: fileErrors?.[fileIndex],
             dismiss: {
               label: i18nStrings.removeFileAriaLabel(file, fileIndex),
               onDismiss: () => onFileRemove(fileIndex),
             },
           })}
           renderItem={(file, fileIndex) => (
-            <FileOption file={file} metadata={metadata} fileProps={fileProps?.[fileIndex]} i18nStrings={i18nStrings} />
+            <FileOption
+              file={file}
+              metadata={metadata}
+              hasError={!!fileErrors?.[fileIndex]}
+              i18nStrings={i18nStrings}
+            />
           )}
           list={multiple}
           limit={limit}

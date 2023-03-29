@@ -7,7 +7,7 @@ import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
 import {
-  FileError,
+  ValidationState,
   SIZE,
   useFileUploadState,
   validateDuplicateFileNames,
@@ -152,6 +152,7 @@ function StandaloneFileUploadScenario({ onInfo, onSuccess }: FileUploadScenarioP
         showFileThumbnail={true}
         i18nStrings={i18nStrings}
         errorText={fileState.serverError ?? fileState.validationError}
+        fileErrors={fileState.fileErrors}
         label="Contracts"
         description="Upload your contract with all amendments"
         info={
@@ -222,7 +223,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
             <FileUpload
               value={fileState.files}
               onChange={event => {
-                fileState.onChange(event.detail.value, []);
+                fileState.onChange(event.detail.value);
               }}
               accept="image/png, image/jpeg"
               showFileType={true}
@@ -231,6 +232,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
               errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -316,6 +318,7 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUp
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
               errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -408,6 +411,7 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
               errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
               info={
@@ -444,38 +448,44 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
   );
 }
 
-function validateProfilePictureFile(file: File | undefined): FileError[] {
+function validateProfilePictureFile(file: File | undefined): ValidationState {
   if (!file) {
-    return [];
+    return { errors: [], fileErrors: [] };
   }
 
-  const errors: FileError[] = [];
-  const addError = (file: null | File, error: null | string) => error && errors.push({ file, error });
+  const fileErrors: string[][] = [[]];
+  const addError = (error: null | string) => error && fileErrors[0].push(error);
 
-  addError(file, validateFileSize(file, 1 * SIZE.MB));
-  addError(file, validateFileNameNotEmpty(file));
-  addError(file, validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
+  addError(validateFileSize(file, 1 * SIZE.MB));
+  addError(validateFileNameNotEmpty(file));
+  addError(validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
 
-  return errors;
+  return { errors: [], fileErrors };
 }
 
-function validateContractFiles(files: File[]): FileError[] {
-  const errors: FileError[] = [];
-  const addError = (file: null | File, error: null | string) => error && errors.push({ file, error });
-  const addErrors = (files: File[], validate: (file: File) => null | string) => {
-    for (const file of files) {
-      addError(file, validate(file));
+function validateContractFiles(files: File[]): ValidationState {
+  const errors: string[] = [];
+  const fileErrors: string[][] = files.map(() => []);
+
+  const addError = (error: null | string) => error && errors.push(error);
+  const addFileErrors = (files: File[], validate: (file: File) => null | string) => {
+    for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
+      const fileError = validate(files[fileIndex]);
+      if (fileError) {
+        fileErrors[fileIndex].push(fileError);
+      }
     }
   };
 
-  addErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
-  addError(null, validateTotalFileSize(files, 750 * SIZE.KB));
-  addErrors(files, validateFileNameNotEmpty);
-  addError(null, validateDuplicateFileNames(files));
-  addErrors(files, file => validateFileExtensions(file, ['pdf']));
-  addErrors(files, validateContractFilePattern);
+  addError(validateTotalFileSize(files, 750 * SIZE.KB));
+  addError(validateDuplicateFileNames(files));
 
-  return errors;
+  addFileErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
+  addFileErrors(files, validateFileNameNotEmpty);
+  addFileErrors(files, file => validateFileExtensions(file, ['pdf']));
+  addFileErrors(files, validateContractFilePattern);
+
+  return { errors, fileErrors };
 }
 
 function validateContractFilePattern(file: File) {

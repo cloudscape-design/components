@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalIcon from '../icon/internal';
 
@@ -35,7 +34,7 @@ export default function DismissButton({ disabled, dismissLabel, onDismiss }: Dis
   const focusVisible = useFocusVisible();
 
   return (
-    <button type="button" className={clsx(styles['dismiss-button'])} {...tokenAttributes} {...focusVisible}>
+    <button type="button" className={styles['dismiss-button']} {...tokenAttributes} {...focusVisible}>
       <InternalIcon name="close" />
     </button>
   );

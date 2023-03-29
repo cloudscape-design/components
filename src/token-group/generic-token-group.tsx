@@ -14,9 +14,11 @@ import DismissButton from './dismiss-button';
 import SelectToggle from './toggle';
 
 import styles from './styles.css.js';
+import InternalBox from '../box/internal';
 
 interface ItemAttributes {
   name: string;
+  error?: null | string;
   disabled?: boolean;
   dismiss?: {
     label?: string;
@@ -82,16 +84,23 @@ interface GenericTokenProps extends ItemAttributes {
   children: React.ReactNode;
 }
 
-function GenericToken({ name, disabled, dismiss, group, children }: GenericTokenProps) {
+function GenericToken({ name, disabled, error, dismiss, group, children }: GenericTokenProps) {
   const groupProps = group ? { role: 'group', 'aria-label': name } : {};
   return (
-    <div
-      {...groupProps}
-      className={clsx(styles.token, disabled && styles['token-disabled'])}
-      aria-disabled={disabled ? 'true' : undefined}
-    >
-      {children}
-      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
+    <div>
+      <div
+        {...groupProps}
+        className={clsx(styles.token, disabled && styles['token-disabled'], error && styles['token-with-error'])}
+        aria-disabled={disabled ? 'true' : undefined}
+      >
+        {children}
+        {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
+      </div>
+      {error && (
+        <InternalBox fontSize="body-s" color="text-status-error">
+          {error}
+        </InternalBox>
+      )}
     </div>
   );
 }

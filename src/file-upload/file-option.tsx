@@ -14,20 +14,20 @@ import { FileOptionThumbnail } from './file-option-thumbnail';
 interface FileOptionProps {
   file: File;
   metadata: FileMetadata;
-  fileProps?: FileUploadProps.FileProps;
+  hasError?: boolean;
   i18nStrings: FileUploadProps.I18nStrings;
 }
 
-export function FileOption({ file, metadata, fileProps, i18nStrings }: FileOptionProps) {
+export function FileOption({ file, metadata, hasError, i18nStrings }: FileOptionProps) {
   const isImage = !!file.type && file.type.split('/')[0] === 'image';
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
   return (
     <InternalBox className={styles['file-option']}>
-      {!fileProps || fileProps?.status === 'success' ? (
-        <InternalIcon variant="success" name="status-positive" />
-      ) : (
+      {hasError ? (
         <InternalIcon variant="error" name="status-warning" />
+      ) : (
+        <InternalIcon variant="success" name="status-positive" />
       )}
 
       {metadata.showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}

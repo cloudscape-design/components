@@ -51,11 +51,9 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps
    */
   value: ReadonlyArray<File>;
   /**
-   * An array of file properties corresponding the `value` files.
-   * Supported properties:
-   * * `status` (string) - An enum of "success", "error" to represent the file status.
+   * An array of file errors corresponding the `value` files.
    */
-  fileProps?: ReadonlyArray<FileUploadProps.FileProps>;
+  fileErrors?: ReadonlyArray<null | string>;
   /**
    * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
    */
@@ -74,10 +72,6 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps
 }
 
 export namespace FileUploadProps {
-  export interface FileProps {
-    status: 'success' | 'error';
-  }
-
   export interface ChangeDetail {
     value: File[];
   }
