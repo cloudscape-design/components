@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import { TokenLimitToggle } from './token-limit-toggle';
 import styles from './styles.css.js';
 import { TokenListProps } from './interfaces';
-import InternalSpaceBetween from '../../../space-between/internal';
 import { useUniqueId } from '../../hooks/use-unique-id';
+import clsx from 'clsx';
 
 export default function TokenList<Item>({
   items,
@@ -42,26 +42,26 @@ export default function TokenList<Item>({
     return (
       <div className={styles.root}>
         {hasItems && (
-          <InternalSpaceBetween id={controlId} direction="horizontal" size="xs" className={styles.list}>
+          <div id={controlId} className={clsx(styles.list, styles['list-horizontal'])}>
             {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
             {toggle}
             {after && <div className={styles.separator} />}
             {after}
-          </InternalSpaceBetween>
+          </div>
         )}
       </div>
     );
   }
 
   return (
-    <InternalSpaceBetween className={styles.root} size="xs">
+    <div className={styles.root}>
       {hasVisibleItems && (
-        <InternalSpaceBetween id={controlId} direction={alignment} size="xs" className={styles.list}>
+        <div id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
           {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
-        </InternalSpaceBetween>
+        </div>
       )}
       {toggle}
       {after}
-    </InternalSpaceBetween>
+    </div>
   );
 }

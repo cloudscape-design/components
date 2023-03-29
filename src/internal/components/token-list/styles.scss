@@ -8,15 +8,25 @@
 @use '../../hooks/focus-visible' as focus-visible;
 
 .root {
-  /* used in test-utils */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: awsui.$space-xs;
 }
 
 .list {
-  /* used in test-utils */
+  display: flex;
+  flex-wrap: wrap;
+  gap: awsui.$space-xs;
+}
+.list-horizontal {
+  flex-direction: row;
+}
+.list-vertical {
+  flex-direction: column;
 }
 
 .toggle-container-inline {
-  height: 100%;
   padding-left: awsui.$space-xs;
   display: flex;
   align-items: center;
@@ -56,7 +66,6 @@
 
 .separator {
   margin: 0px awsui.$space-scaled-m;
-  height: 100%;
   width: awsui.$border-divider-section-width;
   background-color: awsui.$color-border-divider-default;
 }
