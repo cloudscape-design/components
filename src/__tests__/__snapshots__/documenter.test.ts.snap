@@ -1027,6 +1027,13 @@ The event \`detail\` contains the index of the corresponding item.",
   ],
   "functions": Array [
     Object {
+      "description": "Focuses the 'add' button. Use this, for example, after a user removes the last row.",
+      "name": "focusAddButton",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the remove button for the given row index.",
       "name": "focusRemoveButton",
       "parameters": Array [
         Object {

@@ -37,7 +37,14 @@ export namespace AttributeEditorProps {
   }
 
   export interface Ref {
+    /**
+     * Focuses the remove button for the given row index.
+     */
     focusRemoveButton(itemIndex: number): void;
+    /**
+     * Focuses the 'add' button. Use this, for example, after a user removes the last row.
+     */
+    focusAddButton(): void;
   }
 
   export interface I18nStrings {

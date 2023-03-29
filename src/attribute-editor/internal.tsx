@@ -45,6 +45,7 @@ const InternalAttributeEditor = React.forwardRef(
   ) => {
     const [breakpoint, breakpointRef] = useContainerBreakpoints(['default', 'xxs', 'xs']);
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
+    const addButtonRef = useRef<ButtonProps.Ref>(null);
     const wasNonEmpty = useRef<boolean>(false);
     const [removalAnnouncement, setRemovalAnnouncement] = useState<string>('');
 
@@ -56,6 +57,9 @@ const InternalAttributeEditor = React.forwardRef(
     useImperativeHandle(ref, () => ({
       focusRemoveButton(rowIndex: number) {
         removeButtonRefs.current[rowIndex]?.focus();
+      },
+      focusAddButton() {
+        addButtonRef.current?.focus();
       },
     }));
 
@@ -101,6 +105,7 @@ const InternalAttributeEditor = React.forwardRef(
           disabled={disableAddButton}
           onClick={onAddButtonClick}
           formAction="none"
+          ref={addButtonRef}
           __nativeAttributes={{ 'aria-describedby': infoAriaDescribedBy }}
         >
           {addButtonText}
