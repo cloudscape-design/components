@@ -37,11 +37,11 @@ const tokens: StyleDictionary.ShadowsDictionary = {
   shadowStickyEmbedded: '{shadowSticky}',
   shadowStickyColumnStart: {
     light: '4px 0 8px 0 rgba(0, 28, 36, 0.1)',
-    dark: '4px 0 8px 0 rgba(0, 0, 0, 0.25)',
+    dark: '4px 0 8px 0 rgba(0, 0, 0.5)',
   },
   shadowStickyColumnEnd: {
     light: '-4px 0 8px 0 rgba(0, 28, 36, 0.1)',
-    dark: '-4px 0 8px 0 rgba(0, 0, 0, 0.25)',
+    dark: '-4px 0 8px 0 rgba(0, 0, 0, 0.5)',
   },
 };
 

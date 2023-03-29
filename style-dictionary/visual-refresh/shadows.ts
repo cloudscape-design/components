@@ -46,7 +46,7 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     dark: '0px 2px 0px 0px #414d5c, 0px 16px 16px -12px rgba(0, 7, 22, 1)', // 2px grey-600 faux bottom border
   },
   shadowStickyColumnStart: {
-    light: '4px 0px 20px 1px rgba(0, 7, 22, 0.1)',
+    light: '4px 0px 4px 1px rgba(0, 7, 22, 0.1)',
     dark: '0px 4px 20px 1px rgba(0, 7, 22, 1)',
   },
   shadowStickyColumnEnd: {
