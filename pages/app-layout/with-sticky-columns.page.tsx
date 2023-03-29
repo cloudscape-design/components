@@ -14,11 +14,39 @@ import Box from '~components/box';
 import Link from '~components/link';
 
 export default function () {
+  const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+    {
+      label: 'Instance properties',
+      options: [
+        {
+          id: 'id',
+          label: 'ID',
+          editable: false,
+        },
+        { id: 'type', label: 'Type' },
+        {
+          id: 'dnsName',
+          label: 'DNS name',
+        },
+        {
+          id: 'imageId',
+          label: 'Image ID',
+        },
+        {
+          id: 'state',
+          label: 'State',
+        },
+      ],
+    },
+  ];
+
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
     stickyColumns: { start: 1, end: 1 },
+    visibleContent: visibleContentOptions[0].options.map(o => o.id),
   });
+  console.log(preferences);
   const items = generateItems(20);
 
   return (
@@ -46,6 +74,7 @@ export default function () {
             </Box>
           }
           stickyColumns={preferences.stickyColumns}
+          visibleColumns={preferences.visibleContent}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -53,6 +82,10 @@ export default function () {
               cancelLabel="Cancel"
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
+              visibleContentPreference={{
+                title: 'Select visible columns',
+                options: visibleContentOptions,
+              }}
               stickyColumnsPreference={{
                 startColumns: {
                   title: 'Stick first visible column(s)',
