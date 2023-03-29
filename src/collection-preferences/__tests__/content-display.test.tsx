@@ -29,7 +29,7 @@ describe('Content display', () => {
       expect(element.parentElement!.tagName).toBe('UL');
       expectLabel(wrapper, element, `Item ${i + 1}`);
       const dragHandle = item.find(`.${dragHandleStyles.handle}`)!.getElement();
-      expectLabel(wrapper, dragHandle, 'Drag handle');
+      expectLabel(wrapper, dragHandle, `Drag handle, Item ${i + 1}`);
     }
   });
 });

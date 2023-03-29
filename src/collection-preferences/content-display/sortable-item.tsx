@@ -30,7 +30,7 @@ export function SortableItem({
   onToggle: (id: string) => void;
   option: CollectionPreferencesProps.VisibleContentOption;
 }) {
-  const { attributes, isDragging, isSorting, listeners, over, rect, setNodeRef, transform } = useSortable({
+  const { isDragging, isSorting, listeners, over, rect, setNodeRef, transform } = useSortable({
     id: option.id,
   });
   const style = {
@@ -38,11 +38,9 @@ export function SortableItem({
   };
 
   const controlId = `${idPrefix}-control-${option.id}`;
-  const labelId = `${idPrefix}-label-${option.id}`;
 
   const dragHandleAttributes = {
-    ['aria-label']: dragHandleAriaLabel,
-    ['aria-describedby']: attributes['aria-describedby'],
+    ['aria-label']: [dragHandleAriaLabel, option.label].join(', '),
   };
 
   const combinedListeners = {
@@ -69,7 +67,7 @@ export function SortableItem({
   const placeholderStyle = placeholderOffsetY ? { transform: `translateY(${placeholderOffsetY}px)` } : undefined;
 
   return (
-    <li className={clsx(styles['content-display-option'], styles['sortable-item'])} aria-labelledby={labelId}>
+    <li className={clsx(styles['content-display-option'], styles['sortable-item'])}>
       {isDragging && <div {...className('placeholder')} style={placeholderStyle} />}
       <div
         ref={setNodeRef}
@@ -84,7 +82,7 @@ export function SortableItem({
       >
         <DragHandle attributes={dragHandleAttributes} listeners={combinedListeners} />
 
-        <label {...className('label')} id={labelId} htmlFor={controlId}>
+        <label {...className('label')} htmlFor={controlId}>
           {option.label}
         </label>
         <div {...className('toggle')}>
