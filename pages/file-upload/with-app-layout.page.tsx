@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useState } from 'react';
-import { AppLayout, Box, Button, FileUpload, Flashbar, Form, FormField, Header, Input, Link } from '~components';
+import { AppLayout, Box, Button, FileUpload, Flashbar, Form, FormField, Header, Input, Link, Tabs } from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
@@ -109,10 +109,30 @@ export default function FileUploadScenarios() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload scenarios</Header>
 
-          <StandaloneFileUploadScenario onInfo={onInfo} onSuccess={onSuccess} />
-          <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} onSuccess={onSuccess} />
-          <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} onSuccess={onSuccess} />
-          <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} onSuccess={onSuccess} />
+          <Tabs
+            tabs={[
+              {
+                id: '1',
+                label: 'Scenario 1',
+                content: <StandaloneFileUploadScenario onInfo={onInfo} onSuccess={onSuccess} />,
+              },
+              {
+                id: '2',
+                label: 'Scenario 2',
+                content: <FileUploadInFormWithUploadOnSubmitScenario onInfo={onInfo} onSuccess={onSuccess} />,
+              },
+              {
+                id: '3',
+                label: 'Scenario 3',
+                content: <FileUploadInFormWithInstantUploadScenario onInfo={onInfo} onSuccess={onSuccess} />,
+              },
+              {
+                id: '4',
+                label: 'Scenario 4',
+                content: <FileUploadInFormWithMixedValidationScenario onInfo={onInfo} onSuccess={onSuccess} />,
+              },
+            ]}
+          />
         </SpaceBetween>
       }
     />
