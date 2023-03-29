@@ -9,6 +9,7 @@ export const SIZE = {
 };
 
 export interface ValidationState {
+  hasError: boolean;
   errors: string[];
   fileErrors: string[][];
 }
@@ -137,7 +138,11 @@ class DummyServer {
 
 export function useFileUploadState() {
   const [files, setFiles] = useState<File[]>([]);
-  const [validationState, setValidationState] = useState<ValidationState>({ errors: [], fileErrors: [] });
+  const [validationState, setValidationState] = useState<ValidationState>({
+    hasError: false,
+    errors: [],
+    fileErrors: [],
+  });
   const [serverState, setServerState] = useState<ServerUploadState>({ progress: [], errors: [], fileErrors: [] });
   const [submitted, setSubmitted] = useState(false);
 
@@ -153,7 +158,6 @@ export function useFileUploadState() {
   }, [submitted, files, hasValidationErrors]);
 
   const serverError = formatFieldError(serverState);
-  const submissionError = submitted && files.length === 0 ? 'No file(s) submitted' : null;
   const validationError = formatFieldError(validationState);
   const fileErrors = formatFileErrors(
     files.map((_file, index) => [...serverState.fileErrors[index], ...validationState.fileErrors[index]])
@@ -166,14 +170,13 @@ export function useFileUploadState() {
     files,
     progress: serverState.progress,
     serverError,
-    submissionError,
     validationError,
     fileErrors,
     submitted,
     success,
     onChange: (files: File[], validationState?: ValidationState) => {
       setFiles(files);
-      setValidationState(validationState ?? { errors: [], fileErrors: files.map(() => []) });
+      setValidationState(validationState ?? { hasError: false, errors: [], fileErrors: files.map(() => []) });
       setServerState({ progress: files.map(() => 0), errors: [], fileErrors: files.map(() => []) });
       setSubmitted(false);
     },

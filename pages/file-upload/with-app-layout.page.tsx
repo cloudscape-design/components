@@ -219,12 +219,16 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
       <form
         onSubmit={e => {
           e.preventDefault();
-          fileState.onChange(fileState.files, validateProfilePictureFile(fileState.files[0]));
-          if (alias.trim().length > 0) {
-            fileState.onRefresh();
+
+          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
+          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
+
+          if (!aliasError && !fileErrors.hasError) {
+            fileState.onChange([...fileState.files]);
             fileState.onSubmit();
           } else {
-            setAliasError('Alias must not be empty');
+            setAliasError(aliasError);
+            fileState.onChange(fileState.files, fileErrors);
           }
         }}
       >
@@ -247,6 +251,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
         >
           <SpaceBetween size="m">
             <FileUpload
+              ariaRequired={true}
               value={fileState.files}
               onChange={event => {
                 fileState.onChange(event.detail.value);
@@ -257,7 +262,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
               showFileLastModified={true}
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              errorText={fileState.serverError ?? fileState.validationError}
               fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
@@ -271,6 +276,7 @@ function FileUploadInFormWithUploadOnSubmitScenario({ onInfo, onSuccess }: FileU
 
             <FormField label="Alias" description="Specify your alias" errorText={aliasError}>
               <Input
+                ariaRequired={true}
                 value={alias}
                 onChange={e => {
                   setAlias(e.detail.value);
@@ -302,10 +308,15 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUp
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (alias.trim().length > 0) {
+
+          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
+          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
+
+          if (!aliasError && !fileErrors.hasError) {
             fileState.success && onSuccess();
           } else {
-            setAliasError('Alias must not be empty');
+            setAliasError(aliasError);
+            fileState.onChange(fileState.files, fileErrors);
           }
         }}
       >
@@ -333,7 +344,7 @@ function FileUploadInFormWithInstantUploadScenario({ onInfo, onSuccess }: FileUp
               showFileLastModified={true}
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              errorText={fileState.serverError ?? fileState.validationError}
               fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
@@ -395,11 +406,16 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
       <form
         onSubmit={e => {
           e.preventDefault();
-          if (alias.trim().length > 0) {
-            fileState.onRefresh();
+
+          const aliasError = alias.trim().length === 0 ? 'Alias must not be empty' : '';
+          const fileErrors = validateProfilePictureFile(fileState.files[0], true);
+
+          if (!aliasError && !fileErrors.hasError) {
+            fileState.onChange([...fileState.files]);
             fileState.onSubmit();
           } else {
-            setAliasError('Alias must not be empty');
+            setAliasError(aliasError);
+            fileState.onChange(fileState.files, fileErrors);
           }
         }}
       >
@@ -432,7 +448,7 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
               showFileLastModified={true}
               showFileThumbnail={true}
               i18nStrings={i18nStrings}
-              errorText={fileState.serverError ?? fileState.validationError ?? fileState.submissionError}
+              errorText={fileState.serverError ?? fileState.validationError}
               fileErrors={fileState.fileErrors}
               label="Profile picture"
               description="Upload a picture of yourself"
@@ -460,30 +476,43 @@ function FileUploadInFormWithMixedValidationScenario({ onInfo, onSuccess }: File
   );
 }
 
-function validateProfilePictureFile(file: File | undefined): ValidationState {
+function validateProfilePictureFile(file: File | undefined, required = false): ValidationState {
   if (!file) {
-    return { errors: [], fileErrors: [] };
+    return { hasError: required, errors: required ? ['No files selected'] : [], fileErrors: [] };
   }
 
+  let hasError = false;
   const fileErrors: string[][] = [[]];
-  const addError = (error: null | string) => error && fileErrors[0].push(error);
+  const addError = (error: null | string) => {
+    hasError = hasError || !!error;
+    error && fileErrors[0].push(error);
+  };
 
   addError(validateFileSize(file, 1 * SIZE.MB));
   addError(validateFileNameNotEmpty(file));
   addError(validateFileExtensions(file, ['png', 'jpg', 'jpeg']));
 
-  return { errors: [], fileErrors };
+  return { hasError, errors: [], fileErrors };
 }
 
-function validateContractFiles(files: File[]): ValidationState {
+function validateContractFiles(files: File[], required = false): ValidationState {
+  if (files.length === 0) {
+    return { hasError: required, errors: required ? ['No files selected'] : [], fileErrors: [] };
+  }
+
+  let hasError = false;
   const errors: string[] = [];
   const fileErrors: string[][] = files.map(() => []);
 
-  const addError = (error: null | string) => error && errors.push(error);
+  const addError = (error: null | string) => {
+    hasError = hasError || !!error;
+    error && errors.push(error);
+  };
   const addFileErrors = (files: File[], validate: (file: File) => null | string) => {
     for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
       const fileError = validate(files[fileIndex]);
       if (fileError) {
+        hasError = true;
         fileErrors[fileIndex].push(fileError);
       }
     }
@@ -497,7 +526,7 @@ function validateContractFiles(files: File[]): ValidationState {
   addFileErrors(files, file => validateFileExtensions(file, ['pdf']));
   addFileErrors(files, validateContractFilePattern);
 
-  return { errors, fileErrors };
+  return { hasError, errors, fileErrors };
 }
 
 function validateContractFilePattern(file: File) {
