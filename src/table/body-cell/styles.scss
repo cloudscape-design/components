@@ -106,6 +106,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 11;
+    &.body-cell-shaded {
+      background: awsui.$color-background-cell-shaded;
+    }
+    &.body-cell-selected {
+      background-color: awsui.$color-background-item-selected;
+    }
     &-last-start {
       box-shadow: awsui.$shadow-sticky-column-start;
       clip-path: inset(0px -24px 0px 0px);
