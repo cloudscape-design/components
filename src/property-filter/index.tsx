@@ -9,7 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
 import SelectToggle from '../token-group/toggle';
-import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
+import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -30,6 +30,7 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
+import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
@@ -266,6 +267,8 @@ const PropertyFilter = React.forwardRef(
       parsedText.step === 'property' &&
       getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
 
+    const searchResultsId = useUniqueId('property-filter-search-results');
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -309,14 +312,9 @@ const PropertyFilter = React.forwardRef(
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
+            searchResultsId={searchResultsId}
           />
-          <span
-            aria-live="polite"
-            aria-atomic="true"
-            className={clsx(styles.results, showResults && styles['results-visible'])}
-          >
-            {showResults ? countText : ''}
-          </span>
+          {showResults && countText ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
