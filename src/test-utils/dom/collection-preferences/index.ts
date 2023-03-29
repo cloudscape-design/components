@@ -6,6 +6,7 @@ import CheckboxWrapper from '../checkbox';
 import ModalWrapper from '../modal';
 import VisibleContentPreferenceWrapper from './visible-content-preference';
 import PageSizePreferenceWrapper from './page-size-preference';
+import StickyColumnsPreferenceWrapper from './sticky-columns-preference';
 import styles from '../../../collection-preferences/styles.selectors.js';
 
 class PreferencesModalWrapper extends ModalWrapper {
@@ -29,6 +30,10 @@ class PreferencesModalWrapper extends ModalWrapper {
 
   findContentDensityPreference(): CheckboxWrapper | null {
     return this.findComponent(`.${styles['content-density']}`, CheckboxWrapper);
+  }
+
+  findStickyColumnsPreference(): StickyColumnsPreferenceWrapper | null {
+    return this.findComponent(`.${StickyColumnsPreferenceWrapper.rootSelector}`, StickyColumnsPreferenceWrapper);
   }
 
   findPageSizePreference(): PageSizePreferenceWrapper | null {

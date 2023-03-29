@@ -149,7 +149,7 @@ export const StickyColumnsPreference = ({
   value,
 }: StickyColumnsPreferenceProps) => {
   return (
-    <InternalSpaceBetween size="l">
+    <InternalSpaceBetween className={styles['sticky-columns']} size="l">
       {[
         { side: 'start', preference: startColumns },
         { side: 'end', preference: endColumns },
@@ -159,9 +159,14 @@ export const StickyColumnsPreference = ({
         }
         const { title, description, options } = item.preference;
         return (
-          <InternalFormField key={title} label={title} description={description}>
+          <InternalFormField
+            className={styles[`sticky-columns-${item.side}-form-field`]}
+            key={title}
+            label={title}
+            description={description}
+          >
             <InternalRadioGroup
-              className={styles[`sticky-columns-${item.side}-options`]}
+              className={styles[`sticky-columns-${item.side}-radio-group`]}
               value={`${value[item.side]}`}
               items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
               onChange={({ detail }) => onChange({ ...value, [item.side]: Number(detail.value) })}
