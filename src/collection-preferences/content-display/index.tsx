@@ -51,12 +51,12 @@ export default function ContentDisplayPreference({
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
-  const { collisionDetection, handleKeyDown, isDragging, isKeyboard, sensors, setIsDragging } = useDragAndDropReorder({
+  const { activeItem, collisionDetection, handleKeyDown, isKeyboard, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
   });
 
   const announcements = useLiveAnnouncements({
-    isDragging,
+    isDragging: activeItem !== null,
     liveAnnouncementDndStarted,
     liveAnnouncementDndItemReordered,
     liveAnnouncementDndItemCommitted,
@@ -78,9 +78,9 @@ export default function ContentDisplayPreference({
           restoreFocus: false,
           screenReaderInstructions: dragHandleAriaDescription ? { draggable: dragHandleAriaDescription } : undefined,
         }}
-        onDragStart={() => setIsDragging(true)}
+        onDragStart={({ active }) => setActiveItem(active.id)}
         onDragEnd={event => {
-          setIsDragging(false);
+          setActiveItem(null);
           const { active, over } = event;
 
           if (over && active.id !== over.id) {
@@ -89,7 +89,7 @@ export default function ContentDisplayPreference({
             onChange(arrayMove([...value], oldIndex, newIndex));
           }
         }}
-        onDragCancel={() => setIsDragging(false)}
+        onDragCancel={() => setActiveItem(null)}
       >
         <ul {...className('option-list')} aria-describedby={labelId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>

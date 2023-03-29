@@ -10,6 +10,7 @@ import {
   getScrollableAncestors,
   KeyboardCoordinateGetter,
   PointerSensor,
+  UniqueIdentifier,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -27,6 +28,23 @@ enum KeyboardCode {
   Enter = 'Enter',
 }
 
+// A custom collision detection algorithm is used when using a keyboard to
+// work around an unexpected behavior when reordering items of variable height
+// with the keyboard.
+
+// Neither closestCenter nor closestCorners work really well for this case,
+// because the center (or corners) of a tall rectangle might be so low that it
+// is detected as being closest to the rectangle below of the one it should
+// actually swap with.
+
+// Instead of relying on coordinates, the expected results are achieved by
+// moving X positions up or down in the initially sorted array, depending on
+// the desired direction.
+
+// We let our collisionDetection and customCoordinateGetter use the same
+// getClosestId function which takes its value from the current component
+// state, to make sure they are always in sync.
+
 export default function useDragAndDropReorder({
   sortedOptions,
 }: {
@@ -34,24 +52,23 @@ export default function useDragAndDropReorder({
 }) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [activeItem, setActiveItem] = useState<UniqueIdentifier | null>(null);
 
-  if (!isDragging) {
+  if (!activeItem) {
     isKeyboard.current = false;
     positionDelta.current = 0;
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (isKeyboard.current) {
-      // We can't use onDragMove for this because that function gets triggered also on window scroll.
-      if (event.key === 'ArrowDown') {
+    if (isKeyboard.current && activeItem) {
+      const currentTargetIndex = sortedOptions.findIndex(({ id }) => id === activeItem) + positionDelta.current;
+      if (event.key === 'ArrowDown' && currentTargetIndex < sortedOptions.length - 1) {
         positionDelta.current += 1;
-      }
-      if (event.key === 'ArrowUp') {
+      } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
         positionDelta.current -= 1;
       }
     }
-    if (isDragging && isEscape(event.key)) {
+    if (activeItem && isEscape(event.key)) {
       // Prevent modal from closing when pressing Esc to cancel the dragging action
       event.stopPropagation();
     }
@@ -66,22 +83,6 @@ export default function useDragAndDropReorder({
     return sortedOptions[newIndex].id;
   };
 
-  // A custom collision detection algorithm is used when using a keyboard to
-  // work around an unexpected behavior when reordering items of variable height
-  // with the keyboard.
-
-  // Neither closestCenter nor closestCorners work really well for this case,
-  // because the center (or corners) of a tall rectangle might be so low that it
-  // is detected as being closest to the rectangle below of the one it should
-  // actually swap with.
-
-  // Instead of relying on coordinates, the expected results are achieved by
-  // moving X positions up or down in the initially sorted array, depending on
-  // the desired direction.
-
-  // We let customCollisionDetection and customCoordinateGetter use the same
-  // getClosestId function which takes its value from the current component
-  // state, to make sure they are always in sync.
   const collisionDetection: CollisionDetection = ({
     active,
     collisionRect,
@@ -171,13 +172,13 @@ export default function useDragAndDropReorder({
   );
 
   return {
+    activeItem,
     collisionDetection,
     coordinateGetter,
     handleKeyDown,
-    isDragging,
     isKeyboard: isKeyboard.current,
     sensors,
-    setIsDragging,
+    setActiveItem,
   };
 }
 

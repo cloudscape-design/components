@@ -78,6 +78,30 @@ describe('Collection preferences with custom content reordering', () => {
     );
 
     test(
+      'ignores keystrokes out of bounds',
+      setupTest(async page => {
+        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal(wrapper);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+
+        await page.focusDragHandle(0);
+        await page.keys('Space');
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
+        await page.keys(new Array(10).fill('ArrowUp'));
+        await page.expectAnnouncement('Picked up item at position 1 of 6');
+        await page.keys('ArrowDown');
+        await page.expectAnnouncement('Moving item to position 2 of 6');
+        await page.keys(new Array(10).fill('ArrowDown'));
+        await page.keys('ArrowUp');
+        await page.keys('Space');
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 6'])).toBe(true);
+        return page.expectAnnouncement('Item moved from position 1 to position 5 of 6');
+      })
+    );
+
+    test(
       'cancels reordering by pressing Escape',
       setupTest(async page => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-1');
