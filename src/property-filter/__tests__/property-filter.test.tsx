@@ -406,9 +406,16 @@ describe('property filter parts', () => {
   });
 
   describe('count text', () => {
-    test('is hidden when there are no filtering tokens', () => {
+    test('is not displayed when count text is empty', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        countText: '',
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findResultsCount()).toBe(null);
+    });
+    test('is not displayed when there are no filtering tokens', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ countText: '5 matches' });
-      expect(wrapper.findResultsCount()!.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findResultsCount()).toBe(null);
     });
     test('is visible when there is at least 1 token', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({

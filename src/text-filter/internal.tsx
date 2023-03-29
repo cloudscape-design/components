@@ -48,12 +48,12 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
-          ariaDescribedby={searchResultsId}
+          ariaDescribedby={showResults ? searchResultsId : undefined}
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        {showResults && countText ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+        {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
       </div>
     );
   }

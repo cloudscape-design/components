@@ -125,7 +125,7 @@ const PropertyFilter = React.forwardRef(
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
-    const showResults = tokens?.length && !disabled;
+    const showResults = !!tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -312,9 +312,9 @@ const PropertyFilter = React.forwardRef(
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
-            searchResultsId={searchResultsId}
+            searchResultsId={showResults ? searchResultsId : undefined}
           />
-          {showResults && countText ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+          {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
