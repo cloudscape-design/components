@@ -24,6 +24,7 @@ const mockIntersectionObserver = jest.fn(() => ({
 describe('useIntersectionObserver', () => {
   beforeEach(() => {
     window.IntersectionObserver = mockIntersectionObserver;
+    jest.clearAllMocks();
   });
 
   it('should create an observer with the defined target element', async () => {

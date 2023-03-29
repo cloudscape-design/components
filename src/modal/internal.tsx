@@ -97,7 +97,7 @@ export default function InternalModal({
   };
 
   // We use an empty div element at the end of the content slot as a sentinel
-  // to detect when the user has scrolled to be bottom.
+  // to detect when the user has scrolled to the bottom.
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
   return (
