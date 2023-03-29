@@ -10,6 +10,7 @@
 .root {
   @include styles.styles-reset;
 
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: awsui.$space-scaled-xs;

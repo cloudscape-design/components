@@ -39,6 +39,7 @@ export default function GenericTokenGroupPage() {
           limit={5}
           renderItem={(file, fileIndex) => (
             <Token
+              key={fileIndex}
               disabled={file === 0}
               dismissLabel={`Remove file ${fileIndex + 1}`}
               onDismiss={() => onDismiss(fileIndex)}
