@@ -4,20 +4,11 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { SelectToggle } from './select-toggle';
+import { TokenLimitToggle } from './token-limit-toggle';
 import styles from './styles.css.js';
-import { I18nStrings } from './interfaces';
+import { TokenListProps } from './interfaces';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { useUniqueId } from '../../hooks/use-unique-id';
-
-interface TokenListProps<Item> {
-  alignment: 'vertical' | 'horizontal';
-  toggleAlignment?: 'vertical' | 'horizontal';
-  items: readonly Item[];
-  limit?: number;
-  renderItem: (item: Item, itemIndex: number) => React.ReactNode;
-  i18nStrings?: I18nStrings;
-}
 
 export default function TokenList<Item>({
   items,
@@ -32,21 +23,21 @@ export default function TokenList<Item>({
   const [expanded, setExpanded] = useState(false);
   const hasItems = items.length > 0;
   const hasHiddenItems = hasItems && limit !== undefined && items.length > limit;
-  const slicedItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
+  const visibleItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
 
   return (
     <div className={clsx(styles.root, styles[`root-${toggleAlignment}`])}>
       {hasItems && (
         <InternalSpaceBetween id={controlId} direction={alignment} size="xs">
-          {slicedItems.map((item, itemIndex) => renderItem(item, itemIndex))}
+          {visibleItems.map((item, itemIndex) => renderItem(item, itemIndex))}
         </InternalSpaceBetween>
       )}
       {hasHiddenItems && (
-        <SelectToggle
+        <TokenLimitToggle
           controlId={controlId}
           allHidden={limit === 0}
           expanded={expanded}
-          numberOfHiddenOptions={items.length - slicedItems.length}
+          numberOfHiddenOptions={items.length - visibleItems.length}
           i18nStrings={i18nStrings}
           onClick={() => setExpanded(!expanded)}
         />

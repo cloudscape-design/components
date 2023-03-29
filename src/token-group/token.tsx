@@ -10,10 +10,8 @@ import styles from './styles.css.js';
 
 interface ItemAttributes {
   children: React.ReactNode;
-  dismiss?: {
-    label?: string;
-    onDismiss: () => void;
-  };
+  dismissLabel?: string;
+  onDismiss?: () => void;
   disabled?: boolean;
 }
 
@@ -21,14 +19,14 @@ interface TokenProps extends ItemAttributes {
   children: React.ReactNode;
 }
 
-export function Token({ disabled, dismiss, children }: TokenProps) {
+export function Token({ disabled, dismissLabel, onDismiss, children }: TokenProps) {
   return (
     <div
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >
       {children}
-      {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
+      {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import useFocusVisible from '../../hooks/focus-visible';
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
-export interface SelectToggleProps {
+interface TokenLimitToggleProps {
   controlId: string;
   allHidden: boolean;
   expanded: boolean;
@@ -17,14 +17,14 @@ export interface SelectToggleProps {
   i18nStrings?: I18nStrings;
 }
 
-export function SelectToggle({
+export function TokenLimitToggle({
   controlId,
   allHidden,
   expanded,
   numberOfHiddenOptions,
   onClick,
   i18nStrings = {},
-}: SelectToggleProps) {
+}: TokenLimitToggleProps) {
   const focusVisible = useFocusVisible();
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;
   const description = expanded
