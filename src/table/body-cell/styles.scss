@@ -243,6 +243,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
+        &.body-cell-freeze {
+          position: sticky;
+        }
       }
     }
   }
