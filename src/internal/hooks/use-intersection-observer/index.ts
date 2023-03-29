@@ -12,6 +12,11 @@ export function useIntersectionObserver<T extends HTMLElement>() {
   const [isIntersecting, setIsIntersecting] = useState(false);
 
   const ref = useCallback<RefCallback<T>>(targetElement => {
+    if (typeof IntersectionObserver === 'undefined') {
+      // Do nothing in environments like JSDOM
+      return;
+    }
+
     if (observerRef.current) {
       // Dismiss previous observer because the target changed
       observerRef.current.disconnect();
