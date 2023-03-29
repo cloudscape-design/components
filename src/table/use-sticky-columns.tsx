@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect } from 'react';
-import { warnOnce } from '../internal/logging';
 import { TableProps } from './interfaces';
 interface CellWidths {
   start: number[];
@@ -118,12 +117,6 @@ export const useStickyColumns = ({
     const shouldDisable =
       !stickyColumns ||
       totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
-    if (shouldDisable) {
-      warnOnce(
-        'Table',
-        `The sum of all sticky columns widths must not be greater than the difference between the table container width and ${MINIMUM_SPACE_BESIDES_STICKY_COLUMNS}px.`
-      );
-    }
     setShouldDisable(shouldDisable);
   }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength]);
 
