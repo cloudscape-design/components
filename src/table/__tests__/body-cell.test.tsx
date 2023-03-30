@@ -99,21 +99,21 @@ describe('TableBodyCell', () => {
 
   it('should call onEditEnd', () => {
     render(<TestComponent isEditing={true} />);
-    fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when submitting', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
-    fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when cancelling', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
-    fireEvent.click(screen.getByRole('button', { name: 'cancel edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
