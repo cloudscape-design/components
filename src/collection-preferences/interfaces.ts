@@ -151,7 +151,7 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
-    contentDisplay?: ReadonlyArray<ContentDisplay>;
+    contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
   }
 
@@ -172,12 +172,6 @@ export namespace CollectionPreferencesProps {
     dragHandleAriaDescription?: string;
   }
 
-  export interface ContentDisplay {
-    id: string;
-    visible?: boolean;
-    editable?: boolean;
-  }
-
   export interface VisibleContentOptionsGroup {
     label: string;
     options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
@@ -187,6 +181,17 @@ export namespace CollectionPreferencesProps {
     id: string;
     label: string;
     editable?: boolean;
+  }
+
+  export interface ContentDisplayOption {
+    id: string;
+    label: string;
+    alwaysVisible?: boolean;
+  }
+
+  export interface ContentDisplayItem {
+    id: string;
+    visible?: boolean;
   }
 
   export interface PageSizePreference {

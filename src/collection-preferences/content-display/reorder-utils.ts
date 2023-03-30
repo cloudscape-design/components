@@ -6,8 +6,8 @@ export function getSortedOptions({
   options,
   order,
 }: {
-  options: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
-  order: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>;
+  options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+  order: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }) {
   const optionsSet: Record<string, CollectionPreferencesProps.VisibleContentOption> = options.reduce(
     (currentValue, option) => ({ ...currentValue, [option.id]: option }),

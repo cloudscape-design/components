@@ -14,7 +14,7 @@ import useLiveAnnouncements from './use-live-announcements';
 
 const componentPrefix = 'content-display';
 
-const isVisible = (id: string, contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) =>
+const isVisible = (id: string, contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) =>
   !!contentDisplay.find(item => item.id === id)?.visible;
 
 const className = (suffix: string) => ({
@@ -22,8 +22,8 @@ const className = (suffix: string) => ({
 });
 
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
-  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>) => void;
-  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplay>;
+  onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
+  value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }
 
 export default function ContentDisplayPreference({

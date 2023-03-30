@@ -28,7 +28,7 @@ export function SortableItem({
   isVisible: boolean;
   onKeyDown?: (event: React.KeyboardEvent) => void;
   onToggle: (id: string) => void;
-  option: CollectionPreferencesProps.VisibleContentOption;
+  option: CollectionPreferencesProps.ContentDisplayOption;
 }) {
   const { isDragging, isSorting, listeners, over, rect, setNodeRef, transform } = useSortable({
     id: option.id,
@@ -89,7 +89,7 @@ export function SortableItem({
           <InternalToggle
             checked={isVisible}
             onChange={() => onToggle(option.id)}
-            disabled={option.editable === false}
+            disabled={option.alwaysVisible === true}
             controlId={controlId}
           />
         </div>
