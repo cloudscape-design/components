@@ -417,7 +417,9 @@ export type ColorsTokenName =
   | 'colorTextStatusWarning'
   | 'colorTextTopNavigationTitle'
   | 'colorBoardPlaceholderActive'
-  | 'colorBoardPlaceholderHover';
+  | 'colorBoardPlaceholderHover'
+  | 'colorDragPlaceholderActive'
+  | 'colorDragPlaceholderHover';
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'
