@@ -155,18 +155,12 @@ the default white background of the container component.
     flex: 1;
     overflow: auto;
   }
-  .with-content-paddings > & {
+  &.with-paddings {
     padding: awsui.$space-scaled-l awsui.$space-container-horizontal;
-  }
-  .with-content-paddings > .header + & {
-    padding-top: awsui.$space-container-content-top;
-  }
-}
 
-.fit-height.with-content-paddings:not(.with-footer) {
-  padding-bottom: awsui.$space-scaled-l;
-  & > .content {
-    padding-bottom: 0;
+    .header + & {
+      padding-top: awsui.$space-container-content-top;
+    }
   }
 }
 

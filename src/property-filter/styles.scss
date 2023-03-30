@@ -90,16 +90,6 @@
   flex: 1;
 }
 
-.results {
-  color: awsui.$color-text-form-label;
-  display: inline-block;
-  box-sizing: border-box;
-  white-space: nowrap;
-  &-visible {
-    padding-left: awsui.$space-s;
-  }
-}
-
 .token-trigger {
   @include styles.text-wrapping;
 }
