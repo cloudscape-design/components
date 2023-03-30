@@ -166,11 +166,11 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * items also receives the corresponding  `Item` object. You can use the `selectionGroupLabel` to
    * add a meaningful description to the whole selection.
    *
-   * * `activateEditLabel` (EditableColumnDefinition) => string -
+   * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
-   * * `cancelEditLabel` (EditableColumnDefinition) => string -
+   * * `cancelEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the cancel button in editable cells.
-   * * `submitEditLabel` (EditableColumnDefinition) => string -
+   * * `submitEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
    */
   ariaLabels?: TableProps.AriaLabels<T>;
@@ -357,9 +357,9 @@ export namespace TableProps {
     tableLabel?: string;
     // do not use <T> to prevent overly strict validation on consumer end
     // it works, practically, we are only interested in `id` and `header` properties only
-    activateEditLabel?: (column: ColumnDefinition<any>) => string;
-    cancelEditLabel?: (column: ColumnDefinition<any>) => string;
-    submitEditLabel?: (column: ColumnDefinition<any>) => string;
+    activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
+    cancelEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
+    submitEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;

@@ -91,7 +91,7 @@ function TableCellEditable<ItemType>({
             <Button
               __hideFocusOutline={true}
               __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
+              ariaLabel={ariaLabels?.activateEditLabel?.(column, item)}
               formAction="none"
               iconName="edit"
               variant="inline-icon"

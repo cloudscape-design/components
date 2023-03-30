@@ -6,7 +6,7 @@ import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 
 const testItem = {
-  test: 'test',
+  test: 'testData',
 };
 
 const column: TableProps.ColumnDefinition<typeof testItem> = {
@@ -37,9 +37,9 @@ const TestComponent = ({ isEditing = false }) => {
             onEditStart={onEditStart}
             onEditEnd={onEditEnd}
             ariaLabels={{
-              activateEditLabel: () => 'activate edit',
-              cancelEditLabel: () => 'cancel edit',
-              submitEditLabel: () => 'submit edit',
+              activateEditLabel: (column, item) => `Edit ${column.id}, ${item.test}`,
+              cancelEditLabel: (column, item) => `Cancel editing ${column.id}, ${item.test}`,
+              submitEditLabel: (column, item) => `Submit editing ${column.id}, ${item.test}`,
             }}
             isEditable={true}
             isPrevSelected={false}
@@ -93,27 +93,27 @@ describe('TableBodyCell', () => {
 
   it('should call onEditStart', () => {
     render(<TestComponent />);
-    fireEvent.click(screen.getByRole('button', { name: 'activate edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit test, testData' }));
     expect(onEditStart).toHaveBeenCalled();
   });
 
   it('should call onEditEnd', () => {
     render(<TestComponent isEditing={true} />);
-    fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when submitting', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
-    fireEvent.click(screen.getByRole('button', { name: 'submit edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Submit editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 
-  it('should call onEditEnd with value', () => {
+  it('should call onEditEnd with value when cancelling', () => {
     const { container } = render(<TestComponent isEditing={true} />);
     fireEvent.change(container.querySelector('input')!, { target: { value: 'test2' } });
-    fireEvent.click(screen.getByRole('button', { name: 'cancel edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel editing test, testData' }));
     expect(onEditEnd).toHaveBeenCalled();
   });
 

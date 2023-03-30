@@ -96,7 +96,7 @@ export function InlineEditor<ItemType>({
 
   return (
     <FocusLock restoreFocus={true}>
-      <div role="dialog" aria-label={ariaLabel} onKeyDown={handleEscape}>
+      <div role="dialog" aria-label={ariaLabels?.activateEditLabel?.(column, item)} onKeyDown={handleEscape}>
         <form ref={clickAwayRef} onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField
             stretch={true}
@@ -113,7 +113,7 @@ export function InlineEditor<ItemType>({
                 <SpaceBetween direction="horizontal" size="xxs">
                   {!currentEditLoading ? (
                     <Button
-                      ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
+                      ariaLabel={ariaLabels?.cancelEditLabel?.(column, item)}
                       formAction="none"
                       iconName="close"
                       variant="inline-icon"
@@ -121,7 +121,7 @@ export function InlineEditor<ItemType>({
                     />
                   ) : null}
                   <Button
-                    ariaLabel={ariaLabels?.submitEditLabel?.(column)}
+                    ariaLabel={ariaLabels?.submitEditLabel?.(column, item)}
                     formAction="submit"
                     iconName="check"
                     variant="inline-icon"

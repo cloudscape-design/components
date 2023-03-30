@@ -276,9 +276,9 @@ export default function App() {
           }}
           ariaLabels={{
             tableLabel: 'Distributions',
-            activateEditLabel: column => `Edit ${column.header}`,
-            cancelEditLabel: column => `Cancel editing ${column.header}`,
-            submitEditLabel: column => `Submit edit ${column.header}`,
+            activateEditLabel: (column, item) => `Edit ${column.header}, ${item.name}`,
+            cancelEditLabel: (column, item) => `Cancel editing ${column.header}, ${item.name}`,
+            submitEditLabel: (column, item) => `Submit edit ${column.header}, ${item.name}`,
           }}
           contentDensity={inlineEditTableDensity}
           empty={
