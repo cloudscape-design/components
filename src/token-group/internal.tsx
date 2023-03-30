@@ -43,7 +43,6 @@ export default function InternalTokenGroup({
         limit={limit}
         renderItem={(item, itemIndex) => (
           <Token
-            key={itemIndex}
             dismissLabel={item.dismissLabel}
             onDismiss={() => fireNonCancelableEvent(onDismiss, { itemIndex })}
             disabled={item.disabled}

@@ -320,7 +320,6 @@ const PropertyFilter = React.forwardRef(
                 items={tokens}
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
-                    key={tokenIndex}
                     token={token}
                     first={tokenIndex === 0}
                     operation={operation}
