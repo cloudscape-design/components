@@ -324,7 +324,7 @@ function FileUploadForm({
             ariaRequired={true}
             value={profileImageField.value}
             onChange={event => {
-              const validation = validateOnSelect ? validateProfilePictureFile(profileImageField.value) : undefined;
+              const validation = validateOnSelect ? validateProfilePictureFile(event.detail.value) : undefined;
               profileImageField.onChange(event.detail.value, validation);
               if (uploadOnSelect) {
                 profileImageField.onUpload(server);
