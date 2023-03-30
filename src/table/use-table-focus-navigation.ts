@@ -49,7 +49,8 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
             const editButton = cell.querySelector('button:last-child') as HTMLButtonElement | null;
-            editButton?.focus?.({ preventScroll: true });
+            editButton?.focus?.();
+            editButton?.scrollIntoView({ block: 'nearest' });
           }
         });
       }
