@@ -59,12 +59,12 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps
    */
   limit?: number;
   /**
-   * // TODO: refine
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
    * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
    * * `limitShowFewer` (string): The text of the show more tokens button.
    * * `limitShowMore` (string): The text of the show fewer tokens button.
+   * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
    * * `formatFileLastModified` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
    */
@@ -87,9 +87,7 @@ export namespace FileUploadProps {
     removeFileAriaLabel: (file: File, fileIndex: number) => string;
     limitShowFewer: string;
     limitShowMore: string;
-    // TODO: refine
-    invalidStateIconAlt: string;
-    errorIconAriaLabel?: string;
+    errorIconAriaLabel: string;
     formatFileSize?: (sizeInBytes: number) => string;
     formatFileLastModified?: (date: Date) => string;
   }

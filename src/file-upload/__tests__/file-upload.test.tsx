@@ -30,7 +30,6 @@ const defaultProps: FileUploadProps = {
     removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
-    invalidStateIconAlt: 'Error',
   },
 };
 

@@ -9,5 +9,5 @@ export const i18nStrings: FileUploadProps.I18nStrings = {
   removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
   limitShowFewer: 'Show fewer files',
   limitShowMore: 'Show more files',
-  invalidStateIconAlt: 'Error',
+  errorIconAriaLabel: 'Error',
 };

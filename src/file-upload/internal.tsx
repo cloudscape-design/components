@@ -93,6 +93,7 @@ function InternalFileUpload(
         label={label}
         secondaryControl={secondaryControl}
         stretch={stretch}
+        i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
       >
         {isDropzoneVisible ? (
           <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
