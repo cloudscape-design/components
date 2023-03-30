@@ -205,7 +205,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *
    * We support having a maximum of two left and one right column sticky. Other values will be ignored.
    *
-   * If the sum of the sticky columns widths exceeds the difference between the container width and 150px, the feature is deactivated.
+   * If the sum of the sticky columns widths exceeds the difference between the container width and 148px, the feature is deactivated.
    *
    * Use it in conjunction with the sticky columns preference of the
    * [collection preferences](/components/collection-preferences/) component.

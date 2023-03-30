@@ -131,6 +131,9 @@ export const useStickyColumns = ({
   const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
 
+  // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
+
   useEffect(() => {
     let animationFrameId: number;
     const wrapper = wrapperRefObject?.current;
@@ -149,14 +152,13 @@ export const useStickyColumns = ({
       });
     };
     wrapper.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
     return () => {
       wrapper.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       cancelAnimationFrame(animationFrameId);
     };
   }, [tableRefObject, wrapperRefObject, tableLeftPadding, tableRightPadding]);
-
-  // We allow the table to have a minimum of 150px of available space besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 150;
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
     return {
@@ -210,9 +212,10 @@ export const useStickyColumns = ({
   useEffect(() => {
     const shouldDisable =
       !stickyColumns ||
-      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS + tableLeftPadding >
+        (containerWidth ?? Number.MAX_SAFE_INTEGER);
     setShouldDisable(shouldDisable);
-  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength]);
+  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding]);
 
   useLayoutEffect(() => {
     // First checks whether there are any sticky columns to calculate the widths for.
