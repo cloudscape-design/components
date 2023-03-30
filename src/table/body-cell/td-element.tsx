@@ -24,6 +24,7 @@ export interface TableTdElementProps {
   isVisualRefresh?: boolean;
   isStickyColumn?: boolean;
   stickyColumn?: GetStickyColumn;
+  isLastColumn?: boolean;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(

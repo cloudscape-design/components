@@ -16,7 +16,7 @@ interface ResizerProps {
   ariaLabelledby?: string;
   minWidth?: number;
   tabIndex?: number;
-
+  resizeDirection?: 'right' | 'left';
   showFocusRing?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -35,6 +35,7 @@ export function Resizer({
   showFocusRing,
   onFocus,
   onBlur,
+  resizeDirection = 'right',
 }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
@@ -63,9 +64,10 @@ export function Resizer({
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      const { right, width } = headerCell.getBoundingClientRect();
+      const { left: cellLeft, right: cellRight, width } = headerCell.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
-      updateTrackerPosition(right + updatedWidth - width);
+      const cellSide = resizeDirection === 'right' ? cellRight : cellLeft;
+      updateTrackerPosition(cellSide + updatedWidth - width);
       setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
@@ -73,8 +75,8 @@ export function Resizer({
 
     const resizeColumn = (offset: number) => {
       if (offset > leftEdge) {
-        const cellLeft = headerCell.getBoundingClientRect().left;
-        const newWidth = offset - cellLeft;
+        const { left: cellLeft, right: cellRight } = headerCell.getBoundingClientRect();
+        const newWidth = resizeDirection === 'right' ? offset - cellLeft : cellRight - offset;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
       }
@@ -109,14 +111,18 @@ export function Resizer({
       }
       // update width
       if (event.keyCode === KeyCode.left) {
-        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
+        const growValue = resizeDirection === 'right' ? -10 : 10;
+        updateColumnWidth(headerCell.getBoundingClientRect().width + growValue);
       }
       if (event.keyCode === KeyCode.right) {
-        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
+        const growValue = resizeDirection === 'right' ? 10 : -10;
+        updateColumnWidth(headerCell.getBoundingClientRect().width + growValue);
       }
     };
 
-    updateTrackerPosition(headerCell.getBoundingClientRect().right);
+    updateTrackerPosition(
+      resizeDirection === 'right' ? headerCell.getBoundingClientRect().right : headerCell.getBoundingClientRect().left
+    );
     document.body.classList.add(styles['resize-active']);
     document.body.classList.remove(styles['resize-active-with-focus']);
     if (isDragging) {
@@ -135,13 +141,14 @@ export function Resizer({
       document.removeEventListener('mouseup', onMouseUp);
       headerCell.removeEventListener('keydown', onKeyDown);
     };
-  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth]);
+  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth, resizeDirection]);
   return (
     <span
       className={clsx(
         styles.resizer,
         isDragging && styles['resizer-active'],
-        (resizerHasFocus || showFocusRing) && styles['has-focus']
+        (resizerHasFocus || showFocusRing) && styles['has-focus'],
+        resizeDirection === 'left' && styles['resizer-left']
       )}
       onMouseDown={event => {
         if (event.button !== 0) {

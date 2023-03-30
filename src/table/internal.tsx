@@ -191,6 +191,7 @@ const InternalTable = forwardRef(
       shouldDisableStickyColumns,
       startStickyColumnsWidth,
       endStickyColumnsWidth,
+      isStuckToTheRight,
     } = useStickyColumns({
       visibleColumnsLength,
       hasSelection,
@@ -231,8 +232,9 @@ const InternalTable = forwardRef(
       setCellWidths,
       cellWidths,
       stickyColumns,
+      visibleColumnsLength,
+      isStuckToTheRight,
     };
-
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
       <ColumnWidthsProvider
@@ -449,6 +451,7 @@ const InternalTable = forwardRef(
                               isVisualRefresh={isVisualRefresh}
                               stickyColumn={!disableStickyColumns ? stickyColumn : undefined}
                               isStickyColumn={!disableStickyColumns && isSticky}
+                              isLastColumn={colIndex === visibleColumnsLength - 1}
                             />
                           );
                         })}

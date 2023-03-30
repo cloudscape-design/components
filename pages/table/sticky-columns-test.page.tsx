@@ -1,9 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Link from '~components/link';
 import Table, { TableProps } from '~components/table';
-import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -24,46 +22,76 @@ export default () => {
       header: 'Description',
       cell: item => item.description || '-',
     },
-    {
-      id: 'description-2',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'alt',
-      header: 'Text value',
-      cell: item => item.alt || '-',
-      sortingField: 'alt',
-      editConfig: {
-        ariaLabel: 'Name',
-        editIconAriaLabel: 'editable',
-        errorIconAriaLabel: 'Name Error',
-        editingCell: (item, { currentValue, setValue }) => {
-          return (
-            <Input
-              autoFocus={true}
-              value={currentValue ?? item.name}
-              onChange={event => setValue(event.detail.value)}
-            />
-          );
-        },
-      },
-    },
-    {
-      id: 'description-3',
-      header: 'Description',
-      cell: item => <Link href="#">{item.description}</Link> || '-',
-    },
-    {
-      id: 'description-4',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-5',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
+    // {
+    //   id: 'description-2',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-20',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-30',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-40',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-50',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-60',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-70',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'alt',
+    //   header: 'Text value',
+    //   cell: item => item.alt || '-',
+    //   sortingField: 'alt',
+    //   editConfig: {
+    //     ariaLabel: 'Name',
+    //     editIconAriaLabel: 'editable',
+    //     errorIconAriaLabel: 'Name Error',
+    //     editingCell: (item, { currentValue, setValue }) => {
+    //       return (
+    //         <Input
+    //           autoFocus={true}
+    //           value={currentValue ?? item.name}
+    //           onChange={event => setValue(event.detail.value)}
+    //         />
+    //       );
+    //     },
+    //   },
+    // },
+    // {
+    //   id: 'description-3',
+    //   header: 'Description',
+    //   cell: item => <Link href="#">{item.description}</Link> || '-',
+    // },
+    // {
+    //   id: 'description-4',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
+    // {
+    //   id: 'description-5',
+    //   header: 'Description',
+    //   cell: item => item.description || '-',
+    // },
     {
       id: 'description-6',
       header: 'Description',
@@ -121,7 +149,7 @@ export default () => {
   ];
 
   const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
-    stickyColumns: { start: 1, end: 1 },
+    stickyColumns: { start: 2, end: 1 },
   });
 
   return (

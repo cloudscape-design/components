@@ -40,6 +40,8 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
+  visibleColumnsLength: number;
+  isStuckToTheRight: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
@@ -77,6 +79,8 @@ const Thead = React.forwardRef(
       setCellWidths,
       tableCellRefs,
       getStickyColumn,
+      visibleColumnsLength,
+      isStuckToTheRight,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -139,6 +143,7 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
+            const { isSticky = false, stickyStyles = {} } = getStickyColumn ? getStickyColumn(colIndex) : {};
 
             let widthOverride;
             if (resizableColumns) {
@@ -151,8 +156,6 @@ const Thead = React.forwardRef(
                 widthOverride = 'auto';
               }
             }
-
-            const { isSticky = false, stickyStyles = {} } = getStickyColumn ? getStickyColumn(colIndex) : {};
 
             return (
               <TableHeaderCell
@@ -182,6 +185,8 @@ const Thead = React.forwardRef(
                 isStickyColumn={isSticky}
                 tableCellRefs={tableCellRefs}
                 setCellWidths={setCellWidths}
+                visibleColumnsLength={visibleColumnsLength}
+                isStuckToTheRight={isStuckToTheRight}
               />
             );
           })}

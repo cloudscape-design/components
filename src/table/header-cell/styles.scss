@@ -7,6 +7,9 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/styles' as styles;
 
+$resize-handle-width: awsui.$space-l;
+$active-separator-width: 2px;
+
 .header-cell {
   position: relative;
   text-align: left;
@@ -37,7 +40,28 @@
       box-shadow: awsui.$shadow-sticky-column-end;
       clip-path: inset(0 0 0 -24px);
     }
+    &:last-child:before {
+      content: '';
+      position: absolute;
+      bottom: 25%;
+      height: 50%;
+      border-left: awsui.$border-divider-section-width solid awawsui.$color-border-divider-default;
+      box-sizing: border-box;
+      left: -1px;
+    }
+    &.header-cell-resizable:last-child:before {
+      border-left-color: awsui.$color-border-divider-interactive-default;
+    }
   }
+  // &:last-child:before {
+  //   content: '';
+  //   position: absolute;
+  //   bottom: 25%;
+  //   height: 50%;
+  //   border-left: awsui.$border-divider-section-width solid awawsui.$color-border-divider-interactive-default;
+  //   box-sizing: border-box;
+  //   left: -1px;
+  // }
   &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
   }
@@ -50,6 +74,16 @@
   }
 
   &:not(:last-child):before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 25%;
+    height: 50%;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+  }
+
+  &:last-child:before.is-visual-refresh {
     content: '';
     position: absolute;
     right: 0;

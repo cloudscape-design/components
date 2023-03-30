@@ -30,6 +30,8 @@ interface TableHeaderCellProps<ItemType> {
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  visibleColumnsLength: number;
+  isStuckToTheRight: boolean;
   resizableColumns?: boolean;
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
@@ -64,8 +66,9 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     isStickyColumn,
     tableCellRefs,
     setCellWidths,
+    visibleColumnsLength,
+    isStuckToTheRight,
   } = props;
-
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -87,6 +90,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     }
   };
   const headerId = useUniqueId('table-header-');
+  const isLastColumn = colIndex === visibleColumnsLength - 1;
   return (
     <th
       className={clsx(className, {
@@ -157,9 +161,12 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
             }
             onDragMove={newWidth => {
               updateColumn(colIndex, newWidth);
+            }}
+            resizeDirection={isLastColumn && isStickyColumn && isStuckToTheRight ? 'left' : 'right'}
+            onFinish={() => {
+              onResizeFinish();
               updateCellWidths({ setCellWidths, tableCellRefs });
             }}
-            onFinish={onResizeFinish}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}
             onBlur={() => onFocusedComponentChange?.(null)}

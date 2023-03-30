@@ -27,8 +27,29 @@ $active-separator-width: 2px;
   .resize-active & {
     pointer-events: none;
   }
+  // th:last-child > & {
+  //   width: calc(#{$handle-width} / 2);
+  //   right: 0;
+  // }
+  // & is-stuck
+  &-left {
+    width: $handle-width;
+    left: calc(-1 * #{$handle-width} / 2 + #{$active-separator-width});
+    &:hover,
+    &-active {
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 25%;
+        height: 50%;
+        left: calc(#{$handle-width} / 2 - #{$active-separator-width} - 1px);
+        box-sizing: border-box;
+        border-left: $active-separator-width solid awsui.$color-border-divider-active;
+      }
+    }
+  }
   th:last-child > & {
-    width: calc(#{$handle-width} / 2);
+    width: $handle-width;
     right: 0;
   }
   th:not(:last-child) > & {
