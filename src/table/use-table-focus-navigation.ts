@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
@@ -49,8 +50,11 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
             const editButton = cell.querySelector('button:last-child') as HTMLButtonElement | null;
-            editButton?.focus?.();
-            editButton?.scrollIntoView({ block: 'nearest' });
+
+            if (editButton) {
+              editButton.focus?.();
+              scrollElementIntoView(editButton);
+            }
           }
         });
       }
