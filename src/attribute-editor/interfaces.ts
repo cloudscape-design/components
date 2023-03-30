@@ -38,7 +38,7 @@ export namespace AttributeEditorProps {
 
   export interface Ref {
     /**
-     * Focuses the remove button for the given row index.
+     * Focuses the 'remove' button for the given row index.
      */
     focusRemoveButton(itemIndex: number): void;
     /**
