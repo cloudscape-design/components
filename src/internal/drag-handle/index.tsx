@@ -3,7 +3,7 @@
 import React, { ButtonHTMLAttributes, ForwardedRef, forwardRef } from 'react';
 
 import Handle from '../handle';
-import DragHandleIcon from './icon';
+import InternalIcon from '../../icon/internal';
 import styles from './styles.css.js';
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 
@@ -16,7 +16,7 @@ function DragHandle({ attributes, listeners }: DragHandleProps, ref: ForwardedRe
   return (
     <div role="application">
       <Handle ref={ref} className={styles.handle} {...attributes} {...listeners}>
-        <DragHandleIcon />
+        <InternalIcon name="drag-indicator" />
       </Handle>
     </div>
   );
