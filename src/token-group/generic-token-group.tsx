@@ -14,7 +14,7 @@ import DismissButton from './dismiss-button';
 import SelectToggle from './toggle';
 
 import styles from './styles.css.js';
-import InternalBox from '../box/internal';
+import { FormFieldError } from '../form-field/internal';
 
 interface ItemAttributes {
   name: string;
@@ -97,9 +97,9 @@ function GenericToken({ name, disabled, error, dismiss, group, children }: Gener
         {dismiss && <DismissButton disabled={disabled} dismissLabel={dismiss.label} onDismiss={dismiss.onDismiss} />}
       </div>
       {error && (
-        <InternalBox fontSize="body-s" color="text-status-error">
-          {error}
-        </InternalBox>
+        <div style={{ marginTop: '4px' }}>
+          <FormFieldError>{error}</FormFieldError>
+        </div>
       )}
     </div>
   );

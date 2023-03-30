@@ -124,14 +124,7 @@ function InternalFileUpload(
               onDismiss: () => onFileRemove(fileIndex),
             },
           })}
-          renderItem={(file, fileIndex) => (
-            <FileOption
-              file={file}
-              metadata={metadata}
-              hasError={!!fileErrors?.[fileIndex]}
-              i18nStrings={i18nStrings}
-            />
-          )}
+          renderItem={file => <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />}
           list={multiple}
           limit={limit}
           i18nStrings={{
