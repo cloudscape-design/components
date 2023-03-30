@@ -8,14 +8,23 @@ const getClassName = (suffix: string): string => styles[`content-display-${suffi
 export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   static rootSelector = styles['content-display'];
 
+  /**
+   * Returns the title.
+   */
   findTitle(): ElementWrapper {
     return this.findByClassName(getClassName('title'))!;
   }
 
+  /**
+   * Returns the label.
+   */
   findLabel(): ElementWrapper {
     return this.findByClassName(getClassName('label'))!;
   }
 
+  /**
+   * Returns the options that the user can reorder.
+   */
   findOptions(): Array<ElementWrapper> {
     return this.findAllByClassName(getClassName('option'));
   }

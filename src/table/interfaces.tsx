@@ -192,15 +192,24 @@ export interface TableProps<T = any> extends BaseComponentProps {
   sortingDisabled?: boolean;
 
   /**
+   * Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
+   *
+   * If not set, all columns are displayed and the order is dictated by the `columnDefinitions` property.
+   *
+   * Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+   */
+  columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
+
+  /**
    * Specifies an array containing the `id`s of visible columns. If not set, all columns are displayed.
    *
    * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
    *
-   * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property
-   */
+   * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property.
+   *
+   * @deprecated Use the `columnDisplay` property instead.
+   * */
   visibleColumns?: ReadonlyArray<string>;
-
-  columnDisplay?: ReadonlyArray<ColumnDisplayProperties>;
 
   /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
