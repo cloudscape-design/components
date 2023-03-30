@@ -256,7 +256,7 @@ export class KeyboardSensor implements SensorInstance {
 
           event.preventDefault();
 
-          onActivation?.({ event: event.nativeEvent });
+          onActivation?.({ event });
 
           return true;
         }
