@@ -244,7 +244,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const hasDrawerViewportOverlay =
       isMobile && (activeDrawerId !== null || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
-    console.log(hasDrawerViewportOverlay);
 
     /**
      * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
