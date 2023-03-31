@@ -62,14 +62,3 @@ test('overrides form-field properties', () => {
   expect(element).toHaveAttribute('aria-describedby', 'description');
   expect(element).not.toHaveAttribute('aria-invalid');
 });
-
-test('internal autoFocus implementation triggers focus on mount', () => {
-  render(
-    <InternalFormField __useReactAutofocus={true}>
-      <InternalInput value="" autoFocus={true} __inheritFormFieldProps={true} />
-    </InternalFormField>
-  );
-  const element = createWrapper().find('input')!.getElement();
-  expect(element).toHaveFocus();
-  expect(element).toHaveAttribute('data-awsui-react-autofocus', 'true');
-});

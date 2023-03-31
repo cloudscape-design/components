@@ -47,11 +47,7 @@ export interface FormFieldValidationControlProps extends FormFieldControlProps {
   invalid?: boolean;
 }
 
-interface InternalFormFieldControlProps extends FormFieldValidationControlProps {
-  __useReactAutofocus?: boolean;
-}
-
-export const FormFieldContext = createContext<InternalFormFieldControlProps>({});
+export const FormFieldContext = createContext<FormFieldValidationControlProps>({});
 
 function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
   const result = <T>{};
@@ -63,11 +59,5 @@ function applyDefault<T>(fields: T, defaults: T, keys: (keyof T)[]) {
 
 export function useFormFieldContext(props: FormFieldValidationControlProps) {
   const context = useContext(FormFieldContext);
-  return applyDefault<InternalFormFieldControlProps>(props, context, [
-    'invalid',
-    'controlId',
-    'ariaLabelledby',
-    'ariaDescribedby',
-    '__useReactAutofocus',
-  ]);
+  return applyDefault(props, context, ['invalid', 'controlId', 'ariaLabelledby', 'ariaDescribedby']);
 }
