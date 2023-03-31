@@ -111,6 +111,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
           [styles['header-cell-freeze']]: !!isStickyColumn,
+          [styles['header-cell-freeze-stuck-right']]: isLastColumn && isStuckToTheRight,
         },
         lastStickyColumnStyles
       )}
