@@ -31,7 +31,8 @@ interface TableHeaderCellProps<ItemType> {
   onFocus?: () => void;
   onBlur?: () => void;
   visibleColumnsLength: number;
-  isStuckToTheRight: boolean;
+  isStuckToTheRight?: boolean;
+  isStuckToTheLeft?: boolean;
   resizableColumns?: boolean;
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
@@ -69,6 +70,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     tableCellRefs,
     setCellWidths,
     visibleColumnsLength,
+    isStuckToTheLeft,
     isStuckToTheRight,
     isLastStart,
     isLastEnd,
@@ -95,11 +97,10 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   };
   const headerId = useUniqueId('table-header-');
   const isLastColumn = colIndex === visibleColumnsLength - 1;
-  const lastStickyColumnStyles = isLastStart
-    ? styles['header-cell-freeze-last-start']
-    : isLastEnd
-    ? styles['header-cell-freeze-last-end']
-    : undefined;
+  const lastStartStyles = isStuckToTheLeft && isLastStart && styles['header-cell-freeze-last-start'];
+  const lastEndStyles = isStuckToTheRight && isLastEnd && styles['header-cell-freeze-last-end'];
+  const lastStickyColumnStyles = lastStartStyles || lastEndStyles || {};
+
   return (
     <th
       className={clsx(

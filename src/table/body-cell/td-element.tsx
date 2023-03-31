@@ -25,6 +25,8 @@ export interface TableTdElementProps {
   isStickyColumn?: boolean;
   stickyColumn?: GetStickyColumn;
   isLastColumn?: boolean;
+  isStuckToTheRight?: boolean;
+  isStuckToTheLeft?: boolean;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -48,17 +50,14 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       hasFooter,
       isStickyColumn,
       stickyColumn,
+      isStuckToTheRight,
+      isStuckToTheLeft,
     },
     ref
   ) => {
     const { isLastStart, isLastEnd } = stickyColumn || {};
-    const isLastStickyColumn = isLastStart ? 'start' : isLastEnd ? 'end' : undefined;
-    const lastStickyColumnStyles =
-      isLastStickyColumn === 'start'
-        ? styles['body-cell-freeze-last-start']
-        : isLastStickyColumn === 'end'
-        ? styles['body-cell-freeze-last-end']
-        : undefined;
+    const lastStartStyles = isStuckToTheLeft && isLastStart ? styles['body-cell-freeze-last-start'] : {};
+    const lastEndStyles = isStuckToTheRight && isLastEnd ? styles['body-cell-freeze-last-end'] : {};
     return (
       <td
         style={style}
@@ -77,7 +76,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           isStickyColumn && styles['body-cell-freeze'],
-          isLastStickyColumn && lastStickyColumnStyles
+          lastStartStyles,
+          lastEndStyles
         )}
         onClick={onClick}
         ref={ref}

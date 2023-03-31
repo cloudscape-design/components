@@ -42,6 +42,7 @@ export interface TheadProps {
   stripedRows?: boolean;
   visibleColumnsLength: number;
   isStuckToTheRight: boolean;
+  isStuckToTheLeft: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
@@ -81,6 +82,7 @@ const Thead = React.forwardRef(
       getStickyColumn,
       visibleColumnsLength,
       isStuckToTheRight,
+      isStuckToTheLeft,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -194,6 +196,7 @@ const Thead = React.forwardRef(
                 setCellWidths={setCellWidths}
                 visibleColumnsLength={visibleColumnsLength}
                 isStuckToTheRight={isStuckToTheRight}
+                isStuckToTheLeft={isStuckToTheLeft}
               />
             );
           })}

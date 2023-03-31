@@ -192,6 +192,7 @@ const InternalTable = forwardRef(
       startStickyColumnsWidth,
       endStickyColumnsWidth,
       isStuckToTheRight,
+      isStuckToTheLeft,
       checkStuckColumns,
     } = useStickyColumns({
       visibleColumnsLength,
@@ -236,6 +237,7 @@ const InternalTable = forwardRef(
       stickyColumns,
       visibleColumnsLength,
       isStuckToTheRight,
+      isStuckToTheLeft,
     };
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -454,6 +456,8 @@ const InternalTable = forwardRef(
                               stickyColumn={!disableStickyColumns ? stickyColumn : undefined}
                               isStickyColumn={!disableStickyColumns && isSticky}
                               isLastColumn={colIndex === visibleColumnsLength - 1}
+                              isStuckToTheLeft={isStuckToTheLeft}
+                              isStuckToTheRight={isStuckToTheRight}
                             />
                           );
                         })}
