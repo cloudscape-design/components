@@ -43,9 +43,15 @@ export default function TokenList<Item>({
     return (
       <div className={clsx(styles.root, styles.horizontal)}>
         {hasItems && (
-          <ul id={controlId} className={clsx(styles.list, styles.horizontal)}>
+          <ul id={controlId} className={styles.list}>
             {visibleItems.map((item, itemIndex) => (
-              <li key={itemIndex} className={styles['list-item']} {...itemAttributes?.(item, itemIndex)}>
+              <li
+                key={itemIndex}
+                className={styles['list-item']}
+                {...itemAttributes?.(item, itemIndex)}
+                aria-setsize={items.length}
+                aria-posinset={itemIndex + 1}
+              >
                 {renderItem(item, itemIndex)}
               </li>
             ))}
@@ -63,7 +69,13 @@ export default function TokenList<Item>({
       {hasVisibleItems && (
         <ul id={controlId} className={clsx(styles.list, styles[alignment])}>
           {visibleItems.map((item, itemIndex) => (
-            <li key={itemIndex} className={styles['list-item']} {...itemAttributes?.(item, itemIndex)}>
+            <li
+              key={itemIndex}
+              className={styles['list-item']}
+              {...itemAttributes?.(item, itemIndex)}
+              aria-setsize={items.length}
+              aria-posinset={itemIndex + 1}
+            >
               {renderItem(item, itemIndex)}
             </li>
           ))}
