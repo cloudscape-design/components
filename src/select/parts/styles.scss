@@ -37,14 +37,6 @@ $checkbox-size: awsui.$size-control;
 
 .trigger {
   @include styles.text-overflow-ellipsis;
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(
-      (
-        'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-        'horizontal': calc(-1 * #{awsui.$space-scaled-xs}),
-      )
-    );
-  }
 }
 
 .layout-strut {

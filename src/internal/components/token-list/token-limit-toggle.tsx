@@ -1,26 +1,27 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, Ref, useCallback } from 'react';
-import InternalIcon from '../icon/internal';
-import useFocusVisible from '../internal/hooks/focus-visible';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/events';
 
-import { TokenGroupProps } from './interfaces';
+import React, { forwardRef, useCallback } from 'react';
+import InternalIcon from '../../../icon/internal';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import useFocusVisible from '../../hooks/focus-visible';
+import { I18nStrings } from './interfaces';
+
 import styles from './styles.css.js';
-export interface SelectToggleProps {
-  controlId: string;
+interface TokenLimitToggleProps {
+  controlId?: string;
   allHidden: boolean;
   expanded: boolean;
   numberOfHiddenOptions: number;
   onClick?: NonCancelableEventHandler<null>;
-  i18nStrings?: Pick<TokenGroupProps.I18nStrings, 'limitShowFewer' | 'limitShowMore'>;
+  i18nStrings?: I18nStrings;
 }
 
-export default forwardRef(SelectToggle);
+export default forwardRef(TokenLimitToggle);
 
-function SelectToggle(
-  { controlId, allHidden, expanded, numberOfHiddenOptions, onClick, i18nStrings = {} }: SelectToggleProps,
-  ref: Ref<HTMLButtonElement>
+function TokenLimitToggle(
+  { controlId, allHidden, expanded, numberOfHiddenOptions, onClick, i18nStrings = {} }: TokenLimitToggleProps,
+  ref: React.Ref<HTMLButtonElement>
 ) {
   const focusVisible = useFocusVisible();
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;

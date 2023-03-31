@@ -217,7 +217,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         left: 0;
         right: 0;
       }
-      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
+      &[data-awsui-focus-visible='true']:focus-within {
         @include styles.focus-highlight(
           (
             'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),

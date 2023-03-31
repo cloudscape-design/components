@@ -26,7 +26,7 @@ const TestComponent = () => {
 
   const editConfig = { __mock: true };
 
-  useTableFocusNavigation('none', tableRef, [{ editConfig }, { editConfig: undefined }, { editConfig }] as any, 3);
+  useTableFocusNavigation(undefined, tableRef, [{ editConfig }, { editConfig: undefined }, { editConfig }] as any, 3);
 
   const focusHandler = (evt: React.FocusEvent) => {
     focusFn(evt.target.innerHTML);
@@ -196,7 +196,7 @@ describe('useTableFocusNavigation', () => {
     it('should attach event listener for focus navigation', () => {
       renderHook(() =>
         useTableFocusNavigation(
-          'none',
+          undefined,
           { current: table },
           [
             {
@@ -221,7 +221,7 @@ describe('useTableFocusNavigation', () => {
 
     it('should detach event listener for focus navigation', () => {
       const { unmount } = renderHook(() =>
-        useTableFocusNavigation('none', { current: table }, [{ editConfig }, { editConfig }, { editConfig }], 3)
+        useTableFocusNavigation(undefined, { current: table }, [{ editConfig }, { editConfig }, { editConfig }], 3)
       );
       expect(removeEventListener).not.toHaveBeenCalled();
       unmount();

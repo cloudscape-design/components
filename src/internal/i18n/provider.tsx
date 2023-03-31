@@ -100,7 +100,7 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
   };
 
   return (
-    <InternalI18nContext.Provider value={format}>
+    <InternalI18nContext.Provider value={{ locale, format }}>
       <I18nMessagesContext.Provider value={messages}>{children}</I18nMessagesContext.Provider>
     </InternalI18nContext.Provider>
   );
