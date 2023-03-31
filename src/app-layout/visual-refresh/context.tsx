@@ -68,6 +68,8 @@ interface AppLayoutInternals extends AppLayoutProps {
   navigationRefs: FocusControlRefs;
   toolsRefs: FocusControlRefs;
   loseToolsFocus: () => void;
+  hasBreadcrumbs: boolean;
+  isOverlapDisabled: boolean;
 }
 
 /**
@@ -491,6 +493,23 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
+    /**
+     * Determine whether the overlap between the contentHeader and content slots should be disabled.
+     * The disableContentHeaderOverlap property is absolute and will always disable the overlap
+     * if it is set to true. If there is no contentHeader then the overlap should be disabled
+     * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
+     * component in the content slot that needs to manually control the overlap height. Components
+     * such as the Table (full page variant), Wizard, ContentLayout use this property and will
+     * retain the overlap even if there is nothing rendered in the contentHeader slot.
+     */
+    let isOverlapDisabled = false;
+
+    if (props.disableContentHeaderOverlap) {
+      isOverlapDisabled = true;
+    } else if (!props.contentHeader && dynamicOverlapHeight <= 0) {
+      isOverlapDisabled = true;
+    }
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -545,6 +564,8 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsRefs,
           navigationRefs,
           loseToolsFocus,
+          isOverlapDisabled,
+          hasBreadcrumbs: !!props.breadcrumbs,
         }}
       >
         <AppLayoutContext.Provider

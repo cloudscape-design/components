@@ -10,8 +10,11 @@ import styles from './styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Background() {
-  const { hasNotificationsContent, hasStickyBackground, stickyNotifications } = useAppLayoutInternals();
-
+  const { hasNotificationsContent, hasStickyBackground, stickyNotifications, hasBreadcrumbs, isOverlapDisabled } =
+    useAppLayoutInternals();
+  if (hasNotificationsContent && !hasBreadcrumbs && isOverlapDisabled) {
+    return null;
+  }
   return (
     <div className={clsx(styles.background, 'awsui-context-content-header')}>
       <div

@@ -20,10 +20,8 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
-    contentHeader,
     contentType,
     disableBodyScroll,
-    disableContentHeaderOverlap,
     dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
@@ -42,9 +40,8 @@ export default function Layout({ children }: LayoutProps) {
     stickyNotifications,
     splitPanelDisplayed,
     toolsHide,
+    isOverlapDisabled,
   } = useAppLayoutInternals();
-
-  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);
@@ -140,29 +137,4 @@ function getContentGapRight(
  */
 function getContentGapLeft(isNavigationOpen: boolean, navigationHide?: boolean) {
   return isNavigationOpen || navigationHide ? true : false;
-}
-
-/**
- * Determine whether the overlap between the contentHeader and content slots should be disabled.
- * The disableContentHeaderOverlap property is absolute and will always disable the overlap
- * if it is set to true. If there is no contentHeader then the overlap should be disabled
- * unless there is a dynamicOverlapHeight. The dynamicOverlapHeight property is set by a
- * component in the content slot that needs to manually control the overlap height. Components
- * such as the Table (full page variant), Wizard, ContentLayout use this property and will
- * retain the overlap even if there is nothing rendered in the contentHeader slot.
- */
-function getOverlapDisabled(
-  dynamicOverlapHeight: number,
-  contentHeader?: React.ReactNode,
-  disableContentHeaderOverlap?: boolean
-) {
-  let isOverlapDisabled = false;
-
-  if (disableContentHeaderOverlap) {
-    isOverlapDisabled = true;
-  } else if (!contentHeader && dynamicOverlapHeight <= 0) {
-    isOverlapDisabled = true;
-  }
-
-  return isOverlapDisabled;
 }
