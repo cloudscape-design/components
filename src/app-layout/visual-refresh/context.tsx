@@ -502,13 +502,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * such as the Table (full page variant), Wizard, ContentLayout use this property and will
      * retain the overlap even if there is nothing rendered in the contentHeader slot.
      */
-    let isOverlapDisabled = false;
-
-    if (props.disableContentHeaderOverlap) {
-      isOverlapDisabled = true;
-    } else if (!props.contentHeader && dynamicOverlapHeight <= 0) {
-      isOverlapDisabled = true;
-    }
+    const isOverlapDisabled = props.disableContentHeaderOverlap || (!props.contentHeader && dynamicOverlapHeight <= 0);
 
     return (
       <AppLayoutInternalsContext.Provider
