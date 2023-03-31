@@ -43,21 +43,13 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
-    toolsHide,
   } = useAppLayoutInternals();
 
   const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);
-  const hasContentGapRight = getContentGapRight(
-    activeDrawer,
-    isSplitPanelOpen,
-    isToolsOpen,
-    splitPanelDisplayed,
-    splitPanelPosition,
-    toolsHide
-  );
+  const hasContentGapRight = getContentGapRight(activeDrawer, isSplitPanelOpen, isToolsOpen, splitPanelPosition);
 
   return (
     <main
@@ -107,34 +99,12 @@ function getContentGapRight(
   activeDrawer: DrawersProps.Drawer,
   isSplitPanelOpen: boolean | undefined,
   isToolsOpen: boolean,
-  splitPanelDisplayed: boolean,
-  splitPanelPosition: AppLayoutProps.SplitPanelPosition,
-  toolsHide?: boolean
+  splitPanelPosition: AppLayoutProps.SplitPanelPosition
 ) {
-  let hasContentGapRight = false;
+  let hasContentGapRight = true;
 
-  // Main is touching the edge of the Layout and needs a content gap
-  if (!splitPanelDisplayed && toolsHide) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the Tools drawer and needs a content gap
-  if ((!splitPanelDisplayed || !isSplitPanelOpen) && !toolsHide && isToolsOpen) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the edge of the Layout and needs a content gap
-  if (splitPanelDisplayed && splitPanelPosition === 'bottom' && (isToolsOpen || toolsHide)) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the Split Panel drawer and needs a content gap
-  if (splitPanelDisplayed && isSplitPanelOpen && splitPanelPosition === 'side') {
-    hasContentGapRight = true;
-  }
-
-  if (activeDrawer) {
-    hasContentGapRight = true;
+  if (!isToolsOpen && !activeDrawer && (splitPanelPosition !== 'side' || !isSplitPanelOpen)) {
+    hasContentGapRight = false;
   }
 
   return hasContentGapRight;

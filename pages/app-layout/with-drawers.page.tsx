@@ -26,6 +26,14 @@ export default function WithDrawers() {
           activeDrawerId: activeDrawerId,
           items: [
             {
+              content: <Info />,
+              id: 'info',
+              trigger: {
+                ariaLabel: 'View Info content',
+                iconName: 'status-info',
+              },
+            },
+            {
               content: <Security />,
               id: 'security',
               trigger: {

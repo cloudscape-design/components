@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { NonCancelableEventHandler } from '../../internal/events';
+import SplitPanel from './split-panel';
 import TriggerButton, { TriggerButtonProps } from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -30,14 +31,20 @@ export namespace DrawersProps {
 /**
  *
  */
-function Container({ children }: any) {
+export default function Drawers() {
   const { drawers } = useAppLayoutInternals();
 
   if (!drawers) {
     return null;
   }
 
-  return <div className={styles['drawers-container']}>{children}</div>;
+  return (
+    <div className={styles['drawers-container']}>
+      <SplitPanel.Side />
+      <ActiveDrawer />
+      <Triggers />
+    </div>
+  );
 }
 
 /**
@@ -126,9 +133,3 @@ function Triggers() {
     </aside>
   );
 }
-
-export default {
-  ActiveDrawer: ActiveDrawer,
-  Container: Container,
-  Triggers: Triggers,
-};
