@@ -36,9 +36,12 @@ export default function FileUploadScenarios() {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Settings
+  const [acceptMultiple, setAcceptMultiple] = useState(true);
+  const [useForm, setUseForm] = useState(false);
   const [imitateServerFailure, setImitateServerFailure] = useState(false);
   const [imitateServerValidation, setImitateServerValidation] = useState(false);
-  const [acceptMultiple, setAcceptMultiple] = useState(true);
   const [uploadOnSelect, setUploadOnSelect] = useState(true);
   const [validateOnSelect, setValidateOnSelect] = useState(true);
 
@@ -53,8 +56,49 @@ export default function FileUploadScenarios() {
     }, 3000);
   }, []);
 
-  const contractsField = useFileUploadFormField({ onUploadReady: !uploadOnSelect ? onSuccess : undefined });
+  const contractsField = useFileUploadFormField({ onUploadReady: !uploadOnSelect || !useForm ? onSuccess : undefined });
   const nameField = useFormField('');
+
+  const fileUpload = (
+    <FileUpload
+      multiple={acceptMultiple}
+      limit={3}
+      value={contractsField.value}
+      onChange={event => {
+        const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
+        contractsField.onChange(event.detail.value, validation);
+        if (uploadOnSelect) {
+          contractsField.onUpload(server);
+        }
+      }}
+      accept="application/pdf, image/png, image/jpeg"
+      showFileType={true}
+      showFileSize={true}
+      showFileLastModified={true}
+      showFileThumbnail={true}
+      i18nStrings={i18nStrings}
+      errorText={contractsField.error}
+      fileErrors={contractsField.fileErrors}
+      label={acceptMultiple ? 'Contracts' : 'Contract'}
+      description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
+      info={
+        <Link variant="info" onFollow={() => setToolsOpen(true)}>
+          info
+        </Link>
+      }
+      constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+      secondaryControl={
+        contractsField.progress ? (
+          <UploadProgress
+            files={contractsField.value}
+            progress={contractsField.progress}
+            error={!!contractsField.error}
+            onRefresh={() => contractsField.onUpload(server)}
+          />
+        ) : null
+      }
+    />
+  );
 
   return (
     <AppLayout
@@ -62,9 +106,7 @@ export default function FileUploadScenarios() {
       ariaLabels={appLayoutLabels}
       navigationOpen={navigationOpen}
       notifications={
-        showSuccess && (
-          <Flashbar items={[{ type: 'success', header: 'Form submitted', statusIconAriaLabel: 'success' }]} />
-        )
+        showSuccess && <Flashbar items={[{ type: 'success', header: 'Submitted', statusIconAriaLabel: 'success' }]} />
       }
       stickyNotifications={true}
       onNavigationChange={event => setNavigationOpen(event.detail.open)}
@@ -98,107 +140,98 @@ export default function FileUploadScenarios() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload scenarios</Header>
 
-          <SpaceBetween size="s" direction="horizontal">
-            <Checkbox checked={imitateServerFailure} onChange={event => setImitateServerFailure(event.detail.checked)}>
-              Imitate server failure
-            </Checkbox>
-            <Checkbox
-              checked={imitateServerValidation}
-              onChange={event => setImitateServerValidation(event.detail.checked)}
-            >
-              Imitate server validation
-            </Checkbox>
-            <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
-              Accept multiple files
-            </Checkbox>
-            <Checkbox checked={uploadOnSelect} onChange={event => setUploadOnSelect(event.detail.checked)}>
-              Upload files on select
-            </Checkbox>
-            <Checkbox
-              checked={validateOnSelect || uploadOnSelect}
-              disabled={uploadOnSelect}
-              onChange={event => setValidateOnSelect(event.detail.checked)}
-            >
-              Validate files on select
-            </Checkbox>
+          <SpaceBetween size="m" direction="vertical">
+            <FormField label="File upload settings">
+              <SpaceBetween size="s" direction="horizontal">
+                <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+                  Accept multiple files
+                </Checkbox>
+              </SpaceBetween>
+            </FormField>
+
+            <FormField label="Dummy server settings">
+              <SpaceBetween size="s" direction="horizontal">
+                <Checkbox
+                  checked={imitateServerFailure}
+                  onChange={event => setImitateServerFailure(event.detail.checked)}
+                >
+                  Imitate server failure
+                </Checkbox>
+                <Checkbox
+                  checked={imitateServerValidation}
+                  onChange={event => setImitateServerValidation(event.detail.checked)}
+                >
+                  Imitate server validation
+                </Checkbox>
+              </SpaceBetween>
+            </FormField>
+
+            <FormField label="Form settings">
+              <SpaceBetween size="s" direction="horizontal">
+                <Checkbox checked={useForm} onChange={event => setUseForm(event.detail.checked)}>
+                  Use form
+                </Checkbox>
+                <Checkbox
+                  checked={useForm && uploadOnSelect}
+                  disabled={!useForm}
+                  onChange={event => setUploadOnSelect(event.detail.checked)}
+                >
+                  Upload files on select
+                </Checkbox>
+                <Checkbox
+                  checked={useForm && (validateOnSelect || uploadOnSelect)}
+                  disabled={!useForm || uploadOnSelect}
+                  onChange={event => setValidateOnSelect(event.detail.checked)}
+                >
+                  Validate files on select
+                </Checkbox>
+              </SpaceBetween>
+            </FormField>
           </SpaceBetween>
 
-          <form
-            onSubmit={e => {
-              e.preventDefault();
+          {useForm ? (
+            <form
+              onSubmit={e => {
+                e.preventDefault();
 
-              const profileImageError = validateContractFiles(contractsField.value, true);
-              const nameError = nameField.value.trim().length === 0 ? 'Name must not be empty' : '';
+                const profileImageError = validateContractFiles(contractsField.value, true);
+                const nameError = nameField.value.trim().length === 0 ? 'Name must not be empty' : '';
 
-              profileImageError.hasError && contractsField.onChange(contractsField.value, profileImageError);
-              nameError && nameField.onChange(nameField.value, nameError);
+                profileImageError.hasError && contractsField.onChange(contractsField.value, profileImageError);
+                nameError && nameField.onChange(nameField.value, nameError);
 
-              if (!profileImageError.hasError && !nameError) {
-                if (uploadOnSelect) {
-                  contractsField.uploadStatus === 'ready' && onSuccess();
-                } else {
-                  contractsField.onUpload(server);
+                if (!profileImageError.hasError && !nameError) {
+                  if (uploadOnSelect) {
+                    contractsField.uploadStatus === 'ready' && onSuccess();
+                  } else {
+                    contractsField.onUpload(server);
+                  }
                 }
-              }
-            }}
-          >
-            <Form
-              actions={
-                <Button variant="primary" formAction="submit" loading={contractsField.uploadStatus === 'loading'}>
-                  Upload
-                </Button>
-              }
+              }}
             >
-              <SpaceBetween size="m">
-                <FileUpload
-                  multiple={acceptMultiple}
-                  limit={3}
-                  value={contractsField.value}
-                  onChange={event => {
-                    const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
-                    contractsField.onChange(event.detail.value, validation);
-                    if (uploadOnSelect) {
-                      contractsField.onUpload(server);
-                    }
-                  }}
-                  accept="application/pdf, image/png, image/jpeg"
-                  showFileType={true}
-                  showFileSize={true}
-                  showFileLastModified={true}
-                  showFileThumbnail={true}
-                  i18nStrings={i18nStrings}
-                  errorText={contractsField.error}
-                  fileErrors={contractsField.fileErrors}
-                  label={acceptMultiple ? 'Contracts' : 'Contract'}
-                  description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
-                  info={
-                    <Link variant="info" onFollow={() => setToolsOpen(true)}>
-                      info
-                    </Link>
-                  }
-                  constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
-                  secondaryControl={
-                    contractsField.progress ? (
-                      <UploadProgress
-                        files={contractsField.value}
-                        progress={contractsField.progress}
-                        error={!!contractsField.error}
-                        onRefresh={() => contractsField.onUpload(server)}
-                      />
-                    ) : null
-                  }
-                />
+              <Form
+                actions={
+                  <Button variant="primary" formAction="submit" loading={contractsField.uploadStatus === 'loading'}>
+                    Upload
+                  </Button>
+                }
+              >
+                <SpaceBetween size="m">
+                  {fileUpload}
 
-                <FormField label="Name" description="Enter your name" errorText={nameField.error}>
-                  <Input
-                    ariaRequired={true}
-                    value={nameField.value}
-                    onChange={e => nameField.onChange(e.detail.value, '')}
-                  />
-                </FormField>
-              </SpaceBetween>
-            </Form>
-          </form>
+                  <FormField label="Name" description="Enter your name" errorText={nameField.error}>
+                    <Input
+                      ariaRequired={true}
+                      value={nameField.value}
+                      onChange={e => nameField.onChange(e.detail.value, '')}
+                    />
+                  </FormField>
+                </SpaceBetween>
+              </Form>
+            </form>
+          ) : (
+            fileUpload
+          )}
         </SpaceBetween>
       }
     />

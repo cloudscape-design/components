@@ -16,13 +16,10 @@ export class DummyServer implements FileUploadServer {
     this.files = files;
     this.state = new FilesUploadState(files.length);
 
-    let tick = 0;
     const totalSizeInBytes = files.reduce((sum, file) => sum + file.size, 0);
     const speedInBytes = totalSizeInBytes / 100;
 
     const upload = () => {
-      tick += 1;
-
       setTimeout(() => {
         const progressIndex = this.state.progress.findIndex(p => p !== 100);
         if (progressIndex === -1) {
@@ -30,23 +27,20 @@ export class DummyServer implements FileUploadServer {
           return;
         }
         const fileToUpload = this.files[progressIndex];
+        const nextFileProgressInBytes = (fileToUpload.size * this.state.progress[progressIndex]) / 100 + speedInBytes;
+        const nextFileProgress = Math.min(100, 100 * (nextFileProgressInBytes / fileToUpload.size));
 
         // Emulate errors.
-        if (this.imitateServerError && !this.imitateServerFileError) {
+        if (this.imitateServerError) {
           this.state.addError('502: Cannot connect to the sever');
           onProgress(this.state.clone());
           onFinished(this.state.clone());
           return;
         }
-        if (tick === 100 && this.imitateServerError) {
-          this.state.addError('500: Internal server error');
-        }
-        if (tick === 100 && this.imitateServerFileError) {
+        if (nextFileProgress === 100 && this.imitateServerFileError) {
           this.state.addFileError(progressIndex, 'File is not accepted by server');
         }
 
-        const nextFileProgressInBytes = (fileToUpload.size * this.state.progress[progressIndex]) / 100 + speedInBytes;
-        const nextFileProgress = Math.min(100, 100 * (nextFileProgressInBytes / fileToUpload.size));
         this.state.setProgress(progressIndex, nextFileProgress);
         onProgress(this.state.clone());
         upload();
