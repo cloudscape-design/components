@@ -68,7 +68,7 @@ describe('Button Component', () => {
       expect(wrapper.isDisabled()).toEqual(true);
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).toHaveAttribute('disabled');
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
     test('does not add the disabled attribute on link buttons', () => {
@@ -290,11 +290,12 @@ describe('Button Component', () => {
   });
 
   describe('Loading property', () => {
-    test("should disable the button when in 'loading' status", () => {
+    test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();
       const wrapper = renderButton({ onClick: onClickSpy, loading: true });
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
-      expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
       act(() => wrapper.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
@@ -303,6 +304,7 @@ describe('Button Component', () => {
       const wrapper = renderButton({ loading: true, disabled: true });
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
     test('adds a tab index -1 to the link button', () => {

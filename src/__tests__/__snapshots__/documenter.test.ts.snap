@@ -2769,7 +2769,7 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
     Object {
       "defaultValue": "false",
       "description": "Renders the button as being in a loading state. It takes precedence over the \`disabled\` if both are set to \`true\`.
-It prevents users from clicking the button.",
+It prevents users from clicking the button, but it can still be focused.",
       "name": "loading",
       "optional": true,
       "type": "boolean",

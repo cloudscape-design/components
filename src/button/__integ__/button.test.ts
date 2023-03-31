@@ -38,6 +38,8 @@ describe('Button', () => {
       await expect(page.getFocusedElementText()).resolves.toBe('Active with href');
       await page.keys('Tab');
       // disabled button in the middle should be skipped
+      await expect(page.getFocusedElementText()).resolves.toBe('Loading');
+      await page.keys('Tab');
       await expect(page.getFocusedElementText()).resolves.toBe('Last button');
     })
   );

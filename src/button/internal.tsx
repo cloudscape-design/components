@@ -65,7 +65,7 @@ export const InternalButton = React.forwardRef(
 
     const handleClick = useCallback(
       (event: React.MouseEvent) => {
-        if (isAnchor && isDisabled) {
+        if (isDisabled) {
           return event.preventDefault();
         }
 
@@ -139,7 +139,12 @@ export const InternalButton = React.forwardRef(
     }
     return (
       <>
-        <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
+        <button
+          {...buttonProps}
+          type={formAction === 'none' ? 'button' : 'submit'}
+          disabled={disabled}
+          aria-disabled={isDisabled ? true : undefined}
+        >
           {buttonContent}
         </button>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
