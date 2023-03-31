@@ -354,7 +354,7 @@ describe('Tag Editor component', () => {
     });
   });
 
-  test('should render itemRemovedAriaLive when a tag is removed', () => {
+  test('should render itemRemovedAriaLive when a tag is removed', async () => {
     const tags = [
       { key: 'key', value: 'value', existing: false },
       { key: 'key2', value: 'value', existing: false },
@@ -368,7 +368,7 @@ describe('Tag Editor component', () => {
 
     wrapper.findRow(1)!.findRemoveButton()!.click();
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(wrapper.find(`[data-testid="removal-announcement"]`)!.getElement()).toHaveTextContent('removal-text-test');
     });
   });
@@ -494,6 +494,117 @@ describe('Tag Editor component', () => {
 
       // We wait as api call is fired on delayedInput
       await waitFor(() => expect(valueAutosuggest.findDropdown().findOptions()).toHaveLength(3));
+    });
+  });
+
+  describe('focus behavior', () => {
+    const renderControlledTagEditor = (props: Partial<TagEditorProps>) => {
+      const { wrapper, rerender, onChangeSpy } = renderTagEditor(props);
+      return { wrapper, rerender: () => rerender({ ...props, ...onChangeSpy.mock.lastCall[0].detail }) };
+    };
+
+    test('should focus key input when adding a new tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: false }],
+      });
+
+      wrapper.findAddButton().click();
+      rerender();
+      expect(wrapper.findRow(2)!.findAutosuggest()!.findNativeInput().getElement()).toHaveFocus();
+    });
+
+    test('should focus undo button when removing an existing tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: true }],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)?.findUndoButton()!.getElement()).toHaveFocus();
+    });
+
+    test('should focus remove button undoing marking for removal', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: true, markedForRemoval: true }],
+      });
+
+      wrapper.findRow(1)!.findUndoButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveFocus();
+    });
+
+    test('should focus add button when removing single tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [{ key: 'key', value: 'value', existing: false }],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findAddButton().getElement()).toHaveFocus();
+    });
+
+    test('should focus next key input when removing non-last tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: false },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(1)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      expect(nextInput).toHaveValue('key2');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous key input when removing last tag', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: false },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      expect(nextInput).toHaveValue('key');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous value input when removing last tag and previous is existing', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: true },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      const nextInput = wrapper
+        .findRow(1)!
+        .findField(2)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
+      expect(nextInput).toHaveValue('value');
+      expect(nextInput).toHaveFocus();
+    });
+
+    test('should focus previous undo button when removing last tag and previous is existing and flagged for removal', () => {
+      const { wrapper, rerender } = renderControlledTagEditor({
+        tags: [
+          { key: 'key', value: 'value', existing: true, markedForRemoval: true },
+          { key: 'key2', value: 'value2', existing: false },
+        ],
+      });
+
+      wrapper.findRow(2)!.findRemoveButton()!.click();
+      rerender();
+      expect(wrapper.findRow(1)!.findUndoButton()!.getElement()).toHaveFocus();
     });
   });
 });
