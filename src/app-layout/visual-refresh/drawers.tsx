@@ -76,12 +76,13 @@ function Triggers() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (isMobile) {
-    return null;
-  }
-
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
   const hasOpenDrawer = activeDrawer || (hasSplitPanel && isSplitPanelOpen);
+  const triggerCount = drawers.items.length + (hasSplitPanel ? 1 : 0) + (!toolsHide ? 1 : 0);
+
+  if (isMobile || (hasOpenDrawer && triggerCount <= 1)) {
+    return null;
+  }
 
   return (
     <aside

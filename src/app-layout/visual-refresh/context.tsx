@@ -500,7 +500,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const drawers = (props as any).drawers;
 
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers.onChange, null, {
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
       componentName: 'AppLayout',
       controlledProp: 'drawers.activeDrawerId',
       changeHandler: 'onChange',
@@ -517,10 +517,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setActiveDrawerId(newActiveDrawerId);
         fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
       },
-      [activeDrawerId, drawers.onChange, handleToolsClick, isToolsOpen, setActiveDrawerId]
+      [activeDrawerId, drawers?.onChange, handleToolsClick, isToolsOpen, setActiveDrawerId]
     );
 
-    const activeDrawer = drawers.items.find((item: any) => item.id === activeDrawerId);
+    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId);
 
     return (
       <AppLayoutInternalsContext.Provider
