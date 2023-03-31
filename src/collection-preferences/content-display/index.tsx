@@ -5,7 +5,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from '../interfaces';
 import styles from '../styles.css.js';
-import { getSortedOptions } from './reorder-utils';
+import { getSortedOptions } from './utils';
 import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
