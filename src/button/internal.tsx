@@ -139,7 +139,12 @@ export const InternalButton = React.forwardRef(
     }
     return (
       <>
-        <button {...buttonProps} type={formAction === 'none' ? 'button' : 'submit'} disabled={isDisabled}>
+        <button
+          {...buttonProps}
+          type={formAction === 'none' ? 'button' : 'submit'}
+          disabled={disabled}
+          aria-disabled={loading && !disabled ? 'true' : undefined}
+        >
           {buttonContent}
         </button>
         {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
