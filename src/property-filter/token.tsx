@@ -13,7 +13,7 @@ import {
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getExtendedOperator, getPropertyByKey } from './controller';
+import { getFormattedToken } from './controller';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -58,11 +58,7 @@ export const TokenButton = ({
   disableFreeTextFiltering,
   expandToViewport,
 }: TokenProps) => {
-  const valueFormatter =
-    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const formattedToken = getFormattedToken(filteringProperties, token);
   return (
     <FilteringToken
       showOperation={!first && !hideOperations}
@@ -79,7 +75,7 @@ export const TokenButton = ({
         setToken={setToken}
         triggerComponent={
           <span className={styles['token-trigger']}>
-            <TokenTrigger property={propertyLabel} operator={token.operator} value={tokenValue} />
+            <TokenTrigger property={formattedToken.property} operator={token.operator} value={formattedToken.value} />
           </span>
         }
         filteringOptions={filteringOptions}

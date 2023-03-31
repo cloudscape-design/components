@@ -725,11 +725,11 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()!).toHaveLength(1);
       expect(wrapper.findTokens()![0].findLabel().getElement()).toHaveTextContent('string : first');
       // show more
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer);
       expect(wrapper.findTokens()!).toHaveLength(2);
       // show fewer
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
       expect(wrapper.findTokens()!).toHaveLength(1);
     });
