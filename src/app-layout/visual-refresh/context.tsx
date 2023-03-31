@@ -29,7 +29,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawerId: string;
+  activeDrawer: DrawersProps.Drawer;
   drawers: DrawersProps;
   dynamicOverlapHeight: number;
   handleDrawersTriggerClick: (activeDrawerId: string) => void;
@@ -502,33 +502,31 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers.onChange, null, {
       componentName: 'AppLayout',
-      controlledProp: 'activeDrawerId',
+      controlledProp: 'drawers.activeDrawerId',
       changeHandler: 'onChange',
     });
 
     const handleDrawersTriggerClick = useCallback(
-      function handleDrawersChange(activeDrawerId: string) {
-        /*
-        const activeDrawerId = item.id !== drawers.activeDrawerId ? item.id : null;
+      function handleDrawersChange(id: string) {
+        const newActiveDrawerId = id !== activeDrawerId ? id : null;
 
-        if (activeDrawerId && isToolsOpen) {
+        if (newActiveDrawerId && isToolsOpen) {
           handleToolsClick(!isToolsOpen);
         }
 
-        drawers.onChange(activeDrawerId);
-        */
-
-        setActiveDrawerId(activeDrawerId);
-        fireNonCancelableEvent(drawers?.onChange, activeDrawerId);
+        setActiveDrawerId(newActiveDrawerId);
+        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
       },
-      [drawers.onChange, setActiveDrawerId]
+      [activeDrawerId, drawers.onChange, handleToolsClick, isToolsOpen, setActiveDrawerId]
     );
+
+    const activeDrawer = drawers.items.find((item: any) => item.id === activeDrawerId);
 
     return (
       <AppLayoutInternalsContext.Provider
         value={{
           ...props,
-          activeDrawerId,
+          activeDrawer,
           contentType,
           drawers,
           dynamicOverlapHeight,

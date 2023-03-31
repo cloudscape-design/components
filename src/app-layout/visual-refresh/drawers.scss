@@ -2,9 +2,10 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '../../internal/styles' as styles;
+
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../internal/styles' as styles;
 
 .drawers-container {
   display: flex;
@@ -35,4 +36,14 @@
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
   }
+}
+
+.drawer {
+  background-color: awsui.$color-background-container-content;
+  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  box-shadow: awsui.$shadow-panel;
+  height: 100%;
+  pointer-events: auto;
+  overflow-x: hidden;
+  width: 290px;
 }

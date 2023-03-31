@@ -43,8 +43,14 @@ function Container({ children }: any) {
 /**
  *
  */
-function Items() {
-  return <></>;
+function ActiveDrawer() {
+  const { activeDrawer } = useAppLayoutInternals();
+
+  if (!activeDrawer) {
+    return null;
+  }
+
+  return <section className={clsx(styles.drawer)}>{activeDrawer.content}</section>;
 }
 
 /**
@@ -52,7 +58,7 @@ function Items() {
  */
 function Triggers() {
   const {
-    activeDrawerId,
+    activeDrawer,
     ariaLabels,
     drawers,
     handleDrawersTriggerClick,
@@ -75,9 +81,7 @@ function Triggers() {
   }
 
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-  const hasOpenDrawer = hasSplitPanel && isSplitPanelOpen;
-
-  // console.log(`activeDrawerId: ${activeDrawerId}`);
+  const hasOpenDrawer = activeDrawer || (hasSplitPanel && isSplitPanelOpen);
 
   return (
     <aside
@@ -104,18 +108,7 @@ function Triggers() {
           iconSvg={item.trigger.iconSvg}
           key={item.id}
           onClick={() => handleDrawersTriggerClick(item.id)}
-          /*
-          onClick={() => {
-            const activeDrawerId = item.id !== drawers.activeDrawerId ? item.id : null;
-
-            if (activeDrawerId && isToolsOpen) {
-              handleToolsClick(!isToolsOpen);
-            }
-
-            drawers.onChange(activeDrawerId);
-          }}
-          */
-          selected={item.id === activeDrawerId}
+          selected={item === activeDrawer}
         />
       ))}
 
@@ -134,7 +127,7 @@ function Triggers() {
 }
 
 export default {
+  ActiveDrawer: ActiveDrawer,
   Container: Container,
-  Items: Items,
   Triggers: Triggers,
 };

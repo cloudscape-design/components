@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { AppLayoutProps } from '../interfaces';
+import customCssProps from '../../internal/generated/custom-css-properties';
+import { DrawersProps } from './drawers';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { AppLayoutProps } from '../interfaces';
-import customCssProps from '../../internal/generated/custom-css-properties';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
+    activeDrawer,
     contentHeader,
     contentType,
     disableBodyScroll,
@@ -49,10 +51,11 @@ export default function Layout({ children }: LayoutProps) {
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
   const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);
   const hasContentGapRight = getContentGapRight(
-    splitPanelPosition,
+    activeDrawer,
     isSplitPanelOpen,
     isToolsOpen,
     splitPanelDisplayed,
+    splitPanelPosition,
     toolsHide
   );
 
@@ -101,10 +104,11 @@ export default function Layout({ children }: LayoutProps) {
  * horizontal space between the center column and its adjacent siblings.
  */
 function getContentGapRight(
-  splitPanelPosition: AppLayoutProps.SplitPanelPosition,
+  activeDrawer: DrawersProps.Drawer,
   isSplitPanelOpen: boolean | undefined,
   isToolsOpen: boolean,
   splitPanelDisplayed: boolean,
+  splitPanelPosition: AppLayoutProps.SplitPanelPosition,
   toolsHide?: boolean
 ) {
   let hasContentGapRight = false;
@@ -126,6 +130,10 @@ function getContentGapRight(
 
   // Main is touching the Split Panel drawer and needs a content gap
   if (splitPanelDisplayed && isSplitPanelOpen && splitPanelPosition === 'side') {
+    hasContentGapRight = true;
+  }
+
+  if (activeDrawer) {
     hasContentGapRight = true;
   }
 
