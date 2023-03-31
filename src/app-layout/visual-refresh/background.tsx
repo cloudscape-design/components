@@ -10,9 +10,9 @@ import styles from './styles.css.js';
  * that the design tokens used are overridden with the appropriate values.
  */
 export default function Background() {
-  const { hasNotificationsContent, hasStickyBackground, stickyNotifications, hasBreadcrumbs, isOverlapDisabled } =
+  const { hasNotificationsContent, hasStickyBackground, stickyNotifications, breadcrumbs, isOverlapDisabled } =
     useAppLayoutInternals();
-  if (hasNotificationsContent && !hasBreadcrumbs && isOverlapDisabled) {
+  if (hasNotificationsContent && !breadcrumbs && isOverlapDisabled) {
     return null;
   }
   return (

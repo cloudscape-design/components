@@ -68,7 +68,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   navigationRefs: FocusControlRefs;
   toolsRefs: FocusControlRefs;
   loseToolsFocus: () => void;
-  hasBreadcrumbs: boolean;
   isOverlapDisabled: boolean;
 }
 
@@ -559,7 +558,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           navigationRefs,
           loseToolsFocus,
           isOverlapDisabled,
-          hasBreadcrumbs: !!props.breadcrumbs,
         }}
       >
         <AppLayoutContext.Provider
