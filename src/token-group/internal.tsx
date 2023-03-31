@@ -48,7 +48,7 @@ export default function InternalTokenGroup({
             <Option option={item} isGenericGroup={false} />
           </Token>
         )}
-        itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled })}
+        itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled ? true : undefined })}
         i18nStrings={i18nStrings}
       />
     </div>

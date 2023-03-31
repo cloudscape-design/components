@@ -17,6 +17,7 @@
 }
 
 .token {
+  height: 100%;
   border: awsui.$border-field-width solid constants.$token-border-color;
   padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
     styles.$control-padding-horizontal;
@@ -26,10 +27,6 @@
   box-sizing: border-box;
   display: flex;
   align-items: flex-start;
-  height: 100%;
-}
-.token-content {
-  flex: 1;
 }
 
 .dismiss-button {
