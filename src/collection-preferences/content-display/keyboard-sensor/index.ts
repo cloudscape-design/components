@@ -16,7 +16,7 @@ import { Listeners } from './utilities/listeners';
 import type { Activators, SensorInstance } from '@dnd-kit/core';
 import { KeyboardCode, KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
 
-import { defaultKeyboardCodes, defaultKeyboardCoordinateGetter } from './defaults';
+import { defaultKeyboardCodes } from './defaults';
 
 export class KeyboardSensor implements SensorInstance {
   public autoScrollEnabled = false;
@@ -62,11 +62,7 @@ export class KeyboardSensor implements SensorInstance {
   private handleKeyDown(event: Event) {
     if (isKeyboardEvent(event)) {
       const { active, context, options } = this.props;
-      const {
-        keyboardCodes = defaultKeyboardCodes,
-        coordinateGetter = defaultKeyboardCoordinateGetter,
-        scrollBehavior = 'smooth',
-      } = options;
+      const { keyboardCodes = defaultKeyboardCodes, coordinateGetter, scrollBehavior = 'smooth' } = options;
       const { code } = event;
 
       if (keyboardCodes.end.indexOf(code) !== -1) {
@@ -84,6 +80,10 @@ export class KeyboardSensor implements SensorInstance {
 
       if (!this.referenceCoordinates) {
         this.referenceCoordinates = currentCoordinates;
+      }
+
+      if (!coordinateGetter) {
+        return;
       }
 
       const newCoordinates = coordinateGetter(event, {
