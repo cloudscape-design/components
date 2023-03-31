@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import useFocusVisible from '../../hooks/focus-visible';
@@ -17,12 +17,14 @@ interface TokenLimitToggleProps {
   i18nStrings?: I18nStrings;
 }
 
-export default forwardRef(TokenLimitToggle);
-
-function TokenLimitToggle(
-  { controlId, allHidden, expanded, numberOfHiddenOptions, onClick, i18nStrings = {} }: TokenLimitToggleProps,
-  ref: React.Ref<HTMLButtonElement>
-) {
+export default function TokenLimitToggle({
+  controlId,
+  allHidden,
+  expanded,
+  numberOfHiddenOptions,
+  onClick,
+  i18nStrings = {},
+}: TokenLimitToggleProps) {
   const focusVisible = useFocusVisible();
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;
   const description = expanded
@@ -35,7 +37,6 @@ function TokenLimitToggle(
 
   return (
     <button
-      ref={ref}
       type="button"
       className={styles.toggle}
       onClick={handleClick}

@@ -17,19 +17,16 @@ interface ItemAttributes {
 
 interface TokenProps extends ItemAttributes {
   children: React.ReactNode;
-  dismissButtonRef?: React.Ref<HTMLButtonElement>;
 }
 
-export function Token({ disabled, dismissLabel, onDismiss, children, dismissButtonRef }: TokenProps) {
+export function Token({ disabled, dismissLabel, onDismiss, children }: TokenProps) {
   return (
     <div
       className={clsx(styles.token, disabled && styles['token-disabled'])}
       aria-disabled={disabled ? 'true' : undefined}
     >
       {children}
-      {onDismiss && (
-        <DismissButton ref={dismissButtonRef} disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />
-      )}
+      {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import Option from '../internal/components/option';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -28,43 +28,10 @@ export default function InternalTokenGroup({
 }: InternalTokenGroupProps) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
 
-  const toggleButtonRef = useRef<HTMLButtonElement>(null);
-  const dismissButtonRefs = useRef<{ [key: number]: HTMLButtonElement }>({});
   const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
-
-  useEffect(() => {
-    if (removedItemIndex === null) {
-      return;
-    }
-
-    const activeItemIndices = Object.keys(dismissButtonRefs.current).map(key => parseInt(key));
-
-    let closestPrevIndex = Number.NEGATIVE_INFINITY;
-    let closestNextIndex = Number.POSITIVE_INFINITY;
-
-    for (const activeIndex of activeItemIndices) {
-      if (activeIndex < removedItemIndex) {
-        closestPrevIndex =
-          removedItemIndex - activeIndex < removedItemIndex - closestPrevIndex ? activeIndex : closestPrevIndex;
-      } else {
-        closestNextIndex =
-          activeIndex - removedItemIndex < closestNextIndex - removedItemIndex ? activeIndex : closestNextIndex;
-      }
-    }
-
-    if (dismissButtonRefs.current[closestNextIndex]) {
-      dismissButtonRefs.current[closestNextIndex].focus();
-    } else if (dismissButtonRefs.current[closestPrevIndex]) {
-      dismissButtonRefs.current[closestPrevIndex].focus();
-    } else if (toggleButtonRef.current) {
-      toggleButtonRef.current.focus();
-    }
-
-    setRemovedItemIndex(null);
-  }, [removedItemIndex]);
 
   return (
     <div
@@ -78,13 +45,6 @@ export default function InternalTokenGroup({
         limit={limit}
         renderItem={(item, itemIndex) => (
           <Token
-            dismissButtonRef={elem => {
-              if (elem && !item.disabled) {
-                dismissButtonRefs.current[itemIndex] = elem;
-              } else {
-                delete dismissButtonRefs.current[itemIndex];
-              }
-            }}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
@@ -96,7 +56,7 @@ export default function InternalTokenGroup({
           </Token>
         )}
         i18nStrings={i18nStrings}
-        toggleButtonRef={toggleButtonRef}
+        removedItemIndex={removedItemIndex}
       />
     </div>
   );

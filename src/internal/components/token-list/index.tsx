@@ -8,6 +8,7 @@ import styles from './styles.css.js';
 import { TokenListProps } from './interfaces';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import clsx from 'clsx';
+import { useTokenFocusController } from './token-focus-controller';
 
 export default function TokenList<Item>({
   items,
@@ -16,8 +17,9 @@ export default function TokenList<Item>({
   limit,
   after,
   i18nStrings,
-  toggleButtonRef,
+  removedItemIndex,
 }: TokenListProps<Item>) {
+  const tokenListRef = useTokenFocusController({ removedItemIndex });
   const controlId = useUniqueId();
 
   const [expanded, setExpanded] = useState(false);
@@ -29,7 +31,6 @@ export default function TokenList<Item>({
   const toggle = hasHiddenItems ? (
     <div className={styles[`toggle-container-${alignment}`]}>
       <TokenLimitToggle
-        ref={toggleButtonRef}
         controlId={hasVisibleItems ? controlId : undefined}
         allHidden={limit === 0}
         expanded={expanded}
@@ -42,7 +43,7 @@ export default function TokenList<Item>({
 
   if (alignment === 'inline') {
     return (
-      <div className={styles.root}>
+      <div ref={tokenListRef} className={styles.root}>
         {hasItems && (
           <div id={controlId} className={clsx(styles.list, styles['list-horizontal'])}>
             {visibleItems.map((item, itemIndex) => (
@@ -60,7 +61,7 @@ export default function TokenList<Item>({
   }
 
   return (
-    <div className={styles.root}>
+    <div ref={tokenListRef} className={styles.root}>
       {hasVisibleItems && (
         <div id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
           {visibleItems.map((item, itemIndex) => (

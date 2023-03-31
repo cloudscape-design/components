@@ -74,6 +74,7 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
@@ -323,7 +324,10 @@ const PropertyFilter = React.forwardRef(
                     token={token}
                     first={tokenIndex === 0}
                     operation={operation}
-                    removeToken={() => removeToken(tokenIndex)}
+                    removeToken={() => {
+                      removeToken(tokenIndex);
+                      setRemovedTokenIndex(tokenIndex);
+                    }}
                     setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
                     setOperation={setOperation}
                     filteringOptions={filteringOptions}
@@ -348,6 +352,7 @@ const PropertyFilter = React.forwardRef(
                     {i18nStrings.clearFiltersText}
                   </InternalButton>
                 }
+                removedItemIndex={removedTokenIndex}
               />
             </InternalSpaceBetween>
           </div>
