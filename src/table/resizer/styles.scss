@@ -27,11 +27,6 @@ $active-separator-width: 2px;
   .resize-active & {
     pointer-events: none;
   }
-  // th:last-child > & {
-  //   width: calc(#{$handle-width} / 2);
-  //   right: 0;
-  // }
-  // & is-stuck
   &-left {
     width: $handle-width;
     left: calc(-1 * #{$handle-width} / 2 + #{$active-separator-width});
@@ -48,10 +43,6 @@ $active-separator-width: 2px;
       }
     }
   }
-  th:last-child > & {
-    width: $handle-width;
-    right: 0;
-  }
   th:not(:last-child) > & {
     &:hover,
     &-active {
@@ -65,6 +56,10 @@ $active-separator-width: 2px;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
       }
     }
+  }
+  th:last-child > &:not(.resizer-left) {
+    width: calc(#{$handle-width} / 2);
+    right: 0;
   }
   &.has-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);

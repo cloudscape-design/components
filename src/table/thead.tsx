@@ -143,7 +143,12 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const { isSticky = false, stickyStyles = {} } = getStickyColumn ? getStickyColumn(colIndex) : {};
+            const {
+              isSticky = false,
+              isLastStart = false,
+              isLastEnd = false,
+              stickyStyles = {},
+            } = getStickyColumn ? getStickyColumn(colIndex) : {};
 
             let widthOverride;
             if (resizableColumns) {
@@ -182,6 +187,8 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                isLastStart={isLastStart}
+                isLastEnd={isLastEnd}
                 isStickyColumn={isSticky}
                 tableCellRefs={tableCellRefs}
                 setCellWidths={setCellWidths}

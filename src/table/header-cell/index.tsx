@@ -68,6 +68,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     setCellWidths,
     visibleColumnsLength,
     isStuckToTheRight,
+    isLastStart,
+    isLastEnd,
   } = props;
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -91,18 +93,27 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   };
   const headerId = useUniqueId('table-header-');
   const isLastColumn = colIndex === visibleColumnsLength - 1;
+  const lastStickyColumnStyles = isLastStart
+    ? styles['header-cell-freeze-last-start']
+    : isLastEnd
+    ? styles['header-cell-freeze-last-end']
+    : undefined;
   return (
     <th
-      className={clsx(className, {
-        [styles['header-cell-resizable']]: !!resizableColumns,
-        [styles['header-cell-sortable']]: sortingStatus,
-        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-        [styles['header-cell-disabled']]: sortingDisabled,
-        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-        [styles['header-cell-descending']]: sortingStatus === 'descending',
-        [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: !!isStickyColumn,
-      })}
+      className={clsx(
+        className,
+        {
+          [styles['header-cell-resizable']]: !!resizableColumns,
+          [styles['header-cell-sortable']]: sortingStatus,
+          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+          [styles['header-cell-disabled']]: sortingDisabled,
+          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+          [styles['header-cell-descending']]: sortingStatus === 'descending',
+          [styles['header-cell-hidden']]: hidden,
+          [styles['header-cell-freeze']]: !!isStickyColumn,
+        },
+        lastStickyColumnStyles
+      )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
       ref={ref}
