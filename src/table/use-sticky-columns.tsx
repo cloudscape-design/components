@@ -141,8 +141,8 @@ export const useStickyColumns = ({
     if (!wrapper) {
       return;
     }
-    const right = wrapper.scrollLeft <= wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-    const left = wrapper.scrollLeft >= tableLeftPadding;
+    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+    const left = wrapper.scrollLeft > tableLeftPadding;
     setIsStuckToTheLeft(left);
     setIsStuckToTheRight(right);
   };
@@ -164,8 +164,8 @@ export const useStickyColumns = ({
         if (!wrapper) {
           return;
         }
-        const right = wrapper.scrollLeft <= wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-        const left = wrapper.scrollLeft >= tableLeftPadding;
+        const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+        const left = wrapper.scrollLeft > tableLeftPadding;
         setIsStuckToTheLeft(left);
         setIsStuckToTheRight(right);
       });
