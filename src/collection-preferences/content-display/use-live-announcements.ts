@@ -13,7 +13,7 @@ export default function useLiveAnnouncements({
   sortedOptions,
 }: Partial<CollectionPreferencesProps.ContentDisplayPreference> & {
   isDragging: boolean;
-  sortedOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
+  sortedOptions: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }) {
   const isFirstAnnouncement = useRef(true);
   if (!isDragging) {

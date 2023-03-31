@@ -61,7 +61,7 @@ export default function ContentDisplayPreference({
     liveAnnouncementDndItemReordered,
     liveAnnouncementDndItemCommitted,
     liveAnnouncementDndDiscarded,
-    sortedOptions,
+    sortedOptions: value,
   });
 
   return (
