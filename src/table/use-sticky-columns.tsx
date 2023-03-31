@@ -61,15 +61,14 @@ export const getStickyStyles = ({
   const stickySide = isStickyStart ? 'left' : isStickyEnd ? 'right' : '';
   let paddingStyle = {};
   if (isFirstOrLastStickyColumn && !hasSelection) {
-    if (stickySide === 'right' && endPaddingOffset) {
+    if (stickySide === 'right' && endPaddingOffset && tableRightPadding) {
       paddingStyle = { paddingRight: `${tableRightPadding}px` };
     }
 
-    if (stickySide === 'left' && startPaddingOffset) {
+    if (stickySide === 'left' && startPaddingOffset && tableLeftPadding) {
       paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
     }
   }
-
   return {
     [stickySide]: `${
       stickySide === 'right'
@@ -133,6 +132,21 @@ export const useStickyColumns = ({
   const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
 
+  useLayoutEffect(() => {
+    updateCellWidths({ tableCellRefs, setCellWidths });
+  }, [tableCellRefs, setCellWidths]);
+
+  const checkStuckColumns = () => {
+    const wrapper = wrapperRefObject.current;
+    if (!wrapper) {
+      return;
+    }
+    const right = wrapper.scrollLeft <= wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+    const left = wrapper.scrollLeft >= tableLeftPadding;
+    setIsStuckToTheLeft(left);
+    setIsStuckToTheRight(right);
+  };
+
   // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
   const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
   useLayoutEffect(() => {
@@ -146,6 +160,10 @@ export const useStickyColumns = ({
         cancelAnimationFrame(animationFrameId);
       }
       animationFrameId = requestAnimationFrame(() => {
+        const wrapper = wrapperRefObject.current;
+        if (!wrapper) {
+          return;
+        }
         const right = wrapper.scrollLeft <= wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
         const left = wrapper.scrollLeft >= tableLeftPadding;
         setIsStuckToTheLeft(left);
@@ -159,22 +177,17 @@ export const useStickyColumns = ({
       window.removeEventListener('resize', handleScroll);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [tableRefObject, wrapperRefObject, tableLeftPadding, tableRightPadding]);
-  useLayoutEffect(() => {
-    const wrapper = wrapperRefObject.current;
-    console.log('UseEffect!', wrapper);
-    const right = wrapper.scrollLeft <= wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-    const left = wrapper.scrollLeft >= tableLeftPadding;
-    setIsStuckToTheLeft(left);
-    setIsStuckToTheRight(right);
-  }, [tableLeftPadding, tableRightPadding, wrapperRefObject, shouldDisable]);
+  }, [wrapperRefObject, tableLeftPadding, tableRightPadding]);
+
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
+    const isSticky =
+      colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+    const stickyStyles = isSticky ? getStickyStyles(colIndex) : {};
     return {
-      isSticky:
-        colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0),
+      isSticky,
       isLastStart: colIndex + 1 === stickyColumns?.start,
       isLastEnd: colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0),
-      stickyStyles: getStickyStyles(colIndex),
+      stickyStyles,
     };
   };
 
@@ -189,15 +202,14 @@ export const useStickyColumns = ({
 
     let paddingStyle = {};
     if (isFirstOrLastStickyColumn && isVisualRefresh && !hasSelection) {
-      if (stickySide === 'right') {
-        paddingStyle = { paddingRight: isStuckToTheRight ? `${tableRightPadding}px` : '0px' };
+      if (stickySide === 'right' && isStuckToTheRight) {
+        paddingStyle = { paddingRight: `${tableRightPadding}px` };
       }
 
-      if (stickySide === 'left') {
-        paddingStyle = { paddingLeft: isStuckToTheLeft ? `${tableLeftPadding}px` : '0px' };
+      if (stickySide === 'left' && isStuckToTheLeft) {
+        paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
       }
     }
-
     return {
       [stickySide]: `${
         stickySide === 'right'
@@ -225,21 +237,13 @@ export const useStickyColumns = ({
     setShouldDisable(shouldDisable);
   }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding]);
 
-  useLayoutEffect(() => {
-    // First checks whether there are any sticky columns to calculate the widths for.
-    // If there are none, the effect returns and does nothing.
-    if (!(Boolean(stickyColumns?.start) || Boolean(stickyColumns?.end))) {
-      return;
-    }
-    updateCellWidths({ tableCellRefs, setCellWidths });
-  }, [tableCellRefs, stickyColumns]);
-
   return {
     tableCellRefs,
     cellWidths,
     setCellWidths,
     getStickyColumn,
     shouldDisableStickyColumns: shouldDisable,
+    checkStuckColumns,
     startStickyColumnsWidth,
     endStickyColumnsWidth,
     isStuckToTheLeft,
