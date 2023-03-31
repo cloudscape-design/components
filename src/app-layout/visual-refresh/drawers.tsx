@@ -44,7 +44,7 @@ export default function Drawers() {
       <SplitPanel.Side />
       <ActiveDrawer />
       <Tools />
-      <Triggers />
+      <DesktopTriggers />
     </div>
   );
 }
@@ -113,7 +113,7 @@ function Tools() {
 /**
  *
  */
-function Triggers() {
+function DesktopTriggers() {
   const {
     activeDrawer,
     ariaLabels,
@@ -187,5 +187,62 @@ function Triggers() {
         />
       )}
     </aside>
+  );
+}
+
+/**
+ *
+ */
+export function MobileTriggers() {
+  const {
+    activeDrawer,
+    ariaLabels,
+    drawers,
+    handleDrawersClick,
+    handleToolsClick,
+    isAnyPanelOpen,
+    isMobile,
+    isToolsOpen,
+    tools,
+    toolsHide,
+    toolsRefs,
+  } = useAppLayoutInternals();
+
+  if (!isMobile || !drawers) {
+    return null;
+  }
+
+  return (
+    <>
+      {!toolsHide && tools && (
+        <InternalButton
+          ariaLabel={ariaLabels?.toolsToggle ?? undefined}
+          ariaExpanded={isToolsOpen}
+          className={testutilStyles['tools-toggle']}
+          disabled={isAnyPanelOpen}
+          formAction="none"
+          iconName="status-info"
+          onClick={() => handleToolsClick(true)}
+          ref={toolsRefs.toggle}
+          variant="icon"
+          __nativeAttributes={{ 'aria-haspopup': true }}
+        />
+      )}
+
+      {drawers.items.map((item: any) => (
+        <InternalButton
+          ariaExpanded={item.id === activeDrawer?.id}
+          ariaLabel={item.trigger.ariaLabel}
+          disabled={isAnyPanelOpen}
+          formAction="none"
+          iconName={item.trigger.iconName}
+          iconSvg={item.trigger.iconSvg}
+          key={item.trigger.id}
+          onClick={() => handleDrawersClick(item.id)}
+          variant="icon"
+          __nativeAttributes={{ 'aria-haspopup': true }}
+        />
+      ))}
+    </>
   );
 }

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -17,6 +18,7 @@ export default function AppBar() {
     breadcrumbs,
     contentHeader,
     contentType,
+    drawers,
     dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
@@ -82,7 +84,7 @@ export default function AppBar() {
         </div>
       )}
 
-      {!toolsHide && isMobile && (
+      {isMobile && !toolsHide && !drawers && (
         <aside
           className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}
@@ -100,6 +102,12 @@ export default function AppBar() {
             ref={toolsRefs.toggle}
             __nativeAttributes={{ 'aria-haspopup': true }}
           />
+        </aside>
+      )}
+
+      {isMobile && drawers && (
+        <aside aria-hidden={isAnyPanelOpen} className={clsx(styles['appbar-drawers'])}>
+          <DrawersMobileTriggers />
         </aside>
       )}
     </section>

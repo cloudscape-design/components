@@ -230,6 +230,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleDrawersClick = useCallback(
       function handleDrawersChange(id: string | null) {
         const newActiveDrawerId = id !== activeDrawerId ? id : null;
+
         setActiveDrawerId(newActiveDrawerId);
         fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
       },
@@ -241,9 +242,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     /**
      *
      */
+    const drawerVisible = activeDrawer ? true : false;
     const navigationVisible = !navigationHide && isNavigationOpen;
     const toolsVisible = !toolsHide && isToolsOpen;
-    const isAnyPanelOpen = navigationVisible || toolsVisible;
+    const isAnyPanelOpen = drawerVisible || navigationVisible || toolsVisible;
 
     /**
      * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
@@ -456,7 +458,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
          * The first is the the content gap on the right which is stored in a design token
          * and applied in the Layout CSS:
          *
-         *  $contentGapRight: #{awsui.$space-scaled-2x-xxxl};
+         * $contentGapRight: #{awsui.$space-scaled-2x-xxxl};
          *
          * The second is the width of the element that has the circular buttons for the
          * Tools and Split Panel. This could be suppressed given the state of the Tools
@@ -512,6 +514,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * position. Use the size property if it is open and the header height if it is closed.
      */
     let offsetBottom = footerHeight;
+
     if (splitPanelDisplayed && splitPanelPosition === 'bottom') {
       if (isSplitPanelOpen) {
         offsetBottom += splitPanelReportedSize;

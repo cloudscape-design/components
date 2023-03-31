@@ -52,6 +52,11 @@
   overscroll-behavior-y: contain;
   width: 290px;
   word-wrap: break-word;
+
+  // Drawers will take up the entire viewport on mobile
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    width: 100vw;
+  }
 }
 
 .drawer-close-button {

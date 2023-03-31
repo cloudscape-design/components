@@ -29,7 +29,8 @@ section.appbar {
     background-color: awsui.$color-background-layout-main;
   }
 
-  > .appbar-tools {
+  > .appbar-tools,
+  > .appbar-drawers {
     grid-column: 3;
     margin-left: awsui.$space-m;
   }
@@ -53,7 +54,8 @@ section.appbar {
     }
 
     > .appbar-nav,
-    > .appbar-tools {
+    > .appbar-tools,
+    > .appbar-drawers {
       display: none;
     }
 
@@ -127,7 +129,8 @@ section.appbar {
 
     // the Navigation and Tools buttons resume their grid column position
     > .appbar-nav,
-    > .appbar-tools {
+    > .appbar-tools,
+    > .appbar-drawers {
       display: block;
     }
 
