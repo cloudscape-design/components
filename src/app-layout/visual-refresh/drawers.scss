@@ -1,0 +1,38 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+.drawers-container {
+  display: flex;
+  grid-column: 5;
+  grid-row: 1 / span 5;
+  height: var(#{custom-props.$contentHeight});
+  pointer-events: none;
+  position: sticky;
+  top: var(#{custom-props.$offsetTop});
+  z-index: 830;
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    position: fixed;
+    right: 0;
+    top: var(#{custom-props.$offsetTop});
+    z-index: 1001;
+  }
+}
+
+.drawers-triggers {
+  @include styles.styles-reset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-xs;
+  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+
+  &.has-open-drawer {
+    background-color: awsui.$color-background-container-content;
+  }
+}

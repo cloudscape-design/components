@@ -7,23 +7,25 @@ import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
 
-interface TriggerButtonProps {
+export interface TriggerButtonProps {
+  ariaExpanded?: boolean;
   ariaLabel?: string;
-  iconName: IconProps.Name;
+  className?: string;
+  iconName?: IconProps.Name;
+  iconSvg?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   selected?: boolean;
-  className?: string;
 }
 
 function TriggerButton(
-  { ariaLabel, iconName, onClick, selected = false, className }: TriggerButtonProps,
+  { ariaLabel, className, iconName, iconSvg, onClick, selected = false }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
     <button
-      aria-label={ariaLabel}
       aria-expanded={false}
       aria-haspopup={true}
+      aria-label={ariaLabel}
       className={clsx(
         styles.trigger,
         {
@@ -32,10 +34,11 @@ function TriggerButton(
         className
       )}
       onClick={onClick}
-      type="button"
       ref={ref as React.Ref<HTMLButtonElement>}
+      type="button"
     >
-      <Icon name={iconName} />
+      {iconName && !iconSvg && <Icon name={iconName} />}
+      {iconSvg}
     </button>
   );
 }

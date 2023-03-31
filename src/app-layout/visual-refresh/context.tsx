@@ -11,6 +11,7 @@ import React, {
   useContext,
 } from 'react';
 import { AppLayoutProps } from '../interfaces';
+import { DrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { getSplitPanelPosition } from './split-panel';
 import { useControllable } from '../../internal/hooks/use-controllable';
@@ -28,6 +29,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
+  drawers: DrawersProps;
   dynamicOverlapHeight: number;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
@@ -491,11 +493,17 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
+    /**
+     * Drawers stuff.
+     */
+    const drawers = (props as any).drawers;
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
           ...props,
           contentType,
+          drawers,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,
