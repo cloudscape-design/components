@@ -73,8 +73,8 @@ describe('Editable Table TestUtils', () => {
     const cellId0 = wrapper.findBodyCell(1, 1)!.getElement()!;
     fireEvent.click(cellId0);
     const buttons = getByTestId('id-editing-1').closest('form')!.querySelectorAll('button')!;
-    expect(wrapper.findEditingCellCancelButton()!.getElement()!).toBe(buttons[0]);
-    expect(wrapper.findEditingCellSaveButton()!.getElement()!).toBe(buttons[1]);
+    expect(wrapper.findEditingCellSaveButton()!.getElement()!).toBe(buttons[0]);
+    expect(wrapper.findEditingCellCancelButton()!.getElement()!).toBe(buttons[1]);
   });
 
   test('renders when items and labels types do not match', () => {

@@ -147,6 +147,6 @@ export default class TableWrapper extends ComponentWrapper {
   }
 
   findEditingCellCancelButton(): ElementWrapper | null {
-    return this._findEditingCellControls()?.find('button:first-child') ?? null;
+    return this._findEditingCellControls()?.find('button[type="button"]') ?? null;
   }
 }

@@ -113,6 +113,13 @@ export function InlineEditor<ItemType>({
           {editingCell(item, cellContext)}
           <span className={styles['body-cell-editor-controls']}>
             <SpaceBetween direction="horizontal" size="xxs">
+              <Button
+                ariaLabel={ariaLabels?.submitEditLabel?.(column)}
+                formAction="submit"
+                iconName="check"
+                variant="inline-icon"
+                loading={currentEditLoading}
+              />
               {!currentEditLoading ? (
                 <Button
                   ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
@@ -122,13 +129,6 @@ export function InlineEditor<ItemType>({
                   onClick={onCancel}
                 />
               ) : null}
-              <Button
-                ariaLabel={ariaLabels?.submitEditLabel?.(column)}
-                formAction="submit"
-                iconName="check"
-                variant="inline-icon"
-                loading={currentEditLoading}
-              />
             </SpaceBetween>
           </span>
         </div>
