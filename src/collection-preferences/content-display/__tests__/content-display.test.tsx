@@ -7,7 +7,7 @@ import ContentDisplayPreferenceWrapper, {
 } from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
 import { KeyCode } from '../../../internal/keycode';
 
-describe('Content display', () => {
+describe('Content Display preference', () => {
   it('correctly displays title', () => {
     const wrapper = renderContentDisplay({});
     const titleElement = wrapper.findTitle().getElement();
