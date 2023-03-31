@@ -39,9 +39,9 @@ interface AppLayoutInternals extends AppLayoutProps {
   handleSplitPanelResize: (detail: { size: number }) => void;
   handleToolsClick: (value: boolean) => void;
   hasDefaultToolsWidth: boolean;
+  hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
   hasStickyBackground: boolean;
-  isAnyPanelOpen: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -237,15 +237,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [activeDrawerId, drawers?.onChange, setActiveDrawerId]
     );
 
-    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId);
+    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
 
     /**
      *
      */
-    const drawerVisible = activeDrawer ? true : false;
-    const navigationVisible = !navigationHide && isNavigationOpen;
-    const toolsVisible = !toolsHide && isToolsOpen;
-    const isAnyPanelOpen = drawerVisible || navigationVisible || toolsVisible;
+    const hasDrawerViewportOverlay =
+      isMobile && (activeDrawerId !== null || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
+    console.log(hasDrawerViewportOverlay);
 
     /**
      * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
@@ -534,6 +533,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
+          hasDrawerViewportOverlay,
           handleDrawersClick,
           handleNavigationClick,
           handleSplitPanelClick,
@@ -542,7 +542,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleToolsClick,
           hasNotificationsContent,
           hasStickyBackground,
-          isAnyPanelOpen,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,

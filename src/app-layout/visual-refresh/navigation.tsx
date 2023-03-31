@@ -22,13 +22,13 @@ export default function Navigation() {
   const {
     ariaLabels,
     handleNavigationClick,
+    hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
     navigation,
     navigationHide,
     navigationWidth,
     isToolsOpen,
-    isAnyPanelOpen,
     toolsHide,
     navigationRefs,
   } = useAppLayoutInternals();
@@ -48,7 +48,7 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = isMobile && isAnyPanelOpen && isToolsOpen && !toolsHide;
+  const isUnfocusable = hasDrawerViewportOverlay && isToolsOpen && !toolsHide;
 
   return (
     <Transition in={isNavigationOpen}>

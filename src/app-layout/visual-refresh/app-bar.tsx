@@ -22,6 +22,7 @@ export default function AppBar() {
     dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
+    hasDrawerViewportOverlay,
     hasNotificationsContent,
     hasStickyBackground,
     isMobile,
@@ -29,7 +30,6 @@ export default function AppBar() {
     isNavigationOpen,
     isToolsOpen,
     toolsHide,
-    isAnyPanelOpen,
     navigationRefs,
     toolsRefs,
   } = useAppLayoutInternals();
@@ -45,7 +45,7 @@ export default function AppBar() {
         styles.appbar,
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles.unfocusable]: isMobile && isAnyPanelOpen,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
           [testutilStyles['mobile-bar']]: isMobile,
         },
         'awsui-context-content-header'
@@ -65,7 +65,7 @@ export default function AppBar() {
             variant="icon"
             className={testutilStyles['navigation-toggle']}
             ref={navigationRefs.toggle}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
         </nav>
@@ -93,7 +93,7 @@ export default function AppBar() {
           <InternalButton
             className={testutilStyles['tools-toggle']}
             ariaExpanded={isToolsOpen}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             ariaLabel={ariaLabels?.toolsToggle ?? undefined}
             iconName="status-info"
             formAction="none"
@@ -106,7 +106,7 @@ export default function AppBar() {
       )}
 
       {isMobile && drawers && (
-        <aside aria-hidden={isAnyPanelOpen} className={clsx(styles['appbar-drawers'])}>
+        <aside aria-hidden={hasDrawerViewportOverlay} className={clsx(styles['appbar-drawers'])}>
           <DrawersMobileTriggers />
         </aside>
       )}

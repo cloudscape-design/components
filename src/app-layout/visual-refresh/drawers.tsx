@@ -200,7 +200,7 @@ export function MobileTriggers() {
     drawers,
     handleDrawersClick,
     handleToolsClick,
-    isAnyPanelOpen,
+    hasDrawerViewportOverlay,
     isMobile,
     isToolsOpen,
     tools,
@@ -219,7 +219,7 @@ export function MobileTriggers() {
           ariaLabel={ariaLabels?.toolsToggle ?? undefined}
           ariaExpanded={isToolsOpen}
           className={testutilStyles['tools-toggle']}
-          disabled={isAnyPanelOpen}
+          disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName="status-info"
           onClick={() => handleToolsClick(true)}
@@ -233,11 +233,11 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawer?.id}
           ariaLabel={item.trigger.ariaLabel}
-          disabled={isAnyPanelOpen}
+          disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}
           iconSvg={item.trigger.iconSvg}
-          key={item.trigger.id}
+          key={item.id}
           onClick={() => handleDrawersClick(item.id)}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true }}
