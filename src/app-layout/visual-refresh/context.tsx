@@ -32,7 +32,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   activeDrawer: DrawersProps.Drawer;
   drawers: DrawersProps;
   dynamicOverlapHeight: number;
-  handleDrawersTriggerClick: (activeDrawerId: string) => void;
+  handleDrawersClick: (activeDrawerId: string | null) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -216,6 +216,31 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
     );
 
+    /**
+     * Drawers stuff.
+     */
+    const drawers = (props as any).drawers;
+
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
+      componentName: 'AppLayout',
+      controlledProp: 'drawers.activeDrawerId',
+      changeHandler: 'onChange',
+    });
+
+    const handleDrawersClick = useCallback(
+      function handleDrawersChange(id: string | null) {
+        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+        setActiveDrawerId(newActiveDrawerId);
+        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
+      },
+      [activeDrawerId, drawers?.onChange, setActiveDrawerId]
+    );
+
+    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId);
+
+    /**
+     *
+     */
     const navigationVisible = !navigationHide && isNavigationOpen;
     const toolsVisible = !toolsHide && isToolsOpen;
     const isAnyPanelOpen = navigationVisible || toolsVisible;
@@ -495,33 +520,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
-    /**
-     * Drawers stuff.
-     */
-    const drawers = (props as any).drawers;
-
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
-      componentName: 'AppLayout',
-      controlledProp: 'drawers.activeDrawerId',
-      changeHandler: 'onChange',
-    });
-
-    const handleDrawersTriggerClick = useCallback(
-      function handleDrawersChange(id: string) {
-        const newActiveDrawerId = id !== activeDrawerId ? id : null;
-
-        if (newActiveDrawerId && isToolsOpen) {
-          handleToolsClick(!isToolsOpen);
-        }
-
-        setActiveDrawerId(newActiveDrawerId);
-        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
-      },
-      [activeDrawerId, drawers?.onChange, handleToolsClick, isToolsOpen, setActiveDrawerId]
-    );
-
-    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId);
-
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -533,7 +531,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
-          handleDrawersTriggerClick,
+          handleDrawersClick,
           handleNavigationClick,
           handleSplitPanelClick,
           handleSplitPanelPreferencesChange,

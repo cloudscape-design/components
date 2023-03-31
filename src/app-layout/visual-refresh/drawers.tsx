@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import { InternalButton } from '../../button/internal';
 import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
 import TriggerButton, { TriggerButtonProps } from './trigger-button';
@@ -42,6 +43,7 @@ export default function Drawers() {
     <div className={styles['drawers-container']}>
       <SplitPanel.Side />
       <ActiveDrawer />
+      <Tools />
       <Triggers />
     </div>
   );
@@ -51,13 +53,61 @@ export default function Drawers() {
  *
  */
 function ActiveDrawer() {
-  const { activeDrawer } = useAppLayoutInternals();
+  const { activeDrawer, handleDrawersClick, isMobile } = useAppLayoutInternals();
 
   if (!activeDrawer) {
     return null;
   }
 
-  return <section className={clsx(styles.drawer)}>{activeDrawer.content}</section>;
+  return (
+    <aside className={clsx(styles.drawer)}>
+      <div className={clsx(styles['drawer-close-button'])}>
+        <InternalButton
+          formAction="none"
+          iconName={isMobile ? 'close' : 'angle-right'}
+          onClick={() => handleDrawersClick(activeDrawer.id)}
+          variant="icon"
+        />
+      </div>
+
+      {activeDrawer.content}
+    </aside>
+  );
+}
+
+/**
+ *
+ */
+function Tools() {
+  const { ariaLabels, handleToolsClick, isMobile, isToolsOpen, tools, toolsHide, toolsRefs } = useAppLayoutInternals();
+
+  if (!tools || toolsHide || !isToolsOpen) {
+    return null;
+  }
+
+  return (
+    <aside
+      aria-hidden={!isToolsOpen ? true : false}
+      aria-label={ariaLabels?.tools ?? undefined}
+      className={clsx(styles.drawer, testutilStyles.tools)}
+    >
+      <div className={clsx(styles['animated-content'])}>
+        <div className={clsx(styles['hide-tools'])}>
+          <InternalButton
+            ariaLabel={ariaLabels?.toolsClose ?? undefined}
+            className={testutilStyles['tools-close']}
+            formAction="none"
+            iconName={isMobile ? 'close' : 'angle-right'}
+            onClick={() => handleToolsClick(false)}
+            ref={toolsRefs.close}
+            variant="icon"
+          />
+        </div>
+
+        {tools}
+      </div>
+    </aside>
+  );
 }
 
 /**
@@ -68,23 +118,24 @@ function Triggers() {
     activeDrawer,
     ariaLabels,
     drawers,
-    handleDrawersTriggerClick,
+    handleDrawersClick,
     handleSplitPanelClick,
-    // handleToolsClick,
+    handleToolsClick,
     isMobile,
     isSplitPanelOpen,
-    // isToolsOpen,
+    isToolsOpen,
     splitPanel,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
     splitPanelToggle,
+    tools,
     toolsHide,
     toolsRefs,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-  const hasOpenDrawer = activeDrawer || (hasSplitPanel && isSplitPanelOpen);
+  const hasOpenDrawer = activeDrawer || isToolsOpen || (hasSplitPanel && isSplitPanelOpen);
   const triggerCount = drawers.items.length + (hasSplitPanel ? 1 : 0) + (!toolsHide ? 1 : 0);
 
   if (isMobile || (hasOpenDrawer && triggerCount <= 1)) {
@@ -97,15 +148,17 @@ function Triggers() {
         [styles['has-open-drawer']]: hasOpenDrawer,
       })}
     >
-      {!toolsHide && (
+      {!toolsHide && tools && (
         <TriggerButton
           ariaLabel={ariaLabels?.toolsToggle}
           className={testutilStyles['tools-toggle']}
           iconName="status-info"
-          onClick={() => console.log('trigger click')}
-          // onClick={() => handleToolsClick(!isToolsOpen)}
+          onClick={() => {
+            activeDrawer && handleDrawersClick(null);
+            handleToolsClick(!isToolsOpen);
+          }}
           ref={toolsRefs.toggle}
-          // selected={hasToolsForm && isToolsOpen}
+          selected={isToolsOpen}
         />
       )}
 
@@ -115,7 +168,10 @@ function Triggers() {
           iconName={item.trigger.iconName}
           iconSvg={item.trigger.iconSvg}
           key={item.id}
-          onClick={() => handleDrawersTriggerClick(item.id)}
+          onClick={() => {
+            isToolsOpen && handleToolsClick(!isToolsOpen);
+            handleDrawersClick(item.id);
+          }}
           selected={item === activeDrawer}
         />
       ))}

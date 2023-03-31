@@ -35,6 +35,7 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+    z-index: 1;
   }
 }
 
@@ -42,8 +43,20 @@
   background-color: awsui.$color-background-container-content;
   border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   box-shadow: awsui.$shadow-panel;
+  flex-shrink: 0;
   height: 100%;
   pointer-events: auto;
+  position: relative;
+  overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior-y: contain;
   width: 290px;
+  word-wrap: break-word;
+}
+
+.drawer-close-button {
+  position: absolute;
+  right: awsui.$space-m;
+  top: awsui.$size-vertical-panel-icon-offset;
+  z-index: 1;
 }
