@@ -32,6 +32,10 @@ export default function GenericTokenGroupPage() {
           <Token>Custom token</Token>
         </div>
 
+        <div role="group" aria-label="Custom token" aria-disabled={true}>
+          <Token disabled={true}>Custom disabled token</Token>
+        </div>
+
         <TokenList
           alignment="vertical"
           items={files}

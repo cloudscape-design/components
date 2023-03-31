@@ -3,8 +3,10 @@
 import React from 'react';
 
 import Option from '../internal/components/option';
+import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+
 import { TokenGroupProps } from './interfaces';
 import { SomeRequired } from '../internal/types';
 import { getBaseProps } from '../internal/base-component';
@@ -12,7 +14,6 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import TokenList from '../internal/components/token-list';
 import { Token } from './token';
-import { fireNonCancelableEvent } from '../internal/events';
 
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
 

@@ -21,12 +21,12 @@
   border: awsui.$border-field-width solid constants.$token-border-color;
   padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
     styles.$control-padding-horizontal;
+  display: flex;
+  align-items: flex-start;
   background: constants.$token-background;
   border-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
-  display: flex;
-  align-items: flex-start;
 }
 
 .dismiss-button {
