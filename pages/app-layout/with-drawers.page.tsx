@@ -1,12 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { AppLayout, ContentLayout, Header, HelpPanel, SpaceBetween, SplitPanel, Toggle } from '~components';
+import {
+  AppLayout,
+  ContentLayout,
+  Header,
+  HelpPanel,
+  NonCancelableCustomEvent,
+  SpaceBetween,
+  SplitPanel,
+  Toggle,
+} from '~components';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function WithDrawers() {
-  const [activeDrawerId, setActiveDrawerId] = useState(null);
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [useDrawers, setUseDrawers] = useState(true);
   const [useTools, setUseTools] = useState(true);
 
@@ -33,7 +42,7 @@ export default function WithDrawers() {
               },
             },
           ],
-          onChange: (activeDrawerId: any) => setActiveDrawerId(activeDrawerId),
+          onChange: (event: NonCancelableCustomEvent<string>) => setActiveDrawerId(event.detail),
         },
       };
 

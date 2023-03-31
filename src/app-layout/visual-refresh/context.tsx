@@ -29,8 +29,10 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
+  activeDrawerId: string;
   drawers: DrawersProps;
   dynamicOverlapHeight: number;
+  handleDrawersTriggerClick: (activeDrawerId: string) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
@@ -498,16 +500,42 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      */
     const drawers = (props as any).drawers;
 
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers.onChange, null, {
+      componentName: 'AppLayout',
+      controlledProp: 'activeDrawerId',
+      changeHandler: 'onChange',
+    });
+
+    const handleDrawersTriggerClick = useCallback(
+      function handleDrawersChange(activeDrawerId: string) {
+        /*
+        const activeDrawerId = item.id !== drawers.activeDrawerId ? item.id : null;
+
+        if (activeDrawerId && isToolsOpen) {
+          handleToolsClick(!isToolsOpen);
+        }
+
+        drawers.onChange(activeDrawerId);
+        */
+
+        setActiveDrawerId(activeDrawerId);
+        fireNonCancelableEvent(drawers?.onChange, activeDrawerId);
+      },
+      [drawers.onChange, setActiveDrawerId]
+    );
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
           ...props,
+          activeDrawerId,
           contentType,
           drawers,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
+          handleDrawersTriggerClick,
           handleNavigationClick,
           handleSplitPanelClick,
           handleSplitPanelPreferencesChange,

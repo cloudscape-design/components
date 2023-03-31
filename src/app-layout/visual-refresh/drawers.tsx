@@ -10,9 +10,9 @@ import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
 export interface DrawersProps {
-  activeDrawerId: string;
+  activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
-  onChange: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
+  onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
 }
 
 export namespace DrawersProps {
@@ -52,8 +52,10 @@ function Items() {
  */
 function Triggers() {
   const {
+    activeDrawerId,
     ariaLabels,
     drawers,
+    handleDrawersTriggerClick,
     handleSplitPanelClick,
     // handleToolsClick,
     isMobile,
@@ -74,6 +76,8 @@ function Triggers() {
 
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
   const hasOpenDrawer = hasSplitPanel && isSplitPanelOpen;
+
+  // console.log(`activeDrawerId: ${activeDrawerId}`);
 
   return (
     <aside
@@ -99,7 +103,7 @@ function Triggers() {
           iconName={item.trigger.iconName}
           iconSvg={item.trigger.iconSvg}
           key={item.id}
-          onClick={() => console.log('trigger click')}
+          onClick={() => handleDrawersTriggerClick(item.id)}
           /*
           onClick={() => {
             const activeDrawerId = item.id !== drawers.activeDrawerId ? item.id : null;
@@ -111,7 +115,7 @@ function Triggers() {
             drawers.onChange(activeDrawerId);
           }}
           */
-          selected={item.id === drawers.activeDrawerId}
+          selected={item.id === activeDrawerId}
         />
       ))}
 
