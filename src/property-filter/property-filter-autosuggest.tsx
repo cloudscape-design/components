@@ -38,6 +38,7 @@ export interface PropertyFilterAutosuggestProps extends AutosuggestProps, Intern
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
+  searchResultsId?: string;
 }
 
 const PropertyFilterAutosuggest = React.forwardRef(
@@ -61,6 +62,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       filterText,
       onOptionClick,
       hideEnteredTextOption,
+      searchResultsId,
       ...rest
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
@@ -190,6 +192,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
+        ariaDescribedby={searchResultsId}
         dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}

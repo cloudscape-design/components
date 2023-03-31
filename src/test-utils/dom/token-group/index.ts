@@ -21,7 +21,7 @@ export default class TokenGroupWrapper extends ComponentWrapper {
    */
   findToken(tokenIndex: number): TokenWrapper | null {
     return this.findComponent(
-      `.${tokenListSelectors.child}:nth-child(${tokenIndex}) > .${TokenWrapper.rootSelector}`,
+      `.${tokenListSelectors['list-item']}:nth-child(${tokenIndex}) > .${TokenWrapper.rootSelector}`,
       TokenWrapper
     );
   }

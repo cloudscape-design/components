@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { range } from 'lodash';
 import { TokenGroupProps } from '~components/token-group';
 import { Token } from '~components/token-group/token';
-import { TokenList } from '~components/internal/components/token-list';
+import TokenList from '~components/internal/components/token-list';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import Icon from '~components/icon';
@@ -29,7 +29,7 @@ export default function GenericTokenGroupPage() {
       <h1>Generic token group</h1>
       <SpaceBetween size="l" direction="vertical">
         <div role="group" aria-label="Custom token">
-          <Token dismiss={{ label: 'Dismiss', onDismiss: () => undefined }}>Custom token</Token>
+          <Token>Custom token</Token>
         </div>
 
         <TokenList
@@ -37,17 +37,11 @@ export default function GenericTokenGroupPage() {
           items={files}
           i18nStrings={i18nStrings}
           limit={5}
-          getItemAttributes={file => ({
-            ariaLabel: `agreement-${file + 1}.pdf`,
-            disabled: file === 0,
-          })}
           renderItem={(file, fileIndex) => (
             <Token
               disabled={file === 0}
-              dismiss={{
-                label: `Remove file ${fileIndex + 1}`,
-                onDismiss: () => onDismiss(fileIndex),
-              }}
+              dismissLabel={`Remove file ${fileIndex + 1}`}
+              onDismiss={() => onDismiss(fileIndex)}
             >
               <FileOption file={file} />
             </Token>

@@ -11,9 +11,19 @@ export interface FormatFunction {
   <T>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T>): T;
 }
 
-export const InternalI18nContext = React.createContext<FormatFunction>(
-  <T>(_namespace: string, _component: string, _key: string, provided: T) => provided
-);
+export interface InternalI18nContextProps {
+  locale: string | null;
+  format: FormatFunction;
+}
+
+export const InternalI18nContext = React.createContext<InternalI18nContextProps>({
+  locale: null,
+  format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
+});
+
+export function useLocale(): string | null {
+  return useContext(InternalI18nContext).locale;
+}
 
 export interface ComponentFormatFunction {
   (key: string, provided: string): string;
@@ -22,7 +32,7 @@ export interface ComponentFormatFunction {
 }
 
 export function useInternalI18n(componentName: string): ComponentFormatFunction {
-  const format = useContext(InternalI18nContext);
+  const { format } = useContext(InternalI18nContext);
   return <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
     return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
   };

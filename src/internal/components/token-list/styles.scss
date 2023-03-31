@@ -8,50 +8,32 @@
 @use '../../hooks/focus-visible' as focus-visible;
 
 .root {
-  @include styles.styles-reset;
-
   display: flex;
   flex-wrap: wrap;
-  gap: awsui.$space-scaled-xs;
-}
-.root-horizontal {
-  align-items: center;
-}
-.root-vertical {
   flex-direction: column;
+  gap: awsui.$space-xs;
 }
 
 .list {
   display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  flex-wrap: wrap;
+  gap: awsui.$space-xs;
 }
-
 .list-horizontal {
   flex-direction: row;
-  flex-wrap: wrap;
-
-  // This cancels out the margins of the children in the first row / in the first column.
-  margin-left: calc(-1 * #{awsui.$space-xs});
-  margin-bottom: calc(-1 * #{awsui.$space-xs});
 }
-
-.child-horizontal {
-  margin-left: awsui.$space-xs;
-  margin-bottom: awsui.$space-xs;
-}
-
 .list-vertical {
   flex-direction: column;
 }
 
-.child {
+.list-item {
   /* used in test-utils */
 }
 
-.child-vertical:not(:last-child) {
-  margin-bottom: awsui.$space-xs;
+.toggle-container-inline {
+  padding-left: awsui.$space-xs;
+  display: flex;
+  align-items: center;
 }
 
 .toggle {
@@ -84,4 +66,10 @@
   > .description {
     margin-left: awsui.$space-xxs;
   }
+}
+
+.separator {
+  margin: 0px awsui.$space-scaled-m;
+  width: awsui.$border-divider-section-width;
+  background-color: awsui.$color-border-divider-default;
 }

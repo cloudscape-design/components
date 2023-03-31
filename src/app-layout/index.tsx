@@ -23,7 +23,6 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import {
   SplitPanelContextProvider,
   SplitPanelContextProps,
-  SplitPanelLastInteraction,
   SplitPanelSideToggleProps,
 } from '../internal/context/split-panel-context';
 import {
@@ -35,7 +34,6 @@ import {
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { Drawer } from './drawer';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
@@ -44,6 +42,7 @@ import { warnOnce } from '../internal/logging';
 
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../internal/i18n/context';
+import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
 
 export { AppLayoutProps };
 
@@ -142,19 +141,28 @@ const OldAppLayout = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
 
+    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
+    const {
+      refs: toolsRefs,
+      setFocus: focusToolsButtons,
+      loseFocus: loseToolsFocus,
+    } = useFocusControl(toolsOpen, true);
+
     const onNavigationToggle = useCallback(
       (open: boolean) => {
         setNavigationOpen(open);
+        focusNavButtons();
         fireNonCancelableEvent(onNavigationChange, { open });
       },
-      [setNavigationOpen, onNavigationChange]
+      [setNavigationOpen, onNavigationChange, focusNavButtons]
     );
     const onToolsToggle = useCallback(
       (open: boolean) => {
         setToolsOpen(open);
+        focusToolsButtons();
         fireNonCancelableEvent(onToolsChange, { open });
       },
-      [setToolsOpen, onToolsChange]
+      [setToolsOpen, onToolsChange, focusToolsButtons]
     );
     const onNavigationClick = (event: React.MouseEvent) => {
       const hasLink = findUpUntil(
@@ -232,12 +240,18 @@ const OldAppLayout = React.forwardRef(
     const mainContentRef = useRef<HTMLDivElement>(null);
     const legacyScrollRootRef = useRef<HTMLElement>(null);
 
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl([
+      splitPanelPreferences,
+      splitPanelOpen,
+    ]);
+
     const onSplitPanelPreferencesSet = useCallback(
       (detail: { position: 'side' | 'bottom' }) => {
         setSplitPanelPreferences(detail);
+        setSplitPanelLastInteraction({ type: 'position' });
         fireNonCancelableEvent(onSplitPanelPreferencesChange, detail);
       },
-      [setSplitPanelPreferences, onSplitPanelPreferencesChange]
+      [setSplitPanelPreferences, onSplitPanelPreferencesChange, setSplitPanelLastInteraction]
     );
     const onSplitPanelSizeSet = useCallback(
       (detail: { size: number }) => {
@@ -246,10 +260,12 @@ const OldAppLayout = React.forwardRef(
       },
       [setSplitPanelSize, onSplitPanelResize]
     );
-    const onToggle = useCallback(() => {
+
+    const onSplitPanelToggleHandler = useCallback(() => {
       setSplitPanelOpen(!splitPanelOpen);
+      setSplitPanelLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
-    }, [setSplitPanelOpen, splitPanelOpen, onSplitPanelToggle]);
+    }, [setSplitPanelOpen, splitPanelOpen, onSplitPanelToggle, setSplitPanelLastInteraction]);
 
     const getSplitPanelMaxWidth = useStableEventHandler(() => {
       if (!mainContentRef.current || !defaults.minContentWidth) {
@@ -307,13 +323,6 @@ const OldAppLayout = React.forwardRef(
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
     const toolsClosedWidth = toolsHide || isMobile ? 0 : closedDrawerWidth;
 
-    const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
-    useEffectOnUpdate(
-      () => setSplitPanelLastInteraction(splitPanelOpen ? { type: 'open' } : { type: 'close' }),
-      [splitPanelOpen]
-    );
-    useEffectOnUpdate(() => setSplitPanelLastInteraction({ type: 'position' }), [splitPanelPosition]);
-
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
@@ -334,13 +343,13 @@ const OldAppLayout = React.forwardRef(
       isOpen: splitPanelOpen,
       isMobile,
       isForcedPosition: isSplitpanelForcedPosition,
-      lastInteraction: splitPanelLastInteraction,
       onResize: onSplitPanelSizeSet,
-      onToggle,
+      onToggle: onSplitPanelToggleHandler,
       onPreferencesChange: onSplitPanelPreferencesSet,
       setSplitPanelToggle: setSplitPanelReportedToggle,
       reportSize: setSplitPanelReportedSize,
       reportHeaderHeight: setSplitPanelReportedHeaderHeight,
+      refs: splitPanelRefs,
     };
     const splitPanelWrapped = splitPanel && (
       <SplitPanelContextProvider value={splitPanelContext}>{splitPanel}</SplitPanelContextProvider>
@@ -363,9 +372,6 @@ const OldAppLayout = React.forwardRef(
       isMobile,
     };
 
-    const { refs: navigationRefs } = useFocusControl(navigationOpen);
-    const { refs: toolsRefs, setFocus: focusToolsClose, loseFocus: loseToolsFocus } = useFocusControl(toolsOpen, true);
-
     useImperativeHandle(
       ref,
       () => ({
@@ -375,9 +381,9 @@ const OldAppLayout = React.forwardRef(
             onNavigationToggle(false);
           }
         },
-        focusToolsClose,
+        focusToolsClose: () => focusToolsButtons(true),
       }),
-      [isMobile, onNavigationToggle, onToolsToggle, focusToolsClose]
+      [isMobile, onNavigationToggle, onToolsToggle, focusToolsButtons]
     );
 
     const splitPanelBottomOffset =

@@ -8,6 +8,7 @@ import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -19,7 +20,6 @@ import {
   getAutosuggestOptions,
   getAllowedOperators,
   getExtendedOperator,
-  getFormattedToken,
 } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
@@ -29,7 +29,8 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
-import { TokenList } from '../internal/components/token-list';
+import TokenList from '../internal/components/token-list';
+import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
@@ -78,7 +79,7 @@ const PropertyFilter = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
-    const i18nStrings = {
+    const i18nStrings: PropertyFilterProps.I18nStrings = {
       ...rest.i18nStrings,
       allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings.allPropertiesLabel),
       applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings.applyActionText),
@@ -124,7 +125,7 @@ const PropertyFilter = React.forwardRef(
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
-    const showResults = tokens?.length && !disabled;
+    const showResults = !!tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -261,6 +262,8 @@ const PropertyFilter = React.forwardRef(
       parsedText.step === 'property' &&
       getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
 
+    const searchResultsId = useUniqueId('property-filter-search-results');
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
@@ -304,28 +307,17 @@ const PropertyFilter = React.forwardRef(
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
+            searchResultsId={showResults ? searchResultsId : undefined}
           />
-          <span
-            aria-live="polite"
-            aria-atomic="true"
-            className={clsx(styles.results, showResults && styles['results-visible'])}
-          >
-            {showResults ? countText : ''}
-          </span>
+          {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
             <InternalSpaceBetween size="xs" direction="horizontal">
               <TokenList
-                alignment="horizontal"
-                toggleAlignment="horizontal"
+                alignment="inline"
                 limit={tokenLimit}
                 items={tokens}
-                getItemAttributes={token => {
-                  const formattedToken = getFormattedToken(filteringProperties, token);
-                  const ariaLabel = (formattedToken.property ?? '') + formattedToken.operator + formattedToken.value;
-                  return { ariaLabel, disabled };
-                }}
                 renderItem={(token, tokenIndex) => (
                   <TokenButton
                     token={token}
@@ -351,13 +343,12 @@ const PropertyFilter = React.forwardRef(
                   limitShowFewer: i18nStrings.tokenLimitShowFewer,
                   limitShowMore: i18nStrings.tokenLimitShowMore,
                 }}
+                after={
+                  <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
+                    {i18nStrings.clearFiltersText}
+                  </InternalButton>
+                }
               />
-
-              <div className={styles.separator} />
-
-              <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
-                {i18nStrings.clearFiltersText}
-              </InternalButton>
             </InternalSpaceBetween>
           </div>
         )}

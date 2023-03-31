@@ -7,22 +7,21 @@ import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TokenGroupProps } from './interfaces';
 import { SomeRequired } from '../internal/types';
-import { TokenList } from '../internal/components/token-list';
-import styles from './styles.css.js';
-import clsx from 'clsx';
 import { getBaseProps } from '../internal/base-component';
+import clsx from 'clsx';
+import styles from './styles.css.js';
+import TokenList from '../internal/components/token-list';
 import { Token } from './token';
-import { fireNonCancelableEvent } from '../internal/events';
 
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
 
 export default function InternalTokenGroup({
+  alignment,
   items,
   onDismiss,
-  __internalRootRef,
   limit,
-  alignment,
   i18nStrings,
+  __internalRootRef,
   ...props
 }: InternalTokenGroupProps) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
@@ -37,15 +36,12 @@ export default function InternalTokenGroup({
     >
       <TokenList
         alignment={alignment}
-        limit={limit}
         items={items}
-        getItemAttributes={item => ({
-          ariaLabel: item.label ?? '',
-          disabled: item.disabled,
-        })}
+        limit={limit}
         renderItem={(item, itemIndex) => (
           <Token
-            dismiss={{ label: item.dismissLabel, onDismiss: () => fireNonCancelableEvent(onDismiss, { itemIndex }) }}
+            dismissLabel={item.dismissLabel}
+            onDismiss={() => fireNonCancelableEvent(onDismiss, { itemIndex })}
             disabled={item.disabled}
           >
             <Option option={item} />

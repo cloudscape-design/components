@@ -90,23 +90,6 @@
   flex: 1;
 }
 
-.results {
-  color: awsui.$color-text-form-label;
-  display: inline-block;
-  box-sizing: border-box;
-  white-space: nowrap;
-  &-visible {
-    padding-left: awsui.$space-s;
-  }
-}
-
-.separator {
-  margin: 0px awsui.$space-scaled-m;
-  height: 100%;
-  width: awsui.$border-divider-section-width;
-  background-color: awsui.$color-border-divider-default;
-}
-
 .token-trigger {
   @include styles.text-wrapping;
 }
