@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../button/internal';
 import FormField from '../../form-field/internal';
 import SpaceBetween from '../../space-between/internal';
@@ -8,7 +8,7 @@ import { useClickAway } from './click-away';
 import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
-import FocusLock from '../../internal/components/focus-lock';
+import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 
 // A function that does nothing
@@ -33,6 +33,8 @@ export function InlineEditor<ItemType>({
 }: InlineEditorProps<ItemType>) {
   const [currentEditLoading, setCurrentEditLoading] = useState(false);
   const [currentEditValue, setCurrentEditValue] = useState<Optional<any>>();
+
+  const focusLockRef = useRef<FocusLockRef>(null);
 
   const cellContext = {
     currentValue: currentEditValue,
@@ -60,6 +62,7 @@ export function InlineEditor<ItemType>({
       finishEdit();
     } catch (e) {
       setCurrentEditLoading(false);
+      focusLockRef.current?.focusFirst();
     }
   }
 
@@ -95,7 +98,7 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <FocusLock restoreFocus={true}>
+    <FocusLock restoreFocus={true} ref={focusLockRef}>
       <div role="dialog" aria-label={ariaLabels?.activateEditLabel?.(column, item)} onKeyDown={handleEscape}>
         <form ref={clickAwayRef} onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField
