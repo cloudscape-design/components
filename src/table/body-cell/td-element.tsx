@@ -56,8 +56,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     ref
   ) => {
     const { isLastStart, isLastEnd } = stickyColumn || {};
-    const lastStartStyles = isStuckToTheLeft && isLastStart ? styles['body-cell-freeze-last-start'] : {};
-    const lastEndStyles = isStuckToTheRight && isLastEnd ? styles['body-cell-freeze-last-end'] : {};
     return (
       <td
         style={style}
@@ -76,8 +74,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           isStickyColumn && styles['body-cell-freeze'],
-          lastStartStyles,
-          lastEndStyles
+          isStuckToTheLeft && isLastStart && styles['body-cell-freeze-last-start'],
+          isStuckToTheRight && isLastEnd && styles['body-cell-freeze-last-end']
         )}
         onClick={onClick}
         ref={ref}

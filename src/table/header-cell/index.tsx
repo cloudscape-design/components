@@ -97,27 +97,22 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   };
   const headerId = useUniqueId('table-header-');
   const isLastColumn = colIndex === visibleColumnsLength - 1;
-  const lastStartStyles = isStuckToTheLeft && isLastStart && styles['header-cell-freeze-last-start'];
-  const lastEndStyles = isStuckToTheRight && isLastEnd && styles['header-cell-freeze-last-end'];
-  const lastStickyColumnStyles = lastStartStyles || lastEndStyles || {};
 
   return (
     <th
-      className={clsx(
-        className,
-        {
-          [styles['header-cell-resizable']]: !!resizableColumns,
-          [styles['header-cell-sortable']]: sortingStatus,
-          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-          [styles['header-cell-disabled']]: sortingDisabled,
-          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-          [styles['header-cell-descending']]: sortingStatus === 'descending',
-          [styles['header-cell-hidden']]: hidden,
-          [styles['header-cell-freeze']]: !!isStickyColumn,
-          [styles['header-cell-freeze-stuck-right']]: isLastColumn && isStuckToTheRight,
-        },
-        lastStickyColumnStyles
-      )}
+      className={clsx(className, {
+        [styles['header-cell-resizable']]: !!resizableColumns,
+        [styles['header-cell-sortable']]: sortingStatus,
+        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+        [styles['header-cell-disabled']]: sortingDisabled,
+        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+        [styles['header-cell-descending']]: sortingStatus === 'descending',
+        [styles['header-cell-hidden']]: hidden,
+        [styles['header-cell-freeze']]: !!isStickyColumn,
+        [styles['header-cell-freeze-stuck-right']]: isLastColumn && isStuckToTheRight,
+        [styles['header-cell-freeze-last-start']]: isStuckToTheLeft && isLastStart,
+        [styles['header-cell-freeze-last-end']]: isStuckToTheRight && isLastEnd,
+      })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
       ref={ref}
