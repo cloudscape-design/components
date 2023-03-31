@@ -39,6 +39,8 @@ interface TableHeaderCellProps<ItemType> {
   isStickyColumn?: boolean;
   setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
   tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
+  isLastStart?: boolean;
+  isLastEnd?: boolean;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(

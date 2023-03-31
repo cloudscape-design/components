@@ -58,9 +58,14 @@ export function Resizer({
 
     const updateTrackerPosition = (newOffset: number) => {
       const { left: scrollParentLeft } = tableElement.getBoundingClientRect();
+      const { left: headerCellLeft } = headerCell.getBoundingClientRect();
+
       tracker.style.top = headerCell.getBoundingClientRect().height + 'px';
       // minus one pixel to offset the cell border
-      tracker.style.left = newOffset - scrollParentLeft - 1 + 'px';
+      tracker.style.left =
+        resizeDirection === 'left'
+          ? headerCellLeft - scrollParentLeft - 1 + 'px'
+          : newOffset - scrollParentLeft - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {

@@ -55,15 +55,6 @@ $active-separator-width: 2px;
       border-left-color: awsui.$color-border-divider-interactive-default;
     }
   }
-  // &:last-child:before {
-  //   content: '';
-  //   position: absolute;
-  //   bottom: 25%;
-  //   height: 50%;
-  //   border-left: awsui.$border-divider-section-width solid awawsui.$color-border-divider-interactive-default;
-  //   box-sizing: border-box;
-  //   left: -1px;
-  // }
   &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
   }
