@@ -7,6 +7,7 @@ import {
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
+  contentDisplayPreference,
 } from './shared';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
@@ -154,5 +155,14 @@ describe('Collection preferences - Preferences display', () => {
     });
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findCustomPreference()!.getElement()).toHaveTextContent('CustomPref');
+  });
+  test('displays only content display preference when both visible content preference and content display preference are specified', () => {
+    const wrapper = renderCollectionPreferences({
+      visibleContentPreference,
+      contentDisplayPreference,
+    });
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findVisibleContentPreference()).toBeNull();
+    expect(wrapper.findModal()!.findContentDisplayPreference()).not.toBeNull();
   });
 });

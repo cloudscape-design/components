@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { renderCollectionPreferences } from './shared';
+import { contentDisplayPreference, renderCollectionPreferences } from './shared';
 import { CollectionPreferencesProps } from '../../../lib/components';
 import ContentDisplayPreferenceWrapper from '../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
 import dragHandleStyles from '../../../lib/components/internal/drag-handle/styles.css.js';
@@ -44,18 +44,6 @@ describe('Content display', () => {
     }
   });
 });
-
-const contentDisplayPreference: CollectionPreferencesProps.ContentDisplayPreference = {
-  title: 'Content display title',
-  label: 'Content display label',
-  options: [
-    { id: 'id1', label: 'Item 1', editable: false },
-    { id: 'id2', label: 'Item 2' },
-    { id: 'id3', label: 'Item 3' },
-    { id: 'id4', label: 'Item 4' },
-  ],
-  dragHandleAriaLabel: 'Drag handle',
-};
 
 function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
   const collectionPreferencesWrapper = renderCollectionPreferences({ contentDisplayPreference, ...props });
