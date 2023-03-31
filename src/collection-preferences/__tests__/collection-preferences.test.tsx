@@ -118,7 +118,7 @@ describe('Collection preferences - Warnings', () => {
 });
 
 describe('Collection preferences - Preferences display', () => {
-  test('does not preferences if they are not specified', () => {
+  test('does not display preferences if they are not specified', () => {
     const wrapper = renderCollectionPreferences({});
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findPageSizePreference()).toBeNull();
