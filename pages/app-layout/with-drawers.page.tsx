@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 import { AppLayout, ContentLayout, Header, HelpPanel, SpaceBetween, SplitPanel, Toggle } from '~components';
-import { Breadcrumbs, Containers } from '../app-layout/utils/content-blocks';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 
 export default function WithDrawers() {

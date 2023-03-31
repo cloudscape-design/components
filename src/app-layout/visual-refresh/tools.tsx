@@ -30,31 +30,32 @@ export default function Tools({ children }: ToolsProps) {
     handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
-    isAnyPanelOpen,
     isNavigationOpen,
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
-    loseToolsFocus,
-    navigationHide,
     splitPanelDisplayed,
-    splitPanelPosition,
-    splitPanelRefs,
-    splitPanelToggle,
     tools,
     toolsHide,
-    toolsRefs,
     toolsWidth,
+    isAnyPanelOpen,
+    navigationHide,
+    toolsRefs,
+    loseToolsFocus,
+    splitPanelPosition,
+    splitPanelToggle,
+    splitPanelRefs,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
-  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   if ((toolsHide && !hasSplitPanel) || drawers) {
     return null;
   }
+
+  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   return (
     <Transition in={isToolsOpen ?? false}>
