@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import CollectionPreferencesPageObject from './pages/collection-preferences-page';
+import ContentDisplayPageObject from './pages/content-display-page';
 
-const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<void>, height = 1200) => {
+const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>, height = 1200) => {
   return useBrowser(async browser => {
-    const page = new CollectionPreferencesPageObject(browser);
+    const page = new ContentDisplayPageObject(browser);
     await browser.url('#/light/collection-preferences/reorder-content');
     await page.setWindowSize({ width: 1200, height });
     await testFn(page);
@@ -14,6 +14,24 @@ const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<vo
 };
 
 describe('Collection preferences with custom content reordering', () => {
+  describe('with mouse', () => {
+    test(
+      'moves item down',
+      setupTest(async page => {
+        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal(wrapper);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+
+        const activeDragHandle = page.findDragHandle(0);
+        const targetDragHandle = page.findDragHandle(1);
+        await page.dragAndDropTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
+
+        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+      })
+    );
+  });
+
   describe('with keyboard', () => {
     test(
       'moves item down',
