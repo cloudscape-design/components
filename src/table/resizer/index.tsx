@@ -59,7 +59,6 @@ export function Resizer({
     const updateTrackerPosition = (newOffset: number) => {
       const { left: scrollParentLeft } = tableElement.getBoundingClientRect();
       const { left: headerCellLeft } = headerCell.getBoundingClientRect();
-
       tracker.style.top = headerCell.getBoundingClientRect().height + 'px';
       // minus one pixel to offset the cell border
       tracker.style.left =
@@ -72,8 +71,10 @@ export function Resizer({
       const { left: cellLeft, right: cellRight, width } = headerCell.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       const cellSide = resizeDirection === 'right' ? cellRight : cellLeft;
-      updateTrackerPosition(cellSide + updatedWidth - width);
-      setHeaderCellWidth(newWidth);
+      const updatedPosition =
+        resizeDirection === 'right' ? cellSide + updatedWidth - width : cellSide - updatedWidth - width;
+      updateTrackerPosition(updatedPosition);
+      setHeaderCellWidth(updatedWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
     };
