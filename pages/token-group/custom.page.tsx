@@ -46,6 +46,7 @@ export default function GenericTokenGroupPage() {
               <FileOption file={file} />
             </Token>
           )}
+          itemAttributes={file => ({ 'aria-label': `agreement-${file + 1}.pdf`, 'aria-disabled': file === 0 })}
         />
       </SpaceBetween>
     </Box>

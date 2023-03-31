@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import TokenList from '../internal/components/token-list';
 import { Token } from './token';
+import { fireNonCancelableEvent } from '../internal/events';
 
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
 
@@ -44,9 +45,10 @@ export default function InternalTokenGroup({
             onDismiss={() => fireNonCancelableEvent(onDismiss, { itemIndex })}
             disabled={item.disabled}
           >
-            <Option option={item} />
+            <Option option={item} isGenericGroup={false} />
           </Token>
         )}
+        itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled })}
         i18nStrings={i18nStrings}
       />
     </div>

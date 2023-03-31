@@ -25,6 +25,7 @@ const Option = ({
   highlightText,
   triggerVariant = false,
   isGroupOption = false,
+  isGenericGroup = true,
   highlightedOption = false,
   selectedOption = false,
   ...restProps
@@ -59,15 +60,17 @@ const Option = ({
     />
   );
 
+  // When generic props are assigned assistive technologies treat option nodes as semantic (generic) groups.
+  // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/generic_role
+  const genericGroupProps = isGenericGroup
+    ? {
+        title: option.label ?? option.value,
+        'aria-disabled': disabled,
+      }
+    : undefined;
+
   return (
-    <span
-      title={option.label ?? option.value}
-      data-value={option.value}
-      className={className}
-      aria-disabled={disabled}
-      lang={option.lang}
-      {...baseProps}
-    >
+    <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
       {icon}
       <span className={clsx(styles.content)}>
         <span className={clsx(styles['label-content'])}>
