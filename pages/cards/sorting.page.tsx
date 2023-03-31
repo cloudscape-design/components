@@ -9,9 +9,9 @@ import Link from '~components/link';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 import Pagination from '~components/pagination';
 import { Instance, generateItems } from '../table/generate-data';
-import { EmptyState, paginationLabels, pageSizeOptions } from '../table/shared-configs';
+import { EmptyState, paginationLabels, getMatchesCountText, pageSizeOptions } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Input, SegmentedControl, Select, SelectProps } from '~components';
+import { SegmentedControl, Select, SelectProps, TextFilter } from '~components';
 import styles from './styles.scss';
 
 const iconAscending = (
@@ -51,9 +51,9 @@ export const cardDefinition: CardsProps.CardDefinition<Instance> = {
 const allItems = generateItems();
 
 const sortingOptions: Array<SelectProps.Option> = [
-  { value: 'id', label: 'ID' },
-  { value: 'type', label: 'Type' },
-  { value: 'dnsName', label: 'DNS name' },
+  { value: 'id', label: 'Sort by ID' },
+  { value: 'type', label: 'Sort by Type' },
+  { value: 'dnsName', label: 'Sort by DNS name' },
 ];
 
 export default function App() {
@@ -65,25 +65,42 @@ export default function App() {
   const [sortingOrder, setSortingOrder] = useState('ascending');
   const [sortingProperty, setSortingProperty] = useState(sortingOptions[0]);
 
-  const { items, actions, collectionProps, filterProps, paginationProps } = useCollection(allItems, {
-    filtering: {
-      empty: (
-        <EmptyState
-          title="No resources"
-          subtitle="No resources to display."
-          action={<Button>Create resource</Button>}
-        />
-      ),
-      noMatch: (
-        <EmptyState
-          title="No matches"
-          subtitle="We can’t find a match."
-          action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
-        />
-      ),
-    },
-    pagination: { pageSize: preferences.pageSize },
+  const sortedItems = [...allItems].sort((a, b) => {
+    const firstItem = sortingOrder === 'ascending' ? a : b;
+    const secondItem = sortingOrder === 'ascending' ? b : a;
+
+    switch (sortingProperty.value) {
+      case 'type':
+        return firstItem.type.localeCompare(secondItem.type);
+      case 'dnsName':
+        return (firstItem.dnsName ?? '').localeCompare(secondItem.dnsName ?? '');
+      default:
+        return firstItem.id.localeCompare(secondItem.id);
+    }
   });
+
+  const { items, actions, collectionProps, filterProps, filteredItemsCount, paginationProps } = useCollection(
+    sortedItems,
+    {
+      filtering: {
+        empty: (
+          <EmptyState
+            title="No resources"
+            subtitle="No resources to display."
+            action={<Button>Create resource</Button>}
+          />
+        ),
+        noMatch: (
+          <EmptyState
+            title="No matches"
+            subtitle="We can’t find a match."
+            action={<Button onClick={() => actions.setFiltering('')}>Clear filter</Button>}
+          />
+        ),
+      },
+      pagination: { pageSize: preferences.pageSize },
+    }
+  );
   return (
     <ScreenshotArea>
       <Cards<Instance>
@@ -100,7 +117,11 @@ export default function App() {
         filter={
           <div className={styles['input-container']}>
             <div className={styles['input-filter']}>
-              <Input value={filterProps.filteringText} type="search" ariaLabel="Filter instances" />
+              <TextFilter
+                {...filterProps}
+                countText={getMatchesCountText(filteredItemsCount!)}
+                filteringAriaLabel="Filter instances"
+              />
             </div>
             <div className={styles['select-filter']}>
               <Select
