@@ -503,7 +503,7 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findPreviousButton()!.getElement()).toBeDisabled();
   expect(wrapper.findSkipToButton()!.getElement()).toBeDisabled();
   expect(wrapper.findCancelButton()!.getElement()).toBeEnabled();
-  expect(wrapper.findPrimaryButton()!.getElement()).toHaveAttribute('aria-disabled', 'true');
+  expect(wrapper.findPrimaryButton()!.getElement()).toBeDisabled();
 
   expect(wrapper.findMenuNavigationLink(1, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(2, 'active')).not.toBeNull();
