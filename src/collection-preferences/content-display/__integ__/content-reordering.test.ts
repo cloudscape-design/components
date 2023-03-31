@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../../lib/components/test-utils/selectors';
 import ContentDisplayPageObject from './pages/content-display-page';
 
 const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>, height = 1200) => {
@@ -13,8 +13,8 @@ const setupTest = (testFn: (page: ContentDisplayPageObject) => Promise<void>, he
   });
 };
 
-describe('Collection preferences with custom content reordering', () => {
-  describe('with mouse', () => {
+describe('Collection preferences - Content Display preference', () => {
+  describe('reorders content with mouse', () => {
     test(
       'moves item down',
       setupTest(async page => {
@@ -32,7 +32,7 @@ describe('Collection preferences with custom content reordering', () => {
     );
   });
 
-  describe('with keyboard', () => {
+  describe('reorders content with keyboard', () => {
     test(
       'moves item down',
       setupTest(async page => {

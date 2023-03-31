@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { CollectionPreferencesWrapper } from '../../../../lib/components/test-utils/selectors';
-import { collectionPreferencesPageMixin } from './collection-preferences-page';
+import { CollectionPreferencesWrapper } from '../../../../../lib/components/test-utils/selectors';
+import { collectionPreferencesPageMixin } from '../../../__integ__/pages/collection-preferences-page';
 import DndPageObject from './dnd-page-object';
 
 export default class ContentDisplayPageObject extends collectionPreferencesPageMixin(DndPageObject) {

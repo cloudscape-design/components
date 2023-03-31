@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { contentDisplayPreference, renderCollectionPreferences } from './shared';
-import { CollectionPreferencesProps } from '../../../lib/components';
-import ContentDisplayPreferenceWrapper from '../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
-import dragHandleStyles from '../../../lib/components/internal/drag-handle/styles.css.js';
-import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import { KeyCode } from '../../internal/keycode';
+import { contentDisplayPreference, renderCollectionPreferences } from '../../__tests__/shared';
+import { CollectionPreferencesProps } from '../../../../lib/components';
+import ContentDisplayPreferenceWrapper, {
+  ContentDisplayOptionWrapper,
+} from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
+import { KeyCode } from '../../../internal/keycode';
 
 describe('Content display', () => {
   it('correctly displays title', () => {
@@ -35,7 +35,7 @@ describe('Content display', () => {
     for (let i = 0; i < items.length; i++) {
       testOptionItem({ wrapper, item: items[i], index: i });
     }
-    const dragHandle = findDragHandle(items[0])!;
+    const dragHandle = items[0].findDragHandle();
     dragHandle.keydown({ keyCode: KeyCode.space });
     dragHandle.keydown({ keyCode: KeyCode.down });
     dragHandle.keydown({ keyCode: KeyCode.space });
@@ -68,17 +68,13 @@ function testOptionItem({
   index,
 }: {
   wrapper: ContentDisplayPreferenceWrapper;
-  item: ElementWrapper;
+  item: ContentDisplayOptionWrapper;
   index: number;
 }) {
   const element = item.getElement();
   expect(element.tagName).toBe('LI');
   expect(element.parentElement!.tagName).toBe('UL');
   expect(element).toHaveTextContent(`Item ${index + 1}`);
-  const dragHandle = findDragHandle(item)!.getElement();
+  const dragHandle = item.findDragHandle().getElement();
   expectLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
-}
-
-function findDragHandle(item: ElementWrapper) {
-  return item.find(`.${dragHandleStyles.handle}`);
 }
