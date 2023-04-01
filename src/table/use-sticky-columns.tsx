@@ -30,55 +30,6 @@ export interface GetStickyColumn {
   stickyStyles: StickyStyles;
 }
 
-export const getStickyStyles = ({
-  colIndex,
-  stickyColumns,
-  visibleColumnsLength,
-  hasSelection,
-  cellWidths,
-  startPaddingOffset,
-  endPaddingOffset,
-  tableLeftPadding,
-  tableRightPadding,
-}: {
-  colIndex: number;
-  stickyColumns?: TableProps.StickyColumns;
-  visibleColumnsLength: number;
-  hasSelection: boolean;
-  cellWidths?: CellWidths;
-  startPaddingOffset?: boolean;
-  endPaddingOffset?: boolean;
-  tableLeftPadding: number;
-  tableRightPadding: number;
-}): StickyStyles => {
-  if (!cellWidths?.start && !cellWidths?.end) {
-    return {};
-  }
-  const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
-  const isStickyEnd = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-  const isFirstOrLastStickyColumn =
-    colIndex + 1 === (stickyColumns?.start ?? 0) || colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
-  const stickySide = isStickyStart ? 'left' : isStickyEnd ? 'right' : '';
-  let paddingStyle = {};
-  if (isFirstOrLastStickyColumn && !hasSelection) {
-    if (stickySide === 'right' && endPaddingOffset && tableRightPadding) {
-      paddingStyle = { paddingRight: `${tableRightPadding}px` };
-    }
-
-    if (stickySide === 'left' && startPaddingOffset && tableLeftPadding) {
-      paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
-    }
-  }
-  return {
-    [stickySide]: `${
-      stickySide === 'right'
-        ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
-        : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
-    }px`,
-    ...paddingStyle,
-  };
-};
-
 export const updateCellWidths = ({
   tableCellRefs,
   setCellWidths,
@@ -92,7 +43,6 @@ export const updateCellWidths = ({
   startWidthsArray = startWidthsArray.map((elem, index) =>
     startWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
   );
-
   let endWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
   endWidthsArray = endWidthsArray.filter(x => x).reverse();
   endWidthsArray = endWidthsArray
@@ -136,7 +86,10 @@ export const useStickyColumns = ({
     updateCellWidths({ tableCellRefs, setCellWidths });
   }, [tableCellRefs, setCellWidths]);
 
-  const checkStuckColumns = () => {
+  // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
+
+  const checkStuckColumns = React.useCallback(() => {
     const wrapper = wrapperRefObject.current;
     if (!wrapper) {
       return;
@@ -145,39 +98,53 @@ export const useStickyColumns = ({
     const left = wrapper.scrollLeft > tableLeftPadding;
     setIsStuckToTheLeft(left);
     setIsStuckToTheRight(right);
-  };
+  }, [tableLeftPadding, tableRightPadding, wrapperRefObject]);
 
-  // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
   useLayoutEffect(() => {
-    let animationFrameId: number;
     const wrapper = wrapperRefObject?.current;
-    if (!wrapper) {
+    const table = tableRefObject?.current;
+    if (!wrapper || !table || !stickyColumns) {
       return;
     }
-    const handleScroll = () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+
+    checkStuckColumns();
+
+    const handleIntersection = e => {
+      const [entry] = e;
+      console.log(entry);
+      if (entry.isIntersecting) {
+        entry.target === leftEdgeCell ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
+      } else {
+        entry.target === leftEdgeCell ? setIsStuckToTheLeft(true) : setIsStuckToTheRight(true);
       }
-      animationFrameId = requestAnimationFrame(() => {
-        const wrapper = wrapperRefObject.current;
-        if (!wrapper) {
-          return;
-        }
-        const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-        const left = wrapper.scrollLeft > tableLeftPadding;
-        setIsStuckToTheLeft(left);
-        setIsStuckToTheRight(right);
-      });
     };
-    wrapper.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
+
+    const leftEdgeCell = tableCellRefs[0]?.current;
+    const rightEdgeCell = tableCellRefs[tableCellRefs.length - 1]?.current;
+    console.log({ leftEdgeCell, rightEdgeCell });
+    const options = {
+      root: wrapper,
+      rootMargin: `0px -1px 0px -1px`, // -1px on the left and right to trigger the intersection
+      threshold: 1,
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    console.log('HERE!', observer);
+
+    leftEdgeCell && observer.observe(leftEdgeCell);
+    rightEdgeCell && observer.observe(rightEdgeCell);
     return () => {
-      wrapper.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
     };
-  }, [wrapperRefObject, tableLeftPadding, tableRightPadding]);
+  }, [
+    stickyColumns,
+    checkStuckColumns,
+    tableCellRefs,
+    tableRefObject,
+    wrapperRefObject,
+    tableLeftPadding,
+    tableRightPadding,
+  ]);
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
     const isSticky =
@@ -235,6 +202,8 @@ export const useStickyColumns = ({
       totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS + tableLeftPadding >
         (containerWidth ?? Number.MAX_SAFE_INTEGER);
     setShouldDisable(shouldDisable);
+    setIsStuckToTheLeft(false);
+    setIsStuckToTheRight(false);
   }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding]);
 
   return {
@@ -243,10 +212,10 @@ export const useStickyColumns = ({
     setCellWidths,
     getStickyColumn,
     shouldDisableStickyColumns: shouldDisable,
-    checkStuckColumns,
     startStickyColumnsWidth,
     endStickyColumnsWidth,
     isStuckToTheLeft,
     isStuckToTheRight,
+    checkStuckColumns,
   };
 };
