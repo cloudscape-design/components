@@ -67,7 +67,7 @@ export default function FileUploadScenarios() {
       onChange={event => {
         const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
         contractsField.onChange(event.detail.value, validation);
-        if (uploadOnSelect) {
+        if (uploadOnSelect && !validation?.hasError) {
           contractsField.onUpload(server);
         }
       }}
