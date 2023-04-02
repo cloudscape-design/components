@@ -97,7 +97,6 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   };
   const headerId = useUniqueId('table-header-');
   const isLastColumn = colIndex === visibleColumnsLength - 1;
-
   return (
     <th
       className={clsx(className, {
@@ -109,7 +108,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
         [styles['header-cell-freeze']]: !!isStickyColumn,
-        [styles['header-cell-freeze-stuck-right']]: isLastColumn && isStuckToTheRight,
+        [styles['header-cell-freeze-stuck-right']]: !!isStickyColumn && isLastColumn && isStuckToTheRight,
         [styles['header-cell-freeze-last-start']]: isStuckToTheLeft && isLastStart,
         [styles['header-cell-freeze-last-end']]: isStuckToTheRight && isLastEnd,
       })}

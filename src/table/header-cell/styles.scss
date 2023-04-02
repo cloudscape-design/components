@@ -52,12 +52,12 @@ $active-separator-width: 2px;
         position: absolute;
         bottom: 25%;
         height: 50%;
-        border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+        border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-interactive-default;
         box-sizing: border-box;
         left: 0;
       }
     }
-    &.header-cell-resizable:last-child:before {
+    &.header-cell-resizable:before {
       border-left-color: awsui.$color-border-divider-interactive-default;
     }
   }
@@ -72,7 +72,7 @@ $active-separator-width: 2px;
     padding-right: awsui.$space-xs;
   }
 
-  &:not(:last-child):before {
+  &:before {
     content: '';
     position: absolute;
     right: 0;
@@ -82,18 +82,16 @@ $active-separator-width: 2px;
     box-sizing: border-box;
   }
 
-  &:last-child:before {
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: 25%;
-    height: 50%;
-    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    box-sizing: border-box;
+  &-resizable {
+    &:before {
+      border-left-color: awsui.$color-border-divider-interactive-default;
+    }
+    &:not(.is-visual-refresh):not(.header-cell-freeze-stuck-right):last-child::before {
+      border-left-color: transparent;
+    }
   }
-
-  &-resizable:not(:last-child):before {
-    border-left-color: awsui.$color-border-divider-interactive-default;
+  &:not(.header-cell-resizable):before {
+    border-left-color: awsui.$color-border-divider-default;
   }
 }
 

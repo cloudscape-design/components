@@ -37,7 +37,7 @@ $active-separator-width: 2px;
         position: absolute;
         bottom: 25%;
         height: 50%;
-        left: calc(#{$handle-width} / 2 - #{$active-separator-width} - 1px);
+        left: calc(#{$handle-width} / 2 - #{$active-separator-width});
         box-sizing: border-box;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
       }
