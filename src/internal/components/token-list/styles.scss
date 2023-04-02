@@ -30,7 +30,7 @@
   &.vertical {
     display: flex;
     flex-wrap: wrap;
-    gap: awsui.$space-scaled-xs;
+    gap: awsui.$space-xs;
   }
   &.horizontal {
     flex-direction: row;
