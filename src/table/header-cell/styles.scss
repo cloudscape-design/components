@@ -35,10 +35,16 @@ $active-separator-width: 2px;
     &-last-start {
       box-shadow: awsui.$shadow-sticky-column-start;
       clip-path: inset(0px -24px 0px 0px);
+      &:not(.header-cell-resizable):before {
+        display: none;
+      }
     }
     &-last-end {
       box-shadow: awsui.$shadow-sticky-column-end;
       clip-path: inset(0 0 0 -24px);
+      &:not(.header-cell-resizable):before {
+        display: none;
+      }
     }
     &-stuck-right {
       &:before {
