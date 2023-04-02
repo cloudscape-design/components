@@ -193,7 +193,6 @@ const InternalTable = forwardRef(
       endStickyColumnsWidth,
       isStuckToTheRight,
       isStuckToTheLeft,
-      checkStuckColumns,
     } = useStickyColumns({
       visibleColumnsLength,
       hasSelection,
@@ -225,7 +224,6 @@ const InternalTable = forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
-          checkStuckColumns();
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,

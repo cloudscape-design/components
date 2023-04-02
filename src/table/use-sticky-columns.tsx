@@ -89,28 +89,21 @@ export const useStickyColumns = ({
   // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
   const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
 
-  const checkStuckColumns = React.useCallback(() => {
-    const wrapper = wrapperRefObject.current;
-    if (!wrapper) {
-      return;
-    }
-    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-    const left = wrapper.scrollLeft > tableLeftPadding;
-    setIsStuckToTheLeft(left);
-    setIsStuckToTheRight(right);
-  }, [tableLeftPadding, tableRightPadding, wrapperRefObject]);
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     const wrapper = wrapperRefObject?.current;
     const table = tableRefObject?.current;
     if (!wrapper || !table || !stickyColumns) {
       return;
     }
 
-    checkStuckColumns();
+    // Initial load requires besides the intersection observer check
+    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+    const left = wrapper.scrollLeft > tableLeftPadding;
+    setIsStuckToTheLeft(left);
+    setIsStuckToTheRight(right);
 
-    const handleIntersection = e => {
-      const [entry] = e;
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
       console.log(entry);
       if (entry.isIntersecting) {
         entry.target === leftEdgeCell ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
@@ -121,7 +114,6 @@ export const useStickyColumns = ({
 
     const leftEdgeCell = tableCellRefs[0]?.current;
     const rightEdgeCell = tableCellRefs[tableCellRefs.length - 1]?.current;
-    console.log({ leftEdgeCell, rightEdgeCell });
     const options = {
       root: wrapper,
       rootMargin: `0px -1px 0px -1px`, // -1px on the left and right to trigger the intersection
@@ -129,22 +121,12 @@ export const useStickyColumns = ({
     };
 
     const observer = new IntersectionObserver(handleIntersection, options);
-    console.log('HERE!', observer);
-
     leftEdgeCell && observer.observe(leftEdgeCell);
     rightEdgeCell && observer.observe(rightEdgeCell);
     return () => {
       observer.disconnect();
     };
-  }, [
-    stickyColumns,
-    checkStuckColumns,
-    tableCellRefs,
-    tableRefObject,
-    wrapperRefObject,
-    tableLeftPadding,
-    tableRightPadding,
-  ]);
+  }, [stickyColumns, tableCellRefs, tableRefObject, wrapperRefObject, tableLeftPadding, tableRightPadding]);
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
     const isSticky =
@@ -202,8 +184,6 @@ export const useStickyColumns = ({
       totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS + tableLeftPadding >
         (containerWidth ?? Number.MAX_SAFE_INTEGER);
     setShouldDisable(shouldDisable);
-    setIsStuckToTheLeft(false);
-    setIsStuckToTheRight(false);
   }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding]);
 
   return {
@@ -216,6 +196,5 @@ export const useStickyColumns = ({
     endStickyColumnsWidth,
     isStuckToTheLeft,
     isStuckToTheRight,
-    checkStuckColumns,
   };
 };

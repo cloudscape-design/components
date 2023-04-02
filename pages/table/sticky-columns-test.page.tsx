@@ -22,76 +22,51 @@ export default () => {
       header: 'Description',
       cell: item => item.description || '-',
     },
-    // {
-    //   id: 'description-2',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-20',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-30',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-40',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-50',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-60',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-70',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'alt',
-    //   header: 'Text value',
-    //   cell: item => item.alt || '-',
-    //   sortingField: 'alt',
-    //   editConfig: {
-    //     ariaLabel: 'Name',
-    //     editIconAriaLabel: 'editable',
-    //     errorIconAriaLabel: 'Name Error',
-    //     editingCell: (item, { currentValue, setValue }) => {
-    //       return (
-    //         <Input
-    //           autoFocus={true}
-    //           value={currentValue ?? item.name}
-    //           onChange={event => setValue(event.detail.value)}
-    //         />
-    //       );
-    //     },
-    //   },
-    // },
-    // {
-    //   id: 'description-3',
-    //   header: 'Description',
-    //   cell: item => <Link href="#">{item.description}</Link> || '-',
-    // },
-    // {
-    //   id: 'description-4',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
-    // {
-    //   id: 'description-5',
-    //   header: 'Description',
-    //   cell: item => item.description || '-',
-    // },
+    {
+      id: 'description-2',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-20',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-30',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-40',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-50',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-60',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-70',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-4',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
+    {
+      id: 'description-5',
+      header: 'Description',
+      cell: item => item.description || '-',
+    },
     {
       id: 'description-6',
       header: 'Description',
@@ -155,7 +130,7 @@ export default () => {
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
-        <Table
+        {/* <Table
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}
           resizableColumns={true}
@@ -190,6 +165,43 @@ export default () => {
             />
           }
           header={<Header>Simple table</Header>}
+        /> */}
+        <Table
+          selectionType="multi"
+          trackBy={item => item.alt}
+          stickyColumns={preferences.stickyColumns}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                startColumns: {
+                  title: 'Stick first visible column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First visible column', value: 1 },
+                    { label: 'First two visible columns', value: 2 },
+                  ],
+                },
+                endColumns: {
+                  title: 'Stick last visible column',
+                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last visible column', value: 1 },
+                  ],
+                },
+              }}
+            />
+          }
+          header={<Header>Simple table with selection type `multi`</Header>}
         />
       </SpaceBetween>
     </ScreenshotArea>
