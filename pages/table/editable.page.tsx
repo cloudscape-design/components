@@ -1,11 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
-import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import Input from '~components/input';
 import Alert from '~components/alert';
-import BreadcrumbGroup from '~components/breadcrumb-group';
 import Table, { TableProps } from '~components/table';
 import Select, { SelectProps } from '~components/select';
 import TimeInput, { TimeInputProps } from '~components/time-input';
@@ -13,8 +11,7 @@ import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import { Link, Box, Button, Modal, SpaceBetween } from '~components';
 import { initialItems, DistributionInfo, tlsVersions, originSuggestions, tagOptions } from './editable-data';
-import { HelpContent } from './editable-utils';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import ScreenshotArea from '../utils/screenshot-area';
 
 let __editStateDirty = false;
 
@@ -231,49 +228,14 @@ const Demo = forwardRef(
       setItems(items => items.map(item => (item === currentItem ? newItem : item)));
       setClean();
     };
-    const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
-      stickyColumns: { start: 1, end: 0 },
-    });
-
     return (
       <Table
-        variant="full-page"
         ref={tableRef}
         header={
-          <Header variant="awsui-h1-sticky" counter={`(${items.length})`}>
+          <Header headingTagOverride="h1" counter={`(${items.length})`}>
             Distributions
           </Header>
         }
-        stickyColumns={preferences.stickyColumns}
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            onConfirm={({ detail }) => setPreferences(detail)}
-            preferences={preferences}
-            stickyColumnsPreference={{
-              startColumns: {
-                title: 'Stick first visible column(s)',
-                description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'First visible column', value: 1 },
-                  { label: 'First two visible columns', value: 2 },
-                ],
-              },
-              endColumns: {
-                title: 'Stick last visible column',
-                description: 'Keep the last column visible when tables are wider than the viewport.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'Last visible column', value: 1 },
-                ],
-              },
-            }}
-          />
-        }
-        stickyHeader={true}
         submitEdit={handleSubmit}
         onEditCancel={evt => {
           if (__editStateDirty) {
@@ -308,60 +270,36 @@ export default function () {
   });
 
   return (
-    <AppLayout
-      contentType="table"
-      navigationHide={true}
-      breadcrumbs={
-        <BreadcrumbGroup
-          items={[
-            { text: 'AWS-UI Demos', href: '#' },
-            { text: 'Editable table', href: '#' },
-          ]}
-        />
-      }
-      ariaLabels={{
-        navigation: 'Side navigation',
-        navigationToggle: 'Open navigation',
-        navigationClose: 'Close navigation',
-        notifications: 'Notifications',
-        tools: 'Tools',
-        toolsToggle: 'Open tools',
-        toolsClose: 'Close tools',
-      }}
-      tools={<HelpContent />}
-      content={
-        <>
-          <Demo setModalVisible={setModalVisible} ref={tableRef} />
-          <Modal
-            visible={modalVisible}
-            header="Discard changes"
-            closeAriaLabel="Close modal"
-            onDismiss={withCleanState(() => setModalVisible(false))}
-            footer={
-              <Box float="right">
-                <SpaceBetween direction="horizontal" size="xs">
-                  <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={withCleanState(() => {
-                      setModalVisible(false);
-                      tableRef.current?.cancelEdit?.();
-                    })}
-                  >
-                    Discard
-                  </Button>
-                </SpaceBetween>
-              </Box>
-            }
-          >
-            <Alert type="warning" statusIconAriaLabel="Warning">
-              Are you sure you want to discard any unsaved changes?
-            </Alert>
-          </Modal>
-        </>
-      }
-    />
+    <ScreenshotArea disableAnimations={true}>
+      <Demo setModalVisible={setModalVisible} ref={tableRef} />
+      <Modal
+        visible={modalVisible}
+        header="Discard changes"
+        closeAriaLabel="Close modal"
+        onDismiss={withCleanState(() => setModalVisible(false))}
+        footer={
+          <Box float="right">
+            <SpaceBetween direction="horizontal" size="xs">
+              <Button variant="link" onClick={withCleanState(() => setModalVisible(false))}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={withCleanState(() => {
+                  setModalVisible(false);
+                  tableRef.current?.cancelEdit?.();
+                })}
+              >
+                Discard
+              </Button>
+            </SpaceBetween>
+          </Box>
+        }
+      >
+        <Alert type="warning" statusIconAriaLabel="Warning">
+          Are you sure you want to discard any unsaved changes?
+        </Alert>
+      </Modal>
+    </ScreenshotArea>
   );
 }

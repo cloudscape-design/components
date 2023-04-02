@@ -59,7 +59,7 @@ export interface TutorialPanelProps extends BaseComponentProps {
   /**
    * The link to a file documenting all tutorials (usually a PDF).
    */
-  downloadUrl: string;
+  downloadUrl?: string;
 
   /**
    * An object containing all the necessary localized strings required by the component.
@@ -70,12 +70,6 @@ export interface TutorialPanelProps extends BaseComponentProps {
    * Fired when the user clicks on the feedback link at the end of a tutorial.
    */
   onFeedbackClick: NonCancelableEventHandler<TutorialPanelProps.TutorialDetail>;
-
-  /*
-  Filtering is not available in the Beta release.
-
-  filteringFunction?: (tutorial: TutorialPanelProps.Tutorial, searchTerm: string) => boolean;
-  */
 }
 
 export namespace TutorialPanelProps {

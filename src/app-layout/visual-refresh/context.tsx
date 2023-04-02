@@ -21,10 +21,11 @@ import styles from './styles.css.js';
 import { isDevelopment } from '../../internal/is-development';
 import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
-import { FocusControlState, useFocusControl } from '../utils/use-focus-control';
+import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import { useObservedElement } from '../utils/use-observed-element';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
   dynamicOverlapHeight: number;
@@ -63,7 +64,10 @@ interface AppLayoutInternals extends AppLayoutProps {
   splitPanelToggle: SplitPanelSideToggleProps;
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
-  toolsFocusControl: FocusControlState;
+  splitPanelRefs: SplitPanelFocusControlRefs;
+  navigationRefs: FocusControlRefs;
+  toolsRefs: FocusControlRefs;
+  loseToolsFocus: () => void;
 }
 
 /**
@@ -161,12 +165,15 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
 
+    const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(isNavigationOpen);
+
     const handleNavigationClick = useCallback(
       function handleNavigationChange(isOpen: boolean) {
         setIsNavigationOpen(isOpen);
+        focusNavButtons();
         fireNonCancelableEvent(props.onNavigationChange, { open: isOpen });
       },
-      [props.onNavigationChange, setIsNavigationOpen]
+      [props.onNavigationChange, setIsNavigationOpen, focusNavButtons]
     );
 
     /**
@@ -190,14 +197,19 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'toolsOpen', changeHandler: 'onToolsChange' }
     );
 
-    const toolsFocusControl = useFocusControl(isToolsOpen, true);
+    const {
+      refs: toolsRefs,
+      setFocus: focusToolsButtons,
+      loseFocus: loseToolsFocus,
+    } = useFocusControl(isToolsOpen, true);
 
     const handleToolsClick = useCallback(
       function handleToolsChange(isOpen: boolean) {
         setIsToolsOpen(isOpen);
+        focusToolsButtons();
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
-      [props.onToolsChange, setIsToolsOpen]
+      [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
     );
 
     const navigationVisible = !navigationHide && isNavigationOpen;
@@ -242,10 +254,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           openTools: function () {
             handleToolsClick(true);
           },
-          focusToolsClose: toolsFocusControl.setFocus,
+          focusToolsClose: () => focusToolsButtons(true),
         };
       },
-      [isMobile, handleNavigationClick, handleToolsClick, toolsFocusControl.setFocus]
+      [isMobile, handleNavigationClick, handleToolsClick, focusToolsButtons]
     );
 
     /**
@@ -282,14 +294,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       { componentName: 'AppLayout', controlledProp: 'splitPanelOpen', changeHandler: 'onSplitPanelToggle' }
     );
 
-    const handleSplitPanelClick = useCallback(
-      function handleSplitPanelChange() {
-        setIsSplitPanelOpen(!isSplitPanelOpen);
-        fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
-      },
-      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen]
-    );
-
     /**
      * The useControllable hook will manage the controlled or uncontrolled
      * state of the splitPanelPreferences. By default the splitPanelPreferences
@@ -309,6 +313,20 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         controlledProp: 'splitPanelPreferences',
         changeHandler: 'onSplitPanelPreferencesChange',
       }
+    );
+
+    const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl([
+      splitPanelPreferences,
+      isSplitPanelOpen,
+    ]);
+
+    const handleSplitPanelClick = useCallback(
+      function handleSplitPanelChange() {
+        setIsSplitPanelOpen(!isSplitPanelOpen);
+        setSplitPanelLastInteraction({ type: isSplitPanelOpen ? 'close' : 'open' });
+        fireNonCancelableEvent(props.onSplitPanelToggle, { open: !isSplitPanelOpen });
+      },
+      [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen, setSplitPanelLastInteraction]
     );
 
     /**
@@ -365,9 +383,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleSplitPanelPreferencesChange = useCallback(
       function handleSplitPanelChange(detail: AppLayoutProps.SplitPanelPreferences) {
         setSplitPanelPreferences(detail);
+        setSplitPanelLastInteraction({ type: 'position' });
         fireNonCancelableEvent(props.onSplitPanelPreferencesChange, detail);
       },
-      [props.onSplitPanelPreferencesChange, setSplitPanelPreferences]
+      [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
     /**
@@ -519,10 +538,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           splitPanelSize,
           splitPanelToggle,
           setSplitPanelToggle,
+          splitPanelRefs,
           toolsHide,
           toolsOpen: isToolsOpen,
           toolsWidth,
-          toolsFocusControl,
+          toolsRefs,
+          navigationRefs,
+          loseToolsFocus,
         }}
       >
         <AppLayoutContext.Provider
