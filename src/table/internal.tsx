@@ -193,6 +193,8 @@ const InternalTable = forwardRef(
       endStickyColumnsWidth,
       isStuckToTheRight,
       isStuckToTheLeft,
+      rightSentinelRef,
+      leftSentinelRef,
     } = useStickyColumns({
       visibleColumnsLength,
       hasSelection,
@@ -322,6 +324,7 @@ const InternalTable = forwardRef(
               aria-label={ariaLabels?.tableLabel}
               aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
             >
+              <div className={styles['sentinel-left']} ref={leftSentinelRef} />
               <Thead
                 ref={theadRef}
                 hidden={stickyHeader}
@@ -464,6 +467,7 @@ const InternalTable = forwardRef(
                   })
                 )}
               </tbody>
+              <div className={styles['sentinel-right']} ref={rightSentinelRef} />
             </table>
             {resizableColumns && <ResizeTracker />}
           </div>

@@ -59,6 +59,9 @@ export const useStickyColumns = ({
   tableRefObject,
   wrapperRefObject,
 }: StickyColumnParams) => {
+  const leftSentinelRef = React.useRef(null);
+  const rightSentinelRef = React.useRef(null);
+
   const tableLeftPadding = tableRefObject.current
     ? Number(window.getComputedStyle(tableRefObject.current).paddingLeft.slice(0, -2))
     : 0;
@@ -82,21 +85,34 @@ export const useStickyColumns = ({
   const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
 
+  // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
+  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
+
   useLayoutEffect(() => {
     updateCellWidths({ tableCellRefs, setCellWidths });
   }, [tableCellRefs, setCellWidths]);
 
-  // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
+  useEffect(() => {
+    const wrapper = wrapperRefObject?.current;
+    if (!wrapper) {
+      return;
+    }
+    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+    const left = wrapper.scrollLeft > tableLeftPadding;
+    setIsStuckToTheLeft(left);
+    setIsStuckToTheRight(right);
+  }, [cellWidths, setIsStuckToTheLeft, setIsStuckToTheRight, wrapperRefObject, tableLeftPadding, tableRightPadding]);
 
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
+    const leftSentinel = leftSentinelRef?.current;
+    const rightSentinel = rightSentinelRef?.current;
+
     const table = tableRefObject?.current;
-    if (!wrapper || !table || !stickyColumns) {
+    if (!wrapper || !table || !stickyColumns || !leftSentinel || !rightSentinel) {
       return;
     }
 
-    // Initial load requires besides the intersection observer check
     const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
     const left = wrapper.scrollLeft > tableLeftPadding;
     setIsStuckToTheLeft(left);
@@ -105,24 +121,18 @@ export const useStickyColumns = ({
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
       console.log(entry);
-      if (entry.isIntersecting) {
-        entry.target === leftEdgeCell ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
+      if (!entry.isIntersecting) {
+        entry.target === leftSentinel ? setIsStuckToTheLeft(true) : setIsStuckToTheRight(true);
       } else {
-        entry.target === leftEdgeCell ? setIsStuckToTheLeft(true) : setIsStuckToTheRight(true);
+        entry.target === leftSentinel ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
       }
     };
-
-    const leftEdgeCell = tableCellRefs[0]?.current;
-    const rightEdgeCell = tableCellRefs[tableCellRefs.length - 1]?.current;
     const options = {
-      root: wrapper,
-      rootMargin: `0px -1px 0px -1px`, // -1px on the left and right to trigger the intersection
-      threshold: 1,
+      threshold: [0, 1],
     };
-
     const observer = new IntersectionObserver(handleIntersection, options);
-    leftEdgeCell && observer.observe(leftEdgeCell);
-    rightEdgeCell && observer.observe(rightEdgeCell);
+    observer.observe(leftSentinel);
+    observer.observe(rightSentinel);
     return () => {
       observer.disconnect();
     };
@@ -151,11 +161,11 @@ export const useStickyColumns = ({
 
     let paddingStyle = {};
     if (isFirstOrLastStickyColumn && isVisualRefresh && !hasSelection) {
-      if (stickySide === 'right' && isStuckToTheRight) {
+      if (stickySide === 'right' && isStuckToTheRight && tableRightPadding) {
         paddingStyle = { paddingRight: `${tableRightPadding}px` };
       }
 
-      if (stickySide === 'left' && isStuckToTheLeft) {
+      if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
         paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
       }
     }
@@ -196,5 +206,7 @@ export const useStickyColumns = ({
     endStickyColumnsWidth,
     isStuckToTheLeft,
     isStuckToTheRight,
+    leftSentinelRef,
+    rightSentinelRef,
   };
 };
