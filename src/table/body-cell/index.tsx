@@ -23,7 +23,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   isEditing: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
+  submitEdit?: TableProps.SubmitEditFunction<any>;
   ariaLabels: TableProps['ariaLabels'];
 }
 
