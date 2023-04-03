@@ -93,7 +93,7 @@ export const useStickyColumns = ({
       }
     };
 
-    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1] });
+    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1], rootMargin: '-1px' });
     // Observe left and right sentinels to set "stuck" state
     observer.observe(leftSentinel);
     observer.observe(rightSentinel);
@@ -116,7 +116,6 @@ export const useStickyColumns = ({
       totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding > (containerWidth ?? Number.MAX_SAFE_INTEGER);
     const shouldDisable = !stickyColumns || !isWrapperScrollable || hasNotEnoughSpace;
     setShouldDisable(shouldDisable);
-    console.log({ shouldDisable });
   }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding, isWrapperScrollable]);
 
   useEffect(() => {
