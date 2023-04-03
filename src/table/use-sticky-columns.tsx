@@ -80,17 +80,6 @@ export const useStickyColumns = ({
     rightSentinel.style.left = `${newSentinelPosition}px`;
   }, [wrapperRefObject, cellWidths, tableRightPadding]);
 
-  useEffect(() => {
-    const wrapper = wrapperRefObject?.current;
-    if (!wrapper) {
-      return;
-    }
-    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-    const left = wrapper.scrollLeft > tableLeftPadding;
-    setIsStuckToTheLeft(left);
-    setIsStuckToTheRight(right);
-  }, [cellWidths, setIsStuckToTheLeft, setIsStuckToTheRight, wrapperRefObject, tableLeftPadding, tableRightPadding]);
-
   useLayoutEffect(() => {
     if (!rightSentinelRef.current || !tableRefObject.current) {
       return;
