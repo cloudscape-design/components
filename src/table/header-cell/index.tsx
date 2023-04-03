@@ -11,7 +11,6 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { CellWidths } from '../internal';
 import { GetStickyColumn } from '../use-sticky-columns';
 
 interface TableHeaderCellProps<ItemType> {
@@ -30,18 +29,13 @@ interface TableHeaderCellProps<ItemType> {
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  isStuckToTheRight?: boolean;
-  isStuckToTheLeft?: boolean;
   resizableColumns?: boolean;
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  isStickyColumn?: boolean;
-  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
-  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
-  isLastStart?: boolean;
-  isLastEnd?: boolean;
   getStickyColumn: (colIndex: number) => GetStickyColumn;
+  isStuckToTheRight?: boolean;
+  isStuckToTheLeft?: boolean;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
