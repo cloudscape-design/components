@@ -75,8 +75,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
-          isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
-          isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
+          isStickyLeft && isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
+          isStickyRight && isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
         )}
         onClick={onClick}
         ref={ref}

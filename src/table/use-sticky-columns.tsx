@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState, createRef, useEffect } from 'react';
+import React, { useLayoutEffect, useState, createRef, useEffect, useRef } from 'react';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { TableProps } from './interfaces';
 interface CellWidths {
@@ -42,15 +42,10 @@ export const useStickyColumns = ({
   isWrapperScrollable,
 }: StickyColumnParams) => {
   // Sentinels used for triggering IntersectionObserver and set "stuck" state
-  const leftSentinelRef = React.useRef(null);
-  const rightSentinelRef = React.useRef(null);
+  const leftSentinelRef = useRef(null);
+  const rightSentinelRef = useRef(null);
   const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
   const [isStuckToTheRight, setIsStuckToTheRight] = useState(false);
-
-  // Compute table paddings
-  const table = tableRefObject.current;
-  const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
-  const tableRightPadding = table ? Number(getComputedStyle(table).paddingRight.slice(0, -2)) : 0;
 
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
@@ -69,16 +64,21 @@ export const useStickyColumns = ({
   // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
   const MINIMUM_SCROLLABLE_SPACE = 148;
 
+  // Compute table paddings
+  const table = tableRefObject.current;
+  const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
+  const tableRightPadding = table ? Number(getComputedStyle(table).paddingRight.slice(0, -2)) : 0;
+
   useLayoutEffect(() => {
     // Effect to adjust position of the right sentinel, to trigger the IntersectionObserver on the right columns
-    if (!rightSentinelRef.current || !tableRefObject.current) {
+    if (!rightSentinelRef.current || !wrapperRefObject.current) {
       return;
     }
     const rightSentinel = rightSentinelRef.current as HTMLDivElement;
-    const tableWidth = Number(getComputedStyle(tableRefObject.current).width.slice(0, -2));
-    const newSentinelPosition = tableWidth - 2;
+    const wrapperScrollWidth = wrapperRefObject.current.scrollWidth;
+    const newSentinelPosition = wrapperScrollWidth - tableRightPadding - 2;
     rightSentinel.style.left = `${newSentinelPosition}px`;
-  }, [tableRefObject, cellWidths]);
+  }, [wrapperRefObject, cellWidths, tableRightPadding]);
 
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
@@ -140,11 +140,6 @@ export const useStickyColumns = ({
     shouldDisable,
   ]);
 
-  // useEffect(() => {
-  //   setIsStuckToTheLeft(isStuckToTheLeft => (shouldDisable ? false : isStuckToTheLeft));
-  //   setIsStuckToTheRight(isStuckToTheRight => (shouldDisable ? false : isStuckToTheRight));
-  // }, [shouldDisable]);
-
   useEffect(() => {
     // Effect to check the conditions to set the "shouldDisable" sticky columns state
     const hasNotEnoughSpace =
@@ -178,20 +173,20 @@ export const useStickyColumns = ({
     setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
   }, [tableCellRefs]);
 
-  // useLayoutEffect(() => {
-  //   updateCellWidths();
-  // }, [updateCellWidths]);
+  useLayoutEffect(() => {
+    updateCellWidths();
+  }, [updateCellWidths]);
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
-    // if (shouldDisable) {
-    //   return {
-    //     isStickyLeft: false,
-    //     isStickyRight: false,
-    //     isLastStickyLeft: false,
-    //     isLastStickyRight: false,
-    //     stickyStyles: {},
-    //   };
-    // }
+    if (shouldDisable) {
+      return {
+        isStickyLeft: false,
+        isStickyRight: false,
+        isLastStickyLeft: false,
+        isLastStickyRight: false,
+        stickyStyles: {},
+      };
+    }
 
     const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
     const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
@@ -201,8 +196,8 @@ export const useStickyColumns = ({
     // Sticky styles
     let paddingStyle = {};
     const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
-    const isLastSticky = isLastStickyLeft || isLastStickyRight;
-    if (isLastSticky && isVisualRefresh && !hasSelection) {
+    const isFirstOrLastColumn = colIndex === 0 || colIndex === visibleColumnsLength - 1;
+    if (isFirstOrLastColumn && isVisualRefresh && !hasSelection) {
       if (stickySide === 'right' && isStuckToTheRight && tableRightPadding) {
         paddingStyle = { paddingRight: `${tableRightPadding}px` };
       }
@@ -237,8 +232,8 @@ export const useStickyColumns = ({
     shouldDisableStickyColumns: shouldDisable,
     startStickyColumnsWidth,
     endStickyColumnsWidth,
-    isStuckToTheLeft: shouldDisable ? false : isStuckToTheLeft,
-    isStuckToTheRight: shouldDisable ? false : isStuckToTheLeft,
+    isStuckToTheLeft,
+    isStuckToTheRight,
     leftSentinelRef,
     rightSentinelRef,
     updateCellWidths,
