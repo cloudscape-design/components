@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { AppLayoutProps } from '../interfaces';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { DrawersProps } from './drawers';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -21,18 +19,17 @@ interface LayoutProps {
  */
 export default function Layout({ children }: LayoutProps) {
   const {
-    activeDrawer,
     contentHeader,
     contentType,
     disableBodyScroll,
     disableContentHeaderOverlap,
+    drawersTriggerCount,
     dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
+    hasOpenDrawer,
     headerHeight,
     isNavigationOpen,
-    isSplitPanelOpen,
-    isToolsOpen,
     layoutElement,
     layoutWidth,
     mainOffsetLeft,
@@ -45,11 +42,10 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelDisplayed,
   } = useAppLayoutInternals();
 
-  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
-
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
-  const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);
-  const hasContentGapRight = getContentGapRight(activeDrawer, isSplitPanelOpen, isToolsOpen, splitPanelPosition);
+  const hasContentGapLeft = isNavigationOpen || navigationHide;
+  const hasContentGapRight = drawersTriggerCount <= 0 || hasOpenDrawer;
+  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
   return (
     <main
@@ -85,39 +81,6 @@ export default function Layout({ children }: LayoutProps) {
       {children}
     </main>
   );
-}
-
-/**
- * When the Navigation and Tools are present the grid definition has the center column
- * touch the first and last columns with no gap. The forms with the circular buttons
- * for Navigation and Tools have internal padding which creates the necessary
- * horizontal space when the drawers are closed. The remaining conditions below
- * determine the necessity of utilizing the content gap left property to create
- * horizontal space between the center column and its adjacent siblings.
- */
-function getContentGapRight(
-  activeDrawer: DrawersProps.Drawer,
-  isSplitPanelOpen: boolean | undefined,
-  isToolsOpen: boolean,
-  splitPanelPosition: AppLayoutProps.SplitPanelPosition
-) {
-  let hasContentGapRight = true;
-
-  if (!isToolsOpen && !activeDrawer && (splitPanelPosition !== 'side' || !isSplitPanelOpen)) {
-    hasContentGapRight = false;
-  }
-
-  return hasContentGapRight;
-}
-
-/**
- * Additional function to determine whether or not a content gap is needed
- * on the left (see the getContentGapRight function). The same render logic applies
- * regarding the center column touching an adjacent sibling but the only
- * component state that needs to be tracked is the Navigation.
- */
-function getContentGapLeft(isNavigationOpen: boolean, navigationHide?: boolean) {
-  return isNavigationOpen || navigationHide ? true : false;
 }
 
 /**

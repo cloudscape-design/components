@@ -29,8 +29,9 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawer: DrawersProps.Drawer;
+  activeDrawer: DrawersProps.Drawer | null;
   drawers: DrawersProps;
+  drawersTriggerCount: number;
   dynamicOverlapHeight: number;
   handleDrawersClick: (activeDrawerId: string | null) => void;
   handleSplitPanelClick: () => void;
@@ -41,6 +42,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
+  hasOpenDrawer: boolean;
   hasStickyBackground: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
@@ -215,35 +217,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       },
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
     );
-
-    /**
-     * Drawers stuff.
-     */
-    const drawers = (props as any).drawers;
-
-    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
-      componentName: 'AppLayout',
-      controlledProp: 'drawers.activeDrawerId',
-      changeHandler: 'onChange',
-    });
-
-    const handleDrawersClick = useCallback(
-      function handleDrawersChange(id: string | null) {
-        const newActiveDrawerId = id !== activeDrawerId ? id : null;
-
-        setActiveDrawerId(newActiveDrawerId);
-        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
-      },
-      [activeDrawerId, drawers?.onChange, setActiveDrawerId]
-    );
-
-    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
-
-    /**
-     *
-     */
-    const hasDrawerViewportOverlay =
-      isMobile && (!!activeDrawer || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
 
     /**
      * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
@@ -521,6 +494,36 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
+    /**
+     * Drawers stuff.
+     */
+    const drawers = (props as any).drawers;
+
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
+      componentName: 'AppLayout',
+      controlledProp: 'drawers.activeDrawerId',
+      changeHandler: 'onChange',
+    });
+
+    const handleDrawersClick = useCallback(
+      function handleDrawersChange(id: string | null) {
+        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+
+        setActiveDrawerId(newActiveDrawerId);
+        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
+      },
+      [activeDrawerId, drawers?.onChange, setActiveDrawerId]
+    );
+
+    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
+    const drawersTriggerCount =
+      drawers?.items.length ??
+      0 + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
+    const hasOpenDrawer =
+      activeDrawer || isToolsOpen || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+    const hasDrawerViewportOverlay =
+      isMobile && (!!activeDrawer || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
@@ -528,6 +531,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           activeDrawer,
           contentType,
           drawers,
+          drawersTriggerCount,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,
@@ -540,6 +544,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           handleSplitPanelResize,
           handleToolsClick,
           hasNotificationsContent,
+          hasOpenDrawer,
           hasStickyBackground,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,

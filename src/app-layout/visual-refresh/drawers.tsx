@@ -118,9 +118,11 @@ function DesktopTriggers() {
     activeDrawer,
     ariaLabels,
     drawers,
+    drawersTriggerCount,
     handleDrawersClick,
     handleSplitPanelClick,
     handleToolsClick,
+    hasOpenDrawer,
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
@@ -134,13 +136,11 @@ function DesktopTriggers() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-  const hasOpenDrawer = activeDrawer || isToolsOpen || (hasSplitPanel && isSplitPanelOpen);
-  const triggerCount = drawers.items.length + (hasSplitPanel ? 1 : 0) + (!toolsHide ? 1 : 0);
-
-  if (isMobile || (hasOpenDrawer && triggerCount <= 1)) {
+  if (isMobile || (hasOpenDrawer && drawersTriggerCount <= 1)) {
     return null;
   }
+
+  const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 
   return (
     <aside
