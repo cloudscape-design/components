@@ -117,6 +117,18 @@
   }
 }
 
+.sentinel-left,
+.sentinel-right {
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  top: 0;
+}
+.sentinel-right {
+  right: 0;
+}
+
 .empty {
   color: awsui.$color-text-empty;
 }
@@ -152,6 +164,7 @@ filter search icon.
   margin-top: -15px;
   bottom: 0;
   width: 100%;
+  z-index: 15; // Higher than sticky columns
 
   &-content {
     height: 15px;

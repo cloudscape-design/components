@@ -11,6 +11,8 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
+import { updateCellWidths } from '../use-sticky-columns';
+import { CellWidths } from '../internal';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -28,32 +30,51 @@ interface TableHeaderCellProps<ItemType> {
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  visibleColumnsLength: number;
+  isStuckToTheRight?: boolean;
+  isStuckToTheLeft?: boolean;
   resizableColumns?: boolean;
   isEditable?: boolean;
-
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  isStickyColumn?: boolean;
+  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
+  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
+  isLastStart?: boolean;
+  isLastEnd?: boolean;
 }
 
-export function TableHeaderCell<ItemType>({
-  className,
-  style,
-  tabIndex,
-  column,
-  activeSortingColumn,
-  sortingDescending,
-  sortingDisabled,
-  wrapLines,
-  focusedComponent,
-  onFocusedComponentChange,
-  hidden,
-  onClick,
-  colIndex,
-  updateColumn,
-  resizableColumns,
-  onResizeFinish,
-  isEditable,
-}: TableHeaderCellProps<ItemType>) {
+export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
+  props: TableHeaderCellProps<ItemType>,
+  ref: React.Ref<HTMLTableCellElement>
+) {
+  const {
+    className,
+    style,
+    tabIndex,
+    column,
+    activeSortingColumn,
+    sortingDescending,
+    sortingDisabled,
+    wrapLines,
+    colIndex,
+    hidden,
+    onClick,
+    onFocusedComponentChange,
+    focusedComponent,
+    updateColumn,
+    resizableColumns,
+    onResizeFinish,
+    isEditable,
+    isStickyColumn,
+    tableCellRefs,
+    setCellWidths,
+    visibleColumnsLength,
+    isStuckToTheLeft,
+    isStuckToTheRight,
+    isLastStart,
+    isLastEnd,
+  } = props;
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -74,9 +95,8 @@ export function TableHeaderCell<ItemType>({
       handleClick();
     }
   };
-
   const headerId = useUniqueId('table-header-');
-
+  const isLastColumn = colIndex === visibleColumnsLength - 1;
   return (
     <th
       className={clsx(className, {
@@ -87,9 +107,14 @@ export function TableHeaderCell<ItemType>({
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
+        [styles['header-cell-freeze']]: !!isStickyColumn,
+        [styles['header-cell-freeze-stuck-right']]: !!isStickyColumn && isLastColumn && isStuckToTheRight,
+        [styles['header-cell-freeze-last-start']]: isStuckToTheLeft && isLastStart,
+        [styles['header-cell-freeze-last-end']]: isStuckToTheRight && isLastEnd,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
+      ref={ref}
       scope="col"
     >
       <div
@@ -108,8 +133,9 @@ export function TableHeaderCell<ItemType>({
               })
             : undefined
         }
-        {...(sortingStatus && !sortingDisabled
-          ? {
+        {...(sortingDisabled || !sortingStatus
+          ? { ['aria-disabled']: 'true' }
+          : {
               onKeyPress: handleKeyPress,
               tabIndex: tabIndex,
               role: 'button',
@@ -117,8 +143,7 @@ export function TableHeaderCell<ItemType>({
               onClick: handleClick,
               onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
               onBlur: () => onFocusedComponentChange?.(null),
-            }
-          : {})}
+            })}
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}
@@ -143,8 +168,14 @@ export function TableHeaderCell<ItemType>({
               focusedComponent.col === colIndex &&
               focusVisible['data-awsui-focus-visible']
             }
-            onDragMove={newWidth => updateColumn(colIndex, newWidth)}
-            onFinish={onResizeFinish}
+            onDragMove={newWidth => {
+              updateColumn(colIndex, newWidth);
+            }}
+            resizeDirection={isLastColumn && isStickyColumn && isStuckToTheRight ? 'left' : 'right'}
+            onFinish={() => {
+              onResizeFinish();
+              updateCellWidths({ setCellWidths, tableCellRefs });
+            }}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}
             onBlur={() => onFocusedComponentChange?.(null)}
@@ -154,4 +185,4 @@ export function TableHeaderCell<ItemType>({
       )}
     </th>
   );
-}
+});

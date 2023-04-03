@@ -38,6 +38,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     border-right: $border-placeholder;
     padding-right: $cell-edge-horizontal-padding;
   }
+
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
       padding-left: awsui.$space-xxxs;
@@ -101,7 +102,30 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
     }
   }
-
+  &-freeze {
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-paced;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+    position: sticky;
+    background: awsui.$color-background-container-content;
+    z-index: 11;
+    &.body-cell-shaded {
+      background: awsui.$color-background-cell-shaded;
+    }
+    &.body-cell-selected {
+      background-color: awsui.$color-background-item-selected;
+    }
+    &-last-start {
+      box-shadow: awsui.$shadow-sticky-column-start;
+      clip-path: inset(0px -24px 0px 0px);
+    }
+    &-last-end {
+      box-shadow: awsui.$shadow-sticky-column-end;
+      clip-path: inset(0 0 0 -24px);
+    }
+  }
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
     padding-top: $cell-vertical-padding-w-border;
@@ -175,6 +199,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
+    &.body-cell-freeze {
+      position: sticky;
+    }
 
     &.body-cell-edit-active {
       overflow: visible;
@@ -190,6 +217,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
+        &.body-cell-freeze {
+          position: sticky;
+        }
         & > .body-cell-editor {
           padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
         }
@@ -217,16 +247,20 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         left: 0;
         right: 0;
       }
-      &[data-awsui-focus-visible='true']:focus-within {
+      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
         @include styles.focus-highlight(
           (
             'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
+        &.body-cell-freeze {
+          position: sticky;
+        }
       }
     }
   }
+
   &-editable.is-visual-refresh:not(.body-cell-edit-active):hover {
     &:first-child {
       border-top-left-radius: awsui.$border-radius-control-default-focus-ring;

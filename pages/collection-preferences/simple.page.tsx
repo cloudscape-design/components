@@ -16,6 +16,7 @@ const baseProperties: CollectionPreferencesProps<boolean> = {
     pageSize: 10,
     visibleContent: ['id', 'sslCertificate', 'origin'],
     custom: true,
+    stickyColumns: { start: 1, end: 1 },
   },
 };
 
@@ -35,6 +36,26 @@ const wrapLinesPreference: CollectionPreferencesProps.WrapLinesPreference = {
 const contentDensityPreference: CollectionPreferencesProps.ContentDensityPreference = {
   label: 'Compact mode',
   description: 'Content density description',
+};
+
+const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
+  startColumns: {
+    title: 'Stick first visible column(s)',
+    description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'First visible column', value: 1 },
+      { label: 'First two visible columns', value: 2 },
+    ],
+  },
+  endColumns: {
+    title: 'Stick last visible column',
+    description: 'Keep the last column visible when tables are wider than the viewport.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Last visible column', value: 1 },
+    ],
+  },
 };
 
 const visibleContentPreference: CollectionPreferencesProps.VisibleContentPreference = {
@@ -89,6 +110,7 @@ export default function CollectionPreferencesPermutations() {
           wrapLinesPreference={wrapLinesPreference}
           contentDensityPreference={contentDensityPreference}
           visibleContentPreference={visibleContentPreference}
+          stickyColumnsPreference={stickyColumnsPreference}
           customPreference={customPreference}
         />
         <CollectionPreferences className={`cp-2`} {...baseProperties} customPreference={customPreference} />

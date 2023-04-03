@@ -18,6 +18,7 @@ import {
   StripedRowsPreference,
   ContentDensityPreference,
   CustomPreference,
+  StickyColumnsPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -40,6 +41,7 @@ export default function CollectionPreferences({
   wrapLinesPreference,
   stripedRowsPreference,
   contentDensityPreference,
+  stickyColumnsPreference,
   preferences,
   customPreference,
   ...rest
@@ -75,6 +77,7 @@ export default function CollectionPreferences({
     wrapLinesPreference ||
     stripedRowsPreference ||
     contentDensityPreference ||
+    stickyColumnsPreference ||
     customPreference
   );
   const hasRightContent = !!visibleContentPreference;
@@ -158,6 +161,13 @@ export default function CollectionPreferences({
                       value={temporaryPreferences.contentDensity}
                       {...contentDensityPreference}
                       onChange={contentDensity => onChange({ contentDensity })}
+                    />
+                  )}
+                  {stickyColumnsPreference && (
+                    <StickyColumnsPreference
+                      value={temporaryPreferences.stickyColumns}
+                      {...stickyColumnsPreference}
+                      onChange={stickyColumns => onChange({ stickyColumns })}
                     />
                   )}
                   {customPreference && (

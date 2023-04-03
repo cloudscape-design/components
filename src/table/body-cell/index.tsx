@@ -16,27 +16,30 @@ const submitHandlerFallback = () => {
 };
 
 interface TableBodyCellProps<ItemType> extends TableTdElementProps {
-  column: TableProps.ColumnDefinition<ItemType>;
+  column: TableProps.ColumnDefinition<any>;
   item: ItemType;
   isEditing: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
-  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
+  submitEdit?: TableProps.SubmitEditFunction<any>;
   ariaLabels: TableProps['ariaLabels'];
 }
 
-function TableCellEditable<ItemType>({
-  className,
-  item,
-  column,
-  isEditing,
-  onEditStart,
-  onEditEnd,
-  submitEdit,
-  ariaLabels,
-  isVisualRefresh,
-  ...rest
-}: TableBodyCellProps<ItemType>) {
+const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
+  {
+    className,
+    item,
+    column,
+    isEditing,
+    onEditStart,
+    onEditEnd,
+    submitEdit,
+    ariaLabels,
+    isVisualRefresh,
+    ...rest
+  }: TableBodyCellProps<ItemType>,
+  ref: React.Ref<HTMLTableCellElement>
+) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
 
@@ -44,7 +47,6 @@ function TableCellEditable<ItemType>({
     ...(focusVisible as Record<string, string>),
     'data-inline-editing-active': isEditing.toString(),
   };
-
   useEffectOnUpdate(() => {
     if (!isEditing && editActivateRef.current) {
       editActivateRef.current.focus();
@@ -62,6 +64,7 @@ function TableCellEditable<ItemType>({
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
+      ref={ref}
     >
       {isEditing ? (
         <InlineEditor
@@ -88,15 +91,19 @@ function TableCellEditable<ItemType>({
       )}
     </TableTdElement>
   );
-}
+});
 
-export function TableBodyCell<ItemType>({
-  isEditable,
-  ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
+export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
+  { isEditable, ...rest }: TableBodyCellProps<ItemType> & { isEditable: boolean },
+  ref: React.Ref<HTMLTableCellElement>
+) {
   if (isEditable || rest.isEditing) {
-    return <TableCellEditable {...rest} />;
+    return <TableCellEditable ref={ref} {...rest} />;
   }
   const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
-}
+  return (
+    <TableTdElement ref={ref} {...rest}>
+      {column.cell(item)}
+    </TableTdElement>
+  );
+});

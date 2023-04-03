@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState, Ref, forwardRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -34,10 +34,17 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import { useStickyColumns } from './use-sticky-columns';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
-const InternalTable = React.forwardRef(
+export interface CellWidths {
+  start: number[];
+  end: number[];
+}
+
+const InternalTable = forwardRef(
   <T,>(
     {
       header,
@@ -61,6 +68,7 @@ const InternalTable = React.forwardRef(
       sortingDescending,
       sortingDisabled,
       visibleColumns,
+      stickyColumns,
       stickyHeader,
       stickyHeaderVerticalOffset,
       onRowClick,
@@ -79,7 +87,7 @@ const InternalTable = React.forwardRef(
       renderAriaLive,
       ...rest
     }: InternalTableProps<T>,
-    ref: React.Ref<TableProps.Ref>
+    ref: Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
     stickyHeader = stickyHeader && supportsStickyPosition();
@@ -91,14 +99,13 @@ const InternalTable = React.forwardRef(
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
-
-    const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
+    const secondaryWrapperRef = useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
-    const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
-    const scrollbarRef = React.useRef<HTMLDivElement>(null);
+    const stickyHeaderRef = useRef<StickyHeaderRef>(null);
+    const scrollbarRef = useRef<HTMLDivElement>(null);
+
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
-
     useImperativeHandle(
       ref,
       () => ({
@@ -118,6 +125,8 @@ const InternalTable = React.forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
+    const visibleColumnsLength = visibleColumnDefinitions.length;
+
     const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -150,6 +159,53 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
+    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
+    const isWrapperScrollable = !!tableWidth && !!containerWidth && tableWidth > containerWidth;
+    const wrapperProps = isWrapperScrollable
+      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
+      : {};
+    const focusVisibleProps = useFocusVisible();
+    const getMouseDownTarget = useMouseDownTarget();
+    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
+      if (!submitEdit) {
+        return undefined;
+      }
+      return async (...args: Parameters<typeof submitEdit>) => {
+        setCurrentEditLoading(true);
+        try {
+          await submitEdit(...args);
+        } finally {
+          setCurrentEditLoading(false);
+        }
+      };
+    };
+
+    const hasDynamicHeight = computedVariant === 'full-page';
+    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
+
+    const {
+      tableCellRefs,
+      cellWidths,
+      setCellWidths,
+      getStickyColumn,
+      shouldDisableStickyColumns,
+      startStickyColumnsWidth,
+      endStickyColumnsWidth,
+      isStuckToTheRight,
+      isStuckToTheLeft,
+      rightSentinelRef,
+      leftSentinelRef,
+    } = useStickyColumns({
+      visibleColumnsLength,
+      hasSelection,
+      stickyColumns,
+      containerWidth,
+      tableRefObject,
+      wrapperRefObject,
+    });
+
+    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns;
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -174,35 +230,16 @@ const InternalTable = React.forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
+      getStickyColumn: !disableStickyColumns ? getStickyColumn : undefined,
+      tableCellRefs,
+      setCellWidths,
+      cellWidths,
+      stickyColumns,
+      visibleColumnsLength,
+      isStuckToTheRight,
+      isStuckToTheLeft,
     };
-
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
-    const focusVisibleProps = useFocusVisible();
-
-    const getMouseDownTarget = useMouseDownTarget();
-    const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
-      if (!submitEdit) {
-        return undefined;
-      }
-      return async (...args: Parameters<typeof submitEdit>) => {
-        setCurrentEditLoading(true);
-        try {
-          await submitEdit(...args);
-        } finally {
-          setCurrentEditLoading(false);
-        }
-      };
-    };
-
-    const hasDynamicHeight = computedVariant === 'full-page';
-    const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
-
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
@@ -264,6 +301,7 @@ const InternalTable = React.forwardRef(
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
+            style={{ scrollPaddingLeft: startStickyColumnsWidth, scrollPaddingRight: endStickyColumnsWidth }}
             onScroll={handleScroll}
             {...wrapperProps}
             {...focusVisibleProps}
@@ -286,6 +324,7 @@ const InternalTable = React.forwardRef(
               aria-label={ariaLabels?.tableLabel}
               aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
             >
+              <div className={styles['sentinel-left']} ref={leftSentinelRef} />
               <Thead
                 ref={theadRef}
                 hidden={stickyHeader}
@@ -355,6 +394,9 @@ const InternalTable = React.forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            ref={tableCellRefs[0]}
+                            isStickyColumn={!disableStickyColumns && (stickyColumns?.start ?? 0) > 0}
+                            style={(stickyColumns?.start ?? 0) > 0 ? { left: cellWidths.start[0] } : {}}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -368,21 +410,30 @@ const InternalTable = React.forwardRef(
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
+
+                          // Sticky columns
+                          const stickyColumn = getStickyColumn(colIndex);
+                          const { isSticky = false, stickyStyles = {} } = !disableStickyColumns ? stickyColumn : {};
+
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}
                               style={
                                 resizableColumns
-                                  ? {}
+                                  ? {
+                                      ...stickyStyles,
+                                    }
                                   : {
                                       width: column.width,
                                       minWidth: column.minWidth,
                                       maxWidth: column.maxWidth,
+                                      ...stickyStyles,
                                     }
                               }
                               ariaLabels={ariaLabels}
                               column={column}
                               item={item}
+                              ref={tableCellRefs[colIndex + (hasSelection ? 1 : 0)]}
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}
@@ -403,6 +454,11 @@ const InternalTable = React.forwardRef(
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
                               isVisualRefresh={isVisualRefresh}
+                              stickyColumn={!disableStickyColumns ? stickyColumn : undefined}
+                              isStickyColumn={!disableStickyColumns && isSticky}
+                              isLastColumn={colIndex === visibleColumnsLength - 1}
+                              isStuckToTheLeft={isStuckToTheLeft}
+                              isStuckToTheRight={isStuckToTheRight}
                             />
                           );
                         })}
@@ -411,6 +467,7 @@ const InternalTable = React.forwardRef(
                   })
                 )}
               </tbody>
+              <div className={styles['sentinel-right']} ref={rightSentinelRef} />
             </table>
             {resizableColumns && <ResizeTracker />}
           </div>

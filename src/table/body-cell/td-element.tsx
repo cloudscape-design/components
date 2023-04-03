@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
+import { GetStickyColumn } from '../use-sticky-columns.js';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
@@ -21,6 +22,11 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   isVisualRefresh?: boolean;
+  isStickyColumn?: boolean;
+  stickyColumn?: GetStickyColumn;
+  isLastColumn?: boolean;
+  isStuckToTheRight?: boolean;
+  isStuckToTheLeft?: boolean;
 }
 
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
@@ -42,9 +48,14 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isVisualRefresh,
       hasSelection,
       hasFooter,
+      isStickyColumn,
+      stickyColumn,
+      isStuckToTheRight,
+      isStuckToTheLeft,
     },
     ref
   ) => {
+    const { isLastStart, isLastEnd } = stickyColumn || {};
     return (
       <td
         style={style}
@@ -61,7 +72,10 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
-          hasFooter && styles['has-footer']
+          hasFooter && styles['has-footer'],
+          isStickyColumn && styles['body-cell-freeze'],
+          isStuckToTheLeft && isLastStart && styles['body-cell-freeze-last-start'],
+          isStuckToTheRight && isLastEnd && styles['body-cell-freeze-last-end']
         )}
         onClick={onClick}
         ref={ref}

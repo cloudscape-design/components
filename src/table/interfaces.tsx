@@ -200,6 +200,20 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
+   * Specifies the number of columns that should be sticky
+   * either on the `left` and/or `right` sides of the table.
+   *
+   * We support having a maximum of two left and one right column sticky. Other values will be ignored.
+   *
+   * If the sum of the sticky columns widths exceeds the difference between the container width and 148px, the feature is deactivated.
+   *
+   * Use it in conjunction with the sticky columns preference of the
+   * [collection preferences](/components/collection-preferences/) component.
+   *
+   */
+  stickyColumns?: TableProps.StickyColumns;
+
+  /**
    * Fired when the user resizes a table column. The event detail contains an array of column widths in pixels,
    * including the hidden via preferences columns. Use this event to persist the column widths.
    */
@@ -337,11 +351,17 @@ export namespace TableProps {
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-    editConfig?: EditConfig<ItemType>;
+    editConfig?: EditConfig<any>;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
   export type SelectionType = 'single' | 'multi';
+
+  export interface StickyColumns {
+    start?: number;
+    end?: number;
+  }
+
   export type Variant = 'container' | 'embedded' | 'stacked' | 'full-page';
   export interface SelectionState<T> {
     selectedItems: ReadonlyArray<T>;

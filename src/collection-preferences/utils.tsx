@@ -6,6 +6,7 @@ import InternalCheckbox from '../checkbox/internal';
 import InternalColumnLayout from '../column-layout/internal';
 import InternalFormField from '../form-field/internal';
 import InternalRadioGroup from '../radio-group/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
@@ -15,6 +16,7 @@ export const copyPreferences = ({
   wrapLines,
   stripedRows,
   contentDensity,
+  stickyColumns,
   visibleContent,
   custom,
 }: CollectionPreferencesProps.Preferences): CollectionPreferencesProps.Preferences => ({
@@ -23,6 +25,7 @@ export const copyPreferences = ({
   stripedRows,
   contentDensity,
   visibleContent,
+  stickyColumns,
   custom,
 });
 
@@ -35,6 +38,7 @@ export const mergePreferences = (
   stripedRows: newPref.stripedRows !== undefined ? newPref.stripedRows : oldPref.stripedRows,
   contentDensity: newPref.contentDensity !== undefined ? newPref.contentDensity : oldPref.contentDensity,
   visibleContent: newPref.visibleContent !== undefined ? newPref.visibleContent : oldPref.visibleContent,
+  stickyColumns: newPref.stickyColumns !== undefined ? newPref.stickyColumns : oldPref.stickyColumns,
   custom: newPref.custom !== undefined ? newPref.custom : oldPref.custom,
 });
 
@@ -132,6 +136,47 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
     {label}
   </InternalCheckbox>
 );
+
+interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
+  onChange: (value: any) => void;
+  value?: any;
+}
+
+export const StickyColumnsPreference = ({
+  startColumns,
+  endColumns,
+  onChange,
+  value,
+}: StickyColumnsPreferenceProps) => {
+  return (
+    <InternalSpaceBetween className={styles['sticky-columns']} size="l">
+      {[
+        { side: 'start', preference: startColumns },
+        { side: 'end', preference: endColumns },
+      ].map(item => {
+        if (!item.preference) {
+          return;
+        }
+        const { title, description, options } = item.preference;
+        return (
+          <InternalFormField
+            className={styles[`sticky-columns-${item.side}-form-field`]}
+            key={title}
+            label={title}
+            description={description}
+          >
+            <InternalRadioGroup
+              className={styles[`sticky-columns-${item.side}-radio-group`]}
+              value={`${value[item.side]}`}
+              items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
+              onChange={({ detail }) => onChange({ ...value, [item.side]: Number(detail.value) })}
+            />
+          </InternalFormField>
+        );
+      })}
+    </InternalSpaceBetween>
+  );
+};
 
 interface CustomPreferenceProps<T = any> extends Pick<CollectionPreferencesProps<T>, 'customPreference'> {
   onChange: (value: T) => void;

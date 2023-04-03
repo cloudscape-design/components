@@ -13,6 +13,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { CellWidths } from './internal';
+import { GetStickyColumn } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -38,9 +40,16 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
-
+  visibleColumnsLength: number;
+  isStuckToTheRight: boolean;
+  isStuckToTheLeft: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
+  stickyColumns?: TableProps.StickyColumns;
+  cellWidths?: CellWidths;
+  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
+  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
+  getStickyColumn?: (colIndex: number) => GetStickyColumn;
 }
 
 const Thead = React.forwardRef(
@@ -61,17 +70,23 @@ const Thead = React.forwardRef(
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
       stripedRows,
+      stickyColumns,
+      cellWidths,
       sticky = false,
       hidden = false,
       stuck = false,
-
       focusedComponent,
       onFocusedComponentChange,
+      setCellWidths,
+      tableCellRefs,
+      getStickyColumn,
+      visibleColumnsLength,
+      isStuckToTheRight,
+      isStuckToTheLeft,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
     const isVisualRefresh = useVisualRefresh();
-
     const headerCellClass = clsx(
       headerCellStyles['header-cell'],
       headerCellStyles[`header-cell-variant-${variant}`],
@@ -88,13 +103,19 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-
+    const hasStartStickyColumns = (stickyColumns?.start ?? 0) > 0;
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+              )}
+              style={{ left: cellWidths?.start[0] }}
               scope="col"
             >
               <SelectionControl
@@ -110,24 +131,39 @@ const Thead = React.forwardRef(
           )}
           {selectionType === 'single' && (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+              )}
+              style={{ left: cellWidths?.start[0] }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
             </th>
           )}
           {columnDefinitions.map((column, colIndex) => {
+            const isLastColumn = colIndex === columnDefinitions.length - 1;
+            const {
+              isSticky = false,
+              isLastStart = false,
+              isLastEnd = false,
+              stickyStyles = {},
+            } = getStickyColumn ? getStickyColumn(colIndex) : {};
+
             let widthOverride;
             if (resizableColumns) {
               if (columnWidths) {
                 // use stateful value if available
                 widthOverride = columnWidths[getColumnKey(column, colIndex)];
               }
-              if (colIndex === columnDefinitions.length - 1 && containerWidth && containerWidth > totalWidth) {
+              if (isLastColumn && containerWidth && containerWidth > totalWidth) {
                 // let the last column grow and fill the container width
                 widthOverride = 'auto';
               }
             }
+
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
@@ -136,6 +172,7 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
+                  ...stickyStyles,
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -152,6 +189,14 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                isLastStart={isLastStart}
+                isLastEnd={isLastEnd}
+                isStickyColumn={isSticky}
+                tableCellRefs={tableCellRefs}
+                setCellWidths={setCellWidths}
+                visibleColumnsLength={visibleColumnsLength}
+                isStuckToTheRight={isStuckToTheRight}
+                isStuckToTheLeft={isStuckToTheLeft}
               />
             );
           })}
