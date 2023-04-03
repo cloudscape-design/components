@@ -69,25 +69,6 @@ export const useStickyColumns = ({
   const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
   const tableRightPadding = table ? Number(getComputedStyle(table).paddingRight.slice(0, -2)) : 0;
 
-  useLayoutEffect(() => {
-    // Effect to adjust position of the right sentinel, to trigger the IntersectionObserver on the right columns
-    if (!rightSentinelRef.current || !wrapperRefObject.current) {
-      return;
-    }
-    const rightSentinel = rightSentinelRef.current as HTMLDivElement;
-    const wrapperScrollWidth = wrapperRefObject.current.scrollWidth;
-    const newSentinelPosition = wrapperScrollWidth - tableRightPadding - 2;
-    rightSentinel.style.left = `${newSentinelPosition}px`;
-  }, [wrapperRefObject, cellWidths, tableRightPadding]);
-
-  useLayoutEffect(() => {
-    if (!rightSentinelRef.current || !tableRefObject.current) {
-      return;
-    }
-    const rightSentinel = rightSentinelRef.current as HTMLDivElement;
-    rightSentinel.style.left = getComputedStyle(tableRefObject.current).width;
-  }, [tableRefObject, cellWidths]);
-
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
     const leftSentinel = leftSentinelRef?.current;
