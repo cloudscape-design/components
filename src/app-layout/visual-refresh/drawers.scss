@@ -99,10 +99,16 @@
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
-    width: 320px;
+    &.is-drawer-open,
+    > .drawer-content {
+      width: 320px;
+    }
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    width: 100vw;
+    &.is-drawer-open,
+    > .drawer-content {
+      width: 100vw;
+    }
   }
 }
