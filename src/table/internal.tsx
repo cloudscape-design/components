@@ -401,11 +401,13 @@ const InternalTable = React.forwardRef(
                                 setLastSuccessfulEditCell(null);
                                 setCurrentEditCell([rowIndex, colIndex]);
                               }}
-                              onEditEnd={() => {
-                                const wasCancelled = fireCancelableEvent(onEditCancel, {});
-                                if (!wasCancelled) {
+                              onEditEnd={editCancelled => {
+                                const eventCancelled = fireCancelableEvent(onEditCancel, {});
+                                if (!eventCancelled) {
                                   setCurrentEditCell(null);
-                                  setLastSuccessfulEditCell([rowIndex, colIndex]);
+                                  if (!editCancelled) {
+                                    setLastSuccessfulEditCell([rowIndex, colIndex]);
+                                  }
                                 }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}

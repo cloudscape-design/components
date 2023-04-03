@@ -18,7 +18,7 @@ interface InlineEditorProps<ItemType> {
   ariaLabels: TableProps['ariaLabels'];
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType>;
   __onRender?: () => void;
 }
@@ -45,7 +45,7 @@ export function InlineEditor<ItemType>({
     if (!cancel) {
       setCurrentEditValue(undefined);
     }
-    onEditEnd();
+    onEditEnd(cancel);
   }
 
   async function onSubmitClick(evt: React.FormEvent) {
