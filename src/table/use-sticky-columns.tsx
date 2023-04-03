@@ -120,7 +120,6 @@ export const useStickyColumns = ({
 
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      console.log(entry);
       if (!entry.isIntersecting) {
         entry.target === leftSentinel ? setIsStuckToTheLeft(true) : setIsStuckToTheRight(true);
       } else {

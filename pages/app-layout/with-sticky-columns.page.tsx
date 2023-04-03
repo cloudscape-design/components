@@ -46,7 +46,6 @@ export default function () {
     stickyColumns: { start: 1, end: 1 },
     visibleContent: visibleContentOptions[0].options.map(o => o.id),
   });
-  console.log(preferences);
   const items = generateItems(20);
 
   return (
