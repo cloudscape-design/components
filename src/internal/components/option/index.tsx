@@ -61,6 +61,7 @@ const Option = ({
   );
 
   // The option is conditionally assigned 'title' and 'aria-disabled' attributes to ensure it is viewed as a (generic) group  by assistive technology only when necessary.
+  // Omitting the props might be necessary if they are provided on the parent element to avoid nested groups.
   // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/generic_role
   const genericGroupProps = isGenericGroup
     ? {
