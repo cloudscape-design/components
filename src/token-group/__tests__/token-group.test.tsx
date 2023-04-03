@@ -68,13 +68,13 @@ describe('TokenGroup', () => {
 
   test('aligns tokens horizontally by default', () => {
     const wrapper = renderTokenGroup({ items, onDismiss });
-    expect(wrapper.findByClassName(tokenListSelectors['list-horizontal'])).not.toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.horizontal}`)).not.toBeNull();
   });
 
   test('applies the alignment correctly', () => {
     const wrapper = renderTokenGroup({ alignment: 'vertical', items, onDismiss });
-    expect(wrapper.findByClassName(tokenListSelectors['list-horizontal'])).toBeNull();
-    expect(wrapper.findByClassName(tokenListSelectors['list-vertical'])).not.toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.horizontal}`)).toBeNull();
+    expect(wrapper.find(`ul.${tokenListSelectors.vertical}`)).not.toBeNull();
   });
 
   describe('Token', () => {
@@ -111,12 +111,17 @@ describe('TokenGroup', () => {
 
     test('sets aria-disabled on the token when disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
-      expect(findToken(wrapper)!.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(wrapper.findByClassName(tokenListSelectors['list-item'])!.getElement()).toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
     });
 
     test('does not set aria-disabled on the token when not disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: false }], onDismiss });
-      expect(findToken(wrapper)!.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.findByClassName(tokenListSelectors['list-item'])!.getElement()).not.toHaveAttribute(
+        'aria-disabled'
+      );
     });
 
     test('fires dismiss event on mouse click', () => {

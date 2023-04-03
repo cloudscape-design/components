@@ -9,6 +9,7 @@ export interface TokenListProps<Item> {
   limit?: number;
   after?: React.ReactNode;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
+  itemAttributes?: (item: Item, itemIndex: number) => React.HTMLAttributes<HTMLLIElement>;
   i18nStrings?: I18nStrings;
   removedItemIndex?: null | number;
 }

@@ -5,7 +5,6 @@ import React from 'react';
 import clsx from 'clsx';
 
 import DismissButton from './dismiss-button';
-
 import styles from './styles.css.js';
 
 interface ItemAttributes {
@@ -21,10 +20,7 @@ interface TokenProps extends ItemAttributes {
 
 export function Token({ disabled, dismissLabel, onDismiss, children }: TokenProps) {
   return (
-    <div
-      className={clsx(styles.token, disabled && styles['token-disabled'])}
-      aria-disabled={disabled ? 'true' : undefined}
-    >
+    <div className={clsx(styles.token, disabled && styles['token-disabled'])}>
       {children}
       {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
     </div>

@@ -14,6 +14,7 @@ export default function TokenList<Item>({
   items,
   alignment,
   renderItem,
+  itemAttributes,
   limit,
   after,
   i18nStrings,
@@ -43,33 +44,45 @@ export default function TokenList<Item>({
 
   if (alignment === 'inline') {
     return (
-      <div ref={tokenListRef} className={styles.root}>
+      <div ref={tokenListRef} className={clsx(styles.root, styles.horizontal)}>
         {hasItems && (
-          <div id={controlId} className={clsx(styles.list, styles['list-horizontal'])}>
+          <ul id={controlId} className={styles.list}>
             {visibleItems.map((item, itemIndex) => (
-              <div key={itemIndex} className={styles['list-item']}>
+              <li
+                key={itemIndex}
+                className={styles['list-item']}
+                {...itemAttributes?.(item, itemIndex)}
+                aria-setsize={items.length}
+                aria-posinset={itemIndex + 1}
+              >
                 {renderItem(item, itemIndex)}
-              </div>
+              </li>
             ))}
-            {toggle}
-            {after && <div className={styles.separator} />}
-            {after}
-          </div>
+          </ul>
         )}
+        {toggle}
+        {after && <div className={styles.separator} />}
+        {after}
       </div>
     );
   }
 
   return (
-    <div ref={tokenListRef} className={styles.root}>
+    <div ref={tokenListRef} className={clsx(styles.root, styles.vertical)}>
       {hasVisibleItems && (
-        <div id={controlId} className={clsx(styles.list, styles[`list-${alignment}`])}>
+        <ul id={controlId} className={clsx(styles.list, styles[alignment])}>
           {visibleItems.map((item, itemIndex) => (
-            <div key={itemIndex} className={styles['list-item']}>
+            <li
+              key={itemIndex}
+              className={styles['list-item']}
+              {...itemAttributes?.(item, itemIndex)}
+              aria-setsize={items.length}
+              aria-posinset={itemIndex + 1}
+            >
               {renderItem(item, itemIndex)}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
       {toggle}
       {after}

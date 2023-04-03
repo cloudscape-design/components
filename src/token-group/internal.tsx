@@ -32,7 +32,6 @@ export default function InternalTokenGroup({
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
-
   return (
     <div
       {...baseProps}
@@ -52,9 +51,10 @@ export default function InternalTokenGroup({
             }}
             disabled={item.disabled}
           >
-            <Option option={item} />
+            <Option option={item} isGenericGroup={false} />
           </Token>
         )}
+        itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled ? true : undefined })}
         i18nStrings={i18nStrings}
         removedItemIndex={removedItemIndex}
       />
