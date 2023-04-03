@@ -3,11 +3,12 @@
 
 import React, { useState } from 'react';
 
-import { TokenLimitToggle } from './token-limit-toggle';
+import TokenLimitToggle from './token-limit-toggle';
 import styles from './styles.css.js';
 import { TokenListProps } from './interfaces';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import clsx from 'clsx';
+import { useTokenFocusController } from './token-focus-controller';
 
 export default function TokenList<Item>({
   items,
@@ -17,7 +18,9 @@ export default function TokenList<Item>({
   limit,
   after,
   i18nStrings,
+  removedItemIndex,
 }: TokenListProps<Item>) {
+  const tokenListRef = useTokenFocusController({ removedItemIndex });
   const controlId = useUniqueId();
 
   const [expanded, setExpanded] = useState(false);
@@ -41,7 +44,7 @@ export default function TokenList<Item>({
 
   if (alignment === 'inline') {
     return (
-      <div className={clsx(styles.root, styles.horizontal)}>
+      <div ref={tokenListRef} className={clsx(styles.root, styles.horizontal)}>
         {hasItems && (
           <ul id={controlId} className={styles.list}>
             {visibleItems.map((item, itemIndex) => (
@@ -65,7 +68,7 @@ export default function TokenList<Item>({
   }
 
   return (
-    <div className={clsx(styles.root, styles.vertical)}>
+    <div ref={tokenListRef} className={clsx(styles.root, styles.vertical)}>
       {hasVisibleItems && (
         <ul id={controlId} className={clsx(styles.list, styles[alignment])}>
           {visibleItems.map((item, itemIndex) => (
