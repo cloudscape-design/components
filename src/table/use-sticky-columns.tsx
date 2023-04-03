@@ -103,11 +103,18 @@ export const useStickyColumns = ({
     setIsStuckToTheRight(right);
   }, [cellWidths, setIsStuckToTheLeft, setIsStuckToTheRight, wrapperRefObject, tableLeftPadding, tableRightPadding]);
 
+  useLayoutEffect(() => {
+    if (!rightSentinelRef.current || !tableRefObject.current) {
+      return;
+    }
+    const rightSentinel = rightSentinelRef.current as HTMLDivElement;
+    rightSentinel.style.left = getComputedStyle(tableRefObject.current).width;
+  }, [tableRefObject, cellWidths]);
+
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
     const leftSentinel = leftSentinelRef?.current;
     const rightSentinel = rightSentinelRef?.current;
-
     const table = tableRefObject?.current;
     if (!wrapper || !table || !stickyColumns || !leftSentinel || !rightSentinel) {
       return;

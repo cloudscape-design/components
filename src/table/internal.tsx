@@ -306,6 +306,7 @@ const InternalTable = forwardRef(
             {...wrapperProps}
             {...focusVisibleProps}
           >
+            <div className={styles['sentinel-left']} ref={leftSentinelRef} />
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
                 <span>{renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}</span>
@@ -324,7 +325,6 @@ const InternalTable = forwardRef(
               aria-label={ariaLabels?.tableLabel}
               aria-rowcount={totalItemsCount ? totalItemsCount + 1 : -1}
             >
-              <div className={styles['sentinel-left']} ref={leftSentinelRef} />
               <Thead
                 ref={theadRef}
                 hidden={stickyHeader}
@@ -467,9 +467,9 @@ const InternalTable = forwardRef(
                   })
                 )}
               </tbody>
-              <div className={styles['sentinel-right']} ref={rightSentinelRef} />
             </table>
             {resizableColumns && <ResizeTracker />}
+            <div className={styles['sentinel-right']} ref={rightSentinelRef} />
           </div>
           <StickyScrollbar
             ref={scrollbarRef}
