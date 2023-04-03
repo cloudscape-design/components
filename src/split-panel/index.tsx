@@ -21,6 +21,8 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { getLimitedValue } from './utils/size-utils';
 import { Transition } from '../internal/components/transition';
+import { ButtonProps } from '../button/interfaces';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
@@ -52,12 +54,12 @@ export default function SplitPanel({
     contentWidthStyles,
     isOpen,
     isForcedPosition,
+    lastInteraction,
     onPreferencesChange,
     onResize,
     onToggle,
     reportSize,
     setSplitPanelToggle,
-    refs,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const focusVisible = useFocusVisible();
@@ -112,16 +114,34 @@ export default function SplitPanel({
   };
 
   const splitPanelRefObject = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
     position,
     splitPanelRef: splitPanelRefObject,
-    handleRef: refs.slider,
+    handleRef,
     setSidePanelWidth,
     setBottomPanelHeight,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
+
+  const toggleRef = useRef<ButtonProps.Ref>(null);
+  const closeRef = useRef<ButtonProps.Ref>(null);
+  const preferencesRef = useRef<ButtonProps.Ref>(null);
+
+  useEffectOnUpdate(() => {
+    switch (lastInteraction?.type) {
+      case 'open':
+        return handleRef.current?.focus();
+      case 'close':
+        return toggleRef.current?.focus();
+      case 'position':
+        return preferencesRef.current?.focus();
+      default:
+        return;
+    }
+  }, [lastInteraction]);
 
   const wrappedChildren = (
     <AppLayoutContext.Provider
@@ -152,7 +172,7 @@ export default function SplitPanel({
               onClick={() => setPreferencesOpen(true)}
               formAction="none"
               ariaLabel={i18nStrings.preferencesTitle}
-              ref={refs.preferences}
+              ref={preferencesRef}
             />
             <span className={styles.divider} />
           </>
@@ -168,6 +188,7 @@ export default function SplitPanel({
             onClick={onToggle}
             formAction="none"
             ariaLabel={i18nStrings.closeButtonAriaLabel}
+            ref={closeRef}
             ariaExpanded={isOpen}
           />
         ) : position === 'side' ? null : (
@@ -177,7 +198,7 @@ export default function SplitPanel({
             variant="icon"
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
-            ref={refs.toggle}
+            ref={toggleRef}
             ariaExpanded={isOpen}
           />
         )}
@@ -187,7 +208,7 @@ export default function SplitPanel({
 
   const resizeHandle = (
     <div
-      ref={refs.slider}
+      ref={handleRef}
       role="slider"
       tabIndex={0}
       aria-label={i18nStrings.resizeHandleAriaLabel}
@@ -257,7 +278,7 @@ export default function SplitPanel({
               cappedSize={cappedSize}
               onToggle={onToggle}
               i18nStrings={i18nStrings}
-              toggleRef={refs.toggle}
+              toggleRef={toggleRef}
               header={wrappedHeader}
               panelHeaderId={panelHeaderId}
             >

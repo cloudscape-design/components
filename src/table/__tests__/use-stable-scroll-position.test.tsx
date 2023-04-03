@@ -36,12 +36,7 @@ const TestComponent = () => {
 };
 
 describe('useStableScrollPosition', () => {
-  beforeEach(() => {
-    document.body.scrollLeft = 0;
-    document.body.scrollTop = 0;
-  });
-
-  it('does not scroll if active element is not set', () => {
+  it('works with document.body if no scrollable parent exists', () => {
     const emptyRef = React.createRef<HTMLTableCellElement>();
     const { result } = renderHook(() => useStableScrollPosition(emptyRef));
     document.body.scrollLeft = 100;
@@ -50,8 +45,12 @@ describe('useStableScrollPosition', () => {
     document.body.scrollLeft = 0;
     document.body.scrollTop = 0;
     result.current.restoreScrollPosition();
-    expect(document.body.scrollLeft).toBe(0);
-    expect(document.body.scrollTop).toBe(0);
+    expect(document.body.scrollLeft).toBe(100);
+    expect(document.body.scrollTop).toBe(200);
+
+    // cleanup
+    document.body.scrollLeft = 0;
+    document.body.scrollTop = 0;
   });
 
   it('works with nearest scrollable parent', () => {

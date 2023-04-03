@@ -1,6 +1,12 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Descartar alerta"
+  "alert": { "dismissAriaLabel": "Descartar alerta" },
+  "autosuggest": {
+    "stepNumberLabel": "Etapa {stepNumber}",
+    "collapsedStepsLabel": "Etapa {stepNumber} de {stepsCount}",
+    "cancelButton": "Cancelar",
+    "previousButton": "Anterior",
+    "nextButton": "Próximo",
+    "optional": "opcional"
   },
   "app-layout": {
     "ariaLabels.navigation": "Navegação lateral",
@@ -11,11 +17,7 @@
     "ariaLabels.toolsClose": "Abrir o painel de ajuda",
     "ariaLabels.toolsToggle": "Fechar o painel de ajuda"
   },
-  "autosuggest": {
-    "errorIconAriaLabel": "Erro",
-    "selectedAriaLabel": "Selecionado"
-  },
-  "calendar": {
+  "date-picker": {
     "nextMonthAriaLabel": "Próximo mês",
     "previousMonthAriaLabel": "Mês anterior",
     "todayAriaLabel": "Hoje"
@@ -30,26 +32,16 @@
     "i18nStrings.successIconAriaLabel": "Com êxito",
     "i18nStrings.warningIconAriaLabel": "Aviso"
   },
-  "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Erro"
-  },
-  "form": {
-    "errorIconAriaLabel": "Erro"
-  },
-  "input": {
-    "clearAriaLabel": "Limpar"
-  },
-  "modal": {
-    "closeAriaLabel": "Fechar modal"
-  },
+  "form": { "errorIconAriaLabel": "Erro" },
+  "form-field": { "i18nStrings.errorIconAriaLabel": "Erro" },
+  "input": { "clearAriaLabel": "Limpar" },
+  "modal": { "closeAriaLabel": "Fechar modal" },
   "pagination": {
     "ariaLabels.nextPageLabel": "Próxima página",
     "ariaLabels.pageLabel": "Página {pageNumber} de todas as páginas",
     "ariaLabels.previousPageLabel": "Página anterior"
   },
-  "popover": {
-    "dismissAriaLabel": "Fechar pop-over"
-  },
+  "popover": { "dismissAriaLabel": "Fechar pop-over" },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Todas as propriedades",
     "i18nStrings.applyActionText": "Aplicar",
@@ -76,16 +68,6 @@
     "i18nStrings.valueText": "Valor",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remover filtro, {token__propertyKey} igual a {token__value}} not_equals {Remover filtro, {token__propertyKey} diferente de {token__value}} greater_than {Remover filtro, {token__propertyKey} é maior que {token__value}} greater_than_equal {Remover filtro, {token__propertyKey} é maior que ou igual a {token__value}} less_than {Remover filtro, {token__propertyKey} é menor que {token__value}} less_than_equal {Remover filtro, {token__propertyKey} é menor que ou igual a {token__value}} contains {Remove filtro, {token__propertyKey} contém {token__value}} not_contains {Remover filtro, {token__propertyKey} não contém {token__value}} other {}}"
   },
-  "select": {
-    "errorIconAriaLabel": "Erro",
-    "selectedAriaLabel": "Selecionado"
-  },
-  "wizard": {
-    "i18nStrings.stepNumberLabel": "Etapa {stepNumber}",
-    "i18nStrings.collapsedStepsLabel": "Etapa {stepNumber} de {stepsCount}",
-    "i18nStrings.cancelButton": "Cancelar",
-    "i18nStrings.previousButton": "Anterior",
-    "i18nStrings.nextButton": "Próximo",
-    "i18nStrings.optional": "opcional"
-  }
+  "select": { "errorIconAriaLabel": "Erro", "selectedAriaLabel": "Selecionado" },
+  "wizard": { "errorIconAriaLabel": "Erro", "selectedAriaLabel": "Selecionado" }
 }

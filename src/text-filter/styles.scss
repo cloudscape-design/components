@@ -23,5 +23,7 @@
   display: inline-block;
   box-sizing: border-box;
   white-space: nowrap;
-  padding-left: awsui.$space-s;
+  &-visible {
+    padding-left: awsui.$space-s;
+  }
 }

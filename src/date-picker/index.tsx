@@ -27,7 +27,6 @@ import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
-import { useLocale } from '../internal/i18n/context.js';
 
 export { DatePickerProps };
 
@@ -55,20 +54,18 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
-      ...restProps
+      ...rest
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('DatePicker');
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
 
-    const contextLocale = useLocale();
-    const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
-
-    const baseProps = getBaseProps(restProps);
+    const baseProps = getBaseProps(rest);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
+    const normalizedLocale = normalizeLocale('DatePicker', locale);
     const focusVisible = useFocusVisible();
-    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(restProps);
+    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);

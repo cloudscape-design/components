@@ -9,13 +9,7 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../../cont
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import InternalInput from '../../../input/internal';
-import {
-  BaseChangeDetail,
-  BaseInputProps,
-  InputAutoCorrect,
-  InputClearLabel,
-  InputKeyEvents,
-} from '../../../input/interfaces';
+import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputKeyEvents } from '../../../input/interfaces';
 import { AutosuggestProps } from '../../../autosuggest/interfaces';
 import { ExpandToViewport } from '../dropdown/interfaces';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
@@ -28,12 +22,12 @@ export interface AutosuggestInputProps
     BaseInputProps,
     InputAutoCorrect,
     InputKeyEvents,
-    InputClearLabel,
     FormFieldValidationControlProps,
     ExpandToViewport,
     InternalBaseComponentProps {
   ariaControls?: string;
   ariaActivedescendant?: string;
+  clearAriaLabel?: string;
   dropdownExpanded?: boolean;
   dropdownContentKey?: string;
   dropdownContentFocusable?: boolean;

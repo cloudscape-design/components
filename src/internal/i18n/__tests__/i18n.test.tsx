@@ -3,8 +3,52 @@
 
 import React from 'react';
 import { render } from '@testing-library/react';
-import { I18nProvider, I18nProviderProps } from '../../../../lib/components/internal/i18n';
-import { MESSAGES, TestComponent } from './test-component';
+import { useInternalI18n } from '../context';
+import { I18nProvider, I18nProviderProps } from '../provider';
+
+interface TestComponentProps {
+  topLevelString?: string;
+  topLevelFunction?: (type: 'function') => string;
+  nested?: {
+    nestedString?: string;
+    nestedFunction?: (props: { type: 'function' }) => string;
+  };
+}
+
+const MESSAGES: I18nProviderProps.Messages = {
+  '@cloudscape-design/components': {
+    en: {
+      'test-component': {
+        topLevelString: 'top level string',
+        topLevelFunction: 'top level {type}',
+        'nested.nestedString': 'nested string',
+        'nested.nestedFunction': 'nested {type}',
+      },
+    },
+  },
+};
+
+function TestComponent(props: TestComponentProps) {
+  const i18n = useInternalI18n('test-component');
+
+  return (
+    <ul>
+      <li id="top-level-string">{i18n('topLevelString', props.topLevelString)}</li>
+      <li id="top-level-function">
+        {i18n('topLevelFunction', props.topLevelFunction, format => type => format({ type }))?.('function')}
+      </li>
+
+      <li id="nested-string">{i18n('nested.nestedString', props.nested?.nestedString)}</li>
+      <li id="nested-function">
+        {i18n(
+          'nested.nestedFunction',
+          props.nested?.nestedFunction,
+          format => props => format(props)
+        )?.({ type: 'function' })}
+      </li>
+    </ul>
+  );
+}
 
 describe('with custom "lang" on <html>', () => {
   afterEach(() => {
@@ -39,17 +83,6 @@ describe('with custom "lang" on <html>', () => {
 it('provides top-level and dot-notation values for static strings', () => {
   const { container } = render(
     <I18nProvider messages={[MESSAGES]} locale="en">
-      <TestComponent />
-    </I18nProvider>
-  );
-
-  expect(container.querySelector('#top-level-string')).toHaveTextContent('top level string');
-  expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
-});
-
-it('falls back to "en" if no locale is provided', () => {
-  const { container } = render(
-    <I18nProvider messages={[MESSAGES]}>
       <TestComponent />
     </I18nProvider>
   );

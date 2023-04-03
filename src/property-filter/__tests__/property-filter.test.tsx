@@ -406,16 +406,9 @@ describe('property filter parts', () => {
   });
 
   describe('count text', () => {
-    test('is not displayed when count text is empty', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
-        countText: '',
-        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
-      });
-      expect(wrapper.findResultsCount()).toBe(null);
-    });
-    test('is not displayed when there are no filtering tokens', () => {
+    test('is hidden when there are no filtering tokens', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ countText: '5 matches' });
-      expect(wrapper.findResultsCount()).toBe(null);
+      expect(wrapper.findResultsCount()!.getElement()).toBeEmptyDOMElement();
     });
     test('is visible when there is at least 1 token', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -725,11 +718,11 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()!).toHaveLength(1);
       expect(wrapper.findTokens()![0].findLabel().getElement()).toHaveTextContent('string : first');
       // show more
-      act(() => wrapper.findTokenToggle()!.click());
+      act(() => wrapper.findTokenToggle()!.find('button')!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer);
       expect(wrapper.findTokens()!).toHaveLength(2);
       // show fewer
-      act(() => wrapper.findTokenToggle()!.click());
+      act(() => wrapper.findTokenToggle()!.find('button')!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
       expect(wrapper.findTokens()!).toHaveLength(1);
     });

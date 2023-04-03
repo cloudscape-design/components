@@ -1,11 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useAppLayoutInternals } from './context';
-import { SplitPanelContextProvider, SplitPanelContextProps } from '../../internal/context/split-panel-context';
+import {
+  SplitPanelContextProvider,
+  SplitPanelContextProps,
+  SplitPanelLastInteraction,
+} from '../../internal/context/split-panel-context';
 import styles from './styles.css.js';
 import { AppLayoutProps } from '../interfaces';
+import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
 
@@ -26,10 +31,16 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     splitPanelPosition,
     splitPanelSize,
     setSplitPanelToggle,
-    splitPanelRefs,
     headerHeight,
     footerHeight,
   } = useAppLayoutInternals();
+
+  const [splitPanelLastInteraction, setSplitPanelLastInteraction] = useState<undefined | SplitPanelLastInteraction>();
+  useEffectOnUpdate(
+    () => setSplitPanelLastInteraction(isSplitPanelOpen ? { type: 'open' } : { type: 'close' }),
+    [isSplitPanelOpen]
+  );
+  useEffectOnUpdate(() => setSplitPanelLastInteraction({ type: 'position' }), [splitPanelPosition]);
 
   const context: SplitPanelContextProps = {
     bottomOffset: 0,
@@ -53,7 +64,7 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
     size: splitPanelSize || 0,
     topOffset: 0,
     setSplitPanelToggle,
-    refs: splitPanelRefs,
+    lastInteraction: splitPanelLastInteraction,
   };
 
   return <SplitPanelContextProvider value={context}>{children}</SplitPanelContextProvider>;

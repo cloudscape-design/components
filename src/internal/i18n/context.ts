@@ -11,19 +11,11 @@ export interface FormatFunction {
   <T>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T>): T;
 }
 
-export interface InternalI18nContextProps {
-  locale: string | null;
-  format: FormatFunction;
+function defaultFormatFunction<T>(_namespace: string, _component: string, _key: string, provided: T) {
+  return provided;
 }
 
-export const InternalI18nContext = React.createContext<InternalI18nContextProps>({
-  locale: null,
-  format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
-});
-
-export function useLocale(): string | null {
-  return useContext(InternalI18nContext).locale;
-}
+export const InternalI18nContext = React.createContext<FormatFunction>(defaultFormatFunction);
 
 export interface ComponentFormatFunction {
   (key: string, provided: string): string;
@@ -32,7 +24,10 @@ export interface ComponentFormatFunction {
 }
 
 export function useInternalI18n(componentName: string): ComponentFormatFunction {
-  const { format } = useContext(InternalI18nContext);
+  // HACK: useContext should return the default value if a provider
+  // isn't present, but some consumers mock out React.useContext globally
+  // in their tests, so we can't rely on this assumption.
+  const format = useContext(InternalI18nContext) || defaultFormatFunction;
   return <T>(key: string, provided: T, customHandler?: CustomHandler<T>) => {
     return format<T>('@cloudscape-design/components', componentName, key, provided, customHandler);
   };

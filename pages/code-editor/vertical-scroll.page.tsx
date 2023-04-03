@@ -19,6 +19,7 @@ export default function () {
     import('ace-builds').then(ace => {
       ace.config.set('basePath', './ace/');
       ace.config.set('useStrictCSP', true);
+      ace.config.set('loadWorkerFromBlob', false);
       setAce(ace);
       setLoading(false);
     });

@@ -24,13 +24,13 @@ import {
   trackEndWizard,
   trackCancel,
 } from './internal/analytics';
-import { useInternalI18n } from '../internal/i18n/context';
 
 export { WizardProps };
 
 export default function Wizard({
   steps,
   activeStepIndex: controlledActiveStepIndex,
+  i18nStrings,
   isLoadingNextStep = false,
   allowSkipTo = false,
   secondaryActions,
@@ -80,17 +80,6 @@ export default function Wizard({
     } else {
       navigationEvent(actualActiveStepIndex + 1, 'next');
     }
-  };
-
-  const i18n = useInternalI18n('wizard');
-  const i18nStrings: WizardProps.I18nStrings = {
-    ...rest.i18nStrings,
-    stepNumberLabel: i18n('i18nStrings.stepNumberLabel', rest.i18nStrings.stepNumberLabel),
-    collapsedStepsLabel: i18n('i18nStrings.collapsedStepsLabel', rest.i18nStrings.collapsedStepsLabel),
-    cancelButton: i18n('i18nStrings.cancelButton', rest.i18nStrings.cancelButton),
-    previousButton: i18n('i18nStrings.previousButton', rest.i18nStrings.previousButton),
-    nextButton: i18n('i18nStrings.nextButton', rest.i18nStrings.nextButton),
-    optional: i18n('i18nStrings.optional', rest.i18nStrings.optional),
   };
 
   if (activeStepIndex && activeStepIndex >= steps.length) {

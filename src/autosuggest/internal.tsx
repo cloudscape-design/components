@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { Ref, useImperativeHandle, useRef } from 'react';
-import clsx from 'clsx';
 
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -18,6 +17,7 @@ import {
   NonCancelableCustomEvent,
 } from '../internal/events';
 import { BaseChangeDetail } from '../input/interfaces';
+import styles from './styles.css.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -26,9 +26,7 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useFormFieldContext } from '../contexts/form-field';
-import { useInternalI18n } from '../internal/i18n/context';
-
-import styles from './styles.css.js';
+import clsx from 'clsx';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
@@ -58,6 +56,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     virtualScroll,
     expandToViewport,
     onSelect,
+    selectedAriaLabel,
     renderHighlightedAriaLive,
     __internalRootRef,
     ...restProps
@@ -75,10 +74,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     }),
     []
   );
-
-  const i18n = useInternalI18n('autosuggest');
-  const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
-  const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
 
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
@@ -159,13 +154,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
-  const dropdownStatus = useDropdownStatus({
-    ...props,
-    isEmpty,
-    recoveryText,
-    errorIconAriaLabel,
-    onRecoveryClick: handleRecoveryClick,
-  });
+  const dropdownStatus = useDropdownStatus({ ...props, isEmpty, recoveryText, onRecoveryClick: handleRecoveryClick });
 
   return (
     <AutosuggestInput

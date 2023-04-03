@@ -71,7 +71,7 @@ export default function WizardForm({
             isVisualRefresh && isMobile && styles['collapsed-steps-extra-padding']
           )}
         >
-          {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
+          {i18nStrings.collapsedStepsLabel(activeStepIndex + 1, steps.length)}
         </div>
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
           <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef} {...focusVisible}>

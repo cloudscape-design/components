@@ -1,6 +1,12 @@
 {
-  "alert": {
-    "dismissAriaLabel": "Warnung verwerfen"
+  "alert": { "dismissAriaLabel": "Warnung verwerfen" },
+  "autosuggest": {
+    "stepNumberLabel": "Schritt {stepNumber}",
+    "collapsedStepsLabel": "Schritt {stepNumber} von {stepsCount}",
+    "cancelButton": "Abbrechen",
+    "previousButton": "Zurück",
+    "nextButton": "Weiter",
+    "optional": "optional"
   },
   "app-layout": {
     "ariaLabels.navigation": "Seitennavigation",
@@ -11,11 +17,7 @@
     "ariaLabels.toolsClose": "Hilfebereich öffnen",
     "ariaLabels.toolsToggle": "Hilfebereich schließen"
   },
-  "autosuggest": {
-    "errorIconAriaLabel": "Fehler",
-    "selectedAriaLabel": "Ausgewählt"
-  },
-  "calendar": {
+  "date-picker": {
     "nextMonthAriaLabel": "Nächster Monat",
     "previousMonthAriaLabel": "Vorheriger Monat",
     "todayAriaLabel": "Heute"
@@ -30,26 +32,16 @@
     "i18nStrings.successIconAriaLabel": "Erfolg",
     "i18nStrings.warningIconAriaLabel": "Warnung"
   },
-  "form-field": {
-    "i18nStrings.errorIconAriaLabel": "Fehler"
-  },
-  "form": {
-    "errorIconAriaLabel": "Fehler"
-  },
-  "input": {
-    "clearAriaLabel": "Löschen"
-  },
-  "modal": {
-    "closeAriaLabel": "Modal schließen"
-  },
+  "form": { "errorIconAriaLabel": "Fehler" },
+  "form-field": { "i18nStrings.errorIconAriaLabel": "Fehler" },
+  "input": { "clearAriaLabel": "Löschen" },
+  "modal": { "closeAriaLabel": "Modal schließen" },
   "pagination": {
     "ariaLabels.nextPageLabel": "Nächste Seite",
     "ariaLabels.pageLabel": "Seite {pageNumber} aller Seiten",
     "ariaLabels.previousPageLabel": "Vorherige Seite"
   },
-  "popover": {
-    "dismissAriaLabel": "Popover schließen"
-  },
+  "popover": { "dismissAriaLabel": "Popover schließen" },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Alle Eigenschaften",
     "i18nStrings.applyActionText": "Anwenden",
@@ -76,16 +68,6 @@
     "i18nStrings.valueText": "Wert",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Filter entfernen, {token__propertyKey} ist gleich {token__value}} not_equals {Filter entfernen, {token__propertyKey} ist nicht gleich {token__value}} greater_than {Filter entfernen, {token__propertyKey} ist größer als {token__value}} greater_than_equal {Filter entfernen, {token__propertyKey} ist größer oder gleich {token__value}} less_than {Filter entfernen, {token__propertyKey} ist kleiner als {token__value}} less_than_equal {Filter entfernen, {token__propertyKey} ist kleiner als oder gleich {token__value}} contains {Filter entfernen, {token__propertyKey} enthält {token__value}} not_contains {Filter entfernen, {token__propertyKey} enthält nicht {token__value}} other {}}"
   },
-  "select": {
-    "errorIconAriaLabel": "Fehler",
-    "selectedAriaLabel": "Ausgewählt"
-  },
-  "wizard": {
-    "i18nStrings.stepNumberLabel": "Schritt {stepNumber}",
-    "i18nStrings.collapsedStepsLabel": "Schritt {stepNumber} von {stepsCount}",
-    "i18nStrings.cancelButton": "Abbrechen",
-    "i18nStrings.previousButton": "Zurück",
-    "i18nStrings.nextButton": "Weiter",
-    "i18nStrings.optional": "optional"
-  }
+  "select": { "errorIconAriaLabel": "Fehler", "selectedAriaLabel": "Ausgewählt" },
+  "wizard": { "errorIconAriaLabel": "Fehler", "selectedAriaLabel": "Ausgewählt" }
 }

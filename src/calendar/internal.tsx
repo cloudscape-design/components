@@ -17,7 +17,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { getBaseDate } from './utils/navigation';
 import { useDateCache } from '../internal/hooks/use-date-cache/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
-import { useInternalI18n } from '../internal/i18n/context.js';
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -29,6 +28,9 @@ export default function Calendar({
   ariaLabel,
   ariaLabelledby,
   ariaDescribedby,
+  todayAriaLabel,
+  nextMonthAriaLabel,
+  previousMonthAriaLabel,
   onChange,
   __internalRootRef,
   ...rest
@@ -51,11 +53,6 @@ export default function Calendar({
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
   const headingId = useUniqueId('calendar-heading');
-
-  const i18n = useInternalI18n('calendar');
-  const nextMonthAriaLabel = i18n('nextMonthAriaLabel', rest.nextMonthAriaLabel);
-  const previousMonthAriaLabel = i18n('previousMonthAriaLabel', rest.previousMonthAriaLabel);
-  const todayAriaLabel = i18n('todayAriaLabel', rest.todayAriaLabel);
 
   // Update displayed date if value changes.
   useEffect(() => {

@@ -39,7 +39,7 @@ export interface GridProps {
   onFocusDate: (date: null | Date) => void;
   onChangeMonth: (date: Date) => void;
   startOfWeek: DayIndex;
-  todayAriaLabel?: string;
+  todayAriaLabel: string;
   selectedDate: Date | null;
   ariaLabelledby: string;
 }

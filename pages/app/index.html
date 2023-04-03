@@ -19,9 +19,9 @@
       if (location.hash.includes('theming')) {
         csp['style-src'] = "'unsafe-inline' 'self'";
       }
+      // Custom CSP required for how we load SVGs in CodeEditor component
       if (location.hash.includes('code-editor')) {
-        csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
-        csp['img-src'] = 'data:'; // this component contains icons loaded this way
+        csp['img-src'] = 'data:';
       }
 
       const cspString = Object.entries(csp)

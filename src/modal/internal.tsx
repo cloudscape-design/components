@@ -22,7 +22,6 @@ import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
 import { useInternalI18n } from '../internal/i18n/context';
-import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
@@ -96,10 +95,6 @@ export default function InternalModal({
     }
   };
 
-  // We use an empty div element at the end of the content slot as a sentinel
-  // to detect when the user has scrolled to the bottom.
-  const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
-
   return (
     <Portal container={modalRoot}>
       <FormFieldContext.Provider value={{}}>
@@ -147,9 +142,8 @@ export default function InternalModal({
                 </div>
                 <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
                   {children}
-                  <div ref={stickySentinelRef} />
                 </div>
-                {footer && <div className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>{footer}</div>}
+                {footer && <div className={styles.footer}>{footer}</div>}
               </div>
             </div>
           </FocusLock>

@@ -47,6 +47,7 @@ sdsdasd
     import('ace-builds').then(ace => {
       ace.config.set('basePath', './ace/');
       ace.config.set('useStrictCSP', true);
+      ace.config.set('loadWorkerFromBlob', false);
       this.setState({ ace, loading: false });
     });
   }

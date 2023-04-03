@@ -131,26 +131,7 @@ const TagEditor = React.forwardRef(
           };
         } else {
           keyDirtyStateRef.current.splice(detail.itemIndex, 1);
-          const nextKey = keyInputRefs.current[detail.itemIndex + 1];
-          if (nextKey) {
-            // if next key is present, focus _current_ key which will be replaced by next after state update
-            keyInputRefs.current[detail.itemIndex]?.focus();
-          } else if (detail.itemIndex > 0) {
-            // otherwise focus previous key/value/undo button
-            const previousIsExisting = tags[detail.itemIndex - 1].existing;
-            if (previousIsExisting) {
-              if (tags[detail.itemIndex - 1].markedForRemoval) {
-                undoButtonRefs.current[detail.itemIndex - 1]?.focus();
-              } else {
-                valueInputRefs.current[detail.itemIndex - 1]?.focus();
-              }
-            } else {
-              keyInputRefs.current[detail.itemIndex - 1]?.focus();
-            }
-          } else {
-            // or the 'add' button
-            attributeEditorRef.current?.focusAddButton();
-          }
+          keyInputRefs.current[detail.itemIndex]?.focus();
         }
       }
     );

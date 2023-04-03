@@ -3,8 +3,6 @@
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../property-filter/styles.selectors.js';
-import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
-import textFilterStyles from '../../../text-filter/styles.selectors.js';
 
 import AutosuggestWrapper from '../autosuggest';
 
@@ -14,7 +12,7 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   static rootSelector = styles.root;
 
   findResultsCount(): ElementWrapper {
-    return this.findByClassName(textFilterStyles.results)!;
+    return this.findByClassName(styles.results)!;
   }
 
   findTokens(): Array<FilteringTokenWrapper> {
@@ -26,7 +24,7 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
    * Returns the button that toggles if the tokens above `tokenLimit` are visible.
    */
   findTokenToggle(): ElementWrapper | null {
-    return this.findByClassName(tokenListSelectors.toggle);
+    return this.findByClassName(styles['toggle-collapsed']);
   }
   /**
    * Returns the button that removes all current tokens.

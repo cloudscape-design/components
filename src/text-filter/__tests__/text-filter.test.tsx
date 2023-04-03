@@ -94,14 +94,14 @@ test('has autocomplete turned off', () => {
 });
 
 describe('countText', () => {
-  test('not displayed if no value was given', () => {
+  test('is empty if no value was given', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
-    expect(wrapper.findResultsCount()).toBe(null);
+    expect(wrapper.findResultsCount().getElement().textContent).toEqual('');
   });
 
   test('not displayed when filtering text is empty', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" countText="0 matches" />);
-    expect(wrapper.findResultsCount()).toBe(null);
+    expect(wrapper.findResultsCount().getElement().textContent).toEqual('');
   });
 
   test('displays the text when all conditions met', () => {

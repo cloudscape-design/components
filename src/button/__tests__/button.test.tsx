@@ -340,13 +340,6 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
   });
-  describe('form property', () => {
-    test('should have form property when set', () => {
-      const formId = 'form-id';
-      const wrapper = renderButton({ form: formId });
-      expect(wrapper.getElement()).toHaveAttribute('form', formId);
-    });
-  });
 
   describe('button links', () => {
     test('uses an a element if an href is provided', () => {

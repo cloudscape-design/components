@@ -2,17 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
+import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { FocusControlRefs } from '../utils/use-focus-control';
 
 export interface DesktopDrawerProps {
   contentClassName: string;
   toggleClassName: string;
   closeClassName: string;
-  toggleRefs: FocusControlRefs;
+  toggleRefs: {
+    toggle: React.Ref<ButtonProps.Ref>;
+    close: React.Ref<ButtonProps.Ref>;
+  };
   width: number;
   topOffset: number | undefined;
   bottomOffset: number | undefined;

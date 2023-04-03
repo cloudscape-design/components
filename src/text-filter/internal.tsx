@@ -9,8 +9,11 @@ import { fireNonCancelableEvent } from '../internal/events';
 import styles from './styles.css.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { TextFilterProps } from './interfaces';
+import LiveRegion from '../internal/components/live-region';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { SearchResults } from './search-results';
+
+// Debounce delay for live region (based on testing with VoiceOver)
+const LIVE_REGION_DELAY = 2000;
 
 type InternalTextFilterProps = TextFilterProps & InternalBaseComponentProps;
 
@@ -34,7 +37,7 @@ const InternalTextFilter = React.forwardRef(
     const inputRef = useRef<HTMLInputElement>(null);
     useForwardFocus(ref, inputRef);
 
-    const searchResultsId = useUniqueId('text-filter-search-results');
+    const countTextId = useUniqueId('text-filter');
     const showResults = filteringText && countText && !disabled;
 
     return (
@@ -48,12 +51,16 @@ const InternalTextFilter = React.forwardRef(
           value={filteringText}
           disabled={disabled}
           autoComplete={false}
-          ariaDescribedby={showResults ? searchResultsId : undefined}
+          ariaDescribedby={countTextId}
           clearAriaLabel={filteringClearAriaLabel}
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+        <span className={clsx(styles.results, showResults && styles['results-visible'])}>
+          <LiveRegion delay={LIVE_REGION_DELAY} visible={true}>
+            <span id={countTextId}>{showResults ? countText : ''}</span>
+          </LiveRegion>
+        </span>
       </div>
     );
   }

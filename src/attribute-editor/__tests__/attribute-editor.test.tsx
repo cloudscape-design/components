@@ -386,11 +386,6 @@ describe('Attribute Editor', () => {
         expect(wrapper.findRow(row)!.findRemoveButton()!.getElement()).not.toHaveFocus();
       }
     });
-
-    it('can focus add button', () => {
-      ref.focusAddButton();
-      expect(wrapper.findAddButton().getElement()).toHaveFocus();
-    });
   });
 
   describe('a11y', () => {

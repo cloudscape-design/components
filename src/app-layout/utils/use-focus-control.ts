@@ -1,16 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { RefObject, useCallback, useEffect, useRef } from 'react';
+import { RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 
-export interface FocusControlRefs {
-  toggle: RefObject<ButtonProps.Ref>;
-  close: RefObject<ButtonProps.Ref>;
-}
-
-interface FocusControlState {
-  refs: FocusControlRefs;
-  setFocus: (force?: boolean) => void;
+export interface FocusControlState {
+  refs: {
+    toggle: RefObject<ButtonProps.Ref>;
+    close: RefObject<ButtonProps.Ref>;
+  };
+  setFocus: () => void;
   loseFocus: () => void;
 }
 
@@ -20,15 +18,15 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
     close: useRef<ButtonProps.Ref>(null),
   };
   const previousFocusedElement = useRef<HTMLElement>();
-  const shouldFocus = useRef(false);
 
-  const doFocus = () => {
-    if (!shouldFocus.current) {
+  const setFocus = useCallback(() => {
+    // due to mounting/remounting, this hook gets called multiple times for a single change,
+    // so we ignore any calls where the refs are undefined
+    if (!(refs.toggle.current || refs.close.current)) {
       return;
     }
     if (isOpen) {
-      previousFocusedElement.current =
-        document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
+      previousFocusedElement.current = document.activeElement as HTMLElement;
       refs.close.current?.focus();
     } else {
       if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
@@ -38,25 +36,14 @@ export function useFocusControl(isOpen: boolean, restoreFocus = false): FocusCon
         refs.toggle.current?.focus();
       }
     }
-    shouldFocus.current = false;
-  };
-
-  // We explictly want this effect to run when only `isOpen` changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(doFocus, [isOpen]);
+  }, [isOpen, restoreFocus, refs.close, refs.toggle]);
 
   const loseFocus = useCallback(() => {
     previousFocusedElement.current = undefined;
   }, []);
 
-  return {
-    refs,
-    setFocus: force => {
-      shouldFocus.current = true;
-      if (force && isOpen) {
-        doFocus();
-      }
-    },
-    loseFocus,
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(setFocus, [isOpen, restoreFocus]);
+
+  return { refs, setFocus, loseFocus };
 }
