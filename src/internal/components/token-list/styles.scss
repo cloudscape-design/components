@@ -10,20 +10,35 @@
 .root {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  gap: awsui.$space-xs;
+  gap: awsui.$space-scaled-xs;
+
+  &.horizontal {
+    gap: awsui.$space-xs;
+    flex-direction: row;
+  }
+  &.vertical {
+    flex-direction: column;
+  }
 }
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: awsui.$space-xs;
-}
-.list-horizontal {
-  flex-direction: row;
-}
-.list-vertical {
-  flex-direction: column;
+  display: contents;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &.horizontal,
+  &.vertical {
+    display: flex;
+    flex-wrap: wrap;
+    gap: awsui.$space-xs;
+  }
+  &.horizontal {
+    flex-direction: row;
+  }
+  &.vertical {
+    flex-direction: column;
+  }
 }
 
 .list-item {
