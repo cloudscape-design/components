@@ -13,6 +13,7 @@
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
+    gap: awsui.$space-xs;
     flex-direction: row;
   }
   &.vertical {
