@@ -17,7 +17,7 @@ interface TabButtonProps {
   tabIndex?: number;
   ariaHidden?: boolean;
   ariaLabel?: string;
-  paneId: string;
+  paneId?: string;
   isRefresh: boolean;
 
   className: string;
