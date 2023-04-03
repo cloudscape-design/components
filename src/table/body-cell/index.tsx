@@ -80,13 +80,13 @@ function TableCellEditable<ItemType>({
         <>
           {column.cell(item)}
 
+          {successfulEdit && (
+            <span className={styles['body-cell-success']} aria-label="Edit successful" role="img">
+              <Icon name="status-positive" variant="success" />
+            </span>
+          )}
           <span aria-live="polite" aria-atomic="true">
             <ScreenreaderOnly>{successfulEdit ? 'Edit successful' : ''}</ScreenreaderOnly>
-            {successfulEdit && (
-              <span className={styles['body-cell-success']} aria-hidden="true">
-                <Icon name="status-positive" variant="success" />
-              </span>
-            )}
           </span>
           <span className={styles['body-cell-editor']}>
             <Button
