@@ -11,8 +11,8 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { updateCellWidths } from '../use-sticky-columns';
 import { CellWidths } from '../internal';
+import { GetStickyColumn } from '../use-sticky-columns';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -30,7 +30,6 @@ interface TableHeaderCellProps<ItemType> {
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  visibleColumnsLength: number;
   isStuckToTheRight?: boolean;
   isStuckToTheLeft?: boolean;
   resizableColumns?: boolean;
@@ -42,6 +41,7 @@ interface TableHeaderCellProps<ItemType> {
   tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
   isLastStart?: boolean;
   isLastEnd?: boolean;
+  getStickyColumn: (colIndex: number) => GetStickyColumn;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
@@ -66,14 +66,9 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     resizableColumns,
     onResizeFinish,
     isEditable,
-    isStickyColumn,
-    tableCellRefs,
-    setCellWidths,
-    visibleColumnsLength,
     isStuckToTheLeft,
     isStuckToTheRight,
-    isLastStart,
-    isLastEnd,
+    getStickyColumn,
   } = props;
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -96,7 +91,9 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     }
   };
   const headerId = useUniqueId('table-header-');
-  const isLastColumn = colIndex === visibleColumnsLength - 1;
+  // Sticky columns
+  const { isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } = getStickyColumn(colIndex);
+  console.log({ colIndex, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight });
   return (
     <th
       className={clsx(className, {
@@ -107,10 +104,9 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: !!isStickyColumn,
-        [styles['header-cell-freeze-stuck-right']]: !!isStickyColumn && isLastColumn && isStuckToTheRight,
-        [styles['header-cell-freeze-last-start']]: isStuckToTheLeft && isLastStart,
-        [styles['header-cell-freeze-last-end']]: isStuckToTheRight && isLastEnd,
+        [styles['header-cell-freeze']]: isStickyLeft || isStickyRight,
+        [styles['header-cell-freeze-last-left']]: isStuckToTheLeft && isLastStickyLeft,
+        [styles['header-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={style}
@@ -171,10 +167,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
             onDragMove={newWidth => {
               updateColumn(colIndex, newWidth);
             }}
-            resizeDirection={isLastColumn && isStickyColumn && isStuckToTheRight ? 'left' : 'right'}
             onFinish={() => {
               onResizeFinish();
-              updateCellWidths({ setCellWidths, tableCellRefs });
             }}
             ariaLabelledby={headerId}
             onFocus={() => onFocusedComponentChange?.({ type: 'resizer', col: colIndex })}

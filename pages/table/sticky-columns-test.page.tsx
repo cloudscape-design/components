@@ -167,7 +167,7 @@ export default () => {
           header={<Header>Simple table</Header>}
         /> */}
         <Table
-          selectionType="multi"
+          // selectionType="multi"
           trackBy={item => item.alt}
           stickyColumns={preferences.stickyColumns}
           columnDefinitions={COLUMN_DEFINITIONS}

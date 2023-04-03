@@ -21,35 +21,16 @@ interface StickyColumnParams {
   containerWidth: number | null;
   tableRefObject: React.RefObject<HTMLTableElement>;
   wrapperRefObject: React.RefObject<HTMLDivElement>;
+  isWrapperScrollable: boolean;
 }
 
 export interface GetStickyColumn {
-  isSticky: boolean;
-  isLastStart: boolean;
-  isLastEnd: boolean;
+  isStickyLeft: boolean;
+  isStickyRight: boolean;
+  isLastStickyLeft: boolean;
+  isLastStickyRight: boolean;
   stickyStyles: StickyStyles;
 }
-
-export const updateCellWidths = ({
-  tableCellRefs,
-  setCellWidths,
-}: {
-  tableCellRefs: React.RefObject<HTMLTableCellElement>[];
-  setCellWidths: (cellWidths: CellWidths) => void;
-}) => {
-  let startWidthsArray = tableCellRefs
-    .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
-    .filter(x => x);
-  startWidthsArray = startWidthsArray.map((elem, index) =>
-    startWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
-  );
-  let endWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
-  endWidthsArray = endWidthsArray.filter(x => x).reverse();
-  endWidthsArray = endWidthsArray
-    .map((elem, index) => endWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
-    .reverse();
-  setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
-};
 
 export const useStickyColumns = ({
   visibleColumnsLength,
@@ -58,39 +39,46 @@ export const useStickyColumns = ({
   containerWidth,
   tableRefObject,
   wrapperRefObject,
+  isWrapperScrollable,
 }: StickyColumnParams) => {
+  // Sentinels used for triggering IntersectionObserver and set "stuck" state
   const leftSentinelRef = React.useRef(null);
   const rightSentinelRef = React.useRef(null);
-
-  const tableLeftPadding = tableRefObject.current
-    ? Number(window.getComputedStyle(tableRefObject.current).paddingLeft.slice(0, -2))
-    : 0;
-
-  const tableRightPadding = tableRefObject.current
-    ? Number(window.getComputedStyle(tableRefObject.current).paddingRight.slice(0, -2))
-    : 0;
-  const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
-  const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
-  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
-
   const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
   const [isStuckToTheRight, setIsStuckToTheRight] = useState(false);
 
+  // Compute table paddings
+  const table = tableRefObject.current;
+  const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
+  const tableRightPadding = table ? Number(getComputedStyle(table).paddingRight.slice(0, -2)) : 0;
+
+  const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
+  const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
+
+  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
+
   const isVisualRefresh = useVisualRefresh();
 
+  // Calculate the sum of all sticky columns' widths
   const { start = 0, end = 0 } = stickyColumns || {};
-  const lastStartStickyColumnIndex = start + (hasSelection ? 1 : 0);
-  const lastEndStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
-  const startStickyColumnsWidth = cellWidths?.start[lastStartStickyColumnIndex] ?? 0;
-  const endStickyColumnsWidth = cellWidths?.end[lastEndStickyColumnIndex] ?? 0;
+  const lastLeftStickyColumnIndex = start + (hasSelection ? 1 : 0);
+  const lasRightStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
+  const startStickyColumnsWidth = cellWidths?.start[lastLeftStickyColumnIndex] ?? 0;
+  const endStickyColumnsWidth = cellWidths?.end[lasRightStickyColumnIndex] ?? 0;
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
-
   // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
-  const MINIMUM_SPACE_BESIDES_STICKY_COLUMNS = 148;
+  const MINIMUM_SCROLLABLE_SPACE = 148;
 
   useLayoutEffect(() => {
-    updateCellWidths({ tableCellRefs, setCellWidths });
-  }, [tableCellRefs, setCellWidths]);
+    // Effect to adjust position of the right sentinel, to trigger the IntersectionObserver on the right columns
+    if (!rightSentinelRef.current || !tableRefObject.current) {
+      return;
+    }
+    const rightSentinel = rightSentinelRef.current as HTMLDivElement;
+    const tableWidth = Number(getComputedStyle(tableRefObject.current).width.slice(0, -2));
+    const newSentinelPosition = tableWidth - 2;
+    rightSentinel.style.left = `${newSentinelPosition}px`;
+  }, [tableRefObject, cellWidths]);
 
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
@@ -116,10 +104,11 @@ export const useStickyColumns = ({
     const leftSentinel = leftSentinelRef?.current;
     const rightSentinel = rightSentinelRef?.current;
     const table = tableRefObject?.current;
-    if (!wrapper || !table || !stickyColumns || !leftSentinel || !rightSentinel) {
+    if (!wrapper || !table || !stickyColumns || !leftSentinel || !rightSentinel || shouldDisable) {
       return;
     }
 
+    // Check the scrolling position of the table wrapper to set the initial "stuck" state
     const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
     const left = wrapper.scrollLeft > tableLeftPadding;
     setIsStuckToTheLeft(left);
@@ -133,40 +122,87 @@ export const useStickyColumns = ({
         entry.target === leftSentinel ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
       }
     };
-    const options = {
-      threshold: [0, 1],
-    };
-    const observer = new IntersectionObserver(handleIntersection, options);
+
+    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1] });
+    // Observe left and right sentinels to set "stuck" state
     observer.observe(leftSentinel);
     observer.observe(rightSentinel);
     return () => {
       observer.disconnect();
     };
-  }, [stickyColumns, tableCellRefs, tableRefObject, wrapperRefObject, tableLeftPadding, tableRightPadding]);
+  }, [
+    stickyColumns,
+    tableCellRefs,
+    tableRefObject,
+    wrapperRefObject,
+    tableLeftPadding,
+    tableRightPadding,
+    shouldDisable,
+  ]);
+
+  // useEffect(() => {
+  //   setIsStuckToTheLeft(isStuckToTheLeft => (shouldDisable ? false : isStuckToTheLeft));
+  //   setIsStuckToTheRight(isStuckToTheRight => (shouldDisable ? false : isStuckToTheRight));
+  // }, [shouldDisable]);
+
+  useEffect(() => {
+    // Effect to check the conditions to set the "shouldDisable" sticky columns state
+    const hasNotEnoughSpace =
+      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+    const shouldDisable = !stickyColumns || !isWrapperScrollable || hasNotEnoughSpace;
+    setShouldDisable(shouldDisable);
+    console.log({ shouldDisable });
+  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding, isWrapperScrollable]);
+
+  useEffect(() => {
+    // Add and remove table cell refs
+    setTableCellRefs(tableCellRefs =>
+      [...new Array(visibleColumnsLength + (hasSelection ? 1 : 0))].map(
+        (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
+      )
+    );
+  }, [visibleColumnsLength, hasSelection]);
+
+  const updateCellWidths = React.useCallback(() => {
+    let startWidthsArray = tableCellRefs
+      .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+      .filter(x => x);
+    startWidthsArray = startWidthsArray.map((elem, index) =>
+      startWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
+    );
+    let endWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
+    endWidthsArray = endWidthsArray.filter(x => x).reverse();
+    endWidthsArray = endWidthsArray
+      .map((elem, index) => endWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
+      .reverse();
+    setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
+  }, [tableCellRefs]);
+
+  // useLayoutEffect(() => {
+  //   updateCellWidths();
+  // }, [updateCellWidths]);
 
   const getStickyColumn = (colIndex: number): GetStickyColumn => {
-    const isSticky =
-      colIndex + 1 <= (stickyColumns?.start ?? 0) || colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-    const stickyStyles = isSticky ? getStickyStyles(colIndex) : {};
-    return {
-      isSticky,
-      isLastStart: colIndex + 1 === stickyColumns?.start,
-      isLastEnd: colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0),
-      stickyStyles,
-    };
-  };
+    // if (shouldDisable) {
+    //   return {
+    //     isStickyLeft: false,
+    //     isStickyRight: false,
+    //     isLastStickyLeft: false,
+    //     isLastStickyRight: false,
+    //     stickyStyles: {},
+    //   };
+    // }
 
-  const getStickyStyles = (colIndex: number) => {
-    if (!cellWidths?.start && !cellWidths?.end) {
-      return {};
-    }
-    const isStickyStart = colIndex + 1 <= (stickyColumns?.start ?? 0);
-    const isStickyEnd = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-    const isFirstOrLastStickyColumn = colIndex === 0 || colIndex === visibleColumnsLength - 1;
-    const stickySide = isStickyStart ? 'left' : isStickyEnd ? 'right' : '';
+    const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
+    const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+    const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
+    const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
 
+    // Sticky styles
     let paddingStyle = {};
-    if (isFirstOrLastStickyColumn && isVisualRefresh && !hasSelection) {
+    const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+    const isLastSticky = isLastStickyLeft || isLastStickyRight;
+    if (isLastSticky && isVisualRefresh && !hasSelection) {
       if (stickySide === 'right' && isStuckToTheRight && tableRightPadding) {
         paddingStyle = { paddingRight: `${tableRightPadding}px` };
       }
@@ -175,7 +211,7 @@ export const useStickyColumns = ({
         paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
       }
     }
-    return {
+    const stickyStyles = {
       [stickySide]: `${
         stickySide === 'right'
           ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
@@ -183,24 +219,15 @@ export const useStickyColumns = ({
       }px`,
       ...paddingStyle,
     };
+
+    return {
+      isStickyLeft,
+      isStickyRight,
+      isLastStickyLeft,
+      isLastStickyRight,
+      stickyStyles,
+    };
   };
-
-  useEffect(() => {
-    // Add and remove refs
-    setTableCellRefs(tableCellRefs =>
-      [...new Array(visibleColumnsLength + (hasSelection ? 1 : 0))].map(
-        (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
-      )
-    );
-  }, [visibleColumnsLength, hasSelection]);
-
-  useEffect(() => {
-    const shouldDisable =
-      !stickyColumns ||
-      totalStickySpace + MINIMUM_SPACE_BESIDES_STICKY_COLUMNS + tableLeftPadding >
-        (containerWidth ?? Number.MAX_SAFE_INTEGER);
-    setShouldDisable(shouldDisable);
-  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding]);
 
   return {
     tableCellRefs,
@@ -210,9 +237,10 @@ export const useStickyColumns = ({
     shouldDisableStickyColumns: shouldDisable,
     startStickyColumnsWidth,
     endStickyColumnsWidth,
-    isStuckToTheLeft,
-    isStuckToTheRight,
+    isStuckToTheLeft: shouldDisable ? false : isStuckToTheLeft,
+    isStuckToTheRight: shouldDisable ? false : isStuckToTheLeft,
     leftSentinelRef,
     rightSentinelRef,
+    updateCellWidths,
   };
 };

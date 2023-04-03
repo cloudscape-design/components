@@ -60,6 +60,10 @@ export default function InlineEditorPermutations() {
                     isNextSelected={false}
                     isPrevSelected={false}
                     isSelected={false}
+                    isLastStickyLeft={false}
+                    isLastStickyRight={false}
+                    isStickyLeft={false}
+                    isStickyRight={false}
                     onEditStart={() => {}}
                     onEditEnd={() => {}}
                     wrapLines={false}

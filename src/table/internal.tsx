@@ -186,7 +186,7 @@ const InternalTable = forwardRef(
     const {
       tableCellRefs,
       cellWidths,
-      setCellWidths,
+      updateCellWidths,
       getStickyColumn,
       shouldDisableStickyColumns,
       startStickyColumnsWidth,
@@ -202,9 +202,8 @@ const InternalTable = forwardRef(
       containerWidth,
       tableRefObject,
       wrapperRefObject,
+      isWrapperScrollable,
     });
-
-    const disableStickyColumns = !isWrapperScrollable || shouldDisableStickyColumns;
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -226,16 +225,13 @@ const InternalTable = forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
+          updateCellWidths();
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
-      getStickyColumn: !disableStickyColumns ? getStickyColumn : undefined,
-      tableCellRefs,
-      setCellWidths,
-      cellWidths,
+      getStickyColumn,
       stickyColumns,
-      visibleColumnsLength,
       isStuckToTheRight,
       isStuckToTheLeft,
     };
@@ -395,7 +391,10 @@ const InternalTable = forwardRef(
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
                             ref={tableCellRefs[0]}
-                            isStickyColumn={!disableStickyColumns && (stickyColumns?.start ?? 0) > 0}
+                            isStickyLeft={!shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0}
+                            isStickyRight={false}
+                            isStuckToTheLeft={isStuckToTheLeft}
+                            isStuckToTheRight={isStuckToTheRight}
                             style={(stickyColumns?.start ?? 0) > 0 ? { left: cellWidths.start[0] } : {}}
                           >
                             <SelectionControl
@@ -412,8 +411,8 @@ const InternalTable = forwardRef(
                           const isEditable = !!column.editConfig && !currentEditLoading;
 
                           // Sticky columns
-                          const stickyColumn = getStickyColumn(colIndex);
-                          const { isSticky = false, stickyStyles = {} } = !disableStickyColumns ? stickyColumn : {};
+                          const { stickyStyles, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } =
+                            getStickyColumn(colIndex);
 
                           return (
                             <TableBodyCell
@@ -454,9 +453,10 @@ const InternalTable = forwardRef(
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
                               isVisualRefresh={isVisualRefresh}
-                              stickyColumn={!disableStickyColumns ? stickyColumn : undefined}
-                              isStickyColumn={!disableStickyColumns && isSticky}
-                              isLastColumn={colIndex === visibleColumnsLength - 1}
+                              isStickyLeft={isStickyLeft}
+                              isStickyRight={isStickyRight}
+                              isLastStickyLeft={isLastStickyLeft}
+                              isLastStickyRight={isLastStickyRight}
                               isStuckToTheLeft={isStuckToTheLeft}
                               isStuckToTheRight={isStuckToTheRight}
                             />

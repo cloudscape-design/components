@@ -117,11 +117,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     &.body-cell-selected {
       background-color: awsui.$color-background-item-selected;
     }
-    &-last-start {
+    &-last-left {
       box-shadow: awsui.$shadow-sticky-column-start;
       clip-path: inset(0px -24px 0px 0px);
     }
-    &-last-end {
+    &-last-right {
       box-shadow: awsui.$shadow-sticky-column-end;
       clip-path: inset(0 0 0 -24px);
     }
