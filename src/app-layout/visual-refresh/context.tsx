@@ -10,23 +10,23 @@ import React, {
   useState,
   useContext,
 } from 'react';
+import { applyDefaults } from '../defaults';
+import { AppLayoutContext } from '../../internal/context/app-layout-context';
 import { AppLayoutProps } from '../interfaces';
 import { DrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
-import { getSplitPanelPosition } from './split-panel';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import styles from './styles.css.js';
-import { isDevelopment } from '../../internal/is-development';
-import { warnOnce } from '../../internal/logging';
-import { applyDefaults } from '../defaults';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { useObservedElement } from '../utils/use-observed-element';
-import { AppLayoutContext } from '../../internal/context/app-layout-context';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { isDevelopment } from '../../internal/is-development';
+import { getSplitPanelPosition } from './split-panel';
+import { useContainerQuery } from '../../internal/hooks/container-queries';
+import { useControllable } from '../../internal/hooks/use-controllable';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { useObservedElement } from '../utils/use-observed-element';
+import { useMobile } from '../../internal/hooks/use-mobile';
+import { warnOnce } from '../../internal/logging';
+import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
   activeDrawer: DrawersProps.Drawer | null;
@@ -51,8 +51,10 @@ interface AppLayoutInternals extends AppLayoutProps {
   isToolsOpen: boolean;
   layoutElement: React.Ref<HTMLElement>;
   layoutWidth: number;
+  loseToolsFocus: () => void;
   mainElement: React.Ref<HTMLDivElement>;
   mainOffsetLeft: number;
+  navigationRefs: FocusControlRefs;
   notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
   offsetBottom: number;
@@ -71,9 +73,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
-  navigationRefs: FocusControlRefs;
   toolsRefs: FocusControlRefs;
-  loseToolsFocus: () => void;
 }
 
 /**
@@ -553,11 +553,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           isToolsOpen,
           layoutElement,
           layoutWidth,
+          loseToolsFocus,
           mainElement,
           mainOffsetLeft,
           maxContentWidth,
           minContentWidth,
           navigationHide,
+          navigationRefs,
           notificationsElement,
           notificationsHeight,
           offsetBottom,
@@ -581,8 +583,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
-          navigationRefs,
-          loseToolsFocus,
         }}
       >
         <AppLayoutContext.Provider

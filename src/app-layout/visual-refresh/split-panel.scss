@@ -52,8 +52,7 @@ section.split-panel-bottom {
     grid-column-start: 2;
   }
 
-  &.is-tools-open.position-bottom,
-  &.has-active-drawer.position-bottom {
+  &.has-open-drawer.position-bottom {
     grid-column-end: 5;
   }
 
