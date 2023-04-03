@@ -46,8 +46,6 @@ export interface TheadProps {
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
   cellWidths?: CellWidths;
-  setCellWidths: React.Dispatch<React.SetStateAction<CellWidths>>;
-  tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>;
   getStickyColumn: (colIndex: number) => GetStickyColumn;
 }
 

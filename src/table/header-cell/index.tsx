@@ -93,7 +93,6 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   const headerId = useUniqueId('table-header-');
   // Sticky columns
   const { isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } = getStickyColumn(colIndex);
-  console.log({ colIndex, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight });
   return (
     <th
       className={clsx(className, {
