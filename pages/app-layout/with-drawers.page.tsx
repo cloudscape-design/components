@@ -16,8 +16,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [useDrawers, setUseDrawers] = useState(false);
-  const [useTools, setUseTools] = useState(false);
+  const [useDrawers, setUseDrawers] = useState(true);
+  const [useTools, setUseTools] = useState(true);
 
   const drawers = !useDrawers
     ? null
@@ -25,6 +25,7 @@ export default function WithDrawers() {
         drawers: {
           activeDrawerId: activeDrawerId,
           items: [
+            /*
             {
               content: <Security />,
               id: 'security',
@@ -33,6 +34,7 @@ export default function WithDrawers() {
                 iconName: 'security',
               },
             },
+            */
             {
               content: <ProHelp />,
               id: 'pro-help',
@@ -119,9 +121,11 @@ function Info() {
   return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
 }
 
+/*
 function Security() {
   return <HelpPanel header={<h2>Security</h2>}>Keep your passwords secret!</HelpPanel>;
 }
+*/
 
 function ProHelp() {
   return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;

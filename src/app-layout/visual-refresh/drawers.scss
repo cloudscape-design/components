@@ -8,6 +8,7 @@
 @use '../../internal/styles' as styles;
 
 .drawers-container {
+  background-color: transparent;
   display: flex;
   grid-column: 5;
   grid-row: 1 / span 5;
@@ -17,6 +18,15 @@
   top: var(#{custom-props.$offsetTop});
   z-index: 830;
 
+  &.has-open-drawer {
+    background-color: awsui.$color-background-container-content;
+  }
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: background-color;
+  }
+
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     position: fixed;
     right: 0;
@@ -25,8 +35,9 @@
   }
 }
 
-.drawers-triggers {
+.drawers-trigger-container {
   @include styles.styles-reset;
+  background-color: transparent;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -37,31 +48,61 @@
     background-color: awsui.$color-background-container-content;
     z-index: 1;
   }
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: background-color;
+  }
 }
 
 .drawer {
   background-color: awsui.$color-background-container-content;
-  border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  box-shadow: awsui.$shadow-panel;
+  border-color: transparent;
+  box-shadow: transparent;
+  display: grid;
   flex-shrink: 0;
+  grid-template-columns: 1fr auto awsui.$space-m;
+  grid-template-rows: awsui.$size-vertical-panel-icon-offset auto 1fr;
   height: 100%;
-  pointer-events: auto;
-  position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior-y: contain;
-  width: 290px;
+  pointer-events: auto;
   word-wrap: break-word;
 
-  // Drawers will take up the entire viewport on mobile
+  > .drawer-close-button {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  > .drawer-content {
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+    width: 290px;
+  }
+
+  &:not(.is-drawer-open) {
+    opacity: 0;
+    width: 0;
+  }
+
+  &.is-drawer-open {
+    border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    box-shadow: awsui.$shadow-panel;
+    opacity: 1;
+    width: 290px;
+  }
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-refresh-only-fast;
+    transition-property: border-color, box-shadow, opacity, width;
+  }
+
+  @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
+    width: 320px;
+  }
+
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     width: 100vw;
   }
-}
-
-.drawer-close-button {
-  position: absolute;
-  right: awsui.$space-m;
-  top: awsui.$size-vertical-panel-icon-offset;
-  z-index: 1;
 }

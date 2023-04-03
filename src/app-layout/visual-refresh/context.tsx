@@ -29,7 +29,7 @@ import { warnOnce } from '../../internal/logging';
 import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
-  activeDrawer: DrawersProps.Drawer | null;
+  activeDrawerId: string | null;
   drawers: DrawersProps;
   drawersTriggerCount: number;
   dynamicOverlapHeight: number;
@@ -515,20 +515,20 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [activeDrawerId, drawers?.onChange, setActiveDrawerId]
     );
 
-    const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
     const drawersTriggerCount =
-      drawers?.items.length ??
-      0 + (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) + (!toolsHide ? 1 : 0);
+      (drawers?.items.length ?? 0) +
+      (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) +
+      (!toolsHide ? 1 : 0);
     const hasOpenDrawer =
-      activeDrawer || isToolsOpen || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+      activeDrawerId || isToolsOpen || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
     const hasDrawerViewportOverlay =
-      isMobile && (!!activeDrawer || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
+      isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
 
     return (
       <AppLayoutInternalsContext.Provider
         value={{
           ...props,
-          activeDrawer,
+          activeDrawerId,
           contentType,
           drawers,
           drawersTriggerCount,

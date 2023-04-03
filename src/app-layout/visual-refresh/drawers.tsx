@@ -33,17 +33,24 @@ export namespace DrawersProps {
  *
  */
 export default function Drawers() {
-  const { drawers } = useAppLayoutInternals();
+  const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
+    useAppLayoutInternals();
 
   if (!drawers) {
     return null;
   }
 
+  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
+
   return (
-    <div className={styles['drawers-container']}>
+    <div
+      className={clsx(styles['drawers-container'], {
+        [styles['has-open-drawer']]: hasOpenDrawer,
+        [styles.unfocusable]: isUnfocusable,
+      })}
+    >
       <SplitPanel.Side />
       <ActiveDrawer />
-      <Tools />
       <DesktopTriggers />
     </div>
   );
@@ -53,58 +60,44 @@ export default function Drawers() {
  *
  */
 function ActiveDrawer() {
-  const { activeDrawer, handleDrawersClick, isMobile } = useAppLayoutInternals();
+  const {
+    activeDrawerId,
+    ariaLabels,
+    drawers,
+    handleDrawersClick,
+    handleToolsClick,
+    isMobile,
+    isToolsOpen,
+    tools,
+    toolsRefs,
+  } = useAppLayoutInternals();
 
-  if (!activeDrawer) {
-    return null;
-  }
+  const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
 
   return (
-    <aside className={clsx(styles.drawer)}>
+    <aside
+      aria-hidden={!activeDrawerId && !isToolsOpen ? true : false}
+      aria-label={isToolsOpen ? ariaLabels?.tools : undefined}
+      className={clsx(styles.drawer, {
+        [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
+        [testutilStyles.tools]: isToolsOpen,
+      })}
+    >
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
+          ariaLabel={isToolsOpen ? ariaLabels?.toolsClose : undefined}
+          className={isToolsOpen ? testutilStyles['tools-close'] : undefined}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
-          onClick={() => handleDrawersClick(activeDrawer.id)}
+          onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
+          ref={isToolsOpen ? toolsRefs.close : undefined}
           variant="icon"
         />
       </div>
 
-      {activeDrawer.content}
-    </aside>
-  );
-}
-
-/**
- *
- */
-function Tools() {
-  const { ariaLabels, handleToolsClick, isMobile, isToolsOpen, tools, toolsHide, toolsRefs } = useAppLayoutInternals();
-
-  if (!tools || toolsHide || !isToolsOpen) {
-    return null;
-  }
-
-  return (
-    <aside
-      aria-hidden={!isToolsOpen ? true : false}
-      aria-label={ariaLabels?.tools ?? undefined}
-      className={clsx(styles.drawer, testutilStyles.tools)}
-    >
-      <div className={clsx(styles['animated-content'])}>
-        <div className={clsx(styles['hide-tools'])}>
-          <InternalButton
-            ariaLabel={ariaLabels?.toolsClose ?? undefined}
-            className={testutilStyles['tools-close']}
-            formAction="none"
-            iconName={isMobile ? 'close' : 'angle-right'}
-            onClick={() => handleToolsClick(false)}
-            ref={toolsRefs.close}
-            variant="icon"
-          />
-        </div>
-
-        {tools}
+      <div className={styles['drawer-content']}>
+        {activeDrawerId && activeDrawer?.content}
+        {isToolsOpen && tools}
       </div>
     </aside>
   );
@@ -115,7 +108,7 @@ function Tools() {
  */
 function DesktopTriggers() {
   const {
-    activeDrawer,
+    activeDrawerId,
     ariaLabels,
     drawers,
     drawersTriggerCount,
@@ -144,17 +137,17 @@ function DesktopTriggers() {
 
   return (
     <aside
-      className={clsx(styles['drawers-triggers'], {
+      className={clsx(styles['drawers-trigger-container'], {
         [styles['has-open-drawer']]: hasOpenDrawer,
       })}
     >
       {!toolsHide && tools && (
         <TriggerButton
           ariaLabel={ariaLabels?.toolsToggle}
-          className={testutilStyles['tools-toggle']}
+          className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
           iconName="status-info"
           onClick={() => {
-            activeDrawer && handleDrawersClick(null);
+            activeDrawerId && handleDrawersClick(null);
             handleToolsClick(!isToolsOpen);
           }}
           ref={toolsRefs.toggle}
@@ -162,9 +155,10 @@ function DesktopTriggers() {
         />
       )}
 
-      {drawers.items.map((item: any) => (
+      {drawers.items.map((item: DrawersProps.Drawer) => (
         <TriggerButton
           ariaLabel={item.trigger.ariaLabel}
+          className={clsx(styles['drawers-trigger'])}
           iconName={item.trigger.iconName}
           iconSvg={item.trigger.iconSvg}
           key={item.id}
@@ -172,14 +166,14 @@ function DesktopTriggers() {
             isToolsOpen && handleToolsClick(!isToolsOpen);
             handleDrawersClick(item.id);
           }}
-          selected={item === activeDrawer}
+          selected={item.id === activeDrawerId}
         />
       ))}
 
       {hasSplitPanel && splitPanelToggle.displayed && (
         <TriggerButton
           ariaLabel={splitPanelToggle.ariaLabel}
-          className={splitPanelStyles['open-button']}
+          className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
           iconName="view-vertical"
           onClick={() => handleSplitPanelClick()}
           selected={hasSplitPanel && isSplitPanelOpen}
@@ -195,7 +189,7 @@ function DesktopTriggers() {
  */
 export function MobileTriggers() {
   const {
-    activeDrawer,
+    activeDrawerId,
     ariaLabels,
     drawers,
     handleDrawersClick,
@@ -231,7 +225,7 @@ export function MobileTriggers() {
 
       {drawers.items.map((item: any) => (
         <InternalButton
-          ariaExpanded={item.id === activeDrawer?.id}
+          ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.trigger.ariaLabel}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
