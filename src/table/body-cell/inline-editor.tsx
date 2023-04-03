@@ -105,7 +105,6 @@ export function InlineEditor<ItemType>({
         constraintText={constraintText}
         __hideLabel={true}
         __disableGutters={true}
-        __useReactAutofocus={true}
         i18nStrings={{ errorIconAriaLabel }}
         errorText={validation(item, currentEditValue)}
       >

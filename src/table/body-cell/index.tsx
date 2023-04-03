@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
@@ -10,7 +10,6 @@ import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
-import { useStableScrollPosition } from './use-stable-scroll-position';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -39,35 +38,18 @@ function TableCellEditable<ItemType>({
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const cellRef = useRef<HTMLTableCellElement>(null);
   const focusVisible = useFocusVisible();
-  const { storeScrollPosition, restoreScrollPosition } = useStableScrollPosition(cellRef);
-
-  const handleEditStart = () => {
-    storeScrollPosition();
-    if (!isEditing) {
-      onEditStart();
-    }
-  };
-
-  const scheduleRestoreScrollPosition = useCallback(
-    () => setTimeout(restoreScrollPosition, 0),
-    [restoreScrollPosition]
-  );
 
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
-    onFocus: scheduleRestoreScrollPosition,
     'data-inline-editing-active': isEditing.toString(),
   };
 
   useEffectOnUpdate(() => {
     if (!isEditing && editActivateRef.current) {
-      editActivateRef.current.focus({ preventScroll: true });
+      editActivateRef.current.focus();
     }
-    const timer = scheduleRestoreScrollPosition();
-    return () => clearTimeout(timer);
-  }, [isEditing, scheduleRestoreScrollPosition]);
+  }, [isEditing]);
 
   return (
     <TableTdElement
@@ -79,8 +61,7 @@ function TableCellEditable<ItemType>({
         isEditing && styles['body-cell-edit-active'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={handleEditStart}
-      ref={cellRef}
+      onClick={!isEditing ? onEditStart : undefined}
     >
       {isEditing ? (
         <InlineEditor
@@ -89,7 +70,6 @@ function TableCellEditable<ItemType>({
           item={item}
           onEditEnd={onEditEnd}
           submitEdit={submitEdit ?? submitHandlerFallback}
-          __onRender={restoreScrollPosition}
         />
       ) : (
         <>
