@@ -60,7 +60,7 @@ const Option = ({
     />
   );
 
-  // When generic props are assigned assistive technologies treat option nodes as semantic (generic) groups.
+  // The option is conditionally assigned 'title' and 'aria-disabled' attributes to ensure it is viewed as a (generic) group  by assistive technology only when necessary.
   // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/generic_role
   const genericGroupProps = isGenericGroup
     ? {
