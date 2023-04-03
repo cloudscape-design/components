@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
@@ -14,6 +14,22 @@ import tokenListSelectors from '../../../lib/components/internal/components/toke
 function renderTokenGroup(props: TokenGroupProps = {}): TokenGroupWrapper {
   const { container } = render(<TokenGroup {...props} />);
   return createWrapper(container).findTokenGroup()!;
+}
+
+function renderStatefulTokenGroup(props: Omit<TokenGroupProps, 'onDismiss'> = {}): TokenGroupWrapper {
+  const { container } = render(<StatefulTokenGroup {...props} />);
+  return createWrapper(container).findTokenGroup()!;
+}
+
+function StatefulTokenGroup({ items: initialItems = [], ...rest }: Omit<TokenGroupProps, 'onDismiss'>) {
+  const [items, setItems] = useState(initialItems);
+  return (
+    <TokenGroup
+      {...rest}
+      items={items}
+      onDismiss={event => setItems(prev => prev.filter((_, index) => index !== event.detail.itemIndex))}
+    />
+  );
 }
 
 const onDismiss = () => {};
@@ -172,6 +188,66 @@ describe('TokenGroup', () => {
 
       const icon = wrapper.findTokenToggle()!.find('svg');
       expect(icon!.getElement()).toContainHTML(icons['treeview-collapse']);
+    });
+  });
+
+  describe('Focus management', () => {
+    test('Focus is dispatched to the next active token when non-last token is removed', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
+          { label: '3', dismissLabel: 'Remove 3', disabled: true },
+          { label: '4', dismissLabel: 'Remove 4' },
+        ],
+      });
+      wrapper.findToken(2)!.findDismiss().click();
+
+      expect(wrapper.findToken(3)!.findDismiss().getElement()).toHaveFocus();
+    });
+
+    test('Focus is dispatched to the previous active token when last active token is removed', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1' },
+          { label: '2', dismissLabel: 'Remove 2' },
+          { label: '3', dismissLabel: 'Remove 3', disabled: true },
+          { label: '4', dismissLabel: 'Remove 4' },
+          { label: '5', dismissLabel: 'Remove 5', disabled: true },
+        ],
+      });
+      wrapper.findToken(4)!.findDismiss().click();
+
+      expect(wrapper.findToken(2)!.findDismiss().getElement()).toHaveFocus();
+    });
+
+    test('Focus is dispatched to the "show more" button when no active tokens visible after token removal', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1', disabled: true },
+          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '3', dismissLabel: 'Remove 3' },
+          { label: '4', dismissLabel: 'Remove 4', disabled: true },
+          { label: '5', dismissLabel: 'Remove 5' },
+        ],
+        limit: 3,
+      });
+      wrapper.findToken(3)!.findDismiss().click();
+
+      expect(wrapper.findTokenToggle()!.getElement()).toHaveFocus();
+    });
+
+    test('Focus returns to body when no active token and no "show more" button after token removal', () => {
+      const wrapper = renderStatefulTokenGroup({
+        items: [
+          { label: '1', dismissLabel: 'Remove 1', disabled: true },
+          { label: '2', dismissLabel: 'Remove 2', disabled: true },
+          { label: '3', dismissLabel: 'Remove 3' },
+        ],
+      });
+      wrapper.findToken(3)!.findDismiss().click();
+
+      expect(document.body).toHaveFocus();
     });
   });
 });

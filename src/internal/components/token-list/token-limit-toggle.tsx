@@ -17,7 +17,7 @@ interface TokenLimitToggleProps {
   i18nStrings?: I18nStrings;
 }
 
-export function TokenLimitToggle({
+export default function TokenLimitToggle({
   controlId,
   allHidden,
   expanded,
