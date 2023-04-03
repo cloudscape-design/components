@@ -365,5 +365,6 @@ export function getFormattedToken(filteringProperties: readonly FilteringPropert
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
   const propertyLabel = property && property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  return { property: propertyLabel, operator: token.operator, value: tokenValue };
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
 }

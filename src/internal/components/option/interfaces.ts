@@ -44,4 +44,5 @@ export interface OptionProps extends BaseComponentProps {
   highlightedOption?: boolean;
   selectedOption?: boolean;
   isGroupOption?: boolean;
+  isGenericGroup?: boolean;
 }
