@@ -327,6 +327,7 @@ export type ColorsTokenName =
   | 'colorForegroundControlDefault'
   | 'colorForegroundControlDisabled'
   | 'colorShadowDefault'
+  | 'colorShadowLayoutPanelTrigger'
   | 'colorShadowMedium'
   | 'colorShadowSide'
   | 'colorStrokeCodeEditorResizeHandler'

@@ -58,7 +58,7 @@ interface MobileToolbarProps {
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onDrawersChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
 }
 
@@ -122,8 +122,8 @@ export function MobileToolbar({
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.trigger.ariaLabel}
-              onClick={() => drawers.onDrawersChange({ activeDrawerId: item.id })}
+              ariaLabel={item.ariaLabels.triggerButton}
+              onClick={() => drawers.onChange({ activeDrawerId: item.id })}
               ariaExpanded={drawers.activeDrawerId !== undefined}
             />
           ))}
