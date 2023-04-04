@@ -19,7 +19,7 @@ export interface DrawersProps {
   onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
 }
 
-export namespace DrawersProps {
+namespace DrawersProps {
   export interface Drawer {
     ariaLabels?: Labels;
     content: React.ReactNode;
@@ -31,13 +31,13 @@ export namespace DrawersProps {
     activeDrawerId: string | null;
   }
 
-  export interface Labels {
+  interface Labels {
     closeButton?: string;
     content?: string;
     triggerButton?: string;
     resizeHandle?: string;
   }
-  export interface Trigger {
+  interface Trigger {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
     iconUrl?: string;
