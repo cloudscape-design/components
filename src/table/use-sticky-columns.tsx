@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState, createRef, useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useState, createRef, useEffect } from 'react';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { TableProps } from './interfaces';
 interface CellWidths {
   start: number[];
@@ -11,7 +12,6 @@ interface StickyStyles {
   left?: string;
   right?: string;
   paddingLeft?: string;
-  paddingRight?: string;
 }
 
 interface StickyColumnParams {
@@ -42,8 +42,8 @@ export const useStickyColumns = ({
   isWrapperScrollable,
 }: StickyColumnParams) => {
   // Sentinels used for triggering IntersectionObserver and set "stuck" state
-  const leftSentinelRef = useRef(null);
-  const rightSentinelRef = useRef(null);
+  // const leftSentinelRef = useRef(null);
+  // const rightSentinelRef = useRef(null);
   const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
   const [isStuckToTheRight, setIsStuckToTheRight] = useState(false);
 
@@ -69,12 +69,24 @@ export const useStickyColumns = ({
   const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
   const tableRightPadding = table ? Number(getComputedStyle(table).paddingRight.slice(0, -2)) : 0;
 
+  // We use empty div elements at the beginning and end of the table as a sentinel
+  // to detect when the user has scrolled to either end of the wrapper
+  const intersectionObserverOptions = { threshold: [0, 1], rootMargin: '-2px' };
+  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } =
+    useIntersectionObserver(intersectionObserverOptions);
+  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } =
+    useIntersectionObserver(intersectionObserverOptions);
+
+  useEffect(() => {
+    // Observe left and right sentinels to set "stuck" state
+    setIsStuckToTheLeft(!leftSentinelIntersecting);
+    setIsStuckToTheRight(!rightSentinelIntersecting);
+  }, [leftSentinelIntersecting, rightSentinelIntersecting]);
+
   useEffect(() => {
     const wrapper = wrapperRefObject?.current;
-    const leftSentinel = leftSentinelRef?.current;
-    const rightSentinel = rightSentinelRef?.current;
     const table = tableRefObject?.current;
-    if (!wrapper || !table || !stickyColumns || !leftSentinel || !rightSentinel || shouldDisable) {
+    if (!wrapper || !table || !stickyColumns || shouldDisable) {
       return;
     }
 
@@ -83,23 +95,6 @@ export const useStickyColumns = ({
     const left = wrapper.scrollLeft > tableLeftPadding;
     setIsStuckToTheLeft(left);
     setIsStuckToTheRight(right);
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      const [entry] = entries;
-      if (!entry.isIntersecting) {
-        entry.target === leftSentinel ? setIsStuckToTheLeft(true) : setIsStuckToTheRight(true);
-      } else {
-        entry.target === leftSentinel ? setIsStuckToTheLeft(false) : setIsStuckToTheRight(false);
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1], rootMargin: '-2px' });
-    // Observe left and right sentinels to set "stuck" state
-    observer.observe(leftSentinel);
-    observer.observe(rightSentinel);
-    return () => {
-      observer.disconnect();
-    };
   }, [
     stickyColumns,
     tableCellRefs,
@@ -165,12 +160,8 @@ export const useStickyColumns = ({
     // Sticky styles
     let paddingStyle = {};
     const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
-    const isFirstOrLastColumn = colIndex === 0 || colIndex === visibleColumnsLength - 1;
-    if (isFirstOrLastColumn && isVisualRefresh && !hasSelection) {
-      if (stickySide === 'right' && isStuckToTheRight && tableRightPadding) {
-        paddingStyle = { paddingRight: `${tableRightPadding}px` };
-      }
-
+    const isFirstColumn = colIndex === 0;
+    if (isFirstColumn && isVisualRefresh && !hasSelection) {
       if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
         paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
       }
