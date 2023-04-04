@@ -116,6 +116,20 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
     &.body-cell-selected {
       background-color: awsui.$color-background-item-selected;
+
+      // Create a background using box-shadow and clip path to hide underlying elements
+      &:first-child {
+        box-shadow: 0 0 0 4px awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+      }
+      &:last-child {
+        box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+        &.body-cell-freeze-last-right {
+          box-shadow: awsui.$shadow-sticky-column-end, 4px 0 0 0 awsui.$color-background-container-content;
+          clip-path: inset(0 0 0 -24px);
+        }
+      }
     }
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-start;
