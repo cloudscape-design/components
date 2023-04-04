@@ -129,57 +129,66 @@ function DesktopTriggers() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (isMobile || (hasOpenDrawer && drawersTriggerCount <= 1)) {
+  if (isMobile) {
     return null;
   }
 
+  const hasMultipleTriggers = drawersTriggerCount > 1;
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 
   return (
     <aside
       className={clsx(styles['drawers-trigger-container'], {
+        [styles['has-multiple-triggers']]: hasMultipleTriggers,
         [styles['has-open-drawer']]: hasOpenDrawer,
       })}
     >
-      {!toolsHide && tools && (
-        <TriggerButton
-          ariaLabel={ariaLabels?.toolsToggle}
-          className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
-          iconName="status-info"
-          onClick={() => {
-            activeDrawerId && handleDrawersClick(null);
-            handleToolsClick(!isToolsOpen);
-          }}
-          ref={toolsRefs.toggle}
-          selected={isToolsOpen}
-        />
-      )}
+      <div
+        className={clsx(styles['drawers-trigger-content'], {
+          [styles['has-multiple-triggers']]: hasMultipleTriggers,
+          [styles['has-open-drawer']]: hasOpenDrawer,
+        })}
+      >
+        {!toolsHide && tools && (
+          <TriggerButton
+            ariaLabel={ariaLabels?.toolsToggle}
+            className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
+            iconName="status-info"
+            onClick={() => {
+              activeDrawerId && handleDrawersClick(null);
+              handleToolsClick(!isToolsOpen);
+            }}
+            ref={toolsRefs.toggle}
+            selected={isToolsOpen}
+          />
+        )}
 
-      {drawers.items.map((item: DrawersProps.Drawer) => (
-        <TriggerButton
-          ariaLabel={item.trigger.ariaLabel}
-          className={clsx(styles['drawers-trigger'])}
-          iconName={item.trigger.iconName}
-          iconSvg={item.trigger.iconSvg}
-          key={item.id}
-          onClick={() => {
-            isToolsOpen && handleToolsClick(!isToolsOpen);
-            handleDrawersClick(item.id);
-          }}
-          selected={item.id === activeDrawerId}
-        />
-      ))}
+        {drawers.items.map((item: DrawersProps.Drawer) => (
+          <TriggerButton
+            ariaLabel={item.trigger.ariaLabel}
+            className={clsx(styles['drawers-trigger'])}
+            iconName={item.trigger.iconName}
+            iconSvg={item.trigger.iconSvg}
+            key={item.id}
+            onClick={() => {
+              isToolsOpen && handleToolsClick(!isToolsOpen);
+              handleDrawersClick(item.id);
+            }}
+            selected={item.id === activeDrawerId}
+          />
+        ))}
 
-      {hasSplitPanel && splitPanelToggle.displayed && (
-        <TriggerButton
-          ariaLabel={splitPanelToggle.ariaLabel}
-          className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
-          iconName="view-vertical"
-          onClick={() => handleSplitPanelClick()}
-          selected={hasSplitPanel && isSplitPanelOpen}
-          ref={splitPanelRefs.toggle}
-        />
-      )}
+        {hasSplitPanel && splitPanelToggle.displayed && (
+          <TriggerButton
+            ariaLabel={splitPanelToggle.ariaLabel}
+            className={clsx(styles['drawers-trigger'], splitPanelStyles['open-button'])}
+            iconName="view-vertical"
+            onClick={() => handleSplitPanelClick()}
+            selected={hasSplitPanel && isSplitPanelOpen}
+            ref={splitPanelRefs.toggle}
+          />
+        )}
+      </div>
     </aside>
   );
 }

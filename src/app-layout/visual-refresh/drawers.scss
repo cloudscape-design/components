@@ -39,19 +39,54 @@
   @include styles.styles-reset;
   background-color: transparent;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: awsui.$space-xs;
-  padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 
-  &.has-open-drawer {
+  &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
-    z-index: 1;
+
+    @include styles.with-motion {
+      transition: awsui.$motion-duration-refresh-only-fast;
+      transition-property: background-color;
+    }
   }
 
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: background-color;
+  &:not(.has-multiple-triggers).has-open-drawer {
+    width: 0;
+  }
+
+  &:not(.has-multiple-triggers):not(.has-open-drawer) {
+    width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+
+    @include styles.with-motion {
+      transition: awsui.$motion-duration-refresh-only-fast;
+      transition-property: width;
+    }
+  }
+
+  > .drawers-trigger-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: awsui.$space-xs;
+    padding-top: awsui.$space-scaled-s;
+    width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+
+    &:not(.has-multiple-triggers).has-open-drawer {
+      opacity: 0;
+    }
+
+    &:not(.has-multiple-triggers):not(.has-open-drawer) {
+      opacity: 1;
+
+      @include styles.with-motion {
+        transition: awsui.$motion-duration-refresh-only-medium;
+        transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
+        transition-property: opacity;
+      }
+    }
   }
 }
 
