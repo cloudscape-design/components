@@ -98,8 +98,13 @@ export function InlineEditor<ItemType>({
 
   return (
     <FocusLock restoreFocus={true} ref={focusLockRef}>
-      <div role="dialog" aria-label={ariaLabels?.activateEditLabel?.(column)} onKeyDown={handleEscape}>
-        <form ref={clickAwayRef} onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+      <div
+        role="dialog"
+        ref={clickAwayRef}
+        aria-label={ariaLabels?.activateEditLabel?.(column)}
+        onKeyDown={handleEscape}
+      >
+        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField
             stretch={true}
             label={ariaLabel}
