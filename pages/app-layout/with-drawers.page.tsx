@@ -27,18 +27,28 @@ export default function WithDrawers() {
           activeDrawerId: activeDrawerId,
           items: [
             {
+              ariaLabels: {
+                closeButton: 'Security close button',
+                content: 'Security drawer content',
+                triggerButton: 'Security trigger button',
+                resizeHandle: 'Security resize handle',
+              },
               content: <Security />,
               id: 'security',
               trigger: {
-                ariaLabel: 'View Security content',
                 iconName: 'security',
               },
             },
             {
+              ariaLabels: {
+                closeButton: 'ProHelp close button',
+                content: 'ProHelp drawer content',
+                triggerButton: 'ProHelp trigger button',
+                resizeHandle: 'ProHelp resize handle',
+              },
               content: <ProHelp />,
               id: 'pro-help',
               trigger: {
-                ariaLabel: 'View ProHelp content',
                 iconSvg: <IconBriefcase />,
               },
             },

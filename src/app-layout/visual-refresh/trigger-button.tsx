@@ -8,7 +8,6 @@ import { ButtonProps } from '../../button/interfaces';
 import { IconProps } from '../../icon/interfaces';
 
 export interface TriggerButtonProps {
-  ariaExpanded?: boolean;
   ariaLabel?: string;
   className?: string;
   iconName?: IconProps.Name;

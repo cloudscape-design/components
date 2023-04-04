@@ -3,10 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
+import { IconProps } from '../../icon/interfaces';
 import { InternalButton } from '../../button/internal';
 import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
-import TriggerButton, { TriggerButtonProps } from './trigger-button';
+import TriggerButton from './trigger-button';
 import { useAppLayoutInternals } from './context';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import styles from './styles.css.js';
@@ -20,13 +21,26 @@ export interface DrawersProps {
 
 export namespace DrawersProps {
   export interface Drawer {
+    ariaLabels?: Labels;
     content: React.ReactNode;
     id: string;
-    trigger: TriggerButtonProps;
+    trigger: Trigger;
   }
 
   export interface ChangeDetail {
     activeDrawerId: string | null;
+  }
+
+  export interface Labels {
+    closeButton?: string;
+    content?: string;
+    triggerButton?: string;
+    resizeHandle?: string;
+  }
+  export interface Trigger {
+    iconName?: IconProps.Name;
+    iconSvg?: React.ReactNode;
+    iconUrl?: string;
   }
 }
 
@@ -76,10 +90,15 @@ function ActiveDrawer() {
 
   const activeDrawer = drawers?.items.find((item: any) => item.id === activeDrawerId) ?? null;
 
+  const computedAriaLabels = {
+    closeButton: activeDrawerId ? activeDrawer?.ariaLabels?.closeButton : ariaLabels?.toolsClose,
+    content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
+  };
+
   return (
     <aside
       aria-hidden={!activeDrawerId && !isToolsOpen ? true : false}
-      aria-label={isToolsOpen ? ariaLabels?.tools : undefined}
+      aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
         [testutilStyles.tools]: isToolsOpen,
@@ -90,7 +109,7 @@ function ActiveDrawer() {
     >
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
-          ariaLabel={isToolsOpen ? ariaLabels?.toolsClose : undefined}
+          ariaLabel={computedAriaLabels.closeButton}
           className={isToolsOpen ? testutilStyles['tools-close'] : undefined}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
@@ -170,7 +189,7 @@ function DesktopTriggers() {
 
         {drawers.items.map((item: DrawersProps.Drawer) => (
           <TriggerButton
-            ariaLabel={item.trigger.ariaLabel}
+            ariaLabel={item.ariaLabels?.triggerButton}
             className={clsx(styles['drawers-trigger'])}
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
@@ -237,10 +256,10 @@ export function MobileTriggers() {
         />
       )}
 
-      {drawers.items.map((item: any) => (
+      {drawers.items.map((item: DrawersProps.Drawer) => (
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
-          ariaLabel={item.trigger.ariaLabel}
+          ariaLabel={item.ariaLabels?.triggerButton}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}
