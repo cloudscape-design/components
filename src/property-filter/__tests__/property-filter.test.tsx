@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { i18nStrings } from './common';
@@ -103,11 +103,18 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
     </div>
   );
   const pageWrapper = createWrapper(container);
-  return {
-    container,
-    propertyFilterWrapper: pageWrapper.findPropertyFilter()!,
-    pageWrapper,
-  };
+  return { container, propertyFilterWrapper: pageWrapper.findPropertyFilter()!, pageWrapper };
+};
+
+function StatefulPropertyFilter(props: Omit<PropertyFilterProps, 'onChange'>) {
+  const [query, setQuery] = useState<PropertyFilterProps.Query>(props.query);
+  return <PropertyFilter {...props} query={query} onChange={e => setQuery(e.detail)} />;
+}
+
+const renderStatefulComponent = (props?: Partial<PropertyFilterProps>) => {
+  const { container } = render(<StatefulPropertyFilter {...defaultProps} {...props} />);
+  const pageWrapper = createWrapper(container);
+  return { container, propertyFilterWrapper: pageWrapper.findPropertyFilter()!, pageWrapper };
 };
 
 function findPropertySelector(wrapper: ElementWrapper) {
@@ -406,9 +413,16 @@ describe('property filter parts', () => {
   });
 
   describe('count text', () => {
-    test('is hidden when there are no filtering tokens', () => {
+    test('is not displayed when count text is empty', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        countText: '',
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findResultsCount()).toBe(null);
+    });
+    test('is not displayed when there are no filtering tokens', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ countText: '5 matches' });
-      expect(wrapper.findResultsCount()!.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findResultsCount()).toBe(null);
     });
     test('is visible when there is at least 1 token', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -492,7 +506,7 @@ describe('property filter parts', () => {
         expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { tokens: [], operation: 'or' } }));
       });
       test('moves the focus to the input, when pressed', () => {
-        const { propertyFilterWrapper: wrapper } = renderComponent({
+        const { propertyFilterWrapper: wrapper } = renderStatefulComponent({
           query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
         });
         act(() => wrapper.findTokens()![0].findRemoveButton()!.click());
@@ -718,11 +732,11 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()!).toHaveLength(1);
       expect(wrapper.findTokens()![0].findLabel().getElement()).toHaveTextContent('string : first');
       // show more
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer);
       expect(wrapper.findTokens()!).toHaveLength(2);
       // show fewer
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
       expect(wrapper.findTokens()!).toHaveLength(1);
     });

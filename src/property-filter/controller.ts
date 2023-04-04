@@ -358,3 +358,13 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
   };
   return mapping[operator];
 };
+
+export function getFormattedToken(filteringProperties: readonly FilteringProperty[], token: Token) {
+  const valueFormatter =
+    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
+  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
+  const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
+}

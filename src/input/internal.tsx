@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useRef, useEffect } from 'react';
+import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { IconProps } from '../icon/interfaces';
@@ -97,14 +97,7 @@ function InternalInput(
   __onRightIconClick = __onRightIconClick ?? searchProps.__onRightIconClick;
 
   const formFieldContext = useFormFieldContext(rest);
-  const { ariaLabelledby, ariaDescribedby, controlId, invalid, __useReactAutofocus } = __inheritFormFieldProps
-    ? formFieldContext
-    : { __useReactAutofocus: undefined, ...rest };
-
-  const autoFocusEnabled = __nativeAttributes?.autoFocus || autoFocus;
-  const reactAutofocusProps = __useReactAutofocus
-    ? { autoFocus: !autoFocusEnabled, 'data-awsui-react-autofocus': autoFocusEnabled }
-    : {};
+  const { ariaLabelledby, ariaDescribedby, controlId, invalid } = __inheritFormFieldProps ? formFieldContext : rest;
 
   const attributes: React.InputHTMLAttributes<HTMLInputElement> = {
     'aria-label': ariaLabel,
@@ -143,7 +136,6 @@ function InternalInput(
     },
     onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     ...__nativeAttributes,
-    ...reactAutofocusProps,
   };
 
   if (type === 'number') {
@@ -173,12 +165,6 @@ function InternalInput(
   if (attributes.type === 'visualSearch') {
     attributes.type = 'text';
   }
-
-  useEffect(() => {
-    if (__useReactAutofocus && autoFocusEnabled) {
-      inputRef.current?.focus({ preventScroll: true });
-    }
-  }, [__useReactAutofocus, autoFocusEnabled]);
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles['input-container'])} ref={__internalRootRef}>

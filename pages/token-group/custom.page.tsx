@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { range } from 'lodash';
 import { TokenGroupProps } from '~components/token-group';
-import GenericTokenGroup from '~components/token-group/generic-token-group';
+import { Token } from '~components/token-group/token';
+import TokenList from '~components/internal/components/token-list';
 import Box from '~components/box';
 import SpaceBetween from '~components/space-between';
 import Icon from '~components/icon';
@@ -26,21 +27,32 @@ export default function GenericTokenGroupPage() {
   return (
     <Box padding="xl">
       <h1>Generic token group</h1>
-      <GenericTokenGroup
-        alignment="vertical"
-        items={files}
-        i18nStrings={i18nStrings}
-        limit={5}
-        renderItem={file => <FileOption file={file} />}
-        getItemAttributes={(file, fileIndex) => ({
-          name: `agreement-${file + 1}.pdf`,
-          disabled: file === 0,
-          dismiss: {
-            label: 'Remove file',
-            onDismiss: () => onDismiss(fileIndex),
-          },
-        })}
-      />
+      <SpaceBetween size="l" direction="vertical">
+        <div role="group" aria-label="Custom token">
+          <Token>Custom token</Token>
+        </div>
+
+        <div role="group" aria-label="Custom token" aria-disabled={true}>
+          <Token disabled={true}>Custom disabled token</Token>
+        </div>
+
+        <TokenList
+          alignment="vertical"
+          items={files}
+          i18nStrings={i18nStrings}
+          limit={5}
+          renderItem={(file, fileIndex) => (
+            <Token
+              disabled={file === 0}
+              dismissLabel={`Remove file ${fileIndex + 1}`}
+              onDismiss={() => onDismiss(fileIndex)}
+            >
+              <FileOption file={file} />
+            </Token>
+          )}
+          itemAttributes={file => ({ 'aria-label': `agreement-${file + 1}.pdf`, 'aria-disabled': file === 0 })}
+        />
+      </SpaceBetween>
     </Box>
   );
 }

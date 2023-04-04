@@ -99,6 +99,14 @@ describe('BreadcrumbGroup Component', () => {
       }
     });
 
+    test('test-utils findBreadcrumbLink selector properly finds non-link items in short lists', () => {
+      const { container } = render(<BreadcrumbGroup items={[items[0], items[1]]} />);
+      const breadcrumbs = createWrapper(container).findBreadcrumbGroup()!;
+
+      expect(breadcrumbs.findBreadcrumbLink(1)?.getElement()).toHaveTextContent(items[0].text);
+      expect(breadcrumbs.findBreadcrumbLink(2)?.getElement()).toHaveTextContent(items[1].text);
+    });
+
     // Test for AWSUI-6738
     test('all the icons stay visible when changing the items', () => {
       const { container, rerender } = render(<BreadcrumbGroup items={items} />);

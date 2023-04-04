@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { TableProps } from './interfaces';
 
 function iterateTableCells<T extends HTMLElement>(
@@ -25,7 +26,7 @@ function iterateTableCells<T extends HTMLElement>(
  * @param numRows - The number of rows in the table.
  */
 function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<any> }>(
-  selectionType: 'single' | 'multi' | 'none' = 'none',
+  selectionType: TableProps['selectionType'],
   tableRoot: RefObject<HTMLTableElement>,
   columnDefinitions: Readonly<T[]>,
   numRows: number
@@ -34,14 +35,14 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
 
   const focusableColumns = useMemo(() => {
     const cols = columnDefinitions.map(column => !!column.editConfig);
-    if (selectionType !== 'none') {
+    if (selectionType) {
       cols.unshift(false);
     }
     return cols;
   }, [columnDefinitions, selectionType]);
 
-  const maxColumnIndex = useMemo(() => focusableColumns.length - 1, [focusableColumns]);
-  const minColumnIndex = useMemo(() => (selectionType !== 'none' ? 1 : 0), [selectionType]);
+  const maxColumnIndex = focusableColumns.length - 1;
+  const minColumnIndex = selectionType ? 1 : 0;
 
   const focusCell = useCallback(
     (rowIndex: number, columnIndex: number) => {
@@ -49,7 +50,11 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
             const editButton = cell.querySelector('button:last-child') as HTMLButtonElement | null;
-            editButton?.focus?.({ preventScroll: true });
+
+            if (editButton) {
+              editButton.focus?.();
+              scrollElementIntoView(editButton);
+            }
           }
         });
       }

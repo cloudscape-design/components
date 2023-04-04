@@ -30,7 +30,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    await browser.url('#/light/table/editable-with-app-layout');
+    await browser.url('#/light/table/editable');
     await testFn(page);
   });
 };
@@ -75,5 +75,19 @@ test(
     await expect(page.isFocused(cellAbove$)).resolves.toBe(true);
     await page.keys(['ArrowDown', 'ArrowDown']);
     await expect(page.isFocused(cellBelow$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'input is focused when the edit operation failed',
+  setupTest(async page => {
+    await page.click(cellRoot$);
+
+    // "inline" is a special keyword that causes a server-side error
+    await page.setValue(cellInputField$, 'inline');
+    await page.keys('Enter');
+
+    // after loading, the focus should be back on the input
+    await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
   })
 );

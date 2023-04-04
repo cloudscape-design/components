@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
-import SelectToggle from '../token-group/toggle';
-import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
@@ -21,6 +20,7 @@ import {
   getAutosuggestOptions,
   getAllowedOperators,
   getExtendedOperator,
+  getFormattedToken,
 } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
@@ -30,6 +30,8 @@ import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { matchTokenValue } from './utils';
 import { useInternalI18n } from '../internal/i18n/context';
+import TokenList from '../internal/components/token-list';
+import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
 
@@ -73,12 +75,13 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
 
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
-    const i18nStrings = {
+    const i18nStrings: PropertyFilterProps.I18nStrings = {
       ...rest.i18nStrings,
       allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings.allPropertiesLabel),
       applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings.applyActionText),
@@ -124,7 +127,7 @@ const PropertyFilter = React.forwardRef(
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
-    const showResults = tokens?.length && !disabled;
+    const showResults = !!tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -256,15 +259,12 @@ const PropertyFilter = React.forwardRef(
 
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
-    const [tokensExpanded, setTokensExpanded] = useState(false);
-    const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);
-    const hasHiddenOptions = tokenLimit !== undefined && tokens.length > tokenLimit;
-    const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
-    const controlId = useMemo(() => generateUniqueId(), []);
 
     const operatorForm =
       parsedText.step === 'property' &&
       getExtendedOperator(filteringProperties, parsedText.property.key, parsedText.operator)?.form;
+
+    const searchResultsId = useUniqueId('property-filter-search-results');
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -309,59 +309,53 @@ const PropertyFilter = React.forwardRef(
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
+            searchResultsId={showResults ? searchResultsId : undefined}
           />
-          <span
-            aria-live="polite"
-            aria-atomic="true"
-            className={clsx(styles.results, showResults && styles['results-visible'])}
-          >
-            {showResults ? countText : ''}
-          </span>
+          {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
-            <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
-              {slicedTokens.map((token, index) => (
-                <TokenButton
-                  token={token}
-                  first={index === 0}
-                  operation={operation}
-                  key={index}
-                  removeToken={() => removeToken(index)}
-                  setToken={(newToken: Token) => setToken(index, newToken)}
-                  setOperation={setOperation}
-                  filteringOptions={filteringOptions}
-                  filteringProperties={filteringProperties}
-                  asyncProps={asyncProps}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                  asyncProperties={asyncProperties}
-                  hideOperations={hideOperations}
-                  customGroupsText={customGroupsText}
-                  disableFreeTextFiltering={disableFreeTextFiltering}
-                  disabled={disabled}
-                  expandToViewport={expandToViewport}
-                />
-              ))}
-              {hasHiddenOptions && (
-                <div className={styles['toggle-collapsed']}>
-                  <SelectToggle
-                    controlId={controlId}
-                    allHidden={tokenLimit === 0}
-                    expanded={tokensExpanded}
-                    numberOfHiddenOptions={tokens.length - slicedTokens.length}
-                    i18nStrings={{
-                      limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                      limitShowMore: i18nStrings.tokenLimitShowMore,
+            <InternalSpaceBetween size="xs" direction="horizontal">
+              <TokenList
+                alignment="inline"
+                limit={tokenLimit}
+                items={tokens}
+                renderItem={(token, tokenIndex) => (
+                  <TokenButton
+                    token={token}
+                    first={tokenIndex === 0}
+                    operation={operation}
+                    removeToken={() => {
+                      removeToken(tokenIndex);
+                      setRemovedTokenIndex(tokenIndex);
                     }}
-                    onClick={toggleExpandedTokens}
+                    setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
+                    setOperation={setOperation}
+                    filteringOptions={filteringOptions}
+                    filteringProperties={filteringProperties}
+                    asyncProps={asyncProps}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                    asyncProperties={asyncProperties}
+                    hideOperations={hideOperations}
+                    customGroupsText={customGroupsText}
+                    disableFreeTextFiltering={disableFreeTextFiltering}
+                    disabled={disabled}
+                    expandToViewport={expandToViewport}
                   />
-                </div>
-              )}
-              <div className={styles.separator} />
-              <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
-                {i18nStrings.clearFiltersText}
-              </InternalButton>
+                )}
+                itemAttributes={token => ({ 'aria-label': getFormattedToken(filteringProperties, token).label })}
+                i18nStrings={{
+                  limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                  limitShowMore: i18nStrings.tokenLimitShowMore,
+                }}
+                after={
+                  <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
+                    {i18nStrings.clearFiltersText}
+                  </InternalButton>
+                }
+                removedItemIndex={removedTokenIndex}
+              />
             </InternalSpaceBetween>
           </div>
         )}

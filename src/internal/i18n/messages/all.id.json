@@ -1,12 +1,6 @@
 {
-  "alert": { "dismissAriaLabel": "Abaikan pemberitahuan" },
-  "autosuggest": {
-    "stepNumberLabel": "Langkah {stepNumber}",
-    "collapsedStepsLabel": "Langkah {stepNumber} dari {stepsCount}",
-    "cancelButton": "Batalkan",
-    "previousButton": "Sebelumnya",
-    "nextButton": "Berikutnya",
-    "optional": "opsional"
+  "alert": {
+    "dismissAriaLabel": "Abaikan pemberitahuan"
   },
   "app-layout": {
     "ariaLabels.navigation": "Navigasi samping",
@@ -17,7 +11,11 @@
     "ariaLabels.toolsClose": "Buka panel bantuan",
     "ariaLabels.toolsToggle": "Tutup panel bantuan"
   },
-  "date-picker": {
+  "autosuggest": {
+    "errorIconAriaLabel": "Kesalahan",
+    "selectedAriaLabel": "Dipilih"
+  },
+  "calendar": {
     "nextMonthAriaLabel": "Bulan berikutnya",
     "previousMonthAriaLabel": "Bulan sebelumnya",
     "todayAriaLabel": "Hari ini"
@@ -32,16 +30,26 @@
     "i18nStrings.successIconAriaLabel": "Berhasil",
     "i18nStrings.warningIconAriaLabel": "Peringatan"
   },
-  "form": { "errorIconAriaLabel": "Kesalahan" },
-  "form-field": { "i18nStrings.errorIconAriaLabel": "Kesalahan" },
-  "input": { "clearAriaLabel": "Hapus" },
-  "modal": { "closeAriaLabel": "Tutup modal" },
+  "form-field": {
+    "i18nStrings.errorIconAriaLabel": "Kesalahan"
+  },
+  "form": {
+    "errorIconAriaLabel": "Kesalahan"
+  },
+  "input": {
+    "clearAriaLabel": "Hapus"
+  },
+  "modal": {
+    "closeAriaLabel": "Tutup modal"
+  },
   "pagination": {
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
     "ariaLabels.pageLabel": "Halaman {pageNumber} dari semua halaman",
     "ariaLabels.previousPageLabel": "Halaman sebelumnya"
   },
-  "popover": { "dismissAriaLabel": "Tutup popover" },
+  "popover": {
+    "dismissAriaLabel": "Tutup popover"
+  },
   "property-filter": {
     "i18nStrings.allPropertiesLabel": "Semua properti",
     "i18nStrings.applyActionText": "Terapkan",
@@ -68,6 +76,16 @@
     "i18nStrings.valueText": "Nilai",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Hapus filter, {token__propertyKey} sama dengan {token__value}} not_equals {Hapus filter, {token__propertyKey} tidak sama dengan {token__value}} greater_than {Hapus filter, {token__propertyKey} lebih besar dari {token__value}} greater_than_equal {Hapus filter, {token__propertyKey} lebih besar dari atau sama dengan {token__value}} less_than {Hapus filter, {token__propertyKey} kurang dari {token__value}} less_than_equal {Hapus filter, {token__propertyKey} kurang dari atau sama dengan {token__value}} contains {Hapus filter, {token__propertyKey} berisi {token__value}} not_contains {Hapus filter, {token__propertyKey} tidak berisi {token__value}} other {}}"
   },
-  "select": { "errorIconAriaLabel": "Kesalahan", "selectedAriaLabel": "Dipilih" },
-  "wizard": { "errorIconAriaLabel": "Kesalahan", "selectedAriaLabel": "Dipilih" }
+  "select": {
+    "errorIconAriaLabel": "Kesalahan",
+    "selectedAriaLabel": "Dipilih"
+  },
+  "wizard": {
+    "i18nStrings.stepNumberLabel": "Langkah {stepNumber}",
+    "i18nStrings.collapsedStepsLabel": "Langkah {stepNumber} dari {stepsCount}",
+    "i18nStrings.cancelButton": "Batalkan",
+    "i18nStrings.previousButton": "Sebelumnya",
+    "i18nStrings.nextButton": "Berikutnya",
+    "i18nStrings.optional": "opsional"
+  }
 }

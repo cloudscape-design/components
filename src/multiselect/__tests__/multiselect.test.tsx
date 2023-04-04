@@ -12,7 +12,7 @@ import statusIconStyles from '../../../lib/components/status-indicator/styles.se
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
   { label: 'Second', value: '2' },
-  { label: 'Third', value: '3' },
+  { label: 'Third', value: '3', lang: 'es' },
   { label: 'Fourth', value: '4' },
 ];
 const groupOptions: MultiselectProps.Options = [
@@ -76,6 +76,12 @@ test('does not open dropdown when disabled', () => {
   expect(wrapper.isDisabled()).toEqual(true);
   wrapper.openDropdown();
   expect(wrapper.findDropdown().findOpenDropdown()).toEqual(null);
+});
+
+test('renders lang on options', () => {
+  const { wrapper } = renderMultiselect(<Multiselect selectedOptions={[]} options={defaultOptions} />);
+  wrapper.openDropdown();
+  expect(wrapper.findDropdown()!.findOptionByValue('3')!.getElement()).toHaveAttribute('lang', 'es');
 });
 
 test('filtering state stays unchanged when an item is selected', () => {

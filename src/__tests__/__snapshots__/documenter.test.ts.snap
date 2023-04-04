@@ -1027,6 +1027,13 @@ The event \`detail\` contains the index of the corresponding item.",
   ],
   "functions": Array [
     Object {
+      "description": "Focuses the 'add' button. Use this, for example, after a user removes the last row.",
+      "name": "focusAddButton",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+    Object {
+      "description": "Focuses the 'remove' button for the given row index.",
       "name": "focusRemoveButton",
       "parameters": Array [
         Object {
@@ -1553,6 +1560,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -2591,6 +2599,13 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     Object {
+      "description": "The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
+ Use when a button is not the ancestor of a form element, such as when used in a modal.",
+      "name": "form",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "defaultValue": "'submit'",
       "description": "The form action that is performed by a button click.",
       "inlineType": Object {
@@ -2666,6 +2681,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "copy",
           "delete-marker",
           "download",
+          "drag-indicator",
           "edit",
           "ellipsis",
           "envelope",
@@ -2692,6 +2708,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "redo",
           "refresh",
           "remove",
+          "resize-area",
           "script",
           "search",
           "security",
@@ -2980,6 +2997,8 @@ in a slight, visible lag when scrolling complex pages.",
 
 - \`text\` (string) - description shown in the menu for this item. Mandatory for individual items, optional for categories.
 
+- \`lang\` (string) - (Optional) The language of the item, provided as a BCP 47 language tag.
+
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
@@ -3144,13 +3163,13 @@ Supported values and formats are listed in the
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -3163,7 +3182,7 @@ By default the starting day of the week is defined by the locale, but you can us
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4636,12 +4655,6 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
-      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
-      "name": "clearAriaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -4899,7 +4912,7 @@ Supported values and formats are listed in the
     Object {
       "description": "Specifies an \`aria-label\` for the 'next month' button.",
       "name": "nextMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4931,7 +4944,7 @@ a human-readable localised string representing the current value of the input.
     Object {
       "description": "Specifies an \`aria-label\` for the 'previous month' button.",
       "name": "previousMonthAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -4955,7 +4968,7 @@ By default the starting day of the week is defined by the locale, but you can us
     Object {
       "description": "Used as part of the \`aria-label\` for today's date in the calendar.",
       "name": "todayAriaLabel",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -6492,6 +6505,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "copy",
           "delete-marker",
           "download",
+          "drag-indicator",
           "edit",
           "ellipsis",
           "envelope",
@@ -6518,6 +6532,7 @@ This property is ignored if you use a predefined icon or if you set your custom 
           "redo",
           "refresh",
           "remove",
+          "resize-area",
           "script",
           "search",
           "security",
@@ -7370,8 +7385,9 @@ Object {
     Object {
       "cancelable": true,
       "description": "Called when a link is clicked without any modifier keys.
-Use this event if you want to prevent default browser navigation
-(by calling \`preventDefault\`) and implement client-side routing yourself.",
+If you want to implement client-side routing yourself,
+use this event and prevent default browser navigation (by calling \`preventDefault\`).
+",
       "detailInlineType": Object {
         "name": "LinkProps.FollowDetail",
         "properties": Array [
@@ -8338,6 +8354,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -10720,6 +10737,7 @@ The options can be grouped using \`OptionGroup\` objects.
 #### Option
 - \`value\` (string) - The returned value of the option when selected.
 - \`label\` (string) - (Optional) Option text displayed to the user.
+- \`lang\` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
 - \`description\` (string) - (Optional) Further information about the option that appears below the label.
 - \`disabled\` (boolean) - (Optional) Determines whether the option is disabled.
 - \`labelTag\` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -12765,12 +12783,6 @@ scrolled out of the viewport.",
       "type": "string",
     },
     Object {
-      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
-      "name": "clearAriaLabel",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
       "description": "Specifies the ID of the native form element. You can use it to relate
 a label element's \`for\` attribute to this control.
 It defaults to an automatically generated ID that
@@ -13114,12 +13126,6 @@ scrolled out of the viewport.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
-      "optional": true,
-      "type": "string",
-    },
-    Object {
-      "description": "Adds an \`aria-label\` to the clear button inside the search input.",
-      "name": "clearAriaLabel",
       "optional": true,
       "type": "string",
     },
@@ -13648,7 +13654,7 @@ Object {
     Object {
       "description": "The link to a file documenting all tutorials (usually a PDF).",
       "name": "downloadUrl",
-      "optional": false,
+      "optional": true,
       "type": "string",
     },
     Object {
@@ -13928,7 +13934,7 @@ Defaults to \`false\`.
         "properties": Array [
           Object {
             "name": "cancelButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13943,7 +13949,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "nextButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13953,7 +13959,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "previousButton",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -13963,7 +13969,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "collapsedStepsLabel",
-            "optional": false,
+            "optional": true,
             "type": "(stepNumber: number, stepsCount: number) => string",
           },
           Object {
@@ -13973,7 +13979,7 @@ Defaults to \`false\`.
           },
           Object {
             "name": "stepNumberLabel",
-            "optional": false,
+            "optional": true,
             "type": "(stepNumber: number) => string",
           },
         ],

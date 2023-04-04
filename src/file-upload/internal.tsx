@@ -14,11 +14,12 @@ import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
 import clsx from 'clsx';
 import { SomeRequired } from '../internal/types';
-import GenericTokenGroup from '../token-group/generic-token-group';
 import { warnOnce } from '../internal/logging';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
 import InternalFormField from '../form-field/internal';
+import TokenList from '../internal/components/token-list';
+import { Token } from '../token-group/token';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -112,20 +113,20 @@ function InternalFileUpload(
         )}
       </InternalFormField>
 
+      {/* TODO: different handling for multiple=false */}
       {value.length > 0 ? (
-        <GenericTokenGroup
+        <TokenList
           alignment="vertical"
           items={value}
-          getItemAttributes={(file, fileIndex) => ({
-            name: file.name,
-            error: fileErrors?.[fileIndex],
-            dismiss: {
-              label: i18nStrings.removeFileAriaLabel(file, fileIndex),
-              onDismiss: () => onFileRemove(fileIndex),
-            },
-          })}
-          renderItem={file => <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />}
-          list={multiple}
+          itemAttributes={file => ({ 'aria-label': file.name })}
+          renderItem={(file, fileIndex) => (
+            <Token
+              dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
+              onDismiss={() => onFileRemove(fileIndex)}
+            >
+              <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
+            </Token>
+          )}
           limit={limit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,

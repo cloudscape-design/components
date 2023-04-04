@@ -112,14 +112,14 @@ export namespace WizardProps {
   }
 
   export interface I18nStrings {
-    stepNumberLabel(stepNumber: number): string;
-    collapsedStepsLabel(stepNumber: number, stepsCount: number): string;
+    stepNumberLabel?(stepNumber: number): string;
+    collapsedStepsLabel?(stepNumber: number, stepsCount: number): string;
     skipToButtonLabel?(targetStep: WizardProps.Step, targetStepNumber: number): string;
     navigationAriaLabel?: string;
     errorIconAriaLabel?: string;
-    cancelButton: string;
-    previousButton: string;
-    nextButton: string;
+    cancelButton?: string;
+    previousButton?: string;
+    nextButton?: string;
     submitButton: string;
     optional?: string;
   }
