@@ -130,6 +130,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorForegroundControlDefault: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorForegroundControlDisabled: { light: '{colorWhite}', dark: '{colorGrey800}' },
   colorShadowDefault: '{colorGreyTransparentHeavy}',
+  colorShadowLayoutPanelTrigger: { light: '{colorGrey300}', dark: '{colorGrey650}' },
   colorShadowMedium: '{colorGreyTransparent}',
   colorShadowSide: '{colorGreyTransparentLight}',
   colorStrokeCodeEditorResizeHandler: { light: '{colorGrey600}', dark: '{colorGrey300}' },

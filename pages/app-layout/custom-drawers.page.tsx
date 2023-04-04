@@ -7,6 +7,7 @@ import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Toggle from '~components/toggle';
 import HelpPanel from '~components/help-panel';
+import { NonCancelableCustomEvent } from '~components';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Containers, Navigation, Breadcrumbs } from './utils/content-blocks';
@@ -58,32 +59,60 @@ export default function () {
   const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
   const [splitPanelEnabled, setSplitPanelEnabled] = useState(urlParams.splitPanelEnabled ?? true);
   const [drawersEnabled, setDrawersEnabled] = useState(true);
-  const [toolsEnabled, setToolsEnabled] = useState(false);
+  const [toolsEnabled, setToolsEnabled] = useState(true);
 
-  const [activeDrawerId, setActiveDrawerId] = useState(undefined);
+  const [activeDrawerId, setActiveDrawerId] = useState('security-info');
 
   const drawersConfig = drawersEnabled && {
     drawers: {
       items: [
         {
           trigger: {
-            iconName: 'contact',
-            ariaLabel: 'View Ask AWS panel',
-          },
-          id: 'contact',
-          content: <HelpPanel header={<h2>Ask AWS</h2>}></HelpPanel>,
-        },
-        {
-          trigger: {
             iconName: 'security',
-            ariaLabel: 'View security information',
+            iconSvg: (
+              <span>
+                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                  <path
+                    fill="currentColor"
+                    d="m8,0C3.59,0,0,3.59,0,8s3.59,8,8,8,8-3.59,8-8S12.41,0,8,0Zm.99,4v2.01s-1.99,0-1.99,0v-2s1.99,0,1.99,0Zm1.01,8h-4v-2h1v-1h-1v-2h3v3h1v2Z"
+                  />
+                </svg>
+              </span>
+            ),
+          },
+          ariaLabels: {
+            content: 'Security information',
+            closeButton: 'Close security information',
+            triggerButton: 'View security information',
           },
           id: 'security-info',
           content: <HelpPanel header={<h2>Security information</h2>}></HelpPanel>,
         },
+        {
+          trigger: {
+            iconName: 'contact',
+            iconSvg: (
+              <span>
+                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                  <path
+                    fill="currentColor"
+                    d="m14,.55H2c-.55,0-1,.45-1,1v10.29c0,.55.45,1,1,1h5.73l1.42,2.25c.18.29.5.47.85.47s.66-.18.85-.47l1.42-2.25h1.74c.55,0,1-.45,1-1V1.55c0-.55-.45-1-1-1ZM5,7.56v-2s1.99,0,1.99,0v2.01s-1.99,0-1.99,0Zm4,0v-2s1.99,0,1.99,0v2.01s-1.99,0-1.99,0Z"
+                  />
+                </svg>
+              </span>
+            ),
+          },
+          ariaLabels: {
+            content: 'Ask AWS',
+            closeButton: 'Close Ask AWS',
+            triggerButton: 'View Ask AWS panel',
+          },
+          id: 'contact',
+          content: <HelpPanel header={<h2>Ask AWS</h2>}></HelpPanel>,
+        },
       ],
       activeDrawerId,
-      onDrawersChange: ({ detail }: any) => setActiveDrawerId(detail.activeDrawerId),
+      onChange: (event: NonCancelableCustomEvent<string>) => setActiveDrawerId(event.detail),
     },
   };
 

@@ -31,20 +31,19 @@ export interface DesktopDrawerProps {
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onDrawersChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
 }
 
-export interface DesktopStaticDrawerProps {
+export interface DrawerTriggersBar {
   contentClassName: string;
   topOffset: number | undefined;
   bottomOffset: number | undefined;
-  ariaLabels: AppLayoutProps.Labels | undefined;
   isMobile: boolean;
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onDrawersChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
 }
 
@@ -54,7 +53,11 @@ export interface DrawerItem {
   trigger: {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
-    ariaLabel: string;
+  };
+  ariaLabels: {
+    content: string;
+    closeButton: string;
+    triggerButton: string;
   };
 }
 
@@ -111,6 +114,8 @@ export function Drawer({
       />
     </TagName>
   );
+  const activeDrawer = drawers?.items.find(item => item.id === drawers.activeDrawerId);
+
   return (
     <div
       className={clsx(styles.drawer, {
@@ -148,14 +153,14 @@ export function Drawer({
         className={clsx(styles['drawer-content'], contentClassName)}
       >
         {!isMobile && regularOpenButton}
-        <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
+        <TagName aria-label={activeDrawer?.ariaLabels.content || mainLabel} aria-hidden={!isOpen}>
           <CloseButton
             ref={toggleRefs.close}
             className={closeClassName}
-            ariaLabel={closeLabel}
+            ariaLabel={activeDrawer?.ariaLabels.closeButton || closeLabel}
             onClick={() => {
               onToggle(false);
-              drawers?.onDrawersChange({ activeDrawerId: undefined });
+              drawers?.onChange({ activeDrawerId: undefined });
             }}
           />
           {children}
@@ -165,17 +170,7 @@ export function Drawer({
   );
 }
 
-export function DrawerTriggersBar({
-  isMobile,
-  topOffset,
-  bottomOffset,
-  drawers,
-  contentClassName,
-  ariaLabels,
-}: DesktopStaticDrawerProps) {
-  const { getLabels } = togglesConfig.tools;
-  const { mainLabel } = getLabels(ariaLabels);
-
+export function DrawerTriggersBar({ isMobile, topOffset, bottomOffset, drawers, contentClassName }: DrawerTriggersBar) {
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -187,7 +182,7 @@ export function DrawerTriggersBar({
         className={clsx(styles['drawer-content'], styles['non-interactive'], contentClassName)}
       >
         {!isMobile && (
-          <aside aria-label={mainLabel} className={styles.toggle}>
+          <aside aria-label="Drawers" className={styles.toggle}>
             {drawers?.items?.map((item: DrawerItem, index: number) => (
               <AppLayoutButton
                 className={clsx(
@@ -198,8 +193,8 @@ export function DrawerTriggersBar({
                 key={`drawer-trigger-${index}`}
                 iconName={item.trigger.iconName}
                 iconSvg={item.trigger.iconSvg}
-                ariaLabel={item.trigger.ariaLabel}
-                onClick={() => drawers.onDrawersChange({ activeDrawerId: item.id })}
+                ariaLabel={item.ariaLabels?.triggerButton}
+                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
                 ariaExpanded={drawers.activeDrawerId !== undefined}
               />
             ))}

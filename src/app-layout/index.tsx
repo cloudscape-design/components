@@ -147,21 +147,25 @@ const OldAppLayout = React.forwardRef(
 
     const [activeDrawerId, setActiveDrawersId] = useControllable(
       drawers?.activeDrawerId,
-      drawers?.onDrawersChange,
-      '',
+      drawers?.onChange,
+      isMobile ? false : tools ? defaults.toolsOpen : '',
       {
         componentName: 'AppLayout',
         controlledProp: 'activeDrawerId',
-        changeHandler: 'onDrawersChange',
+        changeHandler: 'onChange',
       }
     );
 
     const toolsItem = {
       id: 'tools',
       content: tools,
+      ariaLabels: {
+        triggerButton: 'View tools',
+        closeButton: 'Close tools',
+        content: 'Tools',
+      },
       trigger: {
         iconName: 'status-info',
-        ariaLabel: 'View tools',
       },
     };
 
@@ -170,17 +174,20 @@ const OldAppLayout = React.forwardRef(
         return tools ? [toolsItem, ...drawers.items] : drawers.items;
       }
     };
+
     const selectedDrawer =
-      drawers &&
-      drawers.items &&
-      getAllDrawerItems().filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
+      tools && toolsOpen
+        ? toolsItem
+        : drawers &&
+          drawers.items &&
+          getAllDrawerItems().filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen, true);
+    } = useFocusControl(toolsOpen || activeDrawerId !== undefined, true);
 
     const onNavigationToggle = useCallback(
       (open: boolean) => {
@@ -461,9 +468,9 @@ const OldAppLayout = React.forwardRef(
                   ? {
                       items: tools ? [toolsItem, ...drawers.items] : drawers.items,
                       activeDrawerId: selectedDrawer?.id,
-                      onDrawersChange: changeDetail => {
+                      onChange: changeDetail => {
                         setActiveDrawersId(changeDetail.activeDrawerId);
-                        fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
+                        fireNonCancelableEvent(drawers.onChange, changeDetail);
                       },
                     }
                   : undefined
@@ -589,37 +596,32 @@ const OldAppLayout = React.forwardRef(
 
             {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
               (drawers ? (
-                getAllDrawerItems().map(
-                  (drawerItem: DrawerItem, index: number) =>
-                    drawerItem.id === selectedDrawer.id && (
-                      <Drawer
-                        key={`drawer-${index}`}
-                        contentClassName={testutilStyles.tools}
-                        toggleClassName={testutilStyles['tools-toggle']}
-                        closeClassName={testutilStyles['tools-close']}
-                        ariaLabels={ariaLabels}
-                        width={effectiveToolsWidth}
-                        bottomOffset={footerHeight}
-                        topOffset={headerHeight}
-                        isMobile={isMobile}
-                        onToggle={onToolsToggle}
-                        isOpen={activeDrawerId !== undefined}
-                        toggleRefs={toolsRefs}
-                        type="tools"
-                        onLoseFocus={loseToolsFocus}
-                        drawers={{
-                          items: tools ? [toolsItem, ...drawers.items] : drawers.items,
-                          activeDrawerId: selectedDrawer?.id,
-                          onDrawersChange: changeDetail => {
-                            setActiveDrawersId(changeDetail.activeDrawerId);
-                            fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
-                          },
-                        }}
-                      >
-                        {selectedDrawer?.content}
-                      </Drawer>
-                    )
-                )
+                <Drawer
+                  contentClassName={selectedDrawer?.id === 'tools' ? testutilStyles.tools : ''}
+                  toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
+                  closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
+                  ariaLabels={ariaLabels}
+                  width={effectiveToolsWidth}
+                  bottomOffset={footerHeight}
+                  topOffset={headerHeight}
+                  isMobile={isMobile}
+                  onToggle={onToolsToggle}
+                  isOpen={toolsOpen || activeDrawerId !== undefined}
+                  toggleRefs={toolsRefs}
+                  type="tools"
+                  onLoseFocus={loseToolsFocus}
+                  drawers={{
+                    items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                    activeDrawerId: selectedDrawer.id,
+                    onChange: changeDetail => {
+                      onToolsToggle(false);
+                      setActiveDrawersId(changeDetail.activeDrawerId);
+                      fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
+                    },
+                  }}
+                >
+                  {selectedDrawer.content}
+                </Drawer>
               ) : (
                 <Drawer
                   contentClassName={testutilStyles.tools}
@@ -642,16 +644,18 @@ const OldAppLayout = React.forwardRef(
             {drawers && (
               <DrawerTriggersBar
                 contentClassName={testutilStyles.tools}
-                ariaLabels={ariaLabels}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
                 drawers={{
                   items: tools ? [toolsItem, ...drawers.items] : drawers.items,
                   activeDrawerId: selectedDrawer?.id,
-                  onDrawersChange: changeDetail => {
-                    setActiveDrawersId(changeDetail.activeDrawerId);
-                    fireNonCancelableEvent(drawers.onDrawersChange, changeDetail);
+                  onChange: changeDetail => {
+                    if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
+                      onToolsToggle(changeDetail.activeDrawerId === 'tools');
+                      setActiveDrawersId(changeDetail.activeDrawerId);
+                      fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
+                    }
                   },
                 }}
               />
