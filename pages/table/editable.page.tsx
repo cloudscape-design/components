@@ -207,7 +207,7 @@ const Demo = forwardRef(
       let value = newValue;
       await new Promise(r => setTimeout(r, 1000));
       errorsMeta.delete(currentItem);
-      if (value === 'inline') {
+      if (typeof value === 'string' && value.includes('inline')) {
         errorsMeta.set(currentItem, 'Server does not accept this value, try another');
         throw new Error('Inline error');
       }
