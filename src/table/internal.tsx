@@ -235,6 +235,7 @@ const InternalTable = forwardRef(
       isStuckToTheRight,
       isStuckToTheLeft,
       cellWidths,
+      shouldDisableStickyColumns,
     };
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (

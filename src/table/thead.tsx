@@ -47,6 +47,7 @@ export interface TheadProps {
   stickyColumns?: TableProps.StickyColumns;
   cellWidths?: CellWidths;
   getStickyColumn: (colIndex: number) => GetStickyColumn;
+  shouldDisableStickyColumns: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -77,6 +78,7 @@ const Thead = React.forwardRef(
       getStickyColumn,
       isStuckToTheRight,
       isStuckToTheLeft,
+      shouldDisableStickyColumns,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -107,7 +109,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"
@@ -129,7 +131,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
               style={{ left: cellWidths?.start[0] }}
               scope="col"

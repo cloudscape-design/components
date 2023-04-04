@@ -93,7 +93,7 @@ export const useStickyColumns = ({
       }
     };
 
-    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1], rootMargin: '-1px' });
+    const observer = new IntersectionObserver(handleIntersection, { threshold: [0, 1], rootMargin: '-2px' });
     // Observe left and right sentinels to set "stuck" state
     observer.observe(leftSentinel);
     observer.observe(rightSentinel);
