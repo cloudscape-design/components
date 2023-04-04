@@ -17,7 +17,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [useDrawers, setUseDrawers] = useState(true);
-  const [useTools, setUseTools] = useState(false);
+  const [useTools, setUseTools] = useState(true);
 
   const drawers = !useDrawers
     ? null

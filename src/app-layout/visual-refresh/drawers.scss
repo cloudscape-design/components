@@ -2,7 +2,6 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../internal/styles' as styles;
@@ -20,11 +19,11 @@
 
   &.has-open-drawer {
     background-color: awsui.$color-background-container-content;
+    box-shadow: awsui.$shadow-panel;
   }
 
   @include styles.with-motion {
-    transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: background-color;
+    transition: background-color awsui.$motion-duration-refresh-only-fast;
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
@@ -48,8 +47,7 @@
     background-color: awsui.$color-background-container-content;
 
     @include styles.with-motion {
-      transition: awsui.$motion-duration-refresh-only-fast;
-      transition-property: background-color;
+      transition: background-color awsui.$motion-duration-refresh-only-fast;
     }
   }
 
@@ -61,39 +59,37 @@
     width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
 
     @include styles.with-motion {
-      transition: awsui.$motion-duration-refresh-only-fast;
-      transition-property: width;
+      transition: width awsui.$motion-duration-refresh-only-fast;
     }
   }
+}
 
-  > .drawers-trigger-content {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: awsui.$space-xs;
-    padding-top: awsui.$space-scaled-s;
-    width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
+.drawers-trigger-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-xs;
+  padding-top: awsui.$space-scaled-s;
+  width: calc((awsui.$space-layout-toggle-padding * 2) + awsui.$space-layout-toggle-diameter);
 
-    &:not(.has-multiple-triggers).has-open-drawer {
-      opacity: 0;
-    }
+  &:not(.has-multiple-triggers).has-open-drawer {
+    opacity: 0;
+  }
 
-    &:not(.has-multiple-triggers):not(.has-open-drawer) {
-      opacity: 1;
+  &:not(.has-multiple-triggers):not(.has-open-drawer) {
+    opacity: 1;
 
-      @include styles.with-motion {
-        transition: awsui.$motion-duration-refresh-only-medium;
-        transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
-        transition-property: opacity;
-      }
+    @include styles.with-motion {
+      transition: opacity awsui.$motion-duration-refresh-only-medium;
+      transition-delay: calc(awsui.$motion-duration-refresh-only-fast / 1.5);
     }
   }
 }
 
 .drawer {
+  #{custom-props.$activeDrawerWidth}: 290px;
   background-color: awsui.$color-background-container-content;
   border-color: transparent;
-  box-shadow: transparent;
   display: grid;
   flex-shrink: 0;
   grid-template-columns: 1fr auto awsui.$space-m;
@@ -113,7 +109,7 @@
   > .drawer-content {
     grid-column: 1 / span 3;
     grid-row: 1 / span 3;
-    width: 290px;
+    width: var(#{custom-props.$activeDrawerWidth});
   }
 
   &:not(.is-drawer-open) {
@@ -123,27 +119,24 @@
 
   &.is-drawer-open {
     border-right: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-    box-shadow: awsui.$shadow-panel;
     opacity: 1;
-    width: 290px;
+    width: var(#{custom-props.$activeDrawerWidth});
   }
 
   @include styles.with-motion {
     transition: awsui.$motion-duration-refresh-only-fast;
-    transition-property: border-color, box-shadow, opacity, width;
+    transition-property: border-color, opacity, width;
   }
 
   @include styles.media-breakpoint-up(styles.$breakpoint-xx-large) {
-    &.is-drawer-open,
-    > .drawer-content {
-      width: 320px;
+    &.is-drawer-open {
+      #{custom-props.$activeDrawerWidth}: 320px;
     }
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-    &.is-drawer-open,
-    > .drawer-content {
-      width: 100vw;
+    &.is-drawer-open {
+      #{custom-props.$activeDrawerWidth}: 100vw;
     }
   }
 }
