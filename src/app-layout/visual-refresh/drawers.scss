@@ -12,12 +12,6 @@
   grid-column: 5;
   grid-row: 1 / span 5;
   height: var(#{custom-props.$contentHeight});
-  /* stylelint-disable scss/operator-no-newline-after */
-  max-width: calc(
-    var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
-      var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
-  );
-  /* stylelint-enable scss/operator-no-newline-after */
   pointer-events: none;
   position: sticky;
   top: var(#{custom-props.$offsetTop});
@@ -30,6 +24,15 @@
 
   @include styles.with-motion {
     transition: background-color awsui.$motion-duration-refresh-only-fast;
+  }
+
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    /* stylelint-disable scss/operator-no-newline-after */
+    max-width: calc(
+      var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
+        var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
+    );
+    /* stylelint-enable scss/operator-no-newline-after */
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
@@ -49,16 +52,16 @@
   overflow-x: hidden;
   overscroll-behavior-y: contain;
 
+  &:not(.has-multiple-triggers).has-open-drawer {
+    width: 0;
+  }
+
   &.has-multiple-triggers.has-open-drawer {
     background-color: awsui.$color-background-container-content;
 
     @include styles.with-motion {
       transition: background-color awsui.$motion-duration-refresh-only-fast;
     }
-  }
-
-  &:not(.has-multiple-triggers).has-open-drawer {
-    width: 0;
   }
 
   &:not(.has-multiple-triggers):not(.has-open-drawer) {
