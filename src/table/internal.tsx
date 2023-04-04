@@ -474,7 +474,7 @@ const InternalTable = forwardRef(
                 )}
               </tbody>
             </table>
-            <div role="presentation" aria-hidden={true} ref={rightSentinelRef} />
+            <div className={styles['sentinel-right']} role="presentation" aria-hidden={true} ref={rightSentinelRef} />
             {resizableColumns && <ResizeTracker />}
           </div>
           <StickyScrollbar

@@ -196,6 +196,11 @@ the default white background of the container component.
   }
 }
 
+.sentinel-right {
+  position: relative;
+  right: 2px;
+}
+
 .header-controls {
   padding-top: awsui.$space-container-header-vertical;
   padding-bottom: awsui.$space-container-header-vertical;
