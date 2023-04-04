@@ -35,13 +35,11 @@ $active-separator-width: 2px;
     &:hover,
     &-active {
       &::before {
-        $gap: calc(#{awsui.$space-xs} + #{awsui.$space-xxxs});
-
         content: '';
         position: absolute;
         left: calc(#{$handle-width} / 2 - #{$active-separator-width});
-        bottom: $gap;
-        top: $gap;
+        bottom: 25%;
+        height: 50%;
         box-sizing: border-box;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
       }
