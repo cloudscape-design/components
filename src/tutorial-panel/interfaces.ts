@@ -69,7 +69,7 @@ export interface TutorialPanelProps extends BaseComponentProps {
   /**
    * Fired when the user clicks on the feedback link at the end of a tutorial.
    */
-  onFeedbackClick: NonCancelableEventHandler<TutorialPanelProps.TutorialDetail>;
+  onFeedbackClick?: NonCancelableEventHandler<TutorialPanelProps.TutorialDetail>;
 }
 
 export namespace TutorialPanelProps {
