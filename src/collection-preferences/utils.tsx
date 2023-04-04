@@ -167,7 +167,7 @@ export const StickyColumnsPreference = ({
           >
             <InternalRadioGroup
               className={styles[`sticky-columns-${item.side}-radio-group`]}
-              value={`${value[item.side]}`}
+              value={value && `${value[item.side]}`}
               items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
               onChange={({ detail }) => onChange({ ...value, [item.side]: Number(detail.value) })}
             />
