@@ -8,6 +8,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
+import formFieldStyles from '../form-field/styles.css.js';
 import styles from './styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
@@ -17,9 +18,9 @@ import { SomeRequired } from '../internal/types';
 import { warnOnce } from '../internal/logging';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
-import InternalFormField from '../form-field/internal';
 import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
+import { FormFieldError } from '../form-field/internal';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -46,13 +47,7 @@ function InternalFileUpload(
     __internalRootRef = null,
     // form-field props
     constraintText,
-    controlId,
-    description,
     errorText,
-    info,
-    label,
-    secondaryControl,
-    stretch,
     ...restProps
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
@@ -85,33 +80,39 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      <InternalFormField
-        constraintText={constraintText}
-        controlId={controlId}
-        description={description}
-        errorText={errorText}
-        info={info}
-        label={label}
-        secondaryControl={secondaryControl}
-        stretch={stretch}
-        i18nStrings={{ errorIconAriaLabel: i18nStrings.errorIconAriaLabel }}
-      >
-        {isDropzoneVisible ? (
-          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
-        ) : (
-          <FileInput
-            ref={ref}
-            accept={accept}
-            ariaRequired={ariaRequired}
-            multiple={multiple}
-            onChange={handleFilesChange}
-            value={value}
-            {...restProps}
-          >
-            {i18nStrings.uploadButtonText(multiple)}
-          </FileInput>
-        )}
-      </InternalFormField>
+      {isDropzoneVisible ? (
+        <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+      ) : (
+        <FileInput
+          ref={ref}
+          accept={accept}
+          ariaRequired={ariaRequired}
+          multiple={multiple}
+          onChange={handleFilesChange}
+          value={value}
+          {...restProps}
+        >
+          {i18nStrings.uploadButtonText(multiple)}
+        </FileInput>
+      )}
+
+      {(constraintText || errorText) && (
+        <div>
+          {errorText && (
+            <FormFieldError id="TODO: error id" errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              {errorText}
+            </FormFieldError>
+          )}
+          {constraintText && (
+            <div
+              id="TODO: constraint id"
+              className={clsx(formFieldStyles.constraint, errorText && formFieldStyles['constraint-has-error'])}
+            >
+              {constraintText}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* TODO: different handling for multiple=false */}
       {value.length > 0 ? (
@@ -123,6 +124,7 @@ function InternalFileUpload(
             <Token
               dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
               onDismiss={() => onFileRemove(fileIndex)}
+              errorText={fileErrors?.[fileIndex]}
             >
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>

@@ -32,29 +32,15 @@ export class ValidationState {
     }
   }
 
-  get hasError() {
-    return this.errors.length > 0 || this.fileErrors.flatMap(e => e).length > 0;
-  }
-}
-
-export class FilesUploadState extends ValidationState {
-  progress: number[] = [];
-
-  constructor(filesCount: number) {
-    super(filesCount);
-    this.progress = [...Array(filesCount)].map(() => 0);
-  }
-
-  setProgress(fileIndex: number, progress: number) {
-    this.progress[fileIndex] = progress;
-  }
-
-  clone(): FilesUploadState {
-    const clone = new FilesUploadState(this.progress.length);
-    clone.progress = [...this.progress];
+  clone(): ValidationState {
+    const clone = new ValidationState(this.fileErrors.length);
     clone.errors = [...this.errors];
     clone.fileErrors = [...this.fileErrors];
     return clone;
+  }
+
+  get hasError() {
+    return this.errors.length > 0 || this.fileErrors.flatMap(e => e).length > 0;
   }
 }
 
@@ -62,7 +48,7 @@ export function formatFileSize(bytes: number): string {
   return bytes < SIZE.MB ? `${(bytes / SIZE.KB).toFixed(2)} KB` : `${(bytes / SIZE.MB).toFixed(2)} MB`;
 }
 
-export function formatFieldError({ errors, fileErrors }: ValidationState | FilesUploadState) {
+export function formatFieldError({ errors, fileErrors }: ValidationState) {
   const filesWithErrors = fileErrors.filter(errors => errors.length > 0).length;
 
   const commonErrorText = errors.join(', ');

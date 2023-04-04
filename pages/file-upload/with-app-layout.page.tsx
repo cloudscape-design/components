@@ -1,24 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
-import {
-  AppLayout,
-  Box,
-  Button,
-  Checkbox,
-  FileUpload,
-  Flashbar,
-  Form,
-  FormField,
-  Header,
-  Input,
-  Link,
-} from '~components';
+import { AppLayout, Box, Button, Checkbox, FileUpload, Flashbar, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
-import { UploadProgress } from './upload-progress';
 import { SIZE, ValidationState } from './utils';
 import {
   validateDuplicateFileNames,
@@ -34,7 +21,6 @@ const server = new DummyServer();
 
 export default function FileUploadScenarios() {
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [toolsOpen, setToolsOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Settings
@@ -60,44 +46,32 @@ export default function FileUploadScenarios() {
   const nameField = useFormField('');
 
   const fileUpload = (
-    <FileUpload
-      multiple={acceptMultiple}
-      limit={3}
-      value={contractsField.value}
-      onChange={event => {
-        const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
-        contractsField.onChange(event.detail.value, validation);
-        if (uploadOnSelect && !validation?.hasError) {
-          contractsField.onUpload(server);
-        }
-      }}
-      accept="application/pdf, image/png, image/jpeg"
-      showFileType={true}
-      showFileSize={true}
-      showFileLastModified={true}
-      showFileThumbnail={true}
-      i18nStrings={i18nStrings}
-      errorText={contractsField.error}
-      fileErrors={contractsField.fileErrors}
+    <FormField
       label={acceptMultiple ? 'Contracts' : 'Contract'}
       description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
-      info={
-        <Link variant="info" onFollow={() => setToolsOpen(true)}>
-          info
-        </Link>
-      }
-      constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
-      secondaryControl={
-        contractsField.progress ? (
-          <UploadProgress
-            files={contractsField.value}
-            progress={contractsField.progress}
-            error={!!contractsField.error}
-            onRefresh={() => contractsField.onUpload(server)}
-          />
-        ) : null
-      }
-    />
+    >
+      <FileUpload
+        multiple={acceptMultiple}
+        limit={3}
+        value={contractsField.value}
+        onChange={event => {
+          const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
+          contractsField.onChange(event.detail.value, validation);
+          if (uploadOnSelect && !validation?.hasError) {
+            contractsField.onUpload(server);
+          }
+        }}
+        accept="application/pdf, image/png, image/jpeg"
+        showFileType={true}
+        showFileSize={true}
+        showFileLastModified={true}
+        showFileThumbnail={true}
+        i18nStrings={i18nStrings}
+        errorText={contractsField.error}
+        fileErrors={contractsField.fileErrors}
+        constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+      />
+    </FormField>
   );
 
   return (
@@ -106,12 +80,16 @@ export default function FileUploadScenarios() {
       ariaLabels={appLayoutLabels}
       navigationOpen={navigationOpen}
       notifications={
-        showSuccess && <Flashbar items={[{ type: 'success', header: 'Submitted', statusIconAriaLabel: 'success' }]} />
+        contractsField.uploadStatus === 'loading' ? (
+          <Flashbar
+            items={[{ type: 'info', loading: true, header: 'Uploading files', statusIconAriaLabel: 'loading' }]}
+          />
+        ) : (
+          showSuccess && <Flashbar items={[{ type: 'success', header: 'Submitted', statusIconAriaLabel: 'success' }]} />
+        )
       }
       stickyNotifications={true}
       onNavigationChange={event => setNavigationOpen(event.detail.open)}
-      toolsOpen={toolsOpen}
-      onToolsChange={event => setToolsOpen(event.detail.open)}
       tools={
         <Tools header="Contract files">
           <SpaceBetween size="s">

@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FormFieldProps } from '../form-field/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 
-export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps, 'i18nStrings'> {
+export interface FileUploadProps extends BaseComponentProps, FormFieldValidationControlProps {
   /**
    * Specifies the native file input `accept` attribute to describe the allow-list of file types.
    */
@@ -58,6 +58,14 @@ export interface FileUploadProps extends BaseComponentProps, Omit<FormFieldProps
    * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
    */
   limit?: number;
+  /**
+   * ...
+   */
+  constraintText?: React.ReactNode;
+  /**
+   * ...
+   */
+  errorText?: React.ReactNode;
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.

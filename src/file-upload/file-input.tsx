@@ -28,7 +28,7 @@ function FileInput(
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadButtonLabelId = useUniqueId('button-label');
-  const selfControlId = useUniqueId('input');
+  const selfControlId = useUniqueId('file-input');
   const formFieldContext = useFormFieldContext(restProps);
   const controlId = formFieldContext.controlId ?? selfControlId;
 

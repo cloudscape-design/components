@@ -2,38 +2,38 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { FileUploadServer } from './form-helpers';
-import { FilesUploadState } from './utils';
+import { ValidationState } from './utils';
 
 export class DummyServer implements FileUploadServer {
   private files: File[] = [];
-  private state = new FilesUploadState(0);
+  private state = new ValidationState(0);
   private timeout: null | ReturnType<typeof setTimeout> = null;
 
   public imitateServerError = false;
   public imitateServerFileError = false;
 
-  upload(files: File[], onProgress: (state: FilesUploadState) => void, onFinished: (state: FilesUploadState) => void) {
+  upload(files: File[], onFinished: (state: ValidationState) => void) {
     this.files = files;
-    this.state = new FilesUploadState(files.length);
+    this.state = new ValidationState(files.length);
 
     const totalSizeInBytes = files.reduce((sum, file) => sum + file.size, 0);
     const speedInBytes = totalSizeInBytes / 100;
+    const progress = files.map(() => 0);
 
     const upload = () => {
       setTimeout(() => {
-        const progressIndex = this.state.progress.findIndex(p => p !== 100);
+        const progressIndex = progress.findIndex(p => p !== 100);
         if (progressIndex === -1) {
           onFinished(this.state.clone());
           return;
         }
         const fileToUpload = this.files[progressIndex];
-        const nextFileProgressInBytes = (fileToUpload.size * this.state.progress[progressIndex]) / 100 + speedInBytes;
+        const nextFileProgressInBytes = (fileToUpload.size * progress[progressIndex]) / 100 + speedInBytes;
         const nextFileProgress = Math.min(100, 100 * (nextFileProgressInBytes / fileToUpload.size));
 
         // Emulate errors.
         if (this.imitateServerError) {
           this.state.addError('502: Cannot connect to the sever');
-          onProgress(this.state.clone());
           onFinished(this.state.clone());
           return;
         }
@@ -41,10 +41,9 @@ export class DummyServer implements FileUploadServer {
           this.state.addFileError(progressIndex, 'File is not accepted by server');
         }
 
-        this.state.setProgress(progressIndex, nextFileProgress);
-        onProgress(this.state.clone());
+        progress[progressIndex] = nextFileProgress;
         upload();
-      }, 25);
+      }, 20);
     };
 
     upload();
