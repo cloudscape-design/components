@@ -46,9 +46,6 @@ $active-separator-width: 2px;
         display: none;
       }
     }
-    &.header-cell-resizable:before {
-      border-left-color: awsui.$color-border-divider-interactive-default;
-    }
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-bottom-color: transparent;
@@ -72,7 +69,8 @@ $active-separator-width: 2px;
   }
 
   &-resizable {
-    &:before {
+    &:not(:last-child):before,
+    &.is-visual-refresh:last-child:before {
       border-left-color: awsui.$color-border-divider-interactive-default;
     }
   }
