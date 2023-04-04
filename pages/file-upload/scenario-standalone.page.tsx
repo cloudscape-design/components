@@ -1,35 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useState } from 'react';
-import { AppLayout, Box, Button, Checkbox, FileUpload, Flashbar, Form, FormField, Header, Input } from '~components';
+import { AppLayout, Box, Checkbox, FileUpload, Flashbar, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
 import { i18nStrings } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation, Tools } from '../app-layout/utils/content-blocks';
-import { SIZE, ValidationState } from './utils';
-import {
-  validateDuplicateFileNames,
-  validateFileExtensions,
-  validateFileNameNotEmpty,
-  validateFileSize,
-  validateTotalFileSize,
-} from './validations';
-import { useFileUploadFormField, useFormField } from './form-helpers';
+import { useFileUploadFormField } from './form-helpers';
 import { DummyServer } from './dummy-server';
+import { validateContractFiles } from './validations';
 
 const server = new DummyServer();
 
-export default function FileUploadScenarios() {
+export default function FileUploadScenarioStandalone() {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Settings
   const [acceptMultiple, setAcceptMultiple] = useState(true);
-  const [useForm, setUseForm] = useState(false);
   const [imitateServerFailure, setImitateServerFailure] = useState(false);
   const [imitateServerValidation, setImitateServerValidation] = useState(false);
-  const [uploadOnSelect, setUploadOnSelect] = useState(true);
-  const [validateOnSelect, setValidateOnSelect] = useState(true);
 
   server.imitateServerError = imitateServerFailure;
   server.imitateServerFileError = imitateServerValidation;
@@ -42,8 +32,7 @@ export default function FileUploadScenarios() {
     }, 3000);
   }, []);
 
-  const contractsField = useFileUploadFormField({ onUploadReady: !uploadOnSelect || !useForm ? onSuccess : undefined });
-  const nameField = useFormField('');
+  const contractsField = useFileUploadFormField({ onUploadReady: onSuccess });
 
   const fileUpload = (
     <FormField
@@ -55,9 +44,9 @@ export default function FileUploadScenarios() {
         limit={3}
         value={contractsField.value}
         onChange={event => {
-          const validation = validateOnSelect ? validateContractFiles(event.detail.value) : undefined;
+          const validation = validateContractFiles(event.detail.value);
           contractsField.onChange(event.detail.value, validation);
-          if (uploadOnSelect && !validation?.hasError) {
+          if (!validation?.hasError) {
             contractsField.onUpload(server);
           }
         }}
@@ -116,7 +105,7 @@ export default function FileUploadScenarios() {
       navigation={<Navigation />}
       content={
         <SpaceBetween size="xl">
-          <Header variant="h1">File upload scenarios</Header>
+          <Header variant="h1">File upload scenario: Standalone</Header>
 
           <SpaceBetween size="m" direction="vertical">
             <FormField label="File upload settings">
@@ -143,97 +132,11 @@ export default function FileUploadScenarios() {
                 </Checkbox>
               </SpaceBetween>
             </FormField>
-
-            <FormField label="Form settings">
-              <SpaceBetween size="s" direction="horizontal">
-                <Checkbox checked={useForm} onChange={event => setUseForm(event.detail.checked)}>
-                  Use form
-                </Checkbox>
-                <Checkbox
-                  checked={useForm && uploadOnSelect}
-                  disabled={!useForm}
-                  onChange={event => setUploadOnSelect(event.detail.checked)}
-                >
-                  Upload files on select
-                </Checkbox>
-                <Checkbox
-                  checked={useForm && (validateOnSelect || uploadOnSelect)}
-                  disabled={!useForm || uploadOnSelect}
-                  onChange={event => setValidateOnSelect(event.detail.checked)}
-                >
-                  Validate files on select
-                </Checkbox>
-              </SpaceBetween>
-            </FormField>
           </SpaceBetween>
 
-          {useForm ? (
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-
-                const profileImageError = validateContractFiles(contractsField.value, true);
-                const nameError = nameField.value.trim().length === 0 ? 'Name must not be empty' : '';
-
-                profileImageError.hasError && contractsField.onChange(contractsField.value, profileImageError);
-                nameError && nameField.onChange(nameField.value, nameError);
-
-                if (!profileImageError.hasError && !nameError) {
-                  if (uploadOnSelect) {
-                    contractsField.uploadStatus === 'ready' && onSuccess();
-                  } else {
-                    contractsField.onUpload(server);
-                  }
-                }
-              }}
-            >
-              <Form
-                actions={
-                  <Button variant="primary" formAction="submit" loading={contractsField.uploadStatus === 'loading'}>
-                    Upload
-                  </Button>
-                }
-              >
-                <SpaceBetween size="m">
-                  {fileUpload}
-
-                  <FormField label="Name" description="Enter your name" errorText={nameField.error}>
-                    <Input
-                      ariaRequired={true}
-                      value={nameField.value}
-                      onChange={e => nameField.onChange(e.detail.value, '')}
-                    />
-                  </FormField>
-                </SpaceBetween>
-              </Form>
-            </form>
-          ) : (
-            fileUpload
-          )}
+          {fileUpload}
         </SpaceBetween>
       }
     />
   );
-}
-
-function validateContractFiles(files: File[], required = false): ValidationState {
-  const state = new ValidationState(files.length);
-
-  state.addError(required && files.length === 0 ? 'No files selected' : null);
-  state.addError(validateTotalFileSize(files, 750 * SIZE.KB));
-  state.addError(validateDuplicateFileNames(files));
-
-  state.addFileErrors(files, file => validateFileSize(file, 250 * SIZE.KB));
-  state.addFileErrors(files, file => validateFileNameNotEmpty(file));
-  state.addFileErrors(files, file => validateFileExtensions(file, ['pdf']));
-  state.addFileErrors(files, file => validateContractFilePattern(file));
-
-  return state;
-}
-
-function validateContractFilePattern(file: File) {
-  if (!file.name.match(/[\w]+_(contract)|(amendment_[\d]+).pdf/)) {
-    return `File "${file.name}" does not satisfy naming guidelines. Check "info" for details.`;
-  }
-  return null;
 }
