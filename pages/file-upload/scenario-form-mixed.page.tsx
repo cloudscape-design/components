@@ -3,12 +3,11 @@
 import React, { useCallback, useState } from 'react';
 import { AppLayout, Button, Checkbox, FileUpload, Flashbar, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
-import { i18nStrings } from './shared';
+import { i18nStrings, validateContractFiles } from './shared';
 import appLayoutLabels from '../app-layout/utils/labels';
 import { Navigation } from '../app-layout/utils/content-blocks';
 import { useFileUploadFormField, useFormField } from './form-helpers';
 import { DummyServer } from './dummy-server';
-import { validateContractFiles } from './validations';
 
 const server = new DummyServer();
 
@@ -82,31 +81,19 @@ export default function FileUploadScenarioFormMixed() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload scenario: In form with mixed validation</Header>
 
-          <SpaceBetween size="m" direction="vertical">
-            <FormField label="File upload settings">
-              <SpaceBetween size="s" direction="horizontal">
-                <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
-                  Accept multiple files
-                </Checkbox>
-              </SpaceBetween>
-            </FormField>
-
-            <FormField label="Dummy server settings">
-              <SpaceBetween size="s" direction="horizontal">
-                <Checkbox
-                  checked={imitateServerFailure}
-                  onChange={event => setImitateServerFailure(event.detail.checked)}
-                >
-                  Imitate server failure
-                </Checkbox>
-                <Checkbox
-                  checked={imitateServerValidation}
-                  onChange={event => setImitateServerValidation(event.detail.checked)}
-                >
-                  Imitate server validation
-                </Checkbox>
-              </SpaceBetween>
-            </FormField>
+          <SpaceBetween size="m" direction="horizontal">
+            <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+              Accept multiple files
+            </Checkbox>
+            <Checkbox checked={imitateServerFailure} onChange={event => setImitateServerFailure(event.detail.checked)}>
+              Imitate server failure
+            </Checkbox>
+            <Checkbox
+              checked={imitateServerValidation}
+              onChange={event => setImitateServerValidation(event.detail.checked)}
+            >
+              Imitate server validation
+            </Checkbox>
           </SpaceBetween>
 
           <form
@@ -116,10 +103,10 @@ export default function FileUploadScenarioFormMixed() {
               const profileImageError = validateContractFiles(contractsField.value, true);
               const nameError = nameField.value.trim().length === 0 ? 'Name must not be empty' : '';
 
-              profileImageError.hasError && contractsField.onChange(contractsField.value, profileImageError);
+              profileImageError.error && contractsField.onChange(contractsField.value, profileImageError);
               nameError && nameField.onChange(nameField.value, nameError);
 
-              if (!profileImageError.hasError && !nameError) {
+              if (!profileImageError.error && !nameError) {
                 contractsField.onUpload(server);
               }
             }}

@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DummyServer } from './dummy-server';
-import { formatFieldError, formatFileErrors, ValidationState } from './utils';
+import { FileUploadError } from './error-helpers';
 
 export interface FormFieldState<Value> {
   value: Value;
@@ -26,7 +26,7 @@ export function useFormField<Value>(initialValue: Value): FormFieldState<Value> 
 }
 
 export interface FileUploadServer {
-  upload(files: File[], onFinished: (state: ValidationState) => void): void;
+  upload(files: File[], onFinished: (state: FileUploadError) => void): void;
   cancel(): void;
 }
 
@@ -41,15 +41,14 @@ export interface FileUploadFormFieldState {
   error: null | string;
   fileErrors: (null | string)[];
   uploadStatus: UploadStatus;
-  onChange(newValue: File[], validation?: ValidationState, upload?: FileUploadServer): void;
+  onChange(newValue: File[], validation?: FileUploadError, upload?: FileUploadServer): void;
   onUpload(server?: FileUploadServer): void;
-  onCancelUpload(): void;
 }
 
 export function useFileUploadFormField({ onUploadReady }: FileUploadFormFieldProps = {}): FileUploadFormFieldState {
   const [value, setValue] = useState<File[]>([]);
-  const [validationState, setValidationState] = useState(new ValidationState(0));
-  const [serverState, setServerState] = useState(new ValidationState(0));
+  const [validationState, setValidationState] = useState<FileUploadError>({ error: null, fileErrors: [] });
+  const [serverState, setServerState] = useState<FileUploadError>({ error: null, fileErrors: [] });
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('pending');
   const serverRef = useRef<null | FileUploadServer>(null);
 
@@ -57,10 +56,10 @@ export function useFileUploadFormField({ onUploadReady }: FileUploadFormFieldPro
     const server = serverRef.current;
 
     if (uploadStatus === 'loading' && server) {
-      if (value.length > 0 && !validationState.hasError) {
+      if (value.length > 0 && !validationState.error) {
         server.upload(value, state => {
           setServerState(state);
-          setUploadStatus(state.hasError ? 'error' : 'ready');
+          setUploadStatus(state.error ? 'error' : 'ready');
         });
       } else {
         setUploadStatus('pending');
@@ -79,11 +78,11 @@ export function useFileUploadFormField({ onUploadReady }: FileUploadFormFieldPro
     [uploadStatus]
   );
 
-  const onChange = useCallback((value: File[], validation?: ValidationState) => {
+  const onChange = useCallback((value: File[], validation?: FileUploadError) => {
     serverRef.current?.cancel();
     setValue(value);
-    setValidationState(validation ?? new ValidationState(value.length));
-    setServerState(new ValidationState(value.length));
+    setValidationState(validation ?? { error: null, fileErrors: [] });
+    setServerState({ error: null, fileErrors: [] });
     setUploadStatus('pending');
   }, []);
 
@@ -93,19 +92,12 @@ export function useFileUploadFormField({ onUploadReady }: FileUploadFormFieldPro
     setUploadStatus('loading');
   }, []);
 
-  const onCancelUpload = useCallback(() => {
-    serverRef.current?.cancel();
-    setServerState(new ValidationState(0));
-    setUploadStatus('pending');
-  }, []);
-
   return {
     value,
-    error: formatFieldError(validationState) ?? formatFieldError(serverState),
-    fileErrors: formatFileErrors(validationState.hasError ? validationState.fileErrors : serverState.fileErrors),
+    error: validationState.error ?? serverState.error,
+    fileErrors: validationState.fileErrors.some(Boolean) ? validationState.fileErrors : serverState.fileErrors,
     uploadStatus,
     onChange,
     onUpload,
-    onCancelUpload,
   };
 }

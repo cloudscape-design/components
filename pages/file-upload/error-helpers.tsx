@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export const SIZE = {
-  KB: 1000,
-  MB: 1000 ** 2,
-};
+export interface FileUploadError {
+  error: null | string;
+  fileErrors: (null | string)[];
+}
 
-export class ValidationState {
+export class FileUploadErrorState {
   errors: string[] = [];
   fileErrors: string[][] = [];
 
@@ -32,23 +32,12 @@ export class ValidationState {
     }
   }
 
-  clone(): ValidationState {
-    const clone = new ValidationState(this.fileErrors.length);
-    clone.errors = [...this.errors];
-    clone.fileErrors = [...this.fileErrors];
-    return clone;
-  }
-
-  get hasError() {
-    return this.errors.length > 0 || this.fileErrors.flatMap(e => e).length > 0;
+  format(): FileUploadError {
+    return { error: formatFieldError(this), fileErrors: formatFileErrors(this.fileErrors) };
   }
 }
 
-export function formatFileSize(bytes: number): string {
-  return bytes < SIZE.MB ? `${(bytes / SIZE.KB).toFixed(2)} KB` : `${(bytes / SIZE.MB).toFixed(2)} MB`;
-}
-
-export function formatFieldError({ errors, fileErrors }: ValidationState) {
+function formatFieldError({ errors, fileErrors }: FileUploadErrorState): null | string {
   const filesWithErrors = fileErrors.filter(errors => errors.length > 0).length;
 
   const commonErrorText = errors.join(', ');
@@ -67,7 +56,7 @@ export function formatFieldError({ errors, fileErrors }: ValidationState) {
   return null;
 }
 
-export function formatFileErrors(fileErrors: string[][]) {
+function formatFileErrors(fileErrors: string[][]): (null | string)[] {
   return fileErrors.map(errors => {
     if (errors.length === 0) {
       return null;
