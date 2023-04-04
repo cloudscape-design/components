@@ -77,3 +77,17 @@ test(
     await expect(page.isFocused(cellBelow$)).resolves.toBe(true);
   })
 );
+
+test(
+  'input is focused when the edit operation failed',
+  setupTest(async page => {
+    await page.click(cellRoot$);
+
+    // "inline" is a special keyword that causes a server-side error
+    await page.setValue(cellInputField$, 'inline');
+    await page.keys('Enter');
+
+    // after loading, the focus should be back on the input
+    await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
+  })
+);
