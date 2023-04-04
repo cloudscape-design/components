@@ -53,7 +53,6 @@ export const useStickyState = ({
     useIntersectionObserver(intersectionObserverOptions);
   const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } =
     useIntersectionObserver(intersectionObserverOptions);
-
   useEffect(() => {
     setIsStuckToTheLeft(!leftSentinelIntersecting);
     setIsStuckToTheRight(!rightSentinelIntersecting);
@@ -194,7 +193,6 @@ export const useStickyColumns = ({
         }px`,
         ...paddingStyle,
       };
-      console.log({ cellWidths });
       return {
         isStickyLeft,
         isStickyRight,
