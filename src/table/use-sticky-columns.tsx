@@ -150,48 +150,61 @@ export const useStickyColumns = ({
     );
   }, [visibleColumnsLength, hasSelection]);
 
-  const getStickyColumn = (colIndex: number): GetStickyColumn => {
-    if (shouldDisable) {
-      return {
-        isStickyLeft: false,
-        isStickyRight: false,
-        isLastStickyLeft: false,
-        isLastStickyRight: false,
-        stickyStyles: {},
-      };
-    }
-
-    const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
-    const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-    const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
-    const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
-
-    // Sticky styles
-    let paddingStyle = {};
-    const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
-    const isFirstColumn = colIndex === 0;
-    if (isFirstColumn && isVisualRefresh && !hasSelection) {
-      if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
-        paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
+  const getStickyColumn = useCallback(
+    (colIndex: number): GetStickyColumn => {
+      if (shouldDisable) {
+        return {
+          isStickyLeft: false,
+          isStickyRight: false,
+          isLastStickyLeft: false,
+          isLastStickyRight: false,
+          stickyStyles: {},
+        };
       }
-    }
-    const stickyStyles = {
-      [stickySide]: `${
-        stickySide === 'right'
-          ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
-          : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
-      }px`,
-      ...paddingStyle,
-    };
-    console.log({ cellWidths });
-    return {
-      isStickyLeft,
-      isStickyRight,
-      isLastStickyLeft,
-      isLastStickyRight,
-      stickyStyles,
-    };
-  };
+
+      const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
+      const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+      const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
+      const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
+
+      // Sticky styles
+      let paddingStyle = {};
+      const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+      const isFirstColumn = colIndex === 0;
+      if (isFirstColumn && isVisualRefresh && !hasSelection) {
+        if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
+          paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
+        }
+      }
+      const stickyStyles = {
+        [stickySide]: `${
+          stickySide === 'right'
+            ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
+            : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
+        }px`,
+        ...paddingStyle,
+      };
+      console.log({ cellWidths });
+      return {
+        isStickyLeft,
+        isStickyRight,
+        isLastStickyLeft,
+        isLastStickyRight,
+        stickyStyles,
+      };
+    },
+    [
+      cellWidths,
+      hasSelection,
+      isStuckToTheLeft,
+      isVisualRefresh,
+      shouldDisable,
+      stickyColumns?.end,
+      stickyColumns?.start,
+      tableLeftPadding,
+      visibleColumnsLength,
+    ]
+  );
 
   const stickyState = { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef };
   const wrapperScrollPadding = { left: startStickyColumnsWidth, right: endStickyColumnsWidth };
