@@ -269,7 +269,7 @@ describe('URL sanitization', () => {
       const wrapper = createWrapper(container).findTutorialPanel()!;
       const taskList = wrapper.findTaskList();
 
-      expect(taskList[0].findStepsTitle().getElement().getAttribute('aria-label')).toBe(
+      expect(taskList[0].findStepsTitle().find('[aria-label]')!.getElement().getAttribute('aria-label')).toBe(
         'TASK_1_FIRST_TASK_TEST TOTAL_STEPS_1'
       );
     });
