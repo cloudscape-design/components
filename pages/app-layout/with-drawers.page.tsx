@@ -25,16 +25,6 @@ export default function WithDrawers() {
         drawers: {
           activeDrawerId: activeDrawerId,
           items: [
-            /*
-            {
-              content: <Security />,
-              id: 'security',
-              trigger: {
-                ariaLabel: 'View Security content',
-                iconName: 'security',
-              },
-            },
-            */
             {
               content: <ProHelp />,
               id: 'pro-help',
@@ -120,12 +110,6 @@ function IconBriefcase() {
 function Info() {
   return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
 }
-
-/*
-function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Keep your passwords secret!</HelpPanel>;
-}
-*/
 
 function ProHelp() {
   return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
