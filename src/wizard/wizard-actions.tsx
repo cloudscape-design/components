@@ -86,6 +86,7 @@ export default function WizardActions({
           formAction="none"
           onClick={onPrimaryClick}
           loading={isPrimaryLoading}
+          loadingText="Loading next step"
         >
           {primaryButtonText}
         </InternalButton>
