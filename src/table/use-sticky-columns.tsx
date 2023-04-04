@@ -109,6 +109,9 @@ export const useStickyColumns = ({
   visibleColumnsLength,
   wrapperRefObject,
 }: StickyColumnParams) => {
+  const noStickyColumns = !stickyColumns || (stickyColumns.start === 0 && stickyColumns.end === 0);
+  const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
+
   // Compute table paddings
   const table = tableRefObject.current;
   const tableLeftPadding = getPadding(table, 'Left');
@@ -123,8 +126,6 @@ export const useStickyColumns = ({
   });
   const { cellWidths, updateCellWidths } = useCellWidths(tableCellRefs);
 
-  // Should disable sticky columns
-  const [shouldDisable, setShouldDisable] = useState<boolean>(false);
   const { start = 0, end = 0 } = stickyColumns || {};
   const lastLeftStickyColumnIndex = start + (hasSelection ? 1 : 0);
   const lasRightStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
@@ -137,9 +138,18 @@ export const useStickyColumns = ({
     // Effect to check the conditions to set the "shouldDisable" sticky columns state
     const hasNotEnoughSpace =
       totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding > (containerWidth ?? Number.MAX_SAFE_INTEGER);
-    const shouldDisable = !stickyColumns || !isWrapperScrollable || hasNotEnoughSpace;
+
+    const shouldDisable = noStickyColumns || !isWrapperScrollable || hasNotEnoughSpace;
     setShouldDisable(shouldDisable);
-  }, [containerWidth, stickyColumns, totalStickySpace, visibleColumnsLength, tableLeftPadding, isWrapperScrollable]);
+  }, [
+    containerWidth,
+    noStickyColumns,
+    stickyColumns,
+    totalStickySpace,
+    visibleColumnsLength,
+    tableLeftPadding,
+    isWrapperScrollable,
+  ]);
 
   useEffect(() => {
     // Add and remove table cell refs
