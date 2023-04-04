@@ -12,6 +12,12 @@
   grid-column: 5;
   grid-row: 1 / span 5;
   height: var(#{custom-props.$contentHeight});
+  /* stylelint-disable scss/operator-no-newline-after */
+  max-width: calc(
+    var(#{custom-props.$layoutWidth}) - var(#{custom-props.$mainOffsetLeft}) -
+      var(#{custom-props.$defaultMinContentWidth}) - var(#{custom-props.$contentGapRight})
+  );
+  /* stylelint-enable scss/operator-no-newline-after */
   pointer-events: none;
   position: sticky;
   top: var(#{custom-props.$offsetTop});

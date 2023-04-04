@@ -18,6 +18,7 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [useDrawers, setUseDrawers] = useState(true);
   const [useTools, setUseTools] = useState(true);
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
 
   const drawers = !useDrawers
     ? null
@@ -25,6 +26,14 @@ export default function WithDrawers() {
         drawers: {
           activeDrawerId: activeDrawerId,
           items: [
+            {
+              content: <Security />,
+              id: 'security',
+              trigger: {
+                ariaLabel: 'View Security content',
+                iconName: 'security',
+              },
+            },
             {
               content: <ProHelp />,
               id: 'pro-help',
@@ -86,7 +95,9 @@ export default function WithDrawers() {
             This is the Split Panel!
           </SplitPanel>
         }
+        onToolsChange={({ detail }) => setIsToolsOpen(detail.open)}
         tools={<Info />}
+        toolsOpen={isToolsOpen}
         toolsHide={!useTools}
         {...drawers}
       />
@@ -109,6 +120,10 @@ function IconBriefcase() {
 
 function Info() {
   return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
+}
+
+function Security() {
+  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
 }
 
 function ProHelp() {

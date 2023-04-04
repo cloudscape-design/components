@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { InternalButton } from '../../button/internal';
 import { NonCancelableEventHandler } from '../../internal/events';
 import SplitPanel from './split-panel';
@@ -62,6 +63,7 @@ export default function Drawers() {
 function ActiveDrawer() {
   const {
     activeDrawerId,
+    activeDrawerWidth,
     ariaLabels,
     drawers,
     handleDrawersClick,
@@ -82,6 +84,9 @@ function ActiveDrawer() {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
         [testutilStyles.tools]: isToolsOpen,
       })}
+      style={{
+        ...(!isMobile && activeDrawerWidth && { [customCssProps.activeDrawerWidth]: `${activeDrawerWidth}px` }),
+      }}
     >
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
