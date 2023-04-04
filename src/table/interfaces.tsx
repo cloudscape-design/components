@@ -200,12 +200,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
-   * Specifies the number of columns that should be sticky
-   * either on the `left` and/or `right` sides of the table.
+   * Specifies the number of first and/or last columns that should be sticky.   *
    *
-   * We support having a maximum of two left and one right column sticky. Other values will be ignored.
-   *
-   * If the sum of the sticky columns widths exceeds the difference between the container width and 148px, the feature is deactivated.
+   * If the available scrollable space is less than 148px, the feature is deactivated.
    *
    * Use it in conjunction with the sticky columns preference of the
    * [collection preferences](/components/collection-preferences/) component.
@@ -351,7 +348,7 @@ export namespace TableProps {
     width?: number | string;
     minWidth?: number | string;
     maxWidth?: number | string;
-    editConfig?: EditConfig<any>;
+    editConfig?: EditConfig<ItemType>;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 

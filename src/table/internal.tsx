@@ -183,27 +183,27 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    const {
-      tableCellRefs,
-      cellWidths,
-      updateCellWidths,
-      getStickyColumn,
-      shouldDisableStickyColumns,
-      startStickyColumnsWidth,
-      endStickyColumnsWidth,
-      isStuckToTheRight,
-      isStuckToTheLeft,
-      rightSentinelRef,
-      leftSentinelRef,
-    } = useStickyColumns({
+    const stickyColumnsParams = {
       visibleColumnsLength,
       hasSelection,
       stickyColumns,
-      containerWidth,
       tableRefObject,
-      wrapperRefObject,
+      containerWidth,
       isWrapperScrollable,
-    });
+      wrapperRefObject,
+    };
+
+    const {
+      tableCellRefs,
+      getStickyColumn,
+      stickyState,
+      shouldDisableStickyColumns,
+      wrapperScrollPadding,
+      updateCellWidths,
+      cellWidths,
+    } = useStickyColumns(stickyColumnsParams);
+
+    const { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef } = stickyState;
 
     const theadProps: TheadProps = {
       containerWidth,
@@ -299,7 +299,7 @@ const InternalTable = forwardRef(
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
-            style={{ scrollPaddingLeft: startStickyColumnsWidth, scrollPaddingRight: endStickyColumnsWidth }}
+            style={{ scrollPaddingLeft: wrapperScrollPadding.left, scrollPaddingRight: wrapperScrollPadding.right }}
             onScroll={handleScroll}
             {...wrapperProps}
             {...focusVisibleProps}
@@ -397,7 +397,11 @@ const InternalTable = forwardRef(
                             isStickyRight={false}
                             isStuckToTheLeft={isStuckToTheLeft}
                             isStuckToTheRight={isStuckToTheRight}
-                            style={(stickyColumns?.start ?? 0) > 0 ? { left: cellWidths.start[0] } : {}}
+                            style={
+                              !shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0
+                                ? { left: cellWidths.start[0] }
+                                : {}
+                            }
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
