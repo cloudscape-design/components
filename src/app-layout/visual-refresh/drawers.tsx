@@ -44,9 +44,6 @@ namespace DrawersProps {
   }
 }
 
-/**
- *
- */
 export default function Drawers() {
   const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
     useAppLayoutInternals();
@@ -71,9 +68,6 @@ export default function Drawers() {
   );
 }
 
-/**
- *
- */
 function ActiveDrawer() {
   const {
     activeDrawerId,
@@ -128,9 +122,6 @@ function ActiveDrawer() {
   );
 }
 
-/**
- *
- */
 function DesktopTriggers() {
   const {
     activeDrawerId,
@@ -225,9 +216,6 @@ function DesktopTriggers() {
   );
 }
 
-/**
- *
- */
 export function MobileTriggers() {
   const {
     activeDrawerId,
