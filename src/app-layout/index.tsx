@@ -187,7 +187,7 @@ const OldAppLayout = React.forwardRef(
       refs: toolsRefs,
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
-    } = useFocusControl(toolsOpen || activeDrawerId !== undefined, true);
+    } = useFocusControl(toolsOpen || activeDrawerId, true);
 
     const onNavigationToggle = useCallback(
       (open: boolean) => {
