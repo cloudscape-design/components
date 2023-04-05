@@ -32,3 +32,4 @@ jobs:
     with:
       artifact-name: dev-pages
       deployment-path: lib/static-default
+      skip-codecov: true
