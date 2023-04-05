@@ -56,7 +56,7 @@ export const InternalButton = React.forwardRef(
     checkSafeUrl('Button', href);
     const focusVisible = useFocusVisible();
     const isAnchor = Boolean(href);
-    const isDisabled = loading || disabled;
+    const isNotInteractive = loading || disabled;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
@@ -65,7 +65,7 @@ export const InternalButton = React.forwardRef(
 
     const handleClick = useCallback(
       (event: React.MouseEvent) => {
-        if (isDisabled) {
+        if (isNotInteractive) {
           return event.preventDefault();
         }
 
@@ -76,11 +76,11 @@ export const InternalButton = React.forwardRef(
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
       },
-      [isAnchor, isDisabled, onClick, onFollow]
+      [isAnchor, isNotInteractive, onClick, onFollow]
     );
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
-      [styles.disabled]: isDisabled,
+      [styles.disabled]: isNotInteractive,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
@@ -127,8 +127,8 @@ export const InternalButton = React.forwardRef(
             target={target}
             // security recommendation: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
-            tabIndex={isDisabled ? -1 : undefined}
-            aria-disabled={isDisabled ? true : undefined}
+            tabIndex={isNotInteractive ? -1 : undefined}
+            aria-disabled={isNotInteractive ? true : undefined}
             download={download}
           >
             {buttonContent}
