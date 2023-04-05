@@ -22,6 +22,7 @@ import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
 import { FormFieldError } from '../form-field/internal';
 import LiveRegion from '../internal/components/live-region';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -85,6 +86,8 @@ function InternalFileUpload(
   const errorText = explicitErrorText ?? (!validationResult.valid ? validationResult.errorText : null);
   const fileErrors = explicitFileErrors ?? (!validationResult.valid ? validationResult.fileErrors : null);
 
+  const errorId = useUniqueId('error-');
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -103,6 +106,7 @@ function InternalFileUpload(
           onChange={handleFilesChange}
           value={value}
           {...restProps}
+          errorId={errorId}
         >
           {i18nStrings.uploadButtonText(multiple)}
         </FileInput>
@@ -113,7 +117,7 @@ function InternalFileUpload(
       {(constraintText || errorText) && (
         <div>
           {errorText && (
-            <FormFieldError id="TODO: error id" errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+            <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
               {errorText}
             </FormFieldError>
           )}
