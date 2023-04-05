@@ -25,6 +25,7 @@ jobs:
     with:
       artifact-path: lib/static-default
       artifact-name: dev-pages
+      skip-codecov: true
   deploy:
     needs: build
     uses: cloudscape-design/.github/.github/workflows/deploy.yml@main
@@ -32,4 +33,3 @@ jobs:
     with:
       artifact-name: dev-pages
       deployment-path: lib/static-default
-      skip-codecov: true
