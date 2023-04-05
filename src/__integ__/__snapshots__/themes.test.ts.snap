@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -75,6 +75,7 @@ Object {
   "color-background-layout-mobile-panel": "#ffffff",
   "color-background-layout-panel-content": "#ffffff",
   "color-background-layout-panel-hover": "#eaeded",
+  "color-background-layout-panel-trigger-active": "#0073bb",
   "color-background-layout-toggle-active": "#2a2e33",
   "color-background-layout-toggle-default": "#2a2e33",
   "color-background-layout-toggle-hover": "#545b64",
@@ -311,6 +312,7 @@ Object {
   "color-foreground-control-default": "#ffffff",
   "color-foreground-control-disabled": "#ffffff",
   "color-shadow-default": "rgba(0, 28, 36, 0.5)",
+  "color-shadow-layout-panel-trigger": "#d5dbdb",
   "color-text-accent": "#0073bb",
   "color-text-body-default": "#16191f",
   "color-text-body-secondary": "#545b64",
@@ -370,6 +372,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fafafa",
   "color-text-inverted": "#ffffff",
   "color-text-label": "#545b64",
+  "color-text-layout-panel-trigger-active": "#ffffff",
+  "color-text-layout-panel-trigger-hover": "#0073bb",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#ffffff",
   "color-text-link-button-normal-active": "#16191f",
@@ -409,8 +413,8 @@ Object {
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -589,7 +593,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -663,6 +667,7 @@ Object {
   "color-background-layout-mobile-panel": "#2a2e33",
   "color-background-layout-panel-content": "#2a2e33",
   "color-background-layout-panel-hover": "#414750",
+  "color-background-layout-panel-trigger-active": "#44b9d6",
   "color-background-layout-toggle-active": "#2a2e33",
   "color-background-layout-toggle-default": "#2a2e33",
   "color-background-layout-toggle-hover": "#545b64",
@@ -899,6 +904,7 @@ Object {
   "color-foreground-control-default": "#ffffff",
   "color-foreground-control-disabled": "#687078",
   "color-shadow-default": "rgba(0, 0, 0, 0.5)",
+  "color-shadow-layout-panel-trigger": "#414750",
   "color-text-accent": "#44b9d6",
   "color-text-body-default": "#d5dbdb",
   "color-text-body-secondary": "#d5dbdb",
@@ -958,6 +964,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fafafa",
   "color-text-inverted": "#16191f",
   "color-text-label": "#95a5a6",
+  "color-text-layout-panel-trigger-active": "#1a2029",
+  "color-text-layout-panel-trigger-hover": "#00a1c9",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#16191f",
   "color-text-link-button-normal-active": "#fafafa",
@@ -997,8 +1005,8 @@ Object {
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -1177,7 +1185,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1251,6 +1259,7 @@ Object {
   "color-background-layout-mobile-panel": "#ffffff",
   "color-background-layout-panel-content": "#ffffff",
   "color-background-layout-panel-hover": "#eaeded",
+  "color-background-layout-panel-trigger-active": "#0073bb",
   "color-background-layout-toggle-active": "#2a2e33",
   "color-background-layout-toggle-default": "#2a2e33",
   "color-background-layout-toggle-hover": "#545b64",
@@ -1487,6 +1496,7 @@ Object {
   "color-foreground-control-default": "#ffffff",
   "color-foreground-control-disabled": "#ffffff",
   "color-shadow-default": "rgba(0, 28, 36, 0.5)",
+  "color-shadow-layout-panel-trigger": "#d5dbdb",
   "color-text-accent": "#0073bb",
   "color-text-body-default": "#16191f",
   "color-text-body-secondary": "#545b64",
@@ -1546,6 +1556,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fafafa",
   "color-text-inverted": "#ffffff",
   "color-text-label": "#545b64",
+  "color-text-layout-panel-trigger-active": "#ffffff",
+  "color-text-layout-panel-trigger-hover": "#0073bb",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#ffffff",
   "color-text-link-button-normal-active": "#16191f",
@@ -1585,8 +1597,8 @@ Object {
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -1765,7 +1777,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1839,6 +1851,7 @@ Object {
   "color-background-layout-mobile-panel": "#ffffff",
   "color-background-layout-panel-content": "#ffffff",
   "color-background-layout-panel-hover": "#eaeded",
+  "color-background-layout-panel-trigger-active": "#0073bb",
   "color-background-layout-toggle-active": "#2a2e33",
   "color-background-layout-toggle-default": "#2a2e33",
   "color-background-layout-toggle-hover": "#545b64",
@@ -2075,6 +2088,7 @@ Object {
   "color-foreground-control-default": "#ffffff",
   "color-foreground-control-disabled": "#ffffff",
   "color-shadow-default": "rgba(0, 28, 36, 0.5)",
+  "color-shadow-layout-panel-trigger": "#d5dbdb",
   "color-text-accent": "#0073bb",
   "color-text-body-default": "#16191f",
   "color-text-body-secondary": "#545b64",
@@ -2134,6 +2148,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fafafa",
   "color-text-inverted": "#ffffff",
   "color-text-label": "#545b64",
+  "color-text-layout-panel-trigger-active": "#ffffff",
+  "color-text-layout-panel-trigger-hover": "#0073bb",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#ffffff",
   "color-text-link-button-normal-active": "#16191f",
@@ -2173,8 +2189,8 @@ Object {
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -2353,7 +2369,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -2427,6 +2443,7 @@ Object {
   "color-background-layout-mobile-panel": "#000716",
   "color-background-layout-panel-content": "#ffffff",
   "color-background-layout-panel-hover": "#e9ebed",
+  "color-background-layout-panel-trigger-active": "#00142b",
   "color-background-layout-toggle-active": "#354150",
   "color-background-layout-toggle-default": "#192534",
   "color-background-layout-toggle-hover": "#354150",
@@ -2663,6 +2680,7 @@ Object {
   "color-foreground-control-default": "#ffffff",
   "color-foreground-control-disabled": "#ffffff",
   "color-shadow-default": "rgba(0, 7, 22, 0.12)",
+  "color-shadow-layout-panel-trigger": "#d1d5db",
   "color-text-accent": "#0972d3",
   "color-text-body-default": "#000716",
   "color-text-body-secondary": "#414d5c",
@@ -2722,6 +2740,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fbfbfb",
   "color-text-inverted": "#ffffff",
   "color-text-label": "#000716",
+  "color-text-layout-panel-trigger-active": "#ffffff",
+  "color-text-layout-panel-trigger-hover": "#0972d3",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#ffffff",
   "color-text-link-button-normal-active": "#033160",
@@ -2761,8 +2781,8 @@ Object {
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -2787,8 +2807,8 @@ Object {
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": "\\"inherit\\"",
-  "font-link-primary-weight": "\\"inherit\\"",
+  "font-link-primary-letter-spacing": ""inherit"",
+  "font-link-primary-weight": ""inherit"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
@@ -2941,7 +2961,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-content-header" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -3015,6 +3035,7 @@ Object {
   "color-background-layout-mobile-panel": "#000716",
   "color-background-layout-panel-content": "#0f1b2a",
   "color-background-layout-panel-hover": "#354150",
+  "color-background-layout-panel-trigger-active": "#89bdee",
   "color-background-layout-toggle-active": "#354150",
   "color-background-layout-toggle-default": "#192534",
   "color-background-layout-toggle-hover": "#354150",
@@ -3251,6 +3272,7 @@ Object {
   "color-foreground-control-default": "#000716",
   "color-foreground-control-disabled": "#0f1b2a",
   "color-shadow-default": "rgba(0, 7, 22, 1)",
+  "color-shadow-layout-panel-trigger": "#354150",
   "color-text-accent": "#539fe5",
   "color-text-body-default": "#d1d5db",
   "color-text-body-secondary": "#d1d5db",
@@ -3310,6 +3332,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fbfbfb",
   "color-text-inverted": "#000716",
   "color-text-label": "#d1d5db",
+  "color-text-layout-panel-trigger-active": "#0f1b2a",
+  "color-text-layout-panel-trigger-hover": "#539fe5",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#000716",
   "color-text-link-button-normal-active": "#89bdee",
@@ -3349,8 +3373,8 @@ Object {
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -3375,8 +3399,8 @@ Object {
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": "\\"inherit\\"",
-  "font-link-primary-weight": "\\"inherit\\"",
+  "font-link-primary-letter-spacing": ""inherit"",
+  "font-link-primary-weight": ""inherit"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
@@ -3529,7 +3553,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-dark" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -3603,6 +3627,7 @@ Object {
   "color-background-layout-mobile-panel": "#000716",
   "color-background-layout-panel-content": "#0f1b2a",
   "color-background-layout-panel-hover": "#354150",
+  "color-background-layout-panel-trigger-active": "#89bdee",
   "color-background-layout-toggle-active": "#354150",
   "color-background-layout-toggle-default": "#192534",
   "color-background-layout-toggle-hover": "#354150",
@@ -3839,6 +3864,7 @@ Object {
   "color-foreground-control-default": "#000716",
   "color-foreground-control-disabled": "#0f1b2a",
   "color-shadow-default": "rgba(0, 7, 22, 1)",
+  "color-shadow-layout-panel-trigger": "#354150",
   "color-text-accent": "#539fe5",
   "color-text-body-default": "#d1d5db",
   "color-text-body-secondary": "#d1d5db",
@@ -3898,6 +3924,8 @@ Object {
   "color-text-interactive-inverted-hover": "#fbfbfb",
   "color-text-inverted": "#000716",
   "color-text-label": "#d1d5db",
+  "color-text-layout-panel-trigger-active": "#0f1b2a",
+  "color-text-layout-panel-trigger-hover": "#539fe5",
   "color-text-layout-toggle": "#ffffff",
   "color-text-layout-toggle-selected": "#000716",
   "color-text-link-button-normal-active": "#89bdee",
@@ -3937,8 +3965,8 @@ Object {
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -3963,8 +3991,8 @@ Object {
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": "\\"inherit\\"",
-  "font-link-primary-weight": "\\"inherit\\"",
+  "font-link-primary-letter-spacing": ""inherit"",
+  "font-link-primary-weight": ""inherit"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
