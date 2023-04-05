@@ -143,7 +143,7 @@ export const InternalButton = React.forwardRef(
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled}
-          aria-disabled={isDisabled ? true : undefined}
+          aria-disabled={loading && !disabled ? true : undefined}
         >
           {buttonContent}
         </button>
