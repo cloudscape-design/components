@@ -13,7 +13,7 @@ export function formatFileUploadError(errors: string[], fileErrors: string[][]):
 }
 
 function formatFieldError(errors: string[], fileErrors: string[][]): null | string {
-  const filesWithErrors = new Set(fileErrors.map(([file]) => file)).size;
+  const filesWithErrors = fileErrors.filter(errors => errors.length > 0).length;
 
   const commonErrorText = errors.join(', ');
   const fileErrorsText =
