@@ -32,11 +32,16 @@
   }
 
   &:not(:last-child):before {
+    $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+
     content: '';
     position: absolute;
     right: 0;
-    bottom: 25%;
-    height: 50%;
+    bottom: 0;
+    top: 0;
+    min-height: awsui.$font-heading-xs-line-height;
+    max-height: calc(100% - #{$gap});
+    margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
   }
@@ -48,7 +53,8 @@
 
 .sorting-icon {
   position: absolute;
-  top: awsui.$space-scaled-xxs;
+  top: 50%;
+  transform: translateY(-50%);
   right: awsui.$space-xxs;
   color: awsui.$color-text-column-sorting-icon;
 }
@@ -100,6 +106,11 @@
 }
 
 .header-cell-text {
+  line-height: awsui.$font-heading-xs-line-height;
+
+  padding-top: calc(#{awsui.$space-xxxs} / 2);
+  padding-bottom: calc(#{awsui.$space-xxxs} / 2);
+
   &:not(.header-cell-text-wrap) {
     white-space: nowrap;
     overflow: hidden;
