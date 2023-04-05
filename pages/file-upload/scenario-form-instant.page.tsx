@@ -54,7 +54,7 @@ export default function FileUploadScenarioFormInstant() {
                     formState.onFilesChange(event.detail.value);
                     formState.onUploadFiles(event.detail.valid ? event.detail.value : []);
                   }}
-                  isValueValid={files => formState.fileErrors ?? validateContractFiles(files)}
+                  isValueValid={validateContractFiles}
                   accept="application/pdf, image/png, image/jpeg"
                   showFileType={true}
                   showFileSize={true}

@@ -36,13 +36,14 @@ export default function FileUploadScenarioStandalone() {
               formState.onFilesChange(event.detail.value);
               formState.onUploadFiles(event.detail.valid ? event.detail.value : []);
             }}
-            isValueValid={files => formState.fileErrors ?? validateContractFiles(files)}
+            isValueValid={validateContractFiles}
             accept="application/pdf, image/png, image/jpeg"
             showFileType={true}
             showFileSize={true}
             showFileLastModified={true}
             showFileThumbnail={true}
             i18nStrings={i18nStrings}
+            {...formState.fileErrors}
             constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
           />
         </FormField>
