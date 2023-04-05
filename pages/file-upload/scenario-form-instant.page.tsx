@@ -1,141 +1,81 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState } from 'react';
-import { AppLayout, Button, Checkbox, FileUpload, Flashbar, Form, FormField, Header, Input } from '~components';
+import React, { useState } from 'react';
+import { Box, Button, Checkbox, FileUpload, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
-import { i18nStrings, validateContractFiles } from './shared';
-import appLayoutLabels from '../app-layout/utils/labels';
-import { Navigation } from '../app-layout/utils/content-blocks';
-import { useFileUploadFormField, useFormField } from './form-helpers';
-import { DummyServer } from './dummy-server';
-
-const server = new DummyServer();
+import { PageBanner, PageNotifications, useContractFilesForm, validateContractFiles } from './page-helpers';
+import { i18nStrings } from './shared';
 
 export default function FileUploadScenarioFormInstant() {
-  const [navigationOpen, setNavigationOpen] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  // Settings
   const [acceptMultiple, setAcceptMultiple] = useState(true);
-  const [imitateServerFailure, setImitateServerFailure] = useState(false);
-  const [imitateServerValidation, setImitateServerValidation] = useState(false);
-
-  server.imitateServerError = imitateServerFailure;
-  server.imitateServerFileError = imitateServerValidation;
-
-  const onSuccess = useCallback(() => {
-    setShowSuccess(true);
-
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
-  }, []);
-
-  const contractsField = useFileUploadFormField();
-  const nameField = useFormField('');
-
-  const fileUpload = (
-    <FormField
-      label={acceptMultiple ? 'Contracts' : 'Contract'}
-      description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
-    >
-      <FileUpload
-        multiple={acceptMultiple}
-        limit={3}
-        value={contractsField.value}
-        onChange={event => {
-          const validation = validateContractFiles(event.detail.value);
-          contractsField.onChange(event.detail.value, validation);
-          if (!validation?.error) {
-            contractsField.onUpload(server);
-          }
-        }}
-        accept="application/pdf, image/png, image/jpeg"
-        showFileType={true}
-        showFileSize={true}
-        showFileLastModified={true}
-        showFileThumbnail={true}
-        i18nStrings={i18nStrings}
-        errorText={contractsField.error}
-        fileErrors={contractsField.fileErrors}
-        constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
-      />
-    </FormField>
-  );
+  const formState = useContractFilesForm();
 
   return (
-    <AppLayout
-      contentType="form"
-      ariaLabels={appLayoutLabels}
-      navigationOpen={navigationOpen}
-      notifications={
-        contractsField.uploadStatus === 'loading' ? (
-          <Flashbar
-            items={[{ type: 'info', loading: true, header: 'Uploading files', statusIconAriaLabel: 'loading' }]}
-          />
-        ) : (
-          showSuccess && <Flashbar items={[{ type: 'success', header: 'Submitted', statusIconAriaLabel: 'success' }]} />
-        )
-      }
-      stickyNotifications={true}
-      onNavigationChange={event => setNavigationOpen(event.detail.open)}
-      navigation={<Navigation />}
-      content={
-        <SpaceBetween size="xl">
-          <Header variant="h1">File upload scenario: In form with instant upload</Header>
+    <Box margin="xl">
+      <SpaceBetween size="xl">
+        <Header variant="h1">File upload scenario: In form with instant upload</Header>
 
-          <SpaceBetween size="m" direction="horizontal">
-            <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
-              Accept multiple files
-            </Checkbox>
-            <Checkbox checked={imitateServerFailure} onChange={event => setImitateServerFailure(event.detail.checked)}>
-              Imitate server failure
-            </Checkbox>
-            <Checkbox
-              checked={imitateServerValidation}
-              onChange={event => setImitateServerValidation(event.detail.checked)}
-            >
-              Imitate server validation
-            </Checkbox>
-          </SpaceBetween>
+        <PageBanner />
 
-          <form
-            onSubmit={e => {
-              e.preventDefault();
+        <PageNotifications status={formState.status} />
 
-              const profileImageError = validateContractFiles(contractsField.value, true);
-              const nameError = nameField.value.trim().length === 0 ? 'Name must not be empty' : '';
+        <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+          Accept multiple files
+        </Checkbox>
 
-              profileImageError.error && contractsField.onChange(contractsField.value, profileImageError);
-              nameError && nameField.onChange(nameField.value, nameError);
+        <form
+          onSubmit={e => {
+            e.preventDefault();
 
-              if (!profileImageError.error && !nameError) {
-                contractsField.uploadStatus === 'ready' && onSuccess();
-              }
-            }}
+            const filesError = validateContractFiles(formState.files, true);
+            const nameError = formState.name.trim().length === 0 ? 'Name must not be empty' : '';
+
+            formState.onSubmitForm(filesError, nameError);
+          }}
+        >
+          <Form
+            actions={
+              <Button variant="primary" formAction="submit" loading={formState.status === 'uploading'}>
+                Upload
+              </Button>
+            }
           >
-            <Form
-              actions={
-                <Button variant="primary" formAction="submit" loading={contractsField.uploadStatus === 'loading'}>
-                  Upload
-                </Button>
-              }
-            >
-              <SpaceBetween size="m">
-                {fileUpload}
+            <SpaceBetween size="m">
+              <FormField
+                label={acceptMultiple ? 'Contracts' : 'Contract'}
+                description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
+              >
+                <FileUpload
+                  multiple={acceptMultiple}
+                  limit={3}
+                  value={formState.files}
+                  onChange={event => {
+                    const validation = validateContractFiles(event.detail.value);
+                    formState.onFilesChange(event.detail.value, validation);
+                    formState.onUploadFiles(!validation ? event.detail.value : []);
+                  }}
+                  accept="application/pdf, image/png, image/jpeg"
+                  showFileType={true}
+                  showFileSize={true}
+                  showFileLastModified={true}
+                  showFileThumbnail={true}
+                  i18nStrings={i18nStrings}
+                  {...formState.fileErrors}
+                  constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+                />
+              </FormField>
 
-                <FormField label="Name" description="Enter your name" errorText={nameField.error}>
-                  <Input
-                    ariaRequired={true}
-                    value={nameField.value}
-                    onChange={e => nameField.onChange(e.detail.value, '')}
-                  />
-                </FormField>
-              </SpaceBetween>
-            </Form>
-          </form>
-        </SpaceBetween>
-      }
-    />
+              <FormField label="Name" description="Enter your name" errorText={formState.nameError}>
+                <Input
+                  ariaRequired={true}
+                  value={formState.name}
+                  onChange={e => formState.onNameChange(e.detail.value)}
+                />
+              </FormField>
+            </SpaceBetween>
+          </Form>
+        </form>
+      </SpaceBetween>
+    </Box>
   );
 }

@@ -3,46 +3,25 @@
 import React, { useState } from 'react';
 import { Box, Checkbox, FileUpload, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
-import { i18nStrings, Notifications, NotificationType, validateContractFiles } from './shared';
-import { useFileUploadFormField } from './form-helpers';
-import { DummyServer } from './dummy-server';
-
-const server = new DummyServer();
+import { PageBanner, PageNotifications, useContractFilesForm, validateContractFiles } from './page-helpers';
+import { i18nStrings } from './shared';
 
 export default function FileUploadScenarioStandalone() {
-  const [notificationType, setNotificationType] = useState<NotificationType>(null);
-
-  // Settings
   const [acceptMultiple, setAcceptMultiple] = useState(true);
-  const [imitateServerFailure, setImitateServerFailure] = useState(false);
-  const [imitateServerValidation, setImitateServerValidation] = useState(false);
-
-  server.imitateServerError = imitateServerFailure;
-  server.imitateServerFileError = imitateServerValidation;
-
-  const contractsField = useFileUploadFormField({ onUploadReady: () => setNotificationType('uploaded') });
+  const formState = useContractFilesForm();
 
   return (
     <Box margin="xl">
       <SpaceBetween size="xl">
         <Header variant="h1">File upload scenario: Standalone</Header>
 
-        <Notifications type={notificationType} />
+        <PageBanner />
 
-        <SpaceBetween size="m" direction="horizontal">
-          <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
-            Accept multiple files
-          </Checkbox>
-          <Checkbox checked={imitateServerFailure} onChange={event => setImitateServerFailure(event.detail.checked)}>
-            Imitate server failure
-          </Checkbox>
-          <Checkbox
-            checked={imitateServerValidation}
-            onChange={event => setImitateServerValidation(event.detail.checked)}
-          >
-            Imitate server validation
-          </Checkbox>
-        </SpaceBetween>
+        <PageNotifications status={formState.status} />
+
+        <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+          Accept multiple files
+        </Checkbox>
 
         <FormField
           label={acceptMultiple ? 'Contracts' : 'Contract'}
@@ -51,17 +30,11 @@ export default function FileUploadScenarioStandalone() {
           <FileUpload
             multiple={acceptMultiple}
             limit={3}
-            value={contractsField.value}
+            value={formState.files}
             onChange={event => {
-              const validation = validateContractFiles(event.detail.value);
-              contractsField.onChange(event.detail.value, validation);
-
-              if (!validation?.error) {
-                contractsField.onUpload(server);
-                setNotificationType('uploading');
-              } else {
-                setNotificationType(null);
-              }
+              const validationError = validateContractFiles(event.detail.value);
+              formState.onFilesChange(event.detail.value, validationError);
+              formState.onUploadFiles(!validationError ? event.detail.value : []);
             }}
             accept="application/pdf, image/png, image/jpeg"
             showFileType={true}
@@ -69,8 +42,7 @@ export default function FileUploadScenarioStandalone() {
             showFileLastModified={true}
             showFileThumbnail={true}
             i18nStrings={i18nStrings}
-            errorText={contractsField.error}
-            fileErrors={contractsField.fileErrors}
+            {...formState.fileErrors}
             constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
           />
         </FormField>

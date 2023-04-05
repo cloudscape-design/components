@@ -3,41 +3,16 @@
 
 export interface FileUploadError {
   error: null | string;
-  fileErrors: (null | string)[];
+  fileErrors?: (null | string)[];
 }
 
-export class FileUploadErrorState {
-  errors: string[] = [];
-  fileErrors: string[][] = [];
-
-  constructor(filesCount: number) {
-    this.fileErrors = [...Array(filesCount)].map(() => []);
-  }
-
-  addError(error: null | string) {
-    if (error) {
-      this.errors.push(error);
-    }
-  }
-
-  addFileError(fileIndex: number, error: null | string) {
-    if (error) {
-      this.fileErrors[fileIndex] = [...this.fileErrors[fileIndex], error];
-    }
-  }
-
-  addFileErrors(files: File[], validate: (file: File) => null | string) {
-    for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
-      this.addFileError(fileIndex, validate(files[fileIndex]));
-    }
-  }
-
-  format(): FileUploadError {
-    return { error: formatFieldError(this), fileErrors: formatFileErrors(this.fileErrors) };
-  }
+export function formatFileUploadError(errors: string[], fileErrors: string[][]): null | FileUploadError {
+  const formattedError = formatFieldError(errors, fileErrors);
+  const formattedFileErrors = formatFileErrors(fileErrors);
+  return formattedError ? { error: formattedError, fileErrors: formattedFileErrors } : null;
 }
 
-function formatFieldError({ errors, fileErrors }: FileUploadErrorState): null | string {
+function formatFieldError(errors: string[], fileErrors: string[][]): null | string {
   const filesWithErrors = fileErrors.filter(errors => errors.length > 0).length;
 
   const commonErrorText = errors.join(', ');
@@ -56,8 +31,8 @@ function formatFieldError({ errors, fileErrors }: FileUploadErrorState): null | 
   return null;
 }
 
-function formatFileErrors(fileErrors: string[][]): (null | string)[] {
-  return fileErrors.map(errors => {
+function formatFileErrors(fileErrors: string[][]): (null | string)[] | undefined {
+  const formatted = fileErrors.map(errors => {
     if (errors.length === 0) {
       return null;
     }
@@ -69,4 +44,6 @@ function formatFileErrors(fileErrors: string[][]): (null | string)[] {
     }
     return `${errors[0]}, and ${errors.length - 1} more errors`;
   });
+
+  return formatted.some(Boolean) ? formatted : undefined;
 }
