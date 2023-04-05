@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 import customCssProps from '../../internal/generated/custom-css-properties';
 import { IconProps } from '../../icon/interfaces';
@@ -80,6 +80,7 @@ function ActiveDrawer() {
     activeDrawerWidth,
     ariaLabels,
     drawers,
+    drawersRefs,
     handleDrawersClick,
     handleToolsClick,
     isMobile,
@@ -114,7 +115,7 @@ function ActiveDrawer() {
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
           onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
-          ref={isToolsOpen ? toolsRefs.close : undefined}
+          ref={isToolsOpen ? toolsRefs.close : drawersRefs.close}
           variant="icon"
         />
       </div>
@@ -135,6 +136,7 @@ function DesktopTriggers() {
     activeDrawerId,
     ariaLabels,
     drawers,
+    drawersRefs,
     drawersTriggerCount,
     handleDrawersClick,
     handleSplitPanelClick,
@@ -153,12 +155,18 @@ function DesktopTriggers() {
     toolsRefs,
   } = useAppLayoutInternals();
 
+  const hasMultipleTriggers = drawersTriggerCount > 1;
+  const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
+
+  const lastActiveDrawerId = useRef(activeDrawerId);
+
+  if (activeDrawerId) {
+    lastActiveDrawerId.current = activeDrawerId;
+  }
+
   if (isMobile) {
     return null;
   }
-
-  const hasMultipleTriggers = drawersTriggerCount > 1;
-  const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
 
   return (
     <aside
@@ -179,7 +187,7 @@ function DesktopTriggers() {
             className={clsx(styles['drawers-trigger'], testutilStyles['tools-toggle'])}
             iconName="status-info"
             onClick={() => {
-              activeDrawerId && handleDrawersClick(null);
+              activeDrawerId && handleDrawersClick(null, true);
               handleToolsClick(!isToolsOpen);
             }}
             ref={toolsRefs.toggle}
@@ -195,9 +203,10 @@ function DesktopTriggers() {
             iconSvg={item.trigger.iconSvg}
             key={item.id}
             onClick={() => {
-              isToolsOpen && handleToolsClick(!isToolsOpen);
+              isToolsOpen && handleToolsClick(!isToolsOpen, true);
               handleDrawersClick(item.id);
             }}
+            ref={item.id === lastActiveDrawerId.current ? drawersRefs.toggle : undefined}
             selected={item.id === activeDrawerId}
           />
         ))}
@@ -225,6 +234,7 @@ export function MobileTriggers() {
     activeDrawerId,
     ariaLabels,
     drawers,
+    drawersRefs,
     handleDrawersClick,
     handleToolsClick,
     hasDrawerViewportOverlay,
@@ -234,6 +244,12 @@ export function MobileTriggers() {
     toolsHide,
     toolsRefs,
   } = useAppLayoutInternals();
+
+  const lastActiveDrawerId = useRef(activeDrawerId);
+
+  if (activeDrawerId) {
+    lastActiveDrawerId.current = activeDrawerId;
+  }
 
   if (!isMobile || !drawers) {
     return null;
@@ -266,6 +282,7 @@ export function MobileTriggers() {
           iconSvg={item.trigger.iconSvg}
           key={item.id}
           onClick={() => handleDrawersClick(item.id)}
+          ref={item.id === lastActiveDrawerId.current ? drawersRefs.toggle : undefined}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true }}
         />
