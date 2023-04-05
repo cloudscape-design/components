@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -64,9 +64,10 @@ export function Drawer({
   const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
   const drawerContentWidthOpen = isMobile ? undefined : width;
   const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
+  const openButtonWrapperRef = useRef<HTMLElement | null>(null);
 
   const regularOpenButton = (
-    <TagName aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
+    <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
       <AppLayoutButton
         ref={toggleRefs.toggle}
         className={toggleClassName}
@@ -102,7 +103,10 @@ export function Drawer({
 
         if (!isOpen) {
           // to prevent calling onToggle from the drawer when it's called from the toggle button
-          if ((event.target as Element).tagName !== 'BUTTON') {
+          if (
+            openButtonWrapperRef.current === event.target ||
+            !openButtonWrapperRef.current?.contains(event.target as Node)
+          ) {
             onToggle(true);
           }
         }
