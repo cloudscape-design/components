@@ -4051,6 +4051,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "number",
           },
           Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "unknown",
+          },
+          Object {
             "name": "stripedRows",
             "optional": true,
             "type": "false | true",
@@ -4221,6 +4226,11 @@ It contains the following:
             "type": "number",
           },
           Object {
+            "name": "stickyColumns",
+            "optional": true,
+            "type": "unknown",
+          },
+          Object {
             "name": "stripedRows",
             "optional": true,
             "type": "false | true",
@@ -4241,6 +4251,36 @@ It contains the following:
       "name": "preferences",
       "optional": true,
       "type": "CollectionPreferencesProps.Preferences<CustomPreferenceType>",
+    },
+    Object {
+      "description": "Configures the sticky columns preference.
+You can set it for both left and right columns.
+
+It contains the following:
+- \`label\` (string) - Specifies the label for each radio group.
+- \`description\` (string) - Specifies the text displayed below each radio group label.
+
+You must set the current value in the \`preferences.stickyColumns\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.StickyColumnsPreference",
+        "properties": Array [
+          Object {
+            "name": "endColumns",
+            "optional": true,
+            "type": "unknown",
+          },
+          Object {
+            "name": "startColumns",
+            "optional": true,
+            "type": "unknown",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumnsPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.StickyColumnsPreference",
     },
     Object {
       "description": "Configures the built-in \\"striped rows\\" preference.
@@ -11630,6 +11670,34 @@ to prevent the user from sorting before items are fully loaded.",
       "name": "sortingDisabled",
       "optional": true,
       "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the number of first and/or last columns that should be sticky.   *
+If the available scrollable space is less than 148px, the feature is deactivated.
+
+Use it in conjunction with the sticky columns preference of the
+[collection preferences](/components/collection-preferences/) component.
+
+",
+      "inlineType": Object {
+        "name": "TableProps.StickyColumns",
+        "properties": Array [
+          Object {
+            "name": "end",
+            "optional": true,
+            "type": "number",
+          },
+          Object {
+            "name": "start",
+            "optional": true,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "stickyColumns",
+      "optional": true,
+      "type": "TableProps.StickyColumns",
     },
     Object {
       "description": "If set to \`true\`, the table header remains visible when the user scrolls down.",
