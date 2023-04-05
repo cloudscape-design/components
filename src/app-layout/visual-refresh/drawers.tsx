@@ -51,11 +51,11 @@ export default function Drawers() {
   const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
     useAppLayoutInternals();
 
+  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
+
   if (!drawers) {
     return null;
   }
-
-  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
 
   return (
     <div
@@ -157,11 +157,10 @@ function DesktopTriggers() {
 
   const hasMultipleTriggers = drawersTriggerCount > 1;
   const hasSplitPanel = splitPanel && splitPanelDisplayed && splitPanelPosition === 'side' ? true : false;
-
-  const lastActiveDrawerId = useRef(activeDrawerId);
+  const previousActiveDrawerId = useRef(activeDrawerId);
 
   if (activeDrawerId) {
-    lastActiveDrawerId.current = activeDrawerId;
+    previousActiveDrawerId.current = activeDrawerId;
   }
 
   if (isMobile) {
@@ -206,7 +205,7 @@ function DesktopTriggers() {
               isToolsOpen && handleToolsClick(!isToolsOpen, true);
               handleDrawersClick(item.id);
             }}
-            ref={item.id === lastActiveDrawerId.current ? drawersRefs.toggle : undefined}
+            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
             selected={item.id === activeDrawerId}
           />
         ))}
@@ -245,10 +244,10 @@ export function MobileTriggers() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  const lastActiveDrawerId = useRef(activeDrawerId);
+  const previousActiveDrawerId = useRef(activeDrawerId);
 
   if (activeDrawerId) {
-    lastActiveDrawerId.current = activeDrawerId;
+    previousActiveDrawerId.current = activeDrawerId;
   }
 
   if (!isMobile || !drawers) {
@@ -282,7 +281,7 @@ export function MobileTriggers() {
           iconSvg={item.trigger.iconSvg}
           key={item.id}
           onClick={() => handleDrawersClick(item.id)}
-          ref={item.id === lastActiveDrawerId.current ? drawersRefs.toggle : undefined}
+          ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
           variant="icon"
           __nativeAttributes={{ 'aria-haspopup': true }}
         />

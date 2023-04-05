@@ -35,12 +35,12 @@ interface AppLayoutInternals extends AppLayoutProps {
   drawersRefs: FocusControlRefs;
   drawersTriggerCount: number;
   dynamicOverlapHeight: number;
-  handleDrawersClick: (activeDrawerId: string | null, skipFocus?: boolean) => void;
+  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (detail: { size: number }) => void;
-  handleToolsClick: (value: boolean, skipFocus?: boolean) => void;
+  handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
   hasDefaultToolsWidth: boolean;
   hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
@@ -212,9 +212,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     } = useFocusControl(isToolsOpen, true);
 
     const handleToolsClick = useCallback(
-      function handleToolsChange(isOpen: boolean, skipFocus?: boolean) {
+      function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
-        !skipFocus && focusToolsButtons();
+        !skipFocusControl && focusToolsButtons();
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
@@ -409,11 +409,11 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const { refs: drawersRefs, setFocus: focusDrawersButtons } = useFocusControl(activeDrawerId);
 
     const handleDrawersClick = useCallback(
-      function handleDrawersChange(id: string | null, skipFocus?: boolean) {
+      function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
         const newActiveDrawerId = id !== activeDrawerId ? id : null;
 
         setActiveDrawerId(newActiveDrawerId);
-        !skipFocus && focusDrawersButtons();
+        !skipFocusControl && focusDrawersButtons();
         fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
       },
       [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId]
