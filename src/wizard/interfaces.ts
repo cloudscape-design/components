@@ -61,6 +61,11 @@ export interface WizardProps extends BaseComponentProps {
   isLoadingNextStep?: boolean;
 
   /**
+   * Specifies the text that a screen reader announces when the *next* or *submit* button is in a loading state.
+   */
+  nextStepLoadingText?: string;
+
+  /**
    * When set to `false`, the *skip-to* button is never shown.
    * When set to `true`, the *skip-to* button may appear to offer faster navigation for the user.
    *

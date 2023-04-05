@@ -74,6 +74,7 @@ export default function WizardPage() {
           allowSkipTo={true}
           i18nStrings={i18nStrings}
           activeStepIndex={activeStepIndex}
+          nextStepLoadingText="Loading next step"
           onNavigate={e => {
             if (e.detail.reason === 'next' && simulateApiCall) {
               setLoadingNextStep(true);

@@ -33,6 +33,7 @@ export default function Wizard({
   activeStepIndex: controlledActiveStepIndex,
   isLoadingNextStep = false,
   allowSkipTo = false,
+  nextStepLoadingText,
   secondaryActions,
   onCancel,
   onSubmit,
@@ -151,6 +152,7 @@ export default function Wizard({
             i18nStrings={i18nStrings}
             activeStepIndex={actualActiveStepIndex}
             isPrimaryLoading={isLoadingNextStep}
+            primaryButtonLoadingText={nextStepLoadingText}
             allowSkipTo={allowSkipTo}
             secondaryActions={secondaryActions}
             onCancelClick={onCancelClick}

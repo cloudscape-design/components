@@ -31,7 +31,13 @@ export default function WizardPage() {
       <button id="set-loading" onClick={() => setIsLoading(true)}>
         Set loading
       </button>
-      <Wizard id="wizard" steps={steps} i18nStrings={i18nStrings} isLoadingNextStep={isLoading} />
+      <Wizard
+        id="wizard"
+        steps={steps}
+        i18nStrings={i18nStrings}
+        isLoadingNextStep={isLoading}
+        nextStepLoadingText="Loading next step"
+      />
     </div>
   );
 }

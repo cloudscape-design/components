@@ -13780,6 +13780,12 @@ Use this if you need to wait for a response from the server before the user can 
       "type": "boolean",
     },
     Object {
+      "description": "Specifies the text that a screen reader announces when the *next* or *submit* button is in a loading state.",
+      "name": "nextStepLoadingText",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Array of step objects. Each object represents a step in the wizard with the following properties:
 - \`title\` (string) - Text that's displayed as the title in the navigation pane and form header.
 - \`info\` (ReactNode) - (Optional) Area for a page level info link that's displayed in the form header.

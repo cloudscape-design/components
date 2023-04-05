@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
@@ -498,7 +499,7 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findMenuNavigationLink(3, 'disabled')).toBeNull();
   expect(wrapper.findMenuNavigationLink(4, 'disabled')).toBeNull();
 
-  rerender({ ...props, isLoadingNextStep: true });
+  rerender({ ...props, isLoadingNextStep: true, nextStepLoadingText: 'Loading next step' });
 
   expect(wrapper.findPreviousButton()!.getElement()).toBeDisabled();
   expect(wrapper.findSkipToButton()!.getElement()).toBeDisabled();
@@ -509,6 +510,11 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findMenuNavigationLink(2, 'active')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(3, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(4, 'disabled')).not.toBeNull();
+
+  // check for screen reader announcement
+  expect(wrapper.findActions()?.findByClassName(liveRegionStyles.root)?.getElement()).toHaveTextContent(
+    'Loading next step'
+  );
 
   rerender({ ...props, isLoadingNextStep: false });
 

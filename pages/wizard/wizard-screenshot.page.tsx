@@ -53,6 +53,7 @@ export default function WizardPage() {
           steps={steps}
           i18nStrings={{ ...i18nStrings, nextButton: 'Next Button With Long Long Long Text', skipToButtonLabel }}
           isLoadingNextStep={activeStepIndex === 1}
+          nextStepLoadingText="Loading next step"
           onNavigate={() => {}}
           allowSkipTo={true}
         />

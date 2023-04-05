@@ -18,6 +18,7 @@ interface WizardFormProps {
   showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   isPrimaryLoading: boolean;
+  primaryButtonLoadingText?: string;
   allowSkipTo: boolean;
   secondaryActions?: React.ReactNode;
   onCancelClick: () => void;
@@ -33,6 +34,7 @@ export default function WizardForm({
   showCollapsedSteps,
   i18nStrings,
   isPrimaryLoading,
+  primaryButtonLoadingText,
   allowSkipTo,
   secondaryActions,
   onCancelClick,
@@ -90,6 +92,7 @@ export default function WizardForm({
             onSkipToClick={() => onSkipToClick(skipToTargetIndex)}
             showPrevious={activeStepIndex !== 0}
             isPrimaryLoading={isPrimaryLoading}
+            primaryButtonLoadingText={primaryButtonLoadingText}
             showSkipTo={showSkipTo}
             skipToButtonText={skipToButtonText}
           />
