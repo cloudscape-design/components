@@ -28,12 +28,6 @@ export function FileOption({ file, metadata, i18nStrings }: FileOptionProps) {
         <InternalSpaceBetween direction="vertical" size="xxxs">
           <InternalBox className={styles['file-option-name']}>{file.name}</InternalBox>
 
-          {metadata.showFileType && file.type ? (
-            <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-type']}>
-              {file.type}
-            </InternalBox>
-          ) : null}
-
           {metadata.showFileSize && file.size ? (
             <InternalBox fontSize="body-s" color="text-body-secondary" className={styles['file-option-size']}>
               {formatFileSize(file.size)}

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import { Box, Button, Checkbox, FileUpload, FileUploadProps, Form, FormField, Header, Input } from '~components';
+import { Alert, Box, Button, Checkbox, FileUpload, FileUploadProps, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
-import { PageBanner, PageNotifications, useContractFilesForm } from './page-helpers';
+import { PageNotifications, useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
 import { validateContractFiles, validateContractFilesInForm } from './validations';
 
@@ -36,7 +36,11 @@ export default function FileUploadScenarioFormMixed() {
       <SpaceBetween size="xl">
         <Header variant="h1">File upload scenario: In form with mixed validation</Header>
 
-        <PageBanner />
+        <Alert statusIconAriaLabel="Info" header="Scenario description">
+          File upload is used in a form as one of two required files. The component supports synchronous client-side
+          validation as per constraints. Additionally, the component imitates server-side validation triggered for image
+          files. The upload and server-side validation is triggered upon form submission.
+        </Alert>
 
         <PageNotifications status={formState.status} />
 
@@ -59,12 +63,12 @@ export default function FileUploadScenarioFormMixed() {
               >
                 <FileUpload
                   ref={contractsRef}
+                  ariaRequired={true}
                   multiple={acceptMultiple}
                   limit={3}
                   value={formState.files}
                   onChange={event => formState.onFilesChange(event.detail.value)}
                   accept="application/pdf, image/png, image/jpeg"
-                  showFileType={true}
                   showFileSize={true}
                   showFileLastModified={true}
                   showFileThumbnail={true}

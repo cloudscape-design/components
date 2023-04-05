@@ -25,7 +25,6 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
   },
   {
     value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
-    showFileType: [true],
     showFileSize: [true],
     showFileLastModified: [true],
     showFileThumbnail: [true],

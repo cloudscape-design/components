@@ -15,11 +15,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
-   * Show file's MIME type in the token.
-   * Default: `false`.
-   */
-  showFileType?: boolean;
-  /**
    * Show file's size in the token. Use `i18nStrings.formatFileSize` to customize it.
    * Default: `false`.
    */
@@ -109,7 +104,6 @@ export namespace FileUploadProps {
 }
 
 export interface FileMetadata {
-  showFileType: boolean;
   showFileSize: boolean;
   showFileLastModified: boolean;
   showFileThumbnail: boolean;

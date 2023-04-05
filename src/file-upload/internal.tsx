@@ -25,7 +25,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
-  'multiple' | 'showFileType' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
+  'multiple' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
 > &
   InternalBaseComponentProps;
 
@@ -39,7 +39,6 @@ function InternalFileUpload(
     onChange,
     value,
     limit,
-    showFileType,
     showFileSize,
     showFileLastModified,
     showFileThumbnail,
@@ -53,7 +52,7 @@ function InternalFileUpload(
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
-  const metadata = { showFileType, showFileSize, showFileLastModified, showFileThumbnail };
+  const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
@@ -79,6 +78,7 @@ function InternalFileUpload(
   const isDropzoneVisible = useDropzoneVisible();
 
   const errorId = useUniqueId('error-');
+  const fileErrorId = useUniqueId('file-error-');
 
   return (
     <InternalSpaceBetween
@@ -123,11 +123,12 @@ function InternalFileUpload(
       )}
 
       {!multiple && value.length === 1 ? (
-        <div role="group" aria-label={value[0].name}>
+        <div role="group" aria-label={value[0].name} aria-describedby={fileErrorId}>
           <Token
             dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
             onDismiss={() => onFileRemove(0)}
             errorText={fileErrors?.[0]}
+            errorId={fileErrorId}
           >
             <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
           </Token>
@@ -138,12 +139,16 @@ function InternalFileUpload(
         <TokenList
           alignment="vertical"
           items={value}
-          itemAttributes={file => ({ 'aria-label': file.name })}
+          itemAttributes={(file, fileIndex) => ({
+            'aria-label': file.name,
+            'aria-describedby': `${fileErrorId}-${fileIndex}`,
+          })}
           renderItem={(file, fileIndex) => (
             <Token
               dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
               onDismiss={() => onFileRemove(fileIndex)}
               errorText={fileErrors?.[fileIndex]}
+              errorId={`${fileErrorId}-${fileIndex}`}
             >
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>

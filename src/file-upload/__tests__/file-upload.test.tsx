@@ -155,7 +155,6 @@ describe('File upload tokens', () => {
   test('file token metadata can be opt-in', () => {
     const wrapper = render({
       value: [file1],
-      showFileType: true,
       showFileSize: true,
       showFileLastModified: true,
     });
@@ -214,7 +213,6 @@ test('a11y', async () => {
   const wrapper = render({
     multiple: true,
     value: [file1, file2],
-    showFileType: true,
     showFileSize: true,
     showFileLastModified: true,
   });

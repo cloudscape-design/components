@@ -19,7 +19,6 @@ export default function FileUploadTestPage() {
         value={contractFiles}
         onChange={event => setContractFiles(event.detail.value)}
         accept="application/pdf, image/png, image/jpeg"
-        showFileType={true}
         showFileSize={true}
         showFileLastModified={true}
         showFileThumbnail={true}

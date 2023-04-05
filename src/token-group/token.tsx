@@ -15,13 +15,14 @@ interface ItemAttributes {
   onDismiss?: () => void;
   disabled?: boolean;
   errorText?: React.ReactNode;
+  errorId?: string;
 }
 
 interface TokenProps extends ItemAttributes {
   children: React.ReactNode;
 }
 
-export function Token({ disabled, dismissLabel, onDismiss, children, errorText }: TokenProps) {
+export function Token({ disabled, dismissLabel, onDismiss, children, errorText, errorId }: TokenProps) {
   return (
     <InternalBox>
       <div className={clsx(styles.token, disabled && styles['token-disabled'])}>
@@ -30,7 +31,9 @@ export function Token({ disabled, dismissLabel, onDismiss, children, errorText }
       </div>
       {errorText && (
         <div style={{ marginTop: '4px' }}>
-          <FormFieldError>{errorText}</FormFieldError>
+          <FormFieldError id={errorId} errorIconAriaLabel="Error">
+            {errorText}
+          </FormFieldError>
         </div>
       )}
     </InternalBox>

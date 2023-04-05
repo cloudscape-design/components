@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Checkbox, FileUpload, FileUploadProps, FormField, Header } from '~components';
+import { Alert, Box, Checkbox, FileUpload, FileUploadProps, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
-import { PageBanner, PageNotifications, useContractFilesForm } from './page-helpers';
+import { PageNotifications, useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
 import { validateContractFiles } from './validations';
 
@@ -25,7 +25,10 @@ export default function FileUploadScenarioStandalone() {
       <SpaceBetween size="xl">
         <Header variant="h1">File upload scenario: Standalone</Header>
 
-        <PageBanner />
+        <Alert statusIconAriaLabel="Info" header="Scenario description">
+          File upload is used as a standalone component. It supports synchronous client-side validation as per
+          constraints. Additionally, the component imitates server-side validation triggered for image files.
+        </Alert>
 
         <PageNotifications status={formState.status} />
 
@@ -47,7 +50,6 @@ export default function FileUploadScenarioStandalone() {
               formState.onUploadFiles(!validateContractFiles(event.detail.value) ? event.detail.value : []);
             }}
             accept="application/pdf, image/png, image/jpeg"
-            showFileType={true}
             showFileSize={true}
             showFileLastModified={true}
             showFileThumbnail={true}

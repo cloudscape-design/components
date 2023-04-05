@@ -14,7 +14,6 @@ const FileUpload = React.forwardRef(
   (
     {
       multiple = false,
-      showFileType = false,
       showFileSize = false,
       showFileLastModified = false,
       showFileThumbnail = false,
@@ -28,7 +27,6 @@ const FileUpload = React.forwardRef(
       <InternalFileUpload
         ref={ref}
         multiple={multiple}
-        showFileType={showFileType}
         showFileSize={showFileSize}
         showFileLastModified={showFileLastModified}
         showFileThumbnail={showFileThumbnail}

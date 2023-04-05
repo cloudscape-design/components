@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { Box, Flashbar } from '~components';
+import { useEffect, useState } from 'react';
+import { Flashbar } from '~components';
 import { FileUploadErrors, formatFileUploadError } from './error-helpers';
 
 export interface FormFieldState<Value> {
@@ -18,10 +18,6 @@ export interface FileUploadServer {
 }
 
 export type FormStatus = 'pending' | 'uploading' | 'uploaded' | 'error' | 'submitted';
-
-export function PageBanner() {
-  return <Box fontSize="body-s">Upload image files to imitate server validation.</Box>;
-}
 
 export function PageNotifications({ status }: { status: FormStatus }) {
   switch (status) {
@@ -55,19 +51,20 @@ export function useContractFilesForm() {
   const [fileErrors, setFileErrors] = useState<null | FileUploadErrors>(null);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<null | string>(null);
-  const uploadTimeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
     if (uploadingFiles.length === 0) {
+      setFormStatus('pending');
       return;
     }
 
     setFormStatus('uploading');
 
     let tick = 0;
+    let timeout: null | ReturnType<typeof setTimeout> = null;
 
     const upload = () => {
-      uploadTimeoutRef.current = setTimeout(() => {
+      timeout = setTimeout(() => {
         tick++;
 
         if (tick === 100 && uploadingFiles.some(isImage)) {
@@ -88,14 +85,13 @@ export function useContractFilesForm() {
 
     upload();
 
-    const timeoutRef = uploadTimeoutRef.current;
     return () => {
-      timeoutRef && clearTimeout(timeoutRef);
+      timeout && clearTimeout(timeout);
     };
   }, [uploadingFiles]);
 
   return {
-    status: formSubmitted && !fileErrors && !nameError ? 'submitted' : formStatus,
+    status: formSubmitted && formStatus !== 'uploading' && !fileErrors && !nameError ? 'submitted' : formStatus,
     files,
     fileErrors,
     name,
