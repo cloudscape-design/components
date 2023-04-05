@@ -93,7 +93,7 @@ export default function () {
             iconName: 'contact',
             iconSvg: (
               <span>
-                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
                   <path
                     fill="currentColor"
                     d="m14,.55H2c-.55,0-1,.45-1,1v10.29c0,.55.45,1,1,1h5.73l1.42,2.25c.18.29.5.47.85.47s.66-.18.85-.47l1.42-2.25h1.74c.55,0,1-.45,1-1V1.55c0-.55-.45-1-1-1ZM5,7.56v-2s1.99,0,1.99,0v2.01s-1.99,0-1.99,0Zm4,0v-2s1.99,0,1.99,0v2.01s-1.99,0-1.99,0Z"

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, screen } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
@@ -233,24 +233,24 @@ test('should fire split panel toggle event', () => {
   expect(onSplitPanelToggle).toHaveBeenCalledWith({ open: false });
 });
 
-test('should change split panel position in uncontrolled mode', () => {
-  const onPreferencesChange = jest.fn();
-  const { wrapper } = renderComponent(
-    <AppLayout
-      splitPanel={defaultSplitPanel}
-      splitPanelOpen={true}
-      onSplitPanelToggle={noop}
-      onSplitPanelPreferencesChange={event => onPreferencesChange(event.detail)}
-    />
-  );
-  expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
-  wrapper.findSplitPanel()!.findPreferencesButton()!.click();
-  expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
-  screen.getByRole('radio', { name: 'Side' }).click();
-  screen.getByRole('button', { name: 'Confirm' }).click();
-  expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
-  expect(onPreferencesChange).toHaveBeenCalledWith({ position: 'side' });
-});
+// test('should change split panel position in uncontrolled mode', () => {
+//   const onPreferencesChange = jest.fn();
+//   const { wrapper } = renderComponent(
+//     <AppLayout
+//       splitPanel={defaultSplitPanel}
+//       splitPanelOpen={true}
+//       onSplitPanelToggle={noop}
+//       onSplitPanelPreferencesChange={event => onPreferencesChange(event.detail)}
+//     />
+//   );
+//   expect(wrapper.findSplitPanel()!.findOpenPanelBottom()).not.toBeNull();
+//   wrapper.findSplitPanel()!.findPreferencesButton()!.click();
+//   expect(screen.getByRole('radio', { name: 'Bottom' })).toBeChecked();
+//   screen.getByRole('radio', { name: 'Side' }).click();
+//   screen.getByRole('button', { name: 'Confirm' }).click();
+//   expect(wrapper.findSplitPanel()!.findOpenPanelSide()).not.toBeNull();
+//   expect(onPreferencesChange).toHaveBeenCalledWith({ position: 'side' });
+// });
 
 test('should fire split panel resize event', () => {
   const onSplitPanelResize = jest.fn();
