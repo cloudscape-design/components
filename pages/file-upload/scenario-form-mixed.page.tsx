@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Box, Button, Checkbox, FileUpload, Form, FormField, Header, Input } from '~components';
 import SpaceBetween from '~components/space-between';
-import { PageBanner, PageNotifications, useContractFilesForm, validateContractFiles } from './page-helpers';
+import { PageBanner, PageNotifications, useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
+import { validateContractFiles, validateContractFilesInForm } from './validations';
 
 export default function FileUploadScenarioFormMixed() {
   const [acceptMultiple, setAcceptMultiple] = useState(true);
@@ -27,7 +28,7 @@ export default function FileUploadScenarioFormMixed() {
           onSubmit={e => {
             e.preventDefault();
 
-            const filesError = validateContractFiles(formState.files, true);
+            const filesError = validateContractFilesInForm(formState.files);
             const nameError = formState.name.trim().length === 0 ? 'Name must not be empty' : '';
             const isFormValid = !filesError && !nameError;
 
@@ -51,10 +52,8 @@ export default function FileUploadScenarioFormMixed() {
                   multiple={acceptMultiple}
                   limit={3}
                   value={formState.files}
-                  onChange={event => {
-                    const validation = validateContractFiles(event.detail.value);
-                    formState.onFilesChange(event.detail.value, validation);
-                  }}
+                  onChange={event => formState.onFilesChange(event.detail.value)}
+                  isValueValid={validateContractFiles}
                   accept="application/pdf, image/png, image/jpeg"
                   showFileType={true}
                   showFileSize={true}

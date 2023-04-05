@@ -36,7 +36,6 @@ function InternalFileUpload(
     ariaRequired,
     multiple,
     onChange,
-    fileErrors,
     value,
     limit,
     showFileType,
@@ -45,9 +44,10 @@ function InternalFileUpload(
     showFileThumbnail,
     i18nStrings,
     __internalRootRef = null,
-    // form-field props
     constraintText,
-    errorText,
+    errorText: explicitErrorText,
+    fileErrors: explicitFileErrors,
+    isValueValid,
     ...restProps
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
@@ -64,14 +64,25 @@ function InternalFileUpload(
   const handleFilesChange = (newFiles: File[]) => {
     const currentFiles = [...value];
     const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
-    fireNonCancelableEvent(onChange, { value: newValue });
+    fireNonCancelableEvent(onChange, {
+      value: newValue,
+      valid: isValueValid?.(newValue)?.valid ?? true,
+    });
   };
 
   const onFileRemove = (removeFileIndex: number) => {
-    fireNonCancelableEvent(onChange, { value: value.filter((_, fileIndex) => fileIndex !== removeFileIndex) });
+    const newValue = value.filter((_, fileIndex) => fileIndex !== removeFileIndex);
+    fireNonCancelableEvent(onChange, {
+      value: newValue,
+      valid: isValueValid?.(newValue)?.valid ?? true,
+    });
   };
 
   const isDropzoneVisible = useDropzoneVisible();
+
+  const validationResult = isValueValid?.(value) ?? { valid: true };
+  const errorText = explicitErrorText ?? (!validationResult.valid ? validationResult.errorText : null);
+  const fileErrors = explicitFileErrors ?? (!validationResult.valid ? validationResult.fileErrors : null);
 
   return (
     <InternalSpaceBetween
@@ -124,7 +135,7 @@ function InternalFileUpload(
             <Token
               dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
               onDismiss={() => onFileRemove(fileIndex)}
-              errorText={fileErrors?.[fileIndex]}
+              errorText={fileErrors?.find(([fileWithError]) => fileWithError === file)?.[1]}
             >
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>

@@ -51,10 +51,6 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   value: ReadonlyArray<File>;
   /**
-   * An array of file errors corresponding the `value` files.
-   */
-  fileErrors?: ReadonlyArray<null | string>;
-  /**
    * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
    */
   limit?: number;
@@ -66,6 +62,14 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * ...
    */
   errorText?: React.ReactNode;
+  /**
+   * An array of file errors corresponding the `value` files.
+   */
+  fileErrors?: null | ReadonlyArray<FileUploadProps.FileError>;
+  /**
+   * ...
+   */
+  isValueValid?: FileUploadProps.ValidationFunction;
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
@@ -80,8 +84,25 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
 }
 
 export namespace FileUploadProps {
+  export type ValidationFunction = (value: ReadonlyArray<File>) => ValidationResult;
+
+  export type FileError = [fileWithError: File, errorText: React.ReactNode];
+
+  export type ValidationResult = ValidationResultValid | ValidationResultInvalid;
+
+  export interface ValidationResultValid {
+    valid: true;
+  }
+
+  export interface ValidationResultInvalid {
+    valid: false;
+    errorText: React.ReactNode;
+    fileErrors?: null | ReadonlyArray<FileError>;
+  }
+
   export interface ChangeDetail {
     value: File[];
+    valid: boolean;
   }
 
   export interface DismissDetail {
