@@ -31,12 +31,12 @@ export function getFocusables(container: HTMLElement): HTMLElement[] {
     .filter((element: HTMLElement) => element.tabIndex !== -1);
 }
 
-export function getFirstFocusable(container: HTMLElement) {
+export function getFirstFocusable(container: HTMLElement): null | HTMLElement {
   const focusables = getFocusables(container);
   return focusables[0] ?? null;
 }
 
-export function getLastFocusable(container: HTMLElement) {
+export function getLastFocusable(container: HTMLElement): null | HTMLElement {
   const focusables = getFocusables(container);
   return focusables[focusables.length - 1] ?? null;
 }

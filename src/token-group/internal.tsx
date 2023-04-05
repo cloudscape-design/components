@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 
 import Option from '../internal/components/option';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -28,6 +28,8 @@ export default function InternalTokenGroup({
 }: InternalTokenGroupProps) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
 
+  const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
+
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
   return (
@@ -43,7 +45,10 @@ export default function InternalTokenGroup({
         renderItem={(item, itemIndex) => (
           <Token
             dismissLabel={item.dismissLabel}
-            onDismiss={() => fireNonCancelableEvent(onDismiss, { itemIndex })}
+            onDismiss={() => {
+              fireNonCancelableEvent(onDismiss, { itemIndex });
+              setRemovedItemIndex(itemIndex);
+            }}
             disabled={item.disabled}
           >
             <Option option={item} isGenericGroup={false} />
@@ -51,6 +56,7 @@ export default function InternalTokenGroup({
         )}
         itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled ? true : undefined })}
         i18nStrings={i18nStrings}
+        removedItemIndex={removedItemIndex}
       />
     </div>
   );

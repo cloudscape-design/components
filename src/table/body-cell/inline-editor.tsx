@@ -98,9 +98,14 @@ export function InlineEditor<ItemType>({
   } = column.editConfig!;
 
   return (
-    <FocusLock ref={focusLockRef}>
-      <div role="dialog" aria-label={ariaLabels?.activateEditLabel?.(column, item)} onKeyDown={handleEscape}>
-        <form ref={clickAwayRef} onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+    <FocusLock restoreFocus={true} ref={focusLockRef}>
+      <div
+        role="dialog"
+        ref={clickAwayRef}
+        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+        onKeyDown={handleEscape}
+      >
+        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
           <FormField
             stretch={true}
             label={ariaLabel}

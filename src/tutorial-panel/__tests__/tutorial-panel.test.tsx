@@ -178,6 +178,15 @@ describe('tutorial detail view', () => {
     expect(onFeedbackClick).toHaveBeenCalledTimes(1);
   });
 
+  test('feedback link is optional', () => {
+    const tutorials = getTutorials();
+    const context = getContext({ currentTutorial: tutorials[1] });
+    const { container } = renderTutorialPanelWithContext({ tutorials, onFeedbackClick: undefined }, context);
+    const wrapper = createWrapper(container).findTutorialPanel()!;
+
+    expect(wrapper.findFeedbackLink()).toBe(null);
+  });
+
   test('completed screen should have role status', () => {
     const tutorials = getTutorials();
     const context = getContext({ currentTutorial: tutorials[1] });
@@ -269,7 +278,7 @@ describe('URL sanitization', () => {
       const wrapper = createWrapper(container).findTutorialPanel()!;
       const taskList = wrapper.findTaskList();
 
-      expect(taskList[0].findStepsTitle().getElement().getAttribute('aria-label')).toBe(
+      expect(taskList[0].findStepsTitle().find('[aria-label]')!.getElement().getAttribute('aria-label')).toBe(
         'TASK_1_FIRST_TASK_TEST TOTAL_STEPS_1'
       );
     });
