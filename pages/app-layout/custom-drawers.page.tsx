@@ -69,16 +69,6 @@ export default function () {
         {
           trigger: {
             iconName: 'security',
-            iconSvg: (
-              <span>
-                <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                  <path
-                    fill="currentColor"
-                    d="m8,0C3.59,0,0,3.59,0,8s3.59,8,8,8,8-3.59,8-8S12.41,0,8,0Zm.99,4v2.01s-1.99,0-1.99,0v-2s1.99,0,1.99,0Zm1.01,8h-4v-2h1v-1h-1v-2h3v3h1v2Z"
-                  />
-                </svg>
-              </span>
-            ),
           },
           ariaLabels: {
             content: 'Security information',
@@ -86,6 +76,7 @@ export default function () {
             triggerButton: 'View security information',
           },
           id: 'security-info',
+          resizable: true,
           content: <HelpPanel header={<h2>Security information</h2>}></HelpPanel>,
         },
         {
@@ -107,6 +98,7 @@ export default function () {
             closeButton: 'Close Ask AWS',
             triggerButton: 'View Ask AWS panel',
           },
+
           id: 'contact',
           content: <HelpPanel header={<h2>Ask AWS</h2>}></HelpPanel>,
         },

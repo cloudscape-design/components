@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { ButtonProps } from '../../button/interfaces';
 import { AppLayoutProps } from '../interfaces';
-import { DrawerItem } from '../drawer';
+import { DrawerItem } from '../drawer/interfaces';
 import { AppLayoutButton, togglesConfig } from '../toggles';
 import styles from './styles.css.js';
 import sharedStyles from '../styles.css.js';

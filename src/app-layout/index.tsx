@@ -34,7 +34,8 @@ import {
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { Drawer, DrawerItem, DrawerTriggersBar } from './drawer';
+import { Drawer, DrawerTriggersBar } from './drawer';
+import { DrawerItem } from './drawer/interfaces';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
@@ -43,6 +44,7 @@ import { warnOnce } from '../internal/logging';
 import RefreshedAppLayout from './visual-refresh';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
+import { useDrawerFocusControl } from './utils/use-drawer-focus-control';
 
 export { AppLayoutProps };
 
@@ -251,6 +253,20 @@ const OldAppLayout = React.forwardRef(
         changeHandler: 'onSplitPanelToggle',
       }
     );
+
+    const defaultDrawerSize = toolsWidth;
+
+    const [drawerSize = defaultDrawerSize, setDrawerSize] = useControllable(
+      selectedDrawer?.size,
+      selectedDrawer?.onDrawerResize,
+      defaultDrawerSize,
+      {
+        componentName: 'AppLayout',
+        controlledProp: 'drawerSize',
+        changeHandler: 'onDrawerSize',
+      }
+    );
+
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
     const [splitPanelReportedToggle, setSplitPanelReportedToggle] = useState<SplitPanelSideToggleProps>({
       displayed: false,
@@ -263,6 +279,8 @@ const OldAppLayout = React.forwardRef(
     const effectiveToolsWidth =
       toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && !drawers
         ? 0
+        : selectedDrawer?.resizable
+        ? drawerSize
         : toolsOpen || activeDrawerId !== undefined
         ? toolsWidth
         : closedDrawerWidth;
@@ -287,6 +305,11 @@ const OldAppLayout = React.forwardRef(
       splitPanelOpen,
     ]);
 
+    const { refs: drawerRefs, setLastInteraction: setDrawerLastInteraction } = useDrawerFocusControl([
+      splitPanelPreferences,
+      selectedDrawer?.resizable,
+    ]);
+
     const onSplitPanelPreferencesSet = useCallback(
       (detail: { position: 'side' | 'bottom' }) => {
         setSplitPanelPreferences(detail);
@@ -301,6 +324,14 @@ const OldAppLayout = React.forwardRef(
         fireNonCancelableEvent(onSplitPanelResize, detail);
       },
       [setSplitPanelSize, onSplitPanelResize]
+    );
+
+    const onDrawerSizeSet = useCallback(
+      (detail: { size: number }) => {
+        setDrawerSize(detail.size);
+        fireNonCancelableEvent(selectedDrawer?.onDrawerResize, detail);
+      },
+      [setDrawerSize, selectedDrawer?.onDrawerResize]
     );
 
     const onSplitPanelToggleHandler = useCallback(() => {
@@ -320,6 +351,20 @@ const OldAppLayout = React.forwardRef(
       const contentPadding = disableContentPaddings ? 80 : 0;
       const spaceAvailable = width - defaults.minContentWidth - contentPadding;
       const spaceTaken = finalSplitPanePosition === 'side' ? splitPanelSize : 0;
+      return Math.max(0, spaceTaken + spaceAvailable);
+    });
+
+    const getDrawerMaxWidth = useStableEventHandler(() => {
+      if (!mainContentRef.current || !defaults.minContentWidth) {
+        return NaN;
+      }
+
+      const width = parseInt(getComputedStyle(mainContentRef.current).width);
+      // when disableContentPaddings is true there is less available space,
+      // so we subtract space-scaled-2x-xxxl * 2 for left and right padding
+      const contentPadding = disableContentPaddings ? 80 : 0;
+      const spaceAvailable = width - defaults.minContentWidth - contentPadding;
+      const spaceTaken = drawerSize;
       return Math.max(0, spaceTaken + spaceAvailable);
     });
 
@@ -360,7 +405,7 @@ const OldAppLayout = React.forwardRef(
       // This is a workaround to avoid a forced position due to splitPanelSize, which is
       // user controlled variable.
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contentWidthWithSplitPanel, defaults.minContentWidth, isMobile]);
+    }, [contentWidthWithSplitPanel, drawerSize, defaults.minContentWidth, isMobile]);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
     const toolsClosedWidth = toolsHide || isMobile || (!drawers && toolsHide) ? 0 : closedDrawerWidth;
@@ -379,7 +424,9 @@ const OldAppLayout = React.forwardRef(
         rightOffset +
         (isMobile
           ? 0
-          : drawers && activeDrawerId
+          : drawers && activeDrawerId && selectedDrawer.resizable
+          ? drawerSize + closedDrawerWidth
+          : drawers && activeDrawerId && !selectedDrawer.resizable
           ? toolsWidth + closedDrawerWidth
           : drawers && !activeDrawerId
           ? closedDrawerWidth
@@ -469,8 +516,12 @@ const OldAppLayout = React.forwardRef(
                       items: tools ? [toolsItem, ...drawers.items] : drawers.items,
                       activeDrawerId: selectedDrawer?.id,
                       onChange: changeDetail => {
-                        setActiveDrawersId(changeDetail.activeDrawerId);
-                        fireNonCancelableEvent(drawers.onChange, changeDetail);
+                        if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
+                          onToolsToggle(changeDetail.activeDrawerId === 'tools');
+                          setActiveDrawersId(changeDetail.activeDrawerId);
+                          setDrawerLastInteraction({ type: 'open' });
+                          fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
+                        }
                       },
                     }
                   : undefined
@@ -495,6 +546,10 @@ const OldAppLayout = React.forwardRef(
                 toggleRefs={navigationRefs}
                 type="navigation"
                 width={navigationWidth}
+                size={drawerSize}
+                onResize={onDrawerSizeSet}
+                refs={drawerRefs}
+                getMaxWidth={getDrawerMaxWidth}
               >
                 {navigation}
               </Drawer>
@@ -601,7 +656,7 @@ const OldAppLayout = React.forwardRef(
                   toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
                   closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
                   ariaLabels={ariaLabels}
-                  width={effectiveToolsWidth}
+                  width={selectedDrawer?.resizable ? drawerSize : toolsWidth}
                   bottomOffset={footerHeight}
                   topOffset={headerHeight}
                   isMobile={isMobile}
@@ -615,10 +670,15 @@ const OldAppLayout = React.forwardRef(
                     activeDrawerId: selectedDrawer.id,
                     onChange: changeDetail => {
                       onToolsToggle(false);
+                      setDrawerLastInteraction({ type: 'close' });
                       setActiveDrawersId(changeDetail.activeDrawerId);
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     },
                   }}
+                  size={selectedDrawer?.resizable ? drawerSize : toolsWidth}
+                  onResize={onDrawerSizeSet}
+                  refs={drawerRefs}
+                  getMaxWidth={getDrawerMaxWidth}
                 >
                   {selectedDrawer.content}
                 </Drawer>
@@ -637,6 +697,10 @@ const OldAppLayout = React.forwardRef(
                   toggleRefs={toolsRefs}
                   type="tools"
                   onLoseFocus={loseToolsFocus}
+                  size={drawerSize}
+                  onResize={onDrawerSizeSet}
+                  refs={drawerRefs}
+                  getMaxWidth={getDrawerMaxWidth}
                 >
                   {tools}
                 </Drawer>
@@ -654,6 +718,7 @@ const OldAppLayout = React.forwardRef(
                     if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
                       onToolsToggle(changeDetail.activeDrawerId === 'tools');
                       setActiveDrawersId(changeDetail.activeDrawerId);
+                      setDrawerLastInteraction({ type: 'open' });
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     }
                   },
