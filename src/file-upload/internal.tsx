@@ -21,6 +21,7 @@ import FileInput from './file-input';
 import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
 import { FormFieldError } from '../form-field/internal';
+import LiveRegion from '../internal/components/live-region';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -107,6 +108,8 @@ function InternalFileUpload(
         </FileInput>
       )}
 
+      {!validationResult.valid ? <LiveRegion>{validationResult.errorText}</LiveRegion> : null}
+
       {(constraintText || errorText) && (
         <div>
           {errorText && (
@@ -125,8 +128,19 @@ function InternalFileUpload(
         </div>
       )}
 
-      {/* TODO: different handling for multiple=false */}
-      {value.length > 0 ? (
+      {!multiple && value.length === 1 ? (
+        <div role="group" aria-label={value[0].name}>
+          <Token
+            dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
+            onDismiss={() => onFileRemove(0)}
+            errorText={fileErrors?.find(([fileWithError]) => fileWithError === value[0])?.[1]}
+          >
+            <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
+          </Token>
+        </div>
+      ) : null}
+
+      {(multiple && value.length > 0) || value.length > 1 ? (
         <TokenList
           alignment="vertical"
           items={value}

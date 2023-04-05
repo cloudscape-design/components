@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
@@ -18,26 +18,36 @@ export function useDropzoneVisible() {
   useEffect(() => {
     let dragTimer: null | ReturnType<typeof setTimeout> = null;
 
-    const onDragOver = (event: DragEvent) => {
+    const onDocumentDragOver = (event: DragEvent) => {
+      event.preventDefault();
+
       if (event.dataTransfer && event.dataTransfer.types && event.dataTransfer.types.indexOf('Files') !== -1) {
         setDropzoneVisible(true);
         dragTimer && clearTimeout(dragTimer);
       }
     };
 
-    const onDragLeave = () => {
+    const onDocumentDragLeave = (event: DragEvent) => {
+      event.preventDefault();
+
       dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
     };
 
-    document.addEventListener('dragover', onDragOver);
-    document.addEventListener('dragleave', onDragLeave);
-    document.addEventListener('drop', onDragLeave);
+    const onDocumentDrop = (event: DragEvent) => {
+      event.preventDefault();
+
+      dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
+    };
+
+    document.addEventListener('dragover', onDocumentDragOver, false);
+    document.addEventListener('dragleave', onDocumentDragLeave, false);
+    document.addEventListener('drop', onDocumentDrop, false);
 
     return () => {
       dragTimer && clearTimeout(dragTimer);
-      document.removeEventListener('dragover', onDragOver);
-      document.removeEventListener('dragleave', onDragLeave);
-      document.removeEventListener('drop', onDragLeave);
+      document.removeEventListener('dragover', onDocumentDragOver);
+      document.removeEventListener('dragleave', onDocumentDragLeave);
+      document.removeEventListener('drop', onDocumentDrop);
     };
   }, []);
 
@@ -45,15 +55,27 @@ export function useDropzoneVisible() {
 }
 
 export function Dropzone({ onChange, children }: DropzoneProps) {
+  const dropzoneRef = useRef<HTMLDivElement>(null);
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
+    event.stopPropagation();
     setDropzoneHovered(true);
+
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'copy';
+    }
   };
 
-  const onDragLeave = () => {
+  const onDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
     setDropzoneHovered(false);
+
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'none';
+    }
   };
 
   const onDrop = (event: React.DragEvent) => {
@@ -71,6 +93,7 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
 
   return (
     <div
+      ref={dropzoneRef}
       className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}

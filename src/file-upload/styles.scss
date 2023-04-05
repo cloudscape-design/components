@@ -27,7 +27,6 @@
   border-radius: awsui.$border-radius-dropzone;
   background-color: awsui.$color-board-placeholder-active;
   &-hovered {
-    cursor: copy;
     background-color: awsui.$color-board-placeholder-hover;
   }
 }
