@@ -168,9 +168,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *
    * * `activateEditLabel` (EditableColumnDefinition, Item) => string -
    *                      Specifies an alternative text for the edit button in editable cells.
-   * * `cancelEditLabel` (EditableColumnDefinition, Item) => string -
+   * * `cancelEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the cancel button in editable cells.
-   * * `submitEditLabel` (EditableColumnDefinition, Item) => string -
+   * * `submitEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
    */
   ariaLabels?: TableProps.AriaLabels<T>;

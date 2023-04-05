@@ -120,7 +120,7 @@ export function InlineEditor<ItemType>({
                 <SpaceBetween direction="horizontal" size="xxs">
                   {!currentEditLoading ? (
                     <Button
-                      ariaLabel={ariaLabels?.cancelEditLabel?.(column, item)}
+                      ariaLabel={ariaLabels?.cancelEditLabel?.(column)}
                       formAction="none"
                       iconName="close"
                       variant="inline-icon"
@@ -128,7 +128,7 @@ export function InlineEditor<ItemType>({
                     />
                   ) : null}
                   <Button
-                    ariaLabel={ariaLabels?.submitEditLabel?.(column, item)}
+                    ariaLabel={ariaLabels?.submitEditLabel?.(column)}
                     formAction="submit"
                     iconName="check"
                     variant="inline-icon"
