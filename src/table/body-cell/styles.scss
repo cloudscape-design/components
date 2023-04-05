@@ -26,7 +26,13 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   border-top: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-bottom: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
-  &:not(.body-cell-wrap) {
+
+  &-edit-button:focus {
+    outline: none;
+  }
+
+  &:not(.body-cell-wrap),
+  &:not(.body-cell-wrap) > .body-cell-edit-button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

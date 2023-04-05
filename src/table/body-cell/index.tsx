@@ -5,10 +5,8 @@ import styles from './styles.css.js';
 import React, { useRef } from 'react';
 import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
 import Icon from '../../icon/internal';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
-import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
@@ -41,7 +39,7 @@ function TableCellEditable<ItemType>({
   successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const editActivateRef = useRef<HTMLDivElement>(null);
   const focusVisible = useFocusVisible();
 
   const tdNativeAttributes = {
@@ -66,7 +64,6 @@ function TableCellEditable<ItemType>({
         successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
-      onClick={!isEditing ? onEditStart : undefined}
     >
       {isEditing ? (
         <InlineEditor
@@ -78,8 +75,25 @@ function TableCellEditable<ItemType>({
         />
       ) : (
         <>
-          {column.cell(item)}
-
+          <div
+            ref={editActivateRef}
+            className={styles['body-cell-edit-button']}
+            role="button"
+            tabIndex={0}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            onClick={onEditStart}
+            onKeyDown={event => {
+              if (event.key === ' ' || event.key === 'Enter') {
+                event.preventDefault();
+                onEditStart();
+              }
+            }}
+          >
+            {column.cell(item)}
+          </div>
+          <span className={styles['body-cell-editor']} aria-hidden="true">
+            <Icon name="edit" />
+          </span>
           {successfulEdit && (
             <span className={styles['body-cell-success']} aria-label="Edit successful" role="img">
               <Icon name="status-positive" variant="success" />
@@ -87,16 +101,6 @@ function TableCellEditable<ItemType>({
           )}
           <span aria-live="polite" aria-atomic="true">
             <ScreenreaderOnly>{successfulEdit ? 'Edit successful' : ''}</ScreenreaderOnly>
-          </span>
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __hideFocusOutline={true}
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column, item)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
           </span>
         </>
       )}
