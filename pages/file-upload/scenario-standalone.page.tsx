@@ -8,16 +8,16 @@ import { i18nStrings } from './shared';
 import { validateContractFiles } from './validations';
 
 export default function FileUploadScenarioStandalone() {
-  const ref = useRef<FileUploadProps.Ref>(null);
+  const contractsRef = useRef<FileUploadProps.Ref>(null);
   const [acceptMultiple, setAcceptMultiple] = useState(true);
   const formState = useContractFilesForm();
 
-  const validationErrors = validateContractFiles(formState.files);
-  const componentErrors = !validationErrors.valid ? validationErrors : formState.fileErrors;
+  const contractsValidationErrors = validateContractFiles(formState.files);
+  const contractsErrors = contractsValidationErrors ?? formState.fileErrors;
 
   const hasError = formState.status === 'error';
   useEffect(() => {
-    ref.current?.focus();
+    contractsRef.current?.focus();
   }, [hasError]);
 
   return (
@@ -38,22 +38,21 @@ export default function FileUploadScenarioStandalone() {
           description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
         >
           <FileUpload
-            ref={ref}
+            ref={contractsRef}
             multiple={acceptMultiple}
             limit={3}
             value={formState.files}
             onChange={event => {
               formState.onFilesChange(event.detail.value);
-              formState.onUploadFiles(validateContractFiles(event.detail.value).valid ? event.detail.value : []);
+              formState.onUploadFiles(!validateContractFiles(event.detail.value) ? event.detail.value : []);
             }}
-            isValueValid={validateContractFiles}
             accept="application/pdf, image/png, image/jpeg"
             showFileType={true}
             showFileSize={true}
             showFileLastModified={true}
             showFileThumbnail={true}
             i18nStrings={i18nStrings}
-            {...componentErrors}
+            {...contractsErrors}
             constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
           />
         </FormField>

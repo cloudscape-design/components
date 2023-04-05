@@ -21,7 +21,6 @@ import FileInput from './file-input';
 import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
 import { FormFieldError } from '../form-field/internal';
-import LiveRegion from '../internal/components/live-region';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 type InternalFileUploadProps = SomeRequired<
@@ -47,9 +46,8 @@ function InternalFileUpload(
     i18nStrings,
     __internalRootRef = null,
     constraintText,
-    errorText: explicitErrorText,
-    fileErrors: explicitFileErrors,
-    isValueValid,
+    errorText,
+    fileErrors,
     ...restProps
   }: InternalFileUploadProps,
   ref: ForwardedRef<ButtonProps.Ref>
@@ -68,7 +66,6 @@ function InternalFileUpload(
     const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
     fireNonCancelableEvent(onChange, {
       value: newValue,
-      valid: isValueValid?.(newValue)?.valid ?? true,
     });
   };
 
@@ -76,15 +73,10 @@ function InternalFileUpload(
     const newValue = value.filter((_, fileIndex) => fileIndex !== removeFileIndex);
     fireNonCancelableEvent(onChange, {
       value: newValue,
-      valid: isValueValid?.(newValue)?.valid ?? true,
     });
   };
 
   const isDropzoneVisible = useDropzoneVisible();
-
-  const validationResult = isValueValid?.(value) ?? { valid: true };
-  const errorText = explicitErrorText ?? (!validationResult.valid ? validationResult.errorText : null);
-  const fileErrors = explicitFileErrors ?? (!validationResult.valid ? validationResult.fileErrors : null);
 
   const errorId = useUniqueId('error-');
 
@@ -112,8 +104,6 @@ function InternalFileUpload(
         </FileInput>
       )}
 
-      {!validationResult.valid ? <LiveRegion>{validationResult.errorText}</LiveRegion> : null}
-
       {(constraintText || errorText) && (
         <div>
           {errorText && (
@@ -137,7 +127,7 @@ function InternalFileUpload(
           <Token
             dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
             onDismiss={() => onFileRemove(0)}
-            errorText={fileErrors?.find(([fileWithError]) => fileWithError === value[0])?.[1]}
+            errorText={fileErrors?.[0]}
           >
             <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
           </Token>
@@ -153,7 +143,7 @@ function InternalFileUpload(
             <Token
               dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
               onDismiss={() => onFileRemove(fileIndex)}
-              errorText={fileErrors?.find(([fileWithError]) => fileWithError === file)?.[1]}
+              errorText={fileErrors?.[fileIndex]}
             >
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>

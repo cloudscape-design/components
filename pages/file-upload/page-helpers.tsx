@@ -3,8 +3,8 @@
 
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { Box, FileUploadProps, Flashbar } from '~components';
-import { formatFileUploadError } from './error-helpers';
+import { Box, Flashbar } from '~components';
+import { FileUploadErrors, formatFileUploadError } from './error-helpers';
 
 export interface FormFieldState<Value> {
   value: Value;
@@ -13,7 +13,7 @@ export interface FormFieldState<Value> {
 }
 
 export interface FileUploadServer {
-  upload(files: File[], onFinished: (state: FileUploadProps.ValidationResult) => void): void;
+  upload(files: File[], onFinished: (state: FileUploadErrors) => void): void;
   cancel(): void;
 }
 
@@ -52,7 +52,7 @@ export function useContractFilesForm() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState<File[]>([]);
-  const [fileErrors, setFileErrors] = useState<null | FileUploadProps.ValidationResult>(null);
+  const [fileErrors, setFileErrors] = useState<null | FileUploadErrors>(null);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState<null | string>(null);
   const uploadTimeoutRef = useRef<null | ReturnType<typeof setTimeout>>(null);
@@ -74,7 +74,7 @@ export function useContractFilesForm() {
           setFileErrors(
             formatFileUploadError(
               [],
-              uploadingFiles.filter(isImage).map(file => [file, 'File was not accepted by server'])
+              uploadingFiles.map(file => (isImage(file) ? ['File was not accepted by server'] : []))
             )
           );
           setFormStatus('error');
@@ -113,7 +113,7 @@ export function useContractFilesForm() {
     onUploadFiles(files: File[]) {
       setUploadingFiles(files);
     },
-    onSubmitForm(filesError: null | FileUploadProps.ValidationResult, nameError: null | string) {
+    onSubmitForm(filesError: null | FileUploadErrors, nameError: null | string) {
       setFileErrors(filesError);
       setNameError(nameError);
       setFormSubmitted(!fileErrors && !nameError);

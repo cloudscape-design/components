@@ -1,20 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { FileUploadProps } from '~components';
-
-export function formatFileUploadError(
-  errors: string[],
-  fileErrors: [File, string][]
-): FileUploadProps.ValidationResult {
-  const formattedError = formatFieldError(errors, fileErrors);
-  const formattedFileErrors = formatFileErrors(fileErrors);
-  return formattedError
-    ? { valid: false, errorText: formattedError, fileErrors: formattedFileErrors }
-    : { valid: true };
+export interface FileUploadErrors {
+  errorText: null | string;
+  fileErrors: null | (null | string)[];
 }
 
-function formatFieldError(errors: string[], fileErrors: [File, string][]): null | string {
+export function formatFileUploadError(errors: string[], fileErrors: string[][]): null | FileUploadErrors {
+  const formattedError = formatFieldError(errors, fileErrors);
+  const formattedFileErrors = formatFileErrors(fileErrors);
+  return formattedError ? { errorText: formattedError, fileErrors: formattedFileErrors } : null;
+}
+
+function formatFieldError(errors: string[], fileErrors: string[][]): null | string {
   const filesWithErrors = new Set(fileErrors.map(([file]) => file)).size;
 
   const commonErrorText = errors.join(', ');
@@ -33,25 +31,7 @@ function formatFieldError(errors: string[], fileErrors: [File, string][]): null 
   return null;
 }
 
-function formatFileErrors(fileErrors: [File, string][]): [File, string][] | null {
-  if (fileErrors.length === 0) {
-    return null;
-  }
-
-  const byFile = fileErrors.reduce(
-    (map, [file, error]) => map.set(file, [...(map.get(file) ?? []), error]),
-    new Map<File, string[]>()
-  );
-
-  const formatted: [File, string][] = [...byFile.entries()].map(([file, errors]) => {
-    if (errors.length === 1) {
-      return [file, errors[0]];
-    }
-    if (errors.length === 2) {
-      return [file, `${errors[0]}, and 1 more error`];
-    }
-    return [file, `${errors[0]}, and ${errors.length - 1} more errors`];
-  });
-
-  return formatted;
+function formatFileErrors(fileErrors: string[][]): null | (null | string)[] {
+  const joined = fileErrors.map(errors => errors.join(', ') ?? null);
+  return joined.filter(Boolean).length > 0 ? joined : null;
 }
