@@ -4053,7 +4053,7 @@ The values for all configured preferences are present even if the user didn't ch
           Object {
             "name": "stickyColumns",
             "optional": true,
-            "type": "unknown",
+            "type": "CollectionPreferencesProps.StickyColumns",
           },
           Object {
             "name": "stripedRows",
@@ -4228,7 +4228,7 @@ It contains the following:
           Object {
             "name": "stickyColumns",
             "optional": true,
-            "type": "unknown",
+            "type": "CollectionPreferencesProps.StickyColumns",
           },
           Object {
             "name": "stripedRows",
@@ -11672,13 +11672,10 @@ to prevent the user from sorting before items are fully loaded.",
       "type": "boolean",
     },
     Object {
-      "description": "Specifies the number of first and/or last columns that should be sticky.   *
-If the available scrollable space is less than 148px, the feature is deactivated.
-
-Use it in conjunction with the sticky columns preference of the
-[collection preferences](/components/collection-preferences/) component.
-
-",
+      "description": "Specifies the number of first and/or last columns that should be sticky.
+  If the available scrollable space is less than 148px, the feature is deactivated.
+  Use it in conjunction with the sticky columns preference of the
+  [collection preferences](/components/collection-preferences/) component.",
       "inlineType": Object {
         "name": "TableProps.StickyColumns",
         "properties": Array [

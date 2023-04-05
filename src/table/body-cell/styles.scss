@@ -126,7 +126,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
         &.body-cell-freeze-last-right {
-          box-shadow: awsui.$shadow-sticky-column-end, 4px 0 0 0 awsui.$color-background-container-content;
+          box-shadow: awsui.$shadow-sticky-column-end, 8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
         }
       }

@@ -200,7 +200,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   visibleColumns?: ReadonlyArray<string>;
 
   /**
-   * Specifies the number of first and/or last columns that should be sticky.   *
+   * Specifies the number of first and/or last columns that should be sticky.
    *
    * If the available scrollable space is less than 148px, the feature is deactivated.
    *
