@@ -63,7 +63,7 @@ export default function FileUploadScenarioFormInstant() {
                   ref={contractsRef}
                   ariaRequired={true}
                   multiple={acceptMultiple}
-                  limit={3}
+                  tokenLimit={3}
                   value={formState.files}
                   onChange={event => {
                     formState.onFilesChange(event.detail.value);

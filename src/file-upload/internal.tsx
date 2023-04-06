@@ -38,7 +38,7 @@ function InternalFileUpload(
     multiple,
     onChange,
     value,
-    limit,
+    tokenLimit,
     showFileSize,
     showFileLastModified,
     showFileThumbnail,
@@ -155,7 +155,7 @@ function InternalFileUpload(
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>
           )}
-          limit={limit}
+          tokenLimit={tokenLimit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,
             limitShowMore: i18nStrings.limitShowMore,

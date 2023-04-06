@@ -43,7 +43,7 @@ export default function FileUploadScenarioStandalone() {
           <FileUpload
             ref={contractsRef}
             multiple={acceptMultiple}
-            limit={3}
+            tokenLimit={3}
             value={formState.files}
             onChange={event => {
               formState.onFilesChange(event.detail.value);

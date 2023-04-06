@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../file-upload/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
+import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import ButtonWrapper from '../button';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
@@ -35,19 +36,17 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
     );
   }
 
-  @usesDom
-  isDisabled(): boolean {
-    return this.findUploadButton().isDisabled();
+  /**
+   * Returns the token toggle button.
+   */
+  findTokenToggle(): ElementWrapper | null {
+    return this.findByClassName(tokenListSelectors.toggle);
   }
 }
 
 class FileTokenWrapper extends ComponentWrapper {
   findFileName(): ElementWrapper {
     return this.findByClassName(styles['file-option-name'])!;
-  }
-
-  findFileType(): null | ElementWrapper {
-    return this.findByClassName(styles['file-option-type']);
   }
 
   findFileSize(): null | ElementWrapper {

@@ -25,7 +25,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   showFileLastModified?: boolean;
   /**
-   * Show file's thumbnail in the token. Use for multiple files upload case only. Only supported for images.
+   * Show file's thumbnail in the token. Only supported for images.
    * Default: `false`.
    */
   showFileThumbnail?: boolean;
@@ -48,17 +48,17 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   /**
    * Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.
    */
-  limit?: number;
+  tokenLimit?: number;
   /**
-   * ...
+   * Constraint text that's displayed below the control. Use this to provide additional information about file size limit, etc.
    */
   constraintText?: React.ReactNode;
   /**
-   * ...
+   * Text that displays as a validation message.
    */
   errorText?: React.ReactNode;
   /**
-   * An array of file errors corresponding the `value` files.
+   * An array of file errors corresponding the files in the `value`.
    */
   fileErrors?: null | ReadonlyArray<null | string>;
   /**

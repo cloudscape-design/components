@@ -65,7 +65,7 @@ export default function FileUploadScenarioFormMixed() {
                   ref={contractsRef}
                   ariaRequired={true}
                   multiple={acceptMultiple}
-                  limit={3}
+                  tokenLimit={3}
                   value={formState.files}
                   onChange={event => formState.onFilesChange(event.detail.value)}
                   accept="application/pdf, image/png, image/jpeg"
