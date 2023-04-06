@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { generateUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
@@ -126,7 +126,7 @@ const ExpandableContainerHeader = ({
   onKeyDown,
 }: ExpandableContainerHeaderProps) => {
   const focusVisible = useFocusVisible();
-  const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
+  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const Wrapper =
     variant === 'container'
       ? ({ children }: { children: ReactNode }) => (
