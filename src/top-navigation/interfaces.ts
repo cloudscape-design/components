@@ -43,6 +43,8 @@ export interface TopNavigationProps extends BaseComponentProps {
    *
    * * `variant` ('primary-button' | 'link') - The visual appearance of the button. The default value is 'link'.
    * * `href` (string) - Specifies the `href` for a link styled as a button.
+   * * `target` (string) - Specifies where to open the linked URL (for example, to open in a new browser window or tab use `_blank`). This property only applies when an `href` is provided.
+   * * `rel` (string) - Adds a `rel` attribute to the link. By default, the component sets the `rel` attribute to "noopener noreferrer" when `target` is `"_blank"`. If the `rel` property is provided, it overrides the default behavior.
    * * `external` (boolean) - Marks the link as external by adding an icon after the text. When clicked, the link opens in a new tab.
    * * `externalIconAriaLabel` (string) - Adds an `aria-label` for the external icon.
    * * `onClick` (() => void) - Specifies the event handler called when the utility is clicked.
@@ -100,6 +102,8 @@ export namespace TopNavigationProps {
     variant?: 'primary-button' | 'link';
     onClick?: CancelableEventHandler;
     href?: string;
+    target?: string;
+    rel?: string;
     external?: boolean;
     externalIconAriaLabel?: string;
   }

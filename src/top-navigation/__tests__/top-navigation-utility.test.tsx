@@ -84,6 +84,62 @@ describe('TopNavigation Utility part', () => {
       }).findButtonLinkType()!;
       expect(buttonWrapper.findByClassName('test-svg')).toBeTruthy();
     });
+
+    it('target is undefined by default if external=false', () => {
+      const buttonWrapper = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA' },
+      }).findButtonLinkType()!;
+
+      expect(buttonWrapper.getElement()).not.toHaveAttribute('target');
+    });
+
+    it('target is set to "_blank" by default if external=true', () => {
+      const buttonWrapper = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', external: true },
+      }).findButtonLinkType()!;
+
+      expect(buttonWrapper.getElement()).toHaveAttribute('target', '_blank');
+    });
+
+    it.each([false, true])('target can be overridden for external=%s', external => {
+      const buttonWrapper = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', external, target: 'custom' },
+      }).findButtonLinkType()!;
+
+      expect(buttonWrapper.getElement()).toHaveAttribute('target', 'custom');
+    });
+
+    it('rel is set to "noopener noreferrer" by default if target is "_blank"', () => {
+      const buttonExternal = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', external: true },
+      }).findButtonLinkType()!;
+      const buttonCustomTarget = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', target: '_blank' },
+      }).findButtonLinkType()!;
+
+      expect(buttonExternal.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(buttonCustomTarget.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    it('rel undefined by default when target is not "_blank"', () => {
+      const buttonDefault = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA' },
+      }).findButtonLinkType()!;
+      const buttonCustomTarget = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', target: 'custom' },
+      }).findButtonLinkType()!;
+
+      expect(buttonDefault.getElement()).not.toHaveAttribute('rel');
+      expect(buttonCustomTarget.getElement()).not.toHaveAttribute('rel');
+    });
+
+    it.each([false, true])('rel can be overridden for external=%s', external => {
+      const buttonWrapper = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA', external, rel: 'custom' },
+      }).findButtonLinkType()!;
+
+      expect(buttonWrapper.getElement()).toHaveAttribute('rel', 'custom');
+    });
   });
 
   describe('Primary button', () => {
