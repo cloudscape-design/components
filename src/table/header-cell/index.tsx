@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import React from 'react';
 import InternalIcon from '../../icon/internal';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
@@ -54,7 +53,6 @@ export function TableHeaderCell<ItemType>({
   onResizeFinish,
   isEditable,
 }: TableHeaderCellProps<ItemType>) {
-  const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
   const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
@@ -94,10 +92,7 @@ export function TableHeaderCell<ItemType>({
     >
       <div
         className={clsx(styles['header-cell-content'], {
-          [styles['header-cell-fake-focus']]:
-            focusedComponent?.type === 'column' &&
-            focusedComponent.col === colIndex &&
-            focusVisible['data-awsui-focus-visible'],
+          [styles['header-cell-fake-focus']]: focusedComponent?.type === 'column' && focusedComponent.col === colIndex,
         })}
         aria-label={
           column.ariaLabel
@@ -113,7 +108,6 @@ export function TableHeaderCell<ItemType>({
               onKeyPress: handleKeyPress,
               tabIndex: tabIndex,
               role: 'button',
-              ...focusVisible,
               onClick: handleClick,
               onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
               onBlur: () => onFocusedComponentChange?.(null),
@@ -138,11 +132,7 @@ export function TableHeaderCell<ItemType>({
         <>
           <Resizer
             tabIndex={tabIndex}
-            showFocusRing={
-              focusedComponent?.type === 'resizer' &&
-              focusedComponent.col === colIndex &&
-              focusVisible['data-awsui-focus-visible']
-            }
+            showFocusRing={focusedComponent?.type === 'resizer' && focusedComponent.col === colIndex}
             onDragMove={newWidth => updateColumn(colIndex, newWidth)}
             onFinish={onResizeFinish}
             ariaLabelledby={headerId}

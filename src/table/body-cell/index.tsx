@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import React, { useRef } from 'react';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Button from '../../button/internal';
 import { ButtonProps } from '../../button/interfaces';
@@ -38,10 +37,7 @@ function TableCellEditable<ItemType>({
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
-  const focusVisible = useFocusVisible();
-
   const tdNativeAttributes = {
-    ...(focusVisible as Record<string, string>),
     'data-inline-editing-active': isEditing.toString(),
   };
 

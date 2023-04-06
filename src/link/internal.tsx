@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
 import styles from './styles.css.js';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -44,7 +43,6 @@ const InternalLink = React.forwardRef(
     const specialStyles = ['top-navigation', 'link', 'recovery'];
     const hasSpecialStyle = specialStyles.indexOf(variant) > -1;
 
-    const focusVisible = useFocusVisible();
     const baseProps = getBaseProps(props);
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
@@ -78,7 +76,6 @@ const InternalLink = React.forwardRef(
     const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
 
     const sharedProps = {
-      ...focusVisible,
       ...baseProps,
       // https://github.com/microsoft/TypeScript/issues/36659
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
@@ -59,7 +58,6 @@ const ExpandableDefaultHeader = ({
   onKeyDown,
   variant,
 }: ExpandableDefaultHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div
       id={id}
@@ -72,7 +70,6 @@ const ExpandableDefaultHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
-      {...focusVisible}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
@@ -91,7 +88,6 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
 }: ExpandableNavigationHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div id={id} className={className} onClick={onClick}>
       <button
@@ -100,7 +96,6 @@ const ExpandableNavigationHeader = ({
         aria-label={ariaLabel}
         aria-controls={ariaControls}
         aria-expanded={expanded}
-        {...focusVisible}
       >
         {icon}
       </button>
@@ -125,7 +120,6 @@ const ExpandableContainerHeader = ({
   onKeyUp,
   onKeyDown,
 }: ExpandableContainerHeaderProps) => {
-  const focusVisible = useFocusVisible();
   const screenreaderContentId = useUniqueId('expandable-section-header-content-');
   const isContainer = variant === 'container';
 
@@ -146,7 +140,7 @@ const ExpandableContainerHeader = ({
       };
 
   return (
-    <div id={id} className={className} onClick={onClick} {...focusVisible}>
+    <div id={id} className={className} onClick={onClick}>
       <Wrapper>
         <span
           className={styles['header-container-button']}

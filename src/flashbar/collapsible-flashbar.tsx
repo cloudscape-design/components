@@ -8,7 +8,6 @@ import { FlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
@@ -65,7 +64,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     },
   });
 
-  const isFocusVisible = useFocusVisible();
   const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
@@ -338,7 +336,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               aria-expanded={isFlashbarStackExpanded}
               aria-label={notificationBarAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
-              {...isFocusVisible}
             >
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>

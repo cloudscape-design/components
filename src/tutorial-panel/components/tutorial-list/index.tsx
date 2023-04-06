@@ -15,7 +15,6 @@ import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
 import { CSSTransition } from 'react-transition-group';
 import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalIcon from '../../../icon/internal';
-import useFocusVisible from '../../../internal/hooks/focus-visible/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
 import LiveRegion from '../../../internal/components/live-region/index.js';
@@ -37,7 +36,6 @@ export default function TutorialList({
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
-  const focusVisible = useFocusVisible();
   const isRefresh = useVisualRefresh();
 
   return (
@@ -54,7 +52,6 @@ export default function TutorialList({
         <InternalSpaceBetween size="l">
           {downloadUrl && (
             <a
-              {...focusVisible}
               href={downloadUrl}
               target="_blank"
               rel="noopener noreferrer"

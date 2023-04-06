@@ -8,7 +8,6 @@ import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
 import VisualContext from '../internal/components/visual-context';
 import Portal from '../internal/components/portal';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 import { TopNavigationProps } from './interfaces';
@@ -52,7 +51,6 @@ export default function InternalTopNavigation({
     setOverflowMenuOpen(overflowMenuOpen => !overflowMenuOpen);
   };
 
-  const focusVisible = useFocusVisible();
   const menuTriggerVisible = !isSearchExpanded && responsiveState.hideUtilities;
 
   useEffect(() => {
@@ -93,7 +91,7 @@ export default function InternalTopNavigation({
         <div className={styles['padding-box']}>
           {showIdentity && (
             <div className={clsx(styles.identity, !identity.logo && styles['no-logo'])}>
-              <a {...focusVisible} className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
+              <a className={styles['identity-link']} href={identity.href} onClick={onIdentityClick}>
                 {identity.logo && (
                   <img
                     role="img"
