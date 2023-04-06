@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback } from 'react';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
+import { createIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { TableProps } from './interfaces';
 interface CellWidths {
   start: number[];
@@ -38,6 +38,11 @@ const getPadding = (element: HTMLElement | null, side: 'Left' | 'Right') =>
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
+const useIntersectionObserver = createIntersectionObserver({
+  threshold: 1,
+  rootMargin: '-2px', // -2px to ensure interesction in all table variants
+});
+
 export const useStickyState = ({
   tableRefObject,
   wrapperRefObject,
@@ -48,11 +53,8 @@ export const useStickyState = ({
   const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
   const [isStuckToTheRight, setIsStuckToTheRight] = useState(false);
 
-  const intersectionObserverOptions = { threshold: [0, 1], rootMargin: '-2px' };
-  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } =
-    useIntersectionObserver(intersectionObserverOptions);
-  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } =
-    useIntersectionObserver(intersectionObserverOptions);
+  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } = useIntersectionObserver();
+  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } = useIntersectionObserver();
   useEffect(() => {
     setIsStuckToTheLeft(!leftSentinelIntersecting);
     setIsStuckToTheRight(!rightSentinelIntersecting);
@@ -71,7 +73,12 @@ export const useStickyState = ({
     setIsStuckToTheRight(right);
   }, [wrapperRefObject, tableRefObject]);
 
-  return { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef };
+  return {
+    isStuckToTheLeft,
+    isStuckToTheRight,
+    leftSentinelRef,
+    rightSentinelRef,
+  };
 };
 
 export const useCellWidths = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {

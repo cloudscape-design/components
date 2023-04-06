@@ -7,12 +7,11 @@ import { RefCallback, useCallback, useRef, useState } from 'react';
  * A hook that uses an Intersection Observer on the target element ref
  * and detects if the element is intersecting with its parent.
  */
-export function useIntersectionObserver<T extends HTMLElement>(options?: IntersectionObserverInit) {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
-
-  const ref = useCallback<RefCallback<T>>(
-    targetElement => {
+export function createIntersectionObserver(options?: IntersectionObserverInit) {
+  return function useIntersectionObserver<T extends HTMLElement>() {
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const [isIntersecting, setIsIntersecting] = useState(false);
+    const ref = useCallback<RefCallback<T>>(targetElement => {
       if (typeof IntersectionObserver === 'undefined') {
         // Do nothing in environments like JSDOM
         return;
@@ -28,9 +27,8 @@ export function useIntersectionObserver<T extends HTMLElement>(options?: Interse
         observerRef.current = new IntersectionObserver(([entry]) => setIsIntersecting(entry.isIntersecting), options);
         observerRef.current.observe(targetElement);
       }
-    },
-    [options]
-  );
+    }, []);
 
-  return { ref, isIntersecting };
+    return { ref, isIntersecting };
+  };
 }
