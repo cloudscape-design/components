@@ -64,18 +64,15 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           </InternalButton>
         </span>
       );
-    }
-    // Link
-    else {
-      const anchorTarget = definition.target ?? (definition.external ? '_blank' : undefined);
-      const anchorRel = definition.rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
+    } else {
+      // Link
       return (
         <span className={styles[`offset-right-${offsetRight}`]}>
           <InternalLink
             variant="top-navigation"
             href={definition.href}
-            target={anchorTarget}
-            rel={anchorRel}
+            target={definition.target}
+            rel={definition.rel}
             external={definition.external}
             onFollow={definition.onClick}
             ariaLabel={ariaLabel}
