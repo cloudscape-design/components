@@ -50,14 +50,11 @@ export const useStickyState = ({
   tableRefObject: React.RefObject<HTMLTableElement>;
   wrapperRefObject: React.RefObject<HTMLDivElement>;
 }) => {
-  const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
-  const [isStuckToTheRight, setIsStuckToTheRight] = useState(false);
-
+  const [stickyState, setStickyState] = useState({ left: false, right: false });
   const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } = useIntersectionObserver();
   const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } = useIntersectionObserver();
   useEffect(() => {
-    setIsStuckToTheLeft(!leftSentinelIntersecting);
-    setIsStuckToTheRight(!rightSentinelIntersecting);
+    setStickyState({ left: !leftSentinelIntersecting, right: !rightSentinelIntersecting });
   }, [leftSentinelIntersecting, rightSentinelIntersecting]);
 
   useEffect(() => {
@@ -69,13 +66,11 @@ export const useStickyState = ({
     // Check the scrolling position of the table wrapper to set the initial "stuck" state
     const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - getPadding(table, 'Right');
     const left = wrapper.scrollLeft > getPadding(table, 'Left');
-    setIsStuckToTheLeft(left);
-    setIsStuckToTheRight(right);
+    setStickyState({ left, right });
   }, [wrapperRefObject, tableRefObject]);
 
   return {
-    isStuckToTheLeft,
-    isStuckToTheRight,
+    stickyState,
     leftSentinelRef,
     rightSentinelRef,
   };
@@ -126,10 +121,11 @@ export const useStickyColumns = ({
 
   const isVisualRefresh = useVisualRefresh();
 
-  const { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef } = useStickyState({
+  const { stickyState, leftSentinelRef, rightSentinelRef } = useStickyState({
     wrapperRefObject,
     tableRefObject,
   });
+  const { left: isStuckToTheLeft, right: isStuckToTheRight } = stickyState;
   const { cellWidths, updateCellWidths } = useCellWidths(tableCellRefs);
 
   const { start = 0, end = 0 } = stickyColumns || {};
@@ -221,12 +217,11 @@ export const useStickyColumns = ({
     ]
   );
 
-  const stickyState = { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef };
   const wrapperScrollPadding = { left: startStickyColumnsWidth, right: endStickyColumnsWidth };
   return {
     tableCellRefs,
     getStickyColumn,
-    stickyState,
+    stickyState: { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef },
     shouldDisableStickyColumns: shouldDisable,
     wrapperScrollPadding,
     updateCellWidths,
