@@ -381,7 +381,6 @@ const InternalTable = forwardRef(
                         {selectionType !== undefined && (
                           <TableTdElement
                             className={clsx(styles['selection-control'])}
-                            isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
@@ -458,7 +457,6 @@ const InternalTable = forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
-                              isVisualRefresh={isVisualRefresh}
                               isStickyLeft={isStickyLeft}
                               isStickyRight={isStickyRight}
                               isLastStickyLeft={isLastStickyLeft}

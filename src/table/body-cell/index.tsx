@@ -10,6 +10,7 @@ import { ButtonProps } from '../../button/interfaces';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -35,14 +36,13 @@ const TableCellEditable = React.forwardRef(function TableCellEditable<ItemType>(
     onEditEnd,
     submitEdit,
     ariaLabels,
-    isVisualRefresh,
     ...rest
   }: TableBodyCellProps<ItemType>,
   ref: React.Ref<HTMLTableCellElement>
 ) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
-
+  const isVisualRefresh = useVisualRefresh();
   const tdNativeAttributes = {
     ...(focusVisible as Record<string, string>),
     'data-inline-editing-active': isEditing.toString(),

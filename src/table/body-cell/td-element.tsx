@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
@@ -20,7 +21,6 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  isVisualRefresh?: boolean;
   isStickyLeft?: boolean;
   isStickyRight?: boolean;
   isLastStickyLeft?: boolean;
@@ -45,7 +45,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onClick,
       isEvenRow,
       stripedRows,
-      isVisualRefresh,
       hasSelection,
       hasFooter,
       isStickyLeft,
@@ -57,6 +56,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
+    const isVisualRefresh = useVisualRefresh();
+    console.log('Rendering');
     return (
       <td
         style={style}
