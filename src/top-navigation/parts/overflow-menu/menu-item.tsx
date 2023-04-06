@@ -45,9 +45,9 @@ const LinkItem = forwardRef(
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
 
     const anchorProps = {
-      rel,
+      href,
       target: anchorTarget,
-      href: anchorRel,
+      rel: anchorRel,
       onClick(event: React.MouseEvent) {
         if (isPlainLeftClick(event)) {
           onFollow?.(event);
@@ -230,6 +230,8 @@ function utilityComponentFactory(
           startIcon={startIcon}
           href={utility.href}
           external={utility.external}
+          target={utility.target}
+          rel={utility.rel}
           testId={`__${index}`}
           onFollow={handleClick}
         >
