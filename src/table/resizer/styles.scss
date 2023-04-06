@@ -27,21 +27,9 @@ $active-separator-width: 2px;
   .resize-active & {
     pointer-events: none;
   }
-  &-left {
-    width: $handle-width;
-    left: calc(-1 * #{$handle-width} / 2 + #{$active-separator-width});
-    &:hover,
-    &-active {
-      &::before {
-        content: '';
-        position: absolute;
-        bottom: 25%;
-        height: 50%;
-        left: calc(#{$handle-width} / 2 - #{$active-separator-width});
-        box-sizing: border-box;
-        border-left: $active-separator-width solid awsui.$color-border-divider-active;
-      }
-    }
+  th:last-child > & {
+    width: calc(#{$handle-width} / 2);
+    right: 0;
   }
   th:not(:last-child) > & {
     &:hover,
@@ -56,10 +44,6 @@ $active-separator-width: 2px;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
       }
     }
-  }
-  th:last-child > &:not(.resizer-left) {
-    width: calc(#{$handle-width} / 2);
-    right: 0;
   }
   &.has-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
@@ -77,7 +61,7 @@ $active-separator-width: 2px;
   width: 0;
   top: 0;
   bottom: 0;
-  z-index: 12; // Higher than sticky-columns
+  z-index: 12; // Higher than sticky columns
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     display: block;
