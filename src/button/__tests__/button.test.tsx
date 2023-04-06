@@ -68,6 +68,7 @@ describe('Button Component', () => {
       expect(wrapper.isDisabled()).toEqual(true);
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      // In this case, aria-disabled would be redundant, so we don't set it
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
     });
 
@@ -290,19 +291,23 @@ describe('Button Component', () => {
   });
 
   describe('Loading property', () => {
-    test("should disable the button when in 'loading' status", () => {
+    test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();
       const wrapper = renderButton({ onClick: onClickSpy, loading: true });
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
-      expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
       act(() => wrapper.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
 
     test('gives loading precendence over disabled', () => {
       const wrapper = renderButton({ loading: true, disabled: true });
+      // Loading indicator is shown even when the button is also disabled.
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      // However, setting `disabled` does mean that the button can no longer be focused.
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
     });
 
     test('adds a tab index -1 to the link button', () => {
