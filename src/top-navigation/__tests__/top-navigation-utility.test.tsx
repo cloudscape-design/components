@@ -84,6 +84,15 @@ describe('TopNavigation Utility part', () => {
       }).findButtonLinkType()!;
       expect(buttonWrapper.findByClassName('test-svg')).toBeTruthy();
     });
+
+    it('target and rel can be set', () => {
+      const buttonWrapper = renderUtility({
+        definition: { type: 'button', href: '#', ariaLabel: 'ARIA label', target: 'target', rel: 'rel' },
+      }).findButtonLinkType()!;
+
+      expect(buttonWrapper.getElement()).toHaveAttribute('target', 'target');
+      expect(buttonWrapper.getElement()).toHaveAttribute('rel', 'rel');
+    });
   });
 
   describe('Primary button', () => {

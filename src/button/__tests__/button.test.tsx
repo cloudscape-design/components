@@ -5,6 +5,7 @@ import { act, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
+import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -364,25 +365,18 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveAttribute('href', 'https://amazon.com');
     });
 
-    test('can add a target attribute if it is a link', () => {
-      let wrapper = renderButton({ target: '_blank' });
-      expect(wrapper.getElement()).not.toHaveAttribute('target');
-      wrapper = renderButton({ href: 'https://amazon.com', target: '_blank' });
-      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
-      wrapper = renderButton({ href: 'https://amazon.com' });
-      expect(wrapper.getElement()).not.toHaveAttribute('target');
+    test.each(buttonTargetExpectations)('"target" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      expectation
+        ? expect(wrapper.getElement()).toHaveAttribute('target', expectation)
+        : expect(wrapper.getElement()).not.toHaveAttribute('target');
     });
 
-    test('when target is blank, adds respective rel attribute', () => {
-      let wrapper = renderButton({ href: 'https://amazon.com', target: '_blank' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
-      wrapper = renderButton({ href: 'https://amazon.com', target: '_self' });
-      expect(wrapper.getElement()).not.toHaveAttribute('rel');
-    });
-
-    test('does not set the default "rel" attribute for "target=_blank" if a "rel" prop is provided', () => {
-      const wrapper = renderButton({ href: 'https://amazon.com', target: '_blank', rel: 'nofollow' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'nofollow');
+    test.each(buttonRelExpectations)('"rel" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      expectation
+        ? expect(wrapper.getElement()).toHaveAttribute('rel', expectation)
+        : expect(wrapper.getElement()).not.toHaveAttribute('rel');
     });
 
     test('can add a download attribute if it is a link', () => {

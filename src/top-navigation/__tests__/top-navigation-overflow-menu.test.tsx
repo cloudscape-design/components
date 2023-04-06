@@ -2,6 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
 import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu';
+import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
+import { render } from '@testing-library/react';
+import React from 'react';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 const buttonUtility: TopNavigationProps.ButtonUtility = {
   type: 'button',
@@ -71,5 +76,25 @@ describe('TopNavigation Overflow menu', () => {
         { id: '3__2', text: 'Option 2' },
       ],
     });
+  });
+});
+
+describe('UtilityMenuItem', () => {
+  test.each(linkTargetExpectations)('"target" property %s', (props, expectation) => {
+    const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
+    const wrapper = createWrapper(container);
+
+    expectation
+      ? expect(wrapper.find('a')!.getElement()).toHaveAttribute('target', expectation)
+      : expect(wrapper.find('a')!.getElement()).not.toHaveAttribute('target');
+  });
+
+  test.each(linkRelExpectations)('"rel" property %s', (props, expectation) => {
+    const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
+    const wrapper = createWrapper(container);
+
+    expectation
+      ? expect(wrapper.find('a')!.getElement()).toHaveAttribute('rel', expectation)
+      : expect(wrapper.find('a')!.getElement()).not.toHaveAttribute('rel');
   });
 });
