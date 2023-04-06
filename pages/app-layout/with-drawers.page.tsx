@@ -11,6 +11,7 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
+import appLayoutLabels from './utils/labels';
 import { Breadcrumbs, Containers } from './utils/content-blocks';
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -60,6 +61,7 @@ export default function WithDrawers() {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
