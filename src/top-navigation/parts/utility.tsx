@@ -74,7 +74,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             target={definition.target}
             rel={definition.rel}
             external={definition.external}
-            onFollow={definition.onClick}
+            onFollow={event => definition.onClick?.({ ...event, detail: {} })}
             ariaLabel={ariaLabel}
           >
             {hasIcon && (
