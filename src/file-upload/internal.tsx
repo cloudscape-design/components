@@ -79,6 +79,7 @@ function InternalFileUpload(
 
   const errorId = useUniqueId('error-');
   const fileErrorId = useUniqueId('file-error-');
+  const constraintTextId = useUniqueId('constraint-text-');
 
   return (
     <InternalSpaceBetween
@@ -99,6 +100,7 @@ function InternalFileUpload(
           value={value}
           {...restProps}
           errorId={errorId}
+          constraintTextId={constraintTextId}
         >
           {i18nStrings.uploadButtonText(multiple)}
         </FileInput>
@@ -113,7 +115,7 @@ function InternalFileUpload(
           )}
           {constraintText && (
             <div
-              id="TODO: constraint id"
+              id={constraintTextId}
               className={clsx(formFieldStyles.constraint, errorText && formFieldStyles['constraint-has-error'])}
             >
               {constraintText}

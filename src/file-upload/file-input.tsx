@@ -19,12 +19,23 @@ interface FileInputProps extends FormFieldValidationControlProps {
   onChange: (files: File[]) => void;
   children: React.ReactNode;
   errorId: string;
+  constraintTextId: string;
 }
 
 export default React.forwardRef(FileInput);
 
 function FileInput(
-  { accept, ariaRequired, multiple, value, onChange, children, errorId, ...restProps }: FileInputProps,
+  {
+    accept,
+    ariaRequired,
+    multiple,
+    value,
+    onChange,
+    children,
+    errorId,
+    constraintTextId,
+    ...restProps
+  }: FileInputProps,
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +52,7 @@ function FileInput(
 
   const nativeAttributes: Record<string, any> = {
     'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
-    'aria-describedby': [formFieldContext.ariaDescribedby, errorId].join(' '),
+    'aria-describedby': [formFieldContext.ariaDescribedby, errorId, constraintTextId].join(' '),
   };
   if (formFieldContext.invalid) {
     nativeAttributes['aria-invalid'] = true;
