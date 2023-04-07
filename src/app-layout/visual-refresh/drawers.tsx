@@ -96,6 +96,7 @@ function ActiveDrawer() {
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
+        [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsOpen,
       })}
       style={{
@@ -105,7 +106,10 @@ function ActiveDrawer() {
       <div className={clsx(styles['drawer-close-button'])}>
         <InternalButton
           ariaLabel={computedAriaLabels.closeButton}
-          className={isToolsOpen ? testutilStyles['tools-close'] : undefined}
+          className={clsx({
+            [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+            [testutilStyles['tools-close']]: isToolsOpen,
+          })}
           formAction="none"
           iconName={isMobile ? 'close' : 'angle-right'}
           onClick={() => (activeDrawerId ? handleDrawersClick(activeDrawerId ?? null) : handleToolsClick(false))}
@@ -188,7 +192,7 @@ function DesktopTriggers() {
         {drawers.items.map((item: DrawersProps.Drawer) => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(styles['drawers-trigger'])}
+            className={clsx(styles['drawers-trigger'], testutilStyles['drawer-toggle'])}
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
             key={item.id}
@@ -263,6 +267,7 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
+          className={testutilStyles['drawer-toggle']}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}
