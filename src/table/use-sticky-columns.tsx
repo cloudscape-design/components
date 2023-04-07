@@ -38,37 +38,23 @@ const getPadding = (element: HTMLElement | null, side: 'Left' | 'Right') =>
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
-const useIntersectionObserver = createIntersectionObserver({
+const useLeftIntersectionObserver = createIntersectionObserver({
   threshold: 1,
-  rootMargin: '-2px', // -2px to ensure interesction in all table variants
+  rootMargin: '10000px -2px 10000px 10000px', // -2px to ensure interesction in all table variants
 });
 
-export const useStickyState = ({
-  tableRefObject,
-  wrapperRefObject,
-}: {
-  tableRefObject: React.RefObject<HTMLTableElement>;
-  wrapperRefObject: React.RefObject<HTMLDivElement>;
-}) => {
+const useRightIntersectionObserver = createIntersectionObserver({
+  threshold: 1,
+  rootMargin: '10000px 10000px 10000px -2px', // -2px to ensure interesction in all table variants
+});
+
+export const useStickyState = () => {
   const [stickyState, setStickyState] = useState({ left: false, right: false });
-  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } = useIntersectionObserver();
-  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } = useIntersectionObserver();
+  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } = useLeftIntersectionObserver();
+  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } = useRightIntersectionObserver();
   useEffect(() => {
     setStickyState({ left: !leftSentinelIntersecting, right: !rightSentinelIntersecting });
   }, [leftSentinelIntersecting, rightSentinelIntersecting]);
-
-  useEffect(() => {
-    const wrapper = wrapperRefObject.current;
-    const table = tableRefObject.current;
-    if (!wrapper) {
-      return;
-    }
-    // Check the scrolling position of the table wrapper to set the initial "stuck" state
-    const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - getPadding(table, 'Right');
-    const left = wrapper.scrollLeft > getPadding(table, 'Left');
-    setStickyState({ left, right });
-  }, [wrapperRefObject, tableRefObject]);
-
   return {
     stickyState,
     leftSentinelRef,
@@ -108,11 +94,9 @@ export const useStickyColumns = ({
   stickyColumns,
   tableRefObject,
   visibleColumnsLength,
-  wrapperRefObject,
 }: StickyColumnParams) => {
   const noStickyColumns = !stickyColumns || (stickyColumns.start === 0 && stickyColumns.end === 0);
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
-
   // Compute table paddings
   const table = tableRefObject.current;
   const tableLeftPadding = getPadding(table, 'Left');
@@ -121,10 +105,7 @@ export const useStickyColumns = ({
 
   const isVisualRefresh = useVisualRefresh();
 
-  const { stickyState, leftSentinelRef, rightSentinelRef } = useStickyState({
-    wrapperRefObject,
-    tableRefObject,
-  });
+  const { stickyState, leftSentinelRef, rightSentinelRef } = useStickyState();
   const { left: isStuckToTheLeft, right: isStuckToTheRight } = stickyState;
   const { cellWidths, updateCellWidths } = useCellWidths(tableCellRefs);
 
