@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { generateUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
@@ -23,6 +23,7 @@ interface ExpandableDefaultHeaderProps {
   onKeyDown: KeyboardEventHandler;
   onClick: MouseEventHandler;
   icon: JSX.Element;
+  variant: ExpandableSectionProps.Variant;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
@@ -56,6 +57,7 @@ const ExpandableDefaultHeader = ({
   icon,
   onKeyUp,
   onKeyDown,
+  variant,
 }: ExpandableDefaultHeaderProps) => {
   const focusVisible = useFocusVisible();
   return (
@@ -72,7 +74,7 @@ const ExpandableDefaultHeader = ({
       aria-expanded={expanded}
       {...focusVisible}
     >
-      <div className={styles['icon-container']}>{icon}</div>
+      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
     </div>
   );
@@ -118,20 +120,32 @@ const ExpandableContainerHeader = ({
   icon,
   headerDescription,
   headerCounter,
+  variant,
   headingTagOverride,
   onKeyUp,
   onKeyDown,
 }: ExpandableContainerHeaderProps) => {
   const focusVisible = useFocusVisible();
-  const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
+  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
+  const Wrapper =
+    variant === 'container'
+      ? ({ children }: { children: ReactNode }) => (
+          <InternalHeader
+            variant="h2"
+            description={headerDescription}
+            counter={headerCounter}
+            headingTagOverride={headingTagOverride}
+          >
+            {children}
+          </InternalHeader>
+        )
+      : ({ children }: { children: ReactNode }) => {
+          const Tag = headingTagOverride || 'div';
+          return <Tag className={styles['header-wrapper']}>{children}</Tag>;
+        };
   return (
     <div id={id} className={className} onClick={onClick} {...focusVisible}>
-      <InternalHeader
-        variant={'h2'}
-        description={headerDescription}
-        counter={headerCounter}
-        headingTagOverride={headingTagOverride}
-      >
+      <Wrapper>
         <span
           className={styles['header-container-button']}
           role="button"
@@ -144,10 +158,10 @@ const ExpandableContainerHeader = ({
           aria-controls={ariaControls}
           aria-expanded={expanded}
         >
-          <span className={styles['icon-container']}>{icon}</span>
+          <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
           <span>{children}</span>
         </span>
-      </InternalHeader>
+      </Wrapper>
       <ScreenreaderOnly id={screenreaderContentId}>
         {children} {headerCounter} {headerDescription}
       </ScreenreaderOnly>
@@ -186,6 +200,7 @@ export const ExpandableSectionHeader = ({
     ariaControls: ariaControls,
     ariaLabel: ariaLabel,
     onClick: onClick,
+    variant,
   };
 
   const triggerClassName = clsx(styles.trigger, styles[`trigger-${variant}`], expanded && styles['trigger-expanded']);
@@ -201,7 +216,7 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (variant === 'container' && headerText) {
+  if (headerText) {
     return (
       <ExpandableContainerHeader
         className={clsx(className, triggerClassName, expanded && styles.expanded)}

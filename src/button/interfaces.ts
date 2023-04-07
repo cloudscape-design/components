@@ -12,7 +12,7 @@ export interface ButtonProps extends BaseComponentProps {
   disabled?: boolean;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
-   * It prevents users from clicking the button.
+   * It prevents users from clicking the button, but it can still be focused.
    */
   loading?: boolean;
   /**

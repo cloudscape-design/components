@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
 
 import TabTrap from '../tab-trap/index';
@@ -14,7 +14,23 @@ export interface FocusLockProps {
   children: React.ReactNode;
 }
 
-export default function FocusLock({ className, disabled, autoFocus, restoreFocus, children }: FocusLockProps) {
+export interface FocusLockRef {
+  /**
+   * Focuses the first element in the component.
+   */
+  focusFirst(): void;
+}
+
+function FocusLock(
+  { className, disabled, autoFocus, restoreFocus, children }: FocusLockProps,
+  ref: React.Ref<FocusLockRef>
+) {
+  useImperativeHandle(ref, () => {
+    return {
+      focusFirst,
+    };
+  });
+
   const returnFocusToRef = useRef<HTMLOrSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -71,3 +87,5 @@ export default function FocusLock({ className, disabled, autoFocus, restoreFocus
     </>
   );
 }
+
+export default React.forwardRef(FocusLock);

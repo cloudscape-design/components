@@ -2769,7 +2769,7 @@ If you set both \`iconUrl\` and \`iconSvg\`, \`iconSvg\` will take precedence.
     Object {
       "defaultValue": "false",
       "description": "Renders the button as being in a loading state. It takes precedence over the \`disabled\` if both are set to \`true\`.
-It prevents users from clicking the button.",
+It prevents users from clicking the button, but it can still be focused.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
@@ -5575,8 +5575,9 @@ Behaves similar to the Header component counter.",
       "type": "string",
     },
     Object {
-      "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-h2. Use with container variant.",
+      "description": "Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
+Use with container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
+works with the \`headerText\` slot (not with the deprecated \`header\`), and not with the navigation variant.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.HeadingTag",
         "type": "union",
@@ -13430,6 +13431,8 @@ The following properties are supported across all utility types:
 
 * \`variant\` ('primary-button' | 'link') - The visual appearance of the button. The default value is 'link'.
 * \`href\` (string) - Specifies the \`href\` for a link styled as a button.
+* \`target\` (string) - Specifies where to open the linked URL (for example, to open in a new browser window or tab use \`_blank\`). This property only applies when an \`href\` is provided.
+* \`rel\` (string) - Adds a \`rel\` attribute to the link. By default, the component sets the \`rel\` attribute to \\"noopener noreferrer\\" when \`target\` is \`\\"_blank\\"\`. If the \`rel\` property is provided, it overrides the default behavior.
 * \`external\` (boolean) - Marks the link as external by adding an icon after the text. When clicked, the link opens in a new tab.
 * \`externalIconAriaLabel\` (string) - Adds an \`aria-label\` for the external icon.
 * \`onClick\` (() => void) - Specifies the event handler called when the utility is clicked.

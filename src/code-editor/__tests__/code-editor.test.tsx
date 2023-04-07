@@ -17,6 +17,7 @@ import resizableStyles from '../../../lib/components/code-editor/resizable-box/s
 import { warnOnce } from '../../../lib/components/internal/logging';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import '../../__a11y__/to-validate-a11y';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -466,5 +467,10 @@ describe('Code editor component', () => {
   it('should not log a warning when onEditorContentResize is passed', () => {
     render(<CodeEditor {...defaultProps} editorContentHeight={240} onEditorContentResize={() => {}} />);
     expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('a11y', async () => {
+    const { wrapper } = renderCodeEditor();
+    await expect(wrapper.getElement()).toValidateA11y();
   });
 });

@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import Link, { LinkProps } from '../../../lib/components/link';
 import styles from '../../../lib/components/link/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { linkRelExpectations, linkTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
 function renderLink(props: LinkProps = {}) {
   const renderResult = render(<Link {...props} />);
@@ -43,43 +44,25 @@ describe('Link component', () => {
     });
   });
 
-  describe('"_target" property', () => {
-    test('sets the "rel" attribute to "noopener noreferrer" if target is _blank', () => {
-      const wrapper = renderLink({ href: '#', target: '_blank' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
-    });
-
-    test('does not set the "rel" attribute if another "rel" is provided', () => {
-      const wrapper = renderLink({ href: '#', target: '_blank', rel: 'nofollow' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'nofollow');
-    });
-  });
-
   describe('"external" property', () => {
     test('renders an icon', () => {
       const wrapper = renderLink({ external: true });
       expect(createWrapper(wrapper.getElement()).findIcon()).not.toBeNull();
     });
+  });
 
-    test('sets the "rel" attribute to "noopener noreferrer" on anchors', () => {
-      const wrapper = renderLink({ href: '#', external: true });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
-    });
+  test.each(linkTargetExpectations)('"target" property %s', (props, expectation) => {
+    const wrapper = renderLink({ ...props });
+    expectation
+      ? expect(wrapper.getElement()).toHaveAttribute('target', expectation)
+      : expect(wrapper.getElement()).not.toHaveAttribute('target');
+  });
 
-    test('does not set the "rel" attribute if another "rel" is provided', () => {
-      const wrapper = renderLink({ href: '#', external: true, rel: 'nofollow' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'nofollow');
-    });
-
-    test('sets the "target" attribute to "_blank" if type is anchor and target is not provided', () => {
-      const wrapper = renderLink({ href: '#', external: true });
-      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
-    });
-
-    test('does not override "target" if one is provided', () => {
-      const wrapper = renderLink({ href: '#', external: true, target: 'iframe1' });
-      expect(wrapper.getElement()).toHaveAttribute('target', 'iframe1');
-    });
+  test.each(linkRelExpectations)('"rel" property %s', (props, expectation) => {
+    const wrapper = renderLink({ ...props });
+    expectation
+      ? expect(wrapper.getElement()).toHaveAttribute('rel', expectation)
+      : expect(wrapper.getElement()).not.toHaveAttribute('rel');
   });
 
   describe('"href" property', () => {
