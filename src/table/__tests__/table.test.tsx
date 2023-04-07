@@ -145,6 +145,23 @@ test('should render table header with icons to indicate editable columns', () =>
   });
 });
 
+test('should render table with disabled editable cell', () => {
+  const columnDefinitions: TableProps.ColumnDefinition<Item>[] = [
+    {
+      header: 'id',
+      cell: (item: Item) => item.id,
+      editConfig: { editingCell: item => item.id, disabled: item => item.id === defaultItems[0].id },
+    },
+    { header: 'name', cell: (item: Item) => item.name, editConfig: { editingCell: item => item.name } },
+  ];
+  const { wrapper } = renderTable(<Table columnDefinitions={columnDefinitions} items={defaultItems} />);
+  const disabledBodyCell = wrapper.findBodyCell(1, 1)!;
+  expect(disabledBodyCell.findButton(`[type="button"]`)?.getElement()).toBeUndefined();
+
+  const editableBodyCell = wrapper.findBodyCell(2, 1)!;
+  expect(editableBodyCell.findButton(`[type="button"]`)?.getElement()).toBeInTheDocument();
+});
+
 test('should cancel edit using ref imperative method', async () => {
   const ref = React.createRef<any>();
   const { wrapper } = renderTable(

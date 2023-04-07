@@ -367,7 +367,8 @@ const InternalTable = React.forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
-                          const isEditable = !!column.editConfig && !currentEditLoading;
+                          const isEditable =
+                            !!column.editConfig && !currentEditLoading && !column.editConfig?.disabled?.(item);
                           return (
                             <TableBodyCell
                               key={getColumnKey(column, colIndex)}

@@ -325,6 +325,12 @@ export namespace TableProps {
     validation?: (item: T, value: Optional<V>) => Optional<string>;
 
     /**
+     * A function that allows you to disable editing of the cell
+     * @param item - The item that is being edited.
+     */
+    disabled?: (item: T) => boolean;
+
+    /**
      * Determines the display of a cell's content when inline edit is active.
      */
     editingCell(item: T, ctx: TableProps.CellContext<any>): React.ReactNode;

@@ -60,6 +60,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
       ariaLabel: 'Domain name',
       editIconAriaLabel: 'editable',
       errorIconAriaLabel: 'Domain Name Error',
+      disabled: item => item.DomainName !== initialItems[4].DomainName,
       validation(item, value: string) {
         const currentValue = value ?? item.DomainName;
         if (!DOMAIN_NAME.test(currentValue)) {
