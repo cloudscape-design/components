@@ -58,7 +58,8 @@ $active-separator-width: 2px;
     padding-right: awsui.$space-xs;
   }
 
-  &:not(:last-child):before {
+  &:not(:last-child):before,
+  &.is-visual-refresh:last-child:before {
     $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
     content: '';
     position: absolute;
