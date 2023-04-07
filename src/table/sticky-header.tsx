@@ -8,7 +8,6 @@ import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
-import { CellWidths } from './internal';
 export interface StickyHeaderRef {
   scrollToTop(): void;
   scrollToRow(node: null | HTMLElement): void;
@@ -25,8 +24,6 @@ interface StickyHeaderProps {
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   contentDensity?: 'comfortable' | 'compact';
   tableHasHeader?: boolean;
-  stickyColumns?: TableProps.StickyColumns;
-  cellWidths?: CellWidths;
 }
 
 export default forwardRef(StickyHeader);
