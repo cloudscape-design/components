@@ -60,8 +60,6 @@ export default function () {
   const [splitPanelEnabled, setSplitPanelEnabled] = useState(urlParams.splitPanelEnabled ?? true);
   const [drawersEnabled, setDrawersEnabled] = useState(true);
   const [toolsEnabled, setToolsEnabled] = useState(true);
-  const [splitSize, setSplitSize] = useState(100);
-  const [splitSize2, setSplitSize2] = useState(400);
 
   const [activeDrawerId, setActiveDrawerId] = useState('security-info');
 
@@ -95,11 +93,6 @@ export default function () {
               </span>
             ),
           },
-          resizable: true,
-          size: splitSize2,
-          onDrawerResize: (event: NonCancelableCustomEvent<{ size: number }>) => {
-            setSplitSize2(event.detail.size);
-          },
           ariaLabels: {
             content: 'Ask AWS',
             closeButton: 'Close Ask AWS',
@@ -108,6 +101,7 @@ export default function () {
 
           id: 'contact',
           content: <HelpPanel header={<h2>Ask AWS</h2>}></HelpPanel>,
+          resizable: true,
         },
       ],
       activeDrawerId,
@@ -132,8 +126,6 @@ export default function () {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
         }}
-        splitPanelSize={splitSize}
-        onSplitPanelResize={event => setSplitSize(event.detail.size)}
         splitPanel={
           splitPanelEnabled && (
             <SplitPanel
