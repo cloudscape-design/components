@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState, createRef, useEffect, useCallback } from 'react';
+import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { createIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { TableProps } from './interfaces';
@@ -138,10 +138,10 @@ export const useStickyColumns = ({
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
   useEffect(() => {
     // Effect to check the conditions to set the "shouldDisable" sticky columns state
-    const hasNotEnoughSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding > (containerWidth ?? Number.MAX_SAFE_INTEGER);
+    const hasEnoughScrollableSpace =
+      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding < (containerWidth ?? 0);
 
-    const shouldDisable = noStickyColumns || !isWrapperScrollable || hasNotEnoughSpace;
+    const shouldDisable = noStickyColumns || !isWrapperScrollable || !hasEnoughScrollableSpace;
     setShouldDisable(shouldDisable);
   }, [
     containerWidth,
@@ -162,33 +162,22 @@ export const useStickyColumns = ({
     );
   }, [visibleColumnsLength, hasSelection]);
 
-  const getStickyColumn = useCallback(
-    (colIndex: number): GetStickyColumn => {
-      if (shouldDisable) {
-        return {
-          isStickyLeft: false,
-          isStickyRight: false,
-          isLastStickyLeft: false,
-          isLastStickyRight: false,
-          stickyStyles: {},
-        };
-      }
-
-      const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
-      const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
-      const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
-      const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
-
-      // Sticky styles
+  const getStickyStyles = useCallback(
+    (colIndex: number, isStickyLeft: boolean, isStickyRight: boolean) => {
       let paddingStyle = {};
       const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+      if (!stickySide) {
+        return {};
+      }
+
       const isFirstColumn = colIndex === 0;
       if (isFirstColumn && isVisualRefresh && !hasSelection) {
         if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
           paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
         }
       }
-      const stickyStyles = {
+
+      return {
         [stickySide]: `${
           stickySide === 'right'
             ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
@@ -196,6 +185,30 @@ export const useStickyColumns = ({
         }px`,
         ...paddingStyle,
       };
+    },
+    [cellWidths, hasSelection, isStuckToTheLeft, isVisualRefresh, tableLeftPadding]
+  );
+
+  const getStickyColumn = React.useCallback(
+    (colIndex: number): GetStickyColumn => {
+      const disabledStickyColumn = {
+        isStickyLeft: false,
+        isStickyRight: false,
+        isLastStickyLeft: false,
+        isLastStickyRight: false,
+        stickyStyles: {},
+      };
+
+      if (shouldDisable) {
+        return disabledStickyColumn;
+      }
+      const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
+      const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+      const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
+      const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
+
+      const stickyStyles = getStickyStyles(colIndex, isStickyLeft, isStickyRight);
+
       return {
         isStickyLeft,
         isStickyRight,
@@ -204,20 +217,13 @@ export const useStickyColumns = ({
         stickyStyles,
       };
     },
-    [
-      cellWidths,
-      hasSelection,
-      isStuckToTheLeft,
-      isVisualRefresh,
-      shouldDisable,
-      stickyColumns?.end,
-      stickyColumns?.start,
-      tableLeftPadding,
-      visibleColumnsLength,
-    ]
+    [getStickyStyles, shouldDisable, stickyColumns?.end, stickyColumns?.start, visibleColumnsLength]
   );
 
-  const wrapperScrollPadding = { left: startStickyColumnsWidth, right: endStickyColumnsWidth };
+  const wrapperScrollPadding = useMemo(() => {
+    return { left: startStickyColumnsWidth, right: endStickyColumnsWidth };
+  }, [startStickyColumnsWidth, endStickyColumnsWidth]);
+
   return {
     tableCellRefs,
     getStickyColumn,
