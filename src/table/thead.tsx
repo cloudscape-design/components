@@ -13,7 +13,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { CellWidths } from './internal';
+import { CellOffsets } from './internal';
 import { GetStickyColumnProperties } from './use-sticky-columns';
 
 export type InteractiveComponent =
@@ -45,7 +45,7 @@ export interface TheadProps {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
-  cellWidths?: CellWidths;
+  cellOffsets?: CellOffsets;
   getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
   shouldDisableStickyColumns: boolean;
 }
@@ -69,7 +69,7 @@ const Thead = React.forwardRef(
       singleSelectionHeaderAriaLabel,
       stripedRows,
       stickyColumns,
-      cellWidths,
+      cellOffsets,
       sticky = false,
       hidden = false,
       stuck = false,
@@ -111,7 +111,7 @@ const Thead = React.forwardRef(
                 hidden && headerCellStyles['header-cell-hidden'],
                 !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellWidths?.start[0] }}
+              style={{ left: cellOffsets?.start[0] }}
               scope="col"
             >
               <SelectionControl
@@ -133,7 +133,7 @@ const Thead = React.forwardRef(
                 hidden && headerCellStyles['header-cell-hidden'],
                 !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellWidths?.start[0] }}
+              style={{ left: cellOffsets?.start[0] }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>

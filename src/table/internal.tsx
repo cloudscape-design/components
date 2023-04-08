@@ -40,7 +40,7 @@ import { IntersectionObserverProvider } from './intersection-observer-context';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
-export interface CellWidths {
+export interface CellOffsets {
   start: number[];
   end: number[];
 }
@@ -202,8 +202,8 @@ const InternalTable = forwardRef(
       getStickyColumnProperties,
       shouldDisableStickyColumns,
       wrapperScrollPadding,
-      updateCellWidths,
-      cellWidths,
+      updateCellOffsets,
+      cellOffsets,
     } = useStickyColumns(stickyColumnsParams);
 
     const isStuckToTheLeft = false;
@@ -229,7 +229,7 @@ const InternalTable = forwardRef(
         const widthsChanged = widthsDetail.some((width, index) => columnDefinitions[index].width !== width);
         if (widthsChanged) {
           fireNonCancelableEvent(onColumnWidthsChange, { widths: widthsDetail });
-          updateCellWidths();
+          updateCellOffsets();
         }
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
@@ -238,7 +238,7 @@ const InternalTable = forwardRef(
       stickyColumns,
       isStuckToTheRight,
       isStuckToTheLeft,
-      cellWidths,
+      cellOffsets,
       shouldDisableStickyColumns,
     };
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
@@ -412,7 +412,7 @@ const InternalTable = forwardRef(
                               isStuckToTheRight={isStuckToTheRight}
                               style={
                                 !shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0
-                                  ? { left: cellWidths.start[0] }
+                                  ? { left: cellOffsets.start[0] }
                                   : {}
                               }
                             >

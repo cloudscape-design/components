@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
-interface CellWidths {
+import { CellOffsets } from './internal';
+interface CellOffsets {
   start: number[];
   end: number[];
 }
@@ -33,10 +34,11 @@ export interface GetStickyColumnProperties {
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
-export const useCellWidths = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {
-  const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
+export const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {
+  // This hook calculates the cumulative offsets of the cells in each column of the table, based on the widths of their siblings
 
-  const updateCellWidths = useCallback(() => {
+  const [cellOffsets, setCellOffsets] = useState<CellOffsets>({ start: [], end: [] });
+  const updateCellOffsets = useCallback(() => {
     // Calculate widths of all previous siblings of each table cell in the `tableCellRefs` array
     let startWidthsArray = tableCellRefs
       .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
@@ -54,15 +56,14 @@ export const useCellWidths = (tableCellRefs: Array<React.RefObject<HTMLTableCell
       .map((elem, index) => endWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
       .reverse();
 
-    setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
+    setCellOffsets({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
   }, [tableCellRefs]);
 
-  // Call `updateCellWidths` after layout changes are applied
   useLayoutEffect(() => {
-    updateCellWidths();
-  }, [updateCellWidths]);
+    updateCellOffsets();
+  }, [updateCellOffsets]);
 
-  return { cellWidths, updateCellWidths };
+  return { cellOffsets, updateCellOffsets };
 };
 
 export const useStickyColumns = ({
@@ -78,7 +79,7 @@ export const useStickyColumns = ({
 
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
-  const { cellWidths, updateCellWidths } = useCellWidths(tableCellRefs);
+  const { cellOffsets, updateCellOffsets } = useCellOffsets(tableCellRefs);
 
   // Compute left table padding
   const table = tableRefObject.current;
@@ -89,9 +90,9 @@ export const useStickyColumns = ({
   const lastLeftStickyColumnIndex = start + (hasSelection ? 1 : 0);
   const lasRightStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
 
-  // Get the width of the start and end sticky columns using the `cellWidths` state, or use 0 if it's not available
-  const startStickyColumnsWidth = cellWidths?.start[lastLeftStickyColumnIndex] ?? 0;
-  const endStickyColumnsWidth = cellWidths?.end[lasRightStickyColumnIndex] ?? 0;
+  // Get the width of the start and end sticky columns using the `cellOffsets` state, or use 0 if it's not available
+  const startStickyColumnsWidth = cellOffsets?.start[lastLeftStickyColumnIndex] ?? 0;
+  const endStickyColumnsWidth = cellOffsets?.end[lasRightStickyColumnIndex] ?? 0;
 
   // Calculate the sum of all sticky columns' widths
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
@@ -132,17 +133,17 @@ export const useStickyColumns = ({
         return {};
       }
 
-      // Determine the offset of the sticky column using the `cellWidths` state object
+      // Determine the offset of the sticky column using the `cellOffsets` state object
       const stickyColumnOffset =
         stickySide === 'right'
-          ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
-          : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)];
+          ? cellOffsets?.end[colIndex + (hasSelection ? 1 : 0)]
+          : cellOffsets?.start[colIndex + (hasSelection ? 1 : 0)];
 
       return {
         [stickySide]: `${stickyColumnOffset}px`,
       };
     },
-    [cellWidths, hasSelection]
+    [cellOffsets, hasSelection]
   );
   const getStickyColumnProperties = React.useCallback(
     (colIndex: number): GetStickyColumnProperties => {
@@ -189,7 +190,7 @@ export const useStickyColumns = ({
     getStickyColumnProperties,
     shouldDisableStickyColumns: shouldDisable,
     wrapperScrollPadding,
-    updateCellWidths,
-    cellWidths,
+    updateCellOffsets,
+    cellOffsets,
   };
 };
