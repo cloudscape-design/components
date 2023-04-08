@@ -145,12 +145,12 @@ export default () => {
               preferences={preferences}
               stickyColumnsPreference={{
                 startColumns: {
-                  title: 'Stick first visible column(s)',
+                  title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'First visible column', value: 1 },
-                    { label: 'First two visible columns', value: 2 },
+                    { label: 'First column', value: 1 },
+                    { label: 'First two columns', value: 2 },
                   ],
                 },
                 endColumns: {
@@ -158,7 +158,7 @@ export default () => {
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'Last visible column', value: 1 },
+                    { label: 'Last column', value: 1 },
                   ],
                 },
               }}
@@ -181,12 +181,12 @@ export default () => {
               preferences={preferences}
               stickyColumnsPreference={{
                 startColumns: {
-                  title: 'Stick first visible column(s)',
+                  title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'First visible column', value: 1 },
-                    { label: 'First two visible columns', value: 2 },
+                    { label: 'First column', value: 1 },
+                    { label: 'First two columns', value: 2 },
                   ],
                 },
                 endColumns: {
@@ -194,7 +194,7 @@ export default () => {
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'Last visible column', value: 1 },
+                    { label: 'Last column', value: 1 },
                   ],
                 },
               }}
@@ -219,12 +219,12 @@ export default () => {
               preferences={preferences}
               stickyColumnsPreference={{
                 startColumns: {
-                  title: 'Stick first visible column(s)',
+                  title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'First visible column', value: 1 },
-                    { label: 'First two visible columns', value: 2 },
+                    { label: 'First column', value: 1 },
+                    { label: 'First two columns', value: 2 },
                   ],
                 },
                 endColumns: {
@@ -232,7 +232,7 @@ export default () => {
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
                     { label: 'None', value: 0 },
-                    { label: 'Last visible column', value: 1 },
+                    { label: 'Last column', value: 1 },
                   ],
                 },
               }}
