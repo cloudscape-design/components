@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { createIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { TableProps } from './interfaces';
 interface CellWidths {
   start: number[];
@@ -24,7 +22,7 @@ interface StickyColumnParams {
   wrapperRefObject: React.RefObject<HTMLDivElement>;
 }
 
-export interface GetStickyColumn {
+export interface GetStickyColumnProperties {
   isStickyLeft: boolean;
   isStickyRight: boolean;
   isLastStickyLeft: boolean;
@@ -32,54 +30,34 @@ export interface GetStickyColumn {
   stickyStyles: StickyStyles;
 }
 
-const getPadding = (element: HTMLElement | null, side: 'Left' | 'Right') =>
-  element ? Number(getComputedStyle(element)[`padding${side}`].slice(0, -2)) : 0;
-
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 const MINIMUM_SCROLLABLE_SPACE = 148;
-
-const useLeftIntersectionObserver = createIntersectionObserver({
-  threshold: 1,
-  rootMargin: '10000px -2px 10000px 10000px', // -2px to ensure interesction in all table variants
-});
-
-const useRightIntersectionObserver = createIntersectionObserver({
-  threshold: 1,
-  rootMargin: '10000px 10000px 10000px -2px', // -2px to ensure interesction in all table variants
-});
-
-export const useStickyState = () => {
-  const [stickyState, setStickyState] = useState({ left: false, right: false });
-  const { ref: leftSentinelRef, isIntersecting: leftSentinelIntersecting } = useLeftIntersectionObserver();
-  const { ref: rightSentinelRef, isIntersecting: rightSentinelIntersecting } = useRightIntersectionObserver();
-  useEffect(() => {
-    setStickyState({ left: !leftSentinelIntersecting, right: !rightSentinelIntersecting });
-  }, [leftSentinelIntersecting, rightSentinelIntersecting]);
-  return {
-    stickyState,
-    leftSentinelRef,
-    rightSentinelRef,
-  };
-};
 
 export const useCellWidths = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {
   const [cellWidths, setCellWidths] = useState<CellWidths>({ start: [], end: [] });
 
   const updateCellWidths = useCallback(() => {
+    // Calculate widths of all previous siblings of each table cell in the `tableCellRefs` array
     let startWidthsArray = tableCellRefs
       .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
       .filter(x => x);
+    // Calculate cumulative widths of previous siblings to get the total offset of each of the cells
     startWidthsArray = startWidthsArray.map((elem, index) =>
       startWidthsArray.slice(0, index + 1).reduce((a, b) => a + b)
     );
+
+    // Calculate widths of all next siblings of each table cell in the `tableCellRefs` array
     let endWidthsArray = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
     endWidthsArray = endWidthsArray.filter(x => x).reverse();
+    // Calculate cumulative widths of next siblings to get the the total offset of each of the cells
     endWidthsArray = endWidthsArray
       .map((elem, index) => endWidthsArray.slice(0, index + 1).reduce((a, b) => a + b))
       .reverse();
+
     setCellWidths({ start: [0, ...startWidthsArray], end: [...endWidthsArray, 0] });
   }, [tableCellRefs]);
 
+  // Call `updateCellWidths` after layout changes are applied
   useLayoutEffect(() => {
     updateCellWidths();
   }, [updateCellWidths]);
@@ -95,33 +73,35 @@ export const useStickyColumns = ({
   tableRefObject,
   visibleColumnsLength,
 }: StickyColumnParams) => {
+  // Check if there are any sticky columns
   const noStickyColumns = !stickyColumns || (stickyColumns.start === 0 && stickyColumns.end === 0);
+
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
-  // Compute table paddings
-  const table = tableRefObject.current;
-  const tableLeftPadding = getPadding(table, 'Left');
-
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
-
-  const isVisualRefresh = useVisualRefresh();
-
-  const { stickyState, leftSentinelRef, rightSentinelRef } = useStickyState();
-  const { left: isStuckToTheLeft, right: isStuckToTheRight } = stickyState;
   const { cellWidths, updateCellWidths } = useCellWidths(tableCellRefs);
 
+  // Compute left table padding
+  const table = tableRefObject.current;
+  const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
+
   const { start = 0, end = 0 } = stickyColumns || {};
+  // Calculate the indexex of the last left and right sticky columns, taking into account the selection column
   const lastLeftStickyColumnIndex = start + (hasSelection ? 1 : 0);
   const lasRightStickyColumnIndex = visibleColumnsLength - 1 - end + (hasSelection ? 1 : 0);
+
+  // Get the width of the start and end sticky columns using the `cellWidths` state, or use 0 if it's not available
   const startStickyColumnsWidth = cellWidths?.start[lastLeftStickyColumnIndex] ?? 0;
   const endStickyColumnsWidth = cellWidths?.end[lasRightStickyColumnIndex] ?? 0;
 
   // Calculate the sum of all sticky columns' widths
   const totalStickySpace = startStickyColumnsWidth + endStickyColumnsWidth;
+
   useEffect(() => {
-    // Effect to check the conditions to set the "shouldDisable" sticky columns state
+    // Check if there is enough scrollable space for sticky columns to be enabled
     const hasEnoughScrollableSpace =
       totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding < (containerWidth ?? 0);
 
+    // Determine if sticky columns should be disabled based on the conditions
     const shouldDisable = noStickyColumns || !isWrapperScrollable || !hasEnoughScrollableSpace;
     setShouldDisable(shouldDisable);
   }, [
@@ -135,7 +115,7 @@ export const useStickyColumns = ({
   ]);
 
   useEffect(() => {
-    // Add and remove table cell refs
+    // Create new refs for the visible columns and selection column, if present
     setTableCellRefs(tableCellRefs =>
       [...new Array(visibleColumnsLength + (hasSelection ? 1 : 0))].map(
         (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
@@ -145,33 +125,27 @@ export const useStickyColumns = ({
 
   const getStickyStyles = useCallback(
     (colIndex: number, isStickyLeft: boolean, isStickyRight: boolean) => {
-      let paddingStyle = {};
+      // Determine which side to apply sticky styles to
       const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+
       if (!stickySide) {
         return {};
       }
 
-      const isFirstColumn = colIndex === 0;
-      if (isFirstColumn && isVisualRefresh && !hasSelection) {
-        if (stickySide === 'left' && isStuckToTheLeft && tableLeftPadding) {
-          paddingStyle = { paddingLeft: `${tableLeftPadding}px` };
-        }
-      }
+      // Determine the offset of the sticky column using the `cellWidths` state object
+      const stickyColumnOffset =
+        stickySide === 'right'
+          ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
+          : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)];
 
       return {
-        [stickySide]: `${
-          stickySide === 'right'
-            ? cellWidths?.end[colIndex + (hasSelection ? 1 : 0)]
-            : cellWidths?.start[colIndex + (hasSelection ? 1 : 0)]
-        }px`,
-        ...paddingStyle,
+        [stickySide]: `${stickyColumnOffset}px`,
       };
     },
-    [cellWidths, hasSelection, isStuckToTheLeft, isVisualRefresh, tableLeftPadding]
+    [cellWidths, hasSelection]
   );
-
-  const getStickyColumn = React.useCallback(
-    (colIndex: number): GetStickyColumn => {
+  const getStickyColumnProperties = React.useCallback(
+    (colIndex: number): GetStickyColumnProperties => {
       const disabledStickyColumn = {
         isStickyLeft: false,
         isStickyRight: false,
@@ -183,11 +157,16 @@ export const useStickyColumns = ({
       if (shouldDisable) {
         return disabledStickyColumn;
       }
+
+      // Determine if the column is sticky on the left or right side
       const isStickyLeft = colIndex + 1 <= (stickyColumns?.start ?? 0);
       const isStickyRight = colIndex + 1 > visibleColumnsLength - (stickyColumns?.end ?? 0);
+
+      // Determine if the column is the last left or right sticky column
       const isLastStickyLeft = colIndex + 1 === stickyColumns?.start;
       const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.end ?? 0);
 
+      // Get the sticky styles
       const stickyStyles = getStickyStyles(colIndex, isStickyLeft, isStickyRight);
 
       return {
@@ -207,8 +186,7 @@ export const useStickyColumns = ({
 
   return {
     tableCellRefs,
-    getStickyColumn,
-    stickyState: { isStuckToTheLeft, isStuckToTheRight, leftSentinelRef, rightSentinelRef },
+    getStickyColumnProperties,
     shouldDisableStickyColumns: shouldDisable,
     wrapperScrollPadding,
     updateCellWidths,

@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { CellWidths } from './internal';
-import { GetStickyColumn } from './use-sticky-columns';
+import { GetStickyColumnProperties } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -46,7 +46,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
   cellWidths?: CellWidths;
-  getStickyColumn: (colIndex: number) => GetStickyColumn;
+  getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
   shouldDisableStickyColumns: boolean;
 }
 
@@ -75,7 +75,7 @@ const Thead = React.forwardRef(
       stuck = false,
       focusedComponent,
       onFocusedComponentChange,
-      getStickyColumn,
+      getStickyColumnProperties,
       isStuckToTheRight,
       isStuckToTheLeft,
       shouldDisableStickyColumns,
@@ -141,7 +141,7 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const { stickyStyles } = getStickyColumn(colIndex);
+            const { stickyStyles } = getStickyColumnProperties(colIndex);
 
             let widthOverride;
             if (resizableColumns) {
@@ -182,7 +182,7 @@ const Thead = React.forwardRef(
                 isEditable={!!column.editConfig}
                 isStuckToTheRight={isStuckToTheRight}
                 isStuckToTheLeft={isStuckToTheLeft}
-                getStickyColumn={getStickyColumn}
+                getStickyColumnProperties={getStickyColumnProperties}
               />
             );
           })}

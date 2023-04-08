@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { GetStickyColumn } from '../use-sticky-columns';
+import { GetStickyColumnProperties } from '../use-sticky-columns';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -33,7 +33,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  getStickyColumn: (colIndex: number) => GetStickyColumn;
+  getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
   isStuckToTheRight?: boolean;
   isStuckToTheLeft?: boolean;
 }
@@ -62,7 +62,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     isEditable,
     isStuckToTheLeft,
     isStuckToTheRight,
-    getStickyColumn,
+    getStickyColumnProperties,
   } = props;
   const focusVisible = useFocusVisible();
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -86,7 +86,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
   };
   const headerId = useUniqueId('table-header-');
   // Sticky columns
-  const { isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } = getStickyColumn(colIndex);
+  const { isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties(colIndex);
   return (
     <th
       className={clsx(className, {

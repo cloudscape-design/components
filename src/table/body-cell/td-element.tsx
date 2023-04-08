@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
+import { useIntersectionObserver } from '../intersection-observer-context';
 
 export interface TableTdElementProps {
   className?: string;
@@ -51,12 +52,34 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isStickyRight,
       isLastStickyLeft,
       isLastStickyRight,
-      isStuckToTheRight,
-      isStuckToTheLeft,
+      //isStuckToTheRight,
+      // isStuckToTheLeft,
     },
     ref
   ) => {
     const isVisualRefresh = useVisualRefresh();
+
+    const [isStuck, setIsStuck] = React.useState(false);
+
+    const childCallback = useCallback(
+      entry => {
+        setIsStuck(!entry.isIntersecting);
+      },
+      [setIsStuck]
+    );
+
+    const { registerChildCallback, unregisterChildCallback } = useIntersectionObserver();
+
+    useEffect(() => {
+      if (isLastStickyLeft) {
+        console.log('isStickyLeft');
+        registerChildCallback(childCallback);
+      }
+      return () => {
+        unregisterChildCallback(childCallback);
+      };
+    }, [registerChildCallback, unregisterChildCallback, childCallback, isLastStickyLeft]);
+
     console.log('Rendering');
     return (
       <td
@@ -76,8 +99,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
-          isStickyLeft && isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
-          isStickyRight && isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
+          isStuck && styles['body-cell-freeze-last-left'],
+          isStickyRight && isLastStickyRight && styles['body-cell-freeze-last-right']
         )}
         onClick={onClick}
         ref={ref}
