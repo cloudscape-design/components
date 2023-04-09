@@ -16,7 +16,7 @@ interface ResizerProps {
   ariaLabelledby?: string;
   minWidth?: number;
   tabIndex?: number;
-  resizeDirection?: 'right' | 'left';
+
   showFocusRing?: boolean;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -35,7 +35,6 @@ export function Resizer({
   showFocusRing,
   onFocus,
   onBlur,
-  resizeDirection = 'right',
 }: ResizerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [headerCell, setHeaderCell] = useState<HTMLElement>();
@@ -58,31 +57,24 @@ export function Resizer({
 
     const updateTrackerPosition = (newOffset: number) => {
       const { left: scrollParentLeft } = tableElement.getBoundingClientRect();
-      const { left: headerCellLeft } = headerCell.getBoundingClientRect();
       tracker.style.top = headerCell.getBoundingClientRect().height + 'px';
       // minus one pixel to offset the cell border
-      tracker.style.left =
-        resizeDirection === 'left'
-          ? headerCellLeft - scrollParentLeft - 1 + 'px'
-          : newOffset - scrollParentLeft - 1 + 'px';
+      tracker.style.left = newOffset - scrollParentLeft - 1 + 'px';
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      const { left: cellLeft, right: cellRight, width } = headerCell.getBoundingClientRect();
+      const { right, width } = headerCell.getBoundingClientRect();
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
-      const cellSide = resizeDirection === 'right' ? cellRight : cellLeft;
-      const updatedPosition =
-        resizeDirection === 'right' ? cellSide + updatedWidth - width : cellSide - updatedWidth - width;
-      updateTrackerPosition(updatedPosition);
-      setHeaderCellWidth(updatedWidth);
+      updateTrackerPosition(right + updatedWidth - width);
+      setHeaderCellWidth(newWidth);
       // callbacks must be the last calls in the handler, because they may cause an extra update
       onDragStable(newWidth);
     };
 
     const resizeColumn = (offset: number) => {
       if (offset > leftEdge) {
-        const { left: cellLeft, right: cellRight } = headerCell.getBoundingClientRect();
-        const newWidth = resizeDirection === 'right' ? offset - cellLeft : cellRight - offset;
+        const cellLeft = headerCell.getBoundingClientRect().left;
+        const newWidth = offset - cellLeft;
         // callbacks must be the last calls in the handler, because they may cause an extra update
         updateColumnWidth(newWidth);
       }
@@ -117,18 +109,14 @@ export function Resizer({
       }
       // update width
       if (event.keyCode === KeyCode.left) {
-        const growValue = resizeDirection === 'right' ? -10 : 10;
-        updateColumnWidth(headerCell.getBoundingClientRect().width + growValue);
+        updateColumnWidth(headerCell.getBoundingClientRect().width - 10);
       }
       if (event.keyCode === KeyCode.right) {
-        const growValue = resizeDirection === 'right' ? 10 : -10;
-        updateColumnWidth(headerCell.getBoundingClientRect().width + growValue);
+        updateColumnWidth(headerCell.getBoundingClientRect().width + 10);
       }
     };
 
-    updateTrackerPosition(
-      resizeDirection === 'right' ? headerCell.getBoundingClientRect().right : headerCell.getBoundingClientRect().left
-    );
+    updateTrackerPosition(headerCell.getBoundingClientRect().right);
     document.body.classList.add(styles['resize-active']);
     document.body.classList.remove(styles['resize-active-with-focus']);
     if (isDragging) {
@@ -147,14 +135,13 @@ export function Resizer({
       document.removeEventListener('mouseup', onMouseUp);
       headerCell.removeEventListener('keydown', onKeyDown);
     };
-  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth, resizeDirection]);
+  }, [headerCell, isDragging, onDragStable, onFinishStable, resizerHasFocus, minWidth]);
   return (
     <span
       className={clsx(
         styles.resizer,
         isDragging && styles['resizer-active'],
-        (resizerHasFocus || showFocusRing) && styles['has-focus'],
-        resizeDirection === 'left' && styles['resizer-left']
+        (resizerHasFocus || showFocusRing) && styles['has-focus']
       )}
       onMouseDown={event => {
         if (event.button !== 0) {

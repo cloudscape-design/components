@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
-import { CellOffsets } from './internal';
 interface CellOffsets {
   start: number[];
   end: number[];
