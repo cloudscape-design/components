@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import React, { useCallback, useEffect } from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useIntersectionObserver } from '../intersection-observer-context';
-
+import { useIntersectionObserver } from '../use-intersection-observer';
+import { LEFT_SENTINEL_ID, RIGHT_SENTINEL_ID } from '../utils';
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -52,32 +52,46 @@ export function TableTdElement({
   isLastStickyLeft,
   isLastStickyRight,
   tdRef,
-}: //isStuckToTheRight,
-// isStuckToTheLeft,
-TableTdElementProps) {
+}: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
 
-  const [isStuck, setIsStuck] = React.useState(false);
-
-  const childCallback = useCallback(
+  const [isStuckToTheLeft, setIsStuckToTheLeft] = React.useState(false);
+  const [isStuckToTheRight, setIsStuckToTheRight] = React.useState(false);
+  const leftCallback = useCallback(
     entry => {
-      setIsStuck(!entry.isIntersecting);
+      setIsStuckToTheLeft(!entry.isIntersecting);
     },
-    [setIsStuck]
+    [setIsStuckToTheLeft]
+  );
+
+  const rightCallback = useCallback(
+    entry => {
+      setIsStuckToTheRight(!entry.isIntersecting);
+    },
+    [setIsStuckToTheRight]
   );
 
   const { registerChildCallback, unregisterChildCallback } = useIntersectionObserver();
 
   useEffect(() => {
     if (isLastStickyLeft) {
-      registerChildCallback?.(childCallback);
+      registerChildCallback?.(LEFT_SENTINEL_ID, leftCallback);
+    } else if (isLastStickyRight) {
+      registerChildCallback?.(RIGHT_SENTINEL_ID, rightCallback);
     }
     return () => {
-      unregisterChildCallback?.(childCallback);
+      unregisterChildCallback?.(LEFT_SENTINEL_ID, leftCallback);
+      unregisterChildCallback?.(RIGHT_SENTINEL_ID, rightCallback);
     };
-  }, [registerChildCallback, unregisterChildCallback, childCallback, isLastStickyLeft]);
+  }, [
+    isLastStickyLeft,
+    isLastStickyRight,
+    registerChildCallback,
+    leftCallback,
+    rightCallback,
+    unregisterChildCallback,
+  ]);
 
-  console.log('Rendering');
   return (
     <td
       style={style}
@@ -96,8 +110,8 @@ TableTdElementProps) {
         hasSelection && styles['has-selection'],
         hasFooter && styles['has-footer'],
         (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
-        isStuck && styles['body-cell-freeze-last-left'],
-        isStickyRight && isLastStickyRight && styles['body-cell-freeze-last-right']
+        isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
+        isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
       )}
       onClick={onClick}
       ref={tdRef}
