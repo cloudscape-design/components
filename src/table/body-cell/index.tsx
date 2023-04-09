@@ -24,11 +24,12 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<any>;
   ariaLabels: TableProps['ariaLabels'];
+  tdRef: React.Ref<HTMLTableCellElement>;
 }
 
-type TableCellEditableProps<ItemType> = TableBodyCellProps<ItemType> & {
-  tdRef: React.Ref<HTMLTableCellElement>;
-};
+// type TableCellEditableProps<ItemType> = TableBodyCellProps<ItemType> & {
+//   tdRef: React.Ref<HTMLTableCellElement>;
+// };
 
 function TableCellEditable<ItemType>({
   className,
@@ -39,9 +40,8 @@ function TableCellEditable<ItemType>({
   onEditEnd,
   submitEdit,
   ariaLabels,
-  tdRef,
   ...rest
-}: TableCellEditableProps<ItemType>) {
+}: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<ButtonProps.Ref>(null);
   const focusVisible = useFocusVisible();
   const isVisualRefresh = useVisualRefresh();
@@ -66,7 +66,6 @@ function TableCellEditable<ItemType>({
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
-      ref={tdRef}
     >
       {isEditing ? (
         <InlineEditor
@@ -95,17 +94,13 @@ function TableCellEditable<ItemType>({
   );
 }
 
-export const TableBodyCell = React.forwardRef(function TableBodyCell<ItemType>(
-  { isEditable, ...rest }: TableBodyCellProps<ItemType> & { isEditable: boolean },
-  ref: React.Ref<HTMLTableCellElement>
-) {
+export function TableBodyCell<ItemType>({
+  isEditable,
+  ...rest
+}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
   if (isEditable || rest.isEditing) {
-    return <TableCellEditable tdRef={ref} {...rest} />;
+    return <TableCellEditable {...rest} />;
   }
   const { column, item } = rest;
-  return (
-    <TableTdElement ref={ref} {...rest}>
-      {column.cell(item)}
-    </TableTdElement>
-  );
-});
+  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
+}

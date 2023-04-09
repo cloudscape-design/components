@@ -8,7 +8,7 @@ import Multiselect from '~components/multiselect';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-
+const ref = React.createRef<any>();
 const baseColumnDefinition = { cell: () => 'Cell content', header: 'Column header' };
 
 const options = ['A', 'B', 'C', 'D', 'E', 'F'].map(value => ({ value, label: `Option ${value}` }));
@@ -67,6 +67,7 @@ export default function InlineEditorPermutations() {
                     onEditStart={() => {}}
                     onEditEnd={() => {}}
                     wrapLines={false}
+                    tdRef={ref}
                     {...permutation}
                   />
                 </tr>

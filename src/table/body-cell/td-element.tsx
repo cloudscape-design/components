@@ -28,85 +28,82 @@ export interface TableTdElementProps {
   isLastStickyRight?: boolean;
   isStuckToTheRight?: boolean;
   isStuckToTheLeft?: boolean;
+  tdRef: React.Ref<HTMLTableCellElement>;
 }
 
-export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
-  (
-    {
-      className,
-      style,
-      children,
-      wrapLines,
-      isFirstRow,
-      isLastRow,
-      isSelected,
-      isNextSelected,
-      isPrevSelected,
-      nativeAttributes,
-      onClick,
-      isEvenRow,
-      stripedRows,
-      hasSelection,
-      hasFooter,
-      isStickyLeft,
-      isStickyRight,
-      isLastStickyLeft,
-      isLastStickyRight,
-      //isStuckToTheRight,
-      // isStuckToTheLeft,
+export function TableTdElement({
+  className,
+  style,
+  children,
+  wrapLines,
+  isFirstRow,
+  isLastRow,
+  isSelected,
+  isNextSelected,
+  isPrevSelected,
+  nativeAttributes,
+  onClick,
+  isEvenRow,
+  stripedRows,
+  hasSelection,
+  hasFooter,
+  isStickyLeft,
+  isStickyRight,
+  isLastStickyLeft,
+  isLastStickyRight,
+  tdRef,
+}: //isStuckToTheRight,
+// isStuckToTheLeft,
+TableTdElementProps) {
+  const isVisualRefresh = useVisualRefresh();
+
+  const [isStuck, setIsStuck] = React.useState(false);
+
+  const childCallback = useCallback(
+    entry => {
+      setIsStuck(!entry.isIntersecting);
     },
-    ref
-  ) => {
-    const isVisualRefresh = useVisualRefresh();
+    [setIsStuck]
+  );
 
-    const [isStuck, setIsStuck] = React.useState(false);
+  const { registerChildCallback, unregisterChildCallback } = useIntersectionObserver();
 
-    const childCallback = useCallback(
-      entry => {
-        setIsStuck(!entry.isIntersecting);
-      },
-      [setIsStuck]
-    );
+  useEffect(() => {
+    if (isLastStickyLeft) {
+      registerChildCallback?.(childCallback);
+    }
+    return () => {
+      unregisterChildCallback?.(childCallback);
+    };
+  }, [registerChildCallback, unregisterChildCallback, childCallback, isLastStickyLeft]);
 
-    const { registerChildCallback, unregisterChildCallback } = useIntersectionObserver();
-
-    useEffect(() => {
-      if (isLastStickyLeft) {
-        registerChildCallback?.(childCallback);
-      }
-      return () => {
-        unregisterChildCallback?.(childCallback);
-      };
-    }, [registerChildCallback, unregisterChildCallback, childCallback, isLastStickyLeft]);
-
-    console.log('Rendering');
-    return (
-      <td
-        style={style}
-        className={clsx(
-          className,
-          styles['body-cell'],
-          wrapLines && styles['body-cell-wrap'],
-          isFirstRow && styles['body-cell-first-row'],
-          isLastRow && styles['body-cell-last-row'],
-          isSelected && styles['body-cell-selected'],
-          isNextSelected && styles['body-cell-next-selected'],
-          isPrevSelected && styles['body-cell-prev-selected'],
-          !isEvenRow && stripedRows && styles['body-cell-shaded'],
-          stripedRows && styles['has-striped-rows'],
-          isVisualRefresh && styles['is-visual-refresh'],
-          hasSelection && styles['has-selection'],
-          hasFooter && styles['has-footer'],
-          (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
-          isStuck && styles['body-cell-freeze-last-left'],
-          isStickyRight && isLastStickyRight && styles['body-cell-freeze-last-right']
-        )}
-        onClick={onClick}
-        ref={ref}
-        {...nativeAttributes}
-      >
-        {children}
-      </td>
-    );
-  }
-);
+  console.log('Rendering');
+  return (
+    <td
+      style={style}
+      className={clsx(
+        className,
+        styles['body-cell'],
+        wrapLines && styles['body-cell-wrap'],
+        isFirstRow && styles['body-cell-first-row'],
+        isLastRow && styles['body-cell-last-row'],
+        isSelected && styles['body-cell-selected'],
+        isNextSelected && styles['body-cell-next-selected'],
+        isPrevSelected && styles['body-cell-prev-selected'],
+        !isEvenRow && stripedRows && styles['body-cell-shaded'],
+        stripedRows && styles['has-striped-rows'],
+        isVisualRefresh && styles['is-visual-refresh'],
+        hasSelection && styles['has-selection'],
+        hasFooter && styles['has-footer'],
+        (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
+        isStuck && styles['body-cell-freeze-last-left'],
+        isStickyRight && isLastStickyRight && styles['body-cell-freeze-last-right']
+      )}
+      onClick={onClick}
+      ref={tdRef}
+      {...nativeAttributes}
+    >
+      {children}
+    </td>
+  );
+}

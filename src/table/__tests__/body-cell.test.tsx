@@ -24,7 +24,7 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
 
 const onEditEnd = jest.fn();
 const onEditStart = jest.fn();
-
+const ref = React.createRef<any>();
 const TestComponent = ({ isEditing = false }) => {
   return (
     <table>
@@ -48,6 +48,7 @@ const TestComponent = ({ isEditing = false }) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            tdRef={ref}
           />
         </tr>
       </tbody>
@@ -78,6 +79,7 @@ const TestComponent2 = ({ column }: any) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            tdRef={ref}
           />
         </tr>
       </tbody>
