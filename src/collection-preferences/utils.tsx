@@ -142,38 +142,51 @@ interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.Sticky
   value?: any;
 }
 
+const StickyPreference = ({ side, preference, value, onChange }) => {
+  const { title, description, options } = preference;
+
+  return (
+    <InternalFormField
+      className={styles[`sticky-columns-${side}-form-field`]}
+      key={title}
+      label={title}
+      description={description}
+    >
+      <InternalRadioGroup
+        className={styles[`sticky-columns-${side}-radio-group`]}
+        value={typeof value !== undefined ? `${value}` : null}
+        items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
+        onChange={({ detail }) => onChange(Number(detail.value))}
+      />
+    </InternalFormField>
+  );
+};
+
 export const StickyColumnsPreference = ({
   startColumns,
   endColumns,
   onChange,
   value,
 }: StickyColumnsPreferenceProps) => {
+  console.log({ startColumns, endColumns, onChange, value });
   return (
     <InternalSpaceBetween className={styles['sticky-columns']} size="l">
-      {[
-        { side: 'start', preference: startColumns },
-        { side: 'end', preference: endColumns },
-      ].map(item => {
-        if (!item.preference) {
-          return;
-        }
-        const { title, description, options } = item.preference;
-        return (
-          <InternalFormField
-            className={styles[`sticky-columns-${item.side}-form-field`]}
-            key={title}
-            label={title}
-            description={description}
-          >
-            <InternalRadioGroup
-              className={styles[`sticky-columns-${item.side}-radio-group`]}
-              value={value && `${value[item.side]}`}
-              items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
-              onChange={({ detail }) => onChange({ ...value, [item.side]: Number(detail.value) })}
-            />
-          </InternalFormField>
-        );
-      })}
+      {startColumns && (
+        <StickyPreference
+          side="left"
+          preference={startColumns}
+          value={value.start}
+          onChange={newValue => onChange({ ...value, start: newValue })}
+        />
+      )}
+      {endColumns && (
+        <StickyPreference
+          side="right"
+          preference={endColumns}
+          value={value.end}
+          onChange={newValue => onChange({ ...value, end: newValue })}
+        />
+      )}
     </InternalSpaceBetween>
   );
 };

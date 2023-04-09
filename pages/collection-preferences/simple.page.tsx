@@ -41,7 +41,7 @@ const contentDensityPreference: CollectionPreferencesProps.ContentDensityPrefere
 const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
   startColumns: {
     title: 'First column(s)',
-    description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+    description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
     options: [
       { label: 'None', value: 0 },
       { label: 'First column', value: 1 },
@@ -49,8 +49,8 @@ const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreferenc
     ],
   },
   endColumns: {
-    title: 'Stick last visible column',
-    description: 'Keep the last column visible when tables are wider than the viewport.',
+    title: 'Fix last column',
+    description: 'Keep the last column visible while horizontally scrolling the table content.',
     options: [
       { label: 'None', value: 0 },
       { label: 'Last column', value: 1 },
