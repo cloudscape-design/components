@@ -72,11 +72,10 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
 
     useEffect(() => {
       if (isLastStickyLeft) {
-        console.log('isStickyLeft');
-        registerChildCallback(childCallback);
+        registerChildCallback?.(childCallback);
       }
       return () => {
-        unregisterChildCallback(childCallback);
+        unregisterChildCallback?.(childCallback);
       };
     }, [registerChildCallback, unregisterChildCallback, childCallback, isLastStickyLeft]);
 

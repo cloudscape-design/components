@@ -14,7 +14,7 @@ export const useIntersectionObserver = () => {
   const context = useContext(IntersectionObserverContext);
   if (!context) {
     // useIntersectionObserver must be used within IntersectionObserverProvider
-    return;
+    return { registerChildCallback: () => {}, unregisterChildCallback: () => {} };
   }
   const { registerChildCallback, unregisterChildCallback } = context as IntersectionObserverContextValue;
   return { registerChildCallback, unregisterChildCallback };
