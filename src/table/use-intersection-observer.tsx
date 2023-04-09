@@ -37,6 +37,14 @@ export const IntersectionObserverProvider: React.FC<IntersectionObserverProvider
 }) => {
   const observers = useRef<Map<string, IntersectionObserver>>(new Map());
   const childCallbacks = useRef<Map<string, Set<(entry: IntersectionObserverEntry) => void>>>(new Map());
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, forceUpdate] = React.useState({});
+
+  useEffect(() => {
+    // When force update when dependencies change to make subscribers re-register the callbacks
+    forceUpdate({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...deps]);
 
   useEffect(() => {
     const createObserver = (id: string, ref: React.RefObject<Element>, options: IntersectionObserverInit) => {
