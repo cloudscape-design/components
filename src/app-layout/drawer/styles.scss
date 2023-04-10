@@ -85,6 +85,8 @@ $drawer-z-index-mobile: 1001;
     &.selected {
       padding: constants.$drawers-padding-vertical awsui.$space-s;
       margin: 0;
+      border-top: 1px solid awsui.$color-background-layout-panel-trigger-active;
+      border-bottom: 1px solid awsui.$color-background-layout-panel-trigger-active;
 
       background-color: awsui.$color-background-layout-panel-trigger-active;
       color: awsui.$color-text-layout-panel-trigger-active;

@@ -254,11 +254,11 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const defaultDrawerSize = toolsWidth;
+    const defaultDrawerSize = selectedDrawer?.size || toolsWidth;
 
     const [drawerSize = defaultDrawerSize, setDrawerSize] = useControllable(
       selectedDrawer?.size,
-      selectedDrawer?.onDrawerResize,
+      selectedDrawer?.onResize,
       defaultDrawerSize,
       {
         componentName: 'AppLayout',
@@ -328,9 +328,9 @@ const OldAppLayout = React.forwardRef(
     const onDrawerSizeSet = useCallback(
       (detail: { size: number }) => {
         setDrawerSize(detail.size);
-        fireNonCancelableEvent(selectedDrawer?.onDrawerResize, detail);
+        fireNonCancelableEvent(selectedDrawer?.onResize, detail);
       },
-      [setDrawerSize, selectedDrawer?.onDrawerResize]
+      [setDrawerSize, selectedDrawer?.onResize]
     );
 
     const onSplitPanelToggleHandler = useCallback(() => {

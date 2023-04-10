@@ -20,6 +20,7 @@ export default function WithDrawers() {
   const [useDrawers, setUseDrawers] = useState(true);
   const [useTools, setUseTools] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [drawersWidth, setDrawersWidth] = useState(400);
 
   const drawers = !useDrawers
     ? null
@@ -37,6 +38,10 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
+              size: drawersWidth,
+              onResize: (event: NonCancelableCustomEvent<{ size: number }>) => {
+                setDrawersWidth(event.detail.size);
+              },
               trigger: {
                 iconName: 'security',
               },
