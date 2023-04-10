@@ -207,11 +207,11 @@ export namespace CollectionPreferencesProps {
     description: string;
   }
   interface StickyColumns {
-    start?: number;
-    end?: number;
+    first?: number;
+    last?: number;
   }
   export interface StickyColumnsPreference {
-    startColumns?: {
+    firstColumns?: {
       title: string;
       description: string;
       options: ReadonlyArray<{
@@ -219,7 +219,7 @@ export namespace CollectionPreferencesProps {
         value: number;
       }>;
     };
-    endColumns?: {
+    lastColumns?: {
       title: string;
       description: string;
       options: ReadonlyArray<{

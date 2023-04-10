@@ -42,8 +42,8 @@ type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItem
   InternalBaseComponentProps;
 
 export interface CellOffsets {
-  start: number[];
-  end: number[];
+  first: number[];
+  last: number[];
 }
 
 const InternalTable = forwardRef(
@@ -410,8 +410,8 @@ const InternalTable = forwardRef(
                               tdRef={tableCellRefs[0]}
                               getStickyColumnProperties={() => getStickyColumnProperties(0)}
                               style={
-                                !shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0
-                                  ? { left: cellOffsets.start[0] }
+                                !shouldDisableStickyColumns && (stickyColumns?.first ?? 0) > 0
+                                  ? { left: cellOffsets.first[0] }
                                   : {}
                               }
                             >

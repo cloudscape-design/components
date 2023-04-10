@@ -177,27 +177,27 @@ const StickyPreference = ({ side, preference, value, onChange }: StickyPreferenc
 };
 
 export const StickyColumnsPreference = ({
-  startColumns,
-  endColumns,
+  firstColumns,
+  lastColumns,
   onChange,
   value,
 }: StickyColumnsPreferenceProps) => {
   return (
     <InternalSpaceBetween className={styles['sticky-columns']} size="l">
-      {startColumns && (
+      {firstColumns && (
         <StickyPreference
           side="left"
-          preference={startColumns}
-          value={value.start}
-          onChange={newValue => onChange({ ...value, start: newValue })}
+          preference={firstColumns}
+          value={value.first}
+          onChange={newValue => onChange({ ...value, first: newValue })}
         />
       )}
-      {endColumns && (
+      {lastColumns && (
         <StickyPreference
           side="right"
-          preference={endColumns}
-          value={value.end}
-          onChange={newValue => onChange({ ...value, end: newValue })}
+          preference={lastColumns}
+          value={value.last}
+          onChange={newValue => onChange({ ...value, last: newValue })}
         />
       )}
     </InternalSpaceBetween>

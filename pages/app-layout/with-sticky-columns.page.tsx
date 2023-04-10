@@ -43,7 +43,7 @@ export default function () {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
-    stickyColumns: { start: 1, end: 1 },
+    stickyColumns: { first: 1, last: 1 },
     visibleContent: visibleContentOptions[0].options.map(o => o.id),
   });
   const items = generateItems(20);
@@ -86,7 +86,7 @@ export default function () {
                 options: visibleContentOptions,
               }}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -95,7 +95,7 @@ export default function () {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [

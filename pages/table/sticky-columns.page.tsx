@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from '~components/link';
 import Table, { TableProps } from '~components/table';
 import Input from '~components/input';
 import SpaceBetween from '~components/space-between';
-import Select, { SelectProps } from '~components/select';
-import Box from '~components/box';
 import Header from '~components/header';
 import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
@@ -127,16 +125,10 @@ export default () => {
     },
   ];
 
-  const [leftSticky, setLeftSticky] = React.useState<SelectProps.Option>({ label: 'First column', value: '1' });
-  const [rightSticky, setRightSticky] = React.useState<SelectProps.Option>({
-    label: 'Last column',
-    value: '1',
-  });
   const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
-    stickyColumns: { start: 1, end: 1 },
+    stickyColumns: { first: 1, last: 1 },
   });
 
-  const [stickyColumns, setStickyColumns] = React.useState<TableProps.StickyColumns>({ start: 1, end: 1 });
   const [singleSelectedItems, setSingleSelectedItems] = React.useState([
     { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
   ]);
@@ -144,12 +136,6 @@ export default () => {
     { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
   ]);
 
-  useEffect(() => {
-    setStickyColumns({
-      start: Number(leftSticky.value) as unknown as 0 | 1 | 2,
-      end: Number(rightSticky.value) as unknown as 0 | 1,
-    });
-  }, [leftSticky, rightSticky, preferences]);
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
@@ -168,7 +154,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -177,7 +163,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -204,7 +190,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -213,7 +199,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -246,7 +232,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -255,7 +241,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -287,7 +273,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -296,7 +282,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -323,7 +309,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -332,7 +318,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -357,7 +343,7 @@ export default () => {
               onConfirm={({ detail }) => setPreferences(detail)}
               preferences={preferences}
               stickyColumnsPreference={{
-                startColumns: {
+                firstColumns: {
                   title: 'First column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
@@ -366,7 +352,7 @@ export default () => {
                     { label: 'First two columns', value: 2 },
                   ],
                 },
-                endColumns: {
+                lastColumns: {
                   title: 'Stick last visible column',
                   description: 'Keep the last column visible when tables are wider than the viewport.',
                   options: [
@@ -424,36 +410,6 @@ export default () => {
           sortingDisabled={true}
           header={<Header>Table with sticky inline editing</Header>}
         />
-        <Box float="left">
-          <SpaceBetween direction="horizontal" size="xl">
-            <Box>
-              First column(s):
-              <Select
-                selectedOption={leftSticky}
-                onChange={({ detail }) => setLeftSticky(detail.selectedOption)}
-                options={[
-                  { label: 'None', value: '0' },
-                  { label: 'First column', value: '1' },
-                  { label: 'First two columns', value: '2' },
-                ]}
-                selectedAriaLabel="Selected"
-              />
-            </Box>
-            <Box>
-              Stick last visible column:
-              <Select
-                selectedOption={rightSticky}
-                onChange={({ detail }) => setRightSticky(detail.selectedOption)}
-                options={[
-                  { label: 'None', value: '0' },
-                  { label: 'Last column', value: '1' },
-                ]}
-                selectedAriaLabel="Selected"
-              />
-            </Box>
-          </SpaceBetween>
-        </Box>
-
         <Table
           stickyColumns={stickyColumns}
           stickyHeader={true}
@@ -476,7 +432,7 @@ export default () => {
             onConfirm={({ detail }) => setPreferences(detail)}
             preferences={preferences}
             stickyColumnsPreference={{
-              startColumns: {
+              firstColumns: {
                 title: 'First column(s)',
                 description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                 options: [
@@ -485,7 +441,7 @@ export default () => {
                   { label: 'First two columns', value: 2 },
                 ],
               },
-              endColumns: {
+              lastColumns: {
                 title: 'Stick last visible column',
                 description: 'Keep the last column visible when tables are wider than the viewport.',
                 options: [
@@ -511,7 +467,7 @@ export default () => {
             onConfirm={({ detail }) => setPreferences(detail)}
             preferences={preferences}
             stickyColumnsPreference={{
-              startColumns: {
+              firstColumns: {
                 title: 'First column(s)',
                 description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                 options: [
@@ -520,7 +476,7 @@ export default () => {
                   { label: 'First two columns', value: 2 },
                 ],
               },
-              endColumns: {
+              lastColumns: {
                 title: 'Stick last visible column',
                 description: 'Keep the last column visible when tables are wider than the viewport.',
                 options: [

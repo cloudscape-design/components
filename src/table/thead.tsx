@@ -95,7 +95,7 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-    const hasStartStickyColumns = (stickyColumns?.start ?? 0) > 0;
+    const hasFirstStickyColumns = (stickyColumns?.first ?? 0) > 0;
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
@@ -106,9 +106,9 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellOffsets?.start[0] }}
+              style={{ left: cellOffsets?.first[0] }}
               scope="col"
             >
               <SelectionControl
@@ -128,9 +128,9 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasStartStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['header-cell-freeze']
               )}
-              style={{ left: cellOffsets?.start[0] }}
+              style={{ left: cellOffsets?.first[0] }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
