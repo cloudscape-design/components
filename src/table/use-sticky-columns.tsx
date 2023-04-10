@@ -137,7 +137,7 @@ export const useStickyColumns = ({
 
       const isFirstColumn = colIndex === 0;
       let stuck = {};
-      if (isFirstColumn && !hasSelection) {
+      if (isFirstColumn && !hasSelection && tableLeftPadding !== 0) {
         stuck = { paddingLeft: `${tableLeftPadding}px` };
       }
       // Determine the offset of the sticky column using the `cellOffsets` state object
