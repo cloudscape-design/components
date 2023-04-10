@@ -5,6 +5,7 @@ import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useStickyObserver } from '../use-sticky-observer';
+import { GetStickyColumnProperties } from '../use-sticky-columns';
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -21,6 +22,7 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
+  getStickyColumnProperties: () => GetStickyColumnProperties;
   tdRef: React.Ref<HTMLTableCellElement>;
 }
 

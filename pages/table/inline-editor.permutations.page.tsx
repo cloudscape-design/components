@@ -34,6 +34,13 @@ const editPermutations = createPermutations<TableProps.EditConfig<unknown>>([
   },
 ]);
 
+const stickyColumnProperties = {
+  isSticky: false,
+  isLastStickyLeft: false,
+  isLastStickyRight: false,
+  stickyStyles: { sticky: {}, stuck: {} },
+};
+
 export default function InlineEditorPermutations() {
   return (
     <>
@@ -63,6 +70,7 @@ export default function InlineEditorPermutations() {
                     onEditStart={() => {}}
                     onEditEnd={() => {}}
                     wrapLines={false}
+                    getStickyColumnProperties={() => stickyColumnProperties}
                     tdRef={ref}
                     {...permutation}
                   />
