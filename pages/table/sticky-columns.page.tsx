@@ -411,7 +411,7 @@ export default () => {
           header={<Header>Table with sticky inline editing</Header>}
         />
         <Table
-          stickyColumns={stickyColumns}
+          stickyColumns={preferences.stickyColumns}
           stickyHeader={true}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={[...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS]}
