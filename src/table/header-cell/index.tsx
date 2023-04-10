@@ -84,10 +84,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     }
   };
   const headerId = useUniqueId('table-header-');
-
   // Sticky columns
-  const { stickyStyles, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } =
-    getStickyColumnProperties(colIndex);
+  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties(colIndex);
   const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
 
   return (
@@ -100,12 +98,12 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
         [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: isStickyLeft || isStickyRight,
+        [styles['header-cell-freeze']]: isSticky,
         [styles['header-cell-freeze-last-left']]: isStuckToTheLeft && isLastStickyLeft,
         [styles['header-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={{ ...style, ...stickyStyles }}
+      style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
       ref={ref}
       scope="col"
     >

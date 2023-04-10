@@ -220,9 +220,6 @@ const InternalTable = forwardRef(
       },
     ];
 
-    const isStuckToTheLeft = false;
-    const isStuckToTheRight = false;
-
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -411,10 +408,7 @@ const InternalTable = forwardRef(
                               hasSelection={hasSelection}
                               hasFooter={hasFooter}
                               tdRef={tableCellRefs[0]}
-                              isStickyLeft={!shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0}
-                              isStickyRight={false}
-                              isStuckToTheLeft={isStuckToTheLeft}
-                              isStuckToTheRight={isStuckToTheRight}
+                              getStickyColumnProperties={() => getStickyColumnProperties(0)}
                               style={
                                 !shouldDisableStickyColumns && (stickyColumns?.start ?? 0) > 0
                                   ? { left: cellOffsets.start[0] }
@@ -433,24 +427,16 @@ const InternalTable = forwardRef(
                             const isEditing =
                               !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                             const isEditable = !!column.editConfig && !currentEditLoading;
-
-                            // Sticky columns
-                            const { stickyStyles, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } =
-                              getStickyColumnProperties(colIndex);
-
                             return (
                               <TableBodyCell
                                 key={getColumnKey(column, colIndex)}
                                 style={
                                   resizableColumns
-                                    ? {
-                                        ...stickyStyles,
-                                      }
+                                    ? {}
                                     : {
                                         width: column.width,
                                         minWidth: column.minWidth,
                                         maxWidth: column.maxWidth,
-                                        ...stickyStyles,
                                       }
                                 }
                                 ariaLabels={ariaLabels}
@@ -476,10 +462,7 @@ const InternalTable = forwardRef(
                                 hasFooter={hasFooter}
                                 stripedRows={stripedRows}
                                 isEvenRow={isEven}
-                                isStickyLeft={isStickyLeft}
-                                isStickyRight={isStickyRight}
-                                isLastStickyLeft={isLastStickyLeft}
-                                isLastStickyRight={isLastStickyRight}
+                                getStickyColumnProperties={() => getStickyColumnProperties(colIndex)}
                               />
                             );
                           })}

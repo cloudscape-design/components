@@ -7,9 +7,13 @@ interface CellOffsets {
   end: number[];
 }
 interface StickyStyles {
-  left?: string;
-  right?: string;
-  paddingLeft?: string;
+  sticky: {
+    left?: string;
+    right?: string;
+  };
+  stuck: {
+    paddingLeft?: string;
+  };
 }
 
 interface StickyColumnParams {
@@ -23,8 +27,7 @@ interface StickyColumnParams {
 }
 
 export interface GetStickyColumnProperties {
-  isStickyLeft: boolean;
-  isStickyRight: boolean;
+  isSticky: boolean;
   isLastStickyLeft: boolean;
   isLastStickyRight: boolean;
   stickyStyles: StickyStyles;
@@ -129,9 +132,14 @@ export const useStickyColumns = ({
       const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
 
       if (!stickySide) {
-        return {};
+        return { sticky: {}, stuck: {} };
       }
 
+      const isFirstColumn = colIndex === 0;
+      let stuck = {};
+      if (isFirstColumn && !hasSelection) {
+        stuck = { paddingLeft: `${tableLeftPadding}px` };
+      }
       // Determine the offset of the sticky column using the `cellOffsets` state object
       const stickyColumnOffset =
         stickySide === 'right'
@@ -139,19 +147,22 @@ export const useStickyColumns = ({
           : cellOffsets?.start[colIndex + (hasSelection ? 1 : 0)];
 
       return {
-        [stickySide]: `${stickyColumnOffset}px`,
+        sticky: {
+          [stickySide]: `${stickyColumnOffset}px`,
+        },
+        stuck,
       };
     },
-    [cellOffsets, hasSelection]
+    [cellOffsets, hasSelection, tableLeftPadding]
   );
+
   const getStickyColumnProperties = React.useCallback(
     (colIndex: number): GetStickyColumnProperties => {
       const disabledStickyColumn = {
-        isStickyLeft: false,
-        isStickyRight: false,
+        isSticky: false,
         isLastStickyLeft: false,
         isLastStickyRight: false,
-        stickyStyles: {},
+        stickyStyles: { sticky: {}, stuck: {} },
       };
 
       if (shouldDisable) {
@@ -168,16 +179,14 @@ export const useStickyColumns = ({
 
       // Get the sticky styles
       const stickyStyles = getStickyStyles(colIndex, isStickyLeft, isStickyRight);
-
       return {
-        isStickyLeft,
-        isStickyRight,
+        isSticky: isStickyLeft || isStickyRight,
         isLastStickyLeft,
         isLastStickyRight,
         stickyStyles,
       };
     },
-    [getStickyStyles, shouldDisable, stickyColumns?.end, stickyColumns?.start, visibleColumnsLength]
+    [getStickyStyles, shouldDisable, stickyColumns, visibleColumnsLength]
   );
 
   const wrapperScrollPadding = useMemo(() => {

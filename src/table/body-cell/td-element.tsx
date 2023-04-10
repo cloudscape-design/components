@@ -21,12 +21,6 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  isStickyLeft?: boolean;
-  isStickyRight?: boolean;
-  isLastStickyLeft?: boolean;
-  isLastStickyRight?: boolean;
-  isStuckToTheRight?: boolean;
-  isStuckToTheLeft?: boolean;
   tdRef: React.Ref<HTMLTableCellElement>;
 }
 
@@ -46,18 +40,15 @@ export function TableTdElement({
   stripedRows,
   hasSelection,
   hasFooter,
-  isStickyLeft,
-  isStickyRight,
-  isLastStickyLeft,
-  isLastStickyRight,
+  getStickyColumnProperties,
   tdRef,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
+  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties();
   const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
-
   return (
     <td
-      style={style}
+      style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
       className={clsx(
         className,
         styles['body-cell'],
@@ -72,7 +63,7 @@ export function TableTdElement({
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
         hasFooter && styles['has-footer'],
-        (isStickyLeft || isStickyRight) && styles['body-cell-freeze'],
+        isSticky && styles['body-cell-freeze'],
         isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
         isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
       )}

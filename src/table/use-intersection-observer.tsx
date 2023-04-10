@@ -30,7 +30,11 @@ interface IntersectionObserverProviderProps {
   deps?: any[];
 }
 
-export const IntersectionObserverProvider: React.FC<IntersectionObserverProviderProps> = ({
+interface IntersectionObserverProviderType {
+  (props: IntersectionObserverProviderProps): JSX.Element;
+}
+
+export const IntersectionObserverProvider: IntersectionObserverProviderType = ({
   children,
   observedElements,
   deps = [],
@@ -53,7 +57,6 @@ export const IntersectionObserverProvider: React.FC<IntersectionObserverProvider
         return;
       }
       const observer = new IntersectionObserver(entries => {
-        console.log('NEW OBSERVER!!', { id, ref });
         entries.forEach(entry => {
           childCallbacks.current.get(id)?.forEach(callback => callback(entry));
         });
