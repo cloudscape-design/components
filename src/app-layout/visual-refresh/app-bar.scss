@@ -30,7 +30,7 @@ section.appbar {
   }
 
   > .appbar-tools,
-  > .appbar-drawers {
+  > .drawers-mobile-triggers-container {
     grid-column: 3;
     margin-left: awsui.$space-m;
   }
@@ -55,7 +55,7 @@ section.appbar {
 
     > .appbar-nav,
     > .appbar-tools,
-    > .appbar-drawers {
+    > .drawers-mobile-triggers-container {
       display: none;
     }
 
@@ -130,7 +130,7 @@ section.appbar {
     // the Navigation and Tools buttons resume their grid column position
     > .appbar-nav,
     > .appbar-tools,
-    > .appbar-drawers {
+    > .drawers-mobile-triggers-container {
       display: block;
     }
 

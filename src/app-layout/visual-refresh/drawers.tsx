@@ -77,8 +77,11 @@ function ActiveDrawer() {
     drawersRefs,
     handleDrawersClick,
     handleToolsClick,
+    hasDrawerViewportOverlay,
     isMobile,
+    isNavigationOpen,
     isToolsOpen,
+    navigationHide,
     tools,
     toolsRefs,
   } = useAppLayoutInternals();
@@ -90,12 +93,16 @@ function ActiveDrawer() {
     content: activeDrawerId ? activeDrawer?.ariaLabels?.content : ariaLabels?.tools,
   };
 
+  const isHidden = !activeDrawerId && !isToolsOpen;
+  const isUnfocusable = isHidden || (hasDrawerViewportOverlay && isNavigationOpen && !navigationHide);
+
   return (
     <aside
-      aria-hidden={!activeDrawerId && !isToolsOpen ? true : false}
+      aria-hidden={isHidden}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, {
         [styles['is-drawer-open']]: activeDrawerId || isToolsOpen,
+        [styles.unfocusable]: isUnfocusable,
         [testutilStyles['active-drawer']]: activeDrawerId,
         [testutilStyles.tools]: isToolsOpen,
       })}
@@ -164,10 +171,14 @@ function DesktopTriggers() {
 
   return (
     <aside
-      className={clsx(styles['drawers-trigger-container'], {
-        [styles['has-multiple-triggers']]: hasMultipleTriggers,
-        [styles['has-open-drawer']]: hasOpenDrawer,
-      })}
+      className={clsx(
+        styles['drawers-desktop-triggers-container'],
+        testutilStyles['drawers-desktop-triggers-container'],
+        {
+          [styles['has-multiple-triggers']]: hasMultipleTriggers,
+          [styles['has-open-drawer']]: hasOpenDrawer,
+        }
+      )}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -192,7 +203,7 @@ function DesktopTriggers() {
         {drawers.items.map((item: DrawersProps.Drawer) => (
           <TriggerButton
             ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(styles['drawers-trigger'], testutilStyles['drawer-toggle'])}
+            className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
             iconName={item.trigger.iconName}
             iconSvg={item.trigger.iconSvg}
             key={item.id}
@@ -247,7 +258,16 @@ export function MobileTriggers() {
   }
 
   return (
-    <>
+    <aside
+      aria-hidden={hasDrawerViewportOverlay}
+      className={clsx(
+        styles['drawers-mobile-triggers-container'],
+        testutilStyles['drawers-mobile-triggers-container'],
+        {
+          [styles.unfocusable]: hasDrawerViewportOverlay,
+        }
+      )}
+    >
       {!toolsHide && tools && (
         <InternalButton
           ariaLabel={ariaLabels?.toolsToggle ?? undefined}
@@ -267,7 +287,7 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
-          className={testutilStyles['drawer-toggle']}
+          className={testutilStyles['drawers-trigger']}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}
@@ -279,6 +299,6 @@ export function MobileTriggers() {
           __nativeAttributes={{ 'aria-haspopup': true }}
         />
       ))}
-    </>
+    </aside>
   );
 }

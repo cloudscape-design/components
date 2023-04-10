@@ -105,11 +105,7 @@ export default function AppBar() {
         </aside>
       )}
 
-      {isMobile && drawers && (
-        <aside aria-hidden={hasDrawerViewportOverlay} className={clsx(styles['appbar-drawers'])}>
-          <DrawersMobileTriggers />
-        </aside>
-      )}
+      <DrawersMobileTriggers />
     </section>
   );
 }
