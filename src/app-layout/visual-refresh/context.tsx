@@ -393,6 +393,22 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelPreferencesChange, setSplitPanelPreferences, setSplitPanelLastInteraction]
     );
 
+    /**
+     * The activeDrawerWidth is required in JavaScript to acccurately calculate whether a SplitPanel
+     * in the side position should be forced to the bottom based on available horiziontal space.
+     *
+     * The handleDrawersClick will either open a new drawer or close the currently open drawer by setting
+     * the activeDrawerId value. The active drawer can also be closed if a user clicks the Tools trigger
+     * button. This will skip the focus handling because the focus should be going to the Tools close
+     * button and not one of the drawers trigger buttons.
+     *
+     * The drawersTriggerCount is computed in order to determine whether the triggers should be persistent
+     * in the UI when a drawer is open. The trigger button container is suppressed when a drawer is open
+     * and their is only one trigger button.
+     *
+     * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
+     * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
+     */
     const drawers = (props as any).drawers;
 
     const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {

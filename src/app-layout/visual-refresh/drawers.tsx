@@ -44,6 +44,12 @@ namespace DrawersProps {
   }
 }
 
+/**
+ * The Drawers root component is mounted in the AppLayout index file. It will only
+ * render if the drawers are defined, and it will take over the mounting of and
+ * rendering of the Tools and SplitPanel (side position) if they exist. If drawers
+ * do not exist then the Tools and SplitPanel will be handled by the Tools component.
+ */
 export default function Drawers() {
   const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
     useAppLayoutInternals();
@@ -68,6 +74,12 @@ export default function Drawers() {
   );
 }
 
+/**
+ * The ActiveDrawer component will render either the drawer content that corresponds
+ * to the activeDrawerId or the Tools content if it exists and isToolsOpen is true.
+ * The aria labels, click handling, and focus handling will be updated dynamically
+ * based on the active drawer or tools content.
+ */
 function ActiveDrawer() {
   const {
     activeDrawerId,
@@ -133,6 +145,12 @@ function ActiveDrawer() {
   );
 }
 
+/**
+ * The DesktopTriggers will render the trigger buttons for Tools, Drawers, and the
+ * SplitPanel in non mobile viewports. Changes to the activeDrawerId need to be
+ * tracked by the previousActiveDrawerId property in order to appropriately apply
+ * the ref required to manage focus control.
+ */
 function DesktopTriggers() {
   const {
     activeDrawerId,
@@ -231,6 +249,12 @@ function DesktopTriggers() {
   );
 }
 
+/**
+ * The MobileTriggers will be mounted inside of the AppBar component and
+ * only rendered when Drawers are defined in mobile viewports. The same logic
+ * will in the AppBar component will suppress the rendering of the legacy
+ * trigger button for the Tools drawer.
+ */
 export function MobileTriggers() {
   const {
     activeDrawerId,
