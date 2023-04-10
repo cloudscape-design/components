@@ -18,7 +18,7 @@ export const useIntersectionObserver = () => {
   return { registerChildCallback, unregisterChildCallback };
 };
 
-interface ObservedElement {
+export interface ObservedElement {
   id: string;
   ref: React.RefObject<Element>;
   options: IntersectionObserverInit;
