@@ -40,8 +40,6 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
-  isStuckToTheRight: boolean;
-  isStuckToTheLeft: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
@@ -76,8 +74,6 @@ const Thead = React.forwardRef(
       focusedComponent,
       onFocusedComponentChange,
       getStickyColumnProperties,
-      isStuckToTheRight,
-      isStuckToTheLeft,
       shouldDisableStickyColumns,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
@@ -100,6 +96,7 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
     const hasStartStickyColumns = (stickyColumns?.start ?? 0) > 0;
+
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
@@ -141,8 +138,6 @@ const Thead = React.forwardRef(
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
-            const { stickyStyles } = getStickyColumnProperties(colIndex);
-
             let widthOverride;
             if (resizableColumns) {
               if (columnWidths) {
@@ -163,7 +158,6 @@ const Thead = React.forwardRef(
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
                   maxWidth: resizableColumns || sticky ? undefined : column.maxWidth,
-                  ...stickyStyles,
                 }}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
@@ -180,8 +174,6 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                isStuckToTheRight={isStuckToTheRight}
-                isStuckToTheLeft={isStuckToTheLeft}
                 getStickyColumnProperties={getStickyColumnProperties}
               />
             );

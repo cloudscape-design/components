@@ -12,6 +12,7 @@ import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { GetStickyColumnProperties } from '../use-sticky-columns';
+import { useStickyObserver } from '../use-sticky-observer';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -60,8 +61,6 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     resizableColumns,
     onResizeFinish,
     isEditable,
-    isStuckToTheLeft,
-    isStuckToTheRight,
     getStickyColumnProperties,
   } = props;
   const focusVisible = useFocusVisible();
@@ -85,8 +84,12 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
     }
   };
   const headerId = useUniqueId('table-header-');
+
   // Sticky columns
-  const { isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties(colIndex);
+  const { stickyStyles, isStickyLeft, isStickyRight, isLastStickyLeft, isLastStickyRight } =
+    getStickyColumnProperties(colIndex);
+  const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
+
   return (
     <th
       className={clsx(className, {
@@ -102,7 +105,7 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
         [styles['header-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={style}
+      style={{ ...style, ...stickyStyles }}
       ref={ref}
       scope="col"
     >

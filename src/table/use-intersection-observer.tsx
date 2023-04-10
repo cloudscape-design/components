@@ -53,6 +53,7 @@ export const IntersectionObserverProvider: React.FC<IntersectionObserverProvider
         return;
       }
       const observer = new IntersectionObserver(entries => {
+        console.log('NEW OBSERVER!!', { id, ref });
         entries.forEach(entry => {
           childCallbacks.current.get(id)?.forEach(callback => callback(entry));
         });

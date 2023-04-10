@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useIntersectionObserver } from '../use-intersection-observer';
-import { LEFT_SENTINEL_ID, RIGHT_SENTINEL_ID } from '../utils';
+import { useStickyObserver } from '../use-sticky-observer';
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -54,43 +53,7 @@ export function TableTdElement({
   tdRef,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-
-  const [isStuckToTheLeft, setIsStuckToTheLeft] = React.useState(false);
-  const [isStuckToTheRight, setIsStuckToTheRight] = React.useState(false);
-  const leftCallback = useCallback(
-    entry => {
-      setIsStuckToTheLeft(!entry.isIntersecting);
-    },
-    [setIsStuckToTheLeft]
-  );
-
-  const rightCallback = useCallback(
-    entry => {
-      setIsStuckToTheRight(!entry.isIntersecting);
-    },
-    [setIsStuckToTheRight]
-  );
-
-  const { registerChildCallback, unregisterChildCallback } = useIntersectionObserver();
-
-  useEffect(() => {
-    if (isLastStickyLeft) {
-      registerChildCallback?.(LEFT_SENTINEL_ID, leftCallback);
-    } else if (isLastStickyRight) {
-      registerChildCallback?.(RIGHT_SENTINEL_ID, rightCallback);
-    }
-    return () => {
-      unregisterChildCallback?.(LEFT_SENTINEL_ID, leftCallback);
-      unregisterChildCallback?.(RIGHT_SENTINEL_ID, rightCallback);
-    };
-  }, [
-    isLastStickyLeft,
-    isLastStickyRight,
-    registerChildCallback,
-    leftCallback,
-    rightCallback,
-    unregisterChildCallback,
-  ]);
+  const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
 
   return (
     <td

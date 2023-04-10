@@ -13,14 +13,8 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
-import {
-  checkSortingState,
-  getColumnKey,
-  getItemKey,
-  toContainerVariant,
-  LEFT_SENTINEL_ID,
-  RIGHT_SENTINEL_ID,
-} from './utils';
+import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
+import { LEFT_SENTINEL_ID, RIGHT_SENTINEL_ID } from './use-sticky-observer';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -256,8 +250,6 @@ const InternalTable = forwardRef(
       stripedRows,
       getStickyColumnProperties,
       stickyColumns,
-      isStuckToTheRight,
-      isStuckToTheLeft,
       cellOffsets,
       shouldDisableStickyColumns,
     };
@@ -488,9 +480,6 @@ const InternalTable = forwardRef(
                                 isStickyRight={isStickyRight}
                                 isLastStickyLeft={isLastStickyLeft}
                                 isLastStickyRight={isLastStickyRight}
-                                isStuckToTheLeft={isStuckToTheLeft}
-                                isStuckToTheRight={isStuckToTheRight}
-                                stickyColumns={stickyColumns}
                               />
                             );
                           })}

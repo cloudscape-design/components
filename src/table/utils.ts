@@ -4,9 +4,6 @@ import { InternalContainerProps } from '../container/internal';
 import { TableProps } from './interfaces';
 import { warnOnce } from '../internal/logging';
 
-export const LEFT_SENTINEL_ID = 'leftSentinel';
-export const RIGHT_SENTINEL_ID = 'rightSentinel';
-
 export const applyTrackBy = <T>(trackBy: TableProps.TrackBy<T>, item: T) => {
   if (typeof trackBy === 'function') {
     return trackBy(item);
