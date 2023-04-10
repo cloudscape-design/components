@@ -45,7 +45,7 @@ export const IntersectionObserverProvider: IntersectionObserverProviderType = ({
   const [_, forceUpdate] = React.useState({});
 
   useEffect(() => {
-    // When force update when dependencies change to make subscribers re-register the callbacks
+    // Force update when dependencies change to make subscribers re-register the callbacks
     forceUpdate({});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps]);
