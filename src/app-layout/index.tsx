@@ -276,12 +276,13 @@ const OldAppLayout = React.forwardRef(
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
+
     const effectiveToolsWidth =
       toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && !drawers
         ? 0
         : selectedDrawer?.resizable
         ? drawerSize
-        : toolsOpen || activeDrawerId !== undefined
+        : toolsOpen || activeDrawerId
         ? toolsWidth
         : closedDrawerWidth;
 
