@@ -269,10 +269,7 @@ const InternalTable = forwardRef(
         resizableColumns={resizableColumns}
         hasSelection={hasSelection}
       >
-        <IntersectionObserverProvider
-          observedElements={observedElements}
-          deps={[stickyColumns?.start, stickyColumns?.end]}
-        >
+        <IntersectionObserverProvider observedElements={observedElements} deps={[stickyColumns]}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}

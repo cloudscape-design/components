@@ -168,7 +168,6 @@ export const StickyColumnsPreference = ({
   onChange,
   value,
 }: StickyColumnsPreferenceProps) => {
-  console.log({ startColumns, endColumns, onChange, value });
   return (
     <InternalSpaceBetween className={styles['sticky-columns']} size="l">
       {startColumns && (

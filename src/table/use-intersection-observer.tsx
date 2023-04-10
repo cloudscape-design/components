@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useEffect, useRef, ReactNode } from 'react';
 
 interface IntersectionObserverContextValue {
-  registerChildCallback?: (id: string, callback: (entry: IntersectionObserverEntry) => void) => void;
-  unregisterChildCallback?: (id: string, callback: (entry: IntersectionObserverEntry) => void) => void;
+  registerChildCallback: (id: string, callback: (entry: IntersectionObserverEntry) => void) => void;
+  unregisterChildCallback: (id: string, callback: (entry: IntersectionObserverEntry) => void) => void;
 }
 
 const IntersectionObserverContext = createContext<IntersectionObserverContextValue | null>(null);
@@ -48,7 +48,10 @@ export const IntersectionObserverProvider: React.FC<IntersectionObserverProvider
 
   useEffect(() => {
     const createObserver = (id: string, ref: React.RefObject<Element>, options: IntersectionObserverInit) => {
-      console.log('CREATING OBSERVER!', id);
+      if (typeof IntersectionObserver === 'undefined') {
+        // Do nothing in environments like JSDOM
+        return;
+      }
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           childCallbacks.current.get(id)?.forEach(callback => callback(entry));
@@ -64,9 +67,8 @@ export const IntersectionObserverProvider: React.FC<IntersectionObserverProvider
 
     observedElements.forEach(({ id, ref, options }) => {
       if (!observers.current.has(id)) {
-        console.log('!observers.current.has(id)!');
         const observer = createObserver(id, ref, options);
-        observers.current.set(id, observer);
+        observer && observers.current.set(id, observer);
         childCallbacks.current.set(id, new Set());
       }
     });
