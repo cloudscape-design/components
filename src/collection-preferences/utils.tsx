@@ -142,7 +142,21 @@ interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.Sticky
   value?: any;
 }
 
-const StickyPreference = ({ side, preference, value, onChange }) => {
+interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
+  onChange: (value: any) => void;
+  preference: {
+    title: string;
+    description: string;
+    options: ReadonlyArray<{
+      label: string;
+      value: number;
+    }>;
+  };
+  value?: any;
+  side: 'left' | 'right';
+}
+
+const StickyPreference = ({ side, preference, value, onChange }: StickyPreference) => {
   const { title, description, options } = preference;
 
   return (
