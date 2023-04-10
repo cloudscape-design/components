@@ -65,7 +65,6 @@ export function useSelect({
   const menuRef = useRef<HTMLUListElement>(null);
   const hasFilter = filteringType !== 'none';
   const activeRef = hasFilter ? filterRef : menuRef;
-  const isSelectingUsingSpace = useRef<boolean>(false);
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
@@ -107,7 +106,6 @@ export function useSelect({
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const selectOption = (option?: DropdownOption) => {
-    isSelectingUsingSpace.current = false;
     const optionToSelect = option || highlightedOption;
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
@@ -128,7 +126,6 @@ export function useSelect({
       triggerRef.current?.focus();
       closeDropdown();
     },
-    isSelectingUsingSpace,
     preventNativeSpace: !hasFilter,
   });
 
