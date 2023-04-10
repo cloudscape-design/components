@@ -306,7 +306,6 @@ const OldAppLayout = React.forwardRef(
     ]);
 
     const { refs: drawerRefs, setLastInteraction: setDrawerLastInteraction } = useDrawerFocusControl([
-      splitPanelPreferences,
       selectedDrawer?.resizable,
     ]);
 

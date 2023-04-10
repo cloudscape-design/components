@@ -21,8 +21,6 @@ export default function WithDrawers() {
   const [useTools, setUseTools] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
-  console.log(useTools, isToolsOpen);
-
   const drawers = !useDrawers
     ? null
     : {

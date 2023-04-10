@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = `
-{
+Object {
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -413,8 +413,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -541,7 +541,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
   "space-m": "16px",
   "space-modal-content-bottom": "16px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "32px",
   "space-panel-side-left": "24px",
   "space-panel-side-right": "24px",
@@ -550,18 +550,18 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
   "space-scaled-2x-l": "12px",
   "space-scaled-2x-s": "4px",
   "space-scaled-2x-xl": "16px",
-  "space-scaled-2x-xxs": "0px",
+  "space-scaled-2x-xxs": "0",
   "space-scaled-2x-xxxl": "24px",
   "space-scaled-l": "16px",
   "space-scaled-m": "12px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "8px",
   "space-scaled-xl": "20px",
   "space-scaled-xs": "4px",
   "space-scaled-xxl": "24px",
   "space-scaled-xxs": "2px",
   "space-scaled-xxxl": "32px",
-  "space-scaled-xxxs": "0px",
+  "space-scaled-xxxs": "0",
   "space-segmented-control-focus-outline-gutter": "0px",
   "space-static-l": "20px",
   "space-static-m": "16px",
@@ -593,7 +593,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = 
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
-{
+Object {
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1005,8 +1005,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -1133,7 +1133,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "space-m": "16px",
   "space-modal-content-bottom": "20px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "32px",
   "space-panel-side-left": "32px",
   "space-panel-side-right": "32px",
@@ -1146,7 +1146,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
@@ -1185,7 +1185,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
-{
+Object {
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1597,8 +1597,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -1725,7 +1725,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
   "space-m": "16px",
   "space-modal-content-bottom": "20px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "32px",
   "space-panel-side-left": "32px",
   "space-panel-side-right": "32px",
@@ -1738,7 +1738,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
@@ -1777,7 +1777,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion" 1`] = `
-{
+Object {
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -2189,8 +2189,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
   "font-display-l-size": "44px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-heading-l-letter-spacing": "normal",
@@ -2317,7 +2317,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
   "space-m": "16px",
   "space-modal-content-bottom": "20px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "32px",
   "space-panel-side-left": "32px",
   "space-panel-side-right": "32px",
@@ -2330,7 +2330,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
@@ -2369,7 +2369,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion"
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh" 1`] = `
-{
+Object {
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -2781,8 +2781,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -2807,8 +2807,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": ""inherit"",
-  "font-link-primary-weight": ""inherit"",
+  "font-link-primary-letter-spacing": "\\"inherit\\"",
+  "font-link-primary-weight": "\\"inherit\\"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
@@ -2909,7 +2909,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "space-m": "16px",
   "space-modal-content-bottom": "16px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "28px",
   "space-panel-side-left": "28px",
   "space-panel-side-right": "24px",
@@ -2922,7 +2922,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
@@ -2961,7 +2961,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh"
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-content-header" 1`] = `
-{
+Object {
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -3373,8 +3373,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -3399,8 +3399,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": ""inherit"",
-  "font-link-primary-weight": ""inherit"",
+  "font-link-primary-letter-spacing": "\\"inherit\\"",
+  "font-link-primary-weight": "\\"inherit\\"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
@@ -3501,7 +3501,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "space-m": "16px",
   "space-modal-content-bottom": "16px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "28px",
   "space-panel-side-left": "28px",
   "space-panel-side-right": "24px",
@@ -3514,7 +3514,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
@@ -3553,7 +3553,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-dark" 1`] = `
-{
+Object {
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "2px",
   "border-container-sticky-width": "0px",
@@ -3965,8 +3965,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "font-display-l-size": "48px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
+  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
   "font-header-h2-description-line-height": "22px",
   "font-header-h2-description-size": "14px",
   "font-heading-l-letter-spacing": "-0.015em",
@@ -3991,8 +3991,8 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "font-link-button-letter-spacing": "0.005em",
   "font-link-button-weight": "800",
   "font-link-primary-decoration": "underline",
-  "font-link-primary-letter-spacing": ""inherit"",
-  "font-link-primary-weight": ""inherit"",
+  "font-link-primary-letter-spacing": "\\"inherit\\"",
+  "font-link-primary-weight": "\\"inherit\\"",
   "font-panel-header-line-height": "24px",
   "font-panel-header-size": "20px",
   "font-smoothing-moz-osx": "grayscale",
@@ -4093,7 +4093,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "space-m": "16px",
   "space-modal-content-bottom": "16px",
   "space-modal-horizontal": "20px",
-  "space-none": "0px",
+  "space-none": "0",
   "space-panel-nav-left": "28px",
   "space-panel-side-left": "28px",
   "space-panel-side-right": "24px",
@@ -4106,7 +4106,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-
   "space-scaled-2x-xxxl": "40px",
   "space-scaled-l": "20px",
   "space-scaled-m": "16px",
-  "space-scaled-none": "0px",
+  "space-scaled-none": "0",
   "space-scaled-s": "12px",
   "space-scaled-xl": "24px",
   "space-scaled-xs": "8px",
