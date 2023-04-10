@@ -513,7 +513,7 @@ const OldAppLayout = React.forwardRef(
               drawers={
                 drawers
                   ? {
-                      items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                      items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
                       activeDrawerId: selectedDrawer?.id,
                       onChange: changeDetail => {
                         if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
@@ -666,7 +666,7 @@ const OldAppLayout = React.forwardRef(
                   type="tools"
                   onLoseFocus={loseToolsFocus}
                   drawers={{
-                    items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                    items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
                     activeDrawerId: selectedDrawer.id,
                     onChange: changeDetail => {
                       onToolsToggle(false);
@@ -712,7 +712,7 @@ const OldAppLayout = React.forwardRef(
                 topOffset={headerHeight}
                 isMobile={isMobile}
                 drawers={{
-                  items: tools ? [toolsItem, ...drawers.items] : drawers.items,
+                  items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
                   activeDrawerId: selectedDrawer?.id,
                   onChange: changeDetail => {
                     if (selectedDrawer?.id !== changeDetail.activeDrawerId) {

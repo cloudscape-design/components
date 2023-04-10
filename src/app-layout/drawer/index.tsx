@@ -53,6 +53,7 @@ export function Drawer({
   getMaxWidth,
   refs,
 }: DesktopDrawerProps) {
+  const openButtonWrapperRef = useRef<HTMLElement | null>(null);
   const { TagName, iconName, getLabels } = togglesConfig[type];
   const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
   const drawerContentWidthOpen = isMobile ? undefined : width;
@@ -117,10 +118,10 @@ export function Drawer({
   );
 
   const regularOpenButton = (
-    <TagName aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
+    <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
       <AppLayoutButton
         ref={toggleRefs.toggle}
-        className={clsx(toggleClassName)}
+        className={toggleClassName}
         iconName={iconName}
         ariaLabel={openLabel}
         onClick={() => onToggle(true)}
@@ -153,7 +154,10 @@ export function Drawer({
         }
         if (!isOpen) {
           // to prevent calling onToggle from the drawer when it's called from the toggle button
-          if ((event.target as Element).tagName !== 'BUTTON') {
+          if (
+            openButtonWrapperRef.current === event.target ||
+            !openButtonWrapperRef.current?.contains(event.target as Node)
+          ) {
             onToggle(true);
           }
         }
