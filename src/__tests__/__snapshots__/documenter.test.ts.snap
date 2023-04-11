@@ -4266,12 +4266,12 @@ You must set the current value in the \`preferences.stickyColumns\` property.
         "name": "CollectionPreferencesProps.StickyColumnsPreference",
         "properties": Array [
           Object {
-            "name": "endColumns",
+            "name": "firstColumns",
             "optional": true,
             "type": "unknown",
           },
           Object {
-            "name": "startColumns",
+            "name": "lastColumns",
             "optional": true,
             "type": "unknown",
           },
@@ -11499,7 +11499,7 @@ add a meaningful description to the whole selection.
   item as an argument.
 * \`width\` (string | number) - Specifies the column width. Corresponds to the \`width\` css-property. If the width is not set,
   the browser automatically adjusts the column width based on the content. When \`resizableColumns\` property is
-  set to \`true\`, additional constraints apply: 1) string values are not allowed, and 2) the last visible column always
+  set to \`true\`, additional constraints apply: 1) string values are not allowed, and 2) the Last column always
   fills the remaining space of the table so the specified width is ignored.
 * \`minWidth\` (string | number) - Specifies the minimum column width. Corresponds to the \`min-width\` css-property. When
   \`resizableColumns\` property is set to \`true\`, additional constraints apply: 1) string values are not allowed,
@@ -11674,19 +11674,22 @@ to prevent the user from sorting before items are fully loaded.",
     },
     Object {
       "description": "Specifies the number of first and/or last columns that should be sticky.
-  If the available scrollable space is less than 148px, the feature is deactivated.
-  Use it in conjunction with the sticky columns preference of the
-  [collection preferences](/components/collection-preferences/) component.",
+If the available scrollable space is less than 148px, the feature is deactivated.
+
+Use it in conjunction with the sticky columns preference of the
+[collection preferences](/components/collection-preferences/) component.
+
+",
       "inlineType": Object {
         "name": "TableProps.StickyColumns",
         "properties": Array [
           Object {
-            "name": "end",
+            "name": "first",
             "optional": true,
             "type": "number",
           },
           Object {
-            "name": "start",
+            "name": "last",
             "optional": true,
             "type": "number",
           },
