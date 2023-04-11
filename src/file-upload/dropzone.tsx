@@ -15,9 +15,12 @@ interface DropzoneProps {
 export function useDropzoneVisible() {
   const [isDropzoneVisible, setDropzoneVisible] = useState(false);
 
+  // Registering global drag events listeners.
   useEffect(() => {
+    // The timer helps avoiding dropzone blinking.
     let dragTimer: null | ReturnType<typeof setTimeout> = null;
 
+    // The file-upload dropzone is shown when the user drags files over the to the browser.
     const onDocumentDragOver = (event: DragEvent) => {
       event.preventDefault();
 
@@ -27,12 +30,14 @@ export function useDropzoneVisible() {
       }
     };
 
+    // When the files are no longer dragged over the browser the state must be reset.
     const onDocumentDragLeave = (event: DragEvent) => {
       event.preventDefault();
 
       dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
     };
 
+    // If the files were dropped the state must be reset.
     const onDocumentDrop = (event: DragEvent) => {
       event.preventDefault();
 

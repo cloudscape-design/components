@@ -47,6 +47,7 @@ function FileInput(
     nativeAttributes['aria-required'] = true;
   }
 
+  // Synchronizing component's value with the native file input state.
   useEffect(() => {
     if (window.DataTransfer) {
       const dataTransfer = new DataTransfer();
@@ -67,7 +68,6 @@ function FileInput(
         accept={accept}
         onChange={onFileInputChange}
         className={styles['upload-input']}
-        value=""
       />
 
       <div className={styles['file-input-container']}>

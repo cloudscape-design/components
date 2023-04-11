@@ -97,6 +97,9 @@ function InternalFileUpload(
     constraintText ? constraintTextId : undefined
   );
 
+  const hasError = !!errorText ?? (fileErrors && fileErrors.filter(Boolean).length > 0);
+  const invalid = restProps.invalid ?? hasError;
+
   return (
     <InternalSpaceBetween
       {...baseProps}
@@ -116,6 +119,7 @@ function InternalFileUpload(
           value={value}
           {...restProps}
           ariaDescribedby={ariaDescribedBy}
+          invalid={invalid}
         >
           {i18nStrings.uploadButtonText(multiple)}
         </FileInput>
