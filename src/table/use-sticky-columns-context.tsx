@@ -56,17 +56,14 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({ chi
     }
 
     return () => {
-      // Remove scroll event listener
       if (wrapper) {
         wrapper.removeEventListener('scroll', scrollHandler);
       }
 
-      // Clear registered callbacks
       currentChildCallbacks.clear();
     };
   }, [createScrollHandler, wrapperRef]);
 
-  // A useEffect hook to set up and clean up the scroll event listener
   useEffect(() => {
     const scrollHandler = createScrollHandler();
     const wrapper = wrapperRef.current;

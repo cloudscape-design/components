@@ -11,9 +11,8 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { GetStickyColumnProperties } from '../use-sticky-columns';
+import { getStickyClassNames, GetStickyColumnProperties } from '../use-sticky-columns';
 import { useStickyState } from '../use-sticky-state';
-
 interface TableHeaderCellProps<ItemType> {
   className?: string;
   style?: React.CSSProperties;
@@ -85,18 +84,26 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
 
   return (
     <th
-      className={clsx(className, {
-        [styles['header-cell-resizable']]: !!resizableColumns,
-        [styles['header-cell-sortable']]: sortingStatus,
-        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-        [styles['header-cell-disabled']]: sortingDisabled,
-        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-        [styles['header-cell-descending']]: sortingStatus === 'descending',
-        [styles['header-cell-hidden']]: hidden,
-        [styles['header-cell-freeze']]: isSticky,
-        [styles['header-cell-freeze-last-left']]: isStuckToTheLeft && isLastStickyLeft,
-        [styles['header-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
-      })}
+      className={clsx(
+        className,
+        {
+          [styles['header-cell-resizable']]: !!resizableColumns,
+          [styles['header-cell-sortable']]: sortingStatus,
+          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+          [styles['header-cell-disabled']]: sortingDisabled,
+          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+          [styles['header-cell-descending']]: sortingStatus === 'descending',
+          [styles['header-cell-hidden']]: hidden,
+        },
+        getStickyClassNames({
+          styles,
+          isSticky,
+          isLastStickyLeft,
+          isLastStickyRight,
+          isStuckToTheLeft,
+          isStuckToTheRight,
+        })
+      )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
       scope="col"

@@ -23,7 +23,7 @@ $active-separator-width: 2px;
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
-  &-freeze {
+  &.sticky-cell-freeze {
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-paced;

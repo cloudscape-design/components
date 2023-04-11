@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
+import clsx from 'clsx';
 interface CellOffsets {
   first: number[];
   last: number[];
@@ -67,6 +68,30 @@ export const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCel
 
   return { cellOffsets, updateCellOffsets };
 };
+
+interface GetStickyClassNamesProps {
+  styles: { [key: string]: string };
+  isSticky: boolean;
+  isLastStickyLeft: boolean;
+  isLastStickyRight: boolean;
+  isStuckToTheLeft: boolean;
+  isStuckToTheRight: boolean;
+}
+
+export function getStickyClassNames({
+  styles,
+  isSticky,
+  isLastStickyLeft,
+  isLastStickyRight,
+  isStuckToTheLeft,
+  isStuckToTheRight,
+}: GetStickyClassNamesProps) {
+  return clsx({
+    [styles['sticky-cell-freeze']]: isSticky,
+    [styles['sticky-cell-freeze-last-left']]: isStuckToTheLeft && isLastStickyLeft,
+    [styles['sticky-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
+  });
+}
 
 export const useStickyColumns = ({
   containerWidth,

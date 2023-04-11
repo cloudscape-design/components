@@ -106,7 +106,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['sticky-cell-freeze']
               )}
               style={{ left: cellOffsets?.first[0] }}
               scope="col"
@@ -128,7 +128,7 @@ const Thead = React.forwardRef(
                 headerCellClass,
                 selectionCellClass,
                 hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['header-cell-freeze']
+                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['sticky-cell-freeze']
               )}
               style={{ left: cellOffsets?.first[0] }}
               scope="col"

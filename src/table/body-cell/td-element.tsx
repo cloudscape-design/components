@@ -5,7 +5,7 @@ import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useStickyState } from '../use-sticky-state';
-import { GetStickyColumnProperties } from '../use-sticky-columns';
+import { getStickyClassNames, GetStickyColumnProperties } from '../use-sticky-columns';
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -66,9 +66,14 @@ export function TableTdElement({
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
         hasFooter && styles['has-footer'],
-        isSticky && styles['body-cell-freeze'],
-        isStuckToTheLeft && isLastStickyLeft && styles['body-cell-freeze-last-left'],
-        isStuckToTheRight && isLastStickyRight && styles['body-cell-freeze-last-right']
+        getStickyClassNames({
+          styles,
+          isSticky,
+          isLastStickyLeft,
+          isLastStickyRight,
+          isStuckToTheLeft,
+          isStuckToTheRight,
+        })
       )}
       onClick={onClick}
       ref={tdRef}
