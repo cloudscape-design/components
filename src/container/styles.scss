@@ -77,7 +77,7 @@
     top: 0;
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     position: sticky;
-    z-index: 800;
+    z-index: 801; // Higher than sticky-columns z-index (800)
   }
 
   &-stuck {
