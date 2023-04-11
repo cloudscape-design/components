@@ -4192,7 +4192,7 @@ You must provide an ordered list of the items to display in the \`preferences.co
           Object {
             "name": "options",
             "optional": false,
-            "type": "ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>",
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
           },
           Object {
             "name": "title",
