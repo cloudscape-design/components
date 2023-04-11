@@ -22,6 +22,13 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
   cell: item => item.test,
 };
 
+const stickyColumnProps = {
+  isSticky: false,
+  isLastStickyLeft: false,
+  isLastStickyRight: false,
+  stickyStyles: { sticky: {}, stuck: {} },
+};
+
 const onEditEnd = jest.fn();
 const onEditStart = jest.fn();
 const ref = React.createRef<any>();
@@ -48,6 +55,7 @@ const TestComponent = ({ isEditing = false }) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            getStickyColumnProperties={() => stickyColumnProps}
             tdRef={ref}
           />
         </tr>
@@ -79,6 +87,7 @@ const TestComponent2 = ({ column }: any) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            getStickyColumnProperties={() => stickyColumnProps}
             tdRef={ref}
           />
         </tr>

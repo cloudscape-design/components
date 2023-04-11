@@ -37,10 +37,7 @@ interface TableHeaderCellProps<ItemType> {
   getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
 }
 
-export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
-  props: TableHeaderCellProps<ItemType>,
-  ref: React.Ref<HTMLTableCellElement>
-) {
+export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>) {
   const {
     className,
     style,
@@ -102,7 +99,6 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
-      ref={ref}
       scope="col"
     >
       <div
@@ -171,4 +167,4 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
       )}
     </th>
   );
-});
+}
