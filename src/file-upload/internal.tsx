@@ -8,7 +8,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
-import formFieldStyles from '../form-field/styles.css.js';
 import styles from './styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
@@ -20,13 +19,14 @@ import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
 import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
-import { FormFieldError } from '../form-field/internal';
+import { ConstraintText, FormFieldError } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { joinStrings } from '../internal/utils/strings';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
-  'multiple' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail' | 'i18nStrings'
+  'multiple' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail'
 > &
   InternalBaseComponentProps;
 
@@ -54,10 +54,16 @@ function InternalFileUpload(
 ) {
   const baseProps = getBaseProps(restProps);
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
-  const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
-  const [removedLastToken, setRemovedLastToken] = useState(false);
+
+  const errorId = useUniqueId('error-');
+  const fileErrorId = useUniqueId('file-error-');
+  const constraintTextId = useUniqueId('constraint-text-');
+
   const fileInputRef = useRef<ButtonProps.Ref>(null);
   const ref = useMergeRefs(fileInputRef, externalRef);
+
+  const [removedFileIndex, setRemovedFileIndex] = useState<null | number>(null);
+  const [removedLastFile, setRemovedLastFile] = useState(false);
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
@@ -66,33 +72,30 @@ function InternalFileUpload(
   }
 
   const handleFilesChange = (newFiles: File[]) => {
-    const currentFiles = [...value];
-    const newValue = multiple ? [...currentFiles, ...newFiles] : newFiles[0] ? newFiles : currentFiles;
-    fireNonCancelableEvent(onChange, {
-      value: newValue,
-    });
+    const newValue = multiple ? [...value, ...newFiles] : newFiles[0] ? newFiles : [...value];
+    fireNonCancelableEvent(onChange, { value: newValue });
   };
 
   const onFileRemove = (removeFileIndex: number) => {
     const newValue = value.filter((_, fileIndex) => fileIndex !== removeFileIndex);
-    fireNonCancelableEvent(onChange, {
-      value: newValue,
-    });
-    setRemovedItemIndex(removeFileIndex);
-    setRemovedLastToken(value.length === 1);
+    fireNonCancelableEvent(onChange, { value: newValue });
+    setRemovedFileIndex(removeFileIndex);
+    setRemovedLastFile(value.length === 1);
   };
 
   useEffect(() => {
-    if (removedLastToken) {
+    if (removedLastFile) {
       fileInputRef.current?.focus();
     }
-  }, [removedLastToken]);
+  }, [removedLastFile]);
 
   const isDropzoneVisible = useDropzoneVisible();
 
-  const errorId = useUniqueId('error-');
-  const fileErrorId = useUniqueId('file-error-');
-  const constraintTextId = useUniqueId('constraint-text-');
+  const ariaDescribedBy = joinStrings(
+    restProps.ariaDescribedby,
+    errorText ? errorId : undefined,
+    constraintText ? constraintTextId : undefined
+  );
 
   return (
     <InternalSpaceBetween
@@ -112,8 +115,7 @@ function InternalFileUpload(
           onChange={handleFilesChange}
           value={value}
           {...restProps}
-          errorId={errorId}
-          constraintTextId={constraintTextId}
+          ariaDescribedby={ariaDescribedBy}
         >
           {i18nStrings.uploadButtonText(multiple)}
         </FileInput>
@@ -127,16 +129,14 @@ function InternalFileUpload(
             </FormFieldError>
           )}
           {constraintText && (
-            <div
-              id={constraintTextId}
-              className={clsx(formFieldStyles.constraint, errorText && formFieldStyles['constraint-has-error'])}
-            >
+            <ConstraintText id={constraintTextId} hasError={!!errorText}>
               {constraintText}
-            </div>
+            </ConstraintText>
           )}
         </div>
       )}
 
+      {/* When multiple=`false` the component can have at most one file selected. Using a list representation is unnecessary in that case. */}
       {!multiple && value.length === 1 ? (
         <div role="group" aria-label={value[0].name} aria-describedby={fileErrorId}>
           <Token
@@ -173,7 +173,7 @@ function InternalFileUpload(
             limitShowFewer: i18nStrings.limitShowFewer,
             limitShowMore: i18nStrings.limitShowMore,
           }}
-          removedItemIndex={removedItemIndex}
+          removedItemIndex={removedFileIndex}
         />
       ) : null}
     </InternalSpaceBetween>
