@@ -33,21 +33,21 @@ const ListItem = ({ children, startIcon, endIcon }: ListItemProps) => {
   );
 };
 
-interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external'> {}
+interface LinkItemProps extends ButtonItemProps, Pick<LinkProps, 'href' | 'external' | 'target' | 'rel'> {}
 
 const LinkItem = forwardRef(
   (
-    { children, external, href, startIcon, endIcon, onFollow, context, testId }: LinkItemProps,
+    { children, external, href, target, rel, startIcon, endIcon, onFollow, context, testId }: LinkItemProps,
     ref: React.Ref<HTMLAnchorElement>
   ) => {
     const focusVisible = useFocusVisible();
-    const rel = external ? 'noopener noreferrer' : undefined;
-    const target = external ? '_blank' : undefined;
+    const anchorTarget = target ?? (external ? '_blank' : undefined);
+    const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
 
     const anchorProps = {
-      rel,
-      target,
       href,
+      target: anchorTarget,
+      rel: anchorRel,
       onClick(event: React.MouseEvent) {
         if (isPlainLeftClick(event)) {
           onFollow?.(event);
@@ -230,6 +230,8 @@ function utilityComponentFactory(
           startIcon={startIcon}
           href={utility.href}
           external={utility.external}
+          target={utility.target}
+          rel={utility.rel}
           testId={`__${index}`}
           onFollow={handleClick}
         >

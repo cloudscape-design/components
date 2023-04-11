@@ -35,15 +35,18 @@ $active-separator-width: 2px;
     &:hover,
     &-active {
       &::before {
-        $gap: calc(#{awsui.$space-xs} + #{awsui.$space-xxxs});
+        $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
         content: '';
         position: absolute;
         left: calc(#{$handle-width} / 2 - #{$active-separator-width});
-        bottom: $gap;
-        top: $gap;
-        box-sizing: border-box;
+        bottom: 0;
+        top: 0;
+        min-height: awsui.$font-heading-xs-line-height;
+        max-height: calc(100% - #{$gap});
+        margin: auto;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
+        box-sizing: border-box;
       }
     }
   }
