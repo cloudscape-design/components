@@ -278,14 +278,23 @@ const OldAppLayout = React.forwardRef(
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
 
-    const effectiveToolsWidth =
-      toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && !drawers
-        ? 0
-        : selectedDrawer?.resizable
-        ? drawerSize
-        : toolsOpen || activeDrawerId
-        ? toolsWidth
-        : closedDrawerWidth;
+    const getEffectiveToolsWidth = () => {
+      if (toolsHide && (!splitPanelDisplayed || splitPanelPreferences?.position !== 'side') && !drawers) {
+        return 0;
+      }
+
+      if (selectedDrawer?.resizable) {
+        return drawerSize;
+      }
+
+      if (toolsOpen || activeDrawerId) {
+        return toolsWidth;
+      }
+
+      return closedDrawerWidth;
+    };
+
+    const effectiveToolsWidth = getEffectiveToolsWidth();
 
     const defaultSplitPanelSize = getSplitPanelDefaultSize(splitPanelPosition);
     const [splitPanelSize = defaultSplitPanelSize, setSplitPanelSize] = useControllable(
@@ -416,24 +425,34 @@ const OldAppLayout = React.forwardRef(
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
+    const getSplitPanelRightOffset = () => {
+      if (isMobile) {
+        return 0;
+      }
+
+      if (drawers) {
+        if (activeDrawerId) {
+          if (selectedDrawer.resizable) {
+            return drawerSize + closedDrawerWidth;
+          }
+
+          return toolsWidth + closedDrawerWidth;
+        }
+        return closedDrawerWidth;
+      }
+
+      if (!toolsHide && toolsOpen) {
+        return toolsWidth;
+      }
+      return toolsClosedWidth;
+    };
+
     const splitPanelContext: SplitPanelContextProps = {
       topOffset: headerHeight + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight || 0 : 0),
       bottomOffset: footerHeight,
       leftOffset:
         leftOffset + (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
-      rightOffset:
-        rightOffset +
-        (isMobile
-          ? 0
-          : drawers && activeDrawerId && selectedDrawer.resizable
-          ? drawerSize + closedDrawerWidth
-          : drawers && activeDrawerId && !selectedDrawer.resizable
-          ? toolsWidth + closedDrawerWidth
-          : drawers && !activeDrawerId
-          ? closedDrawerWidth
-          : !toolsHide && toolsOpen && !drawers
-          ? toolsWidth
-          : toolsClosedWidth),
+      rightOffset: rightOffset + getSplitPanelRightOffset(),
       position: finalSplitPanePosition,
       size: splitPanelSize,
       getMaxWidth: getSplitPanelMaxWidth,
