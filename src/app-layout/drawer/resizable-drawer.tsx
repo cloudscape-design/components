@@ -56,9 +56,10 @@ export const ResizableDrawer = ({
   const setSidePanelWidth = (width: number) => {
     const maxWidth = getMaxWidth();
     const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
+    const id = activeDrawer.id;
 
     if (isOpen && maxWidth >= MIN_WIDTH) {
-      onResize({ size });
+      onResize({ size, id });
     }
   };
 
