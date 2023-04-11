@@ -14,9 +14,6 @@ import useLiveAnnouncements from './use-live-announcements';
 
 const componentPrefix = 'content-display';
 
-const isVisible = (id: string, contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) =>
-  !!contentDisplay.find(item => item.id === id)?.visible;
-
 const className = (suffix: string) => ({
   className: styles[`${componentPrefix}-${suffix}`],
 });
@@ -43,8 +40,14 @@ export default function ContentDisplayPreference({
   dragHandleAriaLabel,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
+
+  const isVisible = (id: string) => {
+    const option = options.find(option => option.id === id);
+    return !!(option?.alwaysVisible || value.find(item => item.id === id)?.visible);
+  };
+
   const onToggle = (id: string) => {
-    onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id, value) } : item)));
+    onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id) } : item)));
   };
 
   const labelId = `${idPrefix}-label`;
@@ -100,7 +103,7 @@ export default function ContentDisplayPreference({
                   key={option.id}
                   idPrefix={idPrefix}
                   isKeyboard={isKeyboard}
-                  isVisible={isVisible(option.id, value)}
+                  isVisible={isVisible(option.id)}
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}
                   option={option}

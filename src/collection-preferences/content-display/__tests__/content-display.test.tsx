@@ -29,6 +29,13 @@ describe('Content Display preference', () => {
     }
   });
 
+  it('forces non-editable options to be visible', () => {
+    const wrapper = renderContentDisplay();
+    const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput().getElement();
+    expect(toggleInput).toBeChecked();
+    expect(toggleInput).toBeDisabled();
+  });
+
   it('reorders content items with the keyboard', () => {
     const wrapper = renderContentDisplay();
     const items = wrapper.findOptions();

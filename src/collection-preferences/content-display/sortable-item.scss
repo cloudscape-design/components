@@ -8,6 +8,10 @@
 
 $border-radius: awsui.$border-radius-item;
 
+.sortable-item-toggle {
+  /* used in test-utils */
+}
+
 .sortable-item {
   position: relative;
 }
