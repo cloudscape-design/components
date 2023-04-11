@@ -3,7 +3,6 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../file-upload/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
-import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import ButtonWrapper from '../button';
@@ -32,7 +31,7 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
    */
   findFileToken(fileTokenIndex: number): null | FileTokenWrapper {
     return this.findComponent(
-      `.${spaceBetweenSelectors.child}:nth-child(${fileTokenIndex}) > .${tokenGroupSelectors.token}`,
+      `.${tokenListSelectors['list-item']}:nth-child(${fileTokenIndex}) .${tokenGroupSelectors.token}`,
       FileTokenWrapper
     );
   }
