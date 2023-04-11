@@ -171,6 +171,7 @@ export default () => {
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           resizableColumns={true}
+          selectionType="multi"
           variant="embedded"
           preferences={
             <CollectionPreferences

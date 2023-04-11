@@ -102,7 +102,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       border-radius: 0 awsui.$border-radius-item awsui.$border-radius-item 0;
     }
   }
-  &.sticky-cell-freeze {
+  &.sticky-cell {
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-paced;
@@ -125,7 +125,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       &:last-child {
         box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
-        &.sticky-cell-freeze-last-right {
+        &.sticky-cell-last-right {
           box-shadow: awsui.$shadow-sticky-column-end, 8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
         }
@@ -213,7 +213,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &.body-cell-editable {
     position: relative;
     cursor: pointer;
-    &.sticky-cell-freeze {
+    &.sticky-cell {
       position: sticky;
     }
 
@@ -231,7 +231,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         border: awsui.$border-divider-list-width solid awsui.$color-border-control-default;
         left: calc(-1 * #{awsui.$border-divider-list-width});
         right: calc(-1 * #{awsui.$border-divider-list-width});
-        &.sticky-cell-freeze {
+        &.sticky-cell {
           position: sticky;
         }
         & > .body-cell-editor {
@@ -268,7 +268,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
             'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
           )
         );
-        &.sticky-cell-freeze {
+        &.sticky-cell {
           position: sticky;
         }
       }

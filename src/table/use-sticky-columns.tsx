@@ -87,9 +87,9 @@ export function getStickyClassNames({
   isStuckToTheRight,
 }: GetStickyClassNamesProps) {
   return clsx({
-    [styles['sticky-cell-freeze']]: isSticky,
-    [styles['sticky-cell-freeze-last-left']]: isStuckToTheLeft && isLastStickyLeft,
-    [styles['sticky-cell-freeze-last-right']]: isStuckToTheRight && isLastStickyRight,
+    [styles['sticky-cell']]: isSticky,
+    [styles['sticky-cell-last-left']]: isStuckToTheLeft && isLastStickyLeft,
+    [styles['sticky-cell-last-right']]: isStuckToTheRight && isLastStickyRight,
   });
 }
 

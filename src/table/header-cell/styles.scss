@@ -23,7 +23,7 @@ $active-separator-width: 2px;
   &-sticky {
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
-  &.sticky-cell-freeze {
+  &.sticky-cell {
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-paced;
@@ -71,6 +71,10 @@ $active-separator-width: 2px;
     margin: auto;
     border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
     box-sizing: border-box;
+  }
+
+  &.is-visual-refresh:last-child:before {
+    right: 1px; // Move last resize handle 1px inwards to avoid it being cut off
   }
 
   &-resizable {

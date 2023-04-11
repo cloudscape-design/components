@@ -48,7 +48,6 @@ export function TableTdElement({
   const isVisualRefresh = useVisualRefresh();
   const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties();
   const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
-  console.log({ isStuckToTheLeft });
   return (
     <td
       style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
