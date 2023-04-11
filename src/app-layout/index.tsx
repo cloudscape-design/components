@@ -676,6 +676,7 @@ const OldAppLayout = React.forwardRef(
                   toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
                   closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
                   ariaLabels={ariaLabels}
+                  drawersAriaLabels={selectedDrawer?.ariaLabels}
                   width={selectedDrawer?.resizable ? drawerSize : toolsWidth}
                   bottomOffset={footerHeight}
                   topOffset={headerHeight}
@@ -683,7 +684,7 @@ const OldAppLayout = React.forwardRef(
                   onToggle={onToolsToggle}
                   isOpen={toolsOpen || activeDrawerId !== undefined}
                   toggleRefs={toolsRefs}
-                  type="tools"
+                  type={'tools'}
                   onLoseFocus={loseToolsFocus}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
@@ -727,6 +728,7 @@ const OldAppLayout = React.forwardRef(
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}
+                ariaLabel={drawers.ariaLabel}
                 drawers={{
                   items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
                   activeDrawerId: selectedDrawer?.id,

@@ -6,7 +6,7 @@ import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem } from './interfaces';
+import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -36,6 +36,7 @@ export const Drawer = React.forwardRef(
       topOffset,
       bottomOffset,
       ariaLabels,
+      drawersAriaLabels,
       children,
       isOpen,
       isMobile,
@@ -53,7 +54,12 @@ export const Drawer = React.forwardRef(
     const drawerContentWidthOpen = isMobile ? undefined : width;
     const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
 
-    const activeDrawer = drawers?.items.find(item => item.id === drawers.activeDrawerId);
+    const getDrawersLabels = (labels: DrawerItemAriaLabels = {}) => ({
+      drawerMainLabel: labels?.content,
+      drawerOpenLabel: labels?.triggerButton,
+      drawerCloseLabel: labels?.closeButton,
+    });
+    const { drawerMainLabel, drawerCloseLabel } = getDrawersLabels(drawersAriaLabels);
 
     const regularOpenButton = (
       <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
@@ -107,11 +113,11 @@ export const Drawer = React.forwardRef(
         >
           {!isMobile && regularOpenButton}
           {resizeHandle}
-          <TagName aria-label={activeDrawer?.ariaLabels.content || mainLabel} aria-hidden={!isOpen}>
+          <TagName aria-label={drawers ? drawerMainLabel : mainLabel} aria-hidden={!isOpen}>
             <CloseButton
               ref={toggleRefs.close}
               className={closeClassName}
-              ariaLabel={activeDrawer?.ariaLabels.closeButton || closeLabel}
+              ariaLabel={drawers ? drawerCloseLabel : closeLabel}
               onClick={() => {
                 onToggle(false);
                 drawers?.onChange({ activeDrawerId: undefined });
@@ -125,7 +131,14 @@ export const Drawer = React.forwardRef(
   }
 );
 
-export function DrawerTriggersBar({ isMobile, topOffset, bottomOffset, drawers, contentClassName }: DrawerTriggersBar) {
+export function DrawerTriggersBar({
+  isMobile,
+  topOffset,
+  bottomOffset,
+  drawers,
+  contentClassName,
+  ariaLabel,
+}: DrawerTriggersBar) {
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
@@ -137,7 +150,7 @@ export function DrawerTriggersBar({ isMobile, topOffset, bottomOffset, drawers, 
         className={clsx(styles['drawer-content'], styles['non-interactive'], contentClassName)}
       >
         {!isMobile && (
-          <aside aria-label="Drawers" className={styles['drawer-triggers']}>
+          <aside aria-label={ariaLabel} className={styles['drawer-triggers']}>
             {drawers?.items?.map((item: DrawerItem, index: number) => (
               <AppLayoutButton
                 className={clsx(

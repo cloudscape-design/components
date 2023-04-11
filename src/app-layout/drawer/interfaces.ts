@@ -22,6 +22,7 @@ export interface DesktopDrawerProps {
   topOffset: number | undefined;
   bottomOffset: number | undefined;
   ariaLabels: AppLayoutProps.Labels | undefined;
+  drawersAriaLabels?: DrawerItemAriaLabels | undefined;
   children: React.ReactNode;
   type: keyof typeof togglesConfig;
   isMobile: boolean;
@@ -54,6 +55,13 @@ export interface DrawerTriggersBar {
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
+  ariaLabel: string;
+}
+
+export interface DrawerItemAriaLabels {
+  content?: string;
+  closeButton?: string;
+  triggerButton?: string;
 }
 
 export interface DrawerItem {
@@ -63,11 +71,7 @@ export interface DrawerItem {
     iconName?: IconProps.Name;
     iconSvg?: React.ReactNode;
   };
-  ariaLabels: {
-    content: string;
-    closeButton: string;
-    triggerButton: string;
-  };
+  ariaLabels: DrawerItemAriaLabels;
   resizable?: boolean;
   onResize?: NonCancelableEventHandler<{ size: number }>;
   size?: number;

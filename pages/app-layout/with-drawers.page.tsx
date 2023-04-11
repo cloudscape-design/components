@@ -26,6 +26,7 @@ export default function WithDrawers() {
     ? null
     : {
         drawers: {
+          ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
           items: [
             {
