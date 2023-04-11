@@ -10,13 +10,14 @@ import {
 } from '@dnd-kit/utilities';
 
 import { defaultCoordinates } from '@dnd-kit/core';
-import { getScrollPosition, getScrollElementRect, scrollIntoViewIfNeeded } from './utilities/scroll';
+import { getScrollPosition, getScrollElementRect } from './utilities/scroll';
 import { EventName } from './utilities/events';
 import { Listeners } from './utilities/listeners';
 import type { Activators, SensorInstance } from '@dnd-kit/core';
 import { KeyboardCode, KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
 
 import { defaultKeyboardCodes } from './defaults';
+import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
 
 export class KeyboardSensor implements SensorInstance {
   public autoScrollEnabled = false;
@@ -53,7 +54,7 @@ export class KeyboardSensor implements SensorInstance {
     const node = activeNode.node.current;
 
     if (node) {
-      scrollIntoViewIfNeeded(node);
+      scrollElementIntoView(node);
     }
 
     onStart(defaultCoordinates);
