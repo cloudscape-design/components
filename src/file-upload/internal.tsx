@@ -9,6 +9,7 @@ import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import styles from './styles.css.js';
+import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -142,7 +143,13 @@ function InternalFileUpload(
 
       {/* When multiple=`false` the component can have at most one file selected. Using a list representation is unnecessary in that case. */}
       {!multiple && value.length === 1 ? (
-        <div role="group" aria-label={value[0].name} aria-describedby={fileErrorId}>
+        <div
+          role="group"
+          aria-label={value[0].name}
+          aria-describedby={fileErrors?.[0] ? fileErrorId : undefined}
+          // Adding the 'list-item' class for test-utils method to find the item w/o the need in providing `multiple` argument.
+          className={tokenListStyles['list-item']}
+        >
           <Token
             dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
             onDismiss={() => onFileRemove(0)}
@@ -160,7 +167,7 @@ function InternalFileUpload(
           items={value}
           itemAttributes={(file, fileIndex) => ({
             'aria-label': file.name,
-            'aria-describedby': `${fileErrorId}-${fileIndex}`,
+            'aria-describedby': fileErrors?.[fileIndex] ? `${fileErrorId}-${fileIndex}` : undefined,
           })}
           renderItem={(file, fileIndex) => (
             <Token

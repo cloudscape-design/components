@@ -28,6 +28,7 @@ const defaultProps: FileUploadProps = {
     uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
     dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
     removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
+    errorIconAriaLabel: 'Error',
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',
   },
@@ -53,6 +54,12 @@ function render(props: Partial<FileUploadProps>) {
 }
 
 describe('FileUpload input', () => {
+  // TODO: add programmatic file upload test
+  // TODO: test error text assoc
+  // TODO: test constraint text assoc
+  // TODO: test aria-invalid
+  // TODO: test focusing
+
   test('`multiple` property is assigned', () => {
     expect(render({ multiple: false }).findNativeInput().getElement()).not.toHaveAttribute('multiple');
     expect(render({ multiple: true }).findNativeInput().getElement()).toHaveAttribute('multiple');
@@ -104,6 +111,10 @@ describe('FileUpload input', () => {
 });
 
 describe('File upload tokens', () => {
+  // TODO: test file errors assignment and association
+  // TODO: test token list vs token group!!!!
+  // TODO: test token aria label and descrition
+
   test.each([false, true])(`when multiple=%s all file tokens are shown`, multiple => {
     const wrapper = render({ multiple, value: [file1, file2] });
 
@@ -146,7 +157,6 @@ describe('File upload tokens', () => {
     const wrapper = render({ value: [file1] });
 
     expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
-    expect(wrapper.findFileToken(1)!.findFileType()).toBe(null);
     expect(wrapper.findFileToken(1)!.findFileSize()).toBe(null);
     expect(wrapper.findFileToken(1)!.findFileLastModified()).toBe(null);
     expect(wrapper.findFileToken(1)!.findFileThumbnail()).toBe(null);
@@ -159,7 +169,6 @@ describe('File upload tokens', () => {
       showFileLastModified: true,
     });
     expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
-    expect(wrapper.findFileToken(1)!.findFileType()!.getElement()).toHaveTextContent('text/plain');
     expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('0.01 KB');
     expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020-06-01T00:00:00');
   });
@@ -202,19 +211,66 @@ describe('File upload tokens', () => {
     expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020 year');
   });
 
-  test('the `limit` property controls the number of tokens shown by default', () => {
-    const wrapper = render({ multiple: true, value: [file1, file2], limit: 1 });
+  test('the `tokenLimit` property controls the number of tokens shown by default', () => {
+    const wrapper = render({ multiple: true, value: [file1, file2], tokenLimit: 1 });
     expect(wrapper.findFileTokens()).toHaveLength(1);
     expect(wrapper.getElement().textContent).toContain('Show more files');
   });
 });
 
-test('a11y', async () => {
-  const wrapper = render({
-    multiple: true,
-    value: [file1, file2],
-    showFileSize: true,
-    showFileLastModified: true,
+describe('a11y', () => {
+  test('multiple empty', async () => {
+    const wrapper = render({ multiple: true, value: [] });
+    await expect(wrapper.getElement()).toValidateA11y();
   });
-  await expect(wrapper.getElement()).toValidateA11y();
+
+  test('multiple empty w/ constraint and error', async () => {
+    const wrapper = render({ multiple: true, value: [], constraintText: 'Constraint', errorText: 'Error' });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('single w/o errors', async () => {
+    const wrapper = render({
+      value: [file1],
+      showFileSize: true,
+      showFileLastModified: true,
+      constraintText: 'Constraint',
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('single w/ errors', async () => {
+    const wrapper = render({
+      value: [file1],
+      showFileSize: true,
+      showFileLastModified: true,
+      constraintText: 'Constraint',
+      errorText: 'Error',
+      fileErrors: ['File error'],
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('multiple w/o errors', async () => {
+    const wrapper = render({
+      multiple: true,
+      value: [file1, file2],
+      showFileSize: true,
+      showFileLastModified: true,
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('multiple w/ errors', async () => {
+    const wrapper = render({
+      multiple: true,
+      value: [file1, file2],
+      showFileSize: true,
+      showFileLastModified: true,
+      constraintText: 'Constraint',
+      errorText: '2 files have error(s)',
+      fileErrors: ['File 1 error', 'File 2 error'],
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
 });
