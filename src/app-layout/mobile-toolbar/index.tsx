@@ -59,6 +59,7 @@ interface MobileToolbarProps {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    ariaLabel?: string;
   };
 }
 
@@ -111,8 +112,11 @@ export function MobileToolbar({
         />
       )}
       {drawers && (
-        <aside aria-label="Drawers" className={clsx(styles['mobile-toggle'], styles['mobile-toggle-with-drawers'])}>
-          {drawers?.items.map((item: DrawerItem, index: number) => (
+        <aside
+          aria-label={drawers.ariaLabel}
+          className={clsx(styles['mobile-toggle'], styles['mobile-toggle-with-drawers'])}
+        >
+          {drawers.items.map((item: DrawerItem, index: number) => (
             <AppLayoutButton
               className={clsx(
                 styles.trigger,

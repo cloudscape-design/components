@@ -53,8 +53,8 @@ export interface DrawerTriggersBar {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    ariaLabel: string;
   };
-  ariaLabel: string;
 }
 
 export interface DrawerItemAriaLabels {
