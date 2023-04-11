@@ -127,22 +127,24 @@ const ExpandableContainerHeader = ({
 }: ExpandableContainerHeaderProps) => {
   const focusVisible = useFocusVisible();
   const screenreaderContentId = useUniqueId('expandable-section-header-content-');
-  const Wrapper =
-    variant === 'container'
-      ? ({ children }: { children: ReactNode }) => (
-          <InternalHeader
-            variant="h2"
-            description={headerDescription}
-            counter={headerCounter}
-            headingTagOverride={headingTagOverride}
-          >
-            {children}
-          </InternalHeader>
-        )
-      : ({ children }: { children: ReactNode }) => {
-          const Tag = headingTagOverride || 'div';
-          return <Tag className={styles['header-wrapper']}>{children}</Tag>;
-        };
+  const isContainer = variant === 'container';
+
+  const Wrapper = isContainer
+    ? ({ children }: { children: ReactNode }) => (
+        <InternalHeader
+          variant="h2"
+          description={headerDescription}
+          counter={headerCounter}
+          headingTagOverride={headingTagOverride}
+        >
+          {children}
+        </InternalHeader>
+      )
+    : ({ children }: { children: ReactNode }) => {
+        const Tag = headingTagOverride || 'div';
+        return <Tag className={styles['header-wrapper']}>{children}</Tag>;
+      };
+
   return (
     <div id={id} className={className} onClick={onClick} {...focusVisible}>
       <Wrapper>
@@ -154,7 +156,7 @@ const ExpandableContainerHeader = ({
           onKeyDown={onKeyDown}
           aria-label={ariaLabel}
           // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-          aria-labelledby={ariaLabel ? undefined : screenreaderContentId}
+          aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
           aria-controls={ariaControls}
           aria-expanded={expanded}
         >
@@ -162,9 +164,11 @@ const ExpandableContainerHeader = ({
           <span>{children}</span>
         </span>
       </Wrapper>
-      <ScreenreaderOnly id={screenreaderContentId}>
-        {children} {headerCounter} {headerDescription}
-      </ScreenreaderOnly>
+      {isContainer && (
+        <ScreenreaderOnly id={screenreaderContentId}>
+          {children} {headerCounter} {headerDescription}
+        </ScreenreaderOnly>
+      )}
     </div>
   );
 };
