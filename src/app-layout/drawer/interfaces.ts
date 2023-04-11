@@ -8,8 +8,6 @@ import { IconProps } from '../../icon/interfaces';
 
 import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
 
-import { NonCancelableEventHandler } from '../../internal/events';
-
 export interface DesktopDrawerProps {
   contentClassName: string;
   toggleClassName: string;
@@ -40,7 +38,7 @@ export interface DesktopDrawerProps {
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
   activeDrawer: DrawerItem;
-  onResize: (resizeDetail: { size: number }) => void;
+  onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
   refs: DrawerFocusControlRefs;
@@ -74,7 +72,6 @@ export interface DrawerItem {
   };
   ariaLabels: DrawerItemAriaLabels;
   resizable?: boolean;
-  onResize?: NonCancelableEventHandler<{ size: number }>;
   size?: number;
 }
 

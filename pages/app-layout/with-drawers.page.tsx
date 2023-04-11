@@ -20,7 +20,10 @@ export default function WithDrawers() {
   const [hasDrawers, setHasDrawers] = useState(true);
   const [hasTools, setHasTools] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [drawersWidth, setDrawersWidth] = useState(400);
+  const [drawersWidths, setDrawersWidths] = useState([
+    { id: 'security', size: 400 },
+    { id: 'pro-help', size: 280 },
+  ]);
 
   const drawers = !hasDrawers
     ? null
@@ -28,6 +31,9 @@ export default function WithDrawers() {
         drawers: {
           ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
+          onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
+            setDrawersWidths([{ id: event.detail.id, size: event.detail.size }]);
+          },
           items: [
             {
               ariaLabels: {
@@ -39,10 +45,8 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
-              size: drawersWidth,
-              onResize: (event: NonCancelableCustomEvent<{ size: number }>) => {
-                setDrawersWidth(event.detail.size);
-              },
+              size: drawersWidths.find(drawer => drawer.id === 'security')?.size,
+
               trigger: {
                 iconName: 'security',
               },
@@ -55,6 +59,8 @@ export default function WithDrawers() {
                 resizeHandle: 'ProHelp resize handle',
               },
               content: <ProHelp />,
+              resizable: true,
+              size: drawersWidths.find(drawer => drawer.id === 'pro-help')?.size,
               id: 'pro-help',
               trigger: {
                 iconName: 'contact',
