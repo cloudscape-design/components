@@ -36,7 +36,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   multiple?: boolean;
   /**
-   * Called when the user selects new file(s) or removes a file.
+   * Called when the user selects new file(s), or removes a file.
    * The event `detail` contains the current value of the component.
    */
   onChange?: NonCancelableEventHandler<FileUploadProps.ChangeDetail>;
@@ -50,7 +50,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   tokenLimit?: number;
   /**
-   * Constraint text that's displayed below the control. Use this to provide additional information about file size limit, etc.
+   * Constraint text that is displayed below the control. Use this to provide additional information about file size limit, etc.
    */
   constraintText?: React.ReactNode;
   /**
@@ -58,18 +58,19 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   errorText?: React.ReactNode;
   /**
-   * An array of file errors corresponding the files in the `value`.
+   * An array of file errors corresponding to the files in the `value`.
    */
   fileErrors?: null | ReadonlyArray<null | string>;
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
+   * * `dropzoneText` (function): A function to render the text shown in the dropzone. It takes `multiple` attribute to define plurality.
    * * `removeFileAriaLabel` (function): A function to render the ARIA label for file token remove button.
    * * `limitShowFewer` (string): The text of the show more tokens button.
    * * `limitShowMore` (string): The text of the show fewer tokens button.
    * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.
-   * * `formatFileSize` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
-   * * `formatFileLastModified` (function): (Optional) A function that takes file last modified date object and produces a formatted string.
+   * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
+   * * `formatFileLastModified` (function): (Optional) A function that takes file's last modified date, and produces a formatted string.
    */
   i18nStrings: FileUploadProps.I18nStrings;
 }
