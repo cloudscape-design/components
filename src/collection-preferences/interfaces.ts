@@ -210,22 +210,17 @@ export namespace CollectionPreferencesProps {
     first?: number;
     last?: number;
   }
+
+  interface StickyColumnPreference {
+    title: string;
+    description: string;
+    options: ReadonlyArray<{
+      label: string;
+      value: number;
+    }>;
+  }
   export interface StickyColumnsPreference {
-    firstColumns?: {
-      title: string;
-      description: string;
-      options: ReadonlyArray<{
-        label: string;
-        value: number;
-      }>;
-    };
-    lastColumns?: {
-      title: string;
-      description: string;
-      options: ReadonlyArray<{
-        label: string;
-        value: number;
-      }>;
-    };
+    firstColumns?: StickyColumnPreference;
+    lastColumns?: StickyColumnPreference;
   }
 }
