@@ -195,6 +195,12 @@ const OldAppLayout = React.forwardRef(
       setFocus: focusToolsButtons,
       loseFocus: loseToolsFocus,
     } = useFocusControl(toolsOpen || activeDrawerId, true);
+    const {
+      refs: drawerRefs,
+      setFocus: focusDrawersButtons,
+      loseFocus: loseDrawersFocus,
+      setLastInteraction: setDrawerLastInteraction,
+    } = useDrawerFocusControl([selectedDrawer?.resizable], toolsOpen || activeDrawerId, true);
 
     const onNavigationToggle = useCallback(
       (open: boolean) => {
@@ -208,9 +214,10 @@ const OldAppLayout = React.forwardRef(
       (open: boolean) => {
         setToolsOpen(open);
         focusToolsButtons();
+        focusDrawersButtons();
         fireNonCancelableEvent(onToolsChange, { open });
       },
-      [setToolsOpen, onToolsChange, focusToolsButtons]
+      [setToolsOpen, onToolsChange, focusToolsButtons, focusDrawersButtons]
     );
 
     const onNavigationClick = (event: React.MouseEvent) => {
@@ -319,10 +326,6 @@ const OldAppLayout = React.forwardRef(
     const { refs: splitPanelRefs, setLastInteraction: setSplitPanelLastInteraction } = useSplitPanelFocusControl([
       splitPanelPreferences,
       splitPanelOpen,
-    ]);
-
-    const { refs: drawerRefs, setLastInteraction: setDrawerLastInteraction } = useDrawerFocusControl([
-      selectedDrawer?.resizable,
     ]);
 
     const onSplitPanelPreferencesSet = useCallback(
@@ -687,7 +690,7 @@ const OldAppLayout = React.forwardRef(
                   isOpen={toolsOpen || activeDrawerId !== undefined}
                   toggleRefs={toolsRefs}
                   type="tools"
-                  onLoseFocus={loseToolsFocus}
+                  onLoseFocus={drawers ? loseDrawersFocus : loseToolsFocus}
                   activeDrawer={selectedDrawer}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
