@@ -11684,6 +11684,10 @@ add a meaningful description to the whole selection.
                      Specifies an alternative text for the cancel button in editable cells.
 * \`submitEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the submit button in editable cells.
+* \`successfulEditLabel\` (EditableColumnDefinition) => string -
+                     Specifies an alternative text for the success icon in editable cells.
+* \`loadingEditText\` (EditableColumnDefinition) => string -
+                     Specifies a text that is announced to screen readers while loading a submission in editable cells.
 ",
       "inlineType": Object {
         "name": "TableProps.AriaLabels",
@@ -11709,12 +11713,22 @@ add a meaningful description to the whole selection.
             "type": "(data: TableProps.SelectionState<T>, row: T) => string",
           },
           Object {
+            "name": "loadingEditText",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
             "name": "selectionGroupLabel",
             "optional": true,
             "type": "string",
           },
           Object {
             "name": "submitEditLabel",
+            "optional": true,
+            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+          },
+          Object {
+            "name": "successfulEditLabel",
             "optional": true,
             "type": "(column: TableProps.ColumnDefinition<any>) => string",
           },

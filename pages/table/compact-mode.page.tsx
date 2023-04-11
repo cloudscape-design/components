@@ -279,6 +279,8 @@ export default function App() {
             activateEditLabel: (column, item) => `Edit ${item.name} ${column.header}`,
             cancelEditLabel: column => `Cancel editing ${column.header}`,
             submitEditLabel: column => `Submit edit ${column.header}`,
+            loadingEditText: () => 'Loading edit response',
+            successfulEditLabel: () => 'Edit successful',
           }}
           contentDensity={inlineEditTableDensity}
           empty={

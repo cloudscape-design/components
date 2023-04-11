@@ -8,6 +8,7 @@ import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
+import LiveRegion from '../../internal/components/live-region/index.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -17,8 +18,9 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  successfulEdit?: boolean;
   onEditStart: () => void;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
@@ -33,6 +35,7 @@ function TableCellEditable<ItemType>({
   submitEdit,
   ariaLabels,
   isVisualRefresh,
+  successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const editActivateRef = useRef<HTMLButtonElement>(null);
@@ -59,6 +62,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
+        successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
@@ -85,6 +89,12 @@ function TableCellEditable<ItemType>({
           >
             {showIcon && <Icon name="edit" />}
           </button>
+          {successfulEdit && (
+            <span className={styles['body-cell-success']} aria-label="Edit successful" role="img">
+              <Icon name="status-positive" variant="success" />
+            </span>
+          )}
+          <LiveRegion>{successfulEdit ? ariaLabels?.successfulEditLabel?.(column) : ''}</LiveRegion>
         </>
       )}
     </TableTdElement>

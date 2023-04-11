@@ -134,6 +134,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
+  &-success,
   &-editor {
     top: 0;
     right: 0;
