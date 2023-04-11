@@ -35,8 +35,6 @@ interface TableHeaderCellProps<ItemType> {
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
-  isStuckToTheRight?: boolean;
-  isStuckToTheLeft?: boolean;
 }
 
 export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemType>(
@@ -123,9 +121,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
               })
             : undefined
         }
-        {...(sortingDisabled || !sortingStatus
-          ? { ['aria-disabled']: 'true' }
-          : {
+        {...(sortingStatus && !sortingDisabled
+          ? {
               onKeyPress: handleKeyPress,
               tabIndex: tabIndex,
               role: 'button',
@@ -133,7 +130,8 @@ export const TableHeaderCell = React.forwardRef(function TableHeaderCell<ItemTyp
               onClick: handleClick,
               onFocus: () => onFocusedComponentChange?.({ type: 'column', col: colIndex }),
               onBlur: () => onFocusedComponentChange?.(null),
-            })}
+            }
+          : {})}
       >
         <div className={clsx(styles['header-cell-text'], wrapLines && styles['header-cell-text-wrap'])} id={headerId}>
           {column.header}

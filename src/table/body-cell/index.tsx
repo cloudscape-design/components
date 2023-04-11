@@ -17,19 +17,15 @@ const submitHandlerFallback = () => {
 };
 
 interface TableBodyCellProps<ItemType> extends TableTdElementProps {
-  column: TableProps.ColumnDefinition<any>;
+  column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
   onEditStart: () => void;
   onEditEnd: () => void;
-  submitEdit?: TableProps.SubmitEditFunction<any>;
+  submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
   tdRef: React.Ref<HTMLTableCellElement>;
 }
-
-// type TableCellEditableProps<ItemType> = TableBodyCellProps<ItemType> & {
-//   tdRef: React.Ref<HTMLTableCellElement>;
-// };
 
 function TableCellEditable<ItemType>({
   className,
