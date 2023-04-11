@@ -5,6 +5,7 @@ import styles from '../../../file-upload/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 import spaceBetweenSelectors from '../../../space-between/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
+import formFieldStyles from '../../../form-field/styles.selectors.js';
 import ButtonWrapper from '../button';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
@@ -41,6 +42,14 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
    */
   findTokenToggle(): ElementWrapper | null {
     return this.findByClassName(tokenListSelectors.toggle);
+  }
+
+  findConstraint(): ElementWrapper | null {
+    return this.find(`:scope > .${formFieldStyles.hints} .${formFieldStyles.constraint}`);
+  }
+
+  findError(): ElementWrapper | null {
+    return this.find(`:scope > .${formFieldStyles.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
 }
 
