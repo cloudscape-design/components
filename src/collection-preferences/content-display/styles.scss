@@ -30,4 +30,6 @@
   position: relative;
   list-style: none;
   padding: 0;
+  /* Prevent inner elements from eventually overlapping the footer */
+  z-index: 0;
 }
