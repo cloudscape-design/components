@@ -93,6 +93,14 @@ describe('TopNavigation Utility part', () => {
       expect(buttonWrapper.getElement()).toHaveAttribute('target', 'target');
       expect(buttonWrapper.getElement()).toHaveAttribute('rel', 'rel');
     });
+
+    it('fires onClick with empty detail', () => {
+      const onClick = jest.fn();
+      const buttonWrapper = renderUtility({ definition: { type: 'button', onClick } }).findButtonLinkType()!;
+      buttonWrapper.click();
+
+      expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
+    });
   });
 
   describe('Primary button', () => {
