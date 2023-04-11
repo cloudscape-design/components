@@ -22,11 +22,9 @@ import styles from './styles.css.js';
 import { SomeRequired } from '../internal/types';
 import FocusLock from '../internal/components/focus-lock';
 import { useInternalI18n } from '../internal/i18n/context';
-import { createIntersectionObserver } from '../internal/hooks/use-intersection-observer';
+import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
-
-const useIntersectionObserver = createIntersectionObserver();
 
 export default function InternalModal({
   size,
