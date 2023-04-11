@@ -110,7 +110,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
     position: sticky;
     background: awsui.$color-background-container-content;
-    z-index: 11;
+    z-index: 800;
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
     }

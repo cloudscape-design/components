@@ -154,7 +154,7 @@ filter search icon.
   margin-top: -15px;
   bottom: 0;
   width: 100%;
-  z-index: 15; // Higher than sticky columns
+  z-index: 800;
 
   &-content {
     height: 15px;
