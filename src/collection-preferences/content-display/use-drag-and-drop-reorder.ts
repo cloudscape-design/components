@@ -224,5 +224,4 @@ function createAdjustmentFn(modifier: number) {
   };
 }
 
-export const add = createAdjustmentFn(1);
-export const subtract = createAdjustmentFn(-1);
+const subtract = createAdjustmentFn(-1);
