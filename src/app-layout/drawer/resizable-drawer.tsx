@@ -29,9 +29,15 @@ import { SizeControlProps, ResizableDrawerProps } from './interfaces';
 // * https://github.com/nvaccess/nvda/issues/5825
 // * https://github.com/nvaccess/nvda/issues/5247
 // * https://github.com/nvaccess/nvda/pull/8869 (reverted PR that was going to fix it)
-export const ResizableDrawer = ({ onResize, size, getMaxWidth, refs, ...props }: ResizableDrawerProps) => {
-  const { isOpen, children, drawers, isMobile } = props;
-  const activeDrawer = drawers?.items.find(item => item.id === drawers.activeDrawerId);
+export const ResizableDrawer = ({
+  onResize,
+  size,
+  getMaxWidth,
+  refs,
+  activeDrawer,
+  ...props
+}: ResizableDrawerProps) => {
+  const { isOpen, children, isMobile } = props;
 
   const MIN_WIDTH = activeDrawer?.size && activeDrawer.size < 280 ? activeDrawer?.size : 280;
   const [relativeSize, setRelativeSize] = useState(0);
@@ -95,7 +101,7 @@ export const ResizableDrawer = ({ onResize, size, getMaxWidth, refs, ...props }:
       ref={drawerRefObject}
       resizeHandle={
         !isMobile &&
-        activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
+        activeDrawer.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
       }
     >
       {children}

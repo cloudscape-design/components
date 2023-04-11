@@ -686,6 +686,7 @@ const OldAppLayout = React.forwardRef(
                   toggleRefs={toolsRefs}
                   type={'tools'}
                   onLoseFocus={loseToolsFocus}
+                  activeDrawer={selectedDrawer}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
                     activeDrawerId: selectedDrawer.id,

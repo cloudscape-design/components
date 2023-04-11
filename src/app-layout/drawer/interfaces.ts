@@ -39,6 +39,7 @@ export interface DesktopDrawerProps {
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
+  activeDrawer: DrawerItem;
   onResize: (resizeDetail: { size: number }) => void;
   size: number;
   getMaxWidth: () => number;
