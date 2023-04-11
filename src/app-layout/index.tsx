@@ -37,6 +37,7 @@ import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
 import { ResizableDrawer } from './drawer/resizable-drawer';
 import { DrawerItem } from './drawer/interfaces';
+import { togglesConfig } from './toggles';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
 import { isDevelopment } from '../internal/is-development';
@@ -159,16 +160,19 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
+    const { iconName, getLabels } = togglesConfig.tools;
+    const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
+
     const toolsItem = {
       id: 'tools',
       content: tools,
       ariaLabels: {
-        triggerButton: 'View tools',
-        closeButton: 'Close tools',
-        content: 'Tools',
+        triggerButton: openLabel,
+        closeButton: closeLabel,
+        content: mainLabel,
       },
       trigger: {
-        iconName: 'status-info',
+        iconName: iconName,
       },
     };
 
