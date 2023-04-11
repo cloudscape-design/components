@@ -12,7 +12,7 @@ import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { GetStickyColumnProperties } from '../use-sticky-columns';
-import { useStickyObserver } from '../use-sticky-observer';
+import { useStickyState } from '../use-sticky-state';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -81,7 +81,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   const headerId = useUniqueId('table-header-');
   // Sticky columns
   const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties(colIndex);
-  const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
+  const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
 
   return (
     <th

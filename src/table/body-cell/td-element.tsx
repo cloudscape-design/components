@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useStickyObserver } from '../use-sticky-observer';
+import { useStickyState } from '../use-sticky-state';
 import { GetStickyColumnProperties } from '../use-sticky-columns';
 export interface TableTdElementProps {
   className?: string;
@@ -47,7 +47,8 @@ export function TableTdElement({
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
   const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties();
-  const { isStuckToTheLeft, isStuckToTheRight } = useStickyObserver(isLastStickyLeft, isLastStickyRight);
+  const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
+  console.log({ isStuckToTheLeft });
   return (
     <td
       style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}

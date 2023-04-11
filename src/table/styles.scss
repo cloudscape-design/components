@@ -66,8 +66,6 @@
   padding-top: awsui.$space-table-content-top;
   padding-bottom: awsui.$space-table-content-bottom;
   overflow-x: auto;
-  display: flex;
-  flex-direction: row;
   &.variant-stacked,
   &.variant-container {
     & > .table {
@@ -194,11 +192,6 @@ the default white background of the container component.
   &.table-has-header {
     border-top: awsui.$border-divider-list-width solid awsui.$color-border-container-divider;
   }
-}
-
-.sentinel-right {
-  position: relative;
-  right: 2px;
 }
 
 .header-controls {

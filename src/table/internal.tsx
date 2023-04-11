@@ -14,7 +14,6 @@ import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
-import { LEFT_SENTINEL_ID, RIGHT_SENTINEL_ID } from './use-sticky-observer';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -36,7 +35,7 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './use-sticky-columns';
-import { IntersectionObserverProvider } from './use-intersection-observer';
+import { StickyColumnsContextProvider } from './use-sticky-columns-context';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -97,9 +96,6 @@ const InternalTable = forwardRef(
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
-
-    const leftSentinelRef = React.useRef(null);
-    const rightSentinelRef = React.useRef(null);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
@@ -207,19 +203,6 @@ const InternalTable = forwardRef(
       cellOffsets,
     } = useStickyColumns(stickyColumnsParams);
 
-    const observedElements = [
-      {
-        id: LEFT_SENTINEL_ID,
-        ref: leftSentinelRef,
-        options: { rootMargin: '10000px -2px 10000px 10000px', threshold: 1 },
-      },
-      {
-        id: RIGHT_SENTINEL_ID,
-        ref: rightSentinelRef,
-        options: { rootMargin: '10000px 10000px 10000px -2px', threshold: 1 },
-      },
-    ];
-
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -258,7 +241,7 @@ const InternalTable = forwardRef(
         resizableColumns={resizableColumns}
         hasSelection={hasSelection}
       >
-        <IntersectionObserverProvider observedElements={observedElements} deps={[stickyColumns]}>
+        <StickyColumnsContextProvider wrapperRef={wrapperRefObject} tableRef={tableRefObject}>
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}
@@ -318,7 +301,6 @@ const InternalTable = forwardRef(
               {...wrapperProps}
               {...focusVisibleProps}
             >
-              <div role="presentation" aria-hidden={true} ref={leftSentinelRef} />
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>
                   <span>
@@ -472,7 +454,6 @@ const InternalTable = forwardRef(
                   )}
                 </tbody>
               </table>
-              <div className={styles['sentinel-right']} role="presentation" aria-hidden={true} ref={rightSentinelRef} />
               {resizableColumns && <ResizeTracker />}
             </div>
             <StickyScrollbar
@@ -482,7 +463,7 @@ const InternalTable = forwardRef(
               onScroll={handleScroll}
             />
           </InternalContainer>
-        </IntersectionObserverProvider>
+        </StickyColumnsContextProvider>
       </ColumnWidthsProvider>
     );
   }
