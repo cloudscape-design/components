@@ -340,13 +340,10 @@ const OldAppLayout = React.forwardRef(
       [setSplitPanelSize, onSplitPanelResize]
     );
 
-    const onDrawerSizeSet = useCallback(
-      (detail: { size: number }) => {
-        setDrawerSize(detail.size);
-        fireNonCancelableEvent(selectedDrawer?.onResize, detail);
-      },
-      [setDrawerSize, selectedDrawer?.onResize]
-    );
+    const onDrawerSizeSet = (detail: { size: number }) => {
+      setDrawerSize(detail.size);
+      fireNonCancelableEvent(selectedDrawer?.onResize, detail);
+    };
 
     const onSplitPanelToggleHandler = useCallback(() => {
       setSplitPanelOpen(!splitPanelOpen);

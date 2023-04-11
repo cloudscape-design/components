@@ -17,12 +17,12 @@ import ScreenshotArea from '../utils/screenshot-area';
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-  const [useDrawers, setUseDrawers] = useState(true);
-  const [useTools, setUseTools] = useState(true);
+  const [hasDrawers, setHasDrawers] = useState(true);
+  const [hasTools, setHasTools] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [drawersWidth, setDrawersWidth] = useState(400);
 
-  const drawers = !useDrawers
+  const drawers = !hasDrawers
     ? null
     : {
         drawers: {
@@ -57,7 +57,7 @@ export default function WithDrawers() {
               content: <ProHelp />,
               id: 'pro-help',
               trigger: {
-                iconSvg: <IconBriefcase />,
+                iconName: 'contact',
               },
             },
           ],
@@ -79,11 +79,11 @@ export default function WithDrawers() {
                 </Header>
 
                 <SpaceBetween size="xs">
-                  <Toggle checked={useTools} onChange={({ detail }) => setUseTools(detail.checked)}>
+                  <Toggle checked={hasTools} onChange={({ detail }) => setHasTools(detail.checked)}>
                     Use Tools
                   </Toggle>
 
-                  <Toggle checked={useDrawers} onChange={({ detail }) => setUseDrawers(detail.checked)}>
+                  <Toggle checked={hasDrawers} onChange={({ detail }) => setHasDrawers(detail.checked)}>
                     Use Drawers
                   </Toggle>
                 </SpaceBetween>
@@ -117,23 +117,10 @@ export default function WithDrawers() {
         }}
         tools={<Info />}
         toolsOpen={isToolsOpen}
-        toolsHide={!useTools}
+        toolsHide={!hasTools}
         {...drawers}
       />
     </ScreenshotArea>
-  );
-}
-
-function IconBriefcase() {
-  return (
-    <svg viewBox="0 0 16 16" fill="none">
-      <path
-        d="M8 15H1V5h14v3m-6.5 4.25H16M12.25 8.5V16M5 1h6v4H5V1Z"
-        stroke="#fff"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 
