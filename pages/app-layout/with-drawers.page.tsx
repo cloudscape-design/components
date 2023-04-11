@@ -21,7 +21,7 @@ export default function WithDrawers() {
   const [hasTools, setHasTools] = useState(true);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [drawersWidths, setDrawersWidths] = useState([
-    { id: 'security', size: 400 },
+    { id: 'security', size: 500 },
     { id: 'pro-help', size: 280 },
   ]);
 

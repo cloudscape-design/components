@@ -232,6 +232,7 @@ const OldAppLayout = React.forwardRef(
       disableBodyScroll
     );
     const [isSplitpanelForcedPosition, setIsSplitpanelForcedPosition] = useState(false);
+    const [isResizeInvalid, setIsResizeInvalid] = useState(false);
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.height);
     const anyPanelOpen = navigationVisible || toolsVisible;
@@ -376,6 +377,7 @@ const OldAppLayout = React.forwardRef(
       const contentPadding = disableContentPaddings ? 80 : 0;
       const spaceAvailable = width - defaults.minContentWidth - contentPadding;
       const spaceTaken = drawerSize;
+
       return Math.max(0, spaceTaken + spaceAvailable);
     });
 
@@ -412,7 +414,9 @@ const OldAppLayout = React.forwardRef(
 
     useEffect(() => {
       const contentWidth = contentWidthWithSplitPanel - splitPanelSize;
+
       setIsSplitpanelForcedPosition(isMobile || (defaults.minContentWidth || 0) > contentWidth);
+      setIsResizeInvalid(isMobile || (defaults.minContentWidth || 0) > contentWidthWithSplitPanel);
       // This is a workaround to avoid a forced position due to splitPanelSize, which is
       // user controlled variable.
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -433,7 +437,7 @@ const OldAppLayout = React.forwardRef(
 
       if (drawers) {
         if (activeDrawerId) {
-          if (selectedDrawer.resizable) {
+          if (selectedDrawer.resizable && !isResizeInvalid) {
             return drawerSize + closedDrawerWidth;
           }
 
@@ -675,7 +679,7 @@ const OldAppLayout = React.forwardRef(
                   closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
                   ariaLabels={ariaLabels}
                   drawersAriaLabels={selectedDrawer?.ariaLabels}
-                  width={selectedDrawer?.resizable ? drawerSize : toolsWidth}
+                  width={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
                   bottomOffset={footerHeight}
                   topOffset={headerHeight}
                   isMobile={isMobile}
@@ -695,7 +699,7 @@ const OldAppLayout = React.forwardRef(
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     },
                   }}
-                  size={selectedDrawer?.resizable ? drawerSize : toolsWidth}
+                  size={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
                   onResize={onDrawerSizeSet}
                   refs={drawerRefs}
                   getMaxWidth={getDrawerMaxWidth}
