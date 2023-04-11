@@ -111,10 +111,7 @@ describe('TokenGroup', () => {
 
     test('sets aria-disabled on the token when disabled', () => {
       const wrapper = renderTokenGroup({ items: [{ ...items[0], disabled: true }], onDismiss });
-      expect(wrapper.findByClassName(tokenListSelectors['list-item'])!.getElement()).toHaveAttribute(
-        'aria-disabled',
-        'true'
-      );
+      expect(wrapper.findToken(1)!.getElement()).toHaveAttribute('aria-disabled', 'true');
     });
 
     test('does not set aria-disabled on the token when not disabled', () => {
