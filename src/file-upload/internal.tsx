@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -22,6 +22,7 @@ import TokenList from '../internal/components/token-list';
 import { Token } from '../token-group/token';
 import { FormFieldError } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -49,10 +50,14 @@ function InternalFileUpload(
     fileErrors,
     ...restProps
   }: InternalFileUploadProps,
-  ref: ForwardedRef<ButtonProps.Ref>
+  externalRef: ForwardedRef<ButtonProps.Ref>
 ) {
   const baseProps = getBaseProps(restProps);
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
+  const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
+  const [removedLastToken, setRemovedLastToken] = useState(false);
+  const fileInputRef = useRef<ButtonProps.Ref>(null);
+  const ref = useMergeRefs(fileInputRef, externalRef);
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
@@ -73,7 +78,15 @@ function InternalFileUpload(
     fireNonCancelableEvent(onChange, {
       value: newValue,
     });
+    setRemovedItemIndex(removeFileIndex);
+    setRemovedLastToken(value.length === 1);
   };
+
+  useEffect(() => {
+    if (removedLastToken) {
+      fileInputRef.current?.focus();
+    }
+  }, [removedLastToken]);
 
   const isDropzoneVisible = useDropzoneVisible();
 
@@ -155,11 +168,12 @@ function InternalFileUpload(
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>
           )}
-          tokenLimit={tokenLimit}
+          limit={tokenLimit}
           i18nStrings={{
             limitShowFewer: i18nStrings.limitShowFewer,
             limitShowMore: i18nStrings.limitShowMore,
           }}
+          removedItemIndex={removedItemIndex}
         />
       ) : null}
     </InternalSpaceBetween>

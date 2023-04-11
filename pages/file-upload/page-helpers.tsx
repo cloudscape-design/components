@@ -24,17 +24,29 @@ export function PageNotifications({ status }: { status: FormStatus }) {
     case 'uploading':
       return (
         <Flashbar
-          items={[{ type: 'info', loading: true, header: 'Uploading files', statusIconAriaLabel: 'uploading' }]}
+          items={[
+            {
+              type: 'info',
+              loading: true,
+              header: 'Uploading files',
+              statusIconAriaLabel: 'uploading',
+              ariaRole: 'status',
+            },
+          ]}
         />
       );
     case 'uploaded':
-      return <Flashbar items={[{ type: 'success', header: 'Files uploaded', statusIconAriaLabel: 'uploaded' }]} />;
+      return (
+        <Flashbar
+          items={[{ type: 'success', header: 'Files uploaded', statusIconAriaLabel: 'uploaded', ariaRole: 'status' }]}
+        />
+      );
     case 'submitted':
       return (
         <Flashbar
           items={[
-            { type: 'success', header: 'Files uploaded', statusIconAriaLabel: 'uploaded' },
-            { type: 'success', header: 'Form submitted', statusIconAriaLabel: 'submitted' },
+            { type: 'success', header: 'Files uploaded', statusIconAriaLabel: 'uploaded', ariaRole: 'status' },
+            { type: 'success', header: 'Form submitted', statusIconAriaLabel: 'submitted', ariaRole: 'status' },
           ]}
         />
       );

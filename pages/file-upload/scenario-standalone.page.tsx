@@ -17,7 +17,9 @@ export default function FileUploadScenarioStandalone() {
 
   const hasError = formState.status === 'error';
   useEffect(() => {
-    contractsRef.current?.focus();
+    if (hasError) {
+      contractsRef.current?.focus();
+    }
   }, [hasError]);
 
   return (

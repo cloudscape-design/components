@@ -40,9 +40,7 @@ function FileInput(
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadButtonLabelId = useUniqueId('button-label');
-  const selfControlId = useUniqueId('file-input');
   const formFieldContext = useFormFieldContext(restProps);
-  const controlId = formFieldContext.controlId ?? selfControlId;
 
   const onUploadButtonClick = () => fileInputRef.current?.click();
 
@@ -87,7 +85,6 @@ function FileInput(
       <div className={styles['file-input-container']}>
         <InternalButton
           ref={ref}
-          id={controlId}
           iconName="upload"
           formAction="none"
           onClick={onUploadButtonClick}
