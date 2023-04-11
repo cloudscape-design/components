@@ -9,20 +9,20 @@ import { KeyCode } from '../../../internal/keycode';
 
 describe('Content Display preference', () => {
   it('correctly displays title', () => {
-    const wrapper = renderContentDisplay({});
+    const wrapper = renderContentDisplay();
     const titleElement = wrapper.findTitle().getElement();
     expect(titleElement).toHaveTextContent('Content display title');
     expect(titleElement.tagName).toBe('H3');
   });
 
   it('correctly displays label', () => {
-    const wrapper = renderContentDisplay({});
+    const wrapper = renderContentDisplay();
     const labelElement = wrapper.findLabel().getElement();
     expect(labelElement).toHaveTextContent('Content display label');
   });
 
   it('displays list of options with correct semantics', () => {
-    const wrapper = renderContentDisplay({});
+    const wrapper = renderContentDisplay();
     const items = wrapper.findOptions();
     for (let i = 0; i < items.length; i++) {
       testOptionItem({ wrapper, item: items[i], index: i });
@@ -30,7 +30,7 @@ describe('Content Display preference', () => {
   });
 
   it('reorders content items with the keyboard', () => {
-    const wrapper = renderContentDisplay({});
+    const wrapper = renderContentDisplay();
     const items = wrapper.findOptions();
     for (let i = 0; i < items.length; i++) {
       testOptionItem({ wrapper, item: items[i], index: i });
