@@ -35,6 +35,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
 import { Drawer, DrawerTriggersBar } from './drawer';
+import { ResizableDrawer } from './drawer/resizable-drawer';
 import { DrawerItem } from './drawer/interfaces';
 import { SideSplitPanelDrawer } from './split-panel-drawer';
 import useAppLayoutOffsets from './utils/use-content-width';
@@ -546,10 +547,6 @@ const OldAppLayout = React.forwardRef(
                 toggleRefs={navigationRefs}
                 type="navigation"
                 width={navigationWidth}
-                size={drawerSize}
-                onResize={onDrawerSizeSet}
-                refs={drawerRefs}
-                getMaxWidth={getDrawerMaxWidth}
               >
                 {navigation}
               </Drawer>
@@ -651,7 +648,7 @@ const OldAppLayout = React.forwardRef(
 
             {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
               (drawers ? (
-                <Drawer
+                <ResizableDrawer
                   contentClassName={selectedDrawer?.id === 'tools' ? testutilStyles.tools : ''}
                   toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
                   closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
@@ -681,7 +678,7 @@ const OldAppLayout = React.forwardRef(
                   getMaxWidth={getDrawerMaxWidth}
                 >
                   {selectedDrawer.content}
-                </Drawer>
+                </ResizableDrawer>
               ) : (
                 <Drawer
                   contentClassName={testutilStyles.tools}
@@ -697,10 +694,6 @@ const OldAppLayout = React.forwardRef(
                   toggleRefs={toolsRefs}
                   type="tools"
                   onLoseFocus={loseToolsFocus}
-                  size={drawerSize}
-                  onResize={onDrawerSizeSet}
-                  refs={drawerRefs}
-                  getMaxWidth={getDrawerMaxWidth}
                 >
                   {tools}
                 </Drawer>

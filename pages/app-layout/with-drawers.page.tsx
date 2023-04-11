@@ -92,8 +92,6 @@ export default function WithDrawers() {
             <Containers />
           </ContentLayout>
         }
-        contentType="form"
-        maxContentWidth={999999999999999}
         splitPanel={
           <SplitPanel
             header="Split panel header"

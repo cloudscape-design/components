@@ -1,19 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
-import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
-import useFocusVisible from '../../internal/hooks/focus-visible';
-
-import ResizeHandler from '../../split-panel/icons/resize-handler';
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import splitPanelStyles from '../../split-panel/styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem, SizeControlProps } from './interfaces';
+import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem } from './interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -31,162 +24,107 @@ import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem, SizeControlProps } f
 // * https://github.com/nvaccess/nvda/issues/5825
 // * https://github.com/nvaccess/nvda/issues/5247
 // * https://github.com/nvaccess/nvda/pull/8869 (reverted PR that was going to fix it)
-export function Drawer({
-  contentClassName,
-  toggleClassName,
-  closeClassName,
-  width,
-  type,
-  toggleRefs,
-  topOffset,
-  bottomOffset,
-  ariaLabels,
-  children,
-  isOpen,
-  isMobile,
-  onToggle,
-  onClick,
-  onLoseFocus,
-  drawers,
-  onResize,
-  size,
-  getMaxWidth,
-  refs,
-}: DesktopDrawerProps) {
-  const openButtonWrapperRef = useRef<HTMLElement | null>(null);
-  const { TagName, iconName, getLabels } = togglesConfig[type];
-  const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
-  const drawerContentWidthOpen = isMobile ? undefined : width;
-  const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
+export const Drawer = React.forwardRef(
+  (
+    {
+      contentClassName,
+      toggleClassName,
+      closeClassName,
+      width,
+      type,
+      toggleRefs,
+      topOffset,
+      bottomOffset,
+      ariaLabels,
+      children,
+      isOpen,
+      isMobile,
+      onToggle,
+      onClick,
+      onLoseFocus,
+      drawers,
+      resizeHandle,
+    }: DesktopDrawerProps,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const openButtonWrapperRef = useRef<HTMLElement | null>(null);
+    const { TagName, iconName, getLabels } = togglesConfig[type];
+    const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
+    const drawerContentWidthOpen = isMobile ? undefined : width;
+    const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
 
-  const activeDrawer = drawers?.items.find(item => item.id === drawers.activeDrawerId);
+    const activeDrawer = drawers?.items.find(item => item.id === drawers.activeDrawerId);
 
-  const MIN_WIDTH = activeDrawer?.size && activeDrawer.size < 280 ? activeDrawer?.size : 280;
-  const [relativeSize, setRelativeSize] = useState(0);
-  const focusVisible = useFocusVisible();
+    const regularOpenButton = (
+      <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
+        <AppLayoutButton
+          ref={toggleRefs.toggle}
+          className={toggleClassName}
+          iconName={iconName}
+          ariaLabel={openLabel}
+          onClick={() => onToggle(true)}
+          ariaExpanded={false}
+        />
+      </TagName>
+    );
 
-  useEffect(() => {
-    // effects are called inside out in the components tree
-    // wait one frame to allow app-layout to complete its calculations
-    const handle = requestAnimationFrame(() => {
-      const maxSize = getMaxWidth();
-      setRelativeSize((size / maxSize) * 100);
-    });
-    return () => cancelAnimationFrame(handle);
-  }, [size, getMaxWidth]);
-
-  const setSidePanelWidth = (width: number) => {
-    const maxWidth = getMaxWidth();
-    const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
-
-    if (isOpen && maxWidth >= MIN_WIDTH) {
-      onResize({ size });
-    }
-  };
-
-  const position = 'side';
-  const setBottomPanelHeight = () => {};
-  const drawerRefObject = useRef<HTMLDivElement>(null);
-
-  const sizeControlProps: SizeControlProps = {
-    position,
-    splitPanelRef: drawerRefObject,
-    handleRef: refs.slider,
-    setSidePanelWidth,
-    setBottomPanelHeight,
-  };
-
-  const onSliderPointerDown = usePointerEvents(sizeControlProps);
-  const onKeyDown = useKeyboardEvents(sizeControlProps);
-
-  const resizeHandle = (
-    <div
-      ref={refs.slider}
-      role="slider"
-      tabIndex={0}
-      aria-label="resize handler"
-      aria-valuemax={100}
-      aria-valuemin={0}
-      aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`])}
-      onKeyDown={onKeyDown}
-      onPointerDown={onSliderPointerDown}
-      {...focusVisible}
-    >
-      <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
-    </div>
-  );
-
-  const regularOpenButton = (
-    <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
-      <AppLayoutButton
-        ref={toggleRefs.toggle}
-        className={toggleClassName}
-        iconName={iconName}
-        ariaLabel={openLabel}
-        onClick={() => onToggle(true)}
-        ariaExpanded={false}
-      />
-    </TagName>
-  );
-
-  return (
-    <div
-      ref={drawerRefObject}
-      className={clsx(styles.drawer, {
-        [styles['drawer-closed']]: !isOpen,
-        [testutilStyles['drawer-closed']]: !isOpen,
-        [styles['drawer-mobile']]: isMobile,
-      })}
-      style={{ width: drawerContentWidth }}
-      onBlur={
-        onLoseFocus
-          ? e => {
-              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-                onLoseFocus(e);
-              }
-            }
-          : undefined
-      }
-      onClick={event => {
-        if (onClick) {
-          onClick(event);
-        }
-        if (!isOpen) {
-          // to prevent calling onToggle from the drawer when it's called from the toggle button
-          if (
-            openButtonWrapperRef.current === event.target ||
-            !openButtonWrapperRef.current?.contains(event.target as Node)
-          ) {
-            onToggle(true);
-          }
-        }
-      }}
-    >
+    return (
       <div
-        style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'], contentClassName)}
+        ref={ref}
+        className={clsx(styles.drawer, {
+          [styles['drawer-closed']]: !isOpen,
+          [testutilStyles['drawer-closed']]: !isOpen,
+          [styles['drawer-mobile']]: isMobile,
+        })}
+        style={{ width: drawerContentWidth }}
+        onBlur={
+          onLoseFocus
+            ? e => {
+                if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                  onLoseFocus(e);
+                }
+              }
+            : undefined
+        }
+        onClick={event => {
+          if (onClick) {
+            onClick(event);
+          }
+          if (!isOpen) {
+            // to prevent calling onToggle from the drawer when it's called from the toggle button
+            if (
+              openButtonWrapperRef.current === event.target ||
+              !openButtonWrapperRef.current?.contains(event.target as Node)
+            ) {
+              onToggle(true);
+            }
+          }
+        }}
       >
-        {!isMobile && regularOpenButton}
-        {activeDrawer?.resizable && !isMobile && (
-          <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
-        )}
-        <TagName aria-label={activeDrawer?.ariaLabels.content || mainLabel} aria-hidden={!isOpen}>
-          <CloseButton
-            ref={toggleRefs.close}
-            className={closeClassName}
-            ariaLabel={activeDrawer?.ariaLabels.closeButton || closeLabel}
-            onClick={() => {
-              onToggle(false);
-              drawers?.onChange({ activeDrawerId: undefined });
-            }}
-          />
-          {children}
-        </TagName>
+        <div
+          style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
+          className={clsx(styles['drawer-content'], contentClassName)}
+        >
+          {!isMobile && regularOpenButton}
+          {resizeHandle}
+          <TagName aria-label={activeDrawer?.ariaLabels.content || mainLabel} aria-hidden={!isOpen}>
+            <CloseButton
+              ref={toggleRefs.close}
+              className={closeClassName}
+              ariaLabel={activeDrawer?.ariaLabels.closeButton || closeLabel}
+              onClick={() => {
+                onToggle(false);
+                drawers?.onChange({ activeDrawerId: undefined });
+              }}
+            />
+            {children}
+          </TagName>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
+
 export function DrawerTriggersBar({ isMobile, topOffset, bottomOffset, drawers, contentClassName }: DrawerTriggersBar) {
   return (
     <div

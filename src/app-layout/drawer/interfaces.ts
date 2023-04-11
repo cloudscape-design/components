@@ -34,6 +34,10 @@ export interface DesktopDrawerProps {
     activeDrawerId: string | undefined;
     onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
+  resizeHandle?: React.ReactNode;
+}
+
+export interface ResizableDrawerProps extends DesktopDrawerProps {
   onResize: (resizeDetail: { size: number }) => void;
   size: number;
   getMaxWidth: () => number;
