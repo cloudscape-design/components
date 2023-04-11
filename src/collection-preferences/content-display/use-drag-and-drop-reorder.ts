@@ -17,6 +17,7 @@ import {
 import { CollectionPreferencesProps } from '../interfaces';
 import { hasSortableData } from '@dnd-kit/sortable';
 import { KeyboardSensor } from './keyboard-sensor';
+import { Coordinates } from '@dnd-kit/utilities';
 
 enum KeyboardCode {
   Space = 'Space',
@@ -202,26 +203,9 @@ function isAfter(a: DroppableContainer, b: DroppableContainer) {
   return a.data.current.sortable.index < b.data.current.sortable.index;
 }
 
-function createAdjustmentFn(modifier: number) {
-  return <T extends Record<U, number>, U extends string>(object: T, ...adjustments: Partial<T>[]): T => {
-    return adjustments.reduce<T>(
-      (accumulator, adjustment) => {
-        for (const key of Object.keys(adjustment)) {
-          const value = accumulator[key as U];
-          const valueAdjustment = adjustment[key as U];
-
-          if (value !== null && valueAdjustment !== undefined) {
-            accumulator[key as U] = (value + modifier * valueAdjustment) as T[U];
-          }
-        }
-
-        return accumulator;
-      },
-      {
-        ...object,
-      }
-    );
+function subtract(rectCoordinates: Coordinates, offset: Coordinates) {
+  return {
+    x: rectCoordinates.x - offset.x,
+    y: rectCoordinates.y - offset.y,
   };
 }
-
-const subtract = createAdjustmentFn(-1);
