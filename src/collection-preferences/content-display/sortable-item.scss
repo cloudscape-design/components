@@ -49,6 +49,9 @@ $border-radius: awsui.$border-radius-item;
         transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
       }
     }
+    &.active.keyboard {
+      @include styles.focus-highlight(0px);
+    }
     &.active {
       position: relative;
       z-index: 2;

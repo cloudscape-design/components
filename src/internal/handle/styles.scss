@@ -20,6 +20,11 @@
   }
 
   &:focus-visible {
-    @include styles.focus-highlight(0px);
+    &:not(.hide-focus) {
+      @include styles.focus-highlight(0px);
+    }
+    &.hide-focus {
+      outline: none;
+    }
   }
 }

@@ -80,7 +80,7 @@ export function SortableItem({
         )}
         style={style}
       >
-        <DragHandle attributes={dragHandleAttributes} listeners={combinedListeners} />
+        <DragHandle attributes={dragHandleAttributes} hideFocus={isDragging} listeners={combinedListeners} />
 
         <label {...className('label')} htmlFor={controlId}>
           {option.label}
