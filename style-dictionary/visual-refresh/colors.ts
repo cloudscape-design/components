@@ -221,6 +221,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextTopNavigationTitle: { light: '{colorGrey900}', dark: '{colorGrey100}' },
   colorBoardPlaceholderActive: { light: '{colorGrey200}', dark: '{colorGrey550}' },
   colorBoardPlaceholderHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
+  colorDragPlaceholderActive: { light: '{colorGrey200}', dark: '{colorGrey550}' },
+  colorDragPlaceholderHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
