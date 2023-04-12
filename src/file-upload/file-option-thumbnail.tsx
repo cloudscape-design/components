@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './styles.css.js';
 
 interface FileOptionThumbnailProps {
@@ -9,21 +9,24 @@ interface FileOptionThumbnailProps {
 }
 
 export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
-  const thumbnailRef = useRef<HTMLImageElement>(null);
+  const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (thumbnailRef.current && thumbnailRef.current.src) {
-        thumbnailRef.current.src = reader.result as string;
-      }
+    const src = URL.createObjectURL(file);
+    setImageSrc(src);
+
+    return () => {
+      URL.revokeObjectURL(src);
     };
-    reader.readAsDataURL(file);
   }, [file]);
+
+  const onImageLoad = () => {
+    URL.revokeObjectURL(imageSrc);
+  };
 
   return (
     <div className={styles['file-option-thumbnail']} aria-hidden={true}>
-      <img className={styles['file-option-thumbnail-image']} alt={file.name} ref={thumbnailRef} src="" />
+      <img className={styles['file-option-thumbnail-image']} alt={file.name} src={imageSrc} onLoad={onImageLoad} />
     </div>
   );
 }

@@ -25,7 +25,7 @@
       }
       // Custom CSP required for thumbnails in FileUpload component
       if (location.hash.includes('file-upload')) {
-        csp['img-src'] = 'data:';
+        csp['img-src'] = 'blob:';
       }
 
       const cspString = Object.entries(csp)
