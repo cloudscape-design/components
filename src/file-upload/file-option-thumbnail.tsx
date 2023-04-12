@@ -12,12 +12,14 @@ export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => {
-    const src = URL.createObjectURL(file);
-    setImageSrc(src);
+    if (URL.createObjectURL) {
+      const src = URL.createObjectURL(file);
+      setImageSrc(src);
 
-    return () => {
-      URL.revokeObjectURL(src);
-    };
+      return () => {
+        URL.revokeObjectURL(src);
+      };
+    }
   }, [file]);
 
   const onImageLoad = () => {
