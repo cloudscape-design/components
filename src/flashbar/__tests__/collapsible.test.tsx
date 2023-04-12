@@ -180,24 +180,24 @@ describe('Collapsible Flashbar', () => {
           notificationBarAriaLabel: customToggleButtonAriaLabel,
         },
       });
-      const button = findToggleButton(flashbar);
+      const button = flashbar.findToggleButton()?.getElement();
       expect(button).toHaveAttribute('aria-label', customToggleButtonAriaLabel);
     });
 
     it('applies aria-expanded attribute to toggle button', () => {
       const flashbar = renderFlashbar();
-      const button = findToggleButton(flashbar)!;
-      expect(button).toHaveAttribute('aria-expanded', 'false');
+      const button = flashbar.findToggleButton()!;
+      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'false');
 
       button.click();
-      expect(button).toHaveAttribute('aria-expanded', 'true');
+      expect(button?.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
 
     it('applies aria-controls attribute to toggle button referring to the unordered list', () => {
       const flashbar = renderFlashbar();
       const listId = findList(flashbar)!.getElement().id;
       expect(listId).toBeTruthy();
-      const button = findToggleButton(flashbar);
+      const button = flashbar.findToggleButton()?.getElement();
       expect(button).toHaveAttribute('aria-controls', listId);
     });
 
@@ -225,7 +225,7 @@ describe('Collapsible Flashbar', () => {
       const flashbar = renderFlashbar();
       const itemCounterElementId = findOuterCounter(flashbar)!.id;
       expect(itemCounterElementId).toBeTruthy();
-      const toggleButton = findToggleButton(flashbar);
+      const toggleButton = flashbar.findToggleButton()?.getElement();
       expect(toggleButton).toHaveAttribute('aria-describedby', itemCounterElementId);
     });
 
@@ -285,11 +285,6 @@ function findNotificationBar(flashbar: FlashbarWrapper): HTMLElement | undefined
   if (element) {
     return element as HTMLElement;
   }
-}
-
-// Actual <button/> element inside the toggle element
-function findToggleButton(flashbar: FlashbarWrapper): HTMLElement | undefined {
-  return findNotificationBar(flashbar)?.querySelector('button') || undefined;
 }
 
 // Item counter including the header
