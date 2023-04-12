@@ -44,6 +44,7 @@ export default function InternalTokenGroup({
         limit={limit}
         renderItem={(item, itemIndex) => (
           <Token
+            ariaLabel={item.label}
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
@@ -54,7 +55,6 @@ export default function InternalTokenGroup({
             <Option option={item} isGenericGroup={false} />
           </Token>
         )}
-        itemAttributes={item => ({ 'aria-label': item.label, 'aria-disabled': item.disabled ? true : undefined })}
         i18nStrings={i18nStrings}
         removedItemIndex={removedItemIndex}
       />

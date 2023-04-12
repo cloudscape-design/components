@@ -21,7 +21,7 @@ export function useTokenFocusController({ removedItemIndex }: { removedItemIndex
 
     const activeItemIndices: number[] = [];
     for (let i = 0; i < tokenElements.length; i++) {
-      if (tokenElements[i].getAttribute('aria-disabled') !== 'true') {
+      if (!tokenElements[i].querySelector('[aria-disabled="true"]')) {
         activeItemIndices.push(i);
       }
     }
