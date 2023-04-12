@@ -21,13 +21,29 @@ describe('Collection preferences - Content Display preference', () => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal(wrapper);
 
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
 
         const activeDragHandle = page.findDragHandle(0);
-        const targetDragHandle = page.findDragHandle(1);
+        const targetDragHandle = page.findDragHandle(3);
         await page.dragAndDropTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
 
-        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
+        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 3', 'Item 4', 'Item 1'])).toBe(true);
+      })
+    );
+
+    test(
+      'moves item up',
+      setupTest(async page => {
+        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal(wrapper);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
+
+        const activeDragHandle = page.findDragHandle(3);
+        const targetDragHandle = page.findDragHandle(0);
+        await page.dragAndDropTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
+
+        await expect(await page.containsOptionsInOrder(['Item 4', 'Item 1', 'Item 2', 'Item 3'])).toBe(true);
       })
     );
   });
