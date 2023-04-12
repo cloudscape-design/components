@@ -3,15 +3,15 @@
 
 import React, { ChangeEvent, ForwardedRef, useEffect, useRef, useState } from 'react';
 
-import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import styles from './styles.css.js';
 import { useFormFieldContext } from '../contexts/form-field';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { joinStrings } from '../internal/utils/strings';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { FileUploadProps } from './interfaces';
+import useForwardFocus from '../internal/hooks/forward-focus';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
@@ -26,14 +26,15 @@ export default React.forwardRef(FileInput);
 
 function FileInput(
   { accept, ariaRequired, multiple, value, onChange, children, ...restProps }: FileInputProps,
-  externalRef: ForwardedRef<ButtonProps.Ref>
+  ref: ForwardedRef<FileUploadProps.Ref>
 ) {
   const uploadInputRef = useRef<HTMLInputElement>(null);
-  const uploadButtonRef = useRef<ButtonProps.Ref>(null);
   const uploadButtonLabelId = useUniqueId('upload-button-label');
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('upload-input');
   const controlId = formFieldContext.controlId ?? selfControlId;
+
+  useForwardFocus(ref, uploadInputRef);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -69,8 +70,6 @@ function FileInput(
     }
   }, [value]);
 
-  const ref = useMergeRefs(externalRef, uploadButtonRef);
-
   return (
     <div className={styles['file-input-container']}>
       <input
@@ -88,7 +87,6 @@ function FileInput(
       />
 
       <InternalButton
-        ref={ref}
         iconName="upload"
         formAction="none"
         onClick={onUploadButtonClick}
