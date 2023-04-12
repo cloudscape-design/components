@@ -80,8 +80,8 @@ describe('FileUpload input', () => {
   });
 
   test('`ariaRequired` property is assigned', () => {
-    expect(render({ ariaRequired: false }).findUploadButton().getElement()).not.toHaveAttribute('aria-required');
-    expect(render({ ariaRequired: true }).findUploadButton().getElement()).toHaveAttribute('aria-required');
+    expect(render({ ariaRequired: false }).findNativeInput().getElement()).not.toHaveAttribute('aria-required');
+    expect(render({ ariaRequired: true }).findNativeInput().getElement()).toHaveAttribute('aria-required');
   });
 
   test('`ariaLabelledby` property is assigned', () => {
@@ -91,17 +91,17 @@ describe('FileUpload input', () => {
 
   test('`ariaLabelledby` is joined with `uploadButtonText`', () => {
     const wrapper = render({ ariaLabelledby: 'test-label' });
-    expect(wrapper.findUploadButton().getElement()).toHaveAccessibleName('Test label Choose file');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleName('Test label Choose file');
   });
 
   test('`ariaDescribedby` property is assigned', () => {
-    const uploadButton = render({ ariaDescribedby: 'test-label' }).findUploadButton().getElement();
+    const uploadButton = render({ ariaDescribedby: 'test-label' }).findNativeInput().getElement();
     expect(uploadButton).toHaveAccessibleDescription('Test label');
   });
 
   test('`invalid` property is assigned', () => {
-    expect(render({ invalid: false }).findUploadButton().getElement()).not.toBeInvalid();
-    expect(render({ invalid: true }).findUploadButton().getElement()).toBeInvalid();
+    expect(render({ invalid: false }).findNativeInput().getElement()).not.toBeInvalid();
+    expect(render({ invalid: true }).findNativeInput().getElement()).toBeInvalid();
   });
 
   test('dev warning is issued when `onChange` handler is missing', () => {
@@ -117,36 +117,36 @@ describe('FileUpload input', () => {
   test('error text is set and associated with the upload button', () => {
     const wrapper = render({ errorText: 'Error text' });
     expect(wrapper.findError()!.getElement()).toHaveTextContent('Error text');
-    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Error text');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Error text');
   });
 
   test('constraint text is set and associated with the upload button', () => {
     const wrapper = render({ constraintText: 'Constraint text' });
     expect(wrapper.findConstraint()!.getElement()).toHaveTextContent('Constraint text');
-    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Constraint text');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Constraint text');
   });
 
   test('error and constraint text are both associated with the upload button', () => {
     const wrapper = render({ constraintText: 'Constraint text', errorText: 'Error text' });
-    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Error text Constraint text');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleDescription('Error text Constraint text');
   });
 
   test('file upload button can be assigned aria-invalid', () => {
     const wrapper = render({ invalid: true });
-    expect(wrapper.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
   });
 
   test('file upload button is assigned aria-invalid when error text is present', () => {
     const wrapper = render({ invalid: false, errorText: 'Error text' });
-    expect(wrapper.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
   });
 
   test('file upload button is assigned aria-invalid when at least one file error is present', () => {
     const wrapperEmptyErrors = render({ invalid: false, fileErrors: [null, null, null] });
-    expect(wrapperEmptyErrors.findUploadButton()!.getElement()).not.toHaveAttribute('aria-invalid');
+    expect(wrapperEmptyErrors.findNativeInput().getElement()).not.toHaveAttribute('aria-invalid');
 
     const wrapperWithFileError = render({ invalid: false, fileErrors: [null, 'File error', null] });
-    expect(wrapperWithFileError.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+    expect(wrapperWithFileError.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
   });
 });
 

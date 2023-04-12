@@ -18,6 +18,7 @@ type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __iconClass?: string;
   __activated?: boolean;
   __hideFocusOutline?: boolean;
+  __forceFocusOutline?: boolean;
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -45,6 +46,7 @@ export const InternalButton = React.forwardRef(
       ariaLabel,
       ariaExpanded,
       __hideFocusOutline = false,
+      __forceFocusOutline = false,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -83,6 +85,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
       [styles['hide-focus-outline']]: __hideFocusOutline,
+      [styles['force-focus-outline']]: __forceFocusOutline,
     });
 
     const buttonProps = {
