@@ -10,6 +10,7 @@ import { useFormFieldContext } from '../contexts/form-field';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { joinStrings } from '../internal/utils/strings';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
@@ -24,20 +25,22 @@ export default React.forwardRef(FileInput);
 
 function FileInput(
   { accept, ariaRequired, multiple, value, onChange, children, ...restProps }: FileInputProps,
-  ref: ForwardedRef<ButtonProps.Ref>
+  externalRef: ForwardedRef<ButtonProps.Ref>
 ) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadInputId = useUniqueId('upload-input');
+  const uploadInputRef = useRef<HTMLInputElement>(null);
   const uploadButtonId = useUniqueId('upload-button');
+  const uploadButtonRef = useRef<ButtonProps.Ref>(null);
   const formFieldContext = useFormFieldContext(restProps);
 
-  const onUploadButtonClick = () => fileInputRef.current?.click();
+  const onUploadButtonClick = () => uploadInputRef.current?.click();
 
-  const onFileInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+  const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     onChange(target.files ? Array.from(target.files) : []);
   };
 
   const nativeAttributes: Record<string, any> = {
-    'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonId),
+    'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonId, uploadInputId),
     'aria-describedby': formFieldContext.ariaDescribedby,
   };
   if (formFieldContext.invalid) {
@@ -54,35 +57,37 @@ function FileInput(
       for (const file of value) {
         dataTransfer.items.add(file);
       }
-      fileInputRef.current!.files = dataTransfer.files;
+      uploadInputRef.current!.files = dataTransfer.files;
     }
   }, [value]);
 
+  const ref = useMergeRefs(externalRef, uploadButtonRef);
+
   return (
-    <div>
+    <div className={styles['file-input-container']}>
       <input
-        ref={fileInputRef}
+        id={uploadInputId}
+        ref={uploadInputRef}
         type="file"
-        hidden={true}
+        hidden={false}
         multiple={multiple}
         accept={accept}
-        onChange={onFileInputChange}
+        onChange={onUploadInputChange}
         className={styles['upload-input']}
+        {...nativeAttributes}
       />
 
-      <div className={styles['file-input-container']}>
-        <InternalButton
-          id={uploadButtonId}
-          ref={ref}
-          iconName="upload"
-          formAction="none"
-          onClick={onUploadButtonClick}
-          className={styles['upload-button']}
-          __nativeAttributes={nativeAttributes}
-        >
-          {children}
-        </InternalButton>
-      </div>
+      <InternalButton
+        id={uploadButtonId}
+        ref={ref}
+        iconName="upload"
+        formAction="none"
+        onClick={onUploadButtonClick}
+        className={styles['upload-button']}
+        __nativeAttributes={{ tabIndex: -1 }}
+      >
+        {children}
+      </InternalButton>
     </div>
   );
 }

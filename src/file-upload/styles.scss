@@ -32,10 +32,12 @@
 }
 
 .file-input-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: awsui.$space-scaled-xs;
+  position: relative;
+}
+
+.upload-input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0) !important;
 }
 
 .file-option {
