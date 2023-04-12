@@ -125,7 +125,8 @@ export function MobileToolbar({
               className={clsx(
                 styles.trigger,
                 styles['trigger-drawer'],
-                drawers.activeDrawerId === item.id && styles.selected
+                drawers.activeDrawerId === item.id && styles.selected,
+                testutilStyles['drawers-trigger']
               )}
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
