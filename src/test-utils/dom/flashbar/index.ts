@@ -19,7 +19,7 @@ export default class FlashbarWrapper extends ComponentWrapper {
   /**
    * Returns the toggle button that expands and collapses stacked notifications.
    */
-  findToggleButton(): ElementWrapper | null {
+  findToggleButton(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName(styles['notification-bar'])?.find('button') ?? null;
   }
 }
