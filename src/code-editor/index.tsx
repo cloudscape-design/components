@@ -254,6 +254,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   };
   const onPreferencesDismiss = () => setPreferencesModalVisible(false);
 
+  const isPaneVisible = paneStatus !== 'hidden';
+
   return (
     <div
       {...baseProps}
@@ -307,13 +309,13 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               warningsTabRef={warningsTabRef}
               i18nStrings={i18nStrings}
               isTabFocused={isTabFocused}
-              paneId={paneId}
+              paneId={isPaneVisible ? paneId : undefined}
               onPreferencesOpen={onPreferencesOpen}
               isRefresh={isRefresh}
             />
             <Pane
               id={paneId}
-              visible={paneStatus !== 'hidden'}
+              visible={isPaneVisible}
               annotations={currentAnnotations}
               highlighted={highlightedAnnotation}
               onAnnotationClick={onAnnotationClick}

@@ -10,7 +10,7 @@ import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import DropdownFooter from '../internal/components/dropdown-footer';
 
-import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
@@ -156,7 +156,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const selfControlId = useUniqueId('input');
   const controlId = formFieldContext.controlId ?? selfControlId;
   const listId = useUniqueId('list');
-  const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
+  const highlightedOptionIdSource = useUniqueId();
+  const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
   const dropdownStatus = useDropdownStatus({

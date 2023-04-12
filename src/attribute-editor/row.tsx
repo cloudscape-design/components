@@ -11,7 +11,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import InternalGrid from '../grid/internal';
 import { InternalButton } from '../button/internal';
 import clsx from 'clsx';
-import { generateUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
@@ -56,7 +56,7 @@ export const Row = React.memo(
       fireNonCancelableEvent(onRemoveButtonClick, { itemIndex: index });
     }, [onRemoveButtonClick, index]);
 
-    const firstControlId = generateUniqueId('first-control-id-');
+    const firstControlId = useUniqueId('first-control-id-');
 
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>

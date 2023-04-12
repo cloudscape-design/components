@@ -20,7 +20,6 @@ import {
   getAutosuggestOptions,
   getAllowedOperators,
   getExtendedOperator,
-  getFormattedToken,
 } from './controller';
 import { useLoadItems } from './use-load-items';
 import styles from './styles.css.js';
@@ -344,7 +343,6 @@ const PropertyFilter = React.forwardRef(
                     expandToViewport={expandToViewport}
                   />
                 )}
-                itemAttributes={token => ({ 'aria-label': getFormattedToken(filteringProperties, token).label })}
                 i18nStrings={{
                   limitShowFewer: i18nStrings.tokenLimitShowFewer,
                   limitShowMore: i18nStrings.tokenLimitShowMore,

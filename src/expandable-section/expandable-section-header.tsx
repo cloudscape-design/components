@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { generateUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
@@ -59,7 +58,6 @@ const ExpandableDefaultHeader = ({
   onKeyDown,
   variant,
 }: ExpandableDefaultHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div
       id={id}
@@ -72,7 +70,6 @@ const ExpandableDefaultHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
-      {...focusVisible}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
@@ -91,7 +88,6 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
 }: ExpandableNavigationHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div id={id} className={className} onClick={onClick}>
       <button
@@ -100,7 +96,6 @@ const ExpandableNavigationHeader = ({
         aria-label={ariaLabel}
         aria-controls={ariaControls}
         aria-expanded={expanded}
-        {...focusVisible}
       >
         {icon}
       </button>
@@ -125,26 +120,27 @@ const ExpandableContainerHeader = ({
   onKeyUp,
   onKeyDown,
 }: ExpandableContainerHeaderProps) => {
-  const focusVisible = useFocusVisible();
-  const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
-  const Wrapper =
-    variant === 'container'
-      ? ({ children }: { children: ReactNode }) => (
-          <InternalHeader
-            variant="h2"
-            description={headerDescription}
-            counter={headerCounter}
-            headingTagOverride={headingTagOverride}
-          >
-            {children}
-          </InternalHeader>
-        )
-      : ({ children }: { children: ReactNode }) => {
-          const Tag = headingTagOverride || 'div';
-          return <Tag className={styles['header-wrapper']}>{children}</Tag>;
-        };
+  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
+  const isContainer = variant === 'container';
+
+  const Wrapper = isContainer
+    ? ({ children }: { children: ReactNode }) => (
+        <InternalHeader
+          variant="h2"
+          description={headerDescription}
+          counter={headerCounter}
+          headingTagOverride={headingTagOverride}
+        >
+          {children}
+        </InternalHeader>
+      )
+    : ({ children }: { children: ReactNode }) => {
+        const Tag = headingTagOverride || 'div';
+        return <Tag className={styles['header-wrapper']}>{children}</Tag>;
+      };
+
   return (
-    <div id={id} className={className} onClick={onClick} {...focusVisible}>
+    <div id={id} className={className} onClick={onClick}>
       <Wrapper>
         <span
           className={styles['header-container-button']}
@@ -154,7 +150,7 @@ const ExpandableContainerHeader = ({
           onKeyDown={onKeyDown}
           aria-label={ariaLabel}
           // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-          aria-labelledby={ariaLabel ? undefined : screenreaderContentId}
+          aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
           aria-controls={ariaControls}
           aria-expanded={expanded}
         >
@@ -162,9 +158,11 @@ const ExpandableContainerHeader = ({
           <span>{children}</span>
         </span>
       </Wrapper>
-      <ScreenreaderOnly id={screenreaderContentId}>
-        {children} {headerCounter} {headerDescription}
-      </ScreenreaderOnly>
+      {isContainer && (
+        <ScreenreaderOnly id={screenreaderContentId}>
+          {children} {headerCounter} {headerDescription}
+        </ScreenreaderOnly>
+      )}
     </div>
   );
 };

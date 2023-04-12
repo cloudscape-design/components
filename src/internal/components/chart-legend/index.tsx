@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import React, { useRef, memo } from 'react';
 
-import useFocusVisible from '../../hooks/focus-visible';
 import InternalBox from '../../../box/internal';
 import { KeyCode } from '../../keycode';
 import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
@@ -35,7 +34,6 @@ function ChartLegend<T>({
   ariaLabel,
   plotContainerRef,
 }: ChartLegendProps<T>) {
-  const focusVisible = useFocusVisible();
   const containerRef = useRef<HTMLDivElement>(null);
   const segmentsRef = useRef<Record<number, HTMLElement>>([]);
 
@@ -124,7 +122,6 @@ function ChartLegend<T>({
             const isDimmed = someHighlighted && !isHighlighted;
             return (
               <div
-                {...focusVisible}
                 role="button"
                 key={index}
                 aria-pressed={isHighlighted}

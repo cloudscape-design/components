@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import Icon from '../../icon/internal';
 import styles from './styles.css.js';
 import { ButtonProps } from '../../button/interfaces';
@@ -20,8 +19,6 @@ function TriggerButton(
   { ariaLabel, iconName, onClick, selected = false, className }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const focusVisible = useFocusVisible();
-
   return (
     <button
       aria-label={ariaLabel}
@@ -37,7 +34,6 @@ function TriggerButton(
       onClick={onClick}
       type="button"
       ref={ref as React.Ref<HTMLButtonElement>}
-      {...focusVisible}
     >
       <Icon name={iconName} />
     </button>

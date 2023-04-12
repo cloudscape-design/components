@@ -12,7 +12,6 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import useFocusVisible from '../internal/hooks/focus-visible';
 
 export { TabsProps };
 
@@ -52,8 +51,6 @@ export default function Tabs({
 
   const baseProps = getBaseProps(rest);
 
-  const focusVisible = useFocusVisible();
-
   const content = () => {
     const selectedTab = tabs.filter(tab => tab.id === activeTabId)[0];
     const renderContent = (tab: TabsProps.Tab) => {
@@ -65,7 +62,6 @@ export default function Tabs({
       });
 
       const contentAttributes: JSX.IntrinsicElements['div'] = {
-        ...focusVisible,
         className: classes,
         role: 'tabpanel',
         id: `${idNamespace}-${tab.id}-panel`,
