@@ -26,35 +26,39 @@ interface ToolsProps {
 export default function Tools({ children }: ToolsProps) {
   const {
     ariaLabels,
+    drawers,
     handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
-    isNavigationOpen,
+    hasDrawerViewportOverlay,
     isMobile,
+    isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
+    loseToolsFocus,
+    navigationHide,
     splitPanelDisplayed,
+    splitPanelPosition,
+    splitPanelRefs,
+    splitPanelToggle,
     tools,
     toolsHide,
-    toolsWidth,
-    isAnyPanelOpen,
-    navigationHide,
     toolsRefs,
-    loseToolsFocus,
-    splitPanelPosition,
-    splitPanelToggle,
-    splitPanelRefs,
+    toolsWidth,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
+  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
 
-  if (toolsHide && !hasSplitPanel) {
+  /**
+   * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
+   * by the Drawers component.
+   */
+  if ((toolsHide && !hasSplitPanel) || drawers) {
     return null;
   }
-
-  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   return (
     <Transition in={isToolsOpen ?? false}>

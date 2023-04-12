@@ -13,12 +13,11 @@ import testutilStyles from '../test-classes/styles.css.js';
 export default function Notifications() {
   const {
     ariaLabels,
+    hasDrawerViewportOverlay,
     hasNotificationsContent,
     notifications,
     notificationsElement,
     stickyNotifications,
-    isMobile,
-    isAnyPanelOpen,
   } = useAppLayoutInternals();
 
   if (!notifications) {
@@ -39,7 +38,7 @@ export default function Notifications() {
         {
           [styles['has-notifications-content']]: hasNotificationsContent,
           [styles['sticky-notifications']]: stickyNotifications,
-          [styles.unfocusable]: isMobile && isAnyPanelOpen,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles.notifications,
         'awsui-context-content-header'

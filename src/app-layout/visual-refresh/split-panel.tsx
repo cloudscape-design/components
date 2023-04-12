@@ -68,9 +68,9 @@ function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
 function SplitPanelBottom() {
   const {
     disableBodyScroll,
+    hasOpenDrawer,
     isNavigationOpen,
     isSplitPanelOpen,
-    isToolsOpen,
     splitPanel,
     splitPanelPosition,
     splitPanelReportedSize,
@@ -88,9 +88,9 @@ function SplitPanelBottom() {
           className={clsx(styles['split-panel-bottom'], styles[`position-${splitPanelPosition}`], {
             [styles.animating]: state === 'entering',
             [styles['disable-body-scroll']]: disableBodyScroll,
+            [styles['has-open-drawer']]: hasOpenDrawer,
             [styles['is-navigation-open']]: isNavigationOpen,
             [styles['is-split-panel-open']]: isSplitPanelOpen,
-            [styles['is-tools-open']]: isToolsOpen,
           })}
           ref={transitionEventsRef}
           style={{
