@@ -214,10 +214,9 @@ const OldAppLayout = React.forwardRef(
       (open: boolean) => {
         setToolsOpen(open);
         focusToolsButtons();
-        focusDrawersButtons();
         fireNonCancelableEvent(onToolsChange, { open });
       },
-      [setToolsOpen, onToolsChange, focusToolsButtons, focusDrawersButtons]
+      [setToolsOpen, onToolsChange, focusToolsButtons]
     );
 
     const onNavigationClick = (event: React.MouseEvent) => {
@@ -546,6 +545,7 @@ const OldAppLayout = React.forwardRef(
                       onChange: changeDetail => {
                         if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
                           onToolsToggle(changeDetail.activeDrawerId === 'tools');
+                          focusDrawersButtons();
                           setActiveDrawersId(changeDetail.activeDrawerId);
                           setDrawerLastInteraction({ type: 'open' });
                           fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
@@ -740,6 +740,7 @@ const OldAppLayout = React.forwardRef(
                   onChange: changeDetail => {
                     if (selectedDrawer?.id !== changeDetail.activeDrawerId) {
                       onToolsToggle(changeDetail.activeDrawerId === 'tools');
+                      focusDrawersButtons();
                       setActiveDrawersId(changeDetail.activeDrawerId);
                       setDrawerLastInteraction({ type: 'open' });
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
