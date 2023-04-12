@@ -105,6 +105,7 @@ export default function () {
               tokenLimit={tokenLimit}
               hideOperations={hideOperations}
               disableFreeTextFiltering={disableFreeTextFiltering}
+              filteringEmpty="No options available"
             />
           }
           columnDefinitions={columnDefinitions}

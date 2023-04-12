@@ -148,7 +148,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const highlightedOptionIdSource = useUniqueId();
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
-    const isEmpty = !value && !autosuggestItemsState.items.length;
+    const isEmpty = !autosuggestItemsState.items.length;
     const dropdownStatus = useDropdownStatus({ ...props, isEmpty, onRecoveryClick: handleRecoveryClick });
 
     let content = null;

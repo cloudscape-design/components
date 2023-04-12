@@ -127,6 +127,40 @@ describe('Property filter autosuggest', () => {
     expect(wrapper.findEnteredTextOption()).toBeNull();
   });
 
+  describe('No suggestions', () => {
+    test('shows entered text option when there are no suggestions', () => {
+      const wrapper: AutosuggestWrapper = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          options={[]}
+          enteredTextLabel={value => `Use: ${value}`}
+          empty="No options"
+          value="123"
+          onChange={() => {}}
+          statusType="finished"
+        />
+      ).wrapper;
+      wrapper.focus();
+      expect(wrapper.findEnteredTextOption()?.getElement()).toHaveTextContent('Use: 123');
+    });
+
+    test('shows empty state when there are no suggestions and free text filtering is disabled', () => {
+      const wrapper: AutosuggestWrapper = renderAutosuggest(
+        <PropertyFilterAutosuggest
+          options={[]}
+          enteredTextLabel={() => ''}
+          empty="No options"
+          hideEnteredTextOption={true}
+          value="123"
+          onChange={() => {}}
+          statusType="finished"
+        />
+      ).wrapper;
+      wrapper.focus();
+      expect(wrapper.findEnteredTextOption()).toBeNull();
+      expect(wrapper.findDropdown().findFooterRegion()?.getElement()).toHaveTextContent('No options');
+    });
+  });
+
   describe('disabled option', () => {
     let wrapper: AutosuggestWrapper;
     const handleSelectedSpy = jest.fn();
