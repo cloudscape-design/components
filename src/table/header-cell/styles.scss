@@ -81,7 +81,8 @@
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
 
-  &.header-cell-fake-focus {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
   }
 

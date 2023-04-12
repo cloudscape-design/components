@@ -16,7 +16,6 @@ import ModeSwitcher from './mode-switcher';
 import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
@@ -78,7 +77,6 @@ export function DateRangePickerDropdown({
     value?.type === 'relative' ? value : null
   );
 
-  const focusVisible = useFocusVisible();
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
 
@@ -134,7 +132,6 @@ export function DateRangePickerDropdown({
     <>
       <FocusLock className={styles['focus-lock']} autoFocus={true}>
         <div
-          {...focusVisible}
           ref={scrollableContainerRef}
           className={styles.dropdown}
           tabIndex={0}

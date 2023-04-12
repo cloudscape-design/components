@@ -4,18 +4,14 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import useFocusVisible from '../../../../../lib/components/internal/hooks/focus-visible';
 
-function Fixture({ id = 'button' }) {
-  const visible = useFocusVisible();
-  return (
-    <button {...visible} data-testid={id}>
-      Test
-    </button>
-  );
+function Fixture() {
+  useFocusVisible();
+  return <button>Test</button>;
 }
 
-test('should disable focus by default', async () => {
-  const { findByTestId } = render(<Fixture />);
-  expect(await findByTestId('button')).not.toHaveAttribute('data-awsui-focus-visible');
+test('should disable focus by default', () => {
+  render(<Fixture />);
+  expect(document.body).not.toHaveAttribute('data-awsui-focus-visible');
 });
 
 [
@@ -24,42 +20,41 @@ test('should disable focus by default', async () => {
   { key: 'Control', keyCode: 18 },
   { key: 'Meta', keyCode: 91 },
 ].forEach(key => {
-  test(`should not enable focus when ${key.key} key is pressed`, async () => {
-    const { findByTestId } = render(<Fixture />);
+  test(`should not enable focus when ${key.key} key is pressed`, () => {
+    render(<Fixture />);
     fireEvent.keyDown(document.body, key);
-    expect(await findByTestId('button')).not.toHaveAttribute('data-awsui-focus-visible', 'true');
+    expect(document.body).not.toHaveAttribute('data-awsui-focus-visible');
   });
 });
 
-test(`should enable focus when shift-tab is pressed`, async () => {
-  const { findByTestId } = render(<Fixture />);
+test(`should enable focus when shift-tab is pressed`, () => {
+  render(<Fixture />);
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65, shiftKey: true });
-  expect(await findByTestId('button')).toHaveAttribute('data-awsui-focus-visible', 'true');
+  expect(document.body).toHaveAttribute('data-awsui-focus-visible', 'true');
 });
 
-test('should enable focus when keyboard interaction happened', async () => {
-  const { findByTestId } = render(<Fixture />);
+test('should enable focus when keyboard interaction happened', () => {
+  render(<Fixture />);
   fireEvent.keyDown(document.body);
-  expect(await findByTestId('button')).toHaveAttribute('data-awsui-focus-visible', 'true');
+  expect(document.body).toHaveAttribute('data-awsui-focus-visible', 'true');
 });
 
-test('should disable focus when mouse is used after keyboard', async () => {
-  const { findByTestId } = render(<Fixture />);
+test('should disable focus when mouse is used after keyboard', () => {
+  render(<Fixture />);
   fireEvent.keyDown(document.body);
   fireEvent.mouseDown(document.body);
-  expect(await findByTestId('button')).not.toHaveAttribute('data-awsui-focus-visible');
+  expect(document.body).not.toHaveAttribute('data-awsui-focus-visible');
 });
 
-test('should add listeners only once', async () => {
-  const { findByTestId } = render(
+test('should work with multiple components', () => {
+  render(
     <>
-      <Fixture id="button-1" />
-      <Fixture id="button-2" />
+      <Fixture />
+      <Fixture />
     </>
   );
   fireEvent.keyDown(document.body);
-  expect(await findByTestId('button-1')).toHaveAttribute('data-awsui-focus-visible', 'true');
-  expect(await findByTestId('button-2')).toHaveAttribute('data-awsui-focus-visible', 'true');
+  expect(document.body).toHaveAttribute('data-awsui-focus-visible', 'true');
 });
 
 test('should add listeners only once', () => {
@@ -67,22 +62,22 @@ test('should add listeners only once', () => {
   jest.spyOn(document, 'removeEventListener');
   const { rerender } = render(
     <>
-      <Fixture id="button-1" />
-      <Fixture id="button-2" />
+      <Fixture />
+      <Fixture />
     </>
   );
   expect(document.addEventListener).toHaveBeenCalledTimes(2);
   expect(document.removeEventListener).toHaveBeenCalledTimes(0);
-  rerender(<Fixture id="button-1" />);
+  rerender(<Fixture />);
   expect(document.removeEventListener).toHaveBeenCalledTimes(0);
   rerender(<span />);
   expect(document.removeEventListener).toHaveBeenCalledTimes(2);
 });
 
-test('should initialize late components with updated state', async () => {
-  const { rerender, findByTestId } = render(<Fixture key={1} id="button" />);
+test('should initialize late components with updated state', () => {
+  const { rerender } = render(<Fixture key={1} />);
   fireEvent.keyDown(document.body);
-  expect(await findByTestId('button')).toHaveAttribute('data-awsui-focus-visible', 'true');
-  rerender(<Fixture key={2} id="button" />);
-  expect(await findByTestId('button')).toHaveAttribute('data-awsui-focus-visible', 'true');
+  expect(document.body).toHaveAttribute('data-awsui-focus-visible', 'true');
+  rerender(<Fixture key={2} />);
+  expect(document.body).toHaveAttribute('data-awsui-focus-visible', 'true');
 });

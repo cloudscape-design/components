@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 
@@ -46,7 +45,6 @@ export const TabButton = React.forwardRef(
     }: TabButtonProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
     return (
       <button
         className={clsx([styles['tab-button'], className], {
@@ -66,7 +64,6 @@ export const TabButton = React.forwardRef(
         aria-controls={paneId}
         aria-hidden={ariaHidden}
         aria-label={ariaLabel}
-        {...focusVisible}
       >
         <InternalIcon name={iconName} /> {text}
       </button>

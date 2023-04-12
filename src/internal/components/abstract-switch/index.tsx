@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import useFocusVisible from '../../hooks/focus-visible';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
 
@@ -49,7 +48,6 @@ export default function AbstractSwitch({
   const uniqueId = useUniqueId();
   const id = controlId || uniqueId;
 
-  const focusVisible = useFocusVisible();
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
@@ -79,7 +77,6 @@ export default function AbstractSwitch({
         <span className={clsx(styles.control, controlClassName)}>
           {styledControl}
           {nativeControl({
-            ...focusVisible,
             id,
             disabled,
             className: styles['native-input'],
