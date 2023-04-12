@@ -69,33 +69,22 @@ export function useContractFilesForm() {
 
     setFormStatus('uploading');
 
-    let tick = 0;
-    let timeout: null | ReturnType<typeof setTimeout> = null;
-
-    const upload = () => {
-      timeout = setTimeout(() => {
-        tick++;
-
-        if (tick === 100 && uploadingFiles.some(isImage)) {
-          setFileErrors(
-            formatFileUploadError(
-              [],
-              uploadingFiles.map(file => (isImage(file) ? ['File was not accepted by server'] : []))
-            )
-          );
-          setFormStatus('error');
-        } else if (tick === 100) {
-          setFormStatus('uploaded');
-        } else {
-          upload();
-        }
-      }, 20);
-    };
-
-    upload();
+    const timeout = setTimeout(() => {
+      if (uploadingFiles.some(isImage)) {
+        setFileErrors(
+          formatFileUploadError(
+            [],
+            uploadingFiles.map(file => (isImage(file) ? ['File was not accepted by server'] : []))
+          )
+        );
+        setFormStatus('error');
+      } else {
+        setFormStatus('uploaded');
+      }
+    }, 2000);
 
     return () => {
-      timeout && clearTimeout(timeout);
+      clearTimeout(timeout);
     };
   }, [uploadingFiles]);
 
