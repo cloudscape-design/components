@@ -34,113 +34,7 @@ describe('Collection preferences - Content Display preference', () => {
 
   describe('reorders content with keyboard', () => {
     test(
-      'moves item down',
-      setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-
-        await page.focusDragHandle(0);
-        await page.keys('Space');
-        await page.expectAnnouncement('Picked up item at position 1 of 6');
-        await page.keys('ArrowDown');
-        await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.keys('Space');
-
-        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
-        return page.expectAnnouncement('Item moved from position 1 to position 2 of 6');
-      })
-    );
-
-    test(
-      'moves item up',
-      setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-
-        await page.focusDragHandle(1);
-        await page.keys('Space');
-        await page.expectAnnouncement('Picked up item at position 2 of 6');
-        await page.keys('ArrowUp');
-        await page.expectAnnouncement('Moving item to position 1 of 6');
-        await page.keys('Space');
-
-        await expect(await page.containsOptionsInOrder(['Item 2', 'Item 1'])).toBe(true);
-        return page.expectAnnouncement('Item moved from position 2 to position 1 of 6');
-      })
-    );
-
-    test(
-      'moves item down and back up',
-      setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-
-        await page.focusDragHandle(0);
-        await page.keys('Space');
-        await page.expectAnnouncement('Picked up item at position 1 of 6');
-        await page.keys('ArrowDown');
-        await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.keys('ArrowUp');
-        await page.expectAnnouncement('Moving item back to position 1 of 6');
-        await page.keys('Space');
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-        return page.expectAnnouncement('Item moved back to its original position 1 of 6');
-      })
-    );
-
-    test(
-      'ignores keystrokes out of bounds',
-      setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-
-        await page.focusDragHandle(0);
-        await page.keys('Space');
-        await page.expectAnnouncement('Picked up item at position 1 of 6');
-        await page.keys(new Array(10).fill('ArrowUp'));
-        await page.expectAnnouncement('Picked up item at position 1 of 6');
-        await page.keys('ArrowDown');
-        await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.keys(new Array(10).fill('ArrowDown'));
-        await page.keys('ArrowUp');
-        await page.keys('Space');
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 6'])).toBe(true);
-        return page.expectAnnouncement('Item moved from position 1 to position 5 of 6');
-      })
-    );
-
-    test(
-      'cancels reordering by pressing Escape',
-      setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-
-        await page.focusDragHandle(0);
-        await page.keys('Space');
-        await page.expectAnnouncement('Picked up item at position 1 of 6');
-        await page.keys('ArrowDown');
-        await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.keys('Escape');
-
-        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-        return page.expectAnnouncement('Reordering canceled');
-      })
-    );
-
-    test(
-      'cancels reordering by pressing Tab',
+      'cancels reordering when pressing Tab',
       setupTest(async page => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal(wrapper);
@@ -160,7 +54,7 @@ describe('Collection preferences - Content Display preference', () => {
     );
 
     test(
-      'cancels reordering by clicking somewhere else',
+      'cancels reordering when clicking somewhere else',
       setupTest(async page => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal(wrapper);

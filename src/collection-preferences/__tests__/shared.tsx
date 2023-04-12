@@ -68,4 +68,16 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
     { id: 'id4', label: 'Item 4' },
   ],
   dragHandleAriaLabel: 'Drag handle',
+  dragHandleAriaDescription:
+    'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
+  liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,
+  liveAnnouncementDndDiscarded: 'Reordering canceled',
+  liveAnnouncementDndItemReordered: (initialPosition, currentPosition, total) =>
+    initialPosition === currentPosition
+      ? `Moving item back to position ${currentPosition} of ${total}`
+      : `Moving item to position ${currentPosition} of ${total}`,
+  liveAnnouncementDndItemCommitted: (initialPosition, finalPosition, total) =>
+    initialPosition === finalPosition
+      ? `Item moved back to its original position ${initialPosition} of ${total}`
+      : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
 };
