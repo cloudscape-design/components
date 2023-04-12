@@ -241,7 +241,11 @@ const InternalTable = forwardRef(
         resizableColumns={resizableColumns}
         hasSelection={hasSelection}
       >
-        <StickyColumnsContextProvider wrapperRef={wrapperRefObject} tableRef={tableRefObject}>
+        <StickyColumnsContextProvider
+          wrapperRef={wrapperRefObject}
+          tableRef={tableRefObject}
+          shouldDisableStickyColumns={shouldDisableStickyColumns}
+        >
           <InternalContainer
             {...baseProps}
             __internalRootRef={__internalRootRef}

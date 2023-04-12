@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { createContext, useContext, useEffect, useCallback, useRef, ReactNode } from 'react';
+import React, { createContext, useContext, useLayoutEffect, useCallback, useRef, ReactNode } from 'react';
 
 interface StickyColumnsContextValue {
   registerChildCallback: (callback: (entry: any) => void) => void;
@@ -22,12 +22,18 @@ interface StickyColumnsContextProviderProps {
   children: ReactNode;
   wrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
+  shouldDisableStickyColumns: boolean;
 }
 interface StickyColumnsContextProvider {
   (props: StickyColumnsContextProviderProps): JSX.Element;
 }
 
-export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({ children, wrapperRef, tableRef }) => {
+export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
+  children,
+  wrapperRef,
+  tableRef,
+  shouldDisableStickyColumns,
+}) => {
   const childCallbacks = useRef<Set<(entry: any) => void>>(new Set());
 
   const createScrollHandler = useCallback(() => {
@@ -47,38 +53,26 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({ chi
 
     return scrollHandler;
   }, [tableRef, wrapperRef]);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     const scrollHandler = createScrollHandler();
     const wrapper = wrapperRef.current;
     const currentChildCallbacks = childCallbacks.current;
-    if (wrapper) {
-      wrapper.addEventListener('scroll', scrollHandler);
-    }
-
-    return () => {
-      if (wrapper) {
-        wrapper.removeEventListener('scroll', scrollHandler);
-      }
-
-      currentChildCallbacks.clear();
-    };
-  }, [createScrollHandler, wrapperRef]);
-
-  useEffect(() => {
-    const scrollHandler = createScrollHandler();
-    const wrapper = wrapperRef.current;
-    const currentChildCallbacks = childCallbacks.current;
-    if (wrapper) {
-      wrapper.addEventListener('scroll', scrollHandler);
+    if (!shouldDisableStickyColumns) {
+      wrapper && wrapper.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', scrollHandler);
+    } else if (shouldDisableStickyColumns) {
+      wrapper && wrapper.removeEventListener('scroll', scrollHandler);
+      window.removeEventListener('resize', scrollHandler);
     }
+
     return () => {
       wrapper && wrapper.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', scrollHandler);
 
       currentChildCallbacks.clear();
     };
-  }, [createScrollHandler, wrapperRef]);
+  }, [createScrollHandler, wrapperRef, shouldDisableStickyColumns]);
 
   const registerChildCallback = (callback: (entry: any) => void) => {
     childCallbacks.current.add(callback);
