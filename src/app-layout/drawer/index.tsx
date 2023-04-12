@@ -6,7 +6,7 @@ import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-import { DesktopDrawerProps, DrawerTriggersBar, DrawerItem, DrawerItemAriaLabels } from './interfaces';
+import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -131,7 +131,13 @@ export const Drawer = React.forwardRef(
   }
 );
 
-export function DrawerTriggersBar({ isMobile, topOffset, bottomOffset, drawers, contentClassName }: DrawerTriggersBar) {
+export function DrawerTriggersBar({
+  isMobile,
+  topOffset,
+  bottomOffset,
+  drawers,
+  contentClassName,
+}: DrawerTriggersBarProps) {
   return (
     <div
       className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {

@@ -44,7 +44,7 @@ export interface ResizableDrawerProps extends DesktopDrawerProps {
   refs: DrawerFocusControlRefs;
 }
 
-export interface DrawerTriggersBar {
+export interface DrawerTriggersBarProps {
   contentClassName: string;
   topOffset: number | undefined;
   bottomOffset: number | undefined;

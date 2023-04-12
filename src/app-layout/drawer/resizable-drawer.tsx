@@ -6,29 +6,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
 import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import { Drawer } from './index';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
 import { SizeControlProps, ResizableDrawerProps } from './interfaces';
 
-// We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
-// known bugs in NVDA that cause focus changes within a container to sometimes not be
-// announced. As a result, we use one region for the open button and one region for the
-// actual drawer content, always hiding the other one when it's not visible.
-// An alternative solution to follow a more classic implementation here to only have one
-// button that triggers the opening/closing of the drawer also did not work due to another
-// series of bugs in NVDA (together with Firefox) which prevent the changed expanded state
-// from being announced.
-// Even with this workaround in place, the announcement of the close button when opening a
-// panel in NVDA is not working correctly. The suspected root cause is one of the bugs below
-// as well.
-// Relevant tickets:
-// * https://github.com/nvaccess/nvda/issues/6606
-// * https://github.com/nvaccess/nvda/issues/5825
-// * https://github.com/nvaccess/nvda/issues/5247
-// * https://github.com/nvaccess/nvda/pull/8869 (reverted PR that was going to fix it)
 export const ResizableDrawer = ({
   onResize,
   size,
@@ -41,7 +24,6 @@ export const ResizableDrawer = ({
 
   const MIN_WIDTH = activeDrawer?.size && activeDrawer.size < 280 ? activeDrawer?.size : 280;
   const [relativeSize, setRelativeSize] = useState(0);
-  const focusVisible = useFocusVisible();
 
   useEffect(() => {
     // effects are called inside out in the components tree
@@ -90,7 +72,6 @@ export const ResizableDrawer = ({
       className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
-      {...focusVisible}
     >
       <ResizeHandler className={clsx(splitPanelStyles['slider-icon'], splitPanelStyles[`slider-icon-side`])} />
     </div>
