@@ -127,5 +127,5 @@ export function useContractFilesForm() {
 }
 
 function isImage(file: File) {
-  return !!file.type && file.type.split('/')[0] === 'image';
+  return file.type.startsWith('image/');
 }

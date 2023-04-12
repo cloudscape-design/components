@@ -141,7 +141,7 @@ function InternalFileUpload(
         </div>
       )}
 
-      {!multiple && value.length === 1 ? (
+      {!multiple && value.length > 0 ? (
         <Token
           ariaLabel={value[0].name}
           dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
@@ -153,7 +153,7 @@ function InternalFileUpload(
         </Token>
       ) : null}
 
-      {(multiple && value.length > 0) || value.length > 1 ? (
+      {multiple && value.length > 0 ? (
         <TokenList
           alignment="vertical"
           items={value}

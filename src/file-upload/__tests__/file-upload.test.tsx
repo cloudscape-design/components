@@ -151,13 +151,13 @@ describe('FileUpload input', () => {
 });
 
 describe('File upload tokens', () => {
-  test('token list is not rendered when `multiple=false` and one file is defined', () => {
+  test('token list is not rendered when `multiple=false`', () => {
     const wrapper = render({ multiple: false, value: [file1] });
     expect(wrapper.find(tokenListSelectors.root)).toBeNull();
   });
 
-  test.each([false, true])(`when multiple=%s all file tokens are shown`, multiple => {
-    const wrapper = render({ multiple, value: [file1, file2] });
+  test(`when multiple=true all file tokens are shown`, () => {
+    const wrapper = render({ multiple: true, value: [file1, file2] });
 
     expect(wrapper.findFileTokens()).toHaveLength(2);
 

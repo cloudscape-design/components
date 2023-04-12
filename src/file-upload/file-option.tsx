@@ -17,7 +17,7 @@ interface FileOptionProps {
 }
 
 export function FileOption({ file, metadata, i18nStrings }: FileOptionProps) {
-  const isImage = !!file.type && file.type.split('/')[0] === 'image';
+  const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
   return (
