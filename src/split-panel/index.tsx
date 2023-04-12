@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 
 import { SplitPanelProps, SizeControlProps } from './interfaces';
@@ -60,7 +59,6 @@ export default function SplitPanel({
     refs,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
   const [relativeSize, setRelativeSize] = useState(0);
   const [maxSize, setMaxSize] = useState(size);
@@ -197,7 +195,6 @@ export default function SplitPanel({
       className={clsx(styles.slider, styles[`slider-${position}`])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
-      {...focusVisible}
     >
       <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
     </div>

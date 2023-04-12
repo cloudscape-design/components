@@ -4,7 +4,6 @@
 import React, { useCallback } from 'react';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import useFocusVisible from '../../hooks/focus-visible';
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
@@ -25,7 +24,6 @@ export default function TokenLimitToggle({
   onClick,
   i18nStrings = {},
 }: TokenLimitToggleProps) {
-  const focusVisible = useFocusVisible();
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;
   const description = expanded
     ? i18nStrings.limitShowFewer
@@ -42,7 +40,6 @@ export default function TokenLimitToggle({
       onClick={handleClick}
       aria-controls={controlId}
       aria-expanded={expanded}
-      {...focusVisible}
     >
       <InternalIcon name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
       <span className={styles.description}>{description}</span>

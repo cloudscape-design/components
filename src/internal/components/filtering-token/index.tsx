@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import InternalSelect from '../../../select/internal';
 import InternalIcon from '../../../icon/internal';
-import useFocusVisible from '../../hooks/focus-visible';
 
 import styles from './styles.css.js';
 
@@ -42,7 +41,6 @@ export default function FilteringToken({
   onChange,
   onDismiss,
 }: FilteringTokenProps) {
-  const focusVisible = useFocusVisible();
   return (
     <div className={styles.root} role="group" aria-label={ariaLabel}>
       {showOperation && (
@@ -65,7 +63,6 @@ export default function FilteringToken({
       >
         <div className={styles['token-content']}>{children}</div>
         <button
-          {...focusVisible}
           type="button"
           className={styles['dismiss-button']}
           aria-label={dismissAriaLabel}

@@ -490,6 +490,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorDragPlaceholderActive: {
+    description: 'The color of drag placeholder in active state.',
+    themeable: false,
+    public: true,
+  },
+  colorDragPlaceholderHover: {
+    description: 'The color of drag placeholder in hovered state.',
+    themeable: false,
+    public: true,
+  },
 };
 
 export default metadata;

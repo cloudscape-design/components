@@ -121,6 +121,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusInfo: { dark: '{colorBlue400}' },
   colorBoardPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
   colorBoardPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
+  colorDragPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
+  colorDragPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
