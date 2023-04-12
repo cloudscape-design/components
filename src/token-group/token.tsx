@@ -7,35 +7,47 @@ import clsx from 'clsx';
 import DismissButton from './dismiss-button';
 import styles from './styles.css.js';
 import { FormFieldError } from '../form-field/internal';
-import InternalBox from '../box/internal';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 
-interface ItemAttributes {
+interface TokenProps {
   children: React.ReactNode;
+  ariaLabel?: string;
   dismissLabel?: string;
   onDismiss?: () => void;
   disabled?: boolean;
   errorText?: React.ReactNode;
-  errorId?: string;
+  errorIconAriaLabel?: string;
+  className?: string;
 }
 
-interface TokenProps extends ItemAttributes {
-  children: React.ReactNode;
-}
-
-export function Token({ disabled, dismissLabel, onDismiss, children, errorText, errorId }: TokenProps) {
+export function Token({
+  ariaLabel,
+  disabled,
+  dismissLabel,
+  onDismiss,
+  children,
+  errorText,
+  errorIconAriaLabel,
+  className,
+}: TokenProps) {
+  const errorId = useUniqueId('error');
   return (
-    <InternalBox>
-      <div className={clsx(styles.token, disabled && styles['token-disabled'])}>
+    <div
+      className={clsx(styles.token, className)}
+      role="group"
+      aria-label={ariaLabel}
+      aria-describedby={errorText ? errorId : undefined}
+      aria-disabled={disabled}
+    >
+      <div className={clsx(styles['token-box'], disabled && styles['token-box-disabled'])}>
         {children}
         {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
       </div>
       {errorText && (
-        <div style={{ marginTop: '4px' }}>
-          <FormFieldError id={errorId} errorIconAriaLabel="Error">
-            {errorText}
-          </FormFieldError>
-        </div>
+        <FormFieldError id={errorId} errorIconAriaLabel={errorIconAriaLabel}>
+          {errorText}
+        </FormFieldError>
       )}
-    </InternalBox>
+    </div>
   );
 }

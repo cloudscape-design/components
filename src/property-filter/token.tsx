@@ -61,6 +61,7 @@ export const TokenButton = ({
   const formattedToken = getFormattedToken(filteringProperties, token);
   return (
     <FilteringToken
+      ariaLabel={formattedToken.label}
       showOperation={!first && !hideOperations}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}

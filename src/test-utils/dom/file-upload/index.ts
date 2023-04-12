@@ -39,15 +39,15 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   /**
    * Returns the token toggle button.
    */
-  findTokenToggle(): ElementWrapper | null {
+  findTokenToggle(): null | ElementWrapper {
     return this.findByClassName(tokenListSelectors.toggle);
   }
 
-  findConstraint(): ElementWrapper | null {
+  findConstraint(): null | ElementWrapper {
     return this.find(`:scope > .${formFieldStyles.hints} .${formFieldStyles.constraint}`);
   }
 
-  findError(): ElementWrapper | null {
+  findError(): null | ElementWrapper {
     return this.find(`:scope > .${formFieldStyles.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
 }
@@ -67,6 +67,10 @@ class FileTokenWrapper extends ComponentWrapper {
 
   findFileThumbnail(): null | ElementWrapper {
     return this.findByClassName(styles['file-option-thumbnail-image']);
+  }
+
+  findFileError(): null | ElementWrapper {
+    return this.find(`:scope > .${formFieldStyles.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
 
   findRemoveButton(): null | ElementWrapper {

@@ -28,13 +28,11 @@ export default function GenericTokenGroupPage() {
     <Box padding="xl">
       <h1>Generic token group</h1>
       <SpaceBetween size="l" direction="vertical">
-        <div role="group" aria-label="Custom token">
-          <Token>Custom token</Token>
-        </div>
+        <Token ariaLabel="Standalone token">Standalone token</Token>
 
-        <div role="group" aria-label="Custom token" aria-disabled={true}>
-          <Token disabled={true}>Custom disabled token</Token>
-        </div>
+        <Token ariaLabel="Standalone disabled token" disabled={true}>
+          Standalone disabled token
+        </Token>
 
         <TokenList
           alignment="vertical"
@@ -43,6 +41,7 @@ export default function GenericTokenGroupPage() {
           limit={5}
           renderItem={(file, fileIndex) => (
             <Token
+              ariaLabel={`agreement-${file + 1}.pdf`}
               disabled={file === 0}
               dismissLabel={`Remove file ${fileIndex + 1}`}
               onDismiss={() => onDismiss(fileIndex)}
@@ -50,7 +49,6 @@ export default function GenericTokenGroupPage() {
               <FileOption file={file} />
             </Token>
           )}
-          itemAttributes={file => ({ 'aria-label': `agreement-${file + 1}.pdf`, 'aria-disabled': file === 0 })}
         />
       </SpaceBetween>
     </Box>
@@ -60,7 +58,7 @@ export default function GenericTokenGroupPage() {
 function FileOption({ file }: { file: number }) {
   const fileName = `agreement-${file + 1}.pdf`;
   return (
-    <Box className={styles['file-option']}>
+    <div className={styles['file-option']}>
       <Icon variant="success" name="status-positive" />
 
       <div className={styles['file-option-metadata']}>
@@ -83,6 +81,6 @@ function FileOption({ file }: { file: number }) {
           </Box>
         </SpaceBetween>
       </div>
-    </Box>
+    </div>
   );
 }

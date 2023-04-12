@@ -57,7 +57,6 @@ function InternalFileUpload(
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
 
   const errorId = useUniqueId('error-');
-  const fileErrorId = useUniqueId('file-error-');
   const constraintTextId = useUniqueId('constraint-text-');
 
   const fileInputRef = useRef<ButtonProps.Ref>(null);
@@ -143,38 +142,30 @@ function InternalFileUpload(
 
       {/* When multiple=`false` the component can have at most one file selected. Using a list representation is unnecessary in that case. */}
       {!multiple && value.length === 1 ? (
-        <div
-          role="group"
-          aria-label={value[0].name}
-          aria-describedby={fileErrors?.[0] ? fileErrorId : undefined}
+        <Token
+          ariaLabel={value[0].name}
+          dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
+          onDismiss={() => onFileRemove(0)}
+          errorText={fileErrors?.[0]}
+          errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
           // Adding the 'list-item' class for test-utils method to find the item w/o the need in providing `multiple` argument.
           className={tokenListStyles['list-item']}
         >
-          <Token
-            dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
-            onDismiss={() => onFileRemove(0)}
-            errorText={fileErrors?.[0]}
-            errorId={fileErrorId}
-          >
-            <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
-          </Token>
-        </div>
+          <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
+        </Token>
       ) : null}
 
       {(multiple && value.length > 0) || value.length > 1 ? (
         <TokenList
           alignment="vertical"
           items={value}
-          itemAttributes={(file, fileIndex) => ({
-            'aria-label': file.name,
-            'aria-describedby': fileErrors?.[fileIndex] ? `${fileErrorId}-${fileIndex}` : undefined,
-          })}
           renderItem={(file, fileIndex) => (
             <Token
+              ariaLabel={file.name}
               dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
               onDismiss={() => onFileRemove(fileIndex)}
               errorText={fileErrors?.[fileIndex]}
-              errorId={`${fileErrorId}-${fileIndex}`}
+              errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
             >
               <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
             </Token>

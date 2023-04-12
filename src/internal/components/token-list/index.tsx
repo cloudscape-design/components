@@ -14,7 +14,6 @@ export default function TokenList<Item>({
   items,
   alignment,
   renderItem,
-  itemAttributes,
   limit,
   after,
   i18nStrings,
@@ -51,7 +50,6 @@ export default function TokenList<Item>({
               <li
                 key={itemIndex}
                 className={styles['list-item']}
-                {...itemAttributes?.(item, itemIndex)}
                 aria-setsize={items.length}
                 aria-posinset={itemIndex + 1}
               >
@@ -75,7 +73,6 @@ export default function TokenList<Item>({
             <li
               key={itemIndex}
               className={styles['list-item']}
-              {...itemAttributes?.(item, itemIndex)}
               aria-setsize={items.length}
               aria-posinset={itemIndex + 1}
             >

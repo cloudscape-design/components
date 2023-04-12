@@ -231,6 +231,14 @@ describe('Variant container with headerText', () => {
     const screenreaderElement = wrapper.findHeader().find(`#${headerButton}`)!.getElement();
     expect(screenreaderElement.textContent).toBe('Header component (5) Expand to see more content');
   });
+  test('does not set aria-labelledby for default variant', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'default',
+      headerText: 'Header component',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).not.toHaveAttribute('aria-labelledby');
+  });
   test('button should be under heading', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
