@@ -40,7 +40,7 @@ $border-radius: awsui.$border-radius-item;
   }
   &.draggable {
     padding-left: 0;
-    padding-right: awsui.$space-scaled-xxs;
+    padding-right: awsui.$space-scaled-xs;
     background-color: awsui.$color-background-container-content;
     z-index: 1;
     &:not(.active).sorting,
