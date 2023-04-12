@@ -26,6 +26,8 @@ jest.mock('../../../lib/components/internal/motion', () => ({
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
 
+const setActiveDrawerId = jest.fn();
+
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
@@ -133,6 +135,7 @@ export const drawersConfigurations = {
   singleDrawerOpen: {
     drawers: {
       activeDrawerId: 'security',
+      onChange: (event: any) => setActiveDrawerId(event.detail),
       items: [
         {
           ariaLabels: {

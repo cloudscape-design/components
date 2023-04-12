@@ -328,15 +328,15 @@ describeEachThemeAppLayout(true, theme => {
   test('should render drawers mobile triggers container', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
 
-    //expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
     expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
   });
-});
 
-test('should render an active drawer', () => {
-  const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+  test('should render an active drawer', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
 
-  expect(wrapper.findDrawersMobileTriggersContainer()).toBeFalsy();
-  // expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
-  expect(wrapper.findActiveDrawer()).toBeTruthy();
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
 });
