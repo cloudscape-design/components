@@ -15,23 +15,22 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    */
   ariaRequired?: boolean;
   /**
-   * Show file's size in the token. Use `i18nStrings.formatFileSize` to customize it.
+   * Show file size in the token. Use `i18nStrings.formatFileSize` to customize it.
    * Default: `false`.
    */
   showFileSize?: boolean;
   /**
-   * Show file's last modified timestamp in the token. Use `i18nStrings.formatFileLastModified` to customize it.
+   * Show file last modified timestamp in the token. Use `i18nStrings.formatFileLastModified` to customize it.
    * Default: `false`.
    */
   showFileLastModified?: boolean;
   /**
-   * Show file's thumbnail in the token. Only supported for images.
+   * Show file thumbnail in the token. Only supported for images.
    * Default: `false`.
    */
   showFileThumbnail?: boolean;
   /**
    * Specifies the native file input `multiple` attribute to allow users entering more than one file.
-   * When `multiple=false` but `value` contains more than one file only the first one will be displayed.
    * Default: `false`.
    */
   multiple?: boolean;
@@ -70,7 +69,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
    * * `limitShowMore` (string): The text of the show fewer tokens button.
    * * `errorIconAriaLabel` (string): The ARIA label to be shown on the error file icon.
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
-   * * `formatFileLastModified` (function): (Optional) A function that takes file's last modified date, and produces a formatted string.
+   * * `formatFileLastModified` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.
    */
   i18nStrings: FileUploadProps.I18nStrings;
 }

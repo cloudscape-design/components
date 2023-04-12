@@ -5610,7 +5610,7 @@ Object {
   "events": Array [
     Object {
       "cancelable": false,
-      "description": "Called when the user selects new file(s) or removes a file.
+      "description": "Called when the user selects new file(s), or removes a file.
 The event \`detail\` contains the current value of the component.",
       "detailInlineType": Object {
         "name": "FileUploadProps.ChangeDetail",
@@ -5692,21 +5692,21 @@ is provided by its parent form field component.
       "type": "string",
     },
     Object {
-      "description": "An array of file properties corresponding the \`value\` files.
-Supported properties:
-* \`status\` (string) - An enum of \\"success\\", \\"error\\" to represent the file status.",
-      "name": "fileProps",
+      "description": "An array of file errors corresponding to the files in the \`value\`.",
+      "name": "fileErrors",
       "optional": true,
-      "type": "ReadonlyArray<FileUploadProps.FileProps>",
+      "type": "ReadonlyArray<null | string> | null",
     },
     Object {
       "description": "An object containing all the localized strings required by the component:
 * \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
+* \`dropzoneText\` (function): A function to render the text shown in the dropzone. It takes \`multiple\` attribute to define plurality.
 * \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
 * \`limitShowFewer\` (string): The text of the show more tokens button.
 * \`limitShowMore\` (string): The text of the show fewer tokens button.
-* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes and produces a formatted string.
-* \`formatFileLastModified\` (function): (Optional) A function that takes file last modified date object and produces a formatted string.",
+* \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
       "inlineType": Object {
         "name": "FileUploadProps.I18nStrings",
         "properties": Array [
@@ -5714,6 +5714,11 @@ Supported properties:
             "name": "dropzoneText",
             "optional": false,
             "type": "(multiple: boolean) => string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": false,
+            "type": "string",
           },
           Object {
             "name": "formatFileLastModified",
@@ -5724,11 +5729,6 @@ Supported properties:
             "name": "formatFileSize",
             "optional": true,
             "type": "(sizeInBytes: number) => string",
-          },
-          Object {
-            "name": "invalidStateIconAlt",
-            "optional": false,
-            "type": "string",
           },
           Object {
             "name": "limitShowFewer",
@@ -5775,15 +5775,8 @@ single form field.",
       "type": "boolean",
     },
     Object {
-      "description": "Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.",
-      "name": "limit",
-      "optional": true,
-      "type": "number",
-    },
-    Object {
       "defaultValue": "false",
       "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
-When \`multiple=false\` but \`value\` contains more than one file only the first one will be displayed.
 Default: \`false\`.",
       "name": "multiple",
       "optional": true,
@@ -5791,7 +5784,7 @@ Default: \`false\`.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Show file's last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.
+      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.
 Default: \`false\`.",
       "name": "showFileLastModified",
       "optional": true,
@@ -5799,7 +5792,7 @@ Default: \`false\`.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Show file's size in the token. Use \`i18nStrings.formatFileSize\` to customize it.
+      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.
 Default: \`false\`.",
       "name": "showFileSize",
       "optional": true,
@@ -5807,19 +5800,17 @@ Default: \`false\`.",
     },
     Object {
       "defaultValue": "false",
-      "description": "Show file's thumbnail in the token. Use for multiple files upload case only. Only supported for images.
+      "description": "Show file thumbnail in the token. Only supported for images.
 Default: \`false\`.",
       "name": "showFileThumbnail",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "defaultValue": "false",
-      "description": "Show file's MIME type in the token.
-Default: \`false\`.",
-      "name": "showFileType",
+      "description": "Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.",
+      "name": "tokenLimit",
       "optional": true,
-      "type": "boolean",
+      "type": "number",
     },
     Object {
       "description": "Specifies the currently selected file(s).
@@ -5829,7 +5820,18 @@ If you want to clear the selection, use empty array.",
       "type": "ReadonlyArray<File>",
     },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "Constraint text that is displayed below the control. Use this to provide additional information about file size limit, etc.",
+      "isDefault": false,
+      "name": "constraintText",
+    },
+    Object {
+      "description": "Text that displays as a validation message.",
+      "isDefault": false,
+      "name": "errorText",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
