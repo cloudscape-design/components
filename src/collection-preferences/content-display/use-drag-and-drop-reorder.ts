@@ -140,17 +140,13 @@ export default function useDragAndDropReorder({
             y: newRect.top,
           };
 
-          return offset.x && offset.y
-            ? rectCoordinates
-            : {
-                x: rectCoordinates.x - offset.x,
-                y: rectCoordinates.y - offset.y,
-              };
+          return {
+            x: rectCoordinates.x - offset.x,
+            y: rectCoordinates.y - offset.y,
+          };
         }
       }
     }
-
-    return undefined;
   };
 
   const sensors = useSensors(
@@ -175,10 +171,7 @@ export default function useDragAndDropReorder({
 }
 
 function isAfter(a: DroppableContainer, b: DroppableContainer) {
-  if (!hasSortableData(a) || !hasSortableData(b)) {
-    return false;
-  }
-  return a.data.current.sortable.index < b.data.current.sortable.index;
+  return hasSortableData(a) && hasSortableData(b) && a.data.current.sortable.index < b.data.current.sortable.index;
 }
 
 const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
