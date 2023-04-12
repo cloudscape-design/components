@@ -10,11 +10,11 @@ import {
 } from '@dnd-kit/utilities';
 
 import { defaultCoordinates } from '@dnd-kit/core';
-import { getScrollPosition, getScrollElementRect } from './utilities/scroll';
+import { applyScroll } from './utilities/scroll';
 import { EventName } from './utilities/events';
 import { Listeners } from './utilities/listeners';
 import type { Activators, SensorInstance } from '@dnd-kit/core';
-import { KeyboardCode, KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
+import { KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
 
 import { defaultKeyboardCodes } from './defaults';
 import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
@@ -63,7 +63,7 @@ export class KeyboardSensor implements SensorInstance {
   private handleKeyDown(event: Event) {
     if (isKeyboardEvent(event)) {
       const { active, context, options } = this.props;
-      const { keyboardCodes = defaultKeyboardCodes, coordinateGetter, scrollBehavior = 'smooth' } = options;
+      const { keyboardCodes = defaultKeyboardCodes, coordinateGetter } = options;
       const { code } = event;
 
       if (keyboardCodes.end.indexOf(code) !== -1) {
@@ -94,52 +94,14 @@ export class KeyboardSensor implements SensorInstance {
       });
 
       if (newCoordinates) {
-        const coordinatesDelta = getCoordinatesDelta(newCoordinates, currentCoordinates);
         const { scrollableAncestors } = context.current;
+        const direction = event.code;
 
-        for (const scrollContainer of scrollableAncestors) {
-          const direction = event.code;
-          const { isTop, isBottom, maxScroll, minScroll } = getScrollPosition(scrollContainer);
-          const scrollElementRect = getScrollElementRect(scrollContainer);
+        const scrolled = applyScroll({ currentCoordinates, direction, newCoordinates, scrollableAncestors });
 
-          const clampedCoordinates = {
-            y: Math.min(
-              direction === KeyboardCode.Down
-                ? scrollElementRect.bottom - scrollElementRect.height / 2
-                : scrollElementRect.bottom,
-              Math.max(
-                direction === KeyboardCode.Down
-                  ? scrollElementRect.top
-                  : scrollElementRect.top + scrollElementRect.height / 2,
-                newCoordinates.y
-              )
-            ),
-          };
-
-          const canScrollY =
-            (direction === KeyboardCode.Down && !isBottom) || (direction === KeyboardCode.Up && !isTop);
-
-          if (canScrollY && clampedCoordinates.y !== newCoordinates.y) {
-            const newScrollCoordinates = scrollContainer.scrollTop + coordinatesDelta.y;
-            const canScrollToNewCoordinates =
-              (direction === KeyboardCode.Down && newScrollCoordinates <= maxScroll.y) ||
-              (direction === KeyboardCode.Up && newScrollCoordinates >= minScroll.y);
-
-            if (canScrollToNewCoordinates) {
-              // We don't need to update coordinates, the scroll adjustment alone will trigger
-              // logic to auto-detect the new container we are over
-              scrollContainer.scrollTo({
-                top: newScrollCoordinates,
-                behavior: scrollBehavior,
-              });
-              return;
-            }
-
-            break;
-          }
+        if (!scrolled) {
+          this.handleMove(event, getCoordinatesDelta(newCoordinates, this.referenceCoordinates));
         }
-
-        this.handleMove(event, getCoordinatesDelta(newCoordinates, this.referenceCoordinates));
       }
     }
   }

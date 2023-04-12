@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { canUseDOM } from '@dnd-kit/utilities';
+import { canUseDOM, Coordinates, subtract as getCoordinatesDelta } from '@dnd-kit/utilities';
+import { KeyboardCode } from '@dnd-kit/core';
 
 function isDocumentScrollingElement(element: Element | null) {
   if (!canUseDOM || !element) {
@@ -68,4 +69,58 @@ export function getScrollElementRect(element: Element) {
     width: element.clientWidth,
     height: element.clientHeight,
   };
+}
+
+export function applyScroll({
+  currentCoordinates,
+  direction,
+  newCoordinates,
+  scrollableAncestors,
+}: {
+  currentCoordinates: Coordinates;
+  direction: string;
+  newCoordinates: Coordinates;
+  scrollableAncestors: Element[];
+}) {
+  for (const scrollContainer of scrollableAncestors) {
+    const coordinatesDelta = getCoordinatesDelta(newCoordinates, currentCoordinates);
+    const { isTop, isBottom, maxScroll, minScroll } = getScrollPosition(scrollContainer);
+    const scrollElementRect = getScrollElementRect(scrollContainer);
+
+    const clampedCoordinates = {
+      y: Math.min(
+        direction === KeyboardCode.Down
+          ? scrollElementRect.bottom - scrollElementRect.height / 2
+          : scrollElementRect.bottom,
+        Math.max(
+          direction === KeyboardCode.Down
+            ? scrollElementRect.top
+            : scrollElementRect.top + scrollElementRect.height / 2,
+          newCoordinates.y
+        )
+      ),
+    };
+
+    const canScrollY = (direction === KeyboardCode.Down && !isBottom) || (direction === KeyboardCode.Up && !isTop);
+
+    if (canScrollY && clampedCoordinates.y !== newCoordinates.y) {
+      const newScrollCoordinates = scrollContainer.scrollTop + coordinatesDelta.y;
+      const canScrollToNewCoordinates =
+        (direction === KeyboardCode.Down && newScrollCoordinates <= maxScroll.y) ||
+        (direction === KeyboardCode.Up && newScrollCoordinates >= minScroll.y);
+
+      if (canScrollToNewCoordinates) {
+        // We don't need to update coordinates, the scroll adjustment alone will trigger
+        // logic to auto-detect the new container we are over
+        scrollContainer.scrollTo({
+          top: newScrollCoordinates,
+          behavior: 'smooth',
+        });
+        return true;
+      }
+
+      break;
+    }
+  }
+  return false;
 }
