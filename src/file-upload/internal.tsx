@@ -99,7 +99,7 @@ function InternalFileUpload(
   );
 
   const hasError = Boolean(errorText || fileErrors?.filter(Boolean).length);
-  const invalid = restProps.invalid || hasError;
+  const invalid = restProps.invalid || formFieldContext.invalid || hasError;
 
   return (
     <InternalSpaceBetween

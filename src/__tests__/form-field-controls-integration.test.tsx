@@ -60,7 +60,7 @@ const formFieldControlComponents = [
   },
   {
     componentName: 'file-upload',
-    findNativeElement: (wrapper: ElementWrapper) => wrapper.findFileUpload()?.findUploadButton().getElement(),
+    findNativeElement: (wrapper: ElementWrapper) => wrapper.findFileUpload()?.findNativeInput().getElement(),
   },
 ];
 
@@ -83,8 +83,7 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
 
   describe(`${componentName}`, () => {
     const isGroupComponent = ['radio-group', 'tiles'].indexOf(componentName) !== -1;
-    const isFileUpload = componentName === 'file-upload';
-    if (!isGroupComponent && !isFileUpload) {
+    if (!isGroupComponent) {
       describe('controlId', () => {
         test('applies controlId from FormField when controlId is not set on itself', () => {
           const formFieldControlId = 'form-field-control-id';

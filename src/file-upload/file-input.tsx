@@ -32,6 +32,8 @@ function FileInput(
   const uploadButtonRef = useRef<ButtonProps.Ref>(null);
   const uploadButtonLabelId = useUniqueId('upload-button-label');
   const formFieldContext = useFormFieldContext(restProps);
+  const selfControlId = useUniqueId('upload-input');
+  const controlId = formFieldContext.controlId ?? selfControlId;
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -72,6 +74,7 @@ function FileInput(
   return (
     <div className={styles['file-input-container']}>
       <input
+        id={controlId}
         ref={uploadInputRef}
         type="file"
         hidden={false}
