@@ -166,5 +166,3 @@ export const CustomPreference = ({ value, customPreference, onChange }: CustomPr
   }
   return null;
 };
-
-export const isEscape = (key: string) => key === 'Escape' || key === 'Esc';

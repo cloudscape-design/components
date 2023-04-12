@@ -1,13 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
-import { isEscape } from '../utils';
 import {
   Active,
   closestCenter,
   CollisionDetection,
   DroppableContainer,
-  getScrollableAncestors,
   KeyboardCoordinateGetter,
   PointerSensor,
   UniqueIdentifier,
@@ -17,7 +15,6 @@ import {
 import { CollectionPreferencesProps } from '../interfaces';
 import { hasSortableData } from '@dnd-kit/sortable';
 import { KeyboardSensor } from './keyboard-sensor';
-import { Coordinates } from '@dnd-kit/utilities';
 
 enum KeyboardCode {
   Space = 'Space',
@@ -115,7 +112,7 @@ export default function useDragAndDropReorder({
 
   const coordinateGetter: KeyboardCoordinateGetter = (
     event,
-    { context: { active, collisionRect, droppableRects, droppableContainers, scrollableAncestors } }
+    { context: { active, collisionRect, droppableRects, droppableContainers } }
   ) => {
     if (event.code === KeyboardCode.Up || event.code === KeyboardCode.Down) {
       event.preventDefault();
@@ -133,28 +130,22 @@ export default function useDragAndDropReorder({
         const newNode = newDroppable?.node.current;
 
         if (newNode && newRect && activeDroppable && newDroppable) {
-          const newScrollAncestors = getScrollableAncestors(newNode);
-          const hasDifferentScrollAncestors = newScrollAncestors.some(
-            (element, index) => scrollableAncestors[index] !== element
-          );
-          const hasSameContainer = isSameContainer(activeDroppable, newDroppable);
           const isAfterActive = isAfter(activeDroppable, newDroppable);
-          const offset =
-            hasDifferentScrollAncestors || !hasSameContainer
-              ? {
-                  x: 0,
-                  y: 0,
-                }
-              : {
-                  x: isAfterActive ? collisionRect.width - newRect.width : 0,
-                  y: isAfterActive ? collisionRect.height - newRect.height : 0,
-                };
+          const offset = {
+            x: isAfterActive ? collisionRect.width - newRect.width : 0,
+            y: isAfterActive ? collisionRect.height - newRect.height : 0,
+          };
           const rectCoordinates = {
             x: newRect.left,
             y: newRect.top,
           };
 
-          return offset.x && offset.y ? rectCoordinates : subtract(rectCoordinates, offset);
+          return offset.x && offset.y
+            ? rectCoordinates
+            : {
+                x: rectCoordinates.x - offset.x,
+                y: rectCoordinates.y - offset.y,
+              };
         }
       }
     }
@@ -183,29 +174,11 @@ export default function useDragAndDropReorder({
   };
 }
 
-function isSameContainer(a: DroppableContainer, b: DroppableContainer) {
-  if (!hasSortableData(a) || !hasSortableData(b)) {
-    return false;
-  }
-
-  return a.data.current.sortable.containerId === b.data.current.sortable.containerId;
-}
-
 function isAfter(a: DroppableContainer, b: DroppableContainer) {
   if (!hasSortableData(a) || !hasSortableData(b)) {
     return false;
   }
-
-  if (!isSameContainer(a, b)) {
-    return false;
-  }
-
   return a.data.current.sortable.index < b.data.current.sortable.index;
 }
 
-function subtract(rectCoordinates: Coordinates, offset: Coordinates) {
-  return {
-    x: rectCoordinates.x - offset.x,
-    y: rectCoordinates.y - offset.y,
-  };
-}
+const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
