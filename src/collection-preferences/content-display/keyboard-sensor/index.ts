@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import {
-  add as getAdjustedCoordinates,
   subtract as getCoordinatesDelta,
   getOwnerDocument,
   getWindow,
@@ -96,10 +95,6 @@ export class KeyboardSensor implements SensorInstance {
 
       if (newCoordinates) {
         const coordinatesDelta = getCoordinatesDelta(newCoordinates, currentCoordinates);
-        const scrollDelta = {
-          x: 0,
-          y: 0,
-        };
         const { scrollableAncestors } = context.current;
 
         for (const scrollContainer of scrollableAncestors) {
@@ -130,7 +125,7 @@ export class KeyboardSensor implements SensorInstance {
               (direction === KeyboardCode.Down && newScrollCoordinates <= maxScroll.y) ||
               (direction === KeyboardCode.Up && newScrollCoordinates >= minScroll.y);
 
-            if (canScrollToNewCoordinates && !coordinatesDelta.x) {
+            if (canScrollToNewCoordinates) {
               // We don't need to update coordinates, the scroll adjustment alone will trigger
               // logic to auto-detect the new container we are over
               scrollContainer.scrollTo({
@@ -140,30 +135,11 @@ export class KeyboardSensor implements SensorInstance {
               return;
             }
 
-            if (canScrollToNewCoordinates) {
-              scrollDelta.y = scrollContainer.scrollTop - newScrollCoordinates;
-            } else {
-              scrollDelta.y =
-                direction === KeyboardCode.Down
-                  ? scrollContainer.scrollTop - maxScroll.y
-                  : scrollContainer.scrollTop - minScroll.y;
-            }
-
-            if (scrollDelta.y) {
-              scrollContainer.scrollBy({
-                top: -scrollDelta.y,
-                behavior: scrollBehavior,
-              });
-            }
-
             break;
           }
         }
 
-        this.handleMove(
-          event,
-          getAdjustedCoordinates(getCoordinatesDelta(newCoordinates, this.referenceCoordinates), scrollDelta)
-        );
+        this.handleMove(event, getCoordinatesDelta(newCoordinates, this.referenceCoordinates));
       }
     }
   }
