@@ -104,21 +104,10 @@ export class KeyboardSensor implements SensorInstance {
 
         for (const scrollContainer of scrollableAncestors) {
           const direction = event.code;
-          const { isTop, isRight, isLeft, isBottom, maxScroll, minScroll } = getScrollPosition(scrollContainer);
+          const { isTop, isBottom, maxScroll, minScroll } = getScrollPosition(scrollContainer);
           const scrollElementRect = getScrollElementRect(scrollContainer);
 
           const clampedCoordinates = {
-            x: Math.min(
-              direction === KeyboardCode.Right
-                ? scrollElementRect.right - scrollElementRect.width / 2
-                : scrollElementRect.right,
-              Math.max(
-                direction === KeyboardCode.Right
-                  ? scrollElementRect.left
-                  : scrollElementRect.left + scrollElementRect.width / 2,
-                newCoordinates.x
-              )
-            ),
             y: Math.min(
               direction === KeyboardCode.Down
                 ? scrollElementRect.bottom - scrollElementRect.height / 2
@@ -132,44 +121,10 @@ export class KeyboardSensor implements SensorInstance {
             ),
           };
 
-          const canScrollX =
-            (direction === KeyboardCode.Right && !isRight) || (direction === KeyboardCode.Left && !isLeft);
           const canScrollY =
             (direction === KeyboardCode.Down && !isBottom) || (direction === KeyboardCode.Up && !isTop);
 
-          if (canScrollX && clampedCoordinates.x !== newCoordinates.x) {
-            const newScrollCoordinates = scrollContainer.scrollLeft + coordinatesDelta.x;
-            const canScrollToNewCoordinates =
-              (direction === KeyboardCode.Right && newScrollCoordinates <= maxScroll.x) ||
-              (direction === KeyboardCode.Left && newScrollCoordinates >= minScroll.x);
-
-            if (canScrollToNewCoordinates && !coordinatesDelta.y) {
-              // We don't need to update coordinates, the scroll adjustment alone will trigger
-              // logic to auto-detect the new container we are over
-              scrollContainer.scrollTo({
-                left: newScrollCoordinates,
-                behavior: scrollBehavior,
-              });
-              return;
-            }
-
-            if (canScrollToNewCoordinates) {
-              scrollDelta.x = scrollContainer.scrollLeft - newScrollCoordinates;
-            } else {
-              scrollDelta.x =
-                direction === KeyboardCode.Right
-                  ? scrollContainer.scrollLeft - maxScroll.x
-                  : scrollContainer.scrollLeft - minScroll.x;
-            }
-
-            if (scrollDelta.x) {
-              scrollContainer.scrollBy({
-                left: -scrollDelta.x,
-                behavior: scrollBehavior,
-              });
-            }
-            break;
-          } else if (canScrollY && clampedCoordinates.y !== newCoordinates.y) {
+          if (canScrollY && clampedCoordinates.y !== newCoordinates.y) {
             const newScrollCoordinates = scrollContainer.scrollTop + coordinatesDelta.y;
             const canScrollToNewCoordinates =
               (direction === KeyboardCode.Down && newScrollCoordinates <= maxScroll.y) ||
