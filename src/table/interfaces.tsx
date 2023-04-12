@@ -69,7 +69,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *   item as an argument.
    * * `width` (string | number) - Specifies the column width. Corresponds to the `width` css-property. If the width is not set,
    *   the browser automatically adjusts the column width based on the content. When `resizableColumns` property is
-   *   set to `true`, additional constraints apply: 1) string values are not allowed, and 2) the Last column always
+   *   set to `true`, additional constraints apply: 1) string values are not allowed, and 2) the last visible column always
    *   fills the remaining space of the table so the specified width is ignored.
    * * `minWidth` (string | number) - Specifies the minimum column width. Corresponds to the `min-width` css-property. When
    *   `resizableColumns` property is set to `true`, additional constraints apply: 1) string values are not allowed,

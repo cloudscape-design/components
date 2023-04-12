@@ -37,7 +37,7 @@ export interface GetStickyColumnProperties {
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 const MINIMUM_SCROLLABLE_SPACE = 148;
 
-export const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {
+const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElement>>) => {
   // This hook calculates the cumulative offsets of the cells in each column of the table, based on the widths of their siblings
 
   const [cellOffsets, setCellOffsets] = useState<CellOffsets>({ first: [], last: [] });
@@ -113,7 +113,7 @@ export const useStickyColumns = ({
   const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
 
   const { first = 0, last = 0 } = stickyColumns || {};
-  // Calculate the indexex of the last left and right sticky columns, taking into account the selection column
+  // Calculate the indexes of the last left and right sticky columns, taking into account the selection column
   const lastLeftStickyColumnIndex = first + (hasSelection ? 1 : 0);
   const lasRightStickyColumnIndex = visibleColumnsLength - 1 - last + (hasSelection ? 1 : 0);
 
