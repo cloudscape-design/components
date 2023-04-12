@@ -61,6 +61,7 @@ export interface DrawerItemAriaLabels {
   content?: string;
   closeButton?: string;
   triggerButton?: string;
+  resizeHandle?: string;
 }
 
 export interface DrawerItem {
