@@ -17,17 +17,18 @@
 }
 
 .dropzone {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: awsui.$space-static-xs;
-  padding: awsui.$space-static-xxs;
+  gap: awsui.$space-static-xxs;
+  padding: awsui.$space-scaled-l;
   border-radius: awsui.$border-radius-dropzone;
-  background-color: awsui.$color-board-placeholder-active;
+  color: awsui.$color-dropzone-text-active;
+  background-color: awsui.$color-dropzone-background-active;
   &-hovered {
-    background-color: awsui.$color-board-placeholder-hover;
+    color: awsui.$color-dropzone-text-hover;
+    background-color: awsui.$color-dropzone-background-hover;
   }
 }
 

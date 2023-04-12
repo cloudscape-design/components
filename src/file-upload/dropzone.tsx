@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
 import InternalIcon from '../icon/internal';
-import InternalBox from '../box/internal';
 
 interface DropzoneProps {
   onChange: (files: File[]) => void;
@@ -20,11 +19,11 @@ export function useDropzoneVisible() {
     // The timer helps avoiding dropzone blinking.
     let dragTimer: null | ReturnType<typeof setTimeout> = null;
 
-    // The file-upload dropzone is shown when the user drags files over the to the browser.
+    // The file-upload dropzone is shown when the user drags files over to the browser.
     const onDocumentDragOver = (event: DragEvent) => {
       event.preventDefault();
 
-      if (event.dataTransfer && event.dataTransfer.types && event.dataTransfer.types.indexOf('Files') !== -1) {
+      if (event.dataTransfer?.types?.indexOf('Files') !== -1) {
         setDropzoneVisible(true);
         dragTimer && clearTimeout(dragTimer);
       }
@@ -60,12 +59,10 @@ export function useDropzoneVisible() {
 }
 
 export function Dropzone({ onChange, children }: DropzoneProps) {
-  const dropzoneRef = useRef<HTMLDivElement>(null);
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     setDropzoneHovered(true);
 
     if (event.dataTransfer) {
@@ -75,7 +72,6 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
 
   const onDragLeave = (event: React.DragEvent) => {
     event.preventDefault();
-    event.stopPropagation();
     setDropzoneHovered(false);
 
     if (event.dataTransfer) {
@@ -85,29 +81,26 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
 
   const onDrop = (event: React.DragEvent) => {
     event.preventDefault();
+    setDropzoneHovered(false);
 
     const newFiles: File[] = [];
     const nullableFiles = event.dataTransfer.items
-      ? Array.from(event.dataTransfer.items).map(item => (item.kind === 'file' && item.getAsFile()) || null)
+      ? Array.from(event.dataTransfer.items).map(item => (item.kind === 'file' ? item.getAsFile() : null))
       : Array.from(event.dataTransfer.files);
     nullableFiles.forEach(fileOrNull => fileOrNull && newFiles.push(fileOrNull));
 
     onChange(newFiles);
-    setDropzoneHovered(false);
   };
 
   return (
     <div
-      ref={dropzoneRef}
       className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      <InternalBox color={isDropzoneHovered ? 'text-status-info' : 'text-body-secondary'}>
-        <InternalIcon name="file" />
-      </InternalBox>
-      <InternalBox color={isDropzoneHovered ? 'text-status-info' : 'text-body-secondary'}>{children}</InternalBox>
+      <InternalIcon name="upload" />
+      <span>{children}</span>
     </div>
   );
 }
