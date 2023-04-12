@@ -258,8 +258,8 @@ describe('Token', () => {
       </Token>
     );
     const tokenElement = createWrapper(container).findByClassName(selectors.token)!.getElement();
-    expect(screen.findByText('Error icon')).toBeDefined();
-    expect(screen.findByText('Error text')).toBeDefined();
+    expect(screen.getByLabelText('Error icon')).toBeDefined();
+    expect(screen.getByText('Error text')).toBeDefined();
     expect(tokenElement).toHaveAccessibleDescription('Error text');
   });
 });
