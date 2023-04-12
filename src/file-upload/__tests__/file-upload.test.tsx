@@ -290,12 +290,12 @@ describe('Focusing behavior', () => {
   });
 
   test.each([false, true])(
-    'Focus is dispatched to the file upload button when the last token is removed, multiple=%s',
+    'Focus is dispatched to the file input when the last token is removed, multiple=%s',
     multiple => {
       const wrapper = renderStateful({ multiple, value: [file1] });
       wrapper.findFileToken(1)!.findRemoveButton().click();
 
-      expect(wrapper.findUploadButton().getElement()).toHaveFocus();
+      expect(wrapper.findNativeInput().getElement()).toHaveFocus();
     }
   );
 });
