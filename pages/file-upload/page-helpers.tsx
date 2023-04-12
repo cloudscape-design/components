@@ -44,10 +44,7 @@ export function PageNotifications({ status }: { status: FormStatus }) {
     case 'submitted':
       return (
         <Flashbar
-          items={[
-            { type: 'success', header: 'Files uploaded', statusIconAriaLabel: 'uploaded', ariaRole: 'status' },
-            { type: 'success', header: 'Form submitted', statusIconAriaLabel: 'submitted', ariaRole: 'status' },
-          ]}
+          items={[{ type: 'success', header: 'Form submitted', statusIconAriaLabel: 'submitted', ariaRole: 'status' }]}
         />
       );
     default:

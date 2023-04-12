@@ -21,6 +21,9 @@ test(
     await expect(page.getElementsCount(wrapper.findFileTokens().toSelector())).resolves.toBe(2);
 
     await page.click(wrapper.findFileToken(1).findRemoveButton().toSelector());
+
+    await expect(page.getElementsCount(wrapper.findFileTokens().toSelector())).resolves.toBe(1);
+
     await page.click(wrapper.findFileToken(1).findRemoveButton().toSelector());
 
     await expect(page.getElementsCount(wrapper.findFileTokens().toSelector())).resolves.toBe(0);
