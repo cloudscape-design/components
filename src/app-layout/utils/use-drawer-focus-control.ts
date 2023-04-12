@@ -5,14 +5,14 @@ import { ButtonProps } from '../../button/interfaces';
 
 export type DrawerLastInteraction = { type: 'open' } | { type: 'close' };
 
-export interface FocusControlRefs {
+export interface DrawerFocusControlRefs {
   toggle: RefObject<ButtonProps.Ref>;
   close: RefObject<ButtonProps.Ref>;
   slider: RefObject<HTMLDivElement>;
 }
 
 interface FocusControlState {
-  refs: FocusControlRefs;
+  refs: DrawerFocusControlRefs;
   setFocus: (force?: boolean) => void;
   loseFocus: () => void;
   setLastInteraction: (interaction: DrawerLastInteraction) => void;
