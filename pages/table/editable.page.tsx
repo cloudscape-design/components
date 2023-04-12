@@ -202,7 +202,6 @@ const Demo = forwardRef(
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
     const [items, setItems] = useState(initialItems);
-    const [selectedItems, setSelectedItems] = useState<DistributionInfo[]>([]);
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -250,9 +249,6 @@ const Demo = forwardRef(
         items={items}
         resizableColumns={true}
         ariaLabels={ariaLabels}
-        selectionType="single"
-        selectedItems={selectedItems}
-        onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
       />
     );
   }
