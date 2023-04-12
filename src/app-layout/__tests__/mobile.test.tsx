@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { describeEachThemeAppLayout, isDrawerClosed, renderComponent, splitPanelI18nStrings } from './utils';
+import {
+  describeEachThemeAppLayout,
+  drawersConfigurations,
+  isDrawerClosed,
+  renderComponent,
+  splitPanelI18nStrings,
+} from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -318,4 +324,19 @@ describeEachThemeAppLayout(true, theme => {
       expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
     });
   });
+
+  test('should render drawers mobile triggers container', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+
+    //expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+  });
+});
+
+test('should render an active drawer', () => {
+  const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+
+  expect(wrapper.findDrawersMobileTriggersContainer()).toBeFalsy();
+  // expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+  expect(wrapper.findActiveDrawer()).toBeTruthy();
 });

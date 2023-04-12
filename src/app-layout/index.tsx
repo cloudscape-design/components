@@ -677,9 +677,17 @@ const OldAppLayout = React.forwardRef(
             {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
               (drawers ? (
                 <ResizableDrawer
-                  contentClassName={selectedDrawer?.id === 'tools' ? testutilStyles.tools : ''}
-                  toggleClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : ''}
-                  closeClassName={selectedDrawer?.id === 'tools' ? testutilStyles['tools-close'] : ''}
+                  contentClassName={
+                    selectedDrawer?.id === 'tools' ? testutilStyles.tools : testutilStyles['active-drawer']
+                  }
+                  toggleClassName={
+                    selectedDrawer?.id === 'tools' ? testutilStyles['tools-toggle'] : testutilStyles['drawers-trigger']
+                  }
+                  closeClassName={
+                    selectedDrawer?.id === 'tools'
+                      ? testutilStyles['tools-close']
+                      : testutilStyles['active-drawer-close-button']
+                  }
                   ariaLabels={ariaLabels}
                   drawersAriaLabels={selectedDrawer?.ariaLabels}
                   width={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
@@ -730,7 +738,8 @@ const OldAppLayout = React.forwardRef(
               ))}
             {drawers && (
               <DrawerTriggersBar
-                contentClassName={testutilStyles.tools}
+                contentClassName={testutilStyles['drawers-desktop-triggers-container']}
+                toggleClassName={testutilStyles['drawers-trigger']}
                 bottomOffset={footerHeight}
                 topOffset={headerHeight}
                 isMobile={isMobile}

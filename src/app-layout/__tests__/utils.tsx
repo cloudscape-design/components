@@ -109,3 +109,45 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   preferencesCancel: 'Cancel',
   resizeHandleAriaLabel: 'Resize panel',
 };
+
+export const drawersConfigurations = {
+  singleDrawer: {
+    drawers: {
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  singleDrawerOpen: {
+    drawers: {
+      activeDrawerId: 'security',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+};

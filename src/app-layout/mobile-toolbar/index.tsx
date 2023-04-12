@@ -114,7 +114,11 @@ export function MobileToolbar({
       {drawers && (
         <aside
           aria-label={drawers.ariaLabel}
-          className={clsx(styles['mobile-toggle'], styles['mobile-toggle-with-drawers'])}
+          className={clsx(
+            styles['mobile-toggle'],
+            styles['mobile-toggle-with-drawers'],
+            testutilStyles['drawers-mobile-triggers-container']
+          )}
         >
           {drawers.items.map((item: DrawerItem, index: number) => (
             <AppLayoutButton
