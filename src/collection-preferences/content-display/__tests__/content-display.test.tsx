@@ -29,14 +29,48 @@ describe('Content Display preference', () => {
     }
   });
 
-  it('forces non-editable options to be visible', () => {
-    const wrapper = renderContentDisplay();
-    const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput().getElement();
-    expect(toggleInput).toBeChecked();
-    expect(toggleInput).toBeDisabled();
+  it('toggles content visibility', () => {
+    const collectionPreferencesWrapper = renderCollectionPreferences({
+      contentDisplayPreference,
+      onConfirm: () => null,
+      preferences: {
+        contentDisplay: [
+          {
+            id: 'id1',
+            visible: true,
+          },
+          {
+            id: 'id2',
+            visible: false,
+          },
+          {
+            id: 'id3',
+            visible: true,
+          },
+          { id: 'id4', visible: true },
+        ],
+      },
+    });
+    collectionPreferencesWrapper.findTriggerButton().click();
+    const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, false, true, true] });
+    contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, true, true] });
+    contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
   });
 
-  describe('keyboard interaction', () => {
+  it('forces non-editable options to be visible', () => {
+    const wrapper = renderContentDisplay();
+    const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput();
+    expect(toggleInput.getElement()).toBeChecked();
+    expect(toggleInput.getElement()).toBeDisabled();
+    toggleInput.click();
+    expect(toggleInput.getElement()).toBeChecked();
+    expect(toggleInput.getElement()).toBeDisabled();
+  });
+
+  describe('reorders content', () => {
     it('moves item down', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
@@ -171,6 +205,18 @@ async function expectAnnouncement(wrapper: ContentDisplayPreferenceWrapper, anno
   await new Promise(resolve => setTimeout(resolve, 0));
   const liveRegion = wrapper.find('[aria-live="assertive"]');
   expect(liveRegion!.getElement()).toHaveTextContent(announcement);
+}
+
+function expectCheckedStatus({ wrapper, statuses }: { wrapper: ContentDisplayPreferenceWrapper; statuses: boolean[] }) {
+  const options = wrapper.findOptions();
+  for (let i = 0; i < options.length; i++) {
+    const toggleElement = options[i].findToggle().findNativeInput().getElement();
+    if (statuses[i]) {
+      expect(toggleElement).toBeChecked();
+    } else {
+      expect(toggleElement).not.toBeChecked();
+    }
+  }
 }
 
 function pressKey(element: HTMLElement, key: string) {
