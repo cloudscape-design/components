@@ -9,7 +9,6 @@ import { FileOption } from './file-option';
 import { ButtonProps } from '../button/interfaces';
 import InternalSpaceBetween from '../space-between/internal';
 import styles from './styles.css.js';
-import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -24,6 +23,7 @@ import { ConstraintText, FormFieldError } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { joinStrings } from '../internal/utils/strings';
+import { useFormFieldContext } from '../contexts/form-field';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -91,14 +91,15 @@ function InternalFileUpload(
 
   const isDropzoneVisible = useDropzoneVisible();
 
+  const formFieldContext = useFormFieldContext(restProps);
   const ariaDescribedBy = joinStrings(
-    restProps.ariaDescribedby,
+    restProps.ariaDescribedby ?? formFieldContext.ariaDescribedby,
     errorText ? errorId : undefined,
     constraintText ? constraintTextId : undefined
   );
 
-  const hasError = !!errorText ?? (fileErrors && fileErrors.filter(Boolean).length > 0);
-  const invalid = restProps.invalid ?? hasError;
+  const hasError = Boolean(errorText || fileErrors?.filter(Boolean).length);
+  const invalid = restProps.invalid || hasError;
 
   return (
     <InternalSpaceBetween
@@ -126,7 +127,7 @@ function InternalFileUpload(
       )}
 
       {(constraintText || errorText) && (
-        <div>
+        <div className={styles.hints}>
           {errorText && (
             <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
               {errorText}
@@ -140,7 +141,6 @@ function InternalFileUpload(
         </div>
       )}
 
-      {/* When multiple=`false` the component can have at most one file selected. Using a list representation is unnecessary in that case. */}
       {!multiple && value.length === 1 ? (
         <Token
           ariaLabel={value[0].name}
@@ -148,8 +148,6 @@ function InternalFileUpload(
           onDismiss={() => onFileRemove(0)}
           errorText={fileErrors?.[0]}
           errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-          // Adding the 'list-item' class for test-utils method to find the item w/o the need in providing `multiple` argument.
-          className={tokenListStyles['list-item']}
         >
           <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
         </Token>

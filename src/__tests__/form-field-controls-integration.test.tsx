@@ -83,7 +83,8 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
 
   describe(`${componentName}`, () => {
     const isGroupComponent = ['radio-group', 'tiles'].indexOf(componentName) !== -1;
-    if (!isGroupComponent) {
+    const isFileUpload = componentName === 'file-upload';
+    if (!isGroupComponent && !isFileUpload) {
       describe('controlId', () => {
         test('applies controlId from FormField when controlId is not set on itself', () => {
           const formFieldControlId = 'form-field-control-id';

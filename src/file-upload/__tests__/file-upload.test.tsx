@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { render as testingLibraryRender, screen } from '@testing-library/react';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '../../../lib/components/internal/logging';
+import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 import '../../__a11y__/to-validate-a11y';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
@@ -53,13 +54,17 @@ function render(props: Partial<FileUploadProps>) {
   return createWrapper(renderResult.container).findFileUpload()!;
 }
 
-describe('FileUpload input', () => {
-  // TODO: add programmatic file upload test
-  // TODO: test error text assoc
-  // TODO: test constraint text assoc
-  // TODO: test aria-invalid
-  // TODO: test focusing
+function renderStateful(props: Partial<FileUploadProps> = {}) {
+  const { container } = testingLibraryRender(<StatefulFileUpload {...props} />);
+  return createWrapper(container).findFileUpload()!;
+}
 
+function StatefulFileUpload({ value: initialValue = [], ...rest }: Partial<FileUploadProps>) {
+  const [value, setValue] = useState(initialValue);
+  return <FileUpload {...defaultProps} {...rest} value={value} onChange={event => setValue(event.detail.value)} />;
+}
+
+describe('FileUpload input', () => {
   test('`multiple` property is assigned', () => {
     expect(render({ multiple: false }).findNativeInput().getElement()).not.toHaveAttribute('multiple');
     expect(render({ multiple: true }).findNativeInput().getElement()).toHaveAttribute('multiple');
@@ -108,12 +113,48 @@ describe('FileUpload input', () => {
       'You provided `value` prop without an `onChange` handler. This will render a read-only component. If the component should be mutable, set an `onChange` handler.'
     );
   });
+
+  test('error text is set and associated with the upload button', () => {
+    const wrapper = render({ errorText: 'Error text' });
+    expect(wrapper.findError()!.getElement()).toHaveTextContent('Error text');
+    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Error text');
+  });
+
+  test('constraint text is set and associated with the upload button', () => {
+    const wrapper = render({ constraintText: 'Constraint text' });
+    expect(wrapper.findConstraint()!.getElement()).toHaveTextContent('Constraint text');
+    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Constraint text');
+  });
+
+  test('error and constraint text are both associated with the upload button', () => {
+    const wrapper = render({ constraintText: 'Constraint text', errorText: 'Error text' });
+    expect(wrapper.findUploadButton()!.getElement()).toHaveAccessibleDescription('Error text Constraint text');
+  });
+
+  test('file upload button can be assigned aria-invalid', () => {
+    const wrapper = render({ invalid: true });
+    expect(wrapper.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('file upload button is assigned aria-invalid when error text is present', () => {
+    const wrapper = render({ invalid: false, errorText: 'Error text' });
+    expect(wrapper.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  test('file upload button is assigned aria-invalid when at least one file error is present', () => {
+    const wrapperEmptyErrors = render({ invalid: false, fileErrors: [null, null, null] });
+    expect(wrapperEmptyErrors.findUploadButton()!.getElement()).not.toHaveAttribute('aria-invalid');
+
+    const wrapperWithFileError = render({ invalid: false, fileErrors: [null, 'File error', null] });
+    expect(wrapperWithFileError.findUploadButton()!.getElement()).toHaveAttribute('aria-invalid', 'true');
+  });
 });
 
 describe('File upload tokens', () => {
-  // TODO: test file errors assignment and association
-  // TODO: test token list vs token group!!!!
-  // TODO: test token aria label and descrition
+  test('token list is not rendered when `multiple=false` and one file is defined', () => {
+    const wrapper = render({ multiple: false, value: [file1] });
+    expect(wrapper.find(tokenListSelectors.root)).toBeNull();
+  });
 
   test.each([false, true])(`when multiple=%s all file tokens are shown`, multiple => {
     const wrapper = render({ multiple, value: [file1, file2] });
@@ -216,6 +257,47 @@ describe('File upload tokens', () => {
     expect(wrapper.findFileTokens()).toHaveLength(1);
     expect(wrapper.getElement().textContent).toContain('Show more files');
   });
+
+  test('file tokens have aria labels set to file names', () => {
+    const wrapper = render({ multiple: true, value: [file1, file2] });
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveAttribute('aria-label', file1.name);
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveAttribute('aria-label', file2.name);
+  });
+
+  test('file errors are associated to file tokens', () => {
+    const wrapper = render({ multiple: true, value: [file1, file2], fileErrors: ['Error 1', 'Error 2'] });
+    expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
+    expect(wrapper.findFileToken(2)!.getElement()).toHaveAccessibleDescription('Error 2');
+  });
+});
+
+describe('Focusing behavior', () => {
+  test.each([1, 2])(
+    `Focus is dispatched to the next token when the token before it is removed, tokenLimit=%s`,
+    tokenLimit => {
+      const wrapper = renderStateful({ multiple: true, value: [file1, file2], tokenLimit });
+      wrapper.findFileToken(1)!.findRemoveButton().click();
+
+      expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+    }
+  );
+
+  test('Focus is dispatched to the previous token when removing the token at the end', () => {
+    const wrapper = renderStateful({ multiple: true, value: [file1, file2] });
+    wrapper.findFileToken(2)!.findRemoveButton().click();
+
+    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+  });
+
+  test.each([false, true])(
+    'Focus is dispatched to the file upload button when the last token is removed, multiple=%s',
+    multiple => {
+      const wrapper = renderStateful({ multiple, value: [file1] });
+      wrapper.findFileToken(1)!.findRemoveButton().click();
+
+      expect(wrapper.findUploadButton().getElement()).toHaveFocus();
+    }
+  );
 });
 
 describe('a11y', () => {

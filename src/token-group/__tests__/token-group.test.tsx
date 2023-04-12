@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
+import { Token } from '../../../lib/components/token-group/token';
 import createWrapper, { TokenGroupWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
 import icons from '../../../lib/components/icon/icons';
@@ -246,5 +247,19 @@ describe('TokenGroup', () => {
 
       expect(document.body).toHaveFocus();
     });
+  });
+});
+
+describe('Token', () => {
+  test('Renders token error and associates it with the token', () => {
+    const { container } = render(
+      <Token errorText="Error text" errorIconAriaLabel="Error icon">
+        Content
+      </Token>
+    );
+    const tokenElement = createWrapper(container).findByClassName(selectors.token)!.getElement();
+    expect(screen.findByText('Error icon')).toBeDefined();
+    expect(screen.findByText('Error text')).toBeDefined();
+    expect(tokenElement).toHaveAccessibleDescription('Error text');
   });
 });

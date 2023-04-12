@@ -27,7 +27,7 @@ function FileInput(
   ref: ForwardedRef<ButtonProps.Ref>
 ) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadButtonLabelId = useUniqueId('button-label');
+  const uploadButtonId = useUniqueId('upload-button');
   const formFieldContext = useFormFieldContext(restProps);
 
   const onUploadButtonClick = () => fileInputRef.current?.click();
@@ -37,7 +37,7 @@ function FileInput(
   };
 
   const nativeAttributes: Record<string, any> = {
-    'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
+    'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonId),
     'aria-describedby': formFieldContext.ariaDescribedby,
   };
   if (formFieldContext.invalid) {
@@ -72,6 +72,7 @@ function FileInput(
 
       <div className={styles['file-input-container']}>
         <InternalButton
+          id={uploadButtonId}
           ref={ref}
           iconName="upload"
           formAction="none"
@@ -79,7 +80,7 @@ function FileInput(
           className={styles['upload-button']}
           __nativeAttributes={nativeAttributes}
         >
-          <span id={uploadButtonLabelId}>{children}</span>
+          {children}
         </InternalButton>
       </div>
     </div>
