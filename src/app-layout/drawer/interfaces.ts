@@ -31,7 +31,7 @@ export interface DesktopDrawerProps {
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
   };
   resizeHandle?: React.ReactNode;
 }

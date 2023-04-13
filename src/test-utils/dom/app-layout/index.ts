@@ -66,4 +66,8 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findDrawersTriggers(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger'])!;
   }
+
+  findDrawersSlider(): ElementWrapper {
+    return this.findByClassName(testutilStyles['drawers-slider'])!;
+  }
 }

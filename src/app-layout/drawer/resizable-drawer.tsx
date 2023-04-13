@@ -7,6 +7,7 @@ import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
 import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
 import { Drawer } from './index';
+import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -69,7 +70,7 @@ export const ResizableDrawer = ({
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`])}
+      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
     >

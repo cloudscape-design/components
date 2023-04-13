@@ -26,8 +26,6 @@ jest.mock('../../../lib/components/internal/motion', () => ({
   isMotionDisabled: jest.fn().mockReturnValue(true),
 }));
 
-const setActiveDrawerId = jest.fn();
-
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
@@ -137,7 +135,6 @@ export const drawersConfigurations = {
     drawers: {
       ariaLabel: 'Drawers',
       activeDrawerId: 'security',
-      onChange: (event: any) => setActiveDrawerId(event.detail),
       items: [
         {
           ariaLabels: {
@@ -146,6 +143,27 @@ export const drawersConfigurations = {
             triggerButton: 'Security trigger button',
             resizeHandle: 'Security resize handle',
           },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  resizableDrawer: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          resizable: true,
           content: <span>Security</span>,
           id: 'security',
           trigger: {
