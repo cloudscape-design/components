@@ -5695,7 +5695,7 @@ is provided by its parent form field component.
       "description": "An array of file errors corresponding to the files in the \`value\`.",
       "name": "fileErrors",
       "optional": true,
-      "type": "ReadonlyArray<null | string> | null",
+      "type": "ReadonlyArray<null | string>",
     },
     Object {
       "description": "An object containing all the localized strings required by the component:
@@ -5775,7 +5775,6 @@ single form field.",
       "type": "boolean",
     },
     Object {
-      "defaultValue": "false",
       "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
 Default: \`false\`.",
       "name": "multiple",
@@ -5783,7 +5782,6 @@ Default: \`false\`.",
       "type": "boolean",
     },
     Object {
-      "defaultValue": "false",
       "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.
 Default: \`false\`.",
       "name": "showFileLastModified",
@@ -5791,7 +5789,6 @@ Default: \`false\`.",
       "type": "boolean",
     },
     Object {
-      "defaultValue": "false",
       "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.
 Default: \`false\`.",
       "name": "showFileSize",
@@ -5799,7 +5796,6 @@ Default: \`false\`.",
       "type": "boolean",
     },
     Object {
-      "defaultValue": "false",
       "description": "Show file thumbnail in the token. Only supported for images.
 Default: \`false\`.",
       "name": "showFileThumbnail",

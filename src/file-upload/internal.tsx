@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef, useEffect, useRef, useState } from 'react';
+import React, { ForwardedRef, useRef, useState } from 'react';
 import { FileUploadProps } from './interfaces';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
@@ -13,7 +13,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
 import checkControlled from '../internal/hooks/check-controlled';
 import clsx from 'clsx';
-import { SomeRequired } from '../internal/types';
 import { warnOnce } from '../internal/logging';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import FileInput from './file-input';
@@ -26,11 +25,7 @@ import { joinStrings } from '../internal/utils/strings';
 import { useFormFieldContext } from '../contexts/form-field';
 import InternalBox from '../box/internal';
 
-type InternalFileUploadProps = SomeRequired<
-  FileUploadProps,
-  'multiple' | 'showFileSize' | 'showFileLastModified' | 'showFileThumbnail'
-> &
-  InternalBaseComponentProps;
+type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
 
 export default React.forwardRef(InternalFileUpload);
 
@@ -38,7 +33,7 @@ function InternalFileUpload(
   {
     accept,
     ariaRequired,
-    multiple,
+    multiple = false,
     onChange,
     value,
     tokenLimit,
@@ -64,7 +59,6 @@ function InternalFileUpload(
   const ref = useMergeRefs(fileInputRef, externalRef);
 
   const [removedFileIndex, setRemovedFileIndex] = useState<null | number>(null);
-  const [removedLastFile, setRemovedLastFile] = useState(false);
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
@@ -81,14 +75,10 @@ function InternalFileUpload(
     const newValue = value.filter((_, fileIndex) => fileIndex !== removeFileIndex);
     fireNonCancelableEvent(onChange, { value: newValue });
     setRemovedFileIndex(removeFileIndex);
-    setRemovedLastFile(value.length === 1);
-  };
-
-  useEffect(() => {
-    if (removedLastFile) {
+    if (value.length === 1) {
       fileInputRef.current?.focus();
     }
-  }, [removedLastFile]);
+  };
 
   const isDropzoneVisible = useDropzoneVisible();
 

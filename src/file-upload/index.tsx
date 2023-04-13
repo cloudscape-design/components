@@ -12,13 +12,7 @@ export { FileUploadProps };
 
 const FileUpload = React.forwardRef(
   (
-    {
-      multiple = false,
-      showFileSize = false,
-      showFileLastModified = false,
-      showFileThumbnail = false,
-      ...restProps
-    }: FileUploadProps,
+    { multiple, showFileSize, showFileLastModified, showFileThumbnail, ...restProps }: FileUploadProps,
     ref: React.Ref<FileUploadProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('FileUpload');

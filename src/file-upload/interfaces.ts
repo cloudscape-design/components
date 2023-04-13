@@ -59,7 +59,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   /**
    * An array of file errors corresponding to the files in the `value`.
    */
-  fileErrors?: null | ReadonlyArray<null | string>;
+  fileErrors?: ReadonlyArray<null | string>;
   /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
@@ -104,7 +104,7 @@ export namespace FileUploadProps {
 }
 
 export interface FileMetadata {
-  showFileSize: boolean;
-  showFileLastModified: boolean;
-  showFileThumbnail: boolean;
+  showFileSize?: boolean;
+  showFileLastModified?: boolean;
+  showFileThumbnail?: boolean;
 }

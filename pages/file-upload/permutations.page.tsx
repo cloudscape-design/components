@@ -31,7 +31,7 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
     showFileThumbnail: [false, true],
     errorText: [null, 'Files have errors'],
     constraintText: ['File size must not exceed 1 MB'],
-    fileErrors: [null, ['File size is above 1 MB', 'File size is above 1 MB']],
+    fileErrors: [undefined, ['File size is above 1 MB', 'File size is above 1 MB']],
   },
 ]);
 

@@ -35,7 +35,7 @@ export function validateContractFiles(files: readonly File[]): null | FileUpload
 }
 
 export function validateContractFilesInForm(files: File[]): null | FileUploadErrors {
-  return files.length === 0 ? { errorText: 'No files selected', fileErrors: null } : validateContractFiles(files);
+  return files.length === 0 ? { errorText: 'No files selected', fileErrors: undefined } : validateContractFiles(files);
 }
 
 function formatFileSize(bytes: number): string {

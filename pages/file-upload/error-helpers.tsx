@@ -3,7 +3,7 @@
 
 export interface FileUploadErrors {
   errorText: null | string;
-  fileErrors: null | (null | string)[];
+  fileErrors: undefined | (null | string)[];
 }
 
 export function formatFileUploadError(errors: string[], fileErrors: string[][]): null | FileUploadErrors {
@@ -31,7 +31,7 @@ function formatFieldError(errors: string[], fileErrors: string[][]): null | stri
   return null;
 }
 
-function formatFileErrors(fileErrors: string[][]): null | (null | string)[] {
+function formatFileErrors(fileErrors: string[][]): undefined | (null | string)[] {
   const joined = fileErrors.map(errors => errors.join(', ') ?? null);
-  return joined.filter(Boolean).length > 0 ? joined : null;
+  return joined.filter(Boolean).length > 0 ? joined : undefined;
 }
