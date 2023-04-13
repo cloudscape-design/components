@@ -34,7 +34,7 @@ export default function AppBar() {
     toolsRefs,
   } = useAppLayoutInternals();
 
-  if (navigationHide && !breadcrumbs && toolsHide) {
+  if (navigationHide && !breadcrumbs && toolsHide && !drawers) {
     return null;
   }
 
