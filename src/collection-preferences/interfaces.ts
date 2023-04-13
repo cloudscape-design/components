@@ -77,7 +77,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    *
    * It contains the following:
    * - `title` (string) - Specifies the text displayed at the top of the preference.
-   * - `label` (string) - Specifies the label displayed below the title.
+   * - `description` (string) - Specifies the description displayed below the title.
    * - `liveAnnouncementDndStarted` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
    * - `liveAnnouncementDndDiscarded` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
    * - `liveAnnouncementDndItemReordered` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
