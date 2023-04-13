@@ -120,7 +120,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `pageSize` (number) - (Optional)
    * - `wrapLines` (boolean) - (Optional)
    * - `contentDisplay` (ReadonlyArray<ContentDisplayItem>) - (Optional) Specifies the list of content and their visibility. The order of the elements influences the display.
-   * - `visibleContent` (ReadonlyArray<string>) - Specifies the list of visible content `id`s. The order of the `id`s does not influence the display. If the `contentDisplay` property is set, this property is ignored. **Deprecated**, use contentDisplay instead.
+   * - `visibleContent` (ReadonlyArray<string>) - Specifies the list of visible content `id`s. The order of the `id`s does not influence the display. If the `contentDisplay` property is set, this property is ignored.
    * - `custom` (CustomPreferenceType) - Specifies the value for your custom preference.
    */
   preferences?: CollectionPreferencesProps.Preferences<CustomPreferenceType>;
