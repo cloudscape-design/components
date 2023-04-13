@@ -145,4 +145,21 @@ describeEachThemeAppLayout(false, () => {
     expect(wrapper.findDrawersDesktopTriggersContainer()).toBeTruthy();
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
+
+  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+    const drawersClosed = {
+      drawers: {
+        items: drawersConfigurations.drawersItemsWithoutLabels,
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+    expect(wrapper.findDrawersTriggers().getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findDrawersDesktopTriggersContainer().getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  test('Adds labels to toggle button and landmark when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    expect(wrapper.findDrawersTriggers().getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawersDesktopTriggersContainer().getElement()).toHaveAttribute('aria-label', 'Drawers');
+  });
 });

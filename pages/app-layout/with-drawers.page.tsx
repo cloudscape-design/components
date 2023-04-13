@@ -74,6 +74,8 @@ export default function WithDrawers() {
         },
       };
 
+  console.log(document.activeElement);
+
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout

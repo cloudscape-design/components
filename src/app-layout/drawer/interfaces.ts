@@ -31,7 +31,7 @@ export interface DesktopDrawerProps {
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
   };
   resizeHandle?: React.ReactNode;
 }
@@ -53,7 +53,7 @@ export interface DrawerTriggersBarProps {
   drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
     ariaLabel: string;
   };
 }

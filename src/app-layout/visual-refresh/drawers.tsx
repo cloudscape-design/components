@@ -17,6 +17,7 @@ export interface DrawersProps {
   activeDrawerId?: string;
   items: ReadonlyArray<DrawersProps.Drawer>;
   onChange?: NonCancelableEventHandler<DrawersProps.ChangeDetail>;
+  ariaLabel?: string;
 }
 
 namespace DrawersProps {
@@ -198,6 +199,7 @@ function DesktopTriggers() {
           [styles['has-open-drawer']]: hasOpenDrawer,
         }
       )}
+      aria-label={drawers.ariaLabel}
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
@@ -292,6 +294,7 @@ export function MobileTriggers() {
           [styles.unfocusable]: hasDrawerViewportOverlay,
         }
       )}
+      aria-label={drawers.ariaLabel}
     >
       {!toolsHide && tools && (
         <InternalButton

@@ -3,7 +3,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, isDrawerClosed, renderComponent } from './utils';
+import { describeEachAppLayout, isDrawerClosed, drawersConfigurations, renderComponent } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 describeEachAppLayout(() => {
@@ -19,6 +19,8 @@ describeEachAppLayout(() => {
     expect(wrapper.findContentRegion()).toBeTruthy();
     expect(wrapper.findNotifications()).toBeFalsy();
     expect(wrapper.findBreadcrumbs()).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()).toBeFalsy();
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
   test('should render notifications', () => {
@@ -207,6 +209,110 @@ describeEachAppLayout(() => {
         expect(findElement(wrapper)).toBeFalsy();
         expect(findLandmarks(wrapper)).toHaveLength(0);
       });
+    });
+  });
+
+  // Drawers tests
+
+  describe(`Drawers`, () => {
+    test(`Should call handler once on open when toggle is clicked`, () => {
+      const onChange = jest.fn();
+      const drawersClosed = {
+        drawers: {
+          onChange: onChange,
+          items: drawersConfigurations.drawersItems,
+        },
+      };
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+
+      wrapper.findDrawersTriggers().click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+    });
+
+    test(`Should call handler once on open when span inside toggle is clicked`, () => {
+      const onChange = jest.fn();
+      const drawersClosed = {
+        drawers: {
+          onChange: onChange,
+          items: drawersConfigurations.drawersItems,
+        },
+      };
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+
+      // Chrome bubbles up events from specific elements inside <button>s.
+      wrapper.findDrawersTriggers()!.find('span')!.click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
+    });
+
+    test(`Should call handler once on close`, () => {
+      const onChange = jest.fn();
+      const drawersOpen = {
+        drawers: {
+          onChange: onChange,
+          activeDrawerId: 'security',
+          items: drawersConfigurations.drawersItems,
+        },
+      };
+
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+
+      wrapper.findActiveDrawerCloseButton().click();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
+    });
+
+    test('Renders aria-expanded only on toggle', () => {
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+
+      expect(wrapper.findDrawersTriggers().getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDrawersTriggers().getElement()).toHaveAttribute('aria-haspopup', 'true');
+      wrapper.findDrawersTriggers().click();
+      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-expanded');
+      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-haspopup');
+    });
+
+    test('Close button does have a label if it is defined', () => {
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+
+      expect(wrapper.findActiveDrawerCloseButton().getElement()).toHaveAttribute('aria-label', 'Security close button');
+    });
+
+    test('Close button does not render a label if is not defined', () => {
+      const drawersOpen = {
+        drawers: {
+          activeDrawerId: 'security',
+          items: drawersConfigurations.drawersItemsWithoutLabels,
+        },
+      };
+
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+
+      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-label');
+    });
+
+    test('Opens and closes drawer in uncontrolled mode', () => {
+      // use content type with initial closed state for all drawers
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+      expect(wrapper.findActiveDrawer()).toBeNull();
+
+      act(() => wrapper.findDrawersTriggers().click());
+      expect(wrapper.findActiveDrawer()).not.toBeNull();
+
+      act(() => wrapper.findActiveDrawerCloseButton().click());
+      expect(wrapper.findActiveDrawer()).toBeNull();
+    });
+
+    test('Moves focus between open and close buttons', () => {
+      // use content type with initial closed state for all drawers
+      const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+
+      wrapper.findDrawersTriggers().click();
+      // console.log(document.activeElement);
+      expect(wrapper.findActiveDrawerCloseButton().getElement()).toBe(document.activeElement);
+      wrapper.findActiveDrawerCloseButton().click();
+      expect(wrapper.findDrawersTriggers().getElement()).toBe(document.activeElement);
     });
   });
 });

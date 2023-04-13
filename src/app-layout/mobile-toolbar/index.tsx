@@ -131,7 +131,7 @@ export function MobileToolbar({
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.ariaLabels.triggerButton}
+              ariaLabel={item.ariaLabels?.triggerButton}
               onClick={() => drawers.onChange({ activeDrawerId: item.id })}
               ariaExpanded={drawers.activeDrawerId !== undefined}
             />

@@ -115,6 +115,7 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
 export const drawersConfigurations = {
   singleDrawer: {
     drawers: {
+      ariaLabel: 'Drawers',
       items: [
         {
           ariaLabels: {
@@ -134,6 +135,7 @@ export const drawersConfigurations = {
   },
   singleDrawerOpen: {
     drawers: {
+      ariaLabel: 'Drawers',
       activeDrawerId: 'security',
       onChange: (event: any) => setActiveDrawerId(event.detail),
       items: [
@@ -153,4 +155,28 @@ export const drawersConfigurations = {
       ],
     },
   },
+  drawersItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+  drawersItemsWithoutLabels: [
+    {
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
 };
