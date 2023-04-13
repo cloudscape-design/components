@@ -5743,7 +5743,7 @@ is provided by its parent form field component.
           Object {
             "name": "removeFileAriaLabel",
             "optional": false,
-            "type": "(file: File, fileIndex: number) => string",
+            "type": "(fileIndex: number) => string",
           },
           Object {
             "name": "uploadButtonText",
