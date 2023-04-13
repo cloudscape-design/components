@@ -35,7 +35,7 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the label.
+   * Returns the preference description displayed below the title.
    */
   findDescription(): ElementWrapper {
     return this.findByClassName(getClassName('description'))!;
