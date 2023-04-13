@@ -10,7 +10,7 @@ import {
   wrapLinesPreference,
 } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
-import { collectionPreferencesI18nStrings } from '../common/i18n-strings';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption> = [
   {
@@ -56,7 +56,7 @@ export default function App() {
           title: 'Column preferences',
           label: 'Customize the columns visibility and order.',
           options: shortOptionsList,
-          ...collectionPreferencesI18nStrings,
+          ...contentDisplayPreferenceI18nStrings,
         }}
       />
       <CollectionPreferences
@@ -70,7 +70,7 @@ export default function App() {
           title: 'Column preferences',
           label: 'Customize the columns visibility and order.',
           options: longOptionsList,
-          ...collectionPreferencesI18nStrings,
+          ...contentDisplayPreferenceI18nStrings,
         }}
       />
     </ScreenshotArea>

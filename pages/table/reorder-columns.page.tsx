@@ -11,18 +11,19 @@ import TextFilter from '~components/text-filter';
 import { Instance, generateItems } from './generate-data';
 import { columnsConfig, EmptyState, getMatchesCountText, paginationLabels, pageSizeOptions } from './shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
-import { collectionPreferencesI18nStrings } from '../common/i18n-strings';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 
-const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOptionsGroup> = [
+const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.ContentDisplayPreference> = [
   {
-    label: 'Instance properties',
+    title: 'Column preferences',
+    label: 'Customize the columns visibility and order.',
     options: [
       {
         id: 'id',
         label: 'ID',
-        editable: false,
+        alwaysVisible: true,
       },
       { id: 'type', label: 'Type' },
       {
@@ -34,21 +35,24 @@ const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.VisibleCon
         label: 'Image ID',
       },
       {
-        id: 'longText',
-        label: 'Long text long text long text long text long text long text long text long text long text long text',
-      },
-      {
         id: 'state',
         label: 'State',
       },
     ],
+    ...contentDisplayPreferenceI18nStrings,
   },
 ];
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     pageSize: 20,
-    visibleContent: ['id', 'type', 'dnsName', 'state'],
+    contentDisplay: [
+      { id: 'id', visible: true },
+      { id: 'type', visible: true },
+      { id: 'dnsName', visible: true },
+      { id: 'imageId', visible: false },
+      { id: 'state', visible: true },
+    ],
     wrapLines: false,
   });
   const { items, actions, filteredItemsCount, collectionProps, filterProps, paginationProps } = useCollection(
@@ -93,7 +97,6 @@ export default function App() {
             filteringAriaLabel="Filter instances"
           />
         }
-        visibleColumns={preferences.visibleContent}
         columnDisplay={preferences.contentDisplay}
         preferences={
           <CollectionPreferences
@@ -110,7 +113,7 @@ export default function App() {
               title: 'Column preferences',
               label: 'Customize the columns visibility and order.',
               options: visibleContentOptions[0].options,
-              ...collectionPreferencesI18nStrings,
+              ...contentDisplayPreferenceI18nStrings,
             }}
             wrapLinesPreference={{
               label: 'Wrap lines',

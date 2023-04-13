@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CollectionPreferencesProps } from '~components/collection-preferences/interfaces';
 
-export const collectionPreferencesI18nStrings: Partial<CollectionPreferencesProps.ContentDisplayPreference> = {
+export const contentDisplayPreferenceI18nStrings: Partial<CollectionPreferencesProps.ContentDisplayPreference> = {
   liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,
   liveAnnouncementDndDiscarded: 'Reordering canceled',
   liveAnnouncementDndItemReordered: (initialPosition, currentPosition, total) =>
