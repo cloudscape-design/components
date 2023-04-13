@@ -9,8 +9,6 @@ const customCssPropertiesList = [
   // AppLayout Custom Properties
   'activeDrawerWidth',
   'breadcrumbsGap',
-  'offsetTop',
-  'offsetTopWithNotifications',
   'contentGapLeft',
   'contentGapRight',
   'contentHeight',
