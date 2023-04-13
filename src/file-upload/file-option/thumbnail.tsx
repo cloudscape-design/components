@@ -11,8 +11,6 @@ interface FileOptionThumbnailProps {
 export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   const [imageSrc, setImageSrc] = useState('');
 
-  console.log('imageSrc', imageSrc);
-
   useEffect(() => {
     if (URL.createObjectURL) {
       const src = URL.createObjectURL(file);
@@ -24,13 +22,9 @@ export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
     }
   }, [file]);
 
-  const onImageLoad = () => {
-    URL.revokeObjectURL(imageSrc);
-  };
-
   return (
     <div className={styles['file-option-thumbnail']} aria-hidden={true}>
-      <img className={styles['file-option-thumbnail-image']} alt={file.name} src={imageSrc} onLoad={onImageLoad} />
+      <img className={styles['file-option-thumbnail-image']} alt={file.name} src={imageSrc} />
     </div>
   );
 }

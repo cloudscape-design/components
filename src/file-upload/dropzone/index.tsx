@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import InternalIcon from '../icon/internal';
+import InternalIcon from '../../icon/internal';
 
 interface DropzoneProps {
   onChange: (files: File[]) => void;

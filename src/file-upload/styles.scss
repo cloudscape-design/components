@@ -6,57 +6,6 @@
 @use '../internal/styles/tokens' as awsui;
 
 .root,
-.hints,
-.upload-button,
-.upload-input,
-.file-option-name,
-.file-option-size,
-.file-option-last-modified,
-.file-option-thumbnail {
+.hints {
   /* used in test-utils */
-}
-
-.dropzone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: awsui.$space-static-xxs;
-  padding: awsui.$space-static-l;
-  border-radius: awsui.$border-radius-dropzone;
-  color: awsui.$color-dropzone-text-active;
-  background-color: awsui.$color-dropzone-background-active;
-  &-hovered {
-    color: awsui.$color-dropzone-text-hover;
-    background-color: awsui.$color-dropzone-background-hover;
-  }
-}
-
-.file-input-container {
-  position: relative;
-}
-
-.upload-input {
-  position: absolute;
-  clip: rect(0, 0, 0, 0) !important;
-}
-
-.file-option {
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  gap: awsui.$space-scaled-xs;
-}
-
-.file-option-thumbnail {
-  max-width: 60px;
-}
-
-.file-option-thumbnail-image {
-  width: 100%;
-  height: auto;
-}
-
-.file-option-metadata {
-  width: 100%;
 }

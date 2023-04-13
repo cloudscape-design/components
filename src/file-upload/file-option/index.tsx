@@ -3,12 +3,12 @@
 
 import React from 'react';
 
-import { FileMetadata, FileUploadProps } from './interfaces';
-import InternalBox from '../box/internal';
-import InternalSpaceBetween from '../space-between/internal';
+import { FileMetadata, FileUploadProps } from '../interfaces';
+import InternalBox from '../../box/internal';
+import InternalSpaceBetween from '../../space-between/internal';
 import styles from './styles.css.js';
-import * as defaultFormatters from './default-formatters';
-import { FileOptionThumbnail } from './file-option-thumbnail';
+import * as defaultFormatters from '../default-formatters';
+import { FileOptionThumbnail } from './thumbnail';
 
 interface FileOptionProps {
   file: File;
@@ -18,7 +18,6 @@ interface FileOptionProps {
 
 export function FileOption({ file, metadata, i18nStrings }: FileOptionProps) {
   const isImage = file.type.startsWith('image/');
-  console.log('filetype', file.type);
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
   return (

@@ -3,15 +3,15 @@
 
 import React, { ChangeEvent, ForwardedRef, useEffect, useRef, useState } from 'react';
 
-import InternalButton from '../button/internal';
+import InternalButton from '../../button/internal';
 import styles from './styles.css.js';
-import { useFormFieldContext } from '../contexts/form-field';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
-import { joinStrings } from '../internal/utils/strings';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { FileUploadProps } from './interfaces';
-import useForwardFocus from '../internal/hooks/forward-focus';
+import { useFormFieldContext } from '../../contexts/form-field';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
+import { joinStrings } from '../../internal/utils/strings';
+import ScreenreaderOnly from '../../internal/components/screenreader-only';
+import { FileUploadProps } from '../interfaces';
+import useForwardFocus from '../../internal/hooks/forward-focus';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;

@@ -1,0 +1,20 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+
+.upload-button,
+.upload-input {
+  /* used in test-utils */
+}
+
+.file-input-container {
+  position: relative;
+}
+
+.upload-input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0) !important;
+}
