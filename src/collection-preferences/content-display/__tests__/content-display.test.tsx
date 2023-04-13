@@ -9,69 +9,73 @@ import { fireEvent } from '@testing-library/react';
 import styles from '../../../../lib/components/collection-preferences/styles.css.js';
 
 describe('Content Display preference', () => {
-  it('correctly displays title', () => {
-    const wrapper = renderContentDisplay();
-    const titleElement = wrapper.findTitle().getElement();
-    expect(titleElement).toHaveTextContent('Content display title');
-    expect(titleElement.tagName).toBe('H3');
-  });
-
-  it('correctly displays label', () => {
-    const wrapper = renderContentDisplay();
-    const labelElement = wrapper.findLabel().getElement();
-    expect(labelElement).toHaveTextContent('Content display label');
-  });
-
-  it('displays list of options with correct semantics', () => {
-    const wrapper = renderContentDisplay();
-    const options = wrapper.findOptions();
-    for (let i = 0; i < options.length; i++) {
-      testOption({ wrapper, option: options[i], index: i });
-    }
-  });
-
-  it('toggles content visibility', () => {
-    const collectionPreferencesWrapper = renderCollectionPreferences({
-      contentDisplayPreference,
-      onConfirm: () => null,
-      preferences: {
-        contentDisplay: [
-          {
-            id: 'id1',
-            visible: true,
-          },
-          {
-            id: 'id2',
-            visible: false,
-          },
-          {
-            id: 'id3',
-            visible: true,
-          },
-          { id: 'id4', visible: true },
-        ],
-      },
+  describe('Rendering', () => {
+    it('correctly displays title', () => {
+      const wrapper = renderContentDisplay();
+      const titleElement = wrapper.findTitle().getElement();
+      expect(titleElement).toHaveTextContent('Content display title');
+      expect(titleElement.tagName).toBe('H3');
     });
-    collectionPreferencesWrapper.findTriggerButton().click();
-    const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, false, true, true] });
-    contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
-    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, true, true] });
-    contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
-    expectCheckedStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
+
+    it('correctly displays label', () => {
+      const wrapper = renderContentDisplay();
+      const labelElement = wrapper.findLabel().getElement();
+      expect(labelElement).toHaveTextContent('Content display label');
+    });
+
+    it('displays list of options with correct semantics', () => {
+      const wrapper = renderContentDisplay();
+      const options = wrapper.findOptions();
+      for (let i = 0; i < options.length; i++) {
+        testOption({ wrapper, option: options[i], index: i });
+      }
+    });
   });
 
-  it('forces non-editable options to be visible', () => {
-    const wrapper = renderContentDisplay();
-    const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput();
-    expect(toggleInput.getElement()).toBeChecked();
-    expect(toggleInput.getElement()).toBeDisabled();
-    toggleInput.click();
-    expect(toggleInput.getElement()).toBeChecked();
-    expect(toggleInput.getElement()).toBeDisabled();
+  describe('Content visibility', () => {
+    it('toggles content visibility', () => {
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: () => null,
+        preferences: {
+          contentDisplay: [
+            {
+              id: 'id1',
+              visible: true,
+            },
+            {
+              id: 'id2',
+              visible: false,
+            },
+            {
+              id: 'id3',
+              visible: true,
+            },
+            { id: 'id4', visible: true },
+          ],
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+      expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, false, true, true] });
+      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+      expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, true, true] });
+      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
+    });
+
+    it('forces non-editable options to be visible', () => {
+      const wrapper = renderContentDisplay();
+      const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput();
+      expect(toggleInput.getElement()).toBeChecked();
+      expect(toggleInput.getElement()).toBeDisabled();
+      toggleInput.click();
+      expect(toggleInput.getElement()).toBeChecked();
+      expect(toggleInput.getElement()).toBeDisabled();
+    });
   });
 
-  describe('reorders content', () => {
+  describe('Content reordering', () => {
     it('moves item down', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
@@ -143,19 +147,164 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [1, 2, 0, 3] });
       await expectAnnouncement(wrapper, 'Item moved from position 1 to position 3 of 4');
     });
+
+    it('cancels reordering when pressing Escape', async () => {
+      const wrapper = renderContentDisplay();
+      testOrder({ wrapper, order: [0, 1, 2, 3] });
+      const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
+      pressKey(dragHandle, 'Space');
+      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      pressKey(dragHandle, 'ArrowDown');
+      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      pressKey(dragHandle, 'Escape');
+      testOrder({ wrapper, order: [0, 1, 2, 3] });
+      await expectAnnouncement(wrapper, 'Reordering canceled');
+    });
   });
 
-  it('cancels reordering when pressing Escape', async () => {
-    const wrapper = renderContentDisplay();
-    testOrder({ wrapper, order: [0, 1, 2, 3] });
-    const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
-    pressKey(dragHandle, 'Space');
-    await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
-    pressKey(dragHandle, 'ArrowDown');
-    await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
-    pressKey(dragHandle, 'Escape');
-    testOrder({ wrapper, order: [0, 1, 2, 3] });
-    await expectAnnouncement(wrapper, 'Reordering canceled');
+  describe('State management', () => {
+    const initialStateWithCustomVisibility = [
+      {
+        id: 'id1',
+        visible: true,
+      },
+      {
+        id: 'id2',
+        visible: false,
+      },
+      {
+        id: 'id3',
+        visible: true,
+      },
+      { id: 'id4', visible: true },
+    ];
+
+    it('initializes values from preferences prop', () => {
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: () => null,
+        preferences: {
+          contentDisplay: [
+            {
+              id: 'id1',
+              visible: true,
+            },
+            { id: 'id4', visible: true },
+            {
+              id: 'id2',
+              visible: false,
+            },
+            {
+              id: 'id3',
+              visible: true,
+            },
+          ],
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+      testOrder({ wrapper: contentDisplayPreferenceWrapper, order: [0, 3, 1, 2] });
+      expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
+    });
+
+    it('restores previous value on dismiss', () => {
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: () => null,
+        preferences: {
+          contentDisplay: initialStateWithCustomVisibility,
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      collectionPreferencesWrapper.findModal()!.findDismissButton()!.click();
+      collectionPreferencesWrapper.findTriggerButton().click();
+      expectVisibilityStatus({
+        wrapper: collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!,
+        statuses: [true, false, true, true],
+      });
+    });
+
+    it('restores previous value on cancel', () => {
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: () => null,
+        preferences: {
+          contentDisplay: initialStateWithCustomVisibility,
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      collectionPreferencesWrapper.findModal()!.findCancelButton()!.click();
+      collectionPreferencesWrapper.findTriggerButton().click();
+      expectVisibilityStatus({
+        wrapper: collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!,
+        statuses: [true, false, true, true],
+      });
+    });
+
+    it('decorates onConfirm event details correctly upon change', () => {
+      const onConfirmSpy = jest.fn();
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: onConfirmSpy,
+        preferences: {
+          contentDisplay: initialStateWithCustomVisibility,
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
+      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+      expect(onConfirmSpy).toHaveBeenCalledTimes(1);
+      expect(onConfirmSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            contentDisplay: [
+              {
+                id: 'id1',
+                visible: true,
+              },
+              {
+                id: 'id2',
+                visible: true,
+              },
+              {
+                id: 'id3',
+                visible: false,
+              },
+              { id: 'id4', visible: true },
+            ],
+          },
+        })
+      );
+    });
+
+    it('decorates onConfirm event details correctly even without change', () => {
+      const onConfirmSpy = jest.fn();
+      const collectionPreferencesWrapper = renderCollectionPreferences({
+        contentDisplayPreference,
+        onConfirm: onConfirmSpy,
+        preferences: {
+          contentDisplay: initialStateWithCustomVisibility,
+        },
+      });
+      collectionPreferencesWrapper.findTriggerButton().click();
+      collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
+      expect(onConfirmSpy).toHaveBeenCalledTimes(1);
+      expect(onConfirmSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            contentDisplay: initialStateWithCustomVisibility,
+          },
+        })
+      );
+    });
   });
 });
 
@@ -200,7 +349,7 @@ function testOption({
   expect(element).toHaveTextContent(`Item ${index + 1}`);
   const dragHandle = option.findDragHandle().getElement();
   expectDragHandleAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
-  expectLabelFroToggle(option);
+  expectLabelForToggle(option);
 }
 
 async function expectAnnouncement(wrapper: ContentDisplayPreferenceWrapper, announcement: string) {
@@ -209,7 +358,13 @@ async function expectAnnouncement(wrapper: ContentDisplayPreferenceWrapper, anno
   expect(liveRegion!.getElement()).toHaveTextContent(announcement);
 }
 
-function expectCheckedStatus({ wrapper, statuses }: { wrapper: ContentDisplayPreferenceWrapper; statuses: boolean[] }) {
+function expectVisibilityStatus({
+  wrapper,
+  statuses,
+}: {
+  wrapper: ContentDisplayPreferenceWrapper;
+  statuses: boolean[];
+}) {
   const options = wrapper.findOptions();
   for (let i = 0; i < options.length; i++) {
     const toggleElement = options[i].findToggle().findNativeInput().getElement();
@@ -220,7 +375,7 @@ function expectCheckedStatus({ wrapper, statuses }: { wrapper: ContentDisplayPre
     }
   }
 }
-function expectLabelFroToggle(option: ContentDisplayOptionWrapper) {
+function expectLabelForToggle(option: ContentDisplayOptionWrapper) {
   const toggleId = option.findToggle().findNativeInput().getElement().id;
   expect(toggleId).toBeTruthy();
   const labelForAttribute = option
