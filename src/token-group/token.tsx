@@ -39,7 +39,13 @@ export function Token({
       aria-describedby={errorText ? errorId : undefined}
       aria-disabled={disabled}
     >
-      <div className={clsx(styles['token-box'], disabled && styles['token-box-disabled'])}>
+      <div
+        className={clsx(
+          styles['token-box'],
+          disabled && styles['token-box-disabled'],
+          errorText && styles['token-box-error']
+        )}
+      >
         {children}
         {onDismiss && <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} />}
       </div>

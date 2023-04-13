@@ -10,24 +10,27 @@ import { i18nStrings } from './shared';
 const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel' | 'i18nStrings'>>([
   {
     value: [[]],
+    constraintText: [null, 'File size must not exceed 1 MB'],
   },
   {
-    value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
+    value: [[new File([new Blob(['demo content'])], 'demo file', { type: 'image/*' })]],
+    errorText: [null, 'File size is above 1 MB'],
+    constraintText: ['File size must not exceed 1 MB'],
   },
   {
     multiple: [true],
     value: [
       [
-        new File([new Blob(['demo content 1'], { type: 'text/plain' })], 'demo file 1'),
-        new File([new Blob(['demo content 2'], { type: 'text/plain' })], 'demo file 2'),
+        new File([new Blob(['demo content 1'])], 'demo file 1', { type: 'image/*' }),
+        new File([new Blob(['demo content 2'])], 'demo file 2', { type: 'image/*' }),
       ],
     ],
-  },
-  {
-    value: [[new File([new Blob(['demo content'], { type: 'text/plain' })], 'demo file')]],
     showFileSize: [true],
     showFileLastModified: [true],
-    showFileThumbnail: [true],
+    showFileThumbnail: [false, true],
+    errorText: [null, 'Files have errors'],
+    constraintText: ['File size must not exceed 1 MB'],
+    fileErrors: [null, ['File size is above 1 MB', 'File size is above 1 MB']],
   },
 ]);
 
@@ -40,7 +43,10 @@ export default function FileUploadPermutations() {
           permutations={permutations}
           render={permutation => (
             <FileUpload
-              i18nStrings={i18nStrings}
+              i18nStrings={{
+                ...i18nStrings,
+                formatFileSize: () => `1.01 MB`,
+              }}
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}

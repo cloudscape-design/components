@@ -24,6 +24,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { joinStrings } from '../internal/utils/strings';
 import { useFormFieldContext } from '../contexts/form-field';
+import InternalBox from '../box/internal';
 
 type InternalFileUploadProps = SomeRequired<
   FileUploadProps,
@@ -127,54 +128,60 @@ function InternalFileUpload(
       )}
 
       {(constraintText || errorText) && (
-        <div className={styles.hints}>
-          {errorText && (
-            <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
-              {errorText}
-            </FormFieldError>
-          )}
-          {constraintText && (
-            <ConstraintText id={constraintTextId} hasError={!!errorText}>
-              {constraintText}
-            </ConstraintText>
-          )}
-        </div>
+        <InternalBox>
+          <div className={styles.hints}>
+            {errorText && (
+              <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+                {errorText}
+              </FormFieldError>
+            )}
+            {constraintText && (
+              <ConstraintText id={constraintTextId} hasError={!!errorText}>
+                {constraintText}
+              </ConstraintText>
+            )}
+          </div>
+        </InternalBox>
       )}
 
       {!multiple && value.length > 0 ? (
-        <Token
-          ariaLabel={value[0].name}
-          dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
-          onDismiss={() => onFileRemove(0)}
-          errorText={fileErrors?.[0]}
-          errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-        >
-          <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
-        </Token>
+        <InternalBox>
+          <Token
+            ariaLabel={value[0].name}
+            dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
+            onDismiss={() => onFileRemove(0)}
+            errorText={fileErrors?.[0]}
+            errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+          >
+            <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
+          </Token>
+        </InternalBox>
       ) : null}
 
       {multiple && value.length > 0 ? (
-        <TokenList
-          alignment="vertical"
-          items={value}
-          renderItem={(file, fileIndex) => (
-            <Token
-              ariaLabel={file.name}
-              dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
-              onDismiss={() => onFileRemove(fileIndex)}
-              errorText={fileErrors?.[fileIndex]}
-              errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-            >
-              <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
-            </Token>
-          )}
-          limit={tokenLimit}
-          i18nStrings={{
-            limitShowFewer: i18nStrings.limitShowFewer,
-            limitShowMore: i18nStrings.limitShowMore,
-          }}
-          removedItemIndex={removedFileIndex}
-        />
+        <InternalBox>
+          <TokenList
+            alignment="vertical"
+            items={value}
+            renderItem={(file, fileIndex) => (
+              <Token
+                ariaLabel={file.name}
+                dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
+                onDismiss={() => onFileRemove(fileIndex)}
+                errorText={fileErrors?.[fileIndex]}
+                errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+              >
+                <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
+              </Token>
+            )}
+            limit={tokenLimit}
+            i18nStrings={{
+              limitShowFewer: i18nStrings.limitShowFewer,
+              limitShowMore: i18nStrings.limitShowMore,
+            }}
+            removedItemIndex={removedFileIndex}
+          />
+        </InternalBox>
       ) : null}
     </InternalSpaceBetween>
   );

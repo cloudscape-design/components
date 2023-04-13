@@ -11,6 +11,8 @@ interface FileOptionThumbnailProps {
 export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   const [imageSrc, setImageSrc] = useState('');
 
+  console.log('imageSrc', imageSrc);
+
   useEffect(() => {
     if (URL.createObjectURL) {
       const src = URL.createObjectURL(file);
