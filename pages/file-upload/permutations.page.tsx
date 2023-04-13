@@ -6,6 +6,7 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import FileUpload, { FileUploadProps } from '~components/file-upload';
 import { i18nStrings } from './shared';
+import { Box } from '~components';
 
 const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel' | 'i18nStrings'>>([
   {
@@ -39,10 +40,15 @@ export default function FileUploadPermutations() {
     <>
       <h1>FileUpload permutations</h1>
       <ScreenshotArea>
+        <Box id="file-upload-label" margin={{ bottom: 'm' }}>
+          File upload label (required when using outside form-field)
+        </Box>
+
         <PermutationsView
           permutations={permutations}
           render={permutation => (
             <FileUpload
+              ariaLabelledby="file-upload-label"
               i18nStrings={{
                 ...i18nStrings,
                 formatFileSize: () => `1.01 MB`,

@@ -68,7 +68,7 @@ describe('File upload dropzone', () => {
     expect(screen.findByText('Drop files here')).toBeDefined();
   });
 
-  test('dropzone is hovered on dragover', () => {
+  test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
     const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
@@ -77,6 +77,10 @@ describe('File upload dropzone', () => {
     fireEvent(dropzone, createDragEvent('dragover'));
 
     expect(dropzone).toHaveClass(selectors['dropzone-hovered']);
+
+    fireEvent(dropzone, createDragEvent('dragleave'));
+
+    expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
   });
 
   test('dropzone fires onChange on drop', () => {

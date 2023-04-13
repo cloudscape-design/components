@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render as testingLibraryRender, screen } from '@testing-library/react';
+import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { warnOnce } from '../../../lib/components/internal/logging';
@@ -148,6 +148,13 @@ describe('FileUpload input', () => {
     const wrapperWithFileError = render({ invalid: false, fileErrors: [null, 'File error', null] });
     expect(wrapperWithFileError.findNativeInput().getElement()).toHaveAttribute('aria-invalid', 'true');
   });
+
+  test('file input fires onChange with files in details', () => {
+    const wrapper = render({ multiple: true });
+    fireEvent(wrapper.findNativeInput().getElement(), new CustomEvent('change', { bubbles: true }));
+
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
+  });
 });
 
 describe('File upload tokens', () => {
@@ -189,9 +196,7 @@ describe('File upload tokens', () => {
     const wrapperMultiple = render({ multiple: true, value: [file1, file2] });
     wrapperMultiple.findFileToken(1)!.findRemoveButton()!.click();
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({ detail: { value: expect.arrayContaining([file2]) } })
-    );
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file2] } }));
   });
 
   test('file token only shows name by default', () => {
