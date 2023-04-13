@@ -202,7 +202,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Specifies the number of first and/or last columns that should be sticky.
    *
-   * If the available scrollable space is less than 148px, the feature is deactivated.
+   * If the available scrollable space is less than a certain threshold, the feature is deactivated.
    *
    * Use it in conjunction with the sticky columns preference of the
    * [collection preferences](/components/collection-preferences/) component.

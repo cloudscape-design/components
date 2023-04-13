@@ -24,13 +24,13 @@ export function useStickyState(isLastStickyLeft = false, isLastStickyRight = fal
   const { registerChildCallback, unregisterChildCallback } = useStickyColumnsContext();
   useEffect(() => {
     if (isLastStickyLeft) {
-      registerChildCallback?.(leftCallback);
+      registerChildCallback(leftCallback);
     } else if (isLastStickyRight) {
-      registerChildCallback?.(rightCallback);
+      registerChildCallback(rightCallback);
     }
     return () => {
-      unregisterChildCallback?.(leftCallback);
-      unregisterChildCallback?.(rightCallback);
+      unregisterChildCallback(leftCallback);
+      unregisterChildCallback(rightCallback);
     };
   }, [
     isLastStickyLeft,
