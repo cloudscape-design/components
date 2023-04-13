@@ -50,7 +50,8 @@ $active-separator-width: 2px;
       }
     }
   }
-  &.has-focus {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.has-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
     position: absolute;
     &::before {

@@ -267,6 +267,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSegmentDefault'
   | 'colorBackgroundSegmentDisabled'
   | 'colorBackgroundSegmentHover'
+  | 'colorBackgroundLayoutPanelTriggerActive'
   | 'colorBackgroundStatusError'
   | 'colorBackgroundStatusInfo'
   | 'colorBackgroundStatusSuccess'
@@ -326,6 +327,7 @@ export type ColorsTokenName =
   | 'colorForegroundControlDefault'
   | 'colorForegroundControlDisabled'
   | 'colorShadowDefault'
+  | 'colorShadowLayoutPanelTrigger'
   | 'colorShadowMedium'
   | 'colorShadowSide'
   | 'colorStrokeCodeEditorResizeHandler'
@@ -409,6 +411,8 @@ export type ColorsTokenName =
   | 'colorTextSegmentActive'
   | 'colorTextSegmentDefault'
   | 'colorTextSegmentHover'
+  | 'colorTextLayoutPanelTriggerActive'
+  | 'colorTextLayoutPanelTriggerHover'
   | 'colorTextSmall'
   | 'colorTextStatusError'
   | 'colorTextStatusInactive'
@@ -417,7 +421,9 @@ export type ColorsTokenName =
   | 'colorTextStatusWarning'
   | 'colorTextTopNavigationTitle'
   | 'colorBoardPlaceholderActive'
-  | 'colorBoardPlaceholderHover';
+  | 'colorBoardPlaceholderHover'
+  | 'colorDragPlaceholderActive'
+  | 'colorDragPlaceholderHover';
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'

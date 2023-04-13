@@ -3,7 +3,6 @@
 import clsx from 'clsx';
 import React, { useCallback, useRef } from 'react';
 import { fireCancelableEvent, isPlainLeftClick } from '../internal/events';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import styles from './styles.css.js';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
@@ -54,7 +53,6 @@ export const InternalButton = React.forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     checkSafeUrl('Button', href);
-    const focusVisible = useFocusVisible();
     const isAnchor = Boolean(href);
     const isNotInteractive = loading || disabled;
     const shouldHaveContent =
@@ -84,11 +82,11 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
+      [styles['hide-focus-outline']]: __hideFocusOutline,
     });
 
     const buttonProps = {
       ...props,
-      ...(__hideFocusOutline ? undefined : focusVisible),
       ...__nativeAttributes,
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),

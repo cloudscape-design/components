@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
-import useFocusVisible from '../../../internal/hooks/focus-visible';
 
 import { LinkProps } from '../../../link/interfaces';
 import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
@@ -40,7 +39,6 @@ const LinkItem = forwardRef(
     { children, external, href, target, rel, startIcon, endIcon, onFollow, context, testId }: LinkItemProps,
     ref: React.Ref<HTMLAnchorElement>
   ) => {
-    const focusVisible = useFocusVisible();
     const anchorTarget = target ?? (external ? '_blank' : undefined);
     const anchorRel = rel ?? (anchorTarget === '_blank' ? 'noopener noreferrer' : undefined);
 
@@ -80,7 +78,6 @@ const LinkItem = forwardRef(
           context && styles[`overflow-menu-control-${context}`]
         )}
         {...(typeof href === 'string' ? anchorProps : buttonProps)}
-        {...focusVisible}
         {...(testId ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -100,14 +97,11 @@ const ButtonItem = forwardRef(
     { children, startIcon, endIcon, onFollow: onClick, testId }: ButtonItemProps & { testId?: string },
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const focusVisible = useFocusVisible();
-
     return (
       <button
         ref={ref}
         className={styles['overflow-menu-control']}
         onClick={onClick}
-        {...focusVisible}
         {...(typeof testId === 'string' ? { 'data-testid': testId } : {})}
       >
         <ListItem startIcon={startIcon} endIcon={endIcon}>
@@ -154,7 +148,6 @@ const NavigationItem = forwardRef(
 const ExpandableItem: React.FC<
   ButtonItemProps & ButtonDropdownProps.ItemGroup & { onItemClick: (item: ButtonDropdownProps.Item) => void }
 > = ({ children, onItemClick, ...definition }) => {
-  const focusVisible = useFocusVisible();
   const [expanded, setExpanded] = useState(false);
   const headerId = useUniqueId('overflow-menu-item');
 
@@ -164,7 +157,6 @@ const ExpandableItem: React.FC<
         className={clsx(styles['overflow-menu-control'], styles['overflow-menu-control-expandable-menu-trigger'])}
         onClick={() => setExpanded(value => !value)}
         aria-expanded={expanded}
-        {...focusVisible}
       >
         <ListItem
           endIcon={

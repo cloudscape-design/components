@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
 
@@ -17,9 +18,11 @@ export default function AppBar() {
     breadcrumbs,
     contentHeader,
     contentType,
+    drawers,
     dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
+    hasDrawerViewportOverlay,
     hasNotificationsContent,
     hasStickyBackground,
     isMobile,
@@ -27,7 +30,6 @@ export default function AppBar() {
     isNavigationOpen,
     isToolsOpen,
     toolsHide,
-    isAnyPanelOpen,
     navigationRefs,
     toolsRefs,
   } = useAppLayoutInternals();
@@ -43,7 +45,7 @@ export default function AppBar() {
         styles.appbar,
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles.unfocusable]: isMobile && isAnyPanelOpen,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
           [testutilStyles['mobile-bar']]: isMobile,
         },
         'awsui-context-content-header'
@@ -63,7 +65,7 @@ export default function AppBar() {
             variant="icon"
             className={testutilStyles['navigation-toggle']}
             ref={navigationRefs.toggle}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
         </nav>
@@ -82,7 +84,7 @@ export default function AppBar() {
         </div>
       )}
 
-      {!toolsHide && isMobile && (
+      {isMobile && !toolsHide && !drawers && (
         <aside
           className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}
@@ -91,7 +93,7 @@ export default function AppBar() {
           <InternalButton
             className={testutilStyles['tools-toggle']}
             ariaExpanded={isToolsOpen}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             ariaLabel={ariaLabels?.toolsToggle ?? undefined}
             iconName="status-info"
             formAction="none"
@@ -102,6 +104,8 @@ export default function AppBar() {
           />
         </aside>
       )}
+
+      <DrawersMobileTriggers />
     </section>
   );
 }

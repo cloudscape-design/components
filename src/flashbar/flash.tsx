@@ -10,7 +10,6 @@ import { InternalButton } from '../button/internal';
 import { warnOnce } from '../internal/logging';
 import { isDevelopment } from '../internal/is-development';
 import { throttle } from '../internal/utils/throttle';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import LiveRegion from '../internal/components/live-region';
 import { ButtonProps } from '../button/interfaces';
 
@@ -89,8 +88,6 @@ export const Flash = React.forwardRef(
     }: FlashProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const focusVisible = useFocusVisible();
-
     if (isDevelopment) {
       if (buttonText && !onButtonClick) {
         warnOnce(
@@ -145,7 +142,7 @@ export const Flash = React.forwardRef(
         )}
       >
         <div className={styles['flash-body']}>
-          <div {...focusVisible} className={styles['flash-focus-container']} tabIndex={-1}>
+          <div className={styles['flash-focus-container']} tabIndex={-1}>
             <div
               className={clsx(styles['flash-icon'], styles['flash-text'])}
               role="img"

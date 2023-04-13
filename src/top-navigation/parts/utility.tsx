@@ -13,6 +13,7 @@ import { TopNavigationProps } from '../interfaces';
 import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url';
 import { joinStrings } from '../../internal/utils/strings';
+import { fireCancelableEvent } from '../../internal/events';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -74,7 +75,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             target={definition.target}
             rel={definition.rel}
             external={definition.external}
-            onFollow={definition.onClick}
+            onFollow={() => fireCancelableEvent(definition.onClick, {})}
             ariaLabel={ariaLabel}
           >
             {hasIcon && (

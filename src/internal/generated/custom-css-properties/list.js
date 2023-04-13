@@ -6,6 +6,7 @@
  */
 
 const customCssPropertiesList = [
+  'activeDrawerWidth',
   'offsetTop',
   'offsetTopWithNotifications',
   'contentGapLeft',

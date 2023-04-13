@@ -5,6 +5,7 @@ import AppBar from './app-bar';
 import { AppLayoutInternalsProvider } from './context';
 import { AppLayoutProps } from '../interfaces';
 import Background from './background';
+import Drawers from './drawers';
 import Header from './header';
 import Layout from './layout';
 import Main from './main';
@@ -51,6 +52,8 @@ const AppLayoutWithRef = React.forwardRef(function AppLayout(
           <Tools>
             <SplitPanel.Side />
           </Tools>
+
+          <Drawers />
         </Layout>
       </SplitPanel>
     </AppLayoutInternalsProvider>

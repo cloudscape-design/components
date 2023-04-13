@@ -26,7 +26,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
@@ -165,7 +164,7 @@ const InternalTable = forwardRef(
     const wrapperProps = isWrapperScrollable
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
-    const focusVisibleProps = useFocusVisible();
+
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
       if (!submitEdit) {
@@ -233,6 +232,7 @@ const InternalTable = forwardRef(
       cellOffsets,
       shouldDisableStickyColumns,
     };
+
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
       <ColumnWidthsProvider
@@ -300,10 +300,9 @@ const InternalTable = forwardRef(
                 [styles['has-footer']]: hasFooter,
                 [styles['has-header']]: hasHeader,
               })}
-              style={{ scrollPaddingLeft: wrapperScrollPadding.left, scrollPaddingRight: wrapperScrollPadding.right }}
               onScroll={handleScroll}
+              style={{ scrollPaddingLeft: wrapperScrollPadding.left, scrollPaddingRight: wrapperScrollPadding.right }}
               {...wrapperProps}
-              {...focusVisibleProps}
             >
               {!!renderAriaLive && !!firstIndex && (
                 <LiveRegion>

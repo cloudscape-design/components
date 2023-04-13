@@ -222,6 +222,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
 
     &:not(.body-cell-edit-active) {
+      @mixin focused-editor-styles {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+        & > .body-cell-editor {
+          opacity: 1;
+        }
+      }
       & > .body-cell-editor {
         opacity: 0;
       }
@@ -233,6 +239,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         right: calc(-1 * #{awsui.$border-divider-list-width});
         &.sticky-cell {
           position: sticky;
+        }
+        @include focused-editor-styles;
+        &:first-child {
+          left: 0;
+          right: 0;
         }
         & > .body-cell-editor {
           padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
@@ -250,18 +261,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
       }
-      &:hover,
-      &[data-awsui-focus-visible='true']:focus-within {
-        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
-        & > .body-cell-editor {
-          opacity: 1;
-        }
-      }
-      &:hover:first-child {
-        left: 0;
-        right: 0;
-      }
-      &[data-awsui-focus-visible='true']:not(:hover):focus-within {
+      // stylelint-disable-next-line selector-combinator-disallowed-list
+      body[data-awsui-focus-visible='true'] &:focus-within {
+        @include focused-editor-styles;
         @include styles.focus-highlight(
           (
             'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),

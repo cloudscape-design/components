@@ -10,34 +10,42 @@ import React, {
   useState,
   useContext,
 } from 'react';
-import { AppLayoutProps } from '../interfaces';
-import { fireNonCancelableEvent } from '../../internal/events';
-import { getSplitPanelPosition } from './split-panel';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { useMobile } from '../../internal/hooks/use-mobile';
-import { useContainerQuery } from '../../internal/hooks/container-queries';
-import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import styles from './styles.css.js';
-import { isDevelopment } from '../../internal/is-development';
-import { warnOnce } from '../../internal/logging';
 import { applyDefaults } from '../defaults';
-import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
-import { useObservedElement } from '../utils/use-observed-element';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
-import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { AppLayoutProps } from '../interfaces';
+import { DrawersProps } from './drawers';
+import { fireNonCancelableEvent } from '../../internal/events';
+import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
+import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
+import { isDevelopment } from '../../internal/is-development';
+import { getSplitPanelPosition } from './split-panel';
+import { useContainerQuery } from '../../internal/hooks/container-queries';
+import { useControllable } from '../../internal/hooks/use-controllable';
 import { SplitPanelFocusControlRefs, useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
+import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
+import { useObservedElement } from '../utils/use-observed-element';
+import { useMobile } from '../../internal/hooks/use-mobile';
+import { warnOnce } from '../../internal/logging';
+import styles from './styles.css.js';
 
 interface AppLayoutInternals extends AppLayoutProps {
+  activeDrawerId: string | null;
+  activeDrawerWidth: number;
+  drawers: DrawersProps;
+  drawersRefs: FocusControlRefs;
+  drawersTriggerCount: number;
   dynamicOverlapHeight: number;
+  handleDrawersClick: (activeDrawerId: string | null, skipFocusControl?: boolean) => void;
   handleSplitPanelClick: () => void;
   handleNavigationClick: (isOpen: boolean) => void;
   handleSplitPanelPreferencesChange: (detail: AppLayoutProps.SplitPanelPreferences) => void;
   handleSplitPanelResize: (detail: { size: number }) => void;
-  handleToolsClick: (value: boolean) => void;
+  handleToolsClick: (value: boolean, skipFocusControl?: boolean) => void;
   hasDefaultToolsWidth: boolean;
+  hasDrawerViewportOverlay: boolean;
   hasNotificationsContent: boolean;
+  hasOpenDrawer: boolean;
   hasStickyBackground: boolean;
-  isAnyPanelOpen: boolean;
   isMobile: boolean;
   isNavigationOpen: boolean;
   isSplitPanelForcedPosition: boolean;
@@ -45,8 +53,10 @@ interface AppLayoutInternals extends AppLayoutProps {
   isToolsOpen: boolean;
   layoutElement: React.Ref<HTMLElement>;
   layoutWidth: number;
+  loseToolsFocus: () => void;
   mainElement: React.Ref<HTMLDivElement>;
   mainOffsetLeft: number;
+  navigationRefs: FocusControlRefs;
   notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
   offsetBottom: number;
@@ -65,9 +75,7 @@ interface AppLayoutInternals extends AppLayoutProps {
   setSplitPanelToggle: (toggle: SplitPanelSideToggleProps) => void;
   splitPanelDisplayed: boolean;
   splitPanelRefs: SplitPanelFocusControlRefs;
-  navigationRefs: FocusControlRefs;
   toolsRefs: FocusControlRefs;
-  loseToolsFocus: () => void;
 }
 
 /**
@@ -204,17 +212,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     } = useFocusControl(isToolsOpen, true);
 
     const handleToolsClick = useCallback(
-      function handleToolsChange(isOpen: boolean) {
+      function handleToolsChange(isOpen: boolean, skipFocusControl?: boolean) {
         setIsToolsOpen(isOpen);
-        focusToolsButtons();
+        !skipFocusControl && focusToolsButtons();
         fireNonCancelableEvent(props.onToolsChange, { open: isOpen });
       },
       [props.onToolsChange, setIsToolsOpen, focusToolsButtons]
     );
-
-    const navigationVisible = !navigationHide && isNavigationOpen;
-    const toolsVisible = !toolsHide && isToolsOpen;
-    const isAnyPanelOpen = navigationVisible || toolsVisible;
 
     /**
      * On mobile viewports the navigation and tools drawers are adjusted to a fixed position
@@ -390,6 +394,54 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     );
 
     /**
+     * The activeDrawerWidth is required in JavaScript to acccurately calculate whether a SplitPanel
+     * in the side position should be forced to the bottom based on available horiziontal space.
+     *
+     * The handleDrawersClick will either open a new drawer or close the currently open drawer by setting
+     * the activeDrawerId value. The active drawer can also be closed if a user clicks the Tools trigger
+     * button. This will skip the focus handling because the focus should be going to the Tools close
+     * button and not one of the drawers trigger buttons.
+     *
+     * The drawersTriggerCount is computed in order to determine whether the triggers should be persistent
+     * in the UI when a drawer is open. The trigger button container is suppressed when a drawer is open
+     * and their is only one trigger button.
+     *
+     * The hasDrawerViewportOverlay property is used to determine if any drawer is obscuring the entire
+     * viewport. This currently applies to Navigation, Tools, and Drawers in mobile viewports.
+     */
+    const drawers = (props as any).drawers;
+
+    const [activeDrawerId, setActiveDrawerId] = useControllable(drawers?.activeDrawerId, drawers?.onChange, null, {
+      componentName: 'AppLayout',
+      controlledProp: 'drawers.activeDrawerId',
+      changeHandler: 'onChange',
+    });
+
+    const activeDrawerWidth = 290;
+
+    const { refs: drawersRefs, setFocus: focusDrawersButtons } = useFocusControl(activeDrawerId);
+
+    const handleDrawersClick = useCallback(
+      function handleDrawersChange(id: string | null, skipFocusControl?: boolean) {
+        const newActiveDrawerId = id !== activeDrawerId ? id : null;
+
+        setActiveDrawerId(newActiveDrawerId);
+        !skipFocusControl && focusDrawersButtons();
+        fireNonCancelableEvent(drawers?.onChange, newActiveDrawerId);
+      },
+      [activeDrawerId, drawers?.onChange, focusDrawersButtons, setActiveDrawerId]
+    );
+
+    const drawersTriggerCount =
+      (drawers?.items.length ?? 0) +
+      (splitPanelDisplayed && splitPanelPosition === 'side' ? 1 : 0) +
+      (!toolsHide ? 1 : 0);
+    const hasOpenDrawer =
+      activeDrawerId || isToolsOpen || (splitPanelDisplayed && splitPanelPosition === 'side' && isSplitPanelOpen);
+    const hasDrawerViewportOverlay =
+      isMobile && (!!activeDrawerId || (!navigationHide && isNavigationOpen) || (!toolsHide && isToolsOpen));
+
+    /**
      * The Layout element is not necessarily synonymous with the client
      * viewport width. There can be content in the horizontal viewport
      * that exists on either side of the AppLayout. This resize observer
@@ -415,42 +467,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
         setMainOffsetLeft(mainElement?.current?.offsetLeft ?? 0);
       },
       [layoutWidth, isNavigationOpen, isToolsOpen, splitPanelReportedSize]
-    );
-
-    useLayoutEffect(
-      function handleSplitPanelMaxWidth() {
-        /**
-         * Warning! This is a hack! In order to accurately calculate if there is adequate
-         * horizontal space for the Split Panel to be in the side position we need two values
-         * that are not available in JavaScript.
-         *
-         * The first is the the content gap on the right which is stored in a design token
-         * and applied in the Layout CSS:
-         *
-         *  $contentGapRight: #{awsui.$space-scaled-2x-xxxl};
-         *
-         * The second is the width of the element that has the circular buttons for the
-         * Tools and Split Panel. This could be suppressed given the state of the Tools
-         * drawer returning a zero value. It would, however, be rendered if the Split Panel
-         * were to move into the side position. This is calculated in the Tools CSS and
-         * the Trigger button CSS with design tokens:
-         *
-         * padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
-         * width: awsui.$space-layout-toggle-diameter;
-         *
-         * These values will be defined below as static integers that are rough approximations
-         * of their computed width when rendered in the DOM, but doubled to ensure adequate
-         * spacing for the Split Panel to be in side position.
-         */
-        const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
-        const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
-        const toolsOffsetWidth = isToolsOpen ? toolsWidth : 0;
-
-        setSplitPanelMaxWidth(
-          layoutWidth - mainOffsetLeft - minContentWidth - contentGapRight - toolsOffsetWidth - toolsFormOffsetWidth
-        );
-      },
-      [isNavigationOpen, isToolsOpen, layoutWidth, mainOffsetLeft, minContentWidth, toolsWidth]
     );
 
     /**
@@ -483,6 +499,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * position. Use the size property if it is open and the header height if it is closed.
      */
     let offsetBottom = footerHeight;
+
     if (splitPanelDisplayed && splitPanelPosition === 'bottom') {
       if (isSplitPanelOpen) {
         offsetBottom += splitPanelReportedSize;
@@ -491,23 +508,82 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       }
     }
 
+    /**
+     * Warning! This is a hack! In order to accurately calculate if there is adequate
+     * horizontal space for the Split Panel to be in the side position we need two values
+     * that are not available in JavaScript.
+     *
+     * The first is the the content gap on the right which is stored in a design token
+     * and applied in the Layout CSS:
+     *
+     * $contentGapRight: #{awsui.$space-scaled-2x-xxxl};
+     *
+     * The second is the width of the element that has the circular buttons for the
+     * Tools and Split Panel. This could be suppressed given the state of the Tools
+     * drawer returning a zero value. It would, however, be rendered if the Split Panel
+     * were to move into the side position. This is calculated in the Tools CSS and
+     * the Trigger button CSS with design tokens:
+     *
+     * padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
+     * width: awsui.$space-layout-toggle-diameter;
+     *
+     * These values will be defined below as static integers that are rough approximations
+     * of their computed width when rendered in the DOM, but doubled to ensure adequate
+     * spacing for the Split Panel to be in side position.
+     */
+    useLayoutEffect(
+      function handleSplitPanelMaxWidth() {
+        const contentGapRight = 80; // Approximately 40px when rendered but doubled for safety
+        const toolsFormOffsetWidth = 160; // Approximately 80px when rendered but doubled for safety
+        const toolsOffsetWidth = isToolsOpen ? toolsWidth : 0;
+        const activeDrawerOffsetWidth = activeDrawerId ? activeDrawerWidth : 0;
+
+        setSplitPanelMaxWidth(
+          layoutWidth -
+            mainOffsetLeft -
+            minContentWidth -
+            contentGapRight -
+            toolsOffsetWidth -
+            toolsFormOffsetWidth -
+            activeDrawerOffsetWidth
+        );
+      },
+      [
+        activeDrawerId,
+        activeDrawerWidth,
+        isNavigationOpen,
+        isToolsOpen,
+        layoutWidth,
+        mainOffsetLeft,
+        minContentWidth,
+        toolsWidth,
+      ]
+    );
+
     return (
       <AppLayoutInternalsContext.Provider
         value={{
           ...props,
+          activeDrawerId,
+          activeDrawerWidth,
           contentType,
+          drawers,
+          drawersRefs,
+          drawersTriggerCount,
           dynamicOverlapHeight,
           headerHeight,
           footerHeight,
           hasDefaultToolsWidth,
+          hasDrawerViewportOverlay,
+          handleDrawersClick,
           handleNavigationClick,
           handleSplitPanelClick,
           handleSplitPanelPreferencesChange,
           handleSplitPanelResize,
           handleToolsClick,
           hasNotificationsContent,
+          hasOpenDrawer,
           hasStickyBackground,
-          isAnyPanelOpen,
           isMobile,
           isNavigationOpen: isNavigationOpen ?? false,
           isSplitPanelForcedPosition,
@@ -515,11 +591,13 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           isToolsOpen,
           layoutElement,
           layoutWidth,
+          loseToolsFocus,
           mainElement,
           mainOffsetLeft,
           maxContentWidth,
           minContentWidth,
           navigationHide,
+          navigationRefs,
           notificationsElement,
           notificationsHeight,
           offsetBottom,
@@ -543,8 +621,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           toolsOpen: isToolsOpen,
           toolsWidth,
           toolsRefs,
-          navigationRefs,
-          loseToolsFocus,
         }}
       >
         <AppLayoutContext.Provider
