@@ -14,11 +14,10 @@ export default function Notifications() {
     return null;
   }
 
-  /*
-  The notificationsElement ref is assigned to an inner div to prevent internal bottom margin from affecting the
-  calculated height, which is used for sticky elements below.
+  /**
+   * The notificationsElement ref is assigned to an inner div to prevent internal bottom margin
+   * from affecting the calculated height, which is used for sticky elements below.
    */
-
   return (
     <div
       role="region"
