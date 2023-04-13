@@ -37,25 +37,29 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
 }) => {
   const callbacks = useRef<Set<(entry: any) => void>>(new Set());
 
+  const checkStickyState = React.useCallback(() => {
+    const wrapper = wrapperRef.current;
+    const table = tableRef.current;
+    if (wrapper && table) {
+      const tableLeftPadding = Number(getComputedStyle(table).paddingLeft.slice(0, -2));
+      const tableRightPadding = Number(getComputedStyle(table).paddingRight.slice(0, -2));
+      const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+      const left = wrapper.scrollLeft > tableLeftPadding;
+      return { left, right };
+    }
+    return { left: false, right: false };
+  }, [wrapperRef, tableRef]);
+
   const createScrollHandler = useCallback(() => {
     const scrollHandler = () => {
-      const wrapper = wrapperRef.current;
-      const table = tableRef.current;
-      if (wrapper && table) {
-        const tableLeftPadding = Number(getComputedStyle(table).paddingLeft.slice(0, -2));
-        const tableRightPadding = Number(getComputedStyle(table).paddingRight.slice(0, -2));
-        const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
-        const left = wrapper.scrollLeft > tableLeftPadding;
-
-        // Call all subscribed callbacks
-        unstable_batchedUpdates(() => {
-          callbacks.current.forEach(callback => callback({ left, right }));
-        });
-      }
+      const { left, right } = checkStickyState();
+      // Call all subscribed callbacks
+      unstable_batchedUpdates(() => {
+        callbacks.current.forEach(callback => callback({ left, right }));
+      });
     };
-
     return scrollHandler;
-  }, [tableRef, wrapperRef]);
+  }, [checkStickyState]);
 
   useLayoutEffect(() => {
     const scrollHandler = createScrollHandler();
@@ -79,6 +83,7 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
 
   const subscribe = (callback: (entry: any) => void) => {
     callbacks.current.add(callback);
+    callback(checkStickyState());
   };
 
   const unsubscribe = (callback: (entry: any) => void) => {
