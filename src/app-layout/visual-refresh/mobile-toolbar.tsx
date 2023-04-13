@@ -17,11 +17,11 @@ export default function MobileToolbar() {
     handleToolsClick,
     hasDrawerViewportOverlay,
     isMobile,
-    navigationHide,
     isNavigationOpen,
     isToolsOpen,
-    toolsHide,
+    navigationHide,
     navigationRefs,
+    toolsHide,
     toolsRefs,
   } = useAppLayoutInternals();
 

@@ -25,12 +25,12 @@ export default function Navigation() {
     hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
+    isToolsOpen,
     navigation,
     navigationHide,
-    navigationWidth,
-    isToolsOpen,
-    toolsHide,
     navigationRefs,
+    navigationWidth,
+    toolsHide,
   } = useAppLayoutInternals();
 
   if (navigationHide) {

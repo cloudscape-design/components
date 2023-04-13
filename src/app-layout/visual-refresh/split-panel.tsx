@@ -15,20 +15,20 @@ import customCssProps from '../../internal/generated/custom-css-properties';
  */
 function SplitPanel({ children }: React.PropsWithChildren<unknown>) {
   const {
+    footerHeight,
     handleSplitPanelClick,
     handleSplitPanelPreferencesChange,
     handleSplitPanelResize,
+    headerHeight,
     isMobile,
     isSplitPanelForcedPosition,
     isSplitPanelOpen,
     setSplitPanelReportedSize,
     setSplitPanelReportedHeaderHeight,
-    splitPanelPosition,
-    splitPanelSize,
     setSplitPanelToggle,
+    splitPanelPosition,
     splitPanelRefs,
-    headerHeight,
-    footerHeight,
+    splitPanelSize,
   } = useAppLayoutInternals();
 
   const context: SplitPanelContextProps = {

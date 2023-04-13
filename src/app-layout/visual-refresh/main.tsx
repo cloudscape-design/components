@@ -11,14 +11,14 @@ export default function Main() {
   const {
     content,
     disableContentPaddings,
+    footerHeight,
     hasDrawerViewportOverlay,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     mainElement,
-    splitPanelDisplayed,
     offsetBottom,
-    footerHeight,
+    splitPanelDisplayed,
     splitPanelPosition,
   } = useAppLayoutInternals();
 
