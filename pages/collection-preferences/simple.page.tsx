@@ -40,7 +40,7 @@ const contentDensityPreference: CollectionPreferencesProps.ContentDensityPrefere
 
 const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
   firstColumns: {
-    title: 'First column(s)',
+    title: 'Stick first column(s)',
     description: 'Keep the first column(s) visible while horizontally scrolling the table content.',
     options: [
       { label: 'None', value: 0 },
@@ -49,7 +49,7 @@ const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreferenc
     ],
   },
   lastColumns: {
-    title: 'Fix last column',
+    title: 'Stick last column',
     description: 'Keep the last column visible while horizontally scrolling the table content.',
     options: [
       { label: 'None', value: 0 },

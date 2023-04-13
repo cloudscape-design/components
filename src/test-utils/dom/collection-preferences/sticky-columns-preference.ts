@@ -9,22 +9,24 @@ import styles from '../../../collection-preferences/styles.selectors.js';
 export default class StickyColumnsPreferenceWrapper extends ComponentWrapper {
   static rootSelector = styles['sticky-columns'];
 
-  findTitle(stickyColumnsPreferencesSide: 'start' | 'end'): ElementWrapper {
+  findTitle(stickyColumnsPreferencesSide: 'first' | 'last'): ElementWrapper {
     return this.findComponent(
-      `.${styles[`sticky-columns-${stickyColumnsPreferencesSide}-form-field`]}`,
+      `.${styles[`sticky-columns-${stickyColumnsPreferencesSide}`]}`,
       FormFieldWrapper
     )!.findLabel()!;
   }
-  findDescription(stickyColumnsPreferencesSide: 'start' | 'end'): ElementWrapper {
+  findDescription(stickyColumnsPreferencesSide: 'first' | 'last'): ElementWrapper {
     return this.findComponent(
-      `.${styles[`sticky-columns-${stickyColumnsPreferencesSide}-form-field`]}`,
+      `.${styles[`sticky-columns-${stickyColumnsPreferencesSide}`]}`,
       FormFieldWrapper
     )!.findDescription()!;
   }
-  findOptions(stickyColumnsPreferencesSide: 'start' | 'end'): Array<RadioButtonWrapper> {
-    return this.findComponent(
-      `.${styles[`sticky-columns-${stickyColumnsPreferencesSide}-radio-group`]}`,
-      RadioGroupWrapper
-    )!.findButtons();
+  findRadioGroup(stickyColumnsPreferencesSide: 'first' | 'last'): RadioGroupWrapper {
+    return this.find(`.${styles[`sticky-columns-${stickyColumnsPreferencesSide}`]}`)!.findRadioGroup()!;
+  }
+  findOptions(stickyColumnsPreferencesSide: 'first' | 'last'): Array<RadioButtonWrapper> {
+    return this.find(`.${styles[`sticky-columns-${stickyColumnsPreferencesSide}`]}`)!
+      .findRadioGroup()!
+      .findButtons();
   }
 }

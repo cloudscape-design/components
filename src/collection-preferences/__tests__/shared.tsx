@@ -57,3 +57,23 @@ export const contentDensityPreference: CollectionPreferencesProps.ContentDensity
   label: 'Compact mode',
   description: 'Display the content in a denser, more compact mode',
 };
+
+export const stickyColumnsPreference: CollectionPreferencesProps.StickyColumnsPreference = {
+  firstColumns: {
+    title: 'Stick first column(s)',
+    description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'First column', value: 1 },
+      { label: 'First two columns', value: 2 },
+    ],
+  },
+  lastColumns: {
+    title: 'Stick last column',
+    description: 'Keep the last column visible while horizontally scrolling table content.',
+    options: [
+      { label: 'None', value: 0 },
+      { label: 'Last column', value: 1 },
+    ],
+  },
+};

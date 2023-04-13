@@ -153,21 +153,21 @@ interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPrefe
     }>;
   };
   value?: any;
-  side: 'left' | 'right';
+  firstOrLast: 'first' | 'last';
 }
 
-const StickyPreference = ({ side, preference, value, onChange }: StickyPreference) => {
+const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPreference) => {
   const { title, description, options } = preference;
 
   return (
     <InternalFormField
-      className={styles[`sticky-columns-${side}-form-field`]}
+      className={styles[`sticky-columns-${firstOrLast}`]}
       key={title}
       label={title}
       description={description}
     >
       <InternalRadioGroup
-        className={styles[`sticky-columns-${side}-radio-group`]}
+        // className={styles[`sticky-columns-${firstOrLast}-radio-group`]}
         value={typeof value !== undefined ? `${value}` : null}
         items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
         onChange={({ detail }) => onChange(Number(detail.value))}
@@ -186,7 +186,7 @@ export const StickyColumnsPreference = ({
     <InternalSpaceBetween className={styles['sticky-columns']} size="l">
       {firstColumns && (
         <StickyPreference
-          side="left"
+          firstOrLast="first"
           preference={firstColumns}
           value={value?.first || '0'}
           onChange={newValue => onChange({ ...value, first: newValue })}
@@ -194,7 +194,7 @@ export const StickyColumnsPreference = ({
       )}
       {lastColumns && (
         <StickyPreference
-          side="right"
+          firstOrLast="last"
           preference={lastColumns}
           value={value?.last || '0'}
           onChange={newValue => onChange({ ...value, last: newValue })}
