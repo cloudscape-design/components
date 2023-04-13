@@ -82,8 +82,8 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `liveAnnouncementDndDiscarded` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
    * - `liveAnnouncementDndItemReordered` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
    * - `liveAnnouncementDndItemCommitted` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
-   * - `dragHandleAriaDescription` (string) - (Optional) Adds an `aria-description` for the drag handle.
-   * - `dragHandleAriaLabel` (string) - (Optional) Adds an `aria-label` for the drag handle.
+   * - `dragHandleAriaDescription` (string) - (Optional) Adds an ARIA description for the drag handle.
+   * - `dragHandleAriaLabel` (string) - (Optional) Adds an ARIA label for the drag handle.
    * - `options` - Specifies an array of options for reordering and visible content selection.
    *
    * Each option contains the following:
