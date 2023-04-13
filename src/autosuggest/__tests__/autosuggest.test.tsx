@@ -10,14 +10,10 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
-let uniqueId = 1;
-
-jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => ({
-  useUniqueId: () => 'random-' + uniqueId++,
-  generateUniqueId: () => 'random-' + uniqueId++,
-}));
-
-const defaultOptions: AutosuggestProps.Options = [{ value: '1', label: 'One' }, { value: '2' }];
+const defaultOptions: AutosuggestProps.Options = [
+  { value: '1', label: 'One' },
+  { value: '2', lang: 'fr' },
+];
 const defaultProps: AutosuggestProps = {
   enteredTextLabel: () => 'Use value',
   value: '',
@@ -37,6 +33,12 @@ test('renders correct labels when focused', () => {
   wrapper.focus();
   expect(wrapper.findDropdown().findOptionByValue('1')!.getElement()).toHaveTextContent('One');
   expect(wrapper.findDropdown().findOptionByValue('2')!.getElement()).toHaveTextContent('2');
+});
+
+test('renders lang on options', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.focus();
+  expect(wrapper.findDropdown()!.findOptionByValue('2')!.getElement()).toHaveAttribute('lang', 'fr');
 });
 
 test('option can be selected', () => {
@@ -230,8 +232,8 @@ describe('a11y props', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={[]} />);
     const input = wrapper.findNativeInput().getElement();
     wrapper.findNativeInput().focus();
-    expect(input).toHaveAttribute('aria-controls', expect.stringContaining('random-'));
-    expect(input).toHaveAttribute('aria-owns', expect.stringContaining('random-'));
+    expect(input).toHaveAttribute('aria-controls', expect.any(String));
+    expect(input).toHaveAttribute('aria-owns', expect.any(String));
   });
 
   test('adds correct aria properties to input when expanded', () => {
@@ -252,7 +254,7 @@ describe('a11y props', () => {
     wrapper.findNativeInput().keydown(KeyCode.down);
     const input = wrapper.findNativeInput().getElement();
     const highlightedOption = wrapper.findDropdown().findHighlightedOption()!.getElement();
-    expect(highlightedOption).toHaveAttribute('id', expect.stringContaining('random-'));
+    expect(highlightedOption).toHaveAttribute('id', expect.any(String));
     expect(input).toHaveAttribute('aria-activedescendant', highlightedOption.getAttribute('id'));
   });
 

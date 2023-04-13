@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
+import customCssProps from '../../internal/generated/custom-css-properties';
 import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { AppLayoutProps } from '../interfaces';
-import customCssProps from '../../internal/generated/custom-css-properties';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,15 +24,15 @@ export default function Layout({ children }: LayoutProps) {
     disableBodyScroll,
     disableContentHeaderOverlap,
     disableContentPaddings,
+    drawersTriggerCount,
     dynamicOverlapHeight,
     footerHeight,
     hasNotificationsContent,
     hasStickyBackground,
+    hasOpenDrawer,
     headerHeight,
     isMobile,
     isNavigationOpen,
-    isSplitPanelOpen,
-    isToolsOpen,
     layoutElement,
     layoutWidth,
     mainOffsetLeft,
@@ -44,20 +43,12 @@ export default function Layout({ children }: LayoutProps) {
     splitPanelPosition,
     stickyNotifications,
     splitPanelDisplayed,
-    toolsHide,
   } = useAppLayoutInternals();
 
-  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
-
   // Content gaps on the left and right are used with the minmax function in the CSS grid column definition
-  const hasContentGapLeft = getContentGapLeft(isNavigationOpen, navigationHide);
-  const hasContentGapRight = getContentGapRight(
-    splitPanelPosition,
-    isSplitPanelOpen,
-    isToolsOpen,
-    splitPanelDisplayed,
-    toolsHide
-  );
+  const hasContentGapLeft = isNavigationOpen || navigationHide;
+  const hasContentGapRight = drawersTriggerCount <= 0 || hasOpenDrawer;
+  const isOverlapDisabled = getOverlapDisabled(dynamicOverlapHeight, contentHeader, disableContentHeaderOverlap);
 
   // Determine the first content child so the gap will vertically align with the trigger buttons
   const contentFirstChild = getContentFirstChild(breadcrumbs, contentHeader, hasNotificationsContent, isMobile);
@@ -125,56 +116,6 @@ function getContentFirstChild(
   }
 
   return contentFirstChild;
-}
-
-/**
- * When the Navigation and Tools are present the grid definition has the center column
- * touch the first and last columns with no gap. The forms with the circular buttons
- * for Navigation and Tools have internal padding which creates the necessary
- * horizontal space when the drawers are closed. The remaining conditions below
- * determine the necessity of utilizing the content gap left property to create
- * horizontal space between the center column and its adjacent siblings.
- */
-function getContentGapRight(
-  splitPanelPosition: AppLayoutProps.SplitPanelPosition,
-  isSplitPanelOpen: boolean | undefined,
-  isToolsOpen: boolean,
-  splitPanelDisplayed: boolean,
-  toolsHide?: boolean
-) {
-  let hasContentGapRight = false;
-
-  // Main is touching the edge of the Layout and needs a content gap
-  if (!splitPanelDisplayed && toolsHide) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the Tools drawer and needs a content gap
-  if ((!splitPanelDisplayed || !isSplitPanelOpen) && !toolsHide && isToolsOpen) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the edge of the Layout and needs a content gap
-  if (splitPanelDisplayed && splitPanelPosition === 'bottom' && (isToolsOpen || toolsHide)) {
-    hasContentGapRight = true;
-  }
-
-  // Main is touching the Split Panel drawer and needs a content gap
-  if (splitPanelDisplayed && isSplitPanelOpen && splitPanelPosition === 'side') {
-    hasContentGapRight = true;
-  }
-
-  return hasContentGapRight;
-}
-
-/**
- * Additional function to determine whether or not a content gap is needed
- * on the left (see the getContentGapRight function). The same render logic applies
- * regarding the center column touching an adjacent sibling but the only
- * component state that needs to be tracked is the Navigation.
- */
-function getContentGapLeft(isNavigationOpen: boolean, navigationHide?: boolean) {
-  return isNavigationOpen || navigationHide ? true : false;
 }
 
 /**

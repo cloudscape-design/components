@@ -11,11 +11,10 @@ export default function Main() {
   const {
     content,
     disableContentPaddings,
+    hasDrawerViewportOverlay,
     isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
-    isMobile,
-    isAnyPanelOpen,
     mainElement,
     splitPanelDisplayed,
     offsetBottom,
@@ -23,7 +22,6 @@ export default function Main() {
     splitPanelPosition,
   } = useAppLayoutInternals();
 
-  const isUnfocusable = isMobile && isAnyPanelOpen;
   const splitPanelHeight = offsetBottom - footerHeight;
 
   return (
@@ -37,7 +35,7 @@ export default function Main() {
           [styles['is-navigation-open']]: isNavigationOpen,
           [styles['is-tools-open']]: isToolsOpen,
           [styles['is-split-panel-open']]: isSplitPanelOpen,
-          [styles.unfocusable]: isUnfocusable,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
         },
         testutilStyles.content
       )}

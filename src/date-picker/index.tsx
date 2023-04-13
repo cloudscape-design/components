@@ -23,10 +23,10 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
-import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
+import { useLocale } from '../internal/i18n/context.js';
 
 export { DatePickerProps };
 
@@ -54,18 +54,19 @@ const DatePicker = React.forwardRef(
       invalid,
       openCalendarAriaLabel,
       expandToViewport,
-      ...rest
+      ...restProps
     }: DatePickerProps,
     ref: Ref<DatePickerProps.Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('DatePicker');
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
 
-    const baseProps = getBaseProps(rest);
+    const contextLocale = useLocale();
+    const normalizedLocale = normalizeLocale('DatePicker', locale || contextLocale);
+
+    const baseProps = getBaseProps(restProps);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-    const normalizedLocale = normalizeLocale('DatePicker', locale);
-    const focusVisible = useFocusVisible();
-    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
+    const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(restProps);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
     const buttonRef = useRef<ButtonProps.Ref>(null);
@@ -171,7 +172,7 @@ const DatePicker = React.forwardRef(
           >
             {isDropDownOpen && (
               <FocusLock className={styles['focus-lock']} autoFocus={true}>
-                <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
+                <div tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar
                     value={value}
                     onChange={e => {

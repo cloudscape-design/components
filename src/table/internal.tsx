@@ -26,7 +26,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
@@ -181,7 +180,6 @@ const InternalTable = React.forwardRef(
     const wrapperProps = isWrapperScrollable
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
-    const focusVisibleProps = useFocusVisible();
 
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
@@ -266,7 +264,6 @@ const InternalTable = React.forwardRef(
             })}
             onScroll={handleScroll}
             {...wrapperProps}
-            {...focusVisibleProps}
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>

@@ -6,7 +6,8 @@ export interface AppLayoutButtonProps {
   className?: string;
   ariaLabel: string | undefined;
   ariaExpanded?: boolean;
-  iconName: IconProps.Name;
+  iconName?: IconProps.Name;
+  iconSvg?: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
 }

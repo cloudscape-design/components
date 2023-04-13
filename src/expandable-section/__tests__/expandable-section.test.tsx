@@ -131,6 +131,43 @@ describe('Expandable Section', () => {
     });
   });
 });
+describe('headingTagOverride', () => {
+  test('container variant tag defaults to h2', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+    });
+    expect(wrapper.findHeader().findAll('h2').length).toBe(1);
+  });
+  test('container variant tag can be overwritten', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'container',
+      headerText: 'Header component',
+      headingTagOverride: 'h3',
+    });
+    expect(wrapper.findHeader().findAll('h2').length).toBe(0);
+    expect(wrapper.findHeader().findAll('h3').length).toBe(1);
+  });
+  for (const variant of ['default', 'footer']) {
+    describe.each<ExpandableSectionProps.Variant>(['default', 'footer'])(`variant: ${variant}`, variant => {
+      test('tag defaults to div', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+        });
+        expect(wrapper.findHeader().findAll('h1,h2,h3,h4,h5,h6').length).toBe(0);
+      });
+      test('default variant tag can be overwritten', () => {
+        const wrapper = renderExpandableSection({
+          variant,
+          headerText: 'Header component',
+          headingTagOverride: 'h3',
+        });
+        expect(wrapper.findHeader().findAll('h3').length).toBe(1);
+      });
+    });
+  }
+});
 describe('Variant container with headerText', () => {
   test('validate a11y for container with headerText', async () => {
     const { container } = render(
@@ -194,12 +231,20 @@ describe('Variant container with headerText', () => {
     const screenreaderElement = wrapper.findHeader().find(`#${headerButton}`)!.getElement();
     expect(screenreaderElement.textContent).toBe('Header component (5) Expand to see more content');
   });
+  test('does not set aria-labelledby for default variant', () => {
+    const wrapper = renderExpandableSection({
+      variant: 'default',
+      headerText: 'Header component',
+    });
+    const headerButton = wrapper.findHeader().find('[role="button"]')!.getElement();
+    expect(headerButton).not.toHaveAttribute('aria-labelledby');
+  });
   test('button should be under heading', () => {
     const wrapper = renderExpandableSection({
       variant: 'container',
       headerText: 'Header component',
     });
     expect(wrapper.findHeader().find('[role="button"]')!.findAll('h2')!.length).toBe(0);
-    expect(wrapper!.find('h2')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
+    expect(wrapper.find('h2')!.find('[role="button"]')!.getElement()).toHaveTextContent('Header component');
   });
 });

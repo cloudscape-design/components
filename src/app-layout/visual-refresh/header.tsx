@@ -6,7 +6,7 @@ import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 
 export default function Header() {
-  const { contentHeader, isAnyPanelOpen, isMobile } = useAppLayoutInternals();
+  const { breadcrumbs, contentHeader, hasDrawerViewportOverlay, hasNotificationsContent } = useAppLayoutInternals();
 
   if (!contentHeader) {
     return null;
@@ -16,7 +16,11 @@ export default function Header() {
     <header
       className={clsx(
         styles.content,
-        { [styles.unfocusable]: isMobile && isAnyPanelOpen },
+        {
+          [styles['has-breadcrumbs']]: breadcrumbs,
+          [styles['has-notifications-content']]: hasNotificationsContent,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
+        },
         'awsui-context-content-header'
       )}
     >

@@ -16,7 +16,7 @@ interface StatusBarProps {
   errorsTabRef: React.RefObject<HTMLButtonElement>;
   warningsTabRef: React.RefObject<HTMLButtonElement>;
   isTabFocused: boolean;
-  paneId: string;
+  paneId?: string;
   i18nStrings: CodeEditorProps.I18nStrings;
   errorCount: number;
   warningCount: number;

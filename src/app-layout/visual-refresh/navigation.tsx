@@ -7,7 +7,6 @@ import { InternalButton } from '../../button/internal';
 import TriggerButton from './trigger-button';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 import { Transition } from '../../internal/components/transition';
 import { findUpUntil } from '../../internal/utils/dom';
 import customCssProps from '../../internal/generated/custom-css-properties';
@@ -23,17 +22,16 @@ export default function Navigation() {
   const {
     ariaLabels,
     handleNavigationClick,
+    hasDrawerViewportOverlay,
     isMobile,
     isNavigationOpen,
     navigation,
     navigationHide,
     navigationWidth,
     isToolsOpen,
-    isAnyPanelOpen,
     toolsHide,
+    navigationRefs,
   } = useAppLayoutInternals();
-
-  const { refs: focusRefs } = useFocusControl(isNavigationOpen);
 
   if (navigationHide) {
     return null;
@@ -50,7 +48,7 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = isMobile && isAnyPanelOpen && isToolsOpen && !toolsHide;
+  const isUnfocusable = hasDrawerViewportOverlay && isToolsOpen && !toolsHide;
 
   return (
     <Transition in={isNavigationOpen}>
@@ -78,7 +76,7 @@ export default function Navigation() {
                 iconName="menu"
                 className={testutilStyles['navigation-toggle']}
                 onClick={() => handleNavigationClick(true)}
-                ref={focusRefs.toggle}
+                ref={navigationRefs.toggle}
               />
             </nav>
           )}
@@ -108,7 +106,7 @@ export default function Navigation() {
                   variant="icon"
                   formAction="none"
                   className={testutilStyles['navigation-close']}
-                  ref={focusRefs.close}
+                  ref={navigationRefs.close}
                 />
               </div>
               {navigation}

@@ -178,6 +178,15 @@ describe('tutorial detail view', () => {
     expect(onFeedbackClick).toHaveBeenCalledTimes(1);
   });
 
+  test('feedback link is optional', () => {
+    const tutorials = getTutorials();
+    const context = getContext({ currentTutorial: tutorials[1] });
+    const { container } = renderTutorialPanelWithContext({ tutorials, onFeedbackClick: undefined }, context);
+    const wrapper = createWrapper(container).findTutorialPanel()!;
+
+    expect(wrapper.findFeedbackLink()).toBe(null);
+  });
+
   test('completed screen should have role status', () => {
     const tutorials = getTutorials();
     const context = getContext({ currentTutorial: tutorials[1] });
@@ -251,6 +260,14 @@ describe('URL sanitization', () => {
       expect(console.warn).toHaveBeenCalledWith(
         `[AwsUi] [TutorialPanel] A javascript: URL was blocked as a security precaution. The URL was "javascript:alert('Hello from Download!')".`
       );
+    });
+    test('does not show the download link when downloadUrl is not passed', () => {
+      const tutorials = getTutorials();
+      const context = getContext();
+
+      const { container } = renderTutorialPanelWithContext({ tutorials, downloadUrl: undefined }, context);
+      const wrapper = createWrapper(container).findTutorialPanel()!;
+      expect(wrapper.findDownloadLink()).toBeFalsy();
     });
   });
   describe('a11y', () => {

@@ -19,6 +19,7 @@ const defaultOptions: SelectProps.Options = [
       {
         label: 'Third',
         value: '3',
+        lang: 'de',
       },
       {
         label: 'Forth',
@@ -93,6 +94,15 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     const { wrapper } = renderSelect();
     wrapper.openDropdown();
     expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue(VALUE_WITH_SPECIAL_CHARS)).toBeTruthy();
+  });
+
+  test('renders lang on options', () => {
+    const { wrapper } = renderSelect();
+    wrapper.openDropdown();
+    expect(wrapper.findDropdown({ expandToViewport })!.findOptionByValue('3')!.getElement()).toHaveAttribute(
+      'lang',
+      'de'
+    );
   });
 
   test('throws an error when attempting to select an option with closed dropdown', () => {

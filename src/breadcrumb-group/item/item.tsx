@@ -5,7 +5,6 @@ import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import InternalIcon from '../../icon/internal';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import useFocusVisible from '../../internal/hooks/focus-visible';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { getEventDetail } from '../internal';
 import { Transition } from '../../internal/components/transition';
@@ -26,7 +25,6 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   anchorAttributes,
   ...itemAttributes
 }: BreadcrumbItemWithPopoverProps<T>) => {
-  const focusVisible = useFocusVisible();
   const [showPopover, setShowPopover] = useState(false);
   const textRef = useRef<HTMLElement>(null);
   const virtualTextRef = useRef<HTMLElement>(null);
@@ -97,7 +95,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
           isTruncated(textRef, virtualTextRef) && setShowPopover(true);
         }}
         onMouseLeave={() => setShowPopover(false)}
-        anchorAttributes={{ ...focusVisible, ...anchorAttributes }}
+        anchorAttributes={anchorAttributes}
       >
         <span className={styles.text} ref={textRef}>
           {item.text}
@@ -132,7 +130,6 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   isLast = false,
   isCompressed = false,
 }: BreadcrumbItemProps<T>) {
-  const focusVisible = useFocusVisible();
   const preventDefault = (event: React.MouseEvent) => event.preventDefault();
   const onClickHandler = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -160,7 +157,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
             {...itemAttributes}
           />
         ) : (
-          <Item isLast={isLast} anchorAttributes={{ ...anchorAttributes, ...focusVisible }} {...itemAttributes}>
+          <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
             <span className={styles.text}>{item.text}</span>
           </Item>
         )}

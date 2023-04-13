@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
@@ -52,7 +51,6 @@ function InternalPopover(
   ref: React.Ref<InternalPopoverRef>
 ) {
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
@@ -165,7 +163,7 @@ function InternalPopover(
         }}
       >
         {triggerType === 'text' ? (
-          <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
+          <button {...triggerProps} type="button" aria-haspopup="dialog">
             <span className={styles['trigger-inner-text']}>{children}</span>
           </button>
         ) : (

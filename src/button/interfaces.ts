@@ -12,7 +12,7 @@ export interface ButtonProps extends BaseComponentProps {
   disabled?: boolean;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
-   * It prevents users from clicking the button.
+   * It prevents users from clicking the button, but it can still be focused.
    */
   loading?: boolean;
   /**
@@ -107,6 +107,11 @@ export interface ButtonProps extends BaseComponentProps {
    * * `inline-icon` to display an icon-only (no text) button within a text context.
    */
   variant?: ButtonProps.Variant;
+
+  /** The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
+   *  Use when a button is not the ancestor of a form element, such as when used in a modal.
+   */
+  form?: string;
 
   /**
    * Text displayed in the button element.

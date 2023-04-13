@@ -197,7 +197,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
     visibleData: visibleSeries || [],
     statusType,
   });
-  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch);
+  const showFilters = statusType === 'finished' && (!isEmpty || isNoMatch) && (additionalFilters || !hideFilter);
   const showLegend = !hideLegend && !isEmpty && statusType === 'finished';
   const reserveLegendSpace = !showChart && !hideLegend;
   const reserveFilterSpace = !showChart && !isNoMatch && (!hideFilter || additionalFilters);

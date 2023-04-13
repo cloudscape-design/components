@@ -67,8 +67,9 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerCounter?: string;
 
   /**
-   * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements)
-   * h2. Use with container variant.
+   * Overrides the default [HTML heading tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements).
+   * Use with container variant (which defaults to H2) or default/footer variants (which default to DIV). Note that this only
+   * works with the `headerText` slot (not with the deprecated `header`), and not with the navigation variant.
    */
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
 

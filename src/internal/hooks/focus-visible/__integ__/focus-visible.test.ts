@@ -17,10 +17,14 @@ describe('focus-visible', () => {
   };
 
   test(
-    'click on the button does not set the focus-ring',
+    'focus ring updates when switching from keyboard to mouse and back',
     setupTest(async page => {
       await page.click('#first-button');
-      await expect(page.getElementAttribute('#first-button', 'data-awsui-focus-visible')).resolves.toBeNull();
+      await expect(page.getElementAttribute('body', 'data-awsui-focus-visible')).resolves.toBeNull();
+      await page.keys('Tab');
+      await expect(page.getElementAttribute('body', 'data-awsui-focus-visible')).resolves.toBe('true');
+      await page.click('#second-button');
+      await expect(page.getElementAttribute('body', 'data-awsui-focus-visible')).resolves.toBeNull();
     })
   );
 });

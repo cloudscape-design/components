@@ -52,7 +52,7 @@ describeEachAppLayout(() => {
     },
   ].forEach(({ openProp, hideProp, handler, findElement, findLandmarks, findToggle, findClose }) => {
     describe(`${openProp} prop`, () => {
-      test(`Should call handler once on open`, () => {
+      test(`Should call handler once on open when toggle is clicked`, () => {
         const onToggle = jest.fn();
         const props = {
           [openProp]: false,
@@ -61,6 +61,20 @@ describeEachAppLayout(() => {
         const { wrapper } = renderComponent(<AppLayout {...props} />);
 
         findToggle(wrapper).click();
+        expect(onToggle).toHaveBeenCalledTimes(1);
+        expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
+      });
+
+      test(`Should call handler once on open when span inside toggle is clicked`, () => {
+        const onToggle = jest.fn();
+        const props = {
+          [openProp]: false,
+          [handler]: onToggle,
+        };
+        const { wrapper } = renderComponent(<AppLayout {...props} />);
+
+        // Chrome bubbles up events from specific elements inside <button>s.
+        findToggle(wrapper).find('span')!.click();
         expect(onToggle).toHaveBeenCalledTimes(1);
         expect(onToggle).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
       });
@@ -185,16 +199,6 @@ describeEachAppLayout(() => {
 
         act(() => findClose(wrapper).click());
         expect(findToggle(wrapper).getElement()).toBe(document.activeElement);
-      });
-
-      test('updates active element in controlled mode', () => {
-        const { wrapper, rerender } = renderComponent(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
-
-        rerender(<AppLayout {...{ [openProp]: true, [handler]: () => {} }} />);
-        expect(findClose(wrapper).getElement()).toEqual(document.activeElement);
-
-        rerender(<AppLayout {...{ [openProp]: false, [handler]: () => {} }} />);
-        expect(findToggle(wrapper).getElement()).toEqual(document.activeElement);
       });
 
       test(`Should not render the drawer if ${hideProp} is set to true`, () => {

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import ButtonTrigger from '../../internal/components/button-trigger';
@@ -9,7 +9,7 @@ import styles from './styles.css.js';
 import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import Option from '../../internal/components/option';
-import { generateUniqueId } from '../../internal/hooks/use-unique-id';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { SelectTriggerProps } from '../utils/use-select';
 import { joinStrings } from '../../internal/utils/strings';
 
@@ -40,8 +40,9 @@ const Trigger = React.forwardRef(
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const id = useMemo(() => controlId ?? generateUniqueId(), [controlId]);
-    const triggerContentId = generateUniqueId('trigger-content-');
+    const generatedId = useUniqueId();
+    const id = controlId ?? generatedId;
+    const triggerContentId = useUniqueId('trigger-content-');
 
     let triggerContent = null;
     if (!selectedOption) {

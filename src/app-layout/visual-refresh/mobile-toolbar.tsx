@@ -2,28 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 
 export default function MobileToolbar() {
   const {
     ariaLabels,
     breadcrumbs,
+    drawers,
     handleNavigationClick,
     handleToolsClick,
+    hasDrawerViewportOverlay,
     isMobile,
     navigationHide,
     isNavigationOpen,
     isToolsOpen,
     toolsHide,
-    isAnyPanelOpen,
+    navigationRefs,
+    toolsRefs,
   } = useAppLayoutInternals();
-
-  const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
-  const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
   if (!isMobile || (navigationHide && !breadcrumbs && toolsHide)) {
     return null;
@@ -34,7 +34,9 @@ export default function MobileToolbar() {
       className={clsx(
         styles['mobile-toolbar'],
         {
-          [styles.unfocusable]: isAnyPanelOpen,
+          [styles['has-breadcrumbs']]: breadcrumbs,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
+          [testutilStyles['mobile-bar']]: isMobile,
         },
         testutilStyles['mobile-bar'],
         'awsui-context-content-header'
@@ -53,8 +55,8 @@ export default function MobileToolbar() {
             onClick={() => handleNavigationClick(true)}
             variant="icon"
             className={testutilStyles['navigation-toggle']}
-            ref={focusRefsNav.toggle}
-            disabled={isAnyPanelOpen}
+            ref={navigationRefs.toggle}
+            disabled={hasDrawerViewportOverlay}
             __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
         </nav>
@@ -64,7 +66,7 @@ export default function MobileToolbar() {
         <div className={clsx(styles['mobile-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>{breadcrumbs}</div>
       )}
 
-      {!toolsHide && (
+      {isMobile && !toolsHide && !drawers && (
         <aside
           aria-hidden={isToolsOpen}
           aria-label={ariaLabels?.tools ?? undefined}
@@ -73,17 +75,19 @@ export default function MobileToolbar() {
           <InternalButton
             className={testutilStyles['tools-toggle']}
             ariaExpanded={isToolsOpen}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             ariaLabel={ariaLabels?.toolsToggle ?? undefined}
             iconName="status-info"
             formAction="none"
             onClick={() => handleToolsClick(true)}
             variant="icon"
-            ref={focusRefsTools.toggle}
+            ref={toolsRefs.toggle}
             __nativeAttributes={{ 'aria-haspopup': true }}
           />
         </aside>
       )}
+
+      <DrawersMobileTriggers />
     </section>
   );
 }
