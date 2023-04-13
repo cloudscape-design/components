@@ -1,21 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-import selectors from '../../../file-upload/styles.selectors.js';
+import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
+import fileUploadInputSelectors from '../../../file-upload/file-input/styles.selectors.js';
+import fileUploadOptionSelectors from '../../../file-upload/file-option/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import ButtonWrapper from '../button';
 
 export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
-  static rootSelector: string = selectors.root;
+  static rootSelector: string = fileUploadSelectors.root;
 
   findUploadButton(): ButtonWrapper {
-    return this.findComponent(`.${selectors['upload-button']}`, ButtonWrapper)!;
+    return this.findComponent(`.${fileUploadInputSelectors['upload-button']}`, ButtonWrapper)!;
   }
 
   findNativeInput(): ElementWrapper<HTMLInputElement> {
-    return this.findByClassName(selectors['upload-input'])!;
+    return this.findByClassName(fileUploadInputSelectors['upload-input'])!;
   }
 
   findFileTokens(): Array<FileTokenWrapper> {
@@ -47,29 +49,29 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findConstraint(): null | ElementWrapper {
-    return this.find(`.${selectors.hints} .${formFieldStyles.constraint}`);
+    return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.constraint}`);
   }
 
   findError(): null | ElementWrapper {
-    return this.find(`.${selectors.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
+    return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
 }
 
 class FileTokenWrapper extends ComponentWrapper {
   findFileName(): ElementWrapper {
-    return this.findByClassName(selectors['file-option-name'])!;
+    return this.findByClassName(fileUploadOptionSelectors['file-option-name'])!;
   }
 
   findFileSize(): null | ElementWrapper {
-    return this.findByClassName(selectors['file-option-size']);
+    return this.findByClassName(fileUploadOptionSelectors['file-option-size']);
   }
 
   findFileLastModified(): null | ElementWrapper {
-    return this.findByClassName(selectors['file-option-last-modified']);
+    return this.findByClassName(fileUploadOptionSelectors['file-option-last-modified']);
   }
 
   findFileThumbnail(): null | ElementWrapper {
-    return this.findByClassName(selectors['file-option-thumbnail-image']);
+    return this.findByClassName(fileUploadOptionSelectors['file-option-thumbnail-image']);
   }
 
   findFileError(): null | ElementWrapper {

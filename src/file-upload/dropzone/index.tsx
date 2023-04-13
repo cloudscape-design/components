@@ -83,13 +83,7 @@ export function Dropzone({ onChange, children }: DropzoneProps) {
     event.preventDefault();
     setDropzoneHovered(false);
 
-    const newFiles: File[] = [];
-    const nullableFiles = event.dataTransfer.items
-      ? Array.from(event.dataTransfer.items).map(item => (item.kind === 'file' ? item.getAsFile() : null))
-      : Array.from(event.dataTransfer.files);
-    nullableFiles.forEach(fileOrNull => fileOrNull && newFiles.push(fileOrNull));
-
-    onChange(newFiles);
+    onChange(Array.from(event.dataTransfer.files));
   };
 
   return (

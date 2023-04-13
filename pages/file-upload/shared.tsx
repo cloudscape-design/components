@@ -6,7 +6,7 @@ import { FileUploadProps } from '~components';
 export const i18nStrings: FileUploadProps.I18nStrings = {
   uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
   dropzoneText: multiple => (multiple ? 'Drop files to upload' : 'Drop file to upload'),
-  removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
+  removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
   limitShowFewer: 'Show fewer files',
   limitShowMore: 'Show more files',
   errorIconAriaLabel: 'Error',

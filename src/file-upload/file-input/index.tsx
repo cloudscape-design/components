@@ -61,6 +61,7 @@ function FileInput(
 
   // Synchronizing component's value with the native file input state.
   useEffect(() => {
+    // The DataTransfer is not available in jsdom.
     if (window.DataTransfer) {
       const dataTransfer = new DataTransfer();
       for (const file of value) {
@@ -72,6 +73,8 @@ function FileInput(
 
   return (
     <div className={styles['file-input-container']}>
+      {/* This is the actual interactive and accessible file-upload element. */}
+      {/* It is visually hidden to achieve the desired UX design. */}
       <input
         id={controlId}
         ref={uploadInputRef}
@@ -86,17 +89,20 @@ function FileInput(
         {...nativeAttributes}
       />
 
+      {/* The button is decorative. It dispatches clicks to the file input and is ARIA-hidden. */}
+      {/* When the input is focused the focus outline is forced on the button. */}
       <InternalButton
         iconName="upload"
         formAction="none"
         onClick={onUploadButtonClick}
         className={styles['upload-button']}
         __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
-        __forceFocusOutline={isFocused}
+        __forcedFocusState={isFocused ? 'focused' : undefined}
       >
         {children}
       </InternalButton>
 
+      {/* The file input needs to be labelled with provided content. Can't use the button because it is ARIA-hidden. */}
       <ScreenreaderOnly id={uploadButtonLabelId}>{children}</ScreenreaderOnly>
     </div>
   );

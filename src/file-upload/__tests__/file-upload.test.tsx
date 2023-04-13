@@ -28,7 +28,7 @@ const defaultProps: FileUploadProps = {
   i18nStrings: {
     uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
     dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
-    removeFileAriaLabel: (_file, fileIndex) => `Remove file ${fileIndex + 1}`,
+    removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
     errorIconAriaLabel: 'Error',
     limitShowFewer: 'Show fewer files',
     limitShowMore: 'Show more files',

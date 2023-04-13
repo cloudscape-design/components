@@ -148,7 +148,7 @@ function InternalFileUpload(
         <InternalBox>
           <Token
             ariaLabel={value[0].name}
-            dismissLabel={i18nStrings.removeFileAriaLabel(value[0], 0)}
+            dismissLabel={i18nStrings.removeFileAriaLabel(0)}
             onDismiss={() => onFileRemove(0)}
             errorText={fileErrors?.[0]}
             errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
@@ -166,7 +166,7 @@ function InternalFileUpload(
             renderItem={(file, fileIndex) => (
               <Token
                 ariaLabel={file.name}
-                dismissLabel={i18nStrings.removeFileAriaLabel(file, fileIndex)}
+                dismissLabel={i18nStrings.removeFileAriaLabel(fileIndex)}
                 onDismiss={() => onFileRemove(fileIndex)}
                 errorText={fileErrors?.[fileIndex]}
                 errorIconAriaLabel={i18nStrings.errorIconAriaLabel}

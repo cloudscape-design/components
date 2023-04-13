@@ -12,6 +12,7 @@ export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => {
+    // The URL.createObjectURL is not available in jsdom.
     if (URL.createObjectURL) {
       const src = URL.createObjectURL(file);
       setImageSrc(src);
