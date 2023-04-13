@@ -9,14 +9,14 @@ jest.mock('../use-sticky-columns-context', () => ({
   useStickyColumnsContext: jest.fn(),
 }));
 
-const mockRegisterChildCallback = jest.fn();
-const mockUnregisterChildCallback = jest.fn();
+const mockSubscribe = jest.fn();
+const mockUnsubscribe = jest.fn();
 
 describe('useStickyState', () => {
   beforeEach(() => {
     (useStickyColumnsContext as jest.Mock).mockImplementation(() => ({
-      registerChildCallback: mockRegisterChildCallback,
-      unregisterChildCallback: mockUnregisterChildCallback,
+      subscribe: mockSubscribe,
+      unsubscribe: mockUnsubscribe,
     }));
   });
 
@@ -31,20 +31,20 @@ describe('useStickyState', () => {
   it('should register left callback when isLastStickyLeft is true', () => {
     renderHook(() => useStickyState(true, false));
 
-    expect(mockRegisterChildCallback).toHaveBeenCalled();
-    expect(mockUnregisterChildCallback).not.toHaveBeenCalled();
+    expect(mockSubscribe).toHaveBeenCalled();
+    expect(mockUnsubscribe).not.toHaveBeenCalled();
   });
 
   it('should register left callback when isLastStickyLeft is true', () => {
     renderHook(() => useStickyState(true, false));
 
-    expect(mockRegisterChildCallback).toHaveBeenCalledTimes(1);
+    expect(mockSubscribe).toHaveBeenCalledTimes(1);
   });
 
   it('should register right callback when isLastStickyRight is true', () => {
     renderHook(() => useStickyState(false, true));
 
-    expect(mockRegisterChildCallback).toHaveBeenCalledTimes(1);
+    expect(mockSubscribe).toHaveBeenCalledTimes(1);
   });
 
   it('should unregister callbacks on unmount', () => {
@@ -52,7 +52,7 @@ describe('useStickyState', () => {
 
     unmount();
 
-    expect(mockUnregisterChildCallback).toHaveBeenCalledTimes(2);
+    expect(mockUnsubscribe).toHaveBeenCalledTimes(2);
   });
 
   it('should update isStuckToTheLeft and isStuckToTheRight states based on scroll position', () => {
@@ -60,8 +60,8 @@ describe('useStickyState', () => {
     const { result: rightResult } = renderHook(() => useStickyState(false, true));
 
     act(() => {
-      const leftCallback = mockRegisterChildCallback.mock.calls[0][0];
-      const rightCallback = mockRegisterChildCallback.mock.calls[1][0];
+      const leftCallback = mockSubscribe.mock.calls[0][0];
+      const rightCallback = mockSubscribe.mock.calls[1][0];
 
       leftCallback({ left: true });
       rightCallback({ right: false });

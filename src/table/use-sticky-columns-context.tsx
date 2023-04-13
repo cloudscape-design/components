@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { createContext, useContext, useLayoutEffect, useCallback, useRef, ReactNode } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
 
 interface StickyColumnsContextValue {
-  registerChildCallback: (callback: (entry: any) => void) => void;
-  unregisterChildCallback: (callback: (entry: any) => void) => void;
+  subscribe: (callback: (entry: any) => void) => void;
+  unsubscribe: (callback: (entry: any) => void) => void;
 }
 
 const StickyColumnsContext = createContext<StickyColumnsContextValue | null>(null);
@@ -12,10 +13,10 @@ const StickyColumnsContext = createContext<StickyColumnsContextValue | null>(nul
 export const useStickyColumnsContext = () => {
   const context = useContext(StickyColumnsContext);
   if (!context) {
-    return { registerChildCallback: () => {}, unregisterChildCallback: () => {} };
+    return { subscribe: () => {}, unsubscribe: () => {} };
   }
-  const { registerChildCallback, unregisterChildCallback } = context as StickyColumnsContextValue;
-  return { registerChildCallback, unregisterChildCallback };
+  const { subscribe, unsubscribe } = context as StickyColumnsContextValue;
+  return { subscribe, unsubscribe };
 };
 
 interface StickyColumnsContextProviderProps {
@@ -34,7 +35,7 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
   tableRef,
   shouldDisableStickyColumns,
 }) => {
-  const childCallbacks = useRef<Set<(entry: any) => void>>(new Set());
+  const callbacks = useRef<Set<(entry: any) => void>>(new Set());
 
   const createScrollHandler = useCallback(() => {
     const scrollHandler = () => {
@@ -46,8 +47,10 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
         const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
         const left = wrapper.scrollLeft > tableLeftPadding;
 
-        // Call all registered child callbacks
-        childCallbacks.current.forEach(callback => callback({ left, right }));
+        // Call all subscribed callbacks
+        unstable_batchedUpdates(() => {
+          callbacks.current.forEach(callback => callback({ left, right }));
+        });
       }
     };
 
@@ -57,7 +60,7 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
   useLayoutEffect(() => {
     const scrollHandler = createScrollHandler();
     const wrapper = wrapperRef.current;
-    const currentChildCallbacks = childCallbacks.current;
+    const currentCallbacks = callbacks.current;
     if (!shouldDisableStickyColumns) {
       wrapper && wrapper.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', scrollHandler);
@@ -70,21 +73,17 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
       wrapper && wrapper.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', scrollHandler);
 
-      currentChildCallbacks.clear();
+      currentCallbacks.clear();
     };
   }, [createScrollHandler, wrapperRef, shouldDisableStickyColumns]);
 
-  const registerChildCallback = (callback: (entry: any) => void) => {
-    childCallbacks.current.add(callback);
+  const subscribe = (callback: (entry: any) => void) => {
+    callbacks.current.add(callback);
   };
 
-  const unregisterChildCallback = (callback: (entry: any) => void) => {
-    childCallbacks.current.delete(callback);
+  const unsubscribe = (callback: (entry: any) => void) => {
+    callbacks.current.delete(callback);
   };
 
-  return (
-    <StickyColumnsContext.Provider value={{ registerChildCallback, unregisterChildCallback }}>
-      {children}
-    </StickyColumnsContext.Provider>
-  );
+  return <StickyColumnsContext.Provider value={{ subscribe, unsubscribe }}>{children}</StickyColumnsContext.Provider>;
 };

@@ -21,25 +21,18 @@ export function useStickyState(isLastStickyLeft = false, isLastStickyRight = fal
     [setIsStuckToTheRight]
   );
 
-  const { registerChildCallback, unregisterChildCallback } = useStickyColumnsContext();
+  const { subscribe, unsubscribe } = useStickyColumnsContext();
   useEffect(() => {
     if (isLastStickyLeft) {
-      registerChildCallback(leftCallback);
+      subscribe(leftCallback);
     } else if (isLastStickyRight) {
-      registerChildCallback(rightCallback);
+      subscribe(rightCallback);
     }
     return () => {
-      unregisterChildCallback(leftCallback);
-      unregisterChildCallback(rightCallback);
+      unsubscribe(leftCallback);
+      unsubscribe(rightCallback);
     };
-  }, [
-    isLastStickyLeft,
-    isLastStickyRight,
-    registerChildCallback,
-    leftCallback,
-    rightCallback,
-    unregisterChildCallback,
-  ]);
+  }, [isLastStickyLeft, isLastStickyRight, subscribe, leftCallback, rightCallback, unsubscribe]);
 
   return { isStuckToTheLeft, isStuckToTheRight };
 }
