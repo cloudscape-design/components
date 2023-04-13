@@ -26,7 +26,7 @@ $active-separator-width: 2px;
   &.sticky-cell {
     @include styles.with-motion {
       transition-property: padding;
-      transition-duration: awsui.$motion-duration-transition-show-paced;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
       transition-timing-function: awsui.$motion-easing-sticky;
     }
     position: sticky;
