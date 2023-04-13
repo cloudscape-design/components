@@ -27,6 +27,8 @@ const DEFAULT_I18N_SETS = [
     nextButton: 'Next',
     submitButton: 'Create record',
     optional: 'optional',
+    nextButtonLoadingAnnouncement: 'Loading next step',
+    submitButtonLoadingAnnouncement: 'Submitting form',
   },
   {
     stepNumberLabel: stepNumber => `第 ${stepNumber} 步`,
@@ -37,6 +39,8 @@ const DEFAULT_I18N_SETS = [
     nextButton: '下一步',
     submitButton: '提交',
     optional: '視需要',
+    nextButtonLoadingAnnouncement: 'Lade nächsten Schritt',
+    submitButtonLoadingAnnouncement: 'Schicke Formular ab',
   },
 ] as ReadonlyArray<WizardProps.I18nStrings>;
 
@@ -499,7 +503,7 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findMenuNavigationLink(3, 'disabled')).toBeNull();
   expect(wrapper.findMenuNavigationLink(4, 'disabled')).toBeNull();
 
-  rerender({ ...props, isLoadingNextStep: true, nextStepLoadingText: 'Loading next step' });
+  rerender({ ...props, isLoadingNextStep: true });
 
   expect(wrapper.findPreviousButton()!.getElement()).toBeDisabled();
   expect(wrapper.findSkipToButton()!.getElement()).toBeDisabled();
@@ -513,7 +517,7 @@ test('disables all navigation while a step is loading', () => {
 
   // check for screen reader announcement
   expect(wrapper.findActions()?.findByClassName(liveRegionStyles.root)?.getElement()).toHaveTextContent(
-    'Loading next step'
+    DEFAULT_I18N_SETS[0].nextButtonLoadingAnnouncement!
   );
 
   rerender({ ...props, isLoadingNextStep: false });

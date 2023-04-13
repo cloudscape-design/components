@@ -50,6 +50,8 @@ export interface WizardProps extends BaseComponentProps {
    * - `nextButton` (string) - The text of the button that enables the user to move to the next step.
    * - `submitButton` (string) - The text of the button that enables the user to submit the form.
    * - `optional` (string) - The text displayed next to the step title and form header title when a step is declared optional.
+   * - `nextButtonAnnouncementText` (string) - The text that a screen reader announces when the *next* button is in a loading state.
+   * - `submitButtonAnnouncementText` (string) - The text that a screen reader announces when the *submit* button is in a loading state.
    */
   i18nStrings: WizardProps.I18nStrings;
 
@@ -59,11 +61,6 @@ export interface WizardProps extends BaseComponentProps {
    * Use this if you need to wait for a response from the server before the user can proceed to the next step, such as during server-side validation or retrieving the next step's information.
    */
   isLoadingNextStep?: boolean;
-
-  /**
-   * Specifies the text that a screen reader announces when the *next* or *submit* button is in a loading state.
-   */
-  nextStepLoadingText?: string;
 
   /**
    * When set to `false`, the *skip-to* button is never shown.
@@ -127,6 +124,8 @@ export namespace WizardProps {
     nextButton?: string;
     submitButton: string;
     optional?: string;
+    nextButtonLoadingAnnouncement?: string;
+    submitButtonLoadingAnnouncement?: string;
   }
 
   export interface NavigateDetail {
