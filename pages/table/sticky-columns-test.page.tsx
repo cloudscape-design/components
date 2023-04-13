@@ -3,7 +3,7 @@
 import React from 'react';
 import Table, { TableProps } from '~components/table';
 import SpaceBetween from '~components/space-between';
-import Header from '~components/header';
+import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 
@@ -11,7 +11,7 @@ export default () => {
   const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
     {
       id: 'variable',
-      header: 'Variable name',
+      header: <Link href="#">Embedded table</Link>,
       minWidth: 176,
       cell: item => {
         return item.name;
@@ -201,7 +201,7 @@ export default () => {
               }}
             />
           }
-          header={<Header>Embedded table</Header>}
+          header={<Link href="#">Embedded table</Link>}
         />
 
         {/* <Table
