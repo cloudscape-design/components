@@ -37,8 +37,8 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   /**
    * Returns the label.
    */
-  findLabel(): ElementWrapper {
-    return this.findByClassName(getClassName('label'))!;
+  findDescription(): ElementWrapper {
+    return this.findByClassName(getClassName('description'))!;
   }
 
   /**

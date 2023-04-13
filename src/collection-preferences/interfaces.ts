@@ -180,7 +180,7 @@ export namespace CollectionPreferencesProps {
 
   export interface ContentDisplayPreference {
     title: string;
-    label?: string;
+    description?: string;
     options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
     liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;

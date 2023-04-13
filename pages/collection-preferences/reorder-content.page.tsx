@@ -54,7 +54,7 @@ export default function App() {
         customPreference={customPreference}
         contentDisplayPreference={{
           title: 'Column preferences',
-          label: 'Customize the columns visibility and order.',
+          description: 'Customize the columns visibility and order.',
           options: shortOptionsList,
           ...contentDisplayPreferenceI18nStrings,
         }}
@@ -68,7 +68,7 @@ export default function App() {
         customPreference={customPreference}
         contentDisplayPreference={{
           title: 'Column preferences',
-          label: 'Customize the columns visibility and order.',
+          description: 'Customize the columns visibility and order.',
           options: longOptionsList,
           ...contentDisplayPreferenceI18nStrings,
         }}

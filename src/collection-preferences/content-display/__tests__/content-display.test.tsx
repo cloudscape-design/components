@@ -17,10 +17,10 @@ describe('Content Display preference', () => {
       expect(titleElement.tagName).toBe('H3');
     });
 
-    it('correctly displays label', () => {
+    it('correctly displays description', () => {
       const wrapper = renderContentDisplay();
-      const labelElement = wrapper.findLabel().getElement();
-      expect(labelElement).toHaveTextContent('Content display label');
+      const descriptionElement = wrapper.findDescription().getElement();
+      expect(descriptionElement).toHaveTextContent('Content display description');
     });
 
     it('displays list of options with correct semantics', () => {

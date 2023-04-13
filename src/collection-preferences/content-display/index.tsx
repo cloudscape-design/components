@@ -25,7 +25,7 @@ interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.Conte
 
 export default function ContentDisplayPreference({
   title,
-  label,
+  description,
   options,
   value = options.map(({ id }) => ({
     id,
@@ -70,8 +70,8 @@ export default function ContentDisplayPreference({
   return (
     <div className={styles[componentPrefix]}>
       <h3 {...className('title')}>{title}</h3>
-      <p {...className('label')} id={labelId}>
-        {label}
+      <p {...className('description')} id={labelId}>
+        {description}
       </p>
       <DndContext
         sensors={sensors}

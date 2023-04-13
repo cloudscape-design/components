@@ -60,7 +60,7 @@ export const contentDensityPreference: CollectionPreferencesProps.ContentDensity
 
 export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplayPreference = {
   title: 'Content display title',
-  label: 'Content display label',
+  description: 'Content display description',
   options: [
     { id: 'id1', label: 'Item 1', alwaysVisible: true },
     { id: 'id2', label: 'Item 2' },

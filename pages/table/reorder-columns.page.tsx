@@ -18,7 +18,7 @@ const allItems = generateItems();
 const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.ContentDisplayPreference> = [
   {
     title: 'Column preferences',
-    label: 'Customize the columns visibility and order.',
+    description: 'Customize the columns visibility and order.',
     options: [
       {
         id: 'id',
@@ -111,7 +111,7 @@ export default function App() {
             }}
             contentDisplayPreference={{
               title: 'Column preferences',
-              label: 'Customize the columns visibility and order.',
+              description: 'Customize the columns visibility and order.',
               options: visibleContentOptions[0].options,
               ...contentDisplayPreferenceI18nStrings,
             }}
