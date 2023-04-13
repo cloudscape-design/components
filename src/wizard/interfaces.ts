@@ -50,8 +50,8 @@ export interface WizardProps extends BaseComponentProps {
    * - `nextButton` (string) - The text of the button that enables the user to move to the next step.
    * - `submitButton` (string) - The text of the button that enables the user to submit the form.
    * - `optional` (string) - The text displayed next to the step title and form header title when a step is declared optional.
-   * - `nextButtonAnnouncementText` (string) - The text that a screen reader announces when the *next* button is in a loading state.
-   * - `submitButtonAnnouncementText` (string) - The text that a screen reader announces when the *submit* button is in a loading state.
+   * - `nextButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *next* button is in a loading state.
+   * - `submitButtonLoadingAnnouncement` (string) - The text that a screen reader announces when the *submit* button is in a loading state.
    */
   i18nStrings: WizardProps.I18nStrings;
 
