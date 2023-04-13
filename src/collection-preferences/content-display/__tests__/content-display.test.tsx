@@ -314,7 +314,7 @@ function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
   return collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 }
 
-function expectDragHandleAriaLabel(wrapper: ContentDisplayPreferenceWrapper, element: HTMLElement, label: string) {
+function expectAriaLabel(wrapper: ContentDisplayPreferenceWrapper, element: HTMLElement, label: string) {
   const labelAttribute = element.getAttribute('aria-label');
   if (labelAttribute === label) {
     return;
@@ -348,7 +348,7 @@ function testOption({
   expect(element.parentElement!.tagName).toBe('UL');
   expect(element).toHaveTextContent(`Item ${index + 1}`);
   const dragHandle = option.findDragHandle().getElement();
-  expectDragHandleAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
+  expectAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
   expectLabelForToggle(option);
 }
 
