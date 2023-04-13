@@ -83,6 +83,9 @@ export default function WizardForm({
           <WizardActions
             cancelButtonText={i18nStrings.cancelButton}
             primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
+            primaryButtonLoadingText={
+              isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+            }
             previousButtonText={i18nStrings.previousButton}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}

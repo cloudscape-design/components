@@ -13,6 +13,8 @@ const i18nStrings: WizardProps.I18nStrings = {
   nextButton: 'Next',
   submitButton: 'Create',
   optional: 'optional',
+  nextButtonLoadingAnnouncement: 'Loading next step',
+  submitButtonLoadingAnnouncement: 'Submitting form',
 };
 
 export { i18nStrings };
