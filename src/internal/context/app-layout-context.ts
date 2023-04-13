@@ -7,7 +7,6 @@ export interface AppLayoutContextProps {
   stickyOffsetTop: number;
   hasBreadcrumbs: boolean;
   setHasStickyBackground?: (hasBackground: boolean) => void;
-  setDynamicOverlapHeight?: (height: number) => void;
 }
 
 export const AppLayoutContext = createContext<AppLayoutContextProps>({
