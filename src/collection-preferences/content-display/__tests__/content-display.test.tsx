@@ -6,6 +6,7 @@ import ContentDisplayPreferenceWrapper, {
   ContentDisplayOptionWrapper,
 } from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
 import { fireEvent } from '@testing-library/react';
+import styles from '../../../../lib/components/collection-preferences/styles.css.js';
 
 describe('Content Display preference', () => {
   it('correctly displays title', () => {
@@ -23,9 +24,9 @@ describe('Content Display preference', () => {
 
   it('displays list of options with correct semantics', () => {
     const wrapper = renderContentDisplay();
-    const items = wrapper.findOptions();
-    for (let i = 0; i < items.length; i++) {
-      testOptionItem({ wrapper, item: items[i], index: i });
+    const options = wrapper.findOptions();
+    for (let i = 0; i < options.length; i++) {
+      testOption({ wrapper, option: options[i], index: i });
     }
   });
 
@@ -164,7 +165,7 @@ function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
   return collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 }
 
-function expectLabel(wrapper: ContentDisplayPreferenceWrapper, element: HTMLElement, label: string) {
+function expectDragHandleAriaLabel(wrapper: ContentDisplayPreferenceWrapper, element: HTMLElement, label: string) {
   const labelAttribute = element.getAttribute('aria-label');
   if (labelAttribute === label) {
     return;
@@ -176,29 +177,30 @@ function expectLabel(wrapper: ContentDisplayPreferenceWrapper, element: HTMLElem
 }
 
 function testOrder({ wrapper, order }: { wrapper: ContentDisplayPreferenceWrapper; order: number[] }) {
-  const items = wrapper.findOptions();
+  const options = wrapper.findOptions();
   const expectedOrder = [1, 0, 2, 3];
   for (let i = 0; i < expectedOrder.length; i++) {
-    const item = items[i];
-    testOptionItem({ wrapper, item, index: order[i] });
+    const option = options[i];
+    testOption({ wrapper, option, index: order[i] });
   }
 }
 
-function testOptionItem({
+function testOption({
   wrapper,
-  item,
+  option,
   index,
 }: {
   wrapper: ContentDisplayPreferenceWrapper;
-  item: ContentDisplayOptionWrapper;
+  option: ContentDisplayOptionWrapper;
   index: number;
 }) {
-  const element = item.getElement();
+  const element = option.getElement();
   expect(element.tagName).toBe('LI');
   expect(element.parentElement!.tagName).toBe('UL');
   expect(element).toHaveTextContent(`Item ${index + 1}`);
-  const dragHandle = item.findDragHandle().getElement();
-  expectLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
+  const dragHandle = option.findDragHandle().getElement();
+  expectDragHandleAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
+  expectLabelFroToggle(option);
 }
 
 async function expectAnnouncement(wrapper: ContentDisplayPreferenceWrapper, announcement: string) {
@@ -217,6 +219,15 @@ function expectCheckedStatus({ wrapper, statuses }: { wrapper: ContentDisplayPre
       expect(toggleElement).not.toBeChecked();
     }
   }
+}
+function expectLabelFroToggle(option: ContentDisplayOptionWrapper) {
+  const toggleId = option.findToggle().findNativeInput().getElement().id;
+  expect(toggleId).toBeTruthy();
+  const labelForAttribute = option
+    .findAllByClassName(styles['sortable-item-label'])[0]
+    .getElement()
+    .getAttribute('for');
+  expect(labelForAttribute).toBe(toggleId);
 }
 
 function pressKey(element: HTMLElement, key: string) {
