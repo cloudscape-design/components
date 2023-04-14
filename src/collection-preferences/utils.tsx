@@ -167,7 +167,6 @@ const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPr
       description={description}
     >
       <InternalRadioGroup
-        // className={styles[`sticky-columns-${firstOrLast}-radio-group`]}
         value={typeof value !== undefined ? `${value}` : null}
         items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
         onChange={({ detail }) => onChange(Number(detail.value))}

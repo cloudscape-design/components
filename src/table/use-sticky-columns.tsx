@@ -42,25 +42,27 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
   // This hook calculates the cumulative offsets of the cells in each column of the table, based on the widths of their siblings
 
   const [cellOffsets, setCellOffsets] = useState<CellOffsets>({ first: [], last: [] });
+
+  const calculateOffsetWidths = (widths: number[]) => {
+    return widths.map((elem, index) => widths.slice(0, index + 1).reduce((a, b) => a + b));
+  };
+
   const updateCellOffsets = useCallback(() => {
     // Calculate widths of all previous siblings of each table cell in the `tableCellRefs` array
-    let firstColumnsOffsets = tableCellRefs
-      .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
-      .filter(x => x);
-    // Calculate cumulative widths of previous siblings to get the total offset of each of the cells
-    firstColumnsOffsets = firstColumnsOffsets.map((elem, index) =>
-      firstColumnsOffsets.slice(0, index + 1).reduce((a, b) => a + b)
-    );
+    const firstColumnsOffsets = [
+      0,
+      ...tableCellRefs.map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
+    ];
+    const cumulativeFirstColumnsWidths = calculateOffsetWidths(firstColumnsOffsets);
 
     // Calculate widths of all next siblings of each table cell in the `tableCellRefs` array
-    let lastColumnsOffsets = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
-    lastColumnsOffsets = lastColumnsOffsets.filter(x => x).reverse();
-    // Calculate cumulative widths of next siblings to get the the total offset of each of the cells
-    lastColumnsOffsets = lastColumnsOffsets
-      .map((elem, index) => lastColumnsOffsets.slice(0, index + 1).reduce((a, b) => a + b))
-      .reverse();
+    const lastColumnsOffsets = [
+      ...tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
+      0,
+    ];
+    const cumulativeLastColumnsWidths = calculateOffsetWidths(lastColumnsOffsets).reverse();
 
-    setCellOffsets({ first: [0, ...firstColumnsOffsets], last: [...lastColumnsOffsets, 0] });
+    setCellOffsets({ first: cumulativeFirstColumnsWidths, last: cumulativeLastColumnsWidths });
   }, [tableCellRefs]);
 
   useLayoutEffect(() => {
@@ -167,10 +169,8 @@ export const useStickyColumns = ({
         stuck = { paddingLeft: `${tableLeftPadding}px` };
       }
       // Determine the offset of the sticky column using the `cellOffsets` state object
-      const stickyColumnOffset =
-        stickySide === 'right'
-          ? cellOffsets?.last[colIndex + (hasSelection ? 1 : 0)]
-          : cellOffsets?.first[colIndex + (hasSelection ? 1 : 0)];
+      const offsetKey = stickySide === 'right' ? 'last' : 'first';
+      const stickyColumnOffset = cellOffsets?.[offsetKey]?.[colIndex + (hasSelection ? 1 : 0)];
 
       return {
         sticky: {
