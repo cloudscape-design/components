@@ -15,33 +15,31 @@ import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 
-const visibleContentOptions: ReadonlyArray<CollectionPreferencesProps.ContentDisplayPreference> = [
-  {
-    title: 'Column preferences',
-    description: 'Customize the columns visibility and order.',
-    options: [
-      {
-        id: 'id',
-        label: 'ID',
-        alwaysVisible: true,
-      },
-      { id: 'type', label: 'Type' },
-      {
-        id: 'dnsName',
-        label: 'DNS name',
-      },
-      {
-        id: 'imageId',
-        label: 'Image ID',
-      },
-      {
-        id: 'state',
-        label: 'State',
-      },
-    ],
-    ...contentDisplayPreferenceI18nStrings,
-  },
-];
+const contentDisplayPreference = {
+  title: 'Column preferences',
+  description: 'Customize the columns visibility and order.',
+  options: [
+    {
+      id: 'id',
+      label: 'ID',
+      alwaysVisible: true,
+    },
+    { id: 'type', label: 'Type' },
+    {
+      id: 'dnsName',
+      label: 'DNS name',
+    },
+    {
+      id: 'imageId',
+      label: 'Image ID',
+    },
+    {
+      id: 'state',
+      label: 'State',
+    },
+  ],
+  ...contentDisplayPreferenceI18nStrings,
+};
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
@@ -110,9 +108,7 @@ export default function App() {
               options: pageSizeOptions,
             }}
             contentDisplayPreference={{
-              title: 'Column preferences',
-              description: 'Customize the columns visibility and order.',
-              options: visibleContentOptions[0].options,
+              ...contentDisplayPreference,
               ...contentDisplayPreferenceI18nStrings,
             }}
             wrapLinesPreference={{

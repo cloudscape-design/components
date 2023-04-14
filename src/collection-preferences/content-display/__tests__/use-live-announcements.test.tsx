@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import useLiveAnnouncements from '../use-live-announcements';
-import { CollectionPreferencesProps } from '../../../../lib/components';
 import { render } from '@testing-library/react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
@@ -10,7 +9,7 @@ const liveAnnouncementDndStarted = jest.fn();
 const liveAnnouncementDndItemReordered = jest.fn();
 const liveAnnouncementDndItemCommitted = jest.fn();
 
-const i18nStrings: Partial<CollectionPreferencesProps.ContentDisplayPreference> = {
+const i18nStrings = {
   liveAnnouncementDndStarted,
   liveAnnouncementDndDiscarded: 'Reordering canceled',
   liveAnnouncementDndItemReordered,
@@ -20,7 +19,7 @@ const i18nStrings: Partial<CollectionPreferencesProps.ContentDisplayPreference> 
   dragHandleAriaLabel: 'Drag handle',
 };
 
-const sortedOptions: CollectionPreferencesProps.ContentDisplayItem[] = [{ id: 'id2' }, { id: 'id1' }];
+const sortedOptions = [{ id: 'id2' }, { id: 'id1' }];
 
 const TestComponent = ({ activeId, isDragging, overId }: { activeId: string; isDragging: boolean; overId: string }) => {
   const { onDragStart, onDragOver, onDragEnd, onDragCancel } = useLiveAnnouncements({

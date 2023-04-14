@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import CollectionPreferences from '~components/collection-preferences';
 import {
   baseProperties,
   contentDensityPreference,
@@ -12,7 +12,7 @@ import {
 import ScreenshotArea from '../utils/screenshot-area';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
-const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption> = [
+const shortOptionsList = [
   {
     id: 'id1',
     label: 'Item 1',
@@ -37,7 +37,7 @@ const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.ContentDisplayO
   },
 ];
 
-const longOptionsList: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption> = Array(50)
+const longOptionsList = Array(50)
   .fill(1)
   .map((item, index) => ({ id: `id_${index}`, label: `Item ${index + 1}` }));
 
