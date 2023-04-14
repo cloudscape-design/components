@@ -46,6 +46,24 @@ describe('Collection preferences - Content Display preference', () => {
         await expect(await page.containsOptionsInOrder(['Item 4', 'Item 1', 'Item 2', 'Item 3'])).toBe(true);
       })
     );
+
+    test(
+      'cancels reordering when pressing Escape',
+      setupTest(async page => {
+        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal(wrapper);
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
+
+        const activeDragHandle = page.findDragHandle(3);
+        const targetDragHandle = page.findDragHandle(0);
+        await page.dragTo(activeDragHandle.toSelector(), targetDragHandle.toSelector());
+        await page.keys('Escape');
+
+        await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
+        await expect(wrapper.findModal()).not.toBeNull();
+      })
+    );
   });
 
   describe('reorders content with keyboard', () => {
@@ -65,7 +83,7 @@ describe('Collection preferences - Content Display preference', () => {
         await page.keys('Tab');
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-        return page.expectAnnouncement('Reordering canceled');
+        await page.expectAnnouncement('Reordering canceled');
       })
     );
 
@@ -85,7 +103,7 @@ describe('Collection preferences - Content Display preference', () => {
         await page.click(wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
-        return page.expectAnnouncement('Reordering canceled');
+        await page.expectAnnouncement('Reordering canceled');
       })
     );
 
@@ -108,7 +126,7 @@ describe('Collection preferences - Content Display preference', () => {
         await page.keys('Space');
 
         await expect(await page.containsOptionsInOrder(['Item 31', 'Item 1'])).toBe(true);
-        return page.expectAnnouncement('Item moved from position 1 to position 31 of 50');
+        await page.expectAnnouncement('Item moved from position 1 to position 31 of 50');
       })
     );
   });
