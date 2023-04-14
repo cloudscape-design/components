@@ -88,6 +88,22 @@ function setupTest(
         );
 
         test(
+          'drawers focus toggles between open and close buttons',
+          setupTest(
+            async page => {
+              await page.click(wrapper.findDrawersTriggers().toSelector());
+              await page.keys('Enter');
+              await expect(page.isFocused(wrapper.findDrawersTriggers().toSelector())).resolves.toBe(true);
+              await page.keys('Enter');
+              await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+              await page.keys('Enter');
+              await expect(page.isFocused(wrapper.findDrawersTriggers().toSelector())).resolves.toBe(true);
+            },
+            { pageName: 'with-drawers', visualRefresh, mobile }
+          )
+        );
+
+        test(
           'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position',
           setupTest(
             async page => {

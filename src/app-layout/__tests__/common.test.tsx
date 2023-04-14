@@ -311,8 +311,7 @@ describeEachAppLayout(() => {
       wrapper.findDrawersTriggers().click();
       expect(wrapper.findActiveDrawerCloseButton().getElement()).toBe(document.activeElement);
       wrapper.findActiveDrawerCloseButton().click();
-
-      // expect(wrapper.findDrawersTriggers().getElement()).toBe(document.activeElement);
+      expect(wrapper.findDrawersTriggers().getElement()).toBe(document.activeElement);
     });
   });
 });

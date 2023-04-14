@@ -188,6 +188,22 @@ export const drawersConfigurations = {
       },
     },
   ],
+  drawersResizableItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      resizable: true,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
   drawersItemsWithoutLabels: [
     {
       content: <span>Security</span>,
