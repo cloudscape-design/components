@@ -129,6 +129,7 @@ export function BasicS3Table<T>({
       header={
         <InternalHeader
           variant={isVisualRefresh ? 'h3' : 'h2'}
+          headingTagOverride={'h3'}
           actions={<InternalButton iconName="refresh" ariaLabel={i18nStrings.labelRefresh} onClick={loadData} />}
           counter={selectedItem ? `(1/${allItems.length})` : `(${allItems.length})`}
         >
