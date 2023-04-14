@@ -347,13 +347,13 @@ describeEachThemeAppLayout(true, theme => {
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
-    expect(wrapper.findDrawersTriggers().getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findDrawersTriggers()[0].getElement()).not.toHaveAttribute('aria-label');
     expect(wrapper.findDrawersMobileTriggersContainer().getElement()).not.toHaveAttribute('aria-label');
   });
 
   test('Adds labels to toggle button and landmark when defined', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
-    expect(wrapper.findDrawersTriggers().getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawersTriggers()[0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
     expect(wrapper.findDrawersMobileTriggersContainer().getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 });

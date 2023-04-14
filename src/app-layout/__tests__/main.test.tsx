@@ -120,7 +120,7 @@ describe.each([
     'drawers',
     {
       findElement: (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawer(),
-      findToggle: (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers(),
+      findToggle: (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers()[0],
       findClose: (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawerCloseButton(),
     },
   ],

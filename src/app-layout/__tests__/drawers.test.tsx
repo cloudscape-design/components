@@ -18,9 +18,9 @@ describeEachAppLayout(() => {
     const { wrapper, rerender } = renderComponent(
       <AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />
     );
-    expect(wrapper.findDrawersTriggers()).toBeTruthy();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
   });
 });
 
@@ -37,7 +37,8 @@ describe('Classic only features', () => {
   test(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
 
-    act(() => wrapper.findDrawersTriggers().click());
+    console.log(wrapper.findDrawersTriggers());
+    act(() => wrapper.findDrawersTriggers()[0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
@@ -53,7 +54,7 @@ describe('Classic only features', () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
     wrapper.findDrawersSlider().keydown(KeyCode.left);
 
-    console.log(wrapper.findDrawersSlider());
+    // console.log(wrapper.findDrawersSlider());
 
     expect(onResize).toHaveBeenCalledWith({ size: 290, id: 'security' });
   });
