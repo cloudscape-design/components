@@ -32,13 +32,7 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
    * @param tokenIndex 1-based index of the file token to return.
    */
   findFileToken(fileTokenIndex: number): null | FileTokenWrapper {
-    if (fileTokenIndex === 1) {
-      return this.findComponent(`.${tokenGroupSelectors.token}`, FileTokenWrapper);
-    }
-    return this.findComponent(
-      `.${tokenListSelectors['list-item']}:nth-child(${fileTokenIndex}) .${tokenGroupSelectors.token}`,
-      FileTokenWrapper
-    );
+    return this.findComponent(`.${tokenGroupSelectors.token}[data-index="${fileTokenIndex - 1}"]`, FileTokenWrapper);
   }
 
   /**

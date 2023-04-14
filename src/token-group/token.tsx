@@ -8,6 +8,7 @@ import DismissButton from './dismiss-button';
 import styles from './styles.css.js';
 import { FormFieldError } from '../form-field/internal';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { getBaseProps } from '../internal/base-component';
 
 interface TokenProps {
   children: React.ReactNode;
@@ -28,12 +29,14 @@ export function Token({
   children,
   errorText,
   errorIconAriaLabel,
-  className,
+  ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
+  const baseProps = getBaseProps(restProps);
   return (
     <div
-      className={clsx(styles.token, className)}
+      {...baseProps}
+      className={clsx(styles.token, baseProps.className)}
       role="group"
       aria-label={ariaLabel}
       aria-describedby={errorText ? errorId : undefined}

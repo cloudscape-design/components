@@ -142,6 +142,7 @@ function InternalFileUpload(
             onDismiss={() => onFileRemove(0)}
             errorText={fileErrors?.[0]}
             errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+            data-index={0}
           >
             <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
           </Token>
@@ -160,6 +161,7 @@ function InternalFileUpload(
                 onDismiss={() => onFileRemove(fileIndex)}
                 errorText={fileErrors?.[fileIndex]}
                 errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+                data-index={fileIndex}
               >
                 <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
               </Token>
