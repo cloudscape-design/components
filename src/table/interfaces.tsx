@@ -64,7 +64,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * The columns configuration object
    * * `id` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
-   *   and 2) to match entries in the `visibleColumns` property, if defined.
+   *   and 2) to match entries in the `columnDisplay` property, if defined.
    * * `header` (ReactNode) - Determines the display of the column header.
    * * `cell` ((item) => ReactNode) - Determines the display of a cell's content. You receive the current table row
    *   item as an argument.
