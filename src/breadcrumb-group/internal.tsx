@@ -7,7 +7,6 @@ import InternalIcon from '../icon/internal';
 import InternalButtonDropdown from '../button-dropdown/internal';
 import { LinkItem } from '../button-dropdown/interfaces';
 import { InternalButton } from '../button/internal';
-import { ButtonProps } from '../button/interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupProps, EllipsisDropdownProps } from './interfaces';
 import { fireCancelableEvent } from '../internal/events';
@@ -16,32 +15,6 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { SomeRequired } from '../internal/types';
-
-const DropdownTrigger = (
-  clickHandler: () => void,
-  ref: React.Ref<ButtonProps.Ref>,
-  isDisabled: boolean,
-  isExpanded: boolean,
-  ariaLabel?: string
-) => {
-  return (
-    <InternalButton
-      disabled={isDisabled}
-      onClick={event => {
-        event.preventDefault();
-        clickHandler();
-      }}
-      ref={ref}
-      ariaExpanded={isExpanded}
-      aria-haspopup={true}
-      ariaLabel={ariaLabel}
-      variant="breadcrumb-group"
-      formAction="none"
-    >
-      ...
-    </InternalButton>
-  );
-};
 
 const EllipsisDropdown = ({
   ariaLabel,
@@ -56,8 +29,26 @@ const EllipsisDropdown = ({
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
-        customTriggerBuilder={DropdownTrigger}
-      />
+        variant="custom"
+      >
+        {(ref, { ariaLabel, ariaExpanded, disabled, onClick }) => (
+          <InternalButton
+            ref={ref}
+            disabled={disabled}
+            onClick={event => {
+              event.preventDefault();
+              onClick();
+            }}
+            ariaExpanded={ariaExpanded}
+            aria-haspopup={true}
+            ariaLabel={ariaLabel}
+            variant="breadcrumb-group"
+            formAction="none"
+          >
+            ...
+          </InternalButton>
+        )}
+      </InternalButtonDropdown>
       <span className={styles.icon}>
         <InternalIcon name="angle-right" />
       </span>

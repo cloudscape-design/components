@@ -85,9 +85,14 @@ export interface ButtonDropdownProps extends BaseComponentProps {
   ariaLabel?: string;
   /**
    * Text displayed in the button dropdown trigger.
+   *
+   * When variant="custom" is used the children is a function from:
+   * * `ref` - the React ref to be assigned to the custom trigger.
+   * * `triggerProps` - properties to be assigned to the custom trigger.
+   *
    * @displayname text
    */
-  children?: React.ReactNode;
+  children?: React.ReactNode | ButtonDropdownProps.CustomTrigger;
   /**
    * Called when the user clicks on an item, and the item is not disabled.  The event detail object contains the id of the clicked item.
    */
@@ -100,7 +105,16 @@ export interface ButtonDropdownProps extends BaseComponentProps {
 }
 
 export namespace ButtonDropdownProps {
-  export type Variant = 'normal' | 'primary' | 'icon';
+  export type CustomTrigger = (ref: React.Ref<Ref>, props: CustomTriggerProps) => React.ReactNode;
+
+  export interface CustomTriggerProps {
+    onClick: () => void;
+    ariaLabel?: string;
+    ariaExpanded?: boolean;
+    disabled?: boolean;
+  }
+
+  export type Variant = 'normal' | 'primary' | 'icon' | 'custom';
 
   export interface Item {
     id: string;
@@ -197,13 +211,6 @@ export interface ItemProps {
 }
 
 export interface InternalButtonDropdownProps extends Omit<ButtonDropdownProps, 'variant'>, InternalBaseComponentProps {
-  customTriggerBuilder?: (
-    clickHandler: () => void,
-    ref: React.Ref<any>,
-    isDisabled: boolean,
-    isExpanded: boolean,
-    ariaLabel?: string
-  ) => React.ReactNode;
   variant?: ButtonDropdownProps['variant'] | 'navigation';
 
   /**

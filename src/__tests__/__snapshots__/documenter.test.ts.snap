@@ -2947,6 +2947,16 @@ It should be used in buttons that don't have text in order to make them accessib
       "type": "string",
     },
     Object {
+      "description": "Text displayed in the button dropdown trigger.
+When variant=\\"custom\\" is used the children is a function from:
+* \`ref\` - the React ref to be assigned to the custom trigger.
+* \`triggerProps\` - properties to be assigned to the custom trigger.
+",
+      "name": "children",
+      "optional": true,
+      "type": "ButtonDropdownProps.CustomTrigger | React.ReactNode",
+    },
+    Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -3054,6 +3064,7 @@ It prevents clicks.",
           "normal",
           "primary",
           "icon",
+          "custom",
         ],
       },
       "name": "variant",
@@ -3061,14 +3072,7 @@ It prevents clicks.",
       "type": "string",
     },
   ],
-  "regions": Array [
-    Object {
-      "description": "Text displayed in the button dropdown trigger.",
-      "displayName": "text",
-      "isDefault": true,
-      "name": "children",
-    },
-  ],
+  "regions": Array [],
   "releaseStatus": "stable",
 }
 `;

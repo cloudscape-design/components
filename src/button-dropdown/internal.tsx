@@ -16,6 +16,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { warnOnce } from '../internal/logging.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -29,7 +30,6 @@ const InternalButtonDropdown = React.forwardRef(
       children,
       onItemClick,
       onItemFollow,
-      customTriggerBuilder,
       expandToViewport,
       ariaLabel,
       title,
@@ -44,6 +44,13 @@ const InternalButtonDropdown = React.forwardRef(
     const dropdownId = useUniqueId('dropdown');
     for (const item of items) {
       checkSafeUrl('ButtonDropdown', item.href);
+    }
+
+    if (typeof children === 'function' && variant !== 'custom' && variant !== 'navigation') {
+      warnOnce('ButtonDropdown', 'Custom trigger requires variant="custom".');
+    }
+    if (typeof children !== 'function' && (variant === 'custom' || variant === 'navigation')) {
+      warnOnce('ButtonDropdown', 'variant="custom" requires a render function as children.');
     }
 
     const {
@@ -63,7 +70,7 @@ const InternalButtonDropdown = React.forwardRef(
       items,
       onItemClick,
       onItemFollow,
-      onReturnFocus: () => dropdownRef.current?.focus(),
+      onReturnFocus: () => dropdownTriggerRef.current?.focus(),
       expandToViewport,
       hasExpandableGroups: expandableGroups,
       isInRestrictedView,
@@ -75,9 +82,9 @@ const InternalButtonDropdown = React.forwardRef(
 
     const baseProps = getBaseProps(props);
 
-    const dropdownRef = useRef<HTMLElement>(null);
+    const dropdownTriggerRef = useRef<HTMLElement>(null);
 
-    useForwardFocus(ref, dropdownRef);
+    useForwardFocus(ref, dropdownTriggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
@@ -88,7 +95,7 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
-    const triggerVariant = variant === 'navigation' ? undefined : variant;
+    const triggerVariant = variant === 'navigation' || variant === 'custom' ? undefined : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon'
         ? {
@@ -100,28 +107,29 @@ const InternalButtonDropdown = React.forwardRef(
             __iconClass: canBeOpened && isOpen ? styles['rotate-up'] : styles['rotate-down'],
           };
 
-    const trigger = customTriggerBuilder ? (
-      customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel)
-    ) : (
-      <InternalButton
-        ref={dropdownRef}
-        {...iconProps}
-        variant={triggerVariant}
-        loading={loading}
-        loadingText={loadingText}
-        disabled={disabled}
-        onClick={(event: Event) => {
-          event.preventDefault();
-          clickHandler();
-        }}
-        ariaLabel={ariaLabel}
-        aria-haspopup={true}
-        ariaExpanded={canBeOpened && isOpen}
-        formAction="none"
-      >
-        {children}
-      </InternalButton>
-    );
+    const trigger =
+      typeof children === 'function' ? (
+        children(dropdownTriggerRef, { ariaLabel, disabled, ariaExpanded: isOpen, onClick: clickHandler })
+      ) : (
+        <InternalButton
+          ref={dropdownTriggerRef}
+          {...iconProps}
+          variant={triggerVariant}
+          loading={loading}
+          loadingText={loadingText}
+          disabled={disabled}
+          onClick={(event: Event) => {
+            event.preventDefault();
+            clickHandler();
+          }}
+          ariaLabel={ariaLabel}
+          aria-haspopup={true}
+          ariaExpanded={canBeOpened && isOpen}
+          formAction="none"
+        >
+          {children}
+        </InternalButton>
+      );
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');

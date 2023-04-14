@@ -133,7 +133,6 @@ export interface ButtonProps extends BaseComponentProps {
   /**
    *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
    */
-
   ariaExpanded?: boolean;
 }
 

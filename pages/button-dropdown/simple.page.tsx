@@ -5,6 +5,7 @@ import styles from './styles.scss';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Button } from '~components';
 
 const items: ButtonDropdownProps['items'] = [
   {
@@ -188,6 +189,13 @@ export default function ButtonDropdownPage() {
         <div className={styles.container}>
           <ButtonDropdown id="ButtonDropdown8" expandableGroups={true} items={withDisabledItems}>
             With expandable groups and disabled items
+          </ButtonDropdown>
+        </div>
+        <div className={styles.container}>
+          <ButtonDropdown id="ButtonDropdown9" items={items} variant="custom">
+            {(ref, props) => (
+              <Button ref={ref} {...props} ariaLabel="With custom trigger" variant="icon" iconName="drag-indicator" />
+            )}
           </ButtonDropdown>
         </div>
       </article>

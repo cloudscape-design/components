@@ -81,34 +81,26 @@ const MenuDropdown = ({
 }: MenuDropdownProps) => {
   const baseProps = getBaseProps(props);
 
-  const dropdownTrigger = (clickHandler: () => void, ref: React.Ref<any>, isDisabled: boolean, isExpanded: boolean) => {
-    return (
-      <ButtonTrigger
-        ref={ref}
-        disabled={isDisabled}
-        expanded={isExpanded}
-        iconName={iconName}
-        iconUrl={iconUrl}
-        iconAlt={iconAlt}
-        iconSvg={iconSvg}
-        badge={badge}
-        ariaLabel={ariaLabel}
-        offsetRight={offsetRight}
-        onClick={clickHandler}
-      >
-        {children}
-      </ButtonTrigger>
-    );
-  };
-
   return (
-    <InternalButtonDropdown
-      {...baseProps}
-      {...props}
-      variant="navigation"
-      customTriggerBuilder={dropdownTrigger}
-      preferCenter={true}
-    />
+    <InternalButtonDropdown {...baseProps} {...props} variant="navigation" preferCenter={true}>
+      {(ref, { ariaExpanded, disabled, onClick }) => (
+        <ButtonTrigger
+          ref={ref}
+          disabled={disabled}
+          expanded={ariaExpanded}
+          iconName={iconName}
+          iconUrl={iconUrl}
+          iconAlt={iconAlt}
+          iconSvg={iconSvg}
+          badge={badge}
+          ariaLabel={ariaLabel}
+          offsetRight={offsetRight}
+          onClick={onClick}
+        >
+          {children}
+        </ButtonTrigger>
+      )}
+    </InternalButtonDropdown>
   );
 };
 
