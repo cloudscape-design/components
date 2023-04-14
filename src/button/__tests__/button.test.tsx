@@ -71,6 +71,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveAttribute('disabled');
       // In this case, aria-disabled would be redundant, so we don't set it
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('does not add the disabled attribute on link buttons', () => {
@@ -79,6 +80,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 when button with link is disabled', () => {
@@ -298,6 +300,7 @@ describe('Button Component', () => {
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
       act(() => wrapper.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
@@ -309,6 +312,7 @@ describe('Button Component', () => {
       // However, setting `disabled` does mean that the button can no longer be focused.
       expect(wrapper.getElement()).toHaveAttribute('disabled');
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 to the link button', () => {
