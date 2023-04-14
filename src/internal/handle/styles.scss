@@ -3,20 +3,20 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../../lib/design-tokens/index.scss' as cs;
 @use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
 
 .handle {
   appearance: none;
   background: transparent;
   border: none;
-  padding: 0 cs.$space-scaled-xxxs;
-  margin: 0 cs.$space-scaled-xxs;
+  padding: 0 awsui.$space-scaled-xxxs;
+  margin: 0 awsui.$space-scaled-xxs;
 
-  color: cs.$color-text-interactive-default;
+  color: awsui.$color-text-interactive-default;
 
   &:hover {
-    color: cs.$color-text-interactive-hover;
+    color: awsui.$color-text-interactive-hover;
   }
 
   &:focus-visible {
