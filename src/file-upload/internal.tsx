@@ -99,26 +99,26 @@ function InternalFileUpload(
       className={clsx(baseProps.className, styles.root)}
       __internalRootRef={__internalRootRef}
     >
-      {isDropzoneVisible ? (
-        <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
-      ) : (
-        <FileInput
-          ref={ref}
-          accept={accept}
-          ariaRequired={ariaRequired}
-          multiple={multiple}
-          onChange={handleFilesChange}
-          value={value}
-          {...restProps}
-          ariaDescribedby={ariaDescribedBy}
-          invalid={invalid}
-        >
-          {i18nStrings.uploadButtonText(multiple)}
-        </FileInput>
-      )}
+      <InternalBox>
+        {isDropzoneVisible ? (
+          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+        ) : (
+          <FileInput
+            ref={ref}
+            accept={accept}
+            ariaRequired={ariaRequired}
+            multiple={multiple}
+            onChange={handleFilesChange}
+            value={value}
+            {...restProps}
+            ariaDescribedby={ariaDescribedBy}
+            invalid={invalid}
+          >
+            {i18nStrings.uploadButtonText(multiple)}
+          </FileInput>
+        )}
 
-      {(constraintText || errorText) && (
-        <InternalBox>
+        {(constraintText || errorText) && (
           <div className={styles.hints}>
             {errorText && (
               <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
@@ -131,8 +131,8 @@ function InternalFileUpload(
               </ConstraintText>
             )}
           </div>
-        </InternalBox>
-      )}
+        )}
+      </InternalBox>
 
       {!multiple && value.length > 0 ? (
         <InternalBox>
