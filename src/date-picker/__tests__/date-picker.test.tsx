@@ -168,6 +168,23 @@ describe('Date picker - direct date input', () => {
     });
   });
 
+  describe('required', () => {
+    test('is added to native input if required is passed', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, required: true });
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('required');
+    });
+
+    test('is not added to native input if required is not passed', () => {
+      const { wrapper } = renderDatePicker();
+      expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('required');
+    });
+
+    test('is not added to native input if required is falsy', () => {
+      const { wrapper } = renderDatePicker({ ...defaultProps, required: false });
+      expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('required');
+    });
+  });
+
   describe('aria-label', () => {
     test('aria-label is not added if not defined', () => {
       const { wrapper } = renderDatePicker();

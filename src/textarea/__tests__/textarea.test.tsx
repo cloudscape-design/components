@@ -295,6 +295,21 @@ describe('Textarea', () => {
         expect(textarea).not.toHaveAttribute('aria-required');
       });
     });
+
+    describe('required', () => {
+      test('is added to native textarea if required is passed', () => {
+        const { textarea } = renderTextarea({ required: true, ariaLabel: 'textarea' });
+        expect(textarea).toHaveAttribute('required');
+      });
+      test('is not added to native textarea if required is not passed', () => {
+        const { textarea } = renderTextarea({ ariaLabel: 'textarea' });
+        expect(textarea).not.toHaveAttribute('required');
+      });
+      test('is not added to native textarea if required is falsy', () => {
+        const { textarea } = renderTextarea({ required: false, ariaLabel: 'textarea' });
+        expect(textarea).not.toHaveAttribute('required');
+      });
+    });
   });
 
   describe('Ref', () => {

@@ -320,6 +320,21 @@ describe('Input', () => {
         expect(input).not.toHaveAttribute('aria-required');
       });
     });
+
+    describe('required', () => {
+      test('is added to native input if required is passed', () => {
+        const { input } = renderInput({ required: true, ariaLabel: 'input' });
+        expect(input).toHaveAttribute('required');
+      });
+      test('is not added to native input if required is not passed', () => {
+        const { input } = renderInput({ ariaLabel: 'input' });
+        expect(input).not.toHaveAttribute('required');
+      });
+      test('is not added to native input if required is falsy', () => {
+        const { input } = renderInput({ required: false, ariaLabel: 'input' });
+        expect(input).not.toHaveAttribute('required');
+      });
+    });
   });
 
   describe('Ref', () => {

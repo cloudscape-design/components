@@ -50,6 +50,7 @@ const DatePicker = React.forwardRef(
       name,
       ariaLabel,
       ariaRequired,
+      required,
       controlId,
       invalid,
       openCalendarAriaLabel,
@@ -119,6 +120,7 @@ const DatePicker = React.forwardRef(
             ariaDescribedby={ariaDescribedby}
             ariaLabel={ariaLabel}
             ariaRequired={ariaRequired}
+            required={required}
             value={value}
             disabled={disabled}
             readOnly={readOnly}

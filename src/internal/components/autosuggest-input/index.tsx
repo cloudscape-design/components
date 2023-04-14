@@ -74,6 +74,7 @@ const AutosuggestInput = React.forwardRef(
       autoFocus,
       ariaLabel,
       ariaRequired,
+      required,
       disableBrowserAutocorrect = false,
       expandToViewport,
       ariaControls,
@@ -268,6 +269,7 @@ const AutosuggestInput = React.forwardRef(
               disableBrowserAutocorrect={disableBrowserAutocorrect}
               readOnly={readOnly}
               ariaRequired={ariaRequired}
+              required={required}
               clearAriaLabel={clearAriaLabel}
               ref={inputRef}
               autoComplete={false}

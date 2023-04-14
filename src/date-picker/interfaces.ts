@@ -63,8 +63,14 @@ export interface DatePickerProps
 
   /**
    * Specifies whether to add `aria-required` to the native control.
+   * @deprecated
    */
   ariaRequired?: boolean;
+
+  /**
+   * Specifies whether to add `required` to the native control.
+   */
+  required?: boolean;
 
   /**
    * Called when input focus is moved to the UI control.

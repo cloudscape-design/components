@@ -55,8 +55,14 @@ export interface BaseInputProps {
 
   /**
    * Specifies whether to add `aria-required` to the native control.
+   * @deprecated
    */
   ariaRequired?: boolean;
+
+  /**
+   * Specifies whether to add `required` to the native control.
+   */
+  required?: boolean;
 
   /**
    * Called when input focus is removed from the UI control.

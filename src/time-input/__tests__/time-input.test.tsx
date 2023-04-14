@@ -121,9 +121,31 @@ describe('Time Input component', () => {
         expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-required', 'true');
       });
 
+      test('is not added to native input if ariaRequired is not provided', () => {
+        const { wrapper } = renderTimeInput({ ...defaultProps });
+        expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-required');
+      });
+
       test('is not added to native input if ariaRequired is falsy', () => {
         const { wrapper } = renderTimeInput({ ...defaultProps, ariaRequired: false });
         expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('aria-required');
+      });
+    });
+
+    describe('required', () => {
+      test('is added to native input if required is passed', () => {
+        const { wrapper } = renderTimeInput({ ...defaultProps, required: true });
+        expect(wrapper.findNativeInput().getElement()).toHaveAttribute('required');
+      });
+
+      test('is not added to native input if required is not provided', () => {
+        const { wrapper } = renderTimeInput({ ...defaultProps });
+        expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('required');
+      });
+
+      test('is not added to native input if required is falsy', () => {
+        const { wrapper } = renderTimeInput({ ...defaultProps, required: false });
+        expect(wrapper.findNativeInput().getElement()).not.toHaveAttribute('required');
       });
     });
   });

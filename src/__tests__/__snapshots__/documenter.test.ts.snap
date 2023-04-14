@@ -1392,6 +1392,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -1644,6 +1645,12 @@ For more information, see the
       "name": "renderHighlightedAriaLive",
       "optional": true,
       "type": "AutosuggestProps.ContainingOptionAndGroupString",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Specifies the localized string that describes an option as being selected.
@@ -4632,6 +4639,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -4709,6 +4717,12 @@ submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
 ",
       "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
       "optional": true,
       "type": "boolean",
     },
@@ -4802,6 +4816,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -4955,6 +4970,12 @@ submission. A read-only control can receive focus.
 Do not use read-only inputs outside of a form.
 ",
       "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
       "optional": true,
       "type": "boolean",
     },
@@ -6603,6 +6624,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -6730,6 +6752,12 @@ submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
 ",
       "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
       "optional": true,
       "type": "boolean",
     },
@@ -12520,6 +12548,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -12630,6 +12659,12 @@ submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
 ",
       "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
       "optional": true,
       "type": "boolean",
     },
@@ -12870,6 +12905,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "deprecatedTag": "",
       "description": "Specifies whether to add \`aria-required\` to the native control.",
       "name": "ariaRequired",
       "optional": true,
@@ -12984,6 +13020,12 @@ submission. A read-only control can receive focus.
 Don't use read-only inputs outside a form.
 ",
       "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
       "optional": true,
       "type": "boolean",
     },

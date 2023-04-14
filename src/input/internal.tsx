@@ -63,6 +63,7 @@ function InternalInput(
     __onLeftIconClick,
 
     ariaRequired,
+    required,
 
     __rightIcon,
     __onRightIconClick,
@@ -121,6 +122,7 @@ function InternalInput(
     autoComplete: convertAutoComplete(autoComplete),
     disabled,
     readOnly,
+    required,
     type,
     step,
     inputMode,

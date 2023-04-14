@@ -30,6 +30,7 @@ const Textarea = React.forwardRef(
       onBlur,
       onFocus,
       ariaRequired,
+      required,
       name,
       rows,
       placeholder,
@@ -54,6 +55,7 @@ const Textarea = React.forwardRef(
       'aria-invalid': invalid ? 'true' : undefined,
       name,
       placeholder,
+      required,
       autoFocus,
       className: clsx(styles.textarea, {
         [styles['textarea-readonly']]: readOnly,
