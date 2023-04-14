@@ -16,13 +16,13 @@ import bottomPositionIconRefresh from './icons/bottom-icon-refresh';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 
 interface PreferencesModali18nStrings {
-  header: string;
-  cancel: string;
-  confirm: string;
-  positionLabel: string;
-  positionDescription: string;
-  positionBottom: string;
-  positionSide: string;
+  header?: string;
+  cancel?: string;
+  confirm?: string;
+  positionLabel?: string;
+  positionDescription?: string;
+  positionBottom?: string;
+  positionSide?: string;
 }
 
 interface PreferencesModalProps extends InternalBaseComponentProps {
@@ -57,7 +57,7 @@ export default (props: PreferencesModalProps) => {
       visible={props.visible}
       onDismiss={props.onDismiss}
       header={props.i18nStrings.header}
-      closeAriaLabel={props.i18nStrings.cancel}
+      closeAriaLabel={props.i18nStrings.cancel!}
       footer={
         <InternalBox float="right">
           <InternalSpaceBetween direction="horizontal" size="xs">

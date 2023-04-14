@@ -9,7 +9,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Containers, Navigation, Tools, Breadcrumbs } from './utils/content-blocks';
 import * as toolsContent from './utils/tools-content';
 import labels from './utils/labels';
-import { splitPaneli18nStrings } from './utils/strings';
+import { discreetSplitPanelI18nStrings } from './utils/strings';
 
 export default function () {
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function () {
             header="Add something"
             closeBehavior="hide"
             hidePreferencesButton={true}
-            i18nStrings={splitPaneli18nStrings}
+            i18nStrings={discreetSplitPanelI18nStrings}
           >
             Hello!
           </SplitPanel>

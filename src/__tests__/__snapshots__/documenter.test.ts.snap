@@ -11078,42 +11078,42 @@ Object {
           },
           Object {
             "name": "openButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionBottom",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionDescription",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionSide",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
