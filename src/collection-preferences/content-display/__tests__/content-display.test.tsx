@@ -6,7 +6,6 @@ import ContentDisplayPreferenceWrapper, {
   ContentDisplayOptionWrapper,
 } from '../../../../lib/components/test-utils/dom/collection-preferences/content-display-preference';
 import { fireEvent } from '@testing-library/react';
-import styles from '../../../../lib/components/collection-preferences/styles.css.js';
 
 describe('Content Display preference', () => {
   describe('Rendering', () => {
@@ -346,7 +345,7 @@ function testOption({
   const element = option.getElement();
   expect(element.tagName).toBe('LI');
   expect(element.parentElement!.tagName).toBe('UL');
-  expect(element).toHaveTextContent(`Item ${index + 1}`);
+  expect(option.findLabel().getElement()).toHaveTextContent(`Item ${index + 1}`);
   const dragHandle = option.findDragHandle().getElement();
   expectAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
   expectLabelForToggle(option);
@@ -378,10 +377,7 @@ function expectVisibilityStatus({
 function expectLabelForToggle(option: ContentDisplayOptionWrapper) {
   const toggleId = option.findToggle().findNativeInput().getElement().id;
   expect(toggleId).toBeTruthy();
-  const labelForAttribute = option
-    .findAllByClassName(styles['sortable-item-label'])[0]
-    .getElement()
-    .getAttribute('for');
+  const labelForAttribute = option.findLabel().getElement().getAttribute('for');
   expect(labelForAttribute).toBe(toggleId);
 }
 

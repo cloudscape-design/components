@@ -16,6 +16,13 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the text label displayed in the option item.
+   */
+  findLabel(): ElementWrapper {
+    return this.findByClassName(styles['sortable-item-label'])!;
+  }
+
+  /**
    * Returns the visibility toggle for the option item.
    */
 
