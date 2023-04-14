@@ -21,4 +21,25 @@ describe('getSortedOptions', () => {
       },
     ]);
   });
+
+  it('keeps the value of the alwaysVisible property', () => {
+    const options = [
+      {
+        id: 'a',
+        label: 'a',
+        alwaysVisible: true,
+      },
+      { id: 'b', label: 'b' },
+    ];
+    const order = [{ id: 'b' }, { id: 'a' }];
+    const result = getSortedOptions({ options, order });
+    expect(result).toEqual([
+      { id: 'b', label: 'b' },
+      {
+        id: 'a',
+        label: 'a',
+        alwaysVisible: true,
+      },
+    ]);
+  });
 });

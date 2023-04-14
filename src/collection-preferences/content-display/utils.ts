@@ -9,7 +9,7 @@ export function getSortedOptions({
   options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
   order: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }) {
-  const optionsSet: Record<string, CollectionPreferencesProps.VisibleContentOption> = options.reduce(
+  const optionsSet: Record<string, CollectionPreferencesProps.ContentDisplayOption> = options.reduce(
     (currentValue, option) => ({ ...currentValue, [option.id]: option }),
     {}
   );

@@ -12,7 +12,7 @@ import {
 import ScreenshotArea from '../utils/screenshot-area';
 import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
-const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption> = [
+const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption> = [
   {
     id: 'id1',
     label: 'Item 1',
@@ -37,7 +37,7 @@ const shortOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentO
   },
 ];
 
-const longOptionsList: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption> = Array(50)
+const longOptionsList: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption> = Array(50)
   .fill(1)
   .map((item, index) => ({ id: `id_${index}`, label: `Item ${index + 1}` }));
 
