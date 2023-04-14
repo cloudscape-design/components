@@ -7,6 +7,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { FormFieldControlProps } from '../internal/context/form-field-context';
 import {
   PropertyFilterOperation,
   PropertyFilterOperator,
@@ -19,7 +20,7 @@ import {
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
-export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
+export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**
    * If set to `true`, the filtering input will be disabled.
    * Use it, for example, if you are fetching new items upon filtering change

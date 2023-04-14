@@ -193,7 +193,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        ariaDescribedby={searchResultsId}
+        ariaDescribedby={[searchResultsId, rest.ariaDescribedby].filter(id => !!id).join(' ')}
         dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
