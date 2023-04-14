@@ -16,22 +16,18 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldValidation
   ariaRequired?: boolean;
   /**
    * Show file size in the token. Use `i18nStrings.formatFileSize` to customize it.
-   * Default: `false`.
    */
   showFileSize?: boolean;
   /**
    * Show file last modified timestamp in the token. Use `i18nStrings.formatFileLastModified` to customize it.
-   * Default: `false`.
    */
   showFileLastModified?: boolean;
   /**
    * Show file thumbnail in the token. Only supported for images.
-   * Default: `false`.
    */
   showFileThumbnail?: boolean;
   /**
    * Specifies the native file input `multiple` attribute to allow users entering more than one file.
-   * Default: `false`.
    */
   multiple?: boolean;
   /**

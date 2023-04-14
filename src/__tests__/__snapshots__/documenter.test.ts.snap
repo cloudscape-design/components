@@ -5775,29 +5775,25 @@ single form field.",
       "type": "boolean",
     },
     Object {
-      "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
-Default: \`false\`.",
+      "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.",
       "name": "multiple",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.
-Default: \`false\`.",
+      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.",
       "name": "showFileLastModified",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.
-Default: \`false\`.",
+      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.",
       "name": "showFileSize",
       "optional": true,
       "type": "boolean",
     },
     Object {
-      "description": "Show file thumbnail in the token. Only supported for images.
-Default: \`false\`.",
+      "description": "Show file thumbnail in the token. Only supported for images.",
       "name": "showFileThumbnail",
       "optional": true,
       "type": "boolean",
