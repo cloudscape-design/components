@@ -50,7 +50,8 @@ export default function ContentDisplayPreference({
     onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id) } : item)));
   };
 
-  const labelId = `${idPrefix}-label`;
+  const titleId = `${idPrefix}-title`;
+  const descriptionId = `${idPrefix}-description`;
 
   const sortedOptions = getSortedOptions({ options, order: value });
 
@@ -69,8 +70,10 @@ export default function ContentDisplayPreference({
 
   return (
     <div className={styles[componentPrefix]}>
-      <h3 {...className('title')}>{title}</h3>
-      <p {...className('description')} id={labelId}>
+      <h3 {...className('title')} id={titleId}>
+        {title}
+      </h3>
+      <p {...className('description')} id={descriptionId}>
         {description}
       </p>
       <DndContext
@@ -94,7 +97,7 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setActiveItem(null)}
       >
-        <ul {...className('option-list')} aria-describedby={labelId}>
+        <ul {...className('option-list')} aria-describedby={descriptionId} aria-labelledby={titleId}>
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (

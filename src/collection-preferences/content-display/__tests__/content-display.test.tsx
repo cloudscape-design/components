@@ -22,6 +22,18 @@ describe('Content Display preference', () => {
       expect(descriptionElement).toHaveTextContent('Content display description');
     });
 
+    it('applies correct ARIA label and description to options list', () => {
+      const wrapper = renderContentDisplay();
+      const titleId = wrapper.findTitle().getElement().id;
+      expect(titleId).toBeTruthy();
+      const descriptionId = wrapper.findDescription().getElement().id;
+      expect(descriptionId).toBeTruthy();
+      expect(titleId).not.toBe(descriptionId);
+      const list = wrapper.findAll('UL')[0].getElement();
+      expect(list.getAttribute('aria-labelledby')).toBe(titleId);
+      expect(list.getAttribute('aria-describedby')).toBe(descriptionId);
+    });
+
     it('displays list of options with correct semantics', () => {
       const wrapper = renderContentDisplay();
       const options = wrapper.findOptions();
