@@ -1,340 +1,158 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Link from '~components/link';
 import Table, { TableProps } from '~components/table';
-import Input from '~components/input';
-import SpaceBetween from '~components/space-between';
 import Header from '~components/header';
+import SpaceBetween from '~components/space-between';
+import Input from '~components/input';
 import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 
-export default () => {
-  const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
-    {
-      id: 'variable',
-      header: 'Variable name',
-      minWidth: 176,
-      cell: item => {
-        return item.name;
-      },
+const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
+  {
+    id: 'variable',
+    header: 'Simple table',
+    minWidth: 200,
+    cell: item => {
+      return item.name;
     },
-    {
-      id: 'description',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-2',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'alt',
-      header: 'Text value',
-      cell: item => item.alt || '-',
-      sortingField: 'alt',
-      editConfig: {
-        ariaLabel: 'Name',
-        editIconAriaLabel: 'editable',
-        errorIconAriaLabel: 'Name Error',
-        editingCell: (item, { currentValue, setValue }) => {
-          return (
-            <Input
-              autoFocus={true}
-              value={currentValue ?? item.name}
-              onChange={event => setValue(event.detail.value)}
-            />
-          );
-        },
-      },
-    },
-    {
-      id: 'description-3',
-      header: 'Description',
-      cell: item => <Link href="#">{item.description}</Link> || '-',
-    },
-    {
-      id: 'description-4',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-5',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-6',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-7',
-      header: 'Description',
-      cell: item => item.description || '-',
-    },
-    {
-      id: 'description-8',
-      header: 'Description',
-      cell: item => <Link href="#">{item.description}</Link> || '-',
-    },
-  ];
-  const ITEMS = [
-    {
-      name: 'Item 1',
-      alt: 'First',
-      description: 'This is the first item',
-      type: '1A',
-      size: 'Small',
-    },
-    {
-      name: 'Item 2',
-      alt: 'Second',
-      description: 'This is the second item',
-      type: '1B',
-      size: 'Large',
-    },
-    {
-      name: 'Item 3',
-      alt: 'Third',
-      description: '-',
-      type: '1A',
-      size: 'Large',
-    },
-    {
-      name: 'Item 4',
-      alt: 'Fourth',
-      description: 'This is the fourth item',
-      type: '2A',
-      size: 'Small',
-    },
-    {
-      name: 'Item 5',
-      alt: '-',
-      description: 'This is the fifth item with a longer description',
-      type: '2A',
-      size: 'Large',
-    },
-    {
-      name: 'Item 6',
-      alt: 'Sixth',
-      description: 'This is the sixth item',
-      type: '1A',
-      size: 'Small',
-    },
-  ];
+  },
+  {
+    id: 'description',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-2',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-3',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-4',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-5',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-6',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-7',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-8',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-9',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-10',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-11',
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+  {
+    id: 'description-12',
+    minWidth: 200,
+    header: 'Description',
+    cell: item => item.description || '-',
+  },
+];
+const ITEMS = [
+  {
+    name: 'Item 1',
+    alt: 'First',
+    description: 'This is the first item',
+    type: '1A',
+    size: 'Small',
+  },
+  {
+    name: 'Item 2',
+    alt: 'Second',
+    description: 'This is the second item',
+    type: '1B',
+    size: 'Large',
+  },
+  {
+    name: 'Item 3',
+    alt: 'Third',
+    description: '-',
+    type: '1A',
+    size: 'Large',
+  },
+  {
+    name: 'Item 4',
+    alt: 'Fourth',
+    description: 'This is the fourth item',
+    type: '2A',
+    size: 'Small',
+  },
+  {
+    name: 'Item 5',
+    alt: '-',
+    description: 'This is the fifth item with a longer description',
+    type: '2A',
+    size: 'Large',
+  },
+  {
+    name: 'Item 6',
+    alt: 'Sixth',
+    description: 'This is the sixth item',
+    type: '1A',
+    size: 'Small',
+  },
+];
 
+export default () => {
   const [preferences, setPreferences] = React.useState<CollectionPreferencesProps.Preferences>({
     stickyColumns: { first: 1, last: 1 },
   });
-
-  const [singleSelectedItems, setSingleSelectedItems] = React.useState([
-    { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
-  ]);
-  const [multiSelectedItems, setMultiSelectedItems] = React.useState([
-    { alt: 'First', description: 'This is the first item', name: 'Item 1', size: 'Small', type: '1A' },
-  ]);
 
   return (
     <ScreenshotArea>
       <SpaceBetween size="xl">
         <Table
-          stripedRows={true}
-          stickyColumns={preferences.stickyColumns}
+          data-test-id="simple"
+          stickyColumns={{ first: 1, last: 1 }}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
-          resizableColumns={true}
           sortingDisabled={true}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
           header={<Header>Simple table</Header>}
         />
         <Table
-          stickyColumns={preferences.stickyColumns}
-          columnDefinitions={COLUMN_DEFINITIONS}
-          items={ITEMS}
+          data-test-id="resizable"
           resizableColumns={true}
-          variant="embedded"
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
-          header={<Header>Embedded table</Header>}
-        />
-
-        <Table
-          selectionType="single"
-          selectedItems={singleSelectedItems}
-          onSelectionChange={({ detail: { selectedItems } }) => {
-            setSingleSelectedItems(selectedItems);
-          }}
-          stickyColumns={preferences.stickyColumns}
+          stickyColumns={{ first: 1, last: 1 }}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
-          trackBy={item => item.alt}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
-          header={<Header>Simple table with selection type `single`</Header>}
+          header={<Header>Resizable columns</Header>}
         />
         <Table
-          selectionType="multi"
-          selectedItems={multiSelectedItems}
-          onSelectionChange={({ detail: { selectedItems } }) => {
-            setMultiSelectedItems(selectedItems);
-          }}
-          trackBy={item => item.alt}
+          data-test-id="with-collection-preferences"
           stickyColumns={preferences.stickyColumns}
-          columnDefinitions={COLUMN_DEFINITIONS}
-          items={ITEMS}
-          sortingDisabled={true}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
-          header={<Header>Simple table with selection type `multi`</Header>}
-        />
-        <Table
-          resizableColumns={true}
-          stickyColumns={preferences.stickyColumns}
-          columnDefinitions={COLUMN_DEFINITIONS}
-          items={ITEMS}
-          sortingDisabled={true}
-          preferences={
-            <CollectionPreferences
-              title="Preferences"
-              confirmLabel="Confirm"
-              cancelLabel="Cancel"
-              onConfirm={({ detail }) => setPreferences(detail)}
-              preferences={preferences}
-              stickyColumnsPreference={{
-                firstColumns: {
-                  title: 'First column(s)',
-                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'First column', value: 1 },
-                    { label: 'First two columns', value: 2 },
-                  ],
-                },
-                lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
-                  options: [
-                    { label: 'None', value: 0 },
-                    { label: 'Last column', value: 1 },
-                  ],
-                },
-              }}
-            />
-          }
-          header={<Header>Table with resizable columns</Header>}
-        />
-
-        <Table
           stickyHeader={true}
-          stickyColumns={preferences.stickyColumns}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -344,7 +162,7 @@ export default () => {
               preferences={preferences}
               stickyColumnsPreference={{
                 firstColumns: {
-                  title: 'First column(s)',
+                  title: 'Stick first column(s)',
                   description: 'Keep the first column(s) visible while horizontally scrolling table content.',
                   options: [
                     { label: 'None', value: 0 },
@@ -353,8 +171,8 @@ export default () => {
                   ],
                 },
                 lastColumns: {
-                  title: 'Stick last visible column',
-                  description: 'Keep the last column visible when tables are wider than the viewport.',
+                  title: 'Stick last column',
+                  description: 'Keep the last column visible while horizontally scrolling table content.',
                   options: [
                     { label: 'None', value: 0 },
                     { label: 'Last column', value: 1 },
@@ -363,6 +181,14 @@ export default () => {
               }}
             />
           }
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          header={<Header>Simple table with collection preferences & sticky-header</Header>}
+        />
+        <Table
+          data-test-id="inline-editing"
+          stickyColumns={{ first: 1, last: 1 }}
           columnDefinitions={[
             {
               id: 'inline-edit-start',
@@ -406,89 +232,37 @@ export default () => {
               },
             },
           ]}
-          items={[...ITEMS]}
+          items={ITEMS}
           sortingDisabled={true}
-          header={<Header>Table with sticky inline editing</Header>}
+          header={<Header>Inline editing columns</Header>}
         />
         <Table
-          stickyColumns={preferences.stickyColumns}
-          stickyHeader={true}
+          data-test-id="selection-single"
+          selectionType="single"
+          stickyColumns={{ first: 1, last: 1 }}
           columnDefinitions={COLUMN_DEFINITIONS}
-          items={[...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS]}
+          items={ITEMS}
           sortingDisabled={true}
-          header={<Header>Table sticky header</Header>}
+          header={<Header>Selection type single</Header>}
+        />
+        <Table
+          data-test-id="selection-multi"
+          selectionType="multi"
+          stickyColumns={{ first: 1, last: 1 }}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          header={<Header>Selection type multi</Header>}
+        />
+        <Table
+          data-test-id="focusable-element"
+          stickyColumns={{ first: 3, last: 2 }}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          header={<Header>With 5 sticky columns</Header>}
         />
       </SpaceBetween>
-      <Table
-        stickyColumns={preferences.stickyColumns}
-        columnDefinitions={COLUMN_DEFINITIONS}
-        items={ITEMS}
-        variant="stacked"
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            onConfirm={({ detail }) => setPreferences(detail)}
-            preferences={preferences}
-            stickyColumnsPreference={{
-              firstColumns: {
-                title: 'First column(s)',
-                description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'First column', value: 1 },
-                  { label: 'First two columns', value: 2 },
-                ],
-              },
-              lastColumns: {
-                title: 'Stick last visible column',
-                description: 'Keep the last column visible when tables are wider than the viewport.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'Last column', value: 1 },
-                ],
-              },
-            }}
-          />
-        }
-        header={<Header>Stacked table</Header>}
-      />
-      <Table
-        stickyColumns={preferences.stickyColumns}
-        columnDefinitions={COLUMN_DEFINITIONS}
-        items={ITEMS}
-        variant="stacked"
-        preferences={
-          <CollectionPreferences
-            title="Preferences"
-            confirmLabel="Confirm"
-            cancelLabel="Cancel"
-            onConfirm={({ detail }) => setPreferences(detail)}
-            preferences={preferences}
-            stickyColumnsPreference={{
-              firstColumns: {
-                title: 'First column(s)',
-                description: 'Keep the first column(s) visible while horizontally scrolling table content.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'First column', value: 1 },
-                  { label: 'First two columns', value: 2 },
-                ],
-              },
-              lastColumns: {
-                title: 'Stick last visible column',
-                description: 'Keep the last column visible when tables are wider than the viewport.',
-                options: [
-                  { label: 'None', value: 0 },
-                  { label: 'Last column', value: 1 },
-                ],
-              },
-            }}
-          />
-        }
-        header={<Header>Stacked table</Header>}
-      />
     </ScreenshotArea>
   );
 };
