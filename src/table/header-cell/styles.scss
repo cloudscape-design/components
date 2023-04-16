@@ -80,7 +80,7 @@ $active-separator-width: 2px;
   &-resizable {
     &:not(:last-child):before,
     &.is-visual-refresh:last-child:before {
-      border-left-color: awsui.$color-border-divider-interactive-default;
+      border-left-color: awsui.$color-border-control-default;
     }
   }
   &:not(.header-cell-resizable):before {
