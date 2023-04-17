@@ -12,6 +12,7 @@ import React, {
 } from 'react';
 import { applyDefaults } from '../defaults';
 import { AppLayoutContext } from '../../internal/context/app-layout-context';
+import { DynamicOverlapContext } from '../../internal/context/dynamic-overlap-context';
 import { AppLayoutProps } from '../interfaces';
 import { DrawersProps } from './drawers';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -60,7 +61,6 @@ interface AppLayoutInternals extends AppLayoutProps {
   notificationsElement: React.Ref<HTMLDivElement>;
   notificationsHeight: number;
   offsetBottom: number;
-  setDynamicOverlapHeight: (value: number) => void;
   setHasStickyBackground: (value: boolean) => void;
   setSplitPanelReportedSize: (value: number) => void;
   setSplitPanelReportedHeaderHeight: (value: number) => void;
@@ -601,7 +601,6 @@ export const AppLayoutInternalsProvider = React.forwardRef(
           notificationsElement,
           notificationsHeight,
           offsetBottom,
-          setDynamicOverlapHeight,
           setHasStickyBackground,
           setSplitPanelReportedSize,
           setSplitPanelReportedHeaderHeight,
@@ -629,10 +628,9 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             stickyOffsetTop: 0, // not used in this design. Sticky headers read a CSS-var instead
             hasBreadcrumbs: !!props.breadcrumbs,
             setHasStickyBackground,
-            setDynamicOverlapHeight,
           }}
         >
-          {children}
+          <DynamicOverlapContext.Provider value={setDynamicOverlapHeight}>{children}</DynamicOverlapContext.Provider>
         </AppLayoutContext.Provider>
       </AppLayoutInternalsContext.Provider>
     );
