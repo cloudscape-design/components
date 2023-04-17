@@ -40,30 +40,32 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
 
   const [cellOffsets, setCellOffsets] = useState<CellOffsets>({ first: [], last: [] });
 
-  const calculateOffsetWidths = (widths: number[]) => {
-    return widths.map((elem, index) => widths.slice(0, index + 1).reduce((a, b) => a + b));
-  };
-
   const updateCellOffsets = useCallback(() => {
     // Calculate widths of all previous siblings of each table cell in the `tableCellRefs` array
-    const firstColumnsOffsets = [
-      0,
-      ...tableCellRefs.map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
-    ];
-    const cumulativeFirstColumnsWidths = calculateOffsetWidths(firstColumnsOffsets);
+    let firstColumnsOffsets = tableCellRefs
+      .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+      .filter(Boolean);
+    // Calculate cumulative widths of previous siblings to get the total offset of each of the cells
+    firstColumnsOffsets = firstColumnsOffsets.map((elem, index) =>
+      firstColumnsOffsets.slice(0, index + 1).reduce((a, b) => a + b)
+    );
 
     // Calculate widths of all next siblings of each table cell in the `tableCellRefs` array
-    const lastColumnsOffsets = [
-      0,
-      ...tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
-    ];
-    const cumulativeLastColumnsWidths = calculateOffsetWidths(lastColumnsOffsets).reverse();
+    let lastColumnsOffsets = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
+    lastColumnsOffsets = lastColumnsOffsets.filter(Boolean).reverse();
+    // Calculate cumulative widths of next siblings to get the the total offset of each of the cells
+    lastColumnsOffsets = lastColumnsOffsets
+      .map((elem, index) => lastColumnsOffsets.slice(0, index + 1).reduce((a, b) => a + b))
+      .reverse();
 
-    setCellOffsets({ first: cumulativeFirstColumnsWidths, last: cumulativeLastColumnsWidths });
+    setCellOffsets({ first: [0, ...firstColumnsOffsets], last: [...lastColumnsOffsets, 0] });
   }, [tableCellRefs]);
 
   useLayoutEffect(() => {
-    updateCellOffsets();
+    // Request animation frame to make sure effect runs after the browser's automatic table layout algorithm
+    requestAnimationFrame(() => {
+      updateCellOffsets();
+    });
   }, [updateCellOffsets]);
 
   return { cellOffsets, updateCellOffsets };

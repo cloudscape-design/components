@@ -42,9 +42,6 @@ $active-separator-width: 2px;
     &-last-right {
       box-shadow: awsui.$shadow-sticky-column-end;
       clip-path: inset(0 0 0 -24px);
-      &:not(.header-cell-resizable):before {
-        display: none;
-      }
     }
   }
   &-stuck:not(.header-cell-variant-full-page) {
