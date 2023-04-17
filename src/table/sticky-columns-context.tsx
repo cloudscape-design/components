@@ -43,7 +43,7 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
     if (wrapper && table) {
       const tableLeftPadding = parseInt(getComputedStyle(table).paddingLeft);
       const tableRightPadding = parseInt(getComputedStyle(table).paddingRight);
-      const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
+      const right = Math.ceil(wrapper.scrollLeft) < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
       const left = wrapper.scrollLeft > tableLeftPadding;
       return { left, right };
     }
