@@ -8,12 +8,13 @@ import styles from '../styles.css.js';
 import DragHandle from '../../internal/drag-handle';
 import InternalToggle from '../../toggle/internal';
 import { CollectionPreferencesProps } from '../interfaces';
+import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-const getClassName = (suffix: string) => styles[`sortable-item-${suffix}`];
+const componentPrefix = 'sortable-item';
+const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 export function SortableItem({
   dragHandleAriaLabel,
-  idPrefix,
   isVisible,
   isKeyboard,
   onKeyDown,
@@ -21,7 +22,6 @@ export function SortableItem({
   option,
 }: {
   dragHandleAriaLabel?: string;
-  idPrefix: string;
   isKeyboard: boolean;
   isVisible: boolean;
   onKeyDown?: (event: React.KeyboardEvent) => void;
@@ -35,6 +35,7 @@ export function SortableItem({
     transform: CSS.Translate.toString(transform),
   };
 
+  const idPrefix = useUniqueId(componentPrefix);
   const controlId = `${idPrefix}-control-${option.id}`;
 
   const dragHandleAttributes = {

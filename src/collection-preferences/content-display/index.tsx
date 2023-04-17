@@ -107,7 +107,6 @@ export default function ContentDisplayPreference({
                 <SortableItem
                   dragHandleAriaLabel={dragHandleAriaLabel}
                   key={option.id}
-                  idPrefix={idPrefix}
                   isKeyboard={isKeyboard}
                   isVisible={isVisible(option.id)}
                   onKeyDown={handleKeyDown}
