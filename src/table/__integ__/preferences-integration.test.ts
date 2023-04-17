@@ -43,30 +43,9 @@ test(
   })
 );
 test(
-  'changes visible columns',
+  'changes column visibility',
   useBrowser(async browser => {
     await browser.url('#/light/table/hooks');
-    const page = new BasePageObject(browser);
-    await page.waitForVisible(wrapper.findRows().toSelector());
-    await expect(
-      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
-    ).resolves.toEqual(['ID', 'Type', 'DNS name', 'State']);
-
-    await page.click(preferences.findTriggerButton().toSelector());
-    await page.waitForVisible(preferences.findModal().toSelector());
-    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 2).toSelector());
-    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 3).toSelector());
-    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 4).toSelector());
-    await page.click(preferences.findModal().findConfirmButton().toSelector());
-    await expect(
-      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
-    ).resolves.toEqual(['ID', 'Image ID', 'State']);
-  })
-);
-test(
-  'changes visible columns using the Content Display preference',
-  useBrowser(async browser => {
-    await browser.url('#/light/table/reorder-columns');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(
@@ -89,7 +68,7 @@ test(
 test(
   'changes column order',
   useBrowser(async browser => {
-    await browser.url('#/light/table/reorder-columns');
+    await browser.url('#/light/table/hooks');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(
@@ -109,5 +88,26 @@ test(
     await expect(
       page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
     ).resolves.toEqual(['ID', 'DNS name', 'Type', 'State']);
+  })
+);
+test(
+  'changes visible columns using the deprecated Visible Column preference',
+  useBrowser(async browser => {
+    await browser.url('#/light/table/deprecated.visible-content');
+    const page = new BasePageObject(browser);
+    await page.waitForVisible(wrapper.findRows().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'Type', 'DNS name', 'State']);
+
+    await page.click(preferences.findTriggerButton().toSelector());
+    await page.waitForVisible(preferences.findModal().toSelector());
+    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 2).toSelector());
+    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 3).toSelector());
+    await page.click(preferences.findModal().findVisibleContentPreference().findToggleByIndex(1, 4).toSelector());
+    await page.click(preferences.findModal().findConfirmButton().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'Image ID', 'State']);
   })
 );
