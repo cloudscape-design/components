@@ -2,16 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CollectionPreferencesProps } from '../interfaces';
 
+export interface OptionWithVisibility extends CollectionPreferencesProps.ContentDisplayOption {
+  visible?: boolean;
+}
+
 export function getSortedOptions({
   options,
-  order,
+  contentDisplay,
 }: {
   options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
-  order: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
-}) {
-  const optionsSet: Record<string, CollectionPreferencesProps.ContentDisplayOption> = options.reduce(
+  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
+}): ReadonlyArray<OptionWithVisibility> {
+  const optionsById: Record<string, CollectionPreferencesProps.ContentDisplayOption> = options.reduce(
     (currentValue, option) => ({ ...currentValue, [option.id]: option }),
     {}
   );
-  return order.map(({ id }) => optionsSet[id]).filter(Boolean);
+  return contentDisplay
+    .map(({ id, visible }: CollectionPreferencesProps.ContentDisplayItem) => ({
+      ...optionsById[id],
+      visible,
+    }))
+    .filter(Boolean);
 }

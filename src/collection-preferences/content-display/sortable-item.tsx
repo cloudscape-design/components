@@ -7,15 +7,14 @@ import clsx from 'clsx';
 import styles from '../styles.css.js';
 import DragHandle from '../../internal/drag-handle';
 import InternalToggle from '../../toggle/internal';
-import { CollectionPreferencesProps } from '../interfaces';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { OptionWithVisibility } from './utils';
 
 const componentPrefix = 'sortable-item';
 const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 export function SortableItem({
   dragHandleAriaLabel,
-  isVisible,
   isKeyboard,
   onKeyDown,
   onToggle,
@@ -23,10 +22,9 @@ export function SortableItem({
 }: {
   dragHandleAriaLabel?: string;
   isKeyboard: boolean;
-  isVisible: boolean;
   onKeyDown?: (event: React.KeyboardEvent) => void;
-  onToggle: (id: string) => void;
-  option: CollectionPreferencesProps.ContentDisplayOption;
+  onToggle: (option: OptionWithVisibility) => void;
+  option: OptionWithVisibility;
 }) {
   const { isDragging, isSorting, listeners, over, rect, setNodeRef, transform } = useSortable({
     id: option.id,
@@ -86,8 +84,8 @@ export function SortableItem({
         </label>
         <div className={getClassName('toggle')}>
           <InternalToggle
-            checked={isVisible}
-            onChange={() => onToggle(option.id)}
+            checked={!!option.visible}
+            onChange={() => onToggle(option)}
             disabled={option.alwaysVisible === true}
             controlId={controlId}
           />

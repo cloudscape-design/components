@@ -5,7 +5,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
 import { CollectionPreferencesProps } from '../interfaces';
 import styles from '../styles.css.js';
-import { getSortedOptions } from './utils';
+import { getSortedOptions, OptionWithVisibility } from './utils';
 import { DndContext } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from './sortable-item';
@@ -39,19 +39,14 @@ export default function ContentDisplayPreference({
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
 
-  const isVisible = (id: string) => {
-    const option = options.find(option => option.id === id);
-    return !!(option?.alwaysVisible || value.find(item => item.id === id)?.visible);
-  };
-
-  const onToggle = (id: string) => {
-    onChange(value.map(item => (item.id === id ? { ...item, visible: !isVisible(id) } : item)));
+  const onToggle = (option: OptionWithVisibility) => {
+    onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
   };
 
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedOptions = getSortedOptions({ options, order: value });
+  const sortedOptions = getSortedOptions({ options, contentDisplay: value });
 
   const { activeItem, collisionDetection, handleKeyDown, isKeyboard, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
@@ -102,19 +97,16 @@ export default function ContentDisplayPreference({
           role="list"
         >
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
-            {sortedOptions.map(option => {
-              return (
-                <SortableItem
-                  dragHandleAriaLabel={dragHandleAriaLabel}
-                  key={option.id}
-                  isKeyboard={isKeyboard}
-                  isVisible={isVisible(option.id)}
-                  onKeyDown={handleKeyDown}
-                  onToggle={onToggle}
-                  option={option}
-                />
-              );
-            })}
+            {sortedOptions.map(option => (
+              <SortableItem
+                dragHandleAriaLabel={dragHandleAriaLabel}
+                key={option.id}
+                isKeyboard={isKeyboard}
+                onKeyDown={handleKeyDown}
+                onToggle={onToggle}
+                option={option}
+              />
+            ))}
           </SortableContext>
         </ul>
       </DndContext>

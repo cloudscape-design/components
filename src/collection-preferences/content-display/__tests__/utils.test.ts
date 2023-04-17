@@ -3,7 +3,7 @@
 import { getSortedOptions } from '../utils';
 
 describe('getSortedOptions', () => {
-  it('returns the passed-in options sorted according to the desired order', () => {
+  it('returns the passed-in options with the desired order and visibility', () => {
     const options = [
       {
         id: 'a',
@@ -11,13 +11,17 @@ describe('getSortedOptions', () => {
       },
       { id: 'b', label: 'b' },
     ];
-    const order = [{ id: 'b' }, { id: 'a' }];
-    const result = getSortedOptions({ options, order });
+    const contentDisplay = [
+      { id: 'b', visible: false },
+      { id: 'a', visible: true },
+    ];
+    const result = getSortedOptions({ options, contentDisplay });
     expect(result).toEqual([
-      { id: 'b', label: 'b' },
+      { id: 'b', label: 'b', visible: false },
       {
         id: 'a',
         label: 'a',
+        visible: true,
       },
     ]);
   });
@@ -31,14 +35,18 @@ describe('getSortedOptions', () => {
       },
       { id: 'b', label: 'b' },
     ];
-    const order = [{ id: 'b' }, { id: 'a' }];
-    const result = getSortedOptions({ options, order });
+    const contentDisplay = [
+      { id: 'b', visible: false },
+      { id: 'a', visible: true },
+    ];
+    const result = getSortedOptions({ options, contentDisplay });
     expect(result).toEqual([
-      { id: 'b', label: 'b' },
+      { id: 'b', label: 'b', visible: false },
       {
         id: 'a',
         label: 'a',
         alwaysVisible: true,
+        visible: true,
       },
     ]);
   });
