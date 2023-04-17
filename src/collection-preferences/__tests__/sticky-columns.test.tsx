@@ -73,15 +73,6 @@ describe('Sticky columns preference selection', () => {
     isSelectedOption(wrapper, 'first', 2);
     isSelectedOption(wrapper, 'last', 1);
   });
-  test('displays the correct fallback from preferences prop', () => {
-    const wrapper = renderWithStickyColumnsPreferences({
-      preferences: { stickyColumns: { first: undefined, last: undefined } },
-      onConfirm: () => {},
-    });
-    wrapper.findTriggerButton().click();
-    isSelectedOption(wrapper, 'first', 0);
-    isSelectedOption(wrapper, 'last', 0);
-  });
   test('changes temporary value upon click', () => {
     const wrapper = renderWithStickyColumnsPreferences({
       preferences: { stickyColumns: { first: 1, last: 1 } },

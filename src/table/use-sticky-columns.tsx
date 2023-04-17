@@ -159,7 +159,6 @@ export const useStickyColumns = ({
       if (!stickySide) {
         return { sticky: {}, stuck: {} };
       }
-
       const isFirstColumn = colIndex === 0;
       let stuck = {};
       if (isFirstColumn && !hasSelection && tableLeftPadding !== 0) {
@@ -168,11 +167,12 @@ export const useStickyColumns = ({
       // Determine the offset of the sticky column using the `cellOffsets` state object
       const offsetKey = stickySide === 'right' ? 'last' : 'first';
       const stickyColumnOffset = cellOffsets[offsetKey]?.[colIndex + (hasSelection ? 1 : 0)];
-
       return {
-        sticky: {
-          [stickySide]: `${stickyColumnOffset}px`,
-        },
+        sticky: stickyColumnOffset
+          ? {
+              [stickySide]: `${stickyColumnOffset}px`,
+            }
+          : {},
         stuck,
       };
     },

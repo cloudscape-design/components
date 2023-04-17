@@ -45,7 +45,7 @@ describe('useStickyColumns', () => {
       isLastStickyLeft: true,
       isLastStickyRight: false,
       stickyStyles: {
-        sticky: { left: '0px' },
+        sticky: {},
         stuck: { paddingLeft: '10px' },
       },
     });
