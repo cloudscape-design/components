@@ -34,7 +34,7 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useStickyColumns } from './use-sticky-columns';
-import { StickyColumnsContextProvider } from './use-sticky-columns-context';
+import { StickyColumnsContextProvider } from './sticky-columns-context';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;

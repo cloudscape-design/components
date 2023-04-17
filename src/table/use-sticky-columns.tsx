@@ -57,8 +57,8 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
 
     // Calculate widths of all next siblings of each table cell in the `tableCellRefs` array
     const lastColumnsOffsets = [
-      ...tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
       0,
+      ...tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth).filter(Boolean),
     ];
     const cumulativeLastColumnsWidths = calculateOffsetWidths(lastColumnsOffsets).reverse();
 
@@ -106,6 +106,7 @@ export const useStickyColumns = ({
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
   const noStickyColumns = !stickyColumns || (stickyColumns.first === 0 && stickyColumns.last === 0);
+  const columnsLengthWithSelection = visibleColumnsLength + (hasSelection ? 1 : 0);
 
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
@@ -113,16 +114,16 @@ export const useStickyColumns = ({
 
   // Compute left table padding
   const table = tableRefObject.current;
-  const tableLeftPadding = table ? Number(getComputedStyle(table).paddingLeft.slice(0, -2)) : 0;
+  const tableLeftPadding = table ? parseInt(getComputedStyle(table).paddingLeft) : 0;
 
   const { first = 0, last = 0 } = stickyColumns || {};
   // Calculate the indexes of the last left and right sticky columns, taking into account the selection column
   const lastLeftStickyColumnIndex = first + (hasSelection ? 1 : 0);
-  const lasRightStickyColumnIndex = visibleColumnsLength - 1 - last + (hasSelection ? 1 : 0);
+  const lastRightStickyColumnIndex = columnsLengthWithSelection - 1 - last;
 
   // Get the width of the first and last sticky columns using the `cellOffsets` state, or use 0 if it's not available
-  const firstStickyColumnsWidth = cellOffsets?.first[lastLeftStickyColumnIndex] ?? 0;
-  const lastStickyColumnsWidth = cellOffsets?.last[lasRightStickyColumnIndex] ?? 0;
+  const firstStickyColumnsWidth = cellOffsets.first[lastLeftStickyColumnIndex] ?? 0;
+  const lastStickyColumnsWidth = cellOffsets.last[lastRightStickyColumnIndex] ?? 0;
 
   // Calculate the sum of all sticky columns' widths
   const totalStickySpace = firstStickyColumnsWidth + lastStickyColumnsWidth;
@@ -148,17 +149,14 @@ export const useStickyColumns = ({
   useEffect(() => {
     // Create new refs for the visible columns and selection column, if present
     setTableCellRefs(tableCellRefs =>
-      [...new Array(visibleColumnsLength + (hasSelection ? 1 : 0))].map(
+      [...new Array(columnsLengthWithSelection)].map(
         (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
       )
     );
-  }, [visibleColumnsLength, hasSelection]);
+  }, [columnsLengthWithSelection, hasSelection]);
 
   const getStickyStyles = useCallback(
-    (colIndex: number, isStickyLeft: boolean, isStickyRight: boolean) => {
-      // Determine which side to apply sticky styles to
-      const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
-
+    (colIndex: number, stickySide: 'left' | 'right' | '') => {
       if (!stickySide) {
         return { sticky: {}, stuck: {} };
       }
@@ -170,7 +168,7 @@ export const useStickyColumns = ({
       }
       // Determine the offset of the sticky column using the `cellOffsets` state object
       const offsetKey = stickySide === 'right' ? 'last' : 'first';
-      const stickyColumnOffset = cellOffsets?.[offsetKey]?.[colIndex + (hasSelection ? 1 : 0)];
+      const stickyColumnOffset = cellOffsets[offsetKey]?.[colIndex + (hasSelection ? 1 : 0)];
 
       return {
         sticky: {
@@ -204,7 +202,8 @@ export const useStickyColumns = ({
       const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.last ?? 0);
 
       // Get the sticky styles
-      const stickyStyles = getStickyStyles(colIndex, isStickyLeft, isStickyRight);
+      const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+      const stickyStyles = getStickyStyles(colIndex, stickySide);
       return {
         isSticky: isStickyLeft || isStickyRight,
         isLastStickyLeft,

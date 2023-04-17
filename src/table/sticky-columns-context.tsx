@@ -37,12 +37,12 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
 }) => {
   const callbacks = useRef<Set<(entry: any) => void>>(new Set());
 
-  const checkStickyState = React.useCallback(() => {
+  const checkStickyState = useCallback(() => {
     const wrapper = wrapperRef.current;
     const table = tableRef.current;
     if (wrapper && table) {
-      const tableLeftPadding = Number(getComputedStyle(table).paddingLeft.slice(0, -2));
-      const tableRightPadding = Number(getComputedStyle(table).paddingRight.slice(0, -2));
+      const tableLeftPadding = parseInt(getComputedStyle(table).paddingLeft);
+      const tableRightPadding = parseInt(getComputedStyle(table).paddingRight);
       const right = wrapper.scrollLeft < wrapper.scrollWidth - wrapper.clientWidth - tableRightPadding;
       const left = wrapper.scrollLeft > tableLeftPadding;
       return { left, right };

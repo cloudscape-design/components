@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { useState, useCallback, useEffect } from 'react';
-import { useStickyColumnsContext } from './use-sticky-columns-context';
+import { useStickyColumnsContext } from './sticky-columns-context';
 
 export function useStickyState(isLastStickyLeft = false, isLastStickyRight = false) {
   const [isStuckToTheLeft, setIsStuckToTheLeft] = useState(false);
