@@ -2,11 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
+import { CellOffsets } from './internal';
 import clsx from 'clsx';
-interface CellOffsets {
-  first: number[];
-  last: number[];
-}
 interface StickyStyles {
   sticky: {
     left?: string;

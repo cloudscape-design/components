@@ -67,9 +67,6 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
     if (!shouldDisableStickyColumns) {
       wrapper && wrapper.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', scrollHandler);
-    } else if (shouldDisableStickyColumns) {
-      wrapper && wrapper.removeEventListener('scroll', scrollHandler);
-      window.removeEventListener('resize', scrollHandler);
     }
 
     return () => {
