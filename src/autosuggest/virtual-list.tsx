@@ -4,7 +4,9 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'reac
 import { useVirtual } from 'react-virtual';
 
 import OptionsList from '../internal/components/options-list';
+import { optionKeyExtractor } from '../internal/components/option/utils/key-extractor';
 import { useContainerQuery } from '../internal/hooks/container-queries';
+import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 
 import AutosuggestOption from './autosuggest-option';
 import { getOptionProps, ListProps } from './plain-list';
@@ -28,6 +30,7 @@ const VirtualList = ({
   const rowVirtualizer = useVirtual({
     size: autosuggestItemsState.items.length,
     parentRef: scrollRef,
+    keyExtractor: useStableEventHandler(index => optionKeyExtractor(autosuggestItemsState.items[index], index)),
     // estimateSize is a dependency of measurements memo. We update it to force full recalculation
     // when the height of any option could have changed:
     // 1: because the component got resized (width property got updated)

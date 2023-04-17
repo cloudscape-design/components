@@ -3,10 +3,12 @@
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import OptionsList from '../../internal/components/options-list';
+import { optionKeyExtractor } from '../../internal/components/option/utils/key-extractor';
 import { renderOptions } from '../utils/render-options';
 import { useVirtual } from 'react-virtual';
 import { SelectListProps } from './plain-list';
 import { useContainerQuery } from '../../internal/hooks/container-queries';
+import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 
 import styles from './styles.css.js';
 
@@ -38,6 +40,7 @@ const VirtualListOpen = forwardRef(
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       size: filteredOptions.length,
       parentRef: menuRefObject,
+      keyExtractor: useStableEventHandler(index => optionKeyExtractor(filteredOptions[index], index)),
       // estimateSize is a dependency of measurements memo. We update it to force full recalculation
       // when the height of any option could have changed:
       // 1: because the component got resized (width property got updated)
