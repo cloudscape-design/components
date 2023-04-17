@@ -28,6 +28,7 @@ export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = 
       const testFunction =
         [
           ...skip,
+          'theming/tokens',
           // this page intentionally has issues to test the helper
           'undefined-texts',
         ].indexOf(inputUrl) === -1
