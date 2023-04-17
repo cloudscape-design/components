@@ -50,23 +50,26 @@ export default function useDragAndDropReorder({
 }) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
-  const [activeItem, setActiveItem] = useState<UniqueIdentifier | null>(null);
+  const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);
 
-  if (!activeItem) {
-    isKeyboard.current = false;
-    positionDelta.current = 0;
-  }
+  const setActiveItem = (id: UniqueIdentifier | null) => {
+    setActiveItemId(id);
+    if (!id) {
+      isKeyboard.current = false;
+      positionDelta.current = 0;
+    }
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (isKeyboard.current && activeItem) {
-      const currentTargetIndex = sortedOptions.findIndex(({ id }) => id === activeItem) + positionDelta.current;
+    if (isKeyboard.current && activeItemId) {
+      const currentTargetIndex = sortedOptions.findIndex(({ id }) => id === activeItemId) + positionDelta.current;
       if (event.key === 'ArrowDown' && currentTargetIndex < sortedOptions.length - 1) {
         positionDelta.current += 1;
       } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
         positionDelta.current -= 1;
       }
     }
-    if (activeItem && isEscape(event.key)) {
+    if (activeItemId && isEscape(event.key)) {
       // Prevent modal from closing when pressing Esc to cancel the dragging action
       event.stopPropagation();
     }
@@ -161,7 +164,7 @@ export default function useDragAndDropReorder({
   );
 
   return {
-    activeItem,
+    activeItem: activeItemId,
     collisionDetection,
     coordinateGetter,
     handleKeyDown,
