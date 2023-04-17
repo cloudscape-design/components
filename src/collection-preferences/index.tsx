@@ -26,8 +26,11 @@ import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import ContentDisplayPreference from './content-display';
+import { warnOnce } from '../internal/logging';
 
 export { CollectionPreferencesProps };
+
+const componentName = 'CollectionPreferences';
 
 export default function CollectionPreferences({
   title,
@@ -46,8 +49,8 @@ export default function CollectionPreferences({
   customPreference,
   ...rest
 }: CollectionPreferencesProps) {
-  const { __internalRootRef } = useBaseComponent('CollectionPreferences');
-  checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
+  const { __internalRootRef } = useBaseComponent(componentName);
+  checkControlled(componentName, 'preferences', preferences, 'onConfirm', onConfirm);
   const baseProps = getBaseProps(rest);
   const [modalVisible, setModalVisible] = useState(false);
   const [temporaryPreferences, setTemporaryPreferences] = useState(copyPreferences(preferences || {}));
@@ -83,6 +86,13 @@ export default function CollectionPreferences({
 
   const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
     setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
+
+  if (visibleContentPreference && contentDisplayPreference) {
+    warnOnce(
+      componentName,
+      'You provided both `visibleContentPreference` and `contentDisplayPreference`. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
+    );
+  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -196,4 +206,4 @@ export default function CollectionPreferences({
   );
 }
 
-applyDisplayName(CollectionPreferences, 'CollectionPreferences');
+applyDisplayName(CollectionPreferences, componentName);

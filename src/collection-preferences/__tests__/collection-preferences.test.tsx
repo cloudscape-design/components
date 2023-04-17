@@ -157,6 +157,8 @@ describe('Collection preferences - Preferences display', () => {
     expect(wrapper.findModal()!.findCustomPreference()!.getElement()).toHaveTextContent('CustomPref');
   });
   test('displays only content display preference when both visible content preference and content display preference are specified', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
     const wrapper = renderCollectionPreferences({
       visibleContentPreference,
       contentDisplayPreference,
@@ -164,5 +166,9 @@ describe('Collection preferences - Preferences display', () => {
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findVisibleContentPreference()).toBeNull();
     expect(wrapper.findModal()!.findContentDisplayPreference()).not.toBeNull();
+    expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      '[AwsUi] [CollectionPreferences] You provided both `visibleContentPreference` and `contentDisplayPreference` props. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
+    );
   });
 });
