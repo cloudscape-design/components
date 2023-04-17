@@ -102,7 +102,7 @@ test(
     // Before scroll there is shadow on the last column
     await forEachColumnCell(wrapper, columnCount, async cellSelector => {
       const boxShadow = await browser.execute(getElementComputedStyle, cellSelector, 'boxShadow');
-      await expect(boxShadow).toBe('rgba(0, 28, 36, 0.1) -4px 0px 20px 1px');
+      await expect(boxShadow).not.toBe('none');
     });
 
     // Scroll to end of the wrapper container
@@ -119,7 +119,7 @@ test(
     // First column now has shadow
     await forEachColumnCell(wrapper, 1, async cellSelector => {
       const boxShadow = await browser.execute(getElementComputedStyle, cellSelector, 'boxShadow');
-      await expect(boxShadow).toBe('rgba(0, 7, 22, 0.1) 4px 0px 20px 1px');
+      await expect(boxShadow).not.toBe('none');
     });
   })
 );

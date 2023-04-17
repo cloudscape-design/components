@@ -139,7 +139,7 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
 
 interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
   onChange: (value: any) => void;
-  value?: any;
+  value?: { first?: number; last?: number };
 }
 
 interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
@@ -152,13 +152,12 @@ interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPrefe
       value: number;
     }>;
   };
-  value?: any;
+  value?: number;
   firstOrLast: 'first' | 'last';
 }
 
 const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPreference) => {
   const { title, description, options } = preference;
-
   return (
     <InternalFormField
       className={styles[`sticky-columns-${firstOrLast}`]}
