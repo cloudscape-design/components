@@ -24,6 +24,7 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
+  ariaDescribedby?: string;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
@@ -47,6 +48,7 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
+  ariaDescribedby,
 }: AutosuggestOptionsListProps) {
   const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
   const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
@@ -70,7 +72,13 @@ export default function AutosuggestOptionsList({
       enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}
-      menuProps={{ id: listId, ariaLabelledby: controlId, onMouseUp: handleMouseUp, onMouseMove: handleMouseMove }}
+      menuProps={{
+        id: listId,
+        ariaLabelledby: controlId,
+        onMouseUp: handleMouseUp,
+        onMouseMove: handleMouseMove,
+        ariaDescribedby,
+      }}
       screenReaderContent={announcement}
     />
   );

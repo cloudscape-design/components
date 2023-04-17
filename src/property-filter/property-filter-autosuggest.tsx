@@ -145,6 +145,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     const selfControlId = useUniqueId('input');
     const controlId = rest.controlId ?? selfControlId;
     const listId = useUniqueId('list');
+    const footerId = useUniqueId('footer');
     const highlightedOptionIdSource = useUniqueId();
     const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
@@ -171,7 +172,10 @@ const PropertyFilterAutosuggest = React.forwardRef(
           handleLoadMore={autosuggestLoadMoreHandlers.fireLoadMoreOnScroll}
           hasDropdownStatus={dropdownStatus.content !== null}
           virtualScroll={virtualScroll}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerId : undefined}
         />
       );
     }
@@ -199,7 +203,11 @@ const PropertyFilterAutosuggest = React.forwardRef(
         dropdownContent={content}
         dropdownFooter={
           dropdownStatus.isSticky ? (
-            <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+            <DropdownFooter
+              content={dropdownStatus.content}
+              hasItems={autosuggestItemsState.items.length >= 1}
+              id={footerId}
+            />
           ) : null
         }
         dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}

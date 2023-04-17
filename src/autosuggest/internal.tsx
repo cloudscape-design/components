@@ -154,6 +154,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
+  const footerControlId = useUniqueId('footer');
   const controlId = formFieldContext.controlId ?? selfControlId;
   const listId = useUniqueId('list');
   const highlightedOptionIdSource = useUniqueId();
@@ -208,12 +209,19 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           virtualScroll={virtualScroll}
           selectedAriaLabel={selectedAriaLabel}
           renderHighlightedAriaLive={renderHighlightedAriaLive}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
         />
       }
       dropdownFooter={
         dropdownStatus.isSticky ? (
-          <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+          <DropdownFooter
+            id={footerControlId}
+            content={dropdownStatus.content}
+            hasItems={autosuggestItemsState.items.length >= 1}
+          />
         ) : null
       }
       loopFocus={statusType === 'error' && !!recoveryText}
