@@ -29,6 +29,14 @@ test('renders correct strings and aria labels', async () => {
   expect(modal.findDismissButton().getElement()).toHaveAttribute('aria-label', i18nStrings.labelModalDismiss);
 });
 
+test('modal has valid hierarchy of headings', async () => {
+  const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
+  const modal = wrapper.findModal()!;
+  expect(modal.findHeader().findAll('h2').length).toBe(1);
+  const table = wrapper.findTable()!;
+  expect(table.findHeaderSlot()!.findAll('h3').length).toBe(1);
+});
+
 test('renders alert content when provided', async () => {
   const wrapper = await renderModal(<S3Modal {...modalDefaultProps} alert={<div data-testid="test-alert" />} />);
   expect(wrapper.findModal()!.findContent().find('[data-testid="test-alert"]')).toBeTruthy();
