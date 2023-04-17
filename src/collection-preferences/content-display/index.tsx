@@ -97,7 +97,7 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setActiveItem(null)}
       >
-        <ul {...className('option-list')} aria-describedby={descriptionId} aria-labelledby={titleId}>
+        <ul {...className('option-list')} aria-describedby={descriptionId} aria-labelledby={titleId} role="list">
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (
