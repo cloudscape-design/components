@@ -72,14 +72,14 @@ export default function CollectionPreferences({
     setTemporaryPreferences(copyPreferences(preferences || {}));
   };
 
-  const hasLeftContent = !!(
+  const hasContentOnTheLeft = !!(
     pageSizePreference ||
     wrapLinesPreference ||
     stripedRowsPreference ||
     contentDensityPreference ||
     customPreference
   );
-  const hasRightContent = !!(visibleContentPreference || contentDisplayPreference);
+  const hasContentOnTheRight = !!(visibleContentPreference || contentDisplayPreference);
 
   const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
     setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
@@ -127,12 +127,12 @@ export default function CollectionPreferences({
             </InternalBox>
           }
           closeAriaLabel={cancelLabel}
-          size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
+          size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
           onDismiss={onCancelListener}
         >
           <ModalContentLayout
             left={
-              hasLeftContent && (
+              hasContentOnTheLeft && (
                 <InternalSpaceBetween size="l">
                   {pageSizePreference && (
                     <PageSizePreference
