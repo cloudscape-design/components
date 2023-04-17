@@ -5,6 +5,7 @@ import Table, { TableProps } from '~components/table';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 import Input from '~components/input';
+import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
 
@@ -65,7 +66,7 @@ const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
   {
     id: 'description-10',
     header: 'Description',
-    cell: item => item.description || '-',
+    cell: item => <Link href="#">Link: {item.description}</Link> || '-',
   },
   {
     id: 'description-11',
@@ -79,6 +80,7 @@ const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
     cell: item => item.description || '-',
   },
 ];
+
 const ITEMS = [
   {
     name: 'Item 1',

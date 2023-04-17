@@ -18,6 +18,12 @@ const getElementComputedStyle = (selector: string, styleProperty: keyof CSSStyle
   return style[styleProperty];
 };
 
+const getElementBoundingClientRect = (selector: string) => {
+  const el = document.querySelector<HTMLElement>(selector)!;
+  const rect = el.getBoundingClientRect();
+  return rect;
+};
+
 async function forEachColumnCell(
   wrapper: TableWrapper,
   column: number,
@@ -63,7 +69,7 @@ const checkStickyCells = async (
   }
 };
 
-async function navigateToTestPage(browser: any, dataTestId = 'simple', queryParams = '') {
+async function setupTest(browser: any, dataTestId = 'simple', queryParams = '') {
   await browser.url(`#/light/table/sticky-columns${queryParams}`);
   // Simple table has stickyColumns: {first: 1, last: 1}
   const wrapper = createWrapper().findTable(`[data-test-id='${dataTestId}']`);
@@ -79,11 +85,20 @@ async function navigateToTestPage(browser: any, dataTestId = 'simple', queryPara
 test(
   'first and last columns are sticky',
   useBrowser(async browser => {
-    const { wrapper } = await navigateToTestPage(browser);
+    const { wrapper } = await setupTest(browser);
 
     await checkStickyCells(browser, wrapper, 1, rowCount, true);
+    await forEachColumnCell(wrapper, 1, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      await expect(left).toBe('0px');
+    });
     await checkStickyCells(browser, wrapper, 2, rowCount, false);
+
     await checkStickyCells(browser, wrapper, columnCount - 1, rowCount, false);
+    await forEachColumnCell(wrapper, columnCount, async cellSelector => {
+      const right = await browser.execute(getElementComputedStyle, cellSelector, 'right');
+      await expect(right).toBe('0px');
+    });
     await checkStickyCells(browser, wrapper, columnCount, rowCount, true);
   })
 );
@@ -91,7 +106,7 @@ test(
 test(
   'shadows are displayed correctly',
   useBrowser(async browser => {
-    const { page, wrapper } = await navigateToTestPage(browser);
+    const { page, wrapper } = await setupTest(browser);
 
     // Before scroll there is no shadow on the first column
     await forEachColumnCell(wrapper, 1, async cellSelector => {
@@ -128,7 +143,7 @@ test(
   'padding gets applied to first column while stuck in VR',
   useBrowser(async browser => {
     // Simple table has stickyColumns: {first: 1, last: 1}
-    const { page, wrapper } = await navigateToTestPage(browser, 'simple', '?visualRefresh=true');
+    const { page, wrapper } = await setupTest(browser, 'simple', '?visualRefresh=true');
 
     // First column cells have no padding-left
     await forEachColumnCell(wrapper, 1, async cellSelector => {
@@ -153,7 +168,7 @@ test(
   'not enough space in viewport for feature to be enabled',
   useBrowser(async browser => {
     // Simple table has stickyColumns: {first: 1, last: 1}
-    const { page, wrapper } = await navigateToTestPage(browser);
+    const { page, wrapper } = await setupTest(browser);
 
     await checkStickyCells(browser, wrapper, 1, rowCount, true);
     await checkStickyCells(browser, wrapper, columnCount, rowCount, true);
@@ -169,7 +184,7 @@ test(
   'feature gets disabled after resizing columns to not allow enough scrollable space',
   useBrowser(async browser => {
     // Simple table has stickyColumns: {first: 1, last: 1}
-    const { page, wrapper } = await navigateToTestPage(browser, 'resizable');
+    const { page, wrapper } = await setupTest(browser, 'resizable');
     await page.setWindowSize({ width: 1000, height: 800 });
 
     await checkStickyCells(browser, wrapper, 1, rowCount, true);
@@ -186,7 +201,7 @@ test(
   'when table container is not scrollable, feature gets disabled',
   useBrowser(async browser => {
     // Simple table has stickyColumns: {first: 1, last: 1}
-    const { page, wrapper } = await navigateToTestPage(browser, 'resizable');
+    const { page, wrapper } = await setupTest(browser, 'resizable');
 
     const scrollableWrapperContainer = wrapper.find(`.${styles.wrapper}`);
     let overflow = await hasHorizontalOverflow(browser, scrollableWrapperContainer.toSelector());
@@ -204,6 +219,125 @@ test(
   })
 );
 
-// TODO: Checkboxes/Radio columns are also sticky
-// TODO: Inline editing cells are sticky
-// TODO: Focused element is not covered by sticky columns
+test(
+  'when table container is not scrollable, feature gets disabled',
+  useBrowser(async browser => {
+    // Simple table has stickyColumns: {first: 1, last: 1}
+    const { page, wrapper } = await setupTest(browser, 'resizable');
+
+    const scrollableWrapperContainer = wrapper.find(`.${styles.wrapper}`);
+    let overflow = await hasHorizontalOverflow(browser, scrollableWrapperContainer.toSelector());
+    expect(overflow).toBe(true);
+    await checkStickyCells(browser, wrapper, 1, rowCount, true);
+    await checkStickyCells(browser, wrapper, columnCount, rowCount, true);
+
+    // Make page wide enough for the table not to be scrollablee
+    await page.setWindowSize({ width: 2000, height: 800 });
+
+    overflow = await hasHorizontalOverflow(browser, scrollableWrapperContainer.toSelector());
+    expect(overflow).toBe(false);
+    await checkStickyCells(browser, wrapper, 1, rowCount, false);
+    await checkStickyCells(browser, wrapper, columnCount, rowCount, false);
+  })
+);
+
+test(
+  'single selection cells are sticky',
+  useBrowser(async browser => {
+    const { wrapper } = await setupTest(browser, 'selection-single');
+
+    await forEachColumnCell(wrapper, 1, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(left).toBe('0px');
+    });
+
+    await forEachColumnCell(wrapper, 2, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(left).toBe('40px');
+    });
+  })
+);
+
+test(
+  'multi selection cells are sticky',
+  useBrowser(async browser => {
+    const { wrapper } = await setupTest(browser, 'selection-multi');
+
+    await forEachColumnCell(wrapper, 1, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(left).toBe('0px');
+    });
+
+    await forEachColumnCell(wrapper, 2, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(left).toBe('40px');
+    });
+  })
+);
+
+test(
+  'inline editing cells are sticky',
+  useBrowser(async browser => {
+    const { wrapper } = await setupTest(browser, 'inline-editing');
+    await forEachColumnCell(wrapper, 1, async cellSelector => {
+      const left = await browser.execute(getElementComputedStyle, cellSelector, 'left');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(left).toBe('0px');
+    });
+
+    await forEachColumnCell(wrapper, columnCount, async cellSelector => {
+      const right = await browser.execute(getElementComputedStyle, cellSelector, 'right');
+      const position = await browser.execute(getElementComputedStyle, cellSelector, 'position');
+      await expect(position).toEqual('sticky');
+      await expect(right).toBe('0px');
+    });
+  })
+);
+
+test(
+  'focusable element is not hidden by the sticky columns',
+  useBrowser(async browser => {
+    const isStickyCellOverlapping = async () => {
+      const stickyCellRect = await browser.execute(
+        getElementBoundingClientRect,
+        wrapper.findBodyCell(1, 12).toSelector()
+      );
+      const focusedCellRect = await browser.execute(
+        getElementBoundingClientRect,
+        wrapper.findBodyCell(1, 11).toSelector()
+      );
+      return stickyCellRect.left < focusedCellRect.right;
+    };
+
+    const { page, wrapper } = await setupTest(browser, 'focusable-element');
+    await page.setWindowSize({ width: 2560, height: 800 });
+
+    await page.click(`[data-test-id='focusable-element'] h2`);
+
+    // It should be overlapping
+    expect(await isStickyCellOverlapping()).toBe(true);
+
+    // Tab to focus first link
+    await page.keys(['Tab', 'Tab']);
+    await page.waitForJsTimers();
+
+    // Ensure correct cell is focused
+    const focusedText = await page.getFocusedElementText();
+    await expect(focusedText).toBe('Link: This is the first item');
+    const focusedCellSelector = wrapper.findBodyCell(1, 11).toSelector() + ' a';
+    const isFocused = await page.isFocused(focusedCellSelector);
+    await expect(isFocused).toBe(true);
+
+    // Check that is not overlapping
+    expect(await isStickyCellOverlapping()).toBe(false);
+  })
+);
