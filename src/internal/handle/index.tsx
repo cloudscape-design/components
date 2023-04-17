@@ -6,6 +6,7 @@ import styles from './styles.css.js';
 
 function Handle(props: HTMLAttributes<HTMLDivElement>, ref: ForwardedRef<HTMLDivElement>) {
   function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
+    // Listen only to left button
     if (event.button !== 0) {
       return;
     }

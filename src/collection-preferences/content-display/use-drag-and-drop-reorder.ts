@@ -106,6 +106,7 @@ export default function useDragAndDropReorder({
       }
       return [];
     } else {
+      // For mouse usage, the closest center algorithm works fine
       return closestCenter({ active, collisionRect, droppableRects, droppableContainers, pointerCoordinates });
     }
   };
