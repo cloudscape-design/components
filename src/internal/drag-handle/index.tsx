@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ButtonHTMLAttributes, forwardRef } from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
 import Handle from '../handle';
 import InternalIcon from '../../icon/internal';
@@ -15,12 +15,10 @@ export interface DragHandleProps {
   listeners?: SyntheticListenerMap;
 }
 
-function DragHandle({ attributes, hideFocus, listeners }: DragHandleProps) {
+export default function DragHandle({ attributes, hideFocus, listeners }: DragHandleProps) {
   return (
     <Handle className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'])} {...attributes} {...listeners}>
       <InternalIcon name="drag-indicator" />
     </Handle>
   );
 }
-
-export default forwardRef(DragHandle);
