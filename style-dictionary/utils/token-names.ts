@@ -423,7 +423,11 @@ export type ColorsTokenName =
   | 'colorBoardPlaceholderActive'
   | 'colorBoardPlaceholderHover'
   | 'colorDragPlaceholderActive'
-  | 'colorDragPlaceholderHover';
+  | 'colorDragPlaceholderHover'
+  | 'colorDropzoneBackgroundActive'
+  | 'colorDropzoneBackgroundHover'
+  | 'colorDropzoneTextActive'
+  | 'colorDropzoneTextHover';
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'
@@ -503,6 +507,7 @@ export type BordersTokenName =
   | 'borderRadiusControlCircularFocusRing'
   | 'borderRadiusControlDefaultFocusRing'
   | 'borderRadiusDropdown'
+  | 'borderRadiusDropzone'
   | 'borderRadiusFlashbar'
   | 'borderRadiusInput'
   | 'borderRadiusItem'

@@ -235,7 +235,7 @@ test('disables tokens when multiselect is disabled', () => {
     <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} disabled={true} />
   );
 
-  expect(wrapper.findTokens()[0].getElement()).toHaveClass(tokenGroupStyles['token-disabled']);
+  expect(wrapper.findTokens()[0].getElement()).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('does not render token group when no tokens are present', () => {

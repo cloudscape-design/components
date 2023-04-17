@@ -23,7 +23,7 @@ interface FormFieldErrorProps {
   errorIconAriaLabel?: string;
 }
 
-export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => {
+export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
   const i18n = useInternalI18n('form-field');
 
   return (
@@ -40,7 +40,23 @@ export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldEr
       <span className={styles.error__message}>{children}</span>
     </div>
   );
-};
+}
+
+export function ConstraintText({
+  id,
+  hasError,
+  children,
+}: {
+  id?: string;
+  hasError: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div id={id} className={clsx(styles.constraint, hasError && styles['constraint-has-error'])}>
+      {children}
+    </div>
+  );
+}
 
 export default function InternalFormField({
   controlId,
@@ -127,12 +143,9 @@ export default function InternalFormField({
             </FormFieldError>
           )}
           {constraintText && (
-            <div
-              className={clsx(styles.constraint, errorText && styles['constraint-has-error'])}
-              id={slotIds.constraint}
-            >
+            <ConstraintText id={slotIds.constraint} hasError={!!errorText}>
               {constraintText}
-            </div>
+            </ConstraintText>
           )}
         </div>
       )}

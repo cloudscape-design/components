@@ -500,6 +500,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorDropzoneBackgroundActive: {
+    description: 'The color of file upload dropzone background in active state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneBackgroundHover: {
+    description: 'The color of file upload dropzone background in hovered state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneTextActive: {
+    description: 'The color of file upload dropzone text in active state.',
+    themeable: false,
+    public: false,
+  },
+  colorDropzoneTextHover: {
+    description: 'The color of file upload dropzone text in hovered state.',
+    themeable: false,
+    public: false,
+  },
 };
 
 export default metadata;
