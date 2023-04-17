@@ -9,9 +9,7 @@ import DragHandle from '../../internal/drag-handle';
 import InternalToggle from '../../toggle/internal';
 import { CollectionPreferencesProps } from '../interfaces';
 
-export const className = (suffix: string) => ({
-  className: styles[`sortable-item-${suffix}`],
-});
+const getClassName = (suffix: string) => styles[`sortable-item-${suffix}`];
 
 export function SortableItem({
   dragHandleAriaLabel,
@@ -68,11 +66,11 @@ export function SortableItem({
 
   return (
     <li className={clsx(styles['content-display-option'], styles['sortable-item'])}>
-      {isDragging && <div {...className('placeholder')} style={placeholderStyle} />}
+      {isDragging && <div className={getClassName('placeholder')} style={placeholderStyle} />}
       <div
         ref={setNodeRef}
         className={clsx(
-          className('content').className,
+          getClassName('content'),
           styles.draggable,
           isDragging && styles.active,
           isKeyboard && styles.keyboard,
@@ -82,10 +80,10 @@ export function SortableItem({
       >
         <DragHandle attributes={dragHandleAttributes} hideFocus={isDragging} listeners={combinedListeners} />
 
-        <label {...className('label')} htmlFor={controlId}>
+        <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}
         </label>
-        <div {...className('toggle')}>
+        <div className={getClassName('toggle')}>
           <InternalToggle
             checked={isVisible}
             onChange={() => onToggle(option.id)}

@@ -14,9 +14,7 @@ import useLiveAnnouncements from './use-live-announcements';
 
 const componentPrefix = 'content-display';
 
-const className = (suffix: string) => ({
-  className: styles[`${componentPrefix}-${suffix}`],
-});
+const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.ContentDisplayPreference {
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
@@ -70,10 +68,10 @@ export default function ContentDisplayPreference({
 
   return (
     <div className={styles[componentPrefix]}>
-      <h3 {...className('title')} id={titleId}>
+      <h3 className={getClassName('title')} id={titleId}>
         {title}
       </h3>
-      <p {...className('description')} id={descriptionId}>
+      <p className={getClassName('description')} id={descriptionId}>
         {description}
       </p>
       <DndContext
@@ -97,7 +95,12 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setActiveItem(null)}
       >
-        <ul {...className('option-list')} aria-describedby={descriptionId} aria-labelledby={titleId} role="list">
+        <ul
+          className={getClassName('option-list')}
+          aria-describedby={descriptionId}
+          aria-labelledby={titleId}
+          role="list"
+        >
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (
