@@ -130,7 +130,7 @@ const Thead = React.forwardRef(
                 hidden && headerCellStyles['header-cell-hidden'],
                 !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['sticky-cell']
               )}
-              style={{ left: cellOffsets?.first[0] }}
+              style={{ left: `${cellOffsets?.first[0]}px` }}
               scope="col"
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
