@@ -110,7 +110,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
     position: sticky;
     background: awsui.$color-background-container-content;
-    z-index: 801;
+    z-index: 801; // Our sticky elements should have z-index in the range of 800-850
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
     }
