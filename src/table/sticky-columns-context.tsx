@@ -64,7 +64,6 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
   useLayoutEffect(() => {
     const scrollHandler = createScrollHandler();
     const wrapper = wrapperRef.current;
-    const currentCallbacks = callbacks.current;
     if (!shouldDisableStickyColumns) {
       wrapper && wrapper.addEventListener('scroll', scrollHandler);
       window.addEventListener('resize', scrollHandler);
@@ -77,7 +76,7 @@ export const StickyColumnsContextProvider: StickyColumnsContextProvider = ({
       wrapper && wrapper.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', scrollHandler);
 
-      currentCallbacks.clear();
+      callbacks.current = new Set();
     };
   }, [createScrollHandler, wrapperRef, shouldDisableStickyColumns]);
 
