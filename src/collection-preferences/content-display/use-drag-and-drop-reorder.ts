@@ -92,24 +92,16 @@ export default function useDragAndDropReorder({
     pointerCoordinates,
   }) => {
     if (isKeyboard.current) {
-      const collidingContainerId = getClosestId(active);
-      if (collidingContainerId !== active.id) {
-        const collidingContainer = droppableContainers.find(({ id }) => id === collidingContainerId);
-        if (collidingContainer) {
-          return [
-            {
-              id: collidingContainer.id,
-              data: {
-                droppableContainer: collidingContainer,
-                value: 0,
-              },
-            },
-          ];
-        }
-      }
-      return [];
+      // For keyboard interaction, determine the colliding container based on the movements made by the arrow keys,
+      // via getClosestId
+      const collidingContainer = getCollidingContainer({
+        activeId: active.id,
+        closestId: getClosestId(active),
+        droppableContainers,
+      });
+      return collidingContainer ? [collidingContainer] : [];
     } else {
-      // For mouse usage, the closest center algorithm works fine
+      // For mouse interaction, use the closest center algorithm
       return closestCenter({ active, collisionRect, droppableRects, droppableContainers, pointerCoordinates });
     }
   };
@@ -176,6 +168,30 @@ export default function useDragAndDropReorder({
 
 function isAfter(a: DroppableContainer, b: DroppableContainer) {
   return hasSortableData(a) && hasSortableData(b) && a.data.current.sortable.index < b.data.current.sortable.index;
+}
+
+function getCollidingContainer({
+  activeId,
+  closestId,
+  droppableContainers,
+}: {
+  activeId: UniqueIdentifier;
+  closestId: UniqueIdentifier;
+  droppableContainers: DroppableContainer[];
+}) {
+  if (closestId === activeId) {
+    return;
+  }
+  const collidingContainer = droppableContainers.find(({ id }) => id === closestId);
+  if (collidingContainer) {
+    return {
+      id: collidingContainer.id,
+      data: {
+        droppableContainer: collidingContainer,
+        value: 0,
+      },
+    };
+  }
 }
 
 const isEscape = (key: string) => key === 'Escape' || key === 'Esc';
