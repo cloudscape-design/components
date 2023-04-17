@@ -69,9 +69,9 @@ describe('Content Display preference', () => {
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, false, true, true] });
-      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findToggle().findNativeInput().click();
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, true, true] });
-      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findToggle().findNativeInput().click();
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
     });
 

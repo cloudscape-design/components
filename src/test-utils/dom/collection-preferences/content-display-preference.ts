@@ -49,6 +49,15 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns an option for a given index.
+   *
+   * @param index 1-based index of the option to return.
+   */
+  findOptionByIndex(index: number): ContentDisplayOptionWrapper | null {
+    return this.findComponent(`.${getClassName('option')}:nth-child(${index})`, ContentDisplayOptionWrapper);
+  }
+
+  /**
    * Returns the options that the user can reorder.
    */
   findOptions(): Array<ContentDisplayOptionWrapper> {
