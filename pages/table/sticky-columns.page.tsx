@@ -133,6 +133,7 @@ export default () => {
 
   return (
     <ScreenshotArea>
+      <h1>Sticky columns</h1>
       <SpaceBetween size="xl">
         <Table
           data-test-id="simple"
@@ -140,6 +141,9 @@ export default () => {
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          ariaLabels={{
+            tableLabel: 'simple',
+          }}
           header={<Header>Simple table</Header>}
         />
         <Table
@@ -149,6 +153,9 @@ export default () => {
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          ariaLabels={{
+            tableLabel: 'Resizable',
+          }}
           header={<Header>Resizable columns</Header>}
         />
         <Table
@@ -183,6 +190,16 @@ export default () => {
               }}
             />
           }
+          ariaLabels={{
+            selectionGroupLabel: 'Items selection',
+            allItemsSelectionLabel: ({ selectedItems }) =>
+              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
+            itemSelectionLabel: ({ selectedItems }, item) => {
+              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
+              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
+            },
+            tableLabel: 'With collection preferences',
+          }}
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
@@ -194,13 +211,11 @@ export default () => {
           columnDefinitions={[
             {
               id: 'inline-edit-start',
-              header: 'Edit cells',
+              header: 'Edit first cells',
               cell: item => item.alt || '-',
-              sortingField: 'alt',
               editConfig: {
-                ariaLabel: 'Name',
-                editIconAriaLabel: 'editable',
-                errorIconAriaLabel: 'Name Error',
+                ariaLabel: 'Domain name',
+                errorIconAriaLabel: 'Domain Name Error',
                 editingCell: (item, { currentValue, setValue }) => {
                   return (
                     <Input
@@ -215,13 +230,13 @@ export default () => {
             ...COLUMN_DEFINITIONS,
             {
               id: 'inline-edit-end',
-              header: 'Edit cells',
+              header: 'Edit last cells',
               cell: item => item.alt || '-',
               sortingField: 'alt',
               editConfig: {
-                ariaLabel: 'Name',
+                ariaLabel: 'Edit cell last',
                 editIconAriaLabel: 'editable',
-                errorIconAriaLabel: 'Name Error',
+                errorIconAriaLabel: 'Edit cell last error',
                 editingCell: (item, { currentValue, setValue }) => {
                   return (
                     <Input
@@ -235,6 +250,16 @@ export default () => {
             },
           ]}
           items={ITEMS}
+          ariaLabels={{
+            selectionGroupLabel: 'Items selection',
+            allItemsSelectionLabel: ({ selectedItems }) =>
+              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
+            itemSelectionLabel: ({ selectedItems }, item) => {
+              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
+              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
+            },
+            tableLabel: 'Inline editing',
+          }}
           sortingDisabled={true}
           header={<Header>Inline editing columns</Header>}
         />
@@ -245,6 +270,16 @@ export default () => {
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          ariaLabels={{
+            selectionGroupLabel: 'Items selection',
+            allItemsSelectionLabel: ({ selectedItems }) =>
+              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
+            itemSelectionLabel: ({ selectedItems }, item) => {
+              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
+              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
+            },
+            tableLabel: 'Selection type single',
+          }}
           header={<Header>Selection type single</Header>}
         />
         <Table
@@ -254,6 +289,16 @@ export default () => {
           columnDefinitions={COLUMN_DEFINITIONS}
           items={ITEMS}
           sortingDisabled={true}
+          ariaLabels={{
+            selectionGroupLabel: 'Items selection',
+            allItemsSelectionLabel: ({ selectedItems }) =>
+              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
+            itemSelectionLabel: ({ selectedItems }, item) => {
+              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
+              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
+            },
+            tableLabel: 'With 5 sticky columns',
+          }}
           header={<Header>Selection type multi</Header>}
         />
         <Table
