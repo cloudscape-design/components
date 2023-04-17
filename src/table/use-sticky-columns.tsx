@@ -168,11 +168,7 @@ export const useStickyColumns = ({
       const offsetKey = stickySide === 'right' ? 'last' : 'first';
       const stickyColumnOffset = cellOffsets[offsetKey]?.[colIndex + (hasSelection ? 1 : 0)];
       return {
-        sticky: stickyColumnOffset
-          ? {
-              [stickySide]: `${stickyColumnOffset}px`,
-            }
-          : {},
+        sticky: typeof stickyColumnOffset !== undefined ? { [stickySide]: `${stickyColumnOffset}px` } : {},
         stuck,
       };
     },
