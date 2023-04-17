@@ -3,9 +3,9 @@
 import { act } from '@testing-library/react';
 import { renderHook } from '../../__tests__/render-hook';
 import { useStickyState } from '../use-sticky-state';
-import { useStickyColumnsContext } from '../use-sticky-columns-context';
+import { useStickyColumnsContext } from '../sticky-columns-context';
 
-jest.mock('../use-sticky-columns-context', () => ({
+jest.mock('../sticky-columns-context', () => ({
   useStickyColumnsContext: jest.fn(),
 }));
 
