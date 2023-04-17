@@ -799,6 +799,45 @@ describe('property filter parts', () => {
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
   });
 
+  describe('status indicators', () => {
+    test('displays error status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error text');
+    });
+    test('links error status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error text`);
+    });
+    test('displays finished status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished text');
+    });
+    test('links finished status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished text`);
+    });
+  });
+
   describe('extended operators', () => {
     const indexProperty: FilteringProperty = {
       key: 'index',

@@ -262,6 +262,17 @@ describe('Dropdown states', () => {
       expect(Boolean(dropdown.findByClassName(selectPartsStyles['list-bottom']))).toBe(!isSticky);
     });
 
+    test(`should associate ${statusType} status text as ${
+      isSticky ? 'sticky' : 'non-sticky'
+    } footer to the dropdown element`, () => {
+      const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
+      const { wrapper } = renderMultiselect(
+        <Multiselect selectedOptions={[]} options={defaultOptions} statusType={statusType as any} {...statusText} />
+      );
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Test ${statusType} text`);
+    });
+
     test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {
       const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
       const { container, wrapper } = renderMultiselect(

@@ -264,6 +264,17 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         expect(Boolean(dropdown.findByClassName(selectPartsStyles['list-bottom']))).toBe(!isSticky);
       });
 
+      test(`should link ${statusType} status text in ${
+        isSticky ? 'sticky' : 'non-sticky'
+      } footer to dropdown list`, () => {
+        const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
+        const { wrapper } = renderSelect({ statusType: statusType as any, ...statusText });
+        wrapper.openDropdown();
+        expect(wrapper.findDropdown({ expandToViewport }).find('ul')!.getElement()).toHaveAccessibleDescription(
+          `Test ${statusType} text`
+        );
+      });
+
       test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {
         const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
         const { container, wrapper } = renderSelect({
