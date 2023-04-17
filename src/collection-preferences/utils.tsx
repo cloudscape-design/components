@@ -187,7 +187,7 @@ export const StickyColumnsPreference = ({
         <StickyPreference
           firstOrLast="first"
           preference={firstColumns}
-          value={value?.first || '0'}
+          value={value?.first}
           onChange={newValue => onChange({ ...value, first: newValue })}
         />
       )}
@@ -195,7 +195,7 @@ export const StickyColumnsPreference = ({
         <StickyPreference
           firstOrLast="last"
           preference={lastColumns}
-          value={value?.last || '0'}
+          value={value?.last}
           onChange={newValue => onChange({ ...value, last: newValue })}
         />
       )}
