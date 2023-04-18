@@ -9,8 +9,9 @@ describe('useStickyColumns', () => {
   const stickyColumns: TableProps.StickyColumns = { first: 1, last: 1 };
 
   const tableElement = document.createElement('table');
-  tableElement.style.width = '50px';
+  tableElement.style.width = '350px';
   tableElement.style.paddingLeft = '10px';
+  tableElement.style.paddingRight = '10px';
 
   const defaultProps = {
     containerWidth,
