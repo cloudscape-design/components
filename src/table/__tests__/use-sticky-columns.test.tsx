@@ -19,9 +19,7 @@ describe('useStickyColumns', () => {
     isWrapperScrollable: true,
     stickyColumns,
     visibleColumnsLength: 3,
-    tableRefObject: {
-      current: tableElement,
-    },
+    tablePadding: { left: 10, right: 10 },
     wrapperRefObject: { current: document.createElement('div') },
   };
 
