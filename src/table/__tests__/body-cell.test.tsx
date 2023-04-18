@@ -31,7 +31,6 @@ const stickyColumnProps = {
 
 const onEditEnd = jest.fn();
 const onEditStart = jest.fn();
-const ref = React.createRef<any>();
 const TestComponent = ({ isEditing = false }) => {
   return (
     <table>
@@ -56,7 +55,6 @@ const TestComponent = ({ isEditing = false }) => {
             isSelected={false}
             wrapLines={false}
             getStickyColumnProperties={() => stickyColumnProps}
-            tdRef={ref}
           />
         </tr>
       </tbody>
