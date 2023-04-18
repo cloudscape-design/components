@@ -214,8 +214,9 @@ export default () => {
               header: 'Edit first cells',
               cell: item => item.alt || '-',
               editConfig: {
-                ariaLabel: 'Domain name',
-                errorIconAriaLabel: 'Domain Name Error',
+                ariaLabel: 'Edit first cell',
+                editIconAriaLabel: 'editable',
+                errorIconAriaLabel: 'Edit first cell error',
                 editingCell: (item, { currentValue, setValue }) => {
                   return (
                     <Input
@@ -251,7 +252,9 @@ export default () => {
           ]}
           items={ITEMS}
           ariaLabels={{
-            selectionGroupLabel: 'Items selection',
+            activateEditLabel: column => `Edit ${column.header}`,
+            cancelEditLabel: column => `Cancel editing ${column.header}`,
+            submitEditLabel: column => `Submit edit ${column.header}`,
             allItemsSelectionLabel: ({ selectedItems }) =>
               `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
             itemSelectionLabel: ({ selectedItems }, item) => {
