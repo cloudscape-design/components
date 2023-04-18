@@ -21,7 +21,6 @@ interface StickyColumnParams {
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   tableRefObject: React.RefObject<HTMLTableElement>;
-  wrapperRefObject: React.RefObject<HTMLDivElement>;
 }
 
 export interface GetStickyColumnProperties {
@@ -145,7 +144,6 @@ export const useStickyColumns = ({
     noStickyColumns,
     stickyColumns,
     totalStickySpace,
-    visibleColumnsLength,
     tableLeftPadding,
     tableRightPadding,
     isWrapperScrollable,
