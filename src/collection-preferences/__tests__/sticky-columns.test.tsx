@@ -79,7 +79,6 @@ describe('Sticky columns preference selection', () => {
       onConfirm: () => {},
     });
     wrapper.findTriggerButton().click();
-    wrapper.findTriggerButton().click();
     const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
     radioGroupWrapper.findInputByValue('0')!.click();
     isSelectedOption(wrapper, 'first', 0);
@@ -89,7 +88,6 @@ describe('Sticky columns preference selection', () => {
       preferences: { stickyColumns: { first: 1, last: 1 } },
       onConfirm: () => {},
     });
-    wrapper.findTriggerButton().click();
     wrapper.findTriggerButton().click();
     const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
     radioGroupWrapper.findInputByValue('0')!.click();

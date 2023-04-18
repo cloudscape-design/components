@@ -159,12 +159,7 @@ interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPrefe
 const StickyPreference = ({ firstOrLast, preference, value, onChange }: StickyPreference) => {
   const { title, description, options } = preference;
   return (
-    <InternalFormField
-      className={styles[`sticky-columns-${firstOrLast}`]}
-      key={title}
-      label={title}
-      description={description}
-    >
+    <InternalFormField className={styles[`sticky-columns-${firstOrLast}`]} label={title} description={description}>
       <InternalRadioGroup
         value={typeof value !== 'undefined' ? `${value}` : null}
         items={options.map(({ label, value }) => ({ label, value: `${value}` }))}
