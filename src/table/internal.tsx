@@ -200,7 +200,6 @@ const InternalTable = forwardRef(
       tableRefObject,
       containerWidth,
       isWrapperScrollable,
-      wrapperRefObject,
       tablePadding,
     };
 

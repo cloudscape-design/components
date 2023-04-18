@@ -21,7 +21,6 @@ interface StickyColumnParams {
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   tablePadding: { left: number; right: number };
-  wrapperRefObject: React.RefObject<HTMLDivElement>;
 }
 
 export interface GetStickyColumnProperties {
@@ -108,7 +107,6 @@ export const useStickyColumns = ({
   stickyColumns,
   tablePadding,
   visibleColumnsLength,
-  wrapperRefObject,
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
   const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
@@ -129,11 +127,6 @@ export const useStickyColumns = ({
 
   // Calculate the sum of all sticky columns' widths
   const totalStickySpace = firstStickyColumnsWidth + lastStickyColumnsWidth;
-
-  useEffect(() => {
-    // If scroll width changes we recalculate the cell offsets
-    updateCellOffsets();
-  }, [updateCellOffsets, wrapperRefObject?.current?.scrollWidth]);
 
   useEffect(() => {
     // Check if there is enough scrollable space for sticky columns to be enabled

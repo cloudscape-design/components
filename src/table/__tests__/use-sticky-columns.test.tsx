@@ -20,7 +20,6 @@ describe('useStickyColumns', () => {
     stickyColumns,
     visibleColumnsLength: 3,
     tablePadding: { left: 10, right: 10 },
-    wrapperRefObject: { current: document.createElement('div') },
   };
 
   test('should disable sticky columns if no sticky columns are provided', () => {
