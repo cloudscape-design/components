@@ -34,6 +34,12 @@ test('renders an input element', () => {
   expect(nativeInput.type).toBe('checkbox');
 });
 
+test('can be marked as required', () => {
+  const { wrapper } = renderCheckbox(<Checkbox checked={false} ariaRequired={true} />);
+  const nativeInput = wrapper.findNativeInput().getElement();
+  expect(nativeInput.getAttribute('aria-required')).toBe('true');
+});
+
 describe('native and styled control synchronization', () => {
   test('unchecked state', () => {
     const { wrapper } = renderCheckbox(<Checkbox checked={false} indeterminate={false} />);

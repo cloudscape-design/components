@@ -25,6 +25,11 @@ export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlP
   disabled?: boolean;
 
   /**
+   * Specifies whether to add `aria-required` to the native control.
+   */
+  ariaRequired?: boolean;
+
+  /**
    * Specifies the ID of the native form element. By default, it uses an automatically generated ID.
    */
   controlId?: string;

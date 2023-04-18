@@ -3637,6 +3637,12 @@ in the native control.",
       "optional": true,
       "type": "string",
     },
+    Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
   ],
   "regions": Array [
     Object {
@@ -13378,6 +13384,12 @@ receive focus.",
       "name": "name",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add \`required\` to the native control.",
+      "name": "required",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": Array [
