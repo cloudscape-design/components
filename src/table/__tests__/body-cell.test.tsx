@@ -86,7 +86,6 @@ const TestComponent2 = ({ column }: any) => {
             isSelected={false}
             wrapLines={false}
             getStickyColumnProperties={() => stickyColumnProps}
-            tdRef={ref}
           />
         </tr>
       </tbody>
