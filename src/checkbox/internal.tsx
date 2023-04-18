@@ -57,7 +57,6 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         outlineClassName={styles.outline}
         controlId={controlId}
         disabled={disabled}
-        ariaRequired={ariaRequired}
         label={children}
         description={description}
         descriptionBottomPadding={true}
@@ -72,6 +71,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
             type="checkbox"
             checked={checked}
             name={name}
+            aria-required={ariaRequired ? 'true' : undefined}
             tabIndex={tabIndex}
             onFocus={() => fireNonCancelableEvent(onFocus)}
             onBlur={() => fireNonCancelableEvent(onBlur)}
