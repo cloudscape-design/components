@@ -202,6 +202,8 @@ const InternalTable = forwardRef(
       cellOffsets,
     } = useStickyColumns(stickyColumnsParams);
 
+    const { scrollPaddingLeft, scrollPaddingRight } = wrapperScrollPadding;
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -301,7 +303,7 @@ const InternalTable = forwardRef(
                 [styles['has-header']]: hasHeader,
               })}
               onScroll={handleScroll}
-              style={{ scrollPaddingLeft: wrapperScrollPadding.left, scrollPaddingRight: wrapperScrollPadding.right }}
+              style={{ scrollPaddingLeft, scrollPaddingRight }}
               {...wrapperProps}
             >
               {!!renderAriaLive && !!firstIndex && (
