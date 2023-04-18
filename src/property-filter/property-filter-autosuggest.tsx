@@ -29,6 +29,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import clsx from 'clsx';
 import { getFirstFocusable } from '../internal/components/focus-lock/utils';
 import { filterOptions } from './filter-options';
+import { joinStrings } from '../internal/utils/strings';
 
 const DROPDOWN_WIDTH_OPTIONS_LIST = 300;
 const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
@@ -193,7 +194,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         expandToViewport={expandToViewport}
         ariaControls={listId}
         ariaActivedescendant={highlightedOptionId}
-        ariaDescribedby={[searchResultsId, rest.ariaDescribedby].filter(id => !!id).join(' ')}
+        ariaDescribedby={joinStrings(searchResultsId, rest.ariaDescribedby)}
         dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null || !!customForm}
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
