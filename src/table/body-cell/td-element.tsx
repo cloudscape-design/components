@@ -23,7 +23,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   getStickyColumnProperties: () => GetStickyColumnProperties;
-  tdRef: React.Ref<HTMLTableCellElement>;
+  tdRef?: React.Ref<HTMLTableCellElement>;
 }
 
 export function TableTdElement({

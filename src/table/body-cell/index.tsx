@@ -23,7 +23,7 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   onEditEnd: () => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
-  tdRef: React.Ref<HTMLTableCellElement>;
+  tdRef?: React.Ref<HTMLTableCellElement>;
 }
 
 function TableCellEditable<ItemType>({
