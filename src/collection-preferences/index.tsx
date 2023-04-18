@@ -90,7 +90,7 @@ export default function CollectionPreferences({
   if (visibleContentPreference && contentDisplayPreference) {
     warnOnce(
       componentName,
-      'You provided both `visibleContentPreference` and `contentDisplayPreference`. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
+      'You provided both `visibleContentPreference` and `contentDisplayPreference` props. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
     );
   }
 
