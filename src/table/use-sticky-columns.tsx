@@ -20,7 +20,7 @@ interface StickyColumnParams {
   isWrapperScrollable: boolean;
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
-  tableRefObject: React.RefObject<HTMLTableElement>;
+  tablePadding: { left: number; right: number };
 }
 
 export interface GetStickyColumnProperties {
@@ -103,7 +103,7 @@ export const useStickyColumns = ({
   hasSelection,
   isWrapperScrollable,
   stickyColumns,
-  tableRefObject,
+  tablePadding,
   visibleColumnsLength,
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
@@ -113,17 +113,6 @@ export const useStickyColumns = ({
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const { cellOffsets, updateCellOffsets } = useCellOffsets(tableCellRefs);
-
-  const [tablePadding, setTablePadding] = useState({ left: 0, right: 0 });
-
-  useEffect(() => {
-    if (!tableRefObject.current) {
-      return;
-    }
-    const left = parseInt(getComputedStyle(tableRefObject.current).paddingLeft) || 0;
-    const right = parseInt(getComputedStyle(tableRefObject.current).paddingRight) || 0;
-    setTablePadding({ left, right });
-  }, [tableRefObject]);
 
   const { first = 0, last = 0 } = stickyColumns || {};
   // Calculate the indexes of the last left and right sticky columns, taking into account the selection column

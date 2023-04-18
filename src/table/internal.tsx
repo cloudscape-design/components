@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState, Ref, forwardRef } from 'react';
+import React, { useImperativeHandle, useRef, useState, useEffect, Ref, forwardRef } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -165,6 +165,16 @@ const InternalTable = forwardRef(
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
 
+    const [tablePadding, setTablePadding] = useState({ left: 0, right: 0 });
+    useEffect(() => {
+      if (!tableRefObject.current) {
+        return;
+      }
+      const left = parseInt(getComputedStyle(tableRefObject.current).paddingLeft) || 0;
+      const right = parseInt(getComputedStyle(tableRefObject.current).paddingRight) || 0;
+      setTablePadding({ left, right });
+    }, [tableRefObject]);
+
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
       if (!submitEdit) {
@@ -191,6 +201,7 @@ const InternalTable = forwardRef(
       containerWidth,
       isWrapperScrollable,
       wrapperRefObject,
+      tablePadding,
     };
 
     const {
