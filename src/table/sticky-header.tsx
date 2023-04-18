@@ -8,6 +8,7 @@ import Thead, { InteractiveComponent, TheadProps } from './thead';
 import { useStickyHeader } from './use-sticky-header';
 import styles from './styles.css.js';
 import { getVisualContextClassname } from '../internal/components/visual-context';
+
 export interface StickyHeaderRef {
   scrollToTop(): void;
   scrollToRow(node: null | HTMLElement): void;
@@ -84,10 +85,10 @@ function StickyHeader(
         ref={secondaryTableRef}
       >
         <Thead
-          focusedComponent={focusedComponent}
+          ref={secondaryTheadRef}
           sticky={true}
           stuck={isStuck}
-          ref={secondaryTheadRef}
+          focusedComponent={focusedComponent}
           {...theadProps}
         />
       </table>
