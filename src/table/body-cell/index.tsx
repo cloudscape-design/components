@@ -73,7 +73,7 @@ function TableCellEditable<ItemType>({
           {column.cell(item)}
           <span className={styles['body-cell-editor']}>
             <Button
-              __hideFocusOutline={true}
+              __forcedFocusState="none"
               __internalRootRef={editActivateRef}
               ariaLabel={ariaLabels?.activateEditLabel?.(column)}
               formAction="none"

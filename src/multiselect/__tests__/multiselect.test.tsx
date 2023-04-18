@@ -235,7 +235,7 @@ test('disables tokens when multiselect is disabled', () => {
     <Multiselect selectedOptions={[{ label: 'First', value: '1' }]} options={defaultOptions} disabled={true} />
   );
 
-  expect(wrapper.findTokens()[0].getElement()).toHaveClass(tokenGroupStyles['token-disabled']);
+  expect(wrapper.findTokens()[0].getElement()).toHaveAttribute('aria-disabled', 'true');
 });
 
 test('does not render token group when no tokens are present', () => {
@@ -260,6 +260,17 @@ describe('Dropdown states', () => {
       expect(statusIndicator.getElement()).toHaveTextContent(`Test ${statusType} text`);
       const dropdown = wrapper.findDropdown()!.findOpenDropdown()!;
       expect(Boolean(dropdown.findByClassName(selectPartsStyles['list-bottom']))).toBe(!isSticky);
+    });
+
+    test(`should associate ${statusType} status text as ${
+      isSticky ? 'sticky' : 'non-sticky'
+    } footer to the dropdown element`, () => {
+      const statusText = { [`${statusType}Text`]: `Test ${statusType} text` };
+      const { wrapper } = renderMultiselect(
+        <Multiselect selectedOptions={[]} options={defaultOptions} statusType={statusType as any} {...statusText} />
+      );
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Test ${statusType} text`);
     });
 
     test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {

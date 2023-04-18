@@ -33,6 +33,7 @@ export interface OptionsListProps extends BaseComponentProps {
   position?: React.CSSProperties['position'];
   role?: 'listbox' | 'list' | 'menu';
   ariaLabelledby?: string;
+  ariaDescribedby?: string;
   decreaseTopMargin?: boolean;
 }
 
@@ -62,6 +63,7 @@ const OptionsList = (
     role = 'listbox',
     decreaseTopMargin = false,
     ariaLabelledby,
+    ariaDescribedby,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLUListElement>
@@ -109,6 +111,7 @@ const OptionsList = (
       onFocus={() => fireNonCancelableEvent(onFocus)}
       tabIndex={-1}
       aria-labelledby={ariaLabelledby}
+      aria-describedby={ariaDescribedby}
     >
       {open && children}
     </ul>

@@ -202,6 +202,22 @@ describe('Dropdown states', () => {
     expect(statusIcon).toHaveAttribute('role', 'img');
   });
 
+  test('should associate the error status footer with the dropdown', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" />
+    );
+    wrapper.focus();
+    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Test error text');
+  });
+
+  test('should associate the finished status footer with the dropdown', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} statusType="finished" finishedText="Finished text" />
+    );
+    wrapper.focus();
+    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Finished text');
+  });
+
   it('when no options is matched the dropdown is shown but aria-expanded is false', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} statusType="finished" value="free-text" />);
     wrapper.setInputValue('free-text');

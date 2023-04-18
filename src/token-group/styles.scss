@@ -16,19 +16,6 @@
   }
 }
 
-.token {
-  height: 100%;
-  border: awsui.$border-field-width solid constants.$token-border-color;
-  padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
-    styles.$control-padding-horizontal;
-  display: flex;
-  align-items: flex-start;
-  background: constants.$token-background;
-  border-radius: awsui.$border-radius-token;
-  color: awsui.$color-text-body-default;
-  box-sizing: border-box;
-}
-
 .dismiss-button {
   margin: -1px -1px 0 awsui.$space-xxs;
   border: 1px solid transparent;
@@ -51,7 +38,36 @@
   }
 }
 
-.token-disabled {
+.token {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-xxs;
+}
+.token-box {
+  height: 100%;
+  border: awsui.$border-field-width solid constants.$token-border-color;
+  padding: styles.$control-padding-vertical awsui.$space-xxs styles.$control-padding-vertical
+    styles.$control-padding-horizontal;
+  display: flex;
+  align-items: flex-start;
+  background: constants.$token-background;
+  border-radius: awsui.$border-radius-token;
+  color: awsui.$color-text-body-default;
+  box-sizing: border-box;
+}
+.token-box-error {
+  border-color: awsui.$color-border-status-error;
+  border-left-width: awsui.$border-invalid-width;
+
+  > .dismiss-button {
+    color: awsui.$color-text-interactive-default;
+    &:hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+  }
+}
+.token-box-disabled.token-box-disabled {
   border-color: awsui.$color-border-control-disabled;
   background-color: awsui.$color-background-container-content;
   color: awsui.$color-text-disabled;
