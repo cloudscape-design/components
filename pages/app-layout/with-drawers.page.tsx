@@ -36,7 +36,6 @@ export default function WithDrawers() {
             const obj = widths;
             obj[event.detail.id] = event.detail.size;
             setWidths(obj);
-            console.log(widths.security);
           },
           items: [
             {
@@ -77,29 +76,6 @@ export default function WithDrawers() {
 
   return (
     <ScreenshotArea gutters={false}>
-      {/* <AppLayout
-        contentType="form"
-        {...{
-          drawers: {
-            ariaLabel: 'Drawers',
-            items: [
-              {
-                ariaLabels: {
-                  closeButton: 'Security close button',
-                  content: 'Security drawer content',
-                  triggerButton: 'Security trigger button',
-                  resizeHandle: 'Security resize handle',
-                },
-                content: <span>Security</span>,
-                id: 'security',
-                trigger: {
-                  iconName: 'security',
-                },
-              },
-            ],
-          },
-        }}
-      /> */}
       <AppLayout
         ariaLabels={appLayoutLabels}
         breadcrumbs={<Breadcrumbs />}

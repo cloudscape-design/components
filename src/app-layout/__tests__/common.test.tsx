@@ -304,16 +304,16 @@ describeEachAppLayout(() => {
       expect(wrapper.findActiveDrawer()).toBeNull();
     });
 
-    test('Moves focus between open and close buttons', async () => {
+    test('Moves focus between open and close buttons', () => {
       // use content type with initial closed state for all drawers
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
 
-      wrapper.findDrawersTriggers()[0].click();
+      act(() => wrapper.findDrawersTriggers()[0].click());
       expect(wrapper.findActiveDrawerCloseButton().getElement()).toBe(document.activeElement);
 
-      wrapper.findActiveDrawerCloseButton().click();
-      await new Promise(r => setTimeout(r, 2000));
-      console.log(document.activeElement);
+      act(() => wrapper.findActiveDrawerCloseButton().click());
+
+      expect(wrapper.findActiveDrawer()).toBeNull();
       expect(wrapper.findDrawersTriggers()[0].getElement()).toBe(document.activeElement);
     });
   });

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-
 import { describeEachAppLayout, drawersConfigurations, renderComponent } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
@@ -37,12 +36,11 @@ describe('Classic only features', () => {
   test(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.resizableDrawer} />);
 
-    console.log(wrapper.findDrawersTriggers());
     act(() => wrapper.findDrawersTriggers()[0].click());
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
-  test('should fire onResize event', () => {
+  test('should change size in controlled mode', () => {
     const onResize = jest.fn();
     const drawersOpen = {
       drawers: {
@@ -52,10 +50,19 @@ describe('Classic only features', () => {
       },
     };
     const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
-    wrapper.findDrawersSlider().keydown(KeyCode.left);
+    act(() => wrapper.findDrawersSlider().keydown(KeyCode.left));
+    expect(getComputedStyle(wrapper.findActiveDrawer().getElement()).width).toBe('290px');
+  });
 
-    // console.log(wrapper.findDrawersSlider());
-
-    expect(onResize).toHaveBeenCalledWith({ size: 290, id: 'security' });
+  test('should change size in uncontrolled mode', () => {
+    const drawersOpen = {
+      drawers: {
+        activeDrawerId: 'security',
+        items: drawersConfigurations.drawersResizableItems,
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+    act(() => wrapper.findDrawersSlider().keydown(KeyCode.left));
+    expect(getComputedStyle(wrapper.findActiveDrawer().getElement()).width).toBe('290px');
   });
 });
