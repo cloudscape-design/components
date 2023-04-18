@@ -19,6 +19,14 @@ import { KeyboardSensorOptions, KeyboardSensorProps } from '@dnd-kit/core';
 import { defaultKeyboardCodes } from './defaults';
 import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
 
+// Slightly modified version of @dnd-kit's KeyboardSensor:
+// https://github.com/clauderic/dnd-kit/blob/master/packages/core/src/sensors/keyboard/KeyboardSensor.ts
+
+// The only difference is that here, reordering is deactivated on blur, as in
+// this PR: https://github.com/clauderic/dnd-kit/pull/1087.
+// If it is merged, then @dnd-kit's KeyboardSensor can be used instead
+// and all files under this directory (`keyboard-sensor`) can be removed.
+
 export class KeyboardSensor implements SensorInstance {
   public autoScrollEnabled = false;
   private referenceCoordinates: Coordinates | undefined;
