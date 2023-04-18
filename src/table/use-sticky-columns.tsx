@@ -63,9 +63,13 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
 
   useLayoutEffect(() => {
     // Request animation frame to make sure effect runs after the browser's automatic table layout algorithm
-    requestAnimationFrame(() => {
+    const frameId = requestAnimationFrame(() => {
       updateCellOffsets();
     });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
   }, [updateCellOffsets]);
 
   return { cellOffsets, updateCellOffsets };
@@ -104,7 +108,7 @@ export const useStickyColumns = ({
   visibleColumnsLength,
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
-  const noStickyColumns = !stickyColumns || (stickyColumns.first === 0 && stickyColumns.last === 0);
+  const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
   const columnsLengthWithSelection = visibleColumnsLength + (hasSelection ? 1 : 0);
 
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
@@ -114,6 +118,7 @@ export const useStickyColumns = ({
   // Compute left table padding
   const table = tableRefObject.current;
   const tableLeftPadding = table ? parseInt(getComputedStyle(table).paddingLeft) : 0;
+  const tableRightPadding = table ? parseInt(getComputedStyle(table).paddingRight) : 0;
 
   const { first = 0, last = 0 } = stickyColumns || {};
   // Calculate the indexes of the last left and right sticky columns, taking into account the selection column
@@ -130,7 +135,7 @@ export const useStickyColumns = ({
   useEffect(() => {
     // Check if there is enough scrollable space for sticky columns to be enabled
     const hasEnoughScrollableSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding < (containerWidth ?? 0);
+      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tableLeftPadding + tableRightPadding < (containerWidth ?? 0);
 
     // Determine if sticky columns should be disabled based on the conditions
     const shouldDisable = noStickyColumns || !isWrapperScrollable || !hasEnoughScrollableSpace;
@@ -142,6 +147,7 @@ export const useStickyColumns = ({
     totalStickySpace,
     visibleColumnsLength,
     tableLeftPadding,
+    tableRightPadding,
     isWrapperScrollable,
   ]);
 
@@ -152,10 +158,10 @@ export const useStickyColumns = ({
         (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
       )
     );
-  }, [columnsLengthWithSelection, hasSelection]);
+  }, [columnsLengthWithSelection]);
 
   const getStickyStyles = useCallback(
-    (colIndex: number, stickySide: 'left' | 'right' | '') => {
+    (colIndex: number, stickySide?: 'left' | 'right') => {
       if (!stickySide) {
         return { sticky: {}, stuck: {} };
       }
@@ -175,7 +181,7 @@ export const useStickyColumns = ({
     [cellOffsets, hasSelection, tableLeftPadding]
   );
 
-  const getStickyColumnProperties = React.useCallback(
+  const getStickyColumnProperties = useCallback(
     (colIndex: number): GetStickyColumnProperties => {
       const disabledStickyColumn = {
         isSticky: false,
@@ -197,7 +203,7 @@ export const useStickyColumns = ({
       const isLastStickyRight = colIndex === visibleColumnsLength - (stickyColumns?.last ?? 0);
 
       // Get the sticky styles
-      const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : '';
+      const stickySide = isStickyLeft ? 'left' : isStickyRight ? 'right' : undefined;
       const stickyStyles = getStickyStyles(colIndex, stickySide);
       return {
         isSticky: isStickyLeft || isStickyRight,
