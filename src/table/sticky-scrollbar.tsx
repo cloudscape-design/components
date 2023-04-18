@@ -5,16 +5,20 @@ import { useAppLayoutContext } from '../internal/context/app-layout-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useStickyScrollbar } from './use-sticky-scrollbar';
 import styles from './styles.css.js';
-
+import clsx from 'clsx';
 interface StickyScrollbarProps {
   wrapperRef: React.RefObject<HTMLDivElement>;
   tableRef: React.RefObject<HTMLTableElement>;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
+  className?: string;
 }
 
 export default forwardRef(StickyScrollbar);
 
-function StickyScrollbar({ wrapperRef, tableRef, onScroll }: StickyScrollbarProps, ref: React.Ref<HTMLDivElement>) {
+function StickyScrollbar(
+  { className, wrapperRef, tableRef, onScroll }: StickyScrollbarProps,
+  ref: React.Ref<HTMLDivElement>
+) {
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, scrollbarRef);
@@ -28,7 +32,7 @@ function StickyScrollbar({ wrapperRef, tableRef, onScroll }: StickyScrollbarProp
   useStickyScrollbar(scrollbarRef, scrollbarContentRef, tableRef, wrapperRef, stickyOffsetBottom);
 
   return (
-    <div ref={mergedRef} className={styles['sticky-scrollbar']} onScroll={onScroll}>
+    <div ref={mergedRef} className={clsx(styles['sticky-scrollbar'], className)} onScroll={onScroll}>
       <div ref={scrollbarContentRef} className={styles['sticky-scrollbar-content']} />
     </div>
   );

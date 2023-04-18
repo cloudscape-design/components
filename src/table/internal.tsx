@@ -464,6 +464,7 @@ const InternalTable = forwardRef(
               wrapperRef={wrapperRefObject}
               tableRef={tableRefObject}
               onScroll={handleScroll}
+              className={!shouldDisableStickyColumns ? styles['sticky-scrollbar-with-sticky-columns'] : ''}
             />
           </InternalContainer>
         </StickyColumnsContextProvider>
