@@ -43,7 +43,7 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
   const updateCellOffsets = useCallback(() => {
     // Calculate widths of all previous siblings of each table cell in the `tableCellRefs` array
     let firstColumnsOffsets = tableCellRefs
-      .map(ref => (ref?.current?.previousSibling as HTMLTableCellElement)?.offsetWidth)
+      .map(ref => Math.floor((ref?.current?.previousSibling as HTMLTableCellElement)?.getBoundingClientRect().width))
       .filter(Boolean);
     // Calculate cumulative widths of previous siblings to get the total offset of each of the cells
     firstColumnsOffsets = firstColumnsOffsets.map((elem, index) =>
@@ -51,7 +51,9 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
     );
 
     // Calculate widths of all next siblings of each table cell in the `tableCellRefs` array
-    let lastColumnsOffsets = tableCellRefs.map(ref => (ref?.current?.nextSibling as HTMLTableCellElement)?.offsetWidth);
+    let lastColumnsOffsets = tableCellRefs.map(ref =>
+      Math.floor((ref?.current?.nextSibling as HTMLTableCellElement)?.getBoundingClientRect().width)
+    );
     lastColumnsOffsets = lastColumnsOffsets.filter(Boolean).reverse();
     // Calculate cumulative widths of next siblings to get the the total offset of each of the cells
     lastColumnsOffsets = lastColumnsOffsets
