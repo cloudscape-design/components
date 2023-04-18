@@ -52,6 +52,7 @@ export default function FileUploadPermutations() {
               i18nStrings={{
                 ...i18nStrings,
                 formatFileSize: () => `1.01 MB`,
+                formatFileLastModified: () => '2020-01-01T00:00:00',
               }}
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
