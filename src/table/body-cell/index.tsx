@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
 import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
@@ -46,6 +46,11 @@ function TableCellEditable<ItemType>({
     }
   }, [isEditing]);
 
+  // To improve the initial page render performance we only show the edit icon when necessary.
+  const [hasHover, setHasHover] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const showIcon = hasHover || hasFocus;
+
   return (
     <TableTdElement
       {...rest}
@@ -57,6 +62,8 @@ function TableCellEditable<ItemType>({
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
+      onMouseEnter={() => setHasHover(true)}
+      onMouseLeave={() => setHasHover(false)}
     >
       {isEditing ? (
         <InlineEditor
@@ -75,8 +82,10 @@ function TableCellEditable<ItemType>({
             role="button"
             tabIndex={0}
             ref={editActivateRef}
+            onFocus={() => setHasFocus(true)}
+            onBlur={() => setHasFocus(false)}
           >
-            <Icon name="edit" />
+            {showIcon && <Icon name="edit" />}
           </span>
         </>
       )}
