@@ -77,7 +77,7 @@ describe('Content Display preference', () => {
 
     it('forces non-editable options to be visible', () => {
       const wrapper = renderContentDisplay();
-      const toggleInput = wrapper.findOptions()[0].findVisibilityToggle().findNativeInput();
+      const toggleInput = wrapper.findOptionByIndex(1)!.findVisibilityToggle().findNativeInput();
       expect(toggleInput.getElement()).toBeChecked();
       expect(toggleInput.getElement()).toBeDisabled();
       toggleInput.click();
@@ -90,7 +90,7 @@ describe('Content Display preference', () => {
     it('moves item down', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
@@ -103,7 +103,7 @@ describe('Content Display preference', () => {
     it('moves item up', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      const dragHandle = wrapper.findOptions()[1].findDragHandle().getElement();
+      const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement(wrapper, 'Picked up item at position 2 of 4');
       pressKey(dragHandle, 'ArrowUp');
@@ -116,7 +116,7 @@ describe('Content Display preference', () => {
     it('moves item down and back up', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
@@ -131,7 +131,7 @@ describe('Content Display preference', () => {
     it('ignores keystrokes out of bounds', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
 
@@ -162,7 +162,7 @@ describe('Content Display preference', () => {
     it('cancels reordering when pressing Escape', async () => {
       const wrapper = renderContentDisplay();
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      const dragHandle = wrapper.findOptions()[0].findDragHandle().getElement();
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
       await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
@@ -228,8 +228,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findDismissButton()!.click();
       collectionPreferencesWrapper.findTriggerButton().click();
       expectVisibilityStatus({
@@ -248,8 +248,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findCancelButton()!.click();
       collectionPreferencesWrapper.findTriggerButton().click();
       expectVisibilityStatus({
@@ -269,8 +269,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
       expect(onConfirmSpy).toHaveBeenCalledTimes(1);
       expect(onConfirmSpy).toHaveBeenCalledWith(
