@@ -3589,6 +3589,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies if the component is selected.",
       "name": "checked",
       "optional": false,
