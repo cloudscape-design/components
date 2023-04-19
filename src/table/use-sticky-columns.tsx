@@ -152,9 +152,6 @@ export const useStickyColumns = ({
       )
     );
   }, [visibleColumns, columnsLengthWithSelection]);
-  useEffect(() => {
-    console.log(tableCellRefs);
-  }, [tableCellRefs]);
 
   const getStickyStyles = useCallback(
     (colIndex: number, stickySide?: 'left' | 'right') => {
