@@ -34,7 +34,8 @@ test('modal has valid hierarchy of headings', async () => {
   const modal = wrapper.findModal()!;
   expect(modal.findHeader().findAll('h2').length).toBe(1);
   const table = wrapper.findTable()!;
-  expect(table.findHeaderSlot()!.findAll('h3').length).toBe(1);
+  await waitForFetch();
+  expect(table.findHeaderSlot()!.findHeader()!.findAll('h3').length).toBe(1);
 });
 
 test('renders alert content when provided', async () => {
