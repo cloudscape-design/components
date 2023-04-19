@@ -31,7 +31,7 @@ $active-separator-width: 2px;
     }
     position: sticky;
     background: awsui.$color-background-table-header;
-    z-index: 801; // Our sticky elements should have z-index in the range of 800-850
+    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
     &-last-left {
       box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);

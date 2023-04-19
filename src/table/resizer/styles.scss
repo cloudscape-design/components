@@ -22,7 +22,7 @@ $active-separator-width: 2px;
   right: calc(-1 * #{$handle-width} / 2);
   top: 0;
   width: $handle-width;
-  z-index: 800; // Lower than sticky columns
+  z-index: 800; // Lower than sticky columns body cells
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     pointer-events: none;
@@ -67,7 +67,7 @@ $active-separator-width: 2px;
   width: 0;
   top: 0;
   bottom: 0;
-  z-index: 801; // Same as sticky columns
+  z-index: 801; // Same as sticky columns body cells
   //stylelint-disable-next-line selector-combinator-disallowed-list
   .resize-active & {
     display: block;
