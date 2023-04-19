@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import range from 'lodash/range';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -31,6 +32,7 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
     await page.setWindowSize({ width: 1200, height: 800 });
     await browser.url('#/light/table/editable');
     await testFn(page);
+    await browser.saveScreenshot('table.png');
   });
 };
 
@@ -58,6 +60,46 @@ test(
     await page.click(cellRoot$);
     await page.click(cellSaveButton.toSelector());
     await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'can start editing with mouse',
+  setupTest(async page => {
+    await page.click(cellEditButton$);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'can start editing with Enter key',
+  setupTest(async page => {
+    // Focus element before the table
+    await page.click('[data-testid="focus"]');
+
+    // Tab to the first editable column
+    await page.keys(range(11).map(() => 'Tab'));
+    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
+
+    // Activate with Enter
+    await page.keys(['Enter']);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'can start editing with Space key',
+  setupTest(async page => {
+    // Focus element before the table
+    await page.click('[data-testid="focus"]');
+
+    // Tab to the first editable column
+    await page.keys(range(11).map(() => 'Tab'));
+    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
+
+    // Activate with Space
+    await page.keys(['Space']);
+    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
   })
 );
 

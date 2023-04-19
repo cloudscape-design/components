@@ -35,7 +35,7 @@ function TableCellEditable<ItemType>({
   isVisualRefresh,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<HTMLSpanElement>(null);
+  const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
   };
@@ -76,17 +76,16 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          <span
+          <button
             className={styles['body-cell-editor']}
             aria-label={ariaLabels?.activateEditLabel?.(column)}
             role="button"
-            tabIndex={0}
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
           >
             {showIcon && <Icon name="edit" />}
-          </span>
+          </button>
         </>
       )}
     </TableTdElement>

@@ -272,6 +272,7 @@ export default function () {
 
   return (
     <ScreenshotArea disableAnimations={true}>
+      <input data-testid="focus" aria-label="focus input" />
       <Demo setModalVisible={setModalVisible} ref={tableRef} />
       <Modal
         visible={modalVisible}

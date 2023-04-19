@@ -190,6 +190,8 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       & > .body-cell-editor {
         opacity: 0;
         outline: 0;
+        background: 0;
+        border: 0;
         color: awsui.$color-text-button-normal-default;
 
         &:hover {

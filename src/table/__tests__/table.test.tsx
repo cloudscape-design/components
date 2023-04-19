@@ -145,6 +145,38 @@ test('should render table header with icons to indicate editable columns', () =>
   });
 });
 
+test('should show edit icon on hover', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
+
+  // No icon by default
+  const editButton = wrapper.findEditCellButton(1, 1);
+  expect(editButton?.findIcon()).toBeNull();
+
+  // Show icon on hover
+  fireEvent.mouseEnter(editButton!.getElement());
+  expect(editButton?.findIcon()).not.toBeNull();
+
+  // Remove icon when mouse moves away
+  fireEvent.mouseLeave(editButton!.getElement());
+  expect(editButton?.findIcon()).toBeNull();
+});
+
+test('should show edit icon on focus', () => {
+  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
+
+  // No icon by default
+  const editButton = wrapper.findEditCellButton(1, 1);
+  expect(editButton?.findIcon()).toBeNull();
+
+  // Show icon on focus
+  editButton?.focus();
+  expect(editButton?.findIcon()).not.toBeNull();
+
+  // Remove icon on blur
+  editButton?.blur();
+  expect(editButton?.findIcon()).toBeNull();
+});
+
 test('should cancel edit using ref imperative method', async () => {
   const ref = React.createRef<any>();
   const { wrapper } = renderTable(
