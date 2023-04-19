@@ -158,8 +158,7 @@ test('should cancel edit using ref imperative method', async () => {
     />
   );
 
-  const bodyCell = wrapper.findBodyCell(2, 2)!;
-  const button = bodyCell.findButton(`[type="button"]`)!;
+  const button = wrapper.findEditCellButton(2, 2)!;
 
   fireEvent.click(button.getElement());
   act(() => {
@@ -316,7 +315,7 @@ test('should submit edits successfully', async () => {
   );
 
   const bodyCell = wrapper.find('td');
-  const button = bodyCell?.findButton(`[aria-label="activate-edit"]`);
+  const button = wrapper.findEditCellButton(1, 1);
 
   // activate edit
   fireEvent.click(button!.getElement()!);

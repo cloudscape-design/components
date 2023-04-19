@@ -49,7 +49,7 @@ function useTableFocusNavigation<T extends { editConfig?: TableProps.EditConfig<
       if (tableRoot?.current) {
         iterateTableCells(tableRoot.current, (cell, rIndex, cIndex) => {
           if (rIndex === rowIndex && cIndex === columnIndex) {
-            const editButton = cell.querySelector('button:last-child') as HTMLButtonElement | null;
+            const editButton = cell.querySelector('[role=button]:last-child') as HTMLButtonElement | null;
 
             if (editButton) {
               editButton.focus?.();

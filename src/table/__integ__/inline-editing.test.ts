@@ -8,21 +8,20 @@ const DOMAIN_ERROR = 'Must be a valid domain name';
 const tableWrapper = createWrapper().findTable()!;
 
 // $ = selector
-const EDIT_BTN$ = 'button:first-child:last-child';
 
 const bodyCell = tableWrapper.findBodyCell(2, 2)!;
 const cellRoot$ = bodyCell.toSelector();
 const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
-const cellEditButton$ = bodyCell.find(EDIT_BTN$).toSelector();
+const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
 const cellSaveButton = tableWrapper.findEditingCellSaveButton();
 
 // for arrow key navigation
 const mainCell = tableWrapper.findBodyCell(4, 5);
 const mainCell$ = mainCell.toSelector();
-const leftCell$ = tableWrapper.findBodyCell(4, 4).find(EDIT_BTN$).toSelector();
-const rightCell$ = tableWrapper.findBodyCell(4, 6).find(EDIT_BTN$).toSelector();
-const cellAbove$ = tableWrapper.findBodyCell(3, 5).find(EDIT_BTN$).toSelector();
-const cellBelow$ = tableWrapper.findBodyCell(5, 5).find(EDIT_BTN$).toSelector();
+const leftCell$ = tableWrapper.findEditCellButton(4, 4).toSelector();
+const rightCell$ = tableWrapper.findEditCellButton(4, 6).toSelector();
+const cellAbove$ = tableWrapper.findEditCellButton(3, 5).toSelector();
+const cellBelow$ = tableWrapper.findEditCellButton(5, 5).toSelector();
 
 const bodyCellError = bodyCell.findFormField().findError().toSelector();
 

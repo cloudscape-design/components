@@ -4,8 +4,7 @@ import clsx from 'clsx';
 import styles from './styles.css.js';
 import React, { useRef } from 'react';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
@@ -36,7 +35,7 @@ function TableCellEditable<ItemType>({
   isVisualRefresh,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const editActivateRef = useRef<HTMLSpanElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
   };
@@ -70,15 +69,14 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __forcedFocusState="none"
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
+          <span
+            className={styles['body-cell-editor']}
+            aria-label={ariaLabels?.activateEditLabel?.(column)}
+            role="button"
+            tabIndex={0}
+            ref={editActivateRef}
+          >
+            <Icon name="edit" />
           </span>
         </>
       )}
