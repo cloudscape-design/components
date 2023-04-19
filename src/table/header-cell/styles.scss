@@ -76,6 +76,7 @@ $active-separator-width: 2px;
 
   &-resizable {
     &.is-visual-refresh:before,
+    &.is-visual-refresh:last-child:before, // Need this selector for higher specificity
     &:not(.is-visual-refresh):not(:last-child):before {
       border-left-color: awsui.$color-border-divider-interactive-default;
     }
