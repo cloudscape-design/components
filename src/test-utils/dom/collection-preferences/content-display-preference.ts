@@ -25,8 +25,7 @@ export class ContentDisplayOptionWrapper extends ComponentWrapper {
   /**
    * Returns the visibility toggle for the option item.
    */
-
-  findToggle(): ToggleWrapper {
+  findVisibilityToggle(): ToggleWrapper {
     return this.findComponent(`.${styles['sortable-item-toggle']}`, ToggleWrapper)!;
   }
 }

@@ -69,15 +69,15 @@ describe('Content Display preference', () => {
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, false, true, true] });
-      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(2)!.findVisibilityToggle().findNativeInput().click();
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, true, true] });
-      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
       expectVisibilityStatus({ wrapper: contentDisplayPreferenceWrapper, statuses: [true, true, false, true] });
     });
 
     it('forces non-editable options to be visible', () => {
       const wrapper = renderContentDisplay();
-      const toggleInput = wrapper.findOptions()[0].findToggle().findNativeInput();
+      const toggleInput = wrapper.findOptions()[0].findVisibilityToggle().findNativeInput();
       expect(toggleInput.getElement()).toBeChecked();
       expect(toggleInput.getElement()).toBeDisabled();
       toggleInput.click();
@@ -228,8 +228,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findDismissButton()!.click();
       collectionPreferencesWrapper.findTriggerButton().click();
       expectVisibilityStatus({
@@ -248,8 +248,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findCancelButton()!.click();
       collectionPreferencesWrapper.findTriggerButton().click();
       expectVisibilityStatus({
@@ -269,8 +269,8 @@ describe('Content Display preference', () => {
       });
       collectionPreferencesWrapper.findTriggerButton().click();
       const contentDisplayPreferenceWrapper = collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
-      contentDisplayPreferenceWrapper.findOptions()[1].findToggle().findNativeInput().click();
-      contentDisplayPreferenceWrapper.findOptions()[2].findToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[1].findVisibilityToggle().findNativeInput().click();
+      contentDisplayPreferenceWrapper.findOptions()[2].findVisibilityToggle().findNativeInput().click();
       collectionPreferencesWrapper.findModal()!.findConfirmButton()!.click();
       expect(onConfirmSpy).toHaveBeenCalledTimes(1);
       expect(onConfirmSpy).toHaveBeenCalledWith(
@@ -378,7 +378,7 @@ function expectVisibilityStatus({
 }) {
   const options = wrapper.findOptions();
   for (let i = 0; i < options.length; i++) {
-    const toggleElement = options[i].findToggle().findNativeInput().getElement();
+    const toggleElement = options[i].findVisibilityToggle().findNativeInput().getElement();
     if (statuses[i]) {
       expect(toggleElement).toBeChecked();
     } else {
@@ -387,7 +387,7 @@ function expectVisibilityStatus({
   }
 }
 function expectLabelForToggle(option: ContentDisplayOptionWrapper) {
-  const toggleId = option.findToggle().findNativeInput().getElement().id;
+  const toggleId = option.findVisibilityToggle().findNativeInput().getElement().id;
   expect(toggleId).toBeTruthy();
   const labelForAttribute = option.findLabel().getElement().getAttribute('for');
   expect(labelForAttribute).toBe(toggleId);
