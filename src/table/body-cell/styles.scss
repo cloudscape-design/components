@@ -126,17 +126,17 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
         clip-path: inset(0 0 0 0);
         &.sticky-cell-last-right {
-          box-shadow: awsui.$shadow-sticky-column-end, 8px 0 0 0 awsui.$color-background-container-content;
+          box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
           clip-path: inset(0 0 0 -24px);
         }
       }
     }
     &-last-left {
-      box-shadow: awsui.$shadow-sticky-column-start;
+      box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
     }
     &-last-right {
-      box-shadow: awsui.$shadow-sticky-column-end;
+      box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
     }
   }

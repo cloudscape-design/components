@@ -275,6 +275,9 @@ const PropertyFilter = React.forwardRef(
             enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
+            ariaLabelledby={rest.ariaLabelledby}
+            ariaDescribedby={rest.ariaDescribedby}
+            controlId={rest.controlId}
             value={filteringText}
             disabled={disabled}
             onKeyDown={handleKeyDown}

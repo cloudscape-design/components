@@ -33,14 +33,14 @@ $active-separator-width: 2px;
     background: awsui.$color-background-table-header;
     z-index: 801; // Our sticky elements should have z-index in the range of 800-850
     &-last-left {
-      box-shadow: awsui.$shadow-sticky-column-start;
+      box-shadow: awsui.$shadow-sticky-column-first;
       clip-path: inset(0px -24px 0px 0px);
       &:not(.header-cell-resizable):before {
         display: none;
       }
     }
     &-last-right {
-      box-shadow: awsui.$shadow-sticky-column-end;
+      box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
     }
   }
@@ -75,9 +75,9 @@ $active-separator-width: 2px;
   }
 
   &-resizable {
-    &:not(:last-child):before,
-    &.is-visual-refresh:last-child:before {
-      border-left-color: awsui.$color-border-control-default;
+    &.is-visual-refresh:before,
+    &:not(.is-visual-refresh):not(:last-child):before {
+      border-left-color: awsui.$color-border-divider-interactive-default;
     }
   }
   &:not(.header-cell-resizable):before {

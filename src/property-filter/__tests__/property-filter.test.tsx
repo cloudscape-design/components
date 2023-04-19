@@ -187,6 +187,16 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('disabled');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-label', 'your choice');
     });
+    test('recieves `ariaLabelledby`, `ariaDescribedby` and `controlId` properties passed to the component', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        ariaLabelledby: 'label-by-id',
+        ariaDescribedby: 'described-by-id',
+        controlId: 'control-id',
+      });
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'label-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-describedby', 'described-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('id', 'control-id');
+    });
     describe('typing experience: ', () => {
       test('provides relevant suggestions depending on the currently entered string', () => {
         const { propertyFilterWrapper: wrapper } = renderComponent();

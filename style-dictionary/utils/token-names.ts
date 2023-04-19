@@ -672,8 +672,8 @@ export type ShadowsTokenName =
   | 'shadowSplitSide'
   | 'shadowSticky'
   | 'shadowStickyEmbedded'
-  | 'shadowStickyColumnStart'
-  | 'shadowStickyColumnEnd';
+  | 'shadowStickyColumnFirst'
+  | 'shadowStickyColumnLast';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
