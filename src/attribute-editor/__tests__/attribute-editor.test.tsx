@@ -394,8 +394,10 @@ describe('Attribute Editor', () => {
   });
 
   describe('a11y', () => {
-    test('row has role group and aria-labelledby referring to first control label and content', () => {
-      const wrapper = renderAttributeEditor({
+    let wrapper: AttributeEditorWrapper;
+
+    beforeEach(() => {
+      wrapper = renderAttributeEditor({
         ...defaultProps,
         definition: [
           {
@@ -410,6 +412,9 @@ describe('Attribute Editor', () => {
           },
         ],
       });
+    });
+
+    test('row has role group and aria-labelledby referring to first control label and content', () => {
       const [labelId, inputId] = wrapper
         .findRow(1)!
         .find('[role="group"]')!
@@ -421,6 +426,20 @@ describe('Attribute Editor', () => {
         ' ' +
         wrapper.getElement().querySelector(`#${inputId}`)!.getAttribute('value');
       expect(label).toBe('Key label k1');
+    });
+
+    test('remove button has an aria-labelledby pointing to the first control', () => {
+      const [labelId, inputId] = wrapper
+        .findRow(1)!
+        .findRemoveButton()!
+        .getElement()!
+        .getAttribute('aria-labelledby')!
+        .split(' ');
+
+      expect(document.getElementById(labelId)).toHaveTextContent('Remove');
+      expect(wrapper.findRow(1)!.findField(1)!.findControl()!.findInput()!.findNativeInput()!.getElement().id).toBe(
+        inputId
+      );
     });
   });
 });

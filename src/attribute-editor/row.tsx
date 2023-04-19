@@ -57,6 +57,7 @@ export const Row = React.memo(
     }, [onRemoveButtonClick, index]);
 
     const firstControlId = useUniqueId('first-control-id-');
+    const removeButtonTextId = useUniqueId('remove-button-text-id-');
 
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>
@@ -100,8 +101,9 @@ export const Row = React.memo(
                     removeButtonRefs[index] = ref ?? undefined;
                   }}
                   onClick={handleRemoveClick}
+                  __nativeAttributes={{ 'aria-labelledby': `${removeButtonTextId} ${firstControlId}` }}
                 >
-                  {removeButtonText}
+                  <span id={removeButtonTextId}>{removeButtonText}</span>
                 </InternalButton>
               </ButtonContainer>
             )}
