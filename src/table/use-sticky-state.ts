@@ -32,7 +32,8 @@ export function useStickyState(isLastStickyLeft = false, isLastStickyRight = fal
       unsubscribe(leftCallback);
       unsubscribe(rightCallback);
     };
-  }, [isLastStickyLeft, isLastStickyRight, subscribe, leftCallback, rightCallback, unsubscribe]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLastStickyLeft, isLastStickyRight]);
 
   return { isStuckToTheLeft, isStuckToTheRight };
 }
