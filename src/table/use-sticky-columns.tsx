@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState, createRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, createRef, useEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
 import { CellOffsets } from './internal';
 import clsx from 'clsx';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 interface StickyStyles {
   sticky: {
     left?: string;
@@ -21,6 +22,7 @@ interface StickyColumnParams {
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   tablePadding: { left: number; right: number };
+  wrapperRef: React.RefObject<HTMLDivElement>;
 }
 
 export interface GetStickyColumnProperties {
@@ -62,17 +64,6 @@ const useCellOffsets = (tableCellRefs: Array<React.RefObject<HTMLTableCellElemen
     setCellOffsets({ first: [0, ...firstColumnsOffsets], last: [...lastColumnsOffsets, 0] });
   }, [tableCellRefs]);
 
-  useLayoutEffect(() => {
-    // Request animation frame to make sure effect runs after the browser's automatic table layout algorithm
-    const frameId = requestAnimationFrame(() => {
-      updateCellOffsets();
-    });
-
-    return () => {
-      cancelAnimationFrame(frameId);
-    };
-  }, [updateCellOffsets]);
-
   return { cellOffsets, updateCellOffsets };
 };
 
@@ -107,6 +98,7 @@ export const useStickyColumns = ({
   stickyColumns,
   tablePadding,
   visibleColumnsLength,
+  wrapperRef,
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
   const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
@@ -115,6 +107,8 @@ export const useStickyColumns = ({
   const [shouldDisable, setShouldDisable] = useState<boolean>(noStickyColumns);
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const { cellOffsets, updateCellOffsets } = useCellOffsets(tableCellRefs);
+
+  useResizeObserver(wrapperRef, () => updateCellOffsets());
 
   const { first = 0, last = 0 } = stickyColumns || {};
   // Calculate the indexes of the last left and right sticky columns, taking into account the selection column
@@ -127,7 +121,6 @@ export const useStickyColumns = ({
 
   // Calculate the sum of all sticky columns' widths
   const totalStickySpace = firstStickyColumnsWidth + lastStickyColumnsWidth;
-
   useEffect(() => {
     // Check if there is enough scrollable space for sticky columns to be enabled
     const hasEnoughScrollableSpace =

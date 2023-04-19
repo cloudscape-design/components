@@ -8,6 +8,10 @@ import Input from '~components/input';
 import Link from '~components/link';
 import ScreenshotArea from '../utils/screenshot-area';
 import CollectionPreferences, { CollectionPreferencesProps } from '~components/collection-preferences';
+import { columnsConfig } from './shared-configs';
+import { generateItems } from './generate-data';
+
+const tableItems = generateItems(10);
 
 const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<any>[] = [
   {
@@ -138,13 +142,65 @@ export default () => {
         <Table
           data-test-id="simple"
           stickyColumns={{ first: 1, last: 1 }}
-          columnDefinitions={COLUMN_DEFINITIONS}
-          items={ITEMS}
+          columnDefinitions={columnsConfig}
+          resizableColumns={true}
+          items={tableItems}
           sortingDisabled={true}
           ariaLabels={{
             tableLabel: 'simple',
           }}
           header={<Header>Simple table</Header>}
+        />
+        <Table
+          data-test-id="with-collection-preferences"
+          stickyColumns={preferences.stickyColumns}
+          stickyHeader={true}
+          resizableColumns={true}
+          preferences={
+            <CollectionPreferences
+              title="Preferences"
+              confirmLabel="Confirm"
+              cancelLabel="Cancel"
+              onConfirm={({ detail }) => setPreferences(detail)}
+              preferences={preferences}
+              stickyColumnsPreference={{
+                firstColumns: {
+                  title: 'Stick first column(s)',
+                  description: 'Keep the first column(s) visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'First column', value: 1 },
+                    { label: 'First two columns', value: 2 },
+                    { label: 'Three two columns', value: 3 },
+                  ],
+                },
+                lastColumns: {
+                  title: 'Stick last column',
+                  description: 'Keep the last column visible while horizontally scrolling table content.',
+                  options: [
+                    { label: 'None', value: 0 },
+                    { label: 'Last column', value: 1 },
+                    { label: 'Last two columns', value: 2 },
+                    { label: 'Last three columns', value: 3 },
+                  ],
+                },
+              }}
+            />
+          }
+          ariaLabels={{
+            selectionGroupLabel: 'Items selection',
+            allItemsSelectionLabel: ({ selectedItems }) =>
+              `${selectedItems.length} ${selectedItems.length === 1 ? 'item' : 'items'} selected`,
+            itemSelectionLabel: ({ selectedItems }, item) => {
+              const isItemSelected = selectedItems.filter(i => i.name === item.name).length;
+              return `${item.name} is ${isItemSelected ? '' : 'not'} selected`;
+            },
+            tableLabel: 'With collection preferences',
+          }}
+          columnDefinitions={COLUMN_DEFINITIONS}
+          items={ITEMS}
+          sortingDisabled={true}
+          header={<Header>Simple table with collection preferences & sticky-header</Header>}
         />
         <Table
           data-test-id="resizable"
