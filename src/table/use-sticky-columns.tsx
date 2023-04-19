@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState, createRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, createRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react';
 import { TableProps } from './interfaces';
 import { CellOffsets } from './internal';
 import clsx from 'clsx';
@@ -22,6 +22,7 @@ interface StickyColumnParams {
   stickyColumns?: TableProps.StickyColumns;
   visibleColumnsLength: number;
   tablePadding: { left: number; right: number };
+  visibleColumns?: ReadonlyArray<string>;
   wrapperRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -98,6 +99,7 @@ export const useStickyColumns = ({
   stickyColumns,
   tablePadding,
   visibleColumnsLength,
+  visibleColumns,
   wrapperRef,
 }: StickyColumnParams) => {
   // Check if there are any sticky columns
@@ -108,7 +110,18 @@ export const useStickyColumns = ({
   const [tableCellRefs, setTableCellRefs] = useState<Array<React.RefObject<HTMLTableCellElement>>>([]);
   const { cellOffsets, updateCellOffsets } = useCellOffsets(tableCellRefs);
 
-  useResizeObserver(wrapperRef, () => updateCellOffsets());
+  useLayoutEffect(() => {
+    // Request animation frame to make sure effect runs after the browser's automatic table layout algorithm
+    const frameId = requestAnimationFrame(() => {
+      !shouldDisable && updateCellOffsets();
+    });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, [updateCellOffsets, shouldDisable]);
+
+  useResizeObserver(wrapperRef, () => !shouldDisable && updateCellOffsets());
 
   const { first = 0, last = 0 } = stickyColumns || {};
   // Calculate the indexes of the last left and right sticky columns, taking into account the selection column
@@ -138,7 +151,10 @@ export const useStickyColumns = ({
         (_: any, i: number) => tableCellRefs[i] || createRef<HTMLTableCellElement>()
       )
     );
-  }, [columnsLengthWithSelection]);
+  }, [visibleColumns, columnsLengthWithSelection]);
+  useEffect(() => {
+    console.log(tableCellRefs);
+  }, [tableCellRefs]);
 
   const getStickyStyles = useCallback(
     (colIndex: number, stickySide?: 'left' | 'right') => {

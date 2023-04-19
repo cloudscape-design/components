@@ -194,6 +194,7 @@ const InternalTable = forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     const stickyColumnsParams = {
+      visibleColumns,
       visibleColumnsLength,
       hasSelection,
       stickyColumns,
