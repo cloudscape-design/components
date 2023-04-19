@@ -32,8 +32,9 @@ class PreferencesModalWrapper extends ModalWrapper {
     return this.findComponent(`.${styles['content-density']}`, CheckboxWrapper);
   }
 
-  findStickyColumnsPreference(): StickyColumnsPreferenceWrapper | null {
-    return this.findComponent(`.${StickyColumnsPreferenceWrapper.rootSelector}`, StickyColumnsPreferenceWrapper);
+  findStickyColumnsPreference(firstOrLast: 'first' | 'last' = 'first'): StickyColumnsPreferenceWrapper | null {
+    const rootSelector = firstOrLast === 'first' ? 'firstRootSelector' : 'lastRootSelector';
+    return this.findComponent(`.${StickyColumnsPreferenceWrapper[rootSelector]}`, StickyColumnsPreferenceWrapper);
   }
 
   findPageSizePreference(): PageSizePreferenceWrapper | null {
