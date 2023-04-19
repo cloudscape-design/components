@@ -406,7 +406,7 @@ const InternalTable = forwardRef(
                               hasSelection={hasSelection}
                               hasFooter={hasFooter}
                               tdRef={tableCellRefs[0]}
-                              getStickyColumnProperties={() => getStickyColumnProperties(0)}
+                              stickyColumnProperties={getStickyColumnProperties(0)}
                               style={
                                 !shouldDisableStickyColumns && (stickyColumns?.first ?? 0) > 0
                                   ? { left: cellOffsets.first[0] }
@@ -460,7 +460,7 @@ const InternalTable = forwardRef(
                                 hasFooter={hasFooter}
                                 stripedRows={stripedRows}
                                 isEvenRow={isEven}
-                                getStickyColumnProperties={() => getStickyColumnProperties(colIndex)}
+                                stickyColumnProperties={getStickyColumnProperties(colIndex)}
                               />
                             );
                           })}

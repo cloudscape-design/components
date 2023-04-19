@@ -69,7 +69,7 @@ export default function InlineEditorPermutations() {
                     onEditStart={() => {}}
                     onEditEnd={() => {}}
                     wrapLines={false}
-                    getStickyColumnProperties={() => stickyColumnProperties}
+                    stickyColumnProperties={stickyColumnProperties}
                     {...permutation}
                   />
                 </tr>

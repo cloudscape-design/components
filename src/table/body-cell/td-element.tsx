@@ -5,7 +5,7 @@ import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useStickyState } from '../use-sticky-state';
-import { getStickyClassNames, GetStickyColumnProperties } from '../use-sticky-columns';
+import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -22,7 +22,7 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  getStickyColumnProperties: () => GetStickyColumnProperties;
+  stickyColumnProperties: StickyColumnProperties;
   tdRef?: React.Ref<HTMLTableCellElement>;
 }
 
@@ -42,11 +42,11 @@ export function TableTdElement({
   stripedRows,
   hasSelection,
   hasFooter,
-  getStickyColumnProperties,
+  stickyColumnProperties,
   tdRef,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties();
+  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = stickyColumnProperties;
   const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
   return (
     <td

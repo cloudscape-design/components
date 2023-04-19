@@ -25,7 +25,7 @@ interface StickyColumnParams {
   wrapperRef: React.RefObject<HTMLDivElement>;
 }
 
-export interface GetStickyColumnProperties {
+export interface StickyColumnProperties {
   isSticky: boolean;
   isLastStickyLeft: boolean;
   isLastStickyRight: boolean;
@@ -162,16 +162,14 @@ export const useStickyColumns = ({
   );
 
   const getStickyColumnProperties = useCallback(
-    (colIndex: number): GetStickyColumnProperties => {
-      const disabledStickyColumn = {
-        isSticky: false,
-        isLastStickyLeft: false,
-        isLastStickyRight: false,
-        stickyStyles: { sticky: {}, stuck: {} },
-      };
-
+    (colIndex: number): StickyColumnProperties => {
       if (shouldDisable) {
-        return disabledStickyColumn;
+        return {
+          isSticky: false,
+          isLastStickyLeft: false,
+          isLastStickyRight: false,
+          stickyStyles: { sticky: {}, stuck: {} },
+        };
       }
 
       // Determine if the column is sticky on the left or right side

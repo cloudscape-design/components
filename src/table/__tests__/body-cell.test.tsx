@@ -54,7 +54,7 @@ const TestComponent = ({ isEditing = false }) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
-            getStickyColumnProperties={() => stickyColumnProps}
+            stickyColumnProperties={stickyColumnProps}
           />
         </tr>
       </tbody>
@@ -85,7 +85,7 @@ const TestComponent2 = ({ column }: any) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
-            getStickyColumnProperties={() => stickyColumnProps}
+            stickyColumnProperties={stickyColumnProps}
           />
         </tr>
       </tbody>

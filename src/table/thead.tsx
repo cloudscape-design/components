@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { CellOffsets } from './internal';
-import { GetStickyColumnProperties } from './use-sticky-columns';
+import { StickyColumnProperties } from './use-sticky-columns';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -44,7 +44,7 @@ export interface TheadProps {
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
   stickyColumns?: TableProps.StickyColumns;
   cellOffsets?: CellOffsets;
-  getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
+  getStickyColumnProperties: (colIndex: number) => StickyColumnProperties;
   shouldDisableStickyColumns: boolean;
 }
 
@@ -174,7 +174,7 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                getStickyColumnProperties={getStickyColumnProperties}
+                stickyColumnProperties={getStickyColumnProperties(colIndex)}
               />
             );
           })}

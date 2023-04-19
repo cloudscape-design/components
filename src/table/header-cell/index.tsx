@@ -10,7 +10,7 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { getStickyClassNames, GetStickyColumnProperties } from '../use-sticky-columns';
+import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
 import { useStickyState } from '../use-sticky-state';
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -32,7 +32,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  getStickyColumnProperties: (colIndex: number) => GetStickyColumnProperties;
+  stickyColumnProperties: StickyColumnProperties;
 }
 
 export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>) {
@@ -54,7 +54,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     resizableColumns,
     onResizeFinish,
     isEditable,
-    getStickyColumnProperties,
+    stickyColumnProperties,
   } = props;
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -77,7 +77,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   };
   const headerId = useUniqueId('table-header-');
   // Sticky columns
-  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = getStickyColumnProperties(colIndex);
+  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = stickyColumnProperties;
   const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
 
   return (

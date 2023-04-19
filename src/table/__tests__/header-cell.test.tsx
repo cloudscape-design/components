@@ -55,7 +55,7 @@ it('renders a fake focus outline on the sort control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
-        getStickyColumnProperties={() => stickyColumnProps}
+        stickyColumnProperties={stickyColumnProps}
       />
     </TableWrapper>
   );
@@ -77,7 +77,7 @@ it('renders a fake focus outline on the resize control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
-        getStickyColumnProperties={() => stickyColumnProps}
+        stickyColumnProperties={stickyColumnProps}
       />
     </TableWrapper>
   );
