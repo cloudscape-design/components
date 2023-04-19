@@ -32,11 +32,9 @@ export default function Tools({ children }: ToolsProps) {
     hasDefaultToolsWidth,
     hasDrawerViewportOverlay,
     isMobile,
-    isNavigationOpen,
     isSplitPanelOpen,
     isToolsOpen,
     loseToolsFocus,
-    navigationHide,
     splitPanelDisplayed,
     splitPanelPosition,
     splitPanelRefs,
@@ -50,7 +48,7 @@ export default function Tools({ children }: ToolsProps) {
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
-  const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
+  const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
   /**
    * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered

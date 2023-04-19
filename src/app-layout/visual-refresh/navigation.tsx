@@ -48,7 +48,7 @@ export default function Navigation() {
     }
   };
 
-  const isUnfocusable = hasDrawerViewportOverlay && isToolsOpen && !toolsHide;
+  const isUnfocusable = hasDrawerViewportOverlay && (!isNavigationOpen || (isToolsOpen && !toolsHide));
 
   return (
     <Transition in={isNavigationOpen}>
