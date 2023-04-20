@@ -57,7 +57,7 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the options that the user can reorder.
+   * Returns options that the user can reorder.
    */
   findOptions(): Array<ContentDisplayOptionWrapper> {
     return this.findAllByClassName(getClassName('option')).map(
