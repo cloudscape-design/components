@@ -429,6 +429,5 @@ export namespace TableProps {
   export interface ColumnDisplayProperties {
     id: string;
     visible?: boolean;
-    editable?: boolean;
   }
 }
