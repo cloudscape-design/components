@@ -6,6 +6,8 @@ import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { useStickyState } from '../use-sticky-state';
 import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
+import { useReaction } from '../../area-chart/model/async-store';
+
 export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
@@ -24,6 +26,7 @@ export interface TableTdElementProps {
   hasFooter?: boolean;
   stickyColumnProperties: StickyColumnProperties;
   tdRef?: React.Ref<HTMLTableCellElement>;
+  colIndex: number;
 }
 
 export function TableTdElement({
@@ -42,15 +45,43 @@ export function TableTdElement({
   stripedRows,
   hasSelection,
   hasFooter,
-  stickyColumnProperties,
-  tdRef,
+  colIndex,
+  stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = stickyColumnProperties;
-  const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
+  const ref = React.useRef();
+  // We need to know which classes to add / remove
+  const stickyClasses = [styles['sticky-cell'], styles['sticky-cell-last-left'], styles['sticky-cell-last-left']];
+
+  useReaction(
+    stickyState.store,
+    state => state.cellStyles,
+    styles => {
+      if (ref && ref.current) {
+        const classNames = styles[colIndex]?.classNames.td;
+
+        if (classNames?.length) {
+          const differences = stickyClasses.filter(el => !classNames.includes(el));
+          differences.forEach(name => {
+            ref.current.classList.remove(name);
+          });
+          classNames.forEach(name => {
+            ref.current.classList.add(name);
+          });
+        }
+        console.log('in td element', styles[colIndex]?.style);
+        const cellStyle = styles[colIndex]?.style;
+        for (const key in cellStyle) {
+          if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {
+            ref.current.style[key] = cellStyle[key];
+          }
+        }
+      }
+    }
+  );
   return (
     <td
-      style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
+      style={style}
       className={clsx(
         className,
         styles['body-cell'],
@@ -64,21 +95,15 @@ export function TableTdElement({
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
-        hasFooter && styles['has-footer'],
-        getStickyClassNames({
-          styles,
-          isSticky,
-          isLastStickyLeft,
-          isLastStickyRight,
-          isStuckToTheLeft,
-          isStuckToTheRight,
-        })
+        hasFooter && styles['has-footer']
       )}
       onClick={onClick}
-      ref={tdRef}
+      ref={ref}
       {...nativeAttributes}
     >
       {children}
     </td>
   );
 }
+
+// Need some sort of style restore (when padding gets removed)

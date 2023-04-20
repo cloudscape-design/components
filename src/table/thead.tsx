@@ -42,10 +42,6 @@ export interface TheadProps {
   stripedRows?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  stickyColumns?: TableProps.StickyColumns;
-  cellOffsets?: CellOffsets;
-  getStickyColumnProperties: (colIndex: number) => StickyColumnProperties;
-  shouldDisableStickyColumns: boolean;
 }
 
 const Thead = React.forwardRef(
@@ -66,15 +62,13 @@ const Thead = React.forwardRef(
       onResizeFinish,
       singleSelectionHeaderAriaLabel,
       stripedRows,
-      stickyColumns,
-      cellOffsets,
       sticky = false,
       hidden = false,
       stuck = false,
       focusedComponent,
       onFocusedComponentChange,
-      getStickyColumnProperties,
-      shouldDisableStickyColumns,
+      cellRefs,
+      stickyState,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -95,21 +89,15 @@ const Thead = React.forwardRef(
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-    const hasFirstStickyColumns = (stickyColumns?.first ?? 0) > 0;
 
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
             <th
-              className={clsx(
-                headerCellClass,
-                selectionCellClass,
-                hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['sticky-cell']
-              )}
-              style={{ left: `${cellOffsets?.first[0]}px` }}
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
               scope="col"
+              ref={cellRefs[0]}
             >
               <SelectionControl
                 onFocusDown={event => {
@@ -124,14 +112,9 @@ const Thead = React.forwardRef(
           )}
           {selectionType === 'single' && (
             <th
-              className={clsx(
-                headerCellClass,
-                selectionCellClass,
-                hidden && headerCellStyles['header-cell-hidden'],
-                !shouldDisableStickyColumns && hasFirstStickyColumns && headerCellStyles['sticky-cell']
-              )}
-              style={{ left: `${cellOffsets?.first[0]}px` }}
+              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
               scope="col"
+              ref={cellRefs[0]}
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
             </th>
@@ -174,7 +157,8 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                stickyColumnProperties={getStickyColumnProperties(colIndex)}
+                cellRefs={cellRefs}
+                stickyState={stickyState}
               />
             );
           })}

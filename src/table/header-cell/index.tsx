@@ -12,6 +12,8 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
 import { useStickyState } from '../use-sticky-state';
+import { useReaction } from '../../area-chart/model/async-store';
+
 interface TableHeaderCellProps<ItemType> {
   className?: string;
   style?: React.CSSProperties;
@@ -54,7 +56,8 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     resizableColumns,
     onResizeFinish,
     isEditable,
-    stickyColumnProperties,
+    cellRefs,
+    stickyState,
   } = props;
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -64,7 +67,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       sortingColumn: column,
       isDescending: sorted ? !sortingDescending : false,
     });
-
+  const ref = React.useRef();
   // Elements with role="button" do not have the default behavior of <button>, where pressing
   // Enter or Space will trigger a click event. Therefore we need to add this ourselves.
   // The native <button> element cannot be used due to a misaligned implementation in Firefox:
@@ -76,35 +79,52 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     }
   };
   const headerId = useUniqueId('table-header-');
-  // Sticky columns
-  const { stickyStyles, isSticky, isLastStickyLeft, isLastStickyRight } = stickyColumnProperties;
-  const { isStuckToTheLeft, isStuckToTheRight } = useStickyState(isLastStickyLeft, isLastStickyRight);
+  const stickyClasses = [styles['sticky-cell'], styles['sticky-cell-last-left'], styles['sticky-cell-last-left']];
 
+  useReaction(
+    stickyState.store,
+    state => state.cellStyles,
+    styles => {
+      if (ref && ref.current) {
+        const classNames = styles[colIndex]?.classNames.th;
+
+        if (classNames?.length) {
+          const differences = stickyClasses.filter(el => !classNames.includes(el));
+          differences.forEach(name => {
+            ref.current.classList.remove(name);
+          });
+          classNames.forEach(name => {
+            ref.current.classList.add(name);
+          });
+        }
+        console.log('in th element', styles[colIndex]?.style);
+        const cellStyle = styles[colIndex]?.style;
+        for (const key in cellStyle) {
+          if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {
+            ref.current.style[key] = cellStyle[key];
+          }
+        }
+      }
+    }
+  );
   return (
     <th
-      className={clsx(
-        className,
-        {
-          [styles['header-cell-resizable']]: !!resizableColumns,
-          [styles['header-cell-sortable']]: sortingStatus,
-          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-          [styles['header-cell-disabled']]: sortingDisabled,
-          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-          [styles['header-cell-descending']]: sortingStatus === 'descending',
-          [styles['header-cell-hidden']]: hidden,
-        },
-        getStickyClassNames({
-          styles,
-          isSticky,
-          isLastStickyLeft,
-          isLastStickyRight,
-          isStuckToTheLeft,
-          isStuckToTheRight,
-        })
-      )}
+      className={clsx(className, {
+        [styles['header-cell-resizable']]: !!resizableColumns,
+        [styles['header-cell-sortable']]: sortingStatus,
+        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+        [styles['header-cell-disabled']]: sortingDisabled,
+        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+        [styles['header-cell-descending']]: sortingStatus === 'descending',
+        [styles['header-cell-hidden']]: hidden,
+      })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={{ ...stickyStyles.sticky, ...(isStuckToTheLeft && stickyStyles.stuck), ...style }}
+      style={style}
       scope="col"
+      ref={node => {
+        cellRefs.current[colIndex] = node;
+        ref.current = node;
+      }}
     >
       <div
         className={clsx(styles['header-cell-content'], {

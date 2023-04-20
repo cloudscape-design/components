@@ -59,17 +59,39 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
 }
 
 export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>, effect: Listener<R>): void {
-  useLayoutEffect(
-    () => {
-      const unsubscribe = store.subscribe(selector, (newState, prevState) =>
-        effect(selector(newState), selector(prevState))
-      );
-      return unsubscribe;
-    },
+  useLayoutEffect(() => {
+    const unsubscribe = store.subscribe(selector, (newState, prevState) => {
+      const newSelectedState = selector(newState);
+      const prevSelectedState = selector(prevState);
+
+      if (!isDeepEqual(newSelectedState, prevSelectedState)) {
+        effect(newSelectedState, prevSelectedState);
+      }
+    });
+    return unsubscribe;
     // ignoring selector and effect as they are expected to stay constant
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [store]
-  );
+  }, [store]);
+}
+
+function isDeepEqual(obj1, obj2) {
+  if (obj1 === obj2) return true;
+
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+    return false;
+  }
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (!keys2.includes(key)) return false;
+    if (!isDeepEqual(obj1[key], obj2[key])) return false;
+  }
+
+  return true;
 }
 
 export function useSelector<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>): R {
