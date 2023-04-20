@@ -15,6 +15,8 @@ export interface TableTdElementProps {
   isPrevSelected: boolean;
   nativeAttributes?: Omit<React.HTMLAttributes<HTMLTableCellElement>, 'style' | 'className' | 'onClick'>;
   onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   children?: React.ReactNode;
   isEvenRow?: boolean;
   stripedRows?: boolean;
@@ -37,6 +39,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isPrevSelected,
       nativeAttributes,
       onClick,
+      onMouseEnter,
+      onMouseLeave,
       isEvenRow,
       stripedRows,
       isVisualRefresh,
@@ -64,6 +68,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasFooter && styles['has-footer']
         )}
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         ref={ref}
         {...nativeAttributes}
       >

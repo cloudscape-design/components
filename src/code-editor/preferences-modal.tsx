@@ -23,6 +23,9 @@ interface PreferencesModali18nStrings {
   theme: string;
   lightThemes: string;
   darkThemes: string;
+  themeFilteringPlaceholder?: string;
+  themeFilteringAriaLabel?: string;
+  themeFilteringClearAriaLabel?: string;
 }
 
 interface PreferencesModalProps {
@@ -97,6 +100,9 @@ export default (props: PreferencesModalProps) => {
               onChange={onThemeSelected}
               options={themeOptions}
               filteringType="auto"
+              filteringAriaLabel={props.i18nStrings.themeFilteringAriaLabel}
+              filteringClearAriaLabel={props.i18nStrings.themeFilteringClearAriaLabel}
+              filteringPlaceholder={props.i18nStrings.themeFilteringPlaceholder}
             />
           </InternalFormField>
         </div>

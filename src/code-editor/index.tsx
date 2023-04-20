@@ -341,6 +341,9 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 theme: i18nStrings.preferencesModalTheme,
                 lightThemes: i18nStrings.preferencesModalLightThemes,
                 darkThemes: i18nStrings.preferencesModalDarkThemes,
+                themeFilteringAriaLabel: i18nStrings.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringClearAriaLabel: i18nStrings.preferencesModalThemeFilteringClearAriaLabel,
+                themeFilteringPlaceholder: i18nStrings.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}

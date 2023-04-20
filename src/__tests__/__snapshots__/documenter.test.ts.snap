@@ -3234,6 +3234,8 @@ scroll parent up to reveal the first card or row of cards.",
       "description": "Adds labels to the selection components (checkboxes and radio buttons) as follows:
 * \`itemSelectionLabel\` ((SelectionState, Item) => string) - Determines the label for an item.
 * \`selectionGroupLabel\` (string) - Specifies the label for the group selection control.
+* \`cardsLabel\` (string) - Provides alternative text for the cards list.
+                           By default the contents of the \`header\` are used.
 You can use the first arguments of type \`SelectionState\` to access the current selection
 state of the component (for example, the \`selectedItems\` list). The label function for individual
 items also receives the corresponding  \`Item\` object. You can use the group label to
@@ -3242,6 +3244,11 @@ add a meaningful description to the whole selection.
       "inlineType": Object {
         "name": "CardsProps.AriaLabels",
         "properties": Array [
+          Object {
+            "name": "cardsLabel",
+            "optional": true,
+            "type": "string",
+          },
           Object {
             "name": "itemSelectionLabel",
             "optional": false,
@@ -3589,6 +3596,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
+      "description": "Specifies whether to add \`aria-required\` to the native control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies if the component is selected.",
       "name": "checked",
       "optional": false,
@@ -3905,6 +3918,21 @@ The object should contain, among others:
           Object {
             "name": "preferencesModalTheme",
             "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringClearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringPlaceholder",
+            "optional": true,
             "type": "string",
           },
           Object {
@@ -5693,6 +5721,229 @@ works with the \`headerText\` slot (not with the deprecated \`header\`), and not
 }
 `;
 
+exports[`Documenter definition for file-upload matches the snapshot: file-upload 1`] = `
+Object {
+  "events": Array [
+    Object {
+      "cancelable": false,
+      "description": "Called when the user selects new file(s), or removes a file.
+The event \`detail\` contains the current value of the component.",
+      "detailInlineType": Object {
+        "name": "FileUploadProps.ChangeDetail",
+        "properties": Array [
+          Object {
+            "name": "value",
+            "optional": false,
+            "type": "Array<File>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "FileUploadProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": Array [
+    Object {
+      "description": "Sets focus on the file upload button.",
+      "name": "focus",
+      "parameters": Array [],
+      "returnType": "void",
+    },
+  ],
+  "name": "FileUpload",
+  "properties": Array [
+    Object {
+      "description": "Specifies the native file input \`accept\` attribute to describe the allow-list of file types.",
+      "name": "accept",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies whether to add aria-required to the file upload control.",
+      "name": "ariaRequired",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "An array of file errors corresponding to the files in the \`value\`.",
+      "name": "fileErrors",
+      "optional": true,
+      "type": "ReadonlyArray<null | string>",
+    },
+    Object {
+      "description": "An object containing all the localized strings required by the component:
+* \`uploadButtonText\` (function): A function to render the text of the file upload button. It takes \`multiple\` attribute to define plurality.
+* \`dropzoneText\` (function): A function to render the text shown in the dropzone. It takes \`multiple\` attribute to define plurality.
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
+* \`limitShowFewer\` (string): The text of the show more tokens button.
+* \`limitShowMore\` (string): The text of the show fewer tokens button.
+* \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
+      "inlineType": Object {
+        "name": "FileUploadProps.I18nStrings",
+        "properties": Array [
+          Object {
+            "name": "dropzoneText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
+          },
+          Object {
+            "name": "errorIconAriaLabel",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "formatFileLastModified",
+            "optional": true,
+            "type": "(date: Date) => string",
+          },
+          Object {
+            "name": "formatFileSize",
+            "optional": true,
+            "type": "(sizeInBytes: number) => string",
+          },
+          Object {
+            "name": "limitShowFewer",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "limitShowMore",
+            "optional": false,
+            "type": "string",
+          },
+          Object {
+            "name": "removeFileAriaLabel",
+            "optional": false,
+            "type": "(fileIndex: number) => string",
+          },
+          Object {
+            "name": "uploadButtonText",
+            "optional": false,
+            "type": "(multiple: boolean) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": false,
+      "type": "FileUploadProps.I18nStrings",
+    },
+    Object {
+      "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Overrides the invalidation state. Usually the invalid state
+comes from the parent \`FormField\`component,
+however sometimes you need to override its
+state when you have more than one input within a
+single form field.",
+      "name": "invalid",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the native file input \`multiple\` attribute to allow users entering more than one file.",
+      "name": "multiple",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.",
+      "name": "showFileLastModified",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.",
+      "name": "showFileSize",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Show file thumbnail in the token. Only supported for images.",
+      "name": "showFileThumbnail",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Specifies the maximum number of displayed file tokens. If the property isn't set, all of the tokens are displayed.",
+      "name": "tokenLimit",
+      "optional": true,
+      "type": "number",
+    },
+    Object {
+      "description": "Specifies the currently selected file(s).
+If you want to clear the selection, use empty array.",
+      "name": "value",
+      "optional": false,
+      "type": "ReadonlyArray<File>",
+    },
+  ],
+  "regions": Array [
+    Object {
+      "description": "Constraint text that is displayed below the control. Use this to provide additional information about file size limit, etc.",
+      "isDefault": false,
+      "name": "constraintText",
+    },
+    Object {
+      "description": "Text that displays as a validation message.",
+      "isDefault": false,
+      "name": "errorText",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for flashbar matches the snapshot: flashbar 1`] = `
 Object {
   "events": Array [],
@@ -7244,9 +7495,10 @@ Object {
   "events": Array [
     Object {
       "cancelable": true,
-      "description": "Called when a link is clicked without any modifier keys.
-If you want to implement client-side routing yourself,
-use this event and prevent default browser navigation (by calling \`preventDefault\`).
+      "description": "Called when a link is clicked without any modifier keys. If the link has no \`href\` provided, it will be called on
+all clicks.
+If you want to implement client-side routing yourself, use this event and prevent default browser navigation
+(by calling \`preventDefault\`).
 ",
       "detailInlineType": Object {
         "name": "LinkProps.FollowDetail",
@@ -9234,6 +9486,31 @@ Object {
   "name": "PropertyFilter",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for each element that you want to use as a description
+and set the property to a string of each ID separated by spaces (for example, \`\\"id1 id2 id3\\"\`).
+",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Adds \`aria-labelledby\` to the component. If you're using this component within a form field,
+don't set this property because the form field component automatically sets it.
+Use this property if the component isn't surrounded by a form field, or you want to override the value
+automatically set by the form field (for example, if you have two components within a single form field).
+
+To use it correctly, define an ID for the element you want to use as label and set the property to that ID.
+",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
@@ -9244,6 +9521,16 @@ events to fire calling for more properties.",
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
+      "description": "Specifies the ID of the native form element. You can use it to relate
+a label element's \`for\` attribute to this control.
+It defaults to an automatically generated ID that
+is provided by its parent form field component.
+",
+      "name": "controlId",
       "optional": true,
       "type": "string",
     },
@@ -11166,42 +11453,42 @@ Object {
           },
           Object {
             "name": "openButtonAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesCancel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesConfirm",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionBottom",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionDescription",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionLabel",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesPositionSide",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {
             "name": "preferencesTitle",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           Object {

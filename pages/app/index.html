@@ -23,6 +23,10 @@
         csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
         csp['img-src'] = 'data:'; // this component contains icons loaded this way
       }
+      // Custom CSP required for thumbnails in FileUpload component
+      if (location.hash.includes('file-upload')) {
+        csp['img-src'] = 'blob:';
+      }
 
       const cspString = Object.entries(csp)
         .map(([key, value]) => `${key} ${value}`)

@@ -171,11 +171,21 @@ describe('Cards', () => {
 
     it('maintains logical relationship between header and cards', () => {
       wrapper = renderCards(<Cards<Item> cardDefinition={{}} items={defaultItems} header="abcedefg" />).wrapper;
-      const headerElement = wrapper.findHeader()!.getElement();
-      expect(headerElement).toHaveAttribute('id');
       const cardsOrderedList = getCard(0).getElement().parentElement;
-      expect(cardsOrderedList).toHaveAttribute('aria-labelledby', headerElement!.getAttribute('id'));
-      expect(cardsOrderedList).toHaveAttribute('aria-describedby', headerElement!.getAttribute('id'));
+      expect(cardsOrderedList).toHaveAccessibleName('abcedefg');
+    });
+
+    it('allows label to be overridden', () => {
+      wrapper = renderCards(
+        <Cards<Item>
+          cardDefinition={{}}
+          items={defaultItems}
+          header="abcedefg"
+          ariaLabels={{ itemSelectionLabel: () => 'Item', selectionGroupLabel: 'Group', cardsLabel: 'Custom label' }}
+        />
+      ).wrapper;
+      const cardsOrderedList = getCard(0).getElement().parentElement;
+      expect(cardsOrderedList).toHaveAccessibleName('Custom label');
     });
   });
 

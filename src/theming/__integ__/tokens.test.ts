@@ -21,6 +21,12 @@ class ColorTokensMosaikPage extends BasePageObject {
     });
     return map;
   }
+  switchTheme() {
+    return this.click('[data-testid="change-theme"]');
+  }
+  setSecondaryTheme() {
+    return this.click('[data-testid="set-secondary"]');
+  }
   toggleDarkMode() {
     return this.click('#mode-toggle');
   }
@@ -30,17 +36,16 @@ class ColorTokensMosaikPage extends BasePageObject {
   toggleDisabledMotion() {
     return this.click('#disabled-motion-toggle');
   }
-  toggleVisualRefresh() {
-    return this.click('#visual-refresh-toggle');
-  }
 }
 
-const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>) => {
+const setupTest = (testFn: (page: ColorTokensMosaikPage) => Promise<void>, vr?: boolean) => {
   return useBrowser(async browser => {
     const page = new ColorTokensMosaikPage(browser);
-    await browser.url('#/light/theming/tokens');
-    // The default theme is VR by default, so we toggle once to go to classic mode
-    await page.toggleVisualRefresh();
+    await browser.url(`#/light/theming/tokens${!vr ? '?visualRefresh=false' : ''}`);
+    await page.switchTheme();
+    if (vr) {
+      await page.setSecondaryTheme();
+    }
     await testFn(page);
   });
 };
@@ -87,17 +92,6 @@ test(
     expect(actual).toMatchObject(defaultMap);
   })
 );
-// TODO: re-enable test after implementing theming in visual refresh
-test.skip(
-  'applies theming in visual refresh',
-  setupTest(async page => {
-    await page.toggleVisualRefresh();
-
-    const actual = await page.getCustomPropertyMap();
-
-    expect(actual).toMatchObject(defaultMap);
-  })
-);
 test(
   'applies theming in dark mode',
   setupTest(async page => {
@@ -130,15 +124,21 @@ test(
     expect(actual).toMatchObject(darkMap);
   })
 );
-// TODO: re-enable test after implementing theming in visual refresh
-test.skip(
+test(
+  'applies theming in visual refresh',
+  setupTest(async page => {
+    const actual = await page.getCustomPropertyMap();
+
+    expect(actual).toMatchObject(defaultMap);
+  }, true)
+);
+test(
   'applies theming in dark mode + visual refresh',
   setupTest(async page => {
     await page.toggleDarkMode();
-    await page.toggleVisualRefresh();
 
     const actual = await page.getCustomPropertyMap();
 
     expect(actual).toMatchObject(darkMap);
-  })
+  }, true)
 );

@@ -2,22 +2,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+import Badge from '../../../lib/components/badge';
+import Popover from '../../../lib/components/popover';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { SideNavigationItemWrapper } from '../../../lib/components/test-utils/dom/side-navigation';
+import '../../__a11y__/to-validate-a11y';
 
 function renderSideNavigation(props: SideNavigationProps = {}) {
   const { container } = render(<SideNavigation {...props} />);
   return createWrapper(container).findSideNavigation()!;
 }
 
-it('Side navigation with all possible items', () => {
+it('Side navigation with all possible items', async () => {
   const wrapper = renderSideNavigation({
     items: [
       {
         type: 'link',
         text: 'Page 1',
         href: '#/page1',
+        info: <Badge>1</Badge>,
       },
       {
         type: 'divider',
@@ -30,11 +34,18 @@ it('Side navigation with all possible items', () => {
             type: 'link',
             text: 'Page 2',
             href: '#/page2',
+            info: (
+              <Popover content="very new feature" renderWithPortal={true}>
+                new
+              </Popover>
+            ),
           },
           {
             type: 'link',
             text: 'Page 3',
             href: '#/page3',
+            external: true,
+            externalIconAriaLabel: 'Opens in a new tab',
           },
           { type: 'divider' },
           {
@@ -218,4 +229,5 @@ it('Side navigation with all possible items', () => {
   expect(wrapper.findItemByIndex(8)!.findDivider()).toBeTruthy();
 
   expect(wrapper.findItemByIndex(9)!.findLink()!.getElement()).toHaveTextContent('Notifications');
+  await expect(wrapper.getElement()).toValidateA11y();
 });

@@ -27,6 +27,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusContainer: '0px',
   borderRadiusControlCircularFocusRing: '50%',
   borderRadiusControlDefaultFocusRing: '{borderRadiusInput}',
+  borderRadiusDropzone: '0px',
   borderRadiusFlashbar: '0px',
   borderRadiusItem: '0px',
   borderRadiusInput: '2px',

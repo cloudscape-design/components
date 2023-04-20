@@ -95,7 +95,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderControlChecked: '{colorBackgroundControlChecked}',
   colorBorderControlDefault: '{colorGrey500}',
   colorBorderControlDisabled: '{colorBackgroundControlDisabled}',
-  colorBorderDividerActive: '{colorGrey500}',
+  colorBorderDividerActive: { light: '{colorGrey900}', dark: '{colorGrey100}' },
   colorBorderDividerDefault: { light: '{colorGrey200}', dark: '{colorGrey600}' },
   colorBorderDividerPanelBottom: { light: '{colorBorderDividerDefault}', dark: '{colorGreyTransparent}' },
   colorBorderDividerPanelSide: '{colorBorderDividerDefault}',
@@ -121,7 +121,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderStatusInfo: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderStatusSuccess: { light: '{colorGreen600}', dark: '{colorGreen500}' },
   colorBorderStatusWarning: { light: '{colorGrey500}', dark: '{colorGrey450}' },
-  colorBorderDividerInteractiveDefault: '{colorBorderDividerDefault}',
+  colorBorderDividerInteractiveDefault: '{colorTextInteractiveDefault}',
   colorBorderTabsDivider: { light: '{colorGrey200}', dark: '{colorGrey600}' },
   colorBorderTabsShadow: '{colorGreyTransparent}',
   colorBorderTabsUnderline: '{colorTextAccent}',
@@ -227,6 +227,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBoardPlaceholderHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
   colorDragPlaceholderActive: { light: '{colorGrey200}', dark: '{colorGrey550}' },
   colorDragPlaceholderHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
+  colorDropzoneBackgroundActive: { light: '{colorGrey200}', dark: '{colorGrey500}' },
+  colorDropzoneBackgroundHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
+  colorDropzoneTextActive: { light: '{colorGrey550}', dark: '{colorGrey800}' },
+  colorDropzoneTextHover: { light: '{colorBlue800}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
