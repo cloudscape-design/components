@@ -145,7 +145,23 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     align-items: center;
     justify-content: flex-end;
 
-    padding-right: awsui.$space-xs;
+    // Reset some native <button> styles
+    cursor: pointer;
+    outline: 0;
+    background: 0;
+    border: 0;
+    padding: 0;
+
+    // Additional xxs padding that would normally come from the Inline Icon Button
+    padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
+    color: awsui.$color-text-button-normal-default;
+
+    &:hover {
+      color: awsui.$color-text-button-normal-hover;
+    }
+    &:active {
+      color: awsui.$color-text-button-normal-active;
+    }
 
     &-form {
       margin: calc(-1 * #{awsui.$space-xs}) calc(-1.5 * #{awsui.$space-xs});
@@ -189,17 +205,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       }
       & > .body-cell-editor {
         opacity: 0;
-        outline: 0;
-        background: 0;
-        border: 0;
-        color: awsui.$color-text-button-normal-default;
-
-        &:hover {
-          color: awsui.$color-text-button-normal-hover;
-        }
-        &:active {
-          color: awsui.$color-text-button-normal-active;
-        }
       }
       &:hover {
         position: relative;
@@ -213,7 +218,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           right: 0;
         }
         & > .body-cell-editor {
-          padding-right: calc(#{awsui.$space-xs} - (2 * #{awsui.$border-divider-list-width}));
+          padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs} - (2 * #{awsui.$border-divider-list-width}));
         }
         &.body-cell-last-row.body-cell-selected,
         &.body-cell-next-selected {
