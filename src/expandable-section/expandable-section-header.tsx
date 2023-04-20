@@ -96,6 +96,7 @@ const ExpandableNavigationHeader = ({
         aria-label={ariaLabel}
         aria-controls={ariaControls}
         aria-expanded={expanded}
+        type="button"
       >
         {icon}
       </button>

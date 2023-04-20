@@ -151,7 +151,7 @@ function InternalPopover(
 
   return (
     <FormFieldContext.Provider value={{}}>
-      <div
+      <span
         {...baseProps}
         className={clsx(styles.root, baseProps.className)}
         ref={mergedRef}
@@ -170,7 +170,7 @@ function InternalPopover(
           <span {...triggerProps}>{children}</span>
         )}
         {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-      </div>
+      </span>
     </FormFieldContext.Provider>
   );
 }
