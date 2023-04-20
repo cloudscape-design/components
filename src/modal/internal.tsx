@@ -108,7 +108,8 @@ function InnerModal({
   // to detect when the user has scrolled to the bottom.
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
-  // Add extra scroll padding when the footer is sticky, to prevent it from covering potentially focused elements.
+  // Add extra scroll padding to account for the height of the sticky footer,
+  // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
 
   return (
@@ -122,7 +123,7 @@ function InnerModal({
         onMouseDown={onOverlayMouseDown}
         onClick={onOverlayClick}
         ref={mergedRef}
-        style={!footerStuck && footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
+        style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
       >
         <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
           <div
