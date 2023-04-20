@@ -40,20 +40,64 @@ describe('Classic only features', () => {
     expect(wrapper.findDrawersSlider()!.getElement()).toHaveFocus();
   });
 
-  test('should change size in controlled mode', () => {
+  test('should change drawers size in controlled mode', () => {
     const onResize = jest.fn();
-    const drawersOpen = {
+
+    const drawersSize300 = {
       drawers: {
-        activeDrawerId: 'security',
-        onResize: (event: any) => onResize(event.detail),
-        items: drawersConfigurations.drawersResizableItems,
+        onResize: onResize,
+        items: [
+          {
+            ariaLabels: {
+              closeButton: 'Security close button',
+              content: 'Security drawer content',
+              triggerButton: 'Security trigger button',
+              resizeHandle: 'Security resize handle',
+            },
+            content: <span>Security</span>,
+            resizable: true,
+            size: 300,
+            id: 'security',
+            trigger: {
+              iconName: 'security',
+            },
+          },
+        ],
       },
     };
 
-    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
+    const drawersSize310 = {
+      drawers: {
+        onResize: (event: any) => onResize(event.detail),
+        items: [
+          {
+            ariaLabels: {
+              closeButton: 'Security close button',
+              content: 'Security drawer content',
+              triggerButton: 'Security trigger button',
+              resizeHandle: 'Security resize handle',
+            },
+            content: <span>Security</span>,
+            resizable: true,
+            size: 310,
+            id: 'security',
+            trigger: {
+              iconName: 'security',
+            },
+          },
+        ],
+      },
+    };
+
+    const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawersSize300} />);
+    act(() => wrapper.findDrawersTriggers()![0].click());
     act(() => wrapper.findDrawersSlider()!.keydown(KeyCode.left));
-    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('290px');
-    expect(onResize).toHavebeenCalledTimes(1);
+    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('300px');
+
+    rerender(<AppLayout contentType="form" {...drawersSize310} />);
+
+    act(() => wrapper.findDrawersTriggers()![0].click());
+    expect(getComputedStyle(wrapper.findActiveDrawer()!.getElement()).width).toBe('310px');
   });
 
   test('should change size in uncontrolled mode', () => {

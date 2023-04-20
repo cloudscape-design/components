@@ -274,8 +274,8 @@ const OldAppLayout = React.forwardRef(
       defaultDrawerSize,
       {
         componentName: 'AppLayout',
-        controlledProp: 'drawerSize',
-        changeHandler: 'onDrawerSize',
+        controlledProp: 'size',
+        changeHandler: 'onResize',
       }
     );
 
