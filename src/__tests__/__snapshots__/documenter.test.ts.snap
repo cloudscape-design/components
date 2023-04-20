@@ -3914,6 +3914,21 @@ The object should contain, among others:
             "type": "string",
           },
           Object {
+            "name": "preferencesModalThemeFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringClearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "preferencesModalThemeFilteringPlaceholder",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "preferencesModalWrapLines",
             "optional": false,
             "type": "string",
