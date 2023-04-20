@@ -115,48 +115,40 @@ describe.each([
   });
 });
 
-describe.each([
-  [
-    'drawers',
-    {
-      findElement: (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawer(),
-      findToggle: (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers()[0],
-      findClose: (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawerCloseButton(),
-    },
-  ],
-] as const)('%s', (name, { findToggle, findElement, findClose }) => {
+describe('drawers', () => {
+  const findElement = (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawer()!;
+  const findToggle = (wrapper: AppLayoutWrapper) => wrapper.findDrawersTriggers()![0];
+  const findClose = (wrapper: AppLayoutWrapper) => wrapper.findActiveDrawerCloseButton()!;
+
   test('property is controlled', () => {
     const onChange = jest.fn();
     const drawers = {
       drawers: {
         onChange: onChange,
-        items: [
-          {
-            ariaLabels: {
-              closeButton: 'Security close button',
-              content: 'Security drawer content',
-              triggerButton: 'Security trigger button',
-              resizeHandle: 'Security resize handle',
-            },
-            content: <></>,
-            id: 'security',
-            trigger: {
-              iconName: 'security',
-            },
-          },
-        ],
+        activeDrawerId: null,
+        items: drawersConfigurations.drawersItems,
+      },
+    };
+
+    const drawersOpen = {
+      drawers: {
+        onChange: onChange,
+        activeDrawerId: 'security',
+        items: drawersConfigurations.drawersItems,
       },
     };
 
     const { wrapper, rerender } = renderComponent(<AppLayout contentType="form" {...drawers} />);
+
+    expect(findElement(wrapper)).toBeNull();
     findToggle(wrapper).click();
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
-    expect(findElement(wrapper)).not.toBeNull();
 
-    rerender(<AppLayout contentType="form" {...drawers} />);
+    rerender(<AppLayout contentType="form" {...drawersOpen} />);
+
+    expect(findElement(wrapper)).not.toBeNull();
     findClose(wrapper).click();
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
-    expect(findElement(wrapper)).toBeNull();
   });
 });
 

@@ -47,27 +47,27 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findComponent(`.${SplitPanelWrapper.rootSelector}`, SplitPanelWrapper);
   }
 
-  findActiveDrawer(): ElementWrapper {
-    return this.findByClassName(testutilStyles['active-drawer'])!;
+  findActiveDrawer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['active-drawer']);
   }
 
-  findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button'])!;
+  findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {
+    return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
 
-  findDrawersDesktopTriggersContainer(): ElementWrapper {
-    return this.findByClassName(testutilStyles['drawers-desktop-triggers-container'])!;
+  findDrawersDesktopTriggersContainer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-desktop-triggers-container']);
   }
 
-  findDrawersMobileTriggersContainer(): ElementWrapper {
-    return this.findByClassName(testutilStyles['drawers-mobile-triggers-container'])!;
+  findDrawersMobileTriggersContainer(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-mobile-triggers-container']);
   }
 
-  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
-    return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger'])!;
+  findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] | null {
+    return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
 
-  findDrawersSlider(): ElementWrapper {
-    return this.findByClassName(testutilStyles['drawers-slider'])!;
+  findDrawersSlider(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['drawers-slider']);
   }
 }

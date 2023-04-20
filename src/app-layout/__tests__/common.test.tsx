@@ -19,7 +19,7 @@ describeEachAppLayout(() => {
     expect(wrapper.findContentRegion()).toBeTruthy();
     expect(wrapper.findNotifications()).toBeFalsy();
     expect(wrapper.findBreadcrumbs()).toBeFalsy();
-    expect(wrapper.findDrawersTriggers()[0]).toBeFalsy();
+    expect(wrapper.findDrawersTriggers()![0]).toBeFalsy();
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -225,7 +225,7 @@ describeEachAppLayout(() => {
       };
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
 
-      wrapper.findDrawersTriggers()[0].click();
+      wrapper.findDrawersTriggers()![0].click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
     });
@@ -241,7 +241,7 @@ describeEachAppLayout(() => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
 
       // Chrome bubbles up events from specific elements inside <button>s.
-      wrapper.findDrawersTriggers()[0]!.find('span')!.click();
+      wrapper.findDrawersTriggers()![0]!.find('span')!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: 'security' }));
     });
@@ -258,7 +258,7 @@ describeEachAppLayout(() => {
 
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
 
-      wrapper.findActiveDrawerCloseButton().click();
+      wrapper.findActiveDrawerCloseButton()!.click();
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: null }));
     });
@@ -266,17 +266,20 @@ describeEachAppLayout(() => {
     test('Renders aria-expanded only on toggle', () => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
 
-      expect(wrapper.findDrawersTriggers()[0].getElement()).toHaveAttribute('aria-expanded', 'false');
-      expect(wrapper.findDrawersTriggers()[0].getElement()).toHaveAttribute('aria-haspopup', 'true');
-      wrapper.findDrawersTriggers()[0].click();
-      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-expanded');
-      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-haspopup');
+      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-expanded', 'false');
+      expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-haspopup', 'true');
+      wrapper.findDrawersTriggers()![0].click();
+      expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-expanded');
+      expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-haspopup');
     });
 
     test('Close button does have a label if it is defined', () => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
 
-      expect(wrapper.findActiveDrawerCloseButton().getElement()).toHaveAttribute('aria-label', 'Security close button');
+      expect(wrapper.findActiveDrawerCloseButton()!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Security close button'
+      );
     });
 
     test('Close button does not render a label if is not defined', () => {
@@ -289,7 +292,7 @@ describeEachAppLayout(() => {
 
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersOpen} />);
 
-      expect(wrapper.findActiveDrawerCloseButton().getElement()).not.toHaveAttribute('aria-label');
+      expect(wrapper.findActiveDrawerCloseButton()!.getElement()).not.toHaveAttribute('aria-label');
     });
 
     test('Opens and closes drawer in uncontrolled mode', () => {
@@ -297,10 +300,10 @@ describeEachAppLayout(() => {
       const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
       expect(wrapper.findActiveDrawer()).toBeNull();
 
-      act(() => wrapper.findDrawersTriggers()[0].click());
+      act(() => wrapper.findDrawersTriggers()![0].click());
       expect(wrapper.findActiveDrawer()).not.toBeNull();
 
-      act(() => wrapper.findActiveDrawerCloseButton().click());
+      act(() => wrapper.findActiveDrawerCloseButton()!.click());
       expect(wrapper.findActiveDrawer()).toBeNull();
     });
   });
