@@ -150,6 +150,8 @@ export interface CardsProps<T = any> extends BaseComponentProps {
    * Adds labels to the selection components (checkboxes and radio buttons) as follows:
    * * `itemSelectionLabel` ((SelectionState, Item) => string) - Determines the label for an item.
    * * `selectionGroupLabel` (string) - Specifies the label for the group selection control.
+   * * `cardsLabel` (string) - Provides alternative text for the cards list.
+   *                            By default the contents of the `header` are used.
    *
    * You can use the first arguments of type `SelectionState` to access the current selection
    * state of the component (for example, the `selectedItems` list). The label function for individual
@@ -225,6 +227,7 @@ export namespace CardsProps {
   export interface AriaLabels<T> {
     itemSelectionLabel: (data: CardsProps.SelectionState<T>, row: T) => string;
     selectionGroupLabel: string;
+    cardsLabel?: string;
   }
   export interface Ref {
     /**
