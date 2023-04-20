@@ -103,6 +103,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
   &.sticky-cell {
+    &-first-column {
+      padding-left: awsui.$space-table-horizontal !important;
+    }
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;

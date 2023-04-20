@@ -51,7 +51,12 @@ export function TableTdElement({
   const isVisualRefresh = useVisualRefresh();
   const ref = React.useRef();
   // We need to know which classes to add / remove
-  const stickyClasses = [styles['sticky-cell'], styles['sticky-cell-last-left'], styles['sticky-cell-last-left']];
+  const stickyClasses = [
+    styles['sticky-cell'],
+    styles['sticky-cell-first-column'],
+    styles['sticky-cell-last-left'],
+    styles['sticky-cell-last-left'],
+  ];
 
   useReaction(
     stickyState.store,
@@ -68,8 +73,12 @@ export function TableTdElement({
           classNames.forEach(name => {
             ref.current.classList.add(name);
           });
+        } else {
+          // Problems on resizing
+          // stickyClasses.forEach(name => {
+          //   ref.current.classList.remove(name);
+          // });
         }
-        console.log('in td element', styles[colIndex]?.style);
         const cellStyle = styles[colIndex]?.style;
         for (const key in cellStyle) {
           if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {

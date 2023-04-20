@@ -23,6 +23,7 @@ const TableWrapper = ({ children, className, wrapperRef, onScroll, wrapperProps,
     }
   );
 
+  // TODO: Fix merged ref
   useReaction(
     stickyState.store,
     state => state.scrollPaddingRight,

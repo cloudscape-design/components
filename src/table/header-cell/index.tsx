@@ -79,7 +79,12 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     }
   };
   const headerId = useUniqueId('table-header-');
-  const stickyClasses = [styles['sticky-cell'], styles['sticky-cell-last-left'], styles['sticky-cell-last-left']];
+  const stickyClasses = [
+    styles['sticky-cell'],
+    styles['sticky-cell-first-column'],
+    styles['sticky-cell-last-left'],
+    styles['sticky-cell-last-left'],
+  ];
 
   useReaction(
     stickyState.store,
@@ -96,8 +101,11 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
           classNames.forEach(name => {
             ref.current.classList.add(name);
           });
+        } else {
+          // stickyClasses.forEach(name => {
+          //   ref.current.classList.remove(name);
+          // });
         }
-        console.log('in th element', styles[colIndex]?.style);
         const cellStyle = styles[colIndex]?.style;
         for (const key in cellStyle) {
           if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {

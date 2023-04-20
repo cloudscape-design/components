@@ -24,6 +24,9 @@ $active-separator-width: 2px;
     border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
   }
   &.sticky-cell {
+    &-first-column {
+      padding-left: awsui.$space-table-horizontal !important;
+    }
     @include styles.with-motion {
       transition-property: padding;
       transition-duration: awsui.$motion-duration-transition-show-quick;
