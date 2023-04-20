@@ -51,6 +51,7 @@ export default function App() {
   const [isActive, setIsActive] = useState(false);
   return (
     <ScreenshotArea>
+      <h1>Table performance test</h1>
       {isActive ? (
         <Table
           columnDefinitions={columnDefinitions}
