@@ -90,7 +90,11 @@ function TableCellEditable<ItemType>({
             {showIcon && <Icon name="edit" />}
           </button>
           {successfulEdit && (
-            <span className={styles['body-cell-success']} aria-label="Edit successful" role="img">
+            <span
+              className={styles['body-cell-success']}
+              aria-label={ariaLabels?.successfulEditLabel?.(column)}
+              role="img"
+            >
               <Icon name="status-positive" variant="success" />
             </span>
           )}
