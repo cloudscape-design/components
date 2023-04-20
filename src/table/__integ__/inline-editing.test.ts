@@ -32,7 +32,6 @@ const setupTest = (testFn: (page: BasePageObject) => Promise<void>) => {
     await page.setWindowSize({ width: 1200, height: 800 });
     await browser.url('#/light/table/editable');
     await testFn(page);
-    await browser.saveScreenshot('table.png');
   });
 };
 
