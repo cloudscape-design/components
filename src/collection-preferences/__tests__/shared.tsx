@@ -69,7 +69,7 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
   ],
   dragHandleAriaLabel: 'Drag handle',
   dragHandleAriaDescription:
-    'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
+    "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
   liveAnnouncementDndStarted: (position, total) => `Picked up item at position ${position} of ${total}`,
   liveAnnouncementDndDiscarded: 'Reordering canceled',
   liveAnnouncementDndItemReordered: (initialPosition, currentPosition, total) =>

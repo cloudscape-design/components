@@ -11,12 +11,8 @@ const liveAnnouncementDndItemCommitted = jest.fn();
 
 const i18nStrings = {
   liveAnnouncementDndStarted,
-  liveAnnouncementDndDiscarded: 'Reordering canceled',
   liveAnnouncementDndItemReordered,
   liveAnnouncementDndItemCommitted,
-  dragHandleAriaDescription:
-    'Use Space or Enter to activate drag, arrow keys to move, Space or Enter to submit, or Escape to discard.',
-  dragHandleAriaLabel: 'Drag handle',
 };
 
 const sortedOptions = [{ id: 'id2' }, { id: 'id1' }];
