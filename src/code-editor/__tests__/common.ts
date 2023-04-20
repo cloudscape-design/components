@@ -24,4 +24,8 @@ export const i18nStrings: CodeEditorProps.I18nStrings = {
   preferencesModalTheme: 'Theme',
   preferencesModalLightThemes: 'Light themes',
   preferencesModalDarkThemes: 'Dark themes',
+
+  preferencesModalThemeFilteringAriaLabel: 'Filter themes aria',
+  preferencesModalThemeFilteringClearAriaLabel: 'Clear',
+  preferencesModalThemeFilteringPlaceholder: 'Filter themes',
 };
