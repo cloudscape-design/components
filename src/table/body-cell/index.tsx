@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import styles from './styles.css.js';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import Button from '../../button/internal';
-import { ButtonProps } from '../../button/interfaces';
+import Icon from '../../icon/internal';
 import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
@@ -36,7 +35,7 @@ function TableCellEditable<ItemType>({
   isVisualRefresh,
   ...rest
 }: TableBodyCellProps<ItemType>) {
-  const editActivateRef = useRef<ButtonProps.Ref>(null);
+  const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),
   };
@@ -46,6 +45,11 @@ function TableCellEditable<ItemType>({
       editActivateRef.current.focus();
     }
   }, [isEditing]);
+
+  // To improve the initial page render performance we only show the edit icon when necessary.
+  const [hasHover, setHasHover] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const showIcon = hasHover || hasFocus;
 
   return (
     <TableTdElement
@@ -58,6 +62,8 @@ function TableCellEditable<ItemType>({
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
+      onMouseEnter={() => setHasHover(true)}
+      onMouseLeave={() => setHasHover(false)}
     >
       {isEditing ? (
         <InlineEditor
@@ -70,16 +76,15 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
-          <span className={styles['body-cell-editor']}>
-            <Button
-              __forcedFocusState="none"
-              __internalRootRef={editActivateRef}
-              ariaLabel={ariaLabels?.activateEditLabel?.(column)}
-              formAction="none"
-              iconName="edit"
-              variant="inline-icon"
-            />
-          </span>
+          <button
+            className={styles['body-cell-editor']}
+            aria-label={ariaLabels?.activateEditLabel?.(column)}
+            ref={editActivateRef}
+            onFocus={() => setHasFocus(true)}
+            onBlur={() => setHasFocus(false)}
+          >
+            {showIcon && <Icon name="edit" />}
+          </button>
         </>
       )}
     </TableTdElement>

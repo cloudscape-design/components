@@ -134,6 +134,16 @@ export default class TableWrapper extends ComponentWrapper {
     return this.findComponent(`.${styles['tools-pagination']}`, PaginationWrapper);
   }
 
+  /**
+   * Returns the button that activates inline editing for a table cell based on given row and column indices.
+   *
+   * @param rowIndex 1-based index of the row of the cell to select.
+   * @param columnIndex 1-based index of the column of the cell to select.
+   */
+  findEditCellButton(rowIndex: number, columnIndex: number): ElementWrapper | null {
+    return this.findBodyCell(rowIndex, columnIndex)?.findByClassName(bodyCellStyles['body-cell-editor']) ?? null;
+  }
+
   findEditingCell(): ElementWrapper | null {
     return this.findNativeTable().findByClassName(bodyCellStyles['body-cell-edit-active']);
   }
