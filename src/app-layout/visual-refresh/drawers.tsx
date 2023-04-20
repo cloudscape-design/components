@@ -51,7 +51,7 @@ namespace DrawersProps {
  * do not exist then the Tools and SplitPanel will be handled by the Tools component.
  */
 export default function Drawers() {
-  const { drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
+  const { disableBodyScroll, drawers, hasDrawerViewportOverlay, hasOpenDrawer, isNavigationOpen, navigationHide } =
     useAppLayoutInternals();
 
   const isUnfocusable = hasDrawerViewportOverlay && isNavigationOpen && !navigationHide;
@@ -63,6 +63,7 @@ export default function Drawers() {
   return (
     <div
       className={clsx(styles['drawers-container'], {
+        [styles['disable-body-scroll']]: disableBodyScroll,
         [styles['has-open-drawer']]: hasOpenDrawer,
         [styles.unfocusable]: isUnfocusable,
       })}
