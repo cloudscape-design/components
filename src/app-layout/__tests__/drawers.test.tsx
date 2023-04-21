@@ -17,9 +17,9 @@ describeEachAppLayout(() => {
     const { wrapper, rerender } = renderComponent(
       <AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />
     );
-    expect(wrapper.findDrawersTriggers()).toHaveLength(1);
+    expect(wrapper.findDrawersTriggers()!).toHaveLength(1);
     rerender(<AppLayout />);
-    expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper.findDrawersTriggers()!).toHaveLength(0);
   });
 });
 

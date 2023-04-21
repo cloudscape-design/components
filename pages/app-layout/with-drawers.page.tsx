@@ -33,9 +33,7 @@ export default function WithDrawers() {
           ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
           onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
-            const obj = widths;
-            obj[event.detail.id] = event.detail.size;
-            setWidths(obj);
+            setWidths({ ...widths, [event.detail.id]: event.detail.size });
           },
           items: [
             {
@@ -61,6 +59,8 @@ export default function WithDrawers() {
                 triggerButton: 'ProHelp trigger button',
                 resizeHandle: 'ProHelp resize handle',
               },
+              resizable: true,
+              size: widths['pro-help'],
               content: <ProHelp />,
               id: 'pro-help',
               trigger: {

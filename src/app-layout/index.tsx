@@ -266,18 +266,51 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const defaultDrawerSize = selectedDrawer?.size || toolsWidth;
+    const getDefaultSizes = () => {
+      const defaultSizes: { [id: string]: number } = {};
+      if (!drawers) {
+        return {};
+      }
+      for (const item of drawers.items) {
+        if (item.resizable) {
+          defaultSizes[item.id] = item.size || toolsWidth;
+        }
+      }
+      return defaultSizes;
+    };
 
-    const [drawerSize = defaultDrawerSize, setDrawerSize] = useControllable(
-      selectedDrawer?.size,
+    const getSizes = () => {
+      const sizes: { [id: string]: number } = {};
+      if (!drawers) {
+        return {};
+      }
+
+      for (const item of drawers.items) {
+        if (item.resizable && item.size) {
+          sizes[item.id] = item.size;
+        }
+      }
+      return sizes;
+    };
+
+    const [drawerSizes = getDefaultSizes(), setDrawerSizes] = useControllable(
+      Object.keys(getSizes()).length > 0 ? getSizes() : undefined,
       drawers?.onResize,
-      defaultDrawerSize,
+      {},
       {
         componentName: 'AppLayout',
         controlledProp: 'size',
         changeHandler: 'onResize',
       }
     );
+
+    const [drawerSize, setDrawerSize] = useState<number>(
+      Object.keys(getSizes()).length > 0 ? drawerSizes[selectedDrawer?.id] : toolsWidth
+    );
+
+    useEffect(() => {
+      setDrawerSize(Object.keys(drawerSizes).length > 0 ? drawerSizes[selectedDrawer?.id] : toolsWidth);
+    }, [drawerSizes, selectedDrawer?.id, toolsWidth]);
 
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
     const [splitPanelReportedToggle, setSplitPanelReportedToggle] = useState<SplitPanelSideToggleProps>({
@@ -342,11 +375,6 @@ const OldAppLayout = React.forwardRef(
       },
       [setSplitPanelSize, onSplitPanelResize]
     );
-
-    const onDrawerSizeSet = (detail: { size: number; id: string }) => {
-      setDrawerSize(detail.size);
-      fireNonCancelableEvent(drawers.onResize, detail);
-    };
 
     const onSplitPanelToggleHandler = useCallback(() => {
       setSplitPanelOpen(!splitPanelOpen);
@@ -439,7 +467,7 @@ const OldAppLayout = React.forwardRef(
 
       if (drawers) {
         if (activeDrawerId) {
-          if (selectedDrawer.resizable && !isResizeInvalid) {
+          if (selectedDrawer.resizable && !isResizeInvalid && drawerSize) {
             return drawerSize + closedDrawerWidth;
           }
 
@@ -711,7 +739,10 @@ const OldAppLayout = React.forwardRef(
                     },
                   }}
                   size={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
-                  onResize={onDrawerSizeSet}
+                  onResize={changeDetail => {
+                    fireNonCancelableEvent(drawers.onResize, changeDetail);
+                    setDrawerSizes({ ...drawerSize, [changeDetail.id]: changeDetail.size });
+                  }}
                   refs={drawerRefs}
                   getMaxWidth={getDrawerMaxWidth}
                 >
