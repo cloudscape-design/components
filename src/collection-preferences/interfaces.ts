@@ -71,7 +71,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
-   * Configures the built-in content display preference (for example, order and visibility of columns in a table).
+   * Configures the built-in content display preference for order and visibility of columns in a table.
    *
    * Once set, the component displays this preference in the modal.
    *
@@ -87,7 +87,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * - `options` - Specifies an array of options for reordering and visible content selection.
    *
    * Each option contains the following:
-   * - `id` (string) - Corresponds to a column `id` for tables or to a section `id` for cards.
+   * - `id` (string) - Corresponds to a table column `id`.
    * - `label` (string) - Specifies a short description of the content.
    * - `alwaysVisible` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to `false` by default.
    *
