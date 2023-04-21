@@ -10,12 +10,13 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { StickyStateModel, useStickySyles } from '../sticky-state-model';
+import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
+  columnId: string;
   column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   sortingDescending?: boolean;
@@ -25,7 +26,6 @@ interface TableHeaderCellProps<ItemType> {
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
-  hasSelection: boolean;
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -41,6 +41,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     className,
     style,
     tabIndex,
+    columnId,
     column,
     activeSortingColumn,
     sortingDescending,
@@ -56,7 +57,6 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     onResizeFinish,
     isEditable,
     stickyState,
-    hasSelection,
   } = props;
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -80,8 +80,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   };
 
   const headerId = useUniqueId('table-header-');
-  const stickyColIndex = colIndex + (hasSelection ? 1 : 0);
-  const stickyClassNames = useStickySyles({ stickyState, ref, colIndex: stickyColIndex, cellType: 'th' });
+  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId, cellType: 'th' });
 
   return (
     <th
@@ -103,9 +102,9 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       scope="col"
       ref={node => {
         if (node !== null) {
-          stickyState.refs.headerCells.current[stickyColIndex] = node;
+          stickyState.refs.headerCells.current[columnId] = node;
         } else {
-          stickyState.refs.headerCells.current.splice(stickyColIndex, 1);
+          delete stickyState.refs.headerCells.current[columnId];
         }
         ref.current = node;
       }}

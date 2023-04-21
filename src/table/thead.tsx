@@ -140,13 +140,13 @@ const Thead = React.forwardRef(
                 focusedComponent={focusedComponent}
                 onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
+                columnId={column.id ?? colIndex.toString()}
                 activeSortingColumn={sortingColumn}
                 sortingDescending={sortingDescending}
                 sortingDisabled={sortingDisabled}
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
-                hasSelection={!!selectionType}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}

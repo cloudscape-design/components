@@ -239,7 +239,7 @@ export default () => {
           ariaLabels={ariaLabels}
           header={<Header>Simple table</Header>}
         />
-        <Table
+        {/* <Table
           {...collectionProps}
           data-test-id="large-table"
           stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
@@ -303,7 +303,7 @@ export default () => {
           items={items}
           ariaLabels={ariaLabels}
           header={<Header>Large table with inline editing</Header>}
-        />
+        /> */}
       </SpaceBetween>
     </ScreenshotArea>
   );

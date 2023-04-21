@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState, useEffect, Ref, forwardRef } from 'react';
+import React, { useImperativeHandle, useRef, useState, useEffect, Ref, forwardRef, useMemo } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -192,12 +192,19 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
+    // TODO: make 'awsui-selection-column' a constant
+    const visibleColumnsWithSelection = useMemo(() => {
+      const columnIds = visibleColumns ?? columnDefinitions.map((it, index) => it.id ?? index.toString());
+      return hasSelection ? ['awsui-selection-column', ...columnIds] : columnIds ?? [];
+    }, [visibleColumns, columnDefinitions, hasSelection]);
+
+    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
+
     const stickyState = useStickyState({
       containerWidth: containerWidth ?? 0,
       tableWidth: tableWidth ?? 0,
-      hasSelection,
-      visibleColumnsKey: visibleColumns?.join() ?? '',
-      stickyColumnsFirst: stickyColumns?.first || 0,
+      visibleColumns: visibleColumnsWithSelection,
+      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
       tablePaddingLeft: tablePadding.left,
       tablePaddingRight: tablePadding.right,
@@ -383,7 +390,7 @@ const InternalTable = forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
-                            colIndex={0}
+                            columnId={'awsui-selection-column'}
                             stickyState={stickyState}
                           >
                             <SelectionControl
@@ -411,8 +418,8 @@ const InternalTable = forwardRef(
                                     }
                               }
                               ariaLabels={ariaLabels}
-                              colIndex={colIndex + (hasSelection ? 1 : 0)}
                               column={column}
+                              columnId={column.id ?? colIndex.toString()}
                               item={item}
                               wrapLines={wrapLines}
                               isEditable={isEditable}

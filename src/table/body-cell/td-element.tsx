@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { StickyStateModel, useStickySyles } from '../sticky-state-model';
+import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
 
 export interface TableTdElementProps {
   className?: string;
@@ -23,7 +23,7 @@ export interface TableTdElementProps {
   hasSelection?: boolean;
   hasFooter?: boolean;
   tdRef?: React.Ref<HTMLTableCellElement>;
-  colIndex: number;
+  columnId: string;
   stickyState: StickyStateModel;
 }
 
@@ -43,12 +43,12 @@ export function TableTdElement({
   stripedRows,
   hasSelection,
   hasFooter,
-  colIndex,
+  columnId,
   stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
   const ref = React.useRef<HTMLTableCellElement>(null);
-  const stickyClassNames = useStickySyles({ stickyState, ref, colIndex, cellType: 'td' });
+  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId, cellType: 'td' });
   return (
     <td
       style={{ ...style, ...stickyClassNames.style }}
