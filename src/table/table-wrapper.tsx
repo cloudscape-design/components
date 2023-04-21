@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useReaction } from '../area-chart/model/async-store.js';
+import { useReaction } from '../internal/utils/async-store.js';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 import { StickyStateModel } from './sticky-state-model.js';
 export interface TableWrapperProps {
