@@ -113,6 +113,7 @@
   > .drawer-close-button {
     grid-column: 2;
     grid-row: 2;
+    z-index: 1;
   }
 
   > .drawer-content {
