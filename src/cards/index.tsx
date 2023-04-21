@@ -226,9 +226,9 @@ const CardsList = <T,>({
         >
           <div className={styles['card-inner']}>
             <div className={styles['card-header']}>
-              <span className={styles['card-header-inner']}>
+              <div className={styles['card-header-inner']}>
                 {cardDefinition.header ? cardDefinition.header(item) : ''}
-              </span>
+              </div>
               {selectable && (
                 <div className={styles['selection-control']}>
                   <SelectionControl
