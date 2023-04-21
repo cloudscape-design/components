@@ -24,7 +24,7 @@ export const ariaLabels: TableProps.AriaLabels<DistributionInfo> = {
   activateEditLabel: (column, item) => `Edit ${item.Id} ${column.header}`,
   cancelEditLabel: column => `Cancel editing ${column.header}`,
   submitEditLabel: column => `Submit edit ${column.header}`,
-  loadingEditText: () => 'Loading edit response',
+  submittingEditText: () => 'Loading edit response',
   successfulEditLabel: () => 'Edit successful',
 };
 
