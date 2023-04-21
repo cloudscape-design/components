@@ -279,13 +279,13 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
 
   updateCellOffsets = (props: UpdateCellStylesProps): void => {
     const firstColumnWidths: number[] = [];
-
     for (let i = 0; i < props.visibleColumns.length; i++) {
       const element = props.cellElements[props.visibleColumns[i]];
       const cellWidth = element.getBoundingClientRect().width ?? 0;
       firstColumnWidths[i] = (firstColumnWidths[i - 1] ?? 0) + cellWidth;
     }
-    this.stickyWidthLeft = firstColumnWidths[props.stickyColumnsFirst - 1];
+
+    this.stickyWidthLeft = firstColumnWidths[props.stickyColumnsFirst - 1] ?? 0;
 
     const lastColumnsWidths: number[] = [];
     for (let i = props.visibleColumns.length - 1; i >= 0; i--) {
@@ -294,13 +294,13 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
       lastColumnsWidths[i] = (lastColumnsWidths[i + 1] ?? 0) + cellWidth;
     }
     lastColumnsWidths.reverse();
-    this.stickyWidthRight = firstColumnWidths[props.stickyColumnsLast - 1];
+    this.stickyWidthRight = lastColumnsWidths[props.stickyColumnsLast - 1] ?? 0;
 
     this.cellOffsets = props.visibleColumns.reduce(
       (map, columnId, columnIndex) =>
         map.set(columnId, {
-          left: firstColumnWidths[columnIndex - 1] ?? 0,
-          right: lastColumnsWidths[props.visibleColumns.length - 1 - columnIndex - 1] ?? 0,
+          first: firstColumnWidths[columnIndex - 1] ?? 0,
+          last: lastColumnsWidths[props.visibleColumns.length - 1 - columnIndex - 1] ?? 0,
         }),
       new Map()
     );

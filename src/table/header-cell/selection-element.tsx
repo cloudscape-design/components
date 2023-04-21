@@ -53,7 +53,9 @@ export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
         scope="col"
         ref={node => {
           if (node !== null) {
-            stickyState.refs.headerCells.current[0] = node;
+            stickyState.refs.headerCells.current['awsui-selection-column'] = node;
+          } else {
+            delete stickyState.refs.headerCells.current['awsui-selection-column'];
           }
           ref.current = node;
         }}
