@@ -5,7 +5,6 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
-@use '../../internal/hooks/focus-visible' as focus-visible;
 
 $cell-vertical-padding: awsui.$space-scaled-xs;
 // Calculate padding to prevent a shift in content after selection due to the difference
@@ -206,6 +205,19 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       & > .body-cell-editor {
         opacity: 0;
       }
+      // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
+      // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
+      // It's therefore important to display the focus outline, even when a keyboard user wasn't detected.
+      // For example, when an edit button is selected from the VoiceOver rotor menu.
+      &:focus-within {
+        @include focused-editor-styles;
+        @include styles.focus-highlight(
+          (
+            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
+            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
+          )
+        );
+      }
       &:hover {
         position: relative;
         background-color: awsui.$color-background-dropdown-item-hover;
@@ -232,16 +244,6 @@ $border-placeholder: awsui.$border-item-width solid transparent;
           padding-top: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
           padding-bottom: calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}));
         }
-      }
-      // stylelint-disable-next-line selector-combinator-disallowed-list
-      body[data-awsui-focus-visible='true'] &:focus-within {
-        @include focused-editor-styles;
-        @include styles.focus-highlight(
-          (
-            'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
-            'horizontal': calc(-1 * #{awsui.$space-scaled-xxs}),
-          )
-        );
       }
     }
   }
