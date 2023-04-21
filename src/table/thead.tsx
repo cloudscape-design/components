@@ -13,8 +13,8 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { CellOffsets } from './internal';
-import { StickyColumnProperties } from './use-sticky-columns';
+import { StickyStateModel } from './sticky-state-model';
+import { TableHeaderSelectionCell } from './header-cell/selection-element';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -40,6 +40,8 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
+  hasSelection: boolean;
+  stickyState: StickyStateModel;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
 }
@@ -67,7 +69,6 @@ const Thead = React.forwardRef(
       stuck = false,
       focusedComponent,
       onFocusedComponentChange,
-      cellRefs,
       stickyState,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
@@ -82,22 +83,15 @@ const Thead = React.forwardRef(
       isVisualRefresh && headerCellStyles['is-visual-refresh']
     );
 
-    const selectionCellClass = clsx(
-      styles['selection-control'],
-      styles['selection-control-header'],
-      isVisualRefresh && styles['is-visual-refresh']
-    );
-
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
-              ref={cellRefs[0]}
+            <TableHeaderSelectionCell
+              selectionType="multi"
+              stickyState={stickyState}
+              className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
             >
               <SelectionControl
                 onFocusDown={event => {
@@ -108,16 +102,16 @@ const Thead = React.forwardRef(
                 {...selectAllProps}
                 {...(sticky ? { tabIndex: -1 } : {})}
               />
-            </th>
+            </TableHeaderSelectionCell>
           )}
           {selectionType === 'single' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
-              ref={cellRefs[0]}
+            <TableHeaderSelectionCell
+              selectionType="single"
+              stickyState={stickyState}
+              className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-            </th>
+            </TableHeaderSelectionCell>
           )}
           {columnDefinitions.map((column, colIndex) => {
             const isLastColumn = colIndex === columnDefinitions.length - 1;
@@ -152,12 +146,12 @@ const Thead = React.forwardRef(
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
+                hasSelection={!!selectionType}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
-                cellRefs={cellRefs}
                 stickyState={stickyState}
               />
             );

@@ -10,9 +10,7 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
-import { useStickyState } from '../use-sticky-state';
-import { useReaction } from '../../area-chart/model/async-store';
+import { StickyStateModel, useStickySyles } from '../sticky-state-model';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -27,6 +25,7 @@ interface TableHeaderCellProps<ItemType> {
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
+  hasSelection: boolean;
   updateColumn: (colIndex: number, newWidth: number) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -34,7 +33,7 @@ interface TableHeaderCellProps<ItemType> {
   isEditable?: boolean;
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
-  stickyColumnProperties: StickyColumnProperties;
+  stickyState: StickyStateModel;
 }
 
 export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>) {
@@ -56,8 +55,8 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
     resizableColumns,
     onResizeFinish,
     isEditable,
-    cellRefs,
     stickyState,
+    hasSelection,
   } = props;
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -67,8 +66,9 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       sortingColumn: column,
       isDescending: sorted ? !sortingDescending : false,
     });
-  const ref = React.useRef();
-  // Elements with role="button" do not have the default behavior of <button>, where pressing
+  const ref = React.useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
+
+  // Elements with role="button" do pnot have the default behavior of <button>, where pressing
   // Enter or Space will trigger a click event. Therefore we need to add this ourselves.
   // The native <button> element cannot be used due to a misaligned implementation in Firefox:
   // https://bugzilla.mozilla.org/show_bug.cgi?id=843003
@@ -78,43 +78,10 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       handleClick();
     }
   };
+
   const headerId = useUniqueId('table-header-');
-  const stickyClasses = [
-    styles['sticky-cell'],
-    styles['sticky-cell-first-column'],
-    styles['sticky-cell-last-left'],
-    styles['sticky-cell-last-left'],
-  ];
-
-  useReaction(
-    stickyState.store,
-    state => state.cellStyles,
-    styles => {
-      if (ref && ref.current) {
-        const classNames = styles[colIndex]?.classNames.th;
-
-        if (classNames?.length) {
-          const differences = stickyClasses.filter(el => !classNames.includes(el));
-          differences.forEach(name => {
-            ref.current.classList.remove(name);
-          });
-          classNames.forEach(name => {
-            ref.current.classList.add(name);
-          });
-        } else {
-          // stickyClasses.forEach(name => {
-          //   ref.current.classList.remove(name);
-          // });
-        }
-        const cellStyle = styles[colIndex]?.style;
-        for (const key in cellStyle) {
-          if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {
-            ref.current.style[key] = cellStyle[key];
-          }
-        }
-      }
-    }
-  );
+  const stickyColIndex = colIndex + (hasSelection ? 1 : 0);
+  useStickySyles({ stickyState, ref, colIndex: stickyColIndex, cellType: 'th' });
   return (
     <th
       className={clsx(className, {
@@ -130,7 +97,11 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       style={style}
       scope="col"
       ref={node => {
-        cellRefs.current[colIndex] = node;
+        if (node !== null) {
+          stickyState.refs.headerCells.current[stickyColIndex] = node;
+        } else {
+          stickyState.refs.headerCells.current.splice(stickyColIndex, 1);
+        }
         ref.current = node;
       }}
     >

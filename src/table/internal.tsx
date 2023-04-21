@@ -33,8 +33,6 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
-import { useStickyColumns } from './use-sticky-columns';
-import { StickyColumnsContextProvider } from './sticky-columns-context';
 import TableWrapper from './table-wrapper';
 import { useStickyState } from './sticky-state-model';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
@@ -195,12 +193,12 @@ const InternalTable = forwardRef(
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
     const stickyState = useStickyState({
-      containerWidth,
-      tableWidth,
+      containerWidth: containerWidth ?? 0,
+      tableWidth: tableWidth ?? 0,
       hasSelection,
-      visibleColumnsKey: visibleColumns?.join(),
-      stickyColumnsFirst: stickyColumns?.first,
-      stickyColumnsLast: stickyColumns?.last,
+      visibleColumnsKey: visibleColumns?.join() ?? '',
+      stickyColumnsFirst: stickyColumns?.first ?? 0,
+      stickyColumnsLast: stickyColumns?.last ?? 0,
       tablePaddingLeft: tablePadding.left,
       tablePaddingRight: tablePadding.right,
       wrapperRef: wrapperRefObject,
@@ -219,7 +217,7 @@ const InternalTable = forwardRef(
       sortingDescending,
       onSortingChange,
       onFocusMove: moveFocus,
-      cellRefs: stickyState.refs.headerCells,
+      hasSelection,
       stickyState,
       onResizeFinish(newWidth) {
         const widthsDetail = columnDefinitions.map(
@@ -232,7 +230,6 @@ const InternalTable = forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
-      stickyColumns,
     };
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
     return (
@@ -386,6 +383,7 @@ const InternalTable = forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            colIndex={0}
                             stickyState={stickyState}
                           >
                             <SelectionControl
@@ -413,7 +411,7 @@ const InternalTable = forwardRef(
                                     }
                               }
                               ariaLabels={ariaLabels}
-                              colIndex={colIndex}
+                              colIndex={colIndex + (hasSelection ? 1 : 0)}
                               column={column}
                               item={item}
                               wrapLines={wrapLines}

@@ -4,9 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import { useStickyState } from '../use-sticky-state';
-import { getStickyClassNames, StickyColumnProperties } from '../use-sticky-columns';
-import { useReaction } from '../../area-chart/model/async-store';
+import { StickyStateModel, useStickySyles } from '../sticky-state-model';
 
 export interface TableTdElementProps {
   className?: string;
@@ -24,9 +22,9 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
-  stickyColumnProperties: StickyColumnProperties;
   tdRef?: React.Ref<HTMLTableCellElement>;
   colIndex: number;
+  stickyState: StickyStateModel;
 }
 
 export function TableTdElement({
@@ -49,45 +47,9 @@ export function TableTdElement({
   stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const ref = React.useRef();
-  // We need to know which classes to add / remove
-  const stickyClasses = [
-    styles['sticky-cell'],
-    styles['sticky-cell-first-column'],
-    styles['sticky-cell-last-left'],
-    styles['sticky-cell-last-left'],
-  ];
+  const ref = React.useRef<HTMLTableCellElement>(null);
+  useStickySyles({ stickyState, ref, colIndex, cellType: 'td' });
 
-  useReaction(
-    stickyState.store,
-    state => state.cellStyles,
-    styles => {
-      if (ref && ref.current) {
-        const classNames = styles[colIndex]?.classNames.td;
-
-        if (classNames?.length) {
-          const differences = stickyClasses.filter(el => !classNames.includes(el));
-          differences.forEach(name => {
-            ref.current.classList.remove(name);
-          });
-          classNames.forEach(name => {
-            ref.current.classList.add(name);
-          });
-        } else {
-          // Problems on resizing
-          // stickyClasses.forEach(name => {
-          //   ref.current.classList.remove(name);
-          // });
-        }
-        const cellStyle = styles[colIndex]?.style;
-        for (const key in cellStyle) {
-          if (cellStyle.hasOwnProperty(key) && cellStyle[key] !== undefined) {
-            ref.current.style[key] = cellStyle[key];
-          }
-        }
-      }
-    }
-  );
   return (
     <td
       style={style}
@@ -114,5 +76,3 @@ export function TableTdElement({
     </td>
   );
 }
-
-// Need some sort of style restore (when padding gets removed)
