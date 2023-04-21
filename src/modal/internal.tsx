@@ -34,7 +34,8 @@ export default function InternalModal({ modalRoot, ...rest }: InternalModalProps
   );
 }
 
-// Separate component to prevent the Portal from getting in the way of refs being null because of extra initial rendering
+// Separate component to prevent the Portal from getting in the way of refs, as it needs extra cycles to render the inner components.
+// useContainerQuery needs its targeted element to exist on the first render in order to work properly.
 function InnerModal({
   size,
   visible,
