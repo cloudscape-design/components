@@ -17,17 +17,21 @@ interface TableHeaderSelectionCellProps {
 export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
   const { children, selectionType, stickyState, className } = props;
   const ref = React.useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
+  const stickyClassNames = useStickySyles({ stickyState, ref, colIndex: 0, cellType: 'th' });
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
+    className,
     styles['selection-control'],
     styles['selection-control-header'],
-    isVisualRefresh && styles['is-visual-refresh']
+    isVisualRefresh && styles['is-visual-refresh'],
+    stickyClassNames.className
   );
-  useStickySyles({ stickyState, ref, colIndex: 0, cellType: 'th' });
+
   if (selectionType === 'multi') {
     return (
       <th
-        className={clsx(className, selectionCellClass)}
+        style={stickyClassNames.style}
+        className={selectionCellClass}
         scope="col"
         ref={node => {
           if (node !== null) {
@@ -42,7 +46,8 @@ export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
   } else {
     return (
       <th
-        className={clsx(className, selectionCellClass)}
+        style={stickyClassNames.style}
+        className={selectionCellClass}
         scope="col"
         ref={node => {
           if (node !== null) {

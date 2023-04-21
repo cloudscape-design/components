@@ -6,7 +6,7 @@ import AsyncStore, { useReaction } from '../area-chart/model/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import tdCellStyles from './body-cell/styles.css.js';
 import thCellStyles from './header-cell/styles.css.js';
-
+import clsx from 'clsx';
 // We allow the table to have a minimum of 148px of available space besides the sum of the widths of the sticky columns
 // This value is an UX recommendation and is approximately 1/3 of our smallest breakpoint (465px)
 const MINIMUM_SCROLLABLE_SPACE = 148;
@@ -70,14 +70,14 @@ const DEFAULT_STYLES: StickyStateCellStyles = {
     right: undefined,
   },
 };
-interface UseCellSubscriptionProps {
+interface UseStickyStylesProps {
   stickyState: StickyStateModel;
   ref: React.RefObject<HTMLElement>;
   colIndex: number;
   cellType: 'td' | 'th';
 }
 
-export function useStickySyles({ stickyState, ref, colIndex, cellType }: UseCellSubscriptionProps): void {
+export function useStickySyles({ stickyState, ref, colIndex, cellType }: UseStickyStylesProps) {
   useReaction(
     stickyState.store,
     state => state.cellStyles[colIndex],
@@ -85,21 +85,26 @@ export function useStickySyles({ stickyState, ref, colIndex, cellType }: UseCell
       if (!props) {
         return;
       }
+
       const { classNames, offset } = props;
-      const tdElement = ref.current;
-      if (tdElement) {
+      const element = ref.current;
+      if (element) {
         Object.keys(classNames[cellType]).forEach(key => {
           if (classNames[cellType][key]) {
-            tdElement.classList.add(key);
+            element.classList.add(key);
           } else {
-            tdElement.classList.remove(key);
+            element.classList.remove(key);
           }
         });
-        tdElement.style.left = offset.left !== undefined ? `${offset.left}px` : '';
-        tdElement.style.right = offset.right !== undefined ? `${offset.right}px` : '';
+        element.style.left = offset.left !== undefined ? `${offset.left}px` : '';
+        element.style.right = offset.right !== undefined ? `${offset.right}px` : '';
       }
     }
   );
+  const className = clsx(stickyState.store.get().cellStyles[colIndex]?.classNames[cellType]);
+  const style: React.CSSProperties = stickyState.store.get().cellStyles[colIndex]?.offset;
+
+  return { className, style };
 }
 
 export function useStickyState({
@@ -135,6 +140,7 @@ export function useStickyState({
   });
 
   useEffect(() => {
+    console.log({ visibleColumnsKey });
     const wrapper = wrapperRef.current;
     if (wrapper) {
       store.updateScroll({ wrapper, tablePaddingLeft, tablePaddingRight });
@@ -189,7 +195,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
     const { wrapper, tablePaddingLeft, tablePaddingRight } = props;
     const left = wrapper.scrollLeft > tablePaddingLeft;
     const right = Math.ceil(wrapper.scrollLeft) < wrapper.scrollWidth - wrapper.clientWidth - tablePaddingRight;
-    console.log({ left, right });
     this.isStuckToTheLeft = left;
     this.isStuckToTheRight = right;
   }
@@ -236,6 +241,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
 
       const lastRightStickyColumnIndex = props.cellElements.length - props.stickyColumnsLast;
       const stickyCellLastRight = this.isStuckToTheRight && lastRightStickyColumnIndex === index;
+      console.log([lastRightStickyColumnIndex, index, this.isStuckToTheRight]);
       // if same push prev state
 
       return {
@@ -260,7 +266,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
 
   updateCellOffsets = (cellElements: HTMLTableCellElement[]): void => {
     const firstColumnWidths: number[] = [];
-    console.log(cellElements);
 
     for (let i = 0; i < cellElements.length; i++) {
       const cellWidth = cellElements[i].getBoundingClientRect().width ?? 0;
@@ -274,14 +279,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
     }
 
     this.cellWidths = { first: firstColumnWidths, last: lastColumnsWidths.reverse() };
-    console.log(this.cellWidths);
   };
 
   // Memoize this?
   private isEnabled = (props: UpdateCellStylesProps): boolean => {
     const totalStickySpace = this.getFirstStickyColumnsWidth(props) + this.getLastStickyColumnsWidth(props);
     const noStickyColumns = props.stickyColumnsFirst + props.stickyColumnsLast === 0;
-    console.log({ totalStickySpace });
 
     const isWrapperScrollable = props.tableWidth > props.containerWidth;
 
@@ -292,7 +295,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
 
     // Determine if sticky columns should be disabled based on the conditions
     const shouldDisable = noStickyColumns || !isWrapperScrollable || !hasEnoughScrollableSpace;
-
     return !shouldDisable;
   };
 

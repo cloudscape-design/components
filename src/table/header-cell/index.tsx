@@ -81,20 +81,25 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
 
   const headerId = useUniqueId('table-header-');
   const stickyColIndex = colIndex + (hasSelection ? 1 : 0);
-  useStickySyles({ stickyState, ref, colIndex: stickyColIndex, cellType: 'th' });
+  const stickyClassNames = useStickySyles({ stickyState, ref, colIndex: stickyColIndex, cellType: 'th' });
+
   return (
     <th
-      className={clsx(className, {
-        [styles['header-cell-resizable']]: !!resizableColumns,
-        [styles['header-cell-sortable']]: sortingStatus,
-        [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
-        [styles['header-cell-disabled']]: sortingDisabled,
-        [styles['header-cell-ascending']]: sortingStatus === 'ascending',
-        [styles['header-cell-descending']]: sortingStatus === 'descending',
-        [styles['header-cell-hidden']]: hidden,
-      })}
+      className={clsx(
+        className,
+        {
+          [styles['header-cell-resizable']]: !!resizableColumns,
+          [styles['header-cell-sortable']]: sortingStatus,
+          [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
+          [styles['header-cell-disabled']]: sortingDisabled,
+          [styles['header-cell-ascending']]: sortingStatus === 'ascending',
+          [styles['header-cell-descending']]: sortingStatus === 'descending',
+          [styles['header-cell-hidden']]: hidden,
+        },
+        stickyClassNames.className
+      )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={style}
+      style={{ ...style, ...stickyClassNames.style }}
       scope="col"
       ref={node => {
         if (node !== null) {

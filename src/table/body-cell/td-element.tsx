@@ -48,11 +48,10 @@ export function TableTdElement({
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
   const ref = React.useRef<HTMLTableCellElement>(null);
-  useStickySyles({ stickyState, ref, colIndex, cellType: 'td' });
-
+  const stickyClassNames = useStickySyles({ stickyState, ref, colIndex, cellType: 'td' });
   return (
     <td
-      style={style}
+      style={{ ...style, ...stickyClassNames.style }}
       className={clsx(
         className,
         styles['body-cell'],
@@ -66,7 +65,8 @@ export function TableTdElement({
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
-        hasFooter && styles['has-footer']
+        hasFooter && styles['has-footer'],
+        stickyClassNames.className
       )}
       onClick={onClick}
       ref={ref}
