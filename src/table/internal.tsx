@@ -194,9 +194,9 @@ const InternalTable = forwardRef(
 
     // TODO: make 'awsui-selection-column' a constant
     const visibleColumnsWithSelection = useMemo(() => {
-      const columnIds = visibleColumns ?? columnDefinitions.map((it, index) => it.id ?? index.toString());
+      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
       return hasSelection ? ['awsui-selection-column', ...columnIds] : columnIds ?? [];
-    }, [visibleColumns, columnDefinitions, hasSelection]);
+    }, [visibleColumnDefinitions, hasSelection]);
 
     const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
 
