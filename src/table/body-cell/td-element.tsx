@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
@@ -47,7 +47,7 @@ export function TableTdElement({
   stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const ref = React.useRef<HTMLTableCellElement>(null);
+  const ref = useRef<HTMLTableCellElement>(null);
   const stickyClassNames = useStickyStyles({ stickyState, ref, columnId, cellType: 'td' });
   return (
     <td

@@ -1,22 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from '../styles.css.js';
 import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { TableProps } from '../interfaces';
 
-interface TableHeaderSelectionCellProps {
+interface TableBodySelectionCellProps {
   className?: string;
-  selectionType: TableProps.SelectionType;
+  selectionType?: TableProps.SelectionType;
   children: React.ReactNode;
   stickyState: StickyStateModel;
 }
 
-export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
+export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
   const { children, selectionType, stickyState, className } = props;
-  const ref = React.useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
+  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
   const stickyClassNames = useStickyStyles({ stickyState, ref, columnId: 'awsui-selection-column', cellType: 'th' });
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
@@ -45,7 +45,7 @@ export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
         {children}
       </th>
     );
-  } else {
+  } else if (selectionType === 'single') {
     return (
       <th
         style={stickyClassNames.style}
@@ -63,5 +63,7 @@ export function TableHeaderSelectionCell(props: TableHeaderSelectionCellProps) {
         {children}
       </th>
     );
+  } else {
+    return null;
   }
 }

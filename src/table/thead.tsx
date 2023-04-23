@@ -14,7 +14,7 @@ import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyStateModel } from './sticky-state-model';
-import { TableHeaderSelectionCell } from './header-cell/selection-element';
+import { TableHeaderSelectionCell } from './header-cell/th-selection-element';
 
 export type InteractiveComponent =
   | { type: 'selection' }
