@@ -26,6 +26,7 @@ interface ToolsProps {
 export default function Tools({ children }: ToolsProps) {
   const {
     ariaLabels,
+    disableBodyScroll,
     drawers,
     handleSplitPanelClick,
     handleToolsClick,
@@ -63,8 +64,9 @@ export default function Tools({ children }: ToolsProps) {
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['tools-container'], {
-            [testutilStyles['drawer-closed']]: !isToolsOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
+            [testutilStyles['drawer-closed']]: !isToolsOpen,
           })}
           style={{
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,

@@ -101,7 +101,7 @@ export function InlineEditor<ItemType>({
       <div
         role="dialog"
         ref={clickAwayRef}
-        aria-label={ariaLabels?.activateEditLabel?.(column)}
+        aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         onKeyDown={handleEscape}
       >
         <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>

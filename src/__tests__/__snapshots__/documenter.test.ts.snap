@@ -11766,7 +11766,7 @@ You can use the first argument of type \`SelectionState\` to access the current 
 state of the component (for example, the \`selectedItems\` list). The \`itemSelectionLabel\` for individual
 items also receives the corresponding  \`Item\` object. You can use the \`selectionGroupLabel\` to
 add a meaningful description to the whole selection.
-* \`activateEditLabel\` (EditableColumnDefinition) => string -
+* \`activateEditLabel\` (EditableColumnDefinition, Item) => string -
                      Specifies an alternative text for the edit button in editable cells.
 * \`cancelEditLabel\` (EditableColumnDefinition) => string -
                      Specifies an alternative text for the cancel button in editable cells.
@@ -11779,7 +11779,7 @@ add a meaningful description to the whole selection.
           Object {
             "name": "activateEditLabel",
             "optional": true,
-            "type": "(column: TableProps.ColumnDefinition<any>) => string",
+            "type": "(column: TableProps.ColumnDefinition<any>, item: T) => string",
           },
           Object {
             "name": "allItemsSelectionLabel",

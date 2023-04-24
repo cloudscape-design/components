@@ -6,7 +6,7 @@ import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
 
 const testItem = {
-  test: 'test',
+  test: 'testData',
 };
 
 const column: TableProps.ColumnDefinition<typeof testItem> = {
@@ -37,7 +37,7 @@ const TestComponent = ({ isEditing = false }) => {
             onEditStart={onEditStart}
             onEditEnd={onEditEnd}
             ariaLabels={{
-              activateEditLabel: () => 'activate edit',
+              activateEditLabel: (column, item) => `Edit ${item.test} ${column.id}`,
               cancelEditLabel: () => 'cancel edit',
               submitEditLabel: () => 'submit edit',
             }}
@@ -93,7 +93,7 @@ describe('TableBodyCell', () => {
 
   it('should call onEditStart', () => {
     render(<TestComponent />);
-    fireEvent.click(screen.getByRole('button', { name: 'activate edit' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Edit testData test' }));
     expect(onEditStart).toHaveBeenCalled();
   });
 

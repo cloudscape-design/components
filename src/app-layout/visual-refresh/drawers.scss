@@ -38,8 +38,18 @@
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     position: fixed;
     right: 0;
-    top: var(#{custom-props.$offsetTop});
     z-index: 1001;
+
+    /*
+    When disableBodyScroll is true the offsetTop will be relative to the 
+    app layout and not the body. However, the drawer position changes 
+    to fixed in mobile viewports. The top value needs to include the 
+    header because fixed position switches the top value so it is now 
+    relative to the body.
+    */
+    &.disable-body-scroll {
+      top: var(#{custom-props.$headerHeight});
+    }
   }
 }
 
@@ -113,6 +123,7 @@
   > .drawer-close-button {
     grid-column: 2;
     grid-row: 2;
+    z-index: 1;
   }
 
   > .drawer-content {

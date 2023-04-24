@@ -276,7 +276,7 @@ export default function App() {
           }}
           ariaLabels={{
             tableLabel: 'Distributions',
-            activateEditLabel: column => `Edit ${column.header}`,
+            activateEditLabel: (column, item) => `Edit ${item.name} ${column.header}`,
             cancelEditLabel: column => `Cancel editing ${column.header}`,
             submitEditLabel: column => `Submit edit ${column.header}`,
           }}
