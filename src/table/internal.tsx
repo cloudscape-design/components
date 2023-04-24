@@ -176,11 +176,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
     };
 
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
+    const isWrapperScrollable = Boolean(tableWidth && containerWidth && tableWidth > containerWidth);
 
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
@@ -258,12 +254,13 @@ const InternalTable = React.forwardRef(
           {...focusMarkers.root}
         >
           <TableWrapper
-            wrapperRef={wrapperRef}
+            ref={wrapperRef}
             onScroll={handleScroll}
             hasFooter={hasFooter}
             hasHeader={hasHeader}
-            computedVariant={computedVariant}
-            wrapperProps={wrapperProps}
+            variant={computedVariant}
+            isScrollable={isWrapperScrollable}
+            ariaLabel={ariaLabels?.tableLabel}
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
@@ -327,7 +324,7 @@ const InternalTable = React.forwardRef(
                         className={clsx(styles.row, isSelected && styles['row-selected'])}
                         onFocus={({ currentTarget }) => {
                           // When an element inside table row receives focus we want to adjust the scroll.
-                          // However, that behaviour is unwanted when the focus is received as result of a click
+                          // However, that behavior is unwanted when the focus is received as result of a click
                           // as it causes the click to never reach the target element.
                           if (!currentTarget.contains(getMouseDownTarget())) {
                             stickyHeaderRef.current?.scrollToRow(currentTarget);
@@ -338,22 +335,23 @@ const InternalTable = React.forwardRef(
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
                         aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
-                        <TableBodySelectionCell
-                          className={clsx(styles['selection-control'])}
-                          isFirstRow={firstVisible}
-                          isLastRow={lastVisible}
-                          isSelected={isSelected}
-                          isNextSelected={isNextSelected}
-                          isPrevSelected={isPrevSelected}
-                          isEvenRow={isEven}
-                          stripedRows={stripedRows}
-                          hasFooter={hasFooter}
-                          selectionType={selectionType}
-                          onFocusDown={moveFocusDown}
-                          onFocusUp={moveFocusUp}
-                          onShiftToggle={updateShiftToggle}
-                          itemSelectionProps={getItemSelectionProps(item)}
-                        />
+                        {hasSelection ? (
+                          <TableBodySelectionCell
+                            className={clsx(styles['selection-control'])}
+                            isFirstRow={firstVisible}
+                            isLastRow={lastVisible}
+                            isSelected={isSelected}
+                            isNextSelected={isNextSelected}
+                            isPrevSelected={isPrevSelected}
+                            isEvenRow={isEven}
+                            stripedRows={stripedRows}
+                            hasFooter={hasFooter}
+                            onFocusDown={moveFocusDown}
+                            onFocusUp={moveFocusUp}
+                            onShiftToggle={updateShiftToggle}
+                            itemSelectionProps={getItemSelectionProps(item)}
+                          />
+                        ) : null}
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;

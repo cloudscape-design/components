@@ -86,25 +86,27 @@ const Thead = React.forwardRef(
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
-          <TableHeaderSelectionCell
-            selectionType={selectionType}
-            className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-          >
-            <>
-              {selectionType === 'single' && <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>}
-              {selectionType === 'multi' && (
-                <SelectionControl
-                  onFocusDown={event => {
-                    onFocusMove!(event.target as HTMLElement, -1, +1);
-                  }}
-                  focusedComponent={focusedComponent}
-                  onFocusedComponentChange={onFocusedComponentChange}
-                  {...selectAllProps}
-                  {...(sticky ? { tabIndex: -1 } : {})}
-                />
-              )}
-            </>
-          </TableHeaderSelectionCell>
+          {selectionType !== undefined ? (
+            <TableHeaderSelectionCell
+              className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+            >
+              <>
+                {selectionType === 'single' && <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>}
+                {selectionType === 'multi' && (
+                  <SelectionControl
+                    onFocusDown={event => {
+                      onFocusMove!(event.target as HTMLElement, -1, +1);
+                    }}
+                    focusedComponent={focusedComponent}
+                    onFocusedComponentChange={onFocusedComponentChange}
+                    {...selectAllProps}
+                    {...(sticky ? { tabIndex: -1 } : {})}
+                  />
+                )}
+              </>
+            </TableHeaderSelectionCell>
+          ) : null}
+
           {columnDefinitions.map((column, colIndex) => {
             let widthOverride;
             if (resizableColumns) {

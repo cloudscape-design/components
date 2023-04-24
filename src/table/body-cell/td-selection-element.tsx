@@ -4,15 +4,10 @@ import clsx from 'clsx';
 import React, { KeyboardEventHandler } from 'react';
 import SelectionControl from '../selection-control/';
 import { TableProps } from '../interfaces.js';
-import { TableTdElementProps } from './td-element.js';
+import { getCellClassName, TableTdElementProps } from './td-element.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import styles from './styles.css.js';
 
-type TableBodySelectionCellProps = Omit<
-  TableTdElementProps,
-  'style' | 'nativeAttributes' | 'onClick' | 'tdRef' | 'hasSelection' | 'wrapLines' | 'columnId'
-> & {
-  selectionType?: 'single' | 'multi';
+type TableBodySelectionCellProps = Omit<TableTdElementProps, 'style' | 'nativeAttributes' | 'onClick' | 'wrapLines'> & {
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
   onShiftToggle: (value: boolean) => void;
@@ -36,40 +31,36 @@ export function TableBodySelectionCell({
   isEvenRow,
   stripedRows,
   hasFooter,
-  selectionType,
   onFocusDown,
   onFocusUp,
   onShiftToggle,
   itemSelectionProps,
 }: TableBodySelectionCellProps) {
   const isVisualRefresh = useVisualRefresh();
-  if (selectionType !== undefined) {
-    return (
-      <td
-        className={clsx(
-          className,
-          styles['body-cell'],
-          styles['has-selection'],
-          isFirstRow && styles['body-cell-first-row'],
-          isLastRow && styles['body-cell-last-row'],
-          isSelected && styles['body-cell-selected'],
-          isNextSelected && styles['body-cell-next-selected'],
-          isPrevSelected && styles['body-cell-prev-selected'],
-          !isEvenRow && stripedRows && styles['body-cell-shaded'],
-          stripedRows && styles['has-striped-rows'],
-          isVisualRefresh && styles['is-visual-refresh'],
-          hasFooter && styles['has-footer']
-        )}
-      >
-        <SelectionControl
-          onFocusDown={onFocusDown}
-          onFocusUp={onFocusUp}
-          onShiftToggle={onShiftToggle}
-          {...itemSelectionProps}
-        />
-      </td>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <td
+      className={clsx(
+        className,
+        getCellClassName({
+          isFirstRow,
+          isLastRow,
+          isSelected,
+          isNextSelected,
+          isPrevSelected,
+          isEvenRow,
+          stripedRows,
+          isVisualRefresh,
+          hasFooter,
+          hasSelection: true,
+        })
+      )}
+    >
+      <SelectionControl
+        onFocusDown={onFocusDown}
+        onFocusUp={onFocusUp}
+        onShiftToggle={onShiftToggle}
+        {...itemSelectionProps}
+      />
+    </td>
+  );
 }
