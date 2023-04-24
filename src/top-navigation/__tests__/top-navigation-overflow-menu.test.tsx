@@ -82,7 +82,7 @@ describe('TopNavigation Overflow menu', () => {
 describe('UtilityMenuItem', () => {
   test.each(linkTargetExpectations)('"target" property %s', (props, expectation) => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
-    const linkWrapper = createWrapper(container).find('a')!;
+    const linkWrapper = createWrapper(container).find(`a, button`)!;
 
     expectation
       ? expect(linkWrapper.getElement()).toHaveAttribute('target', expectation)
@@ -91,19 +91,24 @@ describe('UtilityMenuItem', () => {
 
   test.each(linkRelExpectations)('"rel" property %s', (props, expectation) => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
-    const linkWrapper = createWrapper(container).find('a')!;
+    const linkWrapper = createWrapper(container).find('a, button')!;
 
     expectation
       ? expect(linkWrapper.getElement()).toHaveAttribute('rel', expectation)
       : expect(linkWrapper.getElement()).not.toHaveAttribute('rel');
   });
 
-  it('fires onClick with empty detail', () => {
-    const onClick = jest.fn();
-    const { container } = render(<UtilityMenuItem type="button" index={0} href="#" onClick={onClick} />);
-    const linkWrapper = createWrapper(container).find('a')!;
-    linkWrapper.click();
+  test.each([undefined, 'link', 'primary-button'] as const)(
+    'fires onClick with empty detail for variant %s',
+    variant => {
+      const onClick = jest.fn();
+      const { container } = render(
+        <UtilityMenuItem type="button" index={0} href="#" variant={variant} onClick={onClick} />
+      );
+      const linkWrapper = createWrapper(container).find('a')!;
+      linkWrapper.click();
 
-    expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
-  });
+      expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
+    }
+  );
 });

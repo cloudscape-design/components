@@ -208,10 +208,24 @@ function utilityComponentFactory(
         fireCancelableEvent(utility.onClick, {}, event);
       };
 
-      if (utility.variant === 'primary-button') {
+      const content = (
+        <>
+          {label}
+          {utility.external && (
+            <>
+              {' '}
+              <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
+                <InternalIcon name="external" size="normal" />
+              </span>
+            </>
+          )}
+        </>
+      );
+
+      if (!utility.href) {
         return (
           <ButtonItem ref={ref} startIcon={startIcon} onFollow={handleClick} testId={`__${index}`}>
-            {label}
+            {content}
           </ButtonItem>
         );
       }
@@ -227,15 +241,7 @@ function utilityComponentFactory(
           testId={`__${index}`}
           onFollow={handleClick}
         >
-          {label}
-          {utility.external && (
-            <>
-              {' '}
-              <span aria-label={utility.externalIconAriaLabel} role={utility.externalIconAriaLabel ? 'img' : undefined}>
-                <InternalIcon name="external" size="normal" />
-              </span>
-            </>
-          )}
+          {content}
         </LinkItem>
       );
     }
