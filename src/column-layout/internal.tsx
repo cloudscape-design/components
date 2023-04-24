@@ -11,7 +11,7 @@ import styles from './styles.css.js';
 import { InternalColumnLayoutProps } from './interfaces';
 
 export const COLUMN_TRIGGERS = ['default', 'xxs', 'xs'] as const;
-export type ColumnLayoutBreakpoint = typeof COLUMN_TRIGGERS[number] | null;
+export type ColumnLayoutBreakpoint = (typeof COLUMN_TRIGGERS)[number] | null;
 const COLUMN_DEFS: Record<number, GridProps.ElementDefinition | undefined> = {
   1: { colspan: { default: 12, xxs: 12, xs: 12 } },
   2: { colspan: { default: 12, xxs: 6, xs: 6 } },

@@ -9,8 +9,8 @@ import { findUpUntil } from '../internal/utils/dom';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 
-export const DEFAULT_LIGHT_THEME: typeof LightThemes[number]['value'] = 'dawn';
-export const DEFAULT_DARK_THEME: typeof DarkThemes[number]['value'] = 'tomorrow_night_bright';
+export const DEFAULT_LIGHT_THEME: (typeof LightThemes)[number]['value'] = 'dawn';
+export const DEFAULT_DARK_THEME: (typeof DarkThemes)[number]['value'] = 'tomorrow_night_bright';
 
 export function getDefaultConfig(): Partial<Ace.EditorOptions> {
   return {
