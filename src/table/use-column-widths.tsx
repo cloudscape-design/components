@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 import { TableProps } from './interfaces';
 import { getColumnKey } from './utils';
-import headerCellStyles from './header-cell/styles.css.js';
+import headerCellStyles from './body-cell/styles.css.js';
 import { warnOnce } from '../internal/logging';
 
 export const DEFAULT_WIDTH = 120;
