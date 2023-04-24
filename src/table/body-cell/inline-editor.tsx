@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import styles from './styles.css.js';
 import { Optional } from '../../internal/types';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
+import LiveRegion from '../../internal/components/live-region';
 
 // A function that does nothing
 const noop = () => undefined;
@@ -17,7 +18,7 @@ interface InlineEditorProps<ItemType> {
   ariaLabels: TableProps['ariaLabels'];
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit: TableProps.SubmitEditFunction<ItemType>;
   __onRender?: () => void;
 }
@@ -44,7 +45,7 @@ export function InlineEditor<ItemType>({
     if (!cancel) {
       setCurrentEditValue(undefined);
     }
-    onEditEnd();
+    onEditEnd(cancel);
   }
 
   async function onSubmitClick(evt: React.FormEvent) {
@@ -135,6 +136,7 @@ export function InlineEditor<ItemType>({
                     loading={currentEditLoading}
                   />
                 </SpaceBetween>
+                <LiveRegion>{currentEditLoading ? ariaLabels?.submittingEditText?.(column) : ''}</LiveRegion>
               </span>
             </div>
           </FormField>

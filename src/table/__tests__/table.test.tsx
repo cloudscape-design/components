@@ -3,8 +3,10 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
+import PropertyFilter from '../../../lib/components/property-filter';
+import Select from '../../../lib/components/select';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import headerCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 
 interface Item {
   id: number;
@@ -107,6 +109,37 @@ test('should render table with empty state when loading text is not set', () => 
   expect(wrapper.findRows()).toHaveLength(0);
   expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('no content');
   expect(wrapper.findLoadingText()).toBeNull();
+});
+
+test('should render table with a property filter', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumns}
+      items={defaultItems}
+      filter={
+        <PropertyFilter
+          onChange={() => {}}
+          query={{ tokens: [], operation: 'and' }}
+          i18nStrings={{ filteringAriaLabel: 'filter' }}
+          filteringProperties={[]}
+        />
+      }
+    />
+  );
+
+  expect(wrapper.findPropertyFilter()).not.toBeNull();
+});
+
+test('should render table with a select filter', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumns}
+      items={defaultItems}
+      filter={<Select onChange={() => {}} selectedOption={{}} />}
+    />
+  );
+
+  expect(wrapper.findFilterSlot()?.findSelect()).not.toBeNull();
 });
 
 test('should render table with empty state when  loading text is defined', () => {

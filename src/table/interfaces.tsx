@@ -173,6 +173,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *                      Specifies an alternative text for the cancel button in editable cells.
    * * `submitEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
+   * * `successfulEditLabel` (EditableColumnDefinition) => string -
+   *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
+   * * `submittingEditText` (EditableColumnDefinition) => string -
+   *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 
@@ -370,6 +374,8 @@ export namespace TableProps {
     activateEditLabel?: (column: ColumnDefinition<any>, item: T) => string;
     cancelEditLabel?: (column: ColumnDefinition<any>) => string;
     submitEditLabel?: (column: ColumnDefinition<any>) => string;
+    submittingEditText?: (column: ColumnDefinition<any>) => string;
+    successfulEditLabel?: (column: ColumnDefinition<any>) => string;
   }
   export interface SortingState<T> {
     isDescending?: boolean;
