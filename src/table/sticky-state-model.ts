@@ -82,11 +82,6 @@ export function useStickyStyles({ stickyState, columnId }: UseStickyStylesProps)
     stickyState.store,
     state => state.cellStyles[columnId],
     props => {
-      if (!props) {
-        return;
-      }
-
-      const { offset } = props;
       const className = getClassName(props);
 
       const cellElement = ref.current;
@@ -98,8 +93,8 @@ export function useStickyStyles({ stickyState, columnId }: UseStickyStylesProps)
             cellElement.classList.remove(key);
           }
         });
-        cellElement.style.left = offset.left !== undefined ? `${offset.left}px` : '';
-        cellElement.style.right = offset.right !== undefined ? `${offset.right}px` : '';
+        cellElement.style.left = props?.offset?.left !== undefined ? `${props?.offset?.left}px` : '';
+        cellElement.style.right = props?.offset?.right !== undefined ? `${props?.offset?.right}px` : '';
       }
     }
   );
