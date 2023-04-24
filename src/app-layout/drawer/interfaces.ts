@@ -5,6 +5,7 @@ import { ButtonProps } from '../../button/interfaces';
 import { togglesConfig } from '../toggles';
 import { AppLayoutProps } from '../interfaces';
 import { IconProps } from '../../icon/interfaces';
+import { NonCancelableEventHandler } from '../../internal/events';
 
 import { DrawerFocusControlRefs } from '../utils/use-drawer-focus-control';
 
@@ -52,9 +53,9 @@ export interface DrawerTriggersBarProps {
   isMobile: boolean;
   drawers?: {
     items: Array<DrawerItem>;
-    activeDrawerId: string | undefined;
-    onChange: (changeDetail: { activeDrawerId: string | null }) => void;
-    ariaLabel: string;
+    activeDrawerId?: string;
+    onChange: (changeDetail: { activeDrawerId: string | undefined }) => void;
+    ariaLabel?: string;
   };
 }
 
@@ -83,4 +84,14 @@ export interface SizeControlProps {
   handleRef?: React.RefObject<HTMLDivElement>;
   setSidePanelWidth: (width: number) => void;
   setBottomPanelHeight: (height: number) => void;
+}
+
+export interface InternalDrawerProps {
+  drawers: {
+    items: Array<DrawerItem>;
+    activeDrawerId?: string;
+    onChange?: NonCancelableEventHandler<string>;
+    onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
+    ariaLabel?: string;
+  };
 }
