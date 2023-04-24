@@ -5,6 +5,7 @@ import React from 'react';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingStatus } from './utils';
 import styles from '../body-cell/styles.css.js';
+import rootStyles from '../styles.css.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TableThElementProps {
@@ -43,12 +44,13 @@ export function TableThElement({
   return (
     <th
       className={clsx(styles['header-cell'], styles[`header-cell-variant-${variant}`], {
-        [styles['selection-control']]: hasSelection,
-        [styles['selection-control-header']]: hasSelection,
+        [rootStyles['selection-control']]: hasSelection,
+        [rootStyles['selection-control-header']]: hasSelection,
+        [rootStyles['is-visual-refresh']]: hasSelection && isVisualRefresh,
+        [styles['is-visual-refresh']]: !hasSelection && isVisualRefresh,
         [styles['header-cell-sticky']]: sticky,
         [styles['header-cell-stuck']]: stuck,
         [styles['has-striped-rows']]: stripedRows,
-        [styles['is-visual-refresh']]: isVisualRefresh,
         [styles['header-cell-resizable']]: !!resizableColumns,
         [styles['header-cell-sortable']]: sortingStatus,
         [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
