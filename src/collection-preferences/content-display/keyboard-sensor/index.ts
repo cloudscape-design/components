@@ -27,6 +27,8 @@ import { scrollElementIntoView } from '../../../internal/utils/scrollable-contai
 // If it is merged, then @dnd-kit's KeyboardSensor can be used instead
 // and all files under this directory (`keyboard-sensor`) can be removed.
 
+// Changes from mainstream are marked below as "Customization"
+
 export class KeyboardSensor implements SensorInstance {
   public autoScrollEnabled = false;
   private referenceCoordinates: Coordinates | undefined;
@@ -52,6 +54,8 @@ export class KeyboardSensor implements SensorInstance {
 
     this.windowListeners.add(EventName.Resize, this.handleCancel);
     this.windowListeners.add(EventName.VisibilityChange, this.handleCancel);
+
+    // Customization: deactivate reordering on blur event
     this.props.event.target?.addEventListener(EventName.Blur, this.handleCancel);
 
     setTimeout(() => this.listeners.add(EventName.Keydown, this.handleKeyDown));
@@ -131,6 +135,8 @@ export class KeyboardSensor implements SensorInstance {
 
   private handleCancel(event: Event) {
     const { onCancel } = this.props;
+
+    // Customization: do not prevent browser from managing native focus
     if (event.type !== EventName.Blur) {
       event.preventDefault();
     }
@@ -139,7 +145,9 @@ export class KeyboardSensor implements SensorInstance {
   }
 
   private detach() {
+    // Customization: clean up listener for blur event
     this.props.event.target?.removeEventListener(EventName.Blur, this.handleCancel);
+
     this.listeners.removeAll();
     this.windowListeners.removeAll();
   }

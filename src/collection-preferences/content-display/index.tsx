@@ -90,6 +90,8 @@ export default function ContentDisplayPreference({
         }}
         onDragCancel={() => setActiveItem(null)}
       >
+        {/* Use explicit list role to work around Safari not announcing lists as such when list-style is set to none.
+            See https://bugs.webkit.org/show_bug.cgi?id=170179 */}
         <ul
           className={getClassName('option-list')}
           aria-describedby={descriptionId}
