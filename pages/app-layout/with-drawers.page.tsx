@@ -21,12 +21,19 @@ export default function WithDrawers() {
   const [hasTools, setHasTools] = useState(false);
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
+  const [widths, setWidths] = useState<{ [id: string]: number }>({
+    security: 500,
+  });
+
   const drawers = !hasDrawers
     ? null
     : {
         drawers: {
           ariaLabel: 'Drawers',
           activeDrawerId: activeDrawerId,
+          onResize: (event: NonCancelableCustomEvent<{ size: number; id: string }>) => {
+            setWidths({ ...widths, [event.detail.id]: event.detail.size });
+          },
           items: [
             {
               ariaLabels: {
@@ -38,6 +45,8 @@ export default function WithDrawers() {
               content: <Security />,
               id: 'security',
               resizable: true,
+              size: widths.security,
+
               trigger: {
                 iconName: 'security',
               },
