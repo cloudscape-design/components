@@ -135,8 +135,8 @@ export function InlineEditor<ItemType>({
                     variant="inline-icon"
                     loading={currentEditLoading}
                   />
-                  <LiveRegion>{currentEditLoading ? ariaLabels?.submittingEditText?.(column) : ''}</LiveRegion>
                 </SpaceBetween>
+                <LiveRegion>{currentEditLoading ? ariaLabels?.submittingEditText?.(column) : ''}</LiveRegion>
               </span>
             </div>
           </FormField>
