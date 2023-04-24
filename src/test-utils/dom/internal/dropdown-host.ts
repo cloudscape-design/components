@@ -14,12 +14,20 @@ import optionStyles from '../../../internal/components/option/styles.selectors.j
 
 export default abstract class DropdownHostComponentWrapper extends ComponentWrapper {
   abstract findTrigger(): ElementWrapper;
+  protected defaultExpandToViewport = false;
+
+  /**
+   * @param defaultExpandToViewport The new default value for expandToViewport
+   */
+  setDefaultExpandToViewport(defaultExpandToViewport: boolean): void {
+    this.defaultExpandToViewport = defaultExpandToViewport;
+  }
 
   /**
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  private assertOpenDropdown(options = { expandToViewport: false }): void {
+  private assertOpenDropdown(options = { expandToViewport: this.defaultExpandToViewport }): void {
     const isOpen = !!this.findDropdown(options)?.findOpenDropdown();
     if (!isOpen) {
       throw new Error('Unable to select an option when dropdown is closed');
@@ -30,7 +38,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findDropdown(options = { expandToViewport: false }): DropdownContentWrapper {
+  findDropdown(options = { expandToViewport: this.defaultExpandToViewport }): DropdownContentWrapper {
     return options.expandToViewport
       ? createWrapper().findComponent(`.${dropdownStyles.dropdown}[data-open=true]`, PortalDropdownContentWrapper)!
       : new DropdownContentWrapper(this.getElement());
@@ -48,7 +56,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   @usesDom
-  closeDropdown(options = { expandToViewport: false }): void {
+  closeDropdown(options = { expandToViewport: this.defaultExpandToViewport }): void {
     if (
       document.activeElement &&
       (this.element.contains(document.activeElement) ||
@@ -79,7 +87,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   @usesDom
-  selectOption(index: number, options = { expandToViewport: false }): void {
+  selectOption(index: number, options = { expandToViewport: this.defaultExpandToViewport }): void {
     if (index < 1) {
       throw new Error('Option index should be a 1-based integer number');
     }
@@ -110,7 +118,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   @usesDom
-  selectOptionByValue(value: string, options = { expandToViewport: false }): void {
+  selectOptionByValue(value: string, options = { expandToViewport: this.defaultExpandToViewport }): void {
     this.assertOpenDropdown(options);
     const option = this.findDropdown(options).findOptionByValue(value);
     if (!option) {

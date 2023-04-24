@@ -19,7 +19,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findErrorRecoveryButton(options = { expandToViewport: false }): ElementWrapper | null {
+  findErrorRecoveryButton(options = { expandToViewport: this.defaultExpandToViewport }): ElementWrapper | null {
     return this.findDropdown(options).findByClassName(footerStyles.recovery);
   }
 
@@ -28,7 +28,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findFilteringInput(options = { expandToViewport: false }): InputWrapper | null {
+  findFilteringInput(options = { expandToViewport: this.defaultExpandToViewport }): InputWrapper | null {
     return this.findDropdown(options).findComponent(`.${inputStyles['input-container']}`, InputWrapper);
   }
 
@@ -40,7 +40,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findStatusIndicator(options = { expandToViewport: false }): ElementWrapper | null {
+  findStatusIndicator(options = { expandToViewport: this.defaultExpandToViewport }): ElementWrapper | null {
     return this.findDropdown(options).findByClassName(dropdownStatusStyles.root);
   }
 

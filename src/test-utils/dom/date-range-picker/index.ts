@@ -83,7 +83,9 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   }
 
   findCustomRelativeRangeUnit(): SelectWrapper | null {
-    return this.findComponent(`.${relativeRangeStyles['custom-range-unit-select']}`, SelectWrapper);
+    const selectWrapper = this.findComponent(`.${relativeRangeStyles['custom-range-unit-select']}`, SelectWrapper);
+    selectWrapper?.setDefaultExpandToViewport(true);
+    return selectWrapper;
   }
 
   // -- Absolute mode --

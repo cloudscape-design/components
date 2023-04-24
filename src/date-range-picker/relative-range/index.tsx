@@ -140,6 +140,7 @@ export default function RelativeRangePicker({
                 <div className={styles['custom-range-unit']}>
                   <InternalFormField label={i18nStrings.customRelativeRangeUnitLabel}>
                     <InternalSelect
+                      expandToViewport={true}
                       className={styles['custom-range-unit-select']}
                       selectedOption={
                         {
