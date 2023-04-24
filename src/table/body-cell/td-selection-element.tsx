@@ -3,22 +3,15 @@
 import clsx from 'clsx';
 import React, { KeyboardEventHandler } from 'react';
 import SelectionControl from '../selection-control/';
-import { TableProps } from '../interfaces.js';
 import { getCellClassName, TableTdElementProps } from './td-element.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { ItemSelectionProps } from '../use-selection';
 
 type TableBodySelectionCellProps = Omit<TableTdElementProps, 'style' | 'nativeAttributes' | 'onClick' | 'wrapLines'> & {
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
   onShiftToggle: (value: boolean) => void;
-  itemSelectionProps: {
-    name: string;
-    selectionType: TableProps.SelectionType | undefined;
-    ariaLabel: string | undefined;
-    onChange: () => void;
-    checked: boolean;
-    disabled: boolean;
-  };
+  itemSelectionProps: ItemSelectionProps;
 };
 
 export function TableBodySelectionCell({
