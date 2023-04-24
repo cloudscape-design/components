@@ -38,7 +38,7 @@ export interface StickyStateModel {
 }
 
 export interface StickyState {
-  cellStyles: Record<ColumnId, StickyStateCellStyles>;
+  cellStyles: Record<ColumnId, null | StickyStateCellStyles>;
   scrollPadding: { left: number; right: number };
 }
 
@@ -49,30 +49,12 @@ interface UpdateScrollProps {
 }
 
 interface StickyStateCellStyles {
-  classNames: { td: Record<string, boolean>; th: Record<string, boolean> };
+  padLeft: boolean;
+  lastLeft: boolean;
+  lastRight: boolean;
   offset: { left?: number; right?: number };
 }
 
-const DEFAULT_STYLES: StickyStateCellStyles = {
-  classNames: {
-    td: {
-      [tdCellStyles['sticky-cell']]: false,
-      [tdCellStyles['sticky-cell-first-column']]: false,
-      [tdCellStyles['sticky-cell-last-left']]: false,
-      [tdCellStyles['sticky-cell-last-right']]: false,
-    },
-    th: {
-      [thCellStyles['sticky-cell']]: false,
-      [thCellStyles['sticky-cell-first-column']]: false,
-      [thCellStyles['sticky-cell-last-left']]: false,
-      [thCellStyles['sticky-cell-last-right']]: false,
-    },
-  },
-  offset: {
-    left: undefined,
-    right: undefined,
-  },
-};
 interface UseStickyStylesProps {
   stickyState: StickyStateModel;
   columnId: ColumnId;
@@ -91,6 +73,26 @@ export function useStickyStyles({ stickyState, columnId, cellType }: UseStickySt
     ref.current = node;
   }, []);
 
+  const getClassName = (props: null | StickyStateCellStyles) => {
+    if (!props) {
+      return {};
+    }
+    return {
+      td: {
+        [tdCellStyles['sticky-cell']]: true,
+        [tdCellStyles['sticky-cell-first-column']]: props.padLeft,
+        [tdCellStyles['sticky-cell-last-left']]: props.lastLeft,
+        [tdCellStyles['sticky-cell-last-right']]: props.lastRight,
+      },
+      th: {
+        [thCellStyles['sticky-cell']]: true,
+        [thCellStyles['sticky-cell-first-column']]: props.padLeft,
+        [thCellStyles['sticky-cell-last-left']]: props.lastLeft,
+        [thCellStyles['sticky-cell-last-right']]: props.lastRight,
+      },
+    }[cellType];
+  };
+
   useReaction(
     stickyState.store,
     state => state.cellStyles[columnId],
@@ -99,12 +101,13 @@ export function useStickyStyles({ stickyState, columnId, cellType }: UseStickySt
         return;
       }
 
-      const { classNames, offset } = props;
+      const { offset } = props;
+      const className = getClassName(props);
 
       const cellElement = ref.current;
       if (cellElement) {
-        Object.keys(classNames[cellType]).forEach(key => {
-          if (classNames[cellType][key]) {
+        Object.keys(className).forEach(key => {
+          if (className[key]) {
             cellElement.classList.add(key);
           } else {
             cellElement.classList.remove(key);
@@ -118,8 +121,8 @@ export function useStickyStyles({ stickyState, columnId, cellType }: UseStickySt
 
   return {
     ref: refCallback,
-    className: clsx(stickyState.store.get().cellStyles[columnId]?.classNames[cellType]),
-    style: stickyState.store.get().cellStyles[columnId]?.offset,
+    className: clsx(getClassName(stickyState.store.get().cellStyles[columnId])),
+    style: stickyState.store.get().cellStyles[columnId]?.offset ?? {},
   };
 }
 
@@ -225,7 +228,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
     }));
   }
 
-  private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, StickyStateCellStyles> => {
+  private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyStateCellStyles> => {
     const isEnabled = this.isEnabled(props);
 
     // TODO: remove this
@@ -241,7 +244,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
       }
 
       if (!isEnabled || stickySide === 'non-sticky') {
-        acc[columnId] = DEFAULT_STYLES;
+        acc[columnId] = null;
         return acc;
       }
 
@@ -262,25 +265,14 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
       const stickyCellLastRight = this.isStuckToTheRight && lastRightStickyColumnIndex === index;
 
       acc[columnId] = {
-        classNames: {
-          td: {
-            [tdCellStyles['sticky-cell']]: true,
-            [tdCellStyles['sticky-cell-first-column']]: stickyCellFirstColumn,
-            [tdCellStyles['sticky-cell-last-left']]: stickyCellLastLeft,
-            [tdCellStyles['sticky-cell-last-right']]: stickyCellLastRight,
-          },
-          th: {
-            [thCellStyles['sticky-cell']]: true,
-            [thCellStyles['sticky-cell-first-column']]: stickyCellFirstColumn,
-            [thCellStyles['sticky-cell-last-left']]: stickyCellLastLeft,
-            [thCellStyles['sticky-cell-last-right']]: stickyCellLastRight,
-          },
-        },
+        padLeft: stickyCellFirstColumn,
+        lastLeft: stickyCellLastLeft,
+        lastRight: stickyCellLastRight,
         offset: cellStyle,
       };
 
       return acc;
-    }, {} as Record<ColumnId, StickyStateCellStyles>);
+    }, {} as Record<ColumnId, null | StickyStateCellStyles>);
   };
 
   updateCellOffsets = (props: UpdateCellStylesProps): void => {
