@@ -118,7 +118,7 @@ const InternalTable = React.forwardRef(
     const visibleColumnDefinitions = visibleColumns
       ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
       : columnDefinitions;
-    const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
       selectedItems,
@@ -126,10 +126,8 @@ const InternalTable = React.forwardRef(
       isItemDisabled,
       onSelectionChange,
       ariaLabels,
+      loading,
     });
-    if (loading) {
-      selectAllProps.disabled = true;
-    }
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -153,7 +151,7 @@ const InternalTable = React.forwardRef(
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
-      selectAllProps,
+      getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       wrapLines,
