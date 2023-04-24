@@ -5,14 +5,14 @@ import React, { KeyboardEventHandler } from 'react';
 import SelectionControl from '../selection-control/';
 import { getCellClassName, TableTdElementProps } from './td-element.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { ItemSelectionProps } from '../use-selection';
+import { SelectionProps } from '../use-selection';
 import styles from './styles.css.js';
 
 type TableBodySelectionCellProps = Omit<TableTdElementProps, 'style' | 'nativeAttributes' | 'onClick' | 'wrapLines'> & {
   onFocusUp?: KeyboardEventHandler;
   onFocusDown?: KeyboardEventHandler;
   onShiftToggle: (value: boolean) => void;
-  itemSelectionProps: ItemSelectionProps;
+  itemSelectionProps: SelectionProps;
 };
 
 export function TableBodySelectionCell({
