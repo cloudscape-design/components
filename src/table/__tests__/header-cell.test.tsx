@@ -48,6 +48,7 @@ it('renders a fake focus outline on the sort control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
+        variant="container"
       />
     </TableWrapper>
   );
@@ -69,6 +70,7 @@ it('renders a fake focus outline on the resize control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
+        variant="container"
       />
     </TableWrapper>
   );
