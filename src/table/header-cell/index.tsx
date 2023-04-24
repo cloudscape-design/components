@@ -27,7 +27,6 @@ interface TableHeaderCellProps<ItemType> extends Omit<TableThElementProps, 'chil
 }
 
 export function TableHeaderCell<ItemType>({
-  className,
   style,
   tabIndex,
   column,
@@ -73,7 +72,6 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
-      className={className}
       style={style}
       sortable={sortable}
       sorted={sorted}

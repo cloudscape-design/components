@@ -9,7 +9,6 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { TableThElement } from './header-cell/th-element';
@@ -70,51 +69,35 @@ const Thead = React.forwardRef(
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
-    const isVisualRefresh = useVisualRefresh();
-
-    const selectionCellClass = clsx(
-      styles['selection-control'],
-      styles['selection-control-header'],
-      isVisualRefresh && styles['is-visual-refresh']
-    );
-
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
-
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
-          {selectionType === 'multi' && (
+          {selectionType !== undefined ? (
             <TableThElement
               hidden={hidden}
               sticky={sticky}
               stuck={stuck}
               stripedRows={stripedRows}
               variant={variant}
-              className={selectionCellClass}
+              hasSelection={true}
             >
-              <SelectionControl
-                onFocusDown={event => {
-                  onFocusMove!(event.target as HTMLElement, -1, +1);
-                }}
-                focusedComponent={focusedComponent}
-                onFocusedComponentChange={onFocusedComponentChange}
-                {...selectAllProps}
-                {...(sticky ? { tabIndex: -1 } : {})}
-              />
+              {selectionType === 'multi' ? (
+                <SelectionControl
+                  onFocusDown={event => {
+                    onFocusMove!(event.target as HTMLElement, -1, +1);
+                  }}
+                  focusedComponent={focusedComponent}
+                  onFocusedComponentChange={onFocusedComponentChange}
+                  {...selectAllProps}
+                  {...(sticky ? { tabIndex: -1 } : {})}
+                />
+              ) : (
+                <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
+              )}
             </TableThElement>
-          )}
-          {selectionType === 'single' && (
-            <TableThElement
-              hidden={hidden}
-              sticky={sticky}
-              stuck={stuck}
-              stripedRows={stripedRows}
-              variant={variant}
-              className={selectionCellClass}
-            >
-              <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-            </TableThElement>
-          )}
+          ) : null}
+
           {columnDefinitions.map((column, colIndex) => {
             let widthOverride;
             if (resizableColumns) {

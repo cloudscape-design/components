@@ -8,7 +8,6 @@ import styles from '../body-cell/styles.css.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TableThElementProps {
-  className?: string;
   style?: React.CSSProperties;
   sortable?: boolean;
   sorted?: boolean;
@@ -19,12 +18,12 @@ export interface TableThElementProps {
   sticky?: boolean;
   stuck?: boolean;
   stripedRows?: boolean;
+  hasSelection?: boolean;
   variant: TableProps.Variant;
   children: React.ReactNode;
 }
 
 export function TableThElement({
-  className,
   style,
   sortable,
   sorted,
@@ -35,6 +34,7 @@ export function TableThElement({
   sticky,
   stuck,
   stripedRows,
+  hasSelection,
   variant,
   children,
 }: TableThElementProps) {
@@ -42,7 +42,9 @@ export function TableThElement({
   const isVisualRefresh = useVisualRefresh();
   return (
     <th
-      className={clsx(className, styles['header-cell'], styles[`header-cell-variant-${variant}`], {
+      className={clsx(styles['header-cell'], styles[`header-cell-variant-${variant}`], {
+        [styles['selection-control']]: hasSelection,
+        [styles['selection-control-header']]: hasSelection,
         [styles['header-cell-sticky']]: sticky,
         [styles['header-cell-stuck']]: stuck,
         [styles['has-striped-rows']]: stripedRows,
