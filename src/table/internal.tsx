@@ -32,7 +32,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import TableWrapper from './table-wrapper';
-import { TableBodySelectionCell } from './body-cell/td-selection-element';
+import SelectionControl from './selection-control';
+import { TableTdElement } from './body-cell/td-element';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -336,23 +337,29 @@ const InternalTable = React.forwardRef(
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
                         aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
-                        {hasSelection ? (
-                          <TableBodySelectionCell
+                        {selectionType !== undefined && (
+                          <TableTdElement
                             className={clsx(styles['selection-control'])}
+                            isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
                             isNextSelected={isNextSelected}
                             isPrevSelected={isPrevSelected}
+                            wrapLines={false}
                             isEvenRow={isEven}
                             stripedRows={stripedRows}
+                            hasSelection={hasSelection}
                             hasFooter={hasFooter}
-                            onFocusDown={moveFocusDown}
-                            onFocusUp={moveFocusUp}
-                            onShiftToggle={updateShiftToggle}
-                            itemSelectionProps={getItemSelectionProps(item)}
-                          />
-                        ) : null}
+                          >
+                            <SelectionControl
+                              onFocusDown={moveFocusDown}
+                              onFocusUp={moveFocusUp}
+                              onShiftToggle={updateShiftToggle}
+                              {...getItemSelectionProps(item)}
+                            />
+                          </TableTdElement>
+                        )}
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
