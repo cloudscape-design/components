@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useLayoutEffect, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
-import { usePrevious } from '../hooks/use-previous';
+import { usePrevious } from '../../internal/hooks/use-previous';
 
 type Selector<S, R> = (state: S) => R;
 type Listener<S> = (state: S, prevState: S) => any;

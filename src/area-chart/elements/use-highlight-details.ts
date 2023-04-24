@@ -4,7 +4,7 @@ import { CartesianChartProps } from '../../internal/components/cartesian-chart/i
 import { ChartSeriesDetailItem } from '../../internal/components/chart-series-details';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
-import { useSelector } from '../../internal/utils/async-store';
+import { useSelector } from '../model/async-store';
 
 export interface HighlightDetails {
   isPopoverPinned: boolean;
