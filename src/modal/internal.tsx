@@ -12,7 +12,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import Portal from '../internal/components/portal';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
+import { useContainerBreakpoints, useContainerQuery } from '../internal/hooks/container-queries';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { FormFieldContext } from '../internal/context/form-field-context';
 
@@ -26,7 +26,17 @@ import { useIntersectionObserver } from '../internal/hooks/use-intersection-obse
 
 type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
 
-export default function InternalModal({
+export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
+  return (
+    <Portal container={modalRoot}>
+      <InnerModal {...rest} />
+    </Portal>
+  );
+}
+
+// Separate component to prevent the Portal from getting in the way of refs, as it needs extra cycles to render the inner components.
+// useContainerQuery needs its targeted element to exist on the first render in order to work properly.
+function InnerModal({
   size,
   visible,
   header,
@@ -34,7 +44,6 @@ export default function InternalModal({
   footer,
   disableContentPaddings,
   onDismiss,
-  modalRoot,
   __internalRootRef = null,
   ...rest
 }: InternalModalProps) {
@@ -100,61 +109,68 @@ export default function InternalModal({
   // to detect when the user has scrolled to the bottom.
   const { ref: stickySentinelRef, isIntersecting: footerStuck } = useIntersectionObserver();
 
+  // Add extra scroll padding to account for the height of the sticky footer,
+  // to prevent it from covering focused elements.
+  const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+
   return (
-    <Portal container={modalRoot}>
-      <FormFieldContext.Provider value={{}}>
-        <div
-          {...baseProps}
-          className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}
-          role="dialog"
-          aria-modal={true}
-          aria-labelledby={headerId}
-          onMouseDown={onOverlayMouseDown}
-          onClick={onOverlayClick}
-          ref={mergedRef}
-        >
-          <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
-            <div
-              className={clsx(
-                styles.dialog,
-                styles[size],
-                styles[`breakpoint-${breakpoint}`],
-                isRefresh && styles.refresh
-              )}
-              onKeyDown={escKeyHandler}
-              tabIndex={-1}
-            >
-              <div className={styles.container}>
-                <div className={styles.header}>
-                  <InternalHeader
-                    variant="h2"
-                    __disableActionsWrapping={true}
-                    actions={
-                      <InternalButton
-                        ariaLabel={closeAriaLabel}
-                        className={styles['dismiss-control']}
-                        variant="modal-dismiss"
-                        iconName="close"
-                        formAction="none"
-                        onClick={onCloseButtonClick}
-                      />
-                    }
-                  >
-                    <span id={headerId} className={styles['header--text']}>
-                      {header}
-                    </span>
-                  </InternalHeader>
-                </div>
-                <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
-                  {children}
-                  <div ref={stickySentinelRef} />
-                </div>
-                {footer && <div className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>{footer}</div>}
+    <FormFieldContext.Provider value={{}}>
+      <div
+        {...baseProps}
+        className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}
+        role="dialog"
+        aria-modal={true}
+        aria-labelledby={headerId}
+        onMouseDown={onOverlayMouseDown}
+        onClick={onOverlayClick}
+        ref={mergedRef}
+        style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
+      >
+        <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+          <div
+            className={clsx(
+              styles.dialog,
+              styles[size],
+              styles[`breakpoint-${breakpoint}`],
+              isRefresh && styles.refresh
+            )}
+            onKeyDown={escKeyHandler}
+            tabIndex={-1}
+          >
+            <div className={styles.container}>
+              <div className={styles.header}>
+                <InternalHeader
+                  variant="h2"
+                  __disableActionsWrapping={true}
+                  actions={
+                    <InternalButton
+                      ariaLabel={closeAriaLabel}
+                      className={styles['dismiss-control']}
+                      variant="modal-dismiss"
+                      iconName="close"
+                      formAction="none"
+                      onClick={onCloseButtonClick}
+                    />
+                  }
+                >
+                  <span id={headerId} className={styles['header--text']}>
+                    {header}
+                  </span>
+                </InternalHeader>
               </div>
+              <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
+                {children}
+                <div ref={stickySentinelRef} />
+              </div>
+              {footer && (
+                <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                  {footer}
+                </div>
+              )}
             </div>
-          </FocusLock>
-        </div>
-      </FormFieldContext.Provider>
-    </Portal>
+          </div>
+        </FocusLock>
+      </div>
+    </FormFieldContext.Provider>
   );
 }
