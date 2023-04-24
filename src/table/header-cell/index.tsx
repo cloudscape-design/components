@@ -10,7 +10,6 @@ import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
-import { SortingState } from '@cloudscape-design/collection-hooks/dist/cjs/interfaces';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
