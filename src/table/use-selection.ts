@@ -9,13 +9,14 @@ import { getTrackableValue } from './utils';
 import selectionStyles from './selection-control/styles.css.js';
 import { joinStrings } from '../internal/utils/strings';
 
-export interface ItemSelectionProps {
+export interface SelectionProps {
   name: string;
   selectionType: 'single' | 'multi';
   ariaLabel?: string;
   onChange: () => void;
   checked: boolean;
   disabled: boolean;
+  indeterminate?: boolean;
 }
 
 const SELECTION_ITEM = 'selection-item';
@@ -200,8 +201,8 @@ export function useSelection<T>({
       checked: hasSelected && allEnabledSelected,
       onChange: handleToggleAll,
       ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
-    },
-    getItemSelectionProps: (item: T): ItemSelectionProps => {
+    } as SelectionProps,
+    getItemSelectionProps: (item: T): SelectionProps => {
       if (!selectionType) {
         throw new Error('Invariant violation: called selection props with missing selection type.');
       }
