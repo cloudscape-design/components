@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import styles from '../../../table/styles.selectors.js';
-import headerCellStyles from '../../../table/header-cell/styles.selectors.js';
-import bodyCellStyles from '../../../table/body-cell/styles.selectors.js';
+import cellStyles from '../../../table/body-cell/styles.selectors.js';
 import selectionStyles from '../../../table/selection-control/styles.selectors.js';
 import resizerStyles from '../../../table/resizer/styles.selectors.js';
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
 import PaginationWrapper from '../pagination';
 import TextFilterWrapper from '../text-filter';
+import PropertyFilterWrapper from '../property-filter';
 
 export default class TableWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
@@ -95,14 +95,14 @@ export default class TableWrapper extends ComponentWrapper {
    * Returns the column that is used for ascending sorting.
    */
   findAscSortedColumn(): ElementWrapper | null {
-    return this.findNativeTable().findByClassName(headerCellStyles['header-cell-ascending']);
+    return this.findNativeTable().findByClassName(cellStyles['header-cell-ascending']);
   }
 
   /**
    * Returns the column that is used for descending sorting.
    */
   findDescSortedColumn(): ElementWrapper | null {
-    return this.findNativeTable().findByClassName(headerCellStyles['header-cell-descending']);
+    return this.findNativeTable().findByClassName(cellStyles['header-cell-descending']);
   }
 
   /**
@@ -121,11 +121,15 @@ export default class TableWrapper extends ComponentWrapper {
   findTextFilter(): TextFilterWrapper | null {
     return this.findComponent(`.${styles['tools-filtering']}`, TextFilterWrapper);
   }
-  //
-  // findPropertyFiltering(): TablePropertyFilteringWrapper {
-  //   return new TablePropertyFilteringWrapper(this.find('awsui-table-property-filtering').getElement());
-  // }
-  //
+
+  findPropertyFilter(): PropertyFilterWrapper | null {
+    return this.findComponent(`.${styles['tools-filtering']}`, PropertyFilterWrapper);
+  }
+
+  findFilterSlot(): ElementWrapper | null {
+    return this.findComponent(`.${styles['tools-filtering']}`, ElementWrapper);
+  }
+
   findCollectionPreferences(): CollectionPreferencesWrapper | null {
     return this.findComponent(`.${styles['tools-preferences']}`, CollectionPreferencesWrapper);
   }
@@ -141,15 +145,15 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column of the cell to select.
    */
   findEditCellButton(rowIndex: number, columnIndex: number): ElementWrapper | null {
-    return this.findBodyCell(rowIndex, columnIndex)?.findByClassName(bodyCellStyles['body-cell-editor']) ?? null;
+    return this.findBodyCell(rowIndex, columnIndex)?.findByClassName(cellStyles['body-cell-editor']) ?? null;
   }
 
   findEditingCell(): ElementWrapper | null {
-    return this.findNativeTable().findByClassName(bodyCellStyles['body-cell-edit-active']);
+    return this.findNativeTable().findByClassName(cellStyles['body-cell-edit-active']);
   }
 
   private _findEditingCellControls(): ElementWrapper | null {
-    return this.findEditingCell()?.findByClassName(bodyCellStyles['body-cell-editor-controls']) ?? null;
+    return this.findEditingCell()?.findByClassName(cellStyles['body-cell-editor-controls']) ?? null;
   }
 
   findEditingCellSaveButton(): ElementWrapper | null {

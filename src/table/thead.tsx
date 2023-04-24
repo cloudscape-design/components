@@ -12,7 +12,7 @@ import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { TableHeaderSelectionCell } from './header-cell/th-selection-element';
 import styles from './styles.css.js';
-import headerCellStyles from './header-cell/styles.css.js';
+import headerCellStyles from './body-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 
 export type InteractiveComponent =
