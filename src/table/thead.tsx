@@ -11,8 +11,8 @@ import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import headerCellStyles from './body-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { TableThElement } from './header-cell/th-element';
 
 export type InteractiveComponent =
   | { type: 'selection' }
@@ -72,15 +72,6 @@ const Thead = React.forwardRef(
   ) => {
     const isVisualRefresh = useVisualRefresh();
 
-    const headerCellClass = clsx(
-      headerCellStyles['header-cell'],
-      headerCellStyles[`header-cell-variant-${variant}`],
-      sticky && headerCellStyles['header-cell-sticky'],
-      stuck && headerCellStyles['header-cell-stuck'],
-      stripedRows && headerCellStyles['has-striped-rows'],
-      isVisualRefresh && headerCellStyles['is-visual-refresh']
-    );
-
     const selectionCellClass = clsx(
       styles['selection-control'],
       styles['selection-control-header'],
@@ -93,9 +84,13 @@ const Thead = React.forwardRef(
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType === 'multi' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
+            <TableThElement
+              hidden={hidden}
+              sticky={sticky}
+              stuck={stuck}
+              stripedRows={stripedRows}
+              variant={variant}
+              className={selectionCellClass}
             >
               <SelectionControl
                 onFocusDown={event => {
@@ -106,15 +101,19 @@ const Thead = React.forwardRef(
                 {...selectAllProps}
                 {...(sticky ? { tabIndex: -1 } : {})}
               />
-            </th>
+            </TableThElement>
           )}
           {selectionType === 'single' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
+            <TableThElement
+              hidden={hidden}
+              sticky={sticky}
+              stuck={stuck}
+              stripedRows={stripedRows}
+              variant={variant}
+              className={selectionCellClass}
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-            </th>
+            </TableThElement>
           )}
           {columnDefinitions.map((column, colIndex) => {
             let widthOverride;
@@ -131,7 +130,6 @@ const Thead = React.forwardRef(
             return (
               <TableHeaderCell
                 key={getColumnKey(column, colIndex)}
-                className={headerCellClass}
                 style={{
                   width: widthOverride || column.width,
                   minWidth: sticky ? undefined : column.minWidth,
@@ -152,6 +150,10 @@ const Thead = React.forwardRef(
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                sticky={sticky}
+                stuck={stuck}
+                stripedRows={stripedRows}
+                variant={variant}
               />
             );
           })}

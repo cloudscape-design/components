@@ -12,7 +12,9 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { TableThElement, TableThElementProps } from './th-element';
 
-interface TableHeaderCellProps<ItemType> extends Omit<TableThElementProps<ItemType>, 'children'> {
+interface TableHeaderCellProps<ItemType> extends Omit<TableThElementProps, 'children'> {
+  column: TableProps.ColumnDefinition<ItemType>;
+  activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   tabIndex: number;
   wrapLines?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
@@ -42,6 +44,10 @@ export function TableHeaderCell<ItemType>({
   resizableColumns,
   onResizeFinish,
   isEditable,
+  sticky,
+  stuck,
+  stripedRows,
+  variant,
 }: TableHeaderCellProps<ItemType>) {
   const sortable = !!column.sortingComparator || !!column.sortingField;
   const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
@@ -69,12 +75,16 @@ export function TableHeaderCell<ItemType>({
     <TableThElement
       className={className}
       style={style}
-      column={column}
-      activeSortingColumn={activeSortingColumn}
+      sortable={sortable}
+      sorted={sorted}
       sortingDescending={sortingDescending}
       sortingDisabled={sortingDisabled}
       resizableColumns={resizableColumns}
       hidden={hidden}
+      sticky={sticky}
+      stuck={stuck}
+      stripedRows={stripedRows}
+      variant={variant}
     >
       <div
         className={clsx(styles['header-cell-content'], {

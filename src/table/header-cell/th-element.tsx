@@ -3,39 +3,50 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TableProps } from '../interfaces';
-import { getAriaSort, getSortingStatus, isSorted } from './utils';
+import { getAriaSort, getSortingStatus } from './utils';
 import styles from '../body-cell/styles.css.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
-export interface TableThElementProps<ItemType> {
+export interface TableThElementProps {
   className?: string;
   style?: React.CSSProperties;
-  column: TableProps.ColumnDefinition<ItemType>;
-  activeSortingColumn?: TableProps.SortingColumn<ItemType>;
+  sortable?: boolean;
+  sorted?: boolean;
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
   resizableColumns?: boolean;
   hidden?: boolean;
+  sticky?: boolean;
+  stuck?: boolean;
+  stripedRows?: boolean;
+  variant: TableProps.Variant;
   children: React.ReactNode;
 }
 
-export function TableThElement<ItemType>({
+export function TableThElement({
   className,
   style,
-  column,
-  activeSortingColumn,
+  sortable,
+  sorted,
   sortingDescending,
   sortingDisabled,
   resizableColumns,
   hidden,
+  sticky,
+  stuck,
+  stripedRows,
+  variant,
   children,
-}: TableThElementProps<ItemType>) {
-  const sortable = !!column.sortingComparator || !!column.sortingField;
-  const sorted = !!activeSortingColumn && isSorted(column, activeSortingColumn);
-  const sortingStatus = getSortingStatus(sortable, sorted, !!sortingDescending, !!sortingDisabled);
-
+}: TableThElementProps) {
+  const sortingStatus = getSortingStatus(!!sortable, !!sorted, !!sortingDescending, !!sortingDisabled);
+  const isVisualRefresh = useVisualRefresh();
   return (
     <th
-      className={clsx(className, {
+      className={clsx(className, styles['header-cell'], styles[`header-cell-variant-${variant}`], {
+        [styles['header-cell-sticky']]: sticky,
+        [styles['header-cell-stuck']]: stuck,
+        [styles['has-striped-rows']]: stripedRows,
+        [styles['is-visual-refresh']]: isVisualRefresh,
         [styles['header-cell-resizable']]: !!resizableColumns,
         [styles['header-cell-sortable']]: sortingStatus,
         [styles['header-cell-sorted']]: sortingStatus === 'ascending' || sortingStatus === 'descending',
