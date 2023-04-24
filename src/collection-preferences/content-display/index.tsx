@@ -48,7 +48,7 @@ export default function ContentDisplayPreference({
 
   const sortedOptions = getSortedOptions({ options, contentDisplay: value });
 
-  const { activeItem, collisionDetection, handleKeyDown, isKeyboard, sensors, setActiveItem } = useDragAndDropReorder({
+  const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
   });
 
@@ -103,7 +103,6 @@ export default function ContentDisplayPreference({
               <SortableItem
                 dragHandleAriaLabel={dragHandleAriaLabel}
                 key={option.id}
-                isKeyboard={isKeyboard}
                 onKeyDown={handleKeyDown}
                 onToggle={onToggle}
                 option={option}

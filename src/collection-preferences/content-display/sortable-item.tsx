@@ -15,13 +15,11 @@ const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
 
 export function SortableItem({
   dragHandleAriaLabel,
-  isKeyboard,
   onKeyDown,
   onToggle,
   option,
 }: {
   dragHandleAriaLabel?: string;
-  isKeyboard: boolean;
   onKeyDown?: (event: React.KeyboardEvent) => void;
   onToggle: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
@@ -72,7 +70,6 @@ export function SortableItem({
           getClassName('content'),
           styles.draggable,
           isDragging && styles.active,
-          isKeyboard && styles.keyboard,
           isSorting && styles.sorting
         )}
         style={style}

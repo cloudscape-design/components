@@ -8,6 +8,19 @@
 
 $border-radius: awsui.$border-radius-item;
 
+@mixin focus-visible {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] & {
+    @content;
+  }
+}
+
+@mixin animated {
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}
+
 .sortable-item-toggle {
   /* used in test-utils */
 }
@@ -43,20 +56,20 @@ $border-radius: awsui.$border-radius-item;
     padding-right: awsui.$space-scaled-xs;
     background-color: awsui.$color-background-container-content;
     z-index: 1;
-    &:not(.active).sorting,
-    &.active.keyboard {
-      @include styles.with-motion {
-        transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
-      }
-    }
-    &.active.keyboard {
-      @include styles.focus-highlight(0px);
-    }
     &.active {
       position: relative;
       z-index: 2;
       box-shadow: awsui.$shadow-container-active;
       border-radius: $border-radius;
+    }
+    &:not(.active).sorting {
+      @include animated;
+    }
+    @include focus-visible {
+      &.active {
+        @include animated;
+        @include styles.focus-highlight(0px);
+      }
     }
   }
 }

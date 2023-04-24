@@ -160,7 +160,6 @@ export default function useDragAndDropReorder({
     collisionDetection,
     coordinateGetter,
     handleKeyDown,
-    isKeyboard: isKeyboard.current,
     sensors,
     setActiveItem,
   };
