@@ -259,11 +259,10 @@ const InternalTable = React.forwardRef(
         >
           <TableWrapper
             wrapperRef={wrapperRef}
-            className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
-              [styles['has-footer']]: hasFooter,
-              [styles['has-header']]: hasHeader,
-            })}
             onScroll={handleScroll}
+            hasFooter={hasFooter}
+            hasHeader={hasHeader}
+            computedVariant={computedVariant}
             wrapperProps={wrapperProps}
           >
             {!!renderAriaLive && !!firstIndex && (
