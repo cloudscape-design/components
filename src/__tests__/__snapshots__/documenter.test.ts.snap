@@ -12114,7 +12114,6 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "visualRefreshTag": "\`embedded\`, \`stacked\`, and \`full-page\` variants",
     },
     Object {
-      "deprecatedTag": "Use the \`columnDisplay\` property instead.",
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
 Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 

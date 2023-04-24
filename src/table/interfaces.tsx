@@ -206,8 +206,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
    *
    * The order of ids doesn't influence the order in which columns are displayed - this is dictated by the `columnDefinitions` property.
-   *
-   * @deprecated Use the `columnDisplay` property instead.
    * */
   visibleColumns?: ReadonlyArray<string>;
 
