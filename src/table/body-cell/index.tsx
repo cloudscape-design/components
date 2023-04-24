@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
+import LiveRegion from '../../internal/components/live-region/index.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -18,8 +19,9 @@ interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
   isEditing: boolean;
+  successfulEdit?: boolean;
   onEditStart: () => void;
-  onEditEnd: () => void;
+  onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
 }
@@ -33,6 +35,7 @@ function TableCellEditable<ItemType>({
   onEditEnd,
   submitEdit,
   ariaLabels,
+  successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const isVisualRefresh = useVisualRefresh();
@@ -60,6 +63,7 @@ function TableCellEditable<ItemType>({
         className,
         styles['body-cell-editable'],
         isEditing && styles['body-cell-edit-active'],
+        successfulEdit && styles['body-cell-has-success'],
         isVisualRefresh && styles['is-visual-refresh']
       )}
       onClick={!isEditing ? onEditStart : undefined}
@@ -77,6 +81,18 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
+          {successfulEdit && (
+            <>
+              <span
+                className={styles['body-cell-success']}
+                aria-label={ariaLabels?.successfulEditLabel?.(column)}
+                role="img"
+              >
+                <Icon name="status-positive" variant="success" />
+              </span>
+              <LiveRegion>{ariaLabels?.successfulEditLabel?.(column)}</LiveRegion>
+            </>
+          )}
           <button
             className={styles['body-cell-editor']}
             aria-label={ariaLabels?.activateEditLabel?.(column, item)}

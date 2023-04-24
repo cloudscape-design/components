@@ -134,6 +134,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   &-selected:not(.body-cell-prev-selected) {
     padding-top: $cell-vertical-padding;
   }
+  &-success,
   &-editor {
     top: 0;
     right: 0;
@@ -201,9 +202,15 @@ $border-placeholder: awsui.$border-item-width solid transparent;
         & > .body-cell-editor {
           opacity: 1;
         }
+        & > .body-cell-success {
+          opacity: 0;
+        }
       }
       & > .body-cell-editor {
         opacity: 0;
+      }
+      &.body-cell-has-success {
+        padding-right: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
       }
       // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
