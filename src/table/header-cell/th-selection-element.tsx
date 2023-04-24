@@ -16,7 +16,7 @@ interface TableBodySelectionCellProps {
 
 export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
   const { children, selectionType, stickyState, className } = props;
-  const stickyStyles = useStickyStyles({ stickyState, columnId: selectionColumnId, cellType: 'th' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId: selectionColumnId });
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
     className,

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
 import { TableProps } from './interfaces';
 import { getColumnKey } from './utils';
-import headerCellStyles from './header-cell/styles.css.js';
+import cellStyles from './body-cell/styles.css.js';
 import { warnOnce } from '../internal/logging';
 
 export const DEFAULT_WIDTH = 120;
@@ -42,7 +42,7 @@ function readWidths(
       index !== columnDefinitions.length - 1 // skip reading for the last column, because it expands to fully fit the container
     ) {
       const colIndex = hasSelection ? index + 2 : index + 1;
-      const colEl = headerEl.querySelector<HTMLElement>(`.${headerCellStyles['header-cell']}:nth-child(${colIndex})`)!;
+      const colEl = headerEl.querySelector<HTMLElement>(`.${cellStyles['header-cell']}:nth-child(${colIndex})`)!;
       width = colEl.getBoundingClientRect().width;
     }
     result[id] = Math.max(width, minWidth);

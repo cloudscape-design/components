@@ -294,3 +294,193 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
 }
+
+$resize-handle-width: awsui.$space-l;
+$active-separator-width: 2px;
+
+.header-cell {
+  position: relative;
+  text-align: left;
+  box-sizing: border-box;
+  border-bottom: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  background: awsui.$color-background-table-header;
+  color: awsui.$color-text-column-header;
+  font-weight: awsui.$font-heading-s-weight;
+  @include styles.font-smoothing;
+  padding: awsui.$space-scaled-xxs awsui.$space-scaled-xs;
+  &-sticky {
+    border-bottom: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+  }
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+    &-pad-left:not(.has-selection) {
+      padding-left: awsui.$space-table-horizontal !important;
+    }
+    &-last-left {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+      &:not(.header-cell-resizable):before {
+        display: none;
+      }
+    }
+    &-last-right {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+  }
+  &-stuck:not(.header-cell-variant-full-page) {
+    border-bottom-color: transparent;
+  }
+  &-variant-full-page.header-cell-hidden {
+    border-bottom-color: transparent;
+  }
+  &:last-child,
+  &.header-cell-sortable {
+    padding-right: awsui.$space-xs;
+  }
+
+  &:not(:last-child):before,
+  &.is-visual-refresh:last-child:before {
+    $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    min-height: awsui.$font-heading-xs-line-height;
+    max-height: calc(100% - #{$gap});
+    margin: auto;
+    border-left: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    box-sizing: border-box;
+  }
+
+  &.is-visual-refresh:last-child:before {
+    right: 1px; // Move last resize handle 1px inwards to avoid it being cut off
+  }
+
+  &-resizable {
+    &.is-visual-refresh:before,
+    &.is-visual-refresh:last-child:before, // Need this selector for higher specificity
+    &:not(.is-visual-refresh):not(:last-child):before {
+      border-left-color: awsui.$color-border-divider-interactive-default;
+    }
+  }
+  &:not(.header-cell-resizable):before {
+    border-left-color: awsui.$color-border-divider-default;
+  }
+}
+
+.sorting-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: awsui.$space-xxs;
+  color: awsui.$color-text-column-sorting-icon;
+}
+
+.edit-icon {
+  margin-left: awsui.$space-xxs;
+  margin-top: awsui.$space-scaled-xxs;
+  color: inherit;
+}
+
+.header-cell-content {
+  position: relative;
+
+  padding: awsui.$space-scaled-xxs awsui.$space-s;
+  .header-cell-sortable > & {
+    padding-right: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});
+  }
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.header-cell-fake-focus {
+    @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
+  }
+
+  .header-cell-disabled.header-cell-sorted > & {
+    & > .sorting-icon {
+      color: awsui.$color-text-interactive-disabled;
+    }
+  }
+}
+
+.header-cell-sortable:not(.header-cell-disabled) {
+  & > .header-cell-content {
+    cursor: pointer;
+  }
+  & > .header-cell-content:hover,
+  &.header-cell-sorted > .header-cell-content {
+    color: awsui.$color-text-interactive-active;
+    & > .sorting-icon {
+      color: awsui.$color-text-interactive-active;
+    }
+  }
+}
+
+.header-cell-text {
+  line-height: awsui.$font-heading-xs-line-height;
+
+  padding-top: calc(#{awsui.$space-xxxs} / 2);
+  padding-bottom: calc(#{awsui.$space-xxxs} / 2);
+
+  &:not(.header-cell-text-wrap) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.header-cell-ascending,
+.header-cell-descending {
+  /* used in test-utils */
+}
+
+/*
+In Visual Refresh the first cell in the header should align
+with the left edge of the table as closely as possible. If the
+last header cell is sortable the sort icon should align with the
+settings icon in the pagination slot.
+*/
+.header-cell:not(.is-visual-refresh) {
+  &:first-child {
+    padding-left: awsui.$space-xs;
+  }
+}
+
+.header-cell.is-visual-refresh {
+  &:first-child:not(.has-striped-rows) {
+    padding-left: awsui.$space-xxxs;
+  }
+
+  /*
+  Striped rows requires additional left padding because the
+  shaded background makes the child content appear too close
+  to the table edge.
+  */
+  &:first-child.has-striped-rows {
+    padding-left: awsui.$space-xxs;
+  }
+
+  &:first-child > .header-cell-content {
+    padding-left: 0;
+  }
+
+  &:last-child.header-cell-sortable {
+    padding-right: awsui.$space-xxxs;
+  }
+}

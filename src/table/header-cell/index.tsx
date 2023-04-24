@@ -6,7 +6,7 @@ import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingIconName, getSortingStatus, isSorted } from './utils';
-import styles from './styles.css.js';
+import styles from '../body-cell/styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
@@ -79,7 +79,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   };
 
   const headerId = useUniqueId('table-header-');
-  const stickyStyles = useStickyStyles({ stickyState, columnId, cellType: 'th' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId });
 
   return (
     <th

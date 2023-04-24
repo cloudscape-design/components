@@ -47,7 +47,7 @@ export function TableTdElement({
   stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const stickyStyles = useStickyStyles({ stickyState, columnId, cellType: 'td' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId });
   return (
     <td
       style={{ ...style, ...stickyStyles.style }}

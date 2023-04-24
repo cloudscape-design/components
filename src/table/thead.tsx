@@ -11,7 +11,7 @@ import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
-import headerCellStyles from './header-cell/styles.css.js';
+import cellStyles from './body-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { StickyStateModel } from './sticky-state-model';
 import { TableHeaderSelectionCell } from './header-cell/th-selection-element';
@@ -75,12 +75,12 @@ const Thead = React.forwardRef(
   ) => {
     const isVisualRefresh = useVisualRefresh();
     const headerCellClass = clsx(
-      headerCellStyles['header-cell'],
-      headerCellStyles[`header-cell-variant-${variant}`],
-      sticky && headerCellStyles['header-cell-sticky'],
-      stuck && headerCellStyles['header-cell-stuck'],
-      stripedRows && headerCellStyles['has-striped-rows'],
-      isVisualRefresh && headerCellStyles['is-visual-refresh']
+      cellStyles['header-cell'],
+      cellStyles[`header-cell-variant-${variant}`],
+      sticky && cellStyles['header-cell-sticky'],
+      stuck && cellStyles['header-cell-stuck'],
+      stripedRows && cellStyles['has-striped-rows'],
+      isVisualRefresh && cellStyles['is-visual-refresh']
     );
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
@@ -91,7 +91,7 @@ const Thead = React.forwardRef(
             <TableHeaderSelectionCell
               selectionType="multi"
               stickyState={stickyState}
-              className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(headerCellClass, hidden && cellStyles['header-cell-hidden'])}
             >
               <SelectionControl
                 onFocusDown={event => {
@@ -108,7 +108,7 @@ const Thead = React.forwardRef(
             <TableHeaderSelectionCell
               selectionType="single"
               stickyState={stickyState}
-              className={clsx(headerCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(headerCellClass, hidden && cellStyles['header-cell-hidden'])}
             >
               <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
             </TableHeaderSelectionCell>

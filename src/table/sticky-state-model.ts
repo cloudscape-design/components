@@ -4,8 +4,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import AsyncStore, { useReaction } from '../internal/utils/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
-import tdCellStyles from './body-cell/styles.css.js';
-import thCellStyles from './header-cell/styles.css.js';
+import cellStyles from './body-cell/styles.css.js';
 import clsx from 'clsx';
 
 export const selectionColumnId = Symbol('selection-column-id');
@@ -58,7 +57,6 @@ interface StickyStateCellStyles {
 interface UseStickyStylesProps {
   stickyState: StickyStateModel;
   columnId: ColumnId;
-  cellType: 'td' | 'th'; // TODO: resolve this in CSS instead
 }
 
 interface StickyStyles {
@@ -67,31 +65,18 @@ interface StickyStyles {
   style: React.CSSProperties;
 }
 
-export function useStickyStyles({ stickyState, columnId, cellType }: UseStickyStylesProps): StickyStyles {
+export function useStickyStyles({ stickyState, columnId }: UseStickyStylesProps): StickyStyles {
   const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
   const refCallback = useCallback(node => {
     ref.current = node;
   }, []);
 
-  const getClassName = (props: null | StickyStateCellStyles) => {
-    if (!props) {
-      return {};
-    }
-    return {
-      td: {
-        [tdCellStyles['sticky-cell']]: true,
-        [tdCellStyles['sticky-cell-pad-left']]: props.padLeft,
-        [tdCellStyles['sticky-cell-last-left']]: props.lastLeft,
-        [tdCellStyles['sticky-cell-last-right']]: props.lastRight,
-      },
-      th: {
-        [thCellStyles['sticky-cell']]: true,
-        [thCellStyles['sticky-cell-pad-left']]: props.padLeft,
-        [thCellStyles['sticky-cell-last-left']]: props.lastLeft,
-        [thCellStyles['sticky-cell-last-right']]: props.lastRight,
-      },
-    }[cellType];
-  };
+  const getClassName = (props: null | StickyStateCellStyles) => ({
+    [cellStyles['sticky-cell']]: !!props,
+    [cellStyles['sticky-cell-pad-left']]: props?.padLeft,
+    [cellStyles['sticky-cell-last-left']]: props?.lastLeft,
+    [cellStyles['sticky-cell-last-right']]: props?.lastRight,
+  });
 
   useReaction(
     stickyState.store,
