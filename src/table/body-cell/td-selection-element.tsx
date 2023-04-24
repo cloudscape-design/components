@@ -6,6 +6,7 @@ import SelectionControl from '../selection-control/';
 import { getCellClassName, TableTdElementProps } from './td-element.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ItemSelectionProps } from '../use-selection';
+import styles from './styles.css.js';
 
 type TableBodySelectionCellProps = Omit<TableTdElementProps, 'style' | 'nativeAttributes' | 'onClick' | 'wrapLines'> & {
   onFocusUp?: KeyboardEventHandler;
@@ -34,6 +35,7 @@ export function TableBodySelectionCell({
     <td
       className={clsx(
         className,
+        styles['has-selection'],
         getCellClassName({
           isFirstRow,
           isLastRow,
@@ -44,7 +46,6 @@ export function TableBodySelectionCell({
           stripedRows,
           isVisualRefresh,
           hasFooter,
-          hasSelection: true,
         })
       )}
     >
