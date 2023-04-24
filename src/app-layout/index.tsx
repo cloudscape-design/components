@@ -265,19 +265,6 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const getDefaultSizes = () => {
-      const defaultSizes: { [id: string]: number } = {};
-      if (!drawers) {
-        return {};
-      }
-      for (const item of drawers.items) {
-        if (item.resizable) {
-          defaultSizes[item.id] = item.size || toolsWidth;
-        }
-      }
-      return defaultSizes;
-    };
-
     const getSizes = () => {
       const sizes: { [id: string]: number } = {};
       if (!drawers) {
@@ -292,7 +279,7 @@ const OldAppLayout = React.forwardRef(
       return sizes;
     };
 
-    const [drawerSizes = getDefaultSizes(), setDrawerSizes] = useControllable(
+    const [drawerSizes = {}, setDrawerSizes] = useControllable(
       Object.keys(getSizes()).length > 0 ? getSizes() : undefined,
       drawers?.onResize,
       {},

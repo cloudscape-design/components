@@ -46,7 +46,6 @@ export default function WithDrawers() {
               id: 'security',
               resizable: true,
               size: widths.security,
-
               trigger: {
                 iconName: 'security',
               },
