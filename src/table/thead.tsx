@@ -3,8 +3,8 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TableProps } from './interfaces';
-import SelectionControl, { SelectionControlProps } from './selection-control';
-import { focusMarkers } from './use-selection';
+import SelectionControl from './selection-control';
+import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
@@ -29,7 +29,7 @@ export interface TheadProps {
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  selectAllProps: SelectionControlProps;
+  getSelectAllProps: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Record<string, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
@@ -48,7 +48,7 @@ const Thead = React.forwardRef(
     {
       containerWidth,
       selectionType,
-      selectAllProps,
+      getSelectAllProps,
       columnDefinitions,
       sortingColumn,
       sortingDisabled,
@@ -103,7 +103,7 @@ const Thead = React.forwardRef(
                 }}
                 focusedComponent={focusedComponent}
                 onFocusedComponentChange={onFocusedComponentChange}
-                {...selectAllProps}
+                {...getSelectAllProps()}
                 {...(sticky ? { tabIndex: -1 } : {})}
               />
             </th>
