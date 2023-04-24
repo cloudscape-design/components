@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
+import headerCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 
 interface Item {
   id: number;
