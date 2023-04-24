@@ -12,7 +12,6 @@ import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
-import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
@@ -32,7 +31,9 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
-import { TableTdElement } from './body-cell/td-element';
+import TableWrapper from './table-wrapper';
+import { TableBodySelectionCell } from './body-cell/td-selection-element';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -256,14 +257,14 @@ const InternalTable = React.forwardRef(
           __stickyOffset={stickyHeaderVerticalOffset}
           {...focusMarkers.root}
         >
-          <div
-            ref={wrapperRef}
+          <TableWrapper
+            wrapperRef={wrapperRef}
             className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
             onScroll={handleScroll}
-            {...wrapperProps}
+            wrapperProps={wrapperProps}
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
@@ -338,29 +339,22 @@ const InternalTable = React.forwardRef(
                         onContextMenu={onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, item)}
                         aria-rowindex={firstIndex ? firstIndex + rowIndex + 1 : undefined}
                       >
-                        {selectionType !== undefined && (
-                          <TableTdElement
-                            className={clsx(styles['selection-control'])}
-                            isVisualRefresh={isVisualRefresh}
-                            isFirstRow={firstVisible}
-                            isLastRow={lastVisible}
-                            isSelected={isSelected}
-                            isNextSelected={isNextSelected}
-                            isPrevSelected={isPrevSelected}
-                            wrapLines={false}
-                            isEvenRow={isEven}
-                            stripedRows={stripedRows}
-                            hasSelection={hasSelection}
-                            hasFooter={hasFooter}
-                          >
-                            <SelectionControl
-                              onFocusDown={moveFocusDown}
-                              onFocusUp={moveFocusUp}
-                              onShiftToggle={updateShiftToggle}
-                              {...getItemSelectionProps(item)}
-                            />
-                          </TableTdElement>
-                        )}
+                        <TableBodySelectionCell
+                          className={clsx(styles['selection-control'])}
+                          isFirstRow={firstVisible}
+                          isLastRow={lastVisible}
+                          isSelected={isSelected}
+                          isNextSelected={isNextSelected}
+                          isPrevSelected={isPrevSelected}
+                          isEvenRow={isEven}
+                          stripedRows={stripedRows}
+                          hasFooter={hasFooter}
+                          selectionType={selectionType}
+                          onFocusDown={moveFocusDown}
+                          onFocusUp={moveFocusUp}
+                          onShiftToggle={updateShiftToggle}
+                          itemSelectionProps={getItemSelectionProps(item)}
+                        />
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
@@ -410,7 +404,7 @@ const InternalTable = React.forwardRef(
               </tbody>
             </table>
             {resizableColumns && <ResizeTracker />}
-          </div>
+          </TableWrapper>
           <StickyScrollbar
             ref={scrollbarRef}
             wrapperRef={wrapperRefObject}
