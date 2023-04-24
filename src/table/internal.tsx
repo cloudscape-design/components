@@ -12,6 +12,7 @@ import { TableBodyCell } from './body-cell';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
+import SelectionControl from './selection-control';
 import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
@@ -32,7 +33,6 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import TableWrapper from './table-wrapper';
-import SelectionControl from './selection-control';
 import { TableTdElement } from './body-cell/td-element';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
@@ -409,6 +409,7 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              isVisualRefresh={isVisualRefresh}
                             />
                           );
                         })}
