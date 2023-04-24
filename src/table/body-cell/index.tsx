@@ -80,6 +80,18 @@ function TableCellEditable<ItemType>({
       ) : (
         <>
           {column.cell(item)}
+          {successfulEdit && (
+            <>
+              <span
+                className={styles['body-cell-success']}
+                aria-label={ariaLabels?.successfulEditLabel?.(column)}
+                role="img"
+              >
+                <Icon name="status-positive" variant="success" />
+              </span>
+              <LiveRegion>{ariaLabels?.successfulEditLabel?.(column)}</LiveRegion>
+            </>
+          )}
           <button
             className={styles['body-cell-editor']}
             aria-label={ariaLabels?.activateEditLabel?.(column, item)}
@@ -89,16 +101,6 @@ function TableCellEditable<ItemType>({
           >
             {showIcon && <Icon name="edit" />}
           </button>
-          {successfulEdit && (
-            <span
-              className={styles['body-cell-success']}
-              aria-label={ariaLabels?.successfulEditLabel?.(column)}
-              role="img"
-            >
-              <Icon name="status-positive" variant="success" />
-            </span>
-          )}
-          <LiveRegion>{successfulEdit ? ariaLabels?.successfulEditLabel?.(column) : ''}</LiveRegion>
         </>
       )}
     </TableTdElement>
