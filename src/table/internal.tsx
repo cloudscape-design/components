@@ -32,7 +32,9 @@ import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
+import TableWrapper from './table-wrapper';
 import { TableTdElement } from './body-cell/td-element';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -176,11 +178,7 @@ const InternalTable = React.forwardRef(
       stripedRows,
     };
 
-    // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
-    const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
-    const wrapperProps = isWrapperScrollable
-      ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
-      : {};
+    const isWrapperScrollable = Boolean(tableWidth && containerWidth && tableWidth > containerWidth);
 
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
@@ -257,14 +255,14 @@ const InternalTable = React.forwardRef(
           __stickyOffset={stickyHeaderVerticalOffset}
           {...focusMarkers.root}
         >
-          <div
+          <TableWrapper
             ref={wrapperRef}
-            className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
-              [styles['has-footer']]: hasFooter,
-              [styles['has-header']]: hasHeader,
-            })}
             onScroll={handleScroll}
-            {...wrapperProps}
+            hasFooter={hasFooter}
+            hasHeader={hasHeader}
+            variant={computedVariant}
+            isScrollable={isWrapperScrollable}
+            ariaLabel={ariaLabels?.tableLabel}
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
@@ -328,7 +326,7 @@ const InternalTable = React.forwardRef(
                         className={clsx(styles.row, isSelected && styles['row-selected'])}
                         onFocus={({ currentTarget }) => {
                           // When an element inside table row receives focus we want to adjust the scroll.
-                          // However, that behaviour is unwanted when the focus is received as result of a click
+                          // However, that behavior is unwanted when the focus is received as result of a click
                           // as it causes the click to never reach the target element.
                           if (!currentTarget.contains(getMouseDownTarget())) {
                             stickyHeaderRef.current?.scrollToRow(currentTarget);
@@ -422,7 +420,7 @@ const InternalTable = React.forwardRef(
               </tbody>
             </table>
             {resizableColumns && <ResizeTracker />}
-          </div>
+          </TableWrapper>
           <StickyScrollbar
             ref={scrollbarRef}
             wrapperRef={wrapperRefObject}
