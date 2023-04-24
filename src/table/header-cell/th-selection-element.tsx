@@ -6,13 +6,13 @@ import { TableProps } from '../interfaces';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from '../styles.css.js';
 
-interface TableBodySelectionCellProps {
+interface TableHeaderSelectionCellProps {
   className?: string;
   selectionType?: TableProps.SelectionType;
   children: React.ReactNode;
 }
 
-export function TableHeaderSelectionCell({ children, selectionType, className }: TableBodySelectionCellProps) {
+export function TableHeaderSelectionCell({ children, selectionType, className }: TableHeaderSelectionCellProps) {
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
     className,
