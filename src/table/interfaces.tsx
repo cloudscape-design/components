@@ -173,9 +173,9 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `submitEditLabel` (EditableColumnDefinition) => string -
    *                      Specifies an alternative text for the submit button in editable cells.
    * * `successfulEditLabel` (EditableColumnDefinition) => string -
-   *                      Specifies an alternative text for the success icon in editable cells.
+   *                      Specifies an alternative text for the success icon in editable cells. This text is also announced to screen readers.
    * * `submittingEditText` (EditableColumnDefinition) => string -
-   *                      Specifies a text that is announced to screen readers while loading a submission in editable cells.
+   *                      Specifies a text that is announced to screen readers when a cell edit operation is submitted.
    */
   ariaLabels?: TableProps.AriaLabels<T>;
 
