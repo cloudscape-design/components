@@ -78,7 +78,7 @@ function TableCellEditable<ItemType>({
           {column.cell(item)}
           <button
             className={styles['body-cell-editor']}
-            aria-label={ariaLabels?.activateEditLabel?.(column)}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
             ref={editActivateRef}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
