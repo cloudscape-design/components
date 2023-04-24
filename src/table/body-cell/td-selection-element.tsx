@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, KeyboardEventHandler } from 'react';
+import React, { KeyboardEventHandler } from 'react';
 import styles from './styles.css.js';
-import { useStickyStyles } from '../sticky-state-model';
+import { selectionColumnId, useStickyStyles } from '../sticky-state-model';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { TableTdElementProps } from './td-element.js';
 import SelectionControl from '../selection-control/';
@@ -44,13 +44,12 @@ export function TableBodySelectionCell({
   onShiftToggle,
   itemSelectionProps,
 }: TableBodySelectionCellProps) {
-  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLTableCellElement | null>;
   const isVisualRefresh = useVisualRefresh();
-  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId: 'awsui-selection-column', cellType: 'td' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId: selectionColumnId, cellType: 'td' });
   if (selectionType !== undefined) {
     return (
       <td
-        style={stickyClassNames.style}
+        style={stickyStyles.style}
         className={clsx(
           className,
           styles['body-cell'],
@@ -64,9 +63,9 @@ export function TableBodySelectionCell({
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],
           hasFooter && styles['has-footer'],
-          stickyClassNames.className
+          stickyStyles.className
         )}
-        ref={ref}
+        ref={stickyStyles.ref}
       >
         <SelectionControl
           onFocusDown={onFocusDown}

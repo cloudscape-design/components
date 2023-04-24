@@ -4,6 +4,7 @@ import React from 'react';
 import { useReaction } from '../internal/utils/async-store.js';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 import { StickyStateModel } from './sticky-state-model.js';
+
 export interface TableWrapperProps {
   children: React.ReactNode;
   className: string;
@@ -18,22 +19,15 @@ const TableWrapper = ({ children, className, wrapperRef, onScroll, wrapperProps,
 
   useReaction(
     stickyState.store,
-    state => state.scrollPaddingLeft,
-    scrollPaddingLeft => {
+    state => state.scrollPadding,
+    ({ left, right }) => {
       if (wrapperAccessRef && wrapperAccessRef.current) {
-        wrapperAccessRef.current.style.scrollPaddingLeft = scrollPaddingLeft + 'px';
+        wrapperAccessRef.current.style.scrollPaddingLeft = left + 'px';
+        wrapperAccessRef.current.style.scrollPaddingRight = right + 'px';
       }
     }
   );
-  useReaction(
-    stickyState.store,
-    state => state.scrollPaddingRight,
-    scrollPaddingRight => {
-      if (wrapperAccessRef && wrapperAccessRef.current) {
-        wrapperAccessRef.current.style.scrollPaddingRight = scrollPaddingRight + 'px';
-      }
-    }
-  );
+
   const ref = useMergeRefs(wrapperAccessRef, wrapperRef);
   return (
     <div

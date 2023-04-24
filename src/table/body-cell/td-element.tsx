@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React from 'react';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
@@ -47,11 +47,10 @@ export function TableTdElement({
   stickyState,
 }: TableTdElementProps) {
   const isVisualRefresh = useVisualRefresh();
-  const ref = useRef<HTMLTableCellElement>(null);
-  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId, cellType: 'td' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId, cellType: 'td' });
   return (
     <td
-      style={{ ...style, ...stickyClassNames.style }}
+      style={{ ...style, ...stickyStyles.style }}
       className={clsx(
         className,
         styles['body-cell'],
@@ -66,10 +65,10 @@ export function TableTdElement({
         isVisualRefresh && styles['is-visual-refresh'],
         hasSelection && styles['has-selection'],
         hasFooter && styles['has-footer'],
-        stickyClassNames.className
+        stickyStyles.className
       )}
       onClick={onClick}
-      ref={ref}
+      ref={stickyStyles.ref}
       {...nativeAttributes}
     >
       {children}

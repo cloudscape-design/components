@@ -66,7 +66,6 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       sortingColumn: column,
       isDescending: sorted ? !sortingDescending : false,
     });
-  const ref = React.useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
 
   // Elements with role="button" do pnot have the default behavior of <button>, where pressing
   // Enter or Space will trigger a click event. Therefore we need to add this ourselves.
@@ -80,7 +79,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   };
 
   const headerId = useUniqueId('table-header-');
-  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId, cellType: 'th' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId, cellType: 'th' });
 
   return (
     <th
@@ -95,10 +94,10 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
         },
-        stickyClassNames.className
+        stickyStyles.className
       )}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
-      style={{ ...style, ...stickyClassNames.style }}
+      style={{ ...style, ...stickyStyles.style }}
       scope="col"
       ref={node => {
         if (node !== null) {
@@ -106,7 +105,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
         } else {
           delete stickyState.refs.headerCells.current[columnId];
         }
-        ref.current = node;
+        stickyStyles.ref(node);
       }}
     >
       <div

@@ -32,7 +32,7 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import TableWrapper from './table-wrapper';
-import { useStickyState } from './sticky-state-model';
+import { selectionColumnId, useStickyState } from './sticky-state-model';
 import { TableBodySelectionCell } from './body-cell/td-selection-element';
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -191,10 +191,9 @@ const InternalTable = forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    // TODO: make 'awsui-selection-column' a constant
     const visibleColumnsWithSelection = useMemo(() => {
       const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
-      return hasSelection ? ['awsui-selection-column', ...columnIds] : columnIds ?? [];
+      return hasSelection ? [selectionColumnId, ...columnIds] : columnIds ?? [];
     }, [visibleColumnDefinitions, hasSelection]);
 
     const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;

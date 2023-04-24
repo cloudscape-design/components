@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from '../styles.css.js';
-import { StickyStateModel, useStickyStyles } from '../sticky-state-model';
+import { selectionColumnId, StickyStateModel, useStickyStyles } from '../sticky-state-model';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { TableProps } from '../interfaces';
 
@@ -16,30 +16,29 @@ interface TableBodySelectionCellProps {
 
 export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
   const { children, selectionType, stickyState, className } = props;
-  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
-  const stickyClassNames = useStickyStyles({ stickyState, ref, columnId: 'awsui-selection-column', cellType: 'th' });
+  const stickyStyles = useStickyStyles({ stickyState, columnId: selectionColumnId, cellType: 'th' });
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
     className,
     styles['selection-control'],
     styles['selection-control-header'],
     isVisualRefresh && styles['is-visual-refresh'],
-    stickyClassNames.className
+    stickyStyles.className
   );
 
   if (selectionType === 'multi') {
     return (
       <th
-        style={stickyClassNames.style}
+        style={stickyStyles.style}
         className={selectionCellClass}
         scope="col"
         ref={node => {
           if (node !== null) {
-            stickyState.refs.headerCells.current['awsui-selection-column'] = node;
+            stickyState.refs.headerCells.current[selectionColumnId] = node;
           } else {
-            delete stickyState.refs.headerCells.current['awsui-selection-column'];
+            delete stickyState.refs.headerCells.current[selectionColumnId];
           }
-          ref.current = node;
+          stickyStyles.ref(node);
         }}
       >
         {children}
@@ -48,16 +47,16 @@ export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
   } else if (selectionType === 'single') {
     return (
       <th
-        style={stickyClassNames.style}
+        style={stickyStyles.style}
         className={selectionCellClass}
         scope="col"
         ref={node => {
           if (node !== null) {
-            stickyState.refs.headerCells.current['awsui-selection-column'] = node;
+            stickyState.refs.headerCells.current[selectionColumnId] = node;
           } else {
-            delete stickyState.refs.headerCells.current['awsui-selection-column'];
+            delete stickyState.refs.headerCells.current[selectionColumnId];
           }
-          ref.current = node;
+          stickyStyles.ref(node);
         }}
       >
         {children}
