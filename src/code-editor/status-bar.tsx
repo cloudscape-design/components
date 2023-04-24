@@ -13,14 +13,15 @@ interface StatusBarProps {
   languageLabel: string;
   cursorPosition: string;
   paneStatus: string;
-  errorsTabRef: React.RefObject<HTMLButtonElement>;
-  warningsTabRef: React.RefObject<HTMLButtonElement>;
   isTabFocused: boolean;
   paneId?: string;
   i18nStrings: CodeEditorProps.I18nStrings;
   errorCount: number;
   warningCount: number;
   isRefresh: boolean;
+
+  errorsTabRef?: React.RefObject<HTMLButtonElement>;
+  warningsTabRef?: React.RefObject<HTMLButtonElement>;
 
   onErrorPaneToggle: () => void;
   onWarningPaneToggle: () => void;
@@ -139,7 +140,7 @@ function InternalStatusBar({
   );
 }
 
-export const StatusBar = (props: StatusBarProps) => {
+export const StatusBar = ({ errorsTabRef, warningsTabRef, ...restProps }: StatusBarProps) => {
   // create a virtual status bar, in order to calculate the width with full tab button text
   // and decide if tab button text needs to be reduced
   const [realWidth, statusLeftBarRef] = useContainerQuery(rect => rect.width);
@@ -149,8 +150,15 @@ export const StatusBar = (props: StatusBarProps) => {
 
   return (
     <>
-      <InternalStatusBar isVirtual={false} {...props} leftBarRef={statusLeftBarRef} minifyCounters={minifyCounters} />
-      <InternalStatusBar isVirtual={true} {...props} leftBarRef={virtualStatusLeftBarRef} minifyCounters={false} />
+      <InternalStatusBar
+        {...restProps}
+        isVirtual={false}
+        leftBarRef={statusLeftBarRef}
+        errorsTabRef={errorsTabRef}
+        warningsTabRef={warningsTabRef}
+        minifyCounters={minifyCounters}
+      />
+      <InternalStatusBar {...restProps} isVirtual={true} leftBarRef={virtualStatusLeftBarRef} minifyCounters={false} />
     </>
   );
 };
