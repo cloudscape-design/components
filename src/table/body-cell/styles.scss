@@ -103,17 +103,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
   &.sticky-cell {
-    &-first-column {
-      padding-left: awsui.$space-table-horizontal !important;
-    }
-    @include styles.with-motion {
-      transition-property: padding;
-      transition-duration: awsui.$motion-duration-transition-show-quick;
-      transition-timing-function: awsui.$motion-easing-sticky;
-    }
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 801; // Our sticky elements should have z-index in the range of 800-850
+    &-pad-left:not(.has-selection) {
+      padding-left: awsui.$space-table-horizontal !important;
+    }
     &.body-cell-shaded {
       background: awsui.$color-background-cell-shaded;
     }
@@ -141,6 +136,11 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     &-last-right {
       box-shadow: awsui.$shadow-sticky-column-last;
       clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
     }
   }
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)

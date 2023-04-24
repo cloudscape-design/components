@@ -80,13 +80,13 @@ export function useStickyStyles({ stickyState, columnId, cellType }: UseStickySt
     return {
       td: {
         [tdCellStyles['sticky-cell']]: true,
-        [tdCellStyles['sticky-cell-first-column']]: props.padLeft,
+        [tdCellStyles['sticky-cell-pad-left']]: props.padLeft,
         [tdCellStyles['sticky-cell-last-left']]: props.lastLeft,
         [tdCellStyles['sticky-cell-last-right']]: props.lastRight,
       },
       th: {
         [thCellStyles['sticky-cell']]: true,
-        [thCellStyles['sticky-cell-first-column']]: props.padLeft,
+        [thCellStyles['sticky-cell-pad-left']]: props.padLeft,
         [thCellStyles['sticky-cell-last-left']]: props.lastLeft,
         [thCellStyles['sticky-cell-last-right']]: props.lastRight,
       },
@@ -231,10 +231,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
   private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyStateCellStyles> => {
     const isEnabled = this.isEnabled(props);
 
-    // TODO: remove this
-    // instead, the sticky-cell-first-column style can be altered for selection columns in CSS
-    const hasSelection = props.visibleColumns[0] === selectionColumnId;
-
     return props.visibleColumns.reduce((acc, columnId, index) => {
       let stickySide = 'non-sticky';
       if (index < props.stickyColumnsFirst) {
@@ -257,17 +253,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
         right: stickyColumnOffsetRight !== undefined && stickySide === 'right' ? stickyColumnOffsetRight : undefined,
       };
       const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
-      const stickyCellFirstColumn =
-        isFirstColumn && !hasSelection && props.tablePaddingLeft !== 0 && this.isStuckToTheLeft;
-      const stickyCellLastLeft = this.isStuckToTheLeft && lastLeftStickyColumnIndex === index;
-
       const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
-      const stickyCellLastRight = this.isStuckToTheRight && lastRightStickyColumnIndex === index;
 
       acc[columnId] = {
-        padLeft: stickyCellFirstColumn,
-        lastLeft: stickyCellLastLeft,
-        lastRight: stickyCellLastRight,
+        padLeft: isFirstColumn && props.tablePaddingLeft !== 0 && this.isStuckToTheLeft,
+        lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
+        lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
         offset: cellStyle,
       };
 

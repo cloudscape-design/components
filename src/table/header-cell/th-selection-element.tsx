@@ -20,6 +20,7 @@ export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
   const isVisualRefresh = useVisualRefresh();
   const selectionCellClass = clsx(
     className,
+    styles['has-selection'],
     styles['selection-control'],
     styles['selection-control-header'],
     isVisualRefresh && styles['is-visual-refresh'],
