@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import AsyncStore, { useReaction } from '../area-chart/model/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
 import clsx from 'clsx';
+import { useResizeObserver } from '../internal/hooks/container-queries';
 
 export const selectionColumnId = Symbol('selection-column-id');
 
@@ -15,13 +16,9 @@ const MINIMUM_SCROLLABLE_SPACE = 148;
 type ColumnId = string | symbol;
 
 interface StickyStateProps {
-  wrapperWidth: number;
-  tableWidth: number;
   visibleColumns: readonly ColumnId[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
-  tablePaddingLeft: number;
-  tablePaddingRight: number;
 }
 
 export interface StickyStateModel {
@@ -30,6 +27,7 @@ export interface StickyStateModel {
     onWrapperScroll(): void;
   };
   refs: {
+    table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
     headerCell: (columnId: ColumnId, node: null | HTMLElement) => void;
   };
@@ -42,8 +40,7 @@ export interface StickyState {
 
 interface UpdateScrollProps {
   wrapper: HTMLElement;
-  tablePaddingLeft: number;
-  tablePaddingRight: number;
+  table: HTMLElement;
 }
 
 export interface StickyStateCellStyles {
@@ -100,19 +97,20 @@ export function useStickyStyles({ stickyState, columnId, getClassName }: UseStic
 }
 
 export function useStickyState({
-  wrapperWidth,
-  tableWidth,
   visibleColumns,
   stickyColumnsFirst,
   stickyColumnsLast,
-  tablePaddingLeft,
-  tablePaddingRight,
 }: StickyStateProps): StickyStateModel {
   const store = useMemo(() => new StickyColumnsStore(), []);
 
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const setWrapper = useCallback((node: null | HTMLElement) => {
     wrapperRef.current = node;
+  }, []);
+
+  const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
+  const setTable = useCallback((node: null | HTMLElement) => {
+    tableRef.current = node;
   }, []);
 
   const headerCellsRef = useRef<Record<ColumnId, HTMLElement>>({});
@@ -124,65 +122,49 @@ export function useStickyState({
     }
   }, []);
 
-  const onWrapperScroll = useStableEventHandler(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) {
-      return;
+  const updateStickyStyles = useStableEventHandler(() => {
+    if (wrapperRef.current && tableRef.current) {
+      store.updateCellStyles({
+        wrapper: wrapperRef.current,
+        table: tableRef.current,
+        visibleColumns,
+        stickyColumnsFirst,
+        stickyColumnsLast,
+        cellElements: headerCellsRef.current,
+      });
     }
-
-    store.updateScroll({ wrapper, tablePaddingLeft, tablePaddingRight });
-    store.updateCellStyles({
-      wrapperWidth,
-      tableWidth,
-      visibleColumns,
-      stickyColumnsFirst,
-      stickyColumnsLast,
-      tablePaddingLeft,
-      tablePaddingRight,
-      cellElements: headerCellsRef.current,
-    });
   });
 
+  useResizeObserver(wrapperRef, updateStickyStyles);
+
+  useResizeObserver(tableRef, updateStickyStyles);
+
   useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) {
-      return;
+    if (wrapperRef.current && tableRef.current) {
+      store.updateCellStyles({
+        wrapper: wrapperRef.current,
+        table: tableRef.current,
+        visibleColumns,
+        stickyColumnsFirst,
+        stickyColumnsLast,
+        cellElements: headerCellsRef.current,
+      });
     }
+  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns, wrapperRef]);
 
-    store.updateScroll({ wrapper, tablePaddingLeft, tablePaddingRight });
-    store.updateCellStyles({
-      wrapperWidth,
-      tableWidth,
-      visibleColumns,
-      stickyColumnsFirst,
-      stickyColumnsLast,
-      tablePaddingLeft,
-      tablePaddingRight,
-      cellElements: headerCellsRef.current,
-    });
-  }, [
+  return {
     store,
-    wrapperWidth,
-    tableWidth,
-    stickyColumnsFirst,
-    stickyColumnsLast,
-    tablePaddingLeft,
-    tablePaddingRight,
-    visibleColumns,
-    wrapperRef,
-  ]);
-
-  return { store, handlers: { onWrapperScroll }, refs: { wrapper: setWrapper, headerCell: setHeaderCell } };
+    handlers: { onWrapperScroll: updateStickyStyles },
+    refs: { wrapper: setWrapper, table: setTable, headerCell: setHeaderCell },
+  };
 }
 
 interface UpdateCellStylesProps {
-  tableWidth: number;
-  wrapperWidth: number;
+  wrapper: HTMLElement;
+  table: HTMLElement;
   visibleColumns: readonly ColumnId[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
-  tablePaddingLeft: number;
-  tablePaddingRight: number;
   cellElements: Record<ColumnId, HTMLElement>;
 }
 
@@ -198,13 +180,18 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
   }
 
   updateScroll(props: UpdateScrollProps) {
-    const { wrapper, tablePaddingLeft, tablePaddingRight } = props;
-    this.isStuckToTheLeft = wrapper.scrollLeft > tablePaddingLeft;
-    this.isStuckToTheRight =
-      Math.ceil(wrapper.scrollLeft) < wrapper.scrollWidth - wrapper.clientWidth - tablePaddingRight;
+    const wrapperScrollLeft = props.wrapper.scrollLeft;
+    const wrapperScrollWidth = props.wrapper.scrollWidth;
+    const wrapperClientWidth = props.wrapper.clientWidth;
+    const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
+    const tablePaddingRight = parseInt(getComputedStyle(props.table).paddingRight) || 0;
+
+    this.isStuckToTheLeft = wrapperScrollLeft > tablePaddingLeft;
+    this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
   }
 
   updateCellStyles(props: UpdateCellStylesProps) {
+    this.updateScroll(props);
     this.updateCellOffsets(props);
     this.set(() => ({
       cellStyles: this.generateCellStyles(props),
@@ -239,8 +226,10 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
       const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
       const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
 
+      const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
+
       acc[columnId] = {
-        padLeft: isFirstColumn && props.tablePaddingLeft !== 0 && this.isStuckToTheLeft,
+        padLeft: isFirstColumn && tablePaddingLeft !== 0 && this.isStuckToTheLeft,
         lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
         lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
         offset: cellStyle,
@@ -285,16 +274,18 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
       return false;
     }
 
-    const isWrapperScrollable = props.tableWidth > props.wrapperWidth;
+    const wrapperWidth = props.wrapper.getBoundingClientRect().width;
+    const tableWidth = props.table.getBoundingClientRect().width;
+    const isWrapperScrollable = tableWidth > wrapperWidth;
     if (!isWrapperScrollable) {
       return false;
     }
 
     const totalStickySpace = this.stickyWidthLeft + this.stickyWidthRight;
+    const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
+    const tablePaddingRight = parseInt(getComputedStyle(props.table).paddingRight) || 0;
     const hasEnoughScrollableSpace =
-      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + props.tablePaddingLeft + props.tablePaddingRight <
-      props.wrapperWidth;
-
+      totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tablePaddingLeft + tablePaddingRight < wrapperWidth;
     if (!hasEnoughScrollableSpace) {
       return false;
     }

@@ -4,9 +4,7 @@ import React from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box } from '~components';
 import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
-import { useMergeRefs } from '~components/internal/hooks/use-merge-refs';
 import styles from './styles.scss';
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { generateItems } from './generate-data';
 import clsx from 'clsx';
 
@@ -20,28 +18,23 @@ const columnDefinitions = [
 ];
 
 export default function Page() {
-  const [wrapperWidth, wrapperQueryRef] = useContainerQuery(entry => entry.contentBoxWidth);
-  const [tableWidth, tableQueryRef] = useContainerQuery(entry => entry.contentBoxWidth);
-
   const stickyState = useStickyState({
-    wrapperWidth: wrapperWidth ?? 0,
-    tableWidth: tableWidth ?? 0,
     visibleColumns: columnDefinitions.map(column => column.key),
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
-    tablePaddingLeft: 0,
-    tablePaddingRight: 0,
   });
-
-  const wrapperRef = useMergeRefs(wrapperQueryRef, stickyState.refs.wrapper);
 
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
         <h1>Sticky columns with a custom table</h1>
 
-        <div ref={wrapperRef} className={styles['custom-table']} onScroll={stickyState.handlers.onWrapperScroll}>
-          <table ref={tableQueryRef} className={styles['custom-table-table']}>
+        <div
+          ref={stickyState.refs.wrapper}
+          className={styles['custom-table']}
+          onScroll={stickyState.handlers.onWrapperScroll}
+        >
+          <table ref={stickyState.refs.table} className={styles['custom-table-table']}>
             <thead>
               <tr>
                 {columnDefinitions.map(column => (
