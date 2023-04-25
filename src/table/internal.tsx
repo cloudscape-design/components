@@ -13,7 +13,7 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
-import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
+import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -119,14 +119,12 @@ const InternalTable = React.forwardRef(
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
 
-    const sortedVisibleColumnDefinitions = columnDisplay
-      ? columnDisplay
-          .filter(item => item.visible)
-          .map(item => columnDefinitions.filter(column => column.id === item.id)[0])
-          .filter(Boolean)
-      : visibleColumns
-      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
-      : columnDefinitions;
+    const visibleColumnDefinitions = getVisibleColumnDefinitions({
+      columnDefinitions,
+      columnDisplay,
+      visibleColumns,
+    });
+
     const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
@@ -161,7 +159,7 @@ const InternalTable = React.forwardRef(
       containerWidth,
       selectionType,
       getSelectAllProps,
-      columnDefinitions: sortedVisibleColumnDefinitions,
+      columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       wrapLines,
       resizableColumns,
@@ -203,12 +201,12 @@ const InternalTable = React.forwardRef(
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
 
-    useTableFocusNavigation(selectionType, tableRefObject, sortedVisibleColumnDefinitions, items?.length);
+    useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}
-        visibleColumnDefinitions={sortedVisibleColumnDefinitions}
+        visibleColumnDefinitions={visibleColumnDefinitions}
         resizableColumns={resizableColumns}
         hasSelection={hasSelection}
       >
@@ -297,11 +295,7 @@ const InternalTable = React.forwardRef(
                 {loading || items.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={
-                        selectionType
-                          ? sortedVisibleColumnDefinitions.length + 1
-                          : sortedVisibleColumnDefinitions.length
-                      }
+                      colSpan={selectionType ? visibleColumnDefinitions.length + 1 : visibleColumnDefinitions.length}
                       className={clsx(styles['cell-merged'], hasFooter && styles['has-footer'])}
                     >
                       <div
@@ -369,7 +363,7 @@ const InternalTable = React.forwardRef(
                             />
                           </TableTdElement>
                         )}
-                        {sortedVisibleColumnDefinitions.map((column, colIndex) => {
+                        {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
                           const successfulEdit =
