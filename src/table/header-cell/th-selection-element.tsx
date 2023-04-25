@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
 import React from 'react';
-import styles from '../styles.css.js';
+import styles from '../body-cell/styles.css.js';
 import { selectionColumnId, StickyStateModel, useStickyStyles } from '../sticky-state-model';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { TableProps } from '../interfaces';
