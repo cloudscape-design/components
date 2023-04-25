@@ -125,6 +125,24 @@
   /* used in test-utils */
 }
 
+/*
+The min/max/width token values in Visual Refresh should align 
+the table header and body cells selection control with the table
+filter search icon.
+*/
+.selection-control {
+  box-sizing: border-box;
+  max-width: awsui.$size-table-selection-horizontal;
+  min-width: awsui.$size-table-selection-horizontal;
+  position: relative;
+  width: awsui.$size-table-selection-horizontal;
+
+  &.selection-control-header {
+    padding: awsui.$space-scaled-xs awsui.$space-scaled-l;
+    border-left: awsui.$border-item-width solid transparent;
+  }
+}
+
 .sticky-scrollbar {
   height: 15px;
   position: fixed;

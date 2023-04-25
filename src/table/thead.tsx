@@ -75,6 +75,7 @@ const Thead = React.forwardRef(
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType !== undefined ? (
             <TableThElement
+              className={clsx(styles['selection-control'], styles['selection-control-header'])}
               hidden={hidden}
               sticky={sticky}
               stuck={stuck}

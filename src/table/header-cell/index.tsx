@@ -6,7 +6,7 @@ import InternalIcon from '../../icon/internal';
 import { KeyCode } from '../../internal/keycode';
 import { TableProps } from '../interfaces';
 import { getSortingIconName, getSortingStatus, isSorted } from './utils';
-import styles from '../body-cell/styles.css.js';
+import styles from './styles.css.js';
 import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';

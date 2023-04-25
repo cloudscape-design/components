@@ -4,10 +4,11 @@ import clsx from 'clsx';
 import React from 'react';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingStatus } from './utils';
-import styles from '../body-cell/styles.css.js';
+import styles from './styles.css.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TableThElementProps {
+  className?: string;
   style?: React.CSSProperties;
   sortable: boolean;
   sorted: boolean;
@@ -24,6 +25,7 @@ export interface TableThElementProps {
 }
 
 export function TableThElement({
+  className,
   style,
   sortable,
   sorted,
@@ -42,7 +44,7 @@ export function TableThElement({
   const isVisualRefresh = useVisualRefresh();
   return (
     <th
-      className={clsx(styles['header-cell'], styles[`header-cell-variant-${variant}`], {
+      className={clsx(className, styles['header-cell'], styles[`header-cell-variant-${variant}`], {
         [styles['is-visual-refresh']]: !hasSelection && isVisualRefresh,
         [styles['header-cell-sticky']]: sticky,
         [styles['header-cell-stuck']]: stuck,
@@ -53,8 +55,6 @@ export function TableThElement({
         [styles['header-cell-disabled']]: sortingDisabled,
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
-        [styles['selection-control']]: hasSelection,
-        [styles['selection-control-header']]: hasSelection,
         [styles['header-cell-hidden']]: hidden,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}

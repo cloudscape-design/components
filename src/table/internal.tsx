@@ -337,6 +337,7 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
+                            className={styles['selection-control']}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
