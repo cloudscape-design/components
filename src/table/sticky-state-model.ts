@@ -23,9 +23,6 @@ interface StickyStateProps {
 
 export interface StickyStateModel {
   store: StickyColumnsStore;
-  handlers: {
-    onWrapperScroll(): void;
-  };
   refs: {
     table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
@@ -96,31 +93,39 @@ export function useStickyStyles({ stickyState, columnId, getClassName }: UseStic
   };
 }
 
+export function useWrapperStyles({ stickyState }: { stickyState: StickyStateModel }) {
+  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
+  const refCallback = useCallback(node => {
+    ref.current = node;
+  }, []);
+
+  useReaction(
+    stickyState.store,
+    state => state.scrollPadding,
+    props => {
+      ref.current.style.scrollPaddingLeft = props.left + 'px';
+      ref.current.style.scrollPaddingRight = props.right + 'px';
+    }
+  );
+
+  return {
+    ref: refCallback,
+    style: {
+      scrollPaddingLeft: stickyState.store.get().scrollPadding.left + 'px',
+      scrollPaddingRight: stickyState.store.get().scrollPadding.right + 'px',
+    },
+  };
+}
+
 export function useStickyState({
   visibleColumns,
   stickyColumnsFirst,
   stickyColumnsLast,
 }: StickyStateProps): StickyStateModel {
   const store = useMemo(() => new StickyColumnsStore(), []);
-
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
-  const setWrapper = useCallback((node: null | HTMLElement) => {
-    wrapperRef.current = node;
-  }, []);
-
   const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
-  const setTable = useCallback((node: null | HTMLElement) => {
-    tableRef.current = node;
-  }, []);
-
   const headerCellsRef = useRef<Record<ColumnId, HTMLElement>>({});
-  const setHeaderCell = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
-    if (node) {
-      headerCellsRef.current[columnId] = node;
-    } else {
-      delete headerCellsRef.current[columnId];
-    }
-  }, []);
 
   const updateStickyStyles = useStableEventHandler(() => {
     if (wrapperRef.current && tableRef.current) {
@@ -150,11 +155,36 @@ export function useStickyState({
         cellElements: headerCellsRef.current,
       });
     }
-  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns, wrapperRef]);
+  }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
+
+  const setWrapper = useCallback(
+    (node: null | HTMLElement) => {
+      if (wrapperRef.current) {
+        wrapperRef.current.removeEventListener('scroll', updateStickyStyles);
+      }
+      if (node) {
+        node.addEventListener('scroll', updateStickyStyles);
+      }
+
+      wrapperRef.current = node;
+    },
+    [updateStickyStyles]
+  );
+
+  const setTable = useCallback((node: null | HTMLElement) => {
+    tableRef.current = node;
+  }, []);
+
+  const setHeaderCell = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
+    if (node) {
+      headerCellsRef.current[columnId] = node;
+    } else {
+      delete headerCellsRef.current[columnId];
+    }
+  }, []);
 
   return {
     store,
-    handlers: { onWrapperScroll: updateStickyStyles },
     refs: { wrapper: setWrapper, table: setTable, headerCell: setHeaderCell },
   };
 }

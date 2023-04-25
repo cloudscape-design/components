@@ -29,11 +29,7 @@ export default function Page() {
       <SpaceBetween size="xl">
         <h1>Sticky columns with a custom table</h1>
 
-        <div
-          ref={stickyState.refs.wrapper}
-          className={styles['custom-table']}
-          onScroll={stickyState.handlers.onWrapperScroll}
-        >
+        <div ref={stickyState.refs.wrapper} className={styles['custom-table']}>
           <table ref={stickyState.refs.table} className={styles['custom-table-table']}>
             <thead>
               <tr>
