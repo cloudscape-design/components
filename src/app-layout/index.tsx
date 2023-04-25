@@ -188,7 +188,9 @@ const OldAppLayout = React.forwardRef(
     const selectedDrawer =
       tools && toolsOpen
         ? toolsItem
-        : hasDrawers && getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
+        : hasDrawers
+        ? getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0]
+        : undefined;
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
