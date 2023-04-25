@@ -38,7 +38,7 @@ export interface DesktopDrawerProps {
 }
 
 export interface ResizableDrawerProps extends DesktopDrawerProps {
-  activeDrawer: DrawerItem;
+  activeDrawer?: DrawerItem;
   onResize: (resizeDetail: { size: number; id: string }) => void;
   size: number;
   getMaxWidth: () => number;
@@ -87,7 +87,7 @@ export interface SizeControlProps {
 }
 
 export interface InternalDrawerProps {
-  drawers: {
+  drawers?: {
     items: Array<DrawerItem>;
     activeDrawerId?: string;
     onChange?: NonCancelableEventHandler<string>;

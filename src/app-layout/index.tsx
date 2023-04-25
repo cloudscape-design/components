@@ -178,6 +178,9 @@ const OldAppLayout = React.forwardRef(
     };
 
     const getAllDrawerItems = () => {
+      if (!drawers) {
+        return;
+      }
       return tools ? [toolsItem, ...drawers.items] : drawers.items;
     };
 
@@ -186,7 +189,7 @@ const OldAppLayout = React.forwardRef(
         ? toolsItem
         : drawers &&
           drawers.items &&
-          getAllDrawerItems().filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
+          getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
@@ -265,32 +268,34 @@ const OldAppLayout = React.forwardRef(
       }
     );
 
-    const getSizes = () => {
+    const sizes = (() => {
       const sizes: { [id: string]: number } = {};
       if (!drawers) {
         return {};
       }
 
       for (const item of drawers.items) {
-        if (item.resizable && item.size) {
+        if (item.size) {
           sizes[item.id] = item.size;
         }
       }
+
       return sizes;
-    };
+    })();
 
     const [drawerSizes = {}, setDrawerSizes] = useControllable(
-      Object.keys(getSizes()).length > 0 ? getSizes() : undefined,
+      Object.keys(sizes).length > 0 ? sizes : undefined,
       drawers?.onResize,
       {},
       {
         componentName: 'AppLayout',
-        controlledProp: 'size',
-        changeHandler: 'onResize',
+        controlledProp: 'drawers.items[].size',
+        changeHandler: 'drawers.onResize',
       }
     );
 
-    const drawerSize = drawerSizes[selectedDrawer?.id] ?? toolsWidth;
+    const drawerSize =
+      selectedDrawer?.id && drawerSizes[selectedDrawer?.id] ? drawerSizes[selectedDrawer?.id] : toolsWidth;
 
     const splitPanelPosition = splitPanelPreferences?.position || 'bottom';
     const [splitPanelReportedToggle, setSplitPanelReportedToggle] = useState<SplitPanelSideToggleProps>({
@@ -447,7 +452,7 @@ const OldAppLayout = React.forwardRef(
 
       if (drawers) {
         if (activeDrawerId) {
-          if (selectedDrawer.resizable && !isResizeInvalid && drawerSize) {
+          if (!isResizeInvalid && drawerSize) {
             return drawerSize + closedDrawerWidth;
           }
 
@@ -698,7 +703,7 @@ const OldAppLayout = React.forwardRef(
                   }
                   ariaLabels={ariaLabels}
                   drawersAriaLabels={selectedDrawer?.ariaLabels}
-                  width={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
+                  width={!isResizeInvalid ? drawerSize : toolsWidth}
                   bottomOffset={footerHeight}
                   topOffset={headerHeight}
                   isMobile={isMobile}
@@ -710,7 +715,7 @@ const OldAppLayout = React.forwardRef(
                   activeDrawer={selectedDrawer}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
-                    activeDrawerId: selectedDrawer.id,
+                    activeDrawerId: selectedDrawer?.id,
                     onChange: changeDetail => {
                       onToolsToggle(false);
                       setDrawerLastInteraction({ type: 'close' });
@@ -718,7 +723,7 @@ const OldAppLayout = React.forwardRef(
                       fireNonCancelableEvent(drawers.onChange, changeDetail.activeDrawerId);
                     },
                   }}
-                  size={selectedDrawer?.resizable && !isResizeInvalid ? drawerSize : toolsWidth}
+                  size={!isResizeInvalid ? drawerSize : toolsWidth}
                   onResize={changeDetail => {
                     fireNonCancelableEvent(drawers.onResize, changeDetail);
                     setDrawerSizes({ ...drawerSizes, [changeDetail.id]: changeDetail.size });
@@ -726,7 +731,7 @@ const OldAppLayout = React.forwardRef(
                   refs={drawerRefs}
                   getMaxWidth={getDrawerMaxWidth}
                 >
-                  {selectedDrawer.content}
+                  {selectedDrawer?.content}
                 </ResizableDrawer>
               ) : (
                 <Drawer

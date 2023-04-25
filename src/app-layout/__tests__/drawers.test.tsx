@@ -68,7 +68,7 @@ describe('Classic only features', () => {
 
     const drawersSize310 = {
       drawers: {
-        onResize: (event: any) => onResize(event.detail),
+        onResize: onResize,
         items: [
           {
             ariaLabels: {
