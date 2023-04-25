@@ -198,7 +198,7 @@ export namespace CollectionPreferencesProps {
 
   export interface ContentDisplayItem {
     id: string;
-    visible?: boolean;
+    visible: boolean;
   }
 
   export interface VisibleContentPreference {
