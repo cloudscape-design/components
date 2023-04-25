@@ -32,7 +32,7 @@ export interface StickyStateModel {
     onWrapperScroll(): void;
   };
   refs: {
-    headerCells: React.MutableRefObject<Record<ColumnId, HTMLElement>>;
+    headerCell: (columnId: ColumnId, node: null | HTMLElement) => void;
   };
 }
 
@@ -47,7 +47,7 @@ interface UpdateScrollProps {
   tablePaddingRight: number;
 }
 
-interface StickyStateCellStyles {
+export interface StickyStateCellStyles {
   padLeft: boolean;
   lastLeft: boolean;
   lastRight: boolean;
@@ -119,6 +119,13 @@ export function useStickyState({
   const store = useMemo(() => new StickyColumnsStore(), []);
 
   const headerCellsRef = useRef<Record<ColumnId, HTMLElement>>({});
+  const refCallback = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
+    if (node) {
+      headerCellsRef.current[columnId] = node;
+    } else {
+      delete headerCellsRef.current[columnId];
+    }
+  }, []);
 
   const onWrapperScroll = useStableEventHandler(() => {
     const wrapper = wrapperRef.current;
@@ -168,7 +175,7 @@ export function useStickyState({
     wrapperRef,
   ]);
 
-  return { store, handlers: { onWrapperScroll }, refs: { headerCells: headerCellsRef } };
+  return { store, handlers: { onWrapperScroll }, refs: { headerCell: refCallback } };
 }
 
 interface UpdateCellStylesProps {

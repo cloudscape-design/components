@@ -100,11 +100,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       style={{ ...style, ...stickyStyles.style }}
       scope="col"
       ref={node => {
-        if (node !== null) {
-          stickyState.refs.headerCells.current[columnId] = node;
-        } else {
-          delete stickyState.refs.headerCells.current[columnId];
-        }
+        stickyState.refs.headerCell(columnId, node);
         stickyStyles.ref(node);
       }}
     >

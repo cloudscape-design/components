@@ -34,11 +34,7 @@ export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
         className={selectionCellClass}
         scope="col"
         ref={node => {
-          if (node !== null) {
-            stickyState.refs.headerCells.current[selectionColumnId] = node;
-          } else {
-            delete stickyState.refs.headerCells.current[selectionColumnId];
-          }
+          stickyState.refs.headerCell(selectionColumnId, node);
           stickyStyles.ref(node);
         }}
       >
@@ -52,11 +48,7 @@ export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
         className={selectionCellClass}
         scope="col"
         ref={node => {
-          if (node !== null) {
-            stickyState.refs.headerCells.current[selectionColumnId] = node;
-          } else {
-            delete stickyState.refs.headerCells.current[selectionColumnId];
-          }
+          stickyState.refs.headerCell(selectionColumnId, node);
           stickyStyles.ref(node);
         }}
       >
