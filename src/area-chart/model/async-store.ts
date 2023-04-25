@@ -3,6 +3,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import { useStableEventHandler } from '../../internal/hooks/use-stable-event-handler';
 
 type Selector<S, R> = (state: S) => R;
 type Listener<S> = (state: S, prevState: S) => any;
@@ -59,10 +60,13 @@ export default class AsyncStore<S> implements ReadonlyAsyncStore<S> {
 }
 
 export function useReaction<S, R>(store: ReadonlyAsyncStore<S>, selector: Selector<S, R>, effect: Listener<R>): void {
+  const stableSelector = useStableEventHandler(selector);
+  const stableEffect = useStableEventHandler(effect);
+
   useLayoutEffect(
     () => {
-      const unsubscribe = store.subscribe(selector, (newState, prevState) =>
-        effect(selector(newState), selector(prevState))
+      const unsubscribe = store.subscribe(stableSelector, (newState, prevState) =>
+        stableEffect(stableSelector(newState), stableSelector(prevState))
       );
       return unsubscribe;
     },
