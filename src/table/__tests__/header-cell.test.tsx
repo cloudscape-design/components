@@ -49,6 +49,13 @@ it('renders a fake focus outline on the sort control', () => {
         onClick={() => {}}
         onResizeFinish={() => {}}
         variant="container"
+        hidden={false}
+        sortingDisabled={false}
+        sortingDescending={false}
+        resizableColumns={false}
+        sticky={false}
+        stuck={false}
+        stripedRows={false}
       />
     </TableWrapper>
   );
@@ -71,6 +78,12 @@ it('renders a fake focus outline on the resize control', () => {
         onClick={() => {}}
         onResizeFinish={() => {}}
         variant="container"
+        hidden={false}
+        sortingDisabled={false}
+        sortingDescending={false}
+        sticky={false}
+        stuck={false}
+        stripedRows={false}
       />
     </TableWrapper>
   );
