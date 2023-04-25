@@ -79,7 +79,16 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
   };
 
   const headerId = useUniqueId('table-header-');
-  const stickyStyles = useStickyStyles({ stickyState, columnId });
+  const stickyStyles = useStickyStyles({
+    stickyState,
+    columnId,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
 
   return (
     <th

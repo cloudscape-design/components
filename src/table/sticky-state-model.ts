@@ -4,7 +4,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import AsyncStore, { useReaction } from '../area-chart/model/async-store';
 import { useStableEventHandler } from '../internal/hooks/use-stable-event-handler';
-import cellStyles from './body-cell/styles.css.js';
 import clsx from 'clsx';
 
 export const selectionColumnId = Symbol('selection-column-id');
@@ -57,6 +56,7 @@ export interface StickyStateCellStyles {
 interface UseStickyStylesProps {
   stickyState: StickyStateModel;
   columnId: ColumnId;
+  getClassName: (styles: null | StickyStateCellStyles) => Record<string, boolean>;
 }
 
 interface StickyStyles {
@@ -65,18 +65,11 @@ interface StickyStyles {
   style: React.CSSProperties;
 }
 
-export function useStickyStyles({ stickyState, columnId }: UseStickyStylesProps): StickyStyles {
+export function useStickyStyles({ stickyState, columnId, getClassName }: UseStickyStylesProps): StickyStyles {
   const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
   const refCallback = useCallback(node => {
     ref.current = node;
   }, []);
-
-  const getClassName = (props: null | StickyStateCellStyles) => ({
-    [cellStyles['sticky-cell']]: !!props,
-    [cellStyles['sticky-cell-pad-left']]: props?.padLeft,
-    [cellStyles['sticky-cell-last-left']]: props?.lastLeft,
-    [cellStyles['sticky-cell-last-right']]: props?.lastRight,
-  });
 
   useReaction(
     stickyState.store,

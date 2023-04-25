@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box } from '~components';
-import { useStickyState, StickyStateModel, StickyStateCellStyles } from '~components/table/sticky-state-model';
+import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
 import { useMergeRefs } from '~components/internal/hooks/use-merge-refs';
 import styles from './styles.scss';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { generateItems } from './generate-data';
-import { useReaction } from '~components/area-chart/model/async-store';
 import clsx from 'clsx';
 
 const items = generateItems(10);
@@ -71,46 +70,6 @@ export default function Page() {
   );
 }
 
-function useStickyStyles(columnId: string, stickyState: StickyStateModel) {
-  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
-  const refCallback = useCallback(node => {
-    ref.current = node;
-  }, []);
-
-  const getClassName = (props: null | StickyStateCellStyles) => ({
-    [styles['sticky-cell']]: !!props,
-    [styles['sticky-cell-last-left']]: props?.lastLeft,
-    [styles['sticky-cell-last-right']]: props?.lastRight,
-  });
-
-  useReaction(
-    stickyState.store,
-    state => state.cellStyles[columnId],
-    props => {
-      const className = getClassName(props);
-
-      const cellElement = ref.current;
-      if (cellElement) {
-        Object.keys(className).forEach(key => {
-          if (className[key]) {
-            cellElement.classList.add(key);
-          } else {
-            cellElement.classList.remove(key);
-          }
-        });
-        cellElement.style.left = props?.offset?.left !== undefined ? `${props?.offset?.left}px` : '';
-        cellElement.style.right = props?.offset?.right !== undefined ? `${props?.offset?.right}px` : '';
-      }
-    }
-  );
-
-  return {
-    ref: refCallback,
-    className: clsx(getClassName(stickyState.store.get().cellStyles[columnId])),
-    style: stickyState.store.get().cellStyles[columnId]?.offset ?? {},
-  };
-}
-
 function TableCell({
   columnId,
   stickyState,
@@ -120,7 +79,15 @@ function TableCell({
   stickyState: StickyStateModel;
   children: React.ReactNode;
 }) {
-  const stickyStyles = useStickyStyles(columnId, stickyState);
+  const stickyStyles = useStickyStyles({
+    columnId,
+    stickyState,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
   return (
     <td
       ref={stickyStyles.ref}
@@ -141,7 +108,15 @@ function TableHeaderCell({
   stickyState: StickyStateModel;
   children: React.ReactNode;
 }) {
-  const stickyStyles = useStickyStyles(columnId, stickyState);
+  const stickyStyles = useStickyStyles({
+    columnId,
+    stickyState,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
   return (
     <th
       ref={node => {

@@ -45,7 +45,16 @@ export function TableBodySelectionCell({
   itemSelectionProps,
 }: TableBodySelectionCellProps) {
   const isVisualRefresh = useVisualRefresh();
-  const stickyStyles = useStickyStyles({ stickyState, columnId: selectionColumnId });
+  const stickyStyles = useStickyStyles({
+    stickyState,
+    columnId: selectionColumnId,
+    getClassName: props => ({
+      [styles['sticky-cell']]: !!props,
+      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      [styles['sticky-cell-last-right']]: !!props?.lastRight,
+    }),
+  });
   if (selectionType !== undefined) {
     return (
       <td
