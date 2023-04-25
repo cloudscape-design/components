@@ -26,13 +26,6 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
   cell: item => item.test,
 };
 
-const stickyColumnProps = {
-  isSticky: false,
-  isLastStickyLeft: false,
-  isLastStickyRight: false,
-  stickyStyles: { sticky: {}, stuck: {} },
-};
-
 function TableWrapper({ children }: { children: React.ReactNode }) {
   return (
     <table>
@@ -55,7 +48,6 @@ it('renders a fake focus outline on the sort control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
-        stickyColumnProperties={stickyColumnProps}
       />
     </TableWrapper>
   );
@@ -77,7 +69,6 @@ it('renders a fake focus outline on the resize control', () => {
         updateColumn={() => {}}
         onClick={() => {}}
         onResizeFinish={() => {}}
-        stickyColumnProperties={stickyColumnProps}
       />
     </TableWrapper>
   );
