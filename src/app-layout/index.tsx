@@ -130,6 +130,7 @@ const OldAppLayout = React.forwardRef(
     }
 
     const drawers = (props as InternalDrawerProps).drawers;
+    const hasDrawers = drawers && drawers.items.length > 0;
 
     const rootRef = useRef<HTMLDivElement>(null);
     const isMobile = useMobile();
@@ -178,7 +179,7 @@ const OldAppLayout = React.forwardRef(
     };
 
     const getAllDrawerItems = () => {
-      if (!drawers) {
+      if (!hasDrawers) {
         return;
       }
       return tools ? [toolsItem, ...drawers.items] : drawers.items;
@@ -187,9 +188,7 @@ const OldAppLayout = React.forwardRef(
     const selectedDrawer =
       tools && toolsOpen
         ? toolsItem
-        : drawers &&
-          drawers.items &&
-          getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
+        : hasDrawers && getAllDrawerItems()?.filter((drawerItem: DrawerItem) => drawerItem.id === activeDrawerId)[0];
 
     const { refs: navigationRefs, setFocus: focusNavButtons } = useFocusControl(navigationOpen);
     const {
@@ -438,7 +437,7 @@ const OldAppLayout = React.forwardRef(
     }, [contentWidthWithSplitPanel, drawerSize, defaults.minContentWidth, isMobile]);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
-    const toolsClosedWidth = toolsHide || isMobile || (!drawers && toolsHide) ? 0 : closedDrawerWidth;
+    const toolsClosedWidth = toolsHide || isMobile || (!hasDrawers && toolsHide) ? 0 : closedDrawerWidth;
 
     const contentMaxWidthStyle = !isMobile ? { maxWidth: defaults.maxContentWidth } : undefined;
 
@@ -450,7 +449,7 @@ const OldAppLayout = React.forwardRef(
         return 0;
       }
 
-      if (drawers) {
+      if (hasDrawers) {
         if (activeDrawerId) {
           if (!isResizeInvalid && drawerSize) {
             return drawerSize + closedDrawerWidth;
@@ -504,7 +503,7 @@ const OldAppLayout = React.forwardRef(
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
         toolsHide ||
-        (drawers && !activeDrawerId && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
+        (hasDrawers && !activeDrawerId && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -687,8 +686,8 @@ const OldAppLayout = React.forwardRef(
               </SideSplitPanelDrawer>
             )}
 
-            {((drawers && selectedDrawer?.id) || (!drawers && !toolsHide)) &&
-              (drawers ? (
+            {((hasDrawers && selectedDrawer?.id) || (!hasDrawers && !toolsHide)) &&
+              (hasDrawers ? (
                 <ResizableDrawer
                   contentClassName={
                     selectedDrawer?.id === 'tools' ? testutilStyles.tools : testutilStyles['active-drawer']
@@ -711,7 +710,7 @@ const OldAppLayout = React.forwardRef(
                   isOpen={toolsOpen || activeDrawerId !== undefined}
                   toggleRefs={toolsRefs}
                   type="tools"
-                  onLoseFocus={drawers ? loseDrawersFocus : loseToolsFocus}
+                  onLoseFocus={hasDrawers ? loseDrawersFocus : loseToolsFocus}
                   activeDrawer={selectedDrawer}
                   drawers={{
                     items: tools && !toolsHide ? [toolsItem, ...drawers.items] : drawers.items,
@@ -752,7 +751,7 @@ const OldAppLayout = React.forwardRef(
                   {tools}
                 </Drawer>
               ))}
-            {drawers && (
+            {hasDrawers && (
               <DrawerTriggersBar
                 contentClassName={testutilStyles['drawers-desktop-triggers-container']}
                 toggleClassName={testutilStyles['drawers-trigger']}
