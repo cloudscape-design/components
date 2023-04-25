@@ -5,16 +5,16 @@ import SpaceBetween from '~components/space-between';
 import { Box, Link } from '~components';
 import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
 import styles from './styles.scss';
-import { generateItems } from './generate-data';
+import { generateItems, Instance } from './generate-data';
 import clsx from 'clsx';
 
 const items = generateItems(10);
 const columnDefinitions = [
-  { key: 'id', label: 'ID' },
-  { key: 'state', label: 'State' },
-  { key: 'type', label: 'Type' },
-  { key: 'imageId', label: 'Image ID' },
-  { key: 'dnsName', label: 'DNS name' },
+  { key: 'id', label: 'ID', render: (item: Instance) => item.id },
+  { key: 'state', label: 'State', render: (item: Instance) => item.state },
+  { key: 'type', label: 'Type', render: (item: Instance) => item.type },
+  { key: 'imageId', label: 'Image ID', render: (item: Instance) => <Link>{item.imageId}</Link> },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName },
 ];
 
 export default function Page() {
@@ -23,7 +23,6 @@ export default function Page() {
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
   });
-
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
@@ -34,9 +33,9 @@ export default function Page() {
             <thead>
               <tr>
                 {columnDefinitions.map(column => (
-                  <TableHeaderCell key={column.key} columnId={column.key} stickyState={stickyState}>
+                  <TableCell isHeader={true} key={column.key} columnId={column.key} stickyState={stickyState}>
                     {column.label}
-                  </TableHeaderCell>
+                  </TableCell>
                 ))}
               </tr>
             </thead>
@@ -44,12 +43,8 @@ export default function Page() {
               {items.map(item => (
                 <tr key={item.id}>
                   {columnDefinitions.map(column => (
-                    <TableCell key={column.key} columnId={column.key} stickyState={stickyState}>
-                      {column.key === 'imageId' ? (
-                        <Link>{(item as any)[column.key] ?? '???'}</Link>
-                      ) : (
-                        (item as any)[column.key] ?? '???'
-                      )}
+                    <TableCell isHeader={false} key={column.key} columnId={column.key} stickyState={stickyState}>
+                      {column.render(item)}
                     </TableCell>
                   ))}
                 </tr>
@@ -66,11 +61,14 @@ function TableCell({
   columnId,
   stickyState,
   children,
+  isHeader,
 }: {
   columnId: string;
   stickyState: StickyStateModel;
   children: React.ReactNode;
+  isHeader: boolean;
 }) {
+  const Tag = isHeader ? 'th' : 'td';
   const stickyStyles = useStickyStyles({
     columnId,
     stickyState,
@@ -81,44 +79,12 @@ function TableCell({
     }),
   });
   return (
-    <td
+    <Tag
       ref={stickyStyles.ref}
       style={stickyStyles.style}
       className={clsx(styles['custom-table-cell'], stickyStyles.className)}
     >
       {children}
-    </td>
-  );
-}
-
-function TableHeaderCell({
-  columnId,
-  stickyState,
-  children,
-}: {
-  columnId: string;
-  stickyState: StickyStateModel;
-  children: React.ReactNode;
-}) {
-  const stickyStyles = useStickyStyles({
-    columnId,
-    stickyState,
-    getClassName: props => ({
-      [styles['sticky-cell']]: !!props,
-      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-      [styles['sticky-cell-last-right']]: !!props?.lastRight,
-    }),
-  });
-  return (
-    <th
-      ref={node => {
-        stickyStyles.ref(node);
-        stickyState.refs.headerCell(columnId, node);
-      }}
-      style={stickyStyles.style}
-      className={clsx(styles['custom-table-cell'], stickyStyles.className)}
-    >
-      {children}
-    </th>
+    </Tag>
   );
 }

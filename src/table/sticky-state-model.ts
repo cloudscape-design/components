@@ -29,7 +29,7 @@ export interface StickyStateModel {
   refs: {
     table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
-    headerCell: (columnId: ColumnId, node: null | HTMLElement) => void;
+    cell: (columnId: ColumnId, node: null | HTMLElement) => void;
   };
 }
 
@@ -64,9 +64,14 @@ interface StickyStyles {
 
 export function useStickyStyles({ stickyState, columnId, getClassName }: UseStickyStylesProps): StickyStyles {
   const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
-  const refCallback = useCallback(node => {
-    ref.current = node;
-  }, []);
+  const setCell = stickyState.refs.cell;
+  const refCallback = useCallback(
+    node => {
+      ref.current = node;
+      setCell(columnId, node);
+    },
+    [columnId, setCell]
+  );
 
   useReaction(
     stickyState.store,
@@ -104,17 +109,17 @@ export function useStickyState({
   const store = useMemo(() => new StickyColumnsStore(), []);
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
-  const headerCellsRef = useRef<Record<ColumnId, HTMLElement>>({});
+  const cellsRef = useRef<Record<ColumnId, HTMLElement>>({});
 
   const updateStickyStyles = useStableEventHandler(() => {
     if (wrapperRef.current && tableRef.current) {
       store.updateCellStyles({
         wrapper: wrapperRef.current,
         table: tableRef.current,
+        cells: cellsRef.current,
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
-        cellElements: headerCellsRef.current,
       });
     }
   });
@@ -128,10 +133,10 @@ export function useStickyState({
       store.updateCellStyles({
         wrapper: wrapperRef.current,
         table: tableRef.current,
+        cells: cellsRef.current,
         visibleColumns,
         stickyColumnsFirst,
         stickyColumnsLast,
-        cellElements: headerCellsRef.current,
       });
     }
   }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
@@ -165,11 +170,11 @@ export function useStickyState({
     tableRef.current = node;
   }, []);
 
-  const setHeaderCell = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
+  const setCell = useCallback((columnId: ColumnId, node: null | HTMLElement) => {
     if (node) {
-      headerCellsRef.current[columnId] = node;
+      cellsRef.current[columnId] = node;
     } else {
-      delete headerCellsRef.current[columnId];
+      delete cellsRef.current[columnId];
     }
   }, []);
 
@@ -181,17 +186,17 @@ export function useStickyState({
         scrollPaddingRight: store.get().scrollPadding.right + 'px',
       },
     },
-    refs: { wrapper: setWrapper, table: setTable, headerCell: setHeaderCell },
+    refs: { wrapper: setWrapper, table: setTable, cell: setCell },
   };
 }
 
 interface UpdateCellStylesProps {
   wrapper: HTMLElement;
   table: HTMLElement;
+  cells: Record<ColumnId, HTMLElement>;
   visibleColumns: readonly ColumnId[];
   stickyColumnsFirst: number;
   stickyColumnsLast: number;
-  cellElements: Record<ColumnId, HTMLElement>;
 }
 
 export default class StickyColumnsStore extends AsyncStore<StickyState> {
@@ -268,14 +273,14 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
   updateCellOffsets = (props: UpdateCellStylesProps): void => {
     const firstColumnWidths: number[] = [];
     for (let i = 0; i < props.visibleColumns.length; i++) {
-      const element = props.cellElements[props.visibleColumns[i]];
+      const element = props.cells[props.visibleColumns[i]];
       const cellWidth = element.getBoundingClientRect().width ?? 0;
       firstColumnWidths[i] = (firstColumnWidths[i - 1] ?? 0) + cellWidth;
     }
 
     const lastColumnsWidths: number[] = [];
     for (let i = props.visibleColumns.length - 1; i >= 0; i--) {
-      const element = props.cellElements[props.visibleColumns[i]];
+      const element = props.cells[props.visibleColumns[i]];
       const cellWidth = element.getBoundingClientRect().width ?? 0;
       lastColumnsWidths[i] = (lastColumnsWidths[i + 1] ?? 0) + cellWidth;
     }

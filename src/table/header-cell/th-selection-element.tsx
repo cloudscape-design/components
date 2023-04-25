@@ -38,29 +38,13 @@ export function TableHeaderSelectionCell(props: TableBodySelectionCellProps) {
 
   if (selectionType === 'multi') {
     return (
-      <th
-        style={stickyStyles.style}
-        className={selectionCellClass}
-        scope="col"
-        ref={node => {
-          stickyState.refs.headerCell(selectionColumnId, node);
-          stickyStyles.ref(node);
-        }}
-      >
+      <th style={stickyStyles.style} className={selectionCellClass} scope="col" ref={stickyStyles.ref}>
         {children}
       </th>
     );
   } else if (selectionType === 'single') {
     return (
-      <th
-        style={stickyStyles.style}
-        className={selectionCellClass}
-        scope="col"
-        ref={node => {
-          stickyState.refs.headerCell(selectionColumnId, node);
-          stickyStyles.ref(node);
-        }}
-      >
+      <th style={stickyStyles.style} className={selectionCellClass} scope="col" ref={stickyStyles.ref}>
         {children}
       </th>
     );

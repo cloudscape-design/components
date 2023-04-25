@@ -108,10 +108,7 @@ export function TableHeaderCell<ItemType>(props: TableHeaderCellProps<ItemType>)
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}
       style={{ ...style, ...stickyStyles.style }}
       scope="col"
-      ref={node => {
-        stickyState.refs.headerCell(columnId, node);
-        stickyStyles.ref(node);
-      }}
+      ref={stickyStyles.ref}
     >
       <div
         className={clsx(styles['header-cell-content'], {
