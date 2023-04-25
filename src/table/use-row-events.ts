@@ -3,7 +3,7 @@
 import { fireNonCancelableEvent, fireCancelableEvent } from '../internal/events/index';
 import { TableProps } from './interfaces';
 import { findUpUntil } from '../internal/utils/dom';
-import styles from './styles.css.js';
+import styles from './body-cell/styles.css.js';
 
 export function useRowEvents<T>({ onRowClick, onRowContextMenu }: Pick<TableProps, 'onRowClick' | 'onRowContextMenu'>) {
   const onRowClickHandler = (rowIndex: number, item: T, event: React.MouseEvent) => {

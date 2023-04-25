@@ -78,9 +78,14 @@ const Thead = React.forwardRef(
               hidden={hidden}
               sticky={sticky}
               stuck={stuck}
-              stripedRows={stripedRows}
+              stripedRows={!!stripedRows}
               variant={variant}
               hasSelection={true}
+              sortable={false}
+              sorted={false}
+              sortingDescending={false}
+              sortingDisabled={false}
+              resizableColumns={false}
             >
               {selectionType === 'multi' ? (
                 <SelectionControl
@@ -123,19 +128,19 @@ const Thead = React.forwardRef(
                 onFocusedComponentChange={onFocusedComponentChange}
                 column={column}
                 activeSortingColumn={sortingColumn}
-                sortingDescending={sortingDescending}
-                sortingDisabled={sortingDisabled}
+                sortingDescending={!!sortingDescending}
+                sortingDisabled={!!sortingDisabled}
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
-                resizableColumns={resizableColumns}
+                resizableColumns={!!resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
                 sticky={sticky}
                 stuck={stuck}
-                stripedRows={stripedRows}
+                stripedRows={!!stripedRows}
                 variant={variant}
               />
             );

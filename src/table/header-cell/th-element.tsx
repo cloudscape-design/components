@@ -5,21 +5,20 @@ import React from 'react';
 import { TableProps } from '../interfaces';
 import { getAriaSort, getSortingStatus } from './utils';
 import styles from '../body-cell/styles.css.js';
-import rootStyles from '../styles.css.js';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 
 export interface TableThElementProps {
   style?: React.CSSProperties;
-  sortable?: boolean;
-  sorted?: boolean;
-  sortingDescending?: boolean;
-  sortingDisabled?: boolean;
-  resizableColumns?: boolean;
-  hidden?: boolean;
-  sticky?: boolean;
-  stuck?: boolean;
-  stripedRows?: boolean;
-  hasSelection?: boolean;
+  sortable: boolean;
+  sorted: boolean;
+  sortingDescending: boolean;
+  sortingDisabled: boolean;
+  resizableColumns: boolean;
+  hidden: boolean;
+  sticky: boolean;
+  stuck: boolean;
+  stripedRows: boolean;
+  hasSelection: boolean;
   variant: TableProps.Variant;
   children: React.ReactNode;
 }
@@ -44,9 +43,6 @@ export function TableThElement({
   return (
     <th
       className={clsx(styles['header-cell'], styles[`header-cell-variant-${variant}`], {
-        [rootStyles['selection-control']]: hasSelection,
-        [rootStyles['selection-control-header']]: hasSelection,
-        [rootStyles['is-visual-refresh']]: hasSelection && isVisualRefresh,
         [styles['is-visual-refresh']]: !hasSelection && isVisualRefresh,
         [styles['header-cell-sticky']]: sticky,
         [styles['header-cell-stuck']]: stuck,
@@ -57,6 +53,8 @@ export function TableThElement({
         [styles['header-cell-disabled']]: sortingDisabled,
         [styles['header-cell-ascending']]: sortingStatus === 'ascending',
         [styles['header-cell-descending']]: sortingStatus === 'descending',
+        [styles['selection-control']]: hasSelection,
+        [styles['selection-control-header']]: hasSelection,
         [styles['header-cell-hidden']]: hidden,
       })}
       aria-sort={sortingStatus && getAriaSort(sortingStatus)}

@@ -12,7 +12,8 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { TableThElement, TableThElementProps } from './th-element';
 
-interface TableHeaderCellProps<ItemType> extends Omit<TableThElementProps, 'children'> {
+interface TableHeaderCellProps<ItemType>
+  extends Omit<TableThElementProps, 'children' | 'sortable' | 'sorted' | 'hasSelection'> {
   column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
   tabIndex: number;
@@ -83,6 +84,7 @@ export function TableHeaderCell<ItemType>({
       stuck={stuck}
       stripedRows={stripedRows}
       variant={variant}
+      hasSelection={false}
     >
       <div
         className={clsx(styles['header-cell-content'], {

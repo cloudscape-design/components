@@ -9,6 +9,7 @@ import { TableProps } from '../interfaces';
 import { TableTdElement, TableTdElementProps } from './td-element';
 import { InlineEditor } from './inline-editor';
 import LiveRegion from '../../internal/components/live-region/index.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 
 const submitHandlerFallback = () => {
   throw new Error('The function `handleSubmit` is required for editable columns');
@@ -34,10 +35,10 @@ function TableCellEditable<ItemType>({
   onEditEnd,
   submitEdit,
   ariaLabels,
-  isVisualRefresh,
   successfulEdit = false,
   ...rest
 }: TableBodyCellProps<ItemType>) {
+  const isVisualRefresh = useVisualRefresh();
   const editActivateRef = useRef<HTMLButtonElement>(null);
   const tdNativeAttributes = {
     'data-inline-editing-active': isEditing.toString(),

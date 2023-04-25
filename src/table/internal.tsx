@@ -339,8 +339,6 @@ const InternalTable = React.forwardRef(
                       >
                         {selectionType !== undefined && (
                           <TableTdElement
-                            className={clsx(styles['selection-control'])}
-                            isVisualRefresh={isVisualRefresh}
                             isFirstRow={firstVisible}
                             isLastRow={lastVisible}
                             isSelected={isSelected}
@@ -348,8 +346,8 @@ const InternalTable = React.forwardRef(
                             isPrevSelected={isPrevSelected}
                             wrapLines={false}
                             isEvenRow={isEven}
-                            stripedRows={stripedRows}
-                            hasSelection={hasSelection}
+                            stripedRows={!!stripedRows}
+                            hasSelection={true}
                             hasFooter={hasFooter}
                           >
                             <SelectionControl
@@ -409,7 +407,6 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
-                              isVisualRefresh={isVisualRefresh}
                             />
                           );
                         })}
