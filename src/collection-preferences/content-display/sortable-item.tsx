@@ -52,6 +52,8 @@ export function SortableItem({
 
   // The placeholder is rendered from within the dragged item, but is shown at the position of the displaced item.
   // Therefore, we need to translate it by the right amount.
+  // Unfortunately we can't use dnd-kit's recommended approach of using a drag overlay
+  // because it renders out of place when drag and drop is used in our modal.
   const placeholderOffsetY =
     isDragging && over?.rect?.top !== undefined && rect.current?.top !== undefined
       ? over.rect.top > rect.current?.top
