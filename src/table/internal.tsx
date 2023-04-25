@@ -92,7 +92,6 @@ const InternalTable = forwardRef(
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
@@ -199,14 +198,13 @@ const InternalTable = forwardRef(
     const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
 
     const stickyState = useStickyState({
-      containerWidth: containerWidth ?? 0,
+      wrapperWidth: containerWidth ?? 0,
       tableWidth: tableWidth ?? 0,
       visibleColumns: visibleColumnsWithSelection,
       stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
       tablePaddingLeft: tablePadding.left,
       tablePaddingRight: tablePadding.right,
-      wrapperRef: wrapperRefObject,
     });
 
     const theadProps: TheadProps = {
@@ -237,6 +235,9 @@ const InternalTable = forwardRef(
       stripedRows,
     };
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+
+    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+
     return (
       <ColumnWidthsProvider
         tableRef={tableRefObject}

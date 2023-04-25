@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box } from '~components';
 import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
@@ -22,19 +22,18 @@ const columnDefinitions = [
 export default function Page() {
   const [wrapperWidth, wrapperQueryRef] = useContainerQuery(entry => entry.contentBoxWidth);
   const [tableWidth, tableQueryRef] = useContainerQuery(entry => entry.contentBoxWidth);
-  const wrapperRefObject = useRef<HTMLDivElement>(null);
-  const wrapperRef = useMergeRefs(wrapperQueryRef, wrapperRefObject);
 
   const stickyState = useStickyState({
-    containerWidth: wrapperWidth ?? 0,
+    wrapperWidth: wrapperWidth ?? 0,
     tableWidth: tableWidth ?? 0,
     visibleColumns: columnDefinitions.map(column => column.key),
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
     tablePaddingLeft: 0,
     tablePaddingRight: 0,
-    wrapperRef: wrapperRefObject,
   });
+
+  const wrapperRef = useMergeRefs(wrapperQueryRef, stickyState.refs.wrapper);
 
   return (
     <Box margin="l">
