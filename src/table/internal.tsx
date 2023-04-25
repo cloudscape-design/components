@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState, useEffect, Ref, forwardRef, useMemo } from 'react';
+import React, { useImperativeHandle, useRef, useState, Ref, forwardRef, useMemo } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -95,7 +95,6 @@ const InternalTable = forwardRef(
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
-    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
     const secondaryWrapperRef = useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
     const stickyHeaderRef = useRef<StickyHeaderRef>(null);
@@ -103,16 +102,6 @@ const InternalTable = forwardRef(
 
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
-
-    const [tablePadding, setTablePadding] = useState({ left: 0, right: 0 });
-    useEffect(() => {
-      if (!tableRefObject.current) {
-        return;
-      }
-      const left = parseInt(getComputedStyle(tableRefObject.current).paddingLeft) || 0;
-      const right = parseInt(getComputedStyle(tableRefObject.current).paddingRight) || 0;
-      setTablePadding({ left, right });
-    }, [tableRefObject]);
 
     useImperativeHandle(
       ref,
@@ -198,13 +187,9 @@ const InternalTable = forwardRef(
     const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
 
     const stickyState = useStickyState({
-      wrapperWidth: containerWidth ?? 0,
-      tableWidth: tableWidth ?? 0,
       visibleColumns: visibleColumnsWithSelection,
       stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
       stickyColumnsLast: stickyColumns?.last || 0,
-      tablePaddingLeft: tablePadding.left,
-      tablePaddingRight: tablePadding.right,
     });
 
     const theadProps: TheadProps = {
@@ -237,6 +222,7 @@ const InternalTable = forwardRef(
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     return (
       <ColumnWidthsProvider
@@ -295,11 +281,11 @@ const InternalTable = forwardRef(
         >
           <TableWrapper
             wrapperRef={wrapperRef}
-            stickyState={stickyState}
             className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
               [styles['has-footer']]: hasFooter,
               [styles['has-header']]: hasHeader,
             })}
+            style={stickyState.style.wrapper}
             onScroll={handleScroll}
             wrapperProps={wrapperProps}
           >

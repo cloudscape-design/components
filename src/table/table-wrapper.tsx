@@ -1,9 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { useReaction } from '../area-chart/model/async-store.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
-import { StickyStateModel } from './sticky-state-model.js';
 
 export interface TableWrapperProps {
   children: React.ReactNode;
@@ -11,34 +8,12 @@ export interface TableWrapperProps {
   wrapperRef: React.RefCallback<any> | null;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   wrapperProps: any;
-  stickyState: StickyStateModel;
+  style: React.CSSProperties;
 }
 
-const TableWrapper = ({ children, className, wrapperRef, onScroll, wrapperProps, stickyState }: TableWrapperProps) => {
-  const wrapperAccessRef = React.useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement | null>;
-
-  useReaction(
-    stickyState.store,
-    state => state.scrollPadding,
-    ({ left, right }) => {
-      if (wrapperAccessRef && wrapperAccessRef.current) {
-        wrapperAccessRef.current.style.scrollPaddingLeft = left + 'px';
-        wrapperAccessRef.current.style.scrollPaddingRight = right + 'px';
-      }
-    }
-  );
-
-  const ref = useMergeRefs(wrapperAccessRef, wrapperRef);
+const TableWrapper = ({ children, className, wrapperRef, onScroll, wrapperProps, style }: TableWrapperProps) => {
   return (
-    <div
-      ref={ref}
-      className={className}
-      onScroll={e => {
-        onScroll?.(e);
-        stickyState.handlers.onWrapperScroll();
-      }}
-      {...wrapperProps}
-    >
+    <div ref={wrapperRef} className={className} style={style} onScroll={onScroll} {...wrapperProps}>
       {children}
     </div>
   );
