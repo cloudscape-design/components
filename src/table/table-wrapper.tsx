@@ -8,7 +8,7 @@ export interface TableWrapperProps {
   wrapperRef: React.RefCallback<any> | null;
   onScroll?: React.UIEventHandler<HTMLDivElement>;
   wrapperProps: any;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
 }
 
 const TableWrapper = ({ children, className, wrapperRef, onScroll, wrapperProps, style }: TableWrapperProps) => {
