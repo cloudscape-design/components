@@ -24,7 +24,7 @@ interface StickyStateProps {
 export interface StickyStateModel {
   store: StickyColumnsStore;
   style: {
-    wrapper: React.CSSProperties;
+    wrapper?: React.CSSProperties;
   };
   refs: {
     table: React.RefCallback<HTMLElement>;
@@ -58,8 +58,8 @@ interface UseStickyStylesProps {
 
 interface StickyStyles {
   ref: React.RefCallback<HTMLElement>;
-  className: string;
-  style: React.CSSProperties;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export function useStickyStyles({ stickyState, columnId, getClassName }: UseStickyStylesProps): StickyStyles {
@@ -94,10 +94,11 @@ export function useStickyStyles({ stickyState, columnId, getClassName }: UseStic
     }
   );
 
+  const cellStyles = stickyState.store.get().cellStyles[columnId];
   return {
     ref: refCallback,
-    className: clsx(getClassName(stickyState.store.get().cellStyles[columnId])),
-    style: stickyState.store.get().cellStyles[columnId]?.offset ?? {},
+    className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
+    style: cellStyles?.offset ?? undefined,
   };
 }
 
@@ -110,6 +111,8 @@ export function useStickyState({
   const wrapperRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const tableRef = useRef<HTMLElement>(null) as React.MutableRefObject<null | HTMLElement>;
   const cellsRef = useRef<Record<ColumnId, HTMLElement>>({});
+
+  const hasStickyColumns = stickyColumnsFirst + stickyColumnsLast > 0;
 
   const updateStickyStyles = useStableEventHandler(() => {
     if (wrapperRef.current && tableRef.current) {
@@ -157,13 +160,13 @@ export function useStickyState({
       if (wrapperRef.current) {
         wrapperRef.current.removeEventListener('scroll', updateStickyStyles);
       }
-      if (node) {
+      if (node && hasStickyColumns) {
         node.addEventListener('scroll', updateStickyStyles);
       }
 
       wrapperRef.current = node;
     },
-    [updateStickyStyles]
+    [hasStickyColumns, updateStickyStyles]
   );
 
   const setTable = useCallback((node: null | HTMLElement) => {
@@ -181,10 +184,12 @@ export function useStickyState({
   return {
     store,
     style: {
-      wrapper: {
-        scrollPaddingLeft: store.get().scrollPadding.left + 'px',
-        scrollPaddingRight: store.get().scrollPadding.right + 'px',
-      },
+      wrapper: hasStickyColumns
+        ? {
+            scrollPaddingLeft: store.get().scrollPadding.left + 'px',
+            scrollPaddingRight: store.get().scrollPadding.right + 'px',
+          }
+        : undefined,
     },
     refs: { wrapper: setWrapper, table: setTable, cell: setCell },
   };
@@ -222,12 +227,17 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
   }
 
   updateCellStyles(props: UpdateCellStylesProps) {
-    this.updateScroll(props);
-    this.updateCellOffsets(props);
-    this.set(() => ({
-      cellStyles: this.generateCellStyles(props),
-      scrollPadding: { left: this.stickyWidthLeft, right: this.stickyWidthRight },
-    }));
+    const hasStickyColumns = props.stickyColumnsFirst + props.stickyColumnsLast > 0;
+    const hadStickyColumns = this.cellOffsets.size > 0;
+
+    if (hasStickyColumns || hadStickyColumns) {
+      this.updateScroll(props);
+      this.updateCellOffsets(props);
+      this.set(() => ({
+        cellStyles: this.generateCellStyles(props),
+        scrollPadding: { left: this.stickyWidthLeft, right: this.stickyWidthRight },
+      }));
+    }
   }
 
   private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyStateCellStyles> => {
