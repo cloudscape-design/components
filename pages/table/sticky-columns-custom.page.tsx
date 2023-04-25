@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import SpaceBetween from '~components/space-between';
-import { Box } from '~components';
+import { Box, Link } from '~components';
 import { useStickyState, StickyStateModel, useStickyStyles } from '~components/table/sticky-state-model';
 import styles from './styles.scss';
 import { generateItems } from './generate-data';
@@ -29,7 +29,7 @@ export default function Page() {
       <SpaceBetween size="xl">
         <h1>Sticky columns with a custom table</h1>
 
-        <div ref={stickyState.refs.wrapper} className={styles['custom-table']}>
+        <div ref={stickyState.refs.wrapper} className={styles['custom-table']} style={stickyState.style.wrapper}>
           <table ref={stickyState.refs.table} className={styles['custom-table-table']}>
             <thead>
               <tr>
@@ -45,7 +45,11 @@ export default function Page() {
                 <tr key={item.id}>
                   {columnDefinitions.map(column => (
                     <TableCell key={column.key} columnId={column.key} stickyState={stickyState}>
-                      {(item as any)[column.key] ?? '???'}
+                      {column.key === 'imageId' ? (
+                        <Link>{(item as any)[column.key] ?? '???'}</Link>
+                      ) : (
+                        (item as any)[column.key] ?? '???'
+                      )}
                     </TableCell>
                   ))}
                 </tr>

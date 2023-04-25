@@ -23,6 +23,9 @@ interface StickyStateProps {
 
 export interface StickyStateModel {
   store: StickyColumnsStore;
+  style: {
+    wrapper: React.CSSProperties;
+  };
   refs: {
     table: React.RefCallback<HTMLElement>;
     wrapper: React.RefCallback<HTMLElement>;
@@ -93,30 +96,6 @@ export function useStickyStyles({ stickyState, columnId, getClassName }: UseStic
   };
 }
 
-export function useWrapperStyles({ stickyState }: { stickyState: StickyStateModel }) {
-  const ref = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
-  const refCallback = useCallback(node => {
-    ref.current = node;
-  }, []);
-
-  useReaction(
-    stickyState.store,
-    state => state.scrollPadding,
-    props => {
-      ref.current.style.scrollPaddingLeft = props.left + 'px';
-      ref.current.style.scrollPaddingRight = props.right + 'px';
-    }
-  );
-
-  return {
-    ref: refCallback,
-    style: {
-      scrollPaddingLeft: stickyState.store.get().scrollPadding.left + 'px',
-      scrollPaddingRight: stickyState.store.get().scrollPadding.right + 'px',
-    },
-  };
-}
-
 export function useStickyState({
   visibleColumns,
   stickyColumnsFirst,
@@ -157,6 +136,17 @@ export function useStickyState({
     }
   }, [store, stickyColumnsFirst, stickyColumnsLast, visibleColumns]);
 
+  useReaction(
+    store,
+    state => state.scrollPadding,
+    props => {
+      if (wrapperRef.current) {
+        wrapperRef.current.style.scrollPaddingLeft = props.left + 'px';
+        wrapperRef.current.style.scrollPaddingRight = props.right + 'px';
+      }
+    }
+  );
+
   const setWrapper = useCallback(
     (node: null | HTMLElement) => {
       if (wrapperRef.current) {
@@ -185,6 +175,12 @@ export function useStickyState({
 
   return {
     store,
+    style: {
+      wrapper: {
+        scrollPaddingLeft: store.get().scrollPadding.left + 'px',
+        scrollPaddingRight: store.get().scrollPadding.right + 'px',
+      },
+    },
     refs: { wrapper: setWrapper, table: setTable, headerCell: setHeaderCell },
   };
 }
