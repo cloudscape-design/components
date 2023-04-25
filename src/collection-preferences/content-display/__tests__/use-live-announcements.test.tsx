@@ -15,7 +15,10 @@ const i18nStrings = {
   liveAnnouncementDndItemCommitted,
 };
 
-const sortedOptions = [{ id: 'id2' }, { id: 'id1' }];
+const sortedOptions = [
+  { id: 'id2', visible: true },
+  { id: 'id1', visible: true },
+];
 
 const TestComponent = ({ activeId, isDragging, overId }: { activeId: string; isDragging: boolean; overId: string }) => {
   const { onDragStart, onDragOver, onDragEnd, onDragCancel } = useLiveAnnouncements({
