@@ -308,7 +308,6 @@ export default class StickyColumnsStore extends AsyncStore<StickyState> {
     );
   };
 
-  // TODO: Memoize this?
   private isEnabled = (props: UpdateCellStylesProps): boolean => {
     const noStickyColumns = props.stickyColumnsFirst + props.stickyColumnsLast === 0;
     if (noStickyColumns) {
