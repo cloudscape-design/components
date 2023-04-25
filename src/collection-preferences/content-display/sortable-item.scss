@@ -75,8 +75,6 @@ $border-radius: awsui.$border-radius-item;
 }
 
 .sortable-item-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
   padding-right: awsui.$space-l;
   flex-grow: 1;
 }
