@@ -6,7 +6,7 @@ import Table, { TableProps } from '../../../lib/components/table';
 import PropertyFilter from '../../../lib/components/property-filter';
 import Select from '../../../lib/components/select';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
-import headerCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
+import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 
 interface Item {
   id: number;
