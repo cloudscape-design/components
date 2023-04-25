@@ -73,7 +73,10 @@ function getVisibleColumnDefinitionsFromColumnDisplay<T>({
   columnDisplay: ReadonlyArray<TableProps.ColumnDisplayProperties>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
-  const columnDefinitionsById = getColumnDefinitionsById(columnDefinitions);
+  const columnDefinitionsById: Record<string, TableProps.ColumnDefinition<T>> = columnDefinitions.reduce(
+    (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
+    {}
+  );
   return columnDisplay
     .filter(item => item.visible)
     .map(item => columnDefinitionsById[item.id])
@@ -87,15 +90,6 @@ function getVisibleColumnDefinitionsFromVisibleColumns<T>({
   visibleColumns: ReadonlyArray<string>;
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
 }) {
-  const columnDefinitionsById = getColumnDefinitionsById(columnDefinitions);
-  return visibleColumns.map(id => columnDefinitionsById[id]).filter(Boolean);
-}
-
-function getColumnDefinitionsById<T>(
-  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>
-): Record<string, TableProps.ColumnDefinition<T>> {
-  return columnDefinitions.reduce(
-    (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
-    {}
-  );
+  const ids = new Set(visibleColumns);
+  return columnDefinitions.filter(({ id }) => id !== undefined && ids.has(id));
 }
