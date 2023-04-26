@@ -5,7 +5,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { TableHeaderCell } from '../../../lib/components/table/header-cell';
 import { TableProps } from '../interfaces';
 
-import styles from '../../../lib/components/table/body-cell/styles.css.js';
+import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
 
 const testItem = {

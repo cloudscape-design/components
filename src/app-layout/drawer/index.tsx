@@ -137,6 +137,7 @@ export function DrawerTriggersBar({
   bottomOffset,
   drawers,
   contentClassName,
+  toggleClassName,
 }: DrawerTriggersBarProps) {
   return (
     <div
@@ -146,13 +147,14 @@ export function DrawerTriggersBar({
     >
       <div
         style={{ top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'], styles['non-interactive'], contentClassName)}
+        className={clsx(styles['drawer-content'], styles['non-interactive'])}
       >
         {!isMobile && (
-          <aside aria-label={drawers?.ariaLabel} className={styles['drawer-triggers']}>
+          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers'], contentClassName)}>
             {drawers?.items?.map((item: DrawerItem, index: number) => (
               <AppLayoutButton
                 className={clsx(
+                  toggleClassName,
                   styles.trigger,
                   styles['trigger-drawer'],
                   drawers.activeDrawerId === item.id && styles.selected

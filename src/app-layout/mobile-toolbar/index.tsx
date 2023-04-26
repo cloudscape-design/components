@@ -114,19 +114,24 @@ export function MobileToolbar({
       {drawers && (
         <aside
           aria-label={drawers.ariaLabel}
-          className={clsx(styles['mobile-toggle'], styles['mobile-toggle-with-drawers'])}
+          className={clsx(
+            styles['mobile-toggle'],
+            styles['mobile-toggle-with-drawers'],
+            testutilStyles['drawers-mobile-triggers-container']
+          )}
         >
           {drawers.items.map((item: DrawerItem, index: number) => (
             <AppLayoutButton
               className={clsx(
                 styles.trigger,
                 styles['trigger-drawer'],
-                drawers.activeDrawerId === item.id && styles.selected
+                drawers.activeDrawerId === item.id && styles.selected,
+                testutilStyles['drawers-trigger']
               )}
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
-              ariaLabel={item.ariaLabels.triggerButton}
+              ariaLabel={item.ariaLabels?.triggerButton}
               onClick={() => drawers.onChange({ activeDrawerId: item.id })}
               ariaExpanded={drawers.activeDrawerId !== undefined}
             />
