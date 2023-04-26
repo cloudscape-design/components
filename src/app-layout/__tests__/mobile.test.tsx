@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { describeEachThemeAppLayout, isDrawerClosed, renderComponent, splitPanelI18nStrings } from './utils';
+import {
+  describeEachThemeAppLayout,
+  drawersConfigurations,
+  isDrawerClosed,
+  renderComponent,
+  splitPanelI18nStrings,
+} from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -317,5 +323,37 @@ describeEachThemeAppLayout(true, theme => {
       const { wrapper } = renderComponent(<AppLayout {...props} toolsOpen={true} toolsHide={true} />);
       expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
     });
+  });
+
+  test('should render drawers mobile triggers container', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+  });
+
+  test('should render an active drawer', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawerOpen} />);
+
+    expect(wrapper.findDrawersMobileTriggersContainer()).toBeTruthy();
+    expect(wrapper.findDrawersDesktopTriggersContainer()).toBeFalsy();
+    expect(wrapper.findActiveDrawer()).toBeTruthy();
+  });
+
+  test('Does not add a label to the toggle and landmark when they are not defined', () => {
+    const drawersClosed = {
+      drawers: {
+        items: drawersConfigurations.drawersItemsWithoutLabels,
+      },
+    };
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersClosed} />);
+    expect(wrapper.findDrawersTriggers()![0].getElement()).not.toHaveAttribute('aria-label');
+    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).not.toHaveAttribute('aria-label');
+  });
+
+  test('Adds labels to toggle button and landmark when defined', () => {
+    const { wrapper } = renderComponent(<AppLayout contentType="form" {...drawersConfigurations.singleDrawer} />);
+    expect(wrapper.findDrawersTriggers()![0].getElement()).toHaveAttribute('aria-label', 'Security trigger button');
+    expect(wrapper.findDrawersMobileTriggersContainer()!.getElement()).toHaveAttribute('aria-label', 'Drawers');
   });
 });

@@ -7,6 +7,7 @@ import { getLimitedValue } from '../../split-panel/utils/size-utils';
 import { usePointerEvents } from '../../split-panel/utils/use-pointer-events';
 import { useKeyboardEvents } from '../../split-panel/utils/use-keyboard-events';
 import { Drawer } from './index';
+import testutilStyles from '../test-classes/styles.css.js';
 
 import ResizeHandler from '../../split-panel/icons/resize-handler';
 import splitPanelStyles from '../../split-panel/styles.css.js';
@@ -38,9 +39,9 @@ export const ResizableDrawer = ({
   const setSidePanelWidth = (width: number) => {
     const maxWidth = getMaxWidth();
     const size = getLimitedValue(MIN_WIDTH, width, maxWidth);
-    const id = activeDrawer.id;
+    const id = activeDrawer?.id;
 
-    if (isOpen && maxWidth >= MIN_WIDTH) {
+    if (isOpen && id && maxWidth >= MIN_WIDTH) {
       onResize({ size, id });
     }
   };
@@ -65,11 +66,11 @@ export const ResizableDrawer = ({
       ref={refs.slider}
       role="slider"
       tabIndex={0}
-      aria-label={activeDrawer.ariaLabels.resizeHandle}
+      aria-label={activeDrawer?.ariaLabels?.resizeHandle}
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={relativeSize}
-      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`])}
+      className={clsx(splitPanelStyles.slider, splitPanelStyles[`slider-side`], testutilStyles['drawers-slider'])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
     >
@@ -83,7 +84,7 @@ export const ResizableDrawer = ({
       ref={drawerRefObject}
       resizeHandle={
         !isMobile &&
-        activeDrawer.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
+        activeDrawer?.resizable && <div className={splitPanelStyles['slider-wrapper-side']}>{resizeHandle}</div>
       }
     >
       {children}
