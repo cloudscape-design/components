@@ -257,12 +257,12 @@ $border-placeholder: awsui.$border-item-width solid transparent;
   }
   &-editable.is-visual-refresh:not(.body-cell-edit-active):hover {
     &:first-child {
-      border-top-left-radius: awsui.$border-radius-control-default-focus-ring;
-      border-bottom-left-radius: awsui.$border-radius-control-default-focus-ring;
+      border-top-left-radius: awsui.$border-radius-item;
+      border-bottom-left-radius: awsui.$border-radius-item;
     }
     &:last-child {
-      border-top-right-radius: awsui.$border-radius-control-default-focus-ring;
-      border-bottom-right-radius: awsui.$border-radius-control-default-focus-ring;
+      border-top-right-radius: awsui.$border-radius-item;
+      border-bottom-right-radius: awsui.$border-radius-item;
     }
     &.body-cell-first-row > .body-cell-editor {
       padding-top: awsui.$border-divider-list-width;
