@@ -53,7 +53,11 @@ export default function () {
             ariaLabel: 'Notifications',
             iconName: 'notification',
             disableUtilityCollapse: true,
-            onClick: onUtilityClick,
+            href: '/should-not-navigate',
+            onClick: evt => {
+              evt.preventDefault();
+              onUtilityClick(evt);
+            },
           },
           {
             type: 'menu-dropdown',

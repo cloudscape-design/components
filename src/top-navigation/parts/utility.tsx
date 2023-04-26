@@ -75,7 +75,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             target={definition.target}
             rel={definition.rel}
             external={definition.external}
-            onFollow={() => fireCancelableEvent(definition.onClick, {})}
+            onFollow={evt => fireCancelableEvent(definition.onClick, {}, evt)}
             ariaLabel={ariaLabel}
           >
             {hasIcon && (
