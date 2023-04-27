@@ -92,30 +92,27 @@ const Thead = React.forwardRef(
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
-          {selectionType === 'multi' && (
+          {selectionType ? (
             <th
               className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
               scope="col"
             >
-              <SelectionControl
-                onFocusDown={event => {
-                  onFocusMove!(event.target as HTMLElement, -1, +1);
-                }}
-                focusedComponent={focusedComponent}
-                onFocusedComponentChange={onFocusedComponentChange}
-                {...getSelectAllProps()}
-                {...(sticky ? { tabIndex: -1 } : {})}
-              />
+              {selectionType === 'multi' ? (
+                <SelectionControl
+                  onFocusDown={event => {
+                    onFocusMove!(event.target as HTMLElement, -1, +1);
+                  }}
+                  focusedComponent={focusedComponent}
+                  onFocusedComponentChange={onFocusedComponentChange}
+                  {...getSelectAllProps()}
+                  {...(sticky ? { tabIndex: -1 } : {})}
+                />
+              ) : (
+                <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
+              )}
             </th>
-          )}
-          {selectionType === 'single' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
-            >
-              <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-            </th>
-          )}
+          ) : null}
+
           {columnDefinitions.map((column, colIndex) => {
             let widthOverride;
             if (resizableColumns) {
