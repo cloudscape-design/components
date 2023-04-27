@@ -352,6 +352,22 @@ describe('Tag Editor component', () => {
         })
       );
     });
+
+    test('renders `ariaLabel` on remove button using `removeButtonAriaLabel` on all rows', () => {
+      const removeButtonAriaLabel = (item: TagEditorProps.Tag) => `Remove ${item.key}`;
+      const { wrapper } = renderTagEditor({
+        tags: [{ key: 'test key', value: 'value', existing: false }],
+        i18nStrings: { ...defaultProps.i18nStrings, removeButtonAriaLabel },
+      });
+      defaultProps.tags!.forEach((item, index) => {
+        expect(
+          wrapper
+            .findRow(index + 1)!
+            .findRemoveButton()!
+            .getElement()
+        ).toHaveAccessibleName(`Remove test key`);
+      });
+    });
   });
 
   test('should render itemRemovedAriaLive when a tag is removed', async () => {
