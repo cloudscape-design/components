@@ -1,0 +1,18 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+.handle {
+  cursor: grab;
+  // Prevent the browser from scrolling on touch devices when the touch event comes from the drag handle,
+  // because this would otherwise interfere with actually dragging the handle.
+  // The `touch-action` CSS property is not supported in desktop Safari but it is in mobile Safari
+  // (and all our supported mobile browsers, in all the supported versions), which is where it actually matters.
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+  touch-action: none;
+}
+
+.handle:active {
+  cursor: grabbing;
+}

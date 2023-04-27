@@ -7,6 +7,7 @@ import {
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
+  contentDisplayPreference,
 } from './shared';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
@@ -105,8 +106,11 @@ describe('Collection preferences - Events', () => {
 });
 
 describe('Collection preferences - Warnings', () => {
+  const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+  beforeEach(() => {
+    consoleWarnSpy.mockClear();
+  });
   test('raises a warning when setting preferences without onConfirm listener', () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     renderCollectionPreferences({ preferences: {} });
     expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
@@ -114,10 +118,22 @@ describe('Collection preferences - Warnings', () => {
       '[AwsUi] [CollectionPreferences] You provided `preferences` prop without an `onConfirm` handler. This will render a read-only component. If the component should be mutable, set an `onConfirm` handler.'
     );
   });
+  test('raises a warning when both visibleContentPreference and contentDisplayPreference are provided', () => {
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
+    const wrapper = renderCollectionPreferences({
+      visibleContentPreference,
+      contentDisplayPreference,
+    });
+    wrapper.findTriggerButton().click();
+    expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      '[AwsUi] [CollectionPreferences] You provided both `visibleContentPreference` and `contentDisplayPreference` props. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
+    );
+  });
 });
 
 describe('Collection preferences - Preferences display', () => {
-  test('does not preferences if they are not specified', () => {
+  test('does not display preferences if they are not specified', () => {
     const wrapper = renderCollectionPreferences({});
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findPageSizePreference()).toBeNull();
@@ -154,5 +170,14 @@ describe('Collection preferences - Preferences display', () => {
     });
     wrapper.findTriggerButton().click();
     expect(wrapper.findModal()!.findCustomPreference()!.getElement()).toHaveTextContent('CustomPref');
+  });
+  test('displays only content display preference when both visible content preference and content display preference are provided', () => {
+    const wrapper = renderCollectionPreferences({
+      visibleContentPreference,
+      contentDisplayPreference,
+    });
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findVisibleContentPreference()).toBeNull();
+    expect(wrapper.findModal()!.findContentDisplayPreference()).not.toBeNull();
   });
 });

@@ -20,8 +20,10 @@ import {
   getMatchesCountText,
   paginationLabels,
   pageSizeOptions,
-  visibleContentOptions,
+  contentDisplayPreference,
+  defaultPreferences,
 } from './shared-configs';
+import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 
 const allItems = generateItems();
 const ariaLabels: TableProps<Instance>['ariaLabels'] = {
@@ -33,9 +35,7 @@ const ariaLabels: TableProps<Instance>['ariaLabels'] = {
 
 export default function App() {
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
-    pageSize: 20,
-    visibleContent: ['id', 'type', 'dnsName', 'state'],
-    wrapLines: false,
+    ...defaultPreferences,
     // set to "compact" for default "compact density setting".
     contentDensity: 'compact',
   });
@@ -119,7 +119,7 @@ export default function App() {
               filteringAriaLabel="Filter instances"
             />
           }
-          visibleColumns={preferences.visibleContent}
+          columnDisplay={preferences.contentDisplay}
           preferences={
             <CollectionPreferences
               title="Preferences"
@@ -131,9 +131,9 @@ export default function App() {
                 title: 'Select page size',
                 options: pageSizeOptions,
               }}
-              visibleContentPreference={{
-                title: 'Select visible columns',
-                options: visibleContentOptions,
+              contentDisplayPreference={{
+                ...contentDisplayPreference,
+                ...contentDisplayPreferenceI18nStrings,
               }}
               wrapLinesPreference={{
                 label: 'Wrap lines',

@@ -184,7 +184,7 @@ describe('Content selection', () => {
     isChecked(wrapper, 2, 4, false);
     isChecked(wrapper, 2, 5, false);
   });
-  test('decorates onConfim event details correctly upon change', () => {
+  test('decorates onConfirm event details correctly upon change', () => {
     const onConfirmSpy = jest.fn();
     const wrapper = renderWithContentSelection({
       preferences: { visibleContent: ['id', 'priceClass', 'origin'] },
@@ -199,7 +199,7 @@ describe('Content selection', () => {
       expect.objectContaining({ detail: { visibleContent: ['id', 'domainName', 'origin'] } })
     );
   });
-  test('decorates onConfim event details correctly even without change', () => {
+  test('decorates onConfirm event details correctly even without change', () => {
     const onConfirmSpy = jest.fn();
     const wrapper = renderWithContentSelection({
       preferences: { visibleContent: ['id', 'priceClass', 'origin'] },

@@ -264,6 +264,80 @@ test('should render only columns with id in visibleColumns', () => {
   expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
 });
 
+test('should render only columns with visible attribute set to true in columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'id', visible: true },
+        { id: 'name', visible: false },
+      ]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('2');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
+});
+
+test('should not render columns not included in columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[{ id: 'id', visible: true }]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('2');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
+});
+
+test('should render columns in the order specified by columnDisplay', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'name', visible: true },
+        { id: 'id', visible: true },
+      ]}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['name', 'id']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
+  expect(wrapper.findBodyCell(2, 2)!.getElement()).toContainHTML('2');
+});
+
+test('should ignore visibleColumns if columnDisplay is set', () => {
+  const { wrapper } = renderTable(
+    <Table
+      columnDefinitions={defaultColumnsWithIds}
+      items={defaultItems}
+      columnDisplay={[
+        { id: 'id', visible: false },
+        { id: 'name', visible: true },
+      ]}
+      visibleColumns={['id']}
+    />
+  );
+  expect(wrapper.findColumnHeaders().map(getHeaderHtmlContent)).toEqual(['name']);
+  expect(wrapper.findEmptySlot()).toBeNull();
+  expect(wrapper.findLoadingText()).toBeNull();
+  expect(wrapper.findRows()).toHaveLength(3);
+  expect(wrapper.findBodyCell(2, 1)!.getElement()).toContainHTML('Oranges');
+  expect(wrapper.findBodyCell(2, 2)).toBeNull();
+});
+
 test('inner state is tracked by row index by default', () => {
   const { rerender, getByTestId, queryByTestId } = renderTable(
     <Table columnDefinitions={statefulColumns} items={defaultItems} />

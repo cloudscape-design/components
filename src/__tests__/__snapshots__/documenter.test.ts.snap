@@ -4069,6 +4069,11 @@ The values for all configured preferences are present even if the user didn't ch
             "type": "\\"comfortable\\" | \\"compact\\"",
           },
           Object {
+            "name": "contentDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
+          },
+          Object {
             "name": "custom",
             "optional": true,
             "type": "CollectionPreferencesProps.Preferences.CustomPreferenceType",
@@ -4153,6 +4158,83 @@ You must set the current value in the \`preferences.contentDensity\` property.
       "type": "CollectionPreferencesProps.ContentDensityPreference",
     },
     Object {
+      "description": "Configures the built-in content display preference for order and visibility of columns in a table.
+Once set, the component displays this preference in the modal.
+
+It contains the following:
+- \`title\` (string) - Specifies the text displayed at the top of the preference.
+- \`description\` (string) - Specifies the description displayed below the title.
+- \`liveAnnouncementDndStarted\` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
+- \`liveAnnouncementDndDiscarded\` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
+- \`liveAnnouncementDndItemReordered\` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
+- \`liveAnnouncementDndItemCommitted\` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
+- \`dragHandleAriaDescription\` (string) - (Optional) Adds an ARIA description for the drag handle.
+- \`dragHandleAriaLabel\` (string) - (Optional) Adds an ARIA label for the drag handle.
+- \`options\` - Specifies an array of options for reordering and visible content selection.
+
+Each option contains the following:
+- \`id\` (string) - Corresponds to a table column \`id\`.
+- \`label\` (string) - Specifies a short description of the content.
+- \`alwaysVisible\` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to \`false\` by default.
+
+You must provide an ordered list of the items to display in the \`preferences.contentDisplay\` property.
+",
+      "inlineType": Object {
+        "name": "CollectionPreferencesProps.ContentDisplayPreference",
+        "properties": Array [
+          Object {
+            "name": "description",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "(initialPosition: number, finalPosition: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "(initialPosition: number, currentPosition: number, total: number) => string",
+          },
+          Object {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "(position: number, total: number) => string",
+          },
+          Object {
+            "name": "options",
+            "optional": false,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
+          },
+          Object {
+            "name": "title",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "contentDisplayPreference",
+      "optional": true,
+      "type": "CollectionPreferencesProps.ContentDisplayPreference",
+    },
+    Object {
       "description": "Configures custom preferences. The function receives two parameters:
 - \`customValue\` (CustomPreferenceType) - Current value for your custom preference. It is initialized using the value you provide in \`preferences.custom\`.
 - \`setCustomValue\` - A function that is called to notify a state update.
@@ -4227,7 +4309,8 @@ You must set the current value in the \`preferences.pageSize\` property.
 It contains the following:
 - \`pageSize\` (number) - (Optional)
 - \`wrapLines\` (boolean) - (Optional)
-- \`visibleContent\` (ReadonlyArray<string>) - Specifies the list of visible content \`id\`s. The order of the \`id\`s does not influence the display.
+- \`contentDisplay\` (ReadonlyArray<ContentDisplayItem>) - (Optional) Specifies the list of content and their visibility. The order of the elements influences the display.
+- \`visibleContent\` (ReadonlyArray<string>) - Specifies the list of visible content \`id\`s. The order of the \`id\`s does not influence the display. If the \`contentDisplay\` property is set, this property is ignored.
 - \`custom\` (CustomPreferenceType) - Specifies the value for your custom preference.
 ",
       "inlineType": Object {
@@ -4237,6 +4320,11 @@ It contains the following:
             "name": "contentDensity",
             "optional": true,
             "type": "\\"comfortable\\" | \\"compact\\"",
+          },
+          Object {
+            "name": "contentDisplay",
+            "optional": true,
+            "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>",
           },
           Object {
             "name": "custom",
@@ -11754,7 +11842,7 @@ add a meaningful description to the whole selection.
     Object {
       "description": "The columns configuration object
 * \`id\` (string) - Specifies a unique column identifier. The property is used 1) as a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering,
-  and 2) to match entries in the \`visibleColumns\` property, if defined.
+  and 2) to match entries in the \`columnDisplay\` property, if defined.
 * \`header\` (ReactNode) - Determines the display of the column header.
 * \`cell\` ((item) => ReactNode) - Determines the display of a cell's content. You receive the current table row
   item as an argument.
@@ -11795,6 +11883,16 @@ add a meaningful description to the whole selection.
       "name": "columnDefinitions",
       "optional": false,
       "type": "ReadonlyArray<TableProps.ColumnDefinition<T>>",
+    },
+    Object {
+      "description": "Specifies an array that represents the table columns in the order in which they will be displayed, together with their visibility.
+If not set, all columns are displayed and the order is dictated by the \`columnDefinitions\` property.
+
+Use it in conjunction with the content display preference of the [collection preferences](/components/collection-preferences/) component.
+",
+      "name": "columnDisplay",
+      "optional": true,
+      "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
     },
     Object {
       "defaultValue": "'comfortable'",
@@ -12033,7 +12131,7 @@ It's also used to connect \`items\` and \`selectedItems\` values when they refer
       "description": "Specifies an array containing the \`id\`s of visible columns. If not set, all columns are displayed.
 Use it in conjunction with the visible content preference of the [collection preferences](/components/collection-preferences/) component.
 
-The order of ids doesn't influence the order in which columns are displayed - this is dictated by the \`columnDefinitions\` property
+The order of ids doesn't influence the order in which columns are displayed - this is dictated by the \`columnDefinitions\` property.
 ",
       "name": "visibleColumns",
       "optional": true,
