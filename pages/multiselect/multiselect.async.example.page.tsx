@@ -77,6 +77,7 @@ class SecurityGroupMultiselect extends React.Component {
           filteringType="manual"
           filteringPlaceholder="Find security group"
           filteringAriaLabel="Filtering aria label"
+          filteringResultsText={matchesCount => `${matchesCount} items found`}
           statusType={status as any}
           placeholder="Choose a security group"
           loadingText="Loading security groups"

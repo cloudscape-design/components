@@ -75,6 +75,11 @@ export interface BaseSelectProps
    * Specifies the placeholder to display in the filtering input if filtering is enabled.
    */
   filteringPlaceholder?: string;
+
+  /**
+   * Displaying number of matched items while filtering
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
   /**
    * Adds an `aria-label` on the built-in filtering input if filtering is enabled.
    */
