@@ -13,7 +13,7 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
-import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
+import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -76,6 +76,7 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
+      columnDisplay,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -115,9 +116,13 @@ const InternalTable = React.forwardRef(
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
-    const visibleColumnDefinitions = visibleColumns
-      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
-      : columnDefinitions;
+
+    const visibleColumnDefinitions = getVisibleColumnDefinitions({
+      columnDefinitions,
+      columnDisplay,
+      visibleColumns,
+    });
+
     const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,

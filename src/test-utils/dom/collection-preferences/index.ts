@@ -7,6 +7,7 @@ import ModalWrapper from '../modal';
 import VisibleContentPreferenceWrapper from './visible-content-preference';
 import PageSizePreferenceWrapper from './page-size-preference';
 import styles from '../../../collection-preferences/styles.selectors.js';
+import ContentDisplayPreferenceWrapper from './content-display-preference';
 
 class PreferencesModalWrapper extends ModalWrapper {
   static rootSelector = styles['modal-root'];
@@ -37,6 +38,10 @@ class PreferencesModalWrapper extends ModalWrapper {
 
   findVisibleContentPreference(): VisibleContentPreferenceWrapper | null {
     return this.findComponent(`.${VisibleContentPreferenceWrapper.rootSelector}`, VisibleContentPreferenceWrapper);
+  }
+
+  findContentDisplayPreference(): ContentDisplayPreferenceWrapper | null {
+    return this.findComponent(`.${ContentDisplayPreferenceWrapper.rootSelector}`, ContentDisplayPreferenceWrapper);
   }
 
   findCustomPreference(): ElementWrapper | null {

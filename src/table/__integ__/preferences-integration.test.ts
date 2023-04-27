@@ -43,9 +43,9 @@ test(
   })
 );
 test(
-  'changes visible columns',
+  'changes column visibility using the visibleColumn property',
   useBrowser(async browser => {
-    await browser.url('#/light/table/hooks');
+    await browser.url('#/light/table/visible-content');
     const page = new BasePageObject(browser);
     await page.waitForVisible(wrapper.findRows().toSelector());
     await expect(
@@ -61,5 +61,53 @@ test(
     await expect(
       page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
     ).resolves.toEqual(['ID', 'Image ID', 'State']);
+  })
+);
+test(
+  'changes column visibility using the columnDisplay property',
+  useBrowser(async browser => {
+    await browser.url('#/light/table/hooks');
+    const page = new BasePageObject(browser);
+    await page.waitForVisible(wrapper.findRows().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'Type', 'DNS name', 'State']);
+
+    await page.click(preferences.findTriggerButton().toSelector());
+    const modal = preferences.findModal();
+    await page.waitForVisible(modal.toSelector());
+    const options = modal.findContentDisplayPreference().findOptions();
+    await page.click(options.get(2).toSelector());
+    await page.click(options.get(3).toSelector());
+    await page.click(options.get(4).toSelector());
+    await page.click(modal.findConfirmButton().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'Image ID', 'State']);
+  })
+);
+test(
+  'changes column order',
+  useBrowser(async browser => {
+    await browser.url('#/light/table/hooks');
+    const page = new BasePageObject(browser);
+    await page.waitForVisible(wrapper.findRows().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'Type', 'DNS name', 'State']);
+
+    await page.click(preferences.findTriggerButton().toSelector());
+    const modal = preferences.findModal();
+    await page.waitForVisible(modal.toSelector());
+    // Focus the drag handle of the second item
+    await page.keys(new Array(4).fill('Tab'));
+    // Swap the second item with the third one
+    await page.keys('Space');
+    await page.keys('ArrowDown');
+    await page.keys('Space');
+    await page.click(modal.findConfirmButton().toSelector());
+    await expect(
+      page.getElementsText(wrapper.findColumnHeaders().find(`.${headerCellStyles['header-cell-content']}`).toSelector())
+    ).resolves.toEqual(['ID', 'DNS name', 'Type', 'State']);
   })
 );
