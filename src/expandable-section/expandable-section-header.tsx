@@ -144,7 +144,7 @@ const ExpandableContainerHeader = ({
     <div id={id} className={className} onClick={onClick}>
       <Wrapper>
         <span
-          className={styles['header-container-button']}
+          className={isContainer ? styles['header-container-button'] : styles['header-button']}
           role="button"
           tabIndex={0}
           onKeyUp={onKeyUp}

@@ -14,6 +14,9 @@ export default function FileUploadTestPage() {
   return (
     <SpaceBetween size="m">
       <Header variant="h1">File upload integration test page</Header>
+      <button type="button" id="focus-target">
+        focus target
+      </button>
       <FileUpload
         multiple={true}
         value={contractFiles}

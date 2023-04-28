@@ -12,6 +12,7 @@ import { joinStrings } from '../../internal/utils/strings';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { FileUploadProps } from '../interfaces';
 import useForwardFocus from '../../internal/hooks/forward-focus';
+import clsx from 'clsx';
 
 interface FileInputProps extends FormFieldValidationControlProps {
   accept?: string;
@@ -95,9 +96,8 @@ function FileInput(
         iconName="upload"
         formAction="none"
         onClick={onUploadButtonClick}
-        className={styles['upload-button']}
+        className={clsx(styles['upload-button'], isFocused && styles['force-focus-outline'])}
         __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
-        __forcedFocusState={isFocused ? 'focused' : undefined}
       >
         {children}
       </InternalButton>
