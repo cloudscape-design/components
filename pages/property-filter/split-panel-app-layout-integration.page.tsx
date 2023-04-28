@@ -85,7 +85,6 @@ export default function () {
             filter={
               <PropertyFilter
                 {...propertyFilterProps}
-                disableFreeTextFiltering={true}
                 filteringOptions={filteringOptions}
                 virtualScroll={true}
                 countText={`${items.length} matches`}
