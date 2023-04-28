@@ -25,54 +25,38 @@ $border-radius: awsui.$border-radius-item;
   /* used in test-utils */
 }
 
-.content-display-option {
+.content-display-option-content {
   @include styles.styles-reset;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: awsui.$space-xs awsui.$space-scaled-xs awsui.$space-xs 0;
+  z-index: 1;
+}
+
+.content-display-option {
+  list-style: none;
   position: relative;
-  > .content-display-option-content {
-    border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding-top: awsui.$space-xs;
-    padding-bottom: awsui.$space-xs;
-    padding-right: 0;
-    &:not(.draggable) {
-      padding-left: awsui.$space-scaled-l;
-    }
-    &.draggable {
-      padding-left: 0;
-      padding-right: awsui.$space-scaled-xs;
-      z-index: 1;
-      &.active {
-        position: relative;
-        z-index: 2;
-        border-radius: $border-radius;
-        &:after {
-          content: ' ';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: awsui.$color-drag-placeholder-hover;
-          border-radius: $border-radius;
-          z-index: 1;
-        }
-      }
-      &:not(.active).sorting {
-        @include animated;
-      }
-      @include focus-visible {
-        &.active {
-          @include animated;
-        }
-      }
-    }
+  border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
+  &:not(.placeholder).sorting {
+    @include animated;
   }
-  &:not(.sortable) {
+  &.placeholder {
     > .content-display-option-content {
-      border-color: transparent;
+      position: relative;
+      border-radius: $border-radius;
+      &:after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: awsui.$color-drag-placeholder-hover;
+        border-radius: $border-radius;
+        z-index: 1;
+      }
     }
   }
 }

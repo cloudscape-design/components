@@ -4,9 +4,11 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { OptionWithVisibility } from './utils';
-import ContentDisplayOption from './content-display-option';
+import ContentDisplayOption, { getClassName } from './content-display-option';
+import clsx from 'clsx';
+import styles from '../styles.css.js';
 
-export function SortableItem({
+export default function DraggableOption({
   dragHandleAriaLabel,
   onKeyDown,
   onToggle,
@@ -37,16 +39,14 @@ export function SortableItem({
   };
 
   return (
-    <ContentDisplayOption
-      dragHandleAriaLabel={dragHandleAriaLabel}
-      isDragging={isDragging}
-      isSorting={isSorting}
-      listeners={combinedListeners}
-      onToggle={onToggle}
-      option={option}
-      ref={setNodeRef}
-      sortable={true}
-      style={style}
-    />
+    <li className={clsx(getClassName(), isDragging && styles.placeholder, isSorting && styles.sorting)} style={style}>
+      <ContentDisplayOption
+        ref={setNodeRef}
+        listeners={combinedListeners}
+        dragHandleAriaLabel={dragHandleAriaLabel}
+        onToggle={onToggle}
+        option={option}
+      />
+    </li>
   );
 }

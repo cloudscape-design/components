@@ -8,7 +8,7 @@ import styles from '../styles.css.js';
 import { getSortedOptions, OptionWithVisibility } from './utils';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { SortableItem } from './sortable-item';
+import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 import Portal from '../../internal/components/portal';
@@ -105,7 +105,7 @@ export default function ContentDisplayPreference({
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
             {sortedOptions.map(option => {
               return (
-                <SortableItem
+                <DraggableOption
                   dragHandleAriaLabel={dragHandleAriaLabel}
                   key={option.id}
                   onKeyDown={handleKeyDown}
@@ -124,10 +124,10 @@ export default function ContentDisplayPreference({
               https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles
           */}
           {/* eslint-disable-next-line react/forbid-component-props */}
-          <DragOverlay wrapperElement="ul" className={styles['drag-overlay']} style={{ zIndex: 5000 }}>
+          <DragOverlay className={styles['drag-overlay']} style={{ zIndex: 5000 }}>
             {activeOption && (
               <ContentDisplayOption
-                sortable={false}
+                listeners={{ onKeyDown: handleKeyDown }}
                 dragHandleAriaLabel={dragHandleAriaLabel}
                 onToggle={onToggle}
                 option={activeOption}
