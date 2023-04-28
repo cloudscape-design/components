@@ -399,3 +399,20 @@ describe('Ref', () => {
     expect(input.selectionEnd).toBe(2);
   });
 });
+
+test('findOptionInGroup', () => {
+  const { container } = render(
+    <Autosuggest
+      value=""
+      onChange={() => {}}
+      enteredTextLabel={() => 'Use value'}
+      options={[
+        { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
+        { label: 'Group 2', options: [{ value: '3' }] },
+      ]}
+    />
+  );
+  const wrapper = createWrapper(container).findAutosuggest()!;
+  wrapper.findNativeInput().focus();
+  expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
+});
