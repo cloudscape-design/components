@@ -117,18 +117,23 @@ export default function ContentDisplayPreference({
           </SortableContext>
         </ul>
         <Portal>
-          <div className={styles['drag-overlay']}>
-            <DragOverlay wrapperElement="ul">
-              {activeOption && (
-                <ContentDisplayOption
-                  sortable={false}
-                  dragHandleAriaLabel={dragHandleAriaLabel}
-                  onToggle={onToggle}
-                  option={activeOption}
-                />
-              )}
-            </DragOverlay>
-          </div>
+          {/* Make sure that the drag overlay is above the modal
+              by assigning the z-index as inline style
+              so that it prevails over dnd-kit's inline z-index of 999  */}
+          {/* className is a documented prop of the DragOverlay component:
+              https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles
+          */}
+          {/* eslint-disable-next-line react/forbid-component-props */}
+          <DragOverlay wrapperElement="ul" className={styles['drag-overlay']} style={{ zIndex: 5000 }}>
+            {activeOption && (
+              <ContentDisplayOption
+                sortable={false}
+                dragHandleAriaLabel={dragHandleAriaLabel}
+                onToggle={onToggle}
+                option={activeOption}
+              />
+            )}
+          </DragOverlay>
         </Portal>
       </DndContext>
     </div>

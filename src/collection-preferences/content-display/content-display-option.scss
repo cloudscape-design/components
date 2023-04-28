@@ -83,20 +83,15 @@ $border-radius: awsui.$border-radius-item;
 }
 
 .drag-overlay {
-  z-index: 5000;
   position: relative;
   top: 0;
   margin: 0;
-  // stylelint-disable selector-max-type
-  > ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    background-color: awsui.$color-background-container-content;
-    box-shadow: awsui.$shadow-container-active;
-    border-radius: $border-radius;
-    @include focus-visible {
-      @include styles.focus-highlight(0px, $border-radius);
-    }
+  padding: 0;
+  list-style: none;
+  background-color: awsui.$color-background-container-content;
+  box-shadow: awsui.$shadow-container-active;
+  border-radius: $border-radius;
+  @include focus-visible {
+    @include styles.focus-highlight(0px, $border-radius);
   }
 }
