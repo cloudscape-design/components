@@ -89,7 +89,7 @@ describe('Collection preferences - Content Display preference', () => {
         const dragHandleBox = await page.getBoundingBox(dragHandleSelector);
         const delta = { x: x - dragHandleBox.right, y: y - dragHandleBox.bottom };
         await page.mouseDown(dragHandleSelector);
-        await page.mouseMove(delta.x, delta.y);
+        await page.mouseMove(Math.round(delta.x), Math.round(delta.y));
         await wait(100);
 
         const newModalContentBox = await page.getBoundingBox(modalContentSelector);
