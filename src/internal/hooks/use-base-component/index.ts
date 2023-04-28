@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject } from 'react';
-import { useComponentMetadata } from './component-metadata';
+import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
 import { useTelemetry } from '../use-telemetry';
 import { PACKAGE_VERSION } from '../../environment';
+import useFocusVisible from '../focus-visible';
 
 export interface InternalBaseComponentProps {
   __internalRootRef?: MutableRefObject<any> | null;
@@ -16,6 +17,7 @@ export interface InternalBaseComponentProps {
  */
 export default function useBaseComponent<T = any>(componentName: string) {
   useTelemetry(componentName);
+  useFocusVisible();
   const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION);
   return { __internalRootRef: elementRef };
 }

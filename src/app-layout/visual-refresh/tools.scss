@@ -44,8 +44,18 @@ viewport size and state of the Tools drawer.
     #{custom-props.$toolsWidth}: auto;
     position: fixed;
     right: 0;
-    top: var(#{custom-props.$offsetTop});
     z-index: 1001;
+
+    /*
+    When disableBodyScroll is true the offsetTop will be relative to the 
+    app layout and not the body. However, the drawer position changes 
+    to fixed in mobile viewports. The top value needs to include the 
+    header because fixed position switches the top value so it is now 
+    relative to the body.
+    */
+    &.disable-body-scroll {
+      top: var(#{custom-props.$headerHeight});
+    }
   }
 }
 
@@ -130,6 +140,7 @@ the calculation used to determine the Split Panel maximum width in the
 handleSplitPanelMaxWidth function in the context.
 */
 .show-tools {
+  @include styles.styles-reset;
   box-sizing: border-box;
   padding: awsui.$space-scaled-s awsui.$space-layout-toggle-padding;
 

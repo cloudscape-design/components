@@ -182,7 +182,7 @@ function ValueInput({
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
   ) : (
     <InternalAutosuggest
-      enteredTextLabel={i18nStrings.enteredTextLabel}
+      enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
       value={matchedOption?.label ?? value ?? ''}
       clearAriaLabel={i18nStrings.clearAriaLabel}
       onChange={e => onChangeValue(e.detail.value)}

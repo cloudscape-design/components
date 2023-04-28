@@ -1,15 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useRef, useState, useMemo, useImperativeHandle } from 'react';
+import React, { useRef, useState, useImperativeHandle } from 'react';
 
 import InternalSpaceBetween from '../space-between/internal';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { KeyCode } from '../internal/keycode';
-import SelectToggle from '../token-group/toggle';
-import { generateUniqueId } from '../internal/hooks/use-unique-id/index';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { fireNonCancelableEvent } from '../internal/events';
 
 import {
@@ -34,14 +33,27 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { getOperatorForm, matchTokenValue } from './utils';
 import { warnOnce } from '../internal/logging';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
+import { useInternalI18n } from '../internal/i18n/context';
+import TokenList from '../internal/components/token-list';
+import { SearchResults } from '../text-filter/search-results';
 
 export { PropertyFilterProps };
+
+const OPERATOR_I18N_MAPPING: Record<PropertyFilterOperator, string> = {
+  '=': 'equals',
+  '!=': 'not_equals',
+  '>': 'greater_than',
+  '>=': 'greater_than_equal',
+  '<': 'less_than',
+  '<=': 'less_than_equal',
+  ':': 'contains',
+  '!:': 'not_contains',
+};
 
 const PropertyFilter = React.forwardRef(
   (
     {
       disabled,
-      i18nStrings,
       countText,
       query,
       hideOperations,
@@ -68,11 +80,59 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const { __internalRootRef } = useBaseComponent('PropertyFilter');
+    const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
+
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
+
+    const i18n = useInternalI18n('property-filter');
+    const i18nStrings: PropertyFilterProps.I18nStrings = {
+      ...rest.i18nStrings,
+      allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings.allPropertiesLabel),
+      applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings.applyActionText),
+      cancelActionText: i18n('i18nStrings.cancelActionText', rest.i18nStrings.cancelActionText),
+      clearFiltersText: i18n('i18nStrings.clearFiltersText', rest.i18nStrings.clearFiltersText),
+      editTokenHeader: i18n('i18nStrings.editTokenHeader', rest.i18nStrings.editTokenHeader),
+      enteredTextLabel: i18n('i18nStrings.enteredTextLabel', rest.i18nStrings.enteredTextLabel),
+      groupPropertiesText: i18n('i18nStrings.groupPropertiesText', rest.i18nStrings.groupPropertiesText),
+      groupValuesText: i18n('i18nStrings.groupValuesText', rest.i18nStrings.groupValuesText),
+      operationAndText: i18n('i18nStrings.operationAndText', rest.i18nStrings.operationAndText),
+      operationOrText: i18n('i18nStrings.operationOrText', rest.i18nStrings.operationOrText),
+      operatorContainsText: i18n('i18nStrings.operatorContainsText', rest.i18nStrings.operatorContainsText),
+      operatorDoesNotContainText: i18n(
+        'i18nStrings.operatorDoesNotContainText',
+        rest.i18nStrings.operatorDoesNotContainText
+      ),
+      operatorDoesNotEqualText: i18n('i18nStrings.operatorDoesNotEqualText', rest.i18nStrings.operatorDoesNotEqualText),
+      operatorEqualsText: i18n('i18nStrings.operatorEqualsText', rest.i18nStrings.operatorEqualsText),
+      operatorGreaterOrEqualText: i18n(
+        'i18nStrings.operatorGreaterOrEqualText',
+        rest.i18nStrings.operatorGreaterOrEqualText
+      ),
+      operatorGreaterText: i18n('i18nStrings.operatorGreaterText', rest.i18nStrings.operatorGreaterText),
+      operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings.operatorLessOrEqualText),
+      operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings.operatorLessText),
+      operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings.operatorText),
+      operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings.operatorsText),
+      propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings.propertyText),
+      tokenLimitShowFewer: i18n('i18nStrings.tokenLimitShowFewer', rest.i18nStrings.tokenLimitShowFewer),
+      tokenLimitShowMore: i18n('i18nStrings.tokenLimitShowMore', rest.i18nStrings.tokenLimitShowMore),
+      valueText: i18n('i18nStrings.valueText', rest.i18nStrings.valueText),
+      removeTokenButtonAriaLabel: i18n(
+        'i18nStrings.removeTokenButtonAriaLabel',
+        rest.i18nStrings.removeTokenButtonAriaLabel,
+        format => token =>
+          format({
+            token__operator: OPERATOR_I18N_MAPPING[token.operator],
+            token__propertyKey: token.propertyKey ?? '',
+            token__value: token.value,
+          })
+      ),
+    };
+
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const { tokens, operation } = query;
-    const showResults = tokens?.length && !disabled;
+    const showResults = !!tokens?.length && !disabled && !!countText;
     const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
       query,
       onChange,
@@ -245,26 +305,26 @@ const PropertyFilter = React.forwardRef(
 
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
-    const [tokensExpanded, setTokensExpanded] = useState(false);
-    const toggleExpandedTokens = () => setTokensExpanded(!tokensExpanded);
-    const hasHiddenOptions = tokenLimit !== undefined && tokens.length > tokenLimit;
-    const slicedTokens = hasHiddenOptions && !tokensExpanded ? tokens.slice(0, tokenLimit) : tokens;
-    const controlId = useMemo(() => generateUniqueId(), []);
 
     const operatorForm =
       parsedText.step === 'property' &&
       getOperatorForm(internalFilteringProperties, parsedText.property.key, parsedText.operator);
 
+    const searchResultsId = useUniqueId('property-filter-search-results');
+
     return (
-      <span {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
             ref={inputRef}
             virtualScroll={virtualScroll}
-            enteredTextLabel={i18nStrings.enteredTextLabel}
+            enteredTextLabel={i18nStrings.enteredTextLabel ?? (value => value)}
             ariaLabel={i18nStrings.filteringAriaLabel}
             placeholder={i18nStrings.filteringPlaceholder}
+            ariaLabelledby={rest.ariaLabelledby}
+            ariaDescribedby={rest.ariaDescribedby}
+            controlId={rest.controlId}
             value={filteringText}
             disabled={disabled}
             onKeyDown={handleKeyDown}
@@ -298,63 +358,56 @@ const PropertyFilter = React.forwardRef(
             }
             hideEnteredTextOption={disableFreeTextFiltering && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
+            searchResultsId={showResults ? searchResultsId : undefined}
           />
-          <span
-            aria-live="polite"
-            aria-atomic="true"
-            className={clsx(styles.results, showResults && styles['results-visible'])}
-          >
-            {showResults ? countText : ''}
-          </span>
+          {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
         </div>
         {tokens && tokens.length > 0 && (
           <div className={styles.tokens}>
-            <InternalSpaceBetween size="xs" direction="horizontal" id={controlId}>
-              {slicedTokens.map((token, index) => (
-                <TokenButton
-                  token={token}
-                  first={index === 0}
-                  operation={operation}
-                  key={index}
-                  removeToken={() => removeToken(index)}
-                  setToken={(newToken: Token) => setToken(index, newToken)}
-                  setOperation={setOperation}
-                  filteringOptions={internalFilteringOptions}
-                  filteringProperties={internalFilteringProperties}
-                  asyncProps={asyncProps}
-                  onLoadItems={onLoadItems}
-                  i18nStrings={i18nStrings}
-                  asyncProperties={asyncProperties}
-                  hideOperations={hideOperations}
-                  customGroupsText={customGroupsText}
-                  disableFreeTextFiltering={disableFreeTextFiltering}
-                  disabled={disabled}
-                  expandToViewport={expandToViewport}
-                />
-              ))}
-              {hasHiddenOptions && (
-                <div className={styles['toggle-collapsed']}>
-                  <SelectToggle
-                    controlId={controlId}
-                    allHidden={tokenLimit === 0}
-                    expanded={tokensExpanded}
-                    numberOfHiddenOptions={tokens.length - slicedTokens.length}
-                    i18nStrings={{
-                      limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                      limitShowMore: i18nStrings.tokenLimitShowMore,
+            <InternalSpaceBetween size="xs" direction="horizontal">
+              <TokenList
+                alignment="inline"
+                limit={tokenLimit}
+                items={tokens}
+                renderItem={(token, tokenIndex) => (
+                  <TokenButton
+                    token={token}
+                    first={tokenIndex === 0}
+                    operation={operation}
+                    removeToken={() => {
+                      removeToken(tokenIndex);
+                      setRemovedTokenIndex(tokenIndex);
                     }}
-                    onClick={toggleExpandedTokens}
+                    setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
+                    setOperation={setOperation}
+                    filteringOptions={internalFilteringOptions}
+                    filteringProperties={internalFilteringProperties}
+                    asyncProps={asyncProps}
+                    onLoadItems={onLoadItems}
+                    i18nStrings={i18nStrings}
+                    asyncProperties={asyncProperties}
+                    hideOperations={hideOperations}
+                    customGroupsText={customGroupsText}
+                    disableFreeTextFiltering={disableFreeTextFiltering}
+                    disabled={disabled}
+                    expandToViewport={expandToViewport}
                   />
-                </div>
-              )}
-              <div className={styles.separator} />
-              <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
-                {i18nStrings.clearFiltersText}
-              </InternalButton>
+                )}
+                i18nStrings={{
+                  limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                  limitShowMore: i18nStrings.tokenLimitShowMore,
+                }}
+                after={
+                  <InternalButton onClick={removeAllTokens} className={styles['remove-all']} disabled={disabled}>
+                    {i18nStrings.clearFiltersText}
+                  </InternalButton>
+                }
+                removedItemIndex={removedTokenIndex}
+              />
             </InternalSpaceBetween>
           </div>
         )}
-      </span>
+      </div>
     );
   }
 );

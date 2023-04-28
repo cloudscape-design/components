@@ -151,8 +151,8 @@ const Cards = React.forwardRef(function <T = any>(
               visibleSections={visibleSections}
               updateShiftToggle={updateShiftToggle}
               onFocus={onCardFocus}
-              ariaDescribedby={cardsHeaderId}
-              ariaLabelledby={cardsHeaderId}
+              ariaLabel={ariaLabels?.cardsLabel}
+              ariaLabelledby={ariaLabels?.cardsLabel ? undefined : cardsHeaderId}
             />
           )}
         </div>
@@ -175,13 +175,14 @@ const CardsList = <T,>({
   updateShiftToggle,
   onFocus,
   ariaLabelledby,
-  ariaDescribedby,
+  ariaLabel,
 }: Pick<CardsProps<T>, 'items' | 'cardDefinition' | 'trackBy' | 'selectionType' | 'visibleSections'> & {
   columns: number | null;
   isItemSelected: (item: T) => boolean;
   getItemSelectionProps: (item: T) => SelectionControlProps;
   updateShiftToggle: (state: boolean) => void;
   onFocus: FocusEventHandler<HTMLElement>;
+  ariaLabel?: string;
   ariaLabelledby?: string;
   ariaDescribedby?: string;
 }) => {
@@ -209,7 +210,7 @@ const CardsList = <T,>({
       className={clsx(styles.list, styles[`list-grid-${columns || 1}`])}
       role={listRole}
       aria-labelledby={ariaLabelledby}
-      aria-describedby={ariaDescribedby}
+      aria-label={ariaLabel}
       {...(focusMarkers && focusMarkers.root)}
     >
       {items.map((item, index) => (
@@ -225,9 +226,9 @@ const CardsList = <T,>({
         >
           <div className={styles['card-inner']}>
             <div className={styles['card-header']}>
-              <span className={styles['card-header-inner']}>
+              <div className={styles['card-header-inner']}>
                 {cardDefinition.header ? cardDefinition.header(item) : ''}
-              </span>
+              </div>
               {selectable && (
                 <div className={styles['selection-control']}>
                   <SelectionControl

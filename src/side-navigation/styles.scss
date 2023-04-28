@@ -58,8 +58,11 @@
 
 .list-variant-root {
   margin: 0;
-  margin-bottom: awsui.$space-scaled-xxxl;
   padding: 0 awsui.$space-panel-side-right 0 awsui.$space-panel-nav-left;
+
+  &--last {
+    margin-bottom: awsui.$space-scaled-xxxl;
+  }
 }
 
 .list-variant-expandable-link-group {

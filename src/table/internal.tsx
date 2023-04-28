@@ -13,7 +13,7 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { supportsStickyPosition } from '../internal/utils/dom';
 import SelectionControl from './selection-control';
-import { checkSortingState, getColumnKey, getItemKey, toContainerVariant } from './utils';
+import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 import { useRowEvents } from './use-row-events';
 import { focusMarkers, useFocusMove, useSelection } from './use-selection';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
@@ -26,7 +26,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import StickyScrollbar from './sticky-scrollbar';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
@@ -77,6 +76,7 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
+      columnDisplay,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -97,6 +97,7 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const [currentEditCell, setCurrentEditCell] = useState<[number, number] | null>(null);
+    const [lastSuccessfulEditCell, setLastSuccessfulEditCell] = useState<[number, number] | null>(null);
     const [currentEditLoading, setCurrentEditLoading] = useState(false);
 
     useImperativeHandle(
@@ -115,10 +116,14 @@ const InternalTable = React.forwardRef(
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
-    const visibleColumnDefinitions = visibleColumns
-      ? columnDefinitions.filter(column => column.id && visibleColumns.indexOf(column.id) !== -1)
-      : columnDefinitions;
-    const { isItemSelected, selectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
+
+    const visibleColumnDefinitions = getVisibleColumnDefinitions({
+      columnDefinitions,
+      columnDisplay,
+      visibleColumns,
+    });
+
+    const { isItemSelected, getSelectAllProps, getItemSelectionProps, updateShiftToggle } = useSelection({
       items,
       trackBy,
       selectedItems,
@@ -126,10 +131,8 @@ const InternalTable = React.forwardRef(
       isItemDisabled,
       onSelectionChange,
       ariaLabels,
+      loading,
     });
-    if (loading) {
-      selectAllProps.disabled = true;
-    }
 
     if (isDevelopment) {
       if (resizableColumns) {
@@ -153,7 +156,7 @@ const InternalTable = React.forwardRef(
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
-      selectAllProps,
+      getSelectAllProps,
       columnDefinitions: visibleColumnDefinitions,
       variant: computedVariant,
       wrapLines,
@@ -181,7 +184,6 @@ const InternalTable = React.forwardRef(
     const wrapperProps = isWrapperScrollable
       ? { role: 'region', tabIndex: 0, 'aria-label': ariaLabels?.tableLabel }
       : {};
-    const focusVisibleProps = useFocusVisible();
 
     const getMouseDownTarget = useMouseDownTarget();
     const wrapWithInlineLoadingState = (submitEdit: TableProps['submitEdit']) => {
@@ -266,7 +268,6 @@ const InternalTable = React.forwardRef(
             })}
             onScroll={handleScroll}
             {...wrapperProps}
-            {...focusVisibleProps}
           >
             {!!renderAriaLive && !!firstIndex && (
               <LiveRegion>
@@ -367,6 +368,10 @@ const InternalTable = React.forwardRef(
                         {visibleColumnDefinitions.map((column, colIndex) => {
                           const isEditing =
                             !!currentEditCell && currentEditCell[0] === rowIndex && currentEditCell[1] === colIndex;
+                          const successfulEdit =
+                            !!lastSuccessfulEditCell &&
+                            lastSuccessfulEditCell[0] === rowIndex &&
+                            lastSuccessfulEditCell[1] === colIndex;
                           const isEditable = !!column.editConfig && !currentEditLoading;
                           return (
                             <TableBodyCell
@@ -391,11 +396,18 @@ const InternalTable = React.forwardRef(
                               isSelected={isSelected}
                               isNextSelected={isNextSelected}
                               isPrevSelected={isPrevSelected}
-                              onEditStart={() => setCurrentEditCell([rowIndex, colIndex])}
-                              onEditEnd={() => {
-                                const wasCancelled = fireCancelableEvent(onEditCancel, {});
-                                if (!wasCancelled) {
+                              successfulEdit={successfulEdit}
+                              onEditStart={() => {
+                                setLastSuccessfulEditCell(null);
+                                setCurrentEditCell([rowIndex, colIndex]);
+                              }}
+                              onEditEnd={editCancelled => {
+                                const eventCancelled = fireCancelableEvent(onEditCancel, {});
+                                if (!eventCancelled) {
                                   setCurrentEditCell(null);
+                                  if (!editCancelled) {
+                                    setLastSuccessfulEditCell([rowIndex, colIndex]);
+                                  }
                                 }
                               }}
                               submitEdit={wrapWithInlineLoadingState(submitEdit)}

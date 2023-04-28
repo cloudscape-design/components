@@ -33,7 +33,7 @@ export interface CodeEditorProps extends BaseComponentProps, FormFieldControlPro
   /**
    * An event handler called when the value changes.
    * The event `detail` contains the current value of the code editor content.
-   * @deprecated Replaced by `onDelayedChange`.
+   * **Deprecated** Replaced by `onDelayedChange`.
    */
   onChange?: NonCancelableEventHandler<CodeEditorProps.ChangeDetail>;
 
@@ -154,6 +154,10 @@ export namespace CodeEditorProps {
     preferencesModalTheme: string;
     preferencesModalLightThemes: string;
     preferencesModalDarkThemes: string;
+
+    preferencesModalThemeFilteringPlaceholder?: string;
+    preferencesModalThemeFilteringAriaLabel?: string;
+    preferencesModalThemeFilteringClearAriaLabel?: string;
   }
   export interface ResizeDetail {
     height: number;
@@ -164,5 +168,12 @@ export namespace CodeEditorProps {
 
   export interface ValidateDetail {
     annotations: Ace.Annotation[];
+  }
+
+  export interface Ref {
+    /**
+     * Sets input focus onto the code editor control.
+     */
+    focus(): void;
   }
 }

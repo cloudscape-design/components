@@ -22,7 +22,7 @@ export namespace FlashbarProps {
   }
 
   export interface I18nStrings {
-    ariaLabel: string;
+    ariaLabel?: string;
     errorIconAriaLabel?: string;
     infoIconAriaLabel?: string;
     inProgressIconAriaLabel?: string;

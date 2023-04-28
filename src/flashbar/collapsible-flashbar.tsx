@@ -8,7 +8,6 @@ import { FlashbarProps } from './interfaces';
 import InternalIcon from '../icon/internal';
 import { TransitionGroup } from 'react-transition-group';
 import { Transition } from '../internal/components/transition';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 
 import styles from './styles.css.js';
@@ -21,6 +20,7 @@ import { useFlashbar } from './common';
 import { throttle } from '../internal/utils/throttle';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { findUpUntil } from '../internal/utils/dom';
+import { useInternalI18n } from '../internal/i18n/context';
 
 export { FlashbarProps };
 
@@ -45,7 +45,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { ariaLabel, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -64,7 +64,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     },
   });
 
-  const isFocusVisible = useFocusVisible();
   const collapsedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const expandedItemRefs = useRef<Record<string | number, HTMLElement | null>>({});
   const [initialAnimationState, setInitialAnimationState] = useState<Record<string | number, DOMRect> | null>(null);
@@ -134,6 +133,18 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
 
   const { i18nStrings } = restProps;
 
+  const i18n = useInternalI18n('flashbar');
+  const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);
+  const notificationBarText = i18n('i18nStrings.notificationBarText', i18nStrings?.notificationBarText);
+  const notificationBarAriaLabel = i18n('i18nStrings.notificationBarAriaLabel', i18nStrings?.notificationBarAriaLabel);
+  const iconAriaLabels = {
+    errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+    inProgressIconAriaLabel: i18n('i18nStrings.inProgressIconAriaLabel', i18nStrings?.inProgressIconAriaLabel),
+    infoIconAriaLabel: i18n('i18nStrings.infoIconAriaLabel', i18nStrings?.infoIconAriaLabel),
+    successIconAriaLabel: i18n('i18nStrings.successIconAriaLabel', i18nStrings?.successIconAriaLabel),
+    warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+  };
+
   useLayoutEffect(() => {
     // When `useLayoutEffect` is called, the DOM is updated but has not been painted yet,
     // so it's a good moment to trigger animations that will make calculations based on old and new DOM state.
@@ -172,8 +183,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         ...item,
         collapsedIndex: index,
       }));
-
-  const notificationBarText = i18nStrings?.notificationBarText;
 
   const getItemId = (item: StackableItem | FlashbarProps.MessageDefinition) =>
     item.id ?? (item as StackableItem).expandedIndex ?? 0;
@@ -315,7 +324,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                   <NotificationTypeCount
                     key={type}
                     iconName={iconName}
-                    label={i18nStrings ? i18nStrings[labelName] : undefined}
+                    label={iconAriaLabels[labelName]}
                     count={countByType[type]}
                   />
                 ))}
@@ -325,9 +334,8 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
               aria-controls={flashbarElementId}
               aria-describedby={itemCountElementId}
               aria-expanded={isFlashbarStackExpanded}
-              aria-label={i18nStrings?.notificationBarAriaLabel}
+              aria-label={notificationBarAriaLabel}
               className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
-              {...isFocusVisible}
             >
               <InternalIcon className={styles.icon} size="normal" name="angle-down" />
             </button>

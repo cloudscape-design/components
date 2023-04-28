@@ -97,13 +97,10 @@ const isMouseEvent = (e: React.MouseEvent | React.KeyboardEvent): e is React.Mou
   return (e as React.MouseEvent).button !== undefined;
 };
 
-export function isPlainLeftClick(event?: React.MouseEvent | React.KeyboardEvent) {
-  return (
-    event &&
-    (!isMouseEvent(event) || event.button === 0) &&
-    !event.ctrlKey &&
-    !event.altKey &&
-    !event.shiftKey &&
-    !event.metaKey
-  );
+export function hasModifierKeys(event: React.MouseEvent | React.KeyboardEvent) {
+  return event.ctrlKey || event.altKey || event.shiftKey || event.metaKey;
+}
+
+export function isPlainLeftClick(event: React.MouseEvent | React.KeyboardEvent) {
+  return event && (!isMouseEvent(event) || event.button === 0) && !hasModifierKeys(event);
 }

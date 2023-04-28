@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { i18nStrings } from './common';
@@ -20,6 +20,7 @@ import {
   PropertyFilterProps,
   Ref,
 } from '../../../lib/components/property-filter/interfaces';
+import '../../__a11y__/to-validate-a11y';
 
 const states: Record<string, string> = {
   0: 'Stopped',
@@ -102,11 +103,18 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
     </div>
   );
   const pageWrapper = createWrapper(container);
-  return {
-    container,
-    propertyFilterWrapper: pageWrapper.findPropertyFilter()!,
-    pageWrapper,
-  };
+  return { container, propertyFilterWrapper: pageWrapper.findPropertyFilter()!, pageWrapper };
+};
+
+function StatefulPropertyFilter(props: Omit<PropertyFilterProps, 'onChange'>) {
+  const [query, setQuery] = useState<PropertyFilterProps.Query>(props.query);
+  return <PropertyFilter {...props} query={query} onChange={e => setQuery(e.detail)} />;
+}
+
+const renderStatefulComponent = (props?: Partial<PropertyFilterProps>) => {
+  const { container } = render(<StatefulPropertyFilter {...defaultProps} {...props} />);
+  const pageWrapper = createWrapper(container);
+  return { container, propertyFilterWrapper: pageWrapper.findPropertyFilter()!, pageWrapper };
 };
 
 function findPropertySelector(wrapper: ElementWrapper) {
@@ -178,6 +186,16 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('placeholder', 'placeholder');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('disabled');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-label', 'your choice');
+    });
+    test('recieves `ariaLabelledby`, `ariaDescribedby` and `controlId` properties passed to the component', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        ariaLabelledby: 'label-by-id',
+        ariaDescribedby: 'described-by-id',
+        controlId: 'control-id',
+      });
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-labelledby', 'label-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-describedby', 'described-by-id');
+      expect(wrapper.findNativeInput().getElement()).toHaveAttribute('id', 'control-id');
     });
     describe('typing experience: ', () => {
       test('provides relevant suggestions depending on the currently entered string', () => {
@@ -405,9 +423,16 @@ describe('property filter parts', () => {
   });
 
   describe('count text', () => {
-    test('is hidden when there are no filtering tokens', () => {
+    test('is not displayed when count text is empty', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        countText: '',
+        query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      });
+      expect(wrapper.findResultsCount()).toBe(null);
+    });
+    test('is not displayed when there are no filtering tokens', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ countText: '5 matches' });
-      expect(wrapper.findResultsCount()!.getElement()).toBeEmptyDOMElement();
+      expect(wrapper.findResultsCount()).toBe(null);
     });
     test('is visible when there is at least 1 token', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
@@ -491,7 +516,7 @@ describe('property filter parts', () => {
         expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { tokens: [], operation: 'or' } }));
       });
       test('moves the focus to the input, when pressed', () => {
-        const { propertyFilterWrapper: wrapper } = renderComponent({
+        const { propertyFilterWrapper: wrapper } = renderStatefulComponent({
           query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
         });
         act(() => wrapper.findTokens()![0].findRemoveButton()!.click());
@@ -717,11 +742,11 @@ describe('property filter parts', () => {
       expect(wrapper.findTokens()!).toHaveLength(1);
       expect(wrapper.findTokens()![0].findLabel().getElement()).toHaveTextContent('string : first');
       // show more
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer);
       expect(wrapper.findTokens()!).toHaveLength(2);
       // show fewer
-      act(() => wrapper.findTokenToggle()!.find('button')!.click());
+      act(() => wrapper.findTokenToggle()!.click());
       expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
       expect(wrapper.findTokens()!).toHaveLength(1);
     });
@@ -782,6 +807,45 @@ describe('property filter parts', () => {
     expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('error');
     wrapper.selectSuggestion(2, { expandToViewport: true });
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
+  });
+
+  describe('status indicators', () => {
+    test('displays error status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error text');
+    });
+    test('links error status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'error',
+        filteringErrorText: 'Error text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error text`);
+    });
+    test('displays finished status', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished text');
+    });
+    test('links finished status to dropdown', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        filteringStatusType: 'finished',
+        filteringFinishedText: 'Finished text',
+      });
+      wrapper.findNativeInput().focus();
+      wrapper.setInputValue('string');
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished text`);
+    });
   });
 
   describe('extended operators', () => {
@@ -924,11 +988,11 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
     });
-    it('when free text filtering is not allowed and no property is matched dropdown is hidden but aria-expanded is false', () => {
+    it('when free text filtering is not allowed and no property is matched dropdown is not shown and aria-expanded is false', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
-      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('');
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
   });
 
@@ -1241,5 +1305,10 @@ describe('property filter parts', () => {
   test('property filter input can be found with styles.input', () => {
     const { container } = renderComponent();
     expect(createWrapper(container).findByClassName(styles.input)!.getElement()).not.toBe(null);
+  });
+
+  test('check a11y', async () => {
+    const { container } = render(<PropertyFilter {...defaultProps} />);
+    await expect(container).toValidateA11y();
   });
 });

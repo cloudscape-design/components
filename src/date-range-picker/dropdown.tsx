@@ -8,7 +8,7 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import FocusLock from '../internal/components/focus-lock';
 import InternalBox from '../box/internal';
-import SpaceBetween from '../space-between/index.js';
+import InternalSpaceBetween from '../space-between/internal';
 
 import styles from './styles.css.js';
 import RelativeRangePicker from './relative-range';
@@ -16,7 +16,6 @@ import ModeSwitcher from './mode-switcher';
 import clsx from 'clsx';
 import InternalAlert from '../alert/internal';
 import LiveRegion from '../internal/components/live-region';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
@@ -78,7 +77,6 @@ export function DateRangePickerDropdown({
     value?.type === 'relative' ? value : null
   );
 
-  const focusVisible = useFocusVisible();
   const scrollableContainerRef = useRef<HTMLDivElement | null>(null);
   const applyButtonRef = useRef<ButtonProps.Ref>(null);
 
@@ -134,7 +132,6 @@ export function DateRangePickerDropdown({
     <>
       <FocusLock className={styles['focus-lock']} autoFocus={true}>
         <div
-          {...focusVisible}
           ref={scrollableContainerRef}
           className={styles.dropdown}
           tabIndex={0}
@@ -149,9 +146,9 @@ export function DateRangePickerDropdown({
               [styles['one-grid']]: isSingleGrid,
             })}
           >
-            <SpaceBetween size="l">
+            <InternalSpaceBetween size="l">
               <InternalBox padding={{ top: 'm', horizontal: 'l' }}>
-                <SpaceBetween direction="vertical" size="s">
+                <InternalSpaceBetween direction="vertical" size="s">
                   {rangeSelectorMode === 'default' && (
                     <ModeSwitcher
                       mode={rangeSelectionMode}
@@ -188,7 +185,7 @@ export function DateRangePickerDropdown({
                       i18nStrings={i18nStrings}
                     />
                   )}
-                </SpaceBetween>
+                </InternalSpaceBetween>
 
                 <InternalBox
                   className={styles['validation-section']}
@@ -224,7 +221,7 @@ export function DateRangePickerDropdown({
                   </div>
                 )}
                 <div className={styles['footer-button-wrapper']}>
-                  <SpaceBetween size="xs" direction="horizontal">
+                  <InternalSpaceBetween size="xs" direction="horizontal">
                     <InternalButton
                       onClick={closeDropdown}
                       className={styles['cancel-button']}
@@ -242,10 +239,10 @@ export function DateRangePickerDropdown({
                     >
                       {i18nStrings.applyButtonLabel}
                     </InternalButton>
-                  </SpaceBetween>
+                  </InternalSpaceBetween>
                 </div>
               </div>
-            </SpaceBetween>
+            </InternalSpaceBetween>
           </div>
         </div>
       </FocusLock>

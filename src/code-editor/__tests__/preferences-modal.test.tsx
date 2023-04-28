@@ -79,6 +79,18 @@ test('should allow limiting themes selection via property', () => {
   expect(select.findDropdown().findOptions()).toHaveLength(2);
 });
 
+test('should pass i18nStrings to theme select', () => {
+  const { wrapper } = renderCodeEditor();
+  wrapper.findSettingsButton()!.click();
+  const select = createWrapper().findModal()!.findContent().findSelect()!;
+  select.openDropdown();
+  const filteringInput = select.findFilteringInput()!;
+  expect(filteringInput.findNativeInput().getElement()).toHaveAccessibleName('Filter themes aria');
+  expect(filteringInput.findNativeInput().getElement()).toHaveAttribute('placeholder', 'Filter themes');
+  filteringInput.setInputValue('s');
+  expect(filteringInput.findClearButton()!.getElement()).toHaveAccessibleName('Clear');
+});
+
 test('should reset pending changes when modal dismisses', () => {
   const onPreferencesChange = jest.fn();
   const { wrapper } = renderCodeEditor({ onPreferencesChange: event => onPreferencesChange(event.detail) });

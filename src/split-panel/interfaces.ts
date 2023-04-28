@@ -36,14 +36,14 @@ export interface SplitPanelProps extends BaseComponentProps {
 export namespace SplitPanelProps {
   export interface I18nStrings {
     closeButtonAriaLabel: string;
-    openButtonAriaLabel: string;
-    preferencesTitle: string;
-    preferencesPositionLabel: string;
-    preferencesPositionDescription: string;
-    preferencesPositionSide: string;
-    preferencesPositionBottom: string;
-    preferencesConfirm: string;
-    preferencesCancel: string;
+    openButtonAriaLabel?: string;
+    preferencesTitle?: string;
+    preferencesPositionLabel?: string;
+    preferencesPositionDescription?: string;
+    preferencesPositionSide?: string;
+    preferencesPositionBottom?: string;
+    preferencesConfirm?: string;
+    preferencesCancel?: string;
     resizeHandleAriaLabel: string;
   }
 }

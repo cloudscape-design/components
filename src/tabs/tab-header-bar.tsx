@@ -5,7 +5,6 @@ import { TabsProps } from './interfaces';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import { InternalButton } from '../button/internal';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useContainerQuery } from '../internal/hooks/container-queries';
 import { KeyCode } from '../internal/keycode';
 import {
@@ -15,7 +14,7 @@ import {
   hasRightOverflow,
   scrollIntoView,
 } from './scroll-utils';
-import { isPlainLeftClick } from '../internal/events';
+import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 
 export interface TabHeaderBarProps {
@@ -39,8 +38,6 @@ export function TabHeaderBar({
   ariaLabelledby,
   i18nStrings,
 }: TabHeaderBarProps) {
-  const focusVisible = useFocusVisible();
-
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<HTMLAnchorElement>(null);
   const leftOverflowButton = useRef<HTMLElement>(null);
@@ -181,7 +178,7 @@ export function TabHeaderBar({
     ) {
       const { keyCode } = event;
       const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
-      if (specialKeys.indexOf(keyCode) === -1) {
+      if (hasModifierKeys(event) || specialKeys.indexOf(keyCode) === -1) {
         return;
       }
       event.preventDefault();
@@ -260,7 +257,6 @@ export function TabHeaderBar({
 
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
-      ...focusVisible,
       role: 'tab',
       'aria-selected': tab.id === activeTabId,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { Ref, useImperativeHandle, useRef } from 'react';
+import clsx from 'clsx';
 
 import { useAutosuggestItems } from './options-controller';
 import { AutosuggestItem, AutosuggestProps } from './interfaces';
@@ -9,7 +10,7 @@ import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import DropdownFooter from '../internal/components/dropdown-footer';
 
-import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
@@ -17,7 +18,6 @@ import {
   NonCancelableCustomEvent,
 } from '../internal/events';
 import { BaseChangeDetail } from '../input/interfaces';
-import styles from './styles.css.js';
 import { checkOptionValueField } from '../select/utils/check-option-value-field';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -26,7 +26,9 @@ import { useAutosuggestLoadMore } from './load-more-controller';
 import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
 import AutosuggestInput, { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { useFormFieldContext } from '../contexts/form-field';
-import clsx from 'clsx';
+import { useInternalI18n } from '../internal/i18n/context';
+
+import styles from './styles.css.js';
 
 export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
@@ -56,7 +58,6 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     virtualScroll,
     expandToViewport,
     onSelect,
-    selectedAriaLabel,
     renderHighlightedAriaLive,
     __internalRootRef,
     ...restProps
@@ -75,6 +76,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     []
   );
 
+  const i18n = useInternalI18n('autosuggest');
+  const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
+  const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
+
   const [autosuggestItemsState, autosuggestItemsHandlers] = useAutosuggestItems({
     options: options || [],
     filterValue: value,
@@ -84,7 +89,10 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
-      fireNonCancelableEvent(onSelect, { value });
+      fireNonCancelableEvent(onSelect, {
+        value,
+        selectedOption: option.type !== 'use-entered' ? option.option : undefined,
+      });
       autosuggestInputRef.current?.close();
     },
   });
@@ -146,12 +154,20 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
+  const footerControlId = useUniqueId('footer');
   const controlId = formFieldContext.controlId ?? selfControlId;
   const listId = useUniqueId('list');
-  const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
+  const highlightedOptionIdSource = useUniqueId();
+  const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
-  const dropdownStatus = useDropdownStatus({ ...props, isEmpty, recoveryText, onRecoveryClick: handleRecoveryClick });
+  const dropdownStatus = useDropdownStatus({
+    ...props,
+    isEmpty,
+    recoveryText,
+    errorIconAriaLabel,
+    onRecoveryClick: handleRecoveryClick,
+  });
 
   return (
     <AutosuggestInput
@@ -193,12 +209,19 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           virtualScroll={virtualScroll}
           selectedAriaLabel={selectedAriaLabel}
           renderHighlightedAriaLive={renderHighlightedAriaLive}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
         />
       }
       dropdownFooter={
         dropdownStatus.isSticky ? (
-          <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+          <DropdownFooter
+            id={footerControlId}
+            content={dropdownStatus.content}
+            hasItems={autosuggestItemsState.items.length >= 1}
+          />
         ) : null
       }
       loopFocus={statusType === 'error' && !!recoveryText}

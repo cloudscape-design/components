@@ -10,7 +10,7 @@ import {
   OptionsFilteringType,
 } from '../internal/components/dropdown/interfaces';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { BaseInputProps, InputAutoCorrect, InputKeyEvents, InputProps } from '../input/interfaces';
+import { BaseInputProps, InputAutoCorrect, InputClearLabel, InputKeyEvents, InputProps } from '../input/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export interface AutosuggestProps
@@ -19,6 +19,7 @@ export interface AutosuggestProps
     InputAutoCorrect,
     BaseDropdownHostProps,
     InputKeyEvents,
+    InputClearLabel,
     FormFieldValidationControlProps,
     DropdownStatusProps {
   /**
@@ -28,6 +29,7 @@ export interface AutosuggestProps
    * #### Option
    * - `value` (string) - The returned value of the option when selected.
    * - `label` (string) - (Optional) Option text displayed to the user.
+   * - `lang` (string) - (Optional) The language of the option, provided as a BCP 47 language tag.
    * - `description` (string) - (Optional) Further information about the option that appears below the label.
    * - `disabled` (boolean) - (Optional) Determines whether the option is disabled.
    * - `labelTag` (string) - (Optional) A label tag that provides additional guidance, shown next to the label.
@@ -122,6 +124,7 @@ export namespace AutosuggestProps {
   export type StatusType = DropdownStatusProps.StatusType;
   export interface SelectDetail {
     value: string;
+    selectedOption?: Option;
   }
 
   export interface ContainingOptionAndGroupString {

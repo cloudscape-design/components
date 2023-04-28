@@ -6,6 +6,7 @@ import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { findUpUntil } from '../../../lib/components/internal/utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
@@ -91,18 +92,9 @@ export function describeEachAppLayout(callback: () => void) {
 }
 
 export function isDrawerClosed(drawer: ElementWrapper) {
-  const element = drawer.getElement();
-
   // The visibility class name we are attaching to the wrapping element,
   // however the test-util points to the inner element, which has the scrollbar
-  if (element.parentElement!.classList.contains(styles['drawer-closed'])) {
-    return true;
-  }
-  // Apply the same logic for the visual refresh app-layout where the testutils selector is used.
-  if (element.parentElement!.classList.contains(testutilStyles['drawer-closed'])) {
-    return true;
-  }
-  return false;
+  return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
 }
 
 export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
@@ -116,4 +108,109 @@ export const splitPanelI18nStrings: SplitPanelProps.I18nStrings = {
   preferencesConfirm: 'Confirm',
   preferencesCancel: 'Cancel',
   resizeHandleAriaLabel: 'Resize panel',
+};
+
+export const drawersConfigurations = {
+  singleDrawer: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  singleDrawerOpen: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      activeDrawerId: 'security',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  resizableDrawer: {
+    drawers: {
+      ariaLabel: 'Drawers',
+      items: [
+        {
+          ariaLabels: {
+            closeButton: 'Security close button',
+            content: 'Security drawer content',
+            triggerButton: 'Security trigger button',
+            resizeHandle: 'Security resize handle',
+          },
+          resizable: true,
+          content: <span>Security</span>,
+          id: 'security',
+          trigger: {
+            iconName: 'security',
+          },
+        },
+      ],
+    },
+  },
+  drawersItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+  drawersResizableItems: [
+    {
+      ariaLabels: {
+        closeButton: 'Security close button',
+        content: 'Security drawer content',
+        triggerButton: 'Security trigger button',
+        resizeHandle: 'Security resize handle',
+      },
+      content: <span>Security</span>,
+      resizable: true,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
+  drawersItemsWithoutLabels: [
+    {
+      content: <span>Security</span>,
+      id: 'security',
+      trigger: {
+        iconName: 'security',
+      },
+    },
+  ],
 };

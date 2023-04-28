@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { act, render } from '@testing-library/react';
 import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
+import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import Button from '../../../lib/components/button';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
@@ -26,6 +27,8 @@ const DEFAULT_I18N_SETS = [
     nextButton: 'Next',
     submitButton: 'Create record',
     optional: 'optional',
+    nextButtonLoadingAnnouncement: 'Loading next step',
+    submitButtonLoadingAnnouncement: 'Submitting form',
   },
   {
     stepNumberLabel: stepNumber => `第 ${stepNumber} 步`,
@@ -36,6 +39,8 @@ const DEFAULT_I18N_SETS = [
     nextButton: '下一步',
     submitButton: '提交',
     optional: '視需要',
+    nextButtonLoadingAnnouncement: 'Lade nächsten Schritt',
+    submitButtonLoadingAnnouncement: 'Schicke Formular ab',
   },
 ] as ReadonlyArray<WizardProps.I18nStrings>;
 
@@ -94,19 +99,19 @@ describe('i18nStrings', () => {
       );
 
       wrapper.findAllByClassName(styles['navigation-link-label']).forEach((label, index) => {
-        const expectedTitle = i18nStrings.stepNumberLabel(index + 1);
+        const expectedTitle = i18nStrings.stepNumberLabel!(index + 1);
         const expectedLabel = DEFAULT_STEPS[index].isOptional
           ? `${expectedTitle} - ${i18nStrings.optional}`
           : expectedTitle;
         expect(label?.getElement()).toHaveTextContent(expectedLabel);
       });
 
-      expect(wrapper.findCancelButton().getElement()).toHaveTextContent(i18nStrings.cancelButton);
-      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.nextButton);
+      expect(wrapper.findCancelButton().getElement()).toHaveTextContent(i18nStrings.cancelButton!);
+      expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(i18nStrings.nextButton!);
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
-      const expectedCollapsedSteps = `${i18nStrings.collapsedStepsLabel(2, DEFAULT_STEPS.length)}`;
+      const expectedCollapsedSteps = `${i18nStrings.collapsedStepsLabel!(2, DEFAULT_STEPS.length)}`;
       expect(wrapper.findByClassName(styles['collapsed-steps'])!.getElement()).toHaveTextContent(
         expectedCollapsedSteps
       );
@@ -114,7 +119,7 @@ describe('i18nStrings', () => {
       const expectedFormTitle = `${DEFAULT_STEPS[1].title} - ${i18nStrings.optional}`;
       expect(wrapper.findHeader()!.getElement()).toHaveTextContent(expectedFormTitle);
 
-      expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent(i18nStrings.previousButton);
+      expect(wrapper.findPreviousButton()!.getElement()).toHaveTextContent(i18nStrings.previousButton!);
 
       // navigate to next step
       wrapper.findPrimaryButton().click();
@@ -250,7 +255,7 @@ describe('Primary button', () => {
     const [wrapper] = renderDefaultWizard();
     DEFAULT_STEPS.forEach((step, index) => {
       if (index < DEFAULT_STEPS.length - 1) {
-        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton);
+        expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].nextButton!);
       } else {
         expect(wrapper.findPrimaryButton().getElement()).toHaveTextContent(DEFAULT_I18N_SETS[0].submitButton);
       }
@@ -503,12 +508,17 @@ test('disables all navigation while a step is loading', () => {
   expect(wrapper.findPreviousButton()!.getElement()).toBeDisabled();
   expect(wrapper.findSkipToButton()!.getElement()).toBeDisabled();
   expect(wrapper.findCancelButton()!.getElement()).toBeEnabled();
-  expect(wrapper.findPrimaryButton()!.getElement()).toBeDisabled();
+  expect(wrapper.findPrimaryButton()!.getElement()).toHaveAttribute('aria-disabled', 'true');
 
   expect(wrapper.findMenuNavigationLink(1, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(2, 'active')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(3, 'disabled')).not.toBeNull();
   expect(wrapper.findMenuNavigationLink(4, 'disabled')).not.toBeNull();
+
+  // check for screen reader announcement
+  expect(wrapper.findActions()?.findByClassName(liveRegionStyles.root)?.getElement()).toHaveTextContent(
+    DEFAULT_I18N_SETS[0].nextButtonLoadingAnnouncement!
+  );
 
   rerender({ ...props, isLoadingNextStep: false });
 

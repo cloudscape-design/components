@@ -38,7 +38,13 @@
     text-decoration: none;
   }
 
-  @include focus-visible.when-visible {
+  &:not(.hide-focus-outline) {
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    }
+  }
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.force-focus-outline {
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
   &.variant-icon,
@@ -53,7 +59,7 @@
       );
     }
   }
-  &.variant-inline-icon {
+  &.variant-inline-icon:not(.hide-focus-outline) {
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
     }

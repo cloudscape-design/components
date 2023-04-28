@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloudscape demo pages</title>
 
-<head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cloudscape demo pages</title>
+    <script>
+      const isDevelopment = '<%= process.env.NODE_ENV %>' !== 'production';
 
-  <script>
-    const isDevelopment = "<%= process.env.NODE_ENV %>" !== "production";
-    const developmentCsp = "connect-src 'self' ws://" + location.host + ";" ;
-    const safeCsp = "default-src 'self'; style-src 'self'; font-src data:;" + (isDevelopment ? developmentCsp : "");
-    const themingCsp = "default-src 'self'; style-src 'unsafe-inline' 'self'; font-src data:;"
-    // Custom CSP required for how we load SVGs in CodeEditor component
-    //unsafe-inline is required for the react-resizable box in the code-editor
-    const codeEditorCsp = "default-src 'self'; style-src 'unsafe-inline' 'self'; font-src data:;  img-src 'self' data:;" + (isDevelopment ? developmentCsp : "");
- 
-    let csp;
-    if (location.hash.indexOf('code-editor') > -1) {
-      csp = codeEditorCsp;
-    } else if (location.hash.indexOf('theming') > -1) {
-      csp = themingCsp;
-    } else {
-      csp = safeCsp;
-    }
-    document.write('<meta http-equiv="Content-Security-Policy" content="' + csp + '" />');
-  </script>
-</head>
+      const csp = { 'default-src': "'self'", 'font-src': 'data:', 'style-src': "'self'" };
 
-<body>
-  <!-- #b element should be there for compatibility with global navigation -->
-  <div id="b">
-    <div id="app"></div>
-  </div>
-</body>
+      if (isDevelopment) {
+        csp['connect-src'] = `'self' ws://${location.host};`;
+      }
 
+      // Theming generates inline styles in runtime
+      if (location.hash.includes('theming')) {
+        csp['style-src'] = "'unsafe-inline' 'self'";
+      }
+      if (location.hash.includes('code-editor')) {
+        csp['worker-src'] = 'blob:'; // ace uses web workers for syntax validation
+        csp['img-src'] = 'data:'; // this component contains icons loaded this way
+      }
+      // Custom CSP required for thumbnails in FileUpload component
+      if (location.hash.includes('file-upload')) {
+        csp['img-src'] = 'blob:';
+      }
+
+      const cspString = Object.entries(csp)
+        .map(([key, value]) => `${key} ${value}`)
+        .join('; ');
+
+      document.write('<meta http-equiv="Content-Security-Policy" content="' + cspString + '" />');
+    </script>
+  </head>
+
+  <body>
+    <!-- #b element should be there for compatibility with global navigation -->
+    <div id="b">
+      <div id="app"></div>
+    </div>
+  </body>
 </html>

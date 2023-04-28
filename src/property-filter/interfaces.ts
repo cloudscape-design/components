@@ -7,6 +7,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { FormFieldControlProps } from '../internal/context/form-field-context';
 import {
   PropertyFilterOperation,
   PropertyFilterOperator,
@@ -19,7 +20,7 @@ import {
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
-export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
+export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**
    * If set to `true`, the filtering input will be disabled.
    * Use it, for example, if you are fetching new items upon filtering change
@@ -227,40 +228,40 @@ export namespace PropertyFilterProps {
      * See the [Autosuggest API](/system/components/autosuggest/?tabId=api) page for more details.
      */
     filteringAriaLabel: string;
-    dismissAriaLabel: string;
+    dismissAriaLabel?: string;
     clearAriaLabel?: string;
 
     filteringPlaceholder?: string;
-    groupValuesText: string;
-    groupPropertiesText: string;
-    operatorsText: string;
+    groupValuesText?: string;
+    groupPropertiesText?: string;
+    operatorsText?: string;
 
-    operationAndText: string;
-    operationOrText: string;
+    operationAndText?: string;
+    operationOrText?: string;
 
-    operatorLessText: string;
-    operatorLessOrEqualText: string;
-    operatorGreaterText: string;
-    operatorGreaterOrEqualText: string;
-    operatorContainsText: string;
-    operatorDoesNotContainText: string;
-    operatorEqualsText: string;
-    operatorDoesNotEqualText: string;
+    operatorLessText?: string;
+    operatorLessOrEqualText?: string;
+    operatorGreaterText?: string;
+    operatorGreaterOrEqualText?: string;
+    operatorContainsText?: string;
+    operatorDoesNotContainText?: string;
+    operatorEqualsText?: string;
+    operatorDoesNotEqualText?: string;
 
-    editTokenHeader: string;
-    propertyText: string;
-    operatorText: string;
-    valueText: string;
-    cancelActionText: string;
-    applyActionText: string;
-    allPropertiesLabel: string;
+    editTokenHeader?: string;
+    propertyText?: string;
+    operatorText?: string;
+    valueText?: string;
+    cancelActionText?: string;
+    applyActionText?: string;
+    allPropertiesLabel?: string;
 
     tokenLimitShowMore?: string;
     tokenLimitShowFewer?: string;
-    clearFiltersText: string;
+    clearFiltersText?: string;
     tokenOperatorAriaLabel?: string;
-    removeTokenButtonAriaLabel: (token: PropertyFilterProps.Token) => string;
-    enteredTextLabel: AutosuggestProps.EnteredTextLabel;
+    removeTokenButtonAriaLabel?: (token: PropertyFilterProps.Token) => string;
+    enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
   }
 
   export interface GroupText {

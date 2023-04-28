@@ -35,6 +35,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLayoutToggleActive: '{colorGrey700}',
   colorBackgroundLayoutToggleDefault: '{colorGrey700}',
   colorBackgroundLayoutToggleHover: '{colorGrey600}',
+  colorBackgroundLayoutPanelTriggerActive: { light: '{colorBlue600}', dark: '{colorBlue400}' },
   colorBackgroundModalOverlay: { light: '{colorGreyOpaque90}', dark: '{colorGreyOpaque80}' },
   colorBackgroundProgressBarContentInFlash: { light: '{colorGreyOpaque70}', dark: '{colorGrey100}' },
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
@@ -64,7 +65,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderInputDefault: { dark: '{colorGrey500}' },
   colorBorderItemFocused: { light: '{colorBlue600}' },
   colorBorderItemPlaceholder: '{colorTransparent}',
-  colorBorderItemSelected: { light: '{colorBlue500}' },
   colorBorderPopover: { light: '{colorGrey300}', dark: '{colorGrey600}' },
   colorBorderSegmentActive: '{colorBorderSegmentHover}',
   colorBorderSegmentDefault: { light: '{colorGrey550}', dark: '{colorGrey500}' },
@@ -108,6 +108,8 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextInputPlaceholder: { light: '{colorGrey550}', dark: '{colorGrey500}' },
   colorTextInputPlaceholderDisabled: '{colorTextInputPlaceholder}',
   colorTextLabel: { light: '{colorGrey600}', dark: '{colorGrey450}' },
+  colorTextLayoutPanelTriggerHover: { light: '{colorBlue600}', dark: '{colorBlue500}' },
+  colorTextLayoutPanelTriggerActive: { light: '{colorWhite}', dark: '{colorGrey800}' },
   colorTextLinkDefault: { dark: '{colorBlue400}' },
   colorTextLinkHover: '{colorTextLinkDefault}',
   colorTextLinkInvertedHover: '{colorTextNotificationDefault}',
@@ -121,6 +123,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextStatusInfo: { dark: '{colorBlue400}' },
   colorBoardPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
   colorBoardPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
+  colorDragPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
+  colorDragPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
+  colorDropzoneBackgroundActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
+  colorDropzoneBackgroundHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
+  colorDropzoneTextActive: { light: '{colorGrey600}', dark: '{colorGrey900}' },
+  colorDropzoneTextHover: { light: '{colorBlue900}', dark: '{colorWhite}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(

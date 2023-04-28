@@ -31,12 +31,10 @@ export default function InternalSpaceBetween({
       ref={__internalRootRef}
     >
       {flattenedChildren.map(child => {
-        // If this react child is a primitive value, the key will be undefined
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const key = (child as any).key;
+        const key = typeof child === 'object' ? child.key : undefined;
 
         return (
-          <div key={key} className={clsx(styles.child, styles[`child-${direction}-${size}`])}>
+          <div key={key} className={styles.child}>
             {child}
           </div>
         );

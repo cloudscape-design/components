@@ -147,7 +147,7 @@ export const getAllValueSuggestions = (
   customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
-    label: i18nStrings.groupValuesText,
+    label: i18nStrings.groupValuesText ?? '',
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<AutosuggestProps.Option> } = {};
@@ -223,7 +223,7 @@ export function getPropertySuggestions<T>(
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
-    label: i18nStrings.groupPropertiesText,
+    label: i18nStrings.groupPropertiesText ?? '',
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
@@ -329,7 +329,7 @@ export const getAutosuggestOptions = (
 };
 
 export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
-  const mapping: { [K in ComparisonOperator]: string } = {
+  const mapping: { [K in ComparisonOperator]: string | undefined } = {
     ['<']: i18nStrings.operatorLessText,
     ['<=']: i18nStrings.operatorLessOrEqualText,
     ['>']: i18nStrings.operatorGreaterText,
@@ -341,3 +341,13 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
   };
   return mapping[operator];
 };
+
+export function getFormattedToken(filteringProperties: readonly FilteringProperty[], token: Token) {
+  const valueFormatter =
+    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
+  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
+  const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
+}

@@ -15,6 +15,7 @@ import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 import styles from './styles.css.js';
 import { InternalFormFieldProps } from './interfaces';
 import { joinStrings } from '../internal/utils/strings';
+import { useInternalI18n } from '../internal/i18n/context';
 
 interface FormFieldErrorProps {
   id?: string;
@@ -22,16 +23,40 @@ interface FormFieldErrorProps {
   errorIconAriaLabel?: string;
 }
 
-export const FormFieldError = ({ id, children, errorIconAriaLabel }: FormFieldErrorProps) => (
-  <div id={id} className={styles.error}>
-    <div className={styles['error-icon-shake-wrapper']}>
-      <div role="img" aria-label={errorIconAriaLabel} className={styles['error-icon-scale-wrapper']}>
-        <InternalIcon name="status-warning" size="small" />
+export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldErrorProps) {
+  const i18n = useInternalI18n('form-field');
+
+  return (
+    <div id={id} className={styles.error}>
+      <div className={styles['error-icon-shake-wrapper']}>
+        <div
+          role="img"
+          aria-label={i18n('i18nStrings.errorIconAriaLabel', errorIconAriaLabel)}
+          className={styles['error-icon-scale-wrapper']}
+        >
+          <InternalIcon name="status-warning" size="small" />
+        </div>
       </div>
+      <span className={styles.error__message}>{children}</span>
     </div>
-    <span className={styles.error__message}>{children}</span>
-  </div>
-);
+  );
+}
+
+export function ConstraintText({
+  id,
+  hasError,
+  children,
+}: {
+  id?: string;
+  hasError: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div id={id} className={clsx(styles.constraint, hasError && styles['constraint-has-error'])}>
+      {children}
+    </div>
+  );
+}
 
 export default function InternalFormField({
   controlId,
@@ -47,7 +72,6 @@ export default function InternalFormField({
   __hideLabel,
   __internalRootRef = null,
   __disableGutters = false,
-  __useReactAutofocus = false,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -73,7 +97,6 @@ export default function InternalFormField({
     ariaLabelledby: joinStrings(parentAriaLabelledby, slotIds.label) || undefined,
     ariaDescribedby: joinStrings(parentAriaDescribedby, ariaDescribedBy) || undefined,
     invalid: !!errorText || !!parentInvalid,
-    __useReactAutofocus,
   };
 
   return (
@@ -120,12 +143,9 @@ export default function InternalFormField({
             </FormFieldError>
           )}
           {constraintText && (
-            <div
-              className={clsx(styles.constraint, errorText && styles['constraint-has-error'])}
-              id={slotIds.constraint}
-            >
+            <ConstraintText id={slotIds.constraint} hasError={!!errorText}>
               {constraintText}
-            </div>
+            </ConstraintText>
           )}
         </div>
       )}

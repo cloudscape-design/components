@@ -81,6 +81,37 @@ const permutations = createPermutations<TableProps>([
     ],
   },
   {
+    wrapLines: [true],
+    columnDefinitions: [
+      PROPERTY_COLUMNS.map((column, index) => ({
+        ...column,
+        header: Array(20)
+          .fill(0)
+          .map(() => column.header)
+          .join(index < PROPERTY_COLUMNS.length - 1 ? ' ' : ''),
+      })),
+    ],
+    items: [
+      [
+        {
+          name: 'Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color Color',
+          value: '#000000',
+          type: 'String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String String',
+        },
+        {
+          name: 'Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width Width',
+          value: '100',
+          type: 'Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer',
+        },
+        {
+          name: 'Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height Height',
+          value: '200',
+          type: 'Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer Integer',
+        },
+      ],
+    ],
+  },
+  {
     columnDefinitions: [PROPERTY_COLUMNS],
     items: [
       [

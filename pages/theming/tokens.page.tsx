@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Theme, applyTheme } from '~components/theming';
 import * as Tokens from '~design-tokens';
 import { preset } from '~components/internal/generated/theming';
@@ -24,13 +24,39 @@ const tiles: Tile[] = themeableColorTokens
   .map((token: string) => ({ text: token, color: Tokens[token as keyof typeof Tokens] }));
 
 export default function () {
+  const [themed, setThemed] = useState<boolean>(false);
+  const [secondaryTheme, setSecondaryTheme] = useState<boolean>(false);
+
   useEffect(() => {
-    const { reset } = applyTheme({ theme });
+    let reset: () => void = () => {};
+    if (themed) {
+      const result = applyTheme({ theme, baseThemeId: secondaryTheme ? 'visual-refresh' : undefined });
+      reset = result.reset;
+    }
     return reset;
-  }, []);
+  }, [themed, secondaryTheme]);
   return (
     <div style={{ padding: 15, backgroundColor: 'white' }}>
       <h1 className={styles.title}>Color Token Mosaik</h1>
+      <label>
+        <input
+          type="checkbox"
+          data-testid="change-theme"
+          checked={themed}
+          onChange={evt => setThemed(evt.currentTarget.checked)}
+        />
+        <span style={{ marginLeft: 5 }}>Apply theme</span>
+      </label>
+      <label>
+        <input
+          style={{ marginLeft: 15 }}
+          type="checkbox"
+          data-testid="set-secondary"
+          checked={secondaryTheme}
+          onChange={evt => setSecondaryTheme(evt.currentTarget.checked)}
+        />
+        <span style={{ marginLeft: 5 }}>Secondary theme</span>
+      </label>
       <ScreenshotArea>
         <Mosaik tiles={tiles} />
       </ScreenshotArea>

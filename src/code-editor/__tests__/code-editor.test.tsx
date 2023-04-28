@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { KeyCode } from '../../internal/keycode';
-import CodeEditor from '../../../lib/components/code-editor';
+import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import {
   aceMock,
   editorMock,
@@ -17,6 +17,7 @@ import resizableStyles from '../../../lib/components/code-editor/resizable-box/s
 import { warnOnce } from '../../../lib/components/internal/logging';
 import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
+import '../../__a11y__/to-validate-a11y';
 
 jest.mock('../../../lib/components/internal/logging', () => ({
   warnOnce: jest.fn(),
@@ -35,6 +36,13 @@ describe('Code editor component', () => {
     const { wrapper } = renderCodeEditor({ loading: true });
     expect(wrapper.findLoadingScreen()).toBeDefined();
     expect(wrapper.findLoadingScreen()!.getElement()).toHaveTextContent('Loading code editor');
+  });
+
+  it('allows programmatically to be focused', () => {
+    const ref = React.createRef<CodeEditorProps.Ref>();
+    const { wrapper } = renderCodeEditor({}, ref);
+    ref.current!.focus();
+    expect(wrapper.findEditor()?.getElement()).toHaveFocus();
   });
 
   it('displays error screen', () => {
@@ -459,5 +467,10 @@ describe('Code editor component', () => {
   it('should not log a warning when onEditorContentResize is passed', () => {
     render(<CodeEditor {...defaultProps} editorContentHeight={240} onEditorContentResize={() => {}} />);
     expect(warnOnce).not.toHaveBeenCalled();
+  });
+
+  test('a11y', async () => {
+    const { wrapper } = renderCodeEditor();
+    await expect(wrapper.getElement()).toValidateA11y();
   });
 });

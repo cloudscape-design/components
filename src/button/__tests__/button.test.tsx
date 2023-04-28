@@ -5,6 +5,7 @@ import { act, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/button/styles.css.js';
+import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -68,7 +69,9 @@ describe('Button Component', () => {
       expect(wrapper.isDisabled()).toEqual(true);
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      // In this case, aria-disabled would be redundant, so we don't set it
       expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('does not add the disabled attribute on link buttons', () => {
@@ -77,6 +80,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveClass(styles.disabled);
       expect(wrapper.getElement()).not.toHaveAttribute('disabled');
       expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 when button with link is disabled', () => {
@@ -290,19 +294,25 @@ describe('Button Component', () => {
   });
 
   describe('Loading property', () => {
-    test("should disable the button when in 'loading' status", () => {
+    test("should disable the button with aria-disabled when in 'loading' status", () => {
       const onClickSpy = jest.fn();
       const wrapper = renderButton({ onClick: onClickSpy, loading: true });
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
-      expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
       act(() => wrapper.click());
       expect(onClickSpy).not.toHaveBeenCalled();
     });
 
     test('gives loading precendence over disabled', () => {
       const wrapper = renderButton({ loading: true, disabled: true });
+      // Loading indicator is shown even when the button is also disabled.
       expect(wrapper.findLoadingIndicator()).not.toBeNull();
+      // However, setting `disabled` does mean that the button can no longer be focused.
       expect(wrapper.getElement()).toHaveAttribute('disabled');
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      expect(wrapper.isDisabled()).toBe(true);
     });
 
     test('adds a tab index -1 to the link button', () => {
@@ -340,6 +350,13 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
   });
+  describe('form property', () => {
+    test('should have form property when set', () => {
+      const formId = 'form-id';
+      const wrapper = renderButton({ form: formId });
+      expect(wrapper.getElement()).toHaveAttribute('form', formId);
+    });
+  });
 
   describe('button links', () => {
     test('uses an a element if an href is provided', () => {
@@ -352,25 +369,18 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).toHaveAttribute('href', 'https://amazon.com');
     });
 
-    test('can add a target attribute if it is a link', () => {
-      let wrapper = renderButton({ target: '_blank' });
-      expect(wrapper.getElement()).not.toHaveAttribute('target');
-      wrapper = renderButton({ href: 'https://amazon.com', target: '_blank' });
-      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
-      wrapper = renderButton({ href: 'https://amazon.com' });
-      expect(wrapper.getElement()).not.toHaveAttribute('target');
+    test.each(buttonTargetExpectations)('"target" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      expectation
+        ? expect(wrapper.getElement()).toHaveAttribute('target', expectation)
+        : expect(wrapper.getElement()).not.toHaveAttribute('target');
     });
 
-    test('when target is blank, adds respective rel attribute', () => {
-      let wrapper = renderButton({ href: 'https://amazon.com', target: '_blank' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'noopener noreferrer');
-      wrapper = renderButton({ href: 'https://amazon.com', target: '_self' });
-      expect(wrapper.getElement()).not.toHaveAttribute('rel');
-    });
-
-    test('does not set the default "rel" attribute for "target=_blank" if a "rel" prop is provided', () => {
-      const wrapper = renderButton({ href: 'https://amazon.com', target: '_blank', rel: 'nofollow' });
-      expect(wrapper.getElement()).toHaveAttribute('rel', 'nofollow');
+    test.each(buttonRelExpectations)('"rel" property %s', (props, expectation) => {
+      const wrapper = renderButton({ ...props });
+      expectation
+        ? expect(wrapper.getElement()).toHaveAttribute('rel', expectation)
+        : expect(wrapper.getElement()).not.toHaveAttribute('rel');
     });
 
     test('can add a download attribute if it is a link', () => {

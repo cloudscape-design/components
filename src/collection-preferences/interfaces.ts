@@ -71,6 +71,30 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
+   * Configures the built-in content display preference for order and visibility of columns in a table.
+   *
+   * Once set, the component displays this preference in the modal.
+   *
+   * It contains the following:
+   * - `title` (string) - Specifies the text displayed at the top of the preference.
+   * - `description` (string) - Specifies the description displayed below the title.
+   * - `liveAnnouncementDndStarted` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
+   * - `liveAnnouncementDndDiscarded` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
+   * - `liveAnnouncementDndItemReordered` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
+   * - `liveAnnouncementDndItemCommitted` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
+   * - `dragHandleAriaDescription` (string) - (Optional) Adds an ARIA description for the drag handle.
+   * - `dragHandleAriaLabel` (string) - (Optional) Adds an ARIA label for the drag handle.
+   * - `options` - Specifies an array of options for reordering and visible content selection.
+   *
+   * Each option contains the following:
+   * - `id` (string) - Corresponds to a table column `id`.
+   * - `label` (string) - Specifies a short description of the content.
+   * - `alwaysVisible` (boolean) - (Optional) Determines whether the visibility is always on and therefore cannot be toggled. This is set to `false` by default.
+   *
+   * You must provide an ordered list of the items to display in the `preferences.contentDisplay` property.
+   */
+  contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
+  /**
    * Configures the built-in "visible content selection" preference (for example, visible columns in a table).
    *
    * If you set it, the component displays this preference in the modal.
@@ -95,7 +119,8 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * It contains the following:
    * - `pageSize` (number) - (Optional)
    * - `wrapLines` (boolean) - (Optional)
-   * - `visibleContent` (ReadonlyArray<string>) - Specifies the list of visible content `id`s. The order of the `id`s does not influence the display.
+   * - `contentDisplay` (ReadonlyArray<ContentDisplayItem>) - (Optional) Specifies the list of content and their visibility. The order of the elements influences the display.
+   * - `visibleContent` (ReadonlyArray<string>) - Specifies the list of visible content `id`s. The order of the `id`s does not influence the display. If the `contentDisplay` property is set, this property is ignored.
    * - `custom` (CustomPreferenceType) - Specifies the value for your custom preference.
    */
   preferences?: CollectionPreferencesProps.Preferences<CustomPreferenceType>;
@@ -149,7 +174,31 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
+    contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
+  }
+
+  export interface ContentDisplayPreference {
+    title: string;
+    description?: string;
+    options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+    liveAnnouncementDndStarted?: (position: number, total: number) => string;
+    liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
+    liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
+    liveAnnouncementDndDiscarded?: string;
+    dragHandleAriaLabel?: string;
+    dragHandleAriaDescription?: string;
+  }
+
+  export interface ContentDisplayOption {
+    id: string;
+    label: string;
+    alwaysVisible?: boolean;
+  }
+
+  export interface ContentDisplayItem {
+    id: string;
+    visible: boolean;
   }
 
   export interface VisibleContentPreference {
