@@ -8,6 +8,10 @@
 
 @import 'content-display-option';
 
+.content-display {
+  /* used in test-utils */
+}
+
 .content-display-title {
   @include styles.font-label;
   color: awsui.$color-text-form-label;

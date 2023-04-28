@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import styles from './styles.css.js';
+import styles from '../styles.css.js';
 import clsx from 'clsx';
 import DragHandle from '../../internal/drag-handle';
 import InternalToggle from '../../toggle/internal';
