@@ -12,8 +12,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { Navigation, Tools, Breadcrumbs } from '../app-layout/utils/content-blocks';
 import * as toolsContent from '../app-layout/utils/tools-content';
 import labels from '../app-layout/utils/labels';
-import { allItems, TableItem } from './table.data';
-import { columnDefinitions, i18nStrings, filteringProperties, propertyDefinitions } from './common-props';
+import { allItems, states, TableItem } from './table.data';
+import { columnDefinitions, i18nStrings, filteringProperties } from './common-props';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
 export default function () {
@@ -39,6 +39,13 @@ export default function () {
       defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
     },
     sorting: {},
+  });
+
+  const filteringOptions = propertyFilterProps.filteringOptions.map(option => {
+    if (option.propertyKey === 'state') {
+      option.label = states[parseInt(option.value)];
+    }
+    return option;
   });
 
   return (
@@ -78,11 +85,11 @@ export default function () {
             filter={
               <PropertyFilter
                 {...propertyFilterProps}
+                filteringOptions={filteringOptions}
                 virtualScroll={true}
                 countText={`${items.length} matches`}
                 i18nStrings={i18nStrings}
                 expandToViewport={true}
-                propertyDefinitions={propertyDefinitions}
               />
             }
             columnDefinitions={columnDefinitions.slice(0, 2)}

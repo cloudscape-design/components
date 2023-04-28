@@ -163,6 +163,11 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];
   let defaultOperator: PropertyFilterProps.ComparisonOperator = '=';
+  let groupValuesLabel = `${def.propertyLabel} values`;
+
+  if (def.type === 'enum') {
+    operators = ['=', '!='].map(operator => ({ operator, format: def.getLabel }));
+  }
 
   if (def.type === 'text') {
     operators = ['=', '!=', ':', '!:'];
@@ -173,48 +178,42 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   }
 
   if (def.type === 'date') {
-    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({ operator, match: 'date' }));
+    groupValuesLabel = `${def.propertyLabel} value`;
+    operators = ['=', '!=', '<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateForm,
+      match: 'date',
+    }));
   }
 
   if (def.type === 'datetime') {
+    groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
-    operators = ['<', '<=', '>', '>='].map(operator => ({ operator, match: 'datetime' }));
+    operators = ['<', '<=', '>', '>='].map(operator => ({
+      operator,
+      form: DateTimeForm,
+      format: formatDateTime,
+      match: 'datetime',
+    }));
   }
 
   if (def.type === 'boolean') {
-    operators = [{ operator: '=', match: (itemValue: boolean, tokenValue: boolean) => itemValue === tokenValue }];
+    groupValuesLabel = `${def.propertyLabel} value`;
+    operators = [
+      {
+        operator: '=',
+        form: YesNoForm,
+        format: yesNoFormat,
+        match: (itemValue: boolean, tokenValue: boolean) => itemValue === tokenValue,
+      },
+    ];
   }
 
   return {
     key: def.id,
     operators: operators,
     defaultOperator,
+    propertyLabel: def.propertyLabel,
+    groupValuesLabel,
   };
 });
-
-export const propertyDefinitions = columnDefinitions.reduce((acc, def) => {
-  acc[def.id] = {
-    propertyLabel: def.propertyLabel,
-    groupValuesLabel: `${def.propertyLabel} values`,
-  };
-
-  if (def.type === 'date') {
-    acc[def.id].groupValuesLabel = `${def.propertyLabel} value`;
-    acc[def.id].renderForm = DateForm;
-  }
-  if (def.type === 'datetime') {
-    acc[def.id].groupValuesLabel = `${def.propertyLabel} value`;
-    acc[def.id].renderForm = DateTimeForm;
-    acc[def.id].formatValue = formatDateTime;
-  }
-  if (def.type === 'boolean') {
-    acc[def.id].groupValuesLabel = `${def.propertyLabel} value`;
-    acc[def.id].renderForm = YesNoForm;
-    acc[def.id].formatValue = yesNoFormat;
-  }
-  if (def.id === 'state') {
-    acc[def.id].formatValue = getStateLabel;
-  }
-
-  return acc;
-}, {} as { [propertyKey: string]: PropertyFilterProps.PropertyDefinition });
