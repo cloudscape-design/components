@@ -17,7 +17,6 @@ import {
   Ref,
   ComparisonOperator,
   Token,
-  PropertyDefinition,
   PropertyOperatorDefinition,
   InternalFilteringProperty,
   InternalFilteringOption,
@@ -32,7 +31,6 @@ import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './pro
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { getOperatorForm, matchTokenValue } from './utils';
-import { warnOnce } from '../internal/logging';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../internal/i18n/context';
 import TokenList from '../internal/components/token-list';
@@ -62,7 +60,6 @@ const PropertyFilter = React.forwardRef(
       filteringProperties,
       filteringOptions = [],
       customGroupsText = [],
-      propertyDefinitions = {},
       disableFreeTextFiltering = false,
       onLoadItems,
       virtualScroll,
@@ -142,32 +139,24 @@ const PropertyFilter = React.forwardRef(
     const [filteringText, setFilteringText] = useState<string>('');
 
     const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
-      const definition = propertyDefinitions[property.key] as undefined | PropertyDefinition;
-
-      if (!definition?.propertyLabel && !property.propertyLabel) {
-        warnOnce('PropertyFilter', `Property ${property.key} does not have a label.`);
-      }
-      if (!definition?.groupValuesLabel && !property.groupValuesLabel) {
-        warnOnce('PropertyFilter', `Property ${property.key} does not have a group values label.`);
-      }
-
       return {
         key: property.key,
         operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
         defaultOperator: property.defaultOperator,
         definition: {
-          ...definition,
-          propertyLabel: definition?.propertyLabel ?? property.propertyLabel ?? '',
-          groupValuesLabel: definition?.groupValuesLabel ?? property.groupValuesLabel ?? '',
-          group: definition?.group ?? property.group,
+          propertyLabel: property.propertyLabel ?? '',
+          groupValuesLabel: property.groupValuesLabel ?? '',
+          group: property.group,
           operators: (property.operators ?? []).reduce((acc, operator) => {
             if (typeof operator === 'object') {
               acc[operator.operator] = { formatValue: operator.format, renderForm: operator.form };
             }
             return acc;
           }, {} as { [key in PropertyFilterOperator]?: PropertyOperatorDefinition }),
+          formatValue: undefined,
+          renderForm: undefined,
         },
-        property,
+        externalProperty: property,
       };
     });
 
@@ -244,7 +233,7 @@ const PropertyFilter = React.forwardRef(
         filteringOperator: undefined,
       };
       if (parsedText.step === 'property') {
-        loadMoreDetail.filteringProperty = parsedText.property.property;
+        loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
         loadMoreDetail.filteringText = parsedText.value;
         loadMoreDetail.filteringOperator = parsedText.operator;
       }
@@ -298,7 +287,7 @@ const PropertyFilter = React.forwardRef(
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.definition.propertyLabel && operators.length === 1) {
-          loadMoreDetail.filteringProperty = parsedText.property.property;
+          loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.definition.propertyLabel + ' ' + operators[0] + ' ');

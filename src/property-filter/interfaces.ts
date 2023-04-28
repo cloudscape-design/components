@@ -96,12 +96,6 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   filteringOptions?: ReadonlyArray<PropertyFilterProps.FilteringOption>;
   /**
-   * Decorators for property filter properties to define property and value labels and more.
-   */
-  propertyDefinitions?: {
-    [propertyKey: string]: PropertyFilterProps.PropertyDefinition;
-  };
-  /**
    * An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
    *
    * * properties [string]: The group label in the filtering dropdown that contains the list of properties from this group. For example: Tags.
@@ -188,27 +182,6 @@ export namespace PropertyFilterProps {
   export type FilteringOption = PropertyFilterOption;
   export type FilteringProperty = PropertyFilterProperty;
 
-  export interface PropertyDefinition<TokenValue = any> {
-    propertyLabel: string;
-    groupValuesLabel: string;
-    group?: string;
-    // Formats value of property filter option or token.
-    formatValue?: (value: any) => string;
-    // Renders a custom property form.
-    renderForm?: PropertyFilterOperatorForm<TokenValue>;
-    // Operator-specific settings (has higher precedence over property settings).
-    operators?: {
-      [key in PropertyFilterOperator]?: PropertyOperatorDefinition<TokenValue>;
-    };
-  }
-
-  export interface PropertyOperatorDefinition<TokenValue = any> {
-    // Formats value of property filter option or token.
-    formatValue?: (value: any) => string;
-    // Renders a custom property form.
-    renderForm?: PropertyFilterOperatorForm<TokenValue>;
-  }
-
   export interface Query {
     tokens: ReadonlyArray<PropertyFilterProps.Token>;
     operation: PropertyFilterProps.JoinOperation;
@@ -294,8 +267,6 @@ export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenV
 export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
-export type PropertyDefinition = PropertyFilterProps.PropertyDefinition;
-export type PropertyOperatorDefinition = PropertyFilterProps.PropertyOperatorDefinition;
 export type Query = PropertyFilterProps.Query;
 export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
@@ -305,12 +276,33 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
+export interface PropertyDefinition<TokenValue = any> {
+  propertyLabel: string;
+  groupValuesLabel: string;
+  group?: string;
+  // Formats value of property filter option or token.
+  formatValue?: (value: any) => string;
+  // Renders a custom property form.
+  renderForm?: PropertyFilterOperatorForm<TokenValue>;
+  // Operator-specific settings (has higher precedence over property settings).
+  operators?: {
+    [key in PropertyFilterOperator]?: PropertyOperatorDefinition<TokenValue>;
+  };
+}
+
+export interface PropertyOperatorDefinition<TokenValue = any> {
+  // Formats value of property filter option or token.
+  formatValue?: (value: any) => string;
+  // Renders a custom property form.
+  renderForm?: PropertyFilterOperatorForm<TokenValue>;
+}
+
 export interface InternalFilteringProperty {
   key: string;
   operators: readonly PropertyFilterOperator[];
   defaultOperator?: PropertyFilterOperator;
   definition: PropertyDefinition;
-  property: PropertyFilterProperty;
+  externalProperty: PropertyFilterProperty;
 }
 
 export interface InternalFilteringOption {
