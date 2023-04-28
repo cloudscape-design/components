@@ -17,10 +17,10 @@ import {
   Ref,
   ComparisonOperator,
   Token,
-  PropertyOperatorDefinition,
   InternalFilteringProperty,
   InternalFilteringOption,
   FilteringProperty,
+  FilteringValueSettings,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -140,30 +140,29 @@ const PropertyFilter = React.forwardRef(
 
     const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
       return {
-        key: property.key,
+        propertyKey: property.key,
+        propertyLabel: property.propertyLabel ?? '',
+        groupValuesLabel: property.groupValuesLabel ?? '',
+        propertyGroup: property.group,
         operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
         defaultOperator: property.defaultOperator,
-        definition: {
-          propertyLabel: property.propertyLabel ?? '',
-          groupValuesLabel: property.groupValuesLabel ?? '',
-          group: property.group,
-          operators: (property.operators ?? []).reduce((acc, operator) => {
-            if (typeof operator === 'object') {
-              acc[operator.operator] = { formatValue: operator.format, renderForm: operator.form };
-            }
-            return acc;
-          }, {} as { [key in PropertyFilterOperator]?: PropertyOperatorDefinition }),
-          formatValue: undefined,
-          renderForm: undefined,
-        },
+        operatorSettings: (property.operators ?? []).reduce((acc, operator) => {
+          if (typeof operator === 'object') {
+            acc[operator.operator] = { formatValue: operator.format, renderForm: operator.form };
+          }
+          return acc;
+        }, {} as { [key in PropertyFilterOperator]?: FilteringValueSettings }),
+        // Property-level settings are not yet supported
+        formatValue: undefined,
+        renderForm: undefined,
         externalProperty: property,
       };
     });
 
-    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.key, p]));
+    const propertyByKey = new Map(internalFilteringProperties.map(p => [p.propertyKey, p]));
 
     const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
-      const formatter = propertyByKey.get(option.propertyKey)?.definition.formatValue;
+      const formatter = propertyByKey.get(option.propertyKey)?.formatValue;
       return {
         propertyKey: option.propertyKey,
         value: option.value,
@@ -187,7 +186,7 @@ const PropertyFilter = React.forwardRef(
         case 'property': {
           newToken = matchTokenValue(
             {
-              propertyKey: parsedText.property.key,
+              propertyKey: parsedText.property.propertyKey,
               operator: parsedText.operator,
               value: parsedText.value,
             },
@@ -286,11 +285,11 @@ const PropertyFilter = React.forwardRef(
       // Insert operator automatically if only one operator is defined for the given property.
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
-        if (value.trim() === parsedText.property.definition.propertyLabel && operators.length === 1) {
+        if (value.trim() === parsedText.property.propertyLabel && operators.length === 1) {
           loadMoreDetail.filteringProperty = parsedText.property.externalProperty;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
-          setFilteringText(parsedText.property.definition.propertyLabel + ' ' + operators[0] + ' ');
+          setFilteringText(parsedText.property.propertyLabel + ' ' + operators[0] + ' ');
         }
       }
 
@@ -299,7 +298,7 @@ const PropertyFilter = React.forwardRef(
 
     const operatorForm =
       parsedText.step === 'property' &&
-      getOperatorForm(internalFilteringProperties, parsedText.property.key, parsedText.operator);
+      getOperatorForm(internalFilteringProperties, parsedText.property.propertyKey, parsedText.operator);
 
     const searchResultsId = useUniqueId('property-filter-search-results');
 

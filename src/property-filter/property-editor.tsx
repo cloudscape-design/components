@@ -27,11 +27,11 @@ export function PropertyEditor<TokenValue = any>({
   i18nStrings,
 }: PropertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
-  const submitToken = () => onSubmit({ propertyKey: property.key, operator, value });
+  const submitToken = () => onSubmit({ propertyKey: property.propertyKey, operator, value });
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>
-        <InternalFormField label={property.definition.groupValuesLabel}>
+        <InternalFormField label={property.groupValuesLabel}>
           {operatorForm({ value, onChange, operator, filter })}
         </InternalFormField>
       </div>

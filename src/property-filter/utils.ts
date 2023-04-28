@@ -13,12 +13,11 @@ export function matchFilteringProperty(
 
   for (const property of filteringProperties) {
     if (
-      (property.definition.propertyLabel.length >= maxLength &&
-        startsWith(filteringText, property.definition.propertyLabel)) ||
-      (property.definition.propertyLabel.length > maxLength &&
-        startsWith(filteringText.toLowerCase(), property.definition.propertyLabel.toLowerCase()))
+      (property.propertyLabel.length >= maxLength && startsWith(filteringText, property.propertyLabel)) ||
+      (property.propertyLabel.length > maxLength &&
+        startsWith(filteringText.toLowerCase(), property.propertyLabel.toLowerCase()))
     ) {
-      maxLength = property.definition.propertyLabel.length;
+      maxLength = property.propertyLabel.length;
       matchedProperty = property;
     }
   }
@@ -83,7 +82,7 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
 
 export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
   const propertyMap = filteringProperties.reduce<{ [K: string]: InternalFilteringProperty }>((acc, property) => {
-    acc[property.key] = property;
+    acc[property.propertyKey] = property;
     return acc;
   }, {});
   return propertyMap[key] as InternalFilteringProperty | undefined;
@@ -95,9 +94,7 @@ export function getOperatorForm(
   operator: ComparisonOperator
 ) {
   const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return (
-    matchedProperty?.definition.operators?.[operator]?.renderForm ?? matchedProperty?.definition.renderForm ?? null
-  );
+  return matchedProperty?.operatorSettings?.[operator]?.renderForm ?? matchedProperty?.renderForm ?? null;
 }
 
 export function getOperatorValueFormatter(
@@ -106,9 +103,17 @@ export function getOperatorValueFormatter(
   operator: ComparisonOperator
 ) {
   const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return (
-    matchedProperty?.definition.operators?.[operator]?.formatValue ?? matchedProperty?.definition.formatValue ?? null
-  );
+  return matchedProperty?.operatorSettings?.[operator]?.formatValue ?? matchedProperty?.formatValue ?? null;
+}
+
+export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
+  const valueFormatter =
+    token.propertyKey && getOperatorValueFormatter(filteringProperties, token.propertyKey, token.operator);
+  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
+  const propertyLabel = property && property.propertyLabel;
+  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
+  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
+  return { property: propertyLabel, operator: token.operator, value: tokenValue, label };
 }
 
 export function trimStart(source: string): string {

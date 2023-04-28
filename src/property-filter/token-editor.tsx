@@ -60,9 +60,9 @@ function PropertyInput({
     filteringProperties,
     customGroupsText,
     i18nStrings,
-    ({ definition, key }) => ({
-      value: key,
-      label: definition.propertyLabel,
+    ({ propertyKey, propertyLabel }) => ({
+      value: propertyKey,
+      label: propertyLabel,
       dontCloseOnSelect: true,
     })
   );
@@ -93,7 +93,7 @@ function PropertyInput({
         property
           ? {
               value: propertyKey ?? undefined,
-              label: property.definition.propertyLabel,
+              label: property.propertyLabel,
             }
           : allPropertiesOption
       }
@@ -170,7 +170,7 @@ function ValueInput({
   const valueOptions = property
     ? getPropertyOptions(property, filteringOptions).map(({ label, value }) => ({ label, value }))
     : [];
-  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property);
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty);
   const asyncValueAutosuggestProps = propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
@@ -233,7 +233,7 @@ export function TokenEditor({
   const propertyKey = temporaryToken.propertyKey;
   const onChangePropertyKey = (newPropertyKey: undefined | string) => {
     const filteringProperty = filteringProperties.reduce<InternalFilteringProperty | undefined>(
-      (acc, property) => (property.key === newPropertyKey ? property : acc),
+      (acc, property) => (property.propertyKey === newPropertyKey ? property : acc),
       undefined
     );
     const allowedOperators = filteringProperty ? getAllowedOperators(filteringProperty) : freeTextOperators;
