@@ -79,11 +79,8 @@ export function matchTokenValue(token: Token, filteringOptions: readonly Interna
 }
 
 export function getPropertyByKey(filteringProperties: readonly InternalFilteringProperty[], key: string) {
-  const propertyMap = filteringProperties.reduce<{ [K: string]: InternalFilteringProperty }>((acc, property) => {
-    acc[property.propertyKey] = property;
-    return acc;
-  }, {});
-  return propertyMap[key] as InternalFilteringProperty | undefined;
+  const propertyMap = new Map(filteringProperties.map(prop => [prop.propertyKey, prop]));
+  return propertyMap.get(key) as InternalFilteringProperty | undefined;
 }
 
 export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
