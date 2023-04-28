@@ -62,16 +62,14 @@ export function matchOperatorPrefix(
 }
 
 export function matchTokenValue(token: Token, filteringOptions: readonly InternalFilteringOption[]): Token {
-  const value = token.value.toLowerCase();
   const propertyOptions = filteringOptions.filter(option => option.propertyKey === token.propertyKey);
   const bestMatch = { ...token };
   for (const option of propertyOptions) {
-    const optionText = option.label ? option.label.toLowerCase() : '';
-    if (optionText === token.value || (!option.label && option.value === token.value)) {
+    if ((option.label && option.label === token.value) || (!option.label && option.value === token.value)) {
       // exact match found: return it
       return { ...token, value: option.value };
     }
-    if (value === (option.label ?? option.value ?? '').toLowerCase()) {
+    if (token.value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
       // non-exact match: save and keep running in case exact match found later
       bestMatch.value = option.value;
     }
