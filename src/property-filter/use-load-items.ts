@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 
-import { ComparisonOperator, InternalFilteringProperty, LoadItemsDetail } from './interfaces';
+import { ComparisonOperator, FilteringProperty, LoadItemsDetail } from './interfaces';
 
 /**
  * This hook generates `onBlur`, `onFocus` and `onLoadItems` handlers that make sure an `onLoadItems` event
@@ -17,7 +17,7 @@ import { ComparisonOperator, InternalFilteringProperty, LoadItemsDetail } from '
 export const useLoadItems = (
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>,
   focusFilteringText?: string,
-  currentFilteringProperty?: InternalFilteringProperty,
+  currentFilteringProperty?: FilteringProperty,
   currentFilteringText?: string,
   currentFilteringOperator?: ComparisonOperator
 ) => {

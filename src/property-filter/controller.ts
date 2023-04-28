@@ -16,6 +16,7 @@ import {
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import {
+  getOperatorValueFormatter,
   getPropertyByKey,
   matchFilteringProperty,
   matchOperator,
@@ -342,11 +343,11 @@ export const operatorToDescription = (operator: ComparisonOperator, i18nStrings:
   return mapping[operator];
 };
 
-export function getFormattedToken(filteringProperties: readonly FilteringProperty[], token: Token) {
+export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
   const valueFormatter =
-    token.propertyKey && getExtendedOperator(filteringProperties, token.propertyKey, token.operator)?.format;
+    token.propertyKey && getOperatorValueFormatter(filteringProperties, token.propertyKey, token.operator);
   const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
-  const propertyLabel = property && property.propertyLabel;
+  const propertyLabel = property && property.definition.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
   return { property: propertyLabel, operator: token.operator, value: tokenValue, label };

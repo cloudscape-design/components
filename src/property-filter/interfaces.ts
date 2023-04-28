@@ -310,6 +310,7 @@ export interface InternalFilteringProperty {
   operators: readonly PropertyFilterOperator[];
   defaultOperator?: PropertyFilterOperator;
   definition: PropertyDefinition;
+  property: PropertyFilterProperty;
 }
 
 export interface InternalFilteringOption {

@@ -21,6 +21,7 @@ import {
   PropertyOperatorDefinition,
   InternalFilteringProperty,
   InternalFilteringOption,
+  FilteringProperty,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -166,6 +167,7 @@ const PropertyFilter = React.forwardRef(
             return acc;
           }, {} as { [key in PropertyFilterOperator]?: PropertyOperatorDefinition }),
         },
+        property,
       };
     });
 
@@ -233,7 +235,7 @@ const PropertyFilter = React.forwardRef(
     };
     const getLoadMoreDetail = (parsedText: ParsedText, filteringText: string) => {
       const loadMoreDetail: {
-        filteringProperty: InternalFilteringProperty | undefined;
+        filteringProperty: FilteringProperty | undefined;
         filteringText: string;
         filteringOperator: ComparisonOperator | undefined;
       } = {
@@ -242,7 +244,7 @@ const PropertyFilter = React.forwardRef(
         filteringOperator: undefined,
       };
       if (parsedText.step === 'property') {
-        loadMoreDetail.filteringProperty = parsedText.property;
+        loadMoreDetail.filteringProperty = parsedText.property.property;
         loadMoreDetail.filteringText = parsedText.value;
         loadMoreDetail.filteringOperator = parsedText.operator;
       }
@@ -296,7 +298,7 @@ const PropertyFilter = React.forwardRef(
       if (parsedText.step === 'operator') {
         const operators = getAllowedOperators(parsedText.property);
         if (value.trim() === parsedText.property.definition.propertyLabel && operators.length === 1) {
-          loadMoreDetail.filteringProperty = parsedText.property;
+          loadMoreDetail.filteringProperty = parsedText.property.property;
           loadMoreDetail.filteringOperator = operators[0];
           loadMoreDetail.filteringText = '';
           setFilteringText(parsedText.property.definition.propertyLabel + ' ' + operators[0] + ' ');
