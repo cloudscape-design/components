@@ -4,7 +4,7 @@ import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { OptionWithVisibility } from './utils';
-import ContentDisplayItem from './content-display-item';
+import ContentDisplayOption from './content-display-option';
 
 export function SortableItem({
   dragHandleAriaLabel,
@@ -37,7 +37,7 @@ export function SortableItem({
   };
 
   return (
-    <ContentDisplayItem
+    <ContentDisplayOption
       dragHandleAriaLabel={dragHandleAriaLabel}
       isDragging={isDragging}
       isSorting={isSorting}

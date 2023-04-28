@@ -9,8 +9,8 @@ import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import { OptionWithVisibility } from './utils';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 
-const componentPrefix = 'sortable-item';
-export const getClassName = (suffix: string) => styles[`${componentPrefix}-${suffix}`];
+const componentPrefix = 'content-display-option';
+export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
 export interface ContentDisplayItemProps {
   ariaDescribedBy?: string;
@@ -27,7 +27,7 @@ export interface ContentDisplayItemProps {
   };
 }
 
-const ContentDisplayItem = forwardRef(
+const ContentDisplayOption = forwardRef(
   (
     {
       dragHandleAriaLabel,
@@ -52,11 +52,7 @@ const ContentDisplayItem = forwardRef(
 
     return (
       <div
-        className={clsx(
-          styles['content-display-option'],
-          isPlaceholder && styles.placeholder,
-          sortable && styles.sortable
-        )}
+        className={clsx(getClassName(), isPlaceholder && styles.placeholder, sortable && styles.sortable)}
         style={style}
       >
         <div
@@ -87,4 +83,4 @@ const ContentDisplayItem = forwardRef(
   }
 );
 
-export default ContentDisplayItem;
+export default ContentDisplayOption;

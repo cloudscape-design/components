@@ -6,14 +6,7 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 
-@import 'sortable-item';
-
-.content-display,
-.content-display-groups,
-.content-display-group,
-.content-display-option {
-  /* used in test-utils */
-}
+@import 'content-display-option';
 
 .content-display-title {
   @include styles.font-label;

@@ -21,14 +21,14 @@ $border-radius: awsui.$border-radius-item;
   }
 }
 
-.sortable-item-toggle {
+.content-display-option-toggle {
   /* used in test-utils */
 }
 
 .content-display-option {
   @include styles.styles-reset;
   position: relative;
-  > .sortable-item-content {
+  > .content-display-option-content {
     border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
     display: flex;
     flex-wrap: nowrap;
@@ -71,13 +71,13 @@ $border-radius: awsui.$border-radius-item;
     }
   }
   &:not(.sortable) {
-    > .sortable-item-content {
+    > .content-display-option-content {
       border-color: transparent;
     }
   }
 }
 
-.sortable-item-label {
+.content-display-option-label {
   padding-right: awsui.$space-l;
   flex-grow: 1;
 }

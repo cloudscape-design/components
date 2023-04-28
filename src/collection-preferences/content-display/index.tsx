@@ -12,7 +12,7 @@ import { SortableItem } from './sortable-item';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 import Portal from '../../internal/components/portal';
-import ContentDisplayItem from './content-display-item';
+import ContentDisplayOption from './content-display-option';
 
 const componentPrefix = 'content-display';
 
@@ -120,7 +120,7 @@ export default function ContentDisplayPreference({
           <div className={styles['drag-overlay']}>
             <DragOverlay wrapperElement="ul">
               {activeOption && (
-                <ContentDisplayItem
+                <ContentDisplayOption
                   sortable={false}
                   dragHandleAriaLabel={dragHandleAriaLabel}
                   onToggle={onToggle}
