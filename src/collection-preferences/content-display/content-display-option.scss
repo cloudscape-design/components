@@ -28,11 +28,10 @@ $border-radius: awsui.$border-radius-item;
 .content-display-option-content {
   @include styles.styles-reset;
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
   align-items: flex-start;
   padding: awsui.$space-xs awsui.$space-scaled-xs awsui.$space-xs 0;
-  z-index: 1;
+  background-color: awsui.$color-background-container-content;
+  border-radius: $border-radius;
 }
 
 .content-display-option {
@@ -41,11 +40,11 @@ $border-radius: awsui.$border-radius-item;
   border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   &:not(.placeholder).sorting {
     @include animated;
+    z-index: 1;
   }
   &.placeholder {
     > .content-display-option-content {
       position: relative;
-      border-radius: $border-radius;
       &:after {
         content: ' ';
         position: absolute;
@@ -55,24 +54,18 @@ $border-radius: awsui.$border-radius-item;
         right: 0;
         background: awsui.$color-drag-placeholder-hover;
         border-radius: $border-radius;
-        z-index: 1;
       }
     }
   }
 }
 
 .content-display-option-label {
-  padding-right: awsui.$space-l;
   flex-grow: 1;
+  overflow: hidden;
+  padding-right: awsui.$space-l;
 }
 
 .drag-overlay {
-  position: relative;
-  top: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  background-color: awsui.$color-background-container-content;
   box-shadow: awsui.$shadow-container-active;
   border-radius: $border-radius;
   @include focus-visible {
