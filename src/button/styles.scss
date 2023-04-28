@@ -41,10 +41,6 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] &.force-focus-outline {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
   &.variant-icon,
   &.variant-modal-dismiss,
   &.variant-flashbar-icon {

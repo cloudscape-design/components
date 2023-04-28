@@ -17,7 +17,6 @@ type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __nativeAttributes?: Record<string, any>;
   __iconClass?: string;
   __activated?: boolean;
-  __forcedFocusState?: 'focused';
 } & InternalBaseComponentProps;
 
 export const InternalButton = React.forwardRef(
@@ -44,7 +43,6 @@ export const InternalButton = React.forwardRef(
       formAction = 'submit',
       ariaLabel,
       ariaExpanded,
-      __forcedFocusState,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -82,7 +80,6 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
-      [styles['force-focus-outline']]: __forcedFocusState === 'focused',
     });
 
     const buttonProps = {
