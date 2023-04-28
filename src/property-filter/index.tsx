@@ -20,7 +20,7 @@ import {
   InternalFilteringProperty,
   InternalFilteringOption,
   FilteringProperty,
-  FilteringValueSettings,
+  ExtendedOperator,
 } from './interfaces';
 import { TokenButton } from './token';
 import { getQueryActions, parseText, getAutosuggestOptions, getAllowedOperators } from './controller';
@@ -30,7 +30,7 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { PropertyEditor } from './property-editor';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
-import { getOperatorForm, matchTokenValue } from './utils';
+import { matchTokenValue } from './utils';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 import { useInternalI18n } from '../internal/i18n/context';
 import TokenList from '../internal/components/token-list';
@@ -139,22 +139,19 @@ const PropertyFilter = React.forwardRef(
     const [filteringText, setFilteringText] = useState<string>('');
 
     const internalFilteringProperties: readonly InternalFilteringProperty[] = filteringProperties.map(property => {
+      const extendedOperators = (property.operators ?? []).reduce(
+        (acc, operator) => (typeof operator === 'object' ? acc.set(operator.operator, operator) : acc),
+        new Map<PropertyFilterOperator, null | ExtendedOperator<any>>()
+      );
       return {
         propertyKey: property.key,
         propertyLabel: property.propertyLabel ?? '',
         groupValuesLabel: property.groupValuesLabel ?? '',
         propertyGroup: property.group,
         operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
-        defaultOperator: property.defaultOperator,
-        operatorSettings: (property.operators ?? []).reduce((acc, operator) => {
-          if (typeof operator === 'object') {
-            acc[operator.operator] = { formatValue: operator.format, renderForm: operator.form };
-          }
-          return acc;
-        }, {} as { [key in PropertyFilterOperator]?: FilteringValueSettings }),
-        // Property-level settings are not yet supported
-        formatValue: undefined,
-        renderForm: undefined,
+        defaultOperator: property.defaultOperator ?? '=',
+        getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
+        getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
         externalProperty: property,
       };
     });
@@ -162,7 +159,7 @@ const PropertyFilter = React.forwardRef(
     const propertyByKey = new Map(internalFilteringProperties.map(p => [p.propertyKey, p]));
 
     const internalFilteringOptions: readonly InternalFilteringOption[] = filteringOptions.map(option => {
-      const formatter = propertyByKey.get(option.propertyKey)?.formatValue;
+      const formatter = propertyByKey.get(option.propertyKey)?.getValueFormatter();
       return {
         propertyKey: option.propertyKey,
         value: option.value,
@@ -297,8 +294,7 @@ const PropertyFilter = React.forwardRef(
     };
 
     const operatorForm =
-      parsedText.step === 'property' &&
-      getOperatorForm(internalFilteringProperties, parsedText.property.propertyKey, parsedText.operator);
+      parsedText.step === 'property' && parsedText.property.getValueFormRenderer(parsedText.operator);
 
     const searchResultsId = useUniqueId('property-filter-search-results');
 

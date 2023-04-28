@@ -69,7 +69,7 @@ export const getQueryActions = (
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
   const { operators = [], defaultOperator } = property;
   const operatorOrder = ['=', '!=', ':', '!:', '>=', '<=', '<', '>'] as const;
-  const operatorSet = new Set([defaultOperator ?? '=', ...operators]);
+  const operatorSet = new Set([defaultOperator, ...operators]);
   return operatorOrder.filter(op => operatorSet.has(op));
 };
 
@@ -185,12 +185,12 @@ export function createPropertiesCompatibilityMap(
   filteringProperties: readonly InternalFilteringProperty[]
 ): (propertyA: string, propertyB: string) => boolean {
   const lookup: {
-    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | undefined }[];
+    [propertyKey: string]: { operator: string; form: ExtendedOperatorForm<any> | null }[];
   } = {};
 
   for (const property of filteringProperties) {
     lookup[property.propertyKey] = (property.operators || [])
-      .map(operator => ({ operator, form: property.operatorSettings?.[operator]?.renderForm }))
+      .map(operator => ({ operator, form: property.getValueFormRenderer(operator) }))
       .sort((a, b) => a.operator.localeCompare(b.operator));
   }
 

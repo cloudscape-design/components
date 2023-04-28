@@ -28,7 +28,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { getOperatorForm, getPropertyByKey, matchTokenValue } from './utils';
+import { getPropertyByKey, matchTokenValue } from './utils';
 
 const freeTextOperators: ComparisonOperator[] = [':', '!:'];
 
@@ -176,7 +176,7 @@ function ValueInput({
     : { empty: asyncProps.empty };
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = propertyKey && operator && getOperatorForm(filteringProperties, propertyKey, operator);
+  const OperatorForm = propertyKey && operator && property?.getValueFormRenderer(operator);
 
   return OperatorForm ? (
     <OperatorForm value={value} onChange={onChangeValue} operator={operator} />

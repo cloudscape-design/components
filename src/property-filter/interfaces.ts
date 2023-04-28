@@ -276,26 +276,17 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
-export interface InternalFilteringProperty<TokenValue = any> extends FilteringValueSettings<TokenValue> {
+export interface InternalFilteringProperty<TokenValue = any> {
   propertyKey: string;
   propertyLabel: string;
   groupValuesLabel: string;
   propertyGroup?: string;
   operators: readonly PropertyFilterOperator[];
-  defaultOperator?: PropertyFilterOperator;
-  // Operator-specific settings (higher precedence over property settings).
-  operatorSettings: {
-    [key in PropertyFilterOperator]?: FilteringValueSettings<TokenValue>;
-  };
+  defaultOperator: PropertyFilterOperator;
+  getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
+  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
   // Original property to be used in callbacks.
   externalProperty: PropertyFilterProperty;
-}
-
-export interface FilteringValueSettings<TokenValue = any> {
-  // Formats value of property filter option or token.
-  formatValue?: (value: any) => string;
-  // Renders a custom property form.
-  renderForm?: PropertyFilterOperatorForm<TokenValue>;
 }
 
 export interface InternalFilteringOption {

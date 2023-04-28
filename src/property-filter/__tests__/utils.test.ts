@@ -1,15 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-  ComparisonOperator,
-  FilteringOption,
-  FilteringProperty,
-  InternalFilteringOption,
-  InternalFilteringProperty,
-  Token,
-} from '../interfaces';
+import { ComparisonOperator, Token } from '../interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, matchTokenValue } from '../utils';
+import { toInternalOptions, toInternalProperties } from './common';
 
 const filteringProperties = toInternalProperties([
   {
@@ -25,25 +19,6 @@ const filteringProperties = toInternalProperties([
     groupValuesLabel: '',
   },
 ]);
-
-function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
-  return properties.map(property => ({
-    propertyKey: property.key,
-    propertyLabel: property.propertyLabel,
-    groupValuesLabel: property.groupValuesLabel,
-    operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
-    operatorSettings: {},
-    externalProperty: property,
-  }));
-}
-
-function toInternalOptions(options: FilteringOption[]): InternalFilteringOption[] {
-  return options.map(option => ({
-    propertyKey: option.propertyKey,
-    value: option.value,
-    label: option.label ?? option.value ?? '',
-  }));
-}
 
 const operators: ComparisonOperator[] = ['!:', ':', 'contains', 'does not contain'] as any;
 

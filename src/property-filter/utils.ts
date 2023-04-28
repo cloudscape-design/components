@@ -88,28 +88,9 @@ export function getPropertyByKey(filteringProperties: readonly InternalFiltering
   return propertyMap[key] as InternalFilteringProperty | undefined;
 }
 
-export function getOperatorForm(
-  filteringProperties: readonly InternalFilteringProperty[],
-  property: string,
-  operator: ComparisonOperator
-) {
-  const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return matchedProperty?.operatorSettings?.[operator]?.renderForm ?? matchedProperty?.renderForm ?? null;
-}
-
-export function getOperatorValueFormatter(
-  filteringProperties: readonly InternalFilteringProperty[],
-  property: string,
-  operator: ComparisonOperator
-) {
-  const matchedProperty = getPropertyByKey(filteringProperties, property);
-  return matchedProperty?.operatorSettings?.[operator]?.formatValue ?? matchedProperty?.formatValue ?? null;
-}
-
 export function getFormattedToken(filteringProperties: readonly InternalFilteringProperty[], token: Token) {
-  const valueFormatter =
-    token.propertyKey && getOperatorValueFormatter(filteringProperties, token.propertyKey, token.operator);
-  const property = token.propertyKey && getPropertyByKey(filteringProperties, token.propertyKey);
+  const property = token.propertyKey ? getPropertyByKey(filteringProperties, token.propertyKey) : undefined;
+  const valueFormatter = property?.getValueFormatter(token.operator);
   const propertyLabel = property && property.propertyLabel;
   const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
   const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
