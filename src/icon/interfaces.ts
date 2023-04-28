@@ -125,6 +125,8 @@ export namespace IconProps {
     | 'settings'
     | 'share'
     | 'shrink'
+    | 'sort-ascending'
+    | 'sort-descending'
     | 'status-in-progress'
     | 'status-info'
     | 'status-negative'
