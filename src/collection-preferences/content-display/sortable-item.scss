@@ -44,7 +44,7 @@ $border-radius: awsui.$border-radius-item;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   padding-top: awsui.$space-xs;
   padding-bottom: awsui.$space-xs;
   padding-right: 0;
