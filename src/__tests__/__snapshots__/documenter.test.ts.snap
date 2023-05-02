@@ -2549,7 +2549,28 @@ Object {
       "cancelable": true,
       "description": "Called when the user clicks on the button with the left mouse button without pressing
 modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` set.",
-      "detailType": "null",
+      "detailInlineType": Object {
+        "name": "ButtonProps.FollowDetail",
+        "properties": Array [
+          Object {
+            "name": "external",
+            "optional": true,
+            "type": "false | true",
+          },
+          Object {
+            "name": "href",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "target",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "ButtonProps.FollowDetail",
       "name": "onFollow",
     },
   ],
