@@ -391,6 +391,7 @@ const InternalTable = React.forwardRef(
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}
+                              isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}
