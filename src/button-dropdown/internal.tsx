@@ -110,6 +110,7 @@ const InternalButtonDropdown = React.forwardRef(
     } else if (triggerVariant === 'split' || triggerVariant === 'split-primary') {
       trigger = (
         <SplitTrigger
+          loading={loading}
           variant={triggerVariant === 'split' ? 'normal' : 'primary'}
           isOpen={canBeOpened && isOpen}
           onClick={event => {

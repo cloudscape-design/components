@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import buttonDropdownStyles from '../styles.css.js';
 import buttonStyles from '../../button/styles.css.js';
 import styles from './styles.css.js';
 import clsx from 'clsx';
-import { ButtonIconProps, LeftIcon } from '../../button/icon-helper.js';
+import { ButtonIconProps, LeftIcon } from '../../button/icon-helper';
 
 interface SplitTriggerProps {
   loading: boolean;
@@ -24,7 +23,7 @@ export function SplitTrigger({ loading, variant, isOpen, onClick, children }: Sp
     loading: false,
     iconName: 'caret-down-filled',
     variant: 'icon',
-    iconClass: isOpen ? buttonDropdownStyles['rotate-up'] : buttonDropdownStyles['rotate-down'],
+    iconClass: isOpen ? styles['rotate-up'] : styles['rotate-down'],
     iconSize: 'normal',
     iconAlign: 'left',
   };
