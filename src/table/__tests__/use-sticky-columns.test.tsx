@@ -27,6 +27,8 @@ function createMockTable(
   stickyColumns.refs.wrapper(wrapper);
   stickyColumns.refs.table(table);
   cells.forEach((cell, index) => stickyColumns.refs.cell((index + 1).toString(), cell));
+
+  return { wrapper, table, cells };
 }
 
 test('isEnabled is false, wrapper styles is empty and wrapper listener is not attached when feature is off', () => {
@@ -95,7 +97,7 @@ test('styles update when wrapper scrolls', () => {
   expect(updateCellStylesSpy).toHaveBeenCalledTimes(1);
 });
 
-test('generates non-empty styles for sticky cells', () => {
+test('generates non-empty sticky cell state', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 1, stickyColumnsLast: 0 })
   );
@@ -119,7 +121,7 @@ test('generates non-empty styles for sticky cells', () => {
   });
 });
 
-test('generates empty cell styles if wrapper is not scrollable', () => {
+test('generates empty cell state if wrapper is not scrollable', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 1, stickyColumnsLast: 0 })
   );
@@ -138,7 +140,7 @@ test('generates empty cell styles if wrapper is not scrollable', () => {
   });
 });
 
-test('generates empty cell styles if not enough scrollable space', () => {
+test('generates empty sticky cell state if not enough scrollable space', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 1, stickyColumnsLast: 0 })
   );
@@ -161,9 +163,8 @@ test('generates non-empty styles for sticky cells', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 0, stickyColumnsLast: 1 })
   );
-  createMockTable(result.current, 300, 500, 300, 200, 100);
 
-  const getClassName = jest.fn().mockImplementation(() => 'sticky-cell');
+  const getClassName = jest.fn().mockImplementation(() => ({ 'sticky-cell': true }));
   const { result: cellStylesResult, rerender: rerenderCellStyles } = renderHook(() =>
     useStickyCellStyles({ stickyColumns: result.current, columnId: '3', getClassName })
   );
@@ -180,4 +181,30 @@ test('generates non-empty styles for sticky cells', () => {
   });
   expect(cellStylesResult.current.className).toBe('sticky-cell');
   expect(cellStylesResult.current.style).toEqual({ right: 0 });
+});
+
+test('updates sticky cell styles', () => {
+  const { result, rerender } = renderHook(() =>
+    useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 1, stickyColumnsLast: 0 })
+  );
+  const elements = createMockTable(result.current, 300, 500, 100, 200, 300);
+
+  const getClassName = jest.fn().mockImplementation(() => ({ 'sticky-cell': true }));
+  const { result: cellStylesResult, rerender: rerenderCellStyles } = renderHook(() =>
+    useStickyCellStyles({ stickyColumns: result.current, columnId: '1', getClassName })
+  );
+  cellStylesResult.current.ref(elements.cells[0]);
+
+  // Wait for effect
+  rerender({});
+  rerenderCellStyles({});
+
+  expect(elements.cells[0]).toHaveClass('sticky-cell');
+
+  getClassName.mockImplementation(() => ({ 'sticky-cell-updated': true }));
+
+  // Trigger update
+  elements.wrapper.dispatchEvent(new UIEvent('scroll'));
+
+  expect(elements.cells[0]).toHaveClass('sticky-cell-updated');
 });
