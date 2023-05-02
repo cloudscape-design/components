@@ -988,11 +988,11 @@ describe('property filter parts', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
       expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('Use: "free-text"');
     });
-    it('when free text filtering is not allowed and no property is matched dropdown is hidden but aria-expanded is false', () => {
+    it('when free text filtering is not allowed and no property is matched dropdown is not shown and aria-expanded is false', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering: true });
       wrapper.setInputValue('free-text');
       expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
-      expect(wrapper.findDropdown().findOpenDropdown()!.getElement()).toHaveTextContent('');
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
   });
 
