@@ -157,7 +157,7 @@ describe('Sticky header', () => {
   );
 
   test(
-    'sticky header does not get sticky on mobile but table header row does',
+    'sticky header does not get stuck on mobile but table header row does',
     setupTest(async page => {
       await page.setWindowSize(mobileSize);
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });

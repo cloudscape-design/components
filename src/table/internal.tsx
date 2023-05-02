@@ -258,6 +258,7 @@ const InternalTable = React.forwardRef(
           variant={toContainerVariant(computedVariant)}
           __disableFooterPaddings={true}
           __disableFooterDivider={true}
+          __disableStickyMobile={false}
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
