@@ -163,6 +163,7 @@ test('generates non-empty styles for sticky cells', () => {
   const { result, rerender } = renderHook(() =>
     useStickyColumns({ visibleColumns: ['1', '2', '3'], stickyColumnsFirst: 0, stickyColumnsLast: 1 })
   );
+  createMockTable(result.current, 300, 500, 300, 200, 100);
 
   const getClassName = jest.fn().mockImplementation(() => ({ 'sticky-cell': true }));
   const { result: cellStylesResult, rerender: rerenderCellStyles } = renderHook(() =>
