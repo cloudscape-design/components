@@ -54,7 +54,7 @@ export const useStickyHeader = (
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset}px`;
-  if (isRefresh && !hasInnerOverflowParents) {
+  if (isRefresh && !hasInnerOverflowParents && !isMobile) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
 
