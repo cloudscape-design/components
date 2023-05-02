@@ -190,6 +190,14 @@ export default function ButtonDropdownPage() {
             With expandable groups and disabled items
           </ButtonDropdown>
         </div>
+        <div className={styles.container}>
+          {/* split button primary */}
+          <ButtonDropdown id="ButtonDropdown9" items={items} variant="split-primary" />
+        </div>
+        <div className={styles.container}>
+          {/* split button secondary */}
+          <ButtonDropdown id="ButtonDropdown10" items={items} variant="split" />
+        </div>
       </article>
     </ScreenshotArea>
   );

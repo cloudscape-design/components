@@ -16,6 +16,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import InternalBox from '../box/internal';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { SplitTrigger } from './split-trigger/index.js';
 
 const InternalButtonDropdown = React.forwardRef(
   (
@@ -89,6 +90,7 @@ const InternalButtonDropdown = React.forwardRef(
     const canBeOpened = !loading && !disabled;
 
     const triggerVariant = variant === 'navigation' ? undefined : variant;
+
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon'
         ? {
@@ -100,28 +102,46 @@ const InternalButtonDropdown = React.forwardRef(
             __iconClass: canBeOpened && isOpen ? styles['rotate-up'] : styles['rotate-down'],
           };
 
-    const trigger = customTriggerBuilder ? (
-      customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel)
-    ) : (
-      <InternalButton
-        ref={dropdownRef}
-        {...iconProps}
-        variant={triggerVariant}
-        loading={loading}
-        loadingText={loadingText}
-        disabled={disabled}
-        onClick={(event: Event) => {
-          event.preventDefault();
-          clickHandler();
-        }}
-        ariaLabel={ariaLabel}
-        aria-haspopup={true}
-        ariaExpanded={canBeOpened && isOpen}
-        formAction="none"
-      >
-        {children}
-      </InternalButton>
-    );
+    const dropdownItems = triggerVariant === 'split' || triggerVariant === 'split-primary' ? items.slice(1) : items;
+
+    let trigger: React.ReactNode = null;
+    if (customTriggerBuilder) {
+      trigger = customTriggerBuilder(clickHandler, dropdownRef, disabled, isOpen, ariaLabel);
+    } else if (triggerVariant === 'split' || triggerVariant === 'split-primary') {
+      trigger = (
+        <SplitTrigger
+          variant={triggerVariant === 'split' ? 'normal' : 'primary'}
+          isOpen={canBeOpened && isOpen}
+          onClick={event => {
+            event.preventDefault();
+            clickHandler();
+          }}
+        >
+          {items[0].text}
+        </SplitTrigger>
+      );
+    } else {
+      trigger = (
+        <InternalButton
+          ref={dropdownRef}
+          {...iconProps}
+          variant={triggerVariant}
+          loading={loading}
+          loadingText={loadingText}
+          disabled={disabled}
+          onClick={(event: Event) => {
+            event.preventDefault();
+            clickHandler();
+          }}
+          ariaLabel={ariaLabel}
+          aria-haspopup={true}
+          ariaExpanded={canBeOpened && isOpen}
+          formAction="none"
+        >
+          {children}
+        </InternalButton>
+      );
+    }
 
     const hasHeader = title || description;
     const headerId = useUniqueId('awsui-button-dropdown__header');
@@ -177,7 +197,7 @@ const InternalButtonDropdown = React.forwardRef(
             ariaLabelledby={hasHeader ? headerId : undefined}
           >
             <ItemsList
-              items={items}
+              items={dropdownItems}
               onItemActivate={onItemActivate}
               onGroupToggle={onGroupToggle}
               hasExpandableGroups={expandableGroups}
