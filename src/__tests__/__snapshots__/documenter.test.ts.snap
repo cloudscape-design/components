@@ -12326,13 +12326,15 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "defaultValue": "\\"default\\"",
       "description": "The possible visual variants of tabs are the following:
 * \`default\` - Use in any context.
-* \`container\` - A variant with borders, for use alongside other containers.",
+* \`container\` - Use this variant to have the tabs displayed within a container header.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "TabsProps.Variant",
         "type": "union",
         "values": Array [
           "default",
           "container",
+          "stacked",
         ],
       },
       "name": "variant",
