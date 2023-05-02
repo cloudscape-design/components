@@ -47,10 +47,10 @@ export namespace AttributeEditorProps {
     focusAddButton(): void;
   }
 
-  export interface I18nStrings {
+  export interface I18nStrings<T = any> {
     errorIconAriaLabel?: string;
-
     itemRemovedAriaLive?: string;
+    removeButtonAriaLabel?: (item: T) => string;
   }
 }
 
@@ -120,5 +120,5 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
   /**
    * An object containing all the necessary localized strings required by the component.
    */
-  i18nStrings?: AttributeEditorProps.I18nStrings;
+  i18nStrings?: AttributeEditorProps.I18nStrings<T>;
 }
