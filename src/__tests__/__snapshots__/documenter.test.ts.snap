@@ -1094,12 +1094,17 @@ A maximum of four fields are supported.
             "optional": true,
             "type": "string",
           },
+          Object {
+            "name": "removeButtonAriaLabel",
+            "optional": true,
+            "type": "(item: T) => string",
+          },
         ],
         "type": "object",
       },
       "name": "i18nStrings",
       "optional": true,
-      "type": "AttributeEditorProps.I18nStrings",
+      "type": "AttributeEditorProps.I18nStrings<T>",
     },
     Object {
       "deprecatedTag": "Custom CSS is not supported. For other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
@@ -12483,6 +12488,11 @@ character validation. You should use this property only when absolutely necessar
             "name": "removeButton",
             "optional": false,
             "type": "string",
+          },
+          Object {
+            "name": "removeButtonAriaLabel",
+            "optional": true,
+            "type": "(item: TagEditorProps.Tag) => string",
           },
           Object {
             "name": "tagLimit",
