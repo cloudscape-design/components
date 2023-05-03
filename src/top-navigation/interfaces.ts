@@ -4,6 +4,7 @@ import { CancelableEventHandler } from '../internal/events';
 import { BaseComponentProps } from '../internal/base-component';
 import { IconProps } from '../icon/interfaces';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces';
+import { ButtonProps } from '../button/interfaces';
 
 export interface TopNavigationProps extends BaseComponentProps {
   /**
@@ -95,12 +96,14 @@ export namespace TopNavigationProps {
     description?: string;
     items: ButtonDropdownProps.Items;
     onItemClick?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
+    onItemFollow?: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   }
 
   export interface ButtonUtility extends BaseUtility {
     type: 'button';
     variant?: 'primary-button' | 'link';
     onClick?: CancelableEventHandler;
+    onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
     href?: string;
     target?: string;
     rel?: string;

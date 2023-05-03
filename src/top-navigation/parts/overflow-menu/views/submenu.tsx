@@ -13,7 +13,7 @@ import { TopNavigationProps } from '../../../interfaces';
 
 import { View } from '..';
 import styles from '../../../styles.css.js';
-import { fireCancelableEvent } from '../../../../internal/events';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
 
 interface SubmenuViewProps extends View {
   definition: TopNavigationProps.MenuDropdownUtility;
@@ -51,9 +51,20 @@ const SubmenuView = ({
           <SubmenuItem
             key={index}
             {...item}
-            onItemClick={item => {
-              fireCancelableEvent(definition.onItemClick, { id: item.id, href: item.href, external: item.external });
-              onClose?.();
+            onClick={(event, item) => {
+              if (item.href && isPlainLeftClick(event)) {
+                fireCancelableEvent(
+                  definition.onItemFollow,
+                  { id: item.id, href: item.href, external: item.external },
+                  event
+                );
+              }
+
+              fireCancelableEvent(
+                definition.onItemClick,
+                { id: item.id, href: item.href, external: item.external },
+                event
+              );
             }}
           />
         ))}
