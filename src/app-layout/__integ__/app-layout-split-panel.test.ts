@@ -59,6 +59,14 @@ class AppLayoutSplitViewPage extends BasePageObject {
     return this.getBoundingBox(wrapper.findSplitPanel().toSelector());
   }
 
+  async getSplitPanelSliderValue() {
+    const attrValue = await this.getElementAttribute(
+      wrapper.findSplitPanel().findSlider().toSelector(),
+      'aria-valuenow'
+    );
+    return parseFloat(attrValue);
+  }
+
   getContentMarginBottom() {
     return this.browser.execute(contentRegion => {
       return document.querySelector(contentRegion)?.parentElement?.parentElement?.style.marginBottom;
@@ -87,10 +95,14 @@ test(
     await page.keys(['Shift', 'Tab', 'Shift']);
     await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
 
-    const { width } = await page.getSplitPanelSize();
+    const { width: initialWidth } = await page.getSplitPanelSize();
+    const initialSliderValue = await page.getSplitPanelSliderValue();
+
     await page.keys(['ArrowLeft', 'ArrowLeft', 'ArrowLeft']);
-    const expectedWidth = width + 30;
-    await expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth);
+
+    const expectedWidth = initialWidth + 30;
+    expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth);
+    expect(await page.getSplitPanelSliderValue()).toBeLessThan(initialSliderValue);
   })
 );
 
@@ -101,9 +113,13 @@ test(
     await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
 
     const { height } = await page.getSplitPanelSize();
+    const initialSliderValue = await page.getSplitPanelSliderValue();
+
     await page.keys(['ArrowUp', 'ArrowUp', 'ArrowUp']);
+
     const expectedHeight = height + 30;
-    await expect((await page.getSplitPanelSize()).height).toEqual(expectedHeight);
+    expect((await page.getSplitPanelSize()).height).toEqual(expectedHeight);
+    expect(await page.getSplitPanelSliderValue()).toBeGreaterThan(initialSliderValue);
   })
 );
 
