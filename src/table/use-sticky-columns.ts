@@ -202,8 +202,8 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
-          cellElement.style.left = state?.offset?.left !== undefined ? `${state?.offset?.left}px` : '';
-          cellElement.style.right = state?.offset?.right !== undefined ? `${state?.offset?.right}px` : '';
+          cellElement.style.left = state?.offset.left !== undefined ? `${state?.offset.left}px` : '';
+          cellElement.style.right = state?.offset.right !== undefined ? `${state?.offset.right}px` : '';
         }
       };
 
@@ -262,8 +262,8 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     const wrapperScrollLeft = props.wrapper.scrollLeft;
     const wrapperScrollWidth = props.wrapper.scrollWidth;
     const wrapperClientWidth = props.wrapper.clientWidth;
-    const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
-    const tablePaddingRight = parseInt(getComputedStyle(props.table).paddingRight) || 0;
+    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
+    const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
 
     this.isStuckToTheLeft = wrapperScrollLeft > tablePaddingLeft;
     this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
@@ -271,6 +271,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
 
   private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyColumnsCellState> => {
     const isEnabled = this.isEnabled(props);
+    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
+    const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
+    const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
 
     return props.visibleColumns.reduce((acc, columnId, index) => {
       let stickySide = 'non-sticky';
@@ -290,12 +293,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const stickyColumnOffsetLeft = this.cellOffsets.get(columnId)?.first ?? 0;
       const stickyColumnOffsetRight = this.cellOffsets.get(columnId)?.last ?? 0;
       const cellStyle = {
-        left: stickyColumnOffsetLeft !== undefined && stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
-        right: stickyColumnOffsetRight !== undefined && stickySide === 'right' ? stickyColumnOffsetRight : undefined,
+        left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
+        right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
       };
-      const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
-      const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
-      const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
 
       acc[columnId] = {
         padLeft: isFirstColumn && tablePaddingLeft !== 0 && this.isStuckToTheLeft,
@@ -308,11 +308,11 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   };
 
   private updateCellOffsets = (props: UpdateCellStylesProps): void => {
-    const firstColumnWidths: number[] = [];
+    const firstColumnsWidths: number[] = [];
     for (let i = 0; i < props.visibleColumns.length; i++) {
       const element = props.cells[props.visibleColumns[i]];
       const cellWidth = element.getBoundingClientRect().width ?? 0;
-      firstColumnWidths[i] = (firstColumnWidths[i - 1] ?? 0) + cellWidth;
+      firstColumnsWidths[i] = (firstColumnsWidths[i - 1] ?? 0) + cellWidth;
     }
 
     const lastColumnsWidths: number[] = [];
@@ -323,12 +323,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     }
     lastColumnsWidths.reverse();
 
-    this.stickyWidthLeft = firstColumnWidths[props.stickyColumnsFirst - 1] ?? 0;
+    this.stickyWidthLeft = firstColumnsWidths[props.stickyColumnsFirst - 1] ?? 0;
     this.stickyWidthRight = lastColumnsWidths[props.stickyColumnsLast - 1] ?? 0;
     this.cellOffsets = props.visibleColumns.reduce(
       (map, columnId, columnIndex) =>
         map.set(columnId, {
-          first: firstColumnWidths[columnIndex - 1] ?? 0,
+          first: firstColumnsWidths[columnIndex - 1] ?? 0,
           last: lastColumnsWidths[props.visibleColumns.length - 1 - columnIndex - 1] ?? 0,
         }),
       new Map()
