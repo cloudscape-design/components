@@ -266,6 +266,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
 
     this.isStuckToTheLeft = wrapperScrollLeft > tablePaddingLeft;
+
+    // Math.ceil() is used here to address an edge-case in certain browsers, where they return non-integer wrapperScrollLeft values
+    // which are lower than expected (sub-pixel difference), resulting in the table always being in the "stuck to the right" state
     this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
   }
 
