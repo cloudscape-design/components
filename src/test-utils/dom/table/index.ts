@@ -61,7 +61,9 @@ export default class TableWrapper extends ComponentWrapper {
    * @param columnIndex 1-based index of the column of the cell to select.
    */
   findBodyCell(rowIndex: number, columnIndex: number): ElementWrapper | null {
-    return this.findNativeTable().find(`tbody tr:nth-child(${rowIndex}) td:nth-child(${columnIndex})`);
+    return this.findNativeTable().find(
+      `tbody tr:nth-child(${rowIndex}) .${bodyCellStyles['body-cell']}:nth-child(${columnIndex})`
+    );
   }
 
   findRows(): Array<ElementWrapper> {
