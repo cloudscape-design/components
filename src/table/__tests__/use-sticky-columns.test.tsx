@@ -58,27 +58,28 @@ test('isEnabled is true, wrapper styles is not empty and wrapper listener is att
 });
 
 test('styles update when sticky column properties change', () => {
-  const tableWrapper = document.createElement('div');
-  const table = document.createElement('table');
-  const { result, rerender } = renderHook(() =>
-    useStickyColumns({ visibleColumns: [], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
-  );
-  result.current.refs.wrapper(tableWrapper);
-  result.current.refs.table(table);
+  const emptyVisibleColumns = new Array<string>();
+  const allVisibleColumns = ['1', '2', '3'];
+  const { result, rerender } = renderHook(useStickyColumns, {
+    initialProps: { visibleColumns: emptyVisibleColumns, stickyColumnsFirst: 0, stickyColumnsLast: 0 },
+  });
+  createMockTable(result.current, 500, 500, 100, 200, 300);
+
   const updateCellStylesSpy = jest.spyOn(result.current.store, 'updateCellStyles');
 
   expect(updateCellStylesSpy).not.toHaveBeenCalled();
 
-  rerender({ visibleColumns: [], stickyColumnsFirst: 1, stickyColumnsLast: 0 });
+  rerender({ visibleColumns: emptyVisibleColumns, stickyColumnsFirst: 1, stickyColumnsLast: 0 });
   expect(updateCellStylesSpy).toHaveBeenCalledTimes(1);
 
-  rerender({ visibleColumns: [], stickyColumnsFirst: 1, stickyColumnsLast: 1 });
+  rerender({ visibleColumns: emptyVisibleColumns, stickyColumnsFirst: 1, stickyColumnsLast: 1 });
   expect(updateCellStylesSpy).toHaveBeenCalledTimes(2);
 
-  rerender({ visibleColumns: ['new'], stickyColumnsFirst: 1, stickyColumnsLast: 1 });
+  rerender({ visibleColumns: allVisibleColumns, stickyColumnsFirst: 1, stickyColumnsLast: 1 });
   expect(updateCellStylesSpy).toHaveBeenCalledTimes(3);
 
-  expect(result.current.store.get()).toEqual({ cellState: {}, scrollPadding: { left: 0, right: 0 } });
+  rerender({ visibleColumns: allVisibleColumns, stickyColumnsFirst: 1, stickyColumnsLast: 1 });
+  expect(updateCellStylesSpy).toHaveBeenCalledTimes(3);
 });
 
 test('styles update when wrapper scrolls', () => {
