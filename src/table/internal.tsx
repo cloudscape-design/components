@@ -85,6 +85,7 @@ const InternalTable = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(rest);
     const isMobile = useMobile();
+    stickyHeader = stickyHeader && supportsStickyPosition();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);

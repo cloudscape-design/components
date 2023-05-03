@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
-import { findUpUntil } from '../internal/utils/dom';
+import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import customCssProps from '../internal/generated/custom-css-properties';
@@ -26,7 +26,7 @@ export const useStickyHeader = (
   // of other sticky elements positioned on top of the view.
   const { stickyOffsetTop } = useAppLayoutContext();
   const disableSticky = isMobile && __disableMobile;
-  const isSticky = !disableSticky && !!__stickyHeader;
+  const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
   const isRefresh = useVisualRefresh();
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.

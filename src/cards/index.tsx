@@ -22,6 +22,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import LiveRegion from '../internal/components/live-region';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { supportsStickyPosition } from '../internal/utils/dom';
 
 export { CardsProps };
 
@@ -81,7 +82,7 @@ const Cards = React.forwardRef(function <T = any>(
   const headerRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobile();
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
-  stickyHeader = !isMobile && stickyHeader;
+  stickyHeader = supportsStickyPosition() && !isMobile && stickyHeader;
   const onCardFocus: FocusEventHandler<HTMLElement> = event => {
     // When an element inside card receives focus we want to adjust the scroll.
     // However, that behavior is unwanted when the focus is received as result of a click
