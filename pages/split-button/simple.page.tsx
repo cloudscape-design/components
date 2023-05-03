@@ -3,43 +3,36 @@
 import * as React from 'react';
 import SplitButton, { SplitButtonProps } from '~components/split-button';
 import ScreenshotArea from '../utils/screenshot-area';
-import { SpaceBetween } from '~components';
+import { SegmentedControl, SpaceBetween } from '~components';
+import { useEffect, useState } from 'react';
 
 const items: SplitButtonProps['items'] = [
   {
-    id: 'id1',
-    text: 'Option 1',
+    id: 'launch-instance',
+    text: 'Launch instance',
   },
   {
-    id: 'id2',
-    text: 'Link option with some longer text inside it',
-    disabled: true,
-    href: '#',
-  },
-  {
-    id: 'id3',
-    text: 'Option 3',
-    href: '#',
-    external: true,
-    externalIconAriaLabel: '(opens in new tab)',
-  },
-  {
-    id: 'id4',
-    text: 'Option 4',
-    disabled: true,
-  },
-  {
-    id: 'id5',
-    text: 'Option 5',
-  },
-  {
-    id: 'id6',
-    text: 'Option 6',
+    id: 'launch-instance-from-template',
+    text: 'Launch instance from template',
+    disabledReason: 'No template available',
     disabled: true,
   },
 ];
 
 export default function SplitButtonPage() {
+  const [variant, setVariant] = useState<'normal' | 'primary'>('normal');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+    return () => clearTimeout(timeoutId);
+  }, [loading]);
+
   return (
     <ScreenshotArea
       disableAnimations={true}
@@ -50,13 +43,30 @@ export default function SplitButtonPage() {
     >
       <article>
         <h1>Simple SplitButton</h1>
-        <SpaceBetween size="s" direction="horizontal">
-          <SplitButton id="SplitButton1" variant="normal" items={items} ariaLabel="open dropdown">
-            Option 0
-          </SplitButton>
-          <SplitButton id="SplitButton2" variant="primary" items={items} ariaLabel="open dropdown">
-            Option 0
-          </SplitButton>
+        <SpaceBetween size="xl">
+          <SegmentedControl
+            label="Variant"
+            options={[
+              { id: 'normal', text: 'normal' },
+              { id: 'primary', text: 'primary' },
+            ]}
+            selectedId={variant}
+            onChange={({ detail }) => setVariant(detail.selectedId as any)}
+          />
+
+          <SpaceBetween size="s" direction="horizontal">
+            <SplitButton
+              id="SplitButton1"
+              variant={variant}
+              items={items}
+              ariaLabel="open dropdown"
+              onItemClick={() => setLoading(true)}
+              loading={loading}
+              loadingText="Loading"
+            >
+              Launch instance
+            </SplitButton>
+          </SpaceBetween>
         </SpaceBetween>
       </article>
     </ScreenshotArea>

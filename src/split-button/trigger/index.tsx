@@ -7,18 +7,45 @@ import styles from './styles.css.js';
 import clsx from 'clsx';
 import { ButtonIconProps, LeftIcon } from '../../button/icon-helper';
 
-interface SplitTriggerProps {
+interface TriggerLeftProps {
+  loading: boolean;
+  variant: 'primary' | 'normal';
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+export function TriggerLeft({ loading, variant, onClick, children }: TriggerLeftProps) {
+  const loadingIconProps: ButtonIconProps = {
+    loading: true,
+  };
+  return (
+    <button
+      type="button"
+      className={clsx(
+        buttonStyles.button,
+        buttonStyles[`variant-${variant}`],
+        styles['main-action'],
+        styles[`variant-${variant}`],
+        loading && buttonStyles.disabled
+      )}
+      onClick={onClick}
+      disabled={loading}
+    >
+      {loading && <LeftIcon {...loadingIconProps} />}
+      {children}
+    </button>
+  );
+}
+
+interface TriggerRightProps {
   loading: boolean;
   variant: 'primary' | 'normal';
   isOpen: boolean;
   onClick: (event: React.MouseEvent) => void;
-  children: React.ReactNode;
+  dropdownRef: React.Ref<HTMLButtonElement>;
 }
 
-export function SplitTrigger({ loading, variant, isOpen, onClick, children }: SplitTriggerProps) {
-  const loadingIconProps: ButtonIconProps = {
-    loading: true,
-  };
+export function TriggerRight({ loading, variant, isOpen, onClick, dropdownRef }: TriggerRightProps) {
   const dropdownIconProps: ButtonIconProps = {
     loading: false,
     iconName: 'caret-down-filled',
@@ -28,29 +55,23 @@ export function SplitTrigger({ loading, variant, isOpen, onClick, children }: Sp
     iconAlign: 'left',
   };
   return (
-    <div>
-      <button
-        className={clsx(
-          buttonStyles.button,
-          buttonStyles[`variant-${variant}`],
-          styles['main-action'],
-          styles[`variant-${variant}`]
-        )}
-      >
-        {loading && <LeftIcon {...loadingIconProps} />}
-        {children}
-      </button>
-      <button
-        className={clsx(
-          buttonStyles.button,
-          buttonStyles[`variant-${variant}`],
-          styles['more-actions'],
-          styles[`variant-${variant}`]
-        )}
-        onClick={onClick}
-      >
-        <LeftIcon {...dropdownIconProps} />
-      </button>
-    </div>
+    <button
+      type="button"
+      ref={dropdownRef}
+      className={clsx(
+        buttonStyles.button,
+        buttonStyles[`variant-${variant}`],
+        styles['more-actions'],
+        styles[`variant-${variant}`],
+        loading && buttonStyles.disabled
+      )}
+      onClick={onClick}
+      aria-haspopup={true}
+      aria-expanded={isOpen}
+      aria-label="All actions"
+      disabled={loading}
+    >
+      <LeftIcon {...dropdownIconProps} />
+    </button>
   );
 }
