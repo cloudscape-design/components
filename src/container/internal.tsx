@@ -21,6 +21,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __headerRef?: React.RefObject<HTMLDivElement>;
   __headerId?: string;
   __darkHeader?: boolean;
+  __disableStickyMobile?: boolean;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -47,12 +48,19 @@ export default function InternalContainer({
   __headerRef,
   __headerId,
   __darkHeader = false,
+  __disableStickyMobile = true,
   ...restProps
 }: InternalContainerProps) {
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
+  const { isSticky, isStuck, stickyStyles } = useStickyHeader(
+    rootRef,
+    headerRef,
+    __stickyHeader,
+    __stickyOffset,
+    __disableStickyMobile
+  );
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
 
