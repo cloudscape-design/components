@@ -78,6 +78,11 @@ export interface AutosuggestProps
   enteredTextLabel: AutosuggestProps.EnteredTextLabel;
 
   /**
+   * Displaying number of matched items while filtering
+   */
+  filteringResultsText?: (matchesCount: number, totalCount: number) => string;
+
+  /**
    * Specifies the text that's displayed when there aren't any suggestions to display.
    * This is displayed when `statusType` is set to `finished` or it's not set at all.
    */

@@ -54,6 +54,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     ariaLabel,
     ariaRequired,
     enteredTextLabel,
+    filteringResultsText,
     onKeyDown,
     virtualScroll,
     expandToViewport,
@@ -161,12 +162,18 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
+  const isFiltered = value.length !== 0;
+  const filteredText = isFiltered
+    ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
+    : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,
     isEmpty,
+    isFiltered,
     recoveryText,
     errorIconAriaLabel,
     onRecoveryClick: handleRecoveryClick,
+    filteringResultsText: filteredText,
   });
 
   return (
