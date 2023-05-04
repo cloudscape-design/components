@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { RefObject, useState, useLayoutEffect, useCallback, useEffect, createContext } from 'react';
 import { useAppLayoutContext } from '../internal/context/app-layout-context';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { findUpUntil, supportsStickyPosition } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import customCssProps from '../internal/generated/custom-css-properties';
+import { useMobile } from '../internal/hooks/use-mobile';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;
@@ -18,12 +18,15 @@ export const useStickyHeader = (
   rootRef: RefObject<HTMLDivElement>,
   headerRef: RefObject<HTMLDivElement>,
   __stickyHeader?: boolean,
-  __stickyOffset?: number
+  __stickyOffset?: number,
+  __disableMobile = true
 ) => {
+  const isMobile = useMobile();
   // We reach into AppLayoutContext in case sticky header needs to be offset down by the height
   // of other sticky elements positioned on top of the view.
   const { stickyOffsetTop } = useAppLayoutContext();
-  const isSticky = useSupportsStickyHeader() && !!__stickyHeader;
+  const disableSticky = isMobile && __disableMobile;
+  const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
   const isRefresh = useVisualRefresh();
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
@@ -51,7 +54,7 @@ export const useStickyHeader = (
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset}px`;
-  if (isRefresh && !hasInnerOverflowParents) {
+  if (isRefresh && !hasInnerOverflowParents && !isMobile) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
 
@@ -92,8 +95,3 @@ export const useStickyHeader = (
     stickyStyles,
   };
 };
-
-export function useSupportsStickyHeader() {
-  const isMobile = useMobile();
-  return supportsStickyPosition() && !isMobile;
-}

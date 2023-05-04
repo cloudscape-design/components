@@ -33,6 +33,8 @@ import LiveRegion from '../internal/components/live-region';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
+import { useMobile } from '../internal/hooks/use-mobile';
+
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
 
@@ -82,6 +84,7 @@ const InternalTable = React.forwardRef(
     ref: React.Ref<TableProps.Ref>
   ) => {
     const baseProps = getBaseProps(rest);
+    const isMobile = useMobile();
     stickyHeader = stickyHeader && supportsStickyPosition();
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
@@ -202,8 +205,12 @@ const InternalTable = React.forwardRef(
 
     const hasDynamicHeight = computedVariant === 'full-page';
     const overlapElement = useDynamicOverlap({ disabled: !hasDynamicHeight });
-
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
+
+    const toolsHeaderWrapper = useRef(null);
+    // If is mobile we subtract the tools wrapper height so only the table header is sticky
+    const mobileStickyOffset =
+      (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
 
     return (
       <ColumnWidthsProvider
@@ -223,7 +230,10 @@ const InternalTable = React.forwardRef(
                   ref={overlapElement}
                   className={clsx(hasDynamicHeight && [styles['dark-header'], 'awsui-context-content-header'])}
                 >
-                  <div className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}>
+                  <div
+                    ref={toolsHeaderWrapper}
+                    className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                  >
                     <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
                   </div>
                 </div>
@@ -249,6 +259,7 @@ const InternalTable = React.forwardRef(
           variant={toContainerVariant(computedVariant)}
           __disableFooterPaddings={true}
           __disableFooterDivider={true}
+          __disableStickyMobile={false}
           footer={
             footer && (
               <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
@@ -257,7 +268,9 @@ const InternalTable = React.forwardRef(
             )
           }
           __stickyHeader={stickyHeader}
-          __stickyOffset={stickyHeaderVerticalOffset}
+          __stickyOffset={
+            isMobile ? (stickyHeaderVerticalOffset ?? 0) - mobileStickyOffset : stickyHeaderVerticalOffset
+          }
           {...focusMarkers.root}
         >
           <div
@@ -391,6 +404,7 @@ const InternalTable = React.forwardRef(
                               wrapLines={wrapLines}
                               isEditable={isEditable}
                               isEditing={isEditing}
+                              isRowHeader={column.isRowHeader}
                               isFirstRow={firstVisible}
                               isLastRow={lastVisible}
                               isSelected={isSelected}

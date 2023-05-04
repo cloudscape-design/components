@@ -8,12 +8,16 @@ export interface TableTdElementProps {
   className?: string;
   style?: React.CSSProperties;
   wrapLines: boolean | undefined;
+  isRowHeader?: boolean;
   isFirstRow: boolean;
   isLastRow: boolean;
   isSelected: boolean;
   isNextSelected: boolean;
   isPrevSelected: boolean;
-  nativeAttributes?: Omit<React.HTMLAttributes<HTMLTableCellElement>, 'style' | 'className' | 'onClick'>;
+  nativeAttributes?: Omit<
+    React.TdHTMLAttributes<HTMLTableCellElement> | React.ThHTMLAttributes<HTMLTableCellElement>,
+    'style' | 'className' | 'onClick'
+  >;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -32,6 +36,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       style,
       children,
       wrapLines,
+      isRowHeader,
       isFirstRow,
       isLastRow,
       isSelected,
@@ -49,8 +54,16 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     },
     ref
   ) => {
+    let Element: 'th' | 'td' = 'td';
+    if (isRowHeader) {
+      Element = 'th';
+      nativeAttributes = {
+        ...nativeAttributes,
+        scope: 'row',
+      };
+    }
     return (
-      <td
+      <Element
         style={style}
         className={clsx(
           className,
@@ -74,7 +87,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         {...nativeAttributes}
       >
         {children}
-      </td>
+      </Element>
     );
   }
 );

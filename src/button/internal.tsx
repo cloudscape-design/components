@@ -66,13 +66,13 @@ export const InternalButton = React.forwardRef(
         }
 
         if (isAnchor && isPlainLeftClick(event)) {
-          fireCancelableEvent(onFollow, null, event);
+          fireCancelableEvent(onFollow, { href, target }, event);
         }
 
         const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
         fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
       },
-      [isAnchor, isNotInteractive, onClick, onFollow]
+      [isAnchor, isNotInteractive, onClick, onFollow, href, target]
     );
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {

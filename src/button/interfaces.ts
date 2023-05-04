@@ -3,7 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { IconProps } from '../icon/interfaces';
 import React from 'react';
-import { CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
+import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 
 export interface ButtonProps extends BaseComponentProps {
   /**
@@ -128,7 +128,7 @@ export interface ButtonProps extends BaseComponentProps {
    * Called when the user clicks on the button with the left mouse button without pressing
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
    */
-  onFollow?: CancelableEventHandler<null>;
+  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
 
   /**
    *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
@@ -140,6 +140,7 @@ export interface ButtonProps extends BaseComponentProps {
 export namespace ButtonProps {
   export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon';
   export type ClickDetail = _ClickDetail;
+  export type FollowDetail = BaseNavigationDetail;
 
   export type FormAction = 'submit' | 'none';
 
