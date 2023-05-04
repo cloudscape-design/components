@@ -24,7 +24,7 @@ import FocusLock from '../internal/components/focus-lock';
 import { useInternalI18n } from '../internal/i18n/context';
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 
-type InternalModalProps = SomeRequired<ModalProps, 'size' | 'closeAriaLabel'> & InternalBaseComponentProps;
+type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
 
 export default function InternalModal({ modalRoot, ...rest }: InternalModalProps) {
   return (
