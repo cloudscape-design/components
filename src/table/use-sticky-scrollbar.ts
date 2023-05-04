@@ -124,10 +124,9 @@ export function useStickyScrollbar(
   }, [wrapperEl]);
 
   useEffect(() => {
-    if (supportsStickyPosition() && tableRef.current) {
-      const observer = new ResizeObserver(entries => {
+    if (supportsStickyPosition() && wrapperRef.current && tableRef.current) {
+      const observer = new ResizeObserver(() => {
         if (scrollbarContentRef.current) {
-          scrollbarContentRef.current.style.width = `${entries[0].borderBoxSize[0].inlineSize}px`;
           updatePosition(
             tableRef.current,
             wrapperRef.current,
@@ -138,39 +137,13 @@ export function useStickyScrollbar(
           );
         }
       });
+      // Scrollbar width must be in sync with wrapper width.
+      observer.observe(wrapperRef.current);
+      // Scrollbar content width must be in sync with table width.
       observer.observe(tableRef.current);
       return () => {
         observer.disconnect();
       };
     }
   }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, consideredFooterHeight, hasContainingBlock]);
-
-  useEffect(() => {
-    if (supportsStickyPosition()) {
-      const resizeHandler = () => {
-        updatePosition(
-          tableRef.current,
-          wrapperRef.current,
-          scrollbarRef.current,
-          scrollbarContentRef.current,
-          hasContainingBlock,
-          consideredFooterHeight
-        );
-      };
-      const pointerDownHandler = () => {
-        if (scrollbarRef.current) {
-          scrollbarRef.current.classList.remove(styles['sticky-scrollbar-visible']);
-        }
-      };
-      const pointerUpHandler = resizeHandler;
-      window.addEventListener('resize', resizeHandler);
-      window.addEventListener('pointerdown', pointerDownHandler);
-      window.addEventListener('pointerup', pointerUpHandler);
-      return () => {
-        window.removeEventListener('resize', resizeHandler);
-        window.removeEventListener('pointerdown', pointerDownHandler);
-        window.removeEventListener('pointerup', pointerUpHandler);
-      };
-    }
-  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, hasContainingBlock, consideredFooterHeight]);
 }
