@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { TableForwardRefType, TableProps } from './interfaces';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import InternalContainer from '../container/internal';
@@ -34,6 +34,8 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { useStickyColumns } from './use-sticky-columns';
+import { selectionColumnId } from './use-sticky-columns';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -78,6 +80,7 @@ const InternalTable = React.forwardRef(
       totalItemsCount,
       firstIndex,
       renderAriaLive,
+      stickyColumns,
       columnDisplay,
       ...rest
     }: InternalTableProps<T>,
@@ -89,11 +92,9 @@ const InternalTable = React.forwardRef(
 
     const [containerWidth, wrapperMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const wrapperRefObject = useRef(null);
-    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject);
 
     const [tableWidth, tableMeasureRef] = useContainerQuery<number>(({ width }) => width);
     const tableRefObject = useRef(null);
-    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject);
 
     const secondaryWrapperRef = React.useRef<HTMLDivElement>(null);
     const theadRef = useRef<HTMLTableRowElement>(null);
@@ -156,6 +157,19 @@ const InternalTable = React.forwardRef(
     const hasSelection = !!selectionType;
     const hasFooter = !!footer;
 
+    const noStickyColumns = !stickyColumns?.first && !stickyColumns?.last;
+
+    const visibleColumnsWithSelection = useMemo(() => {
+      const columnIds = visibleColumnDefinitions.map((it, index) => it.id ?? index.toString());
+      return hasSelection ? [selectionColumnId, ...columnIds] : columnIds ?? [];
+    }, [visibleColumnDefinitions, hasSelection]);
+
+    const stickyState = useStickyColumns({
+      visibleColumns: visibleColumnsWithSelection,
+      stickyColumnsFirst: noStickyColumns ? 0 : (stickyColumns?.first || 0) + (hasSelection ? 1 : 0),
+      stickyColumnsLast: stickyColumns?.last || 0,
+    });
+
     const theadProps: TheadProps = {
       containerWidth,
       selectionType,
@@ -180,7 +194,11 @@ const InternalTable = React.forwardRef(
       },
       singleSelectionHeaderAriaLabel: ariaLabels?.selectionGroupLabel,
       stripedRows,
+      stickyState,
     };
+
+    const wrapperRef = useMergeRefs(wrapperMeasureRef, wrapperRefObject, stickyState.refs.wrapper);
+    const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
 
     // Allows keyboard users to scroll horizontally with arrow keys by making the wrapper part of the tab sequence
     const isWrapperScrollable = tableWidth && containerWidth && tableWidth > containerWidth;
@@ -369,6 +387,8 @@ const InternalTable = React.forwardRef(
                             stripedRows={stripedRows}
                             hasSelection={hasSelection}
                             hasFooter={hasFooter}
+                            stickyState={stickyState}
+                            columnId={selectionColumnId.toString()}
                           >
                             <SelectionControl
                               onFocusDown={moveFocusDown}
@@ -428,6 +448,8 @@ const InternalTable = React.forwardRef(
                               hasFooter={hasFooter}
                               stripedRows={stripedRows}
                               isEvenRow={isEven}
+                              columnId={column.id ?? colIndex.toString()}
+                              stickyState={stickyState}
                               isVisualRefresh={isVisualRefresh}
                             />
                           );

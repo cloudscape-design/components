@@ -151,6 +151,10 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
   </InternalCheckbox>
 );
 
+interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
+  onChange: (value: any) => void;
+  value?: { first?: number; last?: number };
+}
 interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
   onChange: (value: any) => void;
   preference: {

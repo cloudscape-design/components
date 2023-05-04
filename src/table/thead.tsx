@@ -10,6 +10,7 @@ import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { selectionColumnId, StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 import styles from './styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
@@ -38,6 +39,7 @@ export interface TheadProps {
   stuck?: boolean;
   singleSelectionHeaderAriaLabel?: string;
   stripedRows?: boolean;
+  stickyState: StickyColumnsModel;
 
   focusedComponent?: InteractiveComponent | null;
   onFocusedComponentChange?: (element: InteractiveComponent | null) => void;
@@ -64,6 +66,7 @@ const Thead = React.forwardRef(
       sticky = false,
       hidden = false,
       stuck = false,
+      stickyState,
 
       focusedComponent,
       onFocusedComponentChange,
@@ -89,12 +92,30 @@ const Thead = React.forwardRef(
 
     const { columnWidths, totalWidth, updateColumn } = useColumnWidths();
 
+    const stickyStyles = useStickyCellStyles({
+      stickyColumns: stickyState,
+      columnId: selectionColumnId.toString(),
+      getClassName: props => ({
+        [styles['sticky-cell']]: !!props,
+        [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+        [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+        [styles['sticky-cell-last-right']]: !!props?.lastRight,
+      }),
+    });
+
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
           {selectionType ? (
             <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
+              className={clsx(
+                headerCellClass,
+                selectionCellClass,
+                hidden && headerCellStyles['header-cell-hidden'],
+                stickyStyles.className
+              )}
+              style={stickyStyles.style}
+              ref={stickyStyles.ref}
               scope="col"
             >
               {selectionType === 'multi' ? (
@@ -144,11 +165,13 @@ const Thead = React.forwardRef(
                 wrapLines={wrapLines}
                 hidden={hidden}
                 colIndex={colIndex}
+                columnId={column.id ?? colIndex.toString()}
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
                 onClick={detail => fireNonCancelableEvent(onSortingChange, detail)}
                 isEditable={!!column.editConfig}
+                stickyState={stickyState}
               />
             );
           })}

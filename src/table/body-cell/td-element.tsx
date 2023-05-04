@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -26,6 +27,8 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
+  columnId: string;
+  stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
 }
 
@@ -51,6 +54,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isVisualRefresh,
       hasSelection,
       hasFooter,
+      columnId,
+      stickyState,
     },
     ref
   ) => {
@@ -62,9 +67,21 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         scope: 'row',
       };
     }
+
+    const stickyStyles = useStickyCellStyles({
+      stickyColumns: stickyState,
+      columnId,
+      getClassName: props => ({
+        [styles['sticky-cell']]: !!props,
+        [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+        [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+        [styles['sticky-cell-last-right']]: !!props?.lastRight,
+      }),
+    });
+
     return (
       <Element
-        style={style}
+        style={{ ...style, ...stickyStyles.style }}
         className={clsx(
           className,
           styles['body-cell'],
@@ -78,7 +95,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
-          hasFooter && styles['has-footer']
+          hasFooter && styles['has-footer'],
+          stickyStyles.className
         )}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
