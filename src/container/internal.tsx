@@ -9,6 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 
@@ -51,6 +52,7 @@ export default function InternalContainer({
   __disableStickyMobile = true,
   ...restProps
 }: InternalContainerProps) {
+  const isMobile = useMobile();
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +99,7 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        isSticky && [styles['sticky-enabled']]
+        isSticky && !isMobile && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
