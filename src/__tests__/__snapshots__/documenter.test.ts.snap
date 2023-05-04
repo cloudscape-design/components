@@ -8107,7 +8107,6 @@ The event detail contains the \`reason\`, which can be any of the following:
       "type": "string",
     },
     Object {
-      "defaultValue": "\\"\\"",
       "description": "Adds an \`aria-label\` to the close button, for accessibility.",
       "name": "closeAriaLabel",
       "optional": true,
