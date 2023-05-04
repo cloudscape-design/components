@@ -646,6 +646,22 @@ describe('SideNavigation', () => {
 
       expect(wrapper.findItemByIndex(1)?.findLink()?.getElement()).toHaveAttribute('href', ABSOLUTE_HREF);
     });
+
+    it('has an additional info when "info" property is specified', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          {
+            type: 'link-group',
+            text: 'Link Group',
+            href: ABSOLUTE_HREF,
+            info: <span>Additional info</span>,
+            items: [{ type: 'link', text: 'Page 1', href: '/nested-content' }],
+          },
+        ],
+      });
+
+      expect(wrapper.findItemByIndex(1)?.find('span')?.getElement()).toHaveTextContent('Additional info');
+    });
   });
 
   describe('Expandable Link Group', () => {

@@ -26,5 +26,16 @@
     white-space: nowrap;
 
     background-color: tokens.$color-background-container-content;
+
+    &.sticky-cell {
+      position: sticky;
+
+      &-last-left {
+        border-right: 2px solid red;
+      }
+      &-last-right {
+        border-left: 2px solid red !important;
+      }
+    }
   }
 }

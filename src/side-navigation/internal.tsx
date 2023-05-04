@@ -332,7 +332,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
   return (
     <>
       <Link
-        definition={{ type: 'link', href: definition.href, text: definition.text }}
+        definition={{ type: 'link', href: definition.href, text: definition.text, info: definition.info }}
         fireFollow={(_, event) => fireFollow(definition, event)}
         fireChange={fireChange}
         activeHref={activeHref}
