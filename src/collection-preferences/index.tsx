@@ -18,6 +18,7 @@ import {
   StripedRowsPreference,
   ContentDensityPreference,
   CustomPreference,
+  StickyColumnsPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -25,12 +26,8 @@ import { CollectionPreferencesProps } from './interfaces';
 import styles from './styles.css.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import ContentDisplayPreference from './content-display';
-import { warnOnce } from '../internal/logging';
 
 export { CollectionPreferencesProps };
-
-const componentName = 'CollectionPreferences';
 
 export default function CollectionPreferences({
   title,
@@ -40,17 +37,17 @@ export default function CollectionPreferences({
   onConfirm,
   onCancel,
   visibleContentPreference,
-  contentDisplayPreference,
   pageSizePreference,
   wrapLinesPreference,
   stripedRowsPreference,
   contentDensityPreference,
+  stickyColumnsPreference,
   preferences,
   customPreference,
   ...rest
 }: CollectionPreferencesProps) {
-  const { __internalRootRef } = useBaseComponent(componentName);
-  checkControlled(componentName, 'preferences', preferences, 'onConfirm', onConfirm);
+  const { __internalRootRef } = useBaseComponent('CollectionPreferences');
+  checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
   const baseProps = getBaseProps(rest);
   const [modalVisible, setModalVisible] = useState(false);
   const [temporaryPreferences, setTemporaryPreferences] = useState(copyPreferences(preferences || {}));
@@ -75,24 +72,18 @@ export default function CollectionPreferences({
     setTemporaryPreferences(copyPreferences(preferences || {}));
   };
 
-  const hasContentOnTheLeft = !!(
+  const hasLeftContent = !!(
     pageSizePreference ||
     wrapLinesPreference ||
     stripedRowsPreference ||
     contentDensityPreference ||
+    stickyColumnsPreference ||
     customPreference
   );
-  const hasContentOnTheRight = !!(visibleContentPreference || contentDisplayPreference);
+  const hasRightContent = !!visibleContentPreference;
 
   const onChange = (changedPreferences: CollectionPreferencesProps.Preferences) =>
     setTemporaryPreferences(mergePreferences(changedPreferences, temporaryPreferences));
-
-  if (visibleContentPreference && contentDisplayPreference) {
-    warnOnce(
-      componentName,
-      'You provided both `visibleContentPreference` and `contentDisplayPreference` props. `visibleContentPreference` will be ignored and only `contentDisplayPreference` will be rendered.'
-    );
-  }
 
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -137,12 +128,12 @@ export default function CollectionPreferences({
             </InternalBox>
           }
           closeAriaLabel={cancelLabel}
-          size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
+          size={hasLeftContent && hasRightContent ? 'large' : 'medium'}
           onDismiss={onCancelListener}
         >
           <ModalContentLayout
             left={
-              hasContentOnTheLeft && (
+              hasLeftContent && (
                 <InternalSpaceBetween size="l">
                   {pageSizePreference && (
                     <PageSizePreference
@@ -172,6 +163,13 @@ export default function CollectionPreferences({
                       onChange={contentDensity => onChange({ contentDensity })}
                     />
                   )}
+                  {stickyColumnsPreference && (
+                    <StickyColumnsPreference
+                      value={temporaryPreferences.stickyColumns}
+                      {...stickyColumnsPreference}
+                      onChange={stickyColumns => onChange({ stickyColumns })}
+                    />
+                  )}
                   {customPreference && (
                     <CustomPreference
                       value={temporaryPreferences.custom}
@@ -183,20 +181,12 @@ export default function CollectionPreferences({
               )
             }
             right={
-              contentDisplayPreference ? (
-                <ContentDisplayPreference
-                  {...contentDisplayPreference}
-                  value={temporaryPreferences.contentDisplay}
-                  onChange={contentDisplay => onChange({ contentDisplay })}
+              visibleContentPreference && (
+                <VisibleContentPreference
+                  value={temporaryPreferences.visibleContent}
+                  {...visibleContentPreference}
+                  onChange={visibleContent => onChange({ visibleContent })}
                 />
-              ) : (
-                visibleContentPreference && (
-                  <VisibleContentPreference
-                    value={temporaryPreferences.visibleContent}
-                    {...visibleContentPreference}
-                    onChange={visibleItems => onChange({ visibleContent: visibleItems })}
-                  />
-                )
               )
             }
           />
@@ -206,4 +196,4 @@ export default function CollectionPreferences({
   );
 }
 
-applyDisplayName(CollectionPreferences, componentName);
+applyDisplayName(CollectionPreferences, 'CollectionPreferences');
