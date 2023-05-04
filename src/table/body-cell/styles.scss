@@ -102,6 +102,48 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     }
   }
 
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-container-content;
+    z-index: 801; // Our sticky elements should have z-index in the range of 800-850
+    &-pad-left:not(.has-selection) {
+      padding-left: awsui.$space-table-horizontal;
+    }
+    &.body-cell-shaded {
+      background: awsui.$color-background-cell-shaded;
+    }
+    &.body-cell-selected {
+      background-color: awsui.$color-background-item-selected;
+
+      // Create a background using box-shadow and clip path to hide underlying elements
+      &:first-child {
+        box-shadow: 0 0 0 4px awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+      }
+      &:last-child {
+        box-shadow: 4px 0 0 0 awsui.$color-background-container-content;
+        clip-path: inset(0 0 0 0);
+        &.sticky-cell-last-right {
+          box-shadow: awsui.$shadow-sticky-column-last, 8px 0 0 0 awsui.$color-background-container-content;
+          clip-path: inset(0 0 0 -24px);
+        }
+      }
+    }
+    &-last-left {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+    }
+    &-last-right {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+  }
+
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
   &-selected:not(:first-child) {
     padding-top: $cell-vertical-padding-w-border;
@@ -193,8 +235,15 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: relative;
     cursor: pointer;
 
+    &.sticky-cell {
+      position: sticky;
+    }
+
     &.body-cell-edit-active {
       overflow: visible;
+      &.sticky-cell {
+        position: sticky;
+      }
     }
 
     &:not(.body-cell-edit-active) {

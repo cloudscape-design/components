@@ -31,6 +31,31 @@
     padding-right: awsui.$space-xs;
   }
 
+  &.sticky-cell {
+    position: sticky;
+    background: awsui.$color-background-table-header;
+    z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+    &-pad-left:not(.has-selection) {
+      padding-left: awsui.$space-table-horizontal;
+    }
+    &-last-left {
+      box-shadow: awsui.$shadow-sticky-column-first;
+      clip-path: inset(0px -24px 0px 0px);
+      &:not(.header-cell-resizable):before {
+        display: none;
+      }
+    }
+    &-last-right {
+      box-shadow: awsui.$shadow-sticky-column-last;
+      clip-path: inset(0 0 0 -24px);
+    }
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
+  }
+
   &:not(:last-child):before {
     $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
 
