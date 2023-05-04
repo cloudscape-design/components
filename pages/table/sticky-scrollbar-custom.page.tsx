@@ -1,13 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import SpaceBetween from '~components/space-between';
 import { Box } from '~components';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import StickyScrollbar from '~components/table/sticky-scrollbar';
 import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
-import { supportsStickyPosition } from '~components/internal/utils/dom';
 
 const items = generateItems(50);
 const columnDefinitions = [
@@ -25,39 +23,36 @@ export default function Page() {
   const tableRef = useRef<HTMLTableElement>(null);
   const scrollbarRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = useScrollSync([wrapperRef, scrollbarRef], !supportsStickyPosition());
+  const handleScroll = useScrollSync([wrapperRef, scrollbarRef]);
 
   return (
     <Box margin="l">
-      <SpaceBetween size="xl">
-        <h1>Sticky scrollbar with a custom table</h1>
-
-        <div ref={wrapperRef} onScroll={handleScroll} className={styles['custom-table']}>
-          <table ref={tableRef} className={styles['custom-table-table']}>
-            <thead>
-              <tr>
+      <h1>Sticky scrollbar with a custom table</h1>
+      <div ref={wrapperRef} onScroll={handleScroll} className={styles['custom-table']}>
+        <table ref={tableRef} className={styles['custom-table-table']}>
+          <thead>
+            <tr>
+              {columnDefinitions.map(column => (
+                <th key={column.key} className={styles['custom-table-cell']}>
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {items.map(item => (
+              <tr key={item.id}>
                 {columnDefinitions.map(column => (
-                  <th key={column.key} className={styles['custom-table-cell']}>
-                    {column.label}
-                  </th>
+                  <td key={column.key} className={styles['custom-table-cell']}>
+                    {column.render(item)}
+                  </td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {items.map(item => (
-                <tr key={item.id}>
-                  {columnDefinitions.map(column => (
-                    <td key={column.key} className={styles['custom-table-cell']}>
-                      {column.render(item)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <StickyScrollbar ref={scrollbarRef} wrapperRef={wrapperRef} tableRef={tableRef} onScroll={handleScroll} />
-      </SpaceBetween>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <StickyScrollbar ref={scrollbarRef} wrapperRef={wrapperRef} tableRef={tableRef} onScroll={handleScroll} />
     </Box>
   );
 }

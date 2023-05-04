@@ -157,9 +157,19 @@ export function useStickyScrollbar(
           consideredFooterHeight
         );
       };
+      const pointerDownHandler = () => {
+        if (scrollbarRef.current) {
+          scrollbarRef.current.classList.remove(styles['sticky-scrollbar-visible']);
+        }
+      };
+      const pointerUpHandler = resizeHandler;
       window.addEventListener('resize', resizeHandler);
+      window.addEventListener('pointerdown', pointerDownHandler);
+      window.addEventListener('pointerup', pointerUpHandler);
       return () => {
         window.removeEventListener('resize', resizeHandler);
+        window.removeEventListener('pointerdown', pointerDownHandler);
+        window.removeEventListener('pointerup', pointerUpHandler);
       };
     }
   }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, hasContainingBlock, consideredFooterHeight]);

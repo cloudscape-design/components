@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { RefObject, useRef } from 'react';
+import { supportsStickyPosition } from '../../utils/dom';
 
 /**
- * useScrollSync returns scroll event handler to be attached to synchronised scroll elements.
+ * useScrollSync returns scroll event handler to be attached to synchronized scroll elements.
  *
  * For example
  *    const handleScroll = useScrollSync([ref1, ref2]);
  *    <div ref={ref1} onScroll={handleScroll}/>
  *    <div ref={ref2} onScroll={handleScroll}/>
  */
-export function useScrollSync(refs: Array<RefObject<any>>, disabled = false) {
+export function useScrollSync(refs: Array<RefObject<any>>, disabled = !supportsStickyPosition()) {
   const activeElement = useRef<HTMLElement | null>(null);
   const onScroll = (event: React.UIEvent) => {
     const targetElement = event.target as HTMLElement;
