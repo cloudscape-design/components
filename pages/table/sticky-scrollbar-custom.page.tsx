@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import { Box } from '~components';
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, Checkbox } from '~components';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import StickyScrollbar from '~components/table/sticky-scrollbar';
@@ -25,9 +25,18 @@ export default function Page() {
 
   const handleScroll = useScrollSync([wrapperRef, scrollbarRef]);
 
+  const [hideStickyScrollbar, setHideStickyScrollbar] = useState(false);
+
+  useEffect(() => {
+    document.body.setAttribute('data-awsui-hide-sticky-scrollbar', hideStickyScrollbar.toString());
+  }, [hideStickyScrollbar]);
+
   return (
     <Box margin="l">
       <h1>Sticky scrollbar with a custom table</h1>
+      <Checkbox checked={hideStickyScrollbar} onChange={event => setHideStickyScrollbar(event.detail.checked)}>
+        Hide sticky scrollbar
+      </Checkbox>
       <div ref={wrapperRef} onScroll={handleScroll} className={styles['custom-table']}>
         <table ref={tableRef} className={styles['custom-table-table']}>
           <thead>
