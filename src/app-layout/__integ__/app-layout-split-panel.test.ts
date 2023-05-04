@@ -123,6 +123,26 @@ test(
   })
 );
 
+test.each([
+  { position: 'side', repeatKey: 'ArrowLeft', expectedValue: 0 },
+  { position: 'side', repeatKey: 'ArrowRight', expectedValue: 100 },
+  { position: 'bottom', repeatKey: 'ArrowLeft', expectedValue: 0 },
+  { position: 'bottom', repeatKey: 'ArrowRight', expectedValue: 100 },
+])(
+  'allows split panel slider in $position position to be adjusted to $expectedValue',
+  ({ position, repeatKey, expectedValue }) =>
+    setupTest(async page => {
+      await page.openPanel();
+      if (position === 'side') {
+        await page.switchPosition('side');
+        await page.keys(['Shift', 'Tab', 'Shift']);
+      }
+      await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
+      await page.keys(Array(30).fill(repeatKey));
+      await expect(page.getSplitPanelSliderValue()).resolves.toBe(expectedValue);
+    })()
+);
+
 test(
   'renders with initial side position',
   useBrowser(async browser => {
