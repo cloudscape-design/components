@@ -352,8 +352,8 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     }
 
     const totalStickySpace = this.stickyWidthLeft + this.stickyWidthRight;
-    const tablePaddingLeft = parseInt(getComputedStyle(props.table).paddingLeft) || 0;
-    const tablePaddingRight = parseInt(getComputedStyle(props.table).paddingRight) || 0;
+    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
+    const tablePaddingRight = parseFloat(getComputedStyle(props.table).paddingRight) || 0;
     const hasEnoughScrollableSpace =
       totalStickySpace + MINIMUM_SCROLLABLE_SPACE + tablePaddingLeft + tablePaddingRight < wrapperWidth;
     if (!hasEnoughScrollableSpace) {
