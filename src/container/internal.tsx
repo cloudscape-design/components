@@ -91,6 +91,10 @@ export default function InternalContainer({
     };
   }, [isSticky, setHasStickyBackground, variant]);
 
+  // The container is only sticky on mobile if it is the header for the table.
+  // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
+  const shouldHaveStickyStyles = isSticky && !isMobile;
+
   return (
     <div
       {...baseProps}
@@ -99,7 +103,7 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        isSticky && !isMobile && [styles['sticky-enabled']]
+        shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
