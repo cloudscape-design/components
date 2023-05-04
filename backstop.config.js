@@ -15,6 +15,7 @@ const scenarios = findAllPages()
   .map(pageName => ({
     label: pageName,
     url: `http://localhost:8080/#/light/${pageName}`,
+    delay: 1000,
   }));
 
 module.exports = {
