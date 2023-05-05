@@ -103,14 +103,20 @@ export function useStickyColumns({
 
     const selector = (state: StickyColumnsState) => state.wrapperState;
 
-    const updateWrapperStyles = (state: StickyColumnsWrapperState) => {
+    const updateWrapperStyles = (state: StickyColumnsWrapperState, prev: StickyColumnsWrapperState) => {
+      if (isWrapperStatesEqual(state, prev)) {
+        return;
+      }
+
       if (wrapperRef.current) {
         wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
         wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
       }
     };
 
-    const unsubscribe = store.subscribe(selector, newState => updateWrapperStyles(selector(newState)));
+    const unsubscribe = store.subscribe(selector, (newState, prevState) =>
+      updateWrapperStyles(selector(newState), selector(prevState))
+    );
     return unsubscribe;
   }, [store, hasStickyColumns]);
 
@@ -186,7 +192,11 @@ export function useStickyCellStyles({
 
       const selector = (state: StickyColumnsState) => state.cellState[columnId];
 
-      const updateCellStyles = (state: null | StickyColumnsCellState) => {
+      const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
+        if (isCellStatesEqual(state, prev)) {
+          return;
+        }
+
         const className = getClassName(state);
         const cellElement = cellRef.current;
         if (cellElement) {
@@ -202,7 +212,9 @@ export function useStickyCellStyles({
         }
       };
 
-      const unsubscribe = stickyColumns.store.subscribe(selector, newState => updateCellStyles(selector(newState)));
+      const unsubscribe = stickyColumns.store.subscribe(selector, (newState, prevState) =>
+        updateCellStyles(selector(newState), selector(prevState))
+      );
       return unsubscribe;
     },
     // getClassName is expected to be pure
@@ -217,6 +229,23 @@ export function useStickyCellStyles({
     className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
     style: cellStyles?.offset ?? undefined,
   };
+}
+
+function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | StickyColumnsCellState): boolean {
+  if (s1 && s2) {
+    return (
+      s1.padLeft === s2.padLeft &&
+      s1.lastLeft === s2.lastLeft &&
+      s1.lastRight === s2.lastRight &&
+      s1.offset.left === s2.offset.left &&
+      s1.offset.right === s2.offset.right
+    );
+  }
+  return s1 === s2;
+}
+
+function isWrapperStatesEqual(s1: StickyColumnsWrapperState, s2: StickyColumnsWrapperState): boolean {
+  return s1.scrollPaddingLeft === s2.scrollPaddingLeft && s1.scrollPaddingRight === s2.scrollPaddingRight;
 }
 
 interface UpdateCellStylesProps {
