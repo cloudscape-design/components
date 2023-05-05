@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Checkbox } from '~components';
+import { Box, Checkbox, Link } from '~components';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import StickyScrollbar from '~components/table/sticky-scrollbar';
@@ -9,13 +9,13 @@ import { useScrollSync } from '~components/internal/hooks/use-scroll-sync';
 
 const items = generateItems(50);
 const columnDefinitions = [
-  { key: 'id', label: 'ID', render: (item: Instance) => item.id },
+  { key: 'id', label: 'ID', render: (item: Instance) => <Link>{item.id}</Link> },
   { key: 'state', label: 'State', render: (item: Instance) => item.state },
   { key: 'type', label: 'Type', render: (item: Instance) => item.type },
   { key: 'imageId', label: 'Image ID', render: (item: Instance) => item.imageId },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName },
-  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => item.dnsName + ':2' },
-  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => item.dnsName + ':3' },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? '?' },
+  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? '?') + ':2' },
+  { key: 'dnsName3', label: 'DNS name 3', render: (item: Instance) => (item.dnsName ?? '?') + ':3' },
 ];
 
 export default function Page() {
