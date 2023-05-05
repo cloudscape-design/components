@@ -104,6 +104,10 @@ describe('Input', () => {
       const { input } = renderInput({ value: 'value' });
       expect(input).toHaveAttribute('value', 'value');
     });
+    test('can be obtained through getInputValue API', () => {
+      const { wrapper } = renderInput({ value: 'value' });
+      expect(wrapper.getInputValue()).toBe('value');
+    });
   });
 
   describe('placeholder', () => {
