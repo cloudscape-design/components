@@ -48,14 +48,19 @@ export const useKeyboardEvents = ({
       maxSize = window.innerHeight;
     }
 
+    const primaryGrowKey = position === 'bottom' ? KeyCode.up : KeyCode.left;
+    const primaryShrinkKey = position === 'bottom' ? KeyCode.down : KeyCode.right;
+    const altGrowKey = position === 'bottom' ? KeyCode.right : KeyCode.down;
+    const altShrinkKey = position === 'bottom' ? KeyCode.left : KeyCode.up;
+
     let isEventHandled = true;
     switch (event.keyCode) {
-      case KeyCode.left:
-      case KeyCode.up:
+      case primaryGrowKey:
+      case altGrowKey:
         setSizeFunction(currentSize + KEYBOARD_SINGLE_STEP_SIZE);
         break;
-      case KeyCode.right:
-      case KeyCode.down:
+      case primaryShrinkKey:
+      case altShrinkKey:
         setSizeFunction(currentSize - KEYBOARD_SINGLE_STEP_SIZE);
         break;
       case KeyCode.pageUp:
