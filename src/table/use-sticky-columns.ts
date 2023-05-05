@@ -36,7 +36,7 @@ export interface StickyColumnsModel {
 
 export interface StickyColumnsState {
   cellState: Record<ColumnId, null | StickyColumnsCellState>;
-  scrollPadding: ScrollPadding;
+  wrapperState: StickyColumnsWrapperState;
 }
 
 // Cell state is used to apply respective styles and offsets to sticky cells.
@@ -48,9 +48,9 @@ export interface StickyColumnsCellState {
 }
 
 // Scroll padding is applied to table's wrapper so that the table scrolls when focus goes behind sticky column.
-export interface ScrollPadding {
-  left: number;
-  right: number;
+export interface StickyColumnsWrapperState {
+  scrollPaddingLeft: number;
+  scrollPaddingRight: number;
 }
 
 export function useStickyColumns({
@@ -101,12 +101,12 @@ export function useStickyColumns({
       return;
     }
 
-    const selector = (state: StickyColumnsState) => state.scrollPadding;
+    const selector = (state: StickyColumnsState) => state.wrapperState;
 
-    const updateWrapperStyles = (state: ScrollPadding) => {
+    const updateWrapperStyles = (state: StickyColumnsWrapperState) => {
       if (wrapperRef.current) {
-        wrapperRef.current.style.scrollPaddingLeft = state.left + 'px';
-        wrapperRef.current.style.scrollPaddingRight = state.right + 'px';
+        wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
+        wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
       }
     };
 
@@ -144,12 +144,7 @@ export function useStickyColumns({
     store,
     style: {
       // Provide wrapper styles as props so that a re-render won't cause invalidation.
-      wrapper: hasStickyColumns
-        ? {
-            scrollPaddingLeft: store.get().scrollPadding.left + 'px',
-            scrollPaddingRight: store.get().scrollPadding.right + 'px',
-          }
-        : undefined,
+      wrapper: hasStickyColumns ? { ...store.get().wrapperState } : undefined,
     },
     refs: { wrapper: setWrapper, table: setTable, cell: setCell },
   };
@@ -242,7 +237,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private padLeft = false;
 
   constructor() {
-    super({ cellState: {}, scrollPadding: { left: 0, right: 0 } });
+    super({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -254,7 +249,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       this.updateCellOffsets(props);
       this.set(() => ({
         cellState: this.generateCellStyles(props),
-        scrollPadding: { left: this.stickyWidthLeft, right: this.stickyWidthRight },
+        wrapperState: { scrollPaddingLeft: this.stickyWidthLeft, scrollPaddingRight: this.stickyWidthRight },
       }));
     }
   }
