@@ -13,7 +13,7 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
 
 import React from 'react';
 import Flashbar from '../../../lib/components/flashbar';
-import { createFlashbarWrapper, findList } from './common';
+import { createFlashbarWrapper, findList, i18nStrings } from './common';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps, FlashType } from '../interfaces';
 import { render } from '@testing-library/react';
@@ -26,22 +26,11 @@ const sampleItems: Record<FlashType, FlashbarProps.MessageDefinition> = {
   progress: { type: 'info', loading: true, header: 'Operation in progress' },
 };
 
-const defaultStrings = {
-  ariaLabel: 'Notifications',
-  notificationBarText: 'Notifications',
-  notificationBarAriaLabel: 'View all notifications',
-  errorIconAriaLabel: 'Error',
-  warningIconAriaLabel: 'Warning',
-  successIconAriaLabel: 'Success',
-  infoIconAriaLabel: 'Information',
-  inProgressIconAriaLabel: 'In progress',
-};
-
 const defaultItems = [sampleItems.error, sampleItems.success];
 
 const defaultProps = {
   stackItems: true,
-  i18nStrings: defaultStrings,
+  i18nStrings,
 };
 
 describe('Collapsible Flashbar', () => {
@@ -99,15 +88,13 @@ describe('Collapsible Flashbar', () => {
       const item1 = { ...sampleItems.success, id: '0' };
       const item2 = { ...sampleItems.error, id: '1' };
 
-      const { container, rerender } = render(
-        <Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
-      );
+      const { container, rerender } = render(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings }} />);
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
       expect(flashbar.findItems()).toHaveLength(1);
       expect(findNotificationBar(flashbar)).toBeFalsy();
 
-      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       const toggleElement = findNotificationBar(wrapper.findFlashbar()!);
       expect(toggleElement).toBeTruthy();
@@ -118,7 +105,7 @@ describe('Collapsible Flashbar', () => {
       const item2 = { ...sampleItems.error, id: '1' };
 
       const { container, rerender } = render(
-        <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />
+        <Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings }} />
       );
       const wrapper = createWrapper(container);
       const flashbar = wrapper.findFlashbar()!;
@@ -129,11 +116,11 @@ describe('Collapsible Flashbar', () => {
       toggleElement!.click();
       expect(flashbar.findItems()).toHaveLength(2);
 
-      rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1]} {...{ stackItems: true, i18nStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       expect(findNotificationBar(wrapper.findFlashbar()!)).toBeFalsy();
 
-      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings: defaultStrings }} />);
+      rerender(<Flashbar items={[item1, item2]} {...{ stackItems: true, i18nStrings }} />);
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
     });
@@ -318,6 +305,6 @@ function renderFlashbar(
   }
 ) {
   const { items, ...restProps } = customProps;
-  const props = { ...defaultProps, ...restProps, i18nStrings: { ...defaultStrings, ...restProps.i18nStrings } };
+  const props = { ...defaultProps, ...restProps, i18nStrings: { ...i18nStrings, ...restProps.i18nStrings } };
   return createFlashbarWrapper(<Flashbar {...props} items={items || defaultItems} />);
 }

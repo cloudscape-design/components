@@ -6,17 +6,9 @@ import { render } from '@testing-library/react';
 import Flashbar from '../../../lib/components/flashbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
+import { i18nStrings } from './common';
 
-const i18nStrings = {
-  ariaLabel: 'Notifications',
-  notificationBarText: 'Notifications',
-  notificationBarAriaLabel: 'View all notifications',
-  errorIconAriaLabel: 'Error',
-  warningIconAriaLabel: 'Warning',
-  successIconAriaLabel: 'Success',
-  infoIconAriaLabel: 'Information',
-  inProgressIconAriaLabel: 'In progress',
-};
+// The test serves an example of how flashbar state can be asserted applicable for both unit- and integration tests.
 
 function createDataAttributes(items: readonly FlashbarProps.MessageDefinition[]) {
   const itemsByType = {
