@@ -65,6 +65,17 @@ class SecurityGroupMultiselect extends React.Component {
     });
   };
 
+  showFilteredText = (matchesCount: number, totalCount: number) => {
+    if (this.state.status === 'pending') {
+      return `${matchesCount}+ results displayed`;
+    }
+
+    if (this.state.status === 'finished') {
+      return `${matchesCount} out of ${totalCount} matching results showing`;
+    }
+    return '';
+  };
+
   render() {
     const { status, options, selectedOptions } = this.state;
     return (
@@ -77,7 +88,7 @@ class SecurityGroupMultiselect extends React.Component {
           filteringType="manual"
           filteringPlaceholder="Find security group"
           filteringAriaLabel="Filtering aria label"
-          filteringResultsText={matchesCount => `${matchesCount} items found`}
+          filteringResultsText={this.showFilteredText}
           statusType={status as any}
           placeholder="Choose a security group"
           loadingText="Loading security groups"
