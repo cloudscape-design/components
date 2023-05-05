@@ -122,12 +122,7 @@ export function MobileToolbar({
         >
           {drawers.items.map((item: DrawerItem, index: number) => (
             <AppLayoutButton
-              className={clsx(
-                styles.trigger,
-                styles['trigger-drawer'],
-                drawers.activeDrawerId === item.id && styles.selected,
-                testutilStyles['drawers-trigger']
-              )}
+              className={clsx(styles['mobile-trigger-with-drawers'], testutilStyles['drawers-trigger'])}
               key={`drawer-trigger-${index}`}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}

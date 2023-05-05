@@ -315,7 +315,7 @@ export function MobileTriggers() {
         <InternalButton
           ariaExpanded={item.id === activeDrawerId}
           ariaLabel={item.ariaLabels?.triggerButton}
-          className={testutilStyles['drawers-trigger']}
+          className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
           disabled={hasDrawerViewportOverlay}
           formAction="none"
           iconName={item.trigger.iconName}
