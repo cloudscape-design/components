@@ -203,11 +203,41 @@ test('updates sticky cell styles', () => {
 
   expect(elements.cells[0]).toHaveClass('sticky-cell');
 
-  getClassName.mockImplementation(() => ({ 'sticky-cell-updated': true }));
+  getClassName.mockImplementation(() => ({ 'sticky-cell': false, 'sticky-cell-updated': true }));
+
+  // Trigger update w/o actual change
+  elements.wrapper.dispatchEvent(new UIEvent('scroll'));
+
+  expect(elements.cells[0]).toHaveClass('sticky-cell');
+  expect(elements.cells[0]).not.toHaveClass('sticky-cell-updated');
 
   // Trigger update
   elements.wrapper.scrollLeft = 10;
   elements.wrapper.dispatchEvent(new UIEvent('scroll'));
 
+  expect(elements.cells[0]).not.toHaveClass('sticky-cell');
   expect(elements.cells[0]).toHaveClass('sticky-cell-updated');
+});
+
+test('performs styles cleanup', () => {
+  const visibleColumns = ['1', '2', '3'];
+  const { result, rerender } = renderHook(useStickyColumns, {
+    initialProps: { visibleColumns, stickyColumnsFirst: 1, stickyColumnsLast: 0 },
+  });
+  const elements = createMockTable(result.current, 300, 500, 100, 200, 300);
+
+  const getClassName = jest.fn().mockImplementation(state => ({ 'sticky-cell': !!state }));
+  const { result: cellStylesResult } = renderHook(() =>
+    useStickyCellStyles({ stickyColumns: result.current, columnId: '1', getClassName })
+  );
+  cellStylesResult.current.ref(elements.cells[0]);
+
+  // Trigger update
+  elements.wrapper.dispatchEvent(new UIEvent('scroll'));
+
+  expect(elements.cells[0]).toHaveClass('sticky-cell');
+
+  rerender({ visibleColumns, stickyColumnsFirst: 0, stickyColumnsLast: 0 });
+
+  expect(elements.cells[0]).not.toHaveClass('sticky-cell');
 });
