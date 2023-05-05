@@ -202,8 +202,8 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
-          cellElement.style.left = state?.offset.left !== undefined ? `${state?.offset.left}px` : '';
-          cellElement.style.right = state?.offset.right !== undefined ? `${state?.offset.right}px` : '';
+          cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
+          cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
         }
       };
 
@@ -239,6 +239,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private stickyWidthRight = 0;
   private isStuckToTheLeft = false;
   private isStuckToTheRight = false;
+  private padLeft = false;
 
   constructor() {
     super({ cellState: {}, scrollPadding: { left: 0, right: 0 } });
@@ -270,11 +271,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     // Math.ceil() is used here to address an edge-case in certain browsers, where they return non-integer wrapperScrollLeft values
     // which are lower than expected (sub-pixel difference), resulting in the table always being in the "stuck to the right" state
     this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
+
+    this.padLeft = tablePaddingLeft !== 0 && this.isStuckToTheLeft;
   }
 
   private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyColumnsCellState> => {
     const isEnabled = this.isEnabled(props);
-    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
     const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
     const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
 
@@ -295,16 +297,15 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const isFirstColumn = index === 0;
       const stickyColumnOffsetLeft = this.cellOffsets.get(columnId)?.first ?? 0;
       const stickyColumnOffsetRight = this.cellOffsets.get(columnId)?.last ?? 0;
-      const cellStyle = {
-        left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
-        right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
-      };
 
       acc[columnId] = {
-        padLeft: isFirstColumn && tablePaddingLeft !== 0 && this.isStuckToTheLeft,
+        padLeft: isFirstColumn && this.padLeft,
         lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
         lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
-        offset: cellStyle,
+        offset: {
+          left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
+          right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
+        },
       };
       return acc;
     }, {} as Record<ColumnId, null | StickyColumnsCellState>);
