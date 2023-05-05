@@ -2,19 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import SpaceBetween from '~components/space-between';
-import { Box, Link } from '~components';
+import { Box, Container, Link } from '~components';
 import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/use-sticky-columns';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import clsx from 'clsx';
 
-const items = generateItems(10);
+const items = generateItems(50);
 const columnDefinitions = [
   { key: 'id', label: 'ID', render: (item: Instance) => item.id },
   { key: 'state', label: 'State', render: (item: Instance) => item.state },
-  { key: 'type', label: 'Type', render: (item: Instance) => item.type },
   { key: 'imageId', label: 'Image ID', render: (item: Instance) => <Link>{item.imageId}</Link> },
-  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName },
+  { key: 'dnsName', label: 'DNS name', render: (item: Instance) => item.dnsName ?? 'none' },
+  { key: 'dnsName2', label: 'DNS name 2', render: (item: Instance) => (item.dnsName ?? 'none') + ':2' },
+  { key: 'type', label: 'Type', render: (item: Instance) => item.type },
 ];
 
 export default function Page() {
@@ -28,30 +29,32 @@ export default function Page() {
       <SpaceBetween size="xl">
         <h1>Sticky columns with a custom table</h1>
 
-        <div ref={stickyColumns.refs.wrapper} className={styles['custom-table']} style={stickyColumns.style.wrapper}>
-          <table ref={stickyColumns.refs.table} className={styles['custom-table-table']}>
-            <thead>
-              <tr>
-                {columnDefinitions.map(column => (
-                  <TableCell isHeader={true} key={column.key} columnId={column.key} stickyColumns={stickyColumns}>
-                    {column.label}
-                  </TableCell>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(item => (
-                <tr key={item.id}>
+        <Container disableContentPaddings={true}>
+          <div ref={stickyColumns.refs.wrapper} className={styles['custom-table']} style={stickyColumns.style.wrapper}>
+            <table ref={stickyColumns.refs.table} className={styles['custom-table-table']}>
+              <thead>
+                <tr>
                   {columnDefinitions.map(column => (
-                    <TableCell isHeader={false} key={column.key} columnId={column.key} stickyColumns={stickyColumns}>
-                      {column.render(item)}
+                    <TableCell isHeader={true} key={column.key} columnId={column.key} stickyColumns={stickyColumns}>
+                      {column.label}
                     </TableCell>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {items.map(item => (
+                  <tr key={item.id}>
+                    {columnDefinitions.map(column => (
+                      <TableCell isHeader={false} key={column.key} columnId={column.key} stickyColumns={stickyColumns}>
+                        {column.render(item)}
+                      </TableCell>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Container>
       </SpaceBetween>
     </Box>
   );
@@ -76,6 +79,7 @@ function TableCell({
       [styles['sticky-cell']]: !!props,
       [styles['sticky-cell-last-left']]: !!props?.lastLeft,
       [styles['sticky-cell-last-right']]: !!props?.lastRight,
+      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
     }),
   });
   return (

@@ -14,6 +14,7 @@
     width: 100%;
     box-sizing: border-box;
     border-spacing: 0;
+    padding: 0 16px;
   }
 
   &-cell {
@@ -27,6 +28,14 @@
 
     background-color: tokens.$color-background-container-content;
 
+    &:first-child {
+      padding-left: 2px;
+      border-left: none;
+    }
+    &:last-child {
+      padding-right: 2px;
+    }
+
     &.sticky-cell {
       position: sticky;
 
@@ -35,6 +44,9 @@
       }
       &-last-right {
         border-left: 2px solid red !important;
+      }
+      &-pad-left {
+        padding-left: 20px;
       }
     }
   }
