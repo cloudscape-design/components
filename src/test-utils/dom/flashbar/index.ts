@@ -17,6 +17,19 @@ export default class FlashbarWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the individual flashes of this flashbar given the item type.
+   *
+   * If the items are stacked, only the item at the top of the stack is returned.
+   *
+   * If an item is loading assuming its type is "info".
+   */
+  findItemsByType(type: 'success' | 'warning' | 'info' | 'error'): Array<FlashWrapper> {
+    return this.findAll(`.${styles['flash-list-item']} .${styles[`flash-type-${type}`]}`).map(
+      item => new FlashWrapper(item.getElement())
+    );
+  }
+
+  /**
    * Returns the toggle button that expands and collapses stacked notifications.
    */
   findToggleButton(): ElementWrapper<HTMLButtonElement> | null {
