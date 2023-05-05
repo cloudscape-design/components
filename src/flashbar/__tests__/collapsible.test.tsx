@@ -137,6 +137,43 @@ describe('Collapsible Flashbar', () => {
       expect(wrapper.findFlashbar()!.findItems()).toHaveLength(1);
       expect(findNotificationBar(wrapper.findFlashbar()!)).toBeTruthy();
     });
+
+    test('findItemsByType', () => {
+      {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            stackItems={true}
+            items={[
+              { content: 'Flash', type: 'success' },
+              { content: 'Flash', type: 'warning' },
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(0);
+
+        findNotificationBar(wrapper)!.click();
+
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+      }
+      {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            stackItems={true}
+            items={[
+              { content: 'Flash', type: 'warning' },
+              { content: 'Flash', type: 'warning' },
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+
+        findNotificationBar(wrapper)!.click();
+
+        expect(wrapper.findItemsByType('warning')).toHaveLength(2);
+      }
+    });
   });
 
   describe('Accessibility', () => {
