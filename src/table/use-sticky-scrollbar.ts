@@ -95,6 +95,7 @@ export function useStickyScrollbar(
   const [hasOverflowParent, setHasOverflowParent] = useState(false);
   const consideredFooterHeight = hasContainingBlock || hasOverflowParent ? 0 : footerHeight;
 
+  // Update scrollbar position on window scroll.
   useEffect(() => {
     if (supportsStickyPosition()) {
       const scrollHandler = () => {
@@ -123,6 +124,7 @@ export function useStickyScrollbar(
     }
   }, [wrapperEl]);
 
+  // Update scrollbar position wrapper or table size change.
   useEffect(() => {
     if (supportsStickyPosition() && wrapperRef.current && tableRef.current) {
       const observer = new ResizeObserver(() => {
@@ -146,4 +148,24 @@ export function useStickyScrollbar(
       };
     }
   }, [scrollbarContentRef, scrollbarRef, tableRef, wrapperRef, consideredFooterHeight, hasContainingBlock]);
+
+  // Update scrollbar position when window resizes (vertically).
+  useEffect(() => {
+    if (supportsStickyPosition()) {
+      const resizeHandler = () => {
+        updatePosition(
+          tableRef.current,
+          wrapperRef.current,
+          scrollbarRef.current,
+          scrollbarContentRef.current,
+          hasContainingBlock,
+          consideredFooterHeight
+        );
+      };
+      window.addEventListener('resize', resizeHandler);
+      return () => {
+        window.removeEventListener('resize', resizeHandler);
+      };
+    }
+  }, [tableRef, wrapperRef, scrollbarRef, scrollbarContentRef, hasContainingBlock, consideredFooterHeight]);
 }
