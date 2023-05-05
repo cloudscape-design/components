@@ -12,6 +12,15 @@ export default class TextareaWrapper extends ComponentWrapper<HTMLTextAreaElemen
   }
 
   /**
+   * Gets the value of the component.
+   *
+   * @returns current value of selected textarea.
+   */
+  @usesDom getTextareaValue(): string {
+    return this.findNativeTextarea().getElement().value;
+  }
+
+  /**
    * Sets the value of the component and calls the onChange handler.
    *
    * @param value value to set the textarea to.
