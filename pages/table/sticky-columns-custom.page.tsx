@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useState } from 'react';
 import SpaceBetween from '~components/space-between';
-import { Box, Container, Link } from '~components';
+import { Box, Checkbox, Container, Link } from '~components';
 import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/use-sticky-columns';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
@@ -19,6 +19,8 @@ const columnDefinitions = [
 ];
 
 export default function Page() {
+  // When wrapper paddings are used there is no need in dynamic padLeft.
+  const [useWrapperPaddings, setUseWrapperPaddings] = useState(false);
   const stickyColumns = useStickyColumns({
     visibleColumns: columnDefinitions.map(column => column.key),
     stickyColumnsFirst: 1,
@@ -29,9 +31,20 @@ export default function Page() {
       <SpaceBetween size="xl">
         <h1>Sticky columns with a custom table</h1>
 
+        <Checkbox checked={useWrapperPaddings} onChange={event => setUseWrapperPaddings(event.detail.checked)}>
+          Use wrapper paddings
+        </Checkbox>
+
         <Container disableContentPaddings={true}>
-          <div ref={stickyColumns.refs.wrapper} className={styles['custom-table']} style={stickyColumns.style.wrapper}>
-            <table ref={stickyColumns.refs.table} className={styles['custom-table-table']}>
+          <div
+            ref={stickyColumns.refs.wrapper}
+            className={clsx(styles['custom-table'], useWrapperPaddings && styles['use-wrapper-paddings'])}
+            style={stickyColumns.style.wrapper}
+          >
+            <table
+              ref={stickyColumns.refs.table}
+              className={clsx(styles['custom-table-table'], useWrapperPaddings && styles['use-wrapper-paddings'])}
+            >
               <thead>
                 <tr>
                   {columnDefinitions.map(column => (

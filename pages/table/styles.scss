@@ -10,11 +10,19 @@
   overflow-x: auto;
   width: 100%;
 
+  &.use-wrapper-paddings {
+    width: calc(100% - 64px);
+    margin: 0 32px;
+  }
+
   &-table {
     width: 100%;
     box-sizing: border-box;
     border-spacing: 0;
-    padding: 0 32px;
+
+    &:not(.use-wrapper-paddings) {
+      padding: 0 32px;
+    }
   }
 
   &-cell {
