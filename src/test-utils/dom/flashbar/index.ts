@@ -21,7 +21,7 @@ export default class FlashbarWrapper extends ComponentWrapper {
    *
    * If the items are stacked, only the item at the top of the stack is returned.
    *
-   * If an item is loading assuming its type is "info".
+   * If an item is loading its type is considered as "info".
    */
   findItemsByType(type: 'success' | 'warning' | 'info' | 'error'): Array<FlashWrapper> {
     return this.findAll(`.${styles['flash-list-item']} .${styles[`flash-type-${type}`]}`).map(
