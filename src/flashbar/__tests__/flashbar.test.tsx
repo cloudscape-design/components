@@ -195,6 +195,26 @@ describe('Flashbar component', () => {
         }
       });
 
+      test('findItemsByType', () => {
+        const wrapper = createFlashbarWrapper(
+          <Flashbar
+            items={[
+              { content: 'Flash', type: 'success' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'error' },
+              { content: 'Flash', type: 'warning' },
+              { content: 'Flash', type: 'info' },
+              { content: 'Flash', type: 'warning', loading: true }, // assuming info
+              { content: 'Flash', loading: true }, // assuming info
+            ]}
+          />
+        );
+        expect(wrapper.findItemsByType('success')).toHaveLength(1);
+        expect(wrapper.findItemsByType('error')).toHaveLength(2);
+        expect(wrapper.findItemsByType('warning')).toHaveLength(1);
+        expect(wrapper.findItemsByType('info')).toHaveLength(3);
+      });
+
       test('correct aria-role', () => {
         const wrapper = createFlashbarWrapper(
           <Flashbar
