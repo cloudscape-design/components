@@ -53,7 +53,7 @@ test('isEnabled is true, wrapper styles is not empty and wrapper listener is att
   result.current.refs.wrapper(tableWrapper);
 
   expect(result.current.isEnabled).toBe(true);
-  expect(result.current.style.wrapper).toEqual({ scrollPaddingLeft: '0px', scrollPaddingRight: '0px' });
+  expect(result.current.style.wrapper).toEqual({ scrollPaddingLeft: 0, scrollPaddingRight: 0 });
   expect(addTableWrapperOnScrollSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
 });
 
@@ -118,7 +118,7 @@ test('generates non-empty sticky cell state', () => {
       2: null,
       3: null,
     },
-    scrollPadding: { left: 100, right: 0 },
+    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
   });
 });
 
@@ -137,7 +137,7 @@ test('generates empty cell state if wrapper is not scrollable', () => {
       2: null,
       3: null,
     },
-    scrollPadding: { left: 100, right: 0 },
+    wrapperState: { scrollPaddingLeft: 100, scrollPaddingRight: 0 },
   });
 });
 
@@ -156,7 +156,7 @@ test('generates empty sticky cell state if not enough scrollable space', () => {
       2: null,
       3: null,
     },
-    scrollPadding: { left: 200, right: 0 },
+    wrapperState: { scrollPaddingLeft: 200, scrollPaddingRight: 0 },
   });
 });
 
@@ -206,6 +206,7 @@ test('updates sticky cell styles', () => {
   getClassName.mockImplementation(() => ({ 'sticky-cell-updated': true }));
 
   // Trigger update
+  elements.wrapper.scrollLeft = 10;
   elements.wrapper.dispatchEvent(new UIEvent('scroll'));
 
   expect(elements.cells[0]).toHaveClass('sticky-cell-updated');
