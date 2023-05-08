@@ -6,6 +6,7 @@
 @use '~design-tokens' as tokens;
 
 .custom-table {
+  position: relative;
   box-sizing: border-box;
   overflow-x: auto;
   width: 100%;
@@ -57,5 +58,12 @@
         padding-left: 32px;
       }
     }
+  }
+
+  &-sticky-border {
+    top: 0;
+    width: 2px;
+    background-color: red;
+    position: sticky;
   }
 }

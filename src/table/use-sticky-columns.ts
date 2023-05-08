@@ -37,6 +37,8 @@ export interface StickyColumnsModel {
 export interface StickyColumnsState {
   cellState: Record<ColumnId, null | StickyColumnsCellState>;
   wrapperState: StickyColumnsWrapperState;
+  borderLeftState: StickyBorderState;
+  borderRightState: StickyBorderState;
 }
 
 // Cell state is used to apply respective styles and offsets to sticky cells.
@@ -51,6 +53,10 @@ export interface StickyColumnsCellState {
 export interface StickyColumnsWrapperState {
   scrollPaddingLeft: number;
   scrollPaddingRight: number;
+}
+
+export interface StickyBorderState {
+  offset: { left?: number; right?: number };
 }
 
 export function useStickyColumns({
@@ -109,6 +115,7 @@ export function useStickyColumns({
       }
 
       if (wrapperRef.current) {
+        console.log('update wrapper styles');
         wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
         wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
       }
@@ -207,6 +214,7 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
+          console.log('update cell styles');
           cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
           cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
         }
@@ -228,6 +236,81 @@ export function useStickyCellStyles({
     ref: refCallback,
     className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
     style: cellStyles?.offset ?? undefined,
+  };
+}
+
+interface UseStickyBorderStylesProps {
+  stickyColumns: StickyColumnsModel;
+}
+
+interface StickyBorderStyles {
+  leftBorderRef: React.RefCallback<HTMLElement>;
+  rightBorderRef: React.RefCallback<HTMLElement>;
+  leftBorderStyle?: React.CSSProperties;
+  rightBorderStyle?: React.CSSProperties;
+}
+
+export function useStickyBorderStyles({ stickyColumns }: UseStickyBorderStylesProps): StickyBorderStyles {
+  const leftBorderRef = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
+  const setLeftBorder = useCallback(node => {
+    leftBorderRef.current = node;
+  }, []);
+  const rightBorderRef = useRef<HTMLElement>(null) as React.MutableRefObject<HTMLElement>;
+  const setRightBorder = useCallback(node => {
+    rightBorderRef.current = node;
+  }, []);
+
+  // Update border styles imperatively to avoid unnecessary re-renders.
+  useEffect(() => {
+    if (!stickyColumns.isEnabled) {
+      return;
+    }
+
+    const selectorLeft = (state: StickyColumnsState) => state.borderLeftState;
+    const selectorRight = (state: StickyColumnsState) => state.borderRightState;
+
+    const updateStylesLeft = (state: null | StickyBorderState, prev: null | StickyBorderState) => {
+      if (state?.offset.left === prev?.offset.left) {
+        return;
+      }
+      console.log('update left border styles');
+      if (leftBorderRef.current) {
+        leftBorderRef.current.style.left = state?.offset.left ? `${state.offset.left}px` : '';
+        leftBorderRef.current.style.visibility = state?.offset.left ? 'visible' : 'hidden';
+      }
+    };
+    const updateStylesRight = (state: null | StickyBorderState, prev: null | StickyBorderState) => {
+      if (state?.offset.left === prev?.offset.left) {
+        return;
+      }
+      console.log('update right border styles');
+      if (rightBorderRef.current) {
+        rightBorderRef.current.style.left = state?.offset.left ? `${state.offset.left}px` : '';
+        rightBorderRef.current.style.visibility = state?.offset.left ? 'visible' : 'hidden';
+      }
+    };
+
+    const unsubscribeLeft = stickyColumns.store.subscribe(selectorLeft, (newState, prevState) =>
+      updateStylesLeft(selectorLeft(newState), selectorLeft(prevState))
+    );
+    const unsubscribeRight = stickyColumns.store.subscribe(selectorRight, (newState, prevState) =>
+      updateStylesRight(selectorRight(newState), selectorRight(prevState))
+    );
+
+    return () => {
+      unsubscribeLeft();
+      unsubscribeRight();
+    };
+  }, [stickyColumns.store, stickyColumns.isEnabled]);
+
+  // Provide border styles as props so that a re-render won't cause invalidation.
+  const leftStyles = stickyColumns.store.get().borderLeftState.offset;
+  const rightStyles = stickyColumns.store.get().borderRightState.offset;
+  return {
+    leftBorderRef: setLeftBorder,
+    rightBorderRef: setRightBorder,
+    leftBorderStyle: { ...leftStyles },
+    rightBorderStyle: { ...rightStyles },
   };
 }
 
@@ -266,7 +349,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private padLeft = false;
 
   constructor() {
-    super({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
+    super({
+      cellState: {},
+      wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 },
+      borderLeftState: { offset: {} },
+      borderRightState: { offset: {} },
+    });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -274,11 +362,15 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     const hadStickyColumns = this.cellOffsets.size > 0;
 
     if (hasStickyColumns || hadStickyColumns) {
+      const wrapperWidth = props.wrapper.getBoundingClientRect().width;
+
       this.updateScroll(props);
       this.updateCellOffsets(props);
       this.set(() => ({
         cellState: this.generateCellStyles(props),
         wrapperState: { scrollPaddingLeft: this.stickyWidthLeft, scrollPaddingRight: this.stickyWidthRight },
+        borderLeftState: { offset: { left: this.stickyWidthLeft } },
+        borderRightState: { offset: { left: wrapperWidth - this.stickyWidthRight - 2 } },
       }));
     }
   }
@@ -323,9 +415,9 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const stickyColumnOffsetRight = this.cellOffsets.get(columnId)?.last ?? 0;
 
       acc[columnId] = {
-        padLeft: isFirstColumn && this.padLeft,
-        lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
-        lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
+        padLeft: false, // isFirstColumn && this.padLeft,
+        lastLeft: false, // this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
+        lastRight: false, // this.isStuckToTheRight && lastRightStickyColumnIndex === index,
         offset: {
           left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
           right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,

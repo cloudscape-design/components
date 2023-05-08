@@ -3,10 +3,17 @@
 import React, { useState } from 'react';
 import SpaceBetween from '~components/space-between';
 import { Box, Checkbox, Container, Link } from '~components';
-import { useStickyColumns, useStickyCellStyles, StickyColumnsModel } from '~components/table/use-sticky-columns';
+import { useMergeRefs } from '~components/internal/hooks/use-merge-refs';
+import {
+  useStickyColumns,
+  useStickyCellStyles,
+  useStickyBorderStyles,
+  StickyColumnsModel,
+} from '~components/table/use-sticky-columns';
 import styles from './styles.scss';
 import { generateItems, Instance } from './generate-data';
 import clsx from 'clsx';
+import { useContainerQuery } from '~components/internal/hooks/container-queries';
 
 const items = generateItems(50);
 const columnDefinitions = [
@@ -26,6 +33,8 @@ export default function Page() {
     stickyColumnsFirst: 1,
     stickyColumnsLast: 1,
   });
+  const [tableHeight, tableRef] = useContainerQuery(entry => entry.borderBoxHeight);
+  const mergedTableRef = useMergeRefs(tableRef, stickyColumns.refs.table);
   return (
     <Box margin="l">
       <SpaceBetween size="xl">
@@ -41,8 +50,10 @@ export default function Page() {
             className={clsx(styles['custom-table'], useWrapperPaddings && styles['use-wrapper-paddings'])}
             style={stickyColumns.style.wrapper}
           >
+            <StickyBorders stickyColumns={stickyColumns} tableHeight={tableHeight ?? 0} />
+
             <table
-              ref={stickyColumns.refs.table}
+              ref={mergedTableRef}
               className={clsx(styles['custom-table-table'], useWrapperPaddings && styles['use-wrapper-paddings'])}
             >
               <thead>
@@ -73,6 +84,24 @@ export default function Page() {
   );
 }
 
+function StickyBorders({ stickyColumns, tableHeight }: { stickyColumns: StickyColumnsModel; tableHeight: number }) {
+  const stickyBorderStyles = useStickyBorderStyles({ stickyColumns });
+  return (
+    <>
+      <div
+        ref={stickyBorderStyles.leftBorderRef}
+        style={{ ...stickyBorderStyles.leftBorderStyle, height: tableHeight, marginTop: -tableHeight }}
+        className={styles['custom-table-sticky-border']}
+      ></div>
+      <div
+        ref={stickyBorderStyles.rightBorderRef}
+        style={{ ...stickyBorderStyles.rightBorderStyle, height: tableHeight, marginTop: -tableHeight }}
+        className={styles['custom-table-sticky-border']}
+      ></div>
+    </>
+  );
+}
+
 function TableCell({
   columnId,
   stickyColumns,
@@ -90,9 +119,9 @@ function TableCell({
     stickyColumns,
     getClassName: props => ({
       [styles['sticky-cell']]: !!props,
-      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-      [styles['sticky-cell-last-right']]: !!props?.lastRight,
-      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
+      // [styles['sticky-cell-last-left']]: !!props?.lastLeft,
+      // [styles['sticky-cell-last-right']]: !!props?.lastRight,
+      // [styles['sticky-cell-pad-left']]: !!props?.padLeft,
     }),
   });
   return (
