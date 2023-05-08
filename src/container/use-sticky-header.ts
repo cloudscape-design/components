@@ -63,7 +63,6 @@ export const useStickyHeader = (
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
 
-  console.log({ computedOffset, stickyOffsetTop, __stickyOffset });
   const stickyStyles = isSticky
     ? {
         style: {

@@ -664,7 +664,9 @@ const OldAppLayout = React.forwardRef(
                   <AppLayoutContext.Provider
                     value={{
                       stickyOffsetTop:
-                        (disableBodyScroll ? 0 : headerHeight) +
+                        // We don't support the table header being sticky in case the deprecated disableBodyScroll is enabled,
+                        // therefore we ensure the table header scrolls out of view by offseting a large enough value (9999px)
+                        (disableBodyScroll ? (isMobile ? -9999 : 0) : headerHeight) +
                         (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
                       hasBreadcrumbs: !!breadcrumbs,
