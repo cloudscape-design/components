@@ -55,7 +55,6 @@ describe('Sticky columns preference selection', () => {
   test('correctly displays labels', () => {
     const wrapper = renderWithStickyColumnsPreferences({});
     wrapper.findTriggerButton().click();
-    console.log(wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup());
     const firstColumnsOptions = wrapper
       .findModal()!
       .findStickyColumnsPreference('first')!
