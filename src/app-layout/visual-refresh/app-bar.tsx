@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import clsx from 'clsx';
-import { useAppLayoutInternals } from './context';
 import { InternalButton } from '../../button/internal';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { useAppLayoutInternals } from './context';
 import styles from './styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
-import { useFocusControl } from '../utils/use-focus-control';
 
 /**
  * The CSS class 'awsui-context-content-header' needs to be added to the root element so
@@ -18,9 +18,11 @@ export default function AppBar() {
     breadcrumbs,
     contentHeader,
     contentType,
+    drawers,
     dynamicOverlapHeight,
     handleNavigationClick,
     handleToolsClick,
+    hasDrawerViewportOverlay,
     hasNotificationsContent,
     hasStickyBackground,
     isMobile,
@@ -28,12 +30,11 @@ export default function AppBar() {
     isNavigationOpen,
     isToolsOpen,
     toolsHide,
-    isAnyPanelOpen,
+    navigationRefs,
+    toolsRefs,
   } = useAppLayoutInternals();
-  const { refs: focusRefsNav } = useFocusControl(isNavigationOpen);
-  const { refs: focusRefsTools } = useFocusControl(isToolsOpen, true);
 
-  if (navigationHide && !breadcrumbs && toolsHide) {
+  if (navigationHide && !breadcrumbs && toolsHide && !drawers) {
     return null;
   }
 
@@ -44,7 +45,7 @@ export default function AppBar() {
         styles.appbar,
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
-          [styles.unfocusable]: isMobile && isAnyPanelOpen,
+          [styles.unfocusable]: hasDrawerViewportOverlay,
           [testutilStyles['mobile-bar']]: isMobile,
         },
         'awsui-context-content-header'
@@ -63,8 +64,8 @@ export default function AppBar() {
             onClick={() => handleNavigationClick(true)}
             variant="icon"
             className={testutilStyles['navigation-toggle']}
-            ref={focusRefsNav.toggle}
-            disabled={isAnyPanelOpen}
+            ref={navigationRefs.toggle}
+            disabled={hasDrawerViewportOverlay}
             __nativeAttributes={{ 'aria-haspopup': isNavigationOpen ? undefined : true }}
           />
         </nav>
@@ -83,7 +84,7 @@ export default function AppBar() {
         </div>
       )}
 
-      {!toolsHide && isMobile && (
+      {isMobile && !toolsHide && !drawers && (
         <aside
           className={clsx(styles['appbar-tools'], { [testutilStyles['drawer-closed']]: !isToolsOpen })}
           aria-hidden={isToolsOpen}
@@ -92,17 +93,19 @@ export default function AppBar() {
           <InternalButton
             className={testutilStyles['tools-toggle']}
             ariaExpanded={isToolsOpen}
-            disabled={isAnyPanelOpen}
+            disabled={hasDrawerViewportOverlay}
             ariaLabel={ariaLabels?.toolsToggle ?? undefined}
             iconName="status-info"
             formAction="none"
             onClick={() => handleToolsClick(true)}
             variant="icon"
-            ref={focusRefsTools.toggle}
+            ref={toolsRefs.toggle}
             __nativeAttributes={{ 'aria-haspopup': true }}
           />
         </aside>
       )}
+
+      <DrawersMobileTriggers />
     </section>
   );
 }

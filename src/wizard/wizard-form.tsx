@@ -9,7 +9,6 @@ import WizardActions from './wizard-actions';
 import { WizardProps } from './interfaces';
 import WizardFormHeader from './wizard-form-header';
 import styles from './styles.css.js';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 
 interface WizardFormProps {
@@ -53,8 +52,6 @@ export default function WizardForm({
     }
   }, [activeStepIndex]);
 
-  const focusVisible = useFocusVisible();
-
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =
     skipToTargetIndex !== -1 && i18nStrings.skipToButtonLabel
@@ -74,7 +71,7 @@ export default function WizardForm({
           {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
         </div>
         <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
-          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef} {...focusVisible}>
+          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef}>
             {title}
             {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
           </span>
@@ -86,6 +83,9 @@ export default function WizardForm({
           <WizardActions
             cancelButtonText={i18nStrings.cancelButton}
             primaryButtonText={isLastStep ? i18nStrings.submitButton : i18nStrings.nextButton}
+            primaryButtonLoadingText={
+              isLastStep ? i18nStrings.submitButtonLoadingAnnouncement : i18nStrings.nextButtonLoadingAnnouncement
+            }
             previousButtonText={i18nStrings.previousButton}
             onCancelClick={onCancelClick}
             onPreviousClick={onPreviousClick}

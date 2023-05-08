@@ -10,7 +10,7 @@ import { AutosuggestItem, AutosuggestProps } from './interfaces';
 import { useDropdownStatus } from '../internal/components/dropdown-status';
 import DropdownFooter from '../internal/components/dropdown-footer';
 
-import { generateUniqueId, useUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import {
   BaseKeyDetail,
   fireCancelableEvent,
@@ -154,9 +154,11 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
 
   const formFieldContext = useFormFieldContext(restProps);
   const selfControlId = useUniqueId('input');
+  const footerControlId = useUniqueId('footer');
   const controlId = formFieldContext.controlId ?? selfControlId;
   const listId = useUniqueId('list');
-  const highlightedOptionId = autosuggestItemsState.highlightedOption ? generateUniqueId() : undefined;
+  const highlightedOptionIdSource = useUniqueId();
+  const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
   const isEmpty = !value && !autosuggestItemsState.items.length;
   const dropdownStatus = useDropdownStatus({
@@ -207,12 +209,19 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           virtualScroll={virtualScroll}
           selectedAriaLabel={selectedAriaLabel}
           renderHighlightedAriaLive={renderHighlightedAriaLive}
-          listBottom={!dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} /> : null}
+          listBottom={
+            !dropdownStatus.isSticky ? <DropdownFooter content={dropdownStatus.content} id={footerControlId} /> : null
+          }
+          ariaDescribedby={dropdownStatus.content ? footerControlId : undefined}
         />
       }
       dropdownFooter={
         dropdownStatus.isSticky ? (
-          <DropdownFooter content={dropdownStatus.content} hasItems={autosuggestItemsState.items.length >= 1} />
+          <DropdownFooter
+            id={footerControlId}
+            content={dropdownStatus.content}
+            hasItems={autosuggestItemsState.items.length >= 1}
+          />
         ) : null
       }
       loopFocus={statusType === 'error' && !!recoveryText}

@@ -7,6 +7,7 @@ import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status';
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
+import { FormFieldControlProps } from '../internal/context/form-field-context';
 import {
   PropertyFilterOperation,
   PropertyFilterOperator,
@@ -19,7 +20,7 @@ import {
   PropertyFilterToken,
 } from '@cloudscape-design/collection-hooks';
 
-export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport {
+export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**
    * If set to `true`, the filtering input will be disabled.
    * Use it, for example, if you are fetching new items upon filtering change
@@ -275,7 +276,26 @@ export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
 
+export interface InternalFilteringProperty<TokenValue = any> {
+  propertyKey: string;
+  propertyLabel: string;
+  groupValuesLabel: string;
+  propertyGroup?: string;
+  operators: readonly PropertyFilterOperator[];
+  defaultOperator: PropertyFilterOperator;
+  getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
+  getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
+  // Original property to be used in callbacks.
+  externalProperty: PropertyFilterProperty;
+}
+
+export interface InternalFilteringOption {
+  propertyKey: string;
+  value: string;
+  label: string;
+}
+
 export type ParsedText =
-  | { step: 'property'; property: FilteringProperty; operator: ComparisonOperator; value: string }
-  | { step: 'operator'; property: FilteringProperty; operatorPrefix: string }
+  | { step: 'property'; property: InternalFilteringProperty; operator: ComparisonOperator; value: string }
+  | { step: 'operator'; property: InternalFilteringProperty; operatorPrefix: string }
   | { step: 'free-text'; operator?: ComparisonOperator; value: string };

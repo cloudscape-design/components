@@ -46,3 +46,50 @@ export function checkSortingState<T>(
     );
   }
 }
+
+export function getVisibleColumnDefinitions<T>({
+  columnDisplay,
+  visibleColumns,
+  columnDefinitions,
+}: {
+  columnDisplay?: ReadonlyArray<TableProps.ColumnDisplayProperties>;
+  visibleColumns?: ReadonlyArray<string>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  // columnsDisplay has a precedence over visibleColumns.
+  if (columnDisplay) {
+    return getVisibleColumnDefinitionsFromColumnDisplay({ columnDisplay, columnDefinitions });
+  } else if (visibleColumns) {
+    return getVisibleColumnDefinitionsFromVisibleColumns({ visibleColumns, columnDefinitions });
+  } else {
+    return columnDefinitions;
+  }
+}
+
+function getVisibleColumnDefinitionsFromColumnDisplay<T>({
+  columnDisplay,
+  columnDefinitions,
+}: {
+  columnDisplay: ReadonlyArray<TableProps.ColumnDisplayProperties>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  const columnDefinitionsById: Record<string, TableProps.ColumnDefinition<T>> = columnDefinitions.reduce(
+    (accumulator, item) => (item.id === undefined ? accumulator : { ...accumulator, [item.id]: item }),
+    {}
+  );
+  return columnDisplay
+    .filter(item => item.visible)
+    .map(item => columnDefinitionsById[item.id])
+    .filter(Boolean);
+}
+
+function getVisibleColumnDefinitionsFromVisibleColumns<T>({
+  visibleColumns,
+  columnDefinitions,
+}: {
+  visibleColumns: ReadonlyArray<string>;
+  columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+}) {
+  const ids = new Set(visibleColumns);
+  return columnDefinitions.filter(({ id }) => id !== undefined && ids.has(id));
+}

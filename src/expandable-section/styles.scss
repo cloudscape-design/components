@@ -29,6 +29,9 @@
   margin-left: calc((#{awsui.$font-body-m-line-height} - #{awsui.$size-icon-normal}) / -2);
   // For vertical alignment of text in side navigation items
   margin-right: calc(#{awsui.$space-xxs} + #{awsui.$border-divider-list-width});
+  &-container {
+    margin-right: awsui.$space-xs;
+  }
 }
 
 .trigger {
@@ -66,7 +69,6 @@
     @include styles.font-smoothing;
     font-size: awsui.$font-expandable-heading-size;
     letter-spacing: awsui.$font-heading-s-letter-spacing;
-
     &:hover {
       color: awsui.$color-text-expandable-section-hover;
     }
@@ -89,29 +91,45 @@
 .header {
   display: flex;
 
+  &-wrapper {
+    font-weight: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-button {
+    box-sizing: border-box;
+    display: flex;
+
+    // Header buttons for non-container variants show the focus ring directly
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(0px);
+    }
+  }
+
   &-container {
     width: 100%;
     // The icon-container style is kept for variant='container' and header
     > .icon-container {
       margin-top: awsui.$space-expandable-section-icon-offset-top;
-      margin-right: awsui.$space-xs;
     }
 
-    &[data-awsui-focus-visible='true']:focus-within {
+    // stylelint-disable-next-line selector-combinator-disallowed-list
+    body[data-awsui-focus-visible='true'] &:focus-within {
       outline: none;
       text-decoration: none;
       padding: container.$header-focus-visible-padding;
 
       @include styles.form-focus-element(awsui.$border-radius-control-default-focus-ring);
     }
+
+    // Header buttons that sit in a container should not show focus because the parent container has a focus ring already
     &-button {
-      &:focus {
+      @include focus-visible.when-visible {
         outline: none;
         text-decoration: none;
-      }
-      > .icon-container {
-        margin-top: awsui.$space-expandable-section-icon-offset-top;
-        margin-right: awsui.$space-xs;
       }
     }
   }

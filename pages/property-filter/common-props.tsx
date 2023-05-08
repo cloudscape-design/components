@@ -4,7 +4,7 @@ import { PropertyFilterProps } from '~components/property-filter';
 import { states, TableItem } from './table.data';
 import { DateForm, DateTimeForm, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 
-const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) ?? 'Unknown';
+const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) || 'Unknown';
 
 export const columnDefinitions = [
   {

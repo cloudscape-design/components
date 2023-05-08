@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AutosuggestItemsHandlers, AutosuggestItemsState, getParentGroup } from './options-controller';
+import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-controller';
 import { AutosuggestProps } from './interfaces';
 import VirtualList from './virtual-list';
 import PlainList from './plain-list';
 
 import { useAnnouncement } from '../select/utils/use-announcement';
-import { OptionGroup } from '../internal/components/option/interfaces';
 
 export interface AutosuggestOptionsListProps
   extends Pick<
@@ -24,6 +23,7 @@ export interface AutosuggestOptionsListProps
   handleLoadMore: () => void;
   hasDropdownStatus?: boolean;
   listBottom?: React.ReactNode;
+  ariaDescribedby?: string;
 }
 
 const createMouseEventHandler = (handler: (index: number) => void) => (itemIndex: number) => {
@@ -47,6 +47,7 @@ export default function AutosuggestOptionsList({
   selectedAriaLabel,
   renderHighlightedAriaLive,
   listBottom,
+  ariaDescribedby,
 }: AutosuggestOptionsListProps) {
   const handleMouseUp = createMouseEventHandler(autosuggestItemsHandlers.selectVisibleOptionWithMouse);
   const handleMouseMove = createMouseEventHandler(autosuggestItemsHandlers.highlightVisibleOptionWithMouse);
@@ -56,7 +57,7 @@ export default function AutosuggestOptionsList({
   const announcement = useAnnouncement({
     announceSelected: autosuggestItemsState.highlightedOption?.value === highlightText,
     highlightedOption: autosuggestItemsState.highlightedOption,
-    getParent: option => getParentGroup(option)?.option as undefined | OptionGroup,
+    getParent: option => autosuggestItemsState.getItemGroup(option),
     selectedAriaLabel,
     renderHighlightedAriaLive,
   });
@@ -70,7 +71,13 @@ export default function AutosuggestOptionsList({
       enteredTextLabel={enteredTextLabel}
       highlightedA11yProps={highlightedOptionId ? { id: highlightedOptionId } : {}}
       hasDropdownStatus={hasDropdownStatus}
-      menuProps={{ id: listId, ariaLabelledby: controlId, onMouseUp: handleMouseUp, onMouseMove: handleMouseMove }}
+      menuProps={{
+        id: listId,
+        ariaLabelledby: controlId,
+        onMouseUp: handleMouseUp,
+        onMouseMove: handleMouseMove,
+        ariaDescribedby,
+      }}
       screenReaderContent={announcement}
     />
   );

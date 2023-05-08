@@ -13,6 +13,7 @@ import { TopNavigationProps } from '../interfaces';
 import styles from '../styles.css.js';
 import { checkSafeUrl } from '../../internal/utils/check-safe-url';
 import { joinStrings } from '../../internal/utils/strings';
+import { fireCancelableEvent } from '../../internal/events';
 
 export interface UtilityProps {
   hideText: boolean;
@@ -38,6 +39,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
             href={definition.href}
             target={definition.external ? '_blank' : undefined}
             onClick={definition.onClick}
+            onFollow={definition.onFollow}
             ariaLabel={ariaLabel}
             iconName={definition.iconName}
             iconUrl={definition.iconUrl}
@@ -71,8 +73,21 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
           <InternalLink
             variant="top-navigation"
             href={definition.href}
+            target={definition.target}
+            rel={definition.rel}
             external={definition.external}
-            onFollow={definition.onClick}
+            onFollow={evt => {
+              fireCancelableEvent(
+                definition.onFollow,
+                { href: definition.href, target: definition.target, external: definition.external },
+                evt
+              );
+              fireCancelableEvent(
+                definition.onClick,
+                { href: definition.href, target: definition.target, external: definition.external },
+                evt
+              );
+            }}
             ariaLabel={ariaLabel}
           >
             {hasIcon && (

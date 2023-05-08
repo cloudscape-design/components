@@ -4,6 +4,7 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 import createWrapper, { ElementWrapper, PopoverWrapper } from '../../../lib/components/test-utils/dom';
 import Popover, { PopoverProps } from '../../../lib/components/popover';
+import '../../__a11y__/to-validate-a11y';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
@@ -97,7 +98,7 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        document.dispatchEvent(new MouseEvent('mousedown'));
+        document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeNull();
     });
@@ -106,7 +107,10 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        wrapper.findBody({ renderWithPortal })!.getElement().dispatchEvent(new MouseEvent('mousedown'));
+        wrapper
+          .findBody({ renderWithPortal })!
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
     });
@@ -115,7 +119,10 @@ describe('Dismiss button', () => {
       const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', renderWithPortal });
       wrapper.findTrigger().click();
       act(() => {
-        wrapper.findTrigger().getElement().dispatchEvent(new MouseEvent('mousedown'));
+        wrapper
+          .findTrigger()
+          .getElement()
+          .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
       });
       expect(wrapper.findBody({ renderWithPortal })).toBeTruthy();
     });
@@ -249,5 +256,29 @@ describe('ARIA labels', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
     wrapper.findTrigger().click();
     expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('role', 'dialog');
+  });
+
+  it('accessibility validation basic popover', async () => {
+    const wrapper = renderPopover({
+      children: 'Trigger',
+      content: 'Popover',
+      dismissButton: false,
+      renderWithPortal: true,
+    });
+    wrapper.findTrigger().click();
+    await expect(document.body).toValidateA11y();
+  });
+
+  it('accessibility validation for popover with dismiss button and header', async () => {
+    const wrapper = renderPopover({
+      children: 'Trigger',
+      header: 'Popover',
+      content: 'Content',
+      dismissButton: true,
+      dismissAriaLabel: 'Dismiss',
+      renderWithPortal: true,
+    });
+    wrapper.findTrigger().click();
+    await expect(document.body).toValidateA11y();
   });
 });

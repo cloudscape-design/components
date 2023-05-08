@@ -26,43 +26,47 @@ interface ToolsProps {
 export default function Tools({ children }: ToolsProps) {
   const {
     ariaLabels,
+    disableBodyScroll,
+    drawers,
     handleSplitPanelClick,
     handleToolsClick,
     hasDefaultToolsWidth,
-    isNavigationOpen,
+    hasDrawerViewportOverlay,
     isMobile,
     isSplitPanelOpen,
     isToolsOpen,
+    loseToolsFocus,
     splitPanelDisplayed,
+    splitPanelPosition,
+    splitPanelRefs,
+    splitPanelToggle,
     tools,
     toolsHide,
+    toolsRefs,
     toolsWidth,
-    isAnyPanelOpen,
-    navigationHide,
-    toolsFocusControl,
-    splitPanelPosition,
-    splitPanelToggle,
   } = useAppLayoutInternals();
 
   const hasSplitPanel = getSplitPanelStatus(splitPanelDisplayed, splitPanelPosition);
   const hasToolsForm = getToolsFormStatus(hasSplitPanel, isMobile, isSplitPanelOpen, isToolsOpen, toolsHide);
   const hasToolsFormPersistence = getToolsFormPersistence(hasSplitPanel, isSplitPanelOpen, isToolsOpen, toolsHide);
+  const isUnfocusable = hasDrawerViewportOverlay && !isToolsOpen;
 
-  const { refs: focusRefs } = toolsFocusControl;
-
-  if (toolsHide && !hasSplitPanel) {
+  /**
+   * If the drawers property is defined the Tools and SplitPanel will be mounted and rendered
+   * by the Drawers component.
+   */
+  if ((toolsHide && !hasSplitPanel) || drawers) {
     return null;
   }
-
-  const isUnfocusable = isMobile && isAnyPanelOpen && isNavigationOpen && !navigationHide;
 
   return (
     <Transition in={isToolsOpen ?? false}>
       {(state, transitionEventsRef) => (
         <div
           className={clsx(styles['tools-container'], {
-            [testutilStyles['drawer-closed']]: !isToolsOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
+            [testutilStyles['drawer-closed']]: !isToolsOpen,
           })}
           style={{
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,
@@ -71,7 +75,7 @@ export default function Tools({ children }: ToolsProps) {
           }}
           onBlur={e => {
             if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-              toolsFocusControl.loseFocus();
+              loseToolsFocus();
             }
           }}
         >
@@ -101,7 +105,7 @@ export default function Tools({ children }: ToolsProps) {
                     variant="icon"
                     formAction="none"
                     className={testutilStyles['tools-close']}
-                    ref={focusRefs.close}
+                    ref={toolsRefs.close}
                   />
                 </div>
 
@@ -128,7 +132,7 @@ export default function Tools({ children }: ToolsProps) {
                   onClick={() => handleToolsClick(!isToolsOpen)}
                   selected={hasSplitPanel && isToolsOpen}
                   className={testutilStyles['tools-toggle']}
-                  ref={focusRefs.toggle}
+                  ref={toolsRefs.toggle}
                 />
               )}
 
@@ -139,7 +143,7 @@ export default function Tools({ children }: ToolsProps) {
                   onClick={() => handleSplitPanelClick()}
                   selected={hasSplitPanel && isSplitPanelOpen}
                   className={splitPanelStyles['open-button']}
-                  // TODO should this button also get focus handling? (i.e. when the split panel is toggled)
+                  ref={splitPanelRefs.toggle}
                 />
               )}
             </aside>

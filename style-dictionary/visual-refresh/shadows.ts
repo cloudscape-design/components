@@ -45,6 +45,14 @@ const tokens: StyleDictionary.ShadowsDictionary = {
     light: '0px 2px 0px 0px #e9ebed, 0px 16px 16px -12px rgba(0, 7, 22, 0.10)', // 2px grey-200 faux bottom border
     dark: '0px 2px 0px 0px #414d5c, 0px 16px 16px -12px rgba(0, 7, 22, 1)', // 2px grey-600 faux bottom border
   },
+  shadowStickyColumnFirst: {
+    light: '4px 0px 20px 1px rgba(0, 7, 22, 0.1)',
+    dark: '0px 4px 20px 1px rgba(0, 7, 22, 1)',
+  },
+  shadowStickyColumnLast: {
+    light: '-4px 0 20px 1px rgba(0, 28, 36, 0.1)',
+    dark: '0px 4px 20px 1px rgba(0, 7, 22, 1)',
+  },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

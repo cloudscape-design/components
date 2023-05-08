@@ -3,7 +3,7 @@
 import { BaseComponentProps } from '../internal/base-component';
 import { IconProps } from '../icon/interfaces';
 import React from 'react';
-import { CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
+import { BaseNavigationDetail, CancelableEventHandler, ClickDetail as _ClickDetail } from '../internal/events';
 
 export interface ButtonProps extends BaseComponentProps {
   /**
@@ -12,7 +12,7 @@ export interface ButtonProps extends BaseComponentProps {
   disabled?: boolean;
   /**
    * Renders the button as being in a loading state. It takes precedence over the `disabled` if both are set to `true`.
-   * It prevents users from clicking the button.
+   * It prevents users from clicking the button, but it can still be focused.
    */
   loading?: boolean;
   /**
@@ -108,6 +108,11 @@ export interface ButtonProps extends BaseComponentProps {
    */
   variant?: ButtonProps.Variant;
 
+  /** The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
+   *  Use when a button is not the ancestor of a form element, such as when used in a modal.
+   */
+  form?: string;
+
   /**
    * Text displayed in the button element.
    * @displayname text
@@ -123,7 +128,7 @@ export interface ButtonProps extends BaseComponentProps {
    * Called when the user clicks on the button with the left mouse button without pressing
    * modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an `href` set.
    */
-  onFollow?: CancelableEventHandler<null>;
+  onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
 
   /**
    *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
@@ -135,6 +140,7 @@ export interface ButtonProps extends BaseComponentProps {
 export namespace ButtonProps {
   export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon';
   export type ClickDetail = _ClickDetail;
+  export type FollowDetail = BaseNavigationDetail;
 
   export type FormAction = 'submit' | 'none';
 

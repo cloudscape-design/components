@@ -1,33 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import clsx from 'clsx';
-import React from 'react';
-import { ButtonProps } from '../../button/interfaces';
+import React, { useRef } from 'react';
 import { AppLayoutButton, CloseButton, togglesConfig } from '../toggles';
-import { AppLayoutProps } from '../interfaces';
+
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
-
-export interface DesktopDrawerProps {
-  contentClassName: string;
-  toggleClassName: string;
-  closeClassName: string;
-  toggleRefs: {
-    toggle: React.Ref<ButtonProps.Ref>;
-    close: React.Ref<ButtonProps.Ref>;
-  };
-  width: number;
-  topOffset: number | undefined;
-  bottomOffset: number | undefined;
-  ariaLabels: AppLayoutProps.Labels | undefined;
-  children: React.ReactNode;
-  type: keyof typeof togglesConfig;
-  isMobile: boolean;
-  isOpen: boolean;
-  onToggle: (isOpen: boolean) => void;
-  onClick?: (event: React.MouseEvent) => void;
-  onLoseFocus?: (event: React.FocusEvent) => void;
-}
+import { DesktopDrawerProps, DrawerTriggersBarProps, DrawerItem, DrawerItemAriaLabels } from './interfaces';
 
 // We are using two landmarks per drawer, i.e. two NAVs and two ASIDEs, because of several
 // known bugs in NVDA that cause focus changes within a container to sometimes not be
@@ -45,86 +24,151 @@ export interface DesktopDrawerProps {
 // * https://github.com/nvaccess/nvda/issues/5825
 // * https://github.com/nvaccess/nvda/issues/5247
 // * https://github.com/nvaccess/nvda/pull/8869 (reverted PR that was going to fix it)
+export const Drawer = React.forwardRef(
+  (
+    {
+      contentClassName,
+      toggleClassName,
+      closeClassName,
+      width,
+      type,
+      toggleRefs,
+      topOffset,
+      bottomOffset,
+      ariaLabels,
+      drawersAriaLabels,
+      children,
+      isOpen,
+      isMobile,
+      onToggle,
+      onClick,
+      onLoseFocus,
+      drawers,
+      resizeHandle,
+    }: DesktopDrawerProps,
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const openButtonWrapperRef = useRef<HTMLElement | null>(null);
+    const { TagName, iconName, getLabels } = togglesConfig[type];
+    const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
+    const drawerContentWidthOpen = isMobile ? undefined : width;
+    const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
 
-export function Drawer({
-  contentClassName,
-  toggleClassName,
-  closeClassName,
-  width,
-  type,
-  toggleRefs,
+    const getDrawersLabels = (labels: DrawerItemAriaLabels = {}) => ({
+      drawerMainLabel: labels?.content,
+      drawerOpenLabel: labels?.triggerButton,
+      drawerCloseLabel: labels?.closeButton,
+    });
+    const { drawerMainLabel, drawerCloseLabel } = getDrawersLabels(drawersAriaLabels);
+
+    const regularOpenButton = (
+      <TagName ref={openButtonWrapperRef} aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
+        <AppLayoutButton
+          ref={toggleRefs.toggle}
+          className={toggleClassName}
+          iconName={iconName}
+          ariaLabel={openLabel}
+          onClick={() => onToggle(true)}
+          ariaExpanded={false}
+        />
+      </TagName>
+    );
+
+    return (
+      <div
+        ref={ref}
+        className={clsx(styles.drawer, {
+          [styles['drawer-closed']]: !isOpen,
+          [testutilStyles['drawer-closed']]: !isOpen,
+          [styles['drawer-mobile']]: isMobile,
+        })}
+        style={{ width: drawerContentWidth }}
+        onBlur={
+          onLoseFocus
+            ? e => {
+                if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                  onLoseFocus(e);
+                }
+              }
+            : undefined
+        }
+        onClick={event => {
+          if (onClick) {
+            onClick(event);
+          }
+          if (!isOpen) {
+            // to prevent calling onToggle from the drawer when it's called from the toggle button
+            if (
+              openButtonWrapperRef.current === event.target ||
+              !openButtonWrapperRef.current?.contains(event.target as Node)
+            ) {
+              onToggle(true);
+            }
+          }
+        }}
+      >
+        <div
+          style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
+          className={clsx(styles['drawer-content'], contentClassName)}
+        >
+          {!isMobile && regularOpenButton}
+          {resizeHandle}
+          <TagName aria-label={drawers ? drawerMainLabel : mainLabel} aria-hidden={!isOpen}>
+            <CloseButton
+              ref={toggleRefs.close}
+              className={closeClassName}
+              ariaLabel={drawers ? drawerCloseLabel : closeLabel}
+              onClick={() => {
+                onToggle(false);
+                drawers?.onChange({ activeDrawerId: undefined });
+              }}
+            />
+            {children}
+          </TagName>
+        </div>
+      </div>
+    );
+  }
+);
+
+export function DrawerTriggersBar({
+  isMobile,
   topOffset,
   bottomOffset,
-  ariaLabels,
-  children,
-  isOpen,
-  isMobile,
-  onToggle,
-  onClick,
-  onLoseFocus,
-}: DesktopDrawerProps) {
-  const { TagName, iconName, getLabels } = togglesConfig[type];
-  const { mainLabel, closeLabel, openLabel } = getLabels(ariaLabels);
-  const drawerContentWidthOpen = isMobile ? undefined : width;
-  const drawerContentWidth = isOpen ? drawerContentWidthOpen : undefined;
-
-  const regularOpenButton = (
-    <TagName aria-label={mainLabel} className={styles.toggle} aria-hidden={isOpen}>
-      <AppLayoutButton
-        ref={toggleRefs.toggle}
-        className={toggleClassName}
-        iconName={iconName}
-        ariaLabel={openLabel}
-        onClick={() => onToggle(true)}
-        ariaExpanded={false}
-      />
-    </TagName>
-  );
-
+  drawers,
+  contentClassName,
+  toggleClassName,
+}: DrawerTriggersBarProps) {
   return (
     <div
-      className={clsx(styles.drawer, {
-        [styles['drawer-closed']]: !isOpen,
-        [testutilStyles['drawer-closed']]: !isOpen,
+      className={clsx(styles.drawer, styles['drawer-closed'], testutilStyles['drawer-closed'], {
         [styles['drawer-mobile']]: isMobile,
       })}
-      style={{ width: drawerContentWidth }}
-      onBlur={
-        onLoseFocus
-          ? e => {
-              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-                onLoseFocus(e);
-              }
-            }
-          : undefined
-      }
-      onClick={event => {
-        if (onClick) {
-          onClick(event);
-        }
-
-        if (!isOpen) {
-          // to prevent calling onToggle from the drawer when it's called from the toggle button
-          if ((event.target as Element).tagName !== 'BUTTON') {
-            onToggle(true);
-          }
-        }
-      }}
     >
       <div
-        style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
-        className={clsx(styles['drawer-content'], contentClassName)}
+        style={{ top: topOffset, bottom: bottomOffset }}
+        className={clsx(styles['drawer-content'], styles['non-interactive'])}
       >
-        {!isMobile && regularOpenButton}
-        <TagName aria-label={mainLabel} aria-hidden={!isOpen}>
-          <CloseButton
-            ref={toggleRefs.close}
-            className={closeClassName}
-            ariaLabel={closeLabel}
-            onClick={() => onToggle(false)}
-          />
-          {children}
-        </TagName>
+        {!isMobile && (
+          <aside aria-label={drawers?.ariaLabel} className={clsx(styles['drawer-triggers'], contentClassName)}>
+            {drawers?.items?.map((item: DrawerItem, index: number) => (
+              <AppLayoutButton
+                className={clsx(
+                  toggleClassName,
+                  styles.trigger,
+                  styles['trigger-drawer'],
+                  drawers.activeDrawerId === item.id && styles.selected
+                )}
+                key={`drawer-trigger-${index}`}
+                iconName={item.trigger.iconName}
+                iconSvg={item.trigger.iconSvg}
+                ariaLabel={item.ariaLabels?.triggerButton}
+                onClick={() => drawers.onChange({ activeDrawerId: item.id })}
+                ariaExpanded={drawers.activeDrawerId !== undefined}
+              />
+            ))}
+          </aside>
+        )}
       </div>
     </div>
   );

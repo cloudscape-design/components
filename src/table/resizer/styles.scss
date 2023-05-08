@@ -35,17 +35,23 @@ $active-separator-width: 2px;
     &:hover,
     &-active {
       &::before {
+        $gap: calc(2 * #{awsui.$space-xs} + #{awsui.$space-xxxs});
+
         content: '';
         position: absolute;
         left: calc(#{$handle-width} / 2 - #{$active-separator-width});
-        bottom: 25%;
-        height: 50%;
-        box-sizing: border-box;
+        bottom: 0;
+        top: 0;
+        min-height: awsui.$font-heading-xs-line-height;
+        max-height: calc(100% - #{$gap});
+        margin: auto;
         border-left: $active-separator-width solid awsui.$color-border-divider-active;
+        box-sizing: border-box;
       }
     }
   }
-  &.has-focus {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] &.has-focus {
     @include styles.focus-highlight(awsui.$space-table-header-focus-outline-gutter);
     position: absolute;
     &::before {

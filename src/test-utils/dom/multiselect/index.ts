@@ -24,7 +24,7 @@ export default class MultiselectWrapper extends DropdownHostComponentWrapper {
   }
 
   /**
-   * Returns the input that is used for filtering. Returns `null` if `enableFiltering` is not set to `true`.
+   * Returns the input that is used for filtering.
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */

@@ -1,30 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback } from 'react';
-import InternalIcon from '../icon/internal';
-import useFocusVisible from '../internal/hooks/focus-visible';
-import { NonCancelableEventHandler, fireNonCancelableEvent } from '../internal/events';
 
-import { TokenGroupProps } from './interfaces';
+import React, { useCallback } from 'react';
+import InternalIcon from '../../../icon/internal';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { I18nStrings } from './interfaces';
+
 import styles from './styles.css.js';
-export interface SelectToggleProps {
-  controlId: string;
+interface TokenLimitToggleProps {
+  controlId?: string;
   allHidden: boolean;
   expanded: boolean;
   numberOfHiddenOptions: number;
   onClick?: NonCancelableEventHandler<null>;
-  i18nStrings?: Pick<TokenGroupProps.I18nStrings, 'limitShowFewer' | 'limitShowMore'>;
+  i18nStrings?: I18nStrings;
 }
 
-const SelectToggle = ({
+export default function TokenLimitToggle({
   controlId,
   allHidden,
   expanded,
   numberOfHiddenOptions,
   onClick,
   i18nStrings = {},
-}: SelectToggleProps) => {
-  const focusVisible = useFocusVisible();
+}: TokenLimitToggleProps) {
   const numberOfHiddenOptionLabel = allHidden ? numberOfHiddenOptions : `+${numberOfHiddenOptions}`;
   const description = expanded
     ? i18nStrings.limitShowFewer
@@ -41,12 +40,9 @@ const SelectToggle = ({
       onClick={handleClick}
       aria-controls={controlId}
       aria-expanded={expanded}
-      {...focusVisible}
     >
       <InternalIcon name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
       <span className={styles.description}>{description}</span>
     </button>
   );
-};
-
-export default SelectToggle;
+}

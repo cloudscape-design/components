@@ -9,6 +9,16 @@ import { getTrackableValue } from './utils';
 import selectionStyles from './selection-control/styles.css.js';
 import { joinStrings } from '../internal/utils/strings';
 
+export interface SelectionProps {
+  name: string;
+  disabled: boolean;
+  selectionType: 'single' | 'multi';
+  indeterminate?: boolean;
+  checked: boolean;
+  onChange: () => void;
+  ariaLabel?: string;
+}
+
 const SELECTION_ITEM = 'selection-item';
 const SELECTION_ROOT = 'selection-root';
 
@@ -87,9 +97,17 @@ export function useSelection<T>({
   trackBy,
   onSelectionChange,
   ariaLabels,
+  loading,
 }: Pick<
   TableProps<T>,
-  'ariaLabels' | 'items' | 'selectedItems' | 'selectionType' | 'isItemDisabled' | 'trackBy' | 'onSelectionChange'
+  | 'ariaLabels'
+  | 'items'
+  | 'selectedItems'
+  | 'selectionType'
+  | 'isItemDisabled'
+  | 'trackBy'
+  | 'onSelectionChange'
+  | 'loading'
 >) {
   const [shiftPressed, setShiftPressed] = useState(false);
   const [lastClickedItem, setLastClickedItem] = useState<T | null>(null);
@@ -181,28 +199,42 @@ export function useSelection<T>({
       setLastClickedItem(item);
     }
   };
+
   return {
     isItemSelected,
-    selectAllProps: {
-      name: selectionName,
-      disabled: allDisabled,
-      selectionType: selectionType,
-      indeterminate: hasSelected && !allEnabledSelected,
-      checked: hasSelected && allEnabledSelected,
-      onChange: handleToggleAll,
-      ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+    getSelectAllProps: (): SelectionProps => {
+      if (!selectionType) {
+        throw new Error('Invariant violation: calling selection props with missing selection type.');
+      }
+      return {
+        name: selectionName,
+        disabled: allDisabled || !!loading,
+        selectionType: selectionType,
+        indeterminate: hasSelected && !allEnabledSelected,
+        checked: hasSelected && allEnabledSelected,
+        onChange: handleToggleAll,
+        ariaLabel: joinStrings(
+          ariaLabels?.selectionGroupLabel,
+          ariaLabels?.allItemsSelectionLabel?.({ selectedItems })
+        ),
+      };
     },
-    getItemSelectionProps: (item: T) => ({
-      name: selectionName,
-      selectionType: selectionType,
-      ariaLabel: joinStrings(
-        ariaLabels?.selectionGroupLabel,
-        ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
-      ),
-      onChange: handleToggleItem(item),
-      checked: isItemSelected(item),
-      disabled: isItemDisabled(item),
-    }),
+    getItemSelectionProps: (item: T): SelectionProps => {
+      if (!selectionType) {
+        throw new Error('Invariant violation: calling selection props with missing selection type.');
+      }
+      return {
+        name: selectionName,
+        selectionType: selectionType,
+        ariaLabel: joinStrings(
+          ariaLabels?.selectionGroupLabel,
+          ariaLabels?.itemSelectionLabel?.({ selectedItems }, item)
+        ),
+        onChange: handleToggleItem(item),
+        checked: isItemSelected(item),
+        disabled: isItemDisabled(item),
+      };
+    },
     updateShiftToggle: (value: boolean) => {
       setShiftPressed(value);
     },

@@ -5,7 +5,6 @@ import React from 'react';
 import InternalIcon from '../icon/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import { getBaseProps } from '../internal/base-component';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import styles from './styles.css.js';
 import { getPaginationState, range } from './utils';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -38,7 +37,6 @@ function PageButton({
   children,
   onClick,
 }: PageButtonProps) {
-  const focusVisible = useFocusVisible();
   function handleClick(event: React.MouseEvent) {
     event.preventDefault();
     onClick(pageIndex);
@@ -46,7 +44,6 @@ function PageButton({
   return (
     <li className={styles['page-item']}>
       <button
-        {...focusVisible}
         className={clsx(
           className,
           styles.button,

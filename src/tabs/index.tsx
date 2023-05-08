@@ -12,7 +12,6 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import useFocusVisible from '../internal/hooks/focus-visible';
 
 export { TabsProps };
 
@@ -52,8 +51,6 @@ export default function Tabs({
 
   const baseProps = getBaseProps(rest);
 
-  const focusVisible = useFocusVisible();
-
   const content = () => {
     const selectedTab = tabs.filter(tab => tab.id === activeTabId)[0];
     const renderContent = (tab: TabsProps.Tab) => {
@@ -65,7 +62,6 @@ export default function Tabs({
       });
 
       const contentAttributes: JSX.IntrinsicElements['div'] = {
-        ...focusVisible,
         className: classes,
         role: 'tabpanel',
         id: `${idNamespace}-${tab.id}-panel`,
@@ -81,7 +77,9 @@ export default function Tabs({
     return (
       <div
         className={clsx(
-          variant === 'container' ? styles['tabs-container-content-wrapper'] : styles['tabs-content-wrapper'],
+          variant === 'container' || variant === 'stacked'
+            ? styles['tabs-container-content-wrapper']
+            : styles['tabs-content-wrapper'],
           {
             [styles['with-paddings']]: !disableContentPaddings,
           }
@@ -108,7 +106,7 @@ export default function Tabs({
     />
   );
 
-  if (variant === 'container') {
+  if (variant === 'container' || variant === 'stacked') {
     return (
       <InternalContainer
         header={header}
@@ -117,6 +115,7 @@ export default function Tabs({
         className={clsx(baseProps.className, styles.root)}
         __internalRootRef={__internalRootRef}
         disableContentPaddings={true}
+        variant={variant === 'stacked' ? 'stacked' : 'default'}
       >
         {content()}
       </InternalContainer>

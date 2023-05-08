@@ -3,8 +3,8 @@
 import clsx from 'clsx';
 import React from 'react';
 import { TableProps } from './interfaces';
-import SelectionControl, { SelectionControlProps } from './selection-control';
-import { focusMarkers } from './use-selection';
+import SelectionControl from './selection-control';
+import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { getColumnKey } from './utils';
 import { TableHeaderCell } from './header-cell';
@@ -29,7 +29,7 @@ export interface TheadProps {
   variant: TableProps.Variant;
   wrapLines: boolean | undefined;
   resizableColumns: boolean | undefined;
-  selectAllProps: SelectionControlProps;
+  getSelectAllProps: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
   onResizeFinish: (newWidths: Record<string, number>) => void;
   onSortingChange: NonCancelableEventHandler<TableProps.SortingState<any>> | undefined;
@@ -48,7 +48,7 @@ const Thead = React.forwardRef(
     {
       containerWidth,
       selectionType,
-      selectAllProps,
+      getSelectAllProps,
       columnDefinitions,
       sortingColumn,
       sortingDisabled,
@@ -92,30 +92,27 @@ const Thead = React.forwardRef(
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
-          {selectionType === 'multi' && (
+          {selectionType ? (
             <th
               className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
               scope="col"
             >
-              <SelectionControl
-                onFocusDown={event => {
-                  onFocusMove!(event.target as HTMLElement, -1, +1);
-                }}
-                focusedComponent={focusedComponent}
-                onFocusedComponentChange={onFocusedComponentChange}
-                {...selectAllProps}
-                {...(sticky ? { tabIndex: -1 } : {})}
-              />
+              {selectionType === 'multi' ? (
+                <SelectionControl
+                  onFocusDown={event => {
+                    onFocusMove!(event.target as HTMLElement, -1, +1);
+                  }}
+                  focusedComponent={focusedComponent}
+                  onFocusedComponentChange={onFocusedComponentChange}
+                  {...getSelectAllProps()}
+                  {...(sticky ? { tabIndex: -1 } : {})}
+                />
+              ) : (
+                <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
+              )}
             </th>
-          )}
-          {selectionType === 'single' && (
-            <th
-              className={clsx(headerCellClass, selectionCellClass, hidden && headerCellStyles['header-cell-hidden'])}
-              scope="col"
-            >
-              <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
-            </th>
-          )}
+          ) : null}
+
           {columnDefinitions.map((column, colIndex) => {
             let widthOverride;
             if (resizableColumns) {

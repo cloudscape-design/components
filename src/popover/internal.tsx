@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { KeyCode } from '../internal/keycode';
 import { getBaseProps } from '../internal/base-component';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { FormFieldContext } from '../internal/context/form-field-context';
 
 import Arrow from './arrow';
@@ -52,7 +51,6 @@ function InternalPopover(
   ref: React.Ref<InternalPopoverRef>
 ) {
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
   const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const clickFrameId = useRef<number | null>(null);
@@ -152,27 +150,27 @@ function InternalPopover(
   const mergedRef = useMergeRefs(popoverRef, __internalRootRef);
 
   return (
-    <FormFieldContext.Provider value={{}}>
-      <div
-        {...baseProps}
-        className={clsx(styles.root, baseProps.className)}
-        ref={mergedRef}
-        onMouseDown={() => {
-          // Indicate there was a click inside popover recently, including nested portals.
-          clickFrameId.current = requestAnimationFrame(() => {
-            clickFrameId.current = null;
-          });
-        }}
-      >
-        {triggerType === 'text' ? (
-          <button {...triggerProps} type="button" aria-haspopup="dialog" {...focusVisible}>
-            <span className={styles['trigger-inner-text']}>{children}</span>
-          </button>
-        ) : (
-          <span {...triggerProps}>{children}</span>
-        )}
+    <span
+      {...baseProps}
+      className={clsx(styles.root, baseProps.className)}
+      ref={mergedRef}
+      onMouseDown={() => {
+        // Indicate there was a click inside popover recently, including nested portals.
+        clickFrameId.current = requestAnimationFrame(() => {
+          clickFrameId.current = null;
+        });
+      }}
+    >
+      {triggerType === 'text' ? (
+        <button {...triggerProps} type="button" aria-haspopup="dialog">
+          <span className={styles['trigger-inner-text']}>{children}</span>
+        </button>
+      ) : (
+        <span {...triggerProps}>{children}</span>
+      )}
+      <FormFieldContext.Provider value={{}}>
         {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-      </div>
-    </FormFieldContext.Provider>
+      </FormFieldContext.Provider>
+    </span>
   );
 }

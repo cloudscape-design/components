@@ -9,6 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import styles from './styles.css.js';
 
@@ -21,6 +22,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __headerRef?: React.RefObject<HTMLDivElement>;
   __headerId?: string;
   __darkHeader?: boolean;
+  __disableStickyMobile?: boolean;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -47,12 +49,20 @@ export default function InternalContainer({
   __headerRef,
   __headerId,
   __darkHeader = false,
+  __disableStickyMobile = true,
   ...restProps
 }: InternalContainerProps) {
+  const isMobile = useMobile();
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { isSticky, isStuck, stickyStyles } = useStickyHeader(rootRef, headerRef, __stickyHeader, __stickyOffset);
+  const { isSticky, isStuck, stickyStyles } = useStickyHeader(
+    rootRef,
+    headerRef,
+    __stickyHeader,
+    __stickyOffset,
+    __disableStickyMobile
+  );
   const { setHasStickyBackground } = useAppLayoutContext();
   const isRefresh = useVisualRefresh();
 
@@ -81,6 +91,10 @@ export default function InternalContainer({
     };
   }, [isSticky, setHasStickyBackground, variant]);
 
+  // The container is only sticky on mobile if it is the header for the table.
+  // In this case we don't want the container to have sticky styles, as only the table header row will show as stuck on scroll.
+  const shouldHaveStickyStyles = isSticky && !isMobile;
+
   return (
     <div
       {...baseProps}
@@ -89,9 +103,7 @@ export default function InternalContainer({
         styles.root,
         styles[`variant-${variant}`],
         fitHeight && styles['fit-height'],
-        isSticky && [styles['sticky-enabled']],
-        !disableContentPaddings && styles['with-content-paddings'],
-        footer && styles['with-footer']
+        shouldHaveStickyStyles && [styles['sticky-enabled']]
       )}
       ref={mergedRef}
     >
@@ -118,7 +130,13 @@ export default function InternalContainer({
           </div>
         </StickyHeaderContext.Provider>
       )}
-      <div className={styles.content}>{children}</div>
+      <div
+        className={clsx(styles.content, {
+          [styles['with-paddings']]: !disableContentPaddings,
+        })}
+      >
+        {children}
+      </div>
       {footer && (
         <div
           className={clsx(styles.footer, {

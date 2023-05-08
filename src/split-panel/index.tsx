@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 
 import { SplitPanelProps, SizeControlProps } from './interfaces';
@@ -21,8 +20,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { AppLayoutContext } from '../internal/context/app-layout-context';
 import { getLimitedValue } from './utils/size-utils';
 import { Transition } from '../internal/components/transition';
-import { ButtonProps } from '../button/interfaces';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SplitPanelContentSide } from './side';
@@ -54,15 +51,14 @@ export default function SplitPanel({
     contentWidthStyles,
     isOpen,
     isForcedPosition,
-    lastInteraction,
     onPreferencesChange,
     onResize,
     onToggle,
     reportSize,
     setSplitPanelToggle,
+    refs,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
-  const focusVisible = useFocusVisible();
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
   const [relativeSize, setRelativeSize] = useState(0);
   const [maxSize, setMaxSize] = useState(size);
@@ -79,11 +75,11 @@ export default function SplitPanel({
     // wait one frame to allow app-layout to complete its calculations
     const handle = requestAnimationFrame(() => {
       const maxSize = position === 'bottom' ? getMaxHeight() : getMaxWidth();
-      setRelativeSize((size / maxSize) * 100);
+      setRelativeSize(((size - minSize) / (maxSize - minSize)) * 100);
       setMaxSize(maxSize);
     });
     return () => cancelAnimationFrame(handle);
-  }, [size, position, getMaxHeight, getMaxWidth]);
+  }, [size, minSize, position, getMaxHeight, getMaxWidth]);
 
   useEffect(() => {
     reportSize(cappedSize);
@@ -114,34 +110,16 @@ export default function SplitPanel({
   };
 
   const splitPanelRefObject = useRef<HTMLDivElement>(null);
-  const handleRef = useRef<HTMLDivElement>(null);
 
   const sizeControlProps: SizeControlProps = {
     position,
     splitPanelRef: splitPanelRefObject,
-    handleRef,
+    handleRef: refs.slider,
     setSidePanelWidth,
     setBottomPanelHeight,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
-
-  const toggleRef = useRef<ButtonProps.Ref>(null);
-  const closeRef = useRef<ButtonProps.Ref>(null);
-  const preferencesRef = useRef<ButtonProps.Ref>(null);
-
-  useEffectOnUpdate(() => {
-    switch (lastInteraction?.type) {
-      case 'open':
-        return handleRef.current?.focus();
-      case 'close':
-        return toggleRef.current?.focus();
-      case 'position':
-        return preferencesRef.current?.focus();
-      default:
-        return;
-    }
-  }, [lastInteraction]);
 
   const wrappedChildren = (
     <AppLayoutContext.Provider
@@ -172,7 +150,7 @@ export default function SplitPanel({
               onClick={() => setPreferencesOpen(true)}
               formAction="none"
               ariaLabel={i18nStrings.preferencesTitle}
-              ref={preferencesRef}
+              ref={refs.preferences}
             />
             <span className={styles.divider} />
           </>
@@ -188,7 +166,6 @@ export default function SplitPanel({
             onClick={onToggle}
             formAction="none"
             ariaLabel={i18nStrings.closeButtonAriaLabel}
-            ref={closeRef}
             ariaExpanded={isOpen}
           />
         ) : position === 'side' ? null : (
@@ -198,7 +175,7 @@ export default function SplitPanel({
             variant="icon"
             formAction="none"
             ariaLabel={i18nStrings.openButtonAriaLabel}
-            ref={toggleRef}
+            ref={refs.toggle}
             ariaExpanded={isOpen}
           />
         )}
@@ -208,17 +185,19 @@ export default function SplitPanel({
 
   const resizeHandle = (
     <div
-      ref={handleRef}
+      ref={refs.slider}
       role="slider"
       tabIndex={0}
       aria-label={i18nStrings.resizeHandleAriaLabel}
       aria-valuemax={100}
       aria-valuemin={0}
-      aria-valuenow={relativeSize}
+      // Allows us to use the logical left/right keys to move the slider left/right,
+      // but match aria keyboard behavior of using left/right to decrease/increase
+      // the slider value.
+      aria-valuenow={position === 'bottom' ? relativeSize : 100 - relativeSize}
       className={clsx(styles.slider, styles[`slider-${position}`])}
       onKeyDown={onKeyDown}
       onPointerDown={onSliderPointerDown}
-      {...focusVisible}
     >
       <ResizeHandler className={clsx(styles['slider-icon'], styles[`slider-icon-${position}`])} />
     </div>
@@ -278,7 +257,7 @@ export default function SplitPanel({
               cappedSize={cappedSize}
               onToggle={onToggle}
               i18nStrings={i18nStrings}
-              toggleRef={toggleRef}
+              toggleRef={refs.toggle}
               header={wrappedHeader}
               panelHeaderId={panelHeaderId}
             >

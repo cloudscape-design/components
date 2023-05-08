@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ExpandableSectionProps } from './interfaces';
 import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import InternalIcon from '../icon/internal';
 import clsx from 'clsx';
 import styles from './styles.css.js';
 import InternalHeader from '../header/internal';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { generateUniqueId } from '../internal/hooks/use-unique-id';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { warnOnce } from '../internal/logging';
 
@@ -23,13 +22,14 @@ interface ExpandableDefaultHeaderProps {
   onKeyDown: KeyboardEventHandler;
   onClick: MouseEventHandler;
   icon: JSX.Element;
+  variant: ExpandableSectionProps.Variant;
 }
 
 interface ExpandableNavigationHeaderProps extends Omit<ExpandableDefaultHeaderProps, 'onKeyUp' | 'onKeyDown'> {
   ariaLabelledBy?: string;
 }
 
-interface ExpandableContainerHeaderProps extends ExpandableDefaultHeaderProps {
+interface ExpandableHeaderTextWrapperProps extends ExpandableDefaultHeaderProps {
   headerDescription?: ReactNode;
   headerCounter?: string;
   headingTagOverride?: ExpandableSectionProps.HeadingTag;
@@ -56,8 +56,8 @@ const ExpandableDefaultHeader = ({
   icon,
   onKeyUp,
   onKeyDown,
+  variant,
 }: ExpandableDefaultHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div
       id={id}
@@ -70,9 +70,8 @@ const ExpandableDefaultHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
-      {...focusVisible}
     >
-      <div className={styles['icon-container']}>{icon}</div>
+      <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
     </div>
   );
@@ -89,7 +88,6 @@ const ExpandableNavigationHeader = ({
   children,
   icon,
 }: ExpandableNavigationHeaderProps) => {
-  const focusVisible = useFocusVisible();
   return (
     <div id={id} className={className} onClick={onClick}>
       <button
@@ -98,7 +96,7 @@ const ExpandableNavigationHeader = ({
         aria-label={ariaLabel}
         aria-controls={ariaControls}
         aria-expanded={expanded}
-        {...focusVisible}
+        type="button"
       >
         {icon}
       </button>
@@ -107,7 +105,7 @@ const ExpandableNavigationHeader = ({
   );
 };
 
-const ExpandableContainerHeader = ({
+const ExpandableHeaderTextWrapper = ({
   id,
   className,
   onClick,
@@ -118,39 +116,51 @@ const ExpandableContainerHeader = ({
   icon,
   headerDescription,
   headerCounter,
+  variant,
   headingTagOverride,
   onKeyUp,
   onKeyDown,
-}: ExpandableContainerHeaderProps) => {
-  const focusVisible = useFocusVisible();
-  const screenreaderContentId = generateUniqueId('expandable-section-header-content-');
+}: ExpandableHeaderTextWrapperProps) => {
+  const screenreaderContentId = useUniqueId('expandable-section-header-content-');
+  const isContainer = variant === 'container';
+  const HeadingTag = headingTagOverride || 'div';
+  const headerButton = (
+    <span
+      className={isContainer ? styles['header-container-button'] : styles['header-button']}
+      role="button"
+      tabIndex={0}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      aria-label={ariaLabel}
+      // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
+      aria-labelledby={ariaLabel || !isContainer ? undefined : screenreaderContentId}
+      aria-controls={ariaControls}
+      aria-expanded={expanded}
+    >
+      <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
+      <span>{children}</span>
+    </span>
+  );
+
   return (
-    <div id={id} className={className} onClick={onClick} {...focusVisible}>
-      <InternalHeader
-        variant={'h2'}
-        description={headerDescription}
-        counter={headerCounter}
-        headingTagOverride={headingTagOverride}
-      >
-        <span
-          className={styles['header-container-button']}
-          role="button"
-          tabIndex={0}
-          onKeyUp={onKeyUp}
-          onKeyDown={onKeyDown}
-          aria-label={ariaLabel}
-          // Do not use aria-labelledby={id} but ScreenreaderOnly because safari+VO does not read headerText in this case.
-          aria-labelledby={ariaLabel ? undefined : screenreaderContentId}
-          aria-controls={ariaControls}
-          aria-expanded={expanded}
+    <div id={id} className={className} onClick={onClick}>
+      {isContainer ? (
+        <InternalHeader
+          variant="h2"
+          description={headerDescription}
+          counter={headerCounter}
+          headingTagOverride={headingTagOverride}
         >
-          <span className={styles['icon-container']}>{icon}</span>
-          <span>{children}</span>
-        </span>
-      </InternalHeader>
-      <ScreenreaderOnly id={screenreaderContentId}>
-        {children} {headerCounter} {headerDescription}
-      </ScreenreaderOnly>
+          {headerButton}
+        </InternalHeader>
+      ) : (
+        <HeadingTag className={styles['header-wrapper']}>{headerButton}</HeadingTag>
+      )}
+      {isContainer && (
+        <ScreenreaderOnly id={screenreaderContentId}>
+          {children} {headerCounter} {headerDescription}
+        </ScreenreaderOnly>
+      )}
     </div>
   );
 };
@@ -186,6 +196,7 @@ export const ExpandableSectionHeader = ({
     ariaControls: ariaControls,
     ariaLabel: ariaLabel,
     onClick: onClick,
+    variant,
   };
 
   const triggerClassName = clsx(styles.trigger, styles[`trigger-${variant}`], expanded && styles['trigger-expanded']);
@@ -201,9 +212,9 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (variant === 'container' && headerText) {
+  if (headerText) {
     return (
-      <ExpandableContainerHeader
+      <ExpandableHeaderTextWrapper
         className={clsx(className, triggerClassName, expanded && styles.expanded)}
         headerDescription={headerDescription}
         headerCounter={headerCounter}
@@ -213,7 +224,7 @@ export const ExpandableSectionHeader = ({
         {...defaultHeaderProps}
       >
         {headerText}
-      </ExpandableContainerHeader>
+      </ExpandableHeaderTextWrapper>
     );
   }
 
@@ -231,7 +242,7 @@ export const ExpandableSectionHeader = ({
       onKeyDown={onKeyDown}
       {...defaultHeaderProps}
     >
-      {headerText ?? header}
+      {header}
     </ExpandableDefaultHeader>
   );
 };

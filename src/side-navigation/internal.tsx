@@ -9,7 +9,6 @@ import InternalBox from '../box/internal';
 import { SideNavigationProps } from './interfaces';
 import styles from './styles.css.js';
 import { NonCancelableCustomEvent, isPlainLeftClick } from '../internal/events';
-import useFocusVisible from '../internal/hooks/focus-visible';
 import { hasActiveLink } from './util';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 
@@ -32,8 +31,6 @@ export interface HeaderProps extends BaseItemComponentProps {
 
 export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
   checkSafeUrl('SideNavigation', definition.href);
-  const focusVisible = useFocusVisible();
-
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       if (isPlainLeftClick(event)) {
@@ -47,7 +44,6 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
     <>
       <h2 className={styles.header}>
         <a
-          {...focusVisible}
           href={definition.href}
           className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
           aria-current={definition.href === activeHref ? 'page' : undefined}
@@ -227,7 +223,6 @@ interface LinkProps extends BaseItemComponentProps {
 function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
-  const focusVisible = useFocusVisible();
 
   const onClick = useCallback(
     (event: React.MouseEvent) => {
@@ -243,10 +238,7 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
 
   return (
     <>
-      {/* https://github.com/yannickcr/eslint-plugin-react/issues/2962 */}
-      {/* eslint-disable-next-line react/jsx-no-target-blank */}
       <a
-        {...focusVisible}
         href={definition.href}
         className={clsx(styles.link, { [styles['link-active']]: isActive })}
         target={definition.external ? '_blank' : undefined}
@@ -340,7 +332,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
   return (
     <>
       <Link
-        definition={{ type: 'link', href: definition.href, text: definition.text }}
+        definition={{ type: 'link', href: definition.href, text: definition.text, info: definition.info }}
         fireFollow={(_, event) => fireFollow(definition, event)}
         fireChange={fireChange}
         activeHref={activeHref}

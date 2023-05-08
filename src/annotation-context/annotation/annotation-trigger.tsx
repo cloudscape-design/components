@@ -3,7 +3,6 @@
 import React, { useCallback } from 'react';
 import styles from './styles.css.js';
 import { AnnotationIcon } from './annotation-icon';
-import useFocusVisible from '../../internal/hooks/focus-visible/index.js';
 import { AnnotationContextProps } from '../interfaces';
 
 export interface AnnotationTriggerProps {
@@ -20,8 +19,6 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
   { open, onClick: onClickHandler, i18nStrings, taskLocalStepIndex, totalLocalSteps }: AnnotationTriggerProps,
   ref
 ) {
-  const focusVisible = useFocusVisible();
-
   const onClick = useCallback(
     (event: React.MouseEvent) => {
       event.preventDefault();
@@ -37,7 +34,6 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
       aria-haspopup="dialog"
       aria-label={i18nStrings.labelHotspot(open, taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
       onClick={onClick}
-      {...focusVisible}
     >
       <AnnotationIcon open={open} />
     </button>

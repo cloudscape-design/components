@@ -154,6 +154,10 @@ export namespace CodeEditorProps {
     preferencesModalTheme: string;
     preferencesModalLightThemes: string;
     preferencesModalDarkThemes: string;
+
+    preferencesModalThemeFilteringPlaceholder?: string;
+    preferencesModalThemeFilteringAriaLabel?: string;
+    preferencesModalThemeFilteringClearAriaLabel?: string;
   }
   export interface ResizeDetail {
     height: number;

@@ -12,6 +12,7 @@ interface WizardActionsProps {
   onCancelClick: () => void;
   isPrimaryLoading: boolean;
   primaryButtonText?: string;
+  primaryButtonLoadingText?: string;
   onPrimaryClick: () => void;
   showPrevious: boolean;
   previousButtonText?: string;
@@ -26,6 +27,7 @@ export default function WizardActions({
   onCancelClick,
   isPrimaryLoading,
   primaryButtonText,
+  primaryButtonLoadingText,
   onPrimaryClick,
   showPrevious,
   previousButtonText,
@@ -86,6 +88,7 @@ export default function WizardActions({
           formAction="none"
           onClick={onPrimaryClick}
           loading={isPrimaryLoading}
+          loadingText={primaryButtonLoadingText}
         >
           {primaryButtonText}
         </InternalButton>

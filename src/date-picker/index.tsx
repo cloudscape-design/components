@@ -23,7 +23,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import FocusLock from '../internal/components/focus-lock';
-import useFocusVisible from '../internal/hooks/focus-visible/index.js';
 import { parseDate } from '../internal/utils/date-time';
 import LiveRegion from '../internal/components/live-region';
 import { useFormFieldContext } from '../contexts/form-field.js';
@@ -67,7 +66,6 @@ const DatePicker = React.forwardRef(
 
     const baseProps = getBaseProps(restProps);
     const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-    const focusVisible = useFocusVisible();
     const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(restProps);
 
     const internalInputRef = useRef<HTMLInputElement>(null);
@@ -174,7 +172,7 @@ const DatePicker = React.forwardRef(
           >
             {isDropDownOpen && (
               <FocusLock className={styles['focus-lock']} autoFocus={true}>
-                <div {...focusVisible} tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
+                <div tabIndex={0} className={styles.calendar} role="dialog" aria-modal="true">
                   <InternalCalendar
                     value={value}
                     onChange={e => {

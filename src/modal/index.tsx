@@ -8,9 +8,9 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 
 export { ModalProps };
 
-export default function Modal({ size = 'medium', closeAriaLabel = '', ...props }: ModalProps) {
+export default function Modal({ size = 'medium', ...props }: ModalProps) {
   const baseComponentProps = useBaseComponent('Modal');
-  return <InternalModal size={size} closeAriaLabel={closeAriaLabel} {...props} {...baseComponentProps} />;
+  return <InternalModal size={size} {...props} {...baseComponentProps} />;
 }
 
 applyDisplayName(Modal, 'Modal');

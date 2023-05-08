@@ -267,6 +267,7 @@ export type ColorsTokenName =
   | 'colorBackgroundSegmentDefault'
   | 'colorBackgroundSegmentDisabled'
   | 'colorBackgroundSegmentHover'
+  | 'colorBackgroundLayoutPanelTriggerActive'
   | 'colorBackgroundStatusError'
   | 'colorBackgroundStatusInfo'
   | 'colorBackgroundStatusSuccess'
@@ -326,6 +327,7 @@ export type ColorsTokenName =
   | 'colorForegroundControlDefault'
   | 'colorForegroundControlDisabled'
   | 'colorShadowDefault'
+  | 'colorShadowLayoutPanelTrigger'
   | 'colorShadowMedium'
   | 'colorShadowSide'
   | 'colorStrokeCodeEditorResizeHandler'
@@ -409,6 +411,8 @@ export type ColorsTokenName =
   | 'colorTextSegmentActive'
   | 'colorTextSegmentDefault'
   | 'colorTextSegmentHover'
+  | 'colorTextLayoutPanelTriggerActive'
+  | 'colorTextLayoutPanelTriggerHover'
   | 'colorTextSmall'
   | 'colorTextStatusError'
   | 'colorTextStatusInactive'
@@ -417,7 +421,13 @@ export type ColorsTokenName =
   | 'colorTextStatusWarning'
   | 'colorTextTopNavigationTitle'
   | 'colorBoardPlaceholderActive'
-  | 'colorBoardPlaceholderHover';
+  | 'colorBoardPlaceholderHover'
+  | 'colorDragPlaceholderActive'
+  | 'colorDragPlaceholderHover'
+  | 'colorDropzoneBackgroundActive'
+  | 'colorDropzoneBackgroundHover'
+  | 'colorDropzoneTextActive'
+  | 'colorDropzoneTextHover';
 export type TypographyTokenName =
   | 'fontBodyMLineHeight'
   | 'fontBodyMSize'
@@ -497,6 +507,7 @@ export type BordersTokenName =
   | 'borderRadiusControlCircularFocusRing'
   | 'borderRadiusControlDefaultFocusRing'
   | 'borderRadiusDropdown'
+  | 'borderRadiusDropzone'
   | 'borderRadiusFlashbar'
   | 'borderRadiusInput'
   | 'borderRadiusItem'
@@ -660,7 +671,9 @@ export type ShadowsTokenName =
   | 'shadowSplitBottom'
   | 'shadowSplitSide'
   | 'shadowSticky'
-  | 'shadowStickyEmbedded';
+  | 'shadowStickyEmbedded'
+  | 'shadowStickyColumnFirst'
+  | 'shadowStickyColumnLast';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
 export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
