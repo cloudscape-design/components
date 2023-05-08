@@ -36,7 +36,7 @@ export interface StickyColumnsModel {
 
 export interface StickyColumnsState {
   cellState: Record<ColumnId, null | StickyColumnsCellState>;
-  scrollPadding: ScrollPadding;
+  wrapperState: StickyColumnsWrapperState;
 }
 
 // Cell state is used to apply respective styles and offsets to sticky cells.
@@ -48,9 +48,9 @@ export interface StickyColumnsCellState {
 }
 
 // Scroll padding is applied to table's wrapper so that the table scrolls when focus goes behind sticky column.
-export interface ScrollPadding {
-  left: number;
-  right: number;
+export interface StickyColumnsWrapperState {
+  scrollPaddingLeft: number;
+  scrollPaddingRight: number;
 }
 
 export function useStickyColumns({
@@ -101,16 +101,22 @@ export function useStickyColumns({
       return;
     }
 
-    const selector = (state: StickyColumnsState) => state.scrollPadding;
+    const selector = (state: StickyColumnsState) => state.wrapperState;
 
-    const updateWrapperStyles = (state: ScrollPadding) => {
+    const updateWrapperStyles = (state: StickyColumnsWrapperState, prev: StickyColumnsWrapperState) => {
+      if (isWrapperStatesEqual(state, prev)) {
+        return;
+      }
+
       if (wrapperRef.current) {
-        wrapperRef.current.style.scrollPaddingLeft = state.left + 'px';
-        wrapperRef.current.style.scrollPaddingRight = state.right + 'px';
+        wrapperRef.current.style.scrollPaddingLeft = state.scrollPaddingLeft + 'px';
+        wrapperRef.current.style.scrollPaddingRight = state.scrollPaddingRight + 'px';
       }
     };
 
-    const unsubscribe = store.subscribe(selector, newState => updateWrapperStyles(selector(newState)));
+    const unsubscribe = store.subscribe(selector, (newState, prevState) =>
+      updateWrapperStyles(selector(newState), selector(prevState))
+    );
     return unsubscribe;
   }, [store, hasStickyColumns]);
 
@@ -144,12 +150,7 @@ export function useStickyColumns({
     store,
     style: {
       // Provide wrapper styles as props so that a re-render won't cause invalidation.
-      wrapper: hasStickyColumns
-        ? {
-            scrollPaddingLeft: store.get().scrollPadding.left + 'px',
-            scrollPaddingRight: store.get().scrollPadding.right + 'px',
-          }
-        : undefined,
+      wrapper: hasStickyColumns ? { ...store.get().wrapperState } : undefined,
     },
     refs: { wrapper: setWrapper, table: setTable, cell: setCell },
   };
@@ -191,7 +192,11 @@ export function useStickyCellStyles({
 
       const selector = (state: StickyColumnsState) => state.cellState[columnId];
 
-      const updateCellStyles = (state: null | StickyColumnsCellState) => {
+      const updateCellStyles = (state: null | StickyColumnsCellState, prev: null | StickyColumnsCellState) => {
+        if (isCellStatesEqual(state, prev)) {
+          return;
+        }
+
         const className = getClassName(state);
         const cellElement = cellRef.current;
         if (cellElement) {
@@ -202,12 +207,14 @@ export function useStickyCellStyles({
               cellElement.classList.remove(key);
             }
           });
-          cellElement.style.left = state?.offset.left !== undefined ? `${state?.offset.left}px` : '';
-          cellElement.style.right = state?.offset.right !== undefined ? `${state?.offset.right}px` : '';
+          cellElement.style.left = state?.offset.left !== undefined ? `${state.offset.left}px` : '';
+          cellElement.style.right = state?.offset.right !== undefined ? `${state.offset.right}px` : '';
         }
       };
 
-      const unsubscribe = stickyColumns.store.subscribe(selector, newState => updateCellStyles(selector(newState)));
+      const unsubscribe = stickyColumns.store.subscribe(selector, (newState, prevState) =>
+        updateCellStyles(selector(newState), selector(prevState))
+      );
       return unsubscribe;
     },
     // getClassName is expected to be pure
@@ -222,6 +229,23 @@ export function useStickyCellStyles({
     className: cellStyles ? clsx(getClassName(cellStyles)) : undefined,
     style: cellStyles?.offset ?? undefined,
   };
+}
+
+function isCellStatesEqual(s1: null | StickyColumnsCellState, s2: null | StickyColumnsCellState): boolean {
+  if (s1 && s2) {
+    return (
+      s1.padLeft === s2.padLeft &&
+      s1.lastLeft === s2.lastLeft &&
+      s1.lastRight === s2.lastRight &&
+      s1.offset.left === s2.offset.left &&
+      s1.offset.right === s2.offset.right
+    );
+  }
+  return s1 === s2;
+}
+
+function isWrapperStatesEqual(s1: StickyColumnsWrapperState, s2: StickyColumnsWrapperState): boolean {
+  return s1.scrollPaddingLeft === s2.scrollPaddingLeft && s1.scrollPaddingRight === s2.scrollPaddingRight;
 }
 
 interface UpdateCellStylesProps {
@@ -239,9 +263,10 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private stickyWidthRight = 0;
   private isStuckToTheLeft = false;
   private isStuckToTheRight = false;
+  private padLeft = false;
 
   constructor() {
-    super({ cellState: {}, scrollPadding: { left: 0, right: 0 } });
+    super({ cellState: {}, wrapperState: { scrollPaddingLeft: 0, scrollPaddingRight: 0 } });
   }
 
   public updateCellStyles(props: UpdateCellStylesProps) {
@@ -253,7 +278,7 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       this.updateCellOffsets(props);
       this.set(() => ({
         cellState: this.generateCellStyles(props),
-        scrollPadding: { left: this.stickyWidthLeft, right: this.stickyWidthRight },
+        wrapperState: { scrollPaddingLeft: this.stickyWidthLeft, scrollPaddingRight: this.stickyWidthRight },
       }));
     }
   }
@@ -270,11 +295,12 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
     // Math.ceil() is used here to address an edge-case in certain browsers, where they return non-integer wrapperScrollLeft values
     // which are lower than expected (sub-pixel difference), resulting in the table always being in the "stuck to the right" state
     this.isStuckToTheRight = Math.ceil(wrapperScrollLeft) < wrapperScrollWidth - wrapperClientWidth - tablePaddingRight;
+
+    this.padLeft = tablePaddingLeft !== 0 && this.isStuckToTheLeft;
   }
 
   private generateCellStyles = (props: UpdateCellStylesProps): Record<ColumnId, null | StickyColumnsCellState> => {
     const isEnabled = this.isEnabled(props);
-    const tablePaddingLeft = parseFloat(getComputedStyle(props.table).paddingLeft) || 0;
     const lastLeftStickyColumnIndex = props.stickyColumnsFirst - 1;
     const lastRightStickyColumnIndex = props.visibleColumns.length - props.stickyColumnsLast;
 
@@ -295,16 +321,15 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
       const isFirstColumn = index === 0;
       const stickyColumnOffsetLeft = this.cellOffsets.get(columnId)?.first ?? 0;
       const stickyColumnOffsetRight = this.cellOffsets.get(columnId)?.last ?? 0;
-      const cellStyle = {
-        left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
-        right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
-      };
 
       acc[columnId] = {
-        padLeft: isFirstColumn && tablePaddingLeft !== 0 && this.isStuckToTheLeft,
+        padLeft: isFirstColumn && this.padLeft,
         lastLeft: this.isStuckToTheLeft && lastLeftStickyColumnIndex === index,
         lastRight: this.isStuckToTheRight && lastRightStickyColumnIndex === index,
-        offset: cellStyle,
+        offset: {
+          left: stickySide === 'left' ? stickyColumnOffsetLeft : undefined,
+          right: stickySide === 'right' ? stickyColumnOffsetRight : undefined,
+        },
       };
       return acc;
     }, {} as Record<ColumnId, null | StickyColumnsCellState>);
