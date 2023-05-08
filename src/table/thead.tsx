@@ -12,6 +12,7 @@ import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { selectionColumnId, StickyColumnsModel, useStickyCellStyles } from './use-sticky-columns';
 import styles from './styles.css.js';
+import cellStyles from './header-cell/styles.css.js';
 import headerCellStyles from './header-cell/styles.css.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 
@@ -96,13 +97,9 @@ const Thead = React.forwardRef(
       stickyColumns: stickyState,
       columnId: selectionColumnId.toString(),
       getClassName: props => ({
-        [styles['sticky-cell']]: !!props,
-        [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-        [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-        [styles['sticky-cell-last-right']]: !!props?.lastRight,
+        [cellStyles['sticky-cell']]: !!props,
       }),
     });
-
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>
         <tr {...focusMarkers.all} ref={outerRef} aria-rowindex={1}>
