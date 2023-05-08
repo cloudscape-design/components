@@ -3,21 +3,21 @@
 import React from 'react';
 import {
   ComparisonOperator,
-  FilteringOption,
-  FilteringProperty,
   GroupText,
   I18nStrings,
+  InternalFilteringOption,
+  InternalFilteringProperty,
   JoinOperation,
   LoadItemsDetail,
   Token,
 } from './interfaces';
 import styles from './styles.css.js';
 import { TokenEditor } from './token-editor';
-import { getFormattedToken } from './controller';
 
 import FilteringToken from '../internal/components/filtering-token';
 import { NonCancelableEventHandler } from '../internal/events';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
+import { getFormattedToken } from './utils';
 
 interface TokenProps {
   asyncProperties?: boolean;
@@ -26,8 +26,8 @@ interface TokenProps {
   disabled?: boolean;
   disableFreeTextFiltering?: boolean;
   expandToViewport?: boolean;
-  filteringOptions: readonly FilteringOption[];
-  filteringProperties: readonly FilteringProperty[];
+  filteringOptions: readonly InternalFilteringOption[];
+  filteringProperties: readonly InternalFilteringProperty[];
   first?: boolean;
   hideOperations?: boolean;
   i18nStrings: I18nStrings;
