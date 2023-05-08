@@ -17,7 +17,7 @@ function isSelectedOption(
   expectedOption: number
 ) {
   const options = firstOrLast === 'first' ? firstColumnOptions : lastColumnOptions;
-  const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup(firstOrLast);
+  const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference(firstOrLast)!.findRadioGroup();
   options.forEach(option => {
     if (option === expectedOption) {
       expect(radioGroupWrapper.findInputByValue(`${option}`)!.getElement()).toBeChecked();
@@ -33,10 +33,10 @@ describe('Sticky columns preference selection', () => {
     wrapper.findTriggerButton().click();
     const preferencesModalWrapper = wrapper.findModal();
 
-    expect(preferencesModalWrapper!.findStickyColumnsPreference()!.findTitle('first').getElement()).toHaveTextContent(
+    expect(preferencesModalWrapper!.findStickyColumnsPreference('first')!.findTitle().getElement()).toHaveTextContent(
       'Stick first column(s)'
     );
-    expect(preferencesModalWrapper!.findStickyColumnsPreference()!.findTitle('last').getElement()).toHaveTextContent(
+    expect(preferencesModalWrapper!.findStickyColumnsPreference('last')!.findTitle().getElement()).toHaveTextContent(
       'Stick last column'
     );
   });
@@ -46,17 +46,26 @@ describe('Sticky columns preference selection', () => {
     const preferencesModalWrapper = wrapper.findModal();
 
     expect(
-      preferencesModalWrapper!.findStickyColumnsPreference()!.findDescription('first').getElement()
+      preferencesModalWrapper!.findStickyColumnsPreference('first')!.findDescription().getElement()
     ).toHaveTextContent('Keep the first column(s) visible while horizontally scrolling table content.');
     expect(
-      preferencesModalWrapper!.findStickyColumnsPreference()!.findDescription('last').getElement()
+      preferencesModalWrapper!.findStickyColumnsPreference('last')!.findDescription().getElement()
     ).toHaveTextContent('Keep the last column visible while horizontally scrolling table content.');
   });
   test('correctly displays labels', () => {
     const wrapper = renderWithStickyColumnsPreferences({});
     wrapper.findTriggerButton().click();
-    const firstColumnsOptions = wrapper.findModal()!.findStickyColumnsPreference()!.findOptions('first');
-    const lastColumnsOptions = wrapper.findModal()!.findStickyColumnsPreference()!.findOptions('last');
+    console.log(wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup());
+    const firstColumnsOptions = wrapper
+      .findModal()!
+      .findStickyColumnsPreference('first')!
+      .findRadioGroup()!
+      .findButtons();
+    const lastColumnsOptions = wrapper
+      .findModal()!
+      .findStickyColumnsPreference('last')!
+      .findRadioGroup()!
+      .findButtons();
 
     expect(firstColumnsOptions[0].getElement()).toHaveTextContent('None');
     expect(firstColumnsOptions[1].getElement()).toHaveTextContent('First column');
@@ -79,7 +88,7 @@ describe('Sticky columns preference selection', () => {
       onConfirm: () => {},
     });
     wrapper.findTriggerButton().click();
-    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
+    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup();
     radioGroupWrapper.findInputByValue('0')!.click();
     isSelectedOption(wrapper, 'first', 0);
   });
@@ -89,7 +98,7 @@ describe('Sticky columns preference selection', () => {
       onConfirm: () => {},
     });
     wrapper.findTriggerButton().click();
-    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
+    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup();
     radioGroupWrapper.findInputByValue('0')!.click();
     isSelectedOption(wrapper, 'first', 0);
     wrapper.findModal()!.findDismissButton()!.click();
@@ -102,7 +111,7 @@ describe('Sticky columns preference selection', () => {
       onConfirm: () => {},
     });
     wrapper.findTriggerButton().click();
-    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('last');
+    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference('last')!.findRadioGroup();
     radioGroupWrapper.findInputByValue('0')!.click();
     isSelectedOption(wrapper, 'last', 0);
     wrapper.findModal()!.findCancelButton()!.click();
@@ -116,7 +125,7 @@ describe('Sticky columns preference selection', () => {
       onConfirm: onConfirmSpy,
     });
     wrapper.findTriggerButton().click();
-    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
+    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup();
     radioGroupWrapper.findInputByValue('0')!.click();
     wrapper.findModal()!.findConfirmButton()!.click();
     expect(onConfirmSpy).toHaveBeenCalledTimes(1);
@@ -131,7 +140,7 @@ describe('Sticky columns preference selection', () => {
       onConfirm: onConfirmSpy,
     });
     wrapper.findTriggerButton().click();
-    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference()!.findRadioGroup('first');
+    const radioGroupWrapper = wrapper.findModal()!.findStickyColumnsPreference('first')!.findRadioGroup();
     radioGroupWrapper.findInputByValue('1')!.click();
     wrapper.findModal()!.findConfirmButton()!.click();
     expect(onConfirmSpy).toHaveBeenCalledTimes(1);

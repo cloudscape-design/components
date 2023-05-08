@@ -16,6 +16,6 @@ export default class StickyColumnsPreferenceWrapper extends ComponentWrapper {
     return this.findComponent(`.${styles[`sticky-columns-form-field`]}`, FormFieldWrapper)!.findDescription()!;
   }
   findRadioGroup(): RadioGroupWrapper {
-    return this.find(`.${styles[`sticky-columns-radio-group`]}`)!.findRadioGroup()!;
+    return this.findComponent(`.${styles[`sticky-columns-radio-group`]}`, RadioGroupWrapper)!;
   }
 }
