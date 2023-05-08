@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
-import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns.js';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
 
 export interface TableTdElementProps {
   className?: string;
@@ -78,7 +78,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         [styles['sticky-cell-last-right']]: !!props?.lastRight,
       }),
     });
-
     return (
       <Element
         style={{ ...style, ...stickyStyles.style }}
