@@ -236,7 +236,7 @@ export default () => {
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
-          ariaLabels={ariaLabels}
+          ariaLabels={{ ...ariaLabels, tableLabel: 'Small table' }}
           header={<Header>Simple table</Header>}
         />
         <Table
@@ -244,7 +244,7 @@ export default () => {
           data-test-id="large-table"
           stickyColumns={{ first: parseInt(urlParams.stickyColumnsFirst), last: parseInt(urlParams.stickyColumnsLast) }}
           {...urlParams}
-          ariaLabels={ariaLabels}
+          ariaLabels={{ ...ariaLabels, tableLabel: 'Large table' }}
           columnDefinitions={COLUMN_DEFINITIONS}
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
@@ -301,7 +301,7 @@ export default () => {
           selectedItems={selectedItems}
           onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
           items={items}
-          ariaLabels={ariaLabels}
+          ariaLabels={{ ...ariaLabels, tableLabel: 'Inline editing table' }}
           header={<Header>Large table with inline editing</Header>}
         />
       </SpaceBetween>
