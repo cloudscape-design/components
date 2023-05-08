@@ -121,10 +121,9 @@ export default function ContentDisplayPreference({
               by assigning the z-index as inline style
               so that it prevails over dnd-kit's inline z-index of 999  */}
           {/* className is a documented prop of the DragOverlay component:
-              https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles
-          */}
-          {/* eslint-disable-next-line react/forbid-component-props */}
-          <DragOverlay className={styles['drag-overlay']} style={{ zIndex: 5000 }}>
+              https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles */
+          /* eslint-disable-next-line react/forbid-component-props */}
+          <DragOverlay className={styles['drag-overlay']} dropAnimation={null} style={{ zIndex: 5000 }}>
             {activeOption && (
               <ContentDisplayOption
                 listeners={{ onKeyDown: handleKeyDown }}
