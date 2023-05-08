@@ -11,7 +11,7 @@ export interface TopNavigationProps extends BaseComponentProps {
    * Properties describing the product identity. They are as follows:
    *
    * * `title` (string) - Specifies the title text.
-   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product.
+   * * `logo` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
    * * `href` (string) - Specifies the `href` that the header links to.
    * * `onFollow` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
    */
