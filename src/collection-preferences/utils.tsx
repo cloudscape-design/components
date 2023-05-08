@@ -152,11 +152,11 @@ export const ContentDensityPreference = ({ label, description, value, onChange }
 );
 
 interface StickyColumnsPreferenceProps extends CollectionPreferencesProps.StickyColumnsPreference {
-  onChange: (value: any) => void;
+  onChange: (value?: { first?: number; last?: number }) => void;
   value?: { first?: number; last?: number };
 }
 interface StickyPreference extends CollectionPreferencesProps.StickyColumnsPreference {
-  onChange: (value: any) => void;
+  onChange: (value: number) => void;
   preference: {
     title: string;
     description: string;
