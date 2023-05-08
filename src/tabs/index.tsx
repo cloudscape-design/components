@@ -77,7 +77,9 @@ export default function Tabs({
     return (
       <div
         className={clsx(
-          variant === 'container' ? styles['tabs-container-content-wrapper'] : styles['tabs-content-wrapper'],
+          variant === 'container' || variant === 'stacked'
+            ? styles['tabs-container-content-wrapper']
+            : styles['tabs-content-wrapper'],
           {
             [styles['with-paddings']]: !disableContentPaddings,
           }
@@ -104,7 +106,7 @@ export default function Tabs({
     />
   );
 
-  if (variant === 'container') {
+  if (variant === 'container' || variant === 'stacked') {
     return (
       <InternalContainer
         header={header}
@@ -113,6 +115,7 @@ export default function Tabs({
         className={clsx(baseProps.className, styles.root)}
         __internalRootRef={__internalRootRef}
         disableContentPaddings={true}
+        variant={variant === 'stacked' ? 'stacked' : 'default'}
       >
         {content()}
       </InternalContainer>

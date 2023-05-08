@@ -2513,7 +2513,7 @@ Object {
   "color-border-control-disabled": "#d1d5db",
   "color-border-divider-active": "#000716",
   "color-border-divider-default": "#e9ebed",
-  "color-border-divider-interactive-default": "#414d5c",
+  "color-border-divider-interactive-default": "#7d8998",
   "color-border-divider-panel-bottom": "#e9ebed",
   "color-border-divider-panel-side": "#e9ebed",
   "color-border-dropdown-container": "#9ba7b6",
