@@ -34,6 +34,7 @@ import useTableFocusNavigation from './use-table-focus-navigation';
 import { SomeRequired } from '../internal/types';
 import { TableTdElement } from './body-cell/td-element';
 import { useMobile } from '../internal/hooks/use-mobile';
+import { useMobileBarHeight } from '../app-layout/utils/use-mobile-bar-height';
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant'> &
   InternalBaseComponentProps;
@@ -208,9 +209,11 @@ const InternalTable = React.forwardRef(
     useTableFocusNavigation(selectionType, tableRefObject, visibleColumnDefinitions, items?.length);
 
     const toolsHeaderWrapper = useRef(null);
-    // If is mobile we subtract the tools wrapper height so only the table header is sticky
-    const mobileStickyOffset =
+    // If is mobile, we take into consideration the AppLayout's mobile bar and we subtract the tools wrapper height so only the table header is sticky
+    const toolsHeaderHeight =
       (toolsHeaderWrapper?.current as HTMLDivElement | null)?.getBoundingClientRect().height ?? 0;
+    const mobileBarHeight = useMobileBarHeight();
+    const mobileStickyOffset = mobileBarHeight - toolsHeaderHeight;
 
     return (
       <ColumnWidthsProvider
@@ -269,7 +272,7 @@ const InternalTable = React.forwardRef(
           }
           __stickyHeader={stickyHeader}
           __stickyOffset={
-            isMobile ? (stickyHeaderVerticalOffset ?? 0) - mobileStickyOffset : stickyHeaderVerticalOffset
+            isMobile ? (stickyHeaderVerticalOffset ?? 0) - Math.abs(mobileStickyOffset) : stickyHeaderVerticalOffset
           }
           {...focusMarkers.root}
         >

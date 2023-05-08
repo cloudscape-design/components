@@ -665,7 +665,7 @@ const OldAppLayout = React.forwardRef(
                     value={{
                       stickyOffsetTop:
                         (disableBodyScroll ? 0 : headerHeight) +
-                        (stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
+                        (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
                       hasBreadcrumbs: !!breadcrumbs,
                     }}

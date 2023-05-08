@@ -7,7 +7,6 @@ import { getOverflowParents } from '../internal/utils/scrollable-containers';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import customCssProps from '../internal/generated/custom-css-properties';
 import { useMobile } from '../internal/hooks/use-mobile';
-
 interface StickyHeaderContextProps {
   isStuck: boolean;
 }
@@ -27,7 +26,7 @@ export const useStickyHeader = (
   const { stickyOffsetTop } = useAppLayoutContext();
   const disableSticky = isMobile && __disableMobile;
   const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
-  const isRefresh = useVisualRefresh();
+  const isVisualRefresh = useVisualRefresh();
 
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
@@ -54,10 +53,17 @@ export const useStickyHeader = (
    * to the default offset calculated in AppLayoutDomContext.
    */
   let computedOffset = `${effectiveStickyOffset}px`;
-  if (isRefresh && !hasInnerOverflowParents && !isMobile) {
+
+  if (isMobile) {
+    // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
+    computedOffset = isVisualRefresh
+      ? `calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(__stickyOffset ?? 0)}px)`
+      : `${stickyOffsetTop + (__stickyOffset ?? 0)}px`;
+  } else if (isVisualRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
 
+  console.log({ computedOffset, stickyOffsetTop, __stickyOffset });
   const stickyStyles = isSticky
     ? {
         style: {
