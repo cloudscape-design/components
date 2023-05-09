@@ -11,7 +11,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 const componentPrefix = 'content-display-option';
 export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
-export interface ContentDisplayItemProps {
+export interface ContentDisplayOptionProps {
   dragHandleAriaLabel?: string;
   listeners?: SyntheticListenerMap;
   onToggle?: (option: OptionWithVisibility) => void;
@@ -20,7 +20,7 @@ export interface ContentDisplayItemProps {
 
 const ContentDisplayOption = forwardRef(
   (
-    { dragHandleAriaLabel, listeners, onToggle, option }: ContentDisplayItemProps,
+    { dragHandleAriaLabel, listeners, onToggle, option }: ContentDisplayOptionProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const idPrefix = useUniqueId(componentPrefix);
