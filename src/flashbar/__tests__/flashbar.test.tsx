@@ -391,6 +391,26 @@ describe('Flashbar component', () => {
           expect(list).toBeTruthy();
           expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
         });
+
+        test.only('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
+          const { rerender, container } = reactRender(<Flashbar items={[]} />);
+          rerender(
+            <Flashbar
+              items={[
+                {
+                  id: '1',
+                  ariaRole: 'status',
+                  type: 'error',
+                  statusIconAriaLabel: 'Error',
+                  header: 'The header',
+                  content: 'The content',
+                },
+              ]}
+            />
+          );
+          // Render area of the LiveRegion component.
+          expect(container.querySelector('span[aria-hidden]')).toHaveTextContent('Error The header The content');
+        });
       });
     });
   }
