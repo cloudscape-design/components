@@ -392,7 +392,7 @@ describe('Flashbar component', () => {
           expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
         });
 
-        test.only('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
+        test('renders the label, header, and content in an aria-live region for ariaRole="status"', () => {
           const { rerender, container } = reactRender(<Flashbar items={[]} />);
           rerender(
             <Flashbar
