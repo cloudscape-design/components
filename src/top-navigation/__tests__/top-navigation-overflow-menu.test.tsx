@@ -3,6 +3,7 @@
 import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
 import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu';
 import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
+import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities';
 import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { act, render } from '@testing-library/react';
@@ -166,6 +167,25 @@ describe('Submenu', () => {
     act(() => wrapper.click({ ctrlKey: true }));
     expect(onClick).toBeCalledTimes(2);
   });
+
+  test('onClose is fired when clicking on submenuItem', () => {
+    const onClose = jest.fn();
+
+    const wrapper = createWrapper(
+      render(
+        <SubmenuView
+          definition={{
+            type: 'menu-dropdown',
+            items: [{ id: 'one', text: 'One', href: '#' }],
+          }}
+          onClose={onClose}
+        />
+      ).container
+    ).find('a')!;
+
+    act(() => wrapper.click());
+    expect(onClose).toBeCalledTimes(1);
+  });
 });
 
 describe('UtilityMenuItem', () => {
@@ -200,4 +220,33 @@ describe('UtilityMenuItem', () => {
       expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
     }
   );
+
+  test('onClose is fired when clicking on utilityMenuItem', () => {
+    const onClose = jest.fn();
+
+    const wrapper = createWrapper(
+      render(
+        <UtilitiesView
+          items={[
+            {
+              type: 'button',
+              variant: 'primary-button',
+              text: 'New Thing',
+            },
+            {
+              type: 'button',
+              href: '#',
+            },
+          ]}
+          onClose={onClose}
+        />
+      ).container
+    );
+
+    act(() => wrapper.find('button')!.click());
+    expect(onClose).toBeCalledTimes(1);
+
+    act(() => wrapper.find('a')!.click());
+    expect(onClose).toBeCalledTimes(2);
+  });
 });

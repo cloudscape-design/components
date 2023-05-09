@@ -65,6 +65,7 @@ const SubmenuView = ({
                 { id: item.id, href: item.href, external: item.external },
                 event
               );
+              onClose?.();
             }}
           />
         ))}
