@@ -138,7 +138,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   colorBackgroundLayoutToggleSelectedHover: {
-    description: "The background color of the app layout toggle button when it's selected and on hover.",
+    description: "The background color of the app layout toggle button on hover when it's selected.",
     public: true,
     themeable: true,
   },
