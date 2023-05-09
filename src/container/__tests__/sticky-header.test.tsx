@@ -74,7 +74,7 @@ test('should set isStuck to true when rootTop is less than headerTop', () => {
   expect(result.current.isStuck).toBe(true);
 });
 
-test('should set isStuck to false when rootTop is less than headerTop', () => {
+test('should set isStuck to false when rootTop is larger than than headerTop', () => {
   (supportsStickyPosition as jest.Mock).mockReturnValue(true);
 
   const rootRef = {
@@ -131,7 +131,7 @@ describe('computeOffset', () => {
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(10)}px)`);
+    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) - 10px)`);
   });
 
   it('should calculate offset for mobile without visual refresh', () => {

@@ -272,7 +272,7 @@ const InternalTable = React.forwardRef(
           }
           __stickyHeader={stickyHeader}
           __stickyOffset={
-            isMobile ? (stickyHeaderVerticalOffset ?? 0) - Math.abs(mobileStickyOffset) : stickyHeaderVerticalOffset
+            isMobile ? (stickyHeaderVerticalOffset ?? 0) - Math.max(mobileStickyOffset, 0) : stickyHeaderVerticalOffset
           }
           {...focusMarkers.root}
         >
