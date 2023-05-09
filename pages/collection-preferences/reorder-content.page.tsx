@@ -33,7 +33,7 @@ const shortOptionsList = [
   },
   {
     id: 'id6',
-    label: 'Item 6',
+    label: 'ExtremelyLongLabelTextWithoutSpacesToVerifyThatItWrapsToTheNextLine',
   },
 ];
 
