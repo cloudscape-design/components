@@ -6,7 +6,7 @@ import { TableProps } from './interfaces';
 import SelectionControl from './selection-control';
 import { focusMarkers, SelectionProps } from './use-selection';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { getColumnKey } from './utils';
+import { getColumnKey, getStickyClassNames } from './utils';
 import { TableHeaderCell } from './header-cell';
 import { useColumnWidths } from './use-column-widths';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -96,9 +96,7 @@ const Thead = React.forwardRef(
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
       columnId: selectionColumnId.toString(),
-      getClassName: props => ({
-        [cellStyles['sticky-cell']]: !!props,
-      }),
+      getClassName: props => getStickyClassNames(cellStyles, props),
     });
     return (
       <thead className={clsx(!hidden && styles['thead-active'])}>

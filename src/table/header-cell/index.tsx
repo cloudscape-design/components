@@ -11,6 +11,7 @@ import { Resizer } from '../resizer';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { InteractiveComponent } from '../thead';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
+import { getStickyClassNames } from '../utils';
 
 interface TableHeaderCellProps<ItemType> {
   className?: string;
@@ -83,12 +84,7 @@ export function TableHeaderCell<ItemType>({
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
     columnId,
-    getClassName: props => ({
-      [styles['sticky-cell']]: !!props,
-      [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-      [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-      [styles['sticky-cell-last-right']]: !!props?.lastRight,
-    }),
+    getClassName: props => getStickyClassNames(styles, props),
   });
 
   return (

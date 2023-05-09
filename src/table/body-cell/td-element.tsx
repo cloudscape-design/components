@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
+import { getStickyClassNames } from '../utils.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -71,12 +72,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const stickyStyles = useStickyCellStyles({
       stickyColumns: stickyState,
       columnId,
-      getClassName: props => ({
-        [styles['sticky-cell']]: !!props,
-        [styles['sticky-cell-pad-left']]: !!props?.padLeft,
-        [styles['sticky-cell-last-left']]: !!props?.lastLeft,
-        [styles['sticky-cell-last-right']]: !!props?.lastRight,
-      }),
+      getClassName: props => getStickyClassNames(styles, props),
     });
     return (
       <Element
