@@ -156,8 +156,7 @@ filter search icon.
   &-content {
     height: 15px;
   }
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body:not([data-awsui-hide-sticky-scrollbar='true']) &-visible {
+  &-visible {
     display: block;
   }
 }
