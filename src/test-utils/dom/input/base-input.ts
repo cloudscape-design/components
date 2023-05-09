@@ -28,7 +28,7 @@ export default abstract class BaseInputWrapper extends ComponentWrapper {
   /**
    * Gets the value of the component.
    *
-   * @returns current value of selected textarea.
+   * Returns the current value of the input.
    */
   @usesDom getInputValue(): string {
     return this.findNativeInput().getElement().value;
