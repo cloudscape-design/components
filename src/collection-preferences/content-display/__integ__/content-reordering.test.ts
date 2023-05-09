@@ -71,8 +71,6 @@ describe('Collection preferences - Content Display preference', () => {
     );
 
     describe('does not cause overflow when reaching the edge of the window', () => {
-      const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
-
       const testByDraggingToPosition = async (page: ContentDisplayPageObject, x: number, y: number) => {
         const wrapper = createWrapper().findCollectionPreferences('.cp-1');
         await page.openCollectionPreferencesModal(wrapper);
@@ -90,7 +88,7 @@ describe('Collection preferences - Content Display preference', () => {
         const delta = { x: x - dragHandleBox.right, y: y - dragHandleBox.bottom };
         await page.mouseDown(dragHandleSelector);
         await page.mouseMove(Math.round(delta.x), Math.round(delta.y));
-        await wait(100);
+        await page.pause(100);
 
         const newModalContentBox = await page.getBoundingBox(modalContentSelector);
         expect(newModalContentBox).toEqual(modalContentBox);
