@@ -13,7 +13,7 @@ export { MixedLineBarChartProps };
 function MixedLineBarChart<T extends number | string | Date>({
   series = [],
   height = 500,
-  xScaleType = 'linear',
+  xScaleType = 'categorical',
   yScaleType = 'linear',
   stackedBars = false,
   horizontalBars = false,

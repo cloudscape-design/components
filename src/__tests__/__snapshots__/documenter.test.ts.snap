@@ -2056,7 +2056,8 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "conditional",
     },
     Object {
-      "defaultValue": "\\"linear\\"",
+      "defaultValue": "\\"categorical\\"",
+      "deprecatedTag": "Only \`categorical\` is a valid value for bar charts.",
       "description": "Determines the type of scale for values on the x axis.",
       "inlineType": Object {
         "name": "ScaleType",
@@ -7996,7 +7997,8 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "conditional",
     },
     Object {
-      "defaultValue": "\\"linear\\"",
+      "defaultValue": "\\"categorical\\"",
+      "deprecatedTag": "Only \`categorical\` is a valid value for charts with bars.",
       "description": "Determines the type of scale for values on the x axis.",
       "inlineType": Object {
         "name": "ScaleType",
