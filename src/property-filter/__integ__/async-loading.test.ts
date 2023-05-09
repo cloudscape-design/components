@@ -30,7 +30,6 @@ class AsyncPropertyFilterPage extends BasePageObject {
     await this.waitForAssertion(async () => {
       const loadItemsCalls = await this.browser.execute(() => {
         const loadItemsCalls = window.loadItemsCalls;
-        window.loadItemsCalls = [];
         return loadItemsCalls;
       });
       expect(loadItemsCalls).toEqual(expected);
@@ -105,7 +104,10 @@ const testCases: TestCase[] = [
       {
         command: 'type-in-filtering-input',
         param: '1',
-        result: [{ firstPage: true, samePage: false, filteringText: '1' }],
+        result: [
+          { firstPage: true, samePage: false, filteringText: '' },
+          { firstPage: true, samePage: false, filteringText: '1' },
+        ],
       },
     ],
   ],
@@ -118,10 +120,7 @@ const testCases: TestCase[] = [
       {
         command: 'type-in-filtering-input',
         param: 'label=',
-        result: [
-          { filteringText: 'l', firstPage: false, samePage: false },
-          { filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false },
-        ],
+        result: [{ filteringProperty, filteringOperator: '=', filteringText: '', firstPage: true, samePage: false }],
       },
     ],
   ],

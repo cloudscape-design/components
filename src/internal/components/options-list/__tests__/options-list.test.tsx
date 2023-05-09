@@ -55,3 +55,30 @@ test('supports ariaLabelledby', () => {
   );
   expect(container.querySelector('ul')).toHaveAttribute('aria-labelledby', 'someid');
 });
+
+test('onLoadMore fires when dropdown opens and its bottom is on the screen', () => {
+  const onLoadMore = jest.fn();
+  const { rerender } = render(
+    <OptionsList open={false} onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).not.toHaveBeenCalled();
+
+  rerender(
+    <OptionsList open={true} onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+
+  rerender(
+    <OptionsList open={true} onLoadMore={onLoadMore}>
+      <div>Option</div>
+    </OptionsList>
+  );
+
+  expect(onLoadMore).toHaveBeenCalledTimes(1);
+});
