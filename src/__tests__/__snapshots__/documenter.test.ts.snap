@@ -12325,13 +12325,15 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "defaultValue": "\\"default\\"",
       "description": "The possible visual variants of tabs are the following:
 * \`default\` - Use in any context.
-* \`container\` - A variant with borders, for use alongside other containers.",
+* \`container\` - Use this variant to have the tabs displayed within a container header.
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
       "inlineType": Object {
         "name": "TabsProps.Variant",
         "type": "union",
         "values": Array [
           "default",
           "container",
+          "stacked",
         ],
       },
       "name": "variant",
@@ -13742,7 +13744,7 @@ Object {
     Object {
       "description": "Properties describing the product identity. They are as follows:
 * \`title\` (string) - Specifies the title text.
-* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product.
+* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
 * \`href\` (string) - Specifies the \`href\` that the header links to.
 * \`onFollow\` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
 ",

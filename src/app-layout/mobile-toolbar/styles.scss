@@ -32,6 +32,12 @@
   margin-right: awsui.$space-m;
 }
 
+.mobile-trigger-with-drawers {
+  width: constants.$sidebar-size-closed;
+  display: flex;
+  justify-content: center;
+}
+
 .mobile-toggle {
   box-sizing: border-box;
   cursor: pointer;
@@ -41,7 +47,7 @@
   &:first-child {
     border-right: 1px solid awsui.$color-border-layout;
   }
-  &:last-child {
+  &:last-child:not(.mobile-toggle-with-drawers) {
     border-left: 1px solid awsui.$color-border-layout;
   }
   &:hover:not(.mobile-toggle-with-drawers) {
@@ -51,5 +57,13 @@
   &-with-drawers {
     display: flex;
     width: auto;
+    padding: 0;
+    height: 100%;
+
+    > .mobile-trigger-with-drawers {
+      border-left: 1px solid awsui.$color-border-layout;
+      display: flex;
+      align-items: center;
+    }
   }
 }
