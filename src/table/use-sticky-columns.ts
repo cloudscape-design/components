@@ -275,9 +275,8 @@ export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
 
   public updateCellStyles(props: UpdateCellStylesProps) {
     const hasStickyColumns = props.stickyColumnsFirst + props.stickyColumnsLast > 0;
-    const hadStickyColumns = this.cellOffsets.size > 0;
 
-    if (hasStickyColumns || hadStickyColumns) {
+    if (hasStickyColumns) {
       this.updateScroll(props);
       this.updateCellOffsets(props);
       this.set(() => ({
