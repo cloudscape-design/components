@@ -131,10 +131,14 @@ export interface ButtonProps extends BaseComponentProps {
   onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
 
   /**
-   *  Adds aria-expanded to the button element. Use when the button controls an expandable element.
+   * Adds aria-expanded to the button element. Use when the button controls an expandable element.
    */
-
   ariaExpanded?: boolean;
+
+  /**
+   * Makes the button occupy 100% of the parent container width. The button content is centered.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace ButtonProps {

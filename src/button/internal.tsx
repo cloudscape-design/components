@@ -43,6 +43,7 @@ export const InternalButton = React.forwardRef(
       formAction = 'submit',
       ariaLabel,
       ariaExpanded,
+      fullWidth,
       __nativeAttributes,
       __internalRootRef = null,
       __activated = false,
@@ -80,6 +81,7 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['is-activated']]: __activated,
+      [styles['full-width']]: shouldHaveContent && fullWidth,
     });
 
     const buttonProps = {

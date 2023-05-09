@@ -2590,7 +2590,7 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   "name": "Button",
   "properties": Array [
     Object {
-      "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
+      "description": "Adds aria-expanded to the button element. Use when the button controls an expandable element.",
       "name": "ariaExpanded",
       "optional": true,
       "type": "boolean",
@@ -2645,6 +2645,12 @@ This property only applies when an \`href\` is provided.",
       "name": "formAction",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Makes the button occupy 100% of the parent container width. The button content is centered.",
+      "name": "fullWidth",
+      "optional": true,
+      "type": "boolean",
     },
     Object {
       "description": "Applies button styling to a link. Use this property if you need a link styled as a button (\`variant=link\`).
