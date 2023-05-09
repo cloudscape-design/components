@@ -11,6 +11,45 @@ interface StickyHeaderContextProps {
   isStuck: boolean;
 }
 
+interface ComputeOffsetProps {
+  isMobile: boolean;
+  isVisualRefresh: boolean;
+  customCssProps: Record<string, string>;
+  __stickyOffset?: number;
+  stickyOffsetTop: number;
+  hasInnerOverflowParents: boolean;
+}
+
+export function computeOffset({
+  isMobile,
+  isVisualRefresh,
+  customCssProps,
+  __stickyOffset,
+  stickyOffsetTop,
+  hasInnerOverflowParents,
+}: ComputeOffsetProps) {
+  const effectiveStickyOffset = __stickyOffset ?? (hasInnerOverflowParents ? 0 : stickyOffsetTop);
+  /**
+   * The AppLayout refactor removed the need for passing the sticky offset in px all the time through the
+   * AppLayoutDomContext provider because that information already exists on the DOM in a custom property
+   * on the Layout subcomponent. Thus, if the Container header is sticky, we are in Visual Refresh and use
+   * body scroll then we will use that property. When a component is used outside AppLayout, we fall back
+   * to the default offset calculated in AppLayoutDomContext.
+   */
+  let computedOffset = `${effectiveStickyOffset}px`;
+
+  if (isMobile) {
+    // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
+    computedOffset = isVisualRefresh
+      ? `calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(__stickyOffset ?? 0)}px)`
+      : `${stickyOffsetTop + (__stickyOffset ?? 0)}px`;
+  } else if (isVisualRefresh && !hasInnerOverflowParents) {
+    computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
+  }
+
+  return computedOffset;
+}
+
 export const StickyHeaderContext = createContext<StickyHeaderContextProps>({ isStuck: false });
 
 export const useStickyHeader = (
@@ -43,25 +82,14 @@ export const useStickyHeader = (
     }
   }, [rootRef]);
 
-  const effectiveStickyOffset = __stickyOffset ?? (hasInnerOverflowParents ? 0 : stickyOffsetTop);
-
-  /**
-   * The AppLayout refactor removed the need for passing the sticky offset in px all the time through the
-   * AppLayoutDomContext provider because that information already exists on the DOM in a custom property
-   * on the Layout subcomponent. Thus, if the Container header is sticky, we are in Visual Refresh and use
-   * body scroll then we will use that property. When a component is used outside AppLayout, we fall back
-   * to the default offset calculated in AppLayoutDomContext.
-   */
-  let computedOffset = `${effectiveStickyOffset}px`;
-
-  if (isMobile) {
-    // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
-    computedOffset = isVisualRefresh
-      ? `calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(__stickyOffset ?? 0)}px)`
-      : `${stickyOffsetTop + (__stickyOffset ?? 0)}px`;
-  } else if (isVisualRefresh && !hasInnerOverflowParents) {
-    computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
-  }
+  const computedOffset = computeOffset({
+    isMobile,
+    isVisualRefresh,
+    customCssProps,
+    __stickyOffset,
+    stickyOffsetTop,
+    hasInnerOverflowParents,
+  });
 
   const stickyStyles = isSticky
     ? {

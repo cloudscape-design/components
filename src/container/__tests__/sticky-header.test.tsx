@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import InternalContainer from '../../../lib/components/container/internal';
 import { AppLayoutContext } from '../../../lib/components/internal/context/app-layout-context';
-import { useStickyHeader } from '../use-sticky-header';
+import { useStickyHeader, computeOffset } from '../use-sticky-header';
 import { renderHook, act } from '../../__tests__/render-hook';
 import { supportsStickyPosition } from '../../internal/utils/dom';
 jest.mock('../../../lib/components/container/use-sticky-header', () => ({
@@ -113,4 +113,87 @@ test('should set isStuck to false when headerRef is null', () => {
   });
 
   expect(result.current.isStuck).toBe(false);
+});
+
+describe('computeOffset', () => {
+  const customCssProps = {
+    offsetTop: '--offset-top',
+    offsetTopWithNotifications: '--offset-top-with-notifications',
+  };
+
+  it('should calculate offset for mobile and visual refresh', () => {
+    const result = computeOffset({
+      isMobile: true,
+      isVisualRefresh: true,
+      customCssProps,
+      __stickyOffset: 10,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(10)}px)`);
+  });
+
+  it('should calculate offset for mobile without visual refresh', () => {
+    const result = computeOffset({
+      isMobile: true,
+      isVisualRefresh: false,
+      customCssProps,
+      __stickyOffset: 10,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe('30px');
+  });
+
+  it('should calculate offset for non-mobile and visual refresh without inner overflow parents', () => {
+    const result = computeOffset({
+      isMobile: false,
+      isVisualRefresh: true,
+      customCssProps,
+      __stickyOffset: 10,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe(`var(${customCssProps.offsetTopWithNotifications}, 10px)`);
+  });
+
+  it('should calculate offset for non-mobile without __stickyOffset and no inner overflow parents', () => {
+    const result = computeOffset({
+      isMobile: false,
+      isVisualRefresh: true,
+      customCssProps,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: false,
+    });
+
+    expect(result).toBe(`var(${customCssProps.offsetTopWithNotifications}, 20px)`);
+  });
+
+  it('should calculate offset for non-mobile without __stickyOffset and inner overflow parents', () => {
+    const result = computeOffset({
+      isMobile: false,
+      isVisualRefresh: true,
+      customCssProps,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: true,
+    });
+
+    expect(result).toBe('0px');
+  });
+
+  it('should return effectiveStickyOffset for non-mobile without visual refresh or with inner overflow parents', () => {
+    const result = computeOffset({
+      isMobile: false,
+      isVisualRefresh: false,
+      customCssProps,
+      __stickyOffset: 10,
+      stickyOffsetTop: 20,
+      hasInnerOverflowParents: true,
+    });
+
+    expect(result).toBe('10px');
+  });
 });
