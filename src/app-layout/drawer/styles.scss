@@ -64,7 +64,7 @@ $drawer-z-index-mobile: 1001;
 }
 
 .trigger {
-  .drawer-triggers > & {
+  .drawer-content > .drawer-triggers > & {
     padding: constants.$drawers-padding;
     margin: 1px constants.$drawers-padding-horizontal;
     border-radius: 0;
@@ -82,7 +82,8 @@ $drawer-z-index-mobile: 1001;
       }
     }
 
-    &.selected {
+    &.selected,
+    &.selected:hover {
       padding: constants.$drawers-padding-vertical awsui.$space-s;
       margin: 0;
       border-top: 1px solid awsui.$color-background-layout-panel-trigger-active;
