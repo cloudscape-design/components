@@ -43,7 +43,7 @@ export function computeOffset({
   if (isMobile) {
     // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
     computedOffset = isVisualRefresh
-      ? `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}) - ${Math.abs(
+      ? `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}, 0px) - ${Math.abs(
           __stickyOffset ?? 0
         )}px)`
       : `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
