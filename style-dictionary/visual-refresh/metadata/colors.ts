@@ -475,6 +475,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextLayoutToggle: {
+    description: "This is the default color of the app layout toggle button when it's active.",
+    public: true,
+    themeable: true,
+  },
+  colorTextLayoutToggleSelected: {
+    description: "This is the color of the app layout toggle button when it's selected.",
+    public: true,
+    themeable: true,
+  },
   colorTextLabel: {
     description:
       "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
