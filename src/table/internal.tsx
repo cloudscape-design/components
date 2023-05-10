@@ -112,10 +112,7 @@ const InternalTable = React.forwardRef(
       []
     );
 
-    const handleScroll = useScrollSync(
-      [wrapperRefObject, scrollbarRef, secondaryWrapperRef],
-      !supportsStickyPosition()
-    );
+    const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useFocusMove(selectionType, items.length);
     const { onRowClickHandler, onRowContextMenuHandler } = useRowEvents({ onRowClick, onRowContextMenu });
