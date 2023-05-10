@@ -16,6 +16,7 @@ interface ComputeOffsetProps {
   isVisualRefresh: boolean;
   customCssProps: Record<string, string>;
   __stickyOffset?: number;
+  mobileBarHeight?: number;
   stickyOffsetTop: number;
   hasInnerOverflowParents: boolean;
 }
@@ -25,6 +26,7 @@ export function computeOffset({
   isVisualRefresh,
   customCssProps,
   __stickyOffset,
+  mobileBarHeight = 0,
   stickyOffsetTop,
   hasInnerOverflowParents,
 }: ComputeOffsetProps) {
@@ -41,8 +43,10 @@ export function computeOffset({
   if (isMobile) {
     // VR uses CSS custom properties for the offset value and classic uses AppLayoutContext
     computedOffset = isVisualRefresh
-      ? `calc(var(${customCssProps.offsetTop}, 0px) - ${Math.abs(__stickyOffset ?? 0)}px)`
-      : `${stickyOffsetTop + (__stickyOffset ?? 0)}px`;
+      ? `calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}) - ${Math.abs(
+          __stickyOffset ?? 0
+        )}px)`
+      : `${stickyOffsetTop + mobileBarHeight - (__stickyOffset ?? 0)}px`;
   } else if (isVisualRefresh && !hasInnerOverflowParents) {
     computedOffset = `var(${customCssProps.offsetTopWithNotifications}, ${computedOffset})`;
   }
@@ -62,7 +66,7 @@ export const useStickyHeader = (
   const isMobile = useMobile();
   // We reach into AppLayoutContext in case sticky header needs to be offset down by the height
   // of other sticky elements positioned on top of the view.
-  const { stickyOffsetTop } = useAppLayoutContext();
+  const { stickyOffsetTop, mobileBarHeight } = useAppLayoutContext();
   const disableSticky = isMobile && __disableMobile;
   const isSticky = supportsStickyPosition() && !disableSticky && !!__stickyHeader;
   const isVisualRefresh = useVisualRefresh();
@@ -87,6 +91,7 @@ export const useStickyHeader = (
     isVisualRefresh,
     customCssProps,
     __stickyOffset,
+    mobileBarHeight,
     stickyOffsetTop,
     hasInnerOverflowParents,
   });

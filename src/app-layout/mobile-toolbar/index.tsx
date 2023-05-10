@@ -52,6 +52,7 @@ interface MobileToolbarProps {
   toolsHide: boolean | undefined;
   topOffset?: number;
   ariaLabels?: AppLayoutProps.Labels;
+  mobileBarRef: React.Ref<HTMLDivElement>;
   children: React.ReactNode;
   onNavigationOpen: () => void;
   onToolsOpen: () => void;
@@ -75,6 +76,7 @@ export function MobileToolbar({
   onNavigationOpen,
   onToolsOpen,
   drawers,
+  mobileBarRef,
 }: MobileToolbarProps) {
   useEffect(() => {
     if (anyPanelOpen) {
@@ -87,7 +89,11 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
   return (
-    <div className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)} style={{ top: topOffset }}>
+    <div
+      ref={mobileBarRef}
+      className={clsx(styles['mobile-bar'], unfocusable && sharedStyles.unfocusable)}
+      style={{ top: topOffset }}
+    >
       {!navigationHide && (
         <MobileToggle
           ref={toggleRefs.navigation}

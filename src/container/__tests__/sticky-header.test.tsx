@@ -119,6 +119,7 @@ describe('computeOffset', () => {
   const customCssProps = {
     offsetTop: '--offset-top',
     offsetTopWithNotifications: '--offset-top-with-notifications',
+    mobileBarHeight: '--mobile-bar-height',
   };
 
   it('should calculate offset for mobile and visual refresh', () => {
@@ -127,11 +128,12 @@ describe('computeOffset', () => {
       isVisualRefresh: true,
       customCssProps,
       __stickyOffset: 10,
+      mobileBarHeight: 5,
       stickyOffsetTop: 20,
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) - 10px)`);
+    expect(result).toBe(`calc(var(${customCssProps.offsetTop}, 0px) + var(${customCssProps.mobileBarHeight}) - 10px)`);
   });
 
   it('should calculate offset for mobile without visual refresh', () => {
@@ -139,12 +141,13 @@ describe('computeOffset', () => {
       isMobile: true,
       isVisualRefresh: false,
       customCssProps,
-      __stickyOffset: 10,
+      __stickyOffset: 100,
+      mobileBarHeight: 40,
       stickyOffsetTop: 20,
       hasInnerOverflowParents: false,
     });
 
-    expect(result).toBe('30px');
+    expect(result).toBe('-40px');
   });
 
   it('should calculate offset for non-mobile and visual refresh without inner overflow parents', () => {

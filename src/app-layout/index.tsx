@@ -534,6 +534,8 @@ const OldAppLayout = React.forwardRef(
         ? splitPanelReportedSize
         : splitPanelReportedHeaderHeight) ?? undefined;
 
+    const [mobileBarHeight, mobileBarRef] = useContainerQuery(rect => rect.height);
+
     return (
       <div
         className={clsx(styles.root, testutilStyles.root, disableBodyScroll && styles['root-no-scroll'])}
@@ -551,6 +553,7 @@ const OldAppLayout = React.forwardRef(
               onNavigationOpen={() => onNavigationToggle(true)}
               onToolsOpen={() => onToolsToggle(true)}
               unfocusable={anyPanelOpen}
+              mobileBarRef={mobileBarRef}
               drawers={
                 drawers
                   ? {
@@ -669,6 +672,7 @@ const OldAppLayout = React.forwardRef(
                         (disableBodyScroll ? (isMobile ? -9999 : 0) : headerHeight) +
                         (isMobile ? 0 : stickyNotificationsHeight !== null ? stickyNotificationsHeight : 0),
                       stickyOffsetBottom: footerHeight + (splitPanelBottomOffset || 0),
+                      mobileBarHeight: mobileBarHeight ?? 0,
                       hasBreadcrumbs: !!breadcrumbs,
                     }}
                   >
