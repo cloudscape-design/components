@@ -53,6 +53,9 @@ $border-placeholder: awsui.$border-item-width solid transparent;
       */
     &:first-child.has-striped-rows {
       padding-left: awsui.$space-xxs;
+      &-sticky-cell-pad-left {
+        padding-left: awsui.$space-table-horizontal;
+      }
     }
 
     /*
@@ -106,7 +109,7 @@ $border-placeholder: awsui.$border-item-width solid transparent;
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
-    &-pad-left:not(.has-selection) {
+    &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
       padding-left: awsui.$space-table-horizontal;
     }
     &.body-cell-shaded {
