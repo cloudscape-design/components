@@ -34,6 +34,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
       onChange,
       tabIndex,
       showOutline,
+      ariaControls,
       __internalRootRef,
       ...rest
     },
@@ -63,6 +64,7 @@ const InternalCheckbox = React.forwardRef<CheckboxProps.Ref, InternalProps>(
         ariaLabel={ariaLabel}
         ariaLabelledby={ariaLabelledby}
         ariaDescribedby={ariaDescribedby}
+        ariaControls={ariaControls}
         showOutline={showOutline}
         nativeControl={nativeControlProps => (
           <input
