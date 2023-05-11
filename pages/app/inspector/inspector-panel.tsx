@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Link, SpaceBetween, Toggle } from '~components';
+import { Box, Button, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
+import { HexColorPicker } from 'react-colorful';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -11,6 +12,7 @@ import tokenMapping from './tokens-mapping.json';
 // @ts-ignore
 import tokenDict from './token-descriptions.json';
 import { groupBy, uniqBy } from 'lodash';
+import { applyTheme } from '~components/theming';
 
 interface Token {
   section: string;
@@ -49,6 +51,7 @@ const TREE_SIZE = 5;
 
 interface TreeElement {
   name: string;
+  node: Element;
   tokens: Token[];
 }
 
@@ -133,6 +136,38 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const [selectedNode, setSelectedNode] = useState<null | InspectedElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  // TODO: change colors for light/dark independently.
+  const [valueOverrides, setValueOverrides] = useState<Record<string, string>>({});
+
+  const setTokenValue = (tokenName: string, value: string) => {
+    setValueOverrides(prev => ({ ...prev, [tokenName]: value }));
+  };
+
+  const onHoverToken = (node: null | Element) => {
+    const cursor = cursorRef.current;
+    if (!cursor) {
+      return;
+    }
+
+    if (!node) {
+      cursor.style.visibility = 'hidden';
+      return;
+    }
+
+    const elementRect = node.getBoundingClientRect();
+    cursor.style.visibility = 'visible';
+    cursor.style.left = elementRect.left + 'px';
+    cursor.style.top = elementRect.top + 'px';
+    cursor.style.width = elementRect.width + 'px';
+    cursor.style.height = elementRect.height + 'px';
+    cursor.style.background = 'rgba(129, 204, 185, 0.33)';
+    cursor.style.border = '1px solid #5dbda5';
+  };
+
+  useEffect(() => {
+    applyTheme({ theme: { tokens: valueOverrides } });
+  }, [valueOverrides]);
+
   useEffect(
     () => {
       const cursor = cursorRef.current;
@@ -173,7 +208,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           const tree: TreeElement[] = [];
           for (let i = 0; i < TREE_SIZE; i++) {
             const elementName = getElementName(current);
-            tree.push({ name: elementName, tokens: getElementTokens(current) });
+            tree.push({ name: elementName, node: current, tokens: getElementTokens(current) });
 
             if (!current.parentElement || (current as any).__awsuiMetadata__) {
               break;
@@ -212,8 +247,8 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           setInspectorEnabled(false);
         }
         if (cursor) {
-          cursor.style.background = 'rgba(129, 204, 185, 0.33)';
-          cursor.style.border = '1px solid #5dbda5';
+          cursor.style.background = '';
+          cursor.style.border = '';
         }
       }
 
@@ -265,11 +300,20 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           Elements inspector
         </Toggle>
 
-        <ElementsTree target={selectedNode} tokenIndex={selectedIndex} onSelect={index => setSelectedIndex(index)} />
+        <ElementsTree
+          target={selectedNode}
+          tokenIndex={selectedIndex}
+          onSelect={index => setSelectedIndex(index)}
+          onHoverToken={onHoverToken}
+        />
 
         <TokensPanel>
           {selectedNode && selectedNode.tree[selectedIndex].tokens.length > 0 && (
-            <Tokens tokens={selectedNode.tree[selectedIndex].tokens} />
+            <Tokens
+              tokens={selectedNode.tree[selectedIndex].tokens}
+              valueOverrides={valueOverrides}
+              setTokenValue={setTokenValue}
+            />
           )}
 
           {!selectedNode && (
@@ -316,7 +360,15 @@ function TokensPanelMessage({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Tokens({ tokens }: { tokens: Token[] }) {
+function Tokens({
+  tokens,
+  valueOverrides,
+  setTokenValue,
+}: {
+  tokens: Token[];
+  valueOverrides: Record<string, string>;
+  setTokenValue: (tokenName: string, value: string) => void;
+}) {
   const sections = groupBy(tokens, 'section');
 
   return (
@@ -334,22 +386,45 @@ function Tokens({ tokens }: { tokens: Token[] }) {
               marginTop: '8px',
             }}
           >
-            {sections[section].map(token => (
-              <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
-                {token.name.startsWith('color') ? <ColorIndicator color={token.value} /> : <ValuePlaceholder />}
-                <Box margin={{ left: 'xs' }}>
-                  <SpaceBetween size="xxs">
-                    <Box>{token.name}</Box>
-                    <Box fontSize="body-s" color="text-body-secondary">
-                      {token.description}
-                    </Box>
-                  </SpaceBetween>
-                </Box>
-              </li>
-            ))}
+            {sections[section].map(token => {
+              const value = valueOverrides[token.name] ?? token.value;
+
+              return (
+                <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
+                  {token.name.startsWith('color') ? (
+                    <Popover
+                      header="Edit color"
+                      content={<ColorPicker color={value} onSetColor={value => setTokenValue(token.name, value)} />}
+                      triggerType="custom"
+                    >
+                      <ColorIndicator color={value} />
+                    </Popover>
+                  ) : (
+                    <ValuePlaceholder />
+                  )}
+                  <Box margin={{ left: 'xs' }}>
+                    <SpaceBetween size="xxs">
+                      <Box>{token.name}</Box>
+                      <Box fontSize="body-s" color="text-body-secondary">
+                        {token.description}
+                      </Box>
+                    </SpaceBetween>
+                  </Box>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ))}
+    </SpaceBetween>
+  );
+}
+
+function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value: string) => void }) {
+  return (
+    <SpaceBetween size="xs" direction="vertical">
+      <HexColorPicker color={color} onChange={onSetColor} />
+      <Input value={color} onChange={e => onSetColor(e.detail.value)} />
     </SpaceBetween>
   );
 }
@@ -390,14 +465,16 @@ function ElementsTree({
   target,
   tokenIndex,
   onSelect,
+  onHoverToken,
 }: {
   target: null | InspectedElement;
   tokenIndex: number;
   onSelect: (tokenIndex: number) => void;
+  onHoverToken: (node: null | Element) => void;
 }) {
   const tree = [...(target?.tree || [])].reverse();
   while (tree.length < TREE_SIZE) {
-    tree.unshift({ name: '...', tokens: [] });
+    tree.unshift({ name: '...', tokens: [], node: null as any });
   }
 
   return (
@@ -412,7 +489,16 @@ function ElementsTree({
       }}
     >
       {tree.map((node, index) => (
-        <li key={index} style={{ display: 'flex', alignItems: 'center', paddingLeft: index * 4 + 'px' }}>
+        <li
+          key={index}
+          style={{ display: 'flex', alignItems: 'center', paddingLeft: index * 4 + 'px' }}
+          onMouseEnter={() => {
+            onHoverToken(node.node);
+          }}
+          onMouseLeave={() => {
+            onHoverToken(null);
+          }}
+        >
           <Dash />
           <Box>
             {node.name === '...' ? (
