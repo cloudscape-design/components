@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { InspectorPanel } from './inspector-panel';
 
 const stylesMapping = [
   {
@@ -36,11 +38,16 @@ function createTokensPanel() {
   panel.style.padding = '16px';
   panel.style.background = 'white';
   document.body.append(panel);
+
+  render(<InspectorPanel />, panel);
 }
 
 function destroyTokensPanel() {
   document.body.style.paddingRight = originalBodyPadding;
-  panel?.remove();
+  if (panel) {
+    unmountComponentAtNode(panel);
+    panel.remove();
+  }
 }
 
 export function useInspector() {
