@@ -6,11 +6,13 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { CollectionPreferencesProps } from '../interfaces';
 import styles from '../styles.css.js';
 import { getSortedOptions, OptionWithVisibility } from './utils';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { SortableItem } from './sortable-item';
+import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
+import Portal from '../../internal/components/portal';
+import ContentDisplayOption from './content-display-option';
 
 const componentPrefix = 'content-display';
 
@@ -51,6 +53,8 @@ export default function ContentDisplayPreference({
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
   });
+
+  const activeOption = activeItem ? sortedOptions.find(({ id }) => id === activeItem) : null;
 
   const announcements = useLiveAnnouncements({
     isDragging: activeItem !== null,
@@ -99,17 +103,37 @@ export default function ContentDisplayPreference({
           role="list"
         >
           <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
-            {sortedOptions.map(option => (
-              <SortableItem
-                dragHandleAriaLabel={dragHandleAriaLabel}
-                key={option.id}
-                onKeyDown={handleKeyDown}
-                onToggle={onToggle}
-                option={option}
-              />
-            ))}
+            {sortedOptions.map(option => {
+              return (
+                <DraggableOption
+                  dragHandleAriaLabel={dragHandleAriaLabel}
+                  key={option.id}
+                  onKeyDown={handleKeyDown}
+                  onToggle={onToggle}
+                  option={option}
+                />
+              );
+            })}
           </SortableContext>
         </ul>
+        <Portal>
+          {/* Make sure that the drag overlay is above the modal
+              by assigning the z-index as inline style
+              so that it prevails over dnd-kit's inline z-index of 999  */}
+          {/* className is a documented prop of the DragOverlay component:
+              https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles */
+          /* eslint-disable-next-line react/forbid-component-props */}
+          <DragOverlay className={styles['drag-overlay']} dropAnimation={null} style={{ zIndex: 5000 }}>
+            {activeOption && (
+              <ContentDisplayOption
+                listeners={{ onKeyDown: handleKeyDown }}
+                dragHandleAriaLabel={dragHandleAriaLabel}
+                onToggle={onToggle}
+                option={activeOption}
+              />
+            )}
+          </DragOverlay>
+        </Portal>
       </DndContext>
     </div>
   );

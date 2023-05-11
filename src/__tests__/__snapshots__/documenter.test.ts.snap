@@ -2590,6 +2590,12 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the button has an \`href\` 
   "name": "Button",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-describedby\` to the button.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": " Adds aria-expanded to the button element. Use when the button controls an expandable element.",
       "name": "ariaExpanded",
       "optional": true,
@@ -3588,6 +3594,13 @@ Object {
   ],
   "name": "Checkbox",
   "properties": Array [
+    Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
     Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
@@ -12407,6 +12420,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "variant",
       "optional": true,
       "type": "string",
+      "visualRefreshTag": "\`stacked\` variant",
     },
   ],
   "regions": Array [],
@@ -13198,6 +13212,13 @@ Object {
   "name": "Tiles",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -13550,6 +13571,13 @@ Object {
   "name": "Toggle",
   "properties": Array [
     Object {
+      "description": "Adds \`aria-controls\` attribute to the component.
+If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.",
+      "name": "ariaControls",
+      "optional": true,
+      "type": "string",
+    },
+    Object {
       "description": "Adds \`aria-describedby\` to the component. If you're using this component within a form field,
 don't set this property because the form field component automatically sets it.
 Use this property if the component isn't surrounded by a form field, or you want to override the value
@@ -13812,7 +13840,7 @@ Object {
     Object {
       "description": "Properties describing the product identity. They are as follows:
 * \`title\` (string) - Specifies the title text.
-* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product.
+* \`logo\` ({ src: string, alt: string }) - Specifies the logo for the product. Use fixed width and height for SVG images to ensure proper rendering.
 * \`href\` (string) - Specifies the \`href\` that the header links to.
 * \`onFollow\` (() => void) - Specifies the event handler called when the identity is clicked without any modifier keys.
 ",

@@ -24,6 +24,7 @@ export interface TabsProps extends BaseComponentProps {
    * * `default` - Use in any context.
    * * `container` - Use this variant to have the tabs displayed within a container header.
    * * `stacked` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+   * @visualrefresh `stacked` variant
    */
   variant?: TabsProps.Variant;
 
