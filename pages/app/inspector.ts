@@ -45,6 +45,14 @@ export function useInspector() {
       }
     }
 
+    function setPointerEvents(node: Element) {
+      for (const child of Array.from(node.children)) {
+        if (child instanceof HTMLElement) {
+          child.style.pointerEvents = 'all';
+        }
+      }
+    }
+
     function onMouseMove(event: MouseEvent) {
       const nextElement = document.elementFromPoint(event.clientX, event.clientY);
       if (nextElement && nextElement !== element) {
@@ -57,6 +65,8 @@ export function useInspector() {
         }
 
         console.log(nextElement.tagName, tokens);
+
+        setPointerEvents(nextElement);
       }
       element = nextElement;
 
