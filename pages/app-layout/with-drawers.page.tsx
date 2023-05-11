@@ -69,14 +69,19 @@ function CloudscapeAssistant() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState('');
-  const [messages, setMessages] = useState([{ role: 'user', content: '#hello world' }]);
+  const [messages, setMessages] = useState([
+    {
+      role: 'assistant',
+      content: 'Hello there! Is there anything I can help you with?',
+    },
+  ]);
 
   const handleSend = () => {
     setLoading(true);
     fetch('http://localhost:3000', {
       method: 'post',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({ messages: [...messages, { role: 'user', content: value }] }),
     })
       .then(async response => {
         if (response.status === 200) {
@@ -94,6 +99,7 @@ function CloudscapeAssistant() {
       })
       .finally(() => {
         setLoading(false);
+        setValue('');
       });
   };
 
