@@ -7,26 +7,48 @@ import { Box, Button, Link, SpaceBetween, Toggle } from '~components';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tokenMapping from './tokens-mapping.json';
-import { groupBy } from 'lodash';
+import { groupBy, uniqBy } from 'lodash';
+
+interface Token {
+  section: string;
+  name: string;
+}
 
 const stylesMapping = Object.entries(tokenMapping)
   .map(([selector, tokenByState]: any) => ({
-    selector: fixSelector(selector),
+    selector,
     tokens: Object.entries(tokenByState).flatMap(([key, tokens]: any) =>
-      tokens.map((token: string) => `${key}::${token}`)
+      tokens.map((token: string) => ({ section: key, name: token }))
     ),
   }))
-  .filter(({ selector }) => selector.trim()) as { selector: string; tokens: string[] }[];
+  .filter(({ selector }) => selector.trim()) as { selector: string; tokens: Token[] }[];
 
-function fixSelector(selector: string): string {
-  return selector.replace(/:.*/, '').replace(/>.*/, '');
-}
+// import allTokens from '@amzn/awsui-components-definitions/styles/tokens-polaris.json';
+
+// import { camelCase, capitalize, uniq } from './utils';
+// import tokensMapping from './tokens-mapping.json';
+
+// export const tokenDetails = allTokens
+//   .filter(t => t.themeable)
+//   .reduce((acc, token) => {
+//     const name = camelCase(token.name);
+//     acc[name] = { name, description: token.description, value: token.value };
+//     return acc;
+//   }, {});
+
+// export default Object.keys(tokensMapping).reduce((acc, componentKey) => {
+//   const componentName = capitalize(componentKey).replace(/-[a-z]/g, g => g.slice(1).toUpperCase());
+//   acc[componentName] = uniq(tokensMapping[componentKey].sort())
+//     .map(name => tokenDetails[name])
+//     .filter(Boolean);
+//   return acc;
+// }, {});
 
 const TREE_SIZE = 5;
 
 interface TreeElement {
   name: string;
-  tokens: string[];
+  tokens: Token[];
 }
 
 interface InspectedElement {
@@ -38,8 +60,8 @@ interface InspectorPanelProps {
   onClose: () => void;
 }
 
-function getElementTokens(element: Element): string[] {
-  const tokens: string[] = [];
+function getElementTokens(element: Element): Token[] {
+  const tokens: Token[] = [];
   for (const style of stylesMapping) {
     try {
       if (element.matches(style.selector)) {
@@ -49,7 +71,7 @@ function getElementTokens(element: Element): string[] {
       console.warn(`Invalid selector: "${style.selector}".`);
     }
   }
-  return [...new Set(tokens)];
+  return uniqBy(tokens, token => token.section + ':' + token.name);
 }
 
 function getComponentSegmentName(element: Element): string {
@@ -294,11 +316,8 @@ function TokensPanelMessage({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Tokens({ tokens }: { tokens: string[] }) {
-  const sections = groupBy(
-    tokens.map(token => ({ section: token.split('::')[0], name: token.split('::')[1] })),
-    'section'
-  );
+function Tokens({ tokens }: { tokens: Token[] }) {
+  const sections = groupBy(tokens, 'section');
 
   return (
     <SpaceBetween size="s">
