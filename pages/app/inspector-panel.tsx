@@ -2,8 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { Box } from '~components';
+import { Box, Button } from '~components';
 
-export function InspectorPanel() {
-  return <Box>Nothing</Box>;
+interface InspectorPanelProps {
+  onClose: () => void;
+}
+
+export function InspectorPanel({ onClose }: InspectorPanelProps) {
+  return (
+    <Box>
+      <Button onClick={onClose}>Close</Button>
+    </Box>
+  );
 }

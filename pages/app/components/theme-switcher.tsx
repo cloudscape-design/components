@@ -6,7 +6,12 @@ import SpaceBetween from '~components/space-between';
 import AppContext from '../app-context';
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-export default function ThemeSwitcher() {
+interface ThemeSwitcherProps {
+  showTokenEditor: boolean;
+  onShowTokenEditor: (show: boolean) => void;
+}
+
+export default function ThemeSwitcher({ showTokenEditor, onShowTokenEditor }: ThemeSwitcherProps) {
   const { mode, urlParams, setUrlParams, setMode } = useContext(AppContext);
 
   const vrSwitchProps: React.InputHTMLAttributes<HTMLInputElement> = {
@@ -63,6 +68,15 @@ export default function ThemeSwitcher() {
           onChange={event => setUrlParams({ motionDisabled: event.target.checked })}
         />
         Disable motion
+      </label>
+      <label>
+        <input
+          id="token-editor"
+          type="checkbox"
+          checked={showTokenEditor}
+          onChange={event => onShowTokenEditor(event.target.checked)}
+        />
+        Token editor
       </label>
     </SpaceBetween>
   );
