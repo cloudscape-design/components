@@ -49,6 +49,52 @@ function getElementTokens(element: Element): string[] {
   return [...new Set(tokens)];
 }
 
+function getComponentSegmentName(element: Element): string {
+  const segmentNames = [
+    'header',
+    'footer',
+    'section',
+    'button',
+    'action',
+    'content',
+    'panel',
+    'area',
+    'body',
+    'container',
+    'tools',
+  ];
+
+  const classNames = Array.from(element.classList).filter(className => className.startsWith('awsui_'));
+  for (const className of classNames) {
+    const [, qualifier] = className.split('_');
+    for (const segmentName of segmentNames) {
+      if (qualifier.includes(segmentName)) {
+        return qualifier;
+      }
+    }
+  }
+
+  return 'part';
+}
+
+function getElementName(element: Element): string {
+  const componentName = (element as any).__awsuiMetadata__?.name;
+  if (componentName) {
+    return componentName;
+  }
+
+  let componentAncestor: null | Element = element;
+  while (componentAncestor) {
+    const componentName = (componentAncestor as any).__awsuiMetadata__?.name;
+    if (componentName) {
+      return `${componentName} - ${getComponentSegmentName(element)}`;
+    }
+    componentAncestor = componentAncestor.parentElement;
+  }
+
+  return element.tagName;
+}
+
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -82,10 +128,6 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
       }
 
       function onMouseMove(event: MouseEvent) {
-        if (!inspectorEnabled) {
-          return;
-        }
-
         const panel = panelRef.current;
         const nextElement = document.elementFromPoint(event.clientX, event.clientY);
         if (
@@ -97,7 +139,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           let current = nextElement;
           const tree: TreeElement[] = [];
           for (let i = 0; i < TREE_SIZE; i++) {
-            const elementName: string = (current as any).__awsuiMetadata__?.name ?? current.tagName;
+            const elementName = getElementName(current);
             tree.push({ name: elementName, tokens: getElementTokens(current) });
 
             if (!current.parentElement || (current as any).__awsuiMetadata__) {
@@ -132,6 +174,8 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 
       function onMouseDown(event: MouseEvent) {
         if (targetRef.current && event.target instanceof Element && !panelRef.current?.contains(event.target)) {
+          event.stopPropagation();
+          event.preventDefault();
           setInspectorEnabled(false);
         }
         if (cursor) {
@@ -140,16 +184,25 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
         }
       }
 
-      window.addEventListener('mousemove', onMouseMove);
+      function onClick(event: MouseEvent) {
+        if (targetRef.current && event.target instanceof Element && !panelRef.current?.contains(event.target)) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      }
+
       window.addEventListener('scroll', onScroll);
       window.addEventListener('resize', onResize);
-      window.addEventListener('mousedown', onMouseDown);
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mousedown', onMouseDown, true);
+      window.addEventListener('click', onClick, true);
 
       return () => {
-        window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
-        window.removeEventListener('mousedown', onMouseDown);
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mousedown', onMouseDown, true);
+        window.removeEventListener('click', onClick, true);
       };
     },
     // Expecting onClose to be stable
