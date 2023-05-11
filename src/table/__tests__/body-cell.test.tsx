@@ -4,6 +4,8 @@ import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { TableBodyCell } from '../../../lib/components/table/body-cell';
 import { TableProps } from '../interfaces';
+import { renderHook } from '../../__tests__/render-hook';
+import { useStickyColumns } from '../../../lib/components/table/use-sticky-columns';
 
 const testItem = {
   test: 'testData',
@@ -24,6 +26,10 @@ const column: TableProps.ColumnDefinition<typeof testItem> = {
 
 const onEditEnd = jest.fn();
 const onEditStart = jest.fn();
+
+const { result } = renderHook(() =>
+  useStickyColumns({ visibleColumns: ['id'], stickyColumnsFirst: 0, stickyColumnsLast: 0 })
+);
 
 const TestComponent = ({ isEditing = false }) => {
   return (
@@ -48,6 +54,8 @@ const TestComponent = ({ isEditing = false }) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            stickyState={result.current}
+            columnId="id"
           />
         </tr>
       </tbody>
@@ -78,6 +86,8 @@ const TestComponent2 = ({ column }: any) => {
             isLastRow={true}
             isSelected={false}
             wrapLines={false}
+            stickyState={result.current}
+            columnId="id"
           />
         </tr>
       </tbody>

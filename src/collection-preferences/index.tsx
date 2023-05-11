@@ -17,6 +17,7 @@ import {
   WrapLinesPreference,
   StripedRowsPreference,
   ContentDensityPreference,
+  StickyColumnsPreference,
   CustomPreference,
 } from './utils';
 import VisibleContentPreference from './visible-content';
@@ -45,12 +46,14 @@ export default function CollectionPreferences({
   wrapLinesPreference,
   stripedRowsPreference,
   contentDensityPreference,
+  stickyColumnsPreference,
+
   preferences,
   customPreference,
   ...rest
 }: CollectionPreferencesProps) {
-  const { __internalRootRef } = useBaseComponent(componentName);
-  checkControlled(componentName, 'preferences', preferences, 'onConfirm', onConfirm);
+  const { __internalRootRef } = useBaseComponent('CollectionPreferences');
+  checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);
   const baseProps = getBaseProps(rest);
   const [modalVisible, setModalVisible] = useState(false);
   const [temporaryPreferences, setTemporaryPreferences] = useState(copyPreferences(preferences || {}));
@@ -80,6 +83,7 @@ export default function CollectionPreferences({
     wrapLinesPreference ||
     stripedRowsPreference ||
     contentDensityPreference ||
+    stickyColumnsPreference ||
     customPreference
   );
   const hasContentOnTheRight = !!(visibleContentPreference || contentDisplayPreference);
@@ -170,6 +174,13 @@ export default function CollectionPreferences({
                       value={temporaryPreferences.contentDensity}
                       {...contentDensityPreference}
                       onChange={contentDensity => onChange({ contentDensity })}
+                    />
+                  )}
+                  {stickyColumnsPreference && (
+                    <StickyColumnsPreference
+                      value={temporaryPreferences.stickyColumns}
+                      {...stickyColumnsPreference}
+                      onChange={stickyColumns => onChange({ stickyColumns })}
                     />
                   )}
                   {customPreference && (

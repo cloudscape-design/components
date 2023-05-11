@@ -215,7 +215,11 @@ export function useStickyCellStyles({
       const unsubscribe = stickyColumns.store.subscribe(selector, (newState, prevState) =>
         updateCellStyles(selector(newState), selector(prevState))
       );
-      return unsubscribe;
+      return () => {
+        unsubscribe();
+        // Force the cleanup
+        updateCellStyles(null, { padLeft: false, lastLeft: false, lastRight: false, offset: {} });
+      };
     },
     // getClassName is expected to be pure
     // eslint-disable-next-line react-hooks/exhaustive-deps
