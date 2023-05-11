@@ -1,36 +1,53 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+const path = require('path');
+
+const ExampleCode = `
+<AppLayout
+  navigation={
+    <SideNavigation
+      header={{text: "Playroom"}}
+      items={[{ type: "link", text: "Home", href: "#" }]}
+    />
+  }
+  content={
+    <>
+      <Alert type="info">This is an alert!</Alert>
+    </>
+  }
+/>
+`;
+
 module.exports = {
-  components: '../lib/components/components',
+  components: '../lib/components',
   outputPath: './dist/playroom',
 
   // Optional:
-  title: 'My Awesome Library',
-  //   themes: './src/themes',
+  title: 'Cloudscape Playroom',
+  themes: './playroom/themes.ts',
   //   scope: './playroom/useScope.js',
   widths: [320, 768, 1024],
   port: 9000,
   openBrowser: true,
   paramType: 'search', // default is 'hash'
-  exampleCode: '',
+  exampleCode: ExampleCode,
   snippets: './playroom/snippets.tsx',
+  frameComponent: './playroom/frame.tsx',
+  typeScriptFiles: ['../src/components/**/*.{ts,tsx}', '!**/node_modules'],
   webpackConfig: () => ({
     module: {
       rules: [
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          exclude: /node_modules/,
+          include: path.resolve(__dirname, 'playroom'),
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
-          exclude: /node_modules/,
+          exclude: /node_modules\/(?!@cloudscape-design)/,
+          use: ['style-loader', 'css-loader'],
         },
       ],
-    },
-    resolve: {
-      extensions: ['.js', '.ts', '.tsx'],
     },
   }),
 };

@@ -112,7 +112,7 @@
     "mini-css-extract-plugin": "^2.4.4",
     "mississippi": "^4.0.0",
     "mockdate": "^3.0.5",
-    "playroom": "^0.31.0",
+    "playroom": "0.27.0",
     "please-upgrade-node": "^3.2.0",
     "prettier": "^2.4.1",
     "qs": "^6.10.1",
