@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["ES2015", "ES2017.Intl", "ES2018.Intl", "ES2020.Intl", "DOM"],
     "target": "ES2015",
-    "types": ["node"],
+    "types": [],
     "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
