@@ -199,7 +199,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 
   useEffect(() => {
     console.log(theme);
-    applyTheme({ theme });
+    applyTheme({ theme, baseThemeId: 'visual-refresh' });
   }, [theme]);
 
   useEffect(
