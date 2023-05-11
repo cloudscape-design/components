@@ -57,14 +57,28 @@ export function useInspector() {
       const nextElement = document.elementFromPoint(event.clientX, event.clientY);
       if (nextElement && nextElement !== element) {
         const tokens: string[] = [];
-
         for (const style of stylesMapping) {
           if (nextElement.matches(style.selector)) {
             tokens.push(...style.tokens);
           }
         }
 
-        console.log(nextElement.tagName, tokens);
+        let current: null | Element = nextElement;
+        const parents: string[] = [];
+        for (let i = 0; i < 5; i++) {
+          if ((current as any).__awsuiMetadata__) {
+            break;
+          }
+
+          current = current.parentElement;
+          if (!current) {
+            break;
+          }
+          const parentName = (current as any).__awsuiMetadata__?.name ?? current.tagName;
+          parents.push(parentName);
+        }
+
+        console.log(nextElement.tagName, { tokens, parents });
 
         setPointerEvents(nextElement);
       }
