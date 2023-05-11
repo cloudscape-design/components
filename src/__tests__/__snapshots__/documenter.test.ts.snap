@@ -2653,7 +2653,7 @@ This property only applies when an \`href\` is provided.",
       "type": "string",
     },
     Object {
-      "description": "Makes the button occupy 100% of the parent container width. The button content is centered.",
+      "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
       "name": "fullWidth",
       "optional": true,
       "type": "boolean",

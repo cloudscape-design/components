@@ -143,7 +143,7 @@ export interface ButtonProps extends BaseComponentProps {
   ariaExpanded?: boolean;
 
   /**
-   * Makes the button occupy 100% of the parent container width. The button content is centered.
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
    */
   fullWidth?: boolean;
 }
