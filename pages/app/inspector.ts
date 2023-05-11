@@ -19,6 +19,30 @@ const stylesMapping = [
   },
 ] as const;
 
+let originalBodyPadding = '';
+let panel: null | HTMLElement = null;
+
+function createTokensPanel() {
+  originalBodyPadding = document.body.style.paddingRight;
+  document.body.style.paddingRight = '300px';
+
+  panel = document.createElement('div');
+  panel.style.position = 'fixed';
+  panel.style.zIndex = '10000';
+  panel.style.top = '0px';
+  panel.style.bottom = '0px';
+  panel.style.right = '0px';
+  panel.style.width = '300px';
+  panel.style.padding = '16px';
+  panel.style.background = 'white';
+  document.body.append(panel);
+}
+
+function destroyTokensPanel() {
+  document.body.style.paddingRight = originalBodyPadding;
+  panel?.remove();
+}
+
 export function useInspector() {
   useEffect(() => {
     let element: null | Element = null;
@@ -32,7 +56,7 @@ export function useInspector() {
 
         cursor = document.createElement('div');
         cursor.style.position = 'fixed';
-        cursor.style.zIndex = '10000';
+        cursor.style.zIndex = '9999';
         cursor.style.boxSizing = 'border-box';
         cursor.style.left = elementRect.left + 'px';
         cursor.style.top = elementRect.top + 'px';
@@ -55,7 +79,7 @@ export function useInspector() {
 
     function onMouseMove(event: MouseEvent) {
       const nextElement = document.elementFromPoint(event.clientX, event.clientY);
-      if (nextElement && nextElement !== element) {
+      if (nextElement && nextElement !== element && nextElement !== panel && !panel?.contains(nextElement)) {
         const tokens: string[] = [];
         for (const style of stylesMapping) {
           if (nextElement.matches(style.selector)) {
@@ -99,10 +123,14 @@ export function useInspector() {
     window.addEventListener('scroll', onScroll);
     window.addEventListener('resize', onResize);
 
+    createTokensPanel();
+
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+
+      destroyTokensPanel();
     };
   }, []);
 }
