@@ -13,6 +13,8 @@ import tokenDict from './token-descriptions.json';
 import { cloneDeep, groupBy, uniqBy } from 'lodash';
 import { applyTheme } from '~components/theming';
 
+const isVR = !!document.querySelector('.awsui-visual-refresh');
+
 interface Token {
   section: string;
   name: string;
@@ -199,7 +201,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
 
   useEffect(() => {
     console.log(theme);
-    applyTheme({ theme, baseThemeId: 'visual-refresh' });
+    applyTheme({ theme, baseThemeId: isVR ? 'visual-refresh' : undefined });
   }, [theme]);
 
   useEffect(
