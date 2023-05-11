@@ -1,0 +1,1110 @@
+{
+  "colorChartsStatusCritical": {
+    "value": {
+      "light": "#7d2105",
+      "dark": "#d63f38"
+    },
+    "description": "Color to represent a critical error or a critically high-level of severity. For example: \"Sev-1\""
+  },
+  "colorChartsStatusHigh": {
+    "value": {
+      "light": "#ba2e0f",
+      "dark": "#fe6e73"
+    },
+    "description": "Color to represent an error status or a high-level of severity. Use this color to represent a default error status when there is only one applicable to a chart. For example: \"Failed\" or \"Sev-2\""
+  },
+  "colorChartsStatusMedium": {
+    "value": {
+      "light": "#cc5f21",
+      "dark": "#f89256"
+    },
+    "description": "Color to represent a medium-level of severity. For example: \"Sev-3\""
+  },
+  "colorChartsStatusLow": {
+    "value": {
+      "light": "#b2911c",
+      "dark": "#dfb52c"
+    },
+    "description": "Color to represent a warning or a low-level of severity. For example: \"Warning\" or \"Sev-4\""
+  },
+  "colorChartsStatusPositive": {
+    "value": {
+      "light": "#67a353",
+      "dark": "#69ae34"
+    },
+    "description": "Color to represent a positive status. *For example: \"Success\" or \"Running\""
+  },
+  "colorChartsStatusInfo": {
+    "value": {
+      "light": "#3184c2",
+      "dark": "#08aad2"
+    },
+    "description": "Color to represent an informational status. For example: \"In-progress\" or \"Updating\""
+  },
+  "colorChartsStatusNeutral": {
+    "value": {
+      "light": "#879596",
+      "dark": "#879596"
+    },
+    "description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \"Pending\" or \"Sev-5\""
+  },
+  "colorChartsThresholdNegative": {
+    "value": {
+      "light": "#d13212",
+      "dark": "#ff5d64"
+    },
+    "description": "The color to represent a threshold with a negative outcome. For example: A maximum limit"
+  },
+  "colorChartsThresholdPositive": {
+    "value": {
+      "light": "#1d8102",
+      "dark": "#6aaf35"
+    },
+    "description": "The color to represent a threshold with a positive outcome. For example: A designated pass rate"
+  },
+  "colorChartsThresholdInfo": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The color to represent an informational threshold to highlight special circumstances that may have or will occur. For example: A forecasted estimate"
+  },
+  "colorChartsThresholdNeutral": {
+    "value": {
+      "light": "#687078",
+      "dark": "#95a5a6"
+    },
+    "description": "The color to represent a threshold with a neutral outcome. For example: An average or baseline"
+  },
+  "colorChartsPaletteCategorical1": {
+    "value": {
+      "light": "#688ae8",
+      "dark": "#486de8"
+    },
+    "description": "Color #1 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical2": {
+    "value": {
+      "light": "#c33d69",
+      "dark": "#e07f9d"
+    },
+    "description": "Color #2 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical3": {
+    "value": {
+      "light": "#2ea597",
+      "dark": "#018977"
+    },
+    "description": "Color #3 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical4": {
+    "value": {
+      "light": "#8456ce",
+      "dark": "#b088f5"
+    },
+    "description": "Color #4 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical5": {
+    "value": {
+      "light": "#e07941",
+      "dark": "#c55305"
+    },
+    "description": "Color #5 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical6": {
+    "value": {
+      "light": "#3759ce",
+      "dark": "#8ea9ff"
+    },
+    "description": "Color #6 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical7": {
+    "value": {
+      "light": "#962249",
+      "dark": "#ffb0c8"
+    },
+    "description": "Color #7 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical8": {
+    "value": {
+      "light": "#096f64",
+      "dark": "#40bfa9"
+    },
+    "description": "Color #8 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical9": {
+    "value": {
+      "light": "#6237a7",
+      "dark": "#d6baff"
+    },
+    "description": "Color #9 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical10": {
+    "value": {
+      "light": "#a84401",
+      "dark": "#f89256"
+    },
+    "description": "Color #10 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical11": {
+    "value": {
+      "light": "#273ea5",
+      "dark": "#c3d1ff"
+    },
+    "description": "Color #11 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical12": {
+    "value": {
+      "light": "#780d35",
+      "dark": "#ffdfe8"
+    },
+    "description": "Color #12 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical13": {
+    "value": {
+      "light": "#03524a",
+      "dark": "#94e0d0"
+    },
+    "description": "Color #13 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical14": {
+    "value": {
+      "light": "#4a238b",
+      "dark": "#efe2ff"
+    },
+    "description": "Color #14 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical15": {
+    "value": {
+      "light": "#7e3103",
+      "dark": "#ffc6a4"
+    },
+    "description": "Color #15 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical16": {
+    "value": {
+      "light": "#1b2b88",
+      "dark": "#ecf0ff"
+    },
+    "description": "Color #16 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical17": {
+    "value": {
+      "light": "#ce567c",
+      "dark": "#d56889"
+    },
+    "description": "Color #17 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical18": {
+    "value": {
+      "light": "#003e38",
+      "dark": "#d7f7f0"
+    },
+    "description": "Color #18 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical19": {
+    "value": {
+      "light": "#9469d6",
+      "dark": "#a173ea"
+    },
+    "description": "Color #19 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical20": {
+    "value": {
+      "light": "#602400",
+      "dark": "#ffede2"
+    },
+    "description": "Color #20 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical21": {
+    "value": {
+      "light": "#4066df",
+      "dark": "#7698fe"
+    },
+    "description": "Color #21 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical22": {
+    "value": {
+      "light": "#a32952",
+      "dark": "#f5a2bb"
+    },
+    "description": "Color #22 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical23": {
+    "value": {
+      "light": "#0d7d70",
+      "dark": "#00b09b"
+    },
+    "description": "Color #23 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical24": {
+    "value": {
+      "light": "#6b40b2",
+      "dark": "#cbabfc"
+    },
+    "description": "Color #24 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical25": {
+    "value": {
+      "light": "#bc4d01",
+      "dark": "#f27c36"
+    },
+    "description": "Color #25 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical26": {
+    "value": {
+      "light": "#2c46b1",
+      "dark": "#b1c5ff"
+    },
+    "description": "Color #26 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical27": {
+    "value": {
+      "light": "#81143b",
+      "dark": "#ffd1de"
+    },
+    "description": "Color #27 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical28": {
+    "value": {
+      "light": "#045b52",
+      "dark": "#77d7c3"
+    },
+    "description": "Color #28 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical29": {
+    "value": {
+      "light": "#512994",
+      "dark": "#e8d5ff"
+    },
+    "description": "Color #29 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical30": {
+    "value": {
+      "light": "#8a3603",
+      "dark": "#ffb68b"
+    },
+    "description": "Color #30 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical31": {
+    "value": {
+      "light": "#1f3191",
+      "dark": "#dfe6ff"
+    },
+    "description": "Color #31 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical32": {
+    "value": {
+      "light": "#da7596",
+      "dark": "#c64a70"
+    },
+    "description": "Color #32 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical33": {
+    "value": {
+      "light": "#01443e",
+      "dark": "#c2f0e6"
+    },
+    "description": "Color #33 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical34": {
+    "value": {
+      "light": "#a783e1",
+      "dark": "#8d59de"
+    },
+    "description": "Color #34 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical35": {
+    "value": {
+      "light": "#692801",
+      "dark": "#ffe1cf"
+    },
+    "description": "Color #35 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical36": {
+    "value": {
+      "light": "#5978e3",
+      "dark": "#6384f5"
+    },
+    "description": "Color #36 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical37": {
+    "value": {
+      "light": "#b1325c",
+      "dark": "#eb92ad"
+    },
+    "description": "Color #37 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical38": {
+    "value": {
+      "light": "#1c8e81",
+      "dark": "#009d89"
+    },
+    "description": "Color #38 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical39": {
+    "value": {
+      "light": "#7749bf",
+      "dark": "#bf9bf9"
+    },
+    "description": "Color #39 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical40": {
+    "value": {
+      "light": "#cc5f21",
+      "dark": "#de6923"
+    },
+    "description": "Color #40 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical41": {
+    "value": {
+      "light": "#314fbf",
+      "dark": "#a2b8ff"
+    },
+    "description": "Color #41 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical42": {
+    "value": {
+      "light": "#8b1b42",
+      "dark": "#ffc1d4"
+    },
+    "description": "Color #42 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical43": {
+    "value": {
+      "light": "#06645a",
+      "dark": "#5fccb7"
+    },
+    "description": "Color #43 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical44": {
+    "value": {
+      "light": "#59309d",
+      "dark": "#dfc8ff"
+    },
+    "description": "Color #44 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical45": {
+    "value": {
+      "light": "#983c02",
+      "dark": "#fca572"
+    },
+    "description": "Color #45 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical46": {
+    "value": {
+      "light": "#23379b",
+      "dark": "#d2dcff"
+    },
+    "description": "Color #46 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical47": {
+    "value": {
+      "light": "#6f062f",
+      "dark": "#ffecf1"
+    },
+    "description": "Color #47 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical48": {
+    "value": {
+      "light": "#014b44",
+      "dark": "#ace9db"
+    },
+    "description": "Color #48 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical49": {
+    "value": {
+      "light": "#431d84",
+      "dark": "#f5edff"
+    },
+    "description": "Color #49 on the categorical data visualization palette."
+  },
+  "colorChartsPaletteCategorical50": {
+    "value": {
+      "light": "#732c02",
+      "dark": "#ffd4bb"
+    },
+    "description": "Color #50 on the categorical data visualization palette."
+  },
+  "colorBackgroundButtonPrimaryActive": {
+    "value": {
+      "light": "#eb5f07",
+      "dark": "#eb5f07"
+    },
+    "description": "The background color of primary buttons in active state."
+  },
+  "colorBackgroundButtonPrimaryDefault": {
+    "value": {
+      "light": "#ff9900",
+      "dark": "#ff9900"
+    },
+    "description": "The default background color of primary buttons."
+  },
+  "colorBackgroundButtonPrimaryDisabled": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#2a2e33"
+    },
+    "description": "The background color of primary buttons in disabled state."
+  },
+  "colorBackgroundButtonPrimaryHover": {
+    "value": {
+      "light": "#ec7211",
+      "dark": "#ec7211"
+    },
+    "description": "The background color of primary buttons in hover state."
+  },
+  "colorBackgroundCellShaded": {
+    "value": {
+      "light": "#f2f3f3",
+      "dark": "#16191f"
+    },
+    "description": "The background color of shaded table cells."
+  },
+  "colorBackgroundContainerContent": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#2a2e33"
+    },
+    "description": "The background color of container main content areas. For example: content areas of form sections, containers, tables, and cards."
+  },
+  "colorBackgroundContainerHeader": {
+    "value": {
+      "light": "#fafafa",
+      "dark": "#21252c"
+    },
+    "description": "The background color of container headers. For example: headers of form sections, containers, tables, and card collections."
+  },
+  "colorBackgroundControlChecked": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The background color of a checked form control. For example: background fill of a selected radio button, checked checkbox, and toggle that is switched on."
+  },
+  "colorBackgroundControlDefault": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#1a2029"
+    },
+    "description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color."
+  },
+  "colorBackgroundControlDisabled": {
+    "value": {
+      "light": "#d5dbdb",
+      "dark": "#414750"
+    },
+    "description": "The background color of a disabled form control. For example: background fill of a disabled radio button and checkbox."
+  },
+  "colorBackgroundDropdownItemDefault": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#2a2e33"
+    },
+    "description": "The default background color of dropdown items. For example: select, multiselect, autosuggest, and datepicker dropdown backgrounds."
+  },
+  "colorBackgroundDropdownItemFilterMatch": {
+    "value": {
+      "light": "#f1faff",
+      "dark": "#12293b"
+    },
+    "description": "The background color of text that matches a user's query. For example: the background of text matching a query entered into a table filter, select, multiselect, or autosuggest."
+  },
+  "colorBackgroundDropdownItemHover": {
+    "value": {
+      "light": "#f2f3f3",
+      "dark": "#414750"
+    },
+    "description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns."
+  },
+  "colorBackgroundHomeHeader": {
+    "value": {
+      "light": "#232f3e",
+      "dark": "#000000"
+    },
+    "description": "The background color of the home header, displayed on the Service's home page."
+  },
+  "colorBackgroundInputDefault": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#1a2029"
+    },
+    "description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect."
+  },
+  "colorBackgroundInputDisabled": {
+    "value": {
+      "light": "#eaeded",
+      "dark": "#414750"
+    },
+    "description": "The background color of a disabled form input. For example: background fill of a disabled input, textarea, autosuggest, and trigger of a select and multiselect."
+  },
+  "colorBackgroundItemSelected": {
+    "value": {
+      "light": "#f1faff",
+      "dark": "#12293b"
+    },
+    "description": "The background color of a selected item. For example: tokens, selected table rows, cards, and tile backgrounds."
+  },
+  "colorBackgroundLayoutMain": {
+    "value": {
+      "light": "#f2f3f3",
+      "dark": "#16191f"
+    },
+    "description": "The background color of the main content area on a page. For example:  content area in app layout."
+  },
+  "colorBackgroundLayoutToggleActive": {
+    "value": {
+      "light": "#2a2e33",
+      "dark": "#2a2e33"
+    },
+    "description": "The background color of the app layout toggle button when it's active."
+  },
+  "colorBackgroundLayoutToggleDefault": {
+    "value": {
+      "light": "#2a2e33",
+      "dark": "#2a2e33"
+    },
+    "description": "The default background color of the app layout toggle button."
+  },
+  "colorBackgroundLayoutToggleHover": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#545b64"
+    },
+    "description": "The background color of the app layout toggle button on hover."
+  },
+  "colorBackgroundLayoutToggleSelectedActive": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The background color of the app layout toggle button when it's selected and active."
+  },
+  "colorBackgroundLayoutToggleSelectedDefault": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The default background color of the app layout toggle button when it's selected."
+  },
+  "colorBackgroundLayoutToggleSelectedHover": {
+    "value": {
+      "light": "#0a4a74",
+      "dark": "#44b9d6"
+    },
+    "description": "The background color of the app layout toggle button on hover when it's selected."
+  },
+  "colorBackgroundNotificationBlue": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#0073bb"
+    },
+    "description": "Background color for blue notifications. For example: blue badges and info flash messages."
+  },
+  "colorBackgroundNotificationGreen": {
+    "value": {
+      "light": "#1d8102",
+      "dark": "#1d8102"
+    },
+    "description": "Background color for green notifications. For example: green badges and success flash messages."
+  },
+  "colorBackgroundNotificationRed": {
+    "value": {
+      "light": "#d13212",
+      "dark": "#d13212"
+    },
+    "description": "Background color for red notifications. For example: red badges and error flash messages."
+  },
+  "colorBackgroundStatusError": {
+    "value": {
+      "light": "#fdf3f1",
+      "dark": "#270a11"
+    },
+    "description": "The background color of an item in error state. For example: error alerts."
+  },
+  "colorBackgroundStatusInfo": {
+    "value": {
+      "light": "#f1faff",
+      "dark": "#12293b"
+    },
+    "description": "The background color of an informational item. For example: information alerts."
+  },
+  "colorBackgroundStatusSuccess": {
+    "value": {
+      "light": "#f2f8f0",
+      "dark": "#172211"
+    },
+    "description": "The background color of an item in success state. For example: success alerts."
+  },
+  "colorBackgroundStatusWarning": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#2a2e33"
+    },
+    "description": "The background color of an item in warning state. For example: warning alerts."
+  },
+  "colorBackgroundToggleCheckedDisabled": {
+    "value": {
+      "light": "#99cbe4",
+      "dark": "#0a4a74"
+    },
+    "description": "The background color of checked toggles in disabled state."
+  },
+  "colorBorderButtonNormalDefault": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#879596"
+    },
+    "description": "The border color of normal buttons."
+  },
+  "colorBorderButtonNormalDisabled": {
+    "value": {
+      "light": "#d5dbdb",
+      "dark": "#414750"
+    },
+    "description": "The border color of normal buttons in disabled state."
+  },
+  "colorBorderButtonNormalHover": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#aab7b8"
+    },
+    "description": "The border color of normal buttons in hover state."
+  },
+  "colorBorderButtonPrimaryDisabled": {
+    "value": {
+      "light": "#d5dbdb",
+      "dark": "#414750"
+    },
+    "description": "The border color of primary buttons in disabled state."
+  },
+  "colorBorderContainerTop": {
+    "value": {
+      "light": "#eaeded",
+      "dark": "#2a2e33"
+    },
+    "description": "The top border color for containers and first item in dropdowns. For example: the top border of a card, dropdown, and table."
+  },
+  "colorBorderControlDefault": {
+    "value": {
+      "light": "#879596",
+      "dark": "#879596"
+    },
+    "description": "The default border color of form controls. For example: radio buttons and checkboxes."
+  },
+  "colorBorderDividerDefault": {
+    "value": {
+      "light": "#eaeded",
+      "dark": "#414750"
+    },
+    "description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers."
+  },
+  "colorBorderDropdownItemHover": {
+    "value": {
+      "light": "#879596",
+      "dark": "#879596"
+    },
+    "description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker."
+  },
+  "colorBorderInputDefault": {
+    "value": {
+      "light": "#879596",
+      "dark": "#879596"
+    },
+    "description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect."
+  },
+  "colorBorderItemFocused": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The color of focus states. For example: the focus ring around interactive elements."
+  },
+  "colorBorderItemSelected": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The border color of a selected item. For example: tokens, selected table rows, selected cards, and selected tile borders."
+  },
+  "colorBorderStatusError": {
+    "value": {
+      "light": "#d13212",
+      "dark": "#d13212"
+    },
+    "description": "The border color of an item in error state. For example: error alerts."
+  },
+  "colorBorderStatusInfo": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#00a1c9"
+    },
+    "description": "The border color of an informational item. For example: information alerts."
+  },
+  "colorBorderStatusSuccess": {
+    "value": {
+      "light": "#1d8102",
+      "dark": "#1d8102"
+    },
+    "description": "The border color of an item in success state. For example: success alerts."
+  },
+  "colorBorderStatusWarning": {
+    "value": {
+      "light": "#aab7b8",
+      "dark": "#879596"
+    },
+    "description": "The border color of an item in warning state. For example: warning alerts."
+  },
+  "colorForegroundControlDefault": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#ffffff"
+    },
+    "description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles."
+  },
+  "colorForegroundControlDisabled": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#687078"
+    },
+    "description": "The color used to mark disabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles."
+  },
+  "colorTextAccent": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*"
+  },
+  "colorTextBodyDefault": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#d5dbdb"
+    },
+    "description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values."
+  },
+  "colorTextBodySecondary": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#d5dbdb"
+    },
+    "description": "The color of text that is secondary to base text. For example: text in the navigation and tools panels."
+  },
+  "colorTextButtonNormalActive": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#fafafa"
+    },
+    "description": "The active text color of normal buttons. For example: Active text color in normal and link buttons."
+  },
+  "colorTextButtonNormalDefault": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#d5dbdb"
+    },
+    "description": "The default text color of normal buttons."
+  },
+  "colorTextButtonNormalHover": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#fafafa"
+    },
+    "description": "The hover text color of normal buttons."
+  },
+  "colorTextButtonPrimaryActive": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#16191f"
+    },
+    "description": "The active text color of primary buttons."
+  },
+  "colorTextButtonPrimaryDefault": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#16191f"
+    },
+    "description": "The default text color of primary buttons."
+  },
+  "colorTextButtonPrimaryHover": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#16191f"
+    },
+    "description": "The hover text color of primary buttons."
+  },
+  "colorTextCounter": {
+    "value": {
+      "light": "#687078",
+      "dark": "#95a5a6"
+    },
+    "description": "The default color for counters. For example: counters in table headers"
+  },
+  "colorTextDropdownItemFilterMatch": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The color of text matching a user's query. For example: the text matching a query entered into a table filter, select, multiselect, or autosuggest."
+  },
+  "colorTextDropdownItemHighlighted": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#eaeded"
+    },
+    "description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*"
+  },
+  "colorTextEmpty": {
+    "value": {
+      "light": "#687078",
+      "dark": "#d5dbdb"
+    },
+    "description": "The color of text in non-dropdown empty states. For example: tables, card collections, and attribute editor empty state text."
+  },
+  "colorTextFormDefault": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#d5dbdb"
+    },
+    "description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas."
+  },
+  "colorTextFormSecondary": {
+    "value": {
+      "light": "#687078",
+      "dark": "#95a5a6"
+    },
+    "description": "The color of secondary text in form fields and controls. For example: the description and constraint text in form fields, the descriptions in checkboxes, radio buttons, toggles, and any additional info in an attribute editor."
+  },
+  "colorTextGroupLabel": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#95a5a6"
+    },
+    "description": "The default color for group labels. For example: group label in dropdown part of button dropdown, select, and multiselect, and group label in table and cards' preferences content selector."
+  },
+  "colorTextHeadingDefault": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#eaeded"
+    },
+    "description": "The default color for headings 1-5. For example: headings in tables, card collections, containers, form sections, forms, and app layout panels."
+  },
+  "colorTextHeadingSecondary": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#d5dbdb"
+    },
+    "description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions."
+  },
+  "colorTextHomeHeaderDefault": {
+    "value": {
+      "light": "#ffffff",
+      "dark": "#eaeded"
+    },
+    "description": "The color of the home header's text, displayed on the Service's home page."
+  },
+  "colorTextHomeHeaderSecondary": {
+    "value": {
+      "light": "#d5dbdb",
+      "dark": "#d5dbdb"
+    },
+    "description": "The color of the home header's secondary text, displayed on the Service's home page."
+  },
+  "colorTextInputDisabled": {
+    "value": {
+      "light": "#879596",
+      "dark": "#687078"
+    },
+    "description": "The color of the text value in a disabled input. For example: text in a disabled input, autosuggest, datepicker, and the trigger of a select and multiselect."
+  },
+  "colorTextInputPlaceholder": {
+    "value": {
+      "light": "#687078",
+      "dark": "#879596"
+    },
+    "description": "The color of placeholder text in an input. For example: placeholder text in an input, autosuggest, datepicker, and the trigger of a select and multiselect."
+  },
+  "colorTextInteractiveActive": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#fafafa"
+    },
+    "description": "The color of clickable elements in their active state. For example: tabs and icons."
+  },
+  "colorTextInteractiveDefault": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#d5dbdb"
+    },
+    "description": "The color of clickable elements in their default state. *For example: expandable sections, tabs, and icons.*"
+  },
+  "colorTextInteractiveDisabled": {
+    "value": {
+      "light": "#aab7b8",
+      "dark": "#687078"
+    },
+    "description": "The color of clickable elements in their disabled state. For example: disabled tabs, button text, and icons."
+  },
+  "colorTextInteractiveHover": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#fafafa"
+    },
+    "description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*"
+  },
+  "colorTextInteractiveInvertedDefault": {
+    "value": {
+      "light": "#d5dbdb",
+      "dark": "#d5dbdb"
+    },
+    "description": "The default color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar."
+  },
+  "colorTextInteractiveInvertedHover": {
+    "value": {
+      "light": "#fafafa",
+      "dark": "#fafafa"
+    },
+    "description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar."
+  },
+  "colorTextLabel": {
+    "value": {
+      "light": "#545b64",
+      "dark": "#95a5a6"
+    },
+    "description": "This is the default color for non-form labels. For example: the key in key/value pairs and card's sections labels."
+  },
+  "colorTextLinkDefault": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The default color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links."
+  },
+  "colorTextLinkHover": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The hover color for links. For example: text in an anchor tag, info links, breadcrumb links, and icon links."
+  },
+  "colorTextNotificationDefault": {
+    "value": {
+      "light": "#fafafa",
+      "dark": "#fafafa"
+    },
+    "description": "Default text color for notifications. For example: the text on badges and flashes."
+  },
+  "colorTextStatusError": {
+    "value": {
+      "light": "#d13212",
+      "dark": "#ff5d64"
+    },
+    "description": "The color of error text and icons. For example: form field error text and error status indicators."
+  },
+  "colorTextStatusInactive": {
+    "value": {
+      "light": "#687078",
+      "dark": "#95a5a6"
+    },
+    "description": "The color of inactive and loading text and icons. For example: table and card collection loading states icon and text and inactive and pending status indicators."
+  },
+  "colorTextStatusInfo": {
+    "value": {
+      "light": "#0073bb",
+      "dark": "#44b9d6"
+    },
+    "description": "The color of info text and icons. For example: info status indicators and info alert icon."
+  },
+  "colorTextStatusSuccess": {
+    "value": {
+      "light": "#1d8102",
+      "dark": "#6aaf35"
+    },
+    "description": "The color of success text and icons. For example: success status indicators and success alert icon."
+  },
+  "colorTextStatusWarning": {
+    "value": {
+      "light": "#d13212",
+      "dark": "#ff5d64"
+    },
+    "description": "The color of warning icons."
+  },
+  "colorTextTopNavigationTitle": {
+    "value": {
+      "light": "#16191f",
+      "dark": "#fafafa"
+    },
+    "description": "The color of the title in the top navigation."
+  },
+  "fontFamilyBase": {
+    "value": "'Amazon Ember', 'Helvetica Neue', Roboto, Arial, sans-serif",
+    "description": "The default font family that will be applied globally to the product interface. "
+  },
+  "fontFamilyMonospace": {
+    "value": "Monaco, Menlo, Consolas, 'Courier Prime', Courier, 'Courier New', monospace",
+    "description": "The monospace font family that will be applied globally to the product interface."
+  },
+  "borderRadiusAlert": {
+    "value": "2px",
+    "description": "The border radius of alerts."
+  },
+  "borderRadiusBadge": {
+    "value": "16px",
+    "description": "The border radius of badges."
+  },
+  "borderRadiusButton": {
+    "value": "2px",
+    "description": "The border radius of buttons and segmented control's segments."
+  },
+  "borderRadiusCalendarDayFocusRing": {
+    "value": "2px",
+    "description": "The border radius of the focused day in date picker and date range picker."
+  },
+  "borderRadiusContainer": {
+    "value": "0px",
+    "description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal."
+  },
+  "borderRadiusControlCircularFocusRing": {
+    "value": "50%",
+    "description": "The border radius of the focus indicator of circular controls. For example: radio button."
+  },
+  "borderRadiusControlDefaultFocusRing": {
+    "value": "2px",
+    "description": "The border radius of the focus indicator of interactive elements. For example: button, link, toggle, pagination controls, expandable section header, popover trigger."
+  },
+  "borderRadiusDropdown": {
+    "value": "0px",
+    "description": "The border radius of dropdown containers. For example: button dropdown, select, multiselect, autosuggest, date picker, date range picker."
+  },
+  "borderRadiusFlashbar": {
+    "value": "0px",
+    "description": "The border radius of flash messages in flashbars."
+  },
+  "borderRadiusItem": {
+    "value": "0px",
+    "description": "The border radius of items that can be selected from a list. For example: select options, table rows, calendar days."
+  },
+  "borderRadiusInput": {
+    "value": "2px",
+    "description": "The border radius of form controls. For example: input, select."
+  },
+  "borderRadiusPopover": {
+    "value": "2px",
+    "description": "The border radius of popovers."
+  },
+  "borderRadiusTabsFocusRing": {
+    "value": "0px",
+    "description": "The border radius of tabs' focus indicator. Used in tabs and in the code editor status bar."
+  },
+  "borderRadiusTiles": {
+    "value": "2px",
+    "description": "The border radius of tiles."
+  },
+  "borderRadiusToken": {
+    "value": "2px",
+    "description": "The border radius of tokens. For example: token groups, multiselect tokens, property filter tokens."
+  },
+  "borderRadiusTutorialPanelItem": {
+    "value": "2px",
+    "description": "The border radius of tutorials inside a tutorial panel."
+  }
+}

@@ -7,42 +7,43 @@ import { Box, Button, Link, SpaceBetween, Toggle } from '~components';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tokenMapping from './tokens-mapping.json';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import tokenDict from './token-descriptions.json';
 import { groupBy, uniqBy } from 'lodash';
 
 interface Token {
   section: string;
   name: string;
+  description: string;
+  value: string;
+}
+
+function getTokenValue(tokenName: string): string {
+  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
+  const valueEntry = tokenDict[tokenName]?.value ?? 'magenta';
+  const value = typeof valueEntry === 'string' ? valueEntry : valueEntry[isDarkMode ? 'dark' : 'light'];
+  return value;
+}
+
+function getTokenDescription(tokenName: string): string {
+  const description = tokenDict[tokenName]?.description ?? '???';
+  return description;
 }
 
 const stylesMapping = Object.entries(tokenMapping)
   .map(([selector, tokenByState]: any) => ({
     selector,
     tokens: Object.entries(tokenByState).flatMap(([key, tokens]: any) =>
-      tokens.map((token: string) => ({ section: key, name: token }))
+      tokens.map((token: string) => ({
+        section: key,
+        name: token,
+        value: getTokenValue(token),
+        description: getTokenDescription(token),
+      }))
     ),
   }))
   .filter(({ selector }) => selector.trim()) as { selector: string; tokens: Token[] }[];
-
-// import allTokens from '@amzn/awsui-components-definitions/styles/tokens-polaris.json';
-
-// import { camelCase, capitalize, uniq } from './utils';
-// import tokensMapping from './tokens-mapping.json';
-
-// export const tokenDetails = allTokens
-//   .filter(t => t.themeable)
-//   .reduce((acc, token) => {
-//     const name = camelCase(token.name);
-//     acc[name] = { name, description: token.description, value: token.value };
-//     return acc;
-//   }, {});
-
-// export default Object.keys(tokensMapping).reduce((acc, componentKey) => {
-//   const componentName = capitalize(componentKey).replace(/-[a-z]/g, g => g.slice(1).toUpperCase());
-//   acc[componentName] = uniq(tokensMapping[componentKey].sort())
-//     .map(name => tokenDetails[name])
-//     .filter(Boolean);
-//   return acc;
-// }, {});
 
 const TREE_SIZE = 5;
 
@@ -248,8 +249,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
       style={{
         width: '100%',
         height: '100%',
-        padding: '8px',
-        paddingTop: '16px',
+        padding: '16px 8px',
         boxSizing: 'border-box',
         position: 'relative',
         borderLeft: '1px solid #bda55d',
@@ -335,15 +335,54 @@ function Tokens({ tokens }: { tokens: Token[] }) {
             }}
           >
             {sections[section].map(token => (
-              <li key={token.name} style={{ display: 'flex', alignItems: 'center' }}>
-                <Dash />
-                <Box>{token.name}</Box>
+              <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
+                {token.name.startsWith('color') ? <ColorIndicator color={token.value} /> : <ValuePlaceholder />}
+                <Box margin={{ left: 'xs' }}>
+                  <SpaceBetween size="xxs">
+                    <Box>{token.name}</Box>
+                    <Box fontSize="body-s" color="text-body-secondary">
+                      {token.description}
+                    </Box>
+                  </SpaceBetween>
+                </Box>
               </li>
             ))}
           </ul>
         </div>
       ))}
     </SpaceBetween>
+  );
+}
+
+function ColorIndicator({ color }: { color: string }) {
+  return (
+    <button
+      style={{
+        appearance: 'none',
+        border: 0,
+        width: 16,
+        height: 16,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#879596',
+        background: color,
+      }}
+    />
+  );
+}
+
+function ValuePlaceholder() {
+  return (
+    <button
+      style={{
+        appearance: 'none',
+        border: 0,
+        width: 16,
+        height: 16,
+        background: 'transparent',
+      }}
+    />
   );
 }
 
