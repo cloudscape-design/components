@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import {
   AppLayout,
   ContentLayout,
+  Form,
+  FormField,
   Header,
   HelpPanel,
+  Input,
   NonCancelableCustomEvent,
   SpaceBetween,
   SplitPanel,
@@ -22,7 +25,7 @@ export default function WithDrawers() {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
   const [widths, setWidths] = useState<{ [id: string]: number }>({
-    security: 500,
+    'cloudscape-help': 600,
   });
 
   const drawers = !hasDrawers
@@ -37,28 +40,13 @@ export default function WithDrawers() {
           items: [
             {
               ariaLabels: {
-                closeButton: 'Security close button',
-                content: 'Security drawer content',
-                triggerButton: 'Security trigger button',
-                resizeHandle: 'Security resize handle',
+                closeButton: 'Cloudscape Assistant close button',
+                content: 'Cloudscape Assistant drawer content',
+                triggerButton: 'Cloudscape Assistant trigger button',
+                resizeHandle: 'Cloudscape Assistant resize handle',
               },
-              content: <Security />,
-              id: 'security',
-              resizable: true,
-              size: widths.security,
-              trigger: {
-                iconName: 'security',
-              },
-            },
-            {
-              ariaLabels: {
-                closeButton: 'ProHelp close button',
-                content: 'ProHelp drawer content',
-                triggerButton: 'ProHelp trigger button',
-                resizeHandle: 'ProHelp resize handle',
-              },
-              content: <ProHelp />,
-              id: 'pro-help',
+              content: <CloudscapeAssistant />,
+              id: 'cloudscape-help',
               trigger: {
                 iconName: 'contact',
               },
@@ -141,10 +129,26 @@ function Info() {
   return <HelpPanel header={<h2>Info</h2>}>Here is some info for you!</HelpPanel>;
 }
 
-function Security() {
-  return <HelpPanel header={<h2>Security</h2>}>Everyone needs it.</HelpPanel>;
-}
+function CloudscapeAssistant() {
+  const [value, setValue] = useState('');
 
-function ProHelp() {
-  return <HelpPanel header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</HelpPanel>;
+  return (
+    <HelpPanel header={<h2>My Assistant</h2>}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1 }}></div>
+        <div style={{ position: 'absolute', bottom: '24px' }}>
+          <Form>
+            <FormField stretch={true}>
+              <Input
+                placeholder="Ask me anything"
+                value={value}
+                onChange={event => setValue(event.detail.value)}
+                type="search"
+              />
+            </FormField>
+          </Form>
+        </div>
+      </div>
+    </HelpPanel>
+  );
 }
