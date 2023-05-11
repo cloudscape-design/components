@@ -17,6 +17,7 @@ import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
+import { useInspector } from './inspector';
 
 function App() {
   const {
@@ -51,6 +52,8 @@ function App() {
       document.body.classList.remove(styles.macos);
     }
   }, [isMacOS]);
+
+  useInspector();
 
   if (!mode) {
     return <Redirect to="/light/" />;
