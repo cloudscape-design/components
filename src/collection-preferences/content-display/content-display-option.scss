@@ -40,7 +40,6 @@ $border-radius: awsui.$border-radius-item;
   border-top: awsui.$border-divider-list-width solid awsui.$color-border-divider-default;
   &:not(.placeholder).sorting {
     @include animated;
-    z-index: 1;
   }
   &.placeholder {
     > .content-display-option-content {
