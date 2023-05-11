@@ -71,6 +71,18 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
+   * Configures the sticky columns preference.
+   *
+   * You can set it for both left and right columns.
+   *
+   * It contains the following:
+   * - `label` (string) - Specifies the label for each radio group.
+   * - `description` (string) - Specifies the text displayed below each radio group label.
+   *
+   * You must set the current value in the `preferences.stickyColumns` property.
+   */
+  stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
+  /**
    * Configures the built-in content display preference for order and visibility of columns in a table.
    *
    * Once set, the component displays this preference in the modal.
@@ -174,6 +186,7 @@ export namespace CollectionPreferencesProps {
     stripedRows?: boolean;
     contentDensity?: 'comfortable' | 'compact';
     visibleContent?: ReadonlyArray<string>;
+    stickyColumns?: StickyColumns;
     contentDisplay?: ReadonlyArray<ContentDisplayItem>;
     custom?: CustomPreferenceType;
   }
@@ -240,5 +253,23 @@ export namespace CollectionPreferencesProps {
   export interface ContentDensityPreference {
     label: string;
     description: string;
+  }
+
+  interface StickyColumns {
+    first?: number;
+    last?: number;
+  }
+
+  interface StickyColumnPreference {
+    title: string;
+    description: string;
+    options: ReadonlyArray<{
+      label: string;
+      value: number;
+    }>;
+  }
+  export interface StickyColumnsPreference {
+    firstColumns?: StickyColumnPreference;
+    lastColumns?: StickyColumnPreference;
   }
 }

@@ -3,6 +3,8 @@
 import clsx from 'clsx';
 import React from 'react';
 import styles from './styles.css.js';
+import { StickyColumnsModel, useStickyCellStyles } from '../use-sticky-columns';
+import { getStickyClassNames } from '../utils.js';
 
 export interface TableTdElementProps {
   className?: string;
@@ -26,6 +28,8 @@ export interface TableTdElementProps {
   stripedRows?: boolean;
   hasSelection?: boolean;
   hasFooter?: boolean;
+  columnId: string;
+  stickyState: StickyColumnsModel;
   isVisualRefresh?: boolean;
 }
 
@@ -51,6 +55,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isVisualRefresh,
       hasSelection,
       hasFooter,
+      columnId,
+      stickyState,
     },
     ref
   ) => {
@@ -62,9 +68,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         scope: 'row',
       };
     }
+
+    const stickyStyles = useStickyCellStyles({
+      stickyColumns: stickyState,
+      columnId,
+      getClassName: props => getStickyClassNames(styles, props),
+    });
     return (
       <Element
-        style={style}
+        style={{ ...style, ...stickyStyles.style }}
         className={clsx(
           className,
           styles['body-cell'],
@@ -78,12 +90,20 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           stripedRows && styles['has-striped-rows'],
           isVisualRefresh && styles['is-visual-refresh'],
           hasSelection && styles['has-selection'],
-          hasFooter && styles['has-footer']
+          hasFooter && styles['has-footer'],
+          stickyStyles.className
         )}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        ref={ref}
+        ref={node => {
+          if (node) {
+            stickyStyles.ref(node);
+            if (ref) {
+              (ref as React.MutableRefObject<HTMLTableCellElement>).current = node;
+            }
+          }
+        }}
         {...nativeAttributes}
       >
         {children}
