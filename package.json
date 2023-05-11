@@ -20,7 +20,7 @@
     "start:integ": "NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
     "prepare": "husky install",
     "playroom:start": "playroom --config pages/playroom.config.js start",
-    "playroom:build": "playroom build"
+    "playroom:build": "playroom build --config ./pages/playroom.config.js"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
@@ -69,7 +69,7 @@
     "@types/glob": "^7.2.0",
     "@types/jest": "^27.5.1",
     "@types/lodash": "^4.14.176",
-    "@types/node": "^16.18.28",
+    "@types/node": "^16.0.0",
     "@types/qs": "^6.9.7",
     "@types/react": "^16.14.20",
     "@types/react-dom": "^16.9.14",
@@ -125,7 +125,6 @@
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
-    "style-loader": "^3.3.2",
     "stylelint": "^14.15.0",
     "stylelint-config-prettier": "^9.0.4",
     "stylelint-config-recommended-scss": "^8.0.0",

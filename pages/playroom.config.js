@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const ExampleCode = `
 <AppLayout
@@ -35,6 +36,9 @@ module.exports = {
   frameComponent: './playroom/frame.tsx',
   typeScriptFiles: ['../src/components/**/*.{ts,tsx}', '!**/node_modules'],
   webpackConfig: () => ({
+    output: {
+      path: path.resolve(__dirname, '../lib/static-default/playroom'),
+    },
     module: {
       rules: [
         {
@@ -45,9 +49,10 @@ module.exports = {
         {
           test: /\.css$/,
           exclude: /node_modules\/(?!@cloudscape-design)/,
-          use: ['style-loader', 'css-loader'],
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
       ],
     },
+    plugins: [new MiniCssExtractPlugin()],
   }),
 };
