@@ -393,14 +393,20 @@ function Tokens({
                 <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
                   {token.name.startsWith('color') ? (
                     <Popover
-                      header="Edit color"
+                      header="Edit token value"
                       content={<ColorPicker color={value} onSetColor={value => setTokenValue(token.name, value)} />}
                       triggerType="custom"
                     >
                       <ColorIndicator color={value} />
                     </Popover>
                   ) : (
-                    <ValuePlaceholder />
+                    <Popover
+                      header="Edit token value"
+                      content={<Input value={value} onChange={e => setTokenValue(token.name, e.detail.value)} />}
+                      triggerType="custom"
+                    >
+                      <ValuePlaceholder />
+                    </Popover>
                   )}
                   <Box margin={{ left: 'xs' }}>
                     <SpaceBetween size="xxs">
@@ -456,6 +462,10 @@ function ValuePlaceholder() {
         width: 16,
         height: 16,
         background: 'transparent',
+        borderRadius: 4,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#879596',
       }}
     />
   );
