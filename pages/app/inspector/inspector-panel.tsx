@@ -2,21 +2,24 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Link, Toggle } from '~components';
+import { Box, Button, Link, SpaceBetween, Toggle } from '~components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tokenMapping from './tokens-mapping.json';
+import { groupBy } from 'lodash';
 
 const stylesMapping = Object.entries(tokenMapping)
   .map(([selector, tokenByState]: any) => ({
     selector: fixSelector(selector),
-    tokens: Object.values(tokenByState).flatMap(v => v),
+    tokens: Object.entries(tokenByState).flatMap(([key, tokens]: any) =>
+      tokens.map((token: string) => `${key}::${token}`)
+    ),
   }))
   .filter(({ selector }) => selector.trim()) as { selector: string; tokens: string[] }[];
 
 function fixSelector(selector: string): string {
-  return selector.replace(/:.*/, '').replace(/>.*/, '').replace('50%', '');
+  return selector.replace(/:.*/, '').replace(/>.*/, '');
 }
 
 const TREE_SIZE = 5;
@@ -51,16 +54,19 @@ function getElementTokens(element: Element): string[] {
 
 function getComponentSegmentName(element: Element): string {
   const segmentNames = [
-    'header',
-    'footer',
-    'section',
-    'button',
     'action',
-    'content',
-    'panel',
     'area',
+    'bar',
     'body',
+    'button',
     'container',
+    'content',
+    'footer',
+    'group',
+    'header',
+    'list',
+    'panel',
+    'section',
     'tools',
   ];
 
@@ -128,6 +134,10 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
       }
 
       function onMouseMove(event: MouseEvent) {
+        if (!inspectorEnabled) {
+          return;
+        }
+
         const panel = panelRef.current;
         const nextElement = document.elementFromPoint(event.clientX, event.clientY);
         if (
@@ -221,6 +231,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
         boxSizing: 'border-box',
         position: 'relative',
         borderLeft: '1px solid #bda55d',
+        overflowY: 'auto',
       }}
     >
       <div style={{ position: 'absolute', top: '4px', right: '4px' }}>
@@ -284,23 +295,36 @@ function TokensPanelMessage({ children }: { children: React.ReactNode }) {
 }
 
 function Tokens({ tokens }: { tokens: string[] }) {
+  const sections = groupBy(
+    tokens.map(token => ({ section: token.split('::')[0], name: token.split('::')[1] })),
+    'section'
+  );
+
   return (
-    <ul
-      style={{
-        listStyle: 'none',
-        padding: '0',
-        margin: '0',
-        background: '#eee',
-        borderRadius: '8px',
-        marginTop: '8px',
-      }}
-    >
-      {tokens.map(token => (
-        <li key={token} style={{ display: 'flex', alignItems: 'center' }}>
-          <Box>{token}</Box>
-        </li>
+    <SpaceBetween size="s">
+      {Object.keys(sections).map(section => (
+        <div key={section}>
+          <Box fontWeight="bold">{section}</Box>
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: '0',
+              margin: '0',
+              background: '#eee',
+              borderRadius: '8px',
+              marginTop: '8px',
+            }}
+          >
+            {sections[section].map(token => (
+              <li key={token.name} style={{ display: 'flex', alignItems: 'center' }}>
+                <Dash />
+                <Box>{token.name}</Box>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </SpaceBetween>
   );
 }
 

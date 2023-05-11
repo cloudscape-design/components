@@ -17,7 +17,7 @@ import IndexPage from './components/index-page';
 import Header from './components/header';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
-import { useInspector } from './use-inspector';
+import { useInspector } from './inspector/use-inspector';
 
 function App() {
   const {
