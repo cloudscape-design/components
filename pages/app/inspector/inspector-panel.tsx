@@ -3,7 +3,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Input, Link, Popover, SpaceBetween, Toggle } from '~components';
-import { HexColorPicker } from 'react-colorful';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -11,7 +10,7 @@ import tokenMapping from './tokens-mapping.json';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tokenDict from './token-descriptions.json';
-import { groupBy, uniqBy } from 'lodash';
+import { cloneDeep, groupBy, uniqBy } from 'lodash';
 import { applyTheme } from '~components/theming';
 
 interface Token {
@@ -53,6 +52,7 @@ interface TreeElement {
   name: string;
   node: Element;
   tokens: Token[];
+  context: string | null;
 }
 
 interface InspectedElement {
@@ -127,6 +127,27 @@ function getElementName(element: Element): string {
   return element.tagName;
 }
 
+function getElementContext(element: Element): null | string {
+  let current: null | Element = element;
+  while (current) {
+    const contextClassName = Array.from(current.classList).find(className => className.startsWith('awsui-context-'));
+    if (contextClassName) {
+      return contextClassName.slice('awsui-context-'.length);
+    }
+    current = current.parentElement;
+  }
+  return null;
+}
+
+interface Theme {
+  tokens: Record<string, string | { light: string; dark: string }>;
+  contexts: {
+    'compact-table': { tokens: Record<string, string | { light: string; dark: string }> };
+    'top-navigation': { tokens: Record<string, string | { light: string; dark: string }> };
+    flashbar: { tokens: Record<string, string | { light: string; dark: string }> };
+  };
+}
+
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -135,12 +156,24 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   const [inspectorEnabled, setInspectorEnabled] = useState(false);
   const [selectedNode, setSelectedNode] = useState<null | InspectedElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [theme, setTheme] = useState<Theme>({
+    tokens: {},
+    contexts: { 'compact-table': { tokens: {} }, 'top-navigation': { tokens: {} }, flashbar: { tokens: {} } },
+  });
 
-  // TODO: change colors for light/dark independently.
-  const [valueOverrides, setValueOverrides] = useState<Record<string, string>>({});
-
-  const setTokenValue = (tokenName: string, value: string) => {
-    setValueOverrides(prev => ({ ...prev, [tokenName]: value }));
+  const setTokenValue = (tokenName: string, value: string, context: null | string = null, scope?: 'light' | 'dark') => {
+    setTheme(prev => {
+      const next = cloneDeep(prev);
+      const tokens =
+        context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
+          ? next.contexts[context].tokens
+          : next.tokens;
+      const currValue = tokens[tokenName] ?? getTokenValue(tokenName);
+      const currValueObj =
+        typeof currValue === 'object' ? { ...currValue } : { light: currValue ?? value, dark: currValue ?? value };
+      tokens[tokenName] = scope ? { ...currValueObj, [scope]: value } : value;
+      return next;
+    });
   };
 
   const onHoverToken = (node: null | Element) => {
@@ -165,8 +198,9 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
   };
 
   useEffect(() => {
-    applyTheme({ theme: { tokens: valueOverrides } });
-  }, [valueOverrides]);
+    console.log(theme);
+    applyTheme({ theme });
+  }, [theme]);
 
   useEffect(
     () => {
@@ -208,7 +242,12 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           const tree: TreeElement[] = [];
           for (let i = 0; i < TREE_SIZE; i++) {
             const elementName = getElementName(current);
-            tree.push({ name: elementName, node: current, tokens: getElementTokens(current) });
+            tree.push({
+              name: elementName,
+              node: current,
+              tokens: getElementTokens(current),
+              context: getElementContext(current),
+            });
 
             if (!current.parentElement || (current as any).__awsuiMetadata__) {
               break;
@@ -311,8 +350,9 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
           {selectedNode && selectedNode.tree[selectedIndex].tokens.length > 0 && (
             <Tokens
               tokens={selectedNode.tree[selectedIndex].tokens}
-              valueOverrides={valueOverrides}
+              theme={theme}
               setTokenValue={setTokenValue}
+              context={selectedNode.tree[selectedIndex].context}
             />
           )}
 
@@ -362,13 +402,16 @@ function TokensPanelMessage({ children }: { children: React.ReactNode }) {
 
 function Tokens({
   tokens,
-  valueOverrides,
+  theme,
   setTokenValue,
+  context,
 }: {
   tokens: Token[];
-  valueOverrides: Record<string, string>;
-  setTokenValue: (tokenName: string, value: string) => void;
+  theme: Theme;
+  setTokenValue: (tokenName: string, value: string, context: null | string, scope?: 'light' | 'dark') => void;
+  context: null | string;
 }) {
+  const isDarkMode = !!document.querySelector('[class=awsui-dark-mode]');
   const sections = groupBy(tokens, 'section');
 
   return (
@@ -387,14 +430,24 @@ function Tokens({
             }}
           >
             {sections[section].map(token => {
-              const value = valueOverrides[token.name] ?? token.value;
-
+              const themeValue =
+                context === 'compact-table' || context === 'top-navigation' || context === 'flashbar'
+                  ? theme.contexts[context].tokens[token.name]
+                  : theme.tokens[token.name];
+              const themeValueStr =
+                typeof themeValue === 'object' ? themeValue[isDarkMode ? 'dark' : 'light'] : themeValue;
+              const value = themeValueStr ?? token.value;
               return (
                 <li key={token.name} style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
                   {token.name.startsWith('color') ? (
                     <Popover
                       header="Edit token value"
-                      content={<ColorPicker color={value} onSetColor={value => setTokenValue(token.name, value)} />}
+                      content={
+                        <ColorPicker
+                          color={value}
+                          onSetColor={value => setTokenValue(token.name, value, context, isDarkMode ? 'dark' : 'light')}
+                        />
+                      }
                       triggerType="custom"
                     >
                       <ColorIndicator color={value} />
@@ -402,7 +455,14 @@ function Tokens({
                   ) : (
                     <Popover
                       header="Edit token value"
-                      content={<Input value={value} onChange={e => setTokenValue(token.name, e.detail.value)} />}
+                      content={
+                        <Input
+                          value={value}
+                          onChange={e =>
+                            setTokenValue(token.name, e.detail.value, context, isDarkMode ? 'dark' : 'light')
+                          }
+                        />
+                      }
                       triggerType="custom"
                     >
                       <ValuePlaceholder />
@@ -429,8 +489,7 @@ function Tokens({
 function ColorPicker({ color, onSetColor }: { color: string; onSetColor: (value: string) => void }) {
   return (
     <SpaceBetween size="xs" direction="vertical">
-      <HexColorPicker color={color} onChange={onSetColor} />
-      <Input value={color} onChange={e => onSetColor(e.detail.value)} />
+      <input type="color" value={color} onChange={e => onSetColor(e.target.value)} />
     </SpaceBetween>
   );
 }
@@ -484,7 +543,7 @@ function ElementsTree({
 }) {
   const tree = [...(target?.tree || [])].reverse();
   while (tree.length < TREE_SIZE) {
-    tree.unshift({ name: '...', tokens: [], node: null as any });
+    tree.unshift({ name: '...', tokens: [], node: null as any, context: null });
   }
 
   return (
@@ -516,7 +575,7 @@ function ElementsTree({
             ) : (
               <div style={{ cursor: 'pointer' }} onClick={() => onSelect(TREE_SIZE - 1 - index)}>
                 <Box fontWeight={TREE_SIZE - 1 - index === tokenIndex ? 'bold' : 'normal'}>
-                  {node.name} ({node.tokens.length})
+                  {node.name} ({node.tokens.length}) {node.context ? `context = ${node.context}` : ''}
                 </Box>
               </div>
             )}
