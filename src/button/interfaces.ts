@@ -64,11 +64,18 @@ export interface ButtonProps extends BaseComponentProps {
    * The form action that is performed by a button click.
    */
   formAction?: ButtonProps.FormAction;
+
   /**
    * Adds `aria-label` to the button element. It should be used in buttons that don't have text in order to make
    * them accessible.
    */
   ariaLabel?: string;
+
+  /**
+   * Adds `aria-describedby` to the button.
+   */
+  ariaDescribedby?: string;
+
   /**
    * Applies button styling to a link. Use this property if you need a link styled as a button (`variant=link`).
    * For example, if you have a 'help' button that links to a documentation page.

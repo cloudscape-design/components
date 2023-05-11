@@ -52,4 +52,10 @@ export interface BaseCheckboxProps extends BaseComponentProps, FormFieldControlP
    * Description that appears below the label.
    */
   description?: React.ReactNode;
+
+  /**
+   * Adds `aria-controls` attribute to the component.
+   * If the component controls any secondary content (for example, another form field), use this to provide an ID referring to the secondary content.
+   */
+  ariaControls?: string;
 }

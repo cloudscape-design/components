@@ -108,6 +108,18 @@ describe('Button Component', () => {
     });
   });
 
+  describe('ariaDescribedby property', () => {
+    test('adds aria-describedby property to button', () => {
+      const wrapper = renderButton({ ariaDescribedby: 'my-element' });
+      expect(wrapper.getElement()).toHaveAttribute('aria-describedby', 'my-element');
+    });
+
+    test("doesn't add an aria-describedby property if not provided", () => {
+      const wrapper = renderButton();
+      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+    });
+  });
+
   describe('iconUrl property', () => {
     const iconUrl = 'data:image/png;base64,aaaa';
     const iconAlt = 'Custom icon';
@@ -350,6 +362,7 @@ describe('Button Component', () => {
       expect(wrapper.getElement()).not.toHaveAttribute('aria-label');
     });
   });
+
   describe('form property', () => {
     test('should have form property when set', () => {
       const formId = 'form-id';

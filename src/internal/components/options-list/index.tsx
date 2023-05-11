@@ -13,6 +13,7 @@ import {
 } from '../../events';
 import { findUpUntil } from '../../utils/dom';
 import styles from './styles.css.js';
+import { useStableEventHandler } from '../../hooks/use-stable-event-handler';
 
 export interface OptionsListProps extends BaseComponentProps {
   open?: boolean;
@@ -71,7 +72,7 @@ const OptionsList = (
   const baseProps = getBaseProps(restProps);
   const menuRef = useRef<HTMLUListElement>(null);
 
-  const handleScroll = () => {
+  const handleScroll = useStableEventHandler(() => {
     const scrollContainer = menuRef?.current;
     if (scrollContainer) {
       const bottomEdgePosition = scrollContainer.scrollTop + scrollContainer.clientHeight;
@@ -80,14 +81,14 @@ const OptionsList = (
         fireNonCancelableEvent(onLoadMore);
       }
     }
-  };
+  });
 
   useEffect(() => {
     if (!open) {
       return;
     }
     handleScroll();
-  });
+  }, [open, handleScroll]);
 
   const className = clsx(styles['options-list'], {
     [styles['decrease-top-margin']]: decreaseTopMargin,

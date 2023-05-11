@@ -42,6 +42,7 @@ export const InternalButton = React.forwardRef(
       download,
       formAction = 'submit',
       ariaLabel,
+      ariaDescribedby,
       ariaExpanded,
       fullWidth,
       __nativeAttributes,
@@ -90,6 +91,7 @@ export const InternalButton = React.forwardRef(
       // https://github.com/microsoft/TypeScript/issues/36659
       ref: useMergeRefs(buttonRef as any, __internalRootRef),
       'aria-label': ariaLabel,
+      'aria-describedby': ariaDescribedby,
       'aria-expanded': ariaExpanded,
       className: buttonClass,
       onClick: handleClick,
