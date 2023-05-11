@@ -19,8 +19,8 @@
     "start": "gulp watch & NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
     "prepare": "husky install",
-    "playroom:start": "playroom --config pages/playroom.config.js start",
-    "playroom:build": "playroom build --config ./pages/playroom.config.js"
+    "playroom:start": "playroom --config playroom/playroom.config.js start",
+    "playroom:build": "playroom build --config ./playroom/playroom.config.js"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",

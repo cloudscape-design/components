@@ -21,30 +21,27 @@ const ExampleCode = `
 
 module.exports = {
   components: '../lib/components',
-  outputPath: './dist/playroom',
+  outputPath: '../lib/static-default/playroom',
 
   // Optional:
   title: 'Cloudscape Playroom',
-  themes: './playroom/themes.ts',
+  themes: './app/themes.ts',
   //   scope: './playroom/useScope.js',
   widths: [320, 768, 1024],
   port: 9000,
   openBrowser: true,
-  paramType: 'search', // default is 'hash'
+  paramType: 'search',
   exampleCode: ExampleCode,
-  snippets: './playroom/snippets.tsx',
-  frameComponent: './playroom/frame.tsx',
-  typeScriptFiles: ['../src/components/**/*.{ts,tsx}', '!**/node_modules'],
+  snippets: './app/snippets.tsx',
+  frameComponent: './app/frame.tsx',
+  typeScriptFiles: ['../src/**/*.{ts,tsx}', '!**/node_modules'],
   webpackConfig: () => ({
-    output: {
-      path: path.resolve(__dirname, '../lib/static-default/playroom'),
-    },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
-          include: path.resolve(__dirname, 'playroom'),
+          include: path.resolve(__dirname, 'app'),
         },
         {
           test: /\.css$/,
