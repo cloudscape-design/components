@@ -31,7 +31,7 @@ module.exports = {
   title: 'Cloudscape Playroom',
   themes: './app/themes.ts',
   scope: './app/scope.ts',
-  widths: [320, 768, 1024],
+  widths: [1024, 768, 320],
   port: 9000,
   openBrowser: true,
   paramType: 'search',
