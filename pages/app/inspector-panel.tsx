@@ -4,23 +4,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Link, Toggle } from '~components';
 
-const TREE_SIZE = 5;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import tokenMapping from './tokens-mapping.json';
 
-const stylesMapping = [
-  {
-    selector: '[class*="awsui_button_vjswe"][class*="awsui_variant-normal_vjswe"]',
-    tokens: [
-      'colorBorderButtonNormalDefault',
-      'colorBorderButtonNormalHover',
-      'colorTextButtonNormalHover',
-      'colorTextButtonNormalActive',
-    ],
-  },
-  {
-    selector: '[class*="awsui_button_vjswe"][class*="awsui_variant-normal_vjswe"][class*="awsui_disabled_vjswe"]',
-    tokens: ['colorBorderButtonNormalDisabled', 'colorTextInteractiveDisabled'],
-  },
-] as const;
+const stylesMapping = Object.entries(tokenMapping)
+  .map(([selector, tokenByState]: any) => ({
+    selector: fixSelector(selector),
+    tokens: Object.values(tokenByState).flatMap(v => v),
+  }))
+  .filter(({ selector }) => selector.trim()) as { selector: string; tokens: string[] }[];
+
+function fixSelector(selector: string): string {
+  return selector.replace(/:.*/, '').replace(/>.*/, '').replace('50%', '');
+}
+
+const TREE_SIZE = 5;
 
 interface TreeElement {
   name: string;
@@ -39,11 +38,15 @@ interface InspectorPanelProps {
 function getElementTokens(element: Element): string[] {
   const tokens: string[] = [];
   for (const style of stylesMapping) {
-    if (element.matches(style.selector)) {
-      tokens.push(...style.tokens);
+    try {
+      if (element.matches(style.selector)) {
+        tokens.push(...style.tokens);
+      }
+    } catch (error) {
+      console.warn(`Invalid selector: "${style.selector}".`);
     }
   }
-  return tokens;
+  return [...new Set(tokens)];
 }
 
 export function InspectorPanel({ onClose }: InspectorPanelProps) {
@@ -241,7 +244,6 @@ function Tokens({ tokens }: { tokens: string[] }) {
     >
       {tokens.map(token => (
         <li key={token} style={{ display: 'flex', alignItems: 'center' }}>
-          <Dash />
           <Box>{token}</Box>
         </li>
       ))}

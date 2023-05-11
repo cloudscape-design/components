@@ -10,7 +10,7 @@ let panel: null | HTMLElement = null;
 
 function createTokensPanel(onClose: () => void) {
   originalBodyPadding = document.body.style.paddingRight;
-  document.body.style.paddingRight = '300px';
+  document.body.style.paddingRight = '400px';
 
   panel = document.createElement('div');
   panel.style.position = 'fixed';
@@ -19,7 +19,7 @@ function createTokensPanel(onClose: () => void) {
   panel.style.top = '0px';
   panel.style.bottom = '0px';
   panel.style.right = '0px';
-  panel.style.width = '300px';
+  panel.style.width = '400px';
   panel.style.background = 'white';
   document.body.append(panel);
 
