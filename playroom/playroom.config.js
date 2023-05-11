@@ -4,19 +4,23 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const ExampleCode = `
-<AppLayout
-  navigation={
-    <SideNavigation
-      header={{text: "Playroom"}}
-      items={[{ type: "link", text: "Home", href: "#" }]}
-    />
-  }
-  content={
-    <>
-      <Alert type="info">This is an alert!</Alert>
-    </>
-  }
-/>
+<Function>
+  {() => {
+    const [value, setValue] = useState("Hello Cloudscape!");
+    return (
+      <AppLayout
+        navigation={
+          <SideNavigation
+            header={{ text: "Playroom" }}
+            items={[{ type: "link", text: "Home", href: "#" }]}
+          />
+        }
+        showTools={false}
+        content={<Input value={value} onChange={event => setValue(event.detail.value)} />}
+      />
+    );
+  }}
+</Function>
 `;
 
 module.exports = {
@@ -26,7 +30,7 @@ module.exports = {
   // Optional:
   title: 'Cloudscape Playroom',
   themes: './app/themes.ts',
-  //   scope: './playroom/useScope.js',
+  scope: './app/scope.ts',
   widths: [320, 768, 1024],
   port: 9000,
   openBrowser: true,
