@@ -341,7 +341,7 @@ export function InspectorPanel({ onClose }: InspectorPanelProps) {
         <Button onClick={onClose} variant="icon" iconName="close" />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '8px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <Box variant="h3">Theme configurator</Box>
         <Toggle onChange={({ detail }) => setInspectorEnabled(detail.checked)} checked={inspectorEnabled}>
           Elements inspector
