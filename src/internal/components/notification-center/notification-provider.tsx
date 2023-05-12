@@ -4,11 +4,15 @@
 import React, { useState, useCallback } from 'react';
 import { ToastList } from './toast-list';
 import NotificationContext from './notification-context';
-import Portal from '../internal/components/portal';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import Portal from '../portal';
+import { useUniqueId } from '../../hooks/use-unique-id';
 import { ToastProps } from './interface';
 
-export function NotificationProvider(children: React.ReactNode) {
+export interface NotificationProviderProps {
+  children: React.ReactNode
+}
+
+export function NotificationProvider(props: NotificationProviderProps) {
   const [messages, setMessages] = useState<Array<ToastProps>>([]);
   const [queue, setQueue] = useState<Array<ToastProps>>([]);
 
@@ -62,7 +66,7 @@ export function NotificationProvider(children: React.ReactNode) {
 
   return (
     <NotificationContext.Provider value={{ toast, viewAll, markViewed, messages }}>
-      {children}
+      {props.children}
       <Portal>
         <ToastList toasts={queue} onAutoClose={removeFromQueue} />
       </Portal>

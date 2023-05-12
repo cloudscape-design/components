@@ -2,12 +2,12 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
-@use '../internal/hooks/focus-visible' as focus-visible;
-@use '../internal/styles/tokens' as awsui;
-@use '../internal/styles' as styles;
-@use '../internal/styles/typography' as typography;
-@use '../flashbar/motion';
+@use '../../generated/custom-css-properties/index' as custom-props;
+@use '../../hooks/focus-visible/index' as focus-visible;
+@use '../../styles/tokens' as awsui;
+@use '../../styles/index' as styles;
+@use '../../styles/typography/index' as typography;
+@use '../../../flashbar/motion';
 
 .toasts {
   position: relative;

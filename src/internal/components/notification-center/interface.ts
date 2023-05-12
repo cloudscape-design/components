@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ReactNode } from 'react';
-import { ButtonProps } from '../button/interfaces';
+import { ButtonProps } from '../../../button/interfaces';
 
 export namespace NotificationCenterProps {
   export interface ToastMessage {

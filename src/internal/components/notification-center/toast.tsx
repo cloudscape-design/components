@@ -3,9 +3,9 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import { NotificationCenterProps, ToastProps } from './interface';
-import { InternalButton } from '../button/internal';
-import InternalIcon from '../icon/internal';
-import LiveRegion from '../internal/components/live-region';
+import { InternalButton } from '../../../button/internal';
+import InternalIcon from '../../../icon/internal';
+import LiveRegion from '../live-region';
 import styles from './styles.css.js';
 // import { ButtonProps } from '../button/interfaces';
 
